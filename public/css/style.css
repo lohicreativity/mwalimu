@@ -6,3 +6,31 @@
 .ss-align-left{
    text-align: left;
 }
+
+.ss-form-actions{
+   margin-top: 20px;
+}
+
+.ss-pagination-links{
+   margin-top: 20px;
+}
+
+.ss-font-sm{
+   font-size: 14px;
+}
+
+.ss-font-xs{
+   font-size: 12px;
+}
+
+.ss-font-xxs{
+   font-size: 10px;
+}
+
+.ss-no-margin{
+   margin: 0px;
+}
+
+.ss-no-padding{
+   padding: 0px;
+}

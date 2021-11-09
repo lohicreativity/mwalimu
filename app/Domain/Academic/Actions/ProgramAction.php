@@ -1,7 +1,10 @@
 <?php
 
+namespace App\Domain\Academic\Actions;
+
 use Illuminate\Http\Request;
 use App\Domain\Academic\Models\Program;
+use App\Domain\Academic\Repositories\Interfaces\ProgramInterface;
 
 class ProgramAction implements ProgramInterface{
 	

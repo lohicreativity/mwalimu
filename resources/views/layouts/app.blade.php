@@ -27,6 +27,9 @@
   <!-- summernote -->
   <link rel="stylesheet" href="{{ asset('plugins/summernote/summernote-bs4.min.css') }}">
 
+  <link rel="stylesheet" type="text/css" 
+     href="{{ asset('css/toastr.min.css') }}">
+
   <!-- Custom style -->
   <link rel="stylesheet" type="text/css" href="{{ asset('css/style.css') }}">
 </head>
@@ -40,6 +43,8 @@
 <!-- jQuery UI 1.11.4 -->
 <script src="{{ asset('plugins/jquery-ui/jquery-ui.min.js') }}"></script>
 <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+<!-- Custom script -->
+<script src="{{ asset('js/script.js') }}"></script>
 
 <!-- Bootstrap 4 -->
 <script src="{{ asset('plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
@@ -70,6 +75,44 @@
 <script src="{{ asset('dist/js/demo.js') }}"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="{{ asset('dist/js/pages/dashboard.js') }}"></script>
+<script src="{{ asset('js/toastr.min.js') }}"></script>
+<script>
+  @if(session()->has('message'))
+  toastr.options =
+  {
+    "closeButton" : true,
+    "progressBar" : true
+  }
+        toastr.success("{{ session('message') }}");
+  @endif
+
+  @if(session()->has('error'))
+  toastr.options =
+  {
+    "closeButton" : true,
+    "progressBar" : true
+  }
+        toastr.error("{{ session('error') }}");
+  @endif
+
+  @if(session()->has('info'))
+  toastr.options =
+  {
+    "closeButton" : true,
+    "progressBar" : true
+  }
+        toastr.info("{{ session('info') }}");
+  @endif
+
+  @if(session()->has('warning'))
+  toastr.options =
+  {
+    "closeButton" : true,
+    "progressBar" : true
+  }
+        toastr.warning("{{ session('warning') }}");
+  @endif
+</script>
 </body>
 </html>
 

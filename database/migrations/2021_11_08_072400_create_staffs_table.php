@@ -20,7 +20,11 @@ class CreateStaffsTable extends Migration
             $table->string('last_name');
             $table->date('birth_date')->nullable();
             $table->text('qualification')->nullable();
+            $table->unsignedBigInteger('designation_id');
+            $table->string('status',20)->default('ACTIVE');
             $table->timestamps();
+
+            $table->foreign('designation_id')->references('id')->on('designations')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 

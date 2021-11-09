@@ -1,3 +1,6 @@
+@php
+   $status = '';
+@endphp
 @if($errors->all() != null || session()->get('error_messages'))
  <div class="alert alert-danger d-flex align-items-center alert-dismissible ss-messages-box" role="alert">
     <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
@@ -9,7 +12,7 @@
       <p class="ss-error-message">{{ $message }}</p>
       @endforeach
     @endif
- </div><!-- end of sg_messages_box -->
+ </div><!-- end of ss-messages_box -->
  @endif
 
  @if(session()->get('success_messages'))
@@ -18,5 +21,5 @@
     @foreach(session()->get('success_messages') as $message)
       <p class="ss-success-message"> {{ $message }}</p>
     @endforeach
- </div><!-- end of sg_messages_box -->
+ </div><!-- end of ss-messages_box -->
  @endif

@@ -52,75 +52,7 @@ $('document').ready(function(){
     // Enable dropdown
     $('.dropdown-toggle').dropdown();
     
-// Add product quantity price
-$(document).on('click','#ss-edit-quantity-prices-row',function(e){
-         
-         $.ajax({
-            url:$(e.target).data('source-url'),
-            method:'GET',
-            // async: false,
-            // cache: false
-         }).done(function(data,success){
-              var prices_counter = $('input[name=prices_counter]').val();
-              var currency = $(e.target).data('currency');
-              var element = '<div class="row">';
-                  element += '<div class="col-md-4">';
-                  element += '<label>Min bulk order quantity*</label>';
-                  element += '<div class="input-group">';
-                  element += '<span class="input-group-addon">'+currency+'</span>';
-                  element += '<input type="number" name="min_order_quantity_'+prices_counter+'" value="null" class="form-control" placeholder="Min product quantity" required />';
-                  element += '</div>';
-                  element += '</div>';
-                  element += '<div class="col-md-4">';
-                  element += '<label>Bulk price per item*</label>';
-                  element += '<div class="input-group">';
-                  element += '<span class="input-group-addon">'+currency+'</span>';
-                  element += '<input type="number" name="price_'+prices_counter+'" value="null" class="form-control" placeholder="Price" required/>';
-                  element += '</div>';
-                  element += '</div>';
-                  element += '<div class="col-md-4">';
-                  element += '<label>Bulk tax per item*</label>';
-                  element += '<div class="input-group">';
-                  element += '<span class="input-group-addon">'+currency+'</span>';
-                  element += '<input type="number" name="tax_'+prices_counter+'" value="0" class="form-control" placeholder="Tax"/>';
-                  element += '</div>';
-                  element += '</div>';
-                  element += '</div>';
-              $('input[name=prices_counter]').val(parseInt(prices_counter)+1);
-              $($(e.target).data('target')).append(element);
-         });
-             
-     });
 
-$(document).on('click','#ss-add-quantity-prices-row',function(e){
-      var prices_counter = $('input[name=prices_counter]').val();
-      var currency = $(e.target).data('currency');
-      var element = '<div class="row">';
-          element += '<div class="col-md-4">';
-          element += '<label>Min bulk order quantity*</label>';
-          element += '<div class="input-group">';
-          element += '<span class="input-group-addon">'+currency+'</span>';
-          element += '<input type="number" name="min_order_quantity_'+prices_counter+'" value="null" class="form-control" placeholder="Min product quantity" required />';
-          element += '</div>';
-          element += '</div>';
-          element += '<div class="col-md-4">';
-          element += '<label>Bulk price per item*</label>';
-          element += '<div class="input-group">';
-          element += '<span class="input-group-addon">'+currency+'</span>';
-          element += '<input type="number" name="price_'+prices_counter+'" value="null" class="form-control" placeholder="Price" required/>';
-          element += '</div>';
-          element += '</div>';
-          element += '<div class="col-md-4">';
-          element += '<label>Bulk tax per item*</label>';
-          element += '<div class="input-group">';
-          element += '<span class="input-group-addon">'+currency+'</span>';
-          element += '<input type="number" name="tax_'+prices_counter+'" value="0" class="form-control" placeholder="Tax"/>';
-          element += '</div>';
-          element += '</div>';
-          element += '</div>';
-      $('input[name=prices_counter]').val(parseInt(prices_counter)+1);
-      $($(e.target).data('target')).append(element);
-});
     // // Initialize summer note
     //  $('.ss-summernote').summernote({
     //     height: 300,                 // set editor height
@@ -129,24 +61,22 @@ $(document).on('click','#ss-add-quantity-prices-row',function(e){
     //     focus: true                  // set focus to editable area after initializing summernote
     //   });
 
-    // Initialize bootstrap switch
-    $("[class='ss-checkbox-switch']").bootstrapSwitch();
     
-    // Initialize tinymce
-    tinymce.init({
-     selector: '.ss-textarea',  
-     auto_focus: 'element1',
-     branding: false
-    });
+    // // Initialize tinymce
+    // tinymce.init({
+    //  selector: '.ss-textarea',  
+    //  auto_focus: 'element1',
+    //  branding: false
+    // });
 
-    $('.ss-select-search, .ss-select-search-lg').select2();   
+    // $('.ss-select-search, .ss-select-search-lg').select2();   
 
-    $('.ss-select-tags').select2(); 
+    // $('.ss-select-tags').select2(); 
 
-     $('.ss-image-zoomer').lightzoom({
-       glassSize   : 275,
-       zoomPower   : 1000
-     });
+    //  $('.ss-image-zoomer').lightzoom({
+    //    glassSize   : 275,
+    //    zoomPower   : 1000
+    //  });
 
      // Enable collapse
 $('#your-parent .collapse').on('show.bs.collapse', function (e) {
@@ -164,45 +94,24 @@ $('#your-parent .collapse').on('show.bs.collapse', function (e) {
     // });
 
     // Initialize date picker
-     $(function(){
-        $('.ss-datepicker').fdatepicker({
-          initialDate: '22-06-1989',
-          format: 'dd-mm-yyyy',
-          disableDblClickSelection: true,
-        });
-     });
+    //  $(function(){
+    //     $('.ss-datepicker').fdatepicker({
+    //       initialDate: '22-06-1989',
+    //       format: 'dd-mm-yyyy',
+    //       disableDblClickSelection: true,
+    //     });
+    //  });
 
-      // Initialize time picker
-     $(function(){
-      $('.ss-timepicker').fdatepicker({
-        format: 'dd-mm-yyyy hh:ii',
-        disableDblClickSelection: true,
-        language: 'vi',
-        pickTime: true
-      });
-    });
-
-
-     $('.ss-adjust-plus').click(function(e){
-         if(typeof parseInt($(e.target).parent().siblings('input[type=number]:first').val()) == 'number' ){
-           $(e.target).parent().siblings('span').children('.ss-adjust-minus').removeClass('disabled');
-           $(e.target).parent().siblings('input[type=number]:first').val(parseInt($(e.target).parent().siblings('input[type=number]:first').val())+1);
-         }
-      });
-
-      $('.ss-adjust-minus').click(function(e){
-         if(parseInt($(e.target).parent().siblings('input[type=number]:first').val()) > 0 && typeof parseInt($(e.target).parent().siblings('input[type=number]:first').val()) == 'number' ){
-           if(parseInt($(e.target).parent().siblings('input[name=quantity]').val()) == 1){
-              $(e.target).parent().siblings('input[name=quantity]').val(1);
-              $(e.target).addClass('disabled');
-           }else{
-              $(e.target).parent().siblings('input[type=number]').val(parseInt($(e.target).parent().siblings('input[type=number]:first').val())-1);
-           }
-         }else if(parseInt($(e.target).parent().siblings('input[type=number]:first').val()) == 0){
-           $(e.target).addClass('disabled');
-         }
-      });
-
+    //   // Initialize time picker
+    //  $(function(){
+    //   $('.ss-timepicker').fdatepicker({
+    //     format: 'dd-mm-yyyy hh:ii',
+    //     disableDblClickSelection: true,
+    //     language: 'vi',
+    //     pickTime: true
+    //   });
+    // });
+    
       $('#ss-signup-carousel').carousel({
           pause: true,
           interval: false
@@ -348,30 +257,30 @@ $('#your-parent .collapse').on('show.bs.collapse', function (e) {
         });
      });
 
-     var input = document.querySelector("#ss-phone");
-     window.intlTelInput(input,{
-      hiddenInput: "full_phone",
-      // initialCountry: "auto",
-      // geoIpLookup: function(success, failure) {
-      //   $.get("https://ipinfo.io", function() {}, "jsonp").always(function(resp) {
-      //     var countryCode = (resp && resp.country) ? resp.country : "";
-      //     success(countryCode);
-      //   });
-      // },
-      initialCountry: "TZ",
-      // preferedCountries: ["US","GB","UK","IN","FR"],
-      // separateDialCode: true,
-      utilsScript: "../assets/js/utils.js?1562189064761"
-    });
+    //  var input = document.querySelector("#ss-phone");
+    //  window.intlTelInput(input,{
+    //   hiddenInput: "full_phone",
+    //   // initialCountry: "auto",
+    //   // geoIpLookup: function(success, failure) {
+    //   //   $.get("https://ipinfo.io", function() {}, "jsonp").always(function(resp) {
+    //   //     var countryCode = (resp && resp.country) ? resp.country : "";
+    //   //     success(countryCode);
+    //   //   });
+    //   // },
+    //   initialCountry: "TZ",
+    //   // preferedCountries: ["US","GB","UK","IN","FR"],
+    //   // separateDialCode: true,
+    //   utilsScript: "../assets/js/utils.js?1562189064761"
+    // });
 
      // Initialize phone number input
-     var input2 = document.querySelector("#ss-company-phone");
-     window.intlTelInput(input2,{
-      hiddenInput: "company_full_phone",
-      initialCountry: "TZ",
-      // separateDialCode: true,
-      utilsScript: "../assets/js/utils.js?1562189064761"
-    });
+    //  var input2 = document.querySelector("#ss-company-phone");
+    //  window.intlTelInput(input2,{
+    //   hiddenInput: "company_full_phone",
+    //   initialCountry: "TZ",
+    //   // separateDialCode: true,
+    //   utilsScript: "../assets/js/utils.js?1562189064761"
+    // });
 
      // Toggle check or radio
      var source = '.ss-toggle-radio input[type=radio], .ss-toggle-check input[type=checkbox]';
@@ -404,28 +313,28 @@ $('#your-parent .collapse').on('show.bs.collapse', function (e) {
 
      // Dependent date picker
      // implementation of disabled form fields
-      var nowTemp = new Date();
-      var now = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate(), 0, 0, 0, 0);
-      var checkin = $('#dpd1, .dpd1').fdatepicker({
-        onRender: function (date) {
-          return date.valueOf() < now.valueOf() ? 'disabled' : '';
-        }
-      }).on('changeDate', function (ev) {
-        if (ev.date.valueOf() > checkout.date.valueOf()) {
-          var newDate = new Date(ev.date)
-          newDate.setDate(newDate.getDate() + 1);
-          checkout.update(newDate);
-        }
-        checkin.hide();
-        $('#dpd2, .dpd2')[0].focus();
-      }).data('datepicker');
-      var checkout = $('#dpd2, .dpd2').fdatepicker({
-        onRender: function (date) {
-          return date.valueOf() <= checkin.date.valueOf() ? 'disabled' : '';
-        }
-      }).on('changeDate', function (ev) {
-        checkout.hide();
-      }).data('datepicker');
+      // var nowTemp = new Date();
+      // var now = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate(), 0, 0, 0, 0);
+      // var checkin = $('#dpd1, .dpd1').fdatepicker({
+      //   onRender: function (date) {
+      //     return date.valueOf() < now.valueOf() ? 'disabled' : '';
+      //   }
+      // }).on('changeDate', function (ev) {
+      //   if (ev.date.valueOf() > checkout.date.valueOf()) {
+      //     var newDate = new Date(ev.date)
+      //     newDate.setDate(newDate.getDate() + 1);
+      //     checkout.update(newDate);
+      //   }
+      //   checkin.hide();
+      //   $('#dpd2, .dpd2')[0].focus();
+      // }).data('datepicker');
+      // var checkout = $('#dpd2, .dpd2').fdatepicker({
+      //   onRender: function (date) {
+      //     return date.valueOf() <= checkin.date.valueOf() ? 'disabled' : '';
+      //   }
+      // }).on('changeDate', function (ev) {
+      //   checkout.hide();
+      // }).data('datepicker');
 
       // $('#ss-right-sidebar').css('position','fixed'); 
       // $('#ss-right-sidebar').css('top','367px'); 
@@ -1567,8 +1476,8 @@ $('.ss-form-ajax-post').submit(function(e){
         beforeSend: function(){
             var percentComplete = 100;
                 element += '';
-                element += '<div class="progress progress-striped active">';
-                element += '<div class="progress-bar progress-bar-warning role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="'+percentComplete+'" style="width: 100%"><span class="sr-only"></span></div>';
+                element += '<div class="progress">';
+                element += '<div class="progress-bar bg-warning progress-bar-striped role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="'+percentComplete+'" style="width: 100%"><span class="sr-only"></span></div>';
                    element += '</div>';
                if(resultsContainer != null){
                    $(resultsContainer).html(element).slideDown();
@@ -1698,8 +1607,8 @@ $('.ss-form-ajax').submit(function(e){
         beforeSend: function(){
             var percentComplete = 100;
                 element += '<p class="ss-bold">Please wait...</p>';
-                element += '<div class="progress progress-striped active">';
-                element += '<div class="progress-bar progress-bar-warning role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="'+percentComplete+'" style="width: 100%"><span class="sr-only"></span></div>';
+                element += '<div class="progress">';
+                element += '<div class="progress-bar bg-warning progress-bar-striped role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="'+percentComplete+'" style="width: 100%"><span class="sr-only"></span></div>';
                    element += '</div>';
                if(resultsContainer != null){
                    $(resultsContainer).html(element).slideDown();

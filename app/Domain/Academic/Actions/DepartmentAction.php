@@ -1,7 +1,10 @@
 <?php
 
+namespace App\Domain\Academic\Actions;
+
 use Illuminate\Http\Request;
 use App\Domain\Academic\Models\Department;
+use App\Domain\Academic\Repositories\Interfaces\DepartmentInterface;
 
 class DepartmentAction implements DepartmentInterface{
 	
@@ -12,7 +15,7 @@ class DepartmentAction implements DepartmentInterface{
 	}
 
 	public function update(Request $request){
-		$department = new Department::find($request->get('department_id'));
+		$department = Department::find($request->get('department_id'));
         $department->name = $request->get('name');
         $department->save();
 	}

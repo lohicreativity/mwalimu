@@ -14,8 +14,8 @@ class Department extends Model
     /**
      * Establish one to many relationship with programs
      */
-    public function department()
+    public function programs()
     {
-    	return $this->hasMany(App\Domain\Academic\Program::class,'department_id');
+    	return $this->hasMany(Program::class,'department_id');
     }
 }

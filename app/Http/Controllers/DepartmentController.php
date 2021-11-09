@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Domain\Academic\Models\Department;
+use App\Domain\Academic\Actions\DepartmentAction;
+use App\Utils\Util;
+use Validator;
 
 class DepartmentController extends Controller
 {
@@ -15,7 +18,7 @@ class DepartmentController extends Controller
     	$data = [
            'departments'=>Department::paginate(20)
     	];
-    	return view('dashboard.academic.programs',$data)->withTitle('Departments');
+    	return view('dashboard.academic.departments',$data)->withTitle('Departments');
     }
 
     /**
@@ -23,7 +26,7 @@ class DepartmentController extends Controller
      */
     public function store(Request $request)
     {
-    	$validation = Validator::make(Input::all(),[
+    	$validation = Validator::make($request->all(),[
             'name'=>'required',
         ]);
 
@@ -38,57 +41,43 @@ class DepartmentController extends Controller
 
         (new DepartmentAction)->store($request);
 
-        if($request->ajax()){
-           return response()->json(array('success_messages'=>array('Department created successfully')));
-        }else{
-           session()->flash('success_messages',array('Department created successfully'));
-           return Redirect::back();
-        }
+        return Util::requestResponse($request,'Department updated successfully');
     }
 
     /**
-     * Store department into database
+     * Update specified department
      */
-    public function store(Request $request)
+    public function update(Request $request)
     {
-    	$validation = Validator::make(Input::all(),[
+    	$validation = Validator::make($request->all(),[
             'name'=>'required',
         ]);
 
         if($validation->fails()){
            if($request->ajax()){
-              return Response::json(array('error_messages'=>$validation->messages()));
+              return response()->json(array('error_messages'=>$validation->messages()));
            }else{
-              return Redirect::back()->withInput()->withErrors($validation->messages());
+              return redirect()->back()->withInput()->withErrors($validation->messages());
            }
         }
 
 
-        $department = Department::find($request->get('department_id'));
-        $department->name = $request->get('name');
-        $department->save();
+        (new DepartmentAction)->update($request);
 
-        if($request->ajax()){
-           return response()->json(array('success_messages'=>array('Department updated successfully')));
-        }else{
-           session()->flash('success_messages',array('Department updated successfully'));
-           return Redirect::back();
-        }
+        return Util::requestResponse($request,'Department updated successfully');
     }
 
     /**
      * Remove the specified department
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         try{
             $department = Department::findOrFail($id);
             $department->delete();
-            session()->flash('success_messages',array('Department deleted successfully'));
-            return Redirect::back();
+            return redirect()->back()->with('message','Department deleted successfully');
         }catch(Exception $e){
-            session()->flash('error_messages',array('Unable to get the resource specified in this request'));
-            return redirect()->back();
+            return redirect()->back()->with('error','Unable to get the resource specified in this request');
         }
     }
 }

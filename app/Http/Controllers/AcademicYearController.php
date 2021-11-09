@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Domain\Academic\Models\AcademicYear;
+use App\Domain\Academic\Models\Program;
 use App\Domain\Academic\Actions\AcademicYearAction;
+use App\Utils\Util;
+use Validator;
 
 
 class AcademicYearController extends Controller
@@ -25,7 +28,7 @@ class AcademicYearController extends Controller
      */
     public function store(Request $request)
     {
-    	$validation = Validator::make(Input::all(),[
+    	$validation = Validator::make($request->all(),[
             'year'=>'required',
         ]);
 
@@ -37,25 +40,17 @@ class AcademicYearController extends Controller
            }
         }
 
+        (new AcademicYearAction)->store($request);
 
-        $academic_year = new Academic;
-        $academic_year->year = $request->get('year');
-        $academic_year->save();
-
-        if($request->ajax()){
-           return response()->json(array('success_messages'=>array('Academic year created successfully')));
-        }else{
-           session()->flash('success_messages',array('Academic year created successfully'));
-           return redirect()->back();
-        }
+        return Util::requestResponse($request,'Academic year updated successfully');
     }
 
     /**
-     * Store department into database
+     * Update specified academic year
      */
-    public function store(Request $request)
+    public function update(Request $request)
     {
-    	$validation = Validator::make(Input::all(),[
+    	$validation = Validator::make($request->all(),[
             'year'=>'required',
         ]);
 
@@ -68,31 +63,57 @@ class AcademicYearController extends Controller
         }
 
 
-        $academic_year = AcademicYear::find($request->get('department_id'));
-        $academic_year->name = $request->get('name');
-        $academic_year->save();
+        (new AcademicYearAction)->update($request);
 
-        if($request->ajax()){
-           return response()->json(array('success_messages'=>array('Academic year updated successfully')));
+        return Util::requestResponse($request,'Academic year updated successfully');
+    }
+    
+    /**
+     * Display asssigned programs
+     */
+    public function showPrograms(Request $request)
+    {
+    	$data = [
+           'academic_years'=>AcademicYear::with(['programs'])->paginate(20),
+           'programs'=>Program::all()
+    	];
+    	return view('dashboard.academic.assign-academic-year-programs',$data)->withTitle('Academic Year Programs');
+    }
+
+    /**
+     * Update asssigned programs
+     */
+    public function updatePrograms(Request $request)
+    {
+    	$programs = Program::all();
+    	$year = AcademicYear::find($request->get('academic_year_id'));
+        $programIds = [];
+        foreach ($programs as $program) {
+        	if($request->has('year_'.$year->id.'_program_'.$program->id)){
+        		$programIds[] = $request->get('year_'.$year->id.'_program_'.$program->id);
+        	}
+        }
+
+        if(count($programIds) == 0){
+            return redirect()->back()->with('error','Please select programs to assign');
         }else{
-           session()->flash('success_messages',array('Academic year updated successfully'));
-           return Redirect::back();
+        	$year->programs()->sync($programIds);
+
+    	    return redirect()->back()->with('message','Programs assigned successfully');
         }
     }
 
     /**
      * Remove the specified department
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         try{
             $academic_year = AcademicYear::findOrFail($id);
             $academic_year->delete();
-            session()->flash('success_messages',array('Academic year deleted successfully'));
-            return Redirect::back();
+            return redirect()->back()->with('message','Academic year deleted successfully');
         }catch(Exception $e){
-            session()->flash('error_messages',array('Unable to get the resource specified in this request'));
-            return redirect()->back();
+            return redirect()->back()->with('error','Unable to get the resource specified in this request');
         }
     }
 }

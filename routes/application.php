@@ -13,6 +13,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
-    return view('dashboard');
-})->name('dashboard');
+Route::middleware(['auth:sanctum', 'verified'])->group(function(){
+
+	Route::get('applications', [ApplicationController::class,'index'])->name('semesters');
+	Route::post('application/store', [ApplicationController::class,'store']);
+	Route::post('application/update', [ApplicationController::class,'update']);
+	Route::get('application/{id}/destroy', [ApplicationController::class,'destroy']);
+});

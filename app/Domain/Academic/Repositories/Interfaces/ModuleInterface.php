@@ -1,10 +1,11 @@
 <?php
+namespace App\Domain\Academic\Repositories\Interfaces;
+
+use Illuminate\Http\Request;
 
 interface ModuleInterface{
 	
-	public function store($request);
+	public function store(Request $request);
 
-	public function update($request)
-
-	public function destroy($id);
+	public function update(Request $request);
 }
