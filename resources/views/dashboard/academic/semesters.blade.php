@@ -121,7 +121,7 @@
                                       {!! Form::input('hidden','semester_id',$semester->id) !!}
                                     </div>
                                       <div class="ss-form-actions">
-                                       <button type="submit" class="btn btn-primary">{{ __('Add Semester') }}</button>
+                                       <button type="submit" class="btn btn-primary">{{ __('Save Changes') }}</button>
                                       </div>
                                 {!! Form::close() !!}
 

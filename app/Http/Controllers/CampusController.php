@@ -1,0 +1,95 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\Domain\Settings\Models\Campus;
+use App\Domain\Settings\Models\Region;
+use App\Domain\Settings\Models\District;
+use App\Domain\Settings\Models\Ward;
+use App\Domain\Settings\Actions\CampusAction;
+use App\Utils\Util;
+use Validator;
+
+class CampusController extends Controller
+{
+    /**
+     * Display a list of campuses
+     */
+    public function index()
+    {
+    	$data = [
+           'campuses'=>campus::paginate(20),
+           'regions'=>Region::all(),
+           'districts'=>District::all(),
+           'wards'=>Ward::all()
+    	];
+    	return view('dashboard.settings.campuses',$data)->withTitle('campuses');
+    }
+
+    /**
+     * Store campus into database
+     */
+    public function store(Request $request)
+    {
+    	$validation = Validator::make($request->all(),[
+            'name'=>'required',
+            'abbreviation'=>'required',
+            'email'=>'required|email',
+            'phone'=>'required'
+        ]);
+
+        if($validation->fails()){
+           if($request->ajax()){
+              return response()->json(array('error_messages'=>$validation->messages()));
+           }else{
+              return redirect()->back()->withInput()->withErrors($validation->messages());
+           }
+        }
+
+
+        (new CampusAction)->store($request);
+
+        return Util::requestResponse($request,'Campus created successfully');
+    }
+
+    /**
+     * Update specified campus
+     */
+    public function update(Request $request)
+    {
+    	$validation = Validator::make($request->all(),[
+            'name'=>'required',
+            'abbreviation'=>'required',
+            'email'=>'required|email',
+            'phone'=>'required'
+        ]);
+
+        if($validation->fails()){
+           if($request->ajax()){
+              return Response::json(array('error_messages'=>$validation->messages()));
+           }else{
+              return Redirect::back()->withInput()->withErrors($validation->messages());
+           }
+        }
+
+
+        (new CampusAction)->update($request);
+
+        return Util::requestResponse($request,'Campus updated successfully');
+    }
+
+    /**
+     * Remove the specified campus
+     */
+    public function destroy($id)
+    {
+        try{
+            $campus = Campus::findOrFail($id);
+            $campus->delete();
+            return redirect()->back()->with('message','Campus deleted successfully');
+        }catch(Exception $e){
+            return redirect()->back()->with('error','Unable to get the resource specified in this request');
+        }
+    }
+}

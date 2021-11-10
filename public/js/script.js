@@ -94,23 +94,23 @@ $('#your-parent .collapse').on('show.bs.collapse', function (e) {
     // });
 
     // Initialize date picker
-    //  $(function(){
-    //     $('.ss-datepicker').fdatepicker({
-    //       initialDate: '22-06-1989',
-    //       format: 'dd-mm-yyyy',
-    //       disableDblClickSelection: true,
-    //     });
-    //  });
+     $(function(){
+        $('.ss-datepicker').fdatepicker({
+          initialDate: '22-06-1989',
+          format: 'dd-mm-yyyy',
+          disableDblClickSelection: true,
+        });
+     });
 
-    //   // Initialize time picker
-    //  $(function(){
-    //   $('.ss-timepicker').fdatepicker({
-    //     format: 'dd-mm-yyyy hh:ii',
-    //     disableDblClickSelection: true,
-    //     language: 'vi',
-    //     pickTime: true
-    //   });
-    // });
+      // Initialize time picker
+     $(function(){
+      $('.ss-timepicker').fdatepicker({
+        format: 'dd-mm-yyyy hh:ii',
+        disableDblClickSelection: true,
+        language: 'vi',
+        pickTime: true
+      });
+    });
     
       $('#ss-signup-carousel').carousel({
           pause: true,

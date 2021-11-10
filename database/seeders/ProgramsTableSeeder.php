@@ -19,6 +19,10 @@ class ProgramsTableSeeder extends Seeder
                'name'=>'BSc. Computer Science',
                'code'=>'CSM',
                'department_id'=>3,
+               'min_duration'=>3,
+               'max_duration'=>4,
+               'nta_level_id'=>1,
+               'award_id'=>1,
                'created_at'=>now(),
                'updated_at'=>now()
             ],
@@ -27,6 +31,10 @@ class ProgramsTableSeeder extends Seeder
                'name'=>'BSc. Insurance and Risk Management',
                'code'=>'IRM',
                'department_id'=>2,
+               'min_duration'=>3,
+               'max_duration'=>4,
+               'nta_level_id'=>2,
+               'award_id'=>2,
                'created_at'=>now(),
                'updated_at'=>now()
             ]

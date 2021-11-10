@@ -13,6 +13,11 @@ class ProgramAction implements ProgramInterface{
         $program->name = $request->get('name');
         $program->code = $request->get('code');
         $program->department_id = $request->get('department_id');
+        $program->nta_level_id = $request->get('nta_level_id');
+        $program->award_id = $request->get('award_id');
+        $program->description = $request->get('description');
+        $program->min_duration = $request->get('min_duration');
+        $program->max_duration = $request->get('max_duration');
         $program->save();
 	}
 
@@ -21,6 +26,11 @@ class ProgramAction implements ProgramInterface{
         $program->name = $request->get('name');
         $program->code = $request->get('code');
         $program->department_id = $request->get('department_id');
+        $program->nta_level_id = $request->get('nta_level_id');
+        $program->award_id = $request->get('award_id');
+        $program->description = $request->get('description');
+        $program->min_duration = $request->get('min_duration');
+        $program->max_duration = $request->get('max_duration');
         $program->save();
 	}
 }

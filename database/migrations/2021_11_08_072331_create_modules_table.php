@@ -18,7 +18,10 @@ class CreateModulesTable extends Migration
             $table->string('name');
             $table->string('code',10);
             $table->integer('credit');
+            $table->unsignedBigInteger('department_id');
             $table->timestamps();
+
+            $table->foreign('department_id')->references('id')->on('departments')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 

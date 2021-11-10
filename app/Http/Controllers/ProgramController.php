@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Domain\Academic\Models\Program;
 use App\Domain\Academic\Models\Department;
+use App\Domain\Academic\Models\Award;
+use App\Domain\Settings\Models\NTALevel;
 use App\Domain\Academic\Actions\ProgramAction;
 use App\Utils\Util;
 use Validator;
@@ -17,8 +19,10 @@ class ProgramController extends Controller
     public function index()
     {
     	$data = [
-           'programs'=>Program::with(['department'])->paginate(20),
-           'departments'=>Department::all()
+           'programs'=>Program::with(['department','ntaLevel','award'])->paginate(20),
+           'departments'=>Department::all(),
+           'nta_levels'=>NTALevel::all(),
+           'awards'=>Award::all()
     	];
     	return view('dashboard.academic.programs',$data)->withTitle('programs');
     }

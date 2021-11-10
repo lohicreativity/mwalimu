@@ -74,7 +74,7 @@ class AcademicYearController extends Controller
     public function showPrograms(Request $request)
     {
     	$data = [
-           'academic_years'=>AcademicYear::with(['programs'])->paginate(20),
+           'studt_academic_years'=>StudyAcademicYear::with(['campusPrograms'])->paginate(20),
            'programs'=>Program::all()
     	];
     	return view('dashboard.academic.assign-academic-year-programs',$data)->withTitle('Academic Year Programs');
@@ -86,11 +86,11 @@ class AcademicYearController extends Controller
     public function updatePrograms(Request $request)
     {
     	$programs = Program::all();
-    	$year = AcademicYear::find($request->get('academic_year_id'));
+    	$year = StudyAcademicYear::find($request->get('study_academic_year_id'));
         $programIds = [];
         foreach ($programs as $program) {
-        	if($request->has('year_'.$year->id.'_program_'.$program->id)){
-        		$programIds[] = $request->get('year_'.$year->id.'_program_'.$program->id);
+        	if($request->has('year_'.$year->id.'_campus_program_'.$program->id)){
+        		$programIds[] = $request->get('year_'.$year->id.'_campus_program_'.$program->id);
         	}
         }
 
@@ -99,7 +99,7 @@ class AcademicYearController extends Controller
         }else{
         	$year->programs()->sync($programIds);
 
-    	    return redirect()->back()->with('message','Programs assigned successfully');
+    	    return redirect()->back()->with('message','Campus programs assigned successfully');
         }
     }
 

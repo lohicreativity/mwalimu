@@ -26,7 +26,8 @@
   <link rel="stylesheet" href="{{ asset('plugins/daterangepicker/daterangepicker.css') }}">
   <!-- summernote -->
   <link rel="stylesheet" href="{{ asset('plugins/summernote/summernote-bs4.min.css') }}">
-
+  <link rel="stylesheet" type="text/css" 
+     href="{{ asset('css/toastr.min.css') }}">
   <!-- Custom style -->
   <link rel="stylesheet" type="text/css" href="{{ asset('css/style.css') }}">
 </head>
@@ -72,6 +73,62 @@
 <script src="{{ asset('dist/js/pages/dashboard.js') }}"></script>
 <!-- Custom script -->
 <script src="{{ asset('js/script.js') }}"></script>
+<script src="{{ asset('js/toastr.min.js') }}"></script>
+<script>
+  @if(session()->has('message'))
+  toastr.options =
+  {
+    "closeButton" : true,
+    "progressBar" : true
+  }
+        toastr.success("{{ session('message') }}");
+  @endif
+
+  @if($errors->all())
+  toastr.options =
+  {
+    "closeButton" : true,
+    "progressBar" : true
+  }
+        toastr.error("{{ implode($errors->all(),'\n') }}");
+  @endif
+
+  @if(session()->has('status'))
+  toastr.options =
+  {
+    "closeButton" : true,
+    "progressBar" : true
+  }
+        toastr.info("{{ session('status') }}");
+  @endif
+
+  @if(session()->has('error'))
+  toastr.options =
+  {
+    "closeButton" : true,
+    "progressBar" : true
+  }
+        toastr.error("{{ session('error') }}");
+  @endif
+
+  @if(session()->has('info'))
+  toastr.options =
+  {
+    "closeButton" : true,
+    "progressBar" : true
+  }
+        toastr.info("{{ session('info') }}");
+  @endif
+
+  @if(session()->has('warning'))
+  toastr.options =
+  {
+    "closeButton" : true,
+    "progressBar" : true
+  }
+        toastr.warning("{{ session('warning') }}");
+  @endif
+</script>
 </body>
 </html>
 

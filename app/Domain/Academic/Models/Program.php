@@ -4,6 +4,7 @@ namespace App\Domain\Academic\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Domain\Settings\Models\NTALevel;
 
 class Program extends Model
 {
@@ -17,6 +18,22 @@ class Program extends Model
     public function department()
     {
     	return $this->belongsTo(Department::class,'department_id');
+    }
+
+    /**
+     * Establish one to many relationship with awards
+     */
+    public function award()
+    {
+        return $this->belongsTo(Award::class,'award_id');
+    }
+
+    /**
+     * Establish one to many relationship with NTA levels
+     */
+    public function ntaLevel()
+    {
+        return $this->belongsTo(NTALevel::class,'nta_level_id');
     }
 
     /**

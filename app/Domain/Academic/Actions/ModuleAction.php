@@ -13,6 +13,7 @@ class ModuleAction implements ModuleInterface{
         $module->name = $request->get('name');
         $module->code = $request->get('code');
         $module->credit = $request->get('credit');
+        $module->department_id = $request->get('department_id');
         $module->save();
 	}
 
@@ -21,6 +22,7 @@ class ModuleAction implements ModuleInterface{
         $module->name = $request->get('name');
         $module->code = $request->get('code');
         $module->credit = $request->get('credit');
+        $module->department_id = $request->get('department_id');
         $module->save();
 	}
 }

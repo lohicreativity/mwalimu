@@ -1,0 +1,67 @@
+<?php
+
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\NTALevelController;
+use App\Http\Controllers\LevelController;
+use App\Http\Controllers\IntakeController;
+use App\Http\Controllers\CountryController;
+use App\Http\Controllers\RegionController;
+use App\Http\Controllers\DistrictController;
+use App\Http\Controllers\WardController;
+use App\Http\Controllers\CampusController;
+
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider within a group which
+| contains the "web" middleware group. Now create something great!
+|
+*/
+
+Route::middleware(['auth:sanctum', 'verified'])->group(function(){
+
+	Route::get('nta-levels', [NTALevelController::class,'index'])->name('nta-levels');
+	Route::post('nta-level/store', [NTALevelController::class,'store']);
+	Route::post('nta-level/update', [NTALevelController::class,'update']);
+	Route::get('nta-level/{id}/destroy', [NTALevelController::class,'destroy']);
+
+
+	Route::get('levels', [LevelController::class,'index'])->name('levels');
+	Route::post('level/store', [LevelController::class,'store']);
+	Route::post('level/update', [LevelController::class,'update']);
+	Route::get('level/{id}/destroy', [LevelController::class,'destroy']);
+
+
+	Route::get('intakes', [IntakeController::class,'index'])->name('levels');
+	Route::post('intake/store', [IntakeController::class,'store']);
+	Route::post('intake/update', [IntakeController::class,'update']);
+	Route::get('intake/{id}/destroy', [IntakeController::class,'destroy']);
+
+
+	Route::get('countries', [CountryController::class,'index'])->name('countries');
+	Route::post('country/store', [CountryController::class,'store']);
+	Route::post('country/update', [CountryController::class,'update']);
+	Route::get('country/{id}/destroy', [CountryController::class,'destroy']);
+
+
+	Route::get('districts', [DistrictController::class,'index'])->name('districts');
+	Route::post('district/store', [DistrictController::class,'store']);
+	Route::post('district/update', [DistrictController::class,'update']);
+	Route::get('district/{id}/destroy', [DistrictController::class,'destroy']);
+
+
+	Route::get('wards', [WardController::class,'index'])->name('wards');
+	Route::post('ward/store', [WardController::class,'store']);
+	Route::post('ward/update', [WardController::class,'update']);
+	Route::get('ward/{id}/destroy', [WardController::class,'destroy']);
+
+
+	Route::get('campuses', [CampusController::class,'index'])->name('campuses');
+	Route::post('campus/store', [CampusController::class,'store']);
+	Route::post('campus/update', [CampusController::class,'update']);
+	Route::get('campus/{id}/destroy', [CampusController::class,'destroy']);
+
+});

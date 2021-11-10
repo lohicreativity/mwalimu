@@ -5,6 +5,7 @@ use App\Http\Controllers\SemesterController;
 use App\Http\Controllers\ProgramController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\AcademicYearController;
+use App\Http\Controllers\StudyAcademicYearController;
 use App\Http\Controllers\AwardController;
 use App\Http\Controllers\CampusController;
 use App\Http\Controllers\ModuleController;
@@ -60,6 +61,11 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 	Route::post('academic-year/update', [AcademicYearController::class,'update']);
 	Route::get('academic-year/{id}/destroy', [AcademicYearController::class,'destroy']);
 
+	Route::get('study-academic-years', [StudyAcademicYearController::class,'index']);
+	Route::post('study-academic-year/store', [StudyAcademicYearController::class,'store']);
+	Route::post('study-academic-year/update', [StudyAcademicYearController::class,'update']);
+	Route::get('study-academic-year/{id}/destroy', [StudyAcademicYearController::class,'destroy']);
+
 	Route::get('academic-year-programs', [AcademicYearController::class,'showPrograms']);
 	Route::post('academic-year-programs/update', [AcademicYearController::class,'updatePrograms']);
 
@@ -77,5 +83,11 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 	Route::post('examination/store', [ExaminationController::class,'store']);
 	Route::post('examination/update', [ExaminationController::class,'update']);
 	Route::get('examination/{id}/destroy', [ExaminationController::class,'destroy']);
+
+
+	Route::get('awards', [AwardController::class,'index']);
+	Route::post('award/store', [AwardController::class,'store']);
+	Route::post('award/update', [AwardController::class,'update']);
+	Route::get('award/{id}/destroy', [AwardController::class,'destroy']);
 
 });

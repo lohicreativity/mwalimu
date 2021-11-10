@@ -68,9 +68,18 @@
               {!! Form::open(['url'=>'academic/module/store','class'=>'ss-form-processing']) !!}
                 <div class="card-body">
                   <div class="row">
-                  <div class="form-group col-12">
+                  <div class="form-group col-6">
                     {!! Form::label('','Module name') !!}
                     {!! Form::text('name',null,$name) !!}
+                  </div>
+                  <div class="form-group col-6">
+                    {!! Form::label('','Department') !!}
+                    <select name="department_id" class="form-control" required>
+                      <option value="">Select Department</option>
+                      @foreach($departments as $department)
+                      <option value="{{ $department->id }}">{{ $department->name }}</option>
+                      @endforeach
+                    </select>
                   </div>
                  </div>
                   <div class="row">
@@ -104,6 +113,7 @@
                   <thead>
                   <tr>
                     <th>Name</th>
+                    <th>Department</th>
                     <th>Code</th>
                     <th>Credit</th>
                     <th>Actions</th>
@@ -113,6 +123,7 @@
                   @foreach($modules as $module)
                   <tr>
                     <td>{{ $module->name }}</td>
+                    <td>{{ $module->department->name }}</td>
                     <td>{{ $module->code }}</td>
                     <td>{{ $module->credit }}</td>
                     <td>
@@ -123,7 +134,7 @@
                        </a>
 
                        <div class="modal fade" id="ss-edit-module-{{ $module->id }}">
-                        <div class="modal-dialog modal-lg">
+                        <div class="modal-dialog modal-xl">
                           <div class="modal-content">
                             <div class="modal-header">
                               <h4 class="modal-title">Edit module</h4>
@@ -141,11 +152,20 @@
                                 @endphp
                                 {!! Form::open(['url'=>'academic/module/update','class'=>'ss-form-processing']) !!}
                                   <div class="row">
-                                    <div class="form-group col-12">
+                                    <div class="form-group col-6">
                                       {!! Form::label('','Module name') !!}
                                       {!! Form::text('name',$module->name,$name) !!}
 
                                       {!! Form::input('hidden','module_id',$module->id) !!}
+                                    </div>
+                                    <div class="form-group col-6">
+                                      {!! Form::label('','Department') !!}
+                                      <select name="department_id" class="form-control" required>
+                                        <option value="">Select Department</option>
+                                        @foreach($departments as $department)
+                                        <option value="{{ $department->id }}" @if($module->department_id == $department->id) selected="selected" @endif>{{ $department->name }}</option>
+                                        @endforeach
+                                      </select>
                                     </div>
                                    </div>
                                     <div class="row">

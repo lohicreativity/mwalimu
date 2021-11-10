@@ -29,7 +29,8 @@
 
   <link rel="stylesheet" type="text/css" 
      href="{{ asset('css/toastr.min.css') }}">
-
+  <link rel="stylesheet" type="text/css" 
+     href="{{ asset('css/foundation-datepicker.min.css') }}">
   <!-- Custom style -->
   <link rel="stylesheet" type="text/css" href="{{ asset('css/style.css') }}">
 </head>
@@ -76,6 +77,7 @@
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="{{ asset('dist/js/pages/dashboard.js') }}"></script>
 <script src="{{ asset('js/toastr.min.js') }}"></script>
+<script src="{{ asset('js/foundation-datepicker.min.js') }}"></script>
 <script>
   @if(session()->has('message'))
   toastr.options =
@@ -84,6 +86,24 @@
     "progressBar" : true
   }
         toastr.success("{{ session('message') }}");
+  @endif
+
+  @if($errors->all())
+  toastr.options =
+  {
+    "closeButton" : true,
+    "progressBar" : true
+  }
+        toastr.error("{{ implode($errors->all(),'\n') }}");
+  @endif
+
+  @if(session()->has('status'))
+  toastr.options =
+  {
+    "closeButton" : true,
+    "progressBar" : true
+  }
+        toastr.info("{{ session('status') }}");
   @endif
 
   @if(session()->has('error'))

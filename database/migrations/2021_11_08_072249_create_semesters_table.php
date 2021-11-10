@@ -27,6 +27,6 @@ class CreateSemestersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('academic_semesters');
+        Schema::dropIfExists('semesters');
     }
 }

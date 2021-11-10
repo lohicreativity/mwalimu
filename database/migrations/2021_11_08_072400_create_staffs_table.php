@@ -17,11 +17,17 @@ class CreateStaffsTable extends Migration
             $table->id();
             $table->string('first_name');
             $table->string('middle_name')->nullable();
-            $table->string('last_name');
+            $table->string('surname');
             $table->date('birth_date')->nullable();
             $table->text('qualification')->nullable();
+            $table->string('category');
+            $table->string('type');
+            $table->string('phone');
+            $table->string('email');
+            $table->string('address');
+            $table->string('staff_id');
             $table->unsignedBigInteger('designation_id');
-            $table->string('status',20)->default('ACTIVE');
+            $table->string('disability_status',20)->default('NIL');
             $table->timestamps();
 
             $table->foreign('designation_id')->references('id')->on('designations')->onUpdate('cascade')->onDelete('cascade');

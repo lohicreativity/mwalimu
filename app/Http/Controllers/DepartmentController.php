@@ -41,7 +41,7 @@ class DepartmentController extends Controller
 
         (new DepartmentAction)->store($request);
 
-        return Util::requestResponse($request,'Department updated successfully');
+        return Util::requestResponse($request,'Department created successfully');
     }
 
     /**

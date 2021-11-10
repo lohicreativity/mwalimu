@@ -52,23 +52,67 @@
                      'class'=>'form-control',
                      'required'=>true
                   ];
+
+                  $min_duration = [
+                     'placeholder'=>'Min duration',
+                     'class'=>'form-control',
+                     'required'=>true
+                  ];
+
+                  $max_duration = [
+                     'placeholder'=>'Max duration',
+                     'class'=>'form-control',
+                     'required'=>true
+                  ];
               @endphp
               {!! Form::open(['url'=>'academic/program/store','class'=>'ss-form-processing']) !!}
                 <div class="card-body">
-
-                  <div class="form-group">
+                  
+                  <div class="row">
+                  <div class="form-group col-12">
                     {!! Form::label('','Program') !!}
                     {!! Form::text('name',null,$name) !!}
                   </div>
-                  <div class="form-group">
+                  </div>
+                  <div class="row">
+                  <div class="form-group col-4">
                     {!! Form::label('','Department') !!}
                     <select name="department_id" class="form-control" required>
-                      <option value="">-- Select --</option>
+                      <option value="">Select Department</option>
                       @foreach($departments as $department)
                       <option value="{{ $department->id }}">{{ $department->name }}</option>
                       @endforeach
                     </select>
                   </div>
+                  <div class="form-group col-4">
+                    {!! Form::label('','Min duration') !!}
+                    {!! Form::text('min_duration',null,$min_duration) !!}
+                  </div>
+                  <div class="form-group col-4">
+                    {!! Form::label('','Max duration') !!}
+                    {!! Form::text('max_duration',null,$max_duration) !!}
+                  </div>
+                 </div>
+                 <div class="row">
+                  <div class="form-group col-6">
+                    {!! Form::label('','NTA level') !!}
+                    <select name="nta_level_id" class="form-control" required>
+                      <option value="">Select NTA level</option>
+                      @foreach($nta_levels as $level)
+                      <option value="{{ $level->id }}">{{ $level->name }}</option>
+                      @endforeach
+                    </select>
+                  </div>
+                  <div class="form-group col-6">
+                    {!! Form::label('','Award') !!}
+                    <select name="award_id" class="form-control" required>
+                      <option value="">Select Award</option>
+                      @foreach($awards as $award)
+                      <option value="{{ $award->id }}">{{ $award->name }}</option>
+                      @endforeach
+                    </select>
+                  </div>
+                 </div>
                 </div>
                 <!-- /.card-body -->
 
@@ -91,6 +135,9 @@
                   <tr>
                     <th>Name</th>
                     <th>Department</th>
+                    <th>NTA Level</th>
+                    <th>Min Duration</th>
+                    <th>Max Duration</th>
                     <th>Actions</th>
                   </tr>
                   </thead>
@@ -99,6 +146,9 @@
                   <tr>
                     <td>{{ $program->name }}</td>
                     <td>{{ $program->department->name }}</td>
+                    <td>{{ $program->ntaLevel->name }}</td>
+                    <td>{{ $program->min_duration }}</td>
+                    <td>{{ $program->max_duration }}</td>
                     <td>
                       <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-edit-program-{{ $program->id }}">
                               <i class="fas fa-pencil-alt">
@@ -124,21 +174,53 @@
                                     ];
                                 @endphp
                                 {!! Form::open(['url'=>'academic/program/update','class'=>'ss-form-processing']) !!}
-
-                                    <div class="form-group">
+                                   <div class="row">
+                                    <div class="form-group col-12">
                                       {!! Form::label('','Program') !!}
                                       {!! Form::text('name',$program->name,$name) !!}
 
                                       {!! Form::input('hidden','program_id',$program->id) !!}
                                     </div>
-                                    <div class="form-group">
-                                    {!! Form::label('','Department') !!}
-                                    <select name="department_id" class="form-control" required>
-                                      @foreach($departments as $department)
-                                      <option value="{{ $department->id }}" @if($program->department_id = $department->id) selected="selected" @endif>{{ $department->name }}</option>
-                                      @endforeach
-                                    </select>
-                                  </div>
+                                    </div>
+                                        <div class="row">
+                                        <div class="form-group col-4">
+                                          {!! Form::label('','Department') !!}
+                                          <select name="department_id" class="form-control" required>
+                                            <option value="">Select Department</option>
+                                            @foreach($departments as $department)
+                                            <option value="{{ $department->id }}" @if($department->id == $program->department_id) selected="selected" @endif>{{ $department->name }}</option>
+                                            @endforeach
+                                          </select>
+                                        </div>
+                                        <div class="form-group col-4">
+                                          {!! Form::label('','Min duration') !!}
+                                          {!! Form::text('min_duration',$program->min_duration,$min_duration) !!}
+                                        </div>
+                                        <div class="form-group col-4">
+                                          {!! Form::label('','Max duration') !!}
+                                          {!! Form::text('max_duration',$program->max_duration,$max_duration) !!}
+                                        </div>
+                                       </div>
+                                       <div class="row">
+                                        <div class="form-group col-6">
+                                          {!! Form::label('','NTA level') !!}
+                                          <select name="nta_level_id" class="form-control" required>
+                                            <option value="">Select NTA level</option>
+                                            @foreach($nta_levels as $level)
+                                            <option value="{{ $level->id }}" @if($level->id == $program->nta_level_id) selected="selected" @endif>{{ $level->name }}</option>
+                                            @endforeach
+                                          </select>
+                                        </div>
+                                        <div class="form-group col-6">
+                                          {!! Form::label('','Award') !!}
+                                          <select name="award_id" class="form-control" required>
+                                            <option value="">Select Award</option>
+                                            @foreach($awards as $award)
+                                            <option value="{{ $award->id }}" @if($award->id == $program->award_id) selected="selected" @endif>{{ $award->name }}</option>
+                                            @endforeach
+                                          </select>
+                                        </div>
+                                       </div>
                                       <div class="ss-form-actions">
                                        <button type="submit" class="btn btn-primary">{{ __('Add Program') }}</button>
                                       </div>

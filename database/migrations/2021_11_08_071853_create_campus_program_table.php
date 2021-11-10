@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateAcademicYearProgramTable extends Migration
+class CreateCampusProgramTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,14 @@ class CreateAcademicYearProgramTable extends Migration
      */
     public function up()
     {
-        Schema::create('academic_year_program', function (Blueprint $table) {
-            $table->unsignedBigInteger('academic_year_id');
+        Schema::create('campus_program', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('campus_id');
             $table->unsignedBigInteger('program_id');
-            $table->unsignedBigInteger('assigned_staff_id')->nullable();
+            $table->string('regulator_code');
+            $table->timestamps();
 
-            $table->foreign('academic_year_id')->references('id')->on('academic_years')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('campus_id')->references('id')->on('campuses')->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('program_id')->references('id')->on('programs')->onUpdate('cascade')->onDelete('cascade');
         });
     }
@@ -30,6 +32,6 @@ class CreateAcademicYearProgramTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('academic_year_program');
+        Schema::dropIfExists('campus_program');
     }
 }

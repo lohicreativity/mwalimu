@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateApplicationCyclesTable extends Migration
+class CreateAwardsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,14 @@ class CreateApplicationCyclesTable extends Migration
      */
     public function up()
     {
-        Schema::create('application_cycles', function (Blueprint $table) {
+        Schema::create('awards', function (Blueprint $table) {
             $table->id();
-            $table->string('cycle');
-            $table->unsignedBigInteger('academic_year_id');
+            $table->string('name');
+            $table->string('code');
+            $table->unsignedBigInteger('level_id');
             $table->timestamps();
 
-            $table->foreign('academic_year_id')->references('id')->on('academic_years')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('level_id')->references('id')->on('levels')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 
@@ -30,6 +31,6 @@ class CreateApplicationCyclesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('application_cycles');
+        Schema::dropIfExists('awards');
     }
 }
