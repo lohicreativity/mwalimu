@@ -28,10 +28,11 @@ class CreateApplicantsTable extends Migration
             $table->mediumInteger('admission_year');
             $table->string('application_number');
             $table->unsignedBigInteger('intake_id');
-            $table->string('disability_status')->default('NIL');
+            $table->unsignedBigInteger('disability_status_id');
             $table->timestamps();
 
             $table->foreign('intake_id')->references('id')->on('intakes')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('disability_status_id')->references('id')->on('disability_statuses')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 

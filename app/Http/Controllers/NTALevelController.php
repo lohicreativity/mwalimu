@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Domain\Settings\Models\NTALevel;
+use App\Domain\Academic\Models\Award;
 use App\Domain\Settings\Actions\NTALevelAction;
 use App\Utils\Util;
 use Validator;
@@ -16,7 +17,8 @@ class NTALevelController extends Controller
     public function index()
     {
     	$data = [
-           'nta_levels'=>NTALevel::paginate(20)
+           'nta_levels'=>NTALevel::with('award')->paginate(20),
+           'awards'=>Award::all()
     	];
     	return view('dashboard.settings.nta-levels',$data)->withTitle('NTA Levels');
     }

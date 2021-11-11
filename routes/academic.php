@@ -11,6 +11,7 @@ use App\Http\Controllers\CampusController;
 use App\Http\Controllers\ModuleController;
 use App\Http\Controllers\ExaminationController;
 use App\Http\Controllers\ModuleAssignmentController;
+use App\Http\Controllers\AssessmentPlanController;
 use App\Http\Controllers\ProgramModuleAssignmentController;
 
 /*
@@ -50,6 +51,25 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 	Route::get('module/{id}/destroy', [ModuleController::class,'destroy']);
 
 
+	Route::get('module-assignments', [ModuleAssignmentController::class,'index']);
+	Route::post('module-assignment/store', [ModuleAssignmentController::class,'store']);
+	Route::get('module-assignment/{id}/destroy', [ModuleAssignmentController::class,'destroy']);
+
+
+	Route::get('staff-module-assignments', [ModuleAssignmentController::class,'showStaffAssignedModules']);
+	Route::get('staff-module-assignment/{id}/assessment-plans', [ModuleAssignmentController::class,'showAssessmentPlans']);
+	Route::get('staff-module-assignment/{id}/syllabus', [ModuleAssignmentController::class,'showSyllabus']);
+	Route::get('staff-module-assignment/{id}/module-attendance', [ModuleAssignmentController::class,'showModuleAttendance']);
+	Route::get('staff-module-assignment/{id}/results', [ModuleAssignmentController::class,'showResultsUpload']);
+	Route::post('staff-module-assignment/{id}/results/compute-course-work', [ModuleAssignmentController::class,'computeCourseWork']);
+	Route::post('staff-module-assignment/results/compute-results', [ModuleAssignmentController::class,'computeResults']);
+	Route::get('staff-module-assignment/{id}/results/download-course-work', [ModuleAssignmentController::class,'downloadCourseWork']);
+
+
+	Route::post('assessment-plan/store',[AssessmentPlanController::class,'store']);
+	Route::post('assessment-plan/update',[AssessmentPlanController::class,'update']);
+
+
 	Route::get('campuses', [CampusController::class,'index']);
 	Route::post('campus/store', [CampusController::class,'store']);
 	Route::post('campus/update', [CampusController::class,'update']);
@@ -69,10 +89,6 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 	Route::get('academic-year-programs', [AcademicYearController::class,'showPrograms']);
 	Route::post('academic-year-programs/update', [AcademicYearController::class,'updatePrograms']);
 
-
-    Route::get('staff-module-assignments', [ModuleAssignmentController::class,'index']);
-    Route::post('staff-module-assignments/search', [ModuleAssignmentController::class,'searchAcademicYear']);
-	Route::post('staff-module-assignments/update', [ModuleAssignmentController::class,'update']);
 
 	Route::get('program-module-assignments', [ProgramModuleAssignmentController::class,'index']);
 	Route::post('program-module-assignments/search', [ProgramModuleAssignmentController::class,'searchAcademicYear']);

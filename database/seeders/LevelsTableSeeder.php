@@ -16,24 +16,14 @@ class LevelsTableSeeder extends Seeder
     {
         $data = [
            [
-              'name'=>'CERTIFICATE',
-              'created_at'=>now(),
-              'updated_at'=>now()
-           ],
-
-           [
-              'name'=>'DIPLOMA',
-              'created_at'=>now(),
-              'updated_at'=>now()
-           ],
-
-           [
+              'id'=>1,
               'name'=>'UNDERGRADUATE',
               'created_at'=>now(),
               'updated_at'=>now()
            ],
 
            [
+              'id'=>2,
               'name'=>'POSTGRADUATE',
               'created_at'=>now(),
               'updated_at'=>now()

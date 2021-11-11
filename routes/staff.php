@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\StaffController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,7 +16,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 
-	Route::get('staffs', [StaffController::class,'index'])->name('semesters');
+	Route::get('staff-members', [StaffController::class,'index'])->name('staff-members');
+	Route::get('staff/create', [StaffController::class,'create']);
+	Route::get('staff/{id}/edit', [StaffController::class,'edit']);
 	Route::post('staff/store', [StaffController::class,'store']);
 	Route::post('staff/update', [StaffController::class,'update']);
 	Route::get('staff/{id}/destroy', [StaffController::class,'destroy']);

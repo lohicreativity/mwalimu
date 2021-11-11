@@ -17,12 +17,13 @@ class CreateModuleAssignmentsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('module_id');
             $table->unsignedBigInteger('staff_id');
-            $table->unsignedBigInteger('academic_year_id');
-            $table->unsignedBigInteger('assigned_staff_id')->nullable();
+            $table->unsignedBigInteger('study_academic_year_id');
+            $table->unsignedBigInteger('assigned_by_staff_id')->nullable();
             $table->timestamps();
 
             $table->foreign('module_id')->references('id')->on('modules')->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('staff_id')->references('id')->on('staffs')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('study_academic_year_id')->references('id')->on('study_academic_years')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 

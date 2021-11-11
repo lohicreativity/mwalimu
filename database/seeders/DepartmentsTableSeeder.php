@@ -18,6 +18,8 @@ class DepartmentsTableSeeder extends Seeder
            [
            	  'id'=>1,
               'name'=>'Admistration',
+              'abbreviation'=>'AD',
+              'unit_category_id'=>1,
               'created_at'=>now(),
               'updated_at'=>now()
            ],
@@ -25,13 +27,17 @@ class DepartmentsTableSeeder extends Seeder
            [
            	  'id'=>2,
               'name'=>'Banking & Finance',
+              'abbreviation'=>'BF',
+              'unit_category_id'=>2,
               'created_at'=>now(),
               'updated_at'=>now()
            ],
 
            [
            	  'id'=>3,
-              'name'=>'Computer Systems & Mathematics',
+              'name'=>'Computer Systems',
+              'abbreviation'=>'CS',
+              'unit_category_id'=>2,
               'created_at'=>now(),
               'updated_at'=>now()
            ]

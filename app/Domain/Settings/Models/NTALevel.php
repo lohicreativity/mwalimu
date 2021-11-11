@@ -18,4 +18,12 @@ class NTALevel extends Model
     {
     	return $this->hasMany(App\Domain\Academic\Models\Program::class,'program_id');
     }
+
+    /**
+     * Establish one to many relationship with awards
+     */
+    public function award()
+    {
+    	return $this->belongsTo(Award::class,'award_id');
+    }
 }

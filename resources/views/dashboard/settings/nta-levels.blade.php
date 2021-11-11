@@ -55,10 +55,21 @@
               @endphp
               {!! Form::open(['url'=>'settings/nta-level/store','class'=>'ss-form-processing']) !!}
                 <div class="card-body">
-
-                  <div class="form-group">
-                    {!! Form::label('','level') !!}
+                  
+                  <div class="row">
+                  <div class="form-group col-6">
+                    {!! Form::label('','NTA level') !!}
                     {!! Form::text('name',null,$name) !!}
+                  </div>
+                  <div class="form-group col-6">
+                    {!! Form::label('','Award') !!}
+                    <select name="award_id" class="form-control">
+                      <option value="">Select Award</option>
+                      @foreach($awards as $award)
+                      <option value="{{ $award->id }}">{{ $award->name }}</option>
+                      @endforeach
+                    </select>
+                  </div>
                   </div>
                 </div>
                 <!-- /.card-body -->
@@ -81,6 +92,7 @@
                   <thead>
                   <tr>
                     <th>Name</th>
+                    <th>Award</th>
                     <th>Actions</th>
                   </tr>
                   </thead>
@@ -88,6 +100,7 @@
                   @foreach($nta_levels as $level)
                   <tr>
                     <td>{{ $level->name }}</td>
+                    <td>{{ $level->award->name }}</td>
                     <td>
                       <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-edit-level-{{ $level->id }}">
                               <i class="fas fa-pencil-alt">
@@ -105,21 +118,24 @@
                               </button>
                             </div>
                             <div class="modal-body">
-                              @php
-                                    $name = [
-                                       'placeholder'=>'level',
-                                       'class'=>'form-control',
-                                       'required'=>true
-                                    ];
-                                @endphp
                                 {!! Form::open(['url'=>'settings/nta-level/update','class'=>'ss-form-processing']) !!}
+                                    <div class="row">
+                                      <div class="form-group col-6">
+                                        {!! Form::label('','NTA level') !!}
+                                        {!! Form::text('name',$level->name,$name) !!}
 
-                                    <div class="form-group">
-                                      {!! Form::label('','NTA level') !!}
-                                      {!! Form::text('name',$level->name,$name) !!}
-
-                                      {!! Form::input('hidden','level_id',$level->id) !!}
-                                    </div>
+                                        {!! Form::input('hidden','level_id',$level->id) !!}
+                                      </div>
+                                      <div class="form-group col-6">
+                                        {!! Form::label('','level') !!}
+                                        <select name="award_id" class="form-control">
+                                          <option value="">Select Award</option>
+                                          @foreach($awards as $award)
+                                          <option value="{{ $award->id }}" @if($award->id == $level->award_id) selected="selected" @endif>{{ $award->name }}</option>
+                                          @endforeach
+                                        </select>
+                                      </div>
+                                      </div>
                                       <div class="ss-form-actions">
                                        <button type="submit" class="btn btn-primary">{{ __('Save Changes') }}</button>
                                       </div>

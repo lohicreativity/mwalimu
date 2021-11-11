@@ -16,7 +16,10 @@ class CreateNtaLevelsTable extends Migration
         Schema::create('nta_levels', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->unsignedBigInteger('award_id');
             $table->timestamps();
+
+            $table->foreign('award_id')->references('id')->on('awards')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 

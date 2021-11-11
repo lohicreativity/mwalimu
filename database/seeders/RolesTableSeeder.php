@@ -37,8 +37,8 @@ class RolesTableSeeder extends Seeder
            ],
 
            [
-              'name'=>'lecturer',
-              'display_name'=>'Lecturer',
+              'name'=>'staff',
+              'display_name'=>'Staff',
               'created_at'=>now(),
               'updated_at'=>now()
            ],

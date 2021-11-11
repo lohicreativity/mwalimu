@@ -17,7 +17,7 @@ class CreateAssessmentPlansTable extends Migration
             $table->id();
             $table->string('name');
             $table->decimal('marks');
-            $table->decimal('weight')->default(0.00);
+            $table->decimal('weight')->nullable();
             $table->unsignedBigInteger('module_assignment_id');
             $table->timestamps();
 

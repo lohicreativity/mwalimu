@@ -64,6 +64,20 @@
                      'class'=>'form-control',
                      'required'=>true
                   ];
+
+                  $course_work = [
+                     'placeholder'=>'Course work',
+                     'class'=>'form-control',
+                     'steps'=>'any',
+                     'required'=>true
+                  ];
+
+                  $final_exam = [
+                     'placeholder'=>'Final exam',
+                     'class'=>'form-control',
+                     'steps'=>'any',
+                     'required'=>true
+                  ];
               @endphp
               {!! Form::open(['url'=>'academic/module/store','class'=>'ss-form-processing']) !!}
                 <div class="card-body">
@@ -92,6 +106,16 @@
                     {!! Form::text('credit',null,$credit) !!}
                   </div>
                  </div>
+                 <div class="row">
+                  <div class="form-group col-6">
+                    {!! Form::label('','Course work') !!}
+                    {!! Form::input('number','course_work',null,$course_work) !!}
+                  </div>
+                  <div class="form-group col-6">
+                    {!! Form::label('','Final exam') !!}
+                    {!! Form::input('number','final_exam',null,$final_exam) !!}
+                  </div>
+                 </div>
                 </div>
                 <!-- /.card-body -->
 
@@ -116,6 +140,8 @@
                     <th>Department</th>
                     <th>Code</th>
                     <th>Credit</th>
+                    <th>Course Work</th>
+                    <th>Final Exam</th>
                     <th>Actions</th>
                   </tr>
                   </thead>
@@ -126,6 +152,8 @@
                     <td>{{ $module->department->name }}</td>
                     <td>{{ $module->code }}</td>
                     <td>{{ $module->credit }}</td>
+                    <td>{{ $module->course_work }}</td>
+                    <td>{{ $module->final_exam }}</td>
                     <td>
                       <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-edit-module-{{ $module->id }}">
                               <i class="fas fa-pencil-alt">
@@ -137,19 +165,12 @@
                         <div class="modal-dialog modal-xl">
                           <div class="modal-content">
                             <div class="modal-header">
-                              <h4 class="modal-title">Edit module</h4>
+                              <h4 class="modal-title">Edit Module</h4>
                               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                               </button>
                             </div>
                             <div class="modal-body">
-                              @php
-                                    $name = [
-                                       'placeholder'=>'module',
-                                       'class'=>'form-control',
-                                       'required'=>true
-                                    ];
-                                @endphp
                                 {!! Form::open(['url'=>'academic/module/update','class'=>'ss-form-processing']) !!}
                                   <div class="row">
                                     <div class="form-group col-6">
@@ -178,6 +199,16 @@
                                       {!! Form::text('credit',$module->credit,$credit) !!}
                                     </div>
                                     </div>
+                                    <div class="row">
+                                    <div class="form-group col-6">
+                                      {!! Form::label('','Course work') !!}
+                                      {!! Form::input('number','course_work',$module->course_work,$course_work) !!}
+                                    </div>
+                                    <div class="form-group col-6">
+                                      {!! Form::label('','Final exam') !!}
+                                      {!! Form::input('number','final_exam',$module->final_exam,$final_exam) !!}
+                                    </div>
+                                   </div>
                                       <div class="ss-form-actions">
                                        <button type="submit" class="btn btn-primary">{{ __('Save Changes') }}</button>
                                       </div>

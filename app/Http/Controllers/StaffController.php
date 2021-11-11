@@ -5,6 +5,12 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Domain\HumanResources\Models\Staff;
 use App\Domain\HumanResources\Models\Designation;
+use App\Domain\Settings\Models\Country;
+use App\Domain\Settings\Models\Region;
+use App\Domain\Settings\Models\District;
+use App\Domain\Settings\Models\Ward;
+use App\Domain\Settings\Models\DisabilityStatus;
+use App\Domain\Settings\Models\Campus;
 use App\Domain\HumanResources\Actions\StaffAction;
 use App\Utils\Util;
 use Validator;
@@ -17,9 +23,55 @@ class StaffController extends Controller
     public function index()
     {
     	$data = [
-           'staffs'=>staff::paginate(20)
+           'staffs'=>Staff::with(['country','region','district','ward','designation'])->paginate(20),
+           'countries'=>Country::all(),
+           'regions'=>Region::all(),
+           'districts'=>District::all(),
+           'wards'=>Ward::all(),
+           'designations'=>Designation::all(),
+           'disabilities'=>DisabilityStatus::all(),
+           'campuses'=>Campus::all()
     	];
     	return view('dashboard.human-resources.staffs',$data)->withTitle('staffs');
+    }
+
+    /**
+     * Display form for creating new staff
+     */
+    public function create()
+    {
+        $data = [
+           'countries'=>Country::all(),
+           'regions'=>Region::all(),
+           'districts'=>District::all(),
+           'wards'=>Ward::all(),
+           'designations'=>Designation::all(),
+           'disabilities'=>DisabilityStatus::all(),
+           'campuses'=>Campus::all()
+        ];
+        return view('dashboard.human-resources.add-staff',$data)->withTitle('Add Staff');
+    }
+
+    /**
+     * Display form for editng staff
+     */
+    public function edit($id)
+    {
+        try{
+            $data = [
+               'staff'=>Staff::findOrFail($id),
+               'countries'=>Country::all(),
+               'regions'=>Region::all(),
+               'districts'=>District::all(),
+               'wards'=>Ward::all(),
+               'designations'=>Designation::all(),
+               'disabilities'=>DisabilityStatus::all(),
+               'campuses'=>Campus::all()
+            ];
+            return view('dashboard.human-resources.edit-staff',$data)->withTitle('Edit Staff');
+        }catch(\Exception $e){
+            return redirect()->back()->with('error','Unable to get the resource specified in this request');
+        }
     }
 
     /**
@@ -29,8 +81,12 @@ class StaffController extends Controller
     {
     	$validation = Validator::make($request->all(),[
             'first_name'=>'required',
-            'last_name'=>'required',
-            'birth_date'=>'required'
+            'surname'=>'required',
+            'birth_date'=>'required',
+            'email'=>'required|email|unique:users',
+            'address'=>'required',
+            'phone'=>'required',
+            'nin'=>'required'
         ]);
 
         if($validation->fails()){
@@ -44,7 +100,7 @@ class StaffController extends Controller
 
         (new StaffAction)->store($request);
 
-        return Util::requestResponse($request,'Staff updated successfully');
+        return Util::requestResponse($request,'Staff created successfully');
     }
 
     /**
@@ -54,8 +110,11 @@ class StaffController extends Controller
     {
     	$validation = Validator::make($request->all(),[
             'first_name'=>'required',
-            'last_name'=>'required',
-            'birth_date'=>'required'
+            'surname'=>'required',
+            'birth_date'=>'required',
+            'address'=>'required',
+            'phone'=>'required',
+            'nin'=>'required'
         ]);
 
         if($validation->fails()){

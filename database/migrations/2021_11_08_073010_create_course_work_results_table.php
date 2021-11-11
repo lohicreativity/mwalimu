@@ -16,13 +16,13 @@ class CreateCourseWorkResultsTable extends Migration
         Schema::create('course_work_results', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('student_id');
-            $table->unsignedBigInteger('examination_id');
+            $table->unsignedBigInteger('module_assignment_id');
             $table->decimal('score');
             $table->decimal('weight');
             $table->timestamps();
 
             $table->foreign('student_id')->references('id')->on('students')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('examination_id')->references('id')->on('examinations')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('module_assignment_id')->references('id')->on('module_assignments')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 

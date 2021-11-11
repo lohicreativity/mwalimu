@@ -19,9 +19,16 @@ class DatabaseSeeder extends Seeder
         $this->call(RoleUserTableSeeder::class);
         $this->call(LevelsTableSeeder::class);
         $this->call(AwardsTableSeeder::class);
+        $this->call(UnitCategoriesTableSeeder::class);
         $this->call(DepartmentsTableSeeder::class);
         $this->call(NTALevelsTableSeeder::class);
         $this->call(ProgramsTableSeeder::class);
         $this->call(IntakesTableSeeder::class);
+        $this->call(DesignationsTableSeeder::class);
+        $this->call(CountriesTableSeeder::class);
+        $this->call(RegionsTableSeeder::class);
+        $this->call(DistrictsTableSeeder::class);
+        $this->call(WardsTableSeeder::class);
+        $this->call(DisabilityStatusesTableSeeder::class);
     }
 }

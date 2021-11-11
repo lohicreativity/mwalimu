@@ -138,7 +138,7 @@
                 <!-- /.card-body -->
 
                 <div class="card-footer">
-                  <button type="submit" class="btn btn-primary">{{ __('Add campus') }}</button>
+                  <button type="submit" class="btn btn-primary">{{ __('Add Campus') }}</button>
                 </div>
               {!! Form::close() !!}
             </div>

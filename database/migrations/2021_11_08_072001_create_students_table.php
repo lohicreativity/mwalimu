@@ -28,6 +28,7 @@ class CreateStudentsTable extends Migration
             $table->string('registration_number')->unique();
             $table->unsignedBigInteger('study_academic_year_id');
             $table->unsignedBigInteger('studentship_status_id');
+            $table->unsignedBigInteger('disability_status_id');
             $table->unsignedBigInteger('program_id');
             $table->mediumInteger('year_of_study');
             $table->mediumInteger('registration_year');
@@ -38,6 +39,7 @@ class CreateStudentsTable extends Migration
             $table->foreign('study_academic_year_id')->references('id')->on('academic_years')->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('studentship_status_id')->references('id')->on('studentship_statuses')->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('program_id')->references('id')->on('programs')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('disability_status_id')->references('id')->on('disability_statuses')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 

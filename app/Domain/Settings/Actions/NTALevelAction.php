@@ -11,12 +11,14 @@ class NTALevelAction implements NTALevelInterface{
 	public function store(Request $request){
 	     $level = new NTALevel;
          $level->name = $request->get('name');
+         $level->award_id = $request->get('award_id');
          $level->save();
 	}
 
 	public function update(Request $request){
 	     $level = NTALevel::find($request->get('level_id'));
          $level->name = $request->get('name');
+         $level->award_id = $request->get('award_id');
          $level->save();
 	}
 }

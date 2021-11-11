@@ -81,7 +81,7 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="pages/UI/general.html" class="nav-link">
+                <a href="{{ url('staff/staff-members') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Staff Members</p>
                 </a>
@@ -139,27 +139,27 @@
                   <p>{{ __('Academic Year Programs') }}</p>
                 </a>
               </li>
-              <li class="nav-item">
-                <a href="{{ url('academic/module-assignments') }}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>{{ __('Modules Assignments') }}</p>
-                </a>
-              </li>
             </ul>
           </li>
           <li class="nav-item">
             <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-check-circle"></i>
+              <i class="nav-icon fas fa-folder-open"></i>
               <p>
-                {{ __('Examinations') }}
+                {{ __('Teaching') }}
                 <i class="fas fa-angle-left right"></i>
               </p>
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="{{ url('academic/examinations') }}" class="nav-link">
+                <a href="{{ url('academic/module-assignments') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Examinations</p>
+                  <p>Modules Assignment</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ url('academic/staff-module-assignments') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Assigned Modules</p>
                 </a>
               </li>
             </ul>

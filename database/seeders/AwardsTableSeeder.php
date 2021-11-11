@@ -17,18 +17,36 @@ class AwardsTableSeeder extends Seeder
         $data = [
            [
               'id'=>1,
-              'name'=>'BACHELOR OF DEGREE IN COMPUTER SCIENCE',
-              'code'=>'CSD',
-              'level_id'=>4,
+              'name'=>'CERTIFICATE',
+              'code'=>'CT',
+              'level_id'=>1,
               'created_at'=>now(),
               'updated_at'=>now()
            ],
 
            [
               'id'=>2,
-              'name'=>'BACHELOR OF DEGREE IN INSURANCE AND RISK MANAGEMENT',
-              'code'=>'IRM',
-              'level_id'=>4,
+              'name'=>'DIPLOMA',
+              'code'=>'DP',
+              'level_id'=>1,
+              'created_at'=>now(),
+              'updated_at'=>now()
+           ],
+
+           [
+              'id'=>3,
+              'name'=>'BACHELOR DEGREE',
+              'code'=>'BD',
+              'level_id'=>1,
+              'created_at'=>now(),
+              'updated_at'=>now()
+           ],
+
+           [
+              'id'=>4,
+              'name'=>'MASTERS DEGREE',
+              'code'=>'MD',
+              'level_id'=>2,
               'created_at'=>now(),
               'updated_at'=>now()
            ]

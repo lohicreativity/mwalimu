@@ -17,28 +17,32 @@ class NTALevelsTableSeeder extends Seeder
         $data = [
            [
               'id'=>1,
-              'name'=>'NTA Level 1',
+              'name'=>'NTA Level 4',
+              'award_id'=>1,
               'created_at'=>now(),
               'updated_at'=>now()
            ],
 
            [
               'id'=>2,
-              'name'=>'NTA Level 2',
+              'name'=>'NTA Level 5',
+              'award_id'=>2,
               'created_at'=>now(),
               'updated_at'=>now()
            ],
 
            [
               'id'=>3,
-              'name'=>'NTA Level 3',
+              'name'=>'NTA Level 6',
+              'award_id'=>3,
               'created_at'=>now(),
               'updated_at'=>now()
            ],
 
            [
               'id'=>4,
-              'name'=>'NTA Level 4',
+              'name'=>'NTA Level 7',
+              'award_id'=>4,
               'created_at'=>now(),
               'updated_at'=>now()
            ]
