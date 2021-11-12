@@ -192,6 +192,12 @@
                 </a>
               </li>
               <li class="nav-item">
+                <a href="{{ url('academic/awards') }}" class="nav-link">
+                  <i class="far fa-users nav-icon"></i>
+                  <p>Awards</p>
+                </a>
+              </li>
+              <li class="nav-item">
                 <a href="{{ url('settings/campuses') }}" class="nav-link">
                   <i class="far fa-users nav-icon"></i>
                   <p>Campuses</p>

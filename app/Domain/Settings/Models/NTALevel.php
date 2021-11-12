@@ -17,7 +17,7 @@ class NTALevel extends Model
      */
     public function programs()
     {
-    	return $this->hasMany(App\Domain\Academic\Models\Program::class,'program_id');
+    	return $this->hasMany(Program::class,'program_id');
     }
 
     /**
