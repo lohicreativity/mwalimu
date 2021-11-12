@@ -5,6 +5,7 @@ namespace App\Domain\HumanResources\Actions;
 use Illuminate\Http\Request;
 use App\Domain\HumanResources\Models\Staff;
 use App\Models\User;
+use App\Models\Role;
 use App\Domain\HumanResources\Repositories\Interfaces\StaffInterface;
 use App\Utils\DateMaker;
 use DB, Hash;
