@@ -90,7 +90,11 @@
     "closeButton" : true,
     "progressBar" : true
   }
+        @if(is_array($errors->all()))
         toastr.error("{{ implode($errors->all(),'\n') }}");
+        @else
+        toastr.error("{{ $errors->all() }}");
+        @endif
   @endif
 
   @if(session()->has('status'))
