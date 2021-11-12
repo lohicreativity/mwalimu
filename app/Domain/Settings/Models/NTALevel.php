@@ -4,6 +4,7 @@ namespace App\Domain\Settings\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Domain\Academic\Models\Award;
 
 class NTALevel extends Model
 {

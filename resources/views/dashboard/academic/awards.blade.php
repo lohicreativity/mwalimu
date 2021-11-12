@@ -106,7 +106,6 @@
                     <th>Name</th>
                     <th>Level</th>
                     <th>Code</th>
-                    <th>Credit</th>
                     <th>Actions</th>
                   </tr>
                   </thead>
