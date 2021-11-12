@@ -86,7 +86,7 @@ class StaffAction implements StaffInterface{
                 $staff->save();
 
                 $user = User::find($staff->user_id);
-                $user->name = $request->get('first_name').' '.$request
+                $user->name = $request->get('first_name').' '.$request::get('surname');
                 $user->save();
                 DB::commit();
 	}
