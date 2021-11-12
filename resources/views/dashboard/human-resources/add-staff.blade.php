@@ -169,7 +169,7 @@
                   </div>
                    <div class="row">
                     <div class="form-group col-4">
-                       {!! Form::label('','Region') !!}
+                       {!! Form::label('','Gender') !!}
                        <select name="gender" class="form-control" required>
                          <option value="">Select Gender</option>
                          <option value="M">Male</option>
