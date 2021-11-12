@@ -90,7 +90,7 @@
     "closeButton" : true,
     "progressBar" : true
   }
-        @if(is_array($errors->all()))
+        @if(is_iterable($errors->all()))
         toastr.error("{{ implode($errors->all(),'\n') }}");
         @else
         toastr.error("{{ $errors->all() }}");
