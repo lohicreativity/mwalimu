@@ -9,5 +9,21 @@ class ProgramModuleAssignment extends Model
 {
     use HasFactory;
 
-    protected $table = 'program_module_assignments';
+    protected $table = 'program_module_assigments';
+
+    /**
+     * Establish one to many relationship with modules
+     */
+    public function module()
+    {
+    	return $this->belongsTo(Module::class,'module_id');
+    }
+
+    /**
+     * Establish one to many relationship with semesters
+     */
+    public function semester()
+    {
+    	return $this->belongsTo(Semester::class,'semester_id');
+    }
 }

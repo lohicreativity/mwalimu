@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Domain\Academic\Models\StudyAcademicYear;
 use App\Domain\Academic\Models\AcademicYear;
 use App\Domain\Academic\Models\Program;
+use App\Domain\Academic\Models\CampusProgram;
+use App\Domain\Settings\Models\Campus;
 use App\Domain\Academic\Actions\StudyAcademicYearAction;
 use App\Utils\Util;
 use Validator;
@@ -76,11 +78,18 @@ class StudyAcademicYearController extends Controller
      */
     public function showPrograms(Request $request)
     {
+    	$campusPrograms = CampusProgram::where('campus_id',$request->get('campus_id'))->get();
+    	$campusProgramIds = [];
+    	foreach($campusPrograms as $prog){
+    		$campusProgramIds[] = $prog->id;
+    	}
     	$data = [
-           'study_academic_years'=>StudyAcademicYear::with(['campusPrograms'])->paginate(20),
-           'programs'=>Program::all()
+           'study_academic_years'=>StudyAcademicYear::get(),
+           'campuses'=>Campus::all(),
+           'campusPrograms'=>CampusProgram::with('program')->get(),
+           'campus'=>$request->has('campus_id')? Campus::find($request->get('campus_id')) : null
     	];
-    	return view('dashboard.academic.assign-academic-year-programs',$data)->withTitle('Academic Year Programs');
+    	return view('dashboard.academic.assign-study-academic-year-campus-programs',$data)->withTitle('Study Academic Year Campus Programs');
     }
 
     /**
@@ -92,15 +101,15 @@ class StudyAcademicYearController extends Controller
     	$year = StudyAcademicYear::find($request->get('study_academic_year_id'));
         $programIds = [];
         foreach ($programs as $program) {
-        	if($request->has('year_'.$year->id.'_campus_program_'.$program->id)){
-        		$programIds[] = $request->get('year_'.$year->id.'_campus_program_'.$program->id);
+        	if($request->has('year_'.$year->id.'_program_'.$program->id)){
+        		$programIds[] = $request->get('year_'.$year->id.'_program_'.$program->id);
         	}
         }
 
         if(count($programIds) == 0){
             return redirect()->back()->with('error','Please select programs to assign');
         }else{
-        	$year->programs()->sync($programIds);
+        	$year->campusPrograms()->sync($programIds);
 
     	    return redirect()->back()->with('message','Campus programs assigned successfully');
         }

@@ -165,6 +165,12 @@
                     <td>{{ $campus->name }}</td>
                     <td>{{ $campus->abbreviation }}</td>
                     <td>
+                      <a class="btn btn-info btn-sm" href="{{ url('academic/campus/'.$campus->id.'/campus-programs') }}">
+                              <i class="fas fa-plus">
+                              </i>
+                              Assign Programs
+                       </a>
+
                       <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-edit-campus-{{ $campus->id }}">
                               <i class="fas fa-pencil-alt">
                               </i>

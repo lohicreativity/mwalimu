@@ -21,6 +21,14 @@ class Program extends Model
     }
 
     /**
+     * Establish one to many relationship with campus programs
+     */
+    public function campusPrograms()
+    {
+        return $this->hasMany(CampusProgram::class,'program_id');
+    }
+
+    /**
      * Establish one to many relationship with awards
      */
     public function award()

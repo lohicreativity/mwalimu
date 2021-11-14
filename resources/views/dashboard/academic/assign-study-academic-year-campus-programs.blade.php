@@ -21,12 +21,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>{{ __('Academic Years Programs') }}</h1>
+            <h1>{{ __('Study Academic Years Campus Programs') }}</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">{{ __('Academic Years Programs') }}</li>
+              <li class="breadcrumb-item active">{{ __('Study Academic Years Campus Programs') }}</li>
             </ol>
           </div>
         </div>
@@ -39,10 +39,39 @@
         <div class="row">
           <div class="col-12">
 
-            @if(count($academic_years) != 0)
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">{{ __('Academic Years') }}</h3>
+                <h3 class="card-title">{{ __('Select Campus') }}</h3>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+                 {!! Form::open(['url'=>'academic/study-academic-year-campus-programs','class'=>'ss-form-processing','method'=>'GET']) !!}
+                   
+                   <div class="form-group">
+                    <select name="campus_id" class="form-control" required>
+                       <option value="">Select Campus</option>
+                       @foreach($campuses as $camp)
+                       <option value="{{ $camp->id }}">{{ $camp->name }}</option>
+                       @endforeach
+                    </select>
+                     
+                  </div>
+                  <div class="ss-form-actions">
+                   <button type="submit" class="btn btn-primary">{{ __('Search') }}</button>
+                  </div>
+
+                 {!! Form::close() !!}
+              </div>
+            </div>
+            <!-- /.card -->
+
+
+
+
+            @if(count($study_academic_years) != 0 && $campus)
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">{{ __('Study Academic Years') }} - {{ $campus->name }}</h3>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
@@ -55,31 +84,31 @@
                   </tr>
                   </thead>
                   <tbody>
-                  @foreach($academic_years as $academic_year)
+                  @foreach($study_academic_years as $year)
                   <tr>
-                    <td>{{ $academic_year->year }}</td>
-                    <td>@foreach($academic_year->programs as $prog)
-                          <p class="ss-font-xs ss-no-margin">{{ $prog->name }}</p>
+                    <td>{{ $year->academicYear->year }}</td>
+                    <td>@foreach($year->campusPrograms as $prog)
+                          <p class="ss-font-xs ss-no-margin">{{ $prog->program->name }}</p>
                         @endforeach
                     </td>
                     <td>
-                      <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-edit-academic_year-{{ $academic_year->id }}">
-                              <i class="fas fa-check-circle">
+                      <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-edit-academic-year-{{ $year->id }}">
+                              <i class="fas fa-plus">
                               </i>
                               Assign
                        </a>
 
-                       <div class="modal fade" id="ss-edit-academic_year-{{ $academic_year->id }}">
+                       <div class="modal fade" id="ss-edit-academic-year-{{ $year->id }}">
                         <div class="modal-dialog modal-lg">
                           <div class="modal-content">
                             <div class="modal-header">
-                              <h4 class="modal-title">Assign Academic Year Programs</h4>
+                              <h4 class="modal-title">Assign Study Academic Year Programs</h4>
                               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                               </button>
                             </div>
                             <div class="modal-body">
-                                {!! Form::open(['url'=>'academic/academic-year-programs/update','class'=>'ss-form-processing']) !!}
+                                {!! Form::open(['url'=>'academic/study-academic-year-campus-programs/update','class'=>'ss-form-processing']) !!}
 
                                 <table class="table table-bordered">
                                 <thead>
@@ -89,17 +118,17 @@
                                   </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach($programs as $program)
+                                    @foreach($campusPrograms as $program)
                                     <tr>
-                                      <td>{{ $program->name }}</td>
+                                      <td>{{ $program->program->name }}</td>
                                       <td>
-                                        @if(App\Utils\Util::collectionContains($academic_year->programs,$program))
+                                        @if(App\Utils\Util::collectionContains($year->campusPrograms,$program))
                                          
-                                         {!! Form::checkbox('year_'.$academic_year->id.'_program_'.$program->id,$program->id,true) !!} 
+                                         {!! Form::checkbox('year_'.$year->id.'_program_'.$program->id,$program->id,true) !!} 
 
                                          @else
                                           
-                                          {!! Form::checkbox('year_'.$academic_year->id.'_program_'.$program->id,$program->id) !!}
+                                          {!! Form::checkbox('year_'.$year->id.'_program_'.$program->id,$program->id) !!}
 
                                          @endif
                                       </td>
@@ -109,10 +138,11 @@
                                 </table>
 
                                     <div class="form-group">
-                                      {!! Form::input('hidden','academic_year_id',$academic_year->id) !!}
+                                      {!! Form::input('hidden','study_academic_year_id',$year->id) !!}
+                                      {!! Form::input('hidden','campus_id',$campus->id) !!}
                                     </div>
                                       <div class="ss-form-actions">
-                                       <button type="submit" class="btn btn-primary">{{ __('Assign Academic Year Programs') }}</button>
+                                       <button type="submit" class="btn btn-primary">{{ __('Assign Study Academic Year Campus Programs') }}</button>
                                       </div>
                                 {!! Form::close() !!}
 
@@ -132,9 +162,6 @@
                   
                   </tbody>
                 </table>
-                <div class="ss-pagination-links">
-                {!! $academic_years->render() !!}
-                </div>
               </div>
               <!-- /.card-body -->
             </div>
@@ -142,7 +169,7 @@
             @else
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">{{ __('No Academic Years Created') }}</h3>
+                <h3 class="card-title">{{ __('No Study Academic Years Created') }}</h3>
               </div>
               <!-- /.card-header -->
               <div class="card-body">

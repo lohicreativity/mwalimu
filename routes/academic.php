@@ -10,6 +10,7 @@ use App\Http\Controllers\AwardController;
 use App\Http\Controllers\CampusController;
 use App\Http\Controllers\ModuleController;
 use App\Http\Controllers\ExaminationController;
+use App\Http\Controllers\CampusProgramController;
 use App\Http\Controllers\ModuleAssignmentController;
 use App\Http\Controllers\AssessmentPlanController;
 use App\Http\Controllers\ProgramModuleAssignmentController;
@@ -76,6 +77,12 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 	Route::get('campus/{id}/destroy', [CampusController::class,'destroy']);
 
 
+	Route::get('campus/{id}/campus-programs', [CampusProgramController::class,'index']);
+	Route::post('campus/campus-program/store', [CampusProgramController::class,'store']);
+	Route::post('campus/campus-program/update', [CampusProgramController::class,'update']);
+	Route::get('campus/campus-program/{id}/destroy', [CampusProgramController::class,'destroy']);
+
+
 	Route::get('academic-years', [AcademicYearController::class,'index']);
 	Route::post('academic-year/store', [AcademicYearController::class,'store']);
 	Route::post('academic-year/update', [AcademicYearController::class,'update']);
@@ -86,14 +93,15 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 	Route::post('study-academic-year/update', [StudyAcademicYearController::class,'update']);
 	Route::get('study-academic-year/{id}/destroy', [StudyAcademicYearController::class,'destroy']);
 
-	Route::get('academic-year-programs', [AcademicYearController::class,'showPrograms']);
-	Route::post('academic-year-programs/update', [AcademicYearController::class,'updatePrograms']);
+
+	Route::get('study-academic-year-campus-programs', [StudyAcademicYearController::class,'showPrograms']);
+	Route::post('study-academic-year-campus-programs/update', [StudyAcademicYearController::class,'updatePrograms']);
 
 
 	Route::get('program-module-assignments', [ProgramModuleAssignmentController::class,'index']);
-	Route::post('program-module-assignments/search', [ProgramModuleAssignmentController::class,'searchAcademicYear']);
-	Route::post('program-module-assignments/update', [ProgramModuleAssignmentController::class,'update']);
-
+	Route::get('program-module-assignment/{ac_year_id}/{campus_prog_id}/assign', [ProgramModuleAssignmentController::class,'assignModules']);
+	Route::post('program-module-assignment/store',[ProgramModuleAssignmentController::class,'store']);
+    Route::post('program-module-assignment/update',[ProgramModuleAssignmentController::class,'update']);
 
 	Route::get('examinations', [ExaminationController::class,'index']);
 	Route::post('examination/store', [ExaminationController::class,'store']);

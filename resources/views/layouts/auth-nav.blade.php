@@ -73,6 +73,29 @@
           </li>
           <li class="nav-item">
             <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-building"></i>
+              <p>
+                {{ __('Organization') }}
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{ url('settings/campuses') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Campuses</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ url('academic/departments') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>{{ __('Departments') }}</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link">
               <i class="nav-icon fas fa-users"></i>
               <p>
                 {{ __('Human Resources') }}
@@ -80,6 +103,12 @@
               </p>
             </a>
             <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{ url('staff/staff/create') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Add Staff</p>
+                </a>
+              </li>
               <li class="nav-item">
                 <a href="{{ url('staff/staff-members') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
@@ -116,12 +145,6 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="{{ url('academic/departments') }}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>{{ __('Departments') }}</p>
-                </a>
-              </li>
-              <li class="nav-item">
                 <a href="{{ url('academic/academic-years') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>{{ __('Academic Years') }}</p>
@@ -134,9 +157,15 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="{{ url('academic/academic-year-programs') }}" class="nav-link">
+                <a href="{{ url('academic/study-academic-year-campus-programs') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>{{ __('Academic Year Programs') }}</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ url('academic/program-module-assignments') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>{{ __('Program Module Assignment') }}</p>
                 </a>
               </li>
             </ul>
@@ -195,12 +224,6 @@
                 <a href="{{ url('academic/awards') }}" class="nav-link">
                   <i class="far fa-users nav-icon"></i>
                   <p>Awards</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="{{ url('settings/campuses') }}" class="nav-link">
-                  <i class="far fa-users nav-icon"></i>
-                  <p>Campuses</p>
                 </a>
               </li>
             </ul>

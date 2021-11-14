@@ -65,7 +65,7 @@
                 <div class="card-body">
                   
                   <div class="row">
-                  <div class="form-group col-3">
+                  <div class="form-group col-4">
                     {!! Form::label('','Academic year') !!}
                     <select name="academic_year_id" class="form-control" required>
                       <option value="">Select Academic Year</option>
@@ -74,20 +74,15 @@
                       @endforeach
                     </select>
                   </div>
-                  <div class="form-group col-3">
+                  <div class="form-group col-4">
                     {!! Form::label('','Begin date') !!}
                     {!! Form::text('begin_date',null,$begin_date) !!}
                   </div>
-                  <div class="form-group col-3">
+                  <div class="form-group col-4">
                     {!! Form::label('','End date') !!}
                     {!! Form::text('end_date',null,$end_date) !!}
-                  </div>
-                  <div class="form-group col-3">
-                    {!! Form::label('','Status') !!}
-                    <select name="status" class="form-control" required>
-                      <option value="ACTIVE">ACTIVE</option>
-                      <option value="INACTIVE">INACTIVE</option>
-                    </select>
+
+                    {!! Form::input('hidden','status','ACTIVE') !!}
                   </div>
                   </div>
                 </div>
@@ -145,7 +140,7 @@
                                 {!! Form::open(['url'=>'academic/study-academic-year/update','class'=>'ss-form-processing']) !!}
 
                                     <div class="row">
-                                    <div class="form-group col-3">
+                                    <div class="form-group col-4">
                                       {!! Form::label('','Academic year') !!}
                                       <select name="academic_year_id" class="form-control" required>
                                         <option value="">Select Academic Year</option>
@@ -155,20 +150,15 @@
                                       </select>
                                       {!! Form::input('hidden','study_academic_year_id',$year->id) !!}
                                     </div>
-                                    <div class="form-group col-3">
+                                    <div class="form-group col-4">
                                       {!! Form::label('','Begin date') !!}
                                       {!! Form::text('begin_date',$year->begin_date,$begin_date) !!}
                                     </div>
-                                    <div class="form-group col-3">
+                                    <div class="form-group col-4">
                                       {!! Form::label('','End date') !!}
                                       {!! Form::text('end_date',$year->end_date,$end_date) !!}
-                                    </div>
-                                    <div class="form-group col-3">
-                                      {!! Form::label('','Status') !!}
-                                      <select name="status" class="form-control" required>
-                                        <option value="ACTIVE" @if($year->status = 'ACTIVE') selected="selected" @endif>ACTIVE</option>
-                                        <option value="INACTIVE" @if($year->status = 'INACTIVE') selected="selected" @endif>INACTIVE</option>
-                                      </select>
+
+                                      {!! Form::input('hidden','status',$year->status) !!}
                                     </div>
                                     </div>
                                       <div class="ss-form-actions">

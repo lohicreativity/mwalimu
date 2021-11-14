@@ -24,7 +24,7 @@ class StudyAcademicYear extends Model
      */
     public function campusPrograms()
     {
-    	return $this->belongsToMany(Program::class,'study_academic_year_campus_program','study_academic_year_id','campus_program_id');
+    	return $this->belongsToMany(CampusProgram::class,'study_academic_year_campus_program','study_academic_year_id','campus_program_id');
     }
 
     /**
