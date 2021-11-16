@@ -79,7 +79,7 @@
                 <table id="example2" class="table table-bordered table-hover">
                   <thead>
                   <tr>
-                    <th>Module</th>
+                    <th>Program</th>
                     <th>Actions</th>
                   </tr>
                   </thead>

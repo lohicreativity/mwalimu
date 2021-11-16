@@ -82,7 +82,7 @@
                     {!! Form::label('','End date') !!}
                     {!! Form::text('end_date',null,$end_date) !!}
 
-                    {!! Form::input('hidden','status','ACTIVE') !!}
+                    {!! Form::input('hidden','status','INACTIVE') !!}
                   </div>
                   </div>
                 </div>
@@ -213,6 +213,21 @@
                         <!-- /.modal-dialog -->
                       </div>
                       <!-- /.modal -->
+
+                      @if($year->status == 'ACTIVE')
+                       <a class="btn btn-danger btn-sm" href="{{ url('academic/study-academic-year/'.$year->id.'/deactivate') }}">
+                              <i class="fas fa-ban">
+                              </i>
+                              Deactivate
+                       </a>
+                      @else
+                       <a class="btn btn-info btn-sm" href="{{ url('academic/study-academic-year/'.$year->id.'/activate') }}">
+                              <i class="fas fa-check-circle">
+                              </i>
+                              Activate
+                       </a>
+
+                      @endif
                     </td>
                   </tr>
                   @endforeach

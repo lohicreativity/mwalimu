@@ -205,7 +205,7 @@
                     </div>
                     <div class="form-group col-6">
                        {!! Form::label('','Country') !!}
-                       <select name="country_id" class="form-control" required>
+                       <select name="country_id" class="form-control" required id="ss-select-countries" data-target="#ss-select-regions" data-token="{{ session()->token() }}" data-source-url="{{ url('api/v1/get-regions') }}">
                          <option value="">Select Country</option>
                          @foreach($countries as $country)
                          <option value="{{ $country->id }}">{{ $country->name }}</option>
@@ -216,7 +216,7 @@
                   <div class="row">
                     <div class="form-group col-6">
                        {!! Form::label('','Region') !!}
-                       <select name="region_id" class="form-control" required>
+                       <select name="region_id" class="form-control" required id="ss-select-regions" data-target="#ss-select-districts" data-token="{{ session()->token() }}" data-source-url="{{ url('api/v1/get-districts') }}">
                          <option value="">Select Region</option>
                          @foreach($regions as $region)
                          <option value="{{ $region->id }}">{{ $region->name }}</option>
@@ -225,7 +225,7 @@
                     </div>
                     <div class="form-group col-6">
                        {!! Form::label('','District') !!}
-                       <select name="district_id" class="form-control" required>
+                       <select name="district_id" class="form-control" required id="ss-select-districts" data-target="#ss-select-wards" data-token="{{ session()->token() }}" data-source-url="{{ url('api/v1/get-wards') }}">
                          <option value="">Select District</option>
                          @foreach($districts as $district)
                          <option value="{{ $district->id }}">{{ $district->name }}</option>
@@ -236,7 +236,7 @@
                   <div class="row">
                     <div class="form-group col-6">
                        {!! Form::label('','Ward') !!}
-                       <select name="ward_id" class="form-control" required>
+                       <select name="ward_id" class="form-control" required id="ss-select-wards" data-token="{{ session()->token() }}">
                          <option value="">Select Ward</option>
                          @foreach($wards as $ward)
                          <option value="{{ $ward->id }}">{{ $ward->name }}</option>

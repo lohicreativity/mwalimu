@@ -49,7 +49,7 @@
               <!-- /.card-header -->
               <!-- form start -->
 
-              {!! Form::open(['url'=>'academic/assessment-plan/store','class'=>'ss-form-processing']) !!}
+              {!! Form::open(['url'=>'academic/module-assignment-result/store','files'=>true,'class'=>'ss-form-processing']) !!}
                 <div class="card-body">
                   <div class="row">
                   <div class="form-group col-6">
@@ -66,16 +66,17 @@
                   </div>
                   <div class="form-group col-6">
                     {!! Form::label('','Upload results') !!}
-                  <div class="input-group">
+                    <div class="input-group">
                       <div class="custom-file">
-                        <input type="results_file" class="custom-file-input" id="exampleInputFile">
+                        <input type="file" class="custom-file-input" id="exampleInputFile">
                         <label class="custom-file-label" for="exampleInputFile">Choose file</label>
                       </div>
                       <div class="input-group-append">
                         <span class="input-group-text">Upload</span>
                       </div>
+                    </div>
                   </div>
-                  </div>
+                  
                   </div>
                 </div>
                 <!-- /.card-body -->

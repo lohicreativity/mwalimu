@@ -48,17 +48,61 @@
               <!-- form start -->
               @php
                   $name = [
-                     'placeholder'=>'department',
+                     'placeholder'=>'Department name',
                      'class'=>'form-control',
                      'required'=>true
+                  ];
+
+                  $abbreviation = [
+                     'placeholder'=>'Abbreviation',
+                     'class'=>'form-control',
+                     'required'=>true
+                  ];
+
+                  $description = [
+                     'placeholder'=>'Description',
+                     'class'=>'form-control',
+                     'rows'=>2
                   ];
               @endphp
               {!! Form::open(['url'=>'academic/department/store','class'=>'ss-form-processing']) !!}
                 <div class="card-body">
-
-                  <div class="form-group">
-                    {!! Form::label('','department') !!}
+                  
+                  <div class="row">
+                  <div class="form-group col-8">
+                    {!! Form::label('','Department name') !!}
                     {!! Form::text('name',null,$name) !!}
+                  </div>
+                  <div class="form-group col-4">
+                    {!! Form::label('','Abbreviation') !!}
+                    {!! Form::text('abbreviation',null,$abbreviation) !!}
+                  </div>
+                  </div>
+                  <div class="row">
+                    <div class="form-group col-12">
+                    {!! Form::label('','Description') !!}
+                    {!! Form::textarea('description',null,$description) !!}
+                  </div>
+                  </div>
+                  <div class="row">
+                  <div class="form-group col-6">
+                    {!! Form::label('','Unit category') !!}
+                    <select name="unit_category_id" class="form-control" required>
+                       <option value="">Select Unit</option>
+                       @foreach($unit_categories as $category)
+                       <option value="{{ $category->id }}">{{ $category->name }}</option>
+                       @endforeach
+                    </select>
+                  </div>
+                  <div class="form-group col-6">
+                    {!! Form::label('','Parent department') !!}
+                    <select name="parent_id" class="form-control">
+                       <option value="">Select Parent</option>
+                       @foreach($all_departments as $dpt)
+                       <option value="{{ $dpt->id }}">{{ $dpt->name }}</option>
+                       @endforeach
+                    </select>
+                  </div>
                   </div>
                 </div>
                 <!-- /.card-body -->
@@ -81,6 +125,8 @@
                   <thead>
                   <tr>
                     <th>Name</th>
+                    <th>Abbreviation</th>
+                    <th>Unit</th>
                     <th>Actions</th>
                   </tr>
                   </thead>
@@ -88,6 +134,8 @@
                   @foreach($departments as $department)
                   <tr>
                     <td>{{ $department->name }}</td>
+                    <td>{{ $department->abbreviation }}</td>
+                    <td>{{ $department->unitCategory->name }}</td>
                     <td>
                       <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-edit-department-{{ $department->id }}">
                               <i class="fas fa-pencil-alt">
@@ -105,20 +153,45 @@
                               </button>
                             </div>
                             <div class="modal-body">
-                              @php
-                                    $name = [
-                                       'placeholder'=>'department',
-                                       'class'=>'form-control',
-                                       'required'=>true
-                                    ];
-                                @endphp
                                 {!! Form::open(['url'=>'academic/department/update','class'=>'ss-form-processing']) !!}
 
-                                    <div class="form-group">
-                                      {!! Form::label('','Department') !!}
+                                    <div class="row">
+                                    <div class="form-group col-8">
+                                      {!! Form::label('','Department name') !!}
                                       {!! Form::text('name',$department->name,$name) !!}
 
-                                      {!! Form::input('hidden','department_id',$department->id) !!}
+                                       {!! Form::input('hidden','department_id',$department->id) !!}
+                                    </div>
+                                    <div class="form-group col-4">
+                                      {!! Form::label('','Abbreviation') !!}
+                                      {!! Form::text('abbreviation',$department->abbreviation,$abbreviation) !!}
+                                    </div>
+                                    </div>
+                                    <div class="row">
+                                      <div class="form-group col-12">
+                                      {!! Form::label('','Description') !!}
+                                      {!! Form::textarea('description',$department->description,$description) !!}
+                                    </div>
+                                    </div>
+                                    <div class="row">
+                                    <div class="form-group col-6">
+                                      {!! Form::label('','Unit category') !!}
+                                      <select name="unit_category_id" class="form-control" required>
+                                         <option value="">Select Unit</option>
+                                         @foreach($unit_categories as $category)
+                                         <option value="{{ $category->id }}" @if($category->id == $department->unit_category_id) selected="selected" @endif>{{ $category->name }}</option>
+                                         @endforeach
+                                      </select>
+                                    </div>
+                                    <div class="form-group col-6">
+                                      {!! Form::label('','Parent department') !!}
+                                      <select name="parent_id" class="form-control">
+                                         <option value="">Select Parent</option>
+                                         @foreach($all_departments as $dpt)
+                                         <option value="{{ $dpt->id }}" @if($department->parent_id == $dpt->id) selected="selected" @endif>{{ $dpt->name }}</option>
+                                         @endforeach
+                                      </select>
+                                    </div>
                                     </div>
                                       <div class="ss-form-actions">
                                        <button type="submit" class="btn btn-primary">{{ __('Add Department') }}</button>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Domain\Academic\Models\Department;
+use App\Domain\Settings\Models\UnitCategory;
 use App\Domain\Academic\Actions\DepartmentAction;
 use App\Utils\Util;
 use Validator;
@@ -16,7 +17,9 @@ class DepartmentController extends Controller
     public function index()
     {
     	$data = [
-           'departments'=>Department::paginate(20)
+           'departments'=>Department::with('unitCategory')->paginate(20),
+           'unit_categories'=>UnitCategory::all(),
+           'all_departments'=>Department::all()
     	];
     	return view('dashboard.academic.departments',$data)->withTitle('Departments');
     }

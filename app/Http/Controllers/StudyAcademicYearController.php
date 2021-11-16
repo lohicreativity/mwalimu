@@ -116,6 +116,41 @@ class StudyAcademicYearController extends Controller
     }
 
     /**
+     * Activate study academic year
+     */
+    public function activate($id)
+    {
+    	try{
+    		$academic_year = StudyAcademicYear::findOrFail($id);
+    		if(strtotime(now()) < strtotime($academic_year)){
+    			return redirect()->back()->with('error','Academic year must be within current dates');
+    		}
+            $academic_year->status = 'ACTIVE';
+            $academic_year->save();
+
+            return redirect()->back()->with('message','Study academic year activated successfully');
+        }catch(Exception $e){
+            return redirect()->back()->with('error','Unable to get the resource specified in this request');
+        }
+    }
+
+    /**
+     * Deactivate study academic year
+     */
+    public function deactivate($id)
+    {
+    	try{
+    		$academic_year = StudyAcademicYear::findOrFail($id);
+            $academic_year->status = 'INACTIVE';
+            $academic_year->save();
+
+            return redirect()->back()->with('message','Study academic year deactivated successfully');
+        }catch(Exception $e){
+            return redirect()->back()->with('error','Unable to get the resource specified in this request');
+        }
+    }
+
+    /**
      * Remove the specified study academic year
      */
     public function destroy(Request $request, $id)

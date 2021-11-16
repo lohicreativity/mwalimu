@@ -68,6 +68,7 @@
                   $course_work = [
                      'placeholder'=>'Course work',
                      'class'=>'form-control',
+                     'data-target'=>'#ss-final-exam',
                      'steps'=>'any',
                      'required'=>true
                   ];
@@ -75,6 +76,7 @@
                   $final_exam = [
                      'placeholder'=>'Final exam',
                      'class'=>'form-control',
+                     'id'=>'ss-final-exam',
                      'steps'=>'any',
                      'required'=>true
                   ];
@@ -171,6 +173,23 @@
                               </button>
                             </div>
                             <div class="modal-body">
+                              @php
+                                $course_work = [
+                                   'placeholder'=>'Course work',
+                                   'class'=>'form-control',
+                                   'data-target'=>'#ss-final-exam-'.$module->id,
+                                   'steps'=>'any',
+                                   'required'=>true
+                                ];
+
+                                $final_exam = [
+                                   'placeholder'=>'Final exam',
+                                   'class'=>'form-control',
+                                   'id'=>'ss-final-exam-'.$module->id,
+                                   'steps'=>'any',
+                                   'required'=>true
+                                ];
+                            @endphp
                                 {!! Form::open(['url'=>'academic/module/update','class'=>'ss-form-processing']) !!}
                                   <div class="row">
                                     <div class="form-group col-6">

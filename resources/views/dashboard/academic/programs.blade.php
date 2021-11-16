@@ -53,6 +53,18 @@
                      'required'=>true
                   ];
 
+                  $code = [
+                     'placeholder'=>'Code',
+                     'class'=>'form-control',
+                     'required'=>true
+                  ];
+
+                  $description = [
+                     'placeholder'=>'Description',
+                     'class'=>'form-control',
+                     'rows'=>2
+                  ];
+
                   $min_duration = [
                      'placeholder'=>'Min duration',
                      'class'=>'form-control',
@@ -69,10 +81,20 @@
                 <div class="card-body">
                   
                   <div class="row">
-                  <div class="form-group col-12">
+                  <div class="form-group col-8">
                     {!! Form::label('','Program') !!}
                     {!! Form::text('name',null,$name) !!}
                   </div>
+                   <div class="form-group col-4">
+                    {!! Form::label('','Code') !!}
+                    {!! Form::text('code',null,$code) !!}
+                  </div>
+                  </div>
+                  <div class="row">
+                    <div class="form-group col-12">
+                      {!! Form::label('','Description') !!}
+                      {!! Form::textarea('description',null,$description) !!}
+                    </div>
                   </div>
                   <div class="row">
                   <div class="form-group col-4">
@@ -134,6 +156,7 @@
                   <thead>
                   <tr>
                     <th>Name</th>
+                    <th>Code</th>
                     <th>Department</th>
                     <th>NTA Level</th>
                     <th>Min Duration</th>
@@ -145,6 +168,7 @@
                   @foreach($programs as $program)
                   <tr>
                     <td>{{ $program->name }}</td>
+                    <td>{{ $program->code }}</td>
                     <td>{{ $program->department->name }}</td>
                     <td>{{ $program->ntaLevel->name }}</td>
                     <td>{{ $program->min_duration }}</td>
@@ -166,21 +190,25 @@
                               </button>
                             </div>
                             <div class="modal-body">
-                              @php
-                                    $name = [
-                                       'placeholder'=>'Program name',
-                                       'class'=>'form-control',
-                                       'required'=>true
-                                    ];
-                                @endphp
+
                                 {!! Form::open(['url'=>'academic/program/update','class'=>'ss-form-processing']) !!}
                                    <div class="row">
-                                    <div class="form-group col-12">
+                                    <div class="form-group col-8">
                                       {!! Form::label('','Program') !!}
                                       {!! Form::text('name',$program->name,$name) !!}
 
                                       {!! Form::input('hidden','program_id',$program->id) !!}
                                     </div>
+                                    <div class="form-group col-4">
+                                      {!! Form::label('','Code') !!}
+                                      {!! Form::text('code',$program->code,$code) !!}
+                                    </div>
+                                    </div>
+                                    <div class="row">
+                                      <div class="form-group col-12">
+                                        {!! Form::label('','Description') !!}
+                                        {!! Form::textarea('description',$program->description,$description) !!}
+                                      </div>
                                     </div>
                                         <div class="row">
                                         <div class="form-group col-4">

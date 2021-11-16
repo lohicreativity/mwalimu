@@ -91,6 +91,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 	Route::get('study-academic-years', [StudyAcademicYearController::class,'index']);
 	Route::post('study-academic-year/store', [StudyAcademicYearController::class,'store']);
 	Route::post('study-academic-year/update', [StudyAcademicYearController::class,'update']);
+	Route::get('study-academic-year/{id}/activate', [StudyAcademicYearController::class,'activate']);
+	Route::get('study-academic-year/{id}/deactivate', [StudyAcademicYearController::class,'deactivate']);
 	Route::get('study-academic-year/{id}/destroy', [StudyAcademicYearController::class,'destroy']);
 
 
