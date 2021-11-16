@@ -52,6 +52,22 @@ class StaffController extends Controller
         return view('dashboard.human-resources.add-staff',$data)->withTitle('Add Staff');
     }
 
+
+    /**
+     * Display staff details
+     */
+    public function show($id)
+    {
+        try{
+            $data = [
+               'staff'=>Staff::with(['disabilityStatus','country','region','district','designation'])->find($id)
+            ];
+            return view('dashboard.human-resources.staff-details',$data)->withTitle('Staff Details');
+        }catch(\Exception $e){
+            return redirect()->back()->with('error','Unable to get the resource specified in this request');
+        }
+    }
+
     /**
      * Display form for editng staff
      */

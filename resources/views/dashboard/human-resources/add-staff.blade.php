@@ -134,7 +134,7 @@
                   ];
 
               @endphp
-              {!! Form::open(['url'=>'staff/staff/store','class'=>'ss-form-processing']) !!}
+              {!! Form::open(['url'=>'staff/staff/store','class'=>'ss-form-processing','files'=>true]) !!}
                 <div class="card-body">
                 
                 <fieldset>
@@ -324,6 +324,18 @@
                          <option value="NON-ACADEMIC">NON-ACADEMIC</option>
                        </select>
                     </div>
+                  <div class="form-group col-6">
+                    <label for="exampleInputFile">Upload profile picture</label>
+                    <div class="input-group">
+                      <div class="custom-file">
+                        <input type="profile_picture" class="custom-file-input" id="exampleInputFile">
+                        <label class="custom-file-label" for="exampleInputFile">Choose file</label>
+                      </div>
+                      <div class="input-group-append">
+                        <span class="input-group-text">Upload</span>
+                      </div>
+                    </div>
+                  </div>
                   </div>
                 </fieldset>
                   

@@ -65,6 +65,12 @@
                     <td>{{ $staff->email }}</td>
                     <td>{{ $staff->phone }}</td>
                     <td>
+                      <a class="btn btn-info btn-sm" href="{{ url('staff/staff/'.$staff->id.'/show') }}">
+                              <i class="fas fa-id-card">
+                              </i>
+                              View
+                       </a>
+
                       <a class="btn btn-info btn-sm" href="{{ url('staff/staff/'.$staff->id.'/edit') }}">
                               <i class="fas fa-pencil-alt">
                               </i>

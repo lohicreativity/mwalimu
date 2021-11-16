@@ -132,9 +132,8 @@
                      'class'=>'form-control ss-datepicker',
                      'required'=>true
                   ];
-
               @endphp
-              {!! Form::open(['url'=>'staff/staff/update','class'=>'ss-form-processing']) !!}
+              {!! Form::open(['url'=>'staff/staff/update','class'=>'ss-form-processing','files'=>true]) !!}
                 <div class="card-body">
                 
                 <fieldset>
@@ -142,15 +141,15 @@
                   <div class="row">
                      <div class="form-group col-4">
                        {!! Form::label('','First name') !!}
-                       {!! Form::text('first_name',null,$first_name) !!}
+                       {!! Form::text('first_name',$staff->first_name,$first_name) !!}
                     </div>
                     <div class="form-group col-4">
                        {!! Form::label('','Middle name') !!}
-                       {!! Form::text('middle_name',null,$middle_name) !!}
+                       {!! Form::text('middle_name',$staff->middle_name,$middle_name) !!}
                     </div>
                     <div class="form-group col-4">
                        {!! Form::label('','Surname') !!}
-                       {!! Form::text('surname',null,$surname) !!}
+                       {!! Form::text('surname',$staff->surname,$surname) !!}
 
                        {!! Form::input('hidden','staff_id',$staff->id) !!}
                     </div>
@@ -158,15 +157,15 @@
                   <div class="row">
                     <div class="form-group col-6">
                        {!! Form::label('','Email') !!}
-                       {!! Form::email('email',null,$email) !!}
+                       {!! Form::email('email',$staff->email,$email) !!}
                     </div>
                     <div class="form-group col-3">
                        {!! Form::label('','Phone') !!}
-                       {!! Form::text('phone',null,$phone) !!}
+                       {!! Form::text('phone',$staff->phone,$phone) !!}
                     </div>
                     <div class="form-group col-3">
                        {!! Form::label('','Birth date') !!}
-                       {!! Form::text('birth_date',null,$birth_date) !!}
+                       {!! Form::text('birth_date',$staff->birth_date,$birth_date) !!}
                     </div>
                   </div>
                    <div class="row">
@@ -174,17 +173,17 @@
                        {!! Form::label('','Region') !!}
                        <select name="gender" class="form-control" required>
                          <option value="">Select Gender</option>
-                         <option value="M">Male</option>
-                         <option value="F">Female</option>
+                         <option value="M" @if($staff->gender == 'M') selected="selected" @endif>Male</option>
+                         <option value="F" @if($staff->gender == 'F') selected="selected" @endif>Female</option>
                        </select>
                     </div>
                     <div class="form-group col-4">
                        {!! Form::label('','Marital Status') !!}
                        <select name="marital_status" class="form-control" required>
                          <option value="">Select Marital Status</option>
-                         <option value="SINGLE">Single</option>
-                         <option value="MARRIED">Married</option>
-                         <option value="WIDOWED">Widowed</option>
+                         <option value="SINGLE" @if($staff->marital_status == 'SINGLE') selected="selected" @endif>Single</option>
+                         <option value="MARRIED" @if($staff->marital_status == 'MARRIED') selected="selected" @endif>Married</option>
+                         <option value="WIDOWED" @if($staff->marital_status == 'WIDOWED') selected="selected" @endif>Widowed</option>
                        </select>
                     </div>
                     <div class="form-group col-4">
@@ -192,7 +191,7 @@
                        <select name="disability_status_id" class="form-control" required>
                          <option value="">Disability Status</option>
                          @foreach($disabilities as $status)
-                         <option value="{{ $status->id }}">{{ $status->name }}</option>
+                         <option value="{{ $status->id }}" @if($staff->disability_status_id == $status->id) selected="selected" @endif>{{ $status->name }}</option>
                          @endforeach
                        </select>
                     </div>
@@ -203,14 +202,14 @@
                   <div class="row">
                      <div class="form-group col-6">
                        {!! Form::label('','Address') !!}
-                       {!! Form::text('address',null,$address) !!}
+                       {!! Form::text('address',$staff->address,$address) !!}
                     </div>
                     <div class="form-group col-6">
                        {!! Form::label('','Country') !!}
                        <select name="country_id" class="form-control" required>
                          <option value="">Select Country</option>
                          @foreach($countries as $country)
-                         <option value="{{ $country->id }}">{{ $country->name }}</option>
+                         <option value="{{ $country->id }}" @if($staff->country_id == $country->id) selected="selected" @endif>{{ $country->name }}</option>
                          @endforeach
                        </select>
                     </div>
@@ -221,7 +220,7 @@
                        <select name="region_id" class="form-control" required>
                          <option value="">Select Region</option>
                          @foreach($regions as $region)
-                         <option value="{{ $region->id }}">{{ $region->name }}</option>
+                         <option value="{{ $region->id }}" @if($staff->region_id == $region->id) selected="selected" @endif>{{ $region->name }}</option>
                          @endforeach
                        </select>
                     </div>
@@ -230,7 +229,7 @@
                        <select name="district_id" class="form-control" required>
                          <option value="">Select District</option>
                          @foreach($districts as $district)
-                         <option value="{{ $district->id }}">{{ $district->name }}</option>
+                         <option value="{{ $district->id }}" @if($staff->district_id == $district->id) selected="selected" @endif>{{ $district->name }}</option>
                          @endforeach
                        </select>
                     </div>
@@ -241,13 +240,13 @@
                        <select name="ward_id" class="form-control" required>
                          <option value="">Select Ward</option>
                          @foreach($wards as $ward)
-                         <option value="{{ $ward->id }}">{{ $ward->name }}</option>
+                         <option value="{{ $ward->id }}" @if($staff->ward_id == $ward->id) selected="selected" @endif>{{ $ward->name }}</option>
                          @endforeach
                        </select>
                     </div>
                      <div class="form-group col-6">
                        {!! Form::label('','Street') !!}
-                       {!! Form::text('street',null,$street) !!}
+                       {!! Form::text('street',$staff->street,$street) !!}
                     </div>
                   </div>
                 </fieldset>
@@ -259,36 +258,36 @@
                        <select name="campus_id" class="form-control" required>
                          <option value="">Select Campus</option>
                          @foreach($campuses as $campus)
-                         <option value="{{ $campus->id }}">{{ $campus->name }}</option>
+                         <option value="{{ $campus->id }}" @if($staff->campus_id == $campus->id) selected="selected" @endif>{{ $campus->name }}</option>
                          @endforeach
                        </select>
                     </div>
                     <div class="form-group col-6">
                        {!! Form::label('','Block') !!}
-                       {!! Form::text('block',null,$block) !!}
+                       {!! Form::text('block',$staff->block,$block) !!}
                     </div>
                   </div>
                   <div class="row">
                      <div class="form-group col-6">
                        {!! Form::label('','Floor') !!}
-                       {!! Form::text('floor',null,$floor) !!}
+                       {!! Form::text('floor',$staff->floor,$floor) !!}
                     </div>
                     <div class="form-group col-6">
                        {!! Form::label('','Room') !!}
-                       {!! Form::text('room',null,$room) !!}
+                       {!! Form::text('room',$staff->room,$room) !!}
                     </div>
                   </div>
                   <div class="row">
                      <div class="form-group col-6">
                        {!! Form::label('','NIN') !!}
-                       {!! Form::text('nin',null,$nin) !!}
+                       {!! Form::text('nin',$staff->nin,$nin) !!}
                     </div>
                      <div class="form-group col-6">
                        {!! Form::label('','Designation') !!}
                        <select name="designation_id" class="form-control" required>
                          <option value="">Select Designation</option>
                          @foreach($designations as $designation)
-                         <option value="{{ $designation->id }}">{{ $designation->name }}</option>
+                         <option value="{{ $designation->id }}" @if($staff->designation_id == $designation->id) selected="selected" @endif>{{ $designation->name }}</option>
                          @endforeach
                        </select>
                     </div>
@@ -296,24 +295,24 @@
                   <div class="row">
                      <div class="form-group col-6">
                        {!! Form::label('','Vote number') !!}
-                       {!! Form::text('vote_number',null,$vote_number) !!}
+                       {!! Form::text('vote_number',$staff->vote_number,$vote_number) !!}
                     </div>
                     <div class="form-group col-6">
                        {!! Form::label('','Check number') !!}
-                       {!! Form::text('check_number',null,$check_number) !!}
+                       {!! Form::text('check_number',$staff->check_number,$check_number) !!}
                     </div>
                   </div>
                   <div class="row">
                      <div class="form-group col-6">
                        {!! Form::label('','PF number') !!}
-                       {!! Form::text('pf_number',null,$pf_number) !!}
+                       {!! Form::text('pf_number',$staff->pf_number,$pf_number) !!}
                     </div>
                     <div class="form-group col-6">
                        {!! Form::label('','Work schedule') !!}
                        <select name="schedule" class="form-control" required>
                          <option value="">Select Schedule</option>
-                         <option value="FULLTIME">FULL TIME</option>
-                         <option value="PARTTIME">PART TIME</option>
+                         <option value="FULLTIME" @if($staff->schedule == 'FULLTIME') selected="selected" @endif>FULL TIME</option>
+                         <option value="PARTTIME" @if($staff->schedule == 'PARTTIME') selected="selected" @endif>PART TIME</option>
                        </select>
                     </div>
                   </div>
@@ -322,10 +321,24 @@
                        {!! Form::label('','Staff category') !!}
                        <select name="category" class="form-control" required>
                          <option value="">Select Category</option>
-                         <option value="ACADEMIC">ACADEMIC</option>
-                         <option value="NON-ACADEMIC">NON-ACADEMIC</option>
+                         <option value="ACADEMIC" @if($staff->category == 'ACADEMIC') selected="selected" @endif>ACADEMIC</option>
+                         <option value="NON-ACADEMIC" @if($staff->category == 'NON-ACADEMIC') selected="selected" @endif>NON-ACADEMIC</option>
                        </select>
                     </div>
+
+                    <div class="form-group col-6">
+                    {!! Form::label('','Upload profile picture') !!}
+                    <div class="input-group">
+                      <div class="custom-file">
+                        <input type="profile_picture" class="custom-file-input" id="exampleInputFile">
+                        <label class="custom-file-label" for="exampleInputFile">Choose file</label>
+                      </div>
+                      <div class="input-group-append">
+                        <span class="input-group-text">Upload</span>
+                      </div>
+                    </div>
+                    </div>
+                  </div>
                   </div>
                 </fieldset>
                   

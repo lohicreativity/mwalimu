@@ -19,6 +19,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 	Route::get('staff-members', [StaffController::class,'index'])->name('staff-members');
 	Route::get('staff/create', [StaffController::class,'create']);
 	Route::get('staff/{id}/edit', [StaffController::class,'edit']);
+	Route::get('staff/{id}/show', [StaffController::class,'show']);
 	Route::post('staff/store', [StaffController::class,'store']);
 	Route::post('staff/update', [StaffController::class,'update']);
 	Route::get('staff/{id}/destroy', [StaffController::class,'destroy']);
