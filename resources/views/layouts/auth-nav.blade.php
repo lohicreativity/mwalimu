@@ -226,6 +226,12 @@
                   <p>Awards</p>
                 </a>
               </li>
+              <li class="nav-item">
+                <a href="{{ url('settings/roles') }}" class="nav-link">
+                  <i class="far fa-users nav-icon"></i>
+                  <p>Roles</p>
+                </a>
+              </li>
             </ul>
           </li>
         </ul>

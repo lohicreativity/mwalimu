@@ -34,4 +34,12 @@ class CampusProgram extends Model
     {
     	return $this->belongsToMany(StudyAcademicYear::class,'study_academic_year_campus_program','campus_program_id','study_academic_year_id');
     }
+
+    /**
+     * Establish one to many relationship with program module assignments
+     */
+    public function programModuleAssignments()
+    {
+        return $this->hasMany(ProgramModuleAssignment::class,'campus_program_id');
+    }
 }

@@ -9,6 +9,7 @@ use App\Http\Controllers\RegionController;
 use App\Http\Controllers\DistrictController;
 use App\Http\Controllers\WardController;
 use App\Http\Controllers\CampusController;
+use App\Http\Controllers\RoleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -63,5 +64,13 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 	Route::post('campus/store', [CampusController::class,'store']);
 	Route::post('campus/update', [CampusController::class,'update']);
 	Route::get('campus/{id}/destroy', [CampusController::class,'destroy']);
+
+
+	Route::get('roles', [RoleController::class,'index'])->name('roles');
+	Route::post('role/store', [RoleController::class,'store']);
+	Route::post('role/update', [RoleController::class,'update']);
+	Route::get('role/{id}/permissions', [RoleController::class,'showPermissions']);
+	Route::post('role/permission/update',[RoleController::class,'updatePermissions']);
+	Route::get('role/{id}/destroy', [RoleController::class,'destroy']);
 
 });

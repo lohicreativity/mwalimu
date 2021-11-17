@@ -80,6 +80,7 @@
                   <thead>
                   <tr>
                     <th>Program</th>
+                    <th>Code</th>
                     <th>Actions</th>
                   </tr>
                   </thead>
@@ -87,6 +88,7 @@
                   @foreach($campus->campusPrograms as $program)
                   <tr>
                     <td>{{ $program->program->name }}</td>
+                    <td>{{ $program->program->code }}</td>
                     <td>
                       <a class="btn btn-info btn-sm" href="{{ url('academic/program-module-assignment/'.$study_academic_year->id.'/'.$program->id.'/assign') }}">
                               <i class="fas fa-plus">

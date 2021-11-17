@@ -52,14 +52,28 @@
                      'class'=>'form-control',
                      'required'=>true
                   ];
+
+                  $display_name = [
+                     'placeholder'=>'Display name',
+                     'class'=>'form-control',
+                     'required'=>true
+                  ];
               @endphp
               {!! Form::open(['url'=>'settings/role/store','class'=>'ss-form-processing']) !!}
                 <div class="card-body">
-
-                  <div class="form-group">
+                  
+                 <div class="row">
+                  <div class="form-group col-6">
                     {!! Form::label('','Role name') !!}
                     {!! Form::text('name',null,$name) !!}
+
+                    {!! Form::input('hidden','is_system_role',0) !!}
                   </div>
+                  <div class="form-group col-6">
+                    {!! Form::label('','Display name') !!}
+                    {!! Form::text('display_name',null,$display_name) !!}
+                  </div>
+                </div>
                 </div>
                 <!-- /.card-body -->
 
@@ -73,7 +87,7 @@
             @if(count($roles) != 0)
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">{{ __('roles') }}</h3>
+                <h3 class="card-title">{{ __('Roles') }}</h3>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
@@ -81,6 +95,7 @@
                   <thead>
                   <tr>
                     <th>Name</th>
+                    <th>Display Name</th>
                     <th>Actions</th>
                   </tr>
                   </thead>
@@ -88,8 +103,14 @@
                   @foreach($roles as $role)
                   <tr>
                     <td>{{ $role->name }}</td>
+                    <td>{{ $role->display_name }}</td>
                     <td>
-                      <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-edit-role-{{ $role->id }}">
+                      <a class="btn btn-info btn-sm" href="{{ url('settings/role/'.$role->id.'/permissions') }}">
+                              <i class="fas fa-check-circle">
+                              </i>
+                              Permissions
+                       </a>
+                      <a class="btn btn-info btn-sm" href="#" @if($role->is_system_role == 1) disabled="disabled" @else data-toggle="modal" data-target="#ss-edit-role-{{ $role->id }}" @endif>
                               <i class="fas fa-pencil-alt">
                               </i>
                               Edit
@@ -107,12 +128,19 @@
                             <div class="modal-body">
                                 {!! Form::open(['url'=>'settings/role/update','class'=>'ss-form-processing']) !!}
 
-                                    <div class="form-group">
+                                    <div class="row">
+                                    <div class="form-group col-6">
                                       {!! Form::label('','Role name') !!}
                                       {!! Form::text('name',$role->name,$name) !!}
 
+                                      {!! Form::input('hidden','is_system_role',$role->is_system_role) !!}
                                       {!! Form::input('hidden','role_id',$role->id) !!}
                                     </div>
+                                    <div class="form-group col-6">
+                                      {!! Form::label('','Display name') !!}
+                                      {!! Form::text('display_name',$role->display_name,$display_name) !!}
+                                    </div>
+                                  </div>
                                       <div class="ss-form-actions">
                                        <button type="submit" class="btn btn-primary">{{ __('Save Changes') }}</button>
                                       </div>
@@ -128,7 +156,7 @@
                         <!-- /.modal-dialog -->
                       </div>
                       <!-- /.modal -->
-                      <a class="btn btn-danger btn-sm" href="#" data-toggle="modal" data-target="#ss-delete-role-{{ $role->id }}">
+                      <a class="btn btn-danger btn-sm" href="#" @if($role->is_system_role == 1) disabled="disabled" @else  data-toggle="modal" data-target="#ss-delete-role-{{ $role->id }}" @endif>
                               <i class="fas fa-trash">
                               </i>
                               Delete

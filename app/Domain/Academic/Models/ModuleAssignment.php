@@ -21,6 +21,14 @@ class ModuleAssignment extends Model
     }
 
     /**
+     * Establish one to many relationship with study academic years
+     */
+    public function programModuleAssignment()
+    {
+    	return $this->belongsTo(ProgramModuleAssignment::class,'program_module_assignment_id');
+    }
+
+    /**
      * Establish one to many relationship with assessment plans
      */
     public function assessmentPlans()

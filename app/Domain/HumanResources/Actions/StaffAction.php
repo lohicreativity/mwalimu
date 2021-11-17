@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\Role;
 use App\Domain\HumanResources\Repositories\Interfaces\StaffInterface;
 use App\Utils\DateMaker;
+use App\Utils\SystemLocation;
 use DB, Hash;
 
 class StaffAction implements StaffInterface{
@@ -41,6 +42,7 @@ class StaffAction implements StaffInterface{
                 $staff->nin = $request->get('nin');
                 $staff->pf_number = $request->get('pf_number');
                 $staff->vote_number = $request->get('vote_number');
+                $staff->check_number = $request->get('check_number');
                 $staff->block = $request->get('block');
                 $staff->floor = $request->get('floor');
                 $staff->schedule = $request->get('schedule');
@@ -52,6 +54,13 @@ class StaffAction implements StaffInterface{
                 $staff->street = $request->get('street');
                 $staff->disability_status_id = $request->get('disability_status_id');
                 $staff->user_id = $user->id;
+                if($request->hasFile('image')){
+                  $destination = SystemLocation::uploadsDirectory();
+                  $request->file('image')->move($destination, $request->file('image')->getClientOriginalName());
+                  $file_name = SystemLocation::renameFile($destination, $request->file('image')->getClientOriginalName(), $request->file('image')->guessClientExtension());
+
+                  $staff->image = $file_name;
+                }
                 $staff->save();
                 DB::commit();
 	}
@@ -74,6 +83,7 @@ class StaffAction implements StaffInterface{
                 $staff->nin = $request->get('nin');
                 $staff->pf_number = $request->get('pf_number');
                 $staff->vote_number = $request->get('vote_number');
+                $staff->check_number = $request->get('check_number');
                 $staff->block = $request->get('block');
                 $staff->floor = $request->get('floor');
                 $staff->schedule = $request->get('schedule');
@@ -84,10 +94,17 @@ class StaffAction implements StaffInterface{
                 $staff->ward_id = $request->get('ward_id');
                 $staff->street = $request->get('street');
                 $staff->disability_status_id = $request->get('disability_status_id');
+                if($request->hasFile('image')){
+                  $destination = SystemLocation::uploadsDirectory();
+                  $request->file('image')->move($destination, $request->file('image')->getClientOriginalName());
+                  $file_name = SystemLocation::renameFile($destination, $request->file('image')->getClientOriginalName(), $request->file('image')->guessClientExtension());
+
+                  $staff->image = $file_name;
+                }
                 $staff->save();
 
                 $user = User::find($staff->user_id);
-                $user->name = $request->get('first_name').' '.$request::get('surname');
+                $user->name = $staff->first_name.' '.$staff->surname;
                 $user->save();
                 DB::commit();
 	}

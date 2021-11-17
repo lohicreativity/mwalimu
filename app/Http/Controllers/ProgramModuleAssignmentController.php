@@ -49,7 +49,7 @@ class ProgramModuleAssignmentController extends Controller
     public function store(Request $request)
     {
     	$validation = Validator::make($request->all(),[
-            'credit'=>'required',
+            'year_of_study'=>'required',
         ]);
 
         if($validation->fails()){
@@ -72,7 +72,7 @@ class ProgramModuleAssignmentController extends Controller
     public function update(Request $request)
     {
     	$validation = Validator::make($request->all(),[
-            'credit'=>'required',
+            'year_of_study'=>'required',
         ]);
 
         if($validation->fails()){

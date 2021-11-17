@@ -18,4 +18,12 @@ class Module extends Model
     {
     	return $this->belongsTo(Department::class,'department_id');
     }
+
+    /**
+     * Establish one to many relationship with module assignments
+     */
+    public function moduleAssignments()
+    {
+    	return $this->hasMany(ModuleAssignment::class,'module_id');
+    }
 }

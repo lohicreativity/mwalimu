@@ -46,8 +46,8 @@
               <!-- /.card-header -->
               <div class="card-body">
                  @php
-                    $credit = [
-                       'placeholder'=>'Credit',
+                    $year_of_study = [
+                       'placeholder'=>'Year of study',
                        'class'=>'form-control',
                        'required'=>true
                     ];
@@ -76,23 +76,17 @@
                     </div>
                   </div>
                     <div class="row">
-                   <div class="form-group col-4">
-                    {!! Form::label('','Compulsory') !!}
-                    <select name="compulsory" class="form-control" required>
-                       <option value="COMPULSORY">Compulsory</option>
-                       <option value="NON-COMPULSORY">Non-Compulsory</option>
-                    </select>
-                    </div>
-                    <div class="form-group col-4">
+                    <div class="form-group col-6">
                     {!! Form::label('','Category') !!}
                     <select name="category" class="form-control" required>
                        <option value="CORE">Core</option>
                        <option value="OPTIONAL">Optional</option>
+                       <option value="FUNDAMENTAL">Fundamental</option>
                     </select>
                     </div>
-                    <div class="form-group col-4">
-                      {!! Form::label('','Credit') !!}
-                      {!! Form::input('number','credit',null,$credit) !!}
+                    <div class="form-group col-6">
+                      {!! Form::label('','Year of study') !!}
+                      {!! Form::input('number','year_of_study',null,$year_of_study) !!}
                       
                     </div>
                     <div class="form-group">
@@ -120,9 +114,8 @@
                   <thead>
                   <tr>
                     <th>Module</th>
-                    <th>Credit</th>
+                    <th>Year</th>
                     <th>Semester</th>
-                    <th>Compulsory</th>
                     <th>Category</th>
                     <th>Actions</th>
                   </tr>
@@ -131,9 +124,8 @@
                   @foreach($assignments as $assignment)
                   <tr>
                     <td>{{ $assignment->module->name }}</td>
-                    <td>{{ $assignment->credit }}</td>
+                    <td>{{ $assignment->year_of_study }}</td>
                     <td>{{ $assignment->semester->name }}</td>
-                    <td>{{ $assignment->compulsory }}</td>
                     <td>{{ $assignment->category }}</td>
                     <td>
                       <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-edit-module-assignment-{{ $assignment->id }}">
@@ -175,23 +167,17 @@
                     </div>
                   </div>
                     <div class="row">
-                   <div class="form-group col-4">
-                    {!! Form::label('','Compulsory') !!}
-                    <select name="compulsory" class="form-control" required>
-                       <option value="COMPULSORY"@if($assignment->compulsory == 'COMPULSORY') selected="selected" @endif>Compulsory</option>
-                       <option value="NON-COMPULSORY" @if($assignment->compulsory == 'NON-COMPULSORY') selected="selected" @endif>Non-Compulsory</option>
-                    </select>
-                    </div>
-                    <div class="form-group col-4">
+                    <div class="form-group col-6">
                     {!! Form::label('','Category') !!}
                     <select name="category" class="form-control" required>
                        <option value="CORE" @if($assignment->category == 'CORE') selected="selected" @endif>Core</option>
                        <option value="OPTIONAL" @if($assignment->category == 'OPTIONAL') selected="selected" @endif>Optional</option>
+                       <option value="FUNDAMENTAL" @if($assignment->category == 'FUNDAMENTAL') selected="selected" @endif>Fundamental</option>
                     </select>
                     </div>
-                    <div class="form-group col-4">
-                      {!! Form::label('','Credit') !!}
-                      {!! Form::input('number','credit',$assignment->credit,$credit) !!}
+                    <div class="form-group col-6">
+                      {!! Form::label('','Year of study') !!}
+                      {!! Form::input('number','year_of_study',$assignment->year_of_study,$year_of_study) !!}
                       
                     </div>
                                     <div class="form-group">

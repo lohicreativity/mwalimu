@@ -141,7 +141,6 @@ class StaffController extends Controller
            }
         }
 
-
         (new StaffAction)->update($request);
 
         return Util::requestResponse($request,'Staff updated successfully');

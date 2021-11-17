@@ -34,3 +34,11 @@
 .ss-no-padding{
    padding: 0px;
 }
+
+.ss-color-danger{
+   color: #dc3545;
+}
+
+.ss-color-info{
+   color: #17a2b8;
+}

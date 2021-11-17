@@ -30,5 +30,7 @@ class DatabaseSeeder extends Seeder
         $this->call(DistrictsTableSeeder::class);
         $this->call(WardsTableSeeder::class);
         $this->call(DisabilityStatusesTableSeeder::class);
+        $this->call(SystemModulesTableSeeder::class);
+        $this->call(PermissionsTableSeeder::class);
     }
 }

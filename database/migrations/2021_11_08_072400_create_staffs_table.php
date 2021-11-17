@@ -42,6 +42,7 @@ class CreateStaffsTable extends Migration
             $table->unsignedBigInteger('campus_id');
             $table->unsignedBigInteger('disability_status_id');
             $table->string('marital_status',20)->default('SINGLE');
+            $table->string('image')->nullable();
             $table->unsignedBigInteger('user_id');
             $table->timestamps();
 

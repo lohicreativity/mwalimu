@@ -12,6 +12,7 @@ class RoleAction implements RoleInterface{
 	       $role = new Role;
            $role->name = $request->get('name');
            $role->display_name = $request->get('display_name');
+           $role->is_system_role = $request->get('is_system_role');
            $role->save();
 	}
 
@@ -19,6 +20,7 @@ class RoleAction implements RoleInterface{
 	       $role = Role::find($request->get('role_id'));
            $role->name = $request->get('name');
            $role->display_name = $request->get('display_name');
+           $role->is_system_role = $request->get('is_system_role');
            $role->save();
 	}
 }

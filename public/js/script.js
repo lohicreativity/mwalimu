@@ -550,7 +550,7 @@ $('#ss-select-districts').on('change',function(e){
 });
 
 // Auto fill final exam
-$('input[name=course_work]').on('keyup',function(e){
+$('select[name=course_work]').on('change',function(e){
      var value = $(e.target).val();
      $($(e.target).data('target')).val((100-parseInt(value)));
 });

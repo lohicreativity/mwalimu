@@ -81,7 +81,7 @@
                      'required'=>true
                   ];
               @endphp
-              {!! Form::open(['url'=>'academic/module/store','class'=>'ss-form-processing']) !!}
+              {!! Form::open(['url'=>'academic/module/store','class'=>'ss-form-processing','true']) !!}
                 <div class="card-body">
                   <div class="row">
                   <div class="form-group col-6">
@@ -105,19 +105,45 @@
                   </div>
                   <div class="form-group col-6">
                     {!! Form::label('','Credit') !!}
-                    {!! Form::text('credit',null,$credit) !!}
+                    <select name="credit" class="form-control" required>
+                       <option value="">Select Credit</option>
+                       @for($i = 5; $i<= 20; $i++)
+                       <option value="{{ $i }}">{{ $i }}</option>
+                       @endfor
+                    </select>
                   </div>
                  </div>
                  <div class="row">
                   <div class="form-group col-6">
                     {!! Form::label('','Course work') !!}
-                    {!! Form::input('number','course_work',null,$course_work) !!}
+                    <select name="course_work" class="form-control" required data-target="#ss-final-exam">
+                     <option value="">Select Course Work</option>
+                     @for($i = 0; $i<= 100; $i++)
+                       @if(($i%5) == 0)
+                       <option value="{{ $i }}">{{ $i }}</option>
+                       @endif
+                     @endfor
+                   </select>
                   </div>
                   <div class="form-group col-6">
                     {!! Form::label('','Final exam') !!}
                     {!! Form::input('number','final_exam',null,$final_exam) !!}
                   </div>
                  </div>
+                 <div class="row">
+                   <div class="form-group col-6">
+                    <label for="exampleInputFile">Upload syllabus</label>
+                    <div class="input-group">
+                      <div class="custom-file">
+                        <input type="file" name="syllabus" class="custom-file-input" id="exampleInputFile">
+                        <label class="custom-file-label" for="exampleInputFile">Choose file</label>
+                      </div>
+                      <div class="input-group-append">
+                        <span class="input-group-text">Upload</span>
+                      </div>
+                    </div>
+                  </div>
+                 </div><!-- end of row -->
                 </div>
                 <!-- /.card-body -->
 
@@ -190,7 +216,7 @@
                                    'required'=>true
                                 ];
                             @endphp
-                                {!! Form::open(['url'=>'academic/module/update','class'=>'ss-form-processing']) !!}
+                                {!! Form::open(['url'=>'academic/module/update','class'=>'ss-form-processing','files'=>true]) !!}
                                   <div class="row">
                                     <div class="form-group col-6">
                                       {!! Form::label('','Module name') !!}
@@ -215,18 +241,44 @@
                                     </div>
                                     <div class="form-group col-6">
                                       {!! Form::label('','Credit') !!}
-                                      {!! Form::text('credit',$module->credit,$credit) !!}
+                                      <select name="credit" class="form-control" required>
+                                         <option value="">Select Credit</option>
+                                         @for($i = 5; $i<= 20; $i++)
+                                         <option value="{{ $i }}" @if($module->credit == $i) selected="selected" @endif>{{ $i }}</option>
+                                         @endfor
+                                      </select>
                                     </div>
                                     </div>
                                     <div class="row">
                                     <div class="form-group col-6">
                                       {!! Form::label('','Course work') !!}
-                                      {!! Form::input('number','course_work',$module->course_work,$course_work) !!}
+                                      <select name="course_work" class="form-control" required data-target="#ss-final-exam-{{ $module->id }}">
+                                       <option value="">Select Course Work</option>
+                                       @for($i = 0; $i<= 100; $i++)
+                                         @if(($i%5) == 0)
+                                         <option value="{{ $i }}" @if($module->course_work == $i) selected="selected" @endif>{{ $i }}</option>
+                                         @endif
+                                       @endfor
+                                     </select>
                                     </div>
                                     <div class="form-group col-6">
                                       {!! Form::label('','Final exam') !!}
                                       {!! Form::input('number','final_exam',$module->final_exam,$final_exam) !!}
                                     </div>
+                                   </div>
+                                   <div class="row">
+                                       <div class="form-group col-6">
+                                        <label for="exampleInputFile">Upload syllabus</label>
+                                        <div class="input-group">
+                                          <div class="custom-file">
+                                            <input type="file" name="syllabus" class="custom-file-input" id="exampleInputFile">
+                                            <label class="custom-file-label" for="exampleInputFile">Choose file</label>
+                                          </div>
+                                          <div class="input-group-append">
+                                            <span class="input-group-text">Upload</span>
+                                          </div>
+                                        </div>
+                                      </div>
                                    </div>
                                       <div class="ss-form-actions">
                                        <button type="submit" class="btn btn-primary">{{ __('Save Changes') }}</button>

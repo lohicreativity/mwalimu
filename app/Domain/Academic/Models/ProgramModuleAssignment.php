@@ -26,4 +26,12 @@ class ProgramModuleAssignment extends Model
     {
     	return $this->belongsTo(Semester::class,'semester_id');
     }
+
+    /**
+     * Establish one to many relationship with campus programs
+     */
+    public function campusProgram()
+    {
+    	return $this->belongsTo(CampusProgram::class,'campus_program_id');
+    }
 }
