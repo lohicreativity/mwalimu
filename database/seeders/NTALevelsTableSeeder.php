@@ -31,14 +31,14 @@ class NTALevelsTableSeeder extends Seeder
 
            [
               'name'=>'NTA Level 6',
-              'award_id'=>3,
+              'award_id'=>2,
               'created_at'=>now(),
               'updated_at'=>now()
            ],
 
            [
               'name'=>'NTA Level 7',
-              'award_id'=>4,
+              'award_id'=>3,
               'created_at'=>now(),
               'updated_at'=>now()
            ],
@@ -52,7 +52,7 @@ class NTALevelsTableSeeder extends Seeder
 
            [
               'name'=>'NTA Level 9',
-              'award_id'=>4,
+              'award_id'=>5,
               'created_at'=>now(),
               'updated_at'=>now()
            ]

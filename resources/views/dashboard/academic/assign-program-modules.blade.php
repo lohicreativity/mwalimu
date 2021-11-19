@@ -21,7 +21,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>{{ __('Program Module Assignment') }}</h1>
+            <h1>{{ __('Programme Module Assignment') }} - {{ $campus_program->program->name }} - {{ $study_academic_year->academicYear->year }}</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -120,6 +120,7 @@
                   <tr>
                     <th>Module</th>
                     <th>Year</th>
+                    <th>Credits</th>
                     <th>Semester</th>
                     <th>Category</th>
                     <th>Actions</th>
@@ -130,6 +131,7 @@
                   <tr>
                     <td>{{ $assignment->module->name }}</td>
                     <td>{{ $assignment->year_of_study }}</td>
+                    <td>{{ $assignment->module->credit }}</td>
                     <td>{{ $assignment->semester->name }}</td>
                     <td>{{ $assignment->category }}</td>
                     <td>

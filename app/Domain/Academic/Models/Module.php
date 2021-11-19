@@ -4,6 +4,7 @@ namespace App\Domain\Academic\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Domain\Settings\Models\NTALevel;
 
 class Module extends Model
 {
@@ -17,6 +18,14 @@ class Module extends Model
     public function department()
     {
     	return $this->belongsTo(Department::class,'department_id');
+    }
+
+    /**
+     * Establish one to many relationship with nta levels
+     */
+    public function ntaLevel()
+    {
+    	return $this->belongsTo(NTALevel::class,'nta_level_id');
     }
 
     /**

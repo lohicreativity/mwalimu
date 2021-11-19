@@ -21,10 +21,12 @@ class CreateModulesTable extends Migration
             $table->decimal('course_work')->default(0.00);
             $table->decimal('final_exam');
             $table->unsignedBigInteger('department_id');
+            $table->unsignedBigInteger('nta_level_id');
             $table->string('syllabus')->nullable();
             $table->timestamps();
 
             $table->foreign('department_id')->references('id')->on('departments')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('nta_level_id')->references('id')->on('nta_levels')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 

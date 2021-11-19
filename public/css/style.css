@@ -42,3 +42,19 @@
 .ss-color-info{
    color: #17a2b8;
 }
+
+.ss-right{
+   float: right;
+}
+
+.ss-left{
+  float: left;
+}
+
+.ss-bold{
+   font-weight: bold;
+}
+
+.ss-italic{
+   font-style: italic;
+}

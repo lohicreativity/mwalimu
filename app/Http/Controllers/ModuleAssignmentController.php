@@ -26,7 +26,7 @@ class ModuleAssignmentController extends Controller
            'campuses'=>Campus::with(['campusPrograms.program','campusPrograms.programModuleAssignments.module','campusPrograms.programModuleAssignments.semester','campusPrograms.programModuleAssignments.module.moduleAssignments'=>function($query) use ($request){
                  $query->where('study_academic_year_id',$request->get('study_academic_year_id'));
            },'campusPrograms.programModuleAssignments.module.moduleAssignments.staff'])->get(),
-           'staffs'=>Staff::all()
+           'staffs'=>Staff::with('designation')->get()
       ];
 		return view('dashboard.academic.assign-staff-modules',$data)->withTitle('Staff Module Assignment');
 	}
@@ -40,8 +40,12 @@ class ModuleAssignmentController extends Controller
                    $query->where('status','ACTIVE');
             }])->where('user_id',Auth::user()->id)->first();
         $data = [
+           'study_academic_years'=>StudyAcademicYear::all(),
+           'study_academic_year'=>$request->has('study_academic_year_id')? StudyAcademicYear::with('academicYear')->find($request->get('study_academic_year_id')) : null,
            'staff'=>$staff,
-           'assignments'=>$staff? ModuleAssignment::with(['studyAcademicYear.academicYear','module','programModuleAssignment.campusProgram.program','programModuleAssignment.semester'])->where('staff_id',$staff->id)->latest()->paginate(20) : [],
+           'assignments'=>$staff? ModuleAssignment::whereHas('studyAcademicYear',function($query) use ($request){
+                  $query->where('id',$request->get('study_academic_year_id'));
+             })->with(['studyAcademicYear.academicYear','module','programModuleAssignment.campusProgram.program','programModuleAssignment.campusProgram.campus','programModuleAssignment.semester'])->where('staff_id',$staff->id)->latest()->paginate(20) : [],
         ];
         return view('dashboard.academic.staff-assigned-modules',$data)->withTitle('Staff Assigned Modules');
     }

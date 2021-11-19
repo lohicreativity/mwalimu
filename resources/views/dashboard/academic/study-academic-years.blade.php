@@ -157,17 +157,17 @@
                                     </div>
                                     <div class="form-group col-4">
                                       {!! Form::label('','Begin date') !!}
-                                      {!! Form::text('begin_date',$year->begin_date,$begin_date) !!}
+                                      {!! Form::text('begin_date',App\Utils\DateMaker::toStandardDate($year->begin_date),$begin_date) !!}
                                     </div>
                                     <div class="form-group col-4">
                                       {!! Form::label('','End date') !!}
-                                      {!! Form::text('end_date',$year->end_date,$end_date) !!}
+                                      {!! Form::text('end_date',App\Utils\DateMaker::toStandardDate($year->end_date),$end_date) !!}
 
                                       {!! Form::input('hidden','status',$year->status) !!}
                                     </div>
                                     </div>
                                       <div class="ss-form-actions">
-                                       <button type="submit" class="btn btn-primary">{{ __('Add Academic Year') }}</button>
+                                       <button type="submit" class="btn btn-primary">{{ __('Save Changes') }}</button>
                                       </div>
                                 {!! Form::close() !!}
 

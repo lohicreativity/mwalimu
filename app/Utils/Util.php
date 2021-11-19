@@ -25,6 +25,13 @@ class Util {
    }
 
    /**
+    * Strip spaces upper
+    */
+   public static function stripSpacesUpper($str){
+        return strtoupper(str_replace(' ', '', $str));
+   }
+
+   /**
     * Check if collection contains ID
     */
    public static function collectionContains($collection,$target){

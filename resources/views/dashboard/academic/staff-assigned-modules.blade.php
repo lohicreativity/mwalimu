@@ -39,7 +39,33 @@
         <div class="row">
           <div class="col-12">
 
-            @if(count($assignments) != 0)
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">{{ __('Select Study Academic Year') }}</h3>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+                 {!! Form::open(['url'=>'academic/staff-module-assignments','class'=>'ss-form-processing','method'=>'GET']) !!}
+                   
+                   <div class="form-group">
+                    <select name="study_academic_year_id" class="form-control" required>
+                       <option value="">Select Study Academic Year</option>
+                       @foreach($study_academic_years as $year)
+                       <option value="{{ $year->id }}">{{ $year->academicYear->year }}</option>
+                       @endforeach
+                    </select>
+                     
+                  </div>
+                  <div class="ss-form-actions">
+                   <button type="submit" class="btn btn-primary">{{ __('Search') }}</button>
+                  </div>
+
+                 {!! Form::close() !!}
+              </div>
+            </div>
+            <!-- /.card -->
+
+            @if(count($assignments) != 0 && $study_academic_year)
             <div class="card">
               <div class="card-header">
                 <h3 class="card-title">{{ __('Module Assignments') }}</h3>
@@ -49,21 +75,23 @@
                 <table id="example2" class="table table-bordered table-hover">
                   <thead>
                   <tr>
-                    <th>Module</th>
-                    <th>Academic Year</th>
-                    <th>Program</th>
+                    <th>Campus</th>
+                    <th>Programme</th>
+                    <th>Module</th> 
                     <th>Year</th>
                     <th>Semester</th>
+                    <th>Credit</th>
                   </tr>
                   </thead>
                   <tbody>
                   @foreach($assignments as $assignment)
                   <tr>
-                    <td><a href="{{ url('academic/staff-module-assignment/'.$assignment->id.'/assessment-plans') }}">{{ $assignment->module->name }}</a></td>
-                    <td>{{ $assignment->studyAcademicYear->academicYear->year }}</td>
+                    <td>{{ $assignment->programModuleAssignment->campusProgram->campus->name }}</td>
                     <td>{{ $assignment->programModuleAssignment->campusProgram->program->name }}</td>
+                    <td><a href="{{ url('academic/staff-module-assignment/'.$assignment->id.'/assessment-plans') }}">{{ $assignment->module->name }}</a></td>
                     <td>{{ $assignment->programModuleAssignment->year_of_study }}</td>
                     <td>{{ $assignment->programModuleAssignment->semester->name }}</td>
+                    <td>{{ $assignment->module->credit }}</td>
                   </tr>
                   @endforeach
                   

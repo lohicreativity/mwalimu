@@ -9,7 +9,7 @@ class ProgramModuleAssignment extends Model
 {
     use HasFactory;
 
-    protected $table = 'program_module_assigments';
+    protected $table = 'program_module_assignments';
 
     /**
      * Establish one to many relationship with modules

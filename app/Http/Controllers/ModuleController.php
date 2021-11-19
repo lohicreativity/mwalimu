@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Domain\Academic\Models\Module;
 use App\Domain\Academic\Models\Department;
+use App\Domain\Settings\Models\NTALevel;
 use App\Domain\Academic\Actions\ModuleAction;
 use App\Utils\Util;
 use Validator;
@@ -17,7 +18,8 @@ class ModuleController extends Controller
     public function index()
     {
     	$data = [
-           'modules'=>Module::with('department')->paginate(20),
+           'modules'=>Module::with(['department','ntaLevel'])->paginate(20),
+           'nta_levels'=>NTALevel::all(),
            'departments'=>Department::all()
     	];
     	return view('dashboard.academic.modules',$data)->withTitle('Modules');

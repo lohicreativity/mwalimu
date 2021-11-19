@@ -15,23 +15,16 @@ class DisabilityStatusesTableSeeder extends Seeder
     public function run()
     {
         $data = [
-           [
-              'name'=>'None',
-              'created_at'=>now(),
-              'updated_at'=>now()
-           ],
-
-           [
-              'name'=>'Visual Imparement',
-              'created_at'=>now(),
-              'updated_at'=>now()
-           ],
-
-           [
-              'name'=>'Hearing Imparement',
-              'created_at'=>now(),
-              'updated_at'=>now()
-           ]
+            ['name' => 'No Disability', 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'Physical Disability', 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'Visual Impairment', 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'Hearing Impairment', 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'Olfactory and Gustatory Impairment', 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'Somatosensory Impairment', 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'Balance Disorder', 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'Intellectual Disability', 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'Mental Health and Emotional Disability', 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'Developmental Disability', 'created_at' => now(), 'updated_at' => now()],
         ];
 
         DisabilityStatus::insert($data);

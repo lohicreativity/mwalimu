@@ -8,6 +8,7 @@ use App\Domain\Settings\Models\Country;
 use App\Domain\Settings\Models\Region;
 use App\Domain\Settings\Models\District;
 use App\Domain\Settings\Models\Ward;
+use App\Domain\HumanResources\Models\Designation;
 use App\Domain\Settings\Models\DisabilityStatus;
 use App\Domain\Academic\Models\ModuleAssignment;
 

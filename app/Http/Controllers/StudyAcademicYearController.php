@@ -19,8 +19,14 @@ class StudyAcademicYearController extends Controller
      */
     public function index()
     {
+    	$years = StudyAcademicYear::all();
+    	foreach($years as $year){
+    		if(strtotime(now()->format('Y-m-d')) > strtotime($year->end_date)){
+    			StudyAcademicYear::where('id',$year->id)->update(['status'=>'INACTIVE']);
+    		}
+    	}
     	$data = [
-           'study_academic_years'=>StudyAcademicYear::with('academicYear')->paginate(20),
+           'study_academic_years'=>StudyAcademicYear::with('academicYear')->latest()->paginate(20),
            'academic_years'=>AcademicYear::all()
     	];
     	return view('dashboard.academic.study-academic-years',$data)->withTitle('Study Academic Years');
@@ -46,6 +52,8 @@ class StudyAcademicYearController extends Controller
 
         if(strtotime($request->get('begin_date')) > strtotime($request->get('end_date'))){
 			return redirect()->back()->with('error','End date cannot be less than begin date');
+		}elseif(strtotime($request->get('begin_date')) < strtotime(now()->format('Y-m-d'))){
+			return redirect()->back()->with('error','Begin date cannot be less than today date');
 		}
 
         (new StudyAcademicYearAction)->store($request);
@@ -73,6 +81,8 @@ class StudyAcademicYearController extends Controller
 
         if(strtotime($request->get('begin_date')) > strtotime($request->get('end_date'))){
 			return redirect()->back()->with('error','End date cannot be less than begin date');
+		}elseif(strtotime($request->get('begin_date')) < strtotime(now()->format('Y-m-d'))){
+			return redirect()->back()->with('error','Begin date cannot be less than today date');
 		}
 
 
@@ -130,11 +140,13 @@ class StudyAcademicYearController extends Controller
     {
     	try{
     		$academic_year = StudyAcademicYear::findOrFail($id);
-    		if(strtotime(now()->format('Y-m-d')) >= strtotime($academic_year->begin_date)){
+    		if(strtotime(now()->format('Y-m-d')) > strtotime($academic_year->begin_date)){
     			return redirect()->back()->with('error','Academic year must be within current dates');
     		}
             $academic_year->status = 'ACTIVE';
             $academic_year->save();
+
+            StudyAcademicYear::where('id','!=',$academic_year->id)->update(['status'=>'INACTIVE']);
 
             return redirect()->back()->with('message','Study academic year activated successfully');
         }catch(Exception $e){

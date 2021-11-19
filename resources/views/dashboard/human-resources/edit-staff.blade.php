@@ -129,6 +129,11 @@
                      'class'=>'form-control ss-datepicker',
                      'required'=>true
                   ];
+
+                  $staff_title = [
+                     'placeholder'=>'Title',
+                     'class'=>'form-control'
+                  ];
               @endphp
               {!! Form::open(['url'=>'staff/staff/update','class'=>'ss-form-processing']) !!}
                 <div class="card-body">
@@ -136,11 +141,21 @@
                 <fieldset>
                   <legend>Personal Details</legend>
                   <div class="row">
+                     <div class="form-group col-1">
+                       {!! Form::label('','Title') !!}
+                       <select name="title" class="form-control">
+                         <option value="Mr." @if($staff->title == 'Mr.') selected="selected" @endif>Mr.</option>
+                         <option value="Mrs." @if($staff->title == 'Mrs.') selected="selected" @endif>Mrs.</option>
+                         <option value="Ms." @if($staff->title == 'Ms.') selected="selected" @endif>Ms.</option>
+                         <option value="Dr." @if($staff->title == 'Dr.') selected="selected" @endif>Dr.</option>
+                         <option value="Prof." @if($staff->title == 'Prof.') selected="selected" @endif>Prof.</option>
+                       </select>
+                    </div>
                      <div class="form-group col-4">
                        {!! Form::label('','First name') !!}
                        {!! Form::text('first_name',$staff->first_name,$first_name) !!}
                     </div>
-                    <div class="form-group col-4">
+                    <div class="form-group col-3">
                        {!! Form::label('','Middle name') !!}
                        {!! Form::text('middle_name',$staff->middle_name,$middle_name) !!}
                     </div>

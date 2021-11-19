@@ -21,12 +21,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>{{ __('Programs') }}</h1>
+            <h1>{{ __('Programmes') }}</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">{{ __('Programs') }}</li>
+              <li class="breadcrumb-item active">{{ __('Programmes') }}</li>
             </ol>
           </div>
         </div>
@@ -42,13 +42,13 @@
             <!-- general form elements -->
             <div class="card card-default">
               <div class="card-header">
-                <h3 class="card-title">{{ __('Add Program') }}</h3>
+                <h3 class="card-title">{{ __('Add Programme') }}</h3>
               </div>
               <!-- /.card-header -->
               <!-- form start -->
               @php
                   $name = [
-                     'placeholder'=>'Program name',
+                     'placeholder'=>'Programme name',
                      'class'=>'form-control',
                      'required'=>true
                   ];
@@ -82,7 +82,7 @@
                   
                   <div class="row">
                   <div class="form-group col-8">
-                    {!! Form::label('','Program') !!}
+                    {!! Form::label('','Programme') !!}
                     {!! Form::text('name',null,$name) !!}
                   </div>
                    <div class="form-group col-4">
@@ -139,7 +139,7 @@
                 <!-- /.card-body -->
 
                 <div class="card-footer">
-                  <button type="submit" class="btn btn-primary">{{ __('Add Program') }}</button>
+                  <button type="submit" class="btn btn-primary">{{ __('Add Programme') }}</button>
                 </div>
               {!! Form::close() !!}
             </div>
@@ -194,7 +194,7 @@
                                 {!! Form::open(['url'=>'academic/program/update','class'=>'ss-form-processing']) !!}
                                    <div class="row">
                                     <div class="form-group col-8">
-                                      {!! Form::label('','Program') !!}
+                                      {!! Form::label('','Programme') !!}
                                       {!! Form::text('name',$program->name,$name) !!}
 
                                       {!! Form::input('hidden','program_id',$program->id) !!}

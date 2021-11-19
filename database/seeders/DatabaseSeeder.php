@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
         $this->call(RoleUserTableSeeder::class);
         $this->call(LevelsTableSeeder::class);
         $this->call(AwardsTableSeeder::class);
+        $this->call(SemestersTableSeeder::class);
         $this->call(UnitCategoriesTableSeeder::class);
         $this->call(DepartmentsTableSeeder::class);
         $this->call(NTALevelsTableSeeder::class);
@@ -39,7 +40,8 @@ class DatabaseSeeder extends Seeder
         $this->call(AcademicStatusesTableSeeder::class);
         $this->call(CampusesTableSeeder::class);
         $this->call(CampusProgramTableSeeder::class);
-       \App\Domain\Application\Models\Applicant::factory(100)->create();
+        \App\Domain\Application\Models\Applicant::factory(100)->create();
         \App\Domain\Registration\Models\Student::factory(100)->create();
+        \App\Domain\HumanResources\Models\Staff::factory(20)->create();
     }
 }

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Domain\Settings\Models\Region;
 use App\Domain\Settings\Models\District;
 use App\Domain\Settings\Models\Ward;
+use App\Domain\Academic\Models\Module;
 
 class HomeController extends Controller
 {
@@ -46,6 +47,19 @@ class HomeController extends Controller
             return response()->json(['status'=>'success','wards'=>$wards]);
     	}else{
     		return response()->json(['status'=>'failed','wards'=>$wards]);
+    	}
+    }
+
+    /**
+     * Return a list of modules give nta level id
+     */
+    public function getNTALevelModules(Request $request)
+    {
+    	$modules = Module::where('nta_level_id',$request->get('nta_level_id'))->get();
+    	if(count($modules) != 0){
+            return response()->json(['status'=>'success','modules'=>$modules]);
+    	}else{
+    		return response()->json(['status'=>'failed','wards'=>$modules]);
     	}
     }
 }

@@ -28,6 +28,7 @@ class StaffAction implements StaffInterface{
                 $user->roles()->sync([$role->id]);
 
 		$staff = new Staff;
+                $staff->title = $request->get('title');
                 $staff->first_name = $request->get('first_name');
                 $staff->middle_name = $request->get('middle_name');
                 $staff->surname = $request->get('surname');
@@ -69,6 +70,7 @@ class StaffAction implements StaffInterface{
                 DB::beginTransaction();
 
 		$staff = Staff::find($request->get('staff_id'));
+                $staff->title = $request->get('title');
                 $staff->first_name = $request->get('first_name');
                 $staff->middle_name = $request->get('middle_name');
                 $staff->surname = $request->get('surname');

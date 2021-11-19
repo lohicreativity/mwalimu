@@ -44,10 +44,14 @@
 
             <!-- general form elements -->
             <div class="card card-default">
-              <div class="card-header">
-                <h3 class="card-title">{{ __('Add Assessment Plan') }}</h3>
-              </div>
-              <!-- /.card-header -->
+                <div class="card-header p-2">
+                <ul class="nav nav-pills">
+                  <li class="nav-item"><a class="nav-link" href="{{ url('academic/module/'.$module_assignment->module_id.'/download-syllabus') }}">{{ __('Module Syllabus') }}</a></li>
+                  <li class="nav-item"><a class="nav-link" href="#settings" data-toggle="tab">{{ __('Attendance Sheet') }}</a></li>
+                  <li class="nav-item"><a class="nav-link active" href="#activity" data-toggle="tab">{{ __('Assessment Plans') }}</a></li>
+                  <li class="nav-item"><a class="nav-link" href="#settings" data-toggle="tab">{{ __('Results Management') }}</a></li>
+                </ul>
+              </div><!-- /.card-header -->
               <!-- form start -->
               @php
                   $name = [

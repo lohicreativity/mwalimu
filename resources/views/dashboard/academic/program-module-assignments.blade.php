@@ -79,7 +79,7 @@
                 <table id="example2" class="table table-bordered table-hover">
                   <thead>
                   <tr>
-                    <th>Program</th>
+                    <th>Programme</th>
                     <th>Code</th>
                     <th>Actions</th>
                   </tr>
@@ -90,6 +90,59 @@
                     <td>{{ $program->program->name }}</td>
                     <td>{{ $program->program->code }}</td>
                     <td>
+                      <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-view-modules-{{ $program->id }}">
+                              <i class="fas fa-eye-open">
+                              </i>
+                              View Modules
+                       </a>
+                       <div class="modal fade" id="ss-view-modules-{{ $program->id }}">
+                        <div class="modal-dialog modal-lg">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h4 class="modal-title"><i class="fa fa-exclamation-sign"></i> Modules - {{ $program->program->name }}</h4>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+                            <div class="modal-body">
+                              @if(count($program->programModuleAssignments) != 0)
+                                
+                                <table id="example2" class="table table-bordered table-hover">
+                                  <thead>
+                                  <tr>
+                                    <th>Module</th>
+                                    <th>Year</th>
+                                    <th>Credits</th>
+                                    <th>Semester</th>
+                                    <th>Category</th>
+                                  </tr>
+                                  </thead>
+                                  <tbody>
+                                  @foreach($program->programModuleAssignments as $assignment)
+                                  <tr>
+                                    <td>{{ $assignment->module->name }}</td>
+                                    <td>{{ $assignment->year_of_study }}</td>
+                                    <td>{{ $assignment->module->credit }}</td>
+                                    <td>{{ $assignment->semester->name }}</td>
+                                    <td>{{ $assignment->category }}</td>
+                                  </tr>
+                                  @endforeach
+                                  
+                                  </tbody>
+                                </table>
+                              @else
+                               <h3>No module assigned.</h3>
+                              @endif
+                            </div>
+                            <div class="modal-footer justify-content-between">
+                              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
+                          </div>
+                          <!-- /.modal-content -->
+                        </div>
+                        <!-- /.modal-dialog -->
+                      </div>
+                      <!-- /.modal -->
                       <a class="btn btn-info btn-sm" href="{{ url('academic/program-module-assignment/'.$study_academic_year->id.'/'.$program->id.'/assign') }}">
                               <i class="fas fa-plus">
                               </i>

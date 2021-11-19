@@ -130,6 +130,11 @@
                      'required'=>true
                   ];
 
+                  $staff_title = [
+                     'placeholder'=>'Title',
+                     'class'=>'form-control'
+                  ];
+
               @endphp
               {!! Form::open(['url'=>'staff/staff/store','class'=>'ss-form-processing','files'=>true]) !!}
                 <div class="card-body">
@@ -137,11 +142,21 @@
                 <fieldset>
                   <legend>Personal Details</legend>
                   <div class="row">
+                     <div class="form-group col-1">
+                       {!! Form::label('','Title') !!}
+                       <select name="title" class="form-control">
+                         <option value="Mr.">Mr.</option>
+                         <option value="Mrs.">Mrs.</option>
+                         <option value="Ms.">Ms.</option>
+                         <option value="Dr.">Dr.</option>
+                         <option value="Prof.">Prof.</option>
+                       </select>
+                    </div>
                      <div class="form-group col-4">
                        {!! Form::label('','First name') !!}
                        {!! Form::text('first_name',null,$first_name) !!}
                     </div>
-                    <div class="form-group col-4">
+                    <div class="form-group col-3">
                        {!! Form::label('','Middle name') !!}
                        {!! Form::text('middle_name',null,$middle_name) !!}
                     </div>

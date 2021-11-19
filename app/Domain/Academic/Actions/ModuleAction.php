@@ -17,9 +17,11 @@ class ModuleAction implements ModuleInterface{
                 $module->course_work = $request->get('course_work');
                 $module->final_exam = $request->get('final_exam');
                 $module->department_id = $request->get('department_id');
+                $module->nta_level_id = $request->get('nta_level_id');
                 if($request->hasFile('syllabus')){
                   $destination = SystemLocation::uploadsDirectory();
                   $request->file('syllabus')->move($destination, $request->file('syllabus')->getClientOriginalName());
+
                   // $file_name = SystemLocation::renameFile($destination, $request->file('syllabus')->getClientOriginalName(), $request->file('syllabus')->guessClientExtension());
 
                   $module->syllabus = $request->file('syllabus')->getClientOriginalName();
@@ -35,6 +37,7 @@ class ModuleAction implements ModuleInterface{
                 $module->course_work = $request->get('course_work');
                 $module->final_exam = $request->get('final_exam');
                 $module->department_id = $request->get('department_id');
+                $module->nta_level_id = $request->get('nta_level_id');
                 if($request->hasFile('syllabus')){
                   $destination = SystemLocation::uploadsDirectory();
                   $request->file('syllabus')->move($destination, $request->file('syllabus')->getClientOriginalName());

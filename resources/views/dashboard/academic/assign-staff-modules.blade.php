@@ -79,7 +79,7 @@
                 <table id="example2" class="table table-bordered table-hover">
                   <thead>
                   <tr>
-                    <th>Program</th>
+                    <th>Programme</th>
                     <th>Code</th>
                     <th>Modules</th>
                   </tr>
@@ -90,14 +90,30 @@
                     <td>{{ $program->program->name }}</td>
                     <td>{{ $program->program->code }}</td>
                     <td>
+                      @if(count($program->programModuleAssignments) != 0)
                       <table class="table table-bordered">
+                        <thead>
+                          <tr>
+                            <th>Module</th>
+                            <th>Code</th>
+                            <th>Year</th>
+                            <th>Semester</th>
+                            <th>Action</th>
+                          </tr>
+                          </thead>
+                          <tbody>  
                       @foreach($program->programModuleAssignments as $assign)
+                        @for($i = 1; $i<=3; $i++)
+                        @if($i == $assign->year_of_study)
+
+                        @for($j = 1; $j<=2; $j++)
+                        @if($j == $assign->semester->id)
                         <tr>
                         <td>{{ $assign->module->name }}
                           @if(count($assign->module->moduleAssignments) != 0)
-                            <p class="ss-font-xs ss-no-margin">Staff:</p>
+                            <p class="ss-font-xs ss-no-margin ss-bold">Facilitator:</p>
                             @foreach($assign->module->moduleAssignments as $modAssign)
-                            <p class="ss-font-xs">{{ $modAssign->staff->first_name }} {{ $modAssign->staff->surname }} <a href="#" data-toggle="modal" data-target="#ss-delete-module-assignment-{{ $modAssign->id }}" class="ss-color-danger">Remove</a></p>
+                            <p class="ss-font-xs ss-no-margin ss-italic">{{ $modAssign->staff->title }} {{ $modAssign->staff->first_name }} {{ $modAssign->staff->middle_name }} {{ $modAssign->staff->surname }} - {{ $modAssign->category }}<a href="#" data-toggle="modal" data-target="#ss-delete-module-assignment-{{ $modAssign->id }}" class="ss-color-danger ss-right">Remove</a></p>
 
                             <div class="modal fade" id="ss-delete-module-assignment-{{ $modAssign->id }}">
                         <div class="modal-dialog modal-lg">
@@ -135,6 +151,7 @@
                           @endif
                         </td>
                         <td>{{ $assign->module->code }}</td>
+                        <td>{{ $assign->year_of_study }}</td>
                         <td>{{ $assign->semester->name }}</td>
                         <td>
                           <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-assign-module-{{ $assign->module->id }}">
@@ -155,13 +172,14 @@
                             <div class="modal-body">
 
                                 {!! Form::open(['url'=>'academic/module-assignment/store','class'=>'ss-form-processing']) !!}
-
-                                    <div class="form-group">
-                                      {!! Form::label('','examination') !!}
+                                   
+                                   <div class="row">
+                                    <div class="form-group col-8">
+                                      {!! Form::label('','Select staff') !!}
                                       <select name="staff_id" class="form-control" required>
                                         <option value="">Select Staff</option>
                                         @foreach($staffs as $staff)
-                                        <option value="{{ $staff->id }}">{{ $staff->first_name }} {{ $staff->surname }}</option>
+                                        <option value="{{ $staff->id }}">{{ $staff->title }} {{ $staff->first_name }} {{ $staff->surname }} - {{ $staff->designation->name }}</option>
                                         @endforeach
                                       </select>
 
@@ -169,8 +187,18 @@
                                       {!! Form::input('hidden','study_academic_year_id',$study_academic_year->id) !!}
                                       {!! Form::input('hidden','program_module_assignment_id',$assign->id) !!}
                                     </div>
+                                      <div class="form-group col-4">
+                                      {!! Form::label('','Category') !!}
+                                      <select name="category" class="form-control" required>
+                                         <option value="Lead Facilitator">Lead Facilitator</option>
+                                         <option value="Assistant Facilitator">Assistant Facilitator</option>
+                                         <option value="Tutor">Tutor</option>
+                                      </select>
+                                      </div>
+
+                                  </div>
                                       <div class="ss-form-actions">
-                                       <button type="submit" class="btn btn-primary">{{ __('Assign Stafff') }}</button>
+                                       <button type="submit" class="btn btn-primary">{{ __('Assign Staff') }}</button>
                                       </div>
                                 {!! Form::close() !!}
 
@@ -186,11 +214,19 @@
                       <!-- /.modal -->
                         </td>
                         </tr>
+                        @endif
+                        @endfor
+
+                        @endif
+                        @endfor
                       @endforeach
+                    </tbody>
                     </table>
+                    @endif
                     </td>
                     
                   </tr>
+                    
                   @endforeach
                   
                   </tbody>

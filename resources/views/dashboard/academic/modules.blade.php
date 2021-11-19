@@ -81,7 +81,7 @@
                      'required'=>true
                   ];
               @endphp
-              {!! Form::open(['url'=>'academic/module/store','class'=>'ss-form-processing','true']) !!}
+              {!! Form::open(['url'=>'academic/module/store','class'=>'ss-form-processing','true','files'=>true]) !!}
                 <div class="card-body">
                   <div class="row">
                   <div class="form-group col-6">
@@ -131,8 +131,17 @@
                   </div>
                  </div>
                  <div class="row">
+                  <div class="form-group col-6">
+                    {!! Form::label('','NTA Level') !!}
+                    <select name="nta_level_id" class="form-control" required>
+                      <option value="">Select NTA Level</option>
+                      @foreach($nta_levels as $level)
+                      <option value="{{ $level->id }}">{{ $level->name }}</option>
+                      @endforeach
+                    </select>
+                  </div>
                    <div class="form-group col-6">
-                    {!! Form::label('','Upload staff image') !!}
+                    {!! Form::label('','Upload module syllabus') !!}
                     {!! Form::file('syllabus',['class'=>'form-control']) !!}
                   </div>
                  </div><!-- end of row -->
@@ -162,6 +171,7 @@
                     <th>Credit</th>
                     <th>Course Work</th>
                     <th>Final Exam</th>
+                    <th>NTA Level</th>
                     <th>Actions</th>
                   </tr>
                   </thead>
@@ -174,6 +184,7 @@
                     <td>{{ $module->credit }}</td>
                     <td>{{ $module->course_work }}</td>
                     <td>{{ $module->final_exam }}</td>
+                    <td>{{ $module->ntaLevel->name }}</td>
                     <td>
                       <a class="btn btn-info btn-sm" href="{{ url('academic/module/'.$module->id.'/download-syllabus') }}">
                               <i class="fas fa-download">
@@ -264,8 +275,17 @@
                                     </div>
                                    </div>
                                    <div class="row">
+                                      <div class="form-group col-6">
+                                        {!! Form::label('','NTA Level') !!}
+                                        <select name="nta_level_id" class="form-control" required>
+                                          <option value="">Select NTA Level</option>
+                                          @foreach($nta_levels as $level)
+                                          <option value="{{ $level->id }}" @if($module->nta_level_id == $level->id) selected="selected" @endif>{{ $level->name }}</option>
+                                          @endforeach
+                                        </select>
+                                      </div>
                                        <div class="form-group col-6">
-                                        {!! Form::label('','Upload staff image') !!}
+                                        {!! Form::label('','Upload module syllabus') !!}
                                         {!! Form::file('syllabus',['class'=>'form-control']) !!}
                                       </div>
                                    </div>
