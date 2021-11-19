@@ -16,7 +16,6 @@ class NTALevelsTableSeeder extends Seeder
     {
         $data = [
            [
-              'id'=>1,
               'name'=>'NTA Level 4',
               'award_id'=>1,
               'created_at'=>now(),
@@ -24,7 +23,6 @@ class NTALevelsTableSeeder extends Seeder
            ],
 
            [
-              'id'=>2,
               'name'=>'NTA Level 5',
               'award_id'=>2,
               'created_at'=>now(),
@@ -32,7 +30,6 @@ class NTALevelsTableSeeder extends Seeder
            ],
 
            [
-              'id'=>3,
               'name'=>'NTA Level 6',
               'award_id'=>3,
               'created_at'=>now(),
@@ -40,8 +37,21 @@ class NTALevelsTableSeeder extends Seeder
            ],
 
            [
-              'id'=>4,
               'name'=>'NTA Level 7',
+              'award_id'=>4,
+              'created_at'=>now(),
+              'updated_at'=>now()
+           ],
+
+           [
+              'name'=>'NTA Level 8',
+              'award_id'=>4,
+              'created_at'=>now(),
+              'updated_at'=>now()
+           ],
+
+           [
+              'name'=>'NTA Level 9',
               'award_id'=>4,
               'created_at'=>now(),
               'updated_at'=>now()
