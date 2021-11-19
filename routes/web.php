@@ -33,7 +33,7 @@ Route::get('test',function(){
        $country->nationality = $line[3];
        $country->save();
     }
-    return App\Domain\Settings\Models\Country::all();
+    //return App\Domain\Settings\Models\Country::all();
 
     $csvFileName = "regions.csv";
     $csvFile = public_path('uploads/' . $csvFileName);
@@ -48,7 +48,7 @@ Route::get('test',function(){
        $country->name = $line[1];
        $country->save();
     }
-    return App\Domain\Settings\Models\Region::all();
+    //return App\Domain\Settings\Models\Region::all();
 
     $csvFileName = "districts.csv";
     $csvFile = public_path('uploads/' . $csvFileName);
@@ -63,7 +63,7 @@ Route::get('test',function(){
        $country->name = $line[1];
        $country->save();
     }
-    return App\Domain\Settings\Models\District::all();
+    //return App\Domain\Settings\Models\District::all();
 
     $csvFileName = "wards.csv";
     $csvFile = public_path('uploads/' . $csvFileName);

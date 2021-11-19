@@ -25,10 +25,10 @@ class DatabaseSeeder extends Seeder
         $this->call(ProgramsTableSeeder::class);
         $this->call(IntakesTableSeeder::class);
         $this->call(DesignationsTableSeeder::class);
-        $this->call(CountriesTableSeeder::class);
-        $this->call(RegionsTableSeeder::class);
-        $this->call(DistrictsTableSeeder::class);
-        $this->call(WardsTableSeeder::class);
+        // $this->call(CountriesTableSeeder::class);
+        // $this->call(RegionsTableSeeder::class);
+        // $this->call(DistrictsTableSeeder::class);
+        // $this->call(WardsTableSeeder::class);
         $this->call(DisabilityStatusesTableSeeder::class);
         $this->call(SystemModulesTableSeeder::class);
         $this->call(PermissionsTableSeeder::class);
