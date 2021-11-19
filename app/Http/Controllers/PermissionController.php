@@ -12,7 +12,7 @@ class PermissionController extends Controller
     public function index()
     {
     	$data = [
-           'permissions'=>$request->has('system_module_id')? Permission::where('system_module_id',$request->get('system_module_id'))->get()
+           'permissions'=>$request->has('system_module_id')? Permission::where('system_module_id',$request->get('system_module_id'))->get() : []
     	];
     	return view('dashboard.settings.permissions',$data)->withTitle('Permissions');
     }

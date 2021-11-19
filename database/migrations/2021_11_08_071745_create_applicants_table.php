@@ -29,10 +29,12 @@ class CreateApplicantsTable extends Migration
             $table->string('application_number');
             $table->unsignedBigInteger('intake_id');
             $table->unsignedBigInteger('disability_status_id');
+            $table->unsignedBigInteger('user_id');
             $table->timestamps();
 
             $table->foreign('intake_id')->references('id')->on('intakes')->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('disability_status_id')->references('id')->on('disability_statuses')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 

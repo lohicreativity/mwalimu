@@ -35,19 +35,19 @@ Route::get('test',function(){
     // }
     //return App\Domain\Settings\Models\Country::all();
 
-    $csvFileName = "regions.csv";
-    $csvFile = public_path('uploads/' . $csvFileName);
-    $file_handle = fopen($csvFile, 'r');
-    while (!feof($file_handle)) {
-        $line_of_text[] = fgetcsv($file_handle, 0, ',');
-    }
-    fclose($file_handle);
-    foreach($line_of_text as $line){
-       $country = new App\Domain\Settings\Models\Region;
-       $country->country_id = 1;
-       $country->name = $line[1];
-       $country->save();
-    }
+    // $csvFileName = "regions.csv";
+    // $csvFile = public_path('uploads/' . $csvFileName);
+    // $file_handle = fopen($csvFile, 'r');
+    // while (!feof($file_handle)) {
+    //     $line_of_text[] = fgetcsv($file_handle, 0, ',');
+    // }
+    // fclose($file_handle);
+    // foreach($line_of_text as $line){
+    //    $country = new App\Domain\Settings\Models\Region;
+    //    $country->country_id = 1;
+    //    $country->name = $line[1];
+    //    $country->save();
+    // }
     //return App\Domain\Settings\Models\Region::all();
 
     $csvFileName = "districts.csv";

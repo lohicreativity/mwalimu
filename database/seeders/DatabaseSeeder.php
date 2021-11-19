@@ -13,8 +13,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
-        $this->call(UsersTableSeeder::class);
+        \App\Models\User::factory(120)->create();
+        // $this->call(UsersTableSeeder::class);
         $this->call(RolesTableSeeder::class);
         $this->call(RoleUserTableSeeder::class);
         $this->call(LevelsTableSeeder::class);
@@ -32,5 +32,14 @@ class DatabaseSeeder extends Seeder
         $this->call(DisabilityStatusesTableSeeder::class);
         $this->call(SystemModulesTableSeeder::class);
         $this->call(PermissionsTableSeeder::class);
+        $this->call(AcademicYearsTableSeeder::class);
+        $this->call(StudyAcademicYearsTableSeeder::class);
+        $this->call(InsurancesTableSeeder::class);
+        $this->call(StudentshipStatusesTableSeeder::class);
+        $this->call(AcademicStatusesTableSeeder::class);
+        $this->call(CampusesTableSeeder::class);
+        $this->call(CampusProgramTableSeeder::class);
+       \App\Domain\Application\Models\Applicant::factory(100)->create();
+        \App\Domain\Registration\Models\Student::factory(100)->create();
     }
 }
