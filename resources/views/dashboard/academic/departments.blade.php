@@ -95,13 +95,13 @@
                     </select>
                   </div>
                   <div class="form-group col-6">
-                    {!! Form::label('','Parent department') !!}
-                    <select name="parent_id" class="form-control">
-                       <option value="">Select Parent</option>
-                       @foreach($all_departments as $dpt)
-                       <option value="{{ $dpt->id }}">{{ $dpt->name }}</option>
-                       @endforeach
-                    </select>
+                    {!! Form::label('','Campus') !!}
+                    <select name="campus_id" class="form-control">
+                         <option value="">Select Parent</option>
+                           @foreach($campuses as $campus)
+                           <option value="{{ $campus->id }}">{{ $campus->name }}</option>
+                           @endforeach
+                        </select>
                   </div>
                   </div>
                 </div>
@@ -184,11 +184,11 @@
                                       </select>
                                     </div>
                                     <div class="form-group col-6">
-                                      {!! Form::label('','Parent department') !!}
-                                      <select name="parent_id" class="form-control">
+                                      {!! Form::label('','Campus') !!}
+                                      <select name="campus_id" class="form-control">
                                          <option value="">Select Parent</option>
-                                         @foreach($all_departments as $dpt)
-                                         <option value="{{ $dpt->id }}" @if($department->parent_id == $dpt->id) selected="selected" @endif>{{ $dpt->name }}</option>
+                                         @foreach($campuses as $campus)
+                                         <option value="{{ $campus->id }}" @if($department->campus_id == $campus->id) selected="selected" @endif>{{ $campus->name }}</option>
                                          @endforeach
                                       </select>
                                     </div>

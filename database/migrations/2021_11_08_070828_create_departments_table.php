@@ -18,7 +18,7 @@ class CreateDepartmentsTable extends Migration
             $table->string('name');
             $table->string('abbreviation');
             $table->text('description')->nullable();
-            $table->unsignedBigInteger('parent_id')->nullable();
+            $table->unsignedBigInteger('campus_id')->nullable();
             $table->unsignedBigInteger('unit_category_id');
             $table->timestamps();
 
