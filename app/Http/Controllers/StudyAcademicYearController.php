@@ -44,6 +44,10 @@ class StudyAcademicYearController extends Controller
            }
         }
 
+        if(strtotime($request->get('begin_date')) > strtotime($request->get('end_date'))){
+			return redirect()->back()->with('error','End date cannot be less than begin date');
+		}
+
         (new StudyAcademicYearAction)->store($request);
 
         return Util::requestResponse($request,'Study academic year updated successfully');
@@ -66,6 +70,10 @@ class StudyAcademicYearController extends Controller
               return redirect()->back()->withInput()->withErrors($validation->messages());
            }
         }
+
+        if(strtotime($request->get('begin_date')) > strtotime($request->get('end_date'))){
+			return redirect()->back()->with('error','End date cannot be less than begin date');
+		}
 
 
         (new StudyAcademicYearAction)->update($request);
@@ -122,7 +130,7 @@ class StudyAcademicYearController extends Controller
     {
     	try{
     		$academic_year = StudyAcademicYear::findOrFail($id);
-    		if(strtotime(now()) < strtotime($academic_year)){
+    		if(strtotime(now()) < strtotime($academic_year->begin_date)){
     			return redirect()->back()->with('error','Academic year must be within current dates');
     		}
             $academic_year->status = 'ACTIVE';

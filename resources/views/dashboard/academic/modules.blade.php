@@ -132,16 +132,8 @@
                  </div>
                  <div class="row">
                    <div class="form-group col-6">
-                    <label for="exampleInputFile">Upload syllabus</label>
-                    <div class="input-group">
-                      <div class="custom-file">
-                        <input type="file" name="syllabus" class="custom-file-input" id="exampleInputFile">
-                        <label class="custom-file-label" for="exampleInputFile">Choose file</label>
-                      </div>
-                      <div class="input-group-append">
-                        <span class="input-group-text">Upload</span>
-                      </div>
-                    </div>
+                    {!! Form::label('','Upload staff image') !!}
+                    {!! Form::file('syllabus',['class'=>'form-control']) !!}
                   </div>
                  </div><!-- end of row -->
                 </div>
@@ -183,6 +175,11 @@
                     <td>{{ $module->course_work }}</td>
                     <td>{{ $module->final_exam }}</td>
                     <td>
+                      <a class="btn btn-info btn-sm" href="{{ url('') }}">
+                              <i class="fas fa-download">
+                              </i>
+                              Download Syllabus
+                       </a>
                       <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-edit-module-{{ $module->id }}">
                               <i class="fas fa-pencil-alt">
                               </i>
@@ -268,16 +265,8 @@
                                    </div>
                                    <div class="row">
                                        <div class="form-group col-6">
-                                        <label for="exampleInputFile">Upload syllabus</label>
-                                        <div class="input-group">
-                                          <div class="custom-file">
-                                            <input type="file" name="syllabus" class="custom-file-input" id="exampleInputFile">
-                                            <label class="custom-file-label" for="exampleInputFile">Choose file</label>
-                                          </div>
-                                          <div class="input-group-append">
-                                            <span class="input-group-text">Upload</span>
-                                          </div>
-                                        </div>
+                                        {!! Form::label('','Upload staff image') !!}
+                                        {!! Form::file('syllabus',['class'=>'form-control']) !!}
                                       </div>
                                    </div>
                                       <div class="ss-form-actions">

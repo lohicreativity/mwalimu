@@ -17,7 +17,7 @@ class CreateCampusProgramTable extends Migration
             $table->id();
             $table->unsignedBigInteger('campus_id');
             $table->unsignedBigInteger('program_id');
-            $table->string('regulator_code');
+            $table->string('regulator_code')->unique();
             $table->timestamps();
 
             $table->foreign('campus_id')->references('id')->on('campuses')->onUpdate('cascade')->onDelete('cascade');

@@ -86,7 +86,12 @@
                     </div>
                     <div class="form-group col-6">
                       {!! Form::label('','Year of study') !!}
-                      {!! Form::input('number','year_of_study',null,$year_of_study) !!}
+                      <select name="year_of_study" class="form-control" required>
+                        <option>Select Year of Study</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                      </select>
                       
                     </div>
                     <div class="form-group">
@@ -177,7 +182,12 @@
                     </div>
                     <div class="form-group col-6">
                       {!! Form::label('','Year of study') !!}
-                      {!! Form::input('number','year_of_study',$assignment->year_of_study,$year_of_study) !!}
+                      <select name="year_of_study" class="form-control" required>
+                        <option>Select Year of Study</option>
+                        <option value="1" @if($assignment->year_of_study == 1) selected="selected" @endif>1</option>
+                        <option value="2" @if($assignment->year_of_study == 2) selected="selected" @endif>2</option>
+                        <option value="3" @if($assignment->year_of_study == 3) selected="selected" @endif>3</option>
+                      </select>
                       
                     </div>
                                     <div class="form-group">
@@ -191,6 +201,44 @@
                                       </div>
                                 {!! Form::close() !!}
 
+                            </div>
+                            <div class="modal-footer justify-content-between">
+                              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
+                          </div>
+                          <!-- /.modal-content -->
+                        </div>
+                        <!-- /.modal-dialog -->
+                      </div>
+                      <!-- /.modal -->
+
+                      <a class="btn btn-danger btn-sm" href="#" data-toggle="modal" data-target="#ss-delete-assignment-{{ $assignment->id }}">
+                              <i class="fas fa-trash">
+                              </i>
+                              Delete
+                       </a>
+
+                       <div class="modal fade" id="ss-delete-assignment-{{ $assignment->id }}">
+                        <div class="modal-dialog modal-lg">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h4 class="modal-title"><i class="fa fa-exclamation-sign"></i> Confirmation Alert</h4>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+                            <div class="modal-body">
+                              <div class="row">
+                                <div class="col-12">
+                                    <div id="ss-confirmation-container">
+                                       <p id="ss-confirmation-text">Are you sure you want to delete this assignment from the list?</p>
+                                       <div class="ss-form-controls">
+                                         <button type="button" class="btn btn-default" data-dismiss="modal">Abort</button>
+                                         <a href="{{ url('academic/program-module-assignment/'.$assignment->id.'/destroy') }}" class="btn btn-danger">Delete</a>
+                                         </div><!-- end of ss-form-controls -->
+                                      </div><!-- end of ss-confirmation-container -->
+                                  </div><!-- end of col-md-12 -->
+                               </div><!-- end of row -->
                             </div>
                             <div class="modal-footer justify-content-between">
                               <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

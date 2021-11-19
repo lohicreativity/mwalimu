@@ -60,7 +60,7 @@
                   <tbody>
                   @foreach($staffs as $staff)
                   <tr>
-                    <td>{{ $staff->surname }}, {{ $staff->first_name }}, {{ strtoupper(substr($staff->middel_name,0,1)) }}</td>
+                    <td>{{ $staff->first_name }} {{ $staff->middle_name }} {{ $staff->surname }}</td>
                     <td>{{ $staff->category }}</td>
                     <td>{{ $staff->email }}</td>
                     <td>{{ $staff->phone }}</td>

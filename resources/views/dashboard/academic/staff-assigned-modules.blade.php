@@ -52,6 +52,7 @@
                     <th>Module</th>
                     <th>Academic Year</th>
                     <th>Program</th>
+                    <th>Year</th>
                     <th>Semester</th>
                   </tr>
                   </thead>
@@ -61,6 +62,7 @@
                     <td><a href="{{ url('academic/staff-module-assignment/'.$assignment->id.'/assessment-plans') }}">{{ $assignment->module->name }}</a></td>
                     <td>{{ $assignment->studyAcademicYear->academicYear->year }}</td>
                     <td>{{ $assignment->programModuleAssignment->campusProgram->program->name }}</td>
+                    <td>{{ $assignment->programModuleAssignment->year_of_study }}</td>
                     <td>{{ $assignment->programModuleAssignment->semester->name }}</td>
                   </tr>
                   @endforeach

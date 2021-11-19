@@ -118,7 +118,12 @@
                     <td>{{ $year->academicYear->year }}</td>
                     <td>{{ $year->begin_date }}</td>
                     <td>{{ $year->end_date }}</td>
-                    <td>{{ $year->status }}</td>
+                    <td>@if($year->status == 'ACTIVE') 
+                        <span>{{ $year->status }}</span>
+                        @else
+                        <span class="ss-color-danger">{{ $year->status }}</span>
+                        @endif
+                    </td>
                     <td>
                       <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-edit-year-{{ $year->id }}">
                               <i class="fas fa-pencil-alt">

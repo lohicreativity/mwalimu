@@ -35,7 +35,7 @@ class CampusProgramController extends Controller
     public function store(Request $request)
     {
     	$validation = Validator::make($request->all(),[
-            'regulator_code'=>'required',
+            'regulator_code'=>'required|unique:campus_program',
         ]);
 
         if($validation->fails()){
