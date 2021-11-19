@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Domain\Academic\Models\Department;
 use App\Domain\Settings\Models\UnitCategory;
-use App\Domain\Settings\Models\UnitCategory;
+use App\Domain\Settings\Models\Campus;
 use App\Domain\Academic\Actions\DepartmentAction;
 use App\Utils\Util;
 use Validator;
