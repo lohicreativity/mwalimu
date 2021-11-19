@@ -57,9 +57,9 @@ class StaffAction implements StaffInterface{
                 if($request->hasFile('image')){
                   $destination = SystemLocation::uploadsDirectory();
                   $request->file('image')->move($destination, $request->file('image')->getClientOriginalName());
-                  $file_name = SystemLocation::renameFile($destination, $request->file('image')->getClientOriginalName(), $request->file('image')->guessClientExtension());
+                  // $file_name = SystemLocation::renameFile($destination, $request->file('image')->getClientOriginalName(), $request->file('image')->guessClientExtension());
 
-                  $staff->image = $file_name;
+                  $staff->image = $request->file('image')->getClientOriginalName();
                 }
                 $staff->save();
                 DB::commit();
@@ -97,9 +97,9 @@ class StaffAction implements StaffInterface{
                 if($request->hasFile('image')){
                   $destination = SystemLocation::uploadsDirectory();
                   $request->file('image')->move($destination, $request->file('image')->getClientOriginalName());
-                  $file_name = SystemLocation::renameFile($destination, $request->file('image')->getClientOriginalName(), $request->file('image')->guessClientExtension());
+                  // $file_name = SystemLocation::renameFile($destination, $request->file('image')->getClientOriginalName(), $request->file('image')->guessClientExtension());
 
-                  $staff->image = $file_name;
+                  $staff->image = $request->file('image')->getClientOriginalName();
                 }
                 $staff->save();
 

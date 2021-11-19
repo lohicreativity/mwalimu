@@ -79,7 +79,8 @@ class ModuleController extends Controller
     public function downloadSyllabus(Request $request, $id)
     {
         try{
-            
+            $module = Module::findOrFail($id);
+            return response()->download(public_path('uploads/'.$module->syllabus));
         }catch(Exception $e){
             return redirect()->back()->with('error','Unable to get the resource specified in this request');
         }

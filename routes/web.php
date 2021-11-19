@@ -19,20 +19,20 @@ Route::view('/', 'auth.login');
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', [HomeController::class,'dashboard'])->name('dashboard');
 
 Route::get('test',function(){
-    $csvFileName = "countries.csv";
-    $csvFile = public_path('uploads/' . $csvFileName);
-    $file_handle = fopen($csvFile, 'r');
-    while (!feof($file_handle)) {
-        $line_of_text[] = fgetcsv($file_handle, 0, ',');
-    }
-    fclose($file_handle);
-    foreach($line_of_text as $line){
-       $country = new App\Domain\Settings\Models\Country;
-       $country->code = $line[1];
-       $country->name = $line[2];
-       $country->nationality = $line[3];
-       $country->save();
-    }
+    // $csvFileName = "countries.csv";
+    // $csvFile = public_path('uploads/' . $csvFileName);
+    // $file_handle = fopen($csvFile, 'r');
+    // while (!feof($file_handle)) {
+    //     $line_of_text[] = fgetcsv($file_handle, 0, ',');
+    // }
+    // fclose($file_handle);
+    // foreach($line_of_text as $line){
+    //    $country = new App\Domain\Settings\Models\Country;
+    //    $country->code = $line[1];
+    //    $country->name = $line[2];
+    //    $country->nationality = $line[3];
+    //    $country->save();
+    // }
     //return App\Domain\Settings\Models\Country::all();
 
     $csvFileName = "regions.csv";

@@ -175,7 +175,7 @@
                     <td>{{ $module->course_work }}</td>
                     <td>{{ $module->final_exam }}</td>
                     <td>
-                      <a class="btn btn-info btn-sm" href="{{ url('') }}">
+                      <a class="btn btn-info btn-sm" href="{{ url('academic/module/'.$module->id.'/download-syllabus') }}">
                               <i class="fas fa-download">
                               </i>
                               Download Syllabus

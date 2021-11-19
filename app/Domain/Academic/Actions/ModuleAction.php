@@ -20,9 +20,9 @@ class ModuleAction implements ModuleInterface{
                 if($request->hasFile('syllabus')){
                   $destination = SystemLocation::uploadsDirectory();
                   $request->file('syllabus')->move($destination, $request->file('syllabus')->getClientOriginalName());
-                  $file_name = SystemLocation::renameFile($destination, $request->file('syllabus')->getClientOriginalName(), $request->file('syllabus')->guessClientExtension());
+                  // $file_name = SystemLocation::renameFile($destination, $request->file('syllabus')->getClientOriginalName(), $request->file('syllabus')->guessClientExtension());
 
-                  $module->syllabus = $file_name;
+                  $module->syllabus = $request->file('syllabus')->getClientOriginalName();
                 }
                 $module->save();
 	}
@@ -38,9 +38,9 @@ class ModuleAction implements ModuleInterface{
                 if($request->hasFile('syllabus')){
                   $destination = SystemLocation::uploadsDirectory();
                   $request->file('syllabus')->move($destination, $request->file('syllabus')->getClientOriginalName());
-                  $file_name = SystemLocation::renameFile($destination, $request->file('syllabus')->getClientOriginalName(), $request->file('syllabus')->guessClientExtension());
+                  // $file_name = SystemLocation::renameFile($destination, $request->file('syllabus')->getClientOriginalName(), $request->file('syllabus')->guessClientExtension());
 
-                  $module->syllabus = $file_name;
+                  $module->syllabus = $request->file('syllabus')->getClientOriginalName();
                 }
                 $module->save();
 	}

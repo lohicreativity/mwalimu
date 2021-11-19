@@ -13,7 +13,7 @@ class CreateProgramModuleAssigmentsTable extends Migration
      */
     public function up()
     {
-        Schema::create('program_module_assigments', function (Blueprint $table) {
+        Schema::create('program_module_assignments', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('study_academic_year_id');
             $table->unsignedBigInteger('semester_id');
@@ -38,6 +38,6 @@ class CreateProgramModuleAssigmentsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('program_module_assigments');
+        Schema::dropIfExists('program_module_assignments');
     }
 }
