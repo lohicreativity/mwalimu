@@ -50,6 +50,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 	Route::post('module/store', [ModuleController::class,'store']);
 	Route::post('module/update', [ModuleController::class,'update']);
 	Route::get('module/{id}/destroy', [ModuleController::class,'destroy']);
+	Route::get('module/{id}/download-syllabus', [ModuleController::class,'downloadSyllabus']);
 
 
 	Route::get('module-assignments', [ModuleAssignmentController::class,'index']);

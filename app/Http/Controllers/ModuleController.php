@@ -74,6 +74,14 @@ class ModuleController extends Controller
     }
 
     /**
+     * Download syllabus
+     */
+    public function downloadSyllabus(Request $request, $id)
+    {
+        
+    }
+
+    /**
      * Remove the specified module
      */
     public function destroy($id)
