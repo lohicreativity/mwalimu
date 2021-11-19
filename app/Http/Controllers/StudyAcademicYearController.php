@@ -130,7 +130,7 @@ class StudyAcademicYearController extends Controller
     {
     	try{
     		$academic_year = StudyAcademicYear::findOrFail($id);
-    		if(strtotime(now()) < strtotime($academic_year->begin_date)){
+    		if(strtotime(now()->format('Y-m-d')) >= strtotime($academic_year->begin_date)){
     			return redirect()->back()->with('error','Academic year must be within current dates');
     		}
             $academic_year->status = 'ACTIVE';
