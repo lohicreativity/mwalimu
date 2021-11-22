@@ -135,7 +135,7 @@
               <li class="nav-item">
                 <a href="{{ url('academic/programs') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>{{ __('Programs') }}</p>
+                  <p>{{ __('Programmes') }}</p>
                 </a>
               </li>
               <li class="nav-item">
@@ -166,6 +166,12 @@
                 <a href="{{ url('academic/program-module-assignments') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>{{ __('Program Module Assignment') }}</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ url('academic/streams') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>{{ __('Streams and Groups') }}</p>
                 </a>
               </li>
             </ul>

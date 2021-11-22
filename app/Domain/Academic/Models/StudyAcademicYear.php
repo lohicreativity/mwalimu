@@ -32,7 +32,23 @@ class StudyAcademicYear extends Model
      */
     public function moduleAssignments()
     {
-    	return $this->hasMany(ProgramModuleAssignment::class,'academic_year_id');
+    	return $this->hasMany(ProgramModuleAssignment::class,'study_academic_year_id');
+    }
+
+    /**
+     * Establish one to many relationship with streams
+     */
+    public function streams()
+    {
+        return $this->hasMany(Stream::class,'study_academic_year_id');
+    }
+
+    /**
+     * Establish one to many relationship with stream components
+     */
+    public function streamComponents()
+    {
+        return $this->hasMany(StreamComponent::class,'study_academic_year_id');
     }
 
     /**

@@ -13,7 +13,11 @@ use App\Http\Controllers\ExaminationController;
 use App\Http\Controllers\CampusProgramController;
 use App\Http\Controllers\ModuleAssignmentController;
 use App\Http\Controllers\AssessmentPlanController;
+use App\Http\Controllers\CourseWorkComponentController;
 use App\Http\Controllers\ProgramModuleAssignmentController;
+use App\Http\Controllers\StreamController;
+use App\Http\Controllers\GroupController;
+use App\Http\Controllers\StreamComponentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -71,6 +75,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 	Route::post('assessment-plan/store',[AssessmentPlanController::class,'store']);
 	Route::post('assessment-plan/update',[AssessmentPlanController::class,'update']);
 
+	Route::post('course-work-component/store',[CourseWorkComponentController::class,'store']);
+
 
 	Route::get('campuses', [CampusController::class,'index']);
 	Route::post('campus/store', [CampusController::class,'store']);
@@ -118,4 +124,18 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 	Route::post('award/update', [AwardController::class,'update']);
 	Route::get('award/{id}/destroy', [AwardController::class,'destroy']);
 
+
+	Route::get('streams', [StreamController::class,'index']);
+	Route::get('stream-reset', [StreamController::class,'resetStreams']);
+	Route::post('stream/store', [StreamController::class,'store']);
+	Route::get('stream/{id}/destroy', [StreamController::class,'destroy']);
+
+
+	Route::get('stream-components', [StreamComponentController::class,'index']);
+	Route::post('stream-component/store', [StreamComponentController::class,'store']);
+	Route::get('stream-component/{id}/destroy', [StreamComponentController::class,'destroy']);
+
+
+    Route::post('group/store', [GroupController::class,'store']);
+	Route::get('group/{id}/destroy', [GroupController::class,'destroy']);
 });
