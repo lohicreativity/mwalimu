@@ -17,6 +17,7 @@ class CreateGroupsTable extends Migration
             $table->id();
             $table->string('name');
             $table->unsignedBigInteger('stream_id');
+            $table->mediumInteger('number_of_students');
             $table->timestamps();
 
             $table->foreign('stream_id')->references('id')->on('streams')->onUpdate('cascade')->onDelete('cascade');

@@ -19,6 +19,8 @@ class StreamComponentAction implements StreamComponentInterface{
         $component->campus_program_id = $request->get('campus_program_id');
         $component->year_of_study = $request->get('year_of_study');
         $component->save();
+
+        return $component;
 	     
 	}
 }

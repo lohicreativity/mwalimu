@@ -89,7 +89,7 @@
                             $stream_created = false;
                           @endphp
                       <tr>
-                        <td>{{ $cp->program->name }}_YR_{{ $i }}
+                        <td>{{ $cp->program->name }}_Year_{{ $i }}
                          @foreach($study_academic_year->streams as $stream)
                             @if($stream->campus_program_id == $cp->id && $stream->year_of_study == $i)
                             @php
@@ -98,18 +98,65 @@
                             @endif
                           @endforeach
                           @if($stream_created)
-                          <p><a href="{{ url('academic/stream-reset?year_of_study='.$i.'&campus_program_id='.$cp->id) }}">{{ __('Reset Streams') }}</a></p>
+                          <p><a href="{{ url('academic/stream-reset?year_of_study='.$i.'&campus_program_id='.$cp->id.'&study_academic_year_id='.$study_academic_year->id) }}">{{ __('Reset Streams') }}</a></p>
                           @endif
                         </td>
                         <td>
-                          
+
                           @foreach($study_academic_year->streams as $stream)
                             @if($stream->campus_program_id == $cp->id && $stream->year_of_study == $i)
-                            <p>Stream - {{ $stream->name }}</p>
+                            <p class="ss-no-margin">Stream_{{ $stream->name }}_({{ $stream->number_of_students }})</p>
+                            <a class="ss-font-xs ss-color-danger" href="{{ url('academic/stream/'.$stream->id.'/destroy') }}">Delete</a><br>
+                            @if(count($stream->groups) == 0)
+                            <a class="ss-font-xs" href="#" data-toggle="modal" data-target="#ss-add-group-{{ $i }}-{{ $stream->id }}">Create Groups</a>
+                            @endif
                             @php
                               $stream_created = true;
                             @endphp
                             @endif
+
+                            <div class="modal fade" id="ss-add-group-{{ $i }}-{{ $stream->id }}">
+                        <div class="modal-dialog modal-lg">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h4 class="modal-title">Create Groups</h4>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+                            <div class="modal-body">
+                                {!! Form::open(['url'=>'academic/group/store','class'=>'ss-form-processing']) !!}
+
+                                    <div class="form-group">
+                                      {!! Form::label('','Number of groups') !!}
+                                      <select name="number_of_groups" class="form-control" required>
+                                        @for($j = 1; $j <= 10; $j++)
+                                         <option value="{{ $j }}">{{ $j }}</option>
+                                        @endfor
+                                      </select>
+
+                                      {!! Form::input('hidden','campus_program_id',$cp->id) !!}
+                                      {!! Form::input('hidden','study_academic_year_id',$study_academic_year->id) !!}
+                                      {!! Form::input('hidden','year_of_study',$i) !!}
+
+                                      {!! Form::input('hidden','stream_id',$stream->id) !!}
+                                    </div>
+                                      <div class="ss-form-actions">
+                                       <button type="submit" class="btn btn-primary">{{ __('Create Groups') }}</button>
+                                      </div>
+                                {!! Form::close() !!}
+
+                            </div>
+                            <div class="modal-footer justify-content-between">
+                              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
+                          </div>
+                          <!-- /.modal-content -->
+                        </div>
+                        <!-- /.modal-dialog -->
+                      </div>
+                      <!-- /.modal -->
+
                           @endforeach
                             
                           @if(!$stream_created)
@@ -126,13 +173,6 @@
                               </button>
                             </div>
                             <div class="modal-body">
-                              @php
-                                    $name = [
-                                       'placeholder'=>'Campus name',
-                                       'class'=>'form-control',
-                                       'required'=>true
-                                    ];
-                                @endphp
                                 {!! Form::open(['url'=>'academic/stream-component/store','class'=>'ss-form-processing']) !!}
 
                                     <div class="form-group">
@@ -162,8 +202,25 @@
                         <!-- /.modal-dialog -->
                       </div>
                       <!-- /.modal -->
+                       
+                           
+                               
+
+                               
+ 
+                      
+
                         </td>
-                        <td></td>
+                        <td>
+                          @foreach($study_academic_year->streams as $stream)
+                            @if($stream->campus_program_id == $cp->id && $stream->year_of_study == $i)
+                             @foreach($stream->groups as $group)
+                              <p class="ss-no-margin">Group_{{ $group->name }}_Stream_{{ $stream->name }}_({{ $group->number_of_students }})</p>
+                              <a class="ss-font-xs ss-color-danger" href="{{ url('academic/group/'.$group->id.'/destroy')}}">Delete</a>
+                            @endforeach
+                            @endif
+                          @endforeach
+                        </td>
                       </tr>
                       @endfor
                     @endforeach

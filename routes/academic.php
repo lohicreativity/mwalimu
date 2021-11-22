@@ -126,6 +126,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 
 
 	Route::get('streams', [StreamController::class,'index']);
+	Route::get('stream-reset', [StreamController::class,'resetStreams']);
 	Route::post('stream/store', [StreamController::class,'store']);
 	Route::get('stream/{id}/destroy', [StreamController::class,'destroy']);
 

@@ -21,15 +21,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>{{ __('Assessment Plans') }} - {{ $module_assignment->module->name }} ({{ $module_assignment->module->course_work}} Wgt)</h1>
+            <h1>{{ __('Add Students Per Stream') }} - {{ $component->number_of_students }} {{ __('Students') }}</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item"><a href="{{ url('academic/staff-module-assignments') }}">{{ __('Module Assignment') }}</a></li>
-              <li class="breadcrumb-item"><a href="{{ url('academic/staff-module-assignment/'.$module_assignment->id.'/syllabus') }}">{{ __('Syllabus') }}</a></li>
-              <li class="breadcrumb-item"><a href="{{ url('academic/staff-module-assignment/'.$module_assignment->id.'/results') }}">{{ __('Results') }}</a></li>
-              <li class="breadcrumb-item active">{{ __('Assessment Plans') }}</li>
+              <li class="breadcrumb-item active">{{ __('Add Students Per Stream') }}</li>
             </ol>
           </div>
         </div>
@@ -44,16 +41,10 @@
 
             <!-- general form elements -->
             <div class="card card-default">
-                <div class="card-header p-2">
-                <ul class="nav nav-pills">
-                  <li class="nav-item"><a class="nav-link" href="{{ url('academic/module/'.$module_assignment->module_id.'/download-syllabus') }}">{{ __('Module Syllabus') }}</a></li>
-                  <li class="nav-item"><a class="nav-link" href="#settings" data-toggle="tab">{{ __('Attendance Sheet') }}</a></li>
-                  <li class="nav-item"><a class="nav-link active" href="#activity" data-toggle="tab">{{ __('Assessment Plans') }}</a></li>
-                  <li class="nav-item"><a class="nav-link" href="#settings" data-toggle="tab">{{ __('Results Management') }}</a></li>
-                </ul>
+                <div class="card-header">
               </div><!-- /.card-header -->
               <!-- form start -->
-              @if(count($stream_components) != 0)
+              @if($component)
               @php
                   $name = [
                      'placeholder'=>'Name',
@@ -71,9 +62,8 @@
 
 
               @endphp
-              {!! Form::open(['url'=>'academic/assessment-plan/store','class'=>'ss-form-processing']) !!}
+              {!! Form::open(['url'=>'academic/stream/store','class'=>'ss-form-processing']) !!}
                 <div class="card-body">
-                  @foreach($stream_components as $component)
                   @for($i = 1; $i <= $component->number_of_streams; $i++)
                   @php
                      switch ($i) {
@@ -124,25 +114,27 @@
                   @endphp
                   <div class="row">
                   <div class="form-group col-6">
-                    {!! Form::label('',$component->name) !!}
-                    {!! Form::text('name_component_'.$component->id,$str,$name) !!}
+                    {!! Form::label('','Stream '.$str) !!}
+                    {!! Form::text('name_component_'.$component->id,'Stream '.$str,$name) !!}
 
                     {!! Form::input('hidden','name_'.$i.'_component_'.$component->id,$str) !!}
-
+                    {!! Form::input('hidden','stream_component_id',$component->id) !!}
+                    {!! Form::input('hidden','campus_program_id',$component->campus_program_id) !!}
+                    {!! Form::input('hidden','study_academic_year_id',$component->study_academic_year_id) !!}
+                    {!! Form::input('hidden','year_of_study',$i) !!}
                     
                   </div>
                   <div class="form-group col-6">
-                    {!! Form::label('','Marks') !!}
+                    {!! Form::label('','Number of students') !!}
                     {!! Form::input('number','number_'.$i.'_component_'.$component->id,null,$students_number) !!}
                   </div>
                   </div>
                   @endfor
-                  @endforeach
                 </div>
                 <!-- /.card-body -->
                 
                 <div class="card-footer">
-                  <button type="submit" class="btn btn-primary">{{ __('Add Assessment Plan') }}</button>
+                  <button type="submit" class="btn btn-primary">{{ __('Add Streams') }}</button>
                 </div>
               {!! Form::close() !!}
 

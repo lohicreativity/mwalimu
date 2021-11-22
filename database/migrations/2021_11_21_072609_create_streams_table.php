@@ -19,6 +19,7 @@ class CreateStreamsTable extends Migration
             $table->smallInteger('year_of_study');
             $table->unsignedBigInteger('campus_program_id');
             $table->unsignedBigInteger('study_academic_year_id');
+            $table->unsignedBigInteger('stream_component_id')->default(0);
             $table->mediumInteger('number_of_students');
             $table->timestamps();
 
