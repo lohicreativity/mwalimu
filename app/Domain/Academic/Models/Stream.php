@@ -15,9 +15,9 @@ class Stream extends Model
     /**
      * Establish one to many relationship with programs
      */
-    public function program()
+    public function campusProgram()
     {
-    	return $this->belongsTo(Program::class,'program_id');
+    	return $this->belongsTo(CampusProgram::class,'campus_program_id');
     }
 
     /**

@@ -17,6 +17,7 @@ use App\Http\Controllers\CourseWorkComponentController;
 use App\Http\Controllers\ProgramModuleAssignmentController;
 use App\Http\Controllers\StreamController;
 use App\Http\Controllers\GroupController;
+use App\Http\Controllers\StreamComponentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -127,6 +128,11 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 	Route::get('streams', [StreamController::class,'index']);
 	Route::post('stream/store', [StreamController::class,'store']);
 	Route::get('stream/{id}/destroy', [StreamController::class,'destroy']);
+
+
+	Route::get('stream-components', [StreamComponentController::class,'index']);
+	Route::post('stream-component/store', [StreamComponentController::class,'store']);
+	Route::get('stream-component/{id}/destroy', [StreamComponentController::class,'destroy']);
 
 
     Route::post('group/store', [GroupController::class,'store']);

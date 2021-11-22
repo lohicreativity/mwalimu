@@ -19,6 +19,7 @@ class CreateStreamsTable extends Migration
             $table->smallInteger('year_of_study');
             $table->unsignedBigInteger('campus_program_id');
             $table->unsignedBigInteger('study_academic_year_id');
+            $table->mediumInteger('number_of_students');
             $table->timestamps();
 
             $table->foreign('campus_program_id')->references('id')->on('campus_program')->onUpdate('cascade')->onDelete('cascade');

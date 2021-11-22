@@ -62,7 +62,7 @@ class ModuleAssignmentController extends Controller
                'assessment_plans'=>AssessmentPlan::where('module_assignment_id',$id)->get(),
                'course_work_components'=>CourseWorkComponent::where('module_assignment_id',$id)->get(),
             ];
-            return view('dashboard.academic.module-assessment-plans',$data)->withTitle('Module Assessment Plans');
+            return view('dashboard.academic.assessment-plans',$data)->withTitle('Module Assessment Plans');
         }catch(\Exception $e){
            return redirect()->back()->with('error','Unable to get the resource specified in this request');
         }

@@ -194,6 +194,8 @@
                   <div class="form-group col-8">
                     {!! Form::label('','Campus name') !!}
                     {!! Form::text('name',$campus->name,$name) !!}
+
+                    {!! Form::input('hidden','campus_id',$campus->id) !!}
                   </div>
                   <div class="form-group col-4">
                     {!! Form::label('','Abbreviation') !!}

@@ -19,9 +19,34 @@ class StreamController extends Controller
     {
     	$data = [
            'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
-           'study_academic_year'=>$request->has('study_academic_year_id')? StudyAcademicYear::with(['academicYear','streams.groups','campus_programs'])->find($request->get('study_academic_year_id')) : null,
+           'study_academic_year'=>$request->has('study_academic_year_id')? StudyAcademicYear::with(['academicYear','streams'=>function($query) use ($request){
+                  $query->where('study_academic_year_id',$request->get('study_academic_year_id'));
+               },'streams.groups','campusPrograms'])->find($request->get('study_academic_year_id')) : null,
            'campus_programs'=>CampusProgram::with(['program','campus'])->get()
     	];
-    	return view('dashboard.academic.campus-program-streams',$data)->withTitle('Campus Program Streams');
+    	return view('dashboard.academic.streams-and-groups',$data)->withTitle('Streams and Groups');
+    }
+
+    /**
+     * Store streams into database
+     */
+    public function store(Request $request)
+    {
+    	$validation = Validator::make($request->all(),[
+            'number_of_streams'=>'required',
+        ]);
+
+        if($validation->fails()){
+           if($request->ajax()){
+              return response()->json(array('error_messages'=>$validation->messages()));
+           }else{
+              return redirect()->back()->withInput()->withErrors($validation->messages());
+           }
+        }
+
+
+        (new StreamAction)->store($request);
+
+        return Util::requestResponse($request,'Streams created successfully');
     }
 }

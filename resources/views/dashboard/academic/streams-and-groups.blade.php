@@ -45,7 +45,7 @@
               </div>
               <!-- /.card-header -->
               <div class="card-body">
-                 {!! Form::open(['url'=>'academic/module-assignments','class'=>'ss-form-processing','method'=>'GET']) !!}
+                 {!! Form::open(['url'=>'academic/streams','class'=>'ss-form-processing','method'=>'GET']) !!}
                    
                    <div class="form-group">
                     <select name="study_academic_year_id" class="form-control" required>
@@ -66,6 +66,7 @@
             <!-- /.card -->
 
 
+          @if(count($campus_programs) != 0 && $study_academic_year)
             <div class="card">
               <div class="card-header">
                 <h3 class="card-title">{{ __('Select Study Academic Year') }}</h3>
@@ -84,16 +85,42 @@
                     @foreach($campus_programs as $cp)
 
                       @for($i = 1; $i <= $cp->program->min_duration; $i++)
+                          @php
+                            $stream_created = false;
+                          @endphp
                       <tr>
-                        <td>{{ $cp->program->name }}_YR_{{ $i }}</td>
+                        <td>{{ $cp->program->name }}_YR_{{ $i }}
+                         @foreach($study_academic_year->streams as $stream)
+                            @if($stream->campus_program_id == $cp->id && $stream->year_of_study == $i)
+                            @php
+                              $stream_created = true;
+                            @endphp
+                            @endif
+                          @endforeach
+                          @if($stream_created)
+                          <p><a href="{{ url('academic/stream-reset?year_of_study='.$i.'&campus_program_id='.$cp->id) }}">{{ __('Reset Streams') }}</a></p>
+                          @endif
+                        </td>
                         <td>
+                          
+                          @foreach($study_academic_year->streams as $stream)
+                            @if($stream->campus_program_id == $cp->id && $stream->year_of_study == $i)
+                            <p>Stream - {{ $stream->name }}</p>
+                            @php
+                              $stream_created = true;
+                            @endphp
+                            @endif
+                          @endforeach
+                            
+                          @if(!$stream_created)
                           <a href="#" data-toggle="modal" data-target="#ss-add-stream-{{ $i }}-{{ $cp->id }}">Create Streams</a></a>
+                          @endif
 
                           <div class="modal fade" id="ss-add-stream-{{ $i }}-{{ $cp->id }}">
                         <div class="modal-dialog modal-lg">
                           <div class="modal-content">
                             <div class="modal-header">
-                              <h4 class="modal-title">Edit campus</h4>
+                              <h4 class="modal-title">Create Streams</h4>
                               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                               </button>
@@ -106,22 +133,22 @@
                                        'required'=>true
                                     ];
                                 @endphp
-                                {!! Form::open(['url'=>'academic/stream/store','class'=>'ss-form-processing']) !!}
+                                {!! Form::open(['url'=>'academic/stream-component/store','class'=>'ss-form-processing']) !!}
 
                                     <div class="form-group">
                                       {!! Form::label('','Number of streams') !!}
-                                      <select name="number" class="form-control" required>
+                                      <select name="number_of_streams" class="form-control" required>
                                         @for($j = 1; $j <= 10; $j++)
-                                         <option value="{{ $i }}">{{ $j }}</option>
+                                         <option value="{{ $j }}">{{ $j }}</option>
                                         @endfor
                                       </select>
 
                                       {!! Form::input('hidden','campus_program_id',$cp->id) !!}
-                                      {!! Form::input('hidden','study_academic_id',$study_academic_year->id) !!}
+                                      {!! Form::input('hidden','study_academic_year_id',$study_academic_year->id) !!}
                                       {!! Form::input('hidden','year_of_study',$i) !!}
                                     </div>
                                       <div class="ss-form-actions">
-                                       <button type="submit" class="btn btn-primary">{{ __('Add Streams') }}</button>
+                                       <button type="submit" class="btn btn-primary">{{ __('Create Streams') }}</button>
                                       </div>
                                 {!! Form::close() !!}
 
@@ -146,7 +173,7 @@
             </div>
             <!-- /.card -->
 
-
+            @else
 
            
             <div class="card">
@@ -158,7 +185,7 @@
               </div>
             </div>
             <!-- /.card -->
-          
+            @endif
 
           </div>
           <!-- /.col -->
