@@ -43,5 +43,6 @@ class DatabaseSeeder extends Seeder
         \App\Domain\Application\Models\Applicant::factory(100)->create();
         \App\Domain\Registration\Models\Student::factory(100)->create();
         \App\Domain\HumanResources\Models\Staff::factory(20)->create();
+        \App\DomaiN\Registration\Models\Registration::factory(100)->create();
     }
 }

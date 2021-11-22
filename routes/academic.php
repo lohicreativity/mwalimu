@@ -15,6 +15,8 @@ use App\Http\Controllers\ModuleAssignmentController;
 use App\Http\Controllers\AssessmentPlanController;
 use App\Http\Controllers\CourseWorkComponentController;
 use App\Http\Controllers\ProgramModuleAssignmentController;
+use App\Http\Controllers\StreamController;
+use App\Http\Controllers\GroupController;
 
 /*
 |--------------------------------------------------------------------------
@@ -121,4 +123,12 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 	Route::post('award/update', [AwardController::class,'update']);
 	Route::get('award/{id}/destroy', [AwardController::class,'destroy']);
 
+
+	Route::get('streams', [StreamController::class,'index']);
+	Route::post('stream/store', [StreamController::class,'store']);
+	Route::get('stream/{id}/destroy', [StreamController::class,'destroy']);
+
+
+    Route::post('group/store', [GroupController::class,'store']);
+	Route::get('group/{id}/destroy', [GroupController::class,'destroy']);
 });

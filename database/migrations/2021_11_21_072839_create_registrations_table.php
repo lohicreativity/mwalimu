@@ -22,6 +22,7 @@ class CreateRegistrationsTable extends Migration
             $table->unsignedBigInteger('stream_id')->nullable();
             $table->unsignedBigInteger('group_id')->nullable();
             $table->date('registration_date');
+            $table->string('status')->default('REGISTERED');
             $table->unsignedBigInteger('registered_by_staff_id');
             $table->timestamps();
 
