@@ -53,41 +53,92 @@
                 </ul>
               </div><!-- /.card-header -->
               <!-- form start -->
+              @if(count($course_work_components) == 0)
+               {!! Form::open(['url'=>'academic/course-work-component/store','class'=>'ss-form-processing']) !!}
+                <div class="card-body">
+                  <div class="row">
+                  <div class="form-group col-6">
+                      {!! Form::label('','Test(s)') !!}
+                      <select name="tests" class="form-control" required>
+                         @for($i = 0; $i <= 4; $i++)
+                         <option value="{{ $i }}">{{ $i }}</option>
+                         @endfor
+                      </select>
+                   </div>
+                 </div>
+                 <div class="row">
+                   <div class="form-group col-6">
+                      {!! Form::label('','Assignement(s)') !!}
+                      <select name="assignments" class="form-control" required>
+                         @for($i = 0; $i <= 4; $i++)
+                         <option value="{{ $i }}">{{ $i }}</option>
+                         @endfor
+                      </select>
+                   </div>
+                 </div>
+                 <div class="row">
+                   <div class="form-group col-6">
+                      {!! Form::label('','Quiz(es)') !!}
+                      <select name="quizes" class="form-control" required>
+                         @for($i = 0; $i <= 4; $i++)
+                         <option value="{{ $i }}">{{ $i }}</option>
+                         @endfor
+                      </select>
+                   </div>
+                  </div>
+                </div>
+                <!-- /.card-body -->
+                {!! Form::input('hidden','module_assignment_id',$module_assignment->id) !!}
+
+                <div class="card-footer">
+                  <button type="submit" class="btn btn-primary">{{ __('Add Course Work Components') }}</button>
+                </div>
+              {!! Form::close() !!}
+              @elseif(count($course_work_components) != 0 && count($assessment_plans) == 0)
               @php
                   $name = [
                      'placeholder'=>'Name',
                      'class'=>'form-control',
-                     'required'=>true
+                     'disabled'=>true,
                   ];
 
                   $marks = [
                      'placeholder'=>'Marks',
                      'class'=>'form-control',
+                     'min'=>0,
                      'steps'=>'any',
                      'required'=>true
                   ];
               @endphp
               {!! Form::open(['url'=>'academic/assessment-plan/store','class'=>'ss-form-processing']) !!}
                 <div class="card-body">
+                  @foreach($course_work_components as $component)
+                  @for($i = 1; $i <= $component->quantity; $i++)
                   <div class="row">
                   <div class="form-group col-6">
-                    {!! Form::label('','Name') !!}
-                    {!! Form::text('name',null,$name) !!}
+                    {!! Form::label('',$component->name) !!}
+                    {!! Form::text('name_component_'.$component->id,$component->name.$i,$name) !!}
 
-                    {!! Form::input('hidden','module_assignment_id',$module_assignment->id) !!}
+                    {!! Form::input('hidden','name_'.$i.'_component_'.$component->id,$component->name.$i) !!}
+
+                    
                   </div>
                   <div class="form-group col-6">
                     {!! Form::label('','Marks') !!}
-                    {!! Form::input('number','marks',null,$marks) !!}
+                    {!! Form::input('number','marks_'.$i.'_component_'.$component->id,null,$marks) !!}
                   </div>
                   </div>
+                  @endfor
+                  @endforeach
                 </div>
                 <!-- /.card-body -->
-
+                {!! Form::input('hidden','module_assignment_id',$module_assignment->id) !!}
                 <div class="card-footer">
                   <button type="submit" class="btn btn-primary">{{ __('Add Assessment Plan') }}</button>
                 </div>
               {!! Form::close() !!}
+
+              @endif
             </div>
             <!-- /.card -->
 
@@ -103,7 +154,6 @@
                   <tr>
                     <th>Name</th>
                     <th>Marks</th>
-                    <th>Actions</th>
                   </tr>
                   </thead>
                   <tbody>
@@ -111,98 +161,6 @@
                   <tr>
                     <td>{{ $plan->name }}</td>
                     <td>{{ $plan->marks }}</td>
-                    <td>
-                      <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-edit-plan-{{ $plan->id }}">
-                              <i class="fas fa-pencil-alt">
-                              </i>
-                              Edit
-                       </a>
-
-                       <div class="modal fade" id="ss-edit-plan-{{ $plan->id }}">
-                        <div class="modal-dialog modal-lg">
-                          <div class="modal-content">
-                            <div class="modal-header">
-                              <h4 class="modal-title">Edit plan</h4>
-                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                              </button>
-                            </div>
-                            <div class="modal-body">
-                              @php
-                                    $name = [
-                                       'placeholder'=>'plan',
-                                       'class'=>'form-control',
-                                       'required'=>true
-                                    ];
-                                @endphp
-                                {!! Form::open(['url'=>'academic/assessment-plan/update','class'=>'ss-form-processing']) !!}
-                                    <div class="row">
-                                      <div class="form-group col-6">
-                                        {!! Form::label('','Name') !!}
-                                        {!! Form::text('name',null,$name) !!}
-
-                                        {!! Form::input('hidden','module_assignment_id',$module_assignment->id) !!}
-
-                                        {!! Form::input('hidden','assessment_plan_id',$plan->id) !!}
-                                      </div>
-                                      <div class="form-group col-6">
-                                        {!! Form::label('','Marks') !!}
-                                        {!! Form::input('number','marks',null,$marks) !!}
-                                      </div>
-                                      </div>
-                                      <div class="ss-form-actions">
-                                       <button type="submit" class="btn btn-primary">{{ __('Save Changes') }}</button>
-                                      </div>
-                                {!! Form::close() !!}
-
-                            </div>
-                            <div class="modal-footer justify-content-between">
-                              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                            </div>
-                          </div>
-                          <!-- /.modal-content -->
-                        </div>
-                        <!-- /.modal-dialog -->
-                      </div>
-                      <!-- /.modal -->
-                      <a class="btn btn-danger btn-sm" href="#" data-toggle="modal" data-target="#ss-delete-plan-{{ $plan->id }}">
-                              <i class="fas fa-trash">
-                              </i>
-                              Delete
-                       </a>
-
-                       <div class="modal fade" id="ss-delete-plan-{{ $plan->id }}">
-                        <div class="modal-dialog modal-lg">
-                          <div class="modal-content">
-                            <div class="modal-header">
-                              <h4 class="modal-title"><i class="fa fa-exclamation-sign"></i> Confirmation Alert</h4>
-                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                              </button>
-                            </div>
-                            <div class="modal-body">
-                              <div class="row">
-                                <div class="col-12">
-                                    <div id="ss-confirmation-container">
-                                       <p id="ss-confirmation-text">Are you sure you want to delete this assessment plan from the list?</p>
-                                       <div class="ss-form-controls">
-                                         <button type="button" class="btn btn-default" data-dismiss="modal">Abort</button>
-                                         <a href="{{ url('academic/plan/'.$plan->id.'/destroy') }}" class="btn btn-danger">Delete</a>
-                                         </div><!-- end of ss-form-controls -->
-                                      </div><!-- end of ss-confirmation-container -->
-                                  </div><!-- end of col-md-12 -->
-                               </div><!-- end of row -->
-                            </div>
-                            <div class="modal-footer justify-content-between">
-                              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                            </div>
-                          </div>
-                          <!-- /.modal-content -->
-                        </div>
-                        <!-- /.modal-dialog -->
-                      </div>
-                      <!-- /.modal -->
-                    </td>
                   </tr>
                   @endforeach
                   

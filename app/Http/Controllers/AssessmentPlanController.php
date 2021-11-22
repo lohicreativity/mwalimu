@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Domain\Academic\Models\AssessmentPlan;
 use App\Domain\Academic\Models\ModuleAssignment;
+use App\Domain\Academic\Models\CourseWorkComponent;
 use App\Domain\Academic\Actions\AssessmentPlanAction;
 use App\Utils\Util;
 use Validator;
@@ -16,37 +17,44 @@ class AssessmentPlanController extends Controller
      */
     public function store(Request $request)
     {
-    	$validation = Validator::make($request->all(),[
-            'name'=>'required',
-            'marks'=>'required|numeric'
-        ]);
+    	$components = CourseWorkComponent::where('module_assignment_id',$request->get('module_assignment_id'))->get();
 
-        if($validation->fails()){
-           if($request->ajax()){
-              return response()->json(array('error_messages'=>$validation->messages()));
-           }else{
-              return redirect()->back()->withInput()->withErrors($validation->messages());
-           }
-        }
- 
         // Check is assessment plan does not exceed module weight
         $module = ModuleAssignment::find($request->get('module_assignment_id'))->module;
-        $plans = AssessmentPlan::where('module_assignment_id',$request->get('module_assignment_id'))->get();
         $sum = 0;
-        foreach($plans as $plan){
-           $sum += $plan->marks;
+        foreach($components as $comp){
+            for($i = 1; $i <= $comp->quantity; $i++){
+               $sum += $request->get('marks_'.$i.'_component_'.$comp->id);
+            }
         }
-        $sum += $request->get('marks');
+
         if($sum > $module->course_work){
-        	if($request->ajax()){
+            if($request->ajax()){
                 return response()->json(array('error_messages'=>'Module cannot exceed module weight'));
              }else{
-                return redirect()->back()->with('error','Module cannot exceed module weight');
+                return redirect()->back()->withInput()->with('error','Module cannot exceed module weight');
              }
         }
 
+        if($sum < $module->course_work){
+            if($request->ajax()){
+                return response()->json(array('error_messages'=>'Module cannot be below module weight'));
+             }else{
+                return redirect()->back()->withInput()->with('error','Module cannot be below module weight');
+             }
+        }
 
-        (new AssessmentPlanAction)->store($request);
+        foreach($components as $comp){
+            for($i = 1; $i <= $comp->quantity; $i++){
+                if($request->has('name_'.$i.'_component_'.$comp->id)){
+                    $plan = new AssessmentPlan;
+                    $plan->module_assignment_id = $request->get('module_assignment_id');
+                    $plan->name = $request->get('name_'.$i.'_component_'.$comp->id);
+                    $plan->marks = $request->get('marks_'.$i.'_component_'.$comp->id);
+                    $plan->save();
+                }
+            }
+        }
 
         return Util::requestResponse($request,'Assessment plan created successfully');
     }

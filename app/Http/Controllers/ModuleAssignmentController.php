@@ -8,6 +8,7 @@ use App\Domain\Academic\Models\StudyAcademicYear;
 use App\Domain\Academic\Models\Module;
 use App\Domain\Settings\Models\Campus;
 use App\Domain\Academic\Models\AssessmentPlan;
+use App\Domain\Academic\Models\CourseWorkComponent;
 use App\Domain\HumanResources\Models\Staff;
 use App\Domain\Academic\Actions\ModuleAssignmentAction;
 use App\Utils\Util;
@@ -58,7 +59,8 @@ class ModuleAssignmentController extends Controller
         try{
             $data = [
                'module_assignment'=>ModuleAssignment::with('module')->findOrFail($id),
-               'assessment_plans'=>AssessmentPlan::where('module_assignment_id',$id)->get()
+               'assessment_plans'=>AssessmentPlan::where('module_assignment_id',$id)->get(),
+               'course_work_components'=>CourseWorkComponent::where('module_assignment_id',$id)->get(),
             ];
             return view('dashboard.academic.module-assessment-plans',$data)->withTitle('Module Assessment Plans');
         }catch(\Exception $e){

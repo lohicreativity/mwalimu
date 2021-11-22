@@ -168,6 +168,12 @@
                   <p>{{ __('Program Module Assignment') }}</p>
                 </a>
               </li>
+              <li class="nav-item">
+                <a href="{{ url('academic/program-module-assignments') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>{{ __('Streams and Groups') }}</p>
+                </a>
+              </li>
             </ul>
           </li>
           <li class="nav-item">

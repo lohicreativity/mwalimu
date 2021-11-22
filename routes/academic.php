@@ -13,6 +13,7 @@ use App\Http\Controllers\ExaminationController;
 use App\Http\Controllers\CampusProgramController;
 use App\Http\Controllers\ModuleAssignmentController;
 use App\Http\Controllers\AssessmentPlanController;
+use App\Http\Controllers\CourseWorkComponentController;
 use App\Http\Controllers\ProgramModuleAssignmentController;
 
 /*
@@ -70,6 +71,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 
 	Route::post('assessment-plan/store',[AssessmentPlanController::class,'store']);
 	Route::post('assessment-plan/update',[AssessmentPlanController::class,'update']);
+
+	Route::post('course-work-component/store',[CourseWorkComponentController::class,'store']);
 
 
 	Route::get('campuses', [CampusController::class,'index']);
