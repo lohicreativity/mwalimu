@@ -13,7 +13,7 @@ class StreamAction implements StreamInterface{
 	public function store(Request $request){
               
              $component = StreamComponent::find($request->get('stream_component_id'));
-             for($i = 1; $i <= $component->number_of_streams; $i){
+             for($i = 1; $i <= $component->number_of_streams; $i++){
                   
                      $stream = new Stream;
                      $stream->name = $request->get('name_'.$i.'_component_'.$component->id);
