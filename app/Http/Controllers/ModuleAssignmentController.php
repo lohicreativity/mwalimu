@@ -90,9 +90,9 @@ class ModuleAssignmentController extends Controller
         if(ModuleAssignment::where('study_academic_year_id',$request->get('study_academic_year_id'))->where('staff_id',$request->get('staff_id'))->where('module_id',$request->get('module_id'))->count() != 0){
 
              if($request->ajax()){
-                return response()->json(array('error_messages'=>'Module already assined for this academic year'));
+                return response()->json(array('error_messages'=>'Module already assigned for this staff in this study academic year'));
              }else{
-                return redirect()->back()->with('error','Module already assined for this academic year');
+                return redirect()->back()->with('error','Module already assigned for this staff in this study academic year');
              }
         }
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Domain\Academic\Models\Stream;
 use App\Domain\Academic\Models\StreamComponent;
+use App\Domain\Academic\Models\Department;
 use App\Domain\Registration\Models\Registration;
 use App\Domain\Registration\Models\Student;
 use App\Domain\Academic\Models\StudyAcademicYear;
@@ -82,11 +83,18 @@ class StreamController extends Controller
      */
     public function showAttendance(Request $request, $id)
     {
-    	$data = [
-           'students'=>Registration::with('student')->where('stream_id',$id)->get()
-    	];
-    	$pdf = PDF::loadView('dashboard.academic.reports.stundents-in-stream', $data)->setPaper('a4','portrait');
+    	try{
+    		$stream = Stream::with(['studyAcademicYear.academicYear','campusProgram.program','campusProgram.campus'])->findOrFail($id);
+	    	$data = [
+	           'registrations'=>Registration::with('student')->where('stream_id',$id)->get(),
+	           'stream'=>$stream,
+	           'department'=>Department::findOrFail($stream->campusProgram->program->department_id)
+	    	];
+    	    $pdf = PDF::loadView('dashboard.academic.reports.students-in-stream', $data)->setPaper('a4','landscape');
             return $pdf->stream();
+        }catch(\Exception $e){
+        	return redirect()->back()->with('error','Unable to get the resource specified in this request');
+        }
     }
 
     /**

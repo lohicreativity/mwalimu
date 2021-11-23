@@ -50,13 +50,27 @@ class AssessmentPlanController extends Controller
                     $plan = new AssessmentPlan;
                     $plan->module_assignment_id = $request->get('module_assignment_id');
                     $plan->name = $request->get('name_'.$i.'_component_'.$comp->id);
-                    $plan->marks = $request->get('marks_'.$i.'_component_'.$comp->id);
+                    $plan->weight = $request->get('marks_'.$i.'_component_'.$comp->id);
                     $plan->save();
                 }
             }
         }
 
         return Util::requestResponse($request,'Assessment plan created successfully');
+    }
+
+    /**
+     * Reset assessment plan
+     */
+    public function reset(Request $request, $mod_assign_id)
+    {
+        try{
+            AssessmentPlan::where('module_assignment_id',$mod_assign_id)->delete();
+            CourseWorkComponent::where('module_assignment_id',$mod_assign_id)->delete();
+            return redirect()->back()->with('message','Assessment plan reset successfully');
+        }catch(\Exception $e){
+            return redirect()->back()->with('error','Unable to get the resource specified in this request');
+        }
     }
 
     /**

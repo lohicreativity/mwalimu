@@ -233,7 +233,7 @@
                               <div class="row">
                                 <div class="col-12">
                                     <div id="ss-confirmation-container">
-                                       <p id="ss-confirmation-text">Are you sure you want to delete this assignment from the list?</p>
+                                       <p id="ss-confirmation-text">Are you sure you want to detach this staff from this module?</p>
                                        <div class="ss-form-controls">
                                          <button type="button" class="btn btn-default" data-dismiss="modal">Abort</button>
                                          <a href="{{ url('academic/program-module-assignment/'.$assignment->id.'/destroy') }}" class="btn btn-danger">Delete</a>

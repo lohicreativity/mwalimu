@@ -19,7 +19,7 @@ class CampusController extends Controller
     public function index()
     {
     	$data = [
-           'campuses'=>campus::paginate(20),
+           'campuses'=>Campus::with(['campusPrograms.program'])->paginate(20),
            'regions'=>Region::all(),
            'districts'=>District::all(),
            'wards'=>Ward::all()
@@ -36,7 +36,7 @@ class CampusController extends Controller
             'name'=>'required|unique:campuses',
             'abbreviation'=>'required',
             'email'=>'required|email',
-            'phone'=>'required|max:18'
+            'phone'=>'required|regex:/^([0-9\s\-\+\(\)]*)$/|max:18'
         ]);
 
         if($validation->fails()){
@@ -62,7 +62,7 @@ class CampusController extends Controller
             'name'=>'required',
             'abbreviation'=>'required',
             'email'=>'required|email',
-            'phone'=>'required|max:18'
+            'phone'=>'required|regex:/^([0-9\s\-\+\(\)]*)$/|max:18'
         ]);
 
         if($validation->fails()){

@@ -5,9 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Domain\Academic\Models\Group;
 use App\Domain\Academic\Models\Stream;
+use App\Domain\Academic\Models\Department;
 use App\Domain\Registration\Models\Registration;
 use App\Utils\Util;
-use Validator;
+use Validator, PDF;
 
 class GroupController extends Controller
 {
@@ -20,69 +21,43 @@ class GroupController extends Controller
             $group_stud_quotient = intdiv($stream->number_of_students,$request->get('number_of_groups'));
             $group_stud_remainder = $stream->number_of_students%$request->get('number_of_groups');
             for($i = 1; $i <= $request->get('number_of_groups'); $i++){
-            	switch ($i) {
-                          case 1:
-                                  $str = 'A';
-                                  break;
-
-                          case 2:
-                                  $str = 'B';
-                                  break;
-
-                          case 3:
-                                  $str = 'C';
-                                  break;
-
-                          case 4:
-                                  $str = 'D';
-                                  break;
-
-                          case 5:
-                                  $str = 'E';
-                                  break;
-
-                          case 6:
-                                  $str = 'F';
-                                  break;
-
-                          case 7:
-                                  $str = 'G';
-                                  break;
-
-                          case 8:
-                                  $str = 'H';
-                                  break;
-
-                          case 9:
-                                  $str = 'I';
-                                  break;
-
-                          case 10:
-                                  $str = 'J';
-                                  break;
-                          
-                          default:
-                                  $str = 'M';
-                                  break;
-                  }
             	if($i == 1){
                    $rm_group = new Group;
-                   $rm_group->name = $str;
+                   $rm_group->name = $i;
             	   $rm_group->number_of_students = $group_stud_remainder+$group_stud_quotient;
             	   $rm_group->stream_id = $stream->id;
             	   $rm_group->save();
             	}else{
                    $rm_group = new Group;
-                   $rm_group->name = $str;
+                   $rm_group->name = $i;
             	   $rm_group->number_of_students = $group_stud_quotient;
             	   $rm_group->stream_id = $stream->id;
             	   $rm_group->save();
             	}
 
-            	Registration::where('year_of_study',$stream->year_of_study)->where('study_academic_year_id',$stream->study_academic_year_id)->take($rm_group->number_of_students)->where('stream_id',$stream->id)->update(['group_id'=>$rm_group->id]);
+            	Registration::where('year_of_study',$stream->year_of_study)->where('study_academic_year_id',$stream->study_academic_year_id)->where('stream_id',$stream->id)->where('group_id',0)->take($rm_group->number_of_students)->update(['group_id'=>$rm_group->id]);
             }
    
             return redirect()->back()->with('message','Groups created successfully');
+    }
+
+    /**
+     * Show attendance
+     */
+    public function showAttendance(Request $request, $id)
+    {
+    	try{
+    		$group = Group::with(['stream.studyAcademicYear.academicYear','stream.campusProgram.program','stream.campusProgram.campus'])->findOrFail($id);
+	    	$data = [
+	           'registrations'=>Registration::with('student')->where('group_id',$id)->get(),
+	           'group'=>$group,
+	           'department'=>Department::findOrFail($group->stream->campusProgram->program->department_id)
+	    	];
+    	    $pdf = PDF::loadView('dashboard.academic.reports.students-in-group', $data)->setPaper('a4','landscape');
+            return $pdf->stream();
+        }catch(\Exception $e){
+        	return redirect()->back()->with('error','Unable to get the resource specified in this request');
+        }
     }
 
 	/**
@@ -95,6 +70,8 @@ class GroupController extends Controller
             $group->delete();
 
             $stream = Stream::find($group->stream_id);
+
+            Registration::where('year_of_study',$stream->year_of_study)->where('study_academic_year_id',$stream->study_academic_year_id)->where('stream_id',$stream->id)->update(['group_id'=>0]);
 
             $remaining_groups = Group::where('stream_id',$stream->id)->get();
             $group_stud_quotient = count($remaining_groups) != 0 ? intdiv($stream->number_of_students,count($remaining_groups)) : 0;
@@ -112,9 +89,13 @@ class GroupController extends Controller
             }
            
             $remaining_groups = Group::where('stream_id',$stream->id)->get();
+            if(count($remaining_groups) == 0){
+            	Registration::where('year_of_study',$stream->year_of_study)->where('study_academic_year_id',$stream->study_academic_year_id)->where('stream_id',$stream->id)->update(['group_id'=>0]);
+            }else{
             
-            foreach ($remaining_groups as $key => $group) {
-            	Registration::where('year_of_study',$stream->year_of_study)->where('study_academic_year_id',$stream->study_academic_year_id)->where('group_id',0)->take($group->number_of_students)->where('stream_id',$stream->id)->update(['group_id'=>$group->id]);
+	            foreach ($remaining_groups as $key => $group) {
+	            	Registration::where('year_of_study',$stream->year_of_study)->where('study_academic_year_id',$stream->study_academic_year_id)->where('stream_id',$stream->id)->take($group->number_of_students)->where('group_id',0)->update(['group_id'=>$group->id]);
+	            }
             }
                      
             return redirect()->back()->with('message','Groups deleted successfully');

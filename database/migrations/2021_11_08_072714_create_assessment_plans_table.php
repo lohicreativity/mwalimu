@@ -16,7 +16,6 @@ class CreateAssessmentPlansTable extends Migration
         Schema::create('assessment_plans', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->decimal('marks');
             $table->decimal('weight');
             $table->unsignedBigInteger('module_assignment_id');
             $table->timestamps();

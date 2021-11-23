@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Domain\Academic\Models\ExaminationResult;
 use App\Domain\Academic\Models\CourseWorkResult;
+use App\Domain\Academic\Models\CampusProgram;
 
 class Student extends Model
 {
@@ -30,4 +31,13 @@ class Student extends Model
     {
     	return $this->hasMany(CourseWorkResult::class,'student_id');
     }
+
+    /**
+     * Establish one to many relationship with campus programs
+     */
+    public function campusProgram()
+    {
+        return $this->belongsTo(CampusProgram::class,'campus_program_id');
+    }
+
 }

@@ -196,10 +196,11 @@
           <div class="col-md-12">
               <div class="ss-letter-head  ss-center">
                <h3>MWALIMU NYERERE MEMORIAL ACADEMY</h3>
-               <h3>{{ $stream->campusProgram->campus->name }}</h3>
+               <h3>{{ $group->stream->campusProgram->campus->name }}</h3>
                <h3>{{ $department->name }}</h3>
-               <h3>{{ $stream->campusProgram->program->name }} ({{ $stream->studyAcademicYear->academicYear->year }})</h3>
-               <h3>STREAM {{ $stream->name }}</h3>
+               <h3>{{ $group->stream->campusProgram->program->name }} ({{ $group->stream->studyAcademicYear->academicYear->year }})</h3>
+               <h3>STREAM {{ $group->stream->name }}</h3>
+               <h3>TUTORIAL GROUP {{ $group->name }}</h3>
                <h3>ATTENDANCE SHEET</h3>
               </div>
                <div class="ss-letter-head ss-left">

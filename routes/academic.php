@@ -74,6 +74,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 
 	Route::post('assessment-plan/store',[AssessmentPlanController::class,'store']);
 	Route::post('assessment-plan/update',[AssessmentPlanController::class,'update']);
+	Route::get('assessment-plan/{mod_assign_id}/reset',[AssessmentPlanController::class,'reset']);
 
 	Route::post('course-work-component/store',[CourseWorkComponentController::class,'store']);
 
@@ -88,6 +89,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 	Route::post('campus/campus-program/store', [CampusProgramController::class,'store']);
 	Route::post('campus/campus-program/update', [CampusProgramController::class,'update']);
 	Route::get('campus/campus-program/{id}/destroy', [CampusProgramController::class,'destroy']);
+	Route::get('campus/campus-program/{id}/attendance', [CampusProgramController::class,'showAttendance']);
 
 
 	Route::get('academic-years', [AcademicYearController::class,'index']);

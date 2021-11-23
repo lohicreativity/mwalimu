@@ -21,6 +21,14 @@ class Stream extends Model
     }
 
     /**
+     * Establish one to many relationship with study academic years
+     */
+    public function studyAcademicYear()
+    {
+        return $this->belongsTo(StudyAcademicYear::class,'study_academic_year_id');
+    }
+
+    /**
      * Establish one to many relationship with groups
      */
     public function groups()

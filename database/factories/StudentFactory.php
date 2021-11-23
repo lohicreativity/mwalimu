@@ -30,7 +30,6 @@ class StudentFactory extends Factory
             'registration_number'=>$this->faker->unique()->numberBetween(1000000,9999999),
             'entry_mode'=>'DIRECT',
             'registration_year'=>$this->faker->numberBetween(2012,2021),
-            'study_academic_year_id'=>$this->faker->numberBetween(1,2),
             'email'=>$this->faker->email(),
             'phone'=>$this->faker->phoneNumber(),
             'nationality'=>$this->faker->country(),

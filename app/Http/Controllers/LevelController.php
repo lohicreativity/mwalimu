@@ -27,7 +27,7 @@ class LevelController extends Controller
     public function store(Request $request)
     {
     	$validation = Validator::make($request->all(),[
-            'name'=>'required:unique:levels',
+            'name'=>'required|unique:levels',
         ]);
 
         if($validation->fails()){

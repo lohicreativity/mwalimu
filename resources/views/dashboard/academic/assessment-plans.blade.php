@@ -91,7 +91,7 @@
                 {!! Form::input('hidden','module_assignment_id',$module_assignment->id) !!}
 
                 <div class="card-footer">
-                  <button type="submit" class="btn btn-primary">{{ __('Add Course Work Components') }}</button>
+                  <button type="submit" class="btn btn-primary">{{ __('Add Assessment Components') }}</button>
                 </div>
               {!! Form::close() !!}
               @elseif(count($course_work_components) != 0 && count($assessment_plans) == 0)
@@ -103,7 +103,7 @@
                   ];
 
                   $marks = [
-                     'placeholder'=>'Marks',
+                     'placeholder'=>'Weights',
                      'class'=>'form-control',
                      'min'=>0,
                      'steps'=>'any',
@@ -116,7 +116,7 @@
                   @for($i = 1; $i <= $component->quantity; $i++)
                   <div class="row">
                   <div class="form-group col-6">
-                    {!! Form::label('',$component->name) !!}
+                    {!! Form::label('',$component->name.$i) !!}
                     {!! Form::text('name_component_'.$component->id,$component->name.$i,$name) !!}
 
                     {!! Form::input('hidden','name_'.$i.'_component_'.$component->id,$component->name.$i) !!}
@@ -124,7 +124,7 @@
                     
                   </div>
                   <div class="form-group col-6">
-                    {!! Form::label('','Marks') !!}
+                    {!! Form::label('','Weights') !!}
                     {!! Form::input('number','marks_'.$i.'_component_'.$component->id,null,$marks) !!}
                   </div>
                   </div>
@@ -149,18 +149,51 @@
               </div>
               <!-- /.card-header -->
               <div class="card-body">
+                <a class="ss-color-danger" href="#" data-toggle="modal" data-target="#ss-delete-plan-{{ $module_assignment->id }}">Reset Assessment Plan</a>
+
+                <div class="modal fade" id="ss-delete-plan-{{ $module_assignment->id }}">
+                        <div class="modal-dialog modal-lg">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h4 class="modal-title"><i class="fa fa-exclamation-sign"></i> Confirmation Alert</h4>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+                            <div class="modal-body">
+                              <div class="row">
+                                <div class="col-12">
+                                    <div id="ss-confirmation-container">
+                                       <p id="ss-confirmation-text">Are you sure you want to reset this assessment plan?</p>
+                                       <div class="ss-form-controls">
+                                         <button type="button" class="btn btn-default" data-dismiss="modal">Abort</button>
+                                         <a href="{{ url('academic/assessment-plan/'.$module_assignment->id.'/reset') }}" class="btn btn-danger">Delete</a>
+                                         </div><!-- end of ss-form-controls -->
+                                      </div><!-- end of ss-confirmation-container -->
+                                  </div><!-- end of col-md-12 -->
+                               </div><!-- end of row -->
+                            </div>
+                            <div class="modal-footer justify-content-between">
+                              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
+                          </div>
+                          <!-- /.modal-content -->
+                        </div>
+                        <!-- /.modal-dialog -->
+                      </div>
+                      <!-- /.modal -->
                 <table id="example2" class="table table-bordered table-hover">
                   <thead>
                   <tr>
                     <th>Name</th>
-                    <th>Marks</th>
+                    <th>Weights</th>
                   </tr>
                   </thead>
                   <tbody>
                   @foreach($assessment_plans as $plan)
                   <tr>
                     <td>{{ $plan->name }}</td>
-                    <td>{{ $plan->marks }}</td>
+                    <td>{{ $plan->weight }}</td>
                   </tr>
                   @endforeach
                   

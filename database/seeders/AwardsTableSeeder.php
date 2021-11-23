@@ -17,8 +17,8 @@ class AwardsTableSeeder extends Seeder
         $data = [
            [
               'id'=>1,
-              'name'=>'BASIC CERTIFICATE',
-              'code'=>'CT',
+              'name'=>'BASIC TECHNICIAN CERTIFICATE',
+              'code'=>'BTC',
               'level_id'=>1,
               'created_at'=>now(),
               'updated_at'=>now()
@@ -27,7 +27,7 @@ class AwardsTableSeeder extends Seeder
            [
               'id'=>2,
               'name'=>'ORDINARY DIPLOMA',
-              'code'=>'DP',
+              'code'=>'OD',
               'level_id'=>1,
               'created_at'=>now(),
               'updated_at'=>now()

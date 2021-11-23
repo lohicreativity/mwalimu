@@ -11,7 +11,7 @@ class AssessmentPlanAction implements AssessmentPlanInterface{
 	public function store(Request $request){
 		$plan = new AssessmentPlan;
                 $plan->name = $request->get('name');
-                $plan->marks = $request->get('marks');
+                $plan->weight = $request->get('marks');
                 $plan->module_assignment_id = $request->get('module_assignment_id');
                 $plan->save();
 	}
@@ -19,7 +19,7 @@ class AssessmentPlanAction implements AssessmentPlanInterface{
 	public function update(Request $request){
 		$plan = AssessmentPlan::find($request->get('assessment_plan_id'));
                 $plan->name = $request->get('name');
-                $plan->marks = $request->get('marks');
+                $plan->weight = $request->get('marks');
                 $plan->module_assignment_id = $request->get('module_assignment_id');
                 $plan->save();
 	}

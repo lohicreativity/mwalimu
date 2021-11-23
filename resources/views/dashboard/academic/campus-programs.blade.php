@@ -21,12 +21,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>{{ __('Campus Programs') }}</h1>
+            <h1>{{ __('Campus Programmes') }} - {{ $campus->name }}</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">{{ __('Campus Programs') }}</li>
+              <li class="breadcrumb-item active">{{ __('Campus Programmes') }}</li>
             </ol>
           </div>
         </div>
@@ -42,7 +42,7 @@
             <!-- general form elements -->
             <div class="card card-default">
               <div class="card-header">
-                <h3 class="card-title">{{ __('Add Campus Program') }}</h3>
+                <h3 class="card-title">{{ __('Add Programme') }}</h3>
               </div>
               <!-- /.card-header -->
               <!-- form start -->
@@ -57,11 +57,11 @@
                 <div class="card-body">
                   <div class="row">
                   <div class="form-group col-8">
-                    {!! Form::label('','Program') !!}
+                    {!! Form::label('','Programmes') !!}
                     <select name="program_id" class="form-control" required>
-                      <option value="">Select Program</option>
+                      <option value="">Select Programme</option>
                       @foreach($programs as $prog)
-                      <option value="{{ $prog->id }}">{{ $prog->name }}</option>
+                      <option value="{{ $prog->id }}">{{ $prog->name }} - {{ $prog->code }}</option>
                       @endforeach
                     </select>
                   </div>
@@ -76,7 +76,7 @@
                 <!-- /.card-body -->
 
                 <div class="card-footer">
-                  <button type="submit" class="btn btn-primary">{{ __('Add Campus Program') }}</button>
+                  <button type="submit" class="btn btn-primary">{{ __('Add Campus Programme') }}</button>
                 </div>
               {!! Form::close() !!}
             </div>
@@ -85,14 +85,14 @@
             @if(count($campus_programs) != 0)
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">{{ __('Campus Programs') }}</h3>
+                <h3 class="card-title">{{ __('List of Programmes in ') }} {{ $campus->name }}</h3>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
                 <table id="example2" class="table table-bordered table-hover">
                   <thead>
                   <tr>
-                    <th>Program</th>
+                    <th>Programme</th>
                     <th>Campus</th>
                     <th>Regulator Code</th>
                     <th>Actions</th>
@@ -115,7 +115,7 @@
                         <div class="modal-dialog modal-lg">
                           <div class="modal-content">
                             <div class="modal-header">
-                              <h4 class="modal-title">Edit Campus Program</h4>
+                              <h4 class="modal-title">Edit Campus Programme</h4>
                               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                               </button>
@@ -126,7 +126,7 @@
 
                                     <div class="row">
                                     <div class="form-group col-8">
-                                      {!! Form::label('','Program') !!}
+                                      {!! Form::label('','Programme') !!}
                                       <select name="program_id" class="form-control" required>
                                         <option value="" disabled>Select Program</option>
                                         @foreach($programs as $prog)
@@ -176,7 +176,7 @@
                               <div class="row">
                                 <div class="col-12">
                                     <div id="ss-confirmation-container">
-                                       <p id="ss-confirmation-text">Are you sure you want to delete this program from the list?</p>
+                                       <p id="ss-confirmation-text">Are you sure you want to delete this programme from the list?</p>
                                        <div class="ss-form-controls">
                                          <button type="button" class="btn btn-default" data-dismiss="modal">Abort</button>
                                          <a href="{{ url('academic/campus/campus-program/'.$program->id.'/destroy') }}" class="btn btn-danger">Delete</a>

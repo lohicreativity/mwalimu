@@ -89,7 +89,7 @@
                              $stream_created = false;
                            @endphp
                        <tr>
-                        <td>{{ $cp->program->name }}_Year_{{ $i }}
+                        <td><a href="{{ url('academic/campus/campus-program/'.$cp->id.'/attendance?year_of_study='.$i.'&study_academic_year_id='.$study_academic_year->id) }}" target="_blank">{{ $cp->program->name }}_Year_{{ $i }}</a>
                           @foreach($study_academic_year->streams as $stream)
                              @if($stream->campus_program_id == $cp->id && $stream->year_of_study == $i)
                              @php
@@ -105,7 +105,7 @@
 
                            @foreach($study_academic_year->streams as $stream)
                             @if($stream->campus_program_id == $cp->id && $stream->year_of_study == $i)
-                            <p class="ss-no-margin"><a href="{{ url('academic/stream/'.$stream->id.'/attendance') }}">Stream_{{ $stream->name }}_({{ $stream->number_of_students }})</a></p>
+                            <p class="ss-no-margin"><a href="{{ url('academic/stream/'.$stream->id.'/attendance') }}" target="_blank">Stream_{{ $stream->name }}_({{ $stream->number_of_students }})</a></p>
                             <a class="ss-font-xs ss-color-danger" href="{{ url('academic/stream/'.$stream->id.'/destroy') }}">Delete</a><br>
                             @if(count($stream->groups) == 0)
                             <a class="ss-font-xs" href="#" data-toggle="modal" data-target="#ss-add-group-{{ $i }}-{{ $stream->id }}">Create Groups</a>
@@ -230,7 +230,7 @@
                           @foreach($study_academic_year->streams as $stream)
                             @if($stream->campus_program_id == $cp->id && $stream->year_of_study == $i)
                              @foreach($stream->groups as $group)
-                              <p class="ss-no-margin"><a href="{{ url('academic/group/'.$group->id.'/attendance') }}">Group_{{ $group->name }}_Stream_{{ $stream->name }}_({{ $group->number_of_students }})</a></p>
+                              <p class="ss-no-margin"><a href="{{ url('academic/group/'.$group->id.'/attendance') }}" target="_blank">Group_{{ $group->name }}_Stream_{{ $stream->name }}_({{ $group->number_of_students }})</a></p>
                               <a class="ss-font-xs ss-color-danger" href="{{ url('academic/group/'.$group->id.'/destroy')}}">Delete</a>
                             @endforeach
                             @endif

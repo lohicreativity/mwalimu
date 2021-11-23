@@ -4,11 +4,14 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Domain\Academic\Models\CampusProgram;
+use App\Domain\Academic\Models\Department;
+use App\Domain\Academic\Models\StudyAcademicYear;
+use App\Domain\Registration\Models\Registration;
 use App\Domain\Settings\Models\Campus;
 use App\Domain\Academic\Models\Program;
 use App\Domain\Academic\Actions\CampusProgramAction;
 use App\Utils\Util;
-use Validator;
+use Validator, PDF;
 
 class CampusProgramController extends Controller
 {
@@ -46,6 +49,10 @@ class CampusProgramController extends Controller
            }
         }
 
+        if(CampusProgram::where('campus_id',$request->get('campus_id'))->where('program_id',$request->get('program_id'))->count() != 0){
+            return redirect()->back()->withInput()->with('error','The programme is already added in this campus');
+        }
+
 
         (new CampusProgramAction)->store($request);
 
@@ -69,10 +76,36 @@ class CampusProgramController extends Controller
            }
         }
 
+         if(CampusProgram::where('campus_id',$request->get('campus_id'))->where('program_id',$request->get('program_id'))->count() != 0){
+            return redirect()->back()->withInput()->with('error','The programme is already added in this campus');
+        }
+
 
         (new CampusProgramAction)->update($request);
 
         return Util::requestResponse($request,'Campus program updated successfully');
+    }
+
+    /**
+     * Show attendance
+     */
+    public function showAttendance(Request $request, $id)
+    {
+        try{
+            $campus_program = CampusProgram::with(['program','campus'])->findOrFail($id);
+            $data = [
+               'registrations'=>Registration::with(['student'])->whereHas('student.campusProgram',function($query) use($id){
+                      $query->where('id',$id);
+                   })->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',$request->get('year_of_study'))->get(),
+               'study_academic_year'=>StudyAcademicYear::with('academicYear')->find($request->get('study_academic_year_id')),
+               'campus_program'=>$campus_program,
+               'department'=>Department::findOrFail($campus_program->program->department_id)
+            ];
+            $pdf = PDF::loadView('dashboard.academic.reports.students-in-campus-program', $data)->setPaper('a4','landscape');
+            return $pdf->stream();
+        }catch(\Exception $e){
+            return redirect()->back()->with('error','Unable to get the resource specified in this request');
+        }
     }
 
     /**

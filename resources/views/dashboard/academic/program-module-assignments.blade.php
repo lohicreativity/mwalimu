@@ -91,7 +91,7 @@
                     <td>{{ $program->program->code }}</td>
                     <td>
                       <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-view-modules-{{ $program->id }}">
-                              <i class="fas fa-eye-open">
+                              <i class="fas fa-list-alt">
                               </i>
                               View Modules
                        </a>
