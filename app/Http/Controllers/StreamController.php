@@ -10,7 +10,7 @@ use App\Domain\Academic\Models\StudyAcademicYear;
 use App\Domain\Academic\Models\CampusProgram;
 use App\Domain\Academic\Actions\StreamAction;
 use App\Utils\Util;
-use Validator;
+use Validator, PDF;
 
 class StreamController extends Controller
 {
@@ -74,6 +74,15 @@ class StreamController extends Controller
     	Registration::where('year_of_study',$request->get('year_of_study'))->where('study_academic_year_id',$request->get('study_academic_year_id'))->update(['stream_id'=>0]);
 
     	return redirect()->back()->with('message','Streams reset successfully');
+    }
+
+    /**
+     * Show attendance
+     */
+    public function showAttendance(Request $request, $id)
+    {
+    	$pdf = PDF::loadView('dashboard.academic.reports.stundents-in-stream', $data)->setPaper('a4','portrait');
+            return $pdf->stream();
     }
 
     /**

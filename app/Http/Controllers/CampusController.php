@@ -36,7 +36,7 @@ class CampusController extends Controller
             'name'=>'required|unique:campuses',
             'abbreviation'=>'required',
             'email'=>'required|email',
-            'phone'=>'required|regex:/^([0-9\s\-\+\(\)]*)$/|max:18'
+            'phone'=>'required|max:18'
         ]);
 
         if($validation->fails()){
@@ -62,14 +62,14 @@ class CampusController extends Controller
             'name'=>'required',
             'abbreviation'=>'required',
             'email'=>'required|email',
-            'phone'=>'required|regex:/^([0-9\s\-\+\(\)]*)$/|max:18'
+            'phone'=>'required|max:18'
         ]);
 
         if($validation->fails()){
            if($request->ajax()){
-              return Response::json(array('error_messages'=>$validation->messages()));
+              return response()->json(array('error_messages'=>$validation->messages()));
            }else{
-              return Redirect::back()->withInput()->withErrors($validation->messages());
+              return redirect()->back()->withInput()->withErrors($validation->messages());
            }
         }
 

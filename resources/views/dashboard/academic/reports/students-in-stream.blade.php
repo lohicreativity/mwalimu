@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <title>{{ Config::get('constants.SITE_NAME') }}</title>
+  <style type="text/css">
+      
+      body{
+         font-family: helvetica;
+      }
+     .container {
+        padding-right: 15px;
+        padding-left: 15px;
+        margin-right: auto;
+        margin-left: auto;
+      }
+      .container-fluid {
+        padding-right: 15px;
+        padding-left: 15px;
+        margin-right: auto;
+        margin-left: auto;
+      }
+      .row {
+        margin-right: -15px;
+        margin-left: -15px;
+      }
+      .col-md-1, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-md-10, .col-md-11, .col-md-12 {
+        float: left;
+      }
+      .col-md-12 {
+        width: 100%;
+      }
+      .col-md-11 {
+        width: 91.66666667%;
+      }
+      .col-md-10 {
+        width: 83.33333333%;
+      }
+      .col-md-9 {
+        width: 75%;
+      }
+      .col-md-8 {
+        width: 66.66666667%;
+      }
+      .col-md-7 {
+        width: 58.33333333%;
+      }
+      .col-md-6 {
+        width: 50%;
+      }
+      .col-md-5 {
+        width: 41.66666667%;
+      }
+      .col-md-4 {
+        width: 33.33333333%;
+      }
+      .col-md-3 {
+        width: 25%;
+      }
+      .col-md-2 {
+        width: 16.66666667%;
+      }
+      .col-md-1 {
+        width: 8.33333333%;
+      }
+     table {
+        background-color: transparent;
+      }
+      caption {
+        padding-top: 8px;
+        padding-bottom: 8px;
+        color: #777;
+        text-align: left;
+      }
+      th {
+        text-align: left;
+      }
+      .table {
+        width: 100%;
+        max-width: 100%;
+        margin-bottom: 20px;
+        border-collapse: collapse;
+      }
+      .table > thead > tr > th,
+      .table > tbody > tr > th,
+      .table > tfoot > tr > th,
+      .table > thead > tr > td,
+      .table > tbody > tr > td,
+      .table > tfoot > tr > td {
+        padding: 8px;
+        line-height: 1.42857143;
+        vertical-align: top;
+        border-top: 1px solid #ddd;
+      }
+      .table > thead > tr > th {
+        vertical-align: bottom;
+        border-bottom: 2px solid #ddd;
+      }
+      .table > caption + thead > tr:first-child > th,
+      .table > colgroup + thead > tr:first-child > th,
+      .table > thead:first-child > tr:first-child > th,
+      .table > caption + thead > tr:first-child > td,
+      .table > colgroup + thead > tr:first-child > td,
+      .table > thead:first-child > tr:first-child > td {
+        border-top: 0;
+      }
+      .table > tbody + tbody {
+        border-top: 2px solid #ddd;
+      }
+      .table .table {
+        background-color: #fff;
+      }
+      .table-condensed > thead > tr > th,
+      .table-condensed > tbody > tr > th,
+      .table-condensed > tfoot > tr > th,
+      .table-condensed > thead > tr > td,
+      .table-condensed > tbody > tr > td,
+      .table-condensed > tfoot > tr > td {
+        padding: 5px;
+      }
+      .table-bordered {
+        border: 1px solid #ddd;
+      }
+      .table-bordered > thead > tr > th,
+      .table-bordered > tbody > tr > th,
+      .table-bordered > tfoot > tr > th,
+      .table-bordered > thead > tr > td,
+      .table-bordered > tbody > tr > td,
+      .table-bordered > tfoot > tr > td {
+        border: 1px solid #ddd;
+      }
+      .table-bordered > thead > tr > th,
+      .table-bordered > thead > tr > td {
+        border-bottom-width: 2px;
+      }
+
+
+     .page-break {
+          page-break-after: always;
+      }
+      .ss-bold{
+         font-weight: bold;
+      }
+      .ss-center{
+         text-align: center;
+      }
+      .ss-italic{
+        font-style: italic;
+      }
+     .ss-margin-top-lg{
+         margin-top: 80px;
+      } 
+     .ss-margin-bottom-lg{
+         margin-bottom: 50px;
+     }
+     .ss-margin-bottom{
+         margin-bottom: 20px;
+     }
+     .ss-font-sm{
+        font-size: 14px;
+     }
+     .ss-font-xs{
+        font-size: 12px;
+     }
+     .ss-letter-head{
+        margin-bottom: 20px;
+        text-align: right;
+     }
+     .ss-letter-head h1, .ss-letter-head h3{
+        margin: 0px;
+     }
+  
+  </style>
+</head>
+
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+              <div class="ss-letter-head">
+               <h1>{{ Config::get('constants.COMPANY_NAME') }}</h1>
+               <h3>{{ Config::get('constants.COMPANY_ADDRESS') }}</h3>
+               <h3>{{ Config::get('constants.SITE_PHONE_LINE_ONE') }}, {{ Config::get('constants.SITE_PHONE_LINE_ONE') }}</h3>
+               <h3>{{ Config::get('constants.SITE_SUPPORT_EMAIL') }}</h3>
+               <h3>{{ Config::get('constants.SITE_DOMAIN') }}</h3>
+              </div>
+               <h3>{{ $title }}</h3>
+               <div class="table-responsive ss-margin-bottom">
+                  <table class="table table-condensed table-bordered">
+                    <tr>
+                      <td class="ss-bold">Date</td>
+                      <td class="ss-bold">Item</td>
+                      <td class="ss-bold">Ref</td>
+                      <td class="ss-bold">Currency</td>
+                      <td class="ss-bold">Debit</td>
+                      <td class="ss-bold">Credit</td>
+                      <td class="ss-bold">Balance</td>
+                    </tr>
+                    @foreach($transactions as $transaction)
+                    <tr class="ss-font-sm">
+                      <td>{{ App\DateMaker::toStandardDate($transaction->created_at) }}</td>
+                      <td>{{ $transaction->item }}</td>
+                      <td>{{ $transaction->reference }}</td>
+                      <td>{{ $transaction->currency->code }}</td>
+                      <td>@if($transaction->type == 'dr') {{ number_format($transaction->amount,2) }} @endif</td>
+                      <td>@if($transaction->type == 'cr') {{ number_format($transaction->amount,2) }} @endif</td>
+                      <td>{{ number_format($transaction->balance,2) }}</td>  
+                    </tr>
+                    @endforeach
+                  </table>
+                </div><!-- end of table-responsive -->
+                <p>Date {{ date('d-m-Y') }}</p>
+
+
+          </div><!-- end of col-md-12 -->
+        </div><!-- end of row -->
+
+      </div><!-- end of container -->
+
+
+</body>
+</html>
+

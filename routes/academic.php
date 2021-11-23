@@ -129,7 +129,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 	Route::get('stream-reset', [StreamController::class,'resetStreams']);
 	Route::post('stream/store', [StreamController::class,'store']);
 	Route::get('stream/{id}/destroy', [StreamController::class,'destroy']);
-
+    Route::get('stream/{id}/attendance', [StreamController::class,'showAttendance']);
 
 	Route::get('stream-components', [StreamComponentController::class,'index']);
 	Route::post('stream-component/store', [StreamComponentController::class,'store']);
@@ -138,4 +138,5 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 
     Route::post('group/store', [GroupController::class,'store']);
 	Route::get('group/{id}/destroy', [GroupController::class,'destroy']);
+	Route::get('group/{id}/attendance', [GroupController::class,'showAttendance']);
 });
