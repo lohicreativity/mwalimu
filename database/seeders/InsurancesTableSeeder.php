@@ -17,12 +17,14 @@ class InsurancesTableSeeder extends Seeder
         $data = [
            [
                'name'=>'NHIF',
+               'description'=>'National Health Insurance Fund',
                'created_at'=>now(),
                'updated_at'=>now()
            ],
 
            [
                'name'=>'AAR',
+               'description'=>'AAR Healthcare',
                'created_at'=>now(),
                'updated_at'=>now()
            ]
