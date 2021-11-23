@@ -29,7 +29,7 @@ class AcademicYearController extends Controller
     public function store(Request $request)
     {
     	$validation = Validator::make($request->all(),[
-            'year'=>'required|required',
+            'year'=>'required|unique:academic_years',
         ]);
 
         if($validation->fails()){

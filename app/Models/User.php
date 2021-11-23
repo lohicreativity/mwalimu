@@ -11,6 +11,9 @@ use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Jetstream\HasTeams;
 use Laravel\Sanctum\HasApiTokens;
 
+use App\Domain\Registration\Models\Student;
+use App\Domain\HumanResources\Models\Staff;
+
 class User extends Authenticatable
 {
     use HasApiTokens;
@@ -103,5 +106,21 @@ class User extends Authenticatable
             return true;
           }
           return false;
+    }
+
+    /**
+     * Establish one to one relationship with students
+     */
+    public function student()
+    {
+        return $this->hasOne(Student::class,'user_id');
+    }
+
+    /**
+     * Establish one to one relationship with staffs
+     */
+    public function staff()
+    {
+        return $this->hasOne(Staff::class,'user_id');
     }
 }

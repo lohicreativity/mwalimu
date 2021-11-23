@@ -16,13 +16,13 @@ class SemestersTableSeeder extends Seeder
     {
         $data = [
            [
-              'name'=>'Semester I',
+              'name'=>'Semester 1',
               'created_at'=>now(),
               'updated_at'=>now()
            ],
 
            [
-              'name'=>'Semester II',
+              'name'=>'Semester 2',
               'created_at'=>now(),
               'updated_at'=>now()
            ]
