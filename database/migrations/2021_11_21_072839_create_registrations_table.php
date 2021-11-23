@@ -19,8 +19,8 @@ class CreateRegistrationsTable extends Migration
             $table->unsignedBigInteger('student_id');
             $table->unsignedBigInteger('study_academic_year_id');
             $table->unsignedBigInteger('semester_id');
-            $table->unsignedBigInteger('stream_id')->nullable();
-            $table->unsignedBigInteger('group_id')->nullable();
+            $table->unsignedBigInteger('stream_id')->default(0);
+            $table->unsignedBigInteger('group_id')->default(0);
             $table->date('registration_date');
             $table->string('status')->default('REGISTERED');
             $table->unsignedBigInteger('registered_by_staff_id');
