@@ -26,7 +26,7 @@ class CreateStaffsTable extends Migration
             $table->string('phone');
             $table->string('email');
             $table->string('address');
-            $table->string('nin');
+            $table->string('nin')->nullable();
             $table->string('pf_number');
             $table->string('vote_number');
             $table->string('check_number');
