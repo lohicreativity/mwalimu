@@ -52,7 +52,7 @@ class StreamController extends Controller
            $sum += $request->get('number_'.$i.'_component_'.$component->id);
         }
         if($sum != $component->number_of_students){
-        	return redirect()->back()->with('error','Number of students must be equal to '.$component->number_of_students);
+        	return redirect()->back()->withInput()->with('error','Number of students must be equal to '.$component->number_of_students);
         }
 
         (new StreamAction)->store($request);
