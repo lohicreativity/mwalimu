@@ -96,7 +96,7 @@
                   </div>
                   <div class="form-group col-6">
                     {!! Form::label('','Campus') !!}
-                    <select name="campuses[]" class="form-control ss-select-tags">
+                    <select name="campuses[]" class="form-control ss-select-tags" multiple="multiple">
                          <option value="">Select Parent</option>
                            @foreach($campuses as $campus)
                            <option value="{{ $campus->id }}">{{ $campus->name }}</option>
@@ -191,7 +191,7 @@
                                     </div>
                                     <div class="form-group col-6">
                                       {!! Form::label('','Campus') !!}<br>
-                                      <select name="campuses[]" class="form-control ss-select-tags" style="width: 100%;">
+                                      <select name="campuses[]" class="form-control ss-select-tags" style="width: 100%;" multiple="multiple">
                                          <option value="">Select Parent</option>
                                          @foreach($campuses as $campus)
                                          <option value="{{ $campus->id }}" @if(App\Utils\Util::collectionContains($department->campuses,$campus)) selected="selected" @endif>{{ $campus->name }}</option>

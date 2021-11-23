@@ -183,7 +183,7 @@
                <h3>{{ Config::get('constants.SITE_SUPPORT_EMAIL') }}</h3>
                <h3>{{ Config::get('constants.SITE_DOMAIN') }}</h3>
               </div>
-               <h3>{{ $title }}</h3>
+               <h3></h3>
                <div class="table-responsive ss-margin-bottom">
                   <table class="table table-condensed table-bordered">
                     <tr>
@@ -195,17 +195,7 @@
                       <td class="ss-bold">Credit</td>
                       <td class="ss-bold">Balance</td>
                     </tr>
-                    @foreach($transactions as $transaction)
-                    <tr class="ss-font-sm">
-                      <td>{{ App\DateMaker::toStandardDate($transaction->created_at) }}</td>
-                      <td>{{ $transaction->item }}</td>
-                      <td>{{ $transaction->reference }}</td>
-                      <td>{{ $transaction->currency->code }}</td>
-                      <td>@if($transaction->type == 'dr') {{ number_format($transaction->amount,2) }} @endif</td>
-                      <td>@if($transaction->type == 'cr') {{ number_format($transaction->amount,2) }} @endif</td>
-                      <td>{{ number_format($transaction->balance,2) }}</td>  
-                    </tr>
-                    @endforeach
+                    
                   </table>
                 </div><!-- end of table-responsive -->
                 <p>Date {{ date('d-m-Y') }}</p>

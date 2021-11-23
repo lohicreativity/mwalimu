@@ -11,4 +11,12 @@ class Registration extends Model
 
     protected $table = 'registrations';
 
+    /**
+     * Establish one to many relationship with students
+     */
+    public function student()
+    {
+    	return $this->belongsTo(Student::class,'student_id');
+    }
+
 }

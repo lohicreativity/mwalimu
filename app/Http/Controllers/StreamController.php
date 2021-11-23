@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Domain\Academic\Models\Stream;
 use App\Domain\Academic\Models\StreamComponent;
 use App\Domain\Registration\Models\Registration;
+use App\Domain\Registration\Models\Student;
 use App\Domain\Academic\Models\StudyAcademicYear;
 use App\Domain\Academic\Models\CampusProgram;
 use App\Domain\Academic\Actions\StreamAction;
@@ -81,6 +82,9 @@ class StreamController extends Controller
      */
     public function showAttendance(Request $request, $id)
     {
+    	$data = [
+           'students'=>Registration::with('student')->where('stream_id',$id)->get()
+    	];
     	$pdf = PDF::loadView('dashboard.academic.reports.stundents-in-stream', $data)->setPaper('a4','portrait');
             return $pdf->stream();
     }
