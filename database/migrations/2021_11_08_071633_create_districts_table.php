@@ -19,7 +19,7 @@ class CreateDistrictsTable extends Migration
             $table->unsignedBigInteger('region_id');
             $table->timestamps();
 
-            $table->foreign('region_id')->references('id')->on('regions')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('region_id')->references('id')->on('regions')->onUpdate('cascade');
         });
     }
 

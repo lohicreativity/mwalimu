@@ -31,6 +31,8 @@
      href="{{ asset('css/toastr.min.css') }}">
   <link rel="stylesheet" type="text/css" 
      href="{{ asset('css/foundation-datepicker.min.css') }}">
+  <link rel="stylesheet" type="text/css" 
+     href="{{ asset('css/select2.min.css') }}">
   <!-- Custom style -->
   <link rel="stylesheet" type="text/css" href="{{ asset('css/style.css') }}">
 </head>
@@ -78,6 +80,7 @@
 <script src="{{ asset('dist/js/pages/dashboard.js') }}"></script>
 <script src="{{ asset('js/toastr.min.js') }}"></script>
 <script src="{{ asset('js/foundation-datepicker.min.js') }}"></script>
+<script src="{{ asset('js/select2.min.js') }}"></script>
 <script>
   @if(session()->has('message'))
   toastr.options =

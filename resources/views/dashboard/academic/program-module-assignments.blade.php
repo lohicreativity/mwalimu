@@ -21,12 +21,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>{{ __('Program Module Assignment') }}</h1>
+            <h1>{{ __('Programme Modules') }}</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">{{ __('Program Module Assignment') }}</li>
+              <li class="breadcrumb-item active">{{ __('Programme Modules') }}</li>
             </ol>
           </div>
         </div>
@@ -146,7 +146,7 @@
                       <a class="btn btn-info btn-sm" href="{{ url('academic/program-module-assignment/'.$study_academic_year->id.'/'.$program->id.'/assign') }}">
                               <i class="fas fa-plus">
                               </i>
-                              Assign Modules
+                              Assign Module
                        </a>
                     </td>
                   </tr>
@@ -162,7 +162,7 @@
             @else
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">{{ __('No Campus Programs Created') }}</h3>
+                <h3 class="card-title">{{ __('No Programme Modules Created') }}</h3>
               </div>
               <!-- /.card-header -->
               <div class="card-body">

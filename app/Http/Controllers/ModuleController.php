@@ -15,12 +15,18 @@ class ModuleController extends Controller
     /**
      * Display a list of modules
      */
-    public function index()
+    public function index(Request $request)
     {
+        if($request->has('query')){
+            $modules = Module::with(['department','ntaLevel'])->where('name','LIKE','%'.$request->get('query').'%')->OrWhere('code','LIKE','%'.$request->get('query').'%')->paginate(20);
+        }else{
+            $modules = Module::with(['department','ntaLevel'])->paginate(20);
+        }
     	$data = [
-           'modules'=>Module::with(['department','ntaLevel'])->paginate(20),
+           'modules'=>$modules,
            'nta_levels'=>NTALevel::all(),
-           'departments'=>Department::all()
+           'departments'=>Department::all(),
+           'request'=>$request
     	];
     	return view('dashboard.academic.modules',$data)->withTitle('Modules');
     }
@@ -31,9 +37,10 @@ class ModuleController extends Controller
     public function store(Request $request)
     {
     	$validation = Validator::make($request->all(),[
-            'name'=>'required',
-            'code'=>'required',
-            'credit'=>'required|numeric'
+            'name'=>'required|unique:modules',
+            'code'=>'required|unique:modules',
+            'credit'=>'required|numeric',
+            'syllabus'=>'required|mimes:pdf'
         ]);
 
         if($validation->fails()){
@@ -58,14 +65,15 @@ class ModuleController extends Controller
     	$validation = Validator::make($request->all(),[
             'name'=>'required',
             'code'=>'required',
-            'credit'=>'required|numeric'
+            'credit'=>'required|numeric',
+            'syllabus'=>'required|mimes:pdf'
         ]);
 
         if($validation->fails()){
            if($request->ajax()){
-              return Response::json(array('error_messages'=>$validation->messages()));
+              return response()->json(array('error_messages'=>$validation->messages()));
            }else{
-              return Redirect::back()->withInput()->withErrors($validation->messages());
+              return redirect()->back()->withInput()->withErrors($validation->messages());
            }
         }
 

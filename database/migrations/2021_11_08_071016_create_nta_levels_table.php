@@ -19,7 +19,7 @@ class CreateNtaLevelsTable extends Migration
             $table->unsignedBigInteger('award_id');
             $table->timestamps();
 
-            $table->foreign('award_id')->references('id')->on('awards')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('award_id')->references('id')->on('awards')->onUpdate('cascade');
         });
     }
 

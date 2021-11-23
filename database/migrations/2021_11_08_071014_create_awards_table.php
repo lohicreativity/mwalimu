@@ -19,8 +19,9 @@ class CreateAwardsTable extends Migration
             $table->string('code');
             $table->unsignedBigInteger('level_id');
             $table->timestamps();
+            $table->softDeletes();
 
-            $table->foreign('level_id')->references('id')->on('levels')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('level_id')->references('id')->on('levels')->onUpdate('cascade');
         });
     }
 

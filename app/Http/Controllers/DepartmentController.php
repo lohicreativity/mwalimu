@@ -18,7 +18,7 @@ class DepartmentController extends Controller
     public function index()
     {
     	$data = [
-           'departments'=>Department::with('unitCategory')->paginate(20),
+           'departments'=>Department::with('unitCategory','campuses')->paginate(20),
            'unit_categories'=>UnitCategory::all(),
            'campuses'=>Campus::all()
     	];
@@ -31,7 +31,10 @@ class DepartmentController extends Controller
     public function store(Request $request)
     {
     	$validation = Validator::make($request->all(),[
-            'name'=>'required',
+            'name'=>'required|unique:departments',
+            'abbreviation'=>'required|unique:departments',
+            'description'=>'required',
+            'campuses'=>'required',
         ]);
 
         if($validation->fails()){
@@ -55,6 +58,9 @@ class DepartmentController extends Controller
     {
     	$validation = Validator::make($request->all(),[
             'name'=>'required',
+            'abbreviation'=>'required',
+            'description'=>'required',
+            'campuses'=>'required',
         ]);
 
         if($validation->fails()){

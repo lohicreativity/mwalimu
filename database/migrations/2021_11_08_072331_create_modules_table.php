@@ -24,9 +24,10 @@ class CreateModulesTable extends Migration
             $table->unsignedBigInteger('nta_level_id');
             $table->string('syllabus')->nullable();
             $table->timestamps();
+            $table->softDeletes();
 
-            $table->foreign('department_id')->references('id')->on('departments')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('nta_level_id')->references('id')->on('nta_levels')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('department_id')->references('id')->on('departments')->onUpdate('cascade');
+            $table->foreign('nta_level_id')->references('id')->on('nta_levels')->onUpdate('cascade');
         });
     }
 

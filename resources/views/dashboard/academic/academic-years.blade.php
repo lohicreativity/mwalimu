@@ -73,7 +73,7 @@
             @if(count($academic_years) != 0)
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">{{ __('Academic Years') }}</h3>
+                <h3 class="card-title">{{ __('List of Academic Years') }}</h3>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
@@ -121,7 +121,7 @@
                                       {!! Form::input('hidden','academic_year_id',$academic_year->id) !!}
                                     </div>
                                       <div class="ss-form-actions">
-                                       <button type="submit" class="btn btn-primary">{{ __('Add Academic Year') }}</button>
+                                       <button type="submit" class="btn btn-primary">{{ __('Save Changes') }}</button>
                                       </div>
                                 {!! Form::close() !!}
 
@@ -157,7 +157,7 @@
                                        <p id="ss-confirmation-text">Are you sure you want to delete this academic_year from the list?</p>
                                        <div class="ss-form-controls">
                                          <button type="button" class="btn btn-default" data-dismiss="modal">Abort</button>
-                                         <a href="{{ url('academic/academic_year/'.$academic_year->id.'/destroy') }}" class="btn btn-danger">Delete</a>
+                                         <a href="{{ url('academic/academic-year/'.$academic_year->id.'/destroy') }}" class="btn btn-danger">Delete</a>
                                          </div><!-- end of ss-form-controls -->
                                       </div><!-- end of ss-confirmation-container -->
                                   </div><!-- end of col-md-12 -->

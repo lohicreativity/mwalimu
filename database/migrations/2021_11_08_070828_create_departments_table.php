@@ -15,14 +15,14 @@ class CreateDepartmentsTable extends Migration
     {
         Schema::create('departments', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('name')->unique();
             $table->string('abbreviation');
-            $table->text('description')->nullable();
-            $table->unsignedBigInteger('campus_id')->nullable();
+            $table->text('description');
             $table->unsignedBigInteger('unit_category_id');
             $table->timestamps();
+            $table->softDeletes();
 
-            $table->foreign('unit_category_id')->references('id')->on('unit_categories')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('unit_category_id')->references('id')->on('unit_categories')->onUpdate('cascade');
         });
     }
 

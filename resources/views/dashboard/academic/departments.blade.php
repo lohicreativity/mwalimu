@@ -48,7 +48,7 @@
               <!-- form start -->
               @php
                   $name = [
-                     'placeholder'=>'Department name',
+                     'placeholder'=>'Name',
                      'class'=>'form-control',
                      'required'=>true
                   ];
@@ -70,7 +70,7 @@
                   
                   <div class="row">
                   <div class="form-group col-8">
-                    {!! Form::label('','Department name') !!}
+                    {!! Form::label('','Name') !!}
                     {!! Form::text('name',null,$name) !!}
                   </div>
                   <div class="form-group col-4">
@@ -86,9 +86,9 @@
                   </div>
                   <div class="row">
                   <div class="form-group col-6">
-                    {!! Form::label('','Unit category') !!}
+                    {!! Form::label('','Type') !!}
                     <select name="unit_category_id" class="form-control" required>
-                       <option value="">Select Unit</option>
+                       <option value="">Select Type</option>
                        @foreach($unit_categories as $category)
                        <option value="{{ $category->id }}">{{ $category->name }}</option>
                        @endforeach
@@ -96,7 +96,7 @@
                   </div>
                   <div class="form-group col-6">
                     {!! Form::label('','Campus') !!}
-                    <select name="campus_id" class="form-control">
+                    <select name="campuses[]" class="form-control ss-select-tags">
                          <option value="">Select Parent</option>
                            @foreach($campuses as $campus)
                            <option value="{{ $campus->id }}">{{ $campus->name }}</option>
@@ -117,7 +117,7 @@
             @if(count($departments) != 0)
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">{{ __('departments') }}</h3>
+                <h3 class="card-title">{{ __('List of Departments') }}</h3>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
@@ -126,7 +126,8 @@
                   <tr>
                     <th>Name</th>
                     <th>Abbreviation</th>
-                    <th>Unit</th>
+                    <th>Type</th>
+                    <th>Campus</th>
                     <th>Actions</th>
                   </tr>
                   </thead>
@@ -136,6 +137,11 @@
                     <td>{{ $department->name }}</td>
                     <td>{{ $department->abbreviation }}</td>
                     <td>{{ $department->unitCategory->name }}</td>
+                    <td>
+                      @foreach($department->campuses as $campus)
+                       <p class="ss-no-margin">{{ $campus->name }}</p>
+                      @endforeach
+                    </td>
                     <td>
                       <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-edit-department-{{ $department->id }}">
                               <i class="fas fa-pencil-alt">
@@ -157,7 +163,7 @@
 
                                     <div class="row">
                                     <div class="form-group col-8">
-                                      {!! Form::label('','Department name') !!}
+                                      {!! Form::label('','Name') !!}
                                       {!! Form::text('name',$department->name,$name) !!}
 
                                        {!! Form::input('hidden','department_id',$department->id) !!}
@@ -175,20 +181,20 @@
                                     </div>
                                     <div class="row">
                                     <div class="form-group col-6">
-                                      {!! Form::label('','Unit category') !!}
+                                      {!! Form::label('','Type') !!}
                                       <select name="unit_category_id" class="form-control" required>
-                                         <option value="">Select Unit</option>
+                                         <option value="">Select Type</option>
                                          @foreach($unit_categories as $category)
                                          <option value="{{ $category->id }}" @if($category->id == $department->unit_category_id) selected="selected" @endif>{{ $category->name }}</option>
                                          @endforeach
                                       </select>
                                     </div>
                                     <div class="form-group col-6">
-                                      {!! Form::label('','Campus') !!}
-                                      <select name="campus_id" class="form-control">
+                                      {!! Form::label('','Campus') !!}<br>
+                                      <select name="campuses[]" class="form-control ss-select-tags" style="width: 100%;">
                                          <option value="">Select Parent</option>
                                          @foreach($campuses as $campus)
-                                         <option value="{{ $campus->id }}" @if($department->campus_id == $campus->id) selected="selected" @endif>{{ $campus->name }}</option>
+                                         <option value="{{ $campus->id }}" @if(App\Utils\Util::collectionContains($department->campuses,$campus)) selected="selected" @endif>{{ $campus->name }}</option>
                                          @endforeach
                                       </select>
                                     </div>

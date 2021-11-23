@@ -21,8 +21,8 @@ class CreateExaminationResultsTable extends Migration
             $table->decimal('final_score')->default(0.00);
             $table->timestamps();
 
-            $table->foreign('student_id')->references('id')->on('students')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('module_assignment_id')->references('id')->on('module_assignments')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('student_id')->references('id')->on('students')->onUpdate('cascade');
+            $table->foreign('module_assignment_id')->references('id')->on('module_assignments')->onUpdate('cascade');
         });
     }
 

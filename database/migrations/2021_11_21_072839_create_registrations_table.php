@@ -26,9 +26,9 @@ class CreateRegistrationsTable extends Migration
             $table->unsignedBigInteger('registered_by_staff_id');
             $table->timestamps();
 
-            $table->foreign('student_id')->references('id')->on('students')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('study_academic_year_id')->references('id')->on('study_academic_years')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('semester_id')->references('id')->on('semesters')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('student_id')->references('id')->on('students')->onUpdate('cascade');
+            $table->foreign('study_academic_year_id')->references('id')->on('study_academic_years')->onUpdate('cascade');
+            $table->foreign('semester_id')->references('id')->on('semesters')->onUpdate('cascade');
         });
     }
 

@@ -24,7 +24,7 @@ class CampusController extends Controller
            'districts'=>District::all(),
            'wards'=>Ward::all()
     	];
-    	return view('dashboard.settings.campuses',$data)->withTitle('campuses');
+    	return view('dashboard.settings.campuses',$data)->withTitle('Campuses');
     }
 
     /**
@@ -33,10 +33,10 @@ class CampusController extends Controller
     public function store(Request $request)
     {
     	$validation = Validator::make($request->all(),[
-            'name'=>'required',
+            'name'=>'required|unique:campuses',
             'abbreviation'=>'required',
             'email'=>'required|email',
-            'phone'=>'required'
+            'phone'=>'required|regex:/^([0-9\s\-\+\(\)]*)$/|max:18'
         ]);
 
         if($validation->fails()){
@@ -62,7 +62,7 @@ class CampusController extends Controller
             'name'=>'required',
             'abbreviation'=>'required',
             'email'=>'required|email',
-            'phone'=>'required'
+            'phone'=>'required|regex:/^([0-9\s\-\+\(\)]*)$/|max:18'
         ]);
 
         if($validation->fails()){

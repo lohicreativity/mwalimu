@@ -18,8 +18,8 @@ class CreateStudyAcademicYearCampusProgramTable extends Migration
             $table->unsignedBigInteger('campus_program_id');
             $table->unsignedBigInteger('assigned_by_staff_id')->nullable();
 
-            $table->foreign('study_academic_year_id','study_ac_year_campus_prog')->references('id')->on('study_academic_years')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('campus_program_id')->references('id')->on('campus_program')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('study_academic_year_id','study_ac_year_campus_prog')->references('id')->on('study_academic_years')->onUpdate('cascade');
+            $table->foreign('campus_program_id')->references('id')->on('campus_program')->onUpdate('cascade');
         });
     }
 

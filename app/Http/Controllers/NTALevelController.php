@@ -29,7 +29,7 @@ class NTALevelController extends Controller
     public function store(Request $request)
     {
     	$validation = Validator::make($request->all(),[
-            'name'=>'required',
+            'name'=>'required|unique:nta_levels',
         ]);
 
         if($validation->fails()){

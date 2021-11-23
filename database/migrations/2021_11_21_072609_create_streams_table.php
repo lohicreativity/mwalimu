@@ -23,8 +23,8 @@ class CreateStreamsTable extends Migration
             $table->mediumInteger('number_of_students');
             $table->timestamps();
 
-            $table->foreign('campus_program_id')->references('id')->on('campus_program')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('study_academic_year_id')->references('id')->on('study_academic_years')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('campus_program_id')->references('id')->on('campus_program')->onUpdate('cascade');
+            $table->foreign('study_academic_year_id')->references('id')->on('study_academic_years')->onUpdate('cascade');
         });
     }
 

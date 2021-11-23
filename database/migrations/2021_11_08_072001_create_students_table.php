@@ -16,13 +16,13 @@ class CreateStudentsTable extends Migration
         Schema::create('students', function (Blueprint $table) {
             $table->id();
             $table->string('first_name');
-            $table->string('middle_name')->nullable();
+            $table->string('middle_name');
             $table->string('surname');
             $table->date('birth_date');
             $table->string('nationality');
             $table->string('gender',2);
             $table->string('email');
-            $table->string('phone');
+            $table->string('phone',20);
             $table->string('address');
             $table->unsignedBigInteger('applicant_id');
             $table->string('registration_number')->unique();
@@ -37,15 +37,16 @@ class CreateStudentsTable extends Migration
             $table->string('entry_mode');
             $table->unsignedBigInteger('user_id');
             $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('applicant_id')->references('id')->on('applicants')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('academic_status_id')->references('id')->on('academic_statuses')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('study_academic_year_id')->references('id')->on('academic_years')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('studentship_status_id')->references('id')->on('studentship_statuses')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('campus_program_id')->references('id')->on('campus_program')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('disability_status_id')->references('id')->on('disability_statuses')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('insurance_id')->references('id')->on('insurances')->onUpdate('cascade')->onDelete('cascade');
-             $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('academic_status_id')->references('id')->on('academic_statuses')->onUpdate('cascade');
+            $table->foreign('study_academic_year_id')->references('id')->on('academic_years')->onUpdate('cascade');
+            $table->foreign('studentship_status_id')->references('id')->on('studentship_statuses')->onUpdate('cascade');
+            $table->foreign('campus_program_id')->references('id')->on('campus_program')->onUpdate('cascade');
+            $table->foreign('disability_status_id')->references('id')->on('disability_statuses')->onUpdate('cascade');
+            $table->foreign('insurance_id')->references('id')->on('insurances')->onUpdate('cascade');
+             $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade');
         });
     }
 

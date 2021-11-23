@@ -21,8 +21,8 @@ class CreateCourseWorkResultsTable extends Migration
             $table->decimal('weight');
             $table->timestamps();
 
-            $table->foreign('student_id')->references('id')->on('students')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('module_assignment_id')->references('id')->on('module_assignments')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('student_id')->references('id')->on('students')->onUpdate('cascade');
+            $table->foreign('module_assignment_id')->references('id')->on('module_assignments')->onUpdate('cascade');
         });
     }
 

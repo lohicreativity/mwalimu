@@ -22,19 +22,20 @@ class CreateApplicantsTable extends Migration
             $table->string('nationality');
             $table->string('gender',2);
             $table->string('email');
-            $table->string('phone');
+            $table->string('phone',20);
             $table->string('address');
-            $table->string('index_number');
+            $table->string('index_number')->unique();
             $table->mediumInteger('admission_year');
-            $table->string('application_number');
+            $table->string('application_number')->unique();
             $table->unsignedBigInteger('intake_id');
             $table->unsignedBigInteger('disability_status_id');
             $table->unsignedBigInteger('user_id');
             $table->timestamps();
+            $table->timestamp('deleted_at')->nullable();
 
-            $table->foreign('intake_id')->references('id')->on('intakes')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('disability_status_id')->references('id')->on('disability_statuses')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('intake_id')->references('id')->on('intakes')->onUpdate('cascade');
+            $table->foreign('disability_status_id')->references('id')->on('disability_statuses')->onUpdate('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade');
         });
     }
 

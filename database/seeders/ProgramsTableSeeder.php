@@ -15,30 +15,72 @@ class ProgramsTableSeeder extends Seeder
     public function run()
     {
         $data = [
+             [
+               'name'=>'Basic Technician Certificate In Economics Development',
+               'code'=>'BTCED',
+               'description'=>'Basic Technician Certificate In Economics Development',
+               'department_id'=>1,
+               'min_duration'=>1,
+               'max_duration'=>2,
+                'nta_level_id'=>1,
+                'award_id'=>1,
+                'created_at'=>now(),
+                'updated_at'=>now()
+             ],
+ 
+             [
+               'name'=>'Technician Certificate In Economics Development',
+               'code'=>'TCED',
+               'description'=>'Technician Certificate In Economics Development',
+               'department_id'=>1,
+               'min_duration'=>1,
+               'max_duration'=>2,
+                'nta_level_id'=>2,
+                'award_id'=>2,
+                'created_at'=>now(),
+                'updated_at'=>now()
+-            ]
+            ],
             [
-               'name'=>'BSc. Computer Science',
-               'code'=>'CSM',
-               'department_id'=>3,
-               'min_duration'=>3,
-               'max_duration'=>4,
-               'nta_level_id'=>1,
-               'award_id'=>1,
+               'name'=>'Ordinary Diploma In Economics Development',
+               'code'=>'ODED',
+               'description'=>'Ordinary Diploma In Economics Development',
+               'department_id'=>1,
+               'min_duration'=>1,
+               'max_duration'=>2,
+               'nta_level_id'=>3,
+               'award_id'=>2,
                'created_at'=>now(),
                'updated_at'=>now()
             ],
 
-            [
-               'name'=>'BSc. Insurance and Risk Management',
-               'code'=>'IRM',
-               'department_id'=>2,
-               'min_duration'=>3,
+             [
+               'name'=>'High Diploma In Economics Development',
+               'code'=>'HD.ED',
+               'description'=>'High Diploma In Economics Development',
+               'department_id'=>1,
+               'min_duration'=>2,
                'max_duration'=>4,
-               'nta_level_id'=>2,
-               'award_id'=>2,
+               'nta_level_id'=>4,
+               'award_id'=>3,
                'created_at'=>now(),
                'updated_at'=>now()
-            ]
-        ];
+            ],
+             [
+               'name'=>'Bachelor In Economics Development',
+               'code'=>'BD.ED',
+               'description'=>'Bachelor In Economics Development',
+               'department_id'=>1,
+               'min_duration'=>1,
+               'max_duration'=>2,
+               'nta_level_id'=>5,
+               'award_id'=>3,
+               'created_at'=>now(),
+               'updated_at'=>now()
+            ],
+
+
+         ];
 
         Program::insert($data);
     }

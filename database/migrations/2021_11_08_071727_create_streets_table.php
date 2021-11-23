@@ -19,7 +19,7 @@ class CreateStreetsTable extends Migration
             $table->unsignedBigInteger('ward_id');
             $table->timestamps();
 
-            $table->foreign('ward_id')->references('id')->on('wards')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('ward_id')->references('id')->on('wards')->onUpdate('cascade');
         });
     }
 

@@ -21,8 +21,8 @@ class CreateStaffDesignationTable extends Migration
             $table->unsignedBigInteger('designation_id');
             $table->timestamps();
 
-            $table->foreign('staff_id')->references('id')->on('staffs')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('designation_id')->references('id')->on('designations')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('staff_id')->references('id')->on('staffs')->onUpdate('cascade');
+            $table->foreign('designation_id')->references('id')->on('designations')->onUpdate('cascade');
         });
     }
 

@@ -29,8 +29,8 @@ class AwardController extends Controller
     public function store(Request $request)
     {
     	$validation = Validator::make($request->all(),[
-            'name'=>'required',
-            'code'=>'required'
+            'name'=>'required|unique:awards',
+            'code'=>'required|unique:awards'
         ]);
 
         if($validation->fails()){

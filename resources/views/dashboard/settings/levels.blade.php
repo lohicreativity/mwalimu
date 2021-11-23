@@ -73,7 +73,7 @@
             @if(count($levels) != 0)
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">{{ __('Levels of Study') }}</h3>
+                <h3 class="card-title">{{ __('Levels of Studies') }}</h3>
               </div>
               <!-- /.card-header -->
               <div class="card-body">

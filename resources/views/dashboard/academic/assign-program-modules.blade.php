@@ -26,7 +26,7 @@
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">{{ __('Program Module Assignment') }}</li>
+              <li class="breadcrumb-item active">{{ __('Programme Module Assignment') }}</li>
             </ol>
           </div>
         </div>
@@ -61,7 +61,7 @@
                     <select name="module_id" class="form-control" required>
                        <option value="">Select Module</option>
                        @foreach($modules as $module)
-                       <option value="{{ $module->id }}">{{ $module->name }}</option>
+                       <option value="{{ $module->id }}">{{ $module->name }} - {{ $module->code }}</option>
                        @endforeach
                     </select>
                     </div>
@@ -100,7 +100,7 @@
                 </div>
                   </div>
                   <div class="ss-form-actions">
-                   <button type="submit" class="btn btn-primary">{{ __('Assign Program Module') }}</button>
+                   <button type="submit" class="btn btn-primary">{{ __('Assign Module') }}</button>
                   </div>
 
                  {!! Form::close() !!}
@@ -111,7 +111,7 @@
             @if(count($assignments) != 0 && $campus_program && $study_academic_year)
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">{{ __('Program Module Assignment') }} - {{ $campus_program->program->name }}</h3>
+                <h3 class="card-title">{{ __('Programme Modules') }} - {{ $campus_program->program->name }}</h3>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
@@ -145,7 +145,7 @@
                         <div class="modal-dialog modal-lg">
                           <div class="modal-content">
                             <div class="modal-header">
-                              <h4 class="modal-title">Edit Program Module Assignment</h4>
+                              <h4 class="modal-title">Edit Programme Module</h4>
                               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                               </button>
@@ -159,7 +159,7 @@
                     <select name="module_id" class="form-control" required>
                        <option value="">Select Module</option>
                        @foreach($modules as $module)
-                       <option value="{{ $module->id }}" @if($assignment->module_id == $module->id) selected="selected" @endif>{{ $module->name }}</option>
+                       <option value="{{ $module->id }}" @if($assignment->module_id == $module->id) selected="selected" @endif>{{ $module->name }} - {{ $module->code }}</option>
                        @endforeach
                     </select>
                     </div>
@@ -264,7 +264,7 @@
             @else
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">{{ __('No Program Module Assigned') }}</h3>
+                <h3 class="card-title">{{ __('No Module Assigned') }}</h3>
               </div>
               <!-- /.card-header -->
               <div class="card-body">

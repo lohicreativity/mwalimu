@@ -20,8 +20,8 @@ class CreateApplicationWindowsTable extends Migration
             $table->integer('capacity');
             $table->timestamps();
 
-            $table->foreign('study_academic_year_id','study_ac_year_app_window')->references('id')->on('study_academic_years')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('intake_id')->references('id')->on('intakes')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('study_academic_year_id','study_ac_year_app_window')->references('id')->on('study_academic_years')->onUpdate('cascade');
+            $table->foreign('intake_id')->references('id')->on('intakes')->onUpdate('cascade');
         });
     }
 

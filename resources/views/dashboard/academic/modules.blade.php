@@ -85,7 +85,7 @@
                 <div class="card-body">
                   <div class="row">
                   <div class="form-group col-6">
-                    {!! Form::label('','Module name') !!}
+                    {!! Form::label('','Name') !!}
                     {!! Form::text('name',null,$name) !!}
                   </div>
                   <div class="form-group col-6">
@@ -158,11 +158,19 @@
             @if(count($modules) != 0)
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">{{ __('Modules') }}</h3>
+                <h3 class="card-title">{{ __('List of Modules') }}</h3>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
-                <table id="example2" class="table table-bordered table-hover">
+                {!! Form::open(['url'=>'academic/modules','method'=>'GET']) !!}
+                <div class="input-group ss-stretch">
+                 <input type="text" name="query" class="form-control" placeholder="Search for module name or code">
+                 <span class="input-group-btn">
+                   <button class="btn btn-default" type="submit"><span class="fa fa-search"></span></button>
+                 </span>
+                </div>
+                {!! Form::close() !!}
+                <table id="example2" class="table table-bordered table-hover ss-margin-top">
                   <thead>
                   <tr>
                     <th>Name</th>
@@ -227,7 +235,7 @@
                                 {!! Form::open(['url'=>'academic/module/update','class'=>'ss-form-processing','files'=>true]) !!}
                                   <div class="row">
                                     <div class="form-group col-6">
-                                      {!! Form::label('','Module name') !!}
+                                      {!! Form::label('','Name') !!}
                                       {!! Form::text('name',$module->name,$name) !!}
 
                                       {!! Form::input('hidden','module_id',$module->id) !!}
@@ -348,7 +356,7 @@
                   </tbody>
                 </table>
                 <div class="ss-pagination-links">
-                {!! $modules->render() !!}
+                {!! $modules->appends($request->except('page'))->render() !!}
                 </div>
               </div>
               <!-- /.card-body -->

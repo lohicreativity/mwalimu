@@ -48,7 +48,7 @@
               <!-- form start -->
               @php
                   $name = [
-                     'placeholder'=>'Role name',
+                     'placeholder'=>'Name',
                      'class'=>'form-control',
                      'required'=>true
                   ];
@@ -64,7 +64,7 @@
                   
                  <div class="row">
                   <div class="form-group col-6">
-                    {!! Form::label('','Role name') !!}
+                    {!! Form::label('','Name') !!}
                     {!! Form::text('name',null,$name) !!}
 
                     {!! Form::input('hidden','is_system_role',0) !!}
@@ -87,7 +87,7 @@
             @if(count($roles) != 0)
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">{{ __('Roles') }}</h3>
+                <h3 class="card-title">{{ __('List of Roles') }}</h3>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
@@ -130,7 +130,7 @@
 
                                     <div class="row">
                                     <div class="form-group col-6">
-                                      {!! Form::label('','Role name') !!}
+                                      {!! Form::label('','Name') !!}
                                       {!! Form::text('name',$role->name,$name) !!}
 
                                       {!! Form::input('hidden','is_system_role',$role->is_system_role) !!}

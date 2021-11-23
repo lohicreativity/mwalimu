@@ -1,4 +1,4 @@
-<!-- Sidebar Menu -->
+Sidebar Menu -->
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class
@@ -98,7 +98,7 @@
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-users"></i>
               <p>
-                {{ __('Human Resources') }}
+                {{ __('Human Resource') }}
                 <i class="fas fa-angle-left right"></i>
               </p>
             </a>
@@ -156,16 +156,16 @@
                   <p>{{ __('Study Academic Years') }}</p>
                 </a>
               </li>
-              <li class="nav-item">
+              <!-- <li class="nav-item">
                 <a href="{{ url('academic/study-academic-year-campus-programs') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>{{ __('Academic Year Programs') }}</p>
                 </a>
-              </li>
+              </li> -->
               <li class="nav-item">
                 <a href="{{ url('academic/program-module-assignments') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>{{ __('Program Module Assignment') }}</p>
+                  <p>{{ __('Programme Modules') }}</p>
                 </a>
               </li>
               <li class="nav-item">
@@ -194,7 +194,7 @@
               <li class="nav-item">
                 <a href="{{ url('academic/staff-module-assignments') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Assigned Modules</p>
+                  <p>Staff Modules</p>
                 </a>
               </li>
             </ul>
@@ -203,7 +203,7 @@
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-cogs"></i>
               <p>
-                {{ __('Settings') }}
+                {{ __('Setting') }}
                 <i class="fas fa-angle-left right"></i>
               </p>
             </a>
@@ -242,4 +242,4 @@
           </li>
         </ul>
       </nav>
-      <!-- /.sidebar-menu -->
+      <!-- /.sidebar-menu

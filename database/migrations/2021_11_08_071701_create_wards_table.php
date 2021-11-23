@@ -19,7 +19,7 @@ class CreateWardsTable extends Migration
             $table->unsignedBigInteger('district_id');
             $table->timestamps();
 
-            $table->foreign('district_id')->references('id')->on('districts')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('district_id')->references('id')->on('districts')->onUpdate('cascade');
         });
     }
 

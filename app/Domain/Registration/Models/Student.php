@@ -4,12 +4,14 @@ namespace App\Domain\Registration\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Domain\Academic\Models\ExaminationResult;
 use App\Domain\Academic\Models\CourseWorkResult;
 
 class Student extends Model
 {
     use HasFactory;
+    use SoftDeletes;
 
     protected $table = 'students';
 

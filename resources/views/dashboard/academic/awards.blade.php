@@ -48,7 +48,7 @@
               <!-- form start -->
               @php
                   $name = [
-                     'placeholder'=>'Award name',
+                     'placeholder'=>'Name',
                      'class'=>'form-control',
                      'required'=>true
                   ];
@@ -64,7 +64,7 @@
                 <div class="card-body">
                   <div class="row">
                   <div class="form-group col-12">
-                    {!! Form::label('','Award name') !!}
+                    {!! Form::label('','Name') !!}
                     {!! Form::text('name',null,$name) !!}
                   </div>
                  </div>
@@ -96,7 +96,7 @@
             @if(count($awards) != 0)
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">{{ __('awards') }}</h3>
+                <h3 class="card-title">{{ __('List of Awards') }}</h3>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
@@ -104,8 +104,8 @@
                   <thead>
                   <tr>
                     <th>Name</th>
-                    <th>Level</th>
                     <th>Code</th>
+                    <th>Level</th>
                     <th>Actions</th>
                   </tr>
                   </thead>
@@ -113,8 +113,8 @@
                   @foreach($awards as $award)
                   <tr>
                     <td>{{ $award->name }}</td>
-                    <td>{{ $award->level->name }}</td>
                     <td>{{ $award->code }}</td>
+                    <td>{{ $award->level->name }}</td>
                     <td>
                       <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-edit-award-{{ $award->id }}">
                               <i class="fas fa-pencil-alt">
@@ -136,7 +136,7 @@
                                 {!! Form::open(['url'=>'academic/award/update','class'=>'ss-form-processing']) !!}
                                   <div class="row">
                                     <div class="form-group col-12">
-                                      {!! Form::label('','award name') !!}
+                                      {!! Form::label('','Name') !!}
                                       {!! Form::text('name',$award->name,$name) !!}
 
                                       {!! Form::input('hidden','award_id',$award->id) !!}

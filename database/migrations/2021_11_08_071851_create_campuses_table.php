@@ -15,15 +15,16 @@ class CreateCampusesTable extends Migration
     {
         Schema::create('campuses', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('name')->unique();
             $table->string('abbreviation');
             $table->string('email');
             $table->string('phone');
-            $table->unsignedBigInteger('region_id')->nullable();
-            $table->unsignedBigInteger('district_id')->nullable();
-            $table->unsignedBigInteger('ward_id')->nullable();
+            $table->unsignedBigInteger('region_id');
+            $table->unsignedBigInteger('district_id');
+            $table->unsignedBigInteger('ward_id');
             $table->string('street')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

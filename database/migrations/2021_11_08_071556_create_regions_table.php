@@ -19,7 +19,7 @@ class CreateRegionsTable extends Migration
             $table->unsignedBigInteger('country_id');
             $table->timestamps();
 
-            $table->foreign('country_id')->references('id')->on('countries')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('country_id')->references('id')->on('countries')->onUpdate('cascade');
         });
     }
 

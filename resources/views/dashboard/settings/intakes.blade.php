@@ -48,7 +48,7 @@
               <!-- form start -->
               @php
                   $name = [
-                     'placeholder'=>'Intake name',
+                     'placeholder'=>'Name',
                      'class'=>'form-control',
                      'required'=>true
                   ];
@@ -57,7 +57,7 @@
                 <div class="card-body">
 
                   <div class="form-group">
-                    {!! Form::label('','Intake name') !!}
+                    {!! Form::label('','Name') !!}
                     {!! Form::text('name',null,$name) !!}
                   </div>
                 </div>
@@ -73,7 +73,7 @@
             @if(count($intakes) != 0)
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">{{ __('Intakes') }}</h3>
+                <h3 class="card-title">{{ __('List of Intakes') }}</h3>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
@@ -105,17 +105,10 @@
                               </button>
                             </div>
                             <div class="modal-body">
-                              @php
-                                    $name = [
-                                       'placeholder'=>'intake',
-                                       'class'=>'form-control',
-                                       'required'=>true
-                                    ];
-                                @endphp
                                 {!! Form::open(['url'=>'settings/intake/update','class'=>'ss-form-processing']) !!}
 
                                     <div class="form-group">
-                                      {!! Form::label('','Intake name') !!}
+                                      {!! Form::label('','Name') !!}
                                       {!! Form::text('name',$intake->name,$name) !!}
 
                                       {!! Form::input('hidden','intake_id',$intake->id) !!}

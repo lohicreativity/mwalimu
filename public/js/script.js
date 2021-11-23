@@ -71,7 +71,7 @@ $('document').ready(function(){
 
     // $('.ss-select-search, .ss-select-search-lg').select2();   
 
-    // $('.ss-select-tags').select2(); 
+    $('.ss-select-tags').select2(); 
 
     //  $('.ss-image-zoomer').lightzoom({
     //    glassSize   : 275,

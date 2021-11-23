@@ -20,7 +20,7 @@ class CreateModuleWeightDistributionsTable extends Migration
             $table->unsignedBigInteger('module_id');
             $table->timestamps();
 
-            $table->foreign('module_id')->references('id')->on('modules')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('module_id')->references('id')->on('modules')->onUpdate('cascade');
         });
     }
 

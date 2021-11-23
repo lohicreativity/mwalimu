@@ -20,8 +20,8 @@ class CreateModuleAttendancesTable extends Migration
             $table->string('category',20)->default('CORE');
             $table->timestamps();
 
-            $table->foreign('student_id')->references('id')->on('students')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('module_id')->references('id')->on('modules')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('student_id')->references('id')->on('students')->onUpdate('cascade');
+            $table->foreign('module_id')->references('id')->on('modules')->onUpdate('cascade');
         });
     }
 

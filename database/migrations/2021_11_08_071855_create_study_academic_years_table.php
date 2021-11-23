@@ -20,8 +20,9 @@ class CreateStudyAcademicYearsTable extends Migration
             $table->date('end_date');
             $table->string('status',10)->default('ACTIVE');
             $table->timestamps();
+            $table->softDeletes();
 
-            $table->foreign('academic_year_id')->references('id')->on('academic_years')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('academic_year_id')->references('id')->on('academic_years')->onUpdate('cascade');
         });
     }
 

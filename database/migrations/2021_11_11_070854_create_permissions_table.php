@@ -20,7 +20,7 @@ class CreatePermissionsTable extends Migration
             $table->unsignedBigInteger('system_module_id');
             $table->timestamps();
 
-            $table->foreign('system_module_id')->references('id')->on('system_modules')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('system_module_id')->references('id')->on('system_modules')->onUpdate('cascade');
         });
     }
 

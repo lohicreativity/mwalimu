@@ -48,7 +48,7 @@
               <!-- form start -->
               @php
                   $name = [
-                     'placeholder'=>'Programme name',
+                     'placeholder'=>'Name',
                      'class'=>'form-control',
                      'required'=>true
                   ];
@@ -82,7 +82,7 @@
                   
                   <div class="row">
                   <div class="form-group col-8">
-                    {!! Form::label('','Programme') !!}
+                    {!! Form::label('','Name') !!}
                     {!! Form::text('name',null,$name) !!}
                   </div>
                    <div class="form-group col-4">
@@ -148,7 +148,7 @@
             @if(count($programs) != 0)
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">{{ __('programs') }}</h3>
+                <h3 class="card-title">{{ __('List of Programs') }}</h3>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
@@ -184,7 +184,7 @@
                         <div class="modal-dialog modal-lg">
                           <div class="modal-content">
                             <div class="modal-header">
-                              <h4 class="modal-title">Edit Program</h4>
+                              <h4 class="modal-title">Edit Programme</h4>
                               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                               </button>
@@ -194,7 +194,7 @@
                                 {!! Form::open(['url'=>'academic/program/update','class'=>'ss-form-processing']) !!}
                                    <div class="row">
                                     <div class="form-group col-8">
-                                      {!! Form::label('','Programme') !!}
+                                      {!! Form::label('','Name') !!}
                                       {!! Form::text('name',$program->name,$name) !!}
 
                                       {!! Form::input('hidden','program_id',$program->id) !!}
@@ -250,7 +250,7 @@
                                         </div>
                                        </div>
                                       <div class="ss-form-actions">
-                                       <button type="submit" class="btn btn-primary">{{ __('Add Program') }}</button>
+                                       <button type="submit" class="btn btn-primary">{{ __('Save Changes') }}</button>
                                       </div>
                                 {!! Form::close() !!}
 

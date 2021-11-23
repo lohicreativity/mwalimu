@@ -14,8 +14,9 @@ class DepartmentAction implements DepartmentInterface{
         $department->description = $request->get('description');
         $department->abbreviation = $request->get('abbreviation');
         $department->unit_category_id = $request->get('unit_category_id');
-        $department->campus_id = $request->get('campus_id');
         $department->save();
+
+        $department->campuses()->sync($request->get('campuses'));
 	}
 
 	public function update(Request $request){
@@ -24,7 +25,8 @@ class DepartmentAction implements DepartmentInterface{
         $department->description = $request->get('description');
         $department->abbreviation = $request->get('abbreviation');
         $department->unit_category_id = $request->get('unit_category_id');
-        $department->campus_id = $request->get('campus_id');
         $department->save();
+
+        $department->campuses()->sync($request->get('campuses'));
 	}
 }

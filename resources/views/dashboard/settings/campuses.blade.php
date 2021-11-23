@@ -48,7 +48,7 @@
               <!-- form start -->
               @php
                   $name = [
-                     'placeholder'=>'Campus name',
+                     'placeholder'=>'Name',
                      'class'=>'form-control',
                      'required'=>true
                   ];
@@ -81,7 +81,7 @@
                 <div class="card-body">
                   <div class="row">
                   <div class="form-group col-8">
-                    {!! Form::label('','Campus name') !!}
+                    {!! Form::label('','Name') !!}
                     {!! Form::text('name',null,$name) !!}
                   </div>
                   <div class="form-group col-4">
@@ -95,7 +95,7 @@
                     {!! Form::text('phone',null,$phone) !!}
                   </div>
                   <div class="form-group col-6">
-                    {!! Form::label('','Abbreviation') !!}
+                    {!! Form::label('','Email') !!}
                     {!! Form::email('email',null,$email) !!}
                   </div>
                  </div>
@@ -147,7 +147,7 @@
             @if(count($campuses) != 0)
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">{{ __('Campuses') }}</h3>
+                <h3 class="card-title">{{ __('List of Campuses') }}</h3>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
@@ -168,7 +168,7 @@
                       <a class="btn btn-info btn-sm" href="{{ url('academic/campus/'.$campus->id.'/campus-programs') }}">
                               <i class="fas fa-plus">
                               </i>
-                              Assign Programs
+                              Assign Programmes
                        </a>
 
                       <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-edit-campus-{{ $campus->id }}">
@@ -192,7 +192,7 @@
 
                                      <div class="row">
                   <div class="form-group col-8">
-                    {!! Form::label('','Campus name') !!}
+                    {!! Form::label('','Name') !!}
                     {!! Form::text('name',$campus->name,$name) !!}
 
                     {!! Form::input('hidden','campus_id',$campus->id) !!}
@@ -208,7 +208,7 @@
                     {!! Form::text('phone',$campus->phone,$phone) !!}
                   </div>
                   <div class="form-group col-6">
-                    {!! Form::label('','Abbreviation') !!}
+                    {!! Form::label('','Email') !!}
                     {!! Form::email('email',$campus->email,$email) !!}
                   </div>
                  </div>

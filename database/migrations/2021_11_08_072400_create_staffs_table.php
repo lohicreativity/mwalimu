@@ -15,30 +15,30 @@ class CreateStaffsTable extends Migration
     {
         Schema::create('staffs', function (Blueprint $table) {
             $table->id();
-            $table->string('title',10)->nullable();
+            $table->string('title',10);
             $table->string('first_name');
-            $table->string('middle_name')->nullable();
+            $table->string('middle_name');
             $table->string('surname');
             $table->string('gender',2);
-            $table->date('birth_date')->nullable();
+            $table->date('birth_date');
             $table->text('qualification')->nullable();
             $table->string('category');
             $table->string('phone');
             $table->string('email');
             $table->string('address');
             $table->string('nin');
-            $table->string('pf_number')->nullable();
-            $table->string('vote_number')->nullable();
-            $table->string('check_number')->nullable();
-            $table->string('block')->nullable();
-            $table->string('room')->nullable();
-            $table->string('floor')->nullable();
+            $table->string('pf_number');
+            $table->string('vote_number');
+            $table->string('check_number');
+            $table->string('block');
+            $table->string('room');
+            $table->string('floor');
             $table->string('schedule')->default('FULLTIME');
-            $table->unsignedBigInteger('country_id')->nullable();
-            $table->unsignedBigInteger('region_id')->nullable();
-            $table->unsignedBigInteger('district_id')->nullable();
-            $table->string('street')->nullable();
-            $table->unsignedBigInteger('ward_id')->nullable();
+            $table->unsignedBigInteger('country_id');
+            $table->unsignedBigInteger('region_id');
+            $table->unsignedBigInteger('district_id');
+            $table->unsignedBigInteger('ward_id');
+            $table->string('street');
             $table->unsignedBigInteger('designation_id');
             $table->unsignedBigInteger('campus_id');
             $table->unsignedBigInteger('disability_status_id');
@@ -46,14 +46,15 @@ class CreateStaffsTable extends Migration
             $table->string('image')->nullable();
             $table->unsignedBigInteger('user_id');
             $table->timestamps();
+            $table->softDeletes();
 
-            $table->foreign('designation_id')->references('id')->on('designations')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('designation_id')->references('id')->on('designations')->onUpdate('cascade');
 
-            $table->foreign('campus_id')->references('id')->on('campuses')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('campus_id')->references('id')->on('campuses')->onUpdate('cascade');
 
-            $table->foreign('disability_status_id')->references('id')->on('disability_statuses')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('disability_status_id')->references('id')->on('disability_statuses')->onUpdate('cascade');
 
-            $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade');
         });
     }
 
