@@ -1,109 +1,109 @@
-@extends('layouts.app')
-
-@section('content')
-
-<div class="wrapper">
-
-  <!-- Preloader -->
-  <div class="preloader flex-column justify-content-center align-items-center">
-    <img class="animation__shake" src="{{ asset('dist/img/logo.png') }}" alt="{{ Config::get('constants.SITE_NAME') }}" height="60" width="60">
-  </div>
-
-  @include('layouts.auth-header')
-
-  @include('layouts.sidebar')
-
-  <!-- Content Wrapper. Contains page content -->
-  <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
-      <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-6">
-            <h1>{{ __('Streams and Groups') }}</h1>
-          </div>
-          <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">{{ __('Streams and Groups') }}</li>
-            </ol>
-          </div>
-        </div>
-      </div><!-- /.container-fluid -->
-    </section>
-
-    <!-- Main content -->
-    <section class="content">
-      <div class="container-fluid">
-        <div class="row">
-          <div class="col-12">
-
-            <div class="card">
-              <div class="card-header">
-                <h3 class="card-title">{{ __('Select Study Academic Year') }}</h3>
-              </div>
-              <!-- /.card-header -->
-              <div class="card-body">
-                 {!! Form::open(['url'=>'academic/streams','class'=>'ss-form-processing','method'=>'GET']) !!}
-                   
-                   <div class="form-group">
-                    <select name="study_academic_year_id" class="form-control" required>
-                       <option value="">Select Study Academic Year</option>
-                       @foreach($study_academic_years as $year)
-                       <option value="{{ $year->id }}">{{ $year->academicYear->year }}</option>
-                       @endforeach
-                    </select>
-                     
-                  </div>
-                  <div class="ss-form-actions">
-                   <button type="submit" class="btn btn-primary">{{ __('Search') }}</button>
-                  </div>
-
-                 {!! Form::close() !!}
-              </div>
-            </div>
-            <!-- /.card -->
-
-
-          @if(count($campus_programs) != 0 && $study_academic_year)
-            <div class="card">
-              <div class="card-header">
-                <h3 class="card-title">{{ __('Select Study Academic Year') }}</h3>
-              </div>
-              <!-- /.card-header -->
-              <div class="card-body">
-                 <table class="table table-bordered">
-                   <thead>
-                      <tr>
-                        <th>Program</th>
-                        <th>Streams</th>
-                        <th>Groups</th>
-                      </tr>
-                   </thead>
-                   <tbody>
-                    @foreach($campus_programs as $cp)
-
-                      @for($i = 1; $i <= $cp->program->min_duration; $i)
-                          @php
-                            $stream_created = false;
-                          @endphp
-                      <tr>
+ @extends('layouts.app')
+ 
+ @section('content')
+ 
+ <div class="wrapper">
+ 
+   <!-- Preloader -->
+   <div class="preloader flex-column justify-content-center align-items-center">
+     <img class="animation__shake" src="{{ asset('dist/img/logo.png') }}" alt="{{ Config::get('constants.SITE_NAME') }}" height="60" width="60">
+   </div>
+ 
+   @include('layouts.auth-header')
+ 
+   @include('layouts.sidebar')
+ 
+   <!-- Content Wrapper. Contains page content -->
+   <!-- Content Wrapper. Contains page content -->
+   <div class="content-wrapper">
+     <!-- Content Header (Page header) -->
+     <section class="content-header">
+       <div class="container-fluid">
+         <div class="row mb-2">
+           <div class="col-sm-6">
+             <h1>{{ __('Streams and Groups') }}</h1>
+           </div>
+           <div class="col-sm-6">
+             <ol class="breadcrumb float-sm-right">
+               <li class="breadcrumb-item"><a href="#">Home</a></li>
+               <li class="breadcrumb-item active">{{ __('Streams and Groups') }}</li>
+             </ol>
+           </div>
+         </div>
+       </div><!-- /.container-fluid -->
+     </section>
+ 
+     <!-- Main content -->
+     <section class="content">
+       <div class="container-fluid">
+         <div class="row">
+           <div class="col-12">
+ 
+             <div class="card">
+               <div class="card-header">
+                 <h3 class="card-title">{{ __('Select Study Academic Year') }}</h3>
+               </div>
+               <!-- /.card-header -->
+               <div class="card-body">
+                  {!! Form::open(['url'=>'academic/streams','class'=>'ss-form-processing','method'=>'GET']) !!}
+                    
+                    <div class="form-group">
+                     <select name="study_academic_year_id" class="form-control" required>
+                        <option value="">Select Study Academic Year</option>
+                        @foreach($study_academic_years as $year)
+                        <option value="{{ $year->id }}">{{ $year->academicYear->year }}</option>
+                        @endforeach
+                     </select>
+                      
+                   </div>
+                   <div class="ss-form-actions">
+                    <button type="submit" class="btn btn-primary">{{ __('Search') }}</button>
+                   </div>
+ 
+                  {!! Form::close() !!}
+               </div>
+             </div>
+             <!-- /.card -->
+ 
+ 
+           @if(count($campus_programs) != 0 && $study_academic_year)
+             <div class="card">
+               <div class="card-header">
+                 <h3 class="card-title">{{ __('Select Study Academic Year') }}</h3>
+               </div>
+               <!-- /.card-header -->
+               <div class="card-body">
+                  <table class="table table-bordered">
+                    <thead>
+                       <tr>
+                         <th>Program</th>
+                         <th>Streams</th>
+                         <th>Groups</th>
+                       </tr>
+                    </thead>
+                    <tbody>
+                     @foreach($campus_programs as $cp)
+ 
+                       @for($i = 1; $i <= $cp->program->min_duration; $i++)
+                           @php
+                             $stream_created = false;
+                           @endphp
+                       <tr>
                         <td>{{ $cp->program->name }}_Year_{{ $i }}
-                         @foreach($study_academic_year->streams as $stream)
-                            @if($stream->campus_program_id == $cp->id && $stream->year_of_study == $i)
-                            @php
-                              $stream_created = true;
-                            @endphp
-                            @endif
-                          @endforeach
-                          @if($stream_created)
+                          @foreach($study_academic_year->streams as $stream)
+                             @if($stream->campus_program_id == $cp->id && $stream->year_of_study == $i)
+                             @php
+                               $stream_created = true;
+                             @endphp
+                             @endif
+                           @endforeach
+                           @if($stream_created)
                           <p><a href="{{ url('academic/stream-reset?year_of_study='.$i.'&campus_program_id='.$cp->id.'&study_academic_year_id='.$study_academic_year->id) }}">{{ __('Reset Streams') }}</a></p>
-                          @endif
-                        </td>
-                        <td>
+                           @endif
+                         </td>
+                         <td>   
 
-                        @foreach($study_academic_year->streams as $stream)
+                           @foreach($study_academic_year->streams as $stream)
                             @if($stream->campus_program_id == $cp->id && $stream->year_of_study == $i)
                             <p class="ss-no-margin">Stream_{{ $stream->name }}_({{ $stream->number_of_students }})</p>
                             <a class="ss-font-xs ss-color-danger" href="{{ url('academic/stream/'.$stream->id.'/destroy') }}">Delete</a><br>
@@ -113,7 +113,7 @@
                              @php
                                $stream_created = true;
                              @endphp
-                             @endif
+                            @endif
 
                             <div class="modal fade" id="ss-add-group-{{ $i }}-{{ $stream->id }}">
                         <div class="modal-dialog modal-lg">
@@ -130,9 +130,16 @@
                                     <div class="form-group">
                                       {!! Form::label('','Number of groups') !!}
                                       <select name="number_of_groups" class="form-control" required>
-                                        @for($j = 1; $j <= 10; $j)
-                                         <option value="{{ $j }}">{{ $j }}</option>
-                                        @endfor
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                        <option value="6">6</option>
+                                        <option value="7">7</option>
+                                        <option value="8">8</option>
+                                        <option value="9">9</option>
+                                        <option value="10">10</option>
                                       </select>
 
                                       {!! Form::input('hidden','campus_program_id',$cp->id) !!}
@@ -179,9 +186,16 @@
                                      <div class="form-group">
                                        {!! Form::label('','Number of streams') !!}
                                        <select name="number_of_streams" class="form-control" required>
-                                         @for($j = 1; $j <= 10; $j)
-                                          <option value="{{ $j }}">{{ $j }}</option>
-                                         @endfor
+                                         <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                        <option value="6">6</option>
+                                        <option value="7">7</option>
+                                        <option value="8">8</option>
+                                        <option value="9">9</option>
+                                        <option value="10">10</option>
                                        </select>
  
                                        {!! Form::input('hidden','campus_program_id',$cp->id) !!}
@@ -222,48 +236,47 @@
                             @endif
                           @endforeach
                          </td>
--                        <td></td>
                        </tr>
                        @endfor
                      @endforeach
-                   </tbody>
-                 </table>
-              </div>
-            </div>
-            <!-- /.card -->
-
-            @else
-
-           
-            <div class="card">
-              <div class="card-header">
-                <h3 class="card-title">{{ __('No Campus Program Streams Created') }}</h3>
-              </div>
-              <!-- /.card-header -->
-              <div class="card-body">
-              </div>
-            </div>
-            <!-- /.card -->
-            @endif
-
-          </div>
-          <!-- /.col -->
-        </div>
-        <!-- /.row -->
-      </div>
-      <!-- /.container-fluid -->
-    </section>
-    <!-- /.content -->
-  </div>
-  <!-- /.content-wrapper -->
-  @include('layouts.footer')
-
-  <!-- Control Sidebar -->
-  <aside class="control-sidebar control-sidebar-dark">
-    <!-- Control sidebar content goes here -->
-  </aside>
-  <!-- /.control-sidebar -->
-</div>
-<!-- ./wrapper -->
-
-@endsection
+                    </tbody>
+                  </table>
+               </div>
+             </div>
+             <!-- /.card -->
+ 
+             @else
+ 
+            
+             <div class="card">
+               <div class="card-header">
+                 <h3 class="card-title">{{ __('No Campus Program Streams Created') }}</h3>
+               </div>
+               <!-- /.card-header -->
+               <div class="card-body">
+               </div>
+             </div>
+             <!-- /.card -->
+             @endif
+ 
+           </div>
+           <!-- /.col -->
+         </div>
+         <!-- /.row -->
+       </div>
+       <!-- /.container-fluid -->
+     </section>
+     <!-- /.content -->
+   </div>
+   <!-- /.content-wrapper -->
+   @include('layouts.footer')
+ 
+   <!-- Control Sidebar -->
+   <aside class="control-sidebar control-sidebar-dark">
+     <!-- Control sidebar content goes here -->
+   </aside>
+   <!-- /.control-sidebar -->
+ </div>
+ <!-- ./wrapper -->
+ 
+ @endsection

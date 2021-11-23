@@ -15,19 +15,19 @@ use Validator;
 class StreamController extends Controller
 {
     /**
-     * Display program streams
-     */
-    public function index(Request $request)
-    {
-    	$data = [
-           'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
-           'study_academic_year'=>$request->has('study_academic_year_id')? StudyAcademicYear::with(['academicYear','streams'=>function($query) use ($request){
-                  $query->where('study_academic_year_id',$request->get('study_academic_year_id'));
-               },'streams.groups','campusPrograms'])->find($request->get('study_academic_year_id')) : null,
-           'campus_programs'=>CampusProgram::with(['program','campus'])->get()
-    	];
-    	return view('dashboard.academic.streams-and-groups',$data)->withTitle('Streams and Groups');
-    }
+      * Display program streams
+      */
+     public function index(Request $request)
+     {
+     	$data = [
+            'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
+            'study_academic_year'=>$request->has('study_academic_year_id')? StudyAcademicYear::with(['academicYear','streams'=>function($query) use ($request){
+                   $query->where('study_academic_year_id',$request->get('study_academic_year_id'));
+                },'streams.groups','campusPrograms'])->find($request->get('study_academic_year_id')) : null,
+            'campus_programs'=>CampusProgram::with(['program','campus'])->get()
+     	];
+     	return view('dashboard.academic.streams-and-groups',$data)->withTitle('Streams and Groups');
+     }
 
     /**
      * Store streams into database

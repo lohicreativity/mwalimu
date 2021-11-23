@@ -17,6 +17,7 @@ class StreamComponentController extends Controller
      */
     public function index(Request $request)
     {
+    	try{
     	$data = [
            'study_academic_year'=>$request->has('study_academic_year_id')? StudyAcademicYear::with(['academicYear','streamComponents'=>function($query) use ($request){
                   $query->where('study_academic_year_id',$request->get('study_academic_year_id'));
@@ -25,6 +26,9 @@ class StreamComponentController extends Controller
            'component'=>StreamComponent::find($request->get('stream_component_id'))
     	];
     	return view('dashboard.academic.stream-components',$data)->withTitle('Stream Components');
+        }catch(\Exception $e){
+        	return $e->getMessage();
+        }
     }
 
 
