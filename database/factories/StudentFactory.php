@@ -27,7 +27,7 @@ class StudentFactory extends Factory
             'applicant_id'=>$this->faker->numberBetween(1,100),
             'studentship_status_id'=>$this->faker->numberBetween(1,5),
             'academic_status_id'=>$this->faker->numberBetween(1,6),
-            'registration_number'=>$this->faker->numberBetween(100000,999999),
+            'registration_number'=>$this->faker->unique()->numberBetween(1000000,9999999),
             'entry_mode'=>'DIRECT',
             'registration_year'=>$this->faker->numberBetween(2012,2021),
             'study_academic_year_id'=>$this->faker->numberBetween(1,2),
