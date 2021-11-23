@@ -39,8 +39,8 @@ class ProgramsTableSeeder extends Seeder
                 'award_id'=>2,
                 'created_at'=>now(),
                 'updated_at'=>now()
--            ]
             ],
+
             [
                'name'=>'Ordinary Diploma In Economics Development',
                'code'=>'ODED',
