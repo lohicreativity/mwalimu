@@ -21,12 +21,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>{{ __('Campus Program Streams') }}</h1>
+            <h1>{{ __('Streams and Groups') }}</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">{{ __('Campus Program Streams') }}</li>
+              <li class="breadcrumb-item active">{{ __('Streams and Groups') }}</li>
             </ol>
           </div>
         </div>
@@ -84,7 +84,7 @@
                    <tbody>
                     @foreach($campus_programs as $cp)
 
-                      @for($i = 1; $i <= $cp->program->min_duration; $i++)
+                      @for($i = 1; $i <= $cp->program->min_duration; $i)
                           @php
                             $stream_created = false;
                           @endphp
@@ -103,17 +103,17 @@
                         </td>
                         <td>
 
-                          @foreach($study_academic_year->streams as $stream)
+                        @foreach($study_academic_year->streams as $stream)
                             @if($stream->campus_program_id == $cp->id && $stream->year_of_study == $i)
                             <p class="ss-no-margin">Stream_{{ $stream->name }}_({{ $stream->number_of_students }})</p>
                             <a class="ss-font-xs ss-color-danger" href="{{ url('academic/stream/'.$stream->id.'/destroy') }}">Delete</a><br>
                             @if(count($stream->groups) == 0)
                             <a class="ss-font-xs" href="#" data-toggle="modal" data-target="#ss-add-group-{{ $i }}-{{ $stream->id }}">Create Groups</a>
                             @endif
-                            @php
-                              $stream_created = true;
-                            @endphp
-                            @endif
+                             @php
+                               $stream_created = true;
+                             @endphp
+                             @endif
 
                             <div class="modal fade" id="ss-add-group-{{ $i }}-{{ $stream->id }}">
                         <div class="modal-dialog modal-lg">
@@ -130,7 +130,7 @@
                                     <div class="form-group">
                                       {!! Form::label('','Number of groups') !!}
                                       <select name="number_of_groups" class="form-control" required>
-                                        @for($j = 1; $j <= 10; $j++)
+                                        @for($j = 1; $j <= 10; $j)
                                          <option value="{{ $j }}">{{ $j }}</option>
                                         @endfor
                                       </select>
@@ -157,51 +157,52 @@
                       </div>
                       <!-- /.modal -->
 
-                          @endforeach
-                            
-                          @if(!$stream_created)
-                          <a href="#" data-toggle="modal" data-target="#ss-add-stream-{{ $i }}-{{ $cp->id }}">Create Streams</a></a>
-                          @endif
+                           @endforeach
+                             
+                           @if(!$stream_created)
+                           <a href="#" data-toggle="modal" data-target="#ss-add-stream-{{ $i }}-{{ $cp->id }}">Create Streams</a></a>
+                           @endif
+ 
+                           <div class="modal fade" id="ss-add-stream-{{ $i }}-{{ $cp->id }}">
+                         <div class="modal-dialog modal-lg">
+                           <div class="modal-content">
+                             <div class="modal-header">
+                               <h4 class="modal-title">Create Streams</h4>
+                               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                 <span aria-hidden="true">&times;</span>
+                               </button>
+                             </div>
+                             <div class="modal-body">
 
-                          <div class="modal fade" id="ss-add-stream-{{ $i }}-{{ $cp->id }}">
-                        <div class="modal-dialog modal-lg">
-                          <div class="modal-content">
-                            <div class="modal-header">
-                              <h4 class="modal-title">Create Streams</h4>
-                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                              </button>
-                            </div>
-                            <div class="modal-body">
-                                {!! Form::open(['url'=>'academic/stream-component/store','class'=>'ss-form-processing']) !!}
-
-                                    <div class="form-group">
-                                      {!! Form::label('','Number of streams') !!}
-                                      <select name="number_of_streams" class="form-control" required>
-                                        @for($j = 1; $j <= 10; $j++)
-                                         <option value="{{ $j }}">{{ $j }}</option>
-                                        @endfor
-                                      </select>
-
-                                      {!! Form::input('hidden','campus_program_id',$cp->id) !!}
-                                      {!! Form::input('hidden','study_academic_year_id',$study_academic_year->id) !!}
-                                      {!! Form::input('hidden','year_of_study',$i) !!}
-                                    </div>
-                                      <div class="ss-form-actions">
-                                       <button type="submit" class="btn btn-primary">{{ __('Create Streams') }}</button>
-                                      </div>
-                                {!! Form::close() !!}
-
-                            </div>
-                            <div class="modal-footer justify-content-between">
-                              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                            </div>
-                          </div>
-                          <!-- /.modal-content -->
-                        </div>
-                        <!-- /.modal-dialog -->
-                      </div>
-                      <!-- /.modal -->
+                                 {!! Form::open(['url'=>'academic/stream-component/store','class'=>'ss-form-processing']) !!}
+ 
+                                     <div class="form-group">
+                                       {!! Form::label('','Number of streams') !!}
+                                       <select name="number_of_streams" class="form-control" required>
+                                         @for($j = 1; $j <= 10; $j)
+                                          <option value="{{ $j }}">{{ $j }}</option>
+                                         @endfor
+                                       </select>
+ 
+                                       {!! Form::input('hidden','campus_program_id',$cp->id) !!}
+                                       {!! Form::input('hidden','study_academic_year_id',$study_academic_year->id) !!}
+                                       {!! Form::input('hidden','year_of_study',$i) !!}
+                                     </div>
+                                       <div class="ss-form-actions">
+                                        <button type="submit" class="btn btn-primary">{{ __('Create Streams') }}</button>
+                                       </div>
+                                 {!! Form::close() !!}
+ 
+                             </div>
+                             <div class="modal-footer justify-content-between">
+                               <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                             </div>
+                           </div>
+                           <!-- /.modal-content -->
+                         </div>
+                         <!-- /.modal-dialog -->
+                       </div>
+                       <!-- /.modal -->
                        
                            
                                
@@ -220,10 +221,11 @@
                             @endforeach
                             @endif
                           @endforeach
-                        </td>
-                      </tr>
-                      @endfor
-                    @endforeach
+                         </td>
+-                        <td></td>
+                       </tr>
+                       @endfor
+                     @endforeach
                    </tbody>
                  </table>
               </div>

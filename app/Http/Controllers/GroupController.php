@@ -19,7 +19,7 @@ class GroupController extends Controller
             $stream = Stream::find($request->get('stream_id'));
             $group_stud_quotient = intdiv($stream->number_of_students,$request->get('number_of_groups'));
             $group_stud_remainder = $stream->number_of_students%$request->get('number_of_groups');
-            for($i = 1; $i <= $request->get('number_of_groups'); $i++){
+            for($i = 1; $i <= $request->get('number_of_groups'); $i){
             	switch ($i) {
                           case 1:
                                   $str = 'A';
@@ -68,7 +68,7 @@ class GroupController extends Controller
             	if($i == 1){
                    $rm_group = new Group;
                    $rm_group->name = $str;
-            	   $rm_group->number_of_students = $group_stud_remainder+$group_stud_quotient;
+            	   $rm_group->number_of_students = $group_stud_remainder$group_stud_quotient;
             	   $rm_group->stream_id = $stream->id;
             	   $rm_group->save();
             	}else{
@@ -102,7 +102,7 @@ class GroupController extends Controller
             foreach($remaining_groups as $key=>$gr){
             	if($key == 0){
                    $rm_group = Group::find($gr->id);
-            	   $rm_group->number_of_students = $group_stud_remainder+$group_stud_quotient;
+            	   $rm_group->number_of_students = $group_stud_remainder$group_stud_quotient;
             	   $rm_group->save();
             	}else{
                    $rm_group = Group::find($gr->id);

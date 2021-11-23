@@ -11,10 +11,9 @@ use App\Domain\Academic\Repositories\Interfaces\StreamInterface;
 class StreamAction implements StreamInterface{
 	
 	public function store(Request $request){
-             
+              
              $component = StreamComponent::find($request->get('stream_component_id'));
-
-             for($i = 1; $i <= $component->number_of_streams; $i++){
+             for($i = 1; $i <= $component->number_of_streams; $i){
                   
                      $stream = new Stream;
                      $stream->name = $request->get('name_'.$i.'_component_'.$component->id);
@@ -23,12 +22,10 @@ class StreamAction implements StreamInterface{
                      $stream->study_academic_year_id = $component->study_academic_year_id;
                      $stream->number_of_students = $request->get('number_'.$i.'_component_'.$component->id);
                      $stream->stream_component_id = $component->id;
-                     $stream->save();
-
-                     
+                      $stream->save();
+                      
                      Registration::where('year_of_study',$component->year_of_study)->where('study_academic_year_id',$component->study_academic_year_id)->where('stream_id',0)->take($request->get('number_'.$i.'_component_'.$component->id))->update(['stream_id'=>$stream->id]);
-
-             }
-	     
-	}
+              }
+         
+    }
 }
