@@ -47,7 +47,7 @@
               <div class="card-header">
                 <h3 class="card-title">{{ __('List of Modules') }} - Year {{ $student->year_of_study }} - {{ $semester->name }} - @if(count($semester->electivePolicies) != 0) ({{ $semester->electivePolicies[0]->number_of_options }} Options Maximum) @endif
 
-                 @if(count($semester->electiveDeadlines) != 0) - Option Deadline {{ $semester->electiveDeadlines[0]->deadline }}  @endif</h3>
+                 @if(count($semester->electiveDeadlines) != 0) - <span class="ss-color-danger">Option Deadline {{ $semester->electiveDeadlines[0]->deadline }} </span> @endif</h3>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
@@ -79,7 +79,8 @@
                            @if(!App\Utils\Util::collectionContains($options,$assignment))
                             <a href="{{ url('student/module/'.$assignment->id.'/opt') }}" class="btn btn-primary"><i class="fa fa-check-circle"></i> Opt</a>
                           @else
-                            <p class="ss-no-margin"><span class="badge badge-info">OPTED</span> <a href="{{ url('student/module/'.$assignment->id.'/reset-option') }}" class="ss-color-danger ss-right ss-font-xs">Reset Option</a></p>
+                            <p class="ss-no-margin"><span class="badge badge-info">OPTED</span> @if(count($semester->electiveDeadlines) != 0) @if(strtotime(now()->format('Y-m-d')) <= strtotime($semester->electiveDeadlines[0]->deadline))<a href="{{ url('student/module/'.$assignment->id.'/reset-option') }}" class="ss-color-danger ss-right ss-font-xs">Reset Option</a> @endif
+                            @endif</p>
                           @endif
                           @else
                             <p class="ss-no-margin">{{ $assignment->category }}</p>

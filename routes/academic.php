@@ -67,7 +67,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 	Route::get('staff-module-assignments', [ModuleAssignmentController::class,'showStaffAssignedModules']);
 	Route::get('staff-module-assignment/{id}/assessment-plans', [ModuleAssignmentController::class,'showAssessmentPlans']);
 	Route::get('staff-module-assignment/{id}/syllabus', [ModuleAssignmentController::class,'showSyllabus']);
-	Route::get('staff-module-assignment/{id}/module-attendance', [ModuleAssignmentController::class,'showModuleAttendance']);
+	Route::get('staff-module-assignment/{id}/attendance', [ModuleAssignmentController::class,'showAttendance']);
 	Route::get('staff-module-assignment/{id}/results', [ModuleAssignmentController::class,'showResultsUpload']);
 	Route::post('staff-module-assignment/{id}/results/compute-course-work', [ModuleAssignmentController::class,'computeCourseWork']);
 	Route::post('staff-module-assignment/results/compute-results', [ModuleAssignmentController::class,'computeResults']);

@@ -12,7 +12,7 @@ use App\Domain\Academic\Models\CourseWorkComponent;
 use App\Domain\HumanResources\Models\Staff;
 use App\Domain\Academic\Actions\ModuleAssignmentAction;
 use App\Utils\Util;
-use Validator, Auth;
+use Validator, Auth, PDF;
 
 class ModuleAssignmentController extends Controller
 {
@@ -66,6 +66,25 @@ class ModuleAssignmentController extends Controller
         }catch(\Exception $e){
            return redirect()->back()->with('error','Unable to get the resource specified in this request');
         }
+    }
+
+    /**
+     * Show module attendance
+     */
+    public function showAttendance(Request $request, $id)
+    {
+         try{
+             $module_assignment = ModuleAssignment::with(['programModuleAssignment'])->findOrFail($id);
+             if($module_assignment->programModuleAssignment->category == 'OPTIONAL'){
+                 $pdf = PDF::loadView('dashboard.academic.reports.students-in-stream', $data)->setPaper('a4','landscape');
+                 return $pdf->stream();
+             }else{
+                 $pdf = PDF::loadView('dashboard.academic.reports.students-in-stream', $data)->setPaper('a4','landscape');
+                 return $pdf->stream();
+             }
+         }catch(\Exception $e){
+             return redirect()->back()->with('error','Unable to get the resource specified in this request');
+         }
     }
 
     /**

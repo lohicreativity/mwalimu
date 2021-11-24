@@ -490,7 +490,7 @@ $('.ss-add-to-cart-').keypress(function(e){
 });
 
 // Load regions
-$('#ss-select-countries').on('change',function(e){
+$('#ss-select-countries, .ss-select-countries').on('change',function(e){
     $.ajax({
       method:'POST',
       url:$(e.target).data('source-url'),
@@ -510,7 +510,7 @@ $('#ss-select-countries').on('change',function(e){
 });
 
 // Load districts
-$('#ss-select-regions').on('change',function(e){
+$('#ss-select-regions, .ss-select-regions').on('change',function(e){
     $.ajax({
       method:'POST',
       url:$(e.target).data('source-url'),
@@ -530,7 +530,7 @@ $('#ss-select-regions').on('change',function(e){
 });
 
 // Load wards
-$('#ss-select-districts').on('change',function(e){
+$('#ss-select-districts, .ss-select-districts').on('change',function(e){
     $.ajax({
       method:'POST',
       url:$(e.target).data('source-url'),
