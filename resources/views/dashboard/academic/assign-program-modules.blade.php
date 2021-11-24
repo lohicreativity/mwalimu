@@ -80,7 +80,7 @@
                     <div class="form-group col-4">
                     {!! Form::label('','Category') !!}
                     <select name="category" class="form-control" required>
-                       <option value="CORE">Core</option>
+                       <option value="COMPULSORY">Compulsory</option>
                        <option value="OPTIONAL">Optional</option>
                     </select>
                     </div>
