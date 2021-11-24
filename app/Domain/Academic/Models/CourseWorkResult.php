@@ -16,14 +16,6 @@ class CourseWorkResult extends Model
      */
     public function student()
     {
-    	return $this->belongsTo(App\Domain\Registration\Models\Student::class,'student_id');
-    }
-
-    /**
-     * Establish one to many relationship with examinations
-     */
-    public function examination()
-    {
-    	return $this->belongsTo(App\Domain\Academic\Models\Examination::class,'examination_id');
+    	return $this->belongsTo(Student::class,'student_id');
     }
 }

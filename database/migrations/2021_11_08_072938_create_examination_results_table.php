@@ -19,10 +19,16 @@ class CreateExaminationResultsTable extends Migration
             $table->unsignedBigInteger('module_assignment_id');
             $table->decimal('course_work_score')->default(0.00);
             $table->decimal('final_score')->default(0.00);
+            $table->decimal('total_score')->default(0.00);
+            $table->string('exam_type')->default('FINAL');
+            $table->string('grade',10)->nullable();
+            $table->string('remark',20)->nullable();
+            $table->unsignedBigInteger('uploaded_by_user_id');
             $table->timestamps();
 
             $table->foreign('student_id')->references('id')->on('students')->onUpdate('cascade');
             $table->foreign('module_assignment_id')->references('id')->on('module_assignments')->onUpdate('cascade');
+            $table->foreign('uploaded_by_user_id')->references('id')->on('users')->onUpdate('cascade');
         });
     }
 

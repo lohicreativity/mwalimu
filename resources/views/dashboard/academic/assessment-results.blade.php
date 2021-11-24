@@ -27,6 +27,7 @@
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
               <li class="breadcrumb-item"><a href="{{ url('academic/staff-module-assignments') }}">{{ __('Module Assignment') }}</a></li>
+              <li class="breadcrumb-item"><a href="{{ url('academic/staff-module-assignment/'.$module_assignment->id.'/assessment-plans') }}">{{ __('Assessment Plans') }}</a></li>
               <li class="breadcrumb-item"><a href="{{ url('academic/staff-module-assignment/'.$module_assignment->id.'/syllabus') }}">{{ __('Syllabus') }}</a></li>
               <li class="breadcrumb-item active">{{ __('Results') }}</li>
             </ol>
@@ -54,27 +55,20 @@
                   <div class="row">
                   <div class="form-group col-6">
                     {!! Form::label('','Assessment') !!}
-                    <select name="assessment" class="form-control" required>
+                    <select name="assessment_plan_id" class="form-control" required>
                       <option value="">Select Assessment</option>
                       @foreach($module_assignment->assessmentPlans as $plan)
                       <option value="{{ $plan->id }}">{{ $plan->name }}</option>
                       @endforeach
                       <option value="FINAL_EXAM">Final Exam</option>
+                      <option value="SUPPLEMENTARY">Supplementary Exam</option>
                     </select>
 
                     {!! Form::input('hidden','module_assignment_id',$module_assignment->id) !!}
                   </div>
                   <div class="form-group col-6">
                     {!! Form::label('','Upload results') !!}
-                    <div class="input-group">
-                      <div class="custom-file">
-                        <input type="file" class="custom-file-input" id="exampleInputFile">
-                        <label class="custom-file-label" for="exampleInputFile">Choose file</label>
-                      </div>
-                      <div class="input-group-append">
-                        <span class="input-group-text">Upload</span>
-                      </div>
-                    </div>
+                    {!! Form::file('results_file',['class'=>'form-control','required'=>true]) !!}
                   </div>
                   
                   </div>

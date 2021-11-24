@@ -6,14 +6,20 @@ use Illuminate\Http\Request;
 use App\Domain\Academic\Models\ModuleAssignment;
 use App\Domain\Academic\Models\StudyAcademicYear;
 use App\Domain\Academic\Models\Module;
+use App\Domain\Academic\Models\ResultFile;
 use App\Domain\Settings\Models\Campus;
 use App\Domain\Academic\Models\AssessmentPlan;
 use App\Domain\Academic\Models\CourseWorkComponent;
+use App\Domain\Academic\Models\CourseWorkResult;
+use App\Domain\Academic\Models\ExaminationResult;
+use App\Domain\Academic\Models\CourseWorkResultLog;
+use App\Domain\Academic\Models\ExaminationResultLog;
 use App\Domain\HumanResources\Models\Staff;
 use App\Domain\Registration\Models\Student;
 use App\Domain\Academic\Actions\ModuleAssignmentAction;
 use App\Utils\Util;
-use Validator, Auth, PDF;
+use App\Utils\SystemLocation;
+use Validator, Auth, PDF, DB;
 
 class ModuleAssignmentController extends Controller
 {
@@ -149,7 +155,7 @@ class ModuleAssignmentController extends Controller
          $data = [
             'module_assignment'=>ModuleAssignment::with('assessmentPlans','module')->findOrFail($id),
          ];
-         return view('dashboard.academic.upload-module-assignment-results',$data)->withTitle('Upload Module Assignment Results');
+         return view('dashboard.academic.assessment-results',$data)->withTitle('Upload Module Assignment Results');
     }
 
     /**
@@ -157,7 +163,143 @@ class ModuleAssignmentController extends Controller
      */
     public function uploadResults(Request $request)
     {
+         $validation = Validator::make($request->all(),[
+            'assessment_plan_id'=>'required',
+            'results_file'=>'required|mimes:csv,txt'
+         ],
+         [
+            'assessment_plan_id'=>'Assessment is required'
+         ]);
 
+         if($validation->fails()){
+             if($request->ajax()){
+                return response()->json(array('error_messages'=>$validation->messages()));
+             }else{
+                return redirect()->back()->withInput()->withErrors($validation->messages());
+             }
+         }
+         
+         if($request->hasFile('results_file')){
+          DB::beginTransaction();
+              $module = ModuleAssignment::find($request->get('module_assignment_id'))->module;
+              $destination = SystemLocation::uploadsDirectory();
+              $request->file('results_file')->move($destination, $request->file('results_file')->getClientOriginalName());
+
+              $file_name = SystemLocation::renameFile($destination, $request->file('results_file')->getClientOriginalName(),'csv', $module->code.'_'.Auth::user()->id.'_'.time());
+
+              
+              // Validate clean results
+              $validationStatus = true;
+              $csvFileName = $file_name;
+              $csvFile = public_path('uploads/' . $csvFileName);
+              $file_handle = fopen($csvFile, 'r');
+              while (!feof($file_handle)) {
+                  $line_of_text[] = fgetcsv($file_handle, 0, ',');
+              }
+              fclose($file_handle);
+              foreach($line_of_text as $line){
+                 if(str_replace(' ', '', $line[1]) < 0 || str_replace(' ', '', $line[1]) > 100){
+                   $validationStatus = false;
+                 }
+              }
+
+              if(!$validationStatus){
+                 return redirect()->back()->with('error','Result file contains invalid data');
+              }
+
+              if($request->get('assessment_plan_id') != 'FINAL_EXAM'){
+                  $plan = AssessmentPlan::find($request->get('assessment_id'));
+              }else{
+                  $plan = null;
+              }
+              
+              $file = new ResultFile;
+              $file->file_name = $file_name;
+              $file->extension = $request->file('results_file')->guessClientExtension();
+              $file->mime_type = $request->file('results_file')->getClientMimeType();
+              //$file->size = $request->file('results_file')->getClientSize();
+              $file->module_assignment_id = $request->get('module_assignment_id');
+              $file->filable_id = $plan? $plan->id : 0;
+              $file->filable_type = $plan? 'assessment_plan' : null;
+              $file->uploaded_by_user_id = Auth::user()->id;
+              $file->save();
+
+              $csvFileName = $file_name;
+              $csvFile = public_path('uploads/' . $csvFileName);
+              $file_handle = fopen($csvFile, 'r');
+              while (!feof($file_handle)) {
+                  $line_of_text[] = fgetcsv($file_handle, 0, ',');
+              }
+              fclose($file_handle);
+              foreach($line_of_text as $line){
+                $student = Student::where('registration_number',str_replace(' ', '', $line[1]))->first();
+                if($student){
+                  if($request->get('assessment_plan_id') == 'FINAL_EXAM'){
+                      $result_log = new ExaminationResultLog;
+                      $result_log->module_assignment_id = $request->get('module_assignment_id');
+                      $result_log->student_id = $student->id;
+                      $result_log->final_score = (str_replace(' ', '', $line[1])*$plan->weight)/100;
+                      $result_log->exam_type = 'FINAL';
+                      $result_log->uploaded_by_user_id = Auth::user()->id;
+                      $result_log->save();
+                      
+                      if($res = ExaminationResult::where('module_assignment_id',$request->get('module_assignment_id'))->where('student_id',$student->id)->where('exam_type','FINAL')->first()){
+                          $result = $res;
+                      }else{
+                         $result = new ExaminationResult;
+                      }
+                      $result->module_assignment_id = $request->get('module_assignment_id');
+                      $result->student_id = $student->id;
+                      $result->final_score = (str_replace(' ', '', $line[1])*$plan->weight)/100;
+                      $result->exam_type = 'FINAL';
+                      $result->uploaded_by_user_id = Auth::user()->id;
+                      $result->save();
+                  }elseif($request->get('assessment_plan_id') == 'SUPPLEMENTARY'){
+                      $result_log = new ExaminationResultLog;
+                      $result_log->module_assignment_id = $request->get('module_assignment_id');
+                      $result_log->student_id = $student->id;
+                      $result_log->final_score = (str_replace(' ', '', $line[1])*$plan->weight)/100;
+                      $result_log->exam_type = 'SUP';
+                      $result_log->uploaded_by_user_id = Auth::user()->id;
+                      $result_log->save();
+                      
+                      if($res = ExaminationResult::where('module_assignment_id',$request->get('module_assignment_id'))->where('student_id',$student->id)->where('exam_type','SUP')->first()){
+                          $result = $res;
+                      }else{
+                         $result = new ExaminationResult;
+                      }
+                      $result->module_assignment_id = $request->get('module_assignment_id');
+                      $result->student_id = $student->id;
+                      $result->final_score = (str_replace(' ', '', $line[1])*$plan->weight)/100;
+                      $result->exam_type = 'SUP';
+                      $result->uploaded_by_user_id = Auth::user()->id;
+                      $result->save();
+                  }else{
+                      $result_log = new CourseWorkResultLog;
+                      $result_log->module_assignment_id = $request->get('module_assignment_id');
+                      $result_log->assessment_plan_id = $plan->id;
+                      $result_log->student_id = $student->id;
+                      $result_log->score = (str_replace(' ', '', $line[1])*$plan->weight)/100;
+                      $result_log->uploaded_by_user_id = Auth::user()->id;
+                      $result_log->save();
+                      
+                      if($res = CourseWorkResult::where('module_assignment_id',$request->get('module_assignment_id'))->where('student_id',$student->id)->first()){
+                          $result = $res;
+                      }else{
+                          $result = new CourseWorkResult;
+                      }
+                      $result->module_assignment_id = $request->get('module_assignment_id');
+                      $result->assessment_plan_id = $plan->id;
+                      $result->student_id = $student->id;
+                      $result->score = (str_replace(' ', '', $line[1])*$plan->weight)/100;
+                      $result->uploaded_by_user_id = Auth::user()->id;
+                      $result->save();
+                  }
+                }
+              }
+              DB::commit();
+          }
+          return redirect()->back()->with('message','Results uploaded successfully');
     }
 
     /**

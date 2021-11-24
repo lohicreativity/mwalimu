@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCourseWorkResultsTable extends Migration
+class CreateExaminationResultsLogsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,17 +13,20 @@ class CreateCourseWorkResultsTable extends Migration
      */
     public function up()
     {
-        Schema::create('course_work_results', function (Blueprint $table) {
+        Schema::create('examination_results_logs', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('student_id');
             $table->unsignedBigInteger('module_assignment_id');
-            $table->unsignedBigInteger('assessment_plan_id');
-            $table->decimal('score');
+            $table->decimal('course_work_score')->default(0.00);
+            $table->decimal('final_score')->default(0.00);
+            $table->decimal('total_score')->default(0.00);
+            $table->string('exam_type')->default('FINAL');
+            $table->string('grade',10)->nullable();
+            $table->string('remark',20)->nullable();
             $table->unsignedBigInteger('uploaded_by_user_id');
             $table->timestamps();
 
             $table->foreign('student_id')->references('id')->on('students')->onUpdate('cascade');
-            $table->foreign('assessment_plan_id')->references('id')->on('assessment_plans')->onUpdate('cascade');
             $table->foreign('module_assignment_id')->references('id')->on('module_assignments')->onUpdate('cascade');
             $table->foreign('uploaded_by_user_id')->references('id')->on('users')->onUpdate('cascade');
         });
@@ -36,6 +39,6 @@ class CreateCourseWorkResultsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('course_work_results');
+        Schema::dropIfExists('examination_results_logs');
     }
 }
