@@ -77,7 +77,10 @@
                       <td>
                           @if($assignment->category == 'OPTIONAL')
                            @if(!App\Utils\Util::collectionContains($options,$assignment))
+                            @if(count($semester->electiveDeadlines) != 0) @if(strtotime(now()->format('Y-m-d')) > strtotime($semester->electiveDeadlines[0]->deadline))
                             <a href="{{ url('student/module/'.$assignment->id.'/opt') }}" class="btn btn-primary"><i class="fa fa-check-circle"></i> Opt</a>
+                            @endif
+                            @endif
                           @else
                             <p class="ss-no-margin"><span class="badge badge-info">OPTED</span> @if(count($semester->electiveDeadlines) != 0) @if(strtotime(now()->format('Y-m-d')) <= strtotime($semester->electiveDeadlines[0]->deadline))<a href="{{ url('student/module/'.$assignment->id.'/reset-option') }}" class="ss-color-danger ss-right ss-font-xs">Reset Option</a> @endif
                             @endif</p>
