@@ -165,7 +165,7 @@
                     {!! Form::label('','Module') !!}
                     <select name="module_id" class="form-control" required>
                        <option value="">Select Module</option>
-                       @foreach($modules as $module)
+                       @foreach($inclusive_modules as $module)
                        <option value="{{ $module->id }}" @if($assignment->module_id == $module->id) selected="selected" @endif>{{ $module->name }} - {{ $module->code }}</option>
                        @endforeach
                     </select>

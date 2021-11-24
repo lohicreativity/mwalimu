@@ -54,6 +54,7 @@
                     <th>Module</th>
                     <th>Code</th>
                     <th>Category</th>
+                    <th>Type</th>
                     <th>Semester</th>
                     <th>Actions</th>
                   </tr>
@@ -66,6 +67,7 @@
                       <td>{{ $assignment->module->name }}</td>
                       <td>{{ $assignment->module->code }}</td>
                       <td>{{ $assignment->category }}</td>
+                      <td>{{ $assignment->type }}</td>
                       <td>{{ $assignment->semester->name }}</td>
                       <td>
                           @if($assignment->category == 'OPTIONAL')
