@@ -208,7 +208,7 @@ class ModuleAssignmentController extends Controller
               }
 
               if($request->get('assessment_plan_id') != 'FINAL_EXAM'){
-                  $plan = AssessmentPlan::find($request->get('assessment_id'));
+                  $plan = AssessmentPlan::find($request->get('assessment_plan_id'));
               }else{
                   $plan = null;
               }
@@ -232,7 +232,7 @@ class ModuleAssignmentController extends Controller
               }
               fclose($file_handle);
               foreach($line_of_text as $line){
-                $student = Student::where('registration_number',str_replace(' ', '', $line[1]))->first();
+                $student = Student::where('registration_number',str_replace(' ', '', $line[0]))->first();
                 if($student){
                   if($request->get('assessment_plan_id') == 'FINAL_EXAM'){
                       $result_log = new ExaminationResultLog;

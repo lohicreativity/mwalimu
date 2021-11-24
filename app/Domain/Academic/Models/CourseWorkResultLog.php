@@ -10,7 +10,7 @@ class CourseWorkResultLog extends Model
 {
     use HasFactory;
 
-    protected $table = 'course_works_results_logs';
+    protected $table = 'course_work_results_logs';
 
     /**
      * Establish one to many relationship with students

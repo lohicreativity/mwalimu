@@ -9,7 +9,7 @@ class CourseWorkResult extends Model
 {
     use HasFactory;
 
-    protected $table = 'course_works_results';
+    protected $table = 'course_work_results';
 
     /**
      * Establish one to many relationship with students
