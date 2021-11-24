@@ -82,7 +82,6 @@
                     <select name="category" class="form-control" required>
                        <option value="CORE">Core</option>
                        <option value="OPTIONAL">Optional</option>
-                       <option value="FUNDAMENTAL">Fundamental</option>
                     </select>
                     </div>
                     <div class="form-group col-4">

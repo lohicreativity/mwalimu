@@ -21,7 +21,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>{{ __('Programme Modules') }} - {{ $study_academic_year->academicYear->year }}</h1>
+            <h1>{{ __('Programme Modules') }} @if($study_academic_year) - {{ $study_academic_year->academicYear->year }} @endif</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">

@@ -8,6 +8,7 @@ use App\Domain\Academic\Models\Department;
 use App\Domain\Academic\Models\StudyAcademicYear;
 use App\Domain\Academic\Models\ProgramModuleAssignment;
 use App\Domain\Registration\Models\Registration;
+use App\Domain\Registration\Models\Student;
 use App\Domain\Settings\Models\Campus;
 use App\Domain\Academic\Models\Program;
 use App\Domain\Academic\Actions\CampusProgramAction;
@@ -116,8 +117,8 @@ class CampusProgramController extends Controller
     {
         try{
             $program = CampusProgram::findOrFail($id);
-            if(ProgramModuleAssignment::where('campus_program_id',$program->id)->count() != 0){
-               return redirect()->back()->with('error','Campus program cannot be deleted because it has program mudule assignments');
+            if(ProgramModuleAssignment::where('campus_program_id',$program->id)->count() != 0 || Student::where('campus_program_id',$program->id)->count() != 0){
+               return redirect()->back()->with('error','Campus program cannot be deleted because it has program mudule assignments or students');
             }else{
               $program->delete();
               return redirect()->back()->with('message','Campus program deleted successfully');
