@@ -124,6 +124,7 @@
                   <thead>
                   <tr>
                     <th>Module</th>
+                    <th>Code</th>
                     <th>Year</th>
                     <th>Credits</th>
                     <th>Semester</th>
@@ -136,6 +137,7 @@
                   @foreach($assignments as $assignment)
                   <tr>
                     <td>{{ $assignment->module->name }}</td>
+                    <td>{{ $assignment->module->code }}</td>
                     <td>{{ $assignment->year_of_study }}</td>
                     <td>{{ $assignment->module->credit }}</td>
                     <td>{{ $assignment->semester->name }}</td>
@@ -245,7 +247,7 @@
                               <div class="row">
                                 <div class="col-12">
                                     <div id="ss-confirmation-container">
-                                       <p id="ss-confirmation-text">Are you sure you want to detach this staff from this module?</p>
+                                       <p id="ss-confirmation-text">Are you sure you want to delete this module assignment from this programme?</p>
                                        <div class="ss-form-controls">
                                          <button type="button" class="btn btn-default" data-dismiss="modal">Abort</button>
                                          <a href="{{ url('academic/program-module-assignment/'.$assignment->id.'/destroy') }}" class="btn btn-danger">Delete</a>

@@ -111,6 +111,7 @@
                                   <thead>
                                   <tr>
                                     <th>Module</th>
+                                    <th>Code</th>
                                     <th>Year</th>
                                     <th>Credits</th>
                                     <th>Semester</th>
@@ -122,6 +123,7 @@
                                   @foreach($program->programModuleAssignments as $assignment)
                                   <tr>
                                     <td>{{ $assignment->module->name }}</td>
+                                    <td>{{ $assignment->module->code }}</td>
                                     <td>{{ $assignment->year_of_study }}</td>
                                     <td>{{ $assignment->module->credit }}</td>
                                     <td>{{ $assignment->semester->name }}</td>
