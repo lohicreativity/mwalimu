@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Domain\Academic\Models\ExaminationResult;
 use App\Domain\Academic\Models\CourseWorkResult;
 use App\Domain\Academic\Models\CampusProgram;
+use App\Domain\Academic\Models\ProgramModuleAssignment;
 
 class Student extends Model
 {
@@ -38,6 +39,14 @@ class Student extends Model
     public function campusProgram()
     {
         return $this->belongsTo(CampusProgram::class,'campus_program_id');
+    }
+
+    /**
+     * Establish many to many relationship with program module assignments
+     */
+    public function options()
+    {
+        return $this->belongsToMany(ProgramModuleAssignment::class,'student_program_module_assignment','student_id','program_module_assignment_id');;
     }
 
 }

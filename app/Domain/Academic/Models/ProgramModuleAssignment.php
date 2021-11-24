@@ -4,6 +4,7 @@ namespace App\Domain\Academic\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Domain\Registration\Models\Student;
 
 class ProgramModuleAssignment extends Model
 {
@@ -33,5 +34,13 @@ class ProgramModuleAssignment extends Model
     public function campusProgram()
     {
     	return $this->belongsTo(CampusProgram::class,'campus_program_id');
+    }
+
+    /**
+     * Establish many to many relationship with students
+     */
+    public function students()
+    {
+        return $this->belongsToMany(Student::class,'student_program_module_assignment','program_module_assignment_id','student_id');
     }
 }

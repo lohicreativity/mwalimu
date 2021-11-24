@@ -21,12 +21,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>{{ __('Elective Policies') }}</h1>
+            <h1>{{ __('Elective (Option) Selection Deadline') }}</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">{{ __('Elective Policies') }}</li>
+              <li class="breadcrumb-item active">{{ __('Elective (Option) Selection Deadline') }}</li>
             </ol>
           </div>
         </div>
@@ -45,7 +45,7 @@
               </div>
               <!-- /.card-header -->
               <div class="card-body">
-                 {!! Form::open(['url'=>'academic/elective-policies','class'=>'ss-form-processing','method'=>'GET']) !!}
+                 {!! Form::open(['url'=>'academic/elective-module-limits','class'=>'ss-form-processing','method'=>'GET']) !!}
                    
                    <div class="form-group">
                     <select name="study_academic_year_id" class="form-control" required>
@@ -68,27 +68,28 @@
             @if($study_academic_year)
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">Add Elective Policy - {{ $study_academic_year->academicYear->year }}</h3>
+                <h3 class="card-title">Add Elective (Option) Deadline - {{ $study_academic_year->academicYear->year }}</h3>
               </div>
               <!-- /.card-header -->
                 @php
-                    $number_of_options = [
-                       'class'=>'form-control',
-                       'placeholder'=>'Number of options',
+                    $deadline = [
+                       'class'=>'form-control ss-datepicker',
+                       'placeholder'=>'Deadline',
+                       'autofocus'=>'off',
                        'required'=>true
                     ];
                  @endphp
-                 {!! Form::open(['url'=>'academic/elective-policy/store','class'=>'ss-form-processing']) !!}
+                 {!! Form::open(['url'=>'academic/elective-module-limit/store','class'=>'ss-form-processing']) !!}
               <div class="card-body">
                  
 
                  <div class="row">
                     <div class="form-group col-6">
-                      {!! Form::label('','Programme') !!}
-                      <select name="campus_program_id" class="form-control" required>
-                         <option value="">Select Campus Programme</option>
-                         @foreach($campus_programs as $prog)
-                         <option value="{{ $prog->id }}">{{ $prog->program->name }} - {{ $prog->campus->name }}</option>
+                      {!! Form::label('','Campus') !!}
+                      <select name="campus_id" class="form-control" required>
+                         <option value="">Select Campus</option>
+                         @foreach($campuses as $campus)
+                         <option value="{{ $campus->id }}">{{ $campus->name }}</option>
                          @endforeach
                       </select>
                     </div>
@@ -104,25 +105,34 @@
                  </div>
                  <div class="row">
                   <div class="form-group col-6">
-                     {!! Form::label('','Number of options') !!}
-                     {!! Form::input('number','number_of_options',null,$number_of_options) !!}
+                  {!! Form::label('','Award') !!}
+                  <select name="award_id" class="form-control" required>
+                     <option value="">Select Award</option>
+                     @foreach($awards as $award)
+                     <option value="{{ $award->id }}">{{ $award->name }}</option>
+                     @endforeach
+                  </select>
+                </div>
+                  <div class="form-group col-6">
+                     {!! Form::label('','Deadline') !!}
+                     {!! Form::text('deadline',null,$deadline) !!}
 
                      {!! Form::input('hidden','study_academic_year_id',$study_academic_year->id) !!}
                   </div>
                 </div>
                 </div>
                 <div class="card-footer">
-                  <button type="submit" class="btn btn-primary">{{ __('Add Elective Policy') }}</button>
+                  <button type="submit" class="btn btn-primary">{{ __('Add Elective Selection Deadline') }}</button>
                 </div>
               {!! Form::close() !!}
             </div>
             <!-- /.card -->
             @endif
 
-            @if(count($elective_policies) != 0 && $study_academic_year)
+            @if(count($elective_module_limits) != 0 && $study_academic_year)
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">List of Elective Policies - {{ $study_academic_year->academicYear->year }}</h3>
+                <h3 class="card-title">List of Elective (Option) Selection Deadlines - {{ $study_academic_year->academicYear->year }}</h3>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
@@ -130,47 +140,47 @@
                 <table id="example2" class="table table-bordered table-hover">
                   <thead>
                   <tr>
-                    <th>Programme</th>
                     <th>Campus</th>
+                    <th>Award</th>
                     <th>Study Academic Year</th>
                     <th>Semester</th>
-                    <th>Options</th>
+                    <th>Deadline</th>
                     <th>Actions</th>
                   </tr>
                   </thead>
                   <tbody>
-                  @foreach($elective_policies as $policy)
+                  @foreach($elective_module_limits as $limit)
                   <tr>
-                    <td>{{ $policy->campusProgram->program->name }}</td>
-                    <td>{{ $policy->campusProgram->campus->name }}</td>
-                    <td>{{ $policy->studyAcademicYear->academicYear->year }}</td>
-                    <td>{{ $policy->semester->name }}</td>
-                    <td>{{ $policy->number_of_options }}</td>
+                    <td>{{ $limit->campus->name }}</td>
+                    <td>{{ $limit->award->name }}</td>
+                    <td>{{ $limit->studyAcademicYear->academicYear->year }}</td>
+                    <td>{{ $limit->semester->name }}</td>
+                    <td>{{ $limit->deadline }}</td>
                     <td>
-                      <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-edit-policy-{{ $policy->id }}">
+                      <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-edit-limit-{{ $limit->id }}">
                               <i class="fas fa-pencil-alt">
                               </i>
                               Edit
                        </a>
-                       <div class="modal fade" id="ss-edit-policy-{{ $policy->id }}">
+                       <div class="modal fade" id="ss-edit-limit-{{ $limit->id }}">
                         <div class="modal-dialog modal-lg">
                           <div class="modal-content">
                             <div class="modal-header">
-                              <h4 class="modal-title"><i class="fa fa-exclamation-sign"></i> Edit Elective Policy</h4>
+                              <h4 class="modal-title"><i class="fa fa-exclamation-sign"></i> Edit Elective (Option) Selection Deadline</h4>
                               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                               </button>
                             </div>
                             <div class="modal-body">
-                               {!! Form::open(['url'=>'academic/elective-policy/update','class'=>'ss-form-processing']) !!}
+                               {!! Form::open(['url'=>'academic/elective-module-limit/update','class'=>'ss-form-processing']) !!}
 
                                <div class="row">
                                   <div class="form-group col-6">
-                                    {!! Form::label('','Programme') !!}
-                                    <select name="campus_program_id" class="form-control" required>
-                                       <option value="">Select Campus Programme</option>
-                                       @foreach($campus_programs as $prog)
-                                       <option value="{{ $prog->id }}" @if($prog->id == $policy->campus_program_id) selected="selected" @endif>{{ $prog->program->name }} - {{ $prog->campus->name }}</option>
+                                    {!! Form::label('','Campus') !!}
+                                    <select name="campus_id" class="form-control" required>
+                                       <option value="">Select Campus</option>
+                                       @foreach($campuses as $campus)
+                                       <option value="{{ $campus->id }}" @if($campus->id == $limit->campus_id) selected="selected" @endif>{{ $campus->name }}</option>
                                        @endforeach
                                     </select>
                                   </div>
@@ -179,19 +189,28 @@
                                     <select name="semester_id" class="form-control" required>
                                        <option value="">Select Semester</option>
                                        @foreach($semesters as $semester)
-                                       <option value="{{ $semester->id }}" @if($policy->semester_id == $semester->id) selected="selected" @endif>{{ $semester->name }}</option>
+                                       <option value="{{ $semester->id }}" @if($limit->semester_id == $semester->id) selected="selected" @endif>{{ $semester->name }}</option>
                                        @endforeach
                                     </select>
                                   </div>
                                </div>
                                <div class="row">
                                 <div class="form-group col-6">
-                                   {!! Form::label('','Number of options') !!}
-                                   {!! Form::input('number','number_of_options',$policy->number_of_options,$number_of_options) !!}
+                                    {!! Form::label('','Award') !!}
+                                    <select name="award_id" class="form-control" required>
+                                       <option value="">Select Award</option>
+                                       @foreach($awards as $award)
+                                       <option value="{{ $award->id }}" @if($limit->award_id == $award->id) selected="selected" @endif>{{ $award->name }}</option>
+                                       @endforeach
+                                    </select>
+                                  </div>
+                                <div class="form-group col-6">
+                                   {!! Form::label('','Deadline') !!}
+                                   {!! Form::text('deadline',App\Utils\DateMaker::toStandardDate($limit->deadline),$deadline) !!}
 
-                                   {!! Form::input('hidden','study_academic_year_id',$policy->study_academic_year_id) !!}
+                                   {!! Form::input('hidden','study_academic_year_id',$limit->study_academic_year_id) !!}
 
-                                   {!! Form::input('hidden','elective_policy_id',$policy->id) !!}
+                                   {!! Form::input('hidden','elective_module_limit_id',$limit->id) !!}
                                 </div>
                               </div>
                                <div class="ss-form-actions">
@@ -209,13 +228,13 @@
                       </div>
                       <!-- /.modal -->
 
-                      <a class="btn btn-danger btn-sm" href="#" data-toggle="modal" data-target="#ss-delete-policy-{{ $policy->id }}">
+                      <a class="btn btn-danger btn-sm" href="#" data-toggle="modal" data-target="#ss-delete-limit-{{ $limit->id }}">
                               <i class="fas fa-trash">
                               </i>
                               Delete
                        </a>
 
-                       <div class="modal fade" id="ss-delete-policy-{{ $policy->id }}">
+                       <div class="modal fade" id="ss-delete-limit-{{ $limit->id }}">
                         <div class="modal-dialog modal-lg">
                           <div class="modal-content">
                             <div class="modal-header">
@@ -228,10 +247,10 @@
                               <div class="row">
                                 <div class="col-12">
                                     <div id="ss-confirmation-container">
-                                       <p id="ss-confirmation-text">Are you sure you want to delete this programme from the list?</p>
+                                       <p id="ss-confirmation-text">Are you sure you want to delete this deadline from the list?</p>
                                        <div class="ss-form-controls">
                                          <button type="button" class="btn btn-default" data-dismiss="modal">Abort</button>
-                                         <a href="{{ url('academic/elective-policy/'.$policy->id.'/destroy') }}" class="btn btn-danger">Delete</a>
+                                         <a href="{{ url('academic/elective-module-limit/'.$limit->id.'/destroy') }}" class="btn btn-danger">Delete</a>
                                          </div><!-- end of ss-form-controls -->
                                       </div><!-- end of ss-confirmation-container -->
                                   </div><!-- end of col-md-12 -->
@@ -259,7 +278,7 @@
             @else
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">{{ __('No Elective Policy Created') }}</h3>
+                <h3 class="card-title">{{ __('No Elective Module Limit Created') }}</h3>
               </div>
               <!-- /.card-header -->
               <div class="card-body">

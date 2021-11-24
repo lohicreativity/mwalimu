@@ -229,6 +229,12 @@
                 </a>
               </li>
               <li class="nav-item">
+                <a href="{{ url('academic/elective-module-limits') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>{{ __('Elective Deadlines') }}</p>
+                </a>
+              </li>
+              <li class="nav-item">
                 <a href="{{ url('academic/elective-policies') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>{{ __('Elective Policies') }}</p>

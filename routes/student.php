@@ -18,7 +18,13 @@ Route::post('authenticate',[StudentController::class, 'authenticate']);
 Route::middleware(['auth:sanctum', 'verified'])->group(function(){
     
     Route::get('dashboard', [StudentController::class,'index']);
+
+
 	Route::get('modules', [StudentController::class,'showModules']);
+	Route::get('module/{id}/opt', [StudentController::class,'optModule']);
+	Route::get('module/{id}/reset-option', [StudentController::class,'resetModuleOption']);
+
+
 	Route::get('results', [StudentController::class,'showResults']);
 	Route::get('profile', [StudentController::class,'showProfile']);
 	Route::get('payments', [StudentController::class,'showPayments']);

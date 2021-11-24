@@ -42,50 +42,61 @@
 
 
             @if($study_academic_year)
+            @foreach($semesters as $semester)
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">{{ __('List of Modules') }} - Year {{ $student->year_of_study }}</h3>
+                <h3 class="card-title">{{ __('List of Modules') }} - Year {{ $student->year_of_study }} - {{ $semester->name }} - @if(count($semester->electivePolicies) != 0) ({{ $semester->electivePolicies[0]->number_of_options }} Options Maximum) @endif
+
+                 @if(count($semester->electiveDeadlines) != 0) - Option Deadline {{ $semester->electiveDeadlines[0]->deadline }}  @endif</h3>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
-                <table id="example2" class="table table-bordered table-hover">
+                
+                
+                <table id="example2" class="table table-bordered table-hover ss-margin-bottom">
                   <thead>
                   <tr>
                     <th>Module</th>
                     <th>Code</th>
-                    <th>Category</th>
                     <th>Type</th>
-                    <th>Semester</th>
+                    <th>Category</th>
                     <th>Actions</th>
                   </tr>
                   </thead>
                   <tbody>
-                  @foreach($semesters as $semester)
+                  
                    @foreach($study_academic_year->moduleAssignments as $assignment)
                      @if($semester->id == $assignment->semester_id)
                     <tr>
                       <td>{{ $assignment->module->name }}</td>
                       <td>{{ $assignment->module->code }}</td>
-                      <td>{{ $assignment->category }}</td>
                       <td>{{ $assignment->type }}</td>
-                      <td>{{ $assignment->semester->name }}</td>
+                      <td>{{ $assignment->category }}</td>
+                      
+                      
                       <td>
                           @if($assignment->category == 'OPTIONAL')
-                            <a href="{{ url('student/module/'.$assignment->id.'/opt') }}">Opt</a>
+                           @if(!App\Utils\Util::collectionContains($options,$assignment))
+                            <a href="{{ url('student/module/'.$assignment->id.'/opt') }}" class="btn btn-primary"><i class="fa fa-check-circle"></i> Opt</a>
                           @else
-                            <p class="ss-no-margin">Compusory</p>
+                            <p class="ss-no-margin"><span class="badge badge-info">OPTED</span> <a href="{{ url('student/module/'.$assignment->id.'/reset-option') }}" class="ss-color-danger ss-right ss-font-xs">Reset Option</a></p>
+                          @endif
+                          @else
+                            <p class="ss-no-margin">{{ $assignment->category }}</p>
                           @endif
                       </td>
                     </tr>
                      @endif
                    @endforeach
-                  @endforeach
+                  
                   </tbody>
                 </table>
+
               </div>
               <!-- /.card-body -->
             </div>
             <!-- /.card -->
+            @endforeach
             @endif 
             
           </div>

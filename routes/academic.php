@@ -19,6 +19,7 @@ use App\Http\Controllers\StreamController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\StreamComponentController;
 use App\Http\Controllers\ElectivePolicyController;
+use App\Http\Controllers\ElectiveModuleLimitController;
 
 /*
 |--------------------------------------------------------------------------
@@ -90,6 +91,12 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 	Route::post('elective-policy/store', [ElectivePolicyController::class,'store']);
 	Route::post('elective-policy/update', [ElectivePolicyController::class,'update']);
 	Route::get('elective-policy/{id}/destroy', [ElectivePolicyController::class,'destroy']);
+
+
+	Route::get('elective-module-limits', [ElectiveModuleLimitController::class,'index']);
+	Route::post('elective-module-limit/store', [ElectiveModuleLimitController::class,'store']);
+	Route::post('elective-module-limit/update', [ElectiveModuleLimitController::class,'update']);
+	Route::get('elective-module-limit/{id}/destroy', [ElectiveModuleLimitController::class,'destroy']);
 
 
 	Route::get('campus/{id}/campus-programs', [CampusProgramController::class,'index']);
