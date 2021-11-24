@@ -48,8 +48,9 @@
                 <ul class="nav nav-pills">
                   <li class="nav-item"><a class="nav-link" href="{{ url('academic/module/'.$module_assignment->module_id.'/download-syllabus') }}">{{ __('Module Syllabus') }}</a></li>
                   <li class="nav-item"><a class="nav-link" href="{{ url('academic/staff-module-assignment/'.$module_assignment->id.'/attendance') }}" target="_blank">{{ __('Attendance Sheet') }}</a></li>
-                  <li class="nav-item"><a class="nav-link active" href="#activity" data-toggle="tab">{{ __('Assessment Plans') }}</a></li>
-                  <li class="nav-item"><a class="nav-link" href="#settings" data-toggle="tab">{{ __('Results Management') }}</a></li>
+                  <li class="nav-item"><a class="nav-link" href="{{ url('academic/staff-module-assignment/'.$module_assignment->id.'/assessment-plans') }}">{{ __('Assessment Plans') }}</a></li>
+                  <li class="nav-item"><a class="nav-link" href="{{ url('academic/staff-module-assignment/'.$module_assignment->id.'/results') }}">{{ __('Results Management') }}</a></li>
+                  <li class="nav-item"><a class="nav-link" href="{{ url('academic/streams') }}">{{ __('Streams and Groups') }}</a></li>
                 </ul>
               </div><!-- /.card-header -->
               <!-- form start -->
