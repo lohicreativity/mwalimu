@@ -10,6 +10,7 @@ use App\Domain\Settings\Models\Campus;
 use App\Domain\Academic\Models\AssessmentPlan;
 use App\Domain\Academic\Models\CourseWorkComponent;
 use App\Domain\HumanResources\Models\Staff;
+use App\Domain\Registration\Models\Student;
 use App\Domain\Academic\Actions\ModuleAssignmentAction;
 use App\Utils\Util;
 use Validator, Auth, PDF;
@@ -73,18 +74,37 @@ class ModuleAssignmentController extends Controller
      */
     public function showAttendance(Request $request, $id)
     {
-         try{
-             $module_assignment = ModuleAssignment::with(['programModuleAssignment'])->findOrFail($id);
+         //try{
+             $module_assignment = ModuleAssignment::with(['programModuleAssignment.campusProgram.program.department','programModuleAssignment.campusProgram.campus','studyAcademicYear.academicYear','programModuleAssignment.module','programModuleAssignment.students','staff','module'])->findOrFail($id);
              if($module_assignment->programModuleAssignment->category == 'OPTIONAL'){
-                 $pdf = PDF::loadView('dashboard.academic.reports.students-in-stream', $data)->setPaper('a4','landscape');
+                 $data = [
+                    'program'=>$module_assignment->programModuleAssignment->campusProgram->program,
+                    'campus'=>$module_assignment->programModuleAssignment->campusProgram->campus,
+                    'department'=>$module_assignment->programModuleAssignment->campusProgram->program->department,
+                    'study_academic_year'=>$module_assignment->studyAcademicYear,
+                    'staff'=>$module_assignment->staff,
+                    'module'=>$module_assignment->module,
+                    'students'=>$module_assignment->programModuleAssignment->students
+                 ];
+                 $pdf = PDF::loadView('dashboard.academic.reports.students-in-optional-module', $data)->setPaper('a4','landscape');
                  return $pdf->stream();
              }else{
-                 $pdf = PDF::loadView('dashboard.academic.reports.students-in-stream', $data)->setPaper('a4','landscape');
+                 $data = [
+                    'program'=>$module_assignment->programModuleAssignment->campusProgram->program,
+                    'campus'=>$module_assignment->programModuleAssignment->campusProgram->campus,
+                    'department'=>$module_assignment->programModuleAssignment->campusProgram->program->department,
+                    'study_academic_year'=>$module_assignment->studyAcademicYear,
+                    'staff'=>$module_assignment->staff,
+                    'module'=>$module_assignment->module,
+                    'students'=>Student::where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id)->get()
+                 ];
+                 $pdf = PDF::loadView('dashboard.academic.reports.students-in-core-module', $data)->setPaper('a4','landscape');
                  return $pdf->stream();
              }
-         }catch(\Exception $e){
-             return redirect()->back()->with('error','Unable to get the resource specified in this request');
-         }
+         // }catch(\Exception $e){
+         //     return $e->getMessage();
+         //     return redirect()->back()->with('error','Unable to get the resource specified in this request');
+         // }
     }
 
     /**
