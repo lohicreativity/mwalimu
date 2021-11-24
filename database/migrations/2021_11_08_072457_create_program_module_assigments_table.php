@@ -20,7 +20,8 @@ class CreateProgramModuleAssigmentsTable extends Migration
             $table->unsignedBigInteger('module_id');
             $table->unsignedBigInteger('campus_program_id');
             $table->mediumInteger('year_of_study');
-            $table->string('category',20)->default('CORE');
+            $table->string('category',20)->default('COMPULSORY');
+            $table->string('type',20)->default('CORE');
             $table->timestamps();
 
             $table->foreign('study_academic_year_id','study_ac_yr_prog_mod_assign')->references('id')->on('study_academic_years')->onUpdate('cascade');

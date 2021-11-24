@@ -17,7 +17,7 @@ class CreateProgramsTable extends Migration
             $table->id();
             $table->string('name')->unique();
             $table->text('description');
-            $table->string('code',10)->unique();
+            $table->string('code')->unique();
             $table->integer('min_duration');
             $table->integer('max_duration');
             $table->unsignedBigInteger('department_id');

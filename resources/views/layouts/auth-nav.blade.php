@@ -228,6 +228,12 @@
                   <p>{{ __('Streams and Groups') }}</p>
                 </a>
               </li>
+              <li class="nav-item">
+                <a href="{{ url('academic/elective-policies') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>{{ __('Elective Policies') }}</p>
+                </a>
+              </li>
             </ul>
           </li>
           <li class="nav-item">
@@ -257,7 +263,7 @@
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-cogs"></i>
               <p>
-                {{ __('Setting') }}
+                {{ __('Settings') }}
                 <i class="fas fa-angle-left right"></i>
               </p>
             </a>

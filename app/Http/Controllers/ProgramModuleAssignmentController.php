@@ -33,36 +33,41 @@ class ProgramModuleAssignmentController extends Controller
      */
     public function assignModules(Request $request, $ac_year_id,$campus_prog_id)
     {
+      $assignments = ProgramModuleAssignment::with(['module','semester'])->where('study_academic_year_id',$ac_year_id)->where('campus_program_id',$campus_prog_id)->get();
+      $moduleIds = [];
+      foreach ($assignments as $key => $assign) {
+        $moduleIds[] = $assign->module->id;
+      }
     	$campus_program = CampusProgram::with('program')->find($campus_prog_id);
     	if(Util::stripSpacesUpper($campus_program->program->ntaLevel->name) == 'NTALEVEL8'){
            $modules = Module::whereHas('ntaLevel',function($query){
            	              $query->where('name','LIKE','NTA level 8')->OrWhere('name','LIKE','NTA level 7');
-                      })->get();
+                      })->whereNotIn('id',$moduleIds)->get();
     	}elseif(Util::stripSpacesUpper($campus_program->program->ntaLevel->name) == 'NTALEVEL7'){
            $modules = Module::whereHas('ntaLevel',function($query){
            	              $query->where('name','LIKE','NTA level 7');
-                      })->get();
+                      })->whereNotIn('id',$moduleIds)->get();
     	}elseif(Util::stripSpacesUpper($campus_program->program->ntaLevel->name) == 'NTALEVEL6'){
            $modules = Module::whereHas('ntaLevel',function($query){
            	              $query->where('name','LIKE','NTA level 6')->OrWhere('name','LIKE','NTA level 5');
-                      })->get();
+                      })->whereNotIn('id',$moduleIds)->get();
     	}elseif(Util::stripSpacesUpper($campus_program->program->ntaLevel->name) == 'NTALEVEL5'){
            $modules = Module::whereHas('ntaLevel',function($query){
            	              $query->where('name','LIKE','NTA level 5');
-                      })->get();
+                      })->whereNotIn('id',$moduleIds)->get();
     	}elseif(Util::stripSpacesUpper($campus_program->program->ntaLevel->name) == 'NTALEVEL4'){
            $modules = Module::whereHas('ntaLevel',function($query){
            	              $query->where('name','LIKE','NTA level 4');
-                      })->get();
+                      })->whereNotIn('id',$moduleIds)->get();
     	}else{
-    		$modules = Module::all();
+    		$modules = Module::whereNotIn('id',$moduleIds)->get();
     	}
     	$data = [
             'study_academic_year'=>StudyAcademicYear::with('academicYear')->find($ac_year_id),
             'campus_program'=>$campus_program,
             'modules'=>$modules,
             'semesters'=>Semester::all(),
-            'assignments'=>ProgramModuleAssignment::with(['module','semester'])->where('study_academic_year_id',$ac_year_id)->where('campus_program_id',$campus_prog_id)->get()
+            'assignments'=>$assignments
     	];
     	return view('dashboard.academic.assign-program-modules',$data)->withTitle('Program Module Assignment');
     }

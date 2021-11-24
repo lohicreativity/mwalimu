@@ -21,48 +21,22 @@ class ProgramsTableSeeder extends Seeder
                'description'=>'Basic Technician Certificate In Economics Development',
                'department_id'=>1,
                'min_duration'=>1,
-               'max_duration'=>2,
+               'max_duration'=>1,
                 'nta_level_id'=>1,
                 'award_id'=>1,
                 'created_at'=>now(),
                 'updated_at'=>now()
              ],
- 
-             [
-               'name'=>'Technician Certificate In Economics Development',
-               'code'=>'TCED',
-               'description'=>'Technician Certificate In Economics Development',
-               'department_id'=>1,
-               'min_duration'=>1,
-               'max_duration'=>2,
-                'nta_level_id'=>2,
-                'award_id'=>2,
-                'created_at'=>now(),
-                'updated_at'=>now()
-            ],
 
             [
                'name'=>'Ordinary Diploma In Economics Development',
                'code'=>'ODED',
                'description'=>'Ordinary Diploma In Economics Development',
                'department_id'=>1,
-               'min_duration'=>1,
+               'min_duration'=>2,
                'max_duration'=>2,
                'nta_level_id'=>3,
                'award_id'=>2,
-               'created_at'=>now(),
-               'updated_at'=>now()
-            ],
-
-             [
-               'name'=>'High Diploma In Economics Development',
-               'code'=>'HD.ED',
-               'description'=>'High Diploma In Economics Development',
-               'department_id'=>1,
-               'min_duration'=>2,
-               'max_duration'=>4,
-               'nta_level_id'=>4,
-               'award_id'=>3,
                'created_at'=>now(),
                'updated_at'=>now()
             ],
@@ -71,8 +45,8 @@ class ProgramsTableSeeder extends Seeder
                'code'=>'BD.ED',
                'description'=>'Bachelor In Economics Development',
                'department_id'=>1,
-               'min_duration'=>1,
-               'max_duration'=>2,
+               'min_duration'=>3,
+               'max_duration'=>5,
                'nta_level_id'=>5,
                'award_id'=>3,
                'created_at'=>now(),

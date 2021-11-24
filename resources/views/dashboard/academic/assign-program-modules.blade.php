@@ -41,7 +41,7 @@
 
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">{{ __('Select Study Academic Year') }}</h3>
+                <h3 class="card-title">{{ __('Add Module Assignment') }}</h3>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
@@ -66,6 +66,33 @@
                     </select>
                     </div>
                     <div class="form-group col-4">
+                      {!! Form::label('','Year of study') !!}
+                      <select name="year_of_study" class="form-control" required>
+                        <option>Select Year of Study</option>
+                        @for($i = 1; $i <= $campus_program->program->min_duration; $i++)
+                        <option value="{{ $i }}">{{ $i }}</option>
+                        @endfor
+                      </select>
+                      
+                    </div>
+                  </div>
+                    <div class="row">
+                    <div class="form-group col-4">
+                    {!! Form::label('','Category') !!}
+                    <select name="category" class="form-control" required>
+                       <option value="CORE">Core</option>
+                       <option value="OPTIONAL">Optional</option>
+                       <option value="FUNDAMENTAL">Fundamental</option>
+                    </select>
+                    </div>
+                    <div class="form-group col-4">
+                    {!! Form::label('','Type') !!}
+                    <select name="type" class="form-control" required>
+                       <option value="CORE">Core</option>
+                       <option value="FUNDAMENTAL">Fundamental</option>
+                    </select>
+                    </div>
+                    <div class="form-group col-4">
                     {!! Form::label('','Semester') !!}
                     <select name="semester_id" class="form-control" required>
                        <option value="">Select Semester</option>
@@ -74,30 +101,9 @@
                        @endforeach
                     </select>
                     </div>
-                  </div>
-                    <div class="row">
-                    <div class="form-group col-6">
-                    {!! Form::label('','Category') !!}
-                    <select name="category" class="form-control" required>
-                       <option value="CORE">Core</option>
-                       <option value="OPTIONAL">Optional</option>
-                       <option value="FUNDAMENTAL">Fundamental</option>
-                    </select>
-                    </div>
-                    <div class="form-group col-6">
-                      {!! Form::label('','Year of study') !!}
-                      <select name="year_of_study" class="form-control" required>
-                        <option>Select Year of Study</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                      </select>
-                      
-                    </div>
-                    <div class="form-group">
                   {!! Form::input('hidden','study_academic_year_id',$study_academic_year->id) !!}
                   {!! Form::input('hidden','campus_program_id',$campus_program->id) !!}
-                </div>
+                    
                   </div>
                   <div class="ss-form-actions">
                    <button type="submit" class="btn btn-primary">{{ __('Assign Module') }}</button>
@@ -123,6 +129,7 @@
                     <th>Credits</th>
                     <th>Semester</th>
                     <th>Category</th>
+                    <th>Type</th>
                     <th>Actions</th>
                   </tr>
                   </thead>
@@ -134,6 +141,7 @@
                     <td>{{ $assignment->module->credit }}</td>
                     <td>{{ $assignment->semester->name }}</td>
                     <td>{{ $assignment->category }}</td>
+                    <td>{{ $assignment->type }}</td>
                     <td>
                       <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-edit-module-assignment-{{ $assignment->id }}">
                               <i class="fas fa-pencil-alt">
@@ -164,6 +172,31 @@
                     </select>
                     </div>
                     <div class="form-group col-4">
+                      {!! Form::label('','Year of study') !!}
+                      <select name="year_of_study" class="form-control" required>
+                        <option>Select Year of Study</option>
+                        @for($i = 1; $i <= $campus_program->program->min_duration; $i++)
+                        <option value="{{ $i }}" @if($i == $assignment->year_of_study ) selected="selected" @endif>{{ $i }}</option>
+                        @endfor
+                      </select>
+                    </div>
+                  </div>
+                    <div class="row">
+                    <div class="form-group col-4">
+                    {!! Form::label('','Category') !!}
+                    <select name="category" class="form-control" required>
+                       <option value="COMPULSORY" @if($assignment->category == 'COMPULSORY') selected="selected" @endif>Compulsory</option>
+                       <option value="OPTIONAL" @if($assignment->category == 'OPTIONAL') selected="selected" @endif>Optional</option>
+                    </select>
+                    </div>
+                    <div class="form-group col-4">
+                    {!! Form::label('','Type') !!}
+                    <select name="type" class="form-control" required>
+                       <option value="CORE" @if($assignment->type == 'CORE') selected="selected" @endif>Core</option>
+                       <option value="FUNDAMENTAL" @if($assignment->type == 'FUNDAMENTAL') selected="selected" @endif>Fundamental</option>
+                    </select>
+                    </div>
+                    <div class="form-group col-4">
                     {!! Form::label('','Semester') !!}
                     <select name="semester_id" class="form-control" required>
                        <option value="">Select Semester</option>
@@ -172,32 +205,12 @@
                        @endforeach
                     </select>
                     </div>
+                        {!! Form::input('hidden','study_academic_year_id',$study_academic_year->id) !!}
+                        {!! Form::input('hidden','campus_program_id',$campus_program->id) !!}
+                        {!! Form::input('hidden','program_module_assignment_id',$assignment->id) !!}
+
+                    
                   </div>
-                    <div class="row">
-                    <div class="form-group col-6">
-                    {!! Form::label('','Category') !!}
-                    <select name="category" class="form-control" required>
-                       <option value="CORE" @if($assignment->category == 'CORE') selected="selected" @endif>Core</option>
-                       <option value="OPTIONAL" @if($assignment->category == 'OPTIONAL') selected="selected" @endif>Optional</option>
-                       <option value="FUNDAMENTAL" @if($assignment->category == 'FUNDAMENTAL') selected="selected" @endif>Fundamental</option>
-                    </select>
-                    </div>
-                    <div class="form-group col-6">
-                      {!! Form::label('','Year of study') !!}
-                      <select name="year_of_study" class="form-control" required>
-                        <option>Select Year of Study</option>
-                        <option value="1" @if($assignment->year_of_study == 1) selected="selected" @endif>1</option>
-                        <option value="2" @if($assignment->year_of_study == 2) selected="selected" @endif>2</option>
-                        <option value="3" @if($assignment->year_of_study == 3) selected="selected" @endif>3</option>
-                      </select>
-                      
-                    </div>
-                                    <div class="form-group">
-                                      {!! Form::input('hidden','study_academic_year_id',$study_academic_year->id) !!}
-                                      {!! Form::input('hidden','campus_program_id',$campus_program->id) !!}
-                                      {!! Form::input('hidden','program_module_assignment_id',$assignment->id) !!}
-                                    </div>
-                                  </div>
                                       <div class="ss-form-actions">
                                        <button type="submit" class="btn btn-primary">{{ __('Save Changes') }}</button>
                                       </div>

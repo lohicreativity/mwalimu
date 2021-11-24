@@ -115,6 +115,7 @@
                                     <th>Credits</th>
                                     <th>Semester</th>
                                     <th>Category</th>
+                                    <th>Type</th>
                                   </tr>
                                   </thead>
                                   <tbody>
@@ -125,6 +126,7 @@
                                     <td>{{ $assignment->module->credit }}</td>
                                     <td>{{ $assignment->semester->name }}</td>
                                     <td>{{ $assignment->category }}</td>
+                                    <td>{{ $assignment->type }}</td>
                                   </tr>
                                   @endforeach
                                   

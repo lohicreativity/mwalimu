@@ -69,14 +69,14 @@
            @if(count($campus_programs) != 0 && $study_academic_year)
              <div class="card">
                <div class="card-header">
-                 <h3 class="card-title">{{ __('Select Study Academic Year') }}</h3>
+                 <h3 class="card-title">{{ __('List of Streams and Groups') }} - {{ $study_academic_year->academicYear->year }}</h3>
                </div>
                <!-- /.card-header -->
                <div class="card-body">
                   <table class="table table-bordered">
                     <thead>
                        <tr>
-                         <th>Program</th>
+                         <th>Programme</th>
                          <th>Streams</th>
                          <th>Groups</th>
                        </tr>
@@ -89,7 +89,7 @@
                              $stream_created = false;
                            @endphp
                        <tr>
-                        <td><a href="{{ url('academic/campus/campus-program/'.$cp->id.'/attendance?year_of_study='.$i.'&study_academic_year_id='.$study_academic_year->id) }}" target="_blank">{{ $cp->program->name }}_Year_{{ $i }}</a>
+                        <td><a href="{{ url('academic/campus/campus-program/'.$cp->id.'/attendance?year_of_study='.$i.'&study_academic_year_id='.$study_academic_year->id) }}" target="_blank">{{ $cp->program->name }} - Year {{ $i }}</a>
                           @foreach($study_academic_year->streams as $stream)
                              @if($stream->campus_program_id == $cp->id && $stream->year_of_study == $i)
                              @php

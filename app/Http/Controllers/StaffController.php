@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Domain\HumanResources\Models\Staff;
 use App\Domain\HumanResources\Models\Designation;
+use App\Domain\Academic\Models\ModuleAssignment;
 use App\Domain\Settings\Models\Country;
 use App\Domain\Settings\Models\Region;
 use App\Domain\Settings\Models\District;
@@ -153,8 +154,12 @@ class StaffController extends Controller
     {
         try{
             $staff = Staff::findOrFail($id);
-            $staff->delete();
-            return redirect()->back()->with('message','Staff deleted successfully');
+            if(ModuleAssignment::where('staff_id',$staff->id)->count() != 0){
+               return redirect()->back()->with('message','Staff cannot be deleted because he has alredy been assigned a module');
+            }else{
+               $staff->delete();
+               return redirect()->back()->with('message','Staff deleted successfully');
+            }
         }catch(Exception $e){
             return redirect()->back()->with('error','Unable to get the resource specified in this request');
         }

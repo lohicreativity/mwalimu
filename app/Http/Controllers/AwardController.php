@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Domain\Academic\Models\Award;
+use App\Domain\Academic\Models\Program;
 use App\Domain\Settings\Models\Level;
 use App\Domain\Academic\Actions\AwardAction;
 use App\Utils\Util;
@@ -78,8 +79,12 @@ class AwardController extends Controller
     {
         try{
             $award = Award::findOrFail($id);
-            $award->delete();
-            return redirect()->back()->with('message','Award deleted successfully');
+            if(Program::where('award_id',$award->id)->count() != 0){
+               return redirect()->back()->with('message','Award cannot be deleted because it has programs');
+            }else{
+               $award->delete();
+               return redirect()->back()->with('message','Award deleted successfully');
+            }
         }catch(Exception $e){
             return redirect()->back()->with('error','Unable to get the resource specified in this request');
         }

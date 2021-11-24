@@ -38,7 +38,7 @@ class StudyAcademicYearController extends Controller
     public function store(Request $request)
     {
     	$validation = Validator::make($request->all(),[
-            'academic_year_id'=>'required|unique:study_academic_years'
+            'academic_year_id'=>'required|unique:study_academic_years',
             'begin_date'=>'required',
             'end_date'=>'required'
         ],[

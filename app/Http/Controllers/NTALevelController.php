@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Domain\Settings\Models\NTALevel;
 use App\Domain\Academic\Models\Award;
+use App\Domain\Academic\Models\Module;
+use App\Domain\Academic\Models\Program;
 use App\Domain\Settings\Actions\NTALevelAction;
 use App\Utils\Util;
 use Validator;
@@ -76,8 +78,12 @@ class NTALevelController extends Controller
     {
         try{
             $level = NTALevel::findOrFail($id);
-            $level->delete();
-            return redirect()->back()->with('message','NTA Level deleted successfully');
+            if(Module::where('nta_level_id',$level->id)->count() != 0 || Program::where('nta_level_id',$level->id)->count() != 0){
+               return redirect()->back()->with('message','NTA Level cannot be deleted because it has modules or programs');
+            }else{
+               $level->delete();
+               return redirect()->back()->with('message','NTA Level deleted successfully');
+            }
         }catch(Exception $e){
             return redirect()->back()->with('error','Unable to get the resource specified in this request');
         }

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Domain\Academic\Models\CampusProgram;
 use App\Domain\Academic\Models\Department;
 use App\Domain\Academic\Models\StudyAcademicYear;
+use App\Domain\Academic\Models\ProgramModuleAssignment;
 use App\Domain\Registration\Models\Registration;
 use App\Domain\Settings\Models\Campus;
 use App\Domain\Academic\Models\Program;
@@ -114,9 +115,13 @@ class CampusProgramController extends Controller
     public function destroy(Request $request, $id)
     {
         try{
-            $program = program::findOrFail($id);
-            $program->delete();
-            return redirect()->back()->with('message','Campus program deleted successfully');
+            $program = CampusProgram::findOrFail($id);
+            if(ProgramModuleAssignment::where('campus_program_id',$program->id)->count() != 0){
+               return redirect()->back()->with('error','Campus program cannot be deleted because it has program mudule assignments');
+            }else{
+              $program->delete();
+              return redirect()->back()->with('message','Campus program deleted successfully');
+            }
         }catch(Exception $e){
             return redirect()->back()->with('error','Unable to get the resource specified in this request');
         }

@@ -16,6 +16,7 @@ class ProgramModuleAssignmentAction implements ProgramModuleAssignmentInterface{
                 $assignment->module_id = $request->get('module_id');
                 $assignment->year_of_study = $request->get('year_of_study');
                 $assignment->category = $request->get('category');
+                $assignment->type = $request->get('type');
                 $assignment->save();
 	}
 
@@ -27,6 +28,7 @@ class ProgramModuleAssignmentAction implements ProgramModuleAssignmentInterface{
                 $assignment->module_id = $request->get('module_id');
                 $assignment->year_of_study = $request->get('year_of_study');
                 $assignment->category = $request->get('category');
+                $assignment->type = $request->get('type');
                 $assignment->save();
 	}
 }

@@ -18,6 +18,7 @@ use App\Http\Controllers\ProgramModuleAssignmentController;
 use App\Http\Controllers\StreamController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\StreamComponentController;
+use App\Http\Controllers\ElectivePolicyController;
 
 /*
 |--------------------------------------------------------------------------
@@ -83,6 +84,12 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 	Route::post('campus/store', [CampusController::class,'store']);
 	Route::post('campus/update', [CampusController::class,'update']);
 	Route::get('campus/{id}/destroy', [CampusController::class,'destroy']);
+
+
+	Route::get('elective-policies', [ElectivePolicyController::class,'index']);
+	Route::post('elective-policy/store', [ElectivePolicyController::class,'store']);
+	Route::post('elective-policy/update', [ElectivePolicyController::class,'update']);
+	Route::get('elective-policy/{id}/destroy', [ElectivePolicyController::class,'destroy']);
 
 
 	Route::get('campus/{id}/campus-programs', [CampusProgramController::class,'index']);

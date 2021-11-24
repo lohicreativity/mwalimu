@@ -7,6 +7,7 @@ use App\Domain\Settings\Models\Campus;
 use App\Domain\Settings\Models\Region;
 use App\Domain\Settings\Models\District;
 use App\Domain\Settings\Models\Ward;
+use App\Domain\Academic\Models\CampusProgram;
 use App\Domain\Settings\Actions\CampusAction;
 use App\Utils\Util;
 use Validator;
@@ -86,8 +87,12 @@ class CampusController extends Controller
     {
         try{
             $campus = Campus::findOrFail($id);
-            $campus->delete();
-            return redirect()->back()->with('message','Campus deleted successfully');
+            if(CampusProgram::where('campus_id',$campus->id)->count() != 0){
+               return redirect()->back()->with('error','Campus cannot be deleted because it has assigned programs');
+            }else{
+              $program->delete();
+              return redirect()->back()->with('message','Campus deleted successfully');
+            }
         }catch(Exception $e){
             return redirect()->back()->with('error','Unable to get the resource specified in this request');
         }

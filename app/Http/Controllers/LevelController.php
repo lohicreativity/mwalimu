@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Domain\Settings\Models\Level;
+use App\Domain\Academic\Models\Award;
 use App\Domain\Settings\Actions\LevelAction;
 use App\Utils\Util;
 use Validator;
@@ -74,8 +75,12 @@ class LevelController extends Controller
     {
         try{
             $level = Level::findOrFail($id);
-            $level->delete();
-            return redirect()->back()->with('message','Level deleted successfully');
+            if(Award::where('award_id',$level->id)->count() != 0){
+               return redirect()->back()->with('message','Level cannot be deleted because it has awards');
+            }else{
+               $level->delete();
+               return redirect()->back()->with('message','Level deleted successfully');
+            }
         }catch(Exception $e){
             return redirect()->back()->with('error','Unable to get the resource specified in this request');
         }
