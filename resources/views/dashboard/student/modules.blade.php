@@ -79,6 +79,8 @@
                            @if(!App\Utils\Util::collectionContains($options,$assignment))
                             @if(count($semester->electiveDeadlines) != 0) @if(strtotime(now()->format('Y-m-d')) > strtotime($semester->electiveDeadlines[0]->deadline))
                             <a href="{{ url('student/module/'.$assignment->id.'/opt') }}" class="btn btn-primary"><i class="fa fa-check-circle"></i> Opt</a>
+                            @else
+                            <p class="ss-no-margin">OPTIONAL</p>
                             @endif
                             @endif
                           @else
