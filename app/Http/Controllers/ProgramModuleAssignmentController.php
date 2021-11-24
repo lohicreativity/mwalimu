@@ -43,10 +43,16 @@ class ProgramModuleAssignmentController extends Controller
            $modules = Module::whereHas('ntaLevel',function($query){
            	              $query->where('name','LIKE','NTA level 8')->OrWhere('name','LIKE','NTA level 7');
                       })->whereNotIn('id',$moduleIds)->get();
+           $inclusive_modules = Module::whereHas('ntaLevel',function($query){
+                          $query->where('name','LIKE','NTA level 8')->OrWhere('name','LIKE','NTA level 7');
+                      })->get();
     	}elseif(Util::stripSpacesUpper($campus_program->program->ntaLevel->name) == 'NTALEVEL7'){
            $modules = Module::whereHas('ntaLevel',function($query){
            	              $query->where('name','LIKE','NTA level 7');
                       })->whereNotIn('id',$moduleIds)->get();
+           $inclusive_modules = Module::whereHas('ntaLevel',function($query){
+                          $query->where('name','LIKE','NTA level 7');
+                      })->get();
     	}elseif(Util::stripSpacesUpper($campus_program->program->ntaLevel->name) == 'NTALEVEL6'){
            $modules = Module::whereHas('ntaLevel',function($query){
            	              $query->where('name','LIKE','NTA level 6')->OrWhere('name','LIKE','NTA level 5');
