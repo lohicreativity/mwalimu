@@ -96,7 +96,7 @@
                               View Modules
                        </a>
                        <div class="modal fade" id="ss-view-modules-{{ $program->id }}">
-                        <div class="modal-dialog modal-lg">
+                        <div class="modal-dialog modal-xl">
                           <div class="modal-content">
                             <div class="modal-header">
                               <h4 class="modal-title"><i class="fa fa-exclamation-sign"></i> Modules - {{ $program->program->name }}</h4>
@@ -117,6 +117,7 @@
                                     <th>Semester</th>
                                     <th>Category</th>
                                     <th>Type</th>
+                                    <th>Examination Irregularity</th>
                                   </tr>
                                   </thead>
                                   <tbody>
@@ -129,6 +130,13 @@
                                     <td>{{ $assignment->semester->name }}</td>
                                     <td>{{ $assignment->category }}</td>
                                     <td>{{ $assignment->type }}</td>
+                                    <td>
+                                      <a class="btn btn-info btn-sm" href="{{ url('academic/module-assignment/'.$assignment->id.'/examination-irregularities') }}">
+                              <i class="fas fa-random">
+                              </i>
+                               Examination Irregularities
+                       </a>
+                                    </td>
                                   </tr>
                                   @endforeach
                                   
@@ -152,6 +160,7 @@
                               </i>
                               Assign Module
                        </a>
+                       
                     </td>
                   </tr>
                   @endforeach

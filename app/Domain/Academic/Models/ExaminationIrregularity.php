@@ -21,6 +21,14 @@ class ExaminationIrregularity extends Model
     }
 
     /**
+     * Establish one to many relationship with semesters
+     */
+    public function semester()
+    {
+    	return $this->belongsTo(Semester::class,'semester_id');
+    }
+
+    /**
      * Establish one to many relationship with study academic years
      */
     public function studyAcademicYear()

@@ -240,6 +240,24 @@
                   <p>{{ __('Elective Policies') }}</p>
                 </a>
               </li>
+              <li class="nav-item">
+                <a href="{{ url('academic/grading-policies') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>{{ __('Grading Policies') }}</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ url('academic/examination-policies') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>{{ __('Examination Policies') }}</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ url('academic/postponements') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>{{ __('Postponements') }}</p>
+                </a>
+              </li>
             </ul>
           </li>
           <li class="nav-item">

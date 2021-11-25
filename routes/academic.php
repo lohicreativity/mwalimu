@@ -20,6 +20,10 @@ use App\Http\Controllers\GroupController;
 use App\Http\Controllers\StreamComponentController;
 use App\Http\Controllers\ElectivePolicyController;
 use App\Http\Controllers\ElectiveModuleLimitController;
+use App\Http\Controllers\GradingPolicyController;
+use App\Http\Controllers\ExaminationPolicyController;
+use App\Http\Controllers\ExaminationIrregularityController;
+use App\Http\Controllers\PostponementController;
 
 /*
 |--------------------------------------------------------------------------
@@ -62,6 +66,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 	Route::get('module-assignments', [ModuleAssignmentController::class,'index']);
 	Route::post('module-assignment/store', [ModuleAssignmentController::class,'store']);
 	Route::get('module-assignment/{id}/destroy', [ModuleAssignmentController::class,'destroy']);
+	Route::get('module-assignment/{id}/examination-irregularities',[ExaminationIrregularityController::class, 'index']);
 
 
 	Route::get('staff-module-assignments', [ModuleAssignmentController::class,'showStaffAssignedModules']);
@@ -136,6 +141,29 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 	Route::post('examination/store', [ExaminationController::class,'store']);
 	Route::post('examination/update', [ExaminationController::class,'update']);
 	Route::get('examination/{id}/destroy', [ExaminationController::class,'destroy']);
+
+
+	Route::get('examination-policies', [ExaminationPolicyController::class,'index']);
+	Route::post('examination-policy/store', [ExaminationPolicyController::class,'store']);
+	Route::post('examination-policy/update', [ExaminationPolicyController::class,'update']);
+	Route::get('examination-policy/{id}/destroy', [ExaminationPolicyController::class,'destroy']);
+
+
+	Route::get('grading-policies', [GradingPolicyController::class,'index']);
+	Route::post('grading-policy/store', [GradingPolicyController::class,'store']);
+	Route::post('grading-policy/update', [GradingPolicyController::class,'update']);
+	Route::get('grading-policy/{id}/destroy', [GradingPolicyController::class,'destroy']);
+
+
+	Route::get('postponements', [PostponementController::class,'index']);
+	Route::post('postponement/store', [PostponementController::class,'store']);
+	Route::post('postponement/update', [PostponementController::class,'update']);
+	Route::get('postponement/{id}/destroy', [PostponementController::class,'destroy']);
+
+
+	Route::post('examination-irregularity/store', [ExaminationIrregularityController::class,'store']);
+	Route::post('examination-irregularity/update', [ExaminationIrregularityController::class,'update']);
+	Route::get('examination-irregularity/{id}/destroy', [ExaminationIrregularityController::class,'destroy']);
 
 
 	Route::get('awards', [AwardController::class,'index']);

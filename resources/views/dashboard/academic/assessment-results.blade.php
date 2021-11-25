@@ -57,11 +57,15 @@
                     {!! Form::label('','Assessment') !!}
                     <select name="assessment_plan_id" class="form-control" required>
                       <option value="">Select Assessment</option>
+                      @if(!$final_upload_status)
                       @foreach($module_assignment->assessmentPlans as $plan)
                       <option value="{{ $plan->id }}">{{ $plan->name }}</option>
                       @endforeach
+                      @endif
+                      @if($module_assignment->course_work_process_status == 'PROCESSED')
                       <option value="FINAL_EXAM">Final Exam</option>
                       <option value="SUPPLEMENTARY">Supplementary Exam</option>
+                      @endif
                     </select>
 
                     {!! Form::input('hidden','module_assignment_id',$module_assignment->id) !!}
@@ -70,8 +74,17 @@
                     {!! Form::label('','Upload results') !!}
                     {!! Form::file('results_file',['class'=>'form-control','required'=>true]) !!}
                   </div>
-                  
-                  </div>
+                </div>
+
+                  @if(session('non_opted_students'))
+                    <div class="alert alert-danger alert-dismissible ss-messages-box" role="alert">
+                      <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <p>The following students did not opt this module. Please, remove them from your CSV file.</p>
+                      @foreach(session('non_opted_students') as $key=>$stud)
+                        <p> {{ ($key+1) }}. {{ $stud->registration_number }} - {{ $stud->first_name }} {{ $stud->middle_name }} {{ $stud->surname }} </p>
+                      @endforeach
+                   </div><!-- end of ss-messages_box -->
+                   @endif
                 </div>
                 <!-- /.card-body -->
 
@@ -103,11 +116,13 @@
                   
                  {!! Form::open(['url'=>'academic/staff-module-assignment/process-course-work','class'=>'ss-form-processing']) !!}
 
+                @if(!$final_upload_status)
                  {!! Form::input('hidden','module_assignment_id',$module_assignment->id) !!}
                  <div class="ss-form-controls">
                   <button type="submit" class="btn btn-primary">{{ __('Process Course Work') }}</button>
                  </div>
                  {!! Form::close() !!}
+                @endif
               </div>
               <!-- /.card-body -->
             </div>

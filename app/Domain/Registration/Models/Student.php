@@ -42,6 +42,14 @@ class Student extends Model
     }
 
     /**
+     * Establish one to many relationship with campus programs
+     */
+    public function studentshipStatus()
+    {
+        return $this->belongsTo(StudentshipStatus::class,'studentship_status_id');
+    }
+
+    /**
      * Establish many to many relationship with program module assignments
      */
     public function options()

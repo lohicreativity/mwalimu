@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Domain\Academic\Models\Postponement;
+use App\Domain\Academic\Models\StudyAcademicYear;
+use App\Domain\Academic\Models\Semester;
+use App\Domain\Registration\Models\Student;
 use App\Domain\Academic\Actions\PostponementAction;
 use App\Utils\Util;
 use Validator;
@@ -14,10 +17,13 @@ class PostponementController extends Controller
      /**
      * Display a list of postponements
      */
-    public function index()
+    public function index(Request $request)
     {
     	$data = [
-           'postponements'=>Postponement::paginate(20)
+    	   'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
+           'student'=>$request->has('registration_number')? Student::where('registration_number',$request->get('registration_number'))->first() : null,
+           'postponements'=>Postponement::with(['student','StudyAcademicYear.academicYear','semester'])->paginate(20),
+           'semesters'=>Semester::all()
     	];
     	return view('dashboard.academic.postponements',$data)->withTitle('Postponements');
     }
@@ -28,7 +34,10 @@ class PostponementController extends Controller
     public function store(Request $request)
     {
     	$validation = Validator::make($request->all(),[
-            'name'=>'required',
+            'study_academic_year_id'=>'required',
+            'student_id'=>'required',
+            'category'=>'required',
+            'semester_id'=>'required'
         ]);
 
         if($validation->fails()){
@@ -40,9 +49,9 @@ class PostponementController extends Controller
         }
 
 
-        (new postponementAction)->store($request);
+        (new PostponementAction)->store($request);
 
-        return Util::requestResponse($request,'postponement created successfully');
+        return Util::requestResponse($request,'Postponement created successfully');
     }
 
     /**
@@ -51,7 +60,10 @@ class PostponementController extends Controller
     public function update(Request $request)
     {
     	$validation = Validator::make($request->all(),[
-            'name'=>'required',
+            'study_academic_year_id'=>'required',
+            'student_id'=>'required',
+            'category'=>'required',
+            'semester_id'=>'required'
         ]);
 
         if($validation->fails()){
@@ -63,9 +75,9 @@ class PostponementController extends Controller
         }
 
 
-        (new postponementAction)->update($request);
+        (new PostponementAction)->update($request);
 
-        return Util::requestResponse($request,'postponement updated successfully');
+        return Util::requestResponse($request,'Postponement updated successfully');
     }
 
     /**
@@ -74,13 +86,9 @@ class PostponementController extends Controller
     public function destroy(Request $request, $id)
     {
         try{
-            $postponement = postponement::findOrFail($id);
-            if(Award::where('award_id',$postponement->id)->count() != 0){
-               return redirect()->back()->with('message','postponement cannot be deleted because it has awards');
-            }else{
-               $postponement->delete();
-               return redirect()->back()->with('message','postponement deleted successfully');
-            }
+            $postponement = Postponement::findOrFail($id);
+            $postponement->delete();
+            return redirect()->back()->with('message','Postponement deleted successfully');
         }catch(Exception $e){
             return redirect()->back()->with('error','Unable to get the resource specified in this request');
         }

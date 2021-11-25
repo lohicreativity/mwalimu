@@ -62,7 +62,7 @@
                       {!! Form::label('','Test(s)') !!}
                       <select name="tests" class="form-control" required>
                          @for($i = 0; $i <= 4; $i++)
-                         <option value="{{ $i }}">{{ $i }}</option>
+                         <option value="{{ $i }}" @if($i == 2) selected="selected" @endif @if($i == 1) disabled="disabled" @endif>{{ $i }}</option>
                          @endfor
                       </select>
                    </div>

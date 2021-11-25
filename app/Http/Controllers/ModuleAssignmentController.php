@@ -19,7 +19,7 @@ use App\Domain\Registration\Models\Student;
 use App\Domain\Academic\Actions\ModuleAssignmentAction;
 use App\Utils\Util;
 use App\Utils\SystemLocation;
-use Validator, Auth, PDF, DB;
+use Validator, Auth, PDF, DB, Session;
 
 class ModuleAssignmentController extends Controller
 {
@@ -159,16 +159,22 @@ class ModuleAssignmentController extends Controller
              }else{
                 $total_students_count = Student::where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id)->count();
              }
-             $students_with_coursework_count = CourseWorkResult::where('module_assignment_id',$module_assignment->id)->count();
-             $students_with_no_coursework_count = $total_students_count - $students_with_coursework_count;
+             $students_with_coursework_count = CourseWorkResult::groupBy('student_id')->selectRaw('COUNT(*) as total, student_id')->where('module_assignment_id',$module_assignment->id)->get();
+
+             $students_with_no_coursework_count = $total_students_count - count($students_with_coursework_count);
              $students_with_final_marks_count = ExaminationResult::where('module_assignment_id',$module_assignment->id)->where('exam_type','FINAL')->count();
              $students_with_no_final_marks_count = $total_students_count - $students_with_final_marks_count;
-             $students_with_supplemetary_count = ExaminationResult::where('module_assignment_id',$module_assignment->id)->where('remark','FAILED')->where('exam_type','FINAL')->count();
-             $students_passed_count = $students_with_supplemetary_count = ExaminationResult::where('module_assignment_id',$module_assignment->id)->where('remark','!=','FAILED')->where('exam_type','FINAL')->count();
+             $students_with_supplemetary_count = ExaminationResult::where('module_assignment_id',$module_assignment->id)->where('final_remark','FAILED')->where('exam_type','FINAL')->count();
+             $students_passed_count = $students_with_supplemetary_count = ExaminationResult::where('module_assignment_id',$module_assignment->id)->where('final_remark','!=','FAILED')->where('exam_type','FINAL')->count();
+             $final_upload_status = false;
+             if(ExaminationResult::where('module_assignment_id',$module_assignment->id)->where('final_uploaded_at','!=',null)->count() != 0){
+                $final_upload_status = true;
+             }
              $data = [
                 'module_assignment'=>$module_assignment,
+                'final_upload_status'=>$final_upload_status,
                 'total_students_count'=>$total_students_count,
-                'students_with_coursework_count'=>$students_with_coursework_count,
+                'students_with_coursework_count'=>count($students_with_coursework_count),
                 'students_with_no_coursework_count'=>$students_with_no_coursework_count,
                 'students_with_final_marks_count'=>$students_with_final_marks_count,
                 'students_with_no_final_marks_count'=>$students_with_no_final_marks_count,
@@ -187,13 +193,30 @@ class ModuleAssignmentController extends Controller
     public function processCourseWork(Request $request)
     { 
          try{
-              DB::beginTransaction();
+              
               $module_assignment = ModuleAssignment::with('assessmentPlans','module','programModuleAssignment')->findOrFail($request->get('module_assignment_id'));
+              $module_assignment->course_work_process_status = 'PROCESSED';
+              $module_assignment->save();
+
+              // Check if all components are uploaded
+              $assessment_upload_status = true;
+              $assessment_plans = AssessmentPlan::where('module_assignment_id',$module_assignment->id)->get();
+              foreach ($assessment_plans as $key => $plan) {
+                  if(CourseWorkResult::where('assessment_plan_id',$plan->id)->count() == 0){
+                      $assessment_upload_status = false;
+                  }
+              }
+
+              if(!$assessment_upload_status){
+                  return redirect()->back()->with('error','Some assessment components are not uploaded');
+              }
+
               if($module_assignment->programModuleAssignment->category == 'OPTIONAL'){
                 $students = $module_assignment->programModuleAssignment->students()->get();
              }else{
                 $students = Student::where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id)->get();
              }
+             DB::beginTransaction();
              foreach ($students as $key => $student) {
                 $course_work = CourseWorkResult::where('module_assignment_id',$module_assignment->id)->where('student_id',$student->id)->sum('score');
                 if($course_work){
@@ -221,6 +244,7 @@ class ModuleAssignmentController extends Controller
              DB::commit();
              return redirect()->back()->with('message','Course work processed successfully');
          }catch(\Exception $e){
+              return $e->getMessage();
               return redirect()->back()->with('error','Unable to get the resource specified in this request');
          }
     }
@@ -247,8 +271,9 @@ class ModuleAssignmentController extends Controller
          }
          
          if($request->hasFile('results_file')){
-          DB::beginTransaction();
-              $module_assignment = ModuleAssignment::with(['module','studyAcademicYear.academicYear'])->find($request->get('module_assignment_id'));
+          // DB::beginTransaction();
+              $module_assignment = ModuleAssignment::with(['module','studyAcademicYear.academicYear','programModuleAssignment'])->find($request->get('module_assignment_id'));
+
               $module = $module_assignment->module;
               $academicYear = $module_assignment->studyAcademicYear->academicYear;
 
@@ -271,6 +296,37 @@ class ModuleAssignmentController extends Controller
 
               $file_name = SystemLocation::renameFile($destination, $request->file('results_file')->getClientOriginalName(),'csv', $academicYear->year.'_'.$module->code.'_'.Auth::user()->id.'_'.now()->format('YmdHms').'_'.$assessment);
 
+              // Get students taking the module
+              if($module_assignment->programModuleAssignment->category == 'OPTIONAL'){
+                $students = $module_assignment->programModuleAssignment->students()->get();
+                $uploaded_students = [];
+                $csvFileName = $file_name;
+                $csvFile = $destination.$csvFileName;
+                $file_handle = fopen($csvFile, 'r');
+                while (!feof($file_handle)) {
+                    $line_of_text[] = fgetcsv($file_handle, 0, ',');
+                }
+                fclose($file_handle);
+                foreach($line_of_text as $line){
+                   $stud = Student::where('registration_number',$line[0])->first();
+                   if($stud){
+                      $uploaded_students[] = $stud;
+                   }
+                }
+                $non_opted_students = [];
+                foreach($uploaded_students as $up_stud){
+                   if($module_assignment->programModuleAssignment->students()->where('id',$up_stud->id)->count() == 0){
+                      $non_opted_students[] = $up_stud;
+                   }
+                }
+                if(count($non_opted_students) != 0){
+                    session()->flash('non_opted_students',$non_opted_students);
+                    return redirect()->back()->with('error','Uploaded students have not opted this module');
+                }
+              }else{
+                $students = Student::where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id)->get();
+              }
+
               
               // Validate clean results
               $validationStatus = true;
@@ -291,6 +347,7 @@ class ModuleAssignmentController extends Controller
                  return redirect()->back()->with('error','Result file contains invalid data');
               }
               
+              DB::beginTransaction();
               $file = new ResultFile;
               $file->file_name = $file_name;
               $file->extension = $request->file('results_file')->guessClientExtension();
@@ -310,7 +367,9 @@ class ModuleAssignmentController extends Controller
               }
               fclose($file_handle);
               foreach($line_of_text as $line){
-                $student = Student::where('registration_number',str_replace(' ', '', $line[0]))->first();
+                $student = Student::whereHas('studentshipStatus',function($query){
+                      $query->where('name','ACTIVE');
+                })->where('registration_number',str_replace(' ', '', $line[0]))->first();
                 if($student){
                   if($request->get('assessment_plan_id') == 'FINAL_EXAM'){
                       $result_log = new ExaminationResultLog;

@@ -265,6 +265,11 @@
                         <!-- /.modal-dialog -->
                       </div>
                       <!-- /.modal -->
+                      <a class="btn btn-info btn-sm" href="{{ url('academic/module-assignment/'.$assignment->id.'/examination-irregularities') }}">
+                              <i class="fas fa-random">
+                              </i>
+                               Examination Irregularities
+                       </a>
                     </td>
                   </tr>
                   @endforeach
