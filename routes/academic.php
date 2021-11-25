@@ -73,6 +73,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 	Route::get('staff-module-assignment/results/compute-results', [ModuleAssignmentController::class,'computeResults']);
 	Route::get('staff-module-assignment/{id}/results/download-course-work', [ModuleAssignmentController::class,'downloadCourseWork']);
 	Route::post('module-assignment-result/store',[ModuleAssignmentController::class,'uploadResults']);
+	Route::post('staff-module-assignment/process-course-work',[ModuleAssignmentController::class,'processCourseWork']);
+	Route::post('module-assignment/process-results',[ModuleAssignmentController::class,'processFinalResults']);
 
 
 	Route::post('assessment-plan/store',[AssessmentPlanController::class,'store']);

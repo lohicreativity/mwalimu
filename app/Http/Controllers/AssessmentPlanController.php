@@ -69,6 +69,7 @@ class AssessmentPlanController extends Controller
             CourseWorkComponent::where('module_assignment_id',$mod_assign_id)->delete();
             return redirect()->back()->with('message','Assessment plan reset successfully');
         }catch(\Exception $e){
+            return $e->getMessage();
             return redirect()->back()->with('error','Unable to get the resource specified in this request');
         }
     }

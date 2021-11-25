@@ -32,6 +32,14 @@ class CourseWorkComponentAction implements CourseWorkComponentInterface{
                       $component->module_assignment_id = $request->get('module_assignment_id');
                       $component->save();
                 }
+
+                if($request->get('portfolios') != 0){
+                      $component = new CourseWorkComponent;
+                      $component->name = 'Portfolio';
+                      $component->quantity = $request->get('portfolios');
+                      $component->module_assignment_id = $request->get('module_assignment_id');
+                      $component->save();
+                }
 	}
 
 }

@@ -87,6 +87,16 @@
                       </select>
                    </div>
                   </div>
+                  <div class="row">
+                   <div class="form-group col-6">
+                      {!! Form::label('','Portfolio(s)') !!}
+                      <select name="portfolios" class="form-control" required>
+                         @for($i = 0; $i <= 4; $i++)
+                         <option value="{{ $i }}">{{ $i }}</option>
+                         @endfor
+                      </select>
+                   </div>
+                  </div>
                 </div>
                 <!-- /.card-body -->
                 {!! Form::input('hidden','module_assignment_id',$module_assignment->id) !!}

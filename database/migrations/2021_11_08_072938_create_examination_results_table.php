@@ -22,8 +22,13 @@ class CreateExaminationResultsTable extends Migration
             $table->decimal('total_score')->default(0.00);
             $table->string('exam_type')->default('FINAL');
             $table->string('grade',10)->nullable();
-            $table->string('remark',20)->nullable();
+            $table->string('course_work_remark',20)->nullable();
+            $table->string('final_remark',20)->nullable();
             $table->unsignedBigInteger('uploaded_by_user_id');
+            $table->unsignedBigInteger('processed_by_user_id')->default(0);
+            $table->timestamp('processed_at')->nullable();
+            $table->unsignedBigInteger('final_processed_by_user_id')->default(0);
+            $table->timestamp('final_processed_at')->nullable();
             $table->timestamps();
 
             $table->foreign('student_id')->references('id')->on('students')->onUpdate('cascade');

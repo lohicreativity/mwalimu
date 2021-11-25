@@ -19,6 +19,7 @@ class CourseWorkComponentController extends Controller
             'tests'=>'required',
             'assignments'=>'required',
             'quizes'=>'required',
+            'portfolios'=>'required'
         ]);
 
         if($validation->fails()){

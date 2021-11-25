@@ -21,7 +21,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>{{ __('Assessment Results') }} - {{ $module_assignment->module->name }}</h1>
+            <h1>{{ __('Assessment Results') }} - {{ $module_assignment->module->name }} - {{ $module_assignment->module->code }}</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -40,7 +40,7 @@
     <section class="content">
       <div class="container-fluid">
         <div class="row">
-          <div class="col-12">
+          <div class="col-6">
 
             <!-- general form elements -->
             <div class="card card-default">
@@ -81,14 +81,33 @@
               {!! Form::close() !!}
             </div>
             <!-- /.card -->
+            </div>
+          <!-- /.col -->
+
+          <div class="col-6">
 
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">{{ __('Assessment Results') }}</h3>
+                <h3 class="card-title">{{ __('Module Results Statistics') }}</h3>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
+                 <p>Total Number of Students: {{ $total_students_count }}</p>
+                 <p>Students with Coursework: {{ $students_with_coursework_count }}</p>
+                 <p>Students with no Coursework: {{ $students_with_no_coursework_count }}</p>
+                 <p>Students with Final Marks: {{ $students_with_final_marks_count }}</p>
+                 <p>Students with no Final Marks: {{ $students_with_no_final_marks_count }}</p>
+                 <p>Students Passed: {{ $students_passed_count }}</p>
+                 <p>Students with Supplementary: {{ $students_with_supplemetary_count }}</p>
+                 <p>Abscond: </p>
+                  
+                 {!! Form::open(['url'=>'academic/staff-module-assignment/process-course-work','class'=>'ss-form-processing']) !!}
 
+                 {!! Form::input('hidden','module_assignment_id',$module_assignment->id) !!}
+                 <div class="ss-form-controls">
+                  <button type="submit" class="btn btn-primary">{{ __('Process Course Work') }}</button>
+                 </div>
+                 {!! Form::close() !!}
               </div>
               <!-- /.card-body -->
             </div>

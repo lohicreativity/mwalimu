@@ -21,6 +21,7 @@ class CreateModuleAssignmentsTable extends Migration
             $table->unsignedBigInteger('program_module_assignment_id');
             $table->unsignedBigInteger('assigned_by_user_id');
             $table->string('category',50)->default('Lead Facilitator');
+            $table->string('course_work_process_status')->nullable();
             $table->timestamps();
 
             $table->foreign('module_id')->references('id')->on('modules')->onUpdate('cascade');

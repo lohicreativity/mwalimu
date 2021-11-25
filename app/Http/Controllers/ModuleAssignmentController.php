@@ -152,10 +152,77 @@ class ModuleAssignmentController extends Controller
      */
     public function showResultsUpload(Request $request,$id)
     {
-         $data = [
-            'module_assignment'=>ModuleAssignment::with('assessmentPlans','module')->findOrFail($id),
-         ];
-         return view('dashboard.academic.assessment-results',$data)->withTitle('Upload Module Assignment Results');
+         try{
+             $module_assignment = ModuleAssignment::with('assessmentPlans','module','programModuleAssignment')->findOrFail($id);
+             if($module_assignment->programModuleAssignment->category == 'OPTIONAL'){
+                $total_students_count = $module_assignment->programModuleAssignment->students()->count();
+             }else{
+                $total_students_count = Student::where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id)->count();
+             }
+             $students_with_coursework_count = CourseWorkResult::where('module_assignment_id',$module_assignment->id)->count();
+             $students_with_no_coursework_count = $total_students_count - $students_with_coursework_count;
+             $students_with_final_marks_count = ExaminationResult::where('module_assignment_id',$module_assignment->id)->where('exam_type','FINAL')->count();
+             $students_with_no_final_marks_count = $total_students_count - $students_with_final_marks_count;
+             $students_with_supplemetary_count = ExaminationResult::where('module_assignment_id',$module_assignment->id)->where('remark','FAILED')->where('exam_type','FINAL')->count();
+             $students_passed_count = $students_with_supplemetary_count = ExaminationResult::where('module_assignment_id',$module_assignment->id)->where('remark','!=','FAILED')->where('exam_type','FINAL')->count();
+             $data = [
+                'module_assignment'=>$module_assignment,
+                'total_students_count'=>$total_students_count,
+                'students_with_coursework_count'=>$students_with_coursework_count,
+                'students_with_no_coursework_count'=>$students_with_no_coursework_count,
+                'students_with_final_marks_count'=>$students_with_final_marks_count,
+                'students_with_no_final_marks_count'=>$students_with_no_final_marks_count,
+                'students_with_supplemetary_count'=>$students_with_supplemetary_count,
+                'students_passed_count'=>$students_passed_count
+             ];
+             return view('dashboard.academic.assessment-results',$data)->withTitle('Upload Module Assignment Results');
+          }catch(\Exception $e){
+              return redirect()->back()->with('error','Unable to get the resource specified in this request');
+          }
+    }
+
+    /**
+     * Process coursework
+     */
+    public function processCourseWork(Request $request)
+    { 
+         try{
+              DB::beginTransaction();
+              $module_assignment = ModuleAssignment::with('assessmentPlans','module','programModuleAssignment')->findOrFail($request->get('module_assignment_id'));
+              if($module_assignment->programModuleAssignment->category == 'OPTIONAL'){
+                $students = $module_assignment->programModuleAssignment->students()->get();
+             }else{
+                $students = Student::where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id)->get();
+             }
+             foreach ($students as $key => $student) {
+                $course_work = CourseWorkResult::where('module_assignment_id',$module_assignment->id)->where('student_id',$student->id)->sum('score');
+                if($course_work){
+                    if($result = ExaminationResult::where('module_assignment_id',$module_assignment->id)->where('student_id',$student->id)->where('exam_type','FINAL')->first()){
+                        $exam_result = $result;
+                        $exam_result->module_assignment_id = $module_assignment->id;
+                        $exam_result->student_id = $student->id;
+                        $exam_result->course_work_score = $course_work;
+                        $exam_result->processed_by_user_id = Auth::user()->id;
+                        $exam_result->processed_at = now();
+                        $exam_result->save();
+                    }else{
+                        $exam_result = new ExaminationResult;
+                        $exam_result->module_assignment_id = $module_assignment->id;
+                        $exam_result->student_id = $student->id;
+                        $exam_result->course_work_score = $course_work;
+                        $exam_result->uploaded_by_user_id = Auth::user()->id;
+                        $exam_result->processed_by_user_id = Auth::user()->id;
+                        $exam_result->processed_at = now();
+                        $exam_result->save();
+                    }
+                    
+                }
+             }
+             DB::commit();
+             return redirect()->back()->with('message','Course work processed successfully');
+         }catch(\Exception $e){
+              return redirect()->back()->with('error','Unable to get the resource specified in this request');
+         }
     }
 
     /**
@@ -181,17 +248,34 @@ class ModuleAssignmentController extends Controller
          
          if($request->hasFile('results_file')){
           DB::beginTransaction();
-              $module = ModuleAssignment::find($request->get('module_assignment_id'))->module;
-              $destination = SystemLocation::uploadsDirectory();
+              $module_assignment = ModuleAssignment::with(['module','studyAcademicYear.academicYear'])->find($request->get('module_assignment_id'));
+              $module = $module_assignment->module;
+              $academicYear = $module_assignment->studyAcademicYear->academicYear;
+
+              if($request->get('assessment_plan_id') != 'FINAL_EXAM'){
+                  $plan = AssessmentPlan::find($request->get('assessment_plan_id'));
+                  $assessment = $plan->name;
+                  $destination = public_path('assessment_results_uploads/');
+              }elseif($request->get('assessment_plan_id') != 'SUPPLEMENTARY'){
+                  $plan = null;
+                  $assessment = 'SUP';
+                  $destination = public_path('supplementary_results_uploads/');
+              }else{
+                  $plan = null;
+                  $assessment = 'FINAL';
+                  $destination = public_path('final_results_uploads/');
+              }
+
+              
               $request->file('results_file')->move($destination, $request->file('results_file')->getClientOriginalName());
 
-              $file_name = SystemLocation::renameFile($destination, $request->file('results_file')->getClientOriginalName(),'csv', $module->code.'_'.Auth::user()->id.'_'.time());
+              $file_name = SystemLocation::renameFile($destination, $request->file('results_file')->getClientOriginalName(),'csv', $academicYear->year.'_'.$module->code.'_'.Auth::user()->id.'_'.now()->format('YmdHms').'_'.$assessment);
 
               
               // Validate clean results
               $validationStatus = true;
               $csvFileName = $file_name;
-              $csvFile = public_path('uploads/' . $csvFileName);
+              $csvFile = $destination.$csvFileName;
               $file_handle = fopen($csvFile, 'r');
               while (!feof($file_handle)) {
                   $line_of_text[] = fgetcsv($file_handle, 0, ',');
@@ -206,12 +290,6 @@ class ModuleAssignmentController extends Controller
               if(!$validationStatus){
                  return redirect()->back()->with('error','Result file contains invalid data');
               }
-
-              if($request->get('assessment_plan_id') != 'FINAL_EXAM'){
-                  $plan = AssessmentPlan::find($request->get('assessment_plan_id'));
-              }else{
-                  $plan = null;
-              }
               
               $file = new ResultFile;
               $file->file_name = $file_name;
@@ -225,7 +303,7 @@ class ModuleAssignmentController extends Controller
               $file->save();
 
               $csvFileName = $file_name;
-              $csvFile = public_path('uploads/' . $csvFileName);
+              $csvFile = $destination.$csvFileName;
               $file_handle = fopen($csvFile, 'r');
               while (!feof($file_handle)) {
                   $line_of_text[] = fgetcsv($file_handle, 0, ',');
@@ -283,7 +361,7 @@ class ModuleAssignmentController extends Controller
                       $result_log->uploaded_by_user_id = Auth::user()->id;
                       $result_log->save();
                       
-                      if($res = CourseWorkResult::where('module_assignment_id',$request->get('module_assignment_id'))->where('student_id',$student->id)->first()){
+                      if($res = CourseWorkResult::where('module_assignment_id',$request->get('module_assignment_id'))->where('student_id',$student->id)->where('assessment_plan_id',$plan->id)->first()){
                           $result = $res;
                       }else{
                           $result = new CourseWorkResult;
