@@ -105,13 +105,13 @@
               </div>
               <!-- /.card-header -->
               <div class="card-body">
-                 <p>Total Number of Students: {{ $total_students_count }}</p>
-                 <p>Students with Coursework: {{ $students_with_coursework_count }}</p>
-                 <p>Students with no Coursework: {{ $students_with_no_coursework_count }}</p>
-                 <p>Students with Final Marks: {{ $students_with_final_marks_count }}</p>
-                 <p>Students with no Final Marks: {{ $students_with_no_final_marks_count }}</p>
-                 <p>Students Passed: {{ $students_passed_count }}</p>
-                 <p>Students with Supplementary: {{ $students_with_supplemetary_count }}</p>
+                 <p>Total Number of Students: <a href="{{ url('academic/staff-module-assignment/'.$module_assignment->id.'/results/total-students') }}" target="_blank">{{ $total_students_count }}</a></p>
+                 <p>Students with Coursework: <a href="{{ url('academic/staff-module-assignment/'.$module_assignment->id.'/results/students-with-course-work') }}" target="_blank">{{ $students_with_coursework_count }}</a></p>
+                 <p>Students with no Coursework: <a href="{{ url('academic/staff-module-assignment/'.$module_assignment->id.'/results/students-with-no-course-work') }}" target="_blank">{{ $students_with_no_coursework_count }}</a></p>
+                 <p>Students with Final Marks: <a href="{{ url('academic/staff-module-assignment/'.$module_assignment->id.'/results/students-with-final-marks') }}" target="_blank">{{ $students_with_final_marks_count }}</a></p>
+                 <p>Students with no Final Marks: <a href="{{ url('academic/staff-module-assignment/'.$module_assignment->id.'/results/students-with-no-final-marks') }}" target="_blank">{{ $students_with_no_final_marks_count }}</a></p>
+                 <p>Students Passed: <a href="{{ url('academic/staff-module-assignment/'.$module_assignment->id.'/results/students-passed') }}" target="_blank">{{ $students_passed_count }}</a></p>
+                 <p>Students with Supplementary: <a href="{{ url('academic/staff-module-assignment/'.$module_assignment->id.'/results/students-with-supplementary') }}" target="_blank">{{ $students_with_supplemetary_count }}</a></p>
                  <p>Abscond: </p>
                   
                  {!! Form::open(['url'=>'academic/staff-module-assignment/process-course-work','class'=>'ss-form-processing']) !!}

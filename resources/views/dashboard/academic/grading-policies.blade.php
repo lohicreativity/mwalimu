@@ -150,6 +150,7 @@
                         <option value="Excellent">Excellent</option>
                         <option value="Very Good">Very Good</option>
                         <option value="Good">Good</option>
+                        <option value="Satisfactory">Satisfactory</option>
                         <option value="Poor">Poor</option>
                         <option value="Failure">Failure</option>
                      </select>
@@ -265,6 +266,7 @@
                                       <option value="Excellent" @if($policy->remark == 'Excellent') selected="selected" @endif>Excellent</option>
                                       <option value="Very Good" @if($policy->remark == 'Very Good') selected="selected" @endif>Very Good</option>
                                       <option value="Good" @if($policy->remark == 'Good') selected="selected" @endif>Good</option>
+                                      <option value="Satisfactory" @if($policy->remark == 'Satisfactory') selected="selected" @endif>Satisfactory</option>
                                       <option value="Poor" @if($policy->remark == 'Poor') selected="selected" @endif>Poor</option>
                                       <option value="Failure" @if($policy->remark == 'Failure') selected="selected" @endif>Failure</option>
                                    </select>

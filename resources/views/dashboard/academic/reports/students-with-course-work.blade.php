@@ -199,56 +199,60 @@
                <h3>{{ $campus->name }}</h3>
                <h3>{{ $department->name }}</h3>
                <h3>{{ $program->name }} ({{ $study_academic_year->academicYear->year }})</h3>
-               <h3>ATTENDANCE SHEET</h3>
+               <h3>{{ $module->name }} - {{ $module->code }}</h3>
+               <h3>STUDENTS LIST</h3>
               </div>
-               <div class="ss-left">
-                 <h3 class="ss-no-margin">MODULE: {{ $module->name }}</h3>
-                 <h3 class="ss-no-margin">LECTURER: {{ $staff->first_name}} {{ $staff->middle_name }} {{ $staff->surname }}</h3>
-                 <h3 class="ss-no-margin">MONTH: ..................................</h3>
-               </div>
                <div class="table-responsive ss-margin-bottom">
                   <table class="table table-condensed table-bordered">
                     <tr>
-                        <td></td>
-                        <td class="ss-bold" colspan="2">TIME</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td class="ss-bold" colspan="2">NUMBER OF HOURS</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                      <td class="ss-bold" colspan="3"></td>
+                      <td class="ss-bold" colspan="{{ count($assessment_plans) }}">ASSESSMENTS</td>
+                      <td class="ss-bold"></td>
                     </tr>
                     <tr>
                       <td class="ss-bold">SN</td>
-                      <td class="ss-bold">NAME</td>
                       <td class="ss-bold">REGNO</td>
-                      <td class="ss-bold" colspan="5">STUDENT SIGNATURE</td>
+                      <td class="ss-bold">NAME</td>
+                      @foreach($assessment_plans as $plan)
+                      <td>{{ $plan->name }}</td>
+                      @endforeach
+                      <td class="ss-bold">SIGNATURE</td>
                     </tr>
-                    @foreach($registrations as $key=>$reg)
+                    @foreach($students as $key=>$student)
                     <tr>
                       <td>{{ $key+1 }}</td>
-                      <td>{{ $reg->student->surname }}, {{ $reg->student->first_name }} {{ $reg->student->middle_name}}</td>
-                      <td>{{ $reg->student->registration_number }}</td>
-                      <td class="ss-sign-column"></td>
-                      <td class="ss-sign-column"></td>
-                      <td class="ss-sign-column"></td>
-                      <td class="ss-sign-column"></td>
-                      <td class="ss-sign-column"></td>
+                      <td>{{ $student->registration_number }}</td>
+                      <td>{{ $student->surname }}, {{ $student->first_name }} {{ $student->middle_name}}</td>
+                        @php 
+                            $cw_available = true;
+                            $empty_columns = count($assessment_plans) - count($student->courseWorkResults);
+                        @endphp
+                      @foreach($assessment_plans as $plan)
+                        
+                        @foreach($student->courseWorkResults as $result)
+                          @if($result->assessment_plan_id == $plan->id)
+                          <td>{{ $result->score }}</td>
+                            @php $cw_available = true; @endphp
+                          @else
+                            @php 
+                                $cw_available = false; 
+                            @endphp
+                          @endif
+                        @endforeach
+                        
+
+                        
+                      @endforeach
+                      @for($i = 0; $i < $empty_columns; $i++)
+                        <td></td>
+                      @endfor
+                      <td></td>
                     </tr>
                     @endforeach
                   </table>
                 </div><!-- end of table-responsive -->
-                <div class="ss-black-line"></div>
-                <p>NOTE: DO NOT WRITE YOUR NAME BELOW THE BLACK LINE</p>
-                <p class="ss-no-margin">In case your name does not appear on the attendance, consult your head of department.</p>
+                
+                
 
 
           </div><!-- end of col-md-12 -->

@@ -24,6 +24,7 @@ class CreateExaminationResultsTable extends Migration
             $table->string('grade',10)->nullable();
             $table->string('course_work_remark',20)->nullable();
             $table->string('final_remark',20)->nullable();
+            $table->string('final_exam_remark',20)->nullable();
             $table->timestamp('final_uploaded_at')->nullable();
             $table->unsignedBigInteger('uploaded_by_user_id');
             $table->unsignedBigInteger('processed_by_user_id')->default(0);

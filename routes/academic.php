@@ -80,6 +80,12 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 	Route::post('module-assignment-result/store',[ModuleAssignmentController::class,'uploadResults']);
 	Route::post('staff-module-assignment/process-course-work',[ModuleAssignmentController::class,'processCourseWork']);
 	Route::post('module-assignment/process-results',[ModuleAssignmentController::class,'processFinalResults']);
+	Route::get('staff-module-assignment/{id}/results/total-students', [ModuleAssignmentController::class,'totalStudents']);
+	Route::get('staff-module-assignment/{id}/results/students-with-course-work', [ModuleAssignmentController::class,'studentsWithCourseWork']);
+	Route::get('staff-module-assignment/{id}/results/students-with-no-course-work', [ModuleAssignmentController::class,'studentsWithNoCourseWork']);
+	Route::get('staff-module-assignment/{id}/results/students-with-final-marks', [ModuleAssignmentController::class,'studentsWithFinalMarks']);
+	Route::get('staff-module-assignment/{id}/results/download-course-work', [ModuleAssignmentController::class,'studentsWithNoFinalMarks']);
+	Route::get('staff-module-assignment/{id}/results/students-with-supplementary', [ModuleAssignmentController::class,'studentsWithSupplementary']);
 
 
 	Route::post('assessment-plan/store',[AssessmentPlanController::class,'store']);

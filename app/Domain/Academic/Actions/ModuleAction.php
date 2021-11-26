@@ -14,8 +14,8 @@ class ModuleAction implements ModuleInterface{
                 $module->name = $request->get('name');
                 $module->code = $request->get('code');
                 $module->credit = $request->get('credit');
-                $module->course_work = $request->get('course_work');
-                $module->final_exam = $request->get('final_exam');
+                // $module->course_work = $request->get('course_work');
+                // $module->final_exam = $request->get('final_exam');
                 $module->department_id = $request->get('department_id');
                 $module->nta_level_id = $request->get('nta_level_id');
                 if($request->hasFile('syllabus')){
@@ -34,8 +34,8 @@ class ModuleAction implements ModuleInterface{
                 $module->name = $request->get('name');
                 $module->code = $request->get('code');
                 $module->credit = $request->get('credit');
-                $module->course_work = $request->get('course_work');
-                $module->final_exam = $request->get('final_exam');
+                // $module->course_work = $request->get('course_work');
+                // $module->final_exam = $request->get('final_exam');
                 $module->department_id = $request->get('department_id');
                 $module->nta_level_id = $request->get('nta_level_id');
                 if($request->hasFile('syllabus')){

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Domain\Academic\Models\Module;
 use App\Domain\Academic\Models\Department;
+use App\Domain\Academic\Models\ExaminationPolicy;
 use App\Domain\Settings\Models\NTALevel;
 use App\Domain\Academic\Actions\ModuleAction;
 use App\Utils\Util;
@@ -51,7 +52,6 @@ class ModuleController extends Controller
            }
         }
 
-
         (new ModuleAction)->store($request);
 
         return Util::requestResponse($request,'Module created successfully');
@@ -66,7 +66,7 @@ class ModuleController extends Controller
             'name'=>'required',
             'code'=>'required',
             'credit'=>'required|numeric',
-            'syllabus'=>'required|mimes:pdf'
+            'syllabus'=>'mimes:pdf'
         ]);
 
         if($validation->fails()){
@@ -76,7 +76,6 @@ class ModuleController extends Controller
               return redirect()->back()->withInput()->withErrors($validation->messages());
            }
         }
-
 
         (new ModuleAction)->update($request);
 

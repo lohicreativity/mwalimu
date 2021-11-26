@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Domain\Academic\Models\ExaminationPolicy;
 use App\Domain\Academic\Models\StudyAcademicYear;
+use App\Domain\Academic\Models\Module;
+use App\Domain\Settings\Models\NTALevel;
 use App\Domain\Academic\Actions\ExaminationPolicyAction;
 use App\Utils\Util;
 use Validator;
@@ -18,7 +20,9 @@ class ExaminationPolicyController extends Controller
     {
     	$data = [
     	   'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
-           'policies'=>ExaminationPolicy::paginate(20)
+           'study_academic_year'=>$request->has('study_academic_year_id')? StudyAcademicYear::with('academicYear')->find($request->get('study_academic_year_id')) : null,
+           'examination_policies'=>ExaminationPolicy::with(['studyAcademicYear.academicYear','ntaLevel'])->paginate(20),
+           'nta_levels'=>NTALevel::all()
     	];
     	return view('dashboard.academic.examination-policies',$data)->withTitle('Examination Policies');
     }
@@ -28,7 +32,7 @@ class ExaminationPolicyController extends Controller
      */
     public function store(Request $request)
     {
-    	$validation = $request->validate($request->all(),[
+    	$validation = Validator::make($request->all(),[
             'module_pass_mark'=>'required',
         ]);
 
@@ -38,6 +42,10 @@ class ExaminationPolicyController extends Controller
            }else{
               return redirect()->back()->withInput()->withErrors($validation->messages());
            }
+        }
+
+        if(ExaminationPolicy::where('type',$request->get('type'))->where('nta_level_id',$request->get('nta_level_id'))->count() != 0){
+        	return redirect()->back()->with('error','Examination policy for this NTA level already exists');
         }
 
 
@@ -51,7 +59,7 @@ class ExaminationPolicyController extends Controller
      */
     public function update(Request $request)
     {
-    	$validation = $request->validate($request->all(),[
+    	$validation = Validator::make($request->all(),[
             'module_pass_mark'=>'required',
         ]);
 
@@ -62,7 +70,6 @@ class ExaminationPolicyController extends Controller
               return Redirect::back()->withInput()->withErrors($validation->messages());
            }
         }
-
 
         (new ExaminationPolicyAction)->update($request);
 
@@ -83,3 +90,5 @@ class ExaminationPolicyController extends Controller
         }
 
     }
+
+}

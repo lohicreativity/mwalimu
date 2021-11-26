@@ -23,7 +23,7 @@ class CreateCourseWorkResultsLogsTable extends Migration
             $table->timestamps();
 
             $table->foreign('student_id')->references('id')->on('students')->onUpdate('cascade');
-            $table->foreign('assessment_plan_id')->references('id')->on('assessment_plans')->onUpdate('cascade');
+            $table->foreign('assessment_plan_id')->references('id')->on('assessment_plans')->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('module_assignment_id')->references('id')->on('module_assignments')->onUpdate('cascade');
             $table->foreign('uploaded_by_user_id')->references('id')->on('users')->onUpdate('cascade');
         });

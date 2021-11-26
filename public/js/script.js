@@ -555,6 +555,21 @@ $('select[name=course_work]').on('change',function(e){
      $($(e.target).data('target')).val((100-parseInt(value)));
 });
 
+// Auto-fill examination policy
+$('.ss-course-work-min-mark').on('keyup',function(e){
+    $($(e.target).data('target')).val((100-parseInt($(e.target).val())));
+});
+
+$('.ss-course-work-percentage-pass').on('keyup',function(e){
+    var percentage = parseInt($(e.target).val())*parseInt($($(e.target).data('from')).val())/100;
+    $($(e.target).data('target')).val(percentage);
+});
+
+$('.ss-final-percentage-pass').on('keyup',function(e){
+    var percentage = parseInt($(e.target).val())*parseInt($($(e.target).data('from')).val())/100;
+    $($(e.target).data('target')).val(percentage);
+});
+
 // Display form processing
 $('.ss-form-processing').submit(function(e){
      var resultsContainer = $(e.target).data('results-container');

@@ -115,23 +115,6 @@
                  </div>
                  <div class="row">
                   <div class="form-group col-6">
-                    {!! Form::label('','Course work') !!}
-                    <select name="course_work" class="form-control" required data-target="#ss-final-exam">
-                     <option value="">Select Course Work</option>
-                     @for($i = 0; $i<= 100; $i++)
-                       @if(($i%5) == 0)
-                       <option value="{{ $i }}">{{ $i }}</option>
-                       @endif
-                     @endfor
-                   </select>
-                  </div>
-                  <div class="form-group col-6">
-                    {!! Form::label('','Final exam') !!}
-                    {!! Form::input('number','final_exam',null,$final_exam) !!}
-                  </div>
-                 </div>
-                 <div class="row">
-                  <div class="form-group col-6">
                     {!! Form::label('','NTA Level') !!}
                     <select name="nta_level_id" class="form-control" required>
                       <option value="">Select NTA Level</option>
@@ -177,8 +160,6 @@
                     <th>Department</th>
                     <th>Code</th>
                     <th>Credit</th>
-                    <th>Course Work</th>
-                    <th>Final Exam</th>
                     <th>NTA Level</th>
                     <th>Actions</th>
                   </tr>
@@ -190,8 +171,6 @@
                     <td>{{ $module->department->name }}</td>
                     <td>{{ $module->code }}</td>
                     <td>{{ $module->credit }}</td>
-                    <td>{{ $module->course_work }}</td>
-                    <td>{{ $module->final_exam }}</td>
                     <td>{{ $module->ntaLevel->name }}</td>
                     <td>
                       <a class="btn btn-info btn-sm" href="{{ url('academic/module/'.$module->id.'/download-syllabus') }}">
@@ -265,23 +244,7 @@
                                       </select>
                                     </div>
                                     </div>
-                                    <div class="row">
-                                    <div class="form-group col-6">
-                                      {!! Form::label('','Course work') !!}
-                                      <select name="course_work" class="form-control" required data-target="#ss-final-exam-{{ $module->id }}">
-                                       <option value="">Select Course Work</option>
-                                       @for($i = 0; $i<= 100; $i++)
-                                         @if(($i%5) == 0)
-                                         <option value="{{ $i }}" @if($module->course_work == $i) selected="selected" @endif>{{ $i }}</option>
-                                         @endif
-                                       @endfor
-                                     </select>
-                                    </div>
-                                    <div class="form-group col-6">
-                                      {!! Form::label('','Final exam') !!}
-                                      {!! Form::input('number','final_exam',$module->final_exam,$final_exam) !!}
-                                    </div>
-                                   </div>
+                                    
                                    <div class="row">
                                       <div class="form-group col-6">
                                         {!! Form::label('','NTA Level') !!}

@@ -17,13 +17,20 @@ class CreateExaminationResultsLogsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('student_id');
             $table->unsignedBigInteger('module_assignment_id');
-            $table->decimal('course_work_score')->default(0.00);
-            $table->decimal('final_score')->default(0.00);
-            $table->decimal('total_score')->default(0.00);
+            $table->decimal('course_work_score',8,1)->default(0.0);
+            $table->decimal('final_score',8,1)->default(0.0);
+            $table->decimal('total_score',8,1)->default(0.0);
             $table->string('exam_type')->default('FINAL');
             $table->string('grade',10)->nullable();
-            $table->string('remark',20)->nullable();
+            $table->string('course_work_remark',20)->nullable();
+            $table->string('final_remark',20)->nullable();
+            $table->string('final_exam_remark',20)->nullable();
+            $table->timestamp('final_uploaded_at')->nullable();
             $table->unsignedBigInteger('uploaded_by_user_id');
+            $table->unsignedBigInteger('processed_by_user_id')->default(0);
+            $table->timestamp('processed_at')->nullable();
+            $table->unsignedBigInteger('final_processed_by_user_id')->default(0);
+            $table->timestamp('final_processed_at')->nullable();
             $table->timestamps();
 
             $table->foreign('student_id')->references('id')->on('students')->onUpdate('cascade');

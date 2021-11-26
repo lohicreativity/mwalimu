@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Domain\Academic\Models\AssessmentPlan;
 use App\Domain\Academic\Models\ModuleAssignment;
 use App\Domain\Academic\Models\CourseWorkComponent;
+use App\Domain\Academic\Models\ExaminationPolicy;
+use App\Domain\Academic\Models\Module;
 use App\Domain\Academic\Actions\AssessmentPlanAction;
 use App\Utils\Util;
 use Validator;
@@ -20,7 +22,12 @@ class AssessmentPlanController extends Controller
     	$components = CourseWorkComponent::where('module_assignment_id',$request->get('module_assignment_id'))->get();
 
         // Check is assessment plan does not exceed module weight
-        $module = ModuleAssignment::find($request->get('module_assignment_id'))->module;
+        $module_assignment = ModuleAssignment::find($request->get('module_assignment_id'));
+        $module = Module::with('ntaLevel')->find($module_assignment->module_id);
+        $policy = ExaminationPolicy::where('nta_level_id',$module->ntaLevel->id)->where('study_academic_year_id',$module_assignment->study_academic_year_id)->first();
+        if(!$policy){
+            return redirect()->back()->withInput()->with('error','No examination policy defined for this module NTA level and study academic year');
+        }
         $sum = 0;
         foreach($components as $comp){
             for($i = 1; $i <= $comp->quantity; $i++){
@@ -29,19 +36,11 @@ class AssessmentPlanController extends Controller
         }
 
         if($sum > $module->course_work){
-            if($request->ajax()){
-                return response()->json(array('error_messages'=>'Module cannot exceed module weight'));
-             }else{
-                return redirect()->back()->withInput()->with('error','Module cannot exceed module weight');
-             }
+            return redirect()->back()->withInput()->with('error','Assessment plans marks cannot exceed module weight');
         }
 
-        if($sum < $module->course_work){
-            if($request->ajax()){
-                return response()->json(array('error_messages'=>'Module cannot be below module weight'));
-             }else{
-                return redirect()->back()->withInput()->with('error','Module cannot be below module weight');
-             }
+        if($sum < $policy->course_work_min_mark){
+            return redirect()->back()->withInput()->with('error','Assessment plans marks cannot be below module weight');
         }
 
         foreach($components as $comp){
@@ -55,6 +54,8 @@ class AssessmentPlanController extends Controller
                 }
             }
         }
+
+
 
         return Util::requestResponse($request,'Assessment plan created successfully');
     }
@@ -93,7 +94,12 @@ class AssessmentPlanController extends Controller
         }
         
         // Check is assessment plan does not exceed module weight
-        $module = ModuleAssignment::find($request->get('module_assignment_id'))->module;
+        $module_assignment = ModuleAssignment::find($request->get('module_assignment_id'));
+        $module = Module::with('ntaLevel')->find($module_assignment->module_id);
+        $policy = ExaminationPolicy::where('nta_level_id',$module->ntaLevel->id)->where('study_academic_year_id',$module_assignment->study_academic_year_id)->first();
+        if(!$policy){
+            return redirect()->back()->withInput()->with('error','No examination policy defined for this module NTA level and study academic year');
+        }
         $plans = AssessmentPlan::where('module_assignment_id',$request->get('module_assignment_id'))->get();
         $sum = 0;
         foreach($plans as $plan){
@@ -101,12 +107,13 @@ class AssessmentPlanController extends Controller
         }
         $sum += $request->get('marks');
         if($sum > $module->course_work){
-        	if($request->ajax()){
-                return response()->json(array('error_messages'=>'Module cannot exceed module weight'));
-             }else{
-                return redirect()->back()->with('error','Module cannot exceed module weight');
-             }
+            return redirect()->back()->withInput()->with('error','Assessment plans marks cannot exceed module weight');
         }
+
+        if($sum < $policy->course_work_min_mark){
+            return redirect()->back()->withInput()->with('error','Assessment plans marks cannot be below module weight');
+        }
+
 
         (new AssessmentPlanAction)->update($request);
 

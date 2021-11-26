@@ -4,6 +4,7 @@ namespace App\Domain\Academic\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Domain\Registration\Models\Student;
 
 class CourseWorkResult extends Model
 {
@@ -18,4 +19,13 @@ class CourseWorkResult extends Model
     {
     	return $this->belongsTo(Student::class,'student_id');
     }
+
+    /**
+     * Establish one to many relationship with assessment plan
+     */
+    public function assessmentPlan()
+    {
+        return $this->belongsTo(AssessmentPlan::class,'assessment_plan_id');
+    }
+
 }

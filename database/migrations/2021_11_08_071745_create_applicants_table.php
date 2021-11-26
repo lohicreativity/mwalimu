@@ -31,7 +31,7 @@ class CreateApplicantsTable extends Migration
             $table->unsignedBigInteger('disability_status_id');
             $table->unsignedBigInteger('user_id');
             $table->timestamps();
-            $table->timestamp('deleted_at')->nullable();
+            $table->softDeletes();
 
             $table->foreign('intake_id')->references('id')->on('intakes')->onUpdate('cascade');
             $table->foreign('disability_status_id')->references('id')->on('disability_statuses')->onUpdate('cascade');

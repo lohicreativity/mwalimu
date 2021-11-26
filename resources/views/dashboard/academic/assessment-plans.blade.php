@@ -160,7 +160,9 @@
               </div>
               <!-- /.card-header -->
               <div class="card-body">
-                <a class="ss-color-danger" href="#" data-toggle="modal" data-target="#ss-delete-plan-{{ $module_assignment->id }}">Reset Assessment Plan</a>
+                @if(!$final_upload_status)
+                <a class="ss-color-danger ss-margin-bottom" href="#" data-toggle="modal" data-target="#ss-delete-plan-{{ $module_assignment->id }}">Reset Assessment Plan</a>
+                @endif
 
                 <div class="modal fade" id="ss-delete-plan-{{ $module_assignment->id }}">
                         <div class="modal-dialog modal-lg">
