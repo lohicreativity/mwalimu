@@ -25,6 +25,7 @@ use App\Http\Controllers\ExaminationPolicyController;
 use App\Http\Controllers\ExaminationIrregularityController;
 use App\Http\Controllers\PostponementController;
 use App\Http\Controllers\SpecialExamController;
+use App\Http\Controllers\ExaminationResultController;
 
 /*
 |--------------------------------------------------------------------------
@@ -198,6 +199,13 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 	Route::get('special-exam/{id}/destroy', [SpecialExamController::class,'destroy']);
 	Route::get('special-exam/{id}/approve', [SpecialExamController::class,'approve']);
 	Route::get('special-exam/{id}/disapprove', [SpecialExamController::class,'disapprove']);
+
+
+	Route::get('results', [ExaminationResultController::class,'showProcess']);
+	Route::post('results/process',[ExaminationResultController::class,'process']);
+	Route::get('results/show-final-results',[ExaminationResultController::class]);
+	Route::get('result/show-results-upload',[ExaminationResultController::class,'showResultsUpload']);
+
 
 
     Route::post('group/store', [GroupController::class,'store']);

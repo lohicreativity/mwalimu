@@ -172,8 +172,8 @@ class ModuleAssignmentController extends Controller
              $students_with_no_coursework_count = $total_students_count - count($students_with_coursework_count);
              $students_with_final_marks_count = ExaminationResult::where('module_assignment_id',$module_assignment->id)->where('exam_type','FINAL')->count();
              $students_with_no_final_marks_count = $total_students_count - $students_with_final_marks_count;
-             $students_with_supplemetary_count = ExaminationResult::where('module_assignment_id',$module_assignment->id)->where('final_remark','FAILED')->where('exam_type','FINAL')->count();
-             $students_passed_count = $students_with_supplemetary_count = ExaminationResult::where('module_assignment_id',$module_assignment->id)->where('final_remark','!=','FAILED')->where('exam_type','FINAL')->count();
+             $students_with_supplemetary_count = ExaminationResult::where('module_assignment_id',$module_assignment->id)->where('final_remark','FAIL')->where('exam_type','FINAL')->count();
+             $students_passed_count = $students_with_supplemetary_count = ExaminationResult::where('module_assignment_id',$module_assignment->id)->where('final_remark','!=','FAIL')->where('exam_type','FINAL')->count();
              $students_with_abscond_count = ExaminationResult::where('module_assignment_id',$module_assignment->id)->where('final_uploaded_at','!=',null)->where('course_work_remark','ABSCOND')->OrWhere('final_remark','ABSCOND')->count();
              $final_upload_status = false;
              if(ExaminationResult::where('module_assignment_id',$module_assignment->id)->where('final_uploaded_at','!=',null)->count() != 0){
@@ -246,7 +246,7 @@ class ModuleAssignmentController extends Controller
                         if(is_null($policy->course_work_pass_score)){
                            $exam_result->course_work_remark = 'ABSCOND';
                         }else{
-                           $exam_result->course_work_remark = $policy->course_work_pass_score <= $course_work? 'PASS' : 'FAILED';
+                           $exam_result->course_work_remark = $policy->course_work_pass_score <= $course_work? 'PASS' : 'FAIL';
                         }
                         
                         $exam_result->processed_by_user_id = Auth::user()->id;
@@ -260,7 +260,7 @@ class ModuleAssignmentController extends Controller
                         if(is_null($policy->course_work_pass_score)){
                            $exam_result->course_work_remark = 'ABSCOND';
                         }else{
-                           $exam_result->course_work_remark = $policy->course_work_pass_score <= $course_work? 'PASS' : 'FAILED';
+                           $exam_result->course_work_remark = $policy->course_work_pass_score <= $course_work? 'PASS' : 'FAIL';
                         }
                         $exam_result->uploaded_by_user_id = Auth::user()->id;
                         $exam_result->processed_by_user_id = Auth::user()->id;
@@ -535,9 +535,9 @@ class ModuleAssignmentController extends Controller
                       $result_log->final_score = !$special_exam? (str_replace(' ', '', $line[1])*$policy->final_min_marks)/100 : null;
                       $result_log->exam_type = 'FINAL';
                       if($special_exam){
-                         $result_log->final_remark = 'INCOMPLETE';
+                         $result_log->final_remark = 'POSTPONED';
                       }else{
-                         $result_log->final_remark = $policy->final_pass_score <= $result_log->final_score? 'PASS' : 'FAILED';
+                         $result_log->final_remark = $policy->final_pass_score <= $result_log->final_score? 'PASS' : 'FAIL';
                       }
                       
                       $result_log->final_uploaded_at = now();
@@ -554,9 +554,9 @@ class ModuleAssignmentController extends Controller
                       $result->final_score = !$special_exam? (str_replace(' ', '', $line[1])*$policy->final_min_mark)/100 : null;
                       $result->exam_type = 'FINAL';
                       if($special_exam){
-                         $result->final_remark = 'INCOMPLETE';
+                         $result->final_remark = 'POSTPONED';
                       }else{
-                         $result->final_remark = $policy->final_pass_score <= $result_log->final_score? 'PASS' : 'FAILED';
+                         $result->final_remark = $policy->final_pass_score <= $result->final_score? 'PASS' : 'FAIL';
                       }
                       $result->final_uploaded_at = now();
                       $result->uploaded_by_user_id = Auth::user()->id;

@@ -18,9 +18,11 @@ class CreateExaminationResultsLogsTable extends Migration
             $table->unsignedBigInteger('student_id');
             $table->unsignedBigInteger('module_assignment_id');
             $table->decimal('course_work_score',8,1)->default(0.0);
-            $table->decimal('final_score',8,1)->default(0.0);
-            $table->decimal('total_score',8,1)->default(0.0);
+            $table->decimal('final_score',8,1)->nullable();
+            $table->decimal('supp_score',8,1)->nullable();
+            $table->decimal('total_score',8,1)->nullable();
             $table->string('exam_type')->default('FINAL');
+            $table->string('exam_category')->default('FIRST');
             $table->string('grade',10)->nullable();
             $table->string('course_work_remark',20)->nullable();
             $table->string('final_remark',20)->nullable();
