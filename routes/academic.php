@@ -24,6 +24,7 @@ use App\Http\Controllers\GradingPolicyController;
 use App\Http\Controllers\ExaminationPolicyController;
 use App\Http\Controllers\ExaminationIrregularityController;
 use App\Http\Controllers\PostponementController;
+use App\Http\Controllers\SpecialExamController;
 
 /*
 |--------------------------------------------------------------------------
@@ -67,6 +68,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 	Route::post('module-assignment/store', [ModuleAssignmentController::class,'store']);
 	Route::get('module-assignment/{id}/destroy', [ModuleAssignmentController::class,'destroy']);
 	Route::get('module-assignment/{id}/examination-irregularities',[ExaminationIrregularityController::class, 'index']);
+	Route::get('module-assignment/{id}/special-exams',[SpecialExamController::class, 'index']);
 
 
 	Route::get('staff-module-assignments', [ModuleAssignmentController::class,'showStaffAssignedModules']);
@@ -86,6 +88,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 	Route::get('staff-module-assignment/{id}/results/students-with-final-marks', [ModuleAssignmentController::class,'studentsWithFinalMarks']);
 	Route::get('staff-module-assignment/{id}/results/download-course-work', [ModuleAssignmentController::class,'studentsWithNoFinalMarks']);
 	Route::get('staff-module-assignment/{id}/results/students-with-supplementary', [ModuleAssignmentController::class,'studentsWithSupplementary']);
+	Route::get('staff-module-assignment/{id}/results/students-with-abscond', [ModuleAssignmentController::class,'studentsWithAbscond']);
 
 
 	Route::post('assessment-plan/store',[AssessmentPlanController::class,'store']);
@@ -187,6 +190,14 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 	Route::get('stream-components', [StreamComponentController::class,'index']);
 	Route::post('stream-component/store', [StreamComponentController::class,'store']);
 	Route::get('stream-component/{id}/destroy', [StreamComponentController::class,'destroy']);
+
+
+	Route::get('special-exams', [SpecialExamController::class,'index']);
+	Route::post('special-exam/store', [SpecialExamController::class,'store']);
+	Route::post('special-exam/update', [SpecialExamController::class,'update']);
+	Route::get('special-exam/{id}/destroy', [SpecialExamController::class,'destroy']);
+	Route::get('special-exam/{id}/approve', [SpecialExamController::class,'approve']);
+	Route::get('special-exam/{id}/disapprove', [SpecialExamController::class,'disapprove']);
 
 
     Route::post('group/store', [GroupController::class,'store']);

@@ -116,7 +116,7 @@
                   </div>
                  </div>
                  <div class="row">
-                  <div class="form-group col-6">
+                  <div class="form-group col-4">
                     {!! Form::label('','NTA level') !!}
                     <select name="nta_level_id" class="form-control" required>
                       <option value="">Select NTA level</option>
@@ -125,7 +125,7 @@
                       @endforeach
                     </select>
                   </div>
-                  <div class="form-group col-6">
+                  <div class="form-group col-4">
                     {!! Form::label('','Award') !!}
                     <select name="award_id" class="form-control" required>
                       <option value="">Select Award</option>
@@ -133,6 +133,14 @@
                       <option value="{{ $award->id }}">{{ $award->name }}</option>
                       @endforeach
                     </select>
+                  </div>
+                   <div class="form-group col-4">
+                      {!! Form::label('','Category') !!}
+                      <select name="category" class="form-control" required>
+                         <option value="">Select Category</option>
+                         <option value="COMMUNITY DEVELOPMENT">Community Development</option>
+                         <option value="NON-COMMUNITY DEVELOPMENT">Non-Community Development</option>
+                      </select>
                   </div>
                  </div>
                 </div>
@@ -161,6 +169,7 @@
                     <th>NTA Level</th>
                     <th>Min Duration</th>
                     <th>Max Duration</th>
+                    <th>Category</th>
                     <th>Actions</th>
                   </tr>
                   </thead>
@@ -173,6 +182,7 @@
                     <td>{{ $program->ntaLevel->name }}</td>
                     <td>{{ $program->min_duration }}</td>
                     <td>{{ $program->max_duration }}</td>
+                    <td>{{ $program->category }}</td>
                     <td>
                       <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-edit-program-{{ $program->id }}">
                               <i class="fas fa-pencil-alt">
@@ -230,7 +240,7 @@
                                         </div>
                                        </div>
                                        <div class="row">
-                                        <div class="form-group col-6">
+                                        <div class="form-group col-4">
                                           {!! Form::label('','NTA level') !!}
                                           <select name="nta_level_id" class="form-control" required>
                                             <option value="">Select NTA level</option>
@@ -239,7 +249,7 @@
                                             @endforeach
                                           </select>
                                         </div>
-                                        <div class="form-group col-6">
+                                        <div class="form-group col-4">
                                           {!! Form::label('','Award') !!}
                                           <select name="award_id" class="form-control" required>
                                             <option value="">Select Award</option>
@@ -248,6 +258,14 @@
                                             @endforeach
                                           </select>
                                         </div>
+                                        <div class="form-group col-4">
+                                        {!! Form::label('','Category') !!}
+                                        <select name="category" class="form-control" required>
+                                           <option value="">Select Category</option>
+                                           <option value="COMMUNITY DEVELOPMENT" @if($program->category == 'COMMUNITY DEVELOPMENT') selected="selected" @endif>Community Development</option>
+                                           <option value="NON-COMMUNITY DEVELOPMENT" @if($program->category == 'NON-COMMUNITY DEVELOPMENT') selected="selected" @endif>Non-Community Development</option>
+                                        </select>
+                                    </div>
                                        </div>
                                       <div class="ss-form-actions">
                                        <button type="submit" class="btn btn-primary">{{ __('Save Changes') }}</button>

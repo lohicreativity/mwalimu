@@ -205,60 +205,21 @@
                <div class="table-responsive ss-margin-bottom">
                   <table class="table table-condensed table-bordered">
                     <tr>
-                      <td class="ss-bold" colspan="3"></td>
-                      <td class="ss-bold" colspan="{{ count($assessment_plans) }}">ASSESSMENTS</td>
-                      <td class="ss-bold"></td>
-                      <td class="ss-bold"></td>
-                    </tr>
-                    <tr>
                       <td class="ss-bold">SN</td>
                       <td class="ss-bold">REGNO</td>
                       <td class="ss-bold">NAME</td>
-                      @foreach($assessment_plans as $plan)
-                      <td>{{ $plan->name }}</td>
-                      @endforeach
-                      <td class="ss-bold">COURSEWORK</td>
-                      <td class="ss-bold">SIGNATURE</td>
+                      <td class="ss-bold">EXAM MARKS</td>
                     </tr>
-                    @foreach($students as $key=>$student)
+                    @foreach($results as $key=>$result)
                     <tr>
                       <td>{{ $key+1 }}</td>
-                      <td>{{ $student->registration_number }}</td>
-                      <td>{{ $student->surname }}, {{ $student->first_name }} {{ $student->middle_name}}</td>
-                        @php 
-                            $cw_available = true;
-                            $empty_columns = count($assessment_plans) - count($student->courseWorkResults);
-                            $cw_total = 0;
-                        @endphp
-                      @foreach($assessment_plans as $plan)
-                        
-                        @foreach($student->courseWorkResults as $result)
-                          @if($result->assessment_plan_id == $plan->id)
-                          <td>{{ $result->score }}</td>
-                            @php 
-                               $cw_available = true; 
-                               $cw_total += $result->score;
-                            @endphp
-                          @else
-                            @php 
-                                $cw_available = false; 
-                            @endphp
-                          @endif
-                        @endforeach
-                        
-
-                        
-                      @endforeach
-                      @for($i = 0; $i < $empty_columns; $i++)
-                        <td></td>
-                      @endfor
-                      <td>@if(count($student->courseWorkResults) != 0 && $course_work_processed) {{ $cw_total }} @endif</td>
-                      <td></td>
+                      <td>{{ $result->student->registration_number }}</td>
+                      <td>{{ $result->student->surname }}, {{ $result->student->first_name }} {{ $result->student->middle_name}}</td>
+                      <td>{{ $result->final_score }}</td>
                     </tr>
                     @endforeach
                   </table>
                 </div><!-- end of table-responsive -->
-                
                 
 
 

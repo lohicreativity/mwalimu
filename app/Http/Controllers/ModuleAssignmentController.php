@@ -17,6 +17,7 @@ use App\Domain\Academic\Models\ExaminationResultLog;
 use App\Domain\HumanResources\Models\Staff;
 use App\Domain\Registration\Models\Student;
 use App\Domain\Academic\Models\ExaminationPolicy;
+use App\Domain\Academic\Models\SpecialExam;
 use App\Domain\Academic\Actions\ModuleAssignmentAction;
 use App\Utils\Util;
 use App\Utils\SystemLocation;
@@ -173,6 +174,7 @@ class ModuleAssignmentController extends Controller
              $students_with_no_final_marks_count = $total_students_count - $students_with_final_marks_count;
              $students_with_supplemetary_count = ExaminationResult::where('module_assignment_id',$module_assignment->id)->where('final_remark','FAILED')->where('exam_type','FINAL')->count();
              $students_passed_count = $students_with_supplemetary_count = ExaminationResult::where('module_assignment_id',$module_assignment->id)->where('final_remark','!=','FAILED')->where('exam_type','FINAL')->count();
+             $students_with_abscond_count = ExaminationResult::where('module_assignment_id',$module_assignment->id)->where('final_uploaded_at','!=',null)->where('course_work_remark','ABSCOND')->OrWhere('final_remark','ABSCOND')->count();
              $final_upload_status = false;
              if(ExaminationResult::where('module_assignment_id',$module_assignment->id)->where('final_uploaded_at','!=',null)->count() != 0){
                 $final_upload_status = true;
@@ -186,7 +188,8 @@ class ModuleAssignmentController extends Controller
                 'students_with_final_marks_count'=>$students_with_final_marks_count,
                 'students_with_no_final_marks_count'=>$students_with_no_final_marks_count,
                 'students_with_supplemetary_count'=>$students_with_supplemetary_count,
-                'students_passed_count'=>$students_passed_count
+                'students_passed_count'=>$students_passed_count,
+                'students_with_abscond_count'=>$students_with_abscond_count
              ];
              return view('dashboard.academic.assessment-results',$data)->withTitle('Upload Module Assignment Results');
           }catch(\Exception $e){
@@ -201,12 +204,12 @@ class ModuleAssignmentController extends Controller
     { 
          try{
               
-              $module_assignment = ModuleAssignment::with('assessmentPlans','module','programModuleAssignment')->findOrFail($request->get('module_assignment_id'));
+              $module_assignment = ModuleAssignment::with('assessmentPlans','module','programModuleAssignment.campusProgram.program')->findOrFail($request->get('module_assignment_id'));
               $module_assignment->course_work_process_status = 'PROCESSED';
               $module_assignment->save();
 
               $module = Module::with('ntaLevel')->find($module_assignment->module_id);
-              $policy = ExaminationPolicy::where('nta_level_id',$module->ntaLevel->id)->where('study_academic_year_id',$module_assignment->study_academic_year_id)->first();
+              $policy = ExaminationPolicy::where('nta_level_id',$module->ntaLevel->id)->where('study_academic_year_id',$module_assignment->study_academic_year_id)->where('type',$module_assignment->programModuleAssignment->campusProgram->program->category)->first();
               if(!$policy){
                   return redirect()->back()->withInput()->with('error','No examination policy defined for this module NTA level and study academic year');
               }
@@ -231,13 +234,21 @@ class ModuleAssignmentController extends Controller
              DB::beginTransaction();
              foreach ($students as $key => $student) {
                 $course_work = CourseWorkResult::where('module_assignment_id',$module_assignment->id)->where('student_id',$student->id)->sum('score');
+                $course_work_count = CourseWorkResult::whereHas('assessmentPlan',function($query) use ($module_assignment){
+                     $query->where('name','LIKE','%Test%');
+                  })->where('module_assignment_id',$module_assignment->id)->where('student_id',$student->id)->count();
                 if($course_work){
                     if($result = ExaminationResult::where('module_assignment_id',$module_assignment->id)->where('student_id',$student->id)->where('exam_type','FINAL')->first()){
                         $exam_result = $result;
                         $exam_result->module_assignment_id = $module_assignment->id;
                         $exam_result->student_id = $student->id;
-                        $exam_result->course_work_score = $course_work;
-                        $exam_result->course_work_remark = $policy->course_work_pass_score <= $course_work? 'PASS' : 'FAILED';
+                        $exam_result->course_work_score = $course_work_count < 2? null : $course_work;
+                        if(is_null($policy->course_work_pass_score)){
+                           $exam_result->course_work_remark = 'ABSCOND';
+                        }else{
+                           $exam_result->course_work_remark = $policy->course_work_pass_score <= $course_work? 'PASS' : 'FAILED';
+                        }
+                        
                         $exam_result->processed_by_user_id = Auth::user()->id;
                         $exam_result->processed_at = now();
                         $exam_result->save();
@@ -245,8 +256,12 @@ class ModuleAssignmentController extends Controller
                         $exam_result = new ExaminationResult;
                         $exam_result->module_assignment_id = $module_assignment->id;
                         $exam_result->student_id = $student->id;
-                        $exam_result->course_work_score = $course_work;
-                        $exam_result->course_work_remark = $policy->course_work_pass_score <= $course_work? 'PASS' : 'FAILED';
+                        $exam_result->course_work_score = $course_work_count < 2? null : $course_work;
+                        if(is_null($policy->course_work_pass_score)){
+                           $exam_result->course_work_remark = 'ABSCOND';
+                        }else{
+                           $exam_result->course_work_remark = $policy->course_work_pass_score <= $course_work? 'PASS' : 'FAILED';
+                        }
                         $exam_result->uploaded_by_user_id = Auth::user()->id;
                         $exam_result->processed_by_user_id = Auth::user()->id;
                         $exam_result->processed_at = now();
@@ -258,6 +273,7 @@ class ModuleAssignmentController extends Controller
              DB::commit();
              return redirect()->back()->with('message','Course work processed successfully');
          }catch(\Exception $e){
+              return $e->getMessage();
               return redirect()->back()->with('error','Unable to get the resource specified in this request');
          }
     }
@@ -294,8 +310,6 @@ class ModuleAssignmentController extends Controller
                 ];
             }
             return view('dashboard.academic.reports.total-students-in-module', $data);
-            // $pdf = PDF::loadView('dashboard.academic.reports.total-students-in-module', $data)->setPaper('a4','portrait');
-            // return $pdf->stream();
             
         }catch(\Exception $e){
             return $e->getMessage();
@@ -326,66 +340,12 @@ class ModuleAssignmentController extends Controller
                     'department'=>$module_assignment->programModuleAssignment->campusProgram->program->department,
                     'module'=>$module_assignment->module,
                     'study_academic_year'=>$module_assignment->studyAcademicYear,
+                    'course_work_processed'=> $module_assignment->course_work_process_status == 'PROCESSED'? true : false,
                     'assessment_plans'=>AssessmentPlan::where('module_assignment_id',$module_assignment->id)->get(),
                     'students'=>$students
                 ];
 
                 return view('dashboard.academic.reports.students-with-course-work',$data);
-
-                // $pdf = PDF::loadView('dashboard.academic.reports.students-with-course-work', $data)->setPaper('a4','landscape');
-                // return $pdf->stream();
-        }catch(\Exception $e){
-            return $e->getMessage();
-            return redirect()->back()->with('error','Unable to get the resource specified in this request');
-        }
-    }
-
-    /**
-     * Show students with no course work
-     */
-    public function studentsWithNoCourseWork(Request $request,$id)
-    {
-        try{
-            $module_assignment = ModuleAssignment::with(['programModuleAssignment.campusProgram.program.department','programModuleAssignment.campusProgram.campus','studyAcademicYear.academicYear','programModuleAssignment.module','programModuleAssignment.students'])->findOrFail($id);
-
-            if($module_assignment->programModuleAssignment->category == 'OPTIONAL'){
-                $students = $module_assignment->programModuleAssignment->students()->get();
-             }else{
-                $students = Student::where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id)->get();
-             }
-
-               $course_works = CourseWorkResult::with('student')->groupBy('student_id')->selectRaw('COUNT(*) as total, student_id')->where('module_assignment_id',$module_assignment->id)->get();
-               $students_with_coursework = [];
-               $students_with_no_coursework = [];
-               $keysList = [];
-               foreach($students as $key=>$stud){
-                  $students_with_coursework[$key] = $stud;
-                  foreach ($course_works as $course) {
-                     if($course->student->id == $stud->id){
-                        $keysList[$key] = $stud;
-                     }
-                  }
-               }
-               
-               $arranged_students = [];
-               $students_with_no_coursework = array_diff_key($students_with_coursework,$keysList);
-               $count = 0;
-               foreach ($students_with_no_coursework as $key => $stud) {
-                  $arranged_students[$count] = $stud;
-                  $count += 1; 
-               }
-
-                $data = [
-                    'program'=>$module_assignment->programModuleAssignment->campusProgram->program,
-                    'campus'=>$module_assignment->programModuleAssignment->campusProgram->campus,
-                    'department'=>$module_assignment->programModuleAssignment->campusProgram->program->department,
-                    'study_academic_year'=>$module_assignment->studyAcademicYear,
-                    'students'=>$arranged_students
-                    
-                ];
-
-                $pdf = PDF::loadView('dashboard.academic.reports.total-students-in-module', $data)->setPaper('a4','portrait');
-                return $pdf->stream();
         }catch(\Exception $e){
             return $e->getMessage();
             return redirect()->back()->with('error','Unable to get the resource specified in this request');
@@ -395,21 +355,44 @@ class ModuleAssignmentController extends Controller
     /**
      * Show students with final marks
      */
-    public function studentsWithFinalMarks(Request $request)
+    public function studentsWithFinalMarks(Request $request,$id)
     {
         try{
+           $module_assignment = ModuleAssignment::with(['programModuleAssignment.campusProgram.program.department','programModuleAssignment.campusProgram.campus','studyAcademicYear.academicYear','programModuleAssignment.module','programModuleAssignment.students','module'])->findOrFail($id);
+
+           $data = [
+                'program'=>$module_assignment->programModuleAssignment->campusProgram->program,
+                'campus'=>$module_assignment->programModuleAssignment->campusProgram->campus,
+                'department'=>$module_assignment->programModuleAssignment->campusProgram->program->department,
+                'module'=>$module_assignment->module,
+                'study_academic_year'=>$module_assignment->studyAcademicYear,
+                'results'=>ExaminationResult::with('student')->where('module_assignment_id',$module_assignment->id)->where('final_uploaded_at','!=',null)->get()
+            ];
+            return view('dashboard.academic.reports.students-with-final',$data);
 
         }catch(\Exception $e){
             return redirect()->back()->with('error','Unable to get the resource specified in this request');
         }
     }
 
+
     /**
-     * Show students with no final marks
+     * Show students with abscond
      */
-    public function studentsWithNoFinalMarks(Request $request)
+    public function studentsWithAbscond(Request $request,$id)
     {
         try{
+           $module_assignment = ModuleAssignment::with(['programModuleAssignment.campusProgram.program.department','programModuleAssignment.campusProgram.campus','studyAcademicYear.academicYear','programModuleAssignment.module','programModuleAssignment.students','module'])->findOrFail($id);
+
+           $data = [
+                'program'=>$module_assignment->programModuleAssignment->campusProgram->program,
+                'campus'=>$module_assignment->programModuleAssignment->campusProgram->campus,
+                'department'=>$module_assignment->programModuleAssignment->campusProgram->program->department,
+                'module'=>$module_assignment->module,
+                'study_academic_year'=>$module_assignment->studyAcademicYear,
+                'results'=>ExaminationResult::with('student')->where('module_assignment_id',$module_assignment->id)->where('final_uploaded_at','!=',null)->where('course_work_remark','ABSCOND')->OrWhere('final_remark','ABSCOND')->get()
+            ];
+            return view('dashboard.academic.reports.students-with-abscond',$data);
 
         }catch(\Exception $e){
             return redirect()->back()->with('error','Unable to get the resource specified in this request');
@@ -439,11 +422,11 @@ class ModuleAssignmentController extends Controller
          
          if($request->hasFile('results_file')){
           // DB::beginTransaction();
-              $module_assignment = ModuleAssignment::with(['module','studyAcademicYear.academicYear','programModuleAssignment'])->find($request->get('module_assignment_id'));
+              $module_assignment = ModuleAssignment::with(['module','studyAcademicYear.academicYear','programModuleAssignment.campusProgram.program'])->find($request->get('module_assignment_id'));
               $academicYear = $module_assignment->studyAcademicYear->academicYear;
 
               $module = Module::with('ntaLevel')->find($module_assignment->module_id);
-              $policy = ExaminationPolicy::where('nta_level_id',$module->ntaLevel->id)->where('study_academic_year_id',$module_assignment->study_academic_year_id)->first();
+              $policy = ExaminationPolicy::where('nta_level_id',$module->ntaLevel->id)->where('study_academic_year_id',$module_assignment->study_academic_year_id)->where('type',$module_assignment->programModuleAssignment->campusProgram->program->category)->first();
               if(!$policy){
                   return redirect()->back()->withInput()->with('error','No examination policy defined for this module NTA level and study academic year');
               }
@@ -541,14 +524,22 @@ class ModuleAssignmentController extends Controller
                 $student = Student::whereHas('studentshipStatus',function($query){
                       $query->where('name','ACTIVE');
                 })->where('registration_number',str_replace(' ', '', $line[0]))->first();
+
                 if($student){
                   if($request->get('assessment_plan_id') == 'FINAL_EXAM'){
+                      $special_exam = SpecialExam::where('student_id',$student->id)->where('module_assignment_id',$module_assignment->id)->where('type','FINAL')->where('status','APPROVED')->first();
+
                       $result_log = new ExaminationResultLog;
                       $result_log->module_assignment_id = $request->get('module_assignment_id');
                       $result_log->student_id = $student->id;
-                      $result_log->final_score = (str_replace(' ', '', $line[1])*$policy->final_min_marks)/100;
+                      $result_log->final_score = !$special_exam? (str_replace(' ', '', $line[1])*$policy->final_min_marks)/100 : null;
                       $result_log->exam_type = 'FINAL';
-                      $result_log->final_remark = $policy->final_pass_score <= $result_log->final_score? 'PASS' : 'FAILED';
+                      if($special_exam){
+                         $result_log->final_remark = 'INCOMPLETE';
+                      }else{
+                         $result_log->final_remark = $policy->final_pass_score <= $result_log->final_score? 'PASS' : 'FAILED';
+                      }
+                      
                       $result_log->final_uploaded_at = now();
                       $result_log->uploaded_by_user_id = Auth::user()->id;
                       $result_log->save();
@@ -560,9 +551,13 @@ class ModuleAssignmentController extends Controller
                       }
                       $result->module_assignment_id = $request->get('module_assignment_id');
                       $result->student_id = $student->id;
-                      $result->final_score = (str_replace(' ', '', $line[1])*$policy->final_min_mark)/100;
+                      $result->final_score = !$special_exam? (str_replace(' ', '', $line[1])*$policy->final_min_mark)/100 : null;
                       $result->exam_type = 'FINAL';
-                      $result->final_remark = $policy->final_pass_score <= $result->final_score? 'PASS' : 'FAILED';
+                      if($special_exam){
+                         $result->final_remark = 'INCOMPLETE';
+                      }else{
+                         $result->final_remark = $policy->final_pass_score <= $result_log->final_score? 'PASS' : 'FAILED';
+                      }
                       $result->final_uploaded_at = now();
                       $result->uploaded_by_user_id = Auth::user()->id;
                       $result->save();

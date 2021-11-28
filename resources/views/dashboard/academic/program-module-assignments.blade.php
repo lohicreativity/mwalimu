@@ -117,6 +117,7 @@
                                     <th>Semester</th>
                                     <th>Category</th>
                                     <th>Type</th>
+                                    <th>Special Exams</th>
                                     <th>Examination Irregularity</th>
                                   </tr>
                                   </thead>
@@ -130,6 +131,13 @@
                                     <td>{{ $assignment->semester->name }}</td>
                                     <td>{{ $assignment->category }}</td>
                                     <td>{{ $assignment->type }}</td>
+                                    <td>
+                                      <a class="btn btn-info btn-sm" href="{{ url('academic/module-assignment/'.$assignment->id.'/special-exams') }}">
+                              <i class="fas fa-folder-open">
+                              </i>
+                               Special Exams
+                              </a>
+                                    </td>
                                     <td>
                                       <a class="btn btn-info btn-sm" href="{{ url('academic/module-assignment/'.$assignment->id.'/examination-irregularities') }}">
                               <i class="fas fa-random">
