@@ -54,10 +54,11 @@
                  @endphp 
                  {!! Form::open(['url'=>'academic/module-assignment/'.$module_assignment->id.'/special-exams','class'=>'ss-form-processing','method'=>'GET']) !!}
                    
-                   <div class="form-group col-6">
+                  <div class="row">
+                  <div class="form-group col-6">
                     {!! Form::label('','Enter student registration number') !!}
                     {!! Form::text('registration_number',null,$reg_number) !!}
-                     
+                  </div>
                   </div>
                   <div class="ss-form-actions">
                    <button type="submit" class="btn btn-primary">{{ __('Search') }}</button>

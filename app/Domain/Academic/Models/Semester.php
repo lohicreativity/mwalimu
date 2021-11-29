@@ -26,4 +26,12 @@ class Semester extends Model
     {
     	return $this->hasMany(ElectiveModuleLimit::class,'semester_id');
     }
+
+    /**
+     * Establish one to many relationship with program module assignments
+     */
+    public function programModuleAssignments()
+    {
+    	return $this->hasMany(ProgramModuleAssignment::class,'semester_id');
+    }
 }

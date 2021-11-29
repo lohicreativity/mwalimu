@@ -203,8 +203,14 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 
 	Route::get('results', [ExaminationResultController::class,'showProcess']);
 	Route::post('results/process',[ExaminationResultController::class,'process']);
-	Route::get('results/show-final-results',[ExaminationResultController::class]);
-	Route::get('result/show-results-upload',[ExaminationResultController::class,'showResultsUpload']);
+	Route::get('results/show-program-results',[ExaminationResultController::class,'showProgramResults']);
+	Route::get('results/show-module-results',[ExaminationResultController::class,'showModuleResults']);
+	Route::get('results/show-student-results',[ExaminationResultController::class,'showStudentResults']);
+	Route::get('results/{student_id}/{ac_yr_id}/{yr_of_study}/show-student-results',[ExaminationResultController::class,'showStudentAcademicYearResults']);
+	Route::post('results/show-program-report',[ExaminationResultController::class,'showProgramResultsReport']);
+	Route::post('results/show-module-report',[ExaminationResultController::class,'showModuleResultsReport']);
+	Route::get('results/show-student-report',[ExaminationResultController::class,'showStudentResultsReport']);
+	Route::get('results/show-results-upload',[ExaminationResultController::class,'showResultsUpload']);
 
 
 

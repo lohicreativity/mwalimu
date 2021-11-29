@@ -37,6 +37,14 @@ class ModuleAssignment extends Model
     }
 
     /**
+     * Establish one to many relationship with examination results
+     */
+    public function examinationResults()
+    {
+        return $this->hasMany(ExaminationResult::class,'module_assignment_id');
+    }
+
+    /**
      * Establish one to many relationship with staffs
      */
     public function staff()

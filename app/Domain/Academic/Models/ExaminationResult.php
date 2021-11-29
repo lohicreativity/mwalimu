@@ -19,4 +19,14 @@ class ExaminationResult extends Model
     {
     	return $this->belongsTo(Student::class,'student_id');
     }
+    
+    /**
+     * Establish one to many relationship with module assignment
+     */
+    public function moduleAssignment()
+    {
+        return $this->belongsTo(ModuleAssignment::class,'module_assignment_id');
+    }
+
+
 }

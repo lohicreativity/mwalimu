@@ -19,6 +19,7 @@ class CreateSemesterRemarksTable extends Migration
             $table->unsignedBigInteger('study_academic_year_id');
             $table->unsignedBigInteger('semester_id');
             $table->mediumInteger('year_of_study');
+            $table->decimal('gpa',8,1);
             $table->string('remark',20);
             $table->timestamps();
 

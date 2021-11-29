@@ -16,6 +16,7 @@ class CreateOverallRemarksTable extends Migration
         Schema::create('overall_remarks', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('student_id');
+            $table->decimal('gpa',8,1);
             $table->string('remark',20);
             $table->timestamps();
 
