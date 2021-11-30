@@ -20,6 +20,14 @@ class Semester extends Model
     }
 
     /**
+     * Establish one to many relationship with semester remarks
+     */
+    public function remarks()
+    {
+    	return $this->hasMany(SemesterRemark::class,'semester_id');
+    }
+
+    /**
      * Establish one to many relationship with elective module limits
      */
     public function electiveDeadlines()

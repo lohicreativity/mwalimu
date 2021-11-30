@@ -21,7 +21,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>{{ __('Examination Results') }}</h1>
+            <h1>{{ __('Examination Results') }} - {{ $study_academic_year->academicYear->year }}</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -62,8 +62,12 @@
                  @endforeach
                 
                  
-                 @foreach($semesters as $semester)
-                 <p class="ss-no-margin">{{ $semester->name }}</p>
+                 @foreach($semesters as $key=>$semester)
+
+                   @if(count($semester->remarks) != 0)
+                <div class="row">
+                <div class="col-12">
+                 <h4 class="ss-no-margin">{{ $semester->name }}</h4>
                  <table class="table table-bordered">
                     <thead>
                       <tr>
@@ -103,9 +107,9 @@
                           <td>{{ $count }}</td>
                           <td>{{ $result->moduleAssignment->module->code }}</td>
                           <td>{{ $result->moduleAssignment->module->name }}</td>
-                          <td>{{ $result->course_work_score }}</td>
-                          <td>{{ $result->final_score }}</td>
-                          <td>{{ $result->total_score }}</td>
+                          <td>@if(!$result->supp_score) {{ $result->course_work_score }} @else N/A @endif</td>
+                          <td>@if(!$result->supp_score) {{ $result->final_score }} @else N/A @endif</td>
+                          <td>@if(!$result->supp_score) {{ $result->total_score }} @else {{ $result->supp_score }}@endif</td>
                           <td>{{ $result->grade }}</td>
                           <td>{{ $result->final_exam_remark }}</td>
                         </tr>
@@ -134,7 +138,53 @@
                      @endforeach
                     </tbody>
                  </table>
+               </div>
                  <br>
+                 <div class="col-6">
+                 <p class="ss-bold">Summary: {{ $semester->name }}</p>
+                 <table class="table table-bordered">
+                   <thead>
+                      <tr>
+                        <th>Remark</th>
+                        <th>GPA</th>
+                      </tr>
+                   </thead>
+                   <tbody>
+                      @foreach($semester->remarks as $remark)
+                      <tr>
+                         <td><strong>{{ $remark->remark }}</strong>
+                             @if($remark->serialized) [{{ implode(', ',unserialize($remark->serialized)) }}] @endif
+                         </td>
+                         <td>{{ bcdiv($remark->gpa,1,1) }}</td>
+                      </tr>
+                      @endforeach
+                   </tbody>
+                 </table>
+               </div>
+                 
+                   @if($annual_remark && $key == (count($semesters)-1))
+                   <div class="col-6">
+                    <p class="ss-bold">Annual Remark</p>
+                     <table class="table table-bordered">
+                   <thead>
+                      <tr>
+                        <th>Remark</th>
+                        <th>GPA</th>
+                      </tr>
+                   </thead>
+                   <tbody>
+                      <tr>
+                        <td><strong>{{ $annual_remark->remark }}</strong></td>
+                        <td>{{ bcdiv($annual_remark->gpa,1,1) }}</td>
+                       </tr>
+                   </tbody>
+                 </table>
+                 <br>
+               </div>
+                   @endif
+                   
+                 </div>
+                 @endif
                  @endforeach
               </div>
             </div>

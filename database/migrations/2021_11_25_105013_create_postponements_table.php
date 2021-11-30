@@ -19,7 +19,7 @@ class CreatePostponementsTable extends Migration
             $table->unsignedBigInteger('study_academic_year_id');
             $table->unsignedBigInteger('semester_id')->default(0);
             $table->string('category'); // SEMESTER or YEAR
-            $table->string('status',20)->default('POSTPONED');
+            $table->string('status',20)->default('PENDING');
             $table->timestamps();
 
             $table->foreign('student_id')->references('id')->on('students')->onUpdate('cascade');

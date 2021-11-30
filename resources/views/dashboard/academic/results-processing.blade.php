@@ -92,9 +92,9 @@
                    
                    <div class="row">
                    <div class="form-group col-6">
-                    {!! Form::label('','Campus program') !!}
+                    {!! Form::label('','Programme') !!}
                     <select name="campus_program_id" class="form-control" required>
-                       <option value="">Select Campus Program</option>
+                       <option value="">Select Programme</option>
                        @foreach($campus_programs as $program)
                           @for($i = 1; $i <= $program->program->min_duration; $i++)
                           <option value="{{ $program->id }}_year_{{ $i }}">{{ $program->program->name }} - Year {{ $i }}</option>

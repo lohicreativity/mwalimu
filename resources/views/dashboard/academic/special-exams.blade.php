@@ -109,7 +109,7 @@
                      <select name="type" class="form-control" required>
                        <option value="">Select Type</option>
                        <option value="FINAL">Final</option>
-                       <option value="SUP">Supplementary</option>
+                       <option value="SUPP">Supplementary</option>
                      </select>
 
                      {!! Form::input('hidden','module_assignment_id',$module_assignment->id) !!}
@@ -225,7 +225,7 @@
                                  <select name="type" class="form-control" required>
                                    <option value="">Select Type</option>
                                    <option value="FINAL" @if($exam->type == 'FINAL') selected="selected" @endif>Final</option>
-                                   <option value="SUP" @if($exam->type == 'SUP') selected="selected" @endif>Supplementary</option>
+                                   <option value="SUPP" @if($exam->type == 'SUPP') selected="selected" @endif>Supplementary</option>
                                  </select>
                                
                                {!! Form::input('hidden','module_assignment_id',$module_assignment->id) !!}

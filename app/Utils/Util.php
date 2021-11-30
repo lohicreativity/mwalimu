@@ -25,6 +25,70 @@ class Util {
    }
 
    /**
+    * Compute GPA
+    */
+   public static function computeGPA($total_credits, $results)
+   {
+       $total_weights = 0;
+       foreach($results as $res){
+          $total_weights += $res->point*$res->moduleAssignment->module->credit;
+       }
+       return  bcdiv($total_weights/$total_credits,1,4);
+   }
+
+   /**
+    * Get annual remark
+    */
+   public static function getAnnualRemark($remarks, $results)
+   {
+       $remark = 'PASS';
+       foreach($remarks as $rem){
+          if($rem->remark == 'FAIL&DISCO'){
+             $remark = 'FAIL&DISCO';
+             break;
+          }
+
+          if($rem->remark == 'INCOMPLETE'){
+             $remark = 'INCOMPLETE';
+             break;
+          }
+
+          if($rem->remark == 'POSTPONED'){
+             $remark = 'POSTPONED';
+             break;
+          }
+          
+          if($rem->remark == 'SUPP'){
+             $remark = 'SUPP';
+          } 
+       }
+       $supp_exams = [];
+       foreach($results as $result){  
+          if($result->final_exam_remark == 'FAIL'){
+              $supp_exams[] = $result->moduleAssignment->module->code;
+          }
+       }
+
+       if(count($supp_exams) > (count($results)/2)){
+          $remark = 'FAIL&DISCO';
+       }
+       return $remark;
+   }
+    
+
+    /**
+     * Truncate number with precision
+     */
+    public static function truncateNumber($number, $precision = 0) {
+   // warning: precision is limited by the size of the int type
+       $shift = pow(10, $precision);
+       if($number > 0){
+            return floor($number * $shift) / $shift; 
+        } else {
+            return ceil($number * $shift) / $shift; 
+        }
+    }
+   /**
     * Strip spaces upper
     */
    public static function stripSpacesUpper($str){
