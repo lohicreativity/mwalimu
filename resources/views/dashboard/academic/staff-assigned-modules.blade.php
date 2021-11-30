@@ -85,7 +85,9 @@
                   </tr>
                   </thead>
                   <tbody>
+                  @foreach($semesters as $semester)
                   @foreach($assignments as $assignment)
+                  @if($assignment->programModuleAssignment->semester_id == $semester->id)
                   <tr>
                     <td>{{ $assignment->programModuleAssignment->campusProgram->campus->name }}</td>
                     <td>{{ $assignment->programModuleAssignment->campusProgram->program->name }}</td>
@@ -95,8 +97,9 @@
                     <td>{{ $assignment->programModuleAssignment->semester->name }}</td>
                     <td>{{ $assignment->module->credit }}</td>
                   </tr>
+                  @endif
                   @endforeach
-                  
+                  @endforeach
                   </tbody>
                 </table>
                 <div class="ss-pagination-links">

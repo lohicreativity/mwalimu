@@ -128,6 +128,12 @@
                     {!! Form::file('syllabus',['class'=>'form-control']) !!}
                   </div>
                  </div><!-- end of row -->
+                 <div class="row">
+                    <div class="form-group form-check">
+                    <input type="checkbox" name="course_work_based" class="form-check-input" value="1" id="exampleCheck1">
+                    <label class="form-check-label" for="exampleCheck1">Course work based.</label>
+                  </div>
+                 </div>
                 </div>
                 <!-- /.card-body -->
 
@@ -260,6 +266,16 @@
                                         {!! Form::file('syllabus',['class'=>'form-control']) !!}
                                       </div>
                                    </div>
+                                   <div class="row">
+                                    <div class="form-group form-check">
+                                      @if($module->course_work_based == 1)
+                                        <input type="checkbox" name="course_work_based" class="form-check-input" value="1" checked="checked" id="exampleCheck1">
+                                      @else
+                                        <input type="checkbox" name="course_work_based" class="form-check-input" value="1" id="exampleCheck1">
+                                      @endif
+                                        <label class="form-check-label" for="exampleCheck1">Course work based.</label>
+                                      </div>
+                                     </div>
                                       <div class="ss-form-actions">
                                        <button type="submit" class="btn btn-primary">{{ __('Save Changes') }}</button>
                                       </div>

@@ -7,6 +7,7 @@ use App\Domain\Academic\Models\ModuleAssignment;
 use App\Domain\Academic\Models\StudyAcademicYear;
 use App\Domain\Academic\Models\Module;
 use App\Domain\Academic\Models\ResultFile;
+use App\Domain\Academic\Models\Semester;
 use App\Domain\Settings\Models\Campus;
 use App\Domain\Academic\Models\AssessmentPlan;
 use App\Domain\Academic\Models\CourseWorkComponent;
@@ -53,6 +54,7 @@ class ModuleAssignmentController extends Controller
            'study_academic_years'=>StudyAcademicYear::all(),
            'study_academic_year'=>$request->has('study_academic_year_id')? StudyAcademicYear::with('academicYear')->find($request->get('study_academic_year_id')) : null,
            'staff'=>$staff,
+           'semesters'=>Semester::all(),
            'assignments'=>$staff? ModuleAssignment::whereHas('studyAcademicYear',function($query) use ($request){
                   $query->where('id',$request->get('study_academic_year_id'));
              })->with(['studyAcademicYear.academicYear','module','programModuleAssignment.campusProgram.program','programModuleAssignment.campusProgram.campus','programModuleAssignment.semester'])->where('staff_id',$staff->id)->latest()->paginate(20) : [],
@@ -66,7 +68,12 @@ class ModuleAssignmentController extends Controller
     public function showAssessmentPlans(Request $request,$id)
     {
         try{
-            $module_assignment = ModuleAssignment::with('module')->findOrFail($id);
+            $module_assignment = ModuleAssignment::with(['module.ntaLevel','programModuleAssignment.campusProgram.program','studyAcademicYear'])->findOrFail($id);
+            $policy = ExaminationPolicy::where('nta_level_id',$module_assignment->module->ntaLevel->id)->where('study_academic_year_id',$module_assignment->study_academic_year_id)->where('type',$module_assignment->programModuleAssignment->campusProgram->program->category)->first();
+
+            if(!$policy){
+                  return redirect()->back()->with('error','No examination policy defined for this module NTA level and study academic year');
+            }
             $final_upload_status = false;
              if(ExaminationResult::where('module_assignment_id',$module_assignment->id)->where('final_uploaded_at','!=',null)->count() != 0){
                 $final_upload_status = true;
@@ -76,6 +83,7 @@ class ModuleAssignmentController extends Controller
                'final_upload_status'=>$final_upload_status,
                'assessment_plans'=>AssessmentPlan::where('module_assignment_id',$id)->get(),
                'course_work_components'=>CourseWorkComponent::where('module_assignment_id',$id)->get(),
+               'policy'=>$policy
             ];
             return view('dashboard.academic.assessment-plans',$data)->withTitle('Module Assessment Plans');
         }catch(\Exception $e){
@@ -431,18 +439,18 @@ class ModuleAssignmentController extends Controller
                   return redirect()->back()->withInput()->with('error','No examination policy defined for this module NTA level and study academic year');
               }
 
-              if($request->get('assessment_plan_id') != 'FINAL_EXAM'){
-                  $plan = AssessmentPlan::find($request->get('assessment_plan_id'));
-                  $assessment = $plan->name;
-                  $destination = public_path('assessment_results_uploads/');
-              }elseif($request->get('assessment_plan_id') != 'SUPPLEMENTARY'){
-                  $plan = null;
-                  $assessment = 'SUP';
-                  $destination = public_path('supplementary_results_uploads/');
-              }else{
+              if($request->get('assessment_plan_id') == 'FINAL_EXAM'){
                   $plan = null;
                   $assessment = 'FINAL';
                   $destination = public_path('final_results_uploads/');
+              }elseif($request->get('assessment_plan_id') == 'SUPPLEMENTARY'){
+                  $plan = null;
+                  $assessment = 'SUPP';
+                  $destination = public_path('supplementary_results_uploads/');
+              }else{
+                  $plan = AssessmentPlan::find($request->get('assessment_plan_id'));
+                  $assessment = $plan->name;
+                  $destination = public_path('assessment_results_uploads/');
               }
 
               

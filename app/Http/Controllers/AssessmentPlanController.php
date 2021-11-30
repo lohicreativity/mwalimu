@@ -35,7 +35,7 @@ class AssessmentPlanController extends Controller
             }
         }
 
-        if($sum > $module->course_work){
+        if($sum > $policy->course_work_min_mark){
             return redirect()->back()->withInput()->with('error','Assessment plans marks cannot exceed module weight');
         }
 

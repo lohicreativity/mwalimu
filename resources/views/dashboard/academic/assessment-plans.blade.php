@@ -21,7 +21,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>{{ __('Assessment Plans') }} - {{ $module_assignment->module->name }} ({{ $module_assignment->module->course_work}} Wgt)</h1>
+            <h1>{{ __('Assessment Plans') }} - {{ $module_assignment->module->name }} ({{ $policy->course_work_min_mark }} Wgt)</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">

@@ -22,6 +22,7 @@ class CreateModulesTable extends Migration
             $table->decimal('final_exam');
             $table->unsignedBigInteger('department_id');
             $table->unsignedBigInteger('nta_level_id');
+            $table->tinyInteger('course_work_based')->default(1);
             $table->string('syllabus')->nullable();
             $table->timestamps();
             $table->softDeletes();

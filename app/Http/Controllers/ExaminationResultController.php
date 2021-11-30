@@ -57,6 +57,16 @@ class ExaminationResultController extends Controller
 	    	    	$query->where('program_id',$campus_program->program->id);
 	    	    })->with('module.ntaLevel','programModuleAssignment.campusProgram.program','studyAcademicYear')->where('study_academic_year_id',$request->get('study_academic_year_id'))->get();
         }
+
+        foreach($module_assignments as $assign){
+        	if($assign->course_work_process_status != 'PROCESSED'){
+        		return redirect()->back()->with('error',$assign->module->name.'-'.$assign->module->code.' course works not processed');
+        	}
+        	if(ExaminationResult::where('final_uploaded_at',null)->where('module_assignment_id',$assign->id)->count() != 0){
+        		return redirect()->back()->with('error',$assign->module->name.'-'.$assign->module->code.' final not uploaded');
+        	}
+        }
+
     	foreach ($module_assignments as $assignment) {
     		$results = ExaminationResult::where('module_assignment_id',$assignment->id)->get();
     		$policy = ExaminationPolicy::where('nta_level_id',$assignment->module->ntaLevel->id)->where('study_academic_year_id',$assignment->study_academic_year_id)->where('type',$assignment->programModuleAssignment->campusProgram->program->category)->first();
@@ -122,7 +132,7 @@ class ExaminationResultController extends Controller
 
         // Determine semester, annual and overall remarks
     	if(Util::stripSpacesUpper($request->get('semester_id')) == Util::stripSpacesUpper('Semester 1')){
-
+               
         }elseif(Util::stripSpacesUpper($request->get('semester_id')) == Util::stripSpacesUpper('Semester 2')){
 
         }elseif($request->get('semester_id') == 'SUPPLEMENTARY'){
@@ -265,7 +275,7 @@ class ExaminationResultController extends Controller
 
     	foreach($years as $key=>$year){
     		foreach($results as $res){
-    			if($res->moduleAssignment->programModuleAssignment->year_of_study == $key){
+    			if($res->moduleAssignment->programModuleAssignment->year_of_study == $key && $res->student_id == $student->id){
     				$years_of_studies[$key][] = $result->moduleAssignment->studyAcademicYear;
     			}
     		}
@@ -288,12 +298,19 @@ class ExaminationResultController extends Controller
          $results = ExaminationResult::with(['moduleAssignment.programModuleAssignment'=>function($query) use ($ac_yr_id,$yr_of_study){
          	 $query->where('study_academic_year_id',$ac_yr_id)->where('year_of_study',$yr_of_study);
          },'moduleAssignment.module'])->where('student_id',$student->id)->get();
-         $core_programs = ProgramModuleAssignment::with(['module'])->where('study_academic_year_id',$ac_yr_id)->where('year_of_study',$yr_of_study)->where('category','CORE')->get();
+         $core_programs = ProgramModuleAssignment::with(['module'])->where('study_academic_year_id',$ac_yr_id)->where('year_of_study',$yr_of_study)->where('category','COMPULSORY')->get();
+         $optional_programs = ProgramModuleAssignment::whereHas('students',function($query) use($student_id){
+         	   $query->where('id',$student_id);
+             })->with(['module'])->where('study_academic_year_id',$ac_yr_id)->where('year_of_study',$yr_of_study)->where('category','OPTIONAL')->get();
+         // if(count($optional_programs) == 0){
+         // 	$optional_programs = ProgramModuleAssignment::with(['module'])->where('study_academic_year_id',$ac_yr_id)->where('year_of_study',$yr_of_study)->where('category','OPTIONAL')->get();
+         // }
 
          $data = [
          	'semesters'=>$semesters,
          	'results'=>$results,
          	'core_programs'=>$core_programs,
+         	'optional_programs'=>$optional_programs,
             'student'=>$student
          ];
          return view('dashboard.academic.reports.final-student-overall-results',$data)->withTitle('Student Results');

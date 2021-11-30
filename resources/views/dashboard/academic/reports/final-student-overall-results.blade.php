@@ -60,6 +60,7 @@
                       $programIds[] = $res->moduleAssignment->programModuleAssignment->id;
                    @endphp
                  @endforeach
+                
                  
                  @foreach($semesters as $semester)
                  <p class="ss-no-margin">{{ $semester->name }}</p>
@@ -92,6 +93,9 @@
                           <td></td>
                           <td></td>
                         </tr>
+                        @php
+                          $count += 1;
+                        @endphp
                        @endif
                       @foreach($results as $result)
                          @if($result->moduleAssignment->programModuleAssignment->semester_id == $semester->id && $result->moduleAssignment->programModuleAssignment->id == $program->id)
@@ -105,13 +109,29 @@
                           <td>{{ $result->grade }}</td>
                           <td>{{ $result->final_exam_remark }}</td>
                         </tr>
-                          
+                          @php
+                            $count += 1;
+                          @endphp
                          @endif
                       @endforeach
-                      @php
-                        $count += 1;
-                      @endphp
                     @endforeach
+                    @foreach($optional_programs as $program)
+                        @if($semester->id == $program->semester_id && !in_array($program->id,$programIds))
+                         <tr>
+                          <td>{{ $count }}</td>
+                          <td>{{ $program->module->code }}</td>
+                          <td>{{ $program->module->name }}</td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                        </tr>
+                        @php
+                          $count += 1;
+                        @endphp
+                       @endif
+                     @endforeach
                     </tbody>
                  </table>
                  <br>
