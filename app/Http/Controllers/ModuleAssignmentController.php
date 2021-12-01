@@ -21,6 +21,8 @@ use App\Domain\Academic\Models\ExaminationPolicy;
 use App\Domain\Academic\Models\GradingPolicy;
 use App\Domain\Academic\Models\SpecialExam;
 use App\Domain\Academic\Models\SemesterRemark;
+use App\Domain\Academic\Models\CarryHistory;
+use App\Domain\Academic\Models\RetakeHistory;
 use App\Domain\Academic\Actions\ModuleAssignmentAction;
 use App\Utils\Util;
 use App\Utils\SystemLocation;
@@ -36,7 +38,9 @@ class ModuleAssignmentController extends Controller
 		$data = [
            'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
            'study_academic_year'=>$request->has('study_academic_year_id')? StudyAcademicYear::with('academicYear')->find($request->get('study_academic_year_id')) : null,
-           'campuses'=>Campus::with(['campusPrograms.program','campusPrograms.programModuleAssignments.module','campusPrograms.programModuleAssignments.semester','campusPrograms.programModuleAssignments.module.moduleAssignments'=>function($query) use ($request){
+           'campuses'=>Campus::with(['campusPrograms.program','campusPrograms.programModuleAssignments'=>function($query) use ($request){
+                 $query->where('study_academic_year_id',$request->get('study_academic_year_id'));
+           },'campusPrograms.programModuleAssignments.module','campusPrograms.programModuleAssignments.semester','campusPrograms.programModuleAssignments.module.moduleAssignments'=>function($query) use ($request){
                  $query->where('study_academic_year_id',$request->get('study_academic_year_id'));
            },'campusPrograms.programModuleAssignments.module.moduleAssignments.staff'])->get(),
            'staffs'=>Staff::with('designation')->get()
@@ -98,7 +102,7 @@ class ModuleAssignmentController extends Controller
      */
     public function showAttendance(Request $request, $id)
     {
-         //try{
+         try{
              $module_assignment = ModuleAssignment::with(['programModuleAssignment.campusProgram.program.department','programModuleAssignment.campusProgram.campus','studyAcademicYear.academicYear','programModuleAssignment.module','programModuleAssignment.students','staff','module'])->findOrFail($id);
              if($module_assignment->programModuleAssignment->category == 'OPTIONAL'){
                  $data = [
@@ -125,10 +129,9 @@ class ModuleAssignmentController extends Controller
                  $pdf = PDF::loadView('dashboard.academic.reports.students-in-core-module', $data)->setPaper('a4','landscape');
                  return $pdf->stream();
              }
-         // }catch(\Exception $e){
-         //     return $e->getMessage();
-         //     return redirect()->back()->with('error','Unable to get the resource specified in this request');
-         // }
+         }catch(\Exception $e){
+             return redirect()->back()->with('error','Unable to get the resource specified in this request');
+         }
     }
 
     /**
@@ -539,10 +542,24 @@ class ModuleAssignmentController extends Controller
                   if($request->get('assessment_plan_id') == 'FINAL_EXAM'){
                       $special_exam = SpecialExam::where('student_id',$student->id)->where('module_assignment_id',$module_assignment->id)->where('type','FINAL')->where('status','APPROVED')->first();
 
+                      $retake_history = RetakeHistory::whereHas('moduleAssignment',function($query) use($module){
+                            $query->where('module_id',$module->id);
+                      })->where('student_id',$student->id)->first();
+
+                      $carry_history = CarryHistory::whereHas('moduleAssignment',function($query) use($module){
+                            $query->where('module_id',$module->id);
+                      })->where('student_id',$student->id)->first();
+
                       $result_log = new ExaminationResultLog;
                       $result_log->module_assignment_id = $request->get('module_assignment_id');
                       $result_log->student_id = $student->id;
                       $result_log->final_score = !$special_exam? (str_replace(' ', '', $line[1])*$policy->final_min_marks)/100 : null;
+                      if($carry_history){
+                         $result_log->exam_category = 'CARRY';
+                      }
+                      if($retake_history){
+                         $result_log->exam_category = 'RETAKE';
+                      }
                       $result_log->exam_type = 'FINAL';
                       if($special_exam){
                          $result_log->final_remark = 'POSTPONED';
@@ -563,6 +580,12 @@ class ModuleAssignmentController extends Controller
                       $result->student_id = $student->id;
                       $result->final_score = !$special_exam? (str_replace(' ', '', $line[1])*$policy->final_min_mark)/100 : null;
                       $result->exam_type = 'FINAL';
+                      if($carry_history){
+                         $result->exam_category = 'CARRY';
+                      }
+                      if($retake_history){
+                         $result->exam_category = 'RETAKE';
+                      }
                       if($special_exam){
                          $result->final_remark = 'POSTPONED';
                       }else{
@@ -602,7 +625,11 @@ class ModuleAssignmentController extends Controller
                              $result->supp_score = null;
                           }else{
                              $result->supp_score = str_replace(' ', '', $line[1]);
-                             $result->grade = $grading_policy? $grading_policy->grade : 'C';
+                             if($result->supp_score < $policy->module_pass_mark){
+                               $result->grade = 'F';
+                             }else{
+                                $result->grade = $grading_policy? $grading_policy->grade : 'C';
+                             }
                              $result->point = $grading_policy? $grading_policy->point : 2;
                              $result->final_exam_remark = $policy->module_pass_mark <= $result->supp_score? 'PASS' : 'FAIL';
                           }

@@ -39,9 +39,19 @@ class Util {
    /**
     * Get annual remark
     */
-   public static function getAnnualRemark($remarks, $results)
+   public static function getAnnualRemark($remarks, $results = [], $retake = [], $carry = [])
    {
+       $supp_exams = [];
+       foreach($results as $result){  
+          if($result->final_exam_remark == 'FAIL'){
+              $supp_exams[] = $result->moduleAssignment->module->code;
+          }
+       }
+       
        $remark = 'PASS';
+       if(count($supp_exams) > (count($results)/2)){
+          $remark = 'FAIL&DISCO';
+       }
        foreach($remarks as $rem){
           if($rem->remark == 'FAIL&DISCO'){
              $remark = 'FAIL&DISCO';
@@ -57,21 +67,24 @@ class Util {
              $remark = 'POSTPONED';
              break;
           }
+
+          if($rem->remark == 'CARRY'){
+             $remark = 'CARRY';
+             break;
+          } 
+
+          if($rem->remark == 'RETAKE'){
+             $remark = 'RETAKE';
+             break;
+          }
           
           if($rem->remark == 'SUPP'){
              $remark = 'SUPP';
           } 
-       }
-       $supp_exams = [];
-       foreach($results as $result){  
-          if($result->final_exam_remark == 'FAIL'){
-              $supp_exams[] = $result->moduleAssignment->module->code;
-          }
-       }
 
-       if(count($supp_exams) > (count($results)/2)){
-          $remark = 'FAIL&DISCO';
+           
        }
+       
        return $remark;
    }
     

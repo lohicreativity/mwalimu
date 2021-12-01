@@ -68,7 +68,7 @@
             @if($study_academic_year)
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">Add Elective Policy - {{ $study_academic_year->academicYear->year }}</h3>
+                <h3 class="card-title">Add Examination Policy - {{ $study_academic_year->academicYear->year }}</h3>
               </div>
               <!-- /.card-header -->
                 @php
@@ -202,7 +202,7 @@
             @if(count($examination_policies) != 0 && $study_academic_year)
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">List of Examination Policies - {{ $study_academic_year->academicYear->year }}</h3>
+                <h3 class="card-title">List of Examination Policies</h3>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
@@ -210,6 +210,7 @@
                 <table id="example2" class="table table-bordered table-hover">
                   <thead>
                   <tr>
+                    <th>Study Academic Year</th>
                     <th>NTA Level</th>
                     <th>CW Min Mark</th>
                     <th>CW Perc Pass</th>
@@ -225,6 +226,7 @@
                   <tbody>
                   @foreach($examination_policies as $policy)
                   <tr>
+                    <td>{{ $policy->studyAcademicYear->academicYear->year }}</td>
                     <td>{{ $policy->ntaLevel->name }}</td>
                     <td>{{ $policy->course_work_min_mark }}</td>
                     <td>{{ $policy->course_work_percentage_pass }}</td>

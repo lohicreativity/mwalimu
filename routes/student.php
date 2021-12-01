@@ -14,6 +14,7 @@ use App\Http\Controllers\StudentController;
 |
 */
 Route::post('authenticate',[StudentController::class, 'authenticate']);
+Route::get('student/logout',[StudentController::class, 'logout']);
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function(){
     
@@ -24,8 +25,9 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 	Route::get('module/{id}/opt', [StudentController::class,'optModule']);
 	Route::get('module/{id}/reset-option', [StudentController::class,'resetModuleOption']);
 
+	Route::get('results',[StudentController::class, 'showResultsReport']);
+    Route::get('results/{ac_year_id}/{yr_of_study}/report',[StudentController::class, 'showAcademicYearResults']);
 
-	Route::get('results', [StudentController::class,'showResults']);
 	Route::get('profile', [StudentController::class,'showProfile']);
 	Route::get('payments', [StudentController::class,'showPayments']);
 });

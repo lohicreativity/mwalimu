@@ -26,6 +26,7 @@ use App\Http\Controllers\ExaminationIrregularityController;
 use App\Http\Controllers\PostponementController;
 use App\Http\Controllers\SpecialExamController;
 use App\Http\Controllers\ExaminationResultController;
+use App\Http\Controllers\ResultPublicationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -217,4 +218,12 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
     Route::post('group/store', [GroupController::class,'store']);
 	Route::get('group/{id}/destroy', [GroupController::class,'destroy']);
 	Route::get('group/{id}/attendance', [GroupController::class,'showAttendance']);
+
+
+	Route::get('results-publications', [ResultPublicationController::class,'index']);
+	Route::post('result-publication/store', [ResultPublicationController::class,'store']);
+	Route::post('result-publication/update', [ResultPublicationController::class,'update']);
+	Route::get('result-publication/{id}/destroy', [ResultPublicationController::class,'destroy']);
+	Route::get('result-publication/{id}/publish', [ResultPublicationController::class,'publish']);
+	Route::get('result-publication/{id}/unpublish', [ResultPublicationController::class,'unpublish']);
 });

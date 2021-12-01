@@ -32,7 +32,10 @@ class CreateExaminationResultsLogsTable extends Migration
             $table->unsignedBigInteger('processed_by_user_id')->default(0);
             $table->timestamp('processed_at')->nullable();
             $table->unsignedBigInteger('final_processed_by_user_id')->default(0);
+
             $table->timestamp('final_processed_at')->nullable();
+            $table->timestamp('supp_processed_at')->nullable();
+            $table->unsignedBigInteger('supp_processed_by_user_id')->default(0);
             $table->timestamps();
 
             $table->foreign('student_id')->references('id')->on('students')->onUpdate('cascade');

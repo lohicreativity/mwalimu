@@ -41,17 +41,10 @@
 
             <div class="card">
               <div class="card-header">
-                <ul class="nav nav-pills">
-                  <li class="nav-item"><a class="nav-link" href="{{ url('academic/results') }}">{{ __('Process Results') }}</a></li>
-                  <li class="nav-item"><a class="nav-link" href="{{ url('academic/results/show-program-results') }}">{{ __('View Programme Results') }}</a></li>
-                  <li class="nav-item"><a class="nav-link" href="{{ url('academic/results/show-module-results') }}">{{ __('View Module Results') }}</a></li>
-                  <li class="nav-item"><a class="nav-link" href="{{ url('academic/results/show-student-results') }}">{{ __('View Student Results') }}</a></li>
-                  <li class="nav-item"><a class="nav-link" href="{{ url('academic/results-publications') }}">{{ __('Publish Results') }}</a></li>
-                </ul>
+                 <h3>Examination Results</h3>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
-                 <h3>Name: {{ $student->surname }}, {{ $student->first_name }} {{ $student->middle_name }}</h3>
 
                  @php
                     $programIds = [];
@@ -64,8 +57,19 @@
                 
                  
                  @foreach($semesters as $key=>$semester)
+                    @php
+                       $publish_status = false;
+                    @endphp
 
-                   @if(count($semester->remarks) != 0)
+                   @foreach($publications as $publication)
+                      @if($publication->semester_id == $semester->id)
+                        @php
+                          $publish_status = true;
+                        @endphp
+                      @endif
+                   @endforeach
+
+                   @if(count($semester->remarks) != 0 && $publish_status)
                 <div class="row">
                 <div class="col-12">
                  <h4 class="ss-no-margin">{{ $semester->name }}</h4>
@@ -187,6 +191,8 @@
                    @endif
                    
                  </div>
+                 @else
+                    <p>No Results Published for {{ $semester->name }}</p>
                  @endif
                  @endforeach
               </div>

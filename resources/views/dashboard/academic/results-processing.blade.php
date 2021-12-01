@@ -46,6 +46,7 @@
                   <li class="nav-item"><a class="nav-link" href="{{ url('academic/results/show-program-results') }}">{{ __('View Programme Results') }}</a></li>
                   <li class="nav-item"><a class="nav-link" href="{{ url('academic/results/show-module-results') }}">{{ __('View Module Results') }}</a></li>
                   <li class="nav-item"><a class="nav-link" href="{{ url('academic/results/show-student-results') }}">{{ __('View Student Results') }}</a></li>
+                  <li class="nav-item"><a class="nav-link" href="{{ url('academic/results-publications') }}">{{ __('Publish Results') }}</a></li>
                 </ul>
               </div>
               <!-- /.card-header -->
@@ -123,6 +124,58 @@
                 </div>
               {!! Form::close() !!}
              </div>
+            @endif
+
+
+            @if(count($publications) != 0)
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">{{ __('Results Publications') }}</h3>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+                <table id="example2" class="table table-bordered table-hover">
+                  <thead>
+                  <tr>
+                    <th>Study Academic Year</th>
+                    <th>Semester</th>
+                    <th>Status</th>
+                    <th>Type</th>
+                    <th>Actions</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  @foreach($publications as $publication)
+                  <tr>
+                    <td>{{ $publication->studyAcademicYear->academicYear->year }}</td>
+                    <td>@if($publication->semester) {{ $publication->semester->name }} @else SUPP @endif</td>
+                    <td>{{ $publication->status }}</td>
+                    <td>{{ $publication->type }}</td>
+                    <td>
+                      @if($publication->status == 'PUBLISHED')
+                        <a class="btn btn-info btn-sm" href="{{ url('academic/result-publication/'.$publication->id.'/unpublish') }}">
+                              <i class="fas fa-ban">
+                              </i>
+                              Unpublish
+                       </a>
+                      @else
+                        <a class="btn btn-info btn-sm" href="{{ url('academic/result-publication/'.$publication->id.'/publish') }}">
+                              <i class="fas fa-check-circle">
+                              </i>
+                              Publish
+                       </a>
+                      @endif
+                      
+                    </td>
+                  </tr>
+                  @endforeach
+                  
+                  </tbody>
+                </table>
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
             @endif
 
           </div>
