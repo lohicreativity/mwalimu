@@ -21,12 +21,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>{{ __('Examination Results') }}</h1>
+            <h1>{{ __('Uploaded Modules') }}</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">{{ __('Examination Results') }}</li>
+              <li class="breadcrumb-item active">{{ __('Uploaded Modules') }}</li>
             </ol>
           </div>
         </div>
@@ -52,19 +52,10 @@
               </div>
               <!-- /.card-header -->
               <div class="card-body">
-                 {!! Form::open(['url'=>'academic/results/show-module-results','class'=>'ss-form-processing','method'=>'GET']) !!}
+                 {!! Form::open(['url'=>'academic/results/uploaded-modules','class'=>'ss-form-processing','method'=>'GET']) !!}
                    
-                   <div class="row">
-                   <div class="form-group col-6">
-                    {!! Form::label('','Select study academic year') !!}
-                    <select name="study_academic_year_id" class="form-control" required>
-                       <option value="">Select Study Academic Year</option>
-                       @foreach($study_academic_years as $year)
-                       <option value="{{ $year->id }}">{{ $year->academicYear->year }}</option>
-                       @endforeach
-                    </select>
-                  </div>
-                  <div class="form-group col-6">
+                  <div class="row">
+                  <div class="form-group col-12">
                     {!! Form::label('','Select campus') !!}
                     <select name="campus_id" class="form-control" required>
                        <option value="">Select Campus</option>
@@ -83,45 +74,98 @@
             </div>
             <!-- /.card -->
              
-            @if($study_academic_year && $campus)
+            @if($campus)
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">View Results for {{ $campus->name }} - {{ $study_academic_year->academicYear->year }}</h3>
+                <h3 class="card-title">Uploaded Modules</h3>
               </div>
               <!-- /.card-header -->
-              {!! Form::open(['url'=>'academic/results/show-module-report','class'=>'ss-form-processing']) !!}
+              {!! Form::open(['url'=>'academic/results/uploaded-modules','class'=>'ss-form-processing','method'=>'GET']) !!}
               <div class="card-body">
-                <div class="row">
-                  <div class="form-group col-6">
+                  
+                   <div class="row">
+                   <div class="form-group col-6">
                     {!! Form::label('','Programme') !!}
                     <select name="campus_program_id" class="form-control" required>
                        <option value="">Select Programme</option>
                        @foreach($campus_programs as $program)
-                          <option value="{{ $program->id }}">{{ $program->program->name }}</option>
+                          @for($i = 1; $i <= $program->program->min_duration; $i++)
+                          <option value="{{ $program->id }}_year_{{ $i }}">{{ $program->program->name }} - Year {{ $i }}</option>
+                          @endfor
                        @endforeach
                     </select>
-                    {!! Form::input('hidden','study_academic_year_id',$study_academic_year->id) !!}
-                    {!! Form::input('hidden','campus_id',$campus->id) !!}
                   </div>
                 </div>
                 <div class="row">
                    <div class="form-group col-6">
-                    {!! Form::label('','Module') !!}
-                    <select name="module_id" class="form-control" required>
-                       <option value="">Select Module</option>
-                       @foreach($modules as $module)
-                          <option value="{{ $module->id }}">{{ $module->name }} - {{ $module->code }}</option>
+                    {!! Form::label('','Select study academic year') !!}
+                    <select name="study_academic_year_id" class="form-control" required>
+                       <option value="">Select Study Academic Year</option>
+                       @foreach($study_academic_years as $year)
+                       <option value="{{ $year->id }}">{{ $year->academicYear->year }}</option>
                        @endforeach
                     </select>
                   </div>
                 </div>
-                
+                <div class="row">
+                  <div class="form-group col-6">
+                    {!! Form::label('','Semester') !!}
+                    <select name="semester_id" class="form-control" required>
+                       <option value="">Select Semester</option>
+                       @foreach($semesters as $semester)
+                       <option value="{{ $semester->id }}">{{ $semester->name }}</option>
+                       @endforeach
+                    </select>
+                    {!! Form::input('hidden','campus_id',$campus->id) !!}
+                  </div>
+                  </div>
+                  <div class="row">
+                  <div class="form-group col-12">
+                        <label class="radio-inline">
+                          <input type="radio" name="results_type" id="inlineRadio2" value="CW"> Course Work
+                        </label>
+                        <label class="radio-inline">
+                          <input type="radio" name="results_type" id="inlineRadio3" value="FN"> Final
+                        </label>
+                  </div>
+                </div>
               </div>
                <div class="card-footer">
-                  <button type="submit" class="btn btn-primary">{{ __('View Results') }}</button>
+                  <button type="submit" class="btn btn-primary">{{ __('View') }}</button>
                 </div>
               {!! Form::close() !!}
              </div>
+            @endif
+
+            @if(count($modules) != 0)
+             <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Uploaded Modules</h3>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+                 <table class="table table-bordered">
+                   <thead>
+                     <tr>
+                       <th>SN</th>
+                       <th>Module Code</th>
+                       <th>Module Name</th>
+                       <th>Number of Students</th>
+                     </tr>
+                   </thead>
+                   <tbody>
+                     @foreach($modules as $key=>$module)
+                      <tr>
+                        <td>{{ $key+1 }}</td>
+                        <td>{{ $module->module->code }}</td>
+                        <td>{{ $module->module->name }}</td>
+                        <td><a href="{{ url('academic/results/uploaded-modules/'.$module->id.'/students?result_type='.$request->get('results_type')) }}">{{ count($module->examinationResults) }}</a></td>
+                      </tr>
+                     @endforeach
+                   </tbody>
+                 </table>
+              </div>
+            </div>
             @endif
 
           </div>

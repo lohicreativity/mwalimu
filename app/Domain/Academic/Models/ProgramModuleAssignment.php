@@ -21,6 +21,14 @@ class ProgramModuleAssignment extends Model
     }
 
     /**
+     * Establish one to many relationship with study academic years
+     */
+    public function studyAcademicYear()
+    {
+        return $this->belongsTo(StudyAcademicYear::class,'study_academic_year_id');
+    }
+
+    /**
      * Establish one to many relationship with semesters
      */
     public function semester()
@@ -42,6 +50,15 @@ class ProgramModuleAssignment extends Model
     public function moduleAssignments()
     {
         return $this->hasMany(ModuleAssignment::class,'program_module_assignment_id');
+    }
+
+
+    /**
+     * Establish one to many through relationship with examination results
+     */
+    public function examinationResults()
+    {
+        return $this->hasManyThrough(ExaminationResult::class,ModuleAssignment::class);
     }
 
     /**

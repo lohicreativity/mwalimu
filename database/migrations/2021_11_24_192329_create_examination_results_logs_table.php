@@ -24,6 +24,7 @@ class CreateExaminationResultsLogsTable extends Migration
             $table->string('exam_type')->default('FINAL');
             $table->string('exam_category')->default('FIRST');
             $table->string('grade',10)->nullable();
+            $table->integer('point')->nullable();
             $table->string('course_work_remark',20)->nullable();
             $table->string('final_remark',20)->nullable();
             $table->string('final_exam_remark',20)->nullable();
