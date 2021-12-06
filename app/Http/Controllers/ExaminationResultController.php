@@ -356,7 +356,7 @@ class ExaminationResultController extends Controller
 	               }
                }
 
-               if($pub = ResultPublication::where('study_academic_year_id',$request->get('study_academic_year_id'))->where('semester_id',$request->get('semester_id'))){
+               if($pub = ResultPublication::where('study_academic_year_id',$request->get('study_academic_year_id'))->where('semester_id',$request->get('semester_id'))->first()){
                	  $publication = $pub;
                }else{
                	  $publication = new ResultPublication;
