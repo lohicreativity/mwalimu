@@ -166,20 +166,20 @@ class StudentController extends Controller
     	$academic_years = [];
     	foreach($results as $key=>$result){
     		if(!array_key_exists($result->moduleAssignment->programModuleAssignment->year_of_study, $years)){
-               $years[$result->moduleAssignment->programModuleAssignment->year_of_study] = $result->moduleAssignment->studyAcademicYear->id; 
+               $years[$result->moduleAssignment->programModuleAssignment->year_of_study] = [];  
+               $years[$result->moduleAssignment->programModuleAssignment->year_of_study][] = $result->moduleAssignment->studyAcademicYear->id;
     		}
+            if(!in_array($result->moduleAssignment->studyAcademicYear->id, $years[$result->moduleAssignment->programModuleAssignment->year_of_study])){
+
+            	$years[$result->moduleAssignment->programModuleAssignment->year_of_study][] = $result->moduleAssignment->studyAcademicYear->id;
+            }
     	}
 
     	foreach($years as $key=>$year){
-    		$status = false;
-    		foreach($results as $rk=>$res){
-    			if($res->moduleAssignment->programModuleAssignment->year_of_study == $key && in_array($res->moduleAssignment->studyAcademicYear->id,$years)){
-                    if(!$status){
-    				   $years_of_studies[$key][] = $res->moduleAssignment->studyAcademicYear;
-    				   $status = true;
-    			   }
-    			}
+    		foreach ($year as $yr) {
+    			$years_of_studies[$key][] = StudyAcademicYear::with('academicYear')->find($yr);
     		}
+    		
     	}
 
     	$data = [
