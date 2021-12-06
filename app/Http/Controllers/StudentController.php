@@ -78,6 +78,9 @@ class StudentController extends Controller
     	$study_academic_year = StudyAcademicYear::with(['moduleAssignments'=>function($query) use($student){
                 $query->where('campus_program_id',$student->campus_program_id)->where('year_of_study',$student->year_of_study);
             },'moduleAssignments.campusProgram','moduleAssignments.module','moduleAssignments.semester','academicYear'])->where('status','ACTIVE')->first();
+    	if(!$study_academic_year){
+    		return redirect()->back()->with('error','No active academic year');
+    	}
     	$data = [
             'student'=>$student,
             'study_academic_year'=>$study_academic_year,
@@ -196,9 +199,12 @@ class StudentController extends Controller
          $semesters = Semester::with(['remarks'=>function($query) use ($student, $ac_yr_id){
          	 $query->where('student_id',$student->id)->where('study_academic_year_id',$ac_yr_id);
          }])->get();
-         $results = ExaminationResult::with(['moduleAssignment.programModuleAssignment'=>function($query) use ($ac_yr_id,$yr_of_study){
+         $results = ExaminationResult::whereHas('moduleAssignment',function($query) use ($ac_yr_id, $student){
+         	   $query->where('study_academic_year_id',$ac_yr_id)->where('student_id',$student->id);
+         })->with(['moduleAssignment.programModuleAssignment'=>function($query) use ($ac_yr_id,$yr_of_study){
          	 $query->where('study_academic_year_id',$ac_yr_id)->where('year_of_study',$yr_of_study);
          },'moduleAssignment.module'])->where('student_id',$student->id)->get();
+
          $core_programs = ProgramModuleAssignment::with(['module'])->where('study_academic_year_id',$ac_yr_id)->where('year_of_study',$yr_of_study)->where('category','COMPULSORY')->where('campus_program_id',$student->campus_program_id)->get();
          $optional_programs = ProgramModuleAssignment::whereHas('students',function($query) use($student){
          	   $query->where('id',$student->id);
