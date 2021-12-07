@@ -6,8 +6,9 @@ use Illuminate\Http\Request;
 use App\Domain\Academic\Models\AcademicYear;
 use App\Domain\Academic\Models\Program;
 use App\Domain\Academic\Actions\AcademicYearAction;
+use App\Models\User;
 use App\Utils\Util;
-use Validator;
+use Validator, Auth;
 
 
 class AcademicYearController extends Controller
@@ -18,7 +19,8 @@ class AcademicYearController extends Controller
     public function index()
     {
     	$data = [
-           'academic_years'=>AcademicYear::paginate(20)
+           'academic_years'=>AcademicYear::paginate(20),
+           'staff'=>User::find(Auth::user()->id)->staff
     	];
     	return view('dashboard.academic.academic-years',$data)->withTitle('Academic Years');
     }
@@ -110,6 +112,9 @@ class AcademicYearController extends Controller
     {
         try{
             $academic_year = AcademicYear::findOrFail($id);
+            if(StudyAcademicYear::where('academic_year_id',$academic_year->id)->count() != 0){
+                return redirect()->back()->with('error','Academic year cannot be deleted');
+            }
             $academic_year->delete();
             return redirect()->back()->with('message','Academic year deleted successfully');
         }catch(Exception $e){

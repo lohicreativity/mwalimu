@@ -9,8 +9,9 @@ use App\Domain\Academic\Models\ModuleAssignment;
 use App\Domain\Academic\Models\Semester;
 use App\Domain\Registration\Models\Student;
 use App\Domain\Academic\Actions\ExaminationIrregularityAction;
+use App\Models\User;
 use App\Utils\Util;
-use Validator;
+use Validator, Auth;
 
 class ExaminationIrregularityController extends Controller
 {
@@ -25,7 +26,8 @@ class ExaminationIrregularityController extends Controller
 	           'irregularities'=>ExaminationIrregularity::with(['semester','studyAcademicYear.academicYear','moduleAssignment.module'])->paginate(20),
 	           'module_assignment'=>ModuleAssignment::with(['module','programModuleAssignment'])->findOrFail($mod_assign_id),
 	           'student'=>$request->has('registration_number')? Student::where('registration_number',$request->get('registration_number'))->first() : null,
-	           'semesters'=>Semester::all()
+	           'semesters'=>Semester::all(),
+	           'staff'=>User::find(Auth::user()->id)->staff
 	    	];
 	    	return view('dashboard.academic.examination-irregularities',$data)->withTitle('Examination Irregularities');
         }catch(\Exception $e){

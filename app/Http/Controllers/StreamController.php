@@ -11,8 +11,9 @@ use App\Domain\Registration\Models\Student;
 use App\Domain\Academic\Models\StudyAcademicYear;
 use App\Domain\Academic\Models\CampusProgram;
 use App\Domain\Academic\Actions\StreamAction;
+use App\Models\User;
 use App\Utils\Util;
-use Validator, PDF;
+use Validator, PDF, Auth;
 
 class StreamController extends Controller
 {
@@ -26,7 +27,8 @@ class StreamController extends Controller
             'study_academic_year'=>$request->has('study_academic_year_id')? StudyAcademicYear::with(['academicYear','streams'=>function($query) use ($request){
                    $query->where('study_academic_year_id',$request->get('study_academic_year_id'));
                 },'streams.groups','campusPrograms'])->find($request->get('study_academic_year_id')) : null,
-            'campus_programs'=>CampusProgram::with(['program','campus'])->get()
+            'campus_programs'=>CampusProgram::with(['program','campus'])->get(),
+            'staff'=>User::find(Auth::user()->id)->staff
      	];
      	return view('dashboard.academic.streams-and-groups',$data)->withTitle('Streams and Groups');
      }
@@ -90,8 +92,7 @@ class StreamController extends Controller
 	           'stream'=>$stream,
 	           'department'=>Department::findOrFail($stream->campusProgram->program->department_id)
 	    	];
-    	    $pdf = PDF::loadView('dashboard.academic.reports.students-in-stream', $data)->setPaper('a4','landscape');
-            return $pdf->stream();
+    	    return view('dashboard.academic.reports.students-in-stream', $data);
         }catch(\Exception $e){
         	return redirect()->back()->with('error','Unable to get the resource specified in this request');
         }

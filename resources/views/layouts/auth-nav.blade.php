@@ -198,12 +198,12 @@
                   <p>{{ __('Modules') }}</p>
                 </a>
               </li>
-              <li class="nav-item">
+              <!-- <li class="nav-item">
                 <a href="{{ url('academic/academic-years') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>{{ __('Academic Years') }}</p>
                 </a>
-              </li>
+              </li> -->
               <li class="nav-item">
                 <a href="{{ url('academic/study-academic-years') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
@@ -275,14 +275,14 @@
               </p>
             </a>
             <ul class="nav nav-treeview">
-              @if(Auth::user()->hasRole('hod'))
+              
               <li class="nav-item">
                 <a href="{{ url('academic/module-assignments') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Modules Assignment</p>
                 </a>
               </li>
-              @endif
+              
               <li class="nav-item">
                 <a href="{{ url('academic/staff-module-assignments') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>

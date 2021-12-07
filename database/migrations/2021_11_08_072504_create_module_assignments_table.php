@@ -20,7 +20,6 @@ class CreateModuleAssignmentsTable extends Migration
             $table->unsignedBigInteger('study_academic_year_id');
             $table->unsignedBigInteger('program_module_assignment_id');
             $table->unsignedBigInteger('assigned_by_user_id');
-            $table->string('category',50)->default('Lead Facilitator');
             $table->string('course_work_process_status')->nullable();
             $table->timestamps();
 

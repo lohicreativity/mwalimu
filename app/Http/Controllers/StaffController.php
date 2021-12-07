@@ -13,8 +13,9 @@ use App\Domain\Settings\Models\Ward;
 use App\Domain\Settings\Models\DisabilityStatus;
 use App\Domain\Settings\Models\Campus;
 use App\Domain\HumanResources\Actions\StaffAction;
+use App\Models\User;
 use App\Utils\Util;
-use Validator;
+use Validator, Auth;
 
 class StaffController extends Controller
 {
@@ -31,7 +32,8 @@ class StaffController extends Controller
            'wards'=>Ward::all(),
            'designations'=>Designation::all(),
            'disabilities'=>DisabilityStatus::all(),
-           'campuses'=>Campus::all()
+           'campuses'=>Campus::all(),
+           'staff'=>User::find(Auth::user()->id)->staff
     	];
     	return view('dashboard.human-resources.staffs',$data)->withTitle('staffs');
     }
@@ -48,7 +50,8 @@ class StaffController extends Controller
            'wards'=>Ward::all(),
            'designations'=>Designation::all(),
            'disabilities'=>DisabilityStatus::all(),
-           'campuses'=>Campus::all()
+           'campuses'=>Campus::all(),
+           'staff'=>User::find(Auth::user()->id)->staff
         ];
         return view('dashboard.human-resources.add-staff',$data)->withTitle('Add Staff');
     }

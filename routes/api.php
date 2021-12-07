@@ -22,3 +22,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post('v1/get-regions',[HomeController::class,'getRegions']);
 Route::post('v1/get-districts',[HomeController::class,'getDistricts']);
 Route::post('v1/get-wards',[HomeController::class,'getWards']);
+Route::post('v1/get-module-by-id',[HomeController::class,'getModuleById']);
+Route::post('v1/get-nta-level',[HomeController::class,'getNTALevel']);
+Route::post('v1/get-nta-level-by-code',[HomeController::class,'getNTALevelByCode']);

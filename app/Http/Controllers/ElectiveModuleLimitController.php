@@ -9,8 +9,9 @@ use App\Domain\Settings\Models\Campus;
 use App\Domain\Academic\Models\Semester;
 use App\Domain\Academic\Models\Award;
 use App\Domain\Academic\Actions\ElectiveModuleLimitAction;
+use App\Models\User;
 use App\Utils\Util;
-use Validator;
+use Validator, Auth;
 
 class ElectiveModuleLimitController extends Controller
 {
@@ -26,6 +27,7 @@ class ElectiveModuleLimitController extends Controller
            'campuses'=>Campus::all(),
            'semesters'=>Semester::all(),
            'awards'=>Award::all(),
+           'staff'=>User::find(Auth::user()->id)->staff
     	];
     	return view('dashboard.academic.elective-module-limits',$data)->withTitle('Elective Module Limits');
     }

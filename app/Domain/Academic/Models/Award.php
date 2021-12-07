@@ -21,4 +21,37 @@ class Award extends Model
     {
     	return $this->belongsTo(Level::class,'level_id');
     }
+
+
+    /**
+     * Set name attribute
+     */
+    public function setNameAttribute($value)
+    {
+        $this->attributes['name'] = ucwords($value);
+    }
+
+    /**
+     * Get name attribute
+     */
+    public function getNameAttribute($value)
+    {
+        return ucwords($value);
+    }
+
+    /**
+     * Set code attribute
+     */
+    public function setCodeAttribute($value)
+    {
+        $this->attributes['code'] = strtoupper($value);
+    }
+
+    /**
+     * Get code attribute
+     */
+    public function getCodeAttribute($value)
+    {
+        return strtoupper($value);
+    }
 }

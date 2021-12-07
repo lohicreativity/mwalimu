@@ -9,8 +9,9 @@ use App\Domain\Settings\Models\District;
 use App\Domain\Settings\Models\Ward;
 use App\Domain\Academic\Models\CampusProgram;
 use App\Domain\Settings\Actions\CampusAction;
+use App\Models\User;
 use App\Utils\Util;
-use Validator;
+use Validator, Auth;
 
 class CampusController extends Controller
 {
@@ -23,7 +24,8 @@ class CampusController extends Controller
            'campuses'=>Campus::with(['campusPrograms.program'])->paginate(20),
            'regions'=>Region::all(),
            'districts'=>District::all(),
-           'wards'=>Ward::all()
+           'wards'=>Ward::all(),
+           'staff'=>User::find(Auth::user()->id)->staff
     	];
     	return view('dashboard.settings.campuses',$data)->withTitle('Campuses');
     }
@@ -90,7 +92,7 @@ class CampusController extends Controller
             if(CampusProgram::where('campus_id',$campus->id)->count() != 0){
                return redirect()->back()->with('error','Campus cannot be deleted because it has assigned programs');
             }else{
-              $program->delete();
+              $campus->delete();
               return redirect()->back()->with('message','Campus deleted successfully');
             }
         }catch(Exception $e){

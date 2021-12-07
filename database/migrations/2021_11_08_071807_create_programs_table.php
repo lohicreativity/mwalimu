@@ -23,7 +23,7 @@ class CreateProgramsTable extends Migration
             $table->unsignedBigInteger('department_id');
             $table->unsignedBigInteger('nta_level_id');
             $table->unsignedBigInteger('award_id');
-            $table->string('category',30)->default('NON-CATEGORY DEVELOPMENT');
+            $table->string('category',30);
             $table->timestamps();
             $table->softDeletes();
 

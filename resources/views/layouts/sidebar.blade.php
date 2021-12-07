@@ -14,7 +14,13 @@
           <img src="{{ asset('img/user-avatar.png') }}" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block">{{ Auth::user()->name }}</a>
+          @if(isset($staff))
+          <a href="#" class="d-block">{{ $staff->first_name }} {{ $staff->surname }}</a>
+          @endif
+          @if(isset($student))
+          <a href="#" class="d-block">{{ $student->first_name }} {{ $student->surname }}</a>
+          @endif
+
         </div>
       </div>
 

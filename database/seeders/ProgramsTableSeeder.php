@@ -24,6 +24,7 @@ class ProgramsTableSeeder extends Seeder
                'max_duration'=>1,
                 'nta_level_id'=>1,
                 'award_id'=>1,
+                'category'=>'NON-COMMUNITY DEVELOPMENT',
                 'created_at'=>now(),
                 'updated_at'=>now()
              ],
@@ -37,6 +38,7 @@ class ProgramsTableSeeder extends Seeder
                'max_duration'=>2,
                'nta_level_id'=>3,
                'award_id'=>2,
+               'category'=>'NON-COMMUNITY DEVELOPMENT',
                'created_at'=>now(),
                'updated_at'=>now()
             ],
@@ -49,6 +51,7 @@ class ProgramsTableSeeder extends Seeder
                'max_duration'=>5,
                'nta_level_id'=>5,
                'award_id'=>3,
+               'category'=>'NON-COMMUNITY DEVELOPMENT',
                'created_at'=>now(),
                'updated_at'=>now()
             ],

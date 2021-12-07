@@ -43,4 +43,20 @@ class CampusProgram extends Model
     {
         return $this->hasMany(ProgramModuleAssignment::class,'campus_program_id');
     }
+
+    /**
+     * Set regulator code attribute
+     */
+    public function setRegulatorCodeAttribute($value)
+    {
+        $this->attributes['regulator_code'] = strtoupper($value);
+    }
+
+    /**
+     * Get regulator code attribute
+     */
+    public function getRegulatorCodeAttribute($value)
+    {
+        return strtoupper($value);
+    }
 }

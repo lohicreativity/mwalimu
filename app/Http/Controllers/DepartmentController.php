@@ -9,8 +9,9 @@ use App\Domain\Academic\Models\Module;
 use App\Domain\Academic\Models\Program;
 use App\Domain\Settings\Models\Campus;
 use App\Domain\Academic\Actions\DepartmentAction;
+use App\Models\User;
 use App\Utils\Util;
-use Validator;
+use Validator, Auth;
 
 class DepartmentController extends Controller
 {
@@ -22,7 +23,8 @@ class DepartmentController extends Controller
     	$data = [
            'departments'=>Department::with('unitCategory','campuses')->paginate(20),
            'unit_categories'=>UnitCategory::all(),
-           'campuses'=>Campus::all()
+           'campuses'=>Campus::all(),
+           'staff'=>User::find(Auth::user()->id)->staff
     	];
     	return view('dashboard.academic.departments',$data)->withTitle('Departments');
     }

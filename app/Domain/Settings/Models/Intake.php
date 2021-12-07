@@ -19,4 +19,20 @@ class Intake extends Model
     {
     	return $this->hasMany(Applicant::class,'intake_id');
     }
+
+    /**
+     * Set name attribute
+     */
+    public function setNameAttribute($value)
+    {
+        $this->attributes['name'] = ucwords($value);
+    }
+
+    /**
+     * Get name attribute
+     */
+    public function getNameAttribute($value)
+    {
+        return ucwords($value);
+    }
 }

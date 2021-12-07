@@ -6,8 +6,9 @@ use Illuminate\Http\Request;
 use App\Domain\Settings\Models\Level;
 use App\Domain\Academic\Models\Award;
 use App\Domain\Settings\Actions\LevelAction;
+use App\Models\User;
 use App\Utils\Util;
-use Validator;
+use Validator, Auth;
 
 class LevelController extends Controller
 {
@@ -17,7 +18,8 @@ class LevelController extends Controller
     public function index()
     {
     	$data = [
-           'levels'=>Level::paginate(20)
+           'levels'=>Level::paginate(20),
+           'staff'=>User::find(Auth::user()->id)->staff
     	];
     	return view('dashboard.settings.levels',$data)->withTitle('Levels');
     }

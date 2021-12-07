@@ -42,7 +42,7 @@
             <!-- general form elements -->
             <div class="card card-default">
               <div class="card-header">
-                <h3 class="card-title">{{ __('Add module') }}</h3>
+                <h3 class="card-title">{{ __('Add Module') }}</h3>
               </div>
               <!-- /.card-header -->
               <!-- form start -->
@@ -55,7 +55,10 @@
 
                   $code = [
                      'placeholder'=>'Code',
-                     'class'=>'form-control',
+                     'class'=>'form-control ss-autofill-nta',
+                     'data-target'=>'#ss-nta-level',
+                     'data-token'=>session()->token(),
+                     'data-source-url'=>url('api/v1/get-nta-level-by-code'),
                      'required'=>true
                   ];
 
@@ -117,22 +120,24 @@
                  <div class="row">
                   <div class="form-group col-6">
                     {!! Form::label('','NTA Level') !!}
-                    <select name="nta_level_id" class="form-control" required>
+                    <select name="nta_level_id" class="form-control" required id="ss-nta-level" disabled="disabled">
                       <option value="">Select NTA Level</option>
                       @foreach($nta_levels as $level)
                       <option value="{{ $level->id }}">{{ $level->name }}</option>
                       @endforeach
                     </select>
+
+                    {!! Form::input('hidden','nta_level_id',null,['id'=>'ss-nta-level']) !!}
                   </div>
                    <div class="form-group col-6">
-                    {!! Form::label('','Upload module syllabus (PDF Format)') !!}
+                    {!! Form::label('','Upload module syllabus (PDF)') !!}
                     {!! Form::file('syllabus',['class'=>'form-control']) !!}
                   </div>
                  </div><!-- end of row -->
                  <div class="row">
                     <div class="form-group form-check">
                     <input type="checkbox" name="course_work_based" class="form-check-input" value="1" id="exampleCheck1">
-                    <label class="form-check-label" for="exampleCheck1">Course work based.</label>
+                    <label class="form-check-label" for="exampleCheck1">Coursework based?</label>
                   </div>
                  </div>
                 </div>
@@ -202,6 +207,15 @@
                             </div>
                             <div class="modal-body">
                               @php
+                                $code = [
+                                   'placeholder'=>'Code',
+                                   'class'=>'form-control ss-autofill-nta',
+                                   'data-target'=>'#ss-nta-level-'.$module->id,
+                                   'data-token'=>session()->token(),
+                                   'data-source-url'=>url('api/v1/get-nta-level-by-code'),
+                                   'required'=>true
+                                ];
+
                                 $course_work = [
                                    'placeholder'=>'Course work',
                                    'class'=>'form-control',
@@ -256,15 +270,17 @@
                                    <div class="row">
                                       <div class="form-group col-6">
                                         {!! Form::label('','NTA Level') !!}
-                                        <select name="nta_level_id" class="form-control" required>
+                                        <select name="nta_level_id" class="form-control" required disabled="disabled" id="ss-nta-level-{{ $module->id }}">
                                           <option value="">Select NTA Level</option>
                                           @foreach($nta_levels as $level)
                                           <option value="{{ $level->id }}" @if($module->nta_level_id == $level->id) selected="selected" @endif>{{ $level->name }}</option>
                                           @endforeach
                                         </select>
+
+                                        {!! Form::input('hidden','nta_level_id',$module->nta_level_id,['id'=>'ss-nta-level-'.$module->id]) !!}
                                       </div>
                                        <div class="form-group col-6">
-                                        {!! Form::label('','Upload module syllabus (PDF Format)') !!}
+                                        {!! Form::label('','Upload module syllabus (PDF)') !!}
                                         {!! Form::file('syllabus',['class'=>'form-control']) !!}
                                       </div>
                                    </div>
@@ -275,7 +291,7 @@
                                       @else
                                         <input type="checkbox" name="course_work_based" class="form-check-input" value="1" id="exampleCheck1">
                                       @endif
-                                        <label class="form-check-label" for="exampleCheck1">Course work based.</label>
+                                        <label class="form-check-label" for="exampleCheck1">Coursework based?</label>
                                       </div>
                                      </div>
                                       <div class="ss-form-actions">

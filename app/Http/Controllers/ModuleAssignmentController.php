@@ -8,6 +8,7 @@ use App\Domain\Academic\Models\StudyAcademicYear;
 use App\Domain\Academic\Models\Module;
 use App\Domain\Academic\Models\ResultFile;
 use App\Domain\Academic\Models\Semester;
+use App\Domain\Academic\Models\CampusProgram;
 use App\Domain\Settings\Models\Campus;
 use App\Domain\Academic\Models\AssessmentPlan;
 use App\Domain\Academic\Models\CourseWorkComponent;
@@ -24,6 +25,7 @@ use App\Domain\Academic\Models\SemesterRemark;
 use App\Domain\Academic\Models\CarryHistory;
 use App\Domain\Academic\Models\RetakeHistory;
 use App\Domain\Academic\Actions\ModuleAssignmentAction;
+use App\Models\User;
 use App\Utils\Util;
 use App\Utils\SystemLocation;
 use Validator, Auth, PDF, DB, Session;
@@ -38,12 +40,23 @@ class ModuleAssignmentController extends Controller
 		$data = [
            'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
            'study_academic_year'=>$request->has('study_academic_year_id')? StudyAcademicYear::with('academicYear')->find($request->get('study_academic_year_id')) : null,
-           'campuses'=>Campus::with(['campusPrograms.program','campusPrograms.programModuleAssignments'=>function($query) use ($request){
+           'semester'=>$request->has('semester_id')? Semester::find($request->get('semester_id')) : null,
+           'campus_programs'=>CampusProgram::with('program')->get(),
+
+           'campus_program'=>CampusProgram::with(['program','programModuleAssignments'=>function($query) use ($request){
+                 $query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',$request->get('year_of_study'))->where('semester_id',$request->get('semester_id'));
+           },'programModuleAssignments.module','programModuleAssignments.semester','programModuleAssignments.module.moduleAssignments'=>function($query) use ($request){
                  $query->where('study_academic_year_id',$request->get('study_academic_year_id'));
-           },'campusPrograms.programModuleAssignments.module','campusPrograms.programModuleAssignments.semester','campusPrograms.programModuleAssignments.module.moduleAssignments'=>function($query) use ($request){
+           },'programModuleAssignments.module.moduleAssignments.staff'])->find($request->get('campus_program_id')),
+
+           'previous_campus_program'=>CampusProgram::with(['program','programModuleAssignments'=>function($query) use ($request){
+                 $query->where('study_academic_year_id','!=',$request->get('study_academic_year_id'))->latest();
+           },'programModuleAssignments.module','programModuleAssignments.semester','programModuleAssignments.module.moduleAssignments'=>function($query) use ($request){
                  $query->where('study_academic_year_id',$request->get('study_academic_year_id'));
-           },'campusPrograms.programModuleAssignments.module.moduleAssignments.staff'])->get(),
-           'staffs'=>Staff::with('designation')->get()
+           },'programModuleAssignments.module.moduleAssignments.staff'])->find($request->get('campus_program_id')),
+           'staffs'=>Staff::with('designation')->get(),
+           'semesters'=>Semester::all(),
+           'staff'=>User::find(Auth::user()->id)->staff
       ];
 		return view('dashboard.academic.assign-staff-modules',$data)->withTitle('Staff Module Assignment');
 	}
@@ -114,8 +127,7 @@ class ModuleAssignmentController extends Controller
                     'module'=>$module_assignment->module,
                     'students'=>$module_assignment->programModuleAssignment->students
                  ];
-                 $pdf = PDF::loadView('dashboard.academic.reports.students-in-optional-module', $data)->setPaper('a4','landscape');
-                 return $pdf->stream();
+                 return view('dashboard.academic.reports.students-in-optional-module', $data);
              }else{
                  $data = [
                     'program'=>$module_assignment->programModuleAssignment->campusProgram->program,
@@ -126,8 +138,7 @@ class ModuleAssignmentController extends Controller
                     'module'=>$module_assignment->module,
                     'students'=>Student::where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id)->get()
                  ];
-                 $pdf = PDF::loadView('dashboard.academic.reports.students-in-core-module', $data)->setPaper('a4','landscape');
-                 return $pdf->stream();
+                 return view('dashboard.academic.reports.students-in-core-module', $data);
              }
          }catch(\Exception $e){
              return redirect()->back()->with('error','Unable to get the resource specified in this request');
@@ -536,7 +547,7 @@ class ModuleAssignmentController extends Controller
               foreach($line_of_text as $line){
                 $student = Student::whereHas('studentshipStatus',function($query){
                       $query->where('name','ACTIVE');
-                })->where('registration_number',str_replace(' ', '', $line[0]))->first();
+                })->where('registration_number',str_replace(' ', '', $line[0]))->where('campus_program_id',$module_assignment->programModuleAssignment->campusProgram->id)->first();
 
                 if($student){
                   if($request->get('assessment_plan_id') == 'FINAL_EXAM'){

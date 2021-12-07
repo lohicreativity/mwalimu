@@ -10,8 +10,9 @@ use App\Domain\Academic\Models\Module;
 use App\Domain\Academic\Models\CampusProgram;
 use App\Domain\Settings\Models\Campus;
 use App\Domain\Academic\Actions\ProgramModuleAssignmentAction;
+use App\Models\User;
 use App\Utils\Util;
-use Validator;
+use Validator, DB, Auth;
 
 class ProgramModuleAssignmentController extends Controller
 {
@@ -23,7 +24,8 @@ class ProgramModuleAssignmentController extends Controller
     	$data = [
            'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
            'study_academic_year'=>$request->has('study_academic_year_id')? StudyAcademicYear::with('academicYear')->find($request->get('study_academic_year_id')) : null,
-           'campuses'=>Campus::with(['campusPrograms.program','campusPrograms.programModuleAssignments.module'])->get()
+           'campuses'=>Campus::with(['campusPrograms.program','campusPrograms.programModuleAssignments.module'])->get(),
+           'staff'=>User::find(Auth::user()->id)->staff
     	];
     	return view('dashboard.academic.program-module-assignments',$data)->withTitle('Program Module Assignment');
     }
@@ -84,9 +86,40 @@ class ProgramModuleAssignmentController extends Controller
             'modules'=>$modules,
             'inclusive_modules'=>$inclusive_modules,
             'semesters'=>Semester::all(),
-            'assignments'=>$assignments
+            'assignments'=>$assignments,
+            'staff'=>User::find(Auth::user()->id)->staff
     	];
     	return view('dashboard.academic.assign-program-modules',$data)->withTitle('Program Module Assignment');
+    }
+
+    /**
+     * Assign previous modules
+     */
+    public function assignPreviousModules(Request $request, $ac_year_id, $campus_prog_id)
+    {
+         DB::beginTransaction();
+         $academic_year = StudyAcademicYear::latest()->take(1)->skip(1)->first();
+         if(!$academic_year){
+             return redirect()->back()->with('error','No previous study academic year');
+         }
+         $assignments = ProgramModuleAssignment::whereHas('studyAcademicYear',function($query) use ($academic_year){
+                  $query->where('id',$academic_year->id);
+         })->get();
+         
+         foreach ($assignments as $key => $assignment){
+            $assign = new ProgramModuleAssignment;
+            $assign->semester_id = $assignment->semester_id;
+            $assign->campus_program_id = $campus_prog_id;
+            $assign->study_academic_year_id = $ac_year_id;
+            $assign->module_id = $assignment->module_id;
+            $assign->year_of_study = $assignment->year_of_study;
+            $assign->category = $assignment->category;
+            $assign->type = $assignment->type;
+            $assign->save();
+         }
+         DB::commit();
+
+         return redirect()->back()->with('message','Programme module assignment completed successfully');
     }
 
     /**

@@ -8,8 +8,9 @@ use App\Domain\Academic\Models\StudyAcademicYear;
 use App\Domain\Academic\Models\Semester;
 use App\Domain\Registration\Models\Student;
 use App\Domain\Academic\Actions\PostponementAction;
+use App\Models\User;
 use App\Utils\Util;
-use Validator;
+use Validator, Auth;
 
 
 class PostponementController extends Controller
@@ -23,7 +24,8 @@ class PostponementController extends Controller
     	   'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
            'student'=>$request->has('registration_number')? Student::where('registration_number',$request->get('registration_number'))->first() : null,
            'postponements'=>Postponement::with(['student','StudyAcademicYear.academicYear','semester'])->paginate(20),
-           'semesters'=>Semester::all()
+           'semesters'=>Semester::all(),
+           'staff'=>User::find(Auth::user()->id)->staff
     	];
     	return view('dashboard.academic.postponements',$data)->withTitle('Postponements');
     }

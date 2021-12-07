@@ -5,8 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Domain\Academic\Models\Semester;
 use App\Domain\Academic\Actions\SemesterAction;
+use App\Models\User;
 use App\Utils\Util;
-use Validator;
+use Validator, Auth;
 
 class SemesterController extends Controller
 {
@@ -16,7 +17,8 @@ class SemesterController extends Controller
     public function index()
     {
     	$data = [
-           'semesters'=>Semester::paginate(20)
+           'semesters'=>Semester::paginate(20),
+           'staff'=>User::find(Auth::user()->id)->staff
     	];
     	return view('dashboard.academic.semesters',$data)->withTitle('Semesters');
     }

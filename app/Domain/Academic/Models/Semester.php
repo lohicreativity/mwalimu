@@ -42,4 +42,20 @@ class Semester extends Model
     {
     	return $this->hasMany(ProgramModuleAssignment::class,'semester_id');
     }
+
+    /**
+     * Set name attribute
+     */
+    public function setNameAttribute($value)
+    {
+        $this->attributes['name'] = ucwords($value);
+    }
+
+    /**
+     * Get name attribute
+     */
+    public function getNameAttribute($value)
+    {
+        return ucwords($value);
+    }
 }

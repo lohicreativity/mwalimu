@@ -57,4 +57,20 @@ class Student extends Model
         return $this->belongsToMany(ProgramModuleAssignment::class,'student_program_module_assignment','student_id','program_module_assignment_id');;
     }
 
+    /**
+     * Set Surname attribute
+     */
+    public function setSurnameAttribute($value)
+    {
+        $this->attributes['surname'] = strtoupper($value);
+    }
+
+    /**
+     * Get surname attribute
+     */
+    public function getSurnameAttribute($value)
+    {
+        return strtoupper($value);
+    }
+
 }

@@ -570,6 +570,85 @@ $('.ss-final-percentage-pass').on('keyup',function(e){
     $($(e.target).data('target')).val(percentage);
 });
 
+// Select NTA Level
+$('.ss-select-nta-level').on('change',function(e){
+    $.ajax({
+       'method':'POST',
+       'url':$(e.target).data('source-url'),
+       'data':{
+          '_token':$(e.target).data('token'),
+          'nta_level_id':$(e.target).val()
+       }
+    }).done(function(data, success){
+        if(data.status == 'success'){
+           $($(e.target).data('min-target')).val(data.nta_level.min_duration);
+           $($(e.target).data('max-target')).val(data.nta_level.max_duration);
+           $($(e.target).data('award-target')).val(data.nta_level.award_id);
+        }
+    });
+});
+
+// Select module
+$('.ss-select-tags').on('change',function(e){
+    $.ajax({
+       'method':'POST',
+       'url':$(e.target).data('source-url'),
+       'data':{
+          '_token':$(e.target).data('token'),
+          'module_id':$(e.target).val()
+       }
+    }).done(function(data, success){
+        if(data.status == 'success'){
+           var code = data.module.code.replace(" ","");
+           var semester_id = code.substring(5,6);
+           var year = 1;
+           if(code.substring(4,5) == '4' || code.substring(4,5) == '5' || code.substring(4,5) == '6'){
+              year = 1;
+           }else if(code.substring(4,6) == '71'){
+              year = 1;
+              semester_id = 1;
+           }else if(code.substring(4,6) == '72'){
+              year = 1;
+              semester_id = 2;
+           }else if(code.substring(4,6) == '73'){
+              year = 2;
+              semester_id = 1;
+           }else if(code.substring(4,6) == '74'){
+              year = 2;
+              semester_id = 2;
+           }else if(code.substring(4,6) == '8'){
+              year = 3;
+           }
+
+           $($(e.target).data('year-target')).val(year);
+           $($(e.target).data('semester-target')).val(semester_id);
+        }
+    });
+});
+
+// Autofill NTA Level by code
+$('.ss-autofill-nta').on('keyup',function(e){
+    $.ajax({
+         method:'POST',
+         url:$(e.target).data('source-url'),
+         data:{
+            _token:$(e.target).data('token'),
+            code:$(e.target).val()
+         }
+    }).done(function(data){
+        if(data.status == 'success'){
+           $($(e.target).data('target')).val(data.nta_level.id);
+        }else{
+           toastr.options =
+           {
+              "closeButton" : true,
+              "progressBar" : true
+           }
+           toastr.error("Invalid module code entered.");
+        }
+    });
+});
+
 // Display form processing
 $('.ss-form-processing').submit(function(e){
      var resultsContainer = $(e.target).data('results-container');

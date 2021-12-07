@@ -46,15 +46,42 @@
               <!-- /.card-header -->
               <div class="card-body">
                  {!! Form::open(['url'=>'academic/module-assignments','class'=>'ss-form-processing','method'=>'GET']) !!}
-                   
-                   <div class="form-group">
+                  <div class="row">
+                   <div class="form-group col-3">
                     <select name="study_academic_year_id" class="form-control" required>
                        <option value="">Select Study Academic Year</option>
                        @foreach($study_academic_years as $year)
-                       <option value="{{ $year->id }}">{{ $year->academicYear->year }}</option>
+                       <option value="{{ $year->id }}" @if($year->status == 'ACTIVE') selected="selected" @endif>{{ $year->academicYear->year }}</option>
                        @endforeach
                     </select>
-                     
+                   </div>
+                   <div class="form-group col-3">
+                    <select name="semester_id" class="form-control" required>
+                       <option value="">Select Semester</option>
+                       @foreach($semesters as $semester)
+                       <option value="{{ $semester->id }}">{{ $semester->name }}</option>
+                       @endforeach
+                    </select>
+                   </div>
+                   <div class="form-group col-4">
+                    <select name="campus_program_id" class="form-control" required>
+                       <option value="">Select Programme</option>
+                       @foreach($campus_programs as $prog)
+                       @if($staff->campus_id == $prog->campus_id)
+                       <option value="{{ $prog->id }}">{{ $prog->program->name }} - {{ $prog->program->code }}</option>
+                       @endif
+                       @endforeach
+                    </select>
+                   </div>
+                   
+                   <div class="form-group col-2">
+                    <select name="year_of_study" class="form-control" required>
+                       <option value="">Select Year of Study</option>
+                       <option value="1">1</option>
+                       <option value="2">2</option>
+                       <option value="3">3</option>
+                    </select>
+                   </div>
                   </div>
                   <div class="ss-form-actions">
                    <button type="submit" class="btn btn-primary">{{ __('Search') }}</button>
@@ -68,29 +95,15 @@
 
 
 
-            @if(count($campuses) != 0 && $study_academic_year)
-            @foreach($campuses as $campus)
+            @if($study_academic_year && $campus_program)
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">{{ $campus->name }} - {{ $study_academic_year->academicYear->year }}</h3>
+                <h3 class="card-title">{{ $campus_program->program->name }} - {{ $study_academic_year->academicYear->year }}</h3>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
-                <table id="example2" class="table table-bordered table-hover">
-                  <thead>
-                  <tr>
-                    <th>Programme</th>
-                    <th>Code</th>
-                    <th>Modules</th>
-                  </tr>
-                  </thead>
-                  <tbody>
-                  @foreach($campus->campusPrograms as $program)
-                  <tr>
-                    <td>{{ $program->program->name }}</td>
-                    <td>{{ $program->program->code }}</td>
-                    <td>
-                      @if(count($program->programModuleAssignments) != 0)
+          
+                      @if(count($campus_program->programModuleAssignments) != 0)
                       <table class="table table-bordered">
                         <thead>
                           <tr>
@@ -98,11 +111,12 @@
                             <th>Code</th>
                             <th>Year</th>
                             <th>Semester</th>
+                            <th>Prev Facilitator</th>
                             <th>Action</th>
                           </tr>
                           </thead>
                           <tbody>  
-                      @foreach($program->programModuleAssignments as $assign)
+                      @foreach($campus_program->programModuleAssignments as $assign)
                         @for($i = 1; $i<=3; $i++)
                         @if($i == $assign->year_of_study)
 
@@ -113,7 +127,7 @@
                           @if(count($assign->module->moduleAssignments) != 0)
                             <p class="ss-font-xs ss-no-margin ss-bold">Facilitator:</p>
                             @foreach($assign->module->moduleAssignments as $modAssign)
-                            <p class="ss-font-xs ss-no-margin ss-italic">{{ $modAssign->staff->title }} {{ $modAssign->staff->first_name }} {{ $modAssign->staff->middle_name }} {{ $modAssign->staff->surname }} - {{ $modAssign->category }}<a href="#" data-toggle="modal" data-target="#ss-delete-module-assignment-{{ $modAssign->id }}" class="ss-color-danger ss-right">Remove</a></p>
+                            <p class="ss-font-xs ss-no-margin ss-italic">{{ $modAssign->staff->title }} {{ $modAssign->staff->first_name }} {{ $modAssign->staff->middle_name }} {{ $modAssign->staff->surname }}<a href="#" data-toggle="modal" data-target="#ss-delete-module-assignment-{{ $modAssign->id }}" class="ss-color-danger ss-right">Remove</a></p>
 
                             <div class="modal fade" id="ss-delete-module-assignment-{{ $modAssign->id }}">
                         <div class="modal-dialog modal-lg">
@@ -154,17 +168,35 @@
                         <td>{{ $assign->year_of_study }}</td>
                         <td>{{ $assign->semester->name }}</td>
                         <td>
+                           @php
+                             $text = 'Not Available';
+                           @endphp
+                           
+                           @foreach($previous_campus_program->programModuleAssignments as $k=>$asg)
+                             @if($asg->id == $assign->id)
+                                   @foreach($asg->module->moduleAssignments as $key=>$mdAsg)
+                                      @if($key == 0)
+                                      @php
+                                       $text = $mdAsg->staff->title.' '.$mdAsg->staff->first_name.' '.$mdAsg->staff->middle_name.' '.$mdAsg->staff->surname;
+                                       @endphp
+                                      @endif
+                                   @endforeach
+                             @endif
+                           @endforeach
+                           {{ $text }}
+                        </td>
+                        <td>
                           <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-assign-module-{{ $assign->module->id }}">
                               <i class="fas fa-plus">
                               </i>
-                              Assign Staff
+                              Assign Facilitator
                          </a>
 
                          <div class="modal fade" id="ss-assign-module-{{ $assign->module->id }}">
                         <div class="modal-dialog modal-lg">
                           <div class="modal-content">
                             <div class="modal-header">
-                              <h4 class="modal-title">Assign Staff</h4>
+                              <h4 class="modal-title">Assign Facilitator</h4>
                               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                               </button>
@@ -174,10 +206,10 @@
                                 {!! Form::open(['url'=>'academic/module-assignment/store','class'=>'ss-form-processing']) !!}
                                    
                                    <div class="row">
-                                    <div class="form-group col-8">
-                                      {!! Form::label('','Select staff') !!}
-                                      <select name="staff_id" class="form-control" required>
-                                        <option value="">Select Staff</option>
+                                    <div class="form-group col-12">
+                                      {!! Form::label('','Select facilitar') !!}<br>
+                                      <select name="staff_id" class="form-control ss-select-tags" required style="width: 100%;">
+                                        <option value="">Select Facilitator</option>
                                         @foreach($staffs as $staff)
                                         <option value="{{ $staff->id }}">{{ $staff->title }} {{ $staff->first_name }} {{ $staff->surname }} - {{ $staff->designation->name }}</option>
                                         @endforeach
@@ -187,18 +219,11 @@
                                       {!! Form::input('hidden','study_academic_year_id',$study_academic_year->id) !!}
                                       {!! Form::input('hidden','program_module_assignment_id',$assign->id) !!}
                                     </div>
-                                      <div class="form-group col-4">
-                                      {!! Form::label('','Category') !!}
-                                      <select name="category" class="form-control" required>
-                                         <option value="Lead Facilitator">Lead Facilitator</option>
-                                         <option value="Assistant Facilitator">Assistant Facilitator</option>
-                                         <option value="Tutor">Tutor</option>
-                                      </select>
-                                      </div>
+                                      
 
                                   </div>
                                       <div class="ss-form-actions">
-                                       <button type="submit" class="btn btn-primary">{{ __('Assign Staff') }}</button>
+                                       <button type="submit" class="btn btn-primary">{{ __('Assign Facilitator') }}</button>
                                       </div>
                                 {!! Form::close() !!}
 
@@ -223,19 +248,11 @@
                     </tbody>
                     </table>
                     @endif
-                    </td>
                     
-                  </tr>
-                    
-                  @endforeach
-                  
-                  </tbody>
-                </table>
               </div>
               <!-- /.card-body -->
             </div>
             <!-- /.card -->
-            @endforeach
             @else
             <div class="card">
               <div class="card-header">

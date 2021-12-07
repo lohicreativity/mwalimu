@@ -37,4 +37,20 @@ class Module extends Model
     {
     	return $this->hasMany(ModuleAssignment::class,'module_id');
     }
+
+    /**
+     * Set name attribute
+     */
+    public function setNameAttribute($value)
+    {
+        $this->attributes['name'] = ucwords($value);
+    }
+
+    /**
+     * Get name attribute
+     */
+    public function getNameAttribute($value)
+    {
+        return ucwords($value);
+    }
 }

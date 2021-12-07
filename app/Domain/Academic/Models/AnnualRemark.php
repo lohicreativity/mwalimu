@@ -27,4 +27,20 @@ class AnnualRemark extends Model
     {
     	return $this->belongsTo(StudyAcademicYear::class,'study_academic_year_id');
     }
+
+    /**
+     * Set remark attribute
+     */
+    public function setRemarkAttribute($value)
+    {
+        $this->attributes['remark'] = strtoupper($value);
+    }
+
+    /**
+     * Get remark attribute
+     */
+    public function getRemarkAttribute($value)
+    {
+        return strtoupper($value);
+    }
 }

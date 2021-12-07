@@ -8,8 +8,9 @@ use App\Domain\Academic\Models\Department;
 use App\Domain\Academic\Models\Award;
 use App\Domain\Settings\Models\NTALevel;
 use App\Domain\Academic\Actions\ProgramAction;
+use App\Models\User;
 use App\Utils\Util;
-use Validator;
+use Validator, Auth;
 
 class ProgramController extends Controller
 {
@@ -19,10 +20,11 @@ class ProgramController extends Controller
     public function index()
     {
     	$data = [
-           'programs'=>Program::with(['department','ntaLevel','award'])->paginate(20),
+           'programs'=>Program::with(['department','ntaLevel','award'])->latest()->paginate(20),
            'departments'=>Department::all(),
            'nta_levels'=>NTALevel::all(),
-           'awards'=>Award::all()
+           'awards'=>Award::all(),
+           'staff'=>User::find(Auth::user()->id)->staff
     	];
     	return view('dashboard.academic.programs',$data)->withTitle('programs');
     }

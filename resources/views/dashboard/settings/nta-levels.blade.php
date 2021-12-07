@@ -52,6 +52,18 @@
                      'class'=>'form-control',
                      'required'=>true
                   ];
+
+                  $min_duration = [
+                     'placeholder'=>'Min duration',
+                     'class'=>'form-control',
+                     'required'=>true
+                  ];
+
+                  $max_duration = [
+                     'placeholder'=>'Max duration',
+                     'class'=>'form-control',
+                     'required'=>true
+                  ];
               @endphp
               {!! Form::open(['url'=>'settings/nta-level/store','class'=>'ss-form-processing']) !!}
                 <div class="card-body">
@@ -64,11 +76,21 @@
                   <div class="form-group col-6">
                     {!! Form::label('','Description') !!}
                     <select name="award_id" class="form-control">
-                      <option value="">Select Award</option>
+                      <option value="">Select description</option>
                       @foreach($awards as $award)
                       <option value="{{ $award->id }}">{{ $award->name }}</option>
                       @endforeach
                     </select>
+                  </div>
+                  </div>
+                  <div class="row">
+                    <div class="form-group col-6">
+                    {!! Form::label('','Min duration') !!}
+                    {!! Form::text('min_duration',null,$min_duration) !!}
+                  </div>
+                  <div class="form-group col-6">
+                    {!! Form::label('','Max duration') !!}
+                    {!! Form::text('max_duration',null,$max_duration) !!}
                   </div>
                   </div>
                 </div>
@@ -93,6 +115,8 @@
                   <tr>
                     <th>Name</th>
                     <th>Description</th>
+                    <th>Min Duration</th>
+                    <th>Max Duration</th>
                     <th>Actions</th>
                   </tr>
                   </thead>
@@ -101,6 +125,8 @@
                   <tr>
                     <td>{{ $level->name }}</td>
                     <td>{{ $level->award->name }}</td>
+                    <td>{{ $level->min_duration }}</td>
+                    <td>{{ $level->max_duration }}</td>
                     <td>
                       <a class="btn btn-info btn-sm" href="#" @if(count($level->programs) != 0) data-toggle="modal" data-target="#ss-edit-level-{{ $level->id }}" @else disabled="disabled" @endif>
                               <i class="fas fa-pencil-alt">
@@ -129,13 +155,23 @@
                                       <div class="form-group col-6">
                                         {!! Form::label('','Description') !!}
                                         <select name="award_id" class="form-control">
-                                          <option value="">Select Award</option>
+                                          <option value="">Select description</option>
                                           @foreach($awards as $award)
                                           <option value="{{ $award->id }}" @if($award->id == $level->award_id) selected="selected" @endif>{{ $award->name }}</option>
                                           @endforeach
                                         </select>
                                       </div>
                                       </div>
+                                      <div class="row">
+                                      <div class="form-group col-6">
+                                      {!! Form::label('','Min duration') !!}
+                                      {!! Form::text('min_duration',$level->min_duration,$min_duration) !!}
+                                    </div>
+                                    <div class="form-group col-6">
+                                      {!! Form::label('','Max duration') !!}
+                                      {!! Form::text('max_duration',$level->max_duration,$max_duration) !!}
+                                    </div>
+                                    </div>
                                       <div class="ss-form-actions">
                                        <button type="submit" class="btn btn-primary">{{ __('Save Changes') }}</button>
                                       </div>

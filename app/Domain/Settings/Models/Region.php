@@ -10,4 +10,20 @@ class Region extends Model
     use HasFactory;
 
     protected $table = 'regions';
+
+     /**
+     * Set name attribute
+     */
+    public function setNameAttribute($value)
+    {
+        $this->attributes['name'] = ucwords($value);
+    }
+
+    /**
+     * Get name attribute
+     */
+    public function getNameAttribute($value)
+    {
+        return ucwords($value);
+    }
 }

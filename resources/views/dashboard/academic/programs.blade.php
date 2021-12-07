@@ -62,18 +62,23 @@
                   $description = [
                      'placeholder'=>'Description',
                      'class'=>'form-control',
-                     'rows'=>2
+                     'rows'=>2,
+                     'required'=>true
                   ];
 
                   $min_duration = [
                      'placeholder'=>'Min duration',
                      'class'=>'form-control',
+                     'id'=>'ss-min-duration',
+                     'readonly'=>true,
                      'required'=>true
                   ];
 
                   $max_duration = [
                      'placeholder'=>'Max duration',
                      'class'=>'form-control',
+                     'id'=>'ss-max-duration',
+                     'readonly'=>true,
                      'required'=>true
                   ];
               @endphp
@@ -118,7 +123,7 @@
                  <div class="row">
                   <div class="form-group col-4">
                     {!! Form::label('','NTA level') !!}
-                    <select name="nta_level_id" class="form-control" required>
+                    <select name="nta_level_id" class="form-control ss-select-nta-level" required data-min-target="#ss-min-duration" data-max-target="#ss-max-duration" data-token="{{ session()->token() }}" data-source-url="{{ url('api/v1/get-nta-level') }}" data-award-target="#ss-nta-award">
                       <option value="">Select NTA level</option>
                       @foreach($nta_levels as $level)
                       <option value="{{ $level->id }}">{{ $level->name }}</option>
@@ -127,12 +132,13 @@
                   </div>
                   <div class="form-group col-4">
                     {!! Form::label('','Award') !!}
-                    <select name="award_id" class="form-control" required>
+                    <select name="award_id" class="form-control" required id="ss-nta-award" disabled="disabled">
                       <option value="">Select Award</option>
                       @foreach($awards as $award)
                       <option value="{{ $award->id }}">{{ $award->name }}</option>
                       @endforeach
                     </select>
+                    {!! Form::input('hidden','award_id',null,['id'=>'ss-nta-award']) !!}
                   </div>
                    <div class="form-group col-4">
                       {!! Form::label('','Category') !!}
@@ -200,6 +206,23 @@
                               </button>
                             </div>
                             <div class="modal-body">
+                                @php
+                                   $min_duration = [
+                                     'placeholder'=>'Min duration',
+                                     'class'=>'form-control',
+                                     'id'=>'ss-min-duration-'.$program->id,
+                                     'readonly'=>true,
+                                     'required'=>true
+                                  ];
+
+                                  $max_duration = [
+                                     'placeholder'=>'Max duration',
+                                     'class'=>'form-control',
+                                     'id'=>'ss-max-duration-'.$program->id,
+                                     'readonly'=>true,
+                                     'required'=>true
+                                  ];
+                                @endphp
 
                                 {!! Form::open(['url'=>'academic/program/update','class'=>'ss-form-processing']) !!}
                                    <div class="row">
@@ -242,7 +265,7 @@
                                        <div class="row">
                                         <div class="form-group col-4">
                                           {!! Form::label('','NTA level') !!}
-                                          <select name="nta_level_id" class="form-control" required>
+                                          <select name="nta_level_id" class="form-control ss-select-nta-level" required data-min-target="#ss-min-duration-{{ $program->id}}" data-max-target="#ss-max-duration-{{ $program->id }}" data-token="{{ session()->token() }}" data-source-url="{{ url('api/v1/get-nta-level') }}" data-award-target="#ss-nta-award-{{ $program->id }}">
                                             <option value="">Select NTA level</option>
                                             @foreach($nta_levels as $level)
                                             <option value="{{ $level->id }}" @if($level->id == $program->nta_level_id) selected="selected" @endif>{{ $level->name }}</option>
@@ -251,12 +274,14 @@
                                         </div>
                                         <div class="form-group col-4">
                                           {!! Form::label('','Award') !!}
-                                          <select name="award_id" class="form-control" required>
+                                          <select name="award_id" class="form-control" required id="ss-nta-award-{{ $program->id }}" disabled="disabled">
                                             <option value="">Select Award</option>
                                             @foreach($awards as $award)
                                             <option value="{{ $award->id }}" @if($award->id == $program->award_id) selected="selected" @endif>{{ $award->name }}</option>
                                             @endforeach
                                           </select>
+
+                                          {!! Form::input('hidden','award_id',$program->award_id,['id'=>'ss-nta-award-'.$program->id]) !!}
                                         </div>
                                         <div class="form-group col-4">
                                         {!! Form::label('','Category') !!}

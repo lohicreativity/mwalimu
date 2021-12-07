@@ -18,4 +18,20 @@ class District extends Model
     {
     	return $this->belongsTo(Region::class,'region_id');
     }
+
+    /**
+     * Set name attribute
+     */
+    public function setNameAttribute($value)
+    {
+        $this->attributes['name'] = ucwords($value);
+    }
+
+    /**
+     * Get name attribute
+     */
+    public function getNameAttribute($value)
+    {
+        return ucwords($value);
+    }
 }

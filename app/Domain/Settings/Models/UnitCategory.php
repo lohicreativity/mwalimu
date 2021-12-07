@@ -19,4 +19,12 @@ class UnitCategory extends Model
     {
     	return $this->hasMany(Department::class,'unit_category_id');
     }
+
+    /**
+     * Get name attribute
+     */
+    public function getNameAttribute($value)
+    {
+        return ucwords($value);
+    }
 }

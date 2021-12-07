@@ -17,7 +17,6 @@ class StaffAction implements StaffInterface{
                 DB::beginTransaction();
 
                 $user = new User;
-                $user->name = $request->get('first_name').' '.$request->get('surname');
                 $user->email = $request->get('email');
                 $user->password = Hash::make('123456');
                 $user->email_verified_at = now();
@@ -67,9 +66,9 @@ class StaffAction implements StaffInterface{
 	}
 
 	public function update(Request $request){
-                DB::beginTransaction();
+                
 
-		$staff = Staff::find($request->get('staff_id'));
+		        $staff = Staff::find($request->get('staff_id'));
                 $staff->title = $request->get('title');
                 $staff->first_name = $request->get('first_name');
                 $staff->middle_name = $request->get('middle_name');
@@ -104,10 +103,6 @@ class StaffAction implements StaffInterface{
                   $staff->image = $request->file('image')->getClientOriginalName();
                 }
                 $staff->save();
-
-                $user = User::find($staff->user_id);
-                $user->name = $staff->first_name.' '.$staff->surname;
-                $user->save();
-                DB::commit();
+            
 	}
 }

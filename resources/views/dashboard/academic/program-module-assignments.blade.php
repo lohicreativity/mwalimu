@@ -169,6 +169,14 @@
                               Assign Module
                        </a>
                        
+                       @if(count($program->programModuleAssignments) == 0)
+                       <a class="btn btn-info btn-sm" href="{{ url('academic/program-module-assignment/'.$study_academic_year->id.'/'.$program->id.'/assign-as-previous') }}">
+                              <i class="fas fa-plus">
+                              </i>
+                              Assign as Previous
+                       </a>
+                       @endif
+                       
                     </td>
                   </tr>
                   @endforeach

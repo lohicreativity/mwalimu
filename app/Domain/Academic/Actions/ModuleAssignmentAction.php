@@ -15,7 +15,6 @@ class ModuleAssignmentAction implements ModuleAssignmentInterface{
                 $assignment->study_academic_year_id = $request->get('study_academic_year_id');
                 $assignment->module_id = $request->get('module_id');
                 $assignment->program_module_assignment_id = $request->get('program_module_assignment_id');
-                $assignment->category = $request->get('category');
                 $assignment->assigned_by_user_id = Auth::user()->id;
                 $assignment->save();
 	}
@@ -26,7 +25,6 @@ class ModuleAssignmentAction implements ModuleAssignmentInterface{
                 $assignment->study_academic_year_id = $request->get('study_academic_year_id');
                 $assignment->module_id = $request->get('module_id');
                 $assignment->program_module_assignment_id = $request->get('program_module_assignment_id');
-                $assignment->category = $request->get('category');
                 $assignment->assigned_by_user_id = Auth::user()->id;
                 $assignment->save();
 	}

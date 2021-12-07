@@ -7,8 +7,9 @@ use App\Domain\Academic\Models\Award;
 use App\Domain\Academic\Models\Program;
 use App\Domain\Settings\Models\Level;
 use App\Domain\Academic\Actions\AwardAction;
+use App\Models\User;
 use App\Utils\Util;
-use Validator;
+use Validator, Auth;
 
 class AwardController extends Controller
 {
@@ -19,7 +20,8 @@ class AwardController extends Controller
     {
     	$data = [
            'awards'=>Award::with('level')->paginate(20),
-           'levels'=>Level::all()
+           'levels'=>Level::all(),
+           'staff'=>User::find(Auth::user()->id)->staff
     	];
     	return view('dashboard.academic.awards',$data)->withTitle('Awards');
     }

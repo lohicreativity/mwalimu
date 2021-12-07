@@ -25,6 +25,7 @@ class ApplicantFactory extends Factory
             'admission_year'=>$this->faker->numberBetween(2012,2021),
             'index_number'=>$this->faker->unique()->numberBetween(100000,999999),
             'application_number'=>$this->faker->unique()->numberBetween(100000,999999),
+            'entry_mode'=>'DIRECT',
             'email'=>$this->faker->email(),
             'phone'=>$this->faker->phoneNumber(),
             'nationality'=>$this->faker->country(),

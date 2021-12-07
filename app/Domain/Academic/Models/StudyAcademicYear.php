@@ -58,4 +58,12 @@ class StudyAcademicYear extends Model
     {
     	return $this->hasMany(ElectiveModuleLimit::class,'academic_year_id');
     }
+
+    /**
+     * Get status attribute
+     */
+    public function getStatusAttribute($value)
+    {
+        return ucwords($value);
+    }
 }

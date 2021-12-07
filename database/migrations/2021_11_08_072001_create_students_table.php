@@ -23,7 +23,6 @@ class CreateStudentsTable extends Migration
             $table->string('gender',2);
             $table->string('email');
             $table->string('phone',20);
-            $table->string('address');
             $table->unsignedBigInteger('applicant_id');
             $table->string('registration_number')->unique();
             $table->unsignedBigInteger('studentship_status_id');
@@ -33,7 +32,6 @@ class CreateStudentsTable extends Migration
             $table->unsignedBigInteger('insurance_id');
             $table->mediumInteger('year_of_study');
             $table->mediumInteger('registration_year');
-            $table->string('entry_mode');
             $table->unsignedBigInteger('user_id');
             $table->timestamps();
             $table->softDeletes();

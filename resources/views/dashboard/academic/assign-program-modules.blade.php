@@ -58,7 +58,7 @@
                    <div class="row">
                    <div class="form-group col-8">
                     {!! Form::label('','Module') !!}
-                    <select name="module_id" class="form-control" required>
+                    <select name="module_id" class="form-control ss-select-tags" required data-year-target="#ss-year" data-semester-target="#ss-semester" data-token="{{ session()->token() }}" data-source-url="{{ url('api/v1/get-module-by-id') }}">
                        <option value="">Select Module</option>
                        @foreach($modules as $module)
                        <option value="{{ $module->id }}">{{ $module->name }} - {{ $module->code }}</option>
@@ -67,7 +67,7 @@
                     </div>
                     <div class="form-group col-4">
                       {!! Form::label('','Year of study') !!}
-                      <select name="year_of_study" class="form-control" required>
+                      <select name="year_of_study" class="form-control" required id="ss-year">
                         <option>Select Year of Study</option>
                         @for($i = 1; $i <= $campus_program->program->min_duration; $i++)
                         <option value="{{ $i }}">{{ $i }}</option>
@@ -93,7 +93,7 @@
                     </div>
                     <div class="form-group col-4">
                     {!! Form::label('','Semester') !!}
-                    <select name="semester_id" class="form-control" required>
+                    <select name="semester_id" class="form-control" required id="ss-semester">
                        <option value="">Select Semester</option>
                        @foreach($semesters as $semester)
                        <option value="{{ $semester->id }}">{{ $semester->name }}</option>
@@ -164,18 +164,17 @@
 
                                    <div class="row">
                    <div class="form-group col-8">
-                    {!! Form::label('','Module') !!}
-                    <select name="module_id" class="form-control" required>
+                    {!! Form::label('','Module') !!}<br>
+                    <select name="module_id" class="form-control ss-select-tags ss-select-module" required style="width: 100%;" data-year-target="#ss-year-{{ $module->id }}" data-semester-target="#ss-semester-{{ $module->id }}" data-token="{{ session()->token() }}" data-source-url="{{ url('api/v1/get-module-by-id') }}">
                        <option value="">Select Module</option>
                        @foreach($inclusive_modules as $module)
-                       <option value="{{ $module->id }}" @if($assignment->module_id == $module->id) selected="selected" @endif>{{ $module->name }} - {{ $module->code }}</option>
+                       <option value="{{ $module->id }}" @if($assignment->module_id == $module->id) selected="selected" @else disabled="disabled" @endif>{{ $module->name }} - {{ $module->code }}</option>
                        @endforeach
                     </select>
                     </div>
                     <div class="form-group col-4">
                       {!! Form::label('','Year of study') !!}
-                      <select name="year_of_study" class="form-control" required>
-                        <option>Select Year of Study</option>
+                      <select name="year_of_study" class="form-control" required id="ss-year-{{ $module->id }}">
                         @for($i = 1; $i <= $campus_program->program->min_duration; $i++)
                         <option value="{{ $i }}" @if($i == $assignment->year_of_study ) selected="selected" @endif>{{ $i }}</option>
                         @endfor
@@ -199,7 +198,7 @@
                     </div>
                     <div class="form-group col-4">
                     {!! Form::label('','Semester') !!}
-                    <select name="semester_id" class="form-control" required>
+                    <select name="semester_id" class="form-control" required id="ss-semester-{{ $module->id }}">
                        <option value="">Select Semester</option>
                        @foreach($semesters as $semester)
                        <option value="{{ $semester->id }}" @if($assignment->semester_id == $semester->id) selected="selected" @endif>{{ $semester->name }}</option>

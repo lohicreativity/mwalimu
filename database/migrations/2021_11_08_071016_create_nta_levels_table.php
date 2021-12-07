@@ -16,6 +16,8 @@ class CreateNtaLevelsTable extends Migration
         Schema::create('nta_levels', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->integer('min_duration');
+            $table->integer('max_duration');
             $table->unsignedBigInteger('award_id');
             $table->timestamps();
 

@@ -8,8 +8,9 @@ use App\Domain\Academic\Models\Department;
 use App\Domain\Academic\Models\ExaminationPolicy;
 use App\Domain\Settings\Models\NTALevel;
 use App\Domain\Academic\Actions\ModuleAction;
+use App\Models\User;
 use App\Utils\Util;
-use Validator;
+use Validator, Auth;
 
 class ModuleController extends Controller
 {
@@ -21,12 +22,13 @@ class ModuleController extends Controller
         if($request->has('query')){
             $modules = Module::with(['department','ntaLevel'])->where('name','LIKE','%'.$request->get('query').'%')->OrWhere('code','LIKE','%'.$request->get('query').'%')->paginate(20);
         }else{
-            $modules = Module::with(['department','ntaLevel'])->paginate(20);
+            $modules = Module::with(['department','ntaLevel'])->latest()->paginate(20);
         }
     	$data = [
            'modules'=>$modules,
            'nta_levels'=>NTALevel::all(),
            'departments'=>Department::all(),
+           'staff'=>User::find(Auth::user()->id)->staff,
            'request'=>$request
     	];
     	return view('dashboard.academic.modules',$data)->withTitle('Modules');

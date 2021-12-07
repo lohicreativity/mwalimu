@@ -9,8 +9,9 @@ use App\Domain\Academic\Models\ModuleAssignment;
 use App\Domain\Academic\Models\Semester;
 use App\Domain\Registration\Models\Student;
 use App\Domain\Academic\Actions\SpecialExamAction;
+use App\Models\User;
 use App\Utils\Util;
-use Validator;
+use Validator, Auth;
 
 class SpecialExamController extends Controller
 {
@@ -24,7 +25,8 @@ class SpecialExamController extends Controller
            'exams'=>SpecialExam::with(['student','semester','studyAcademicYear.academicYear','moduleAssignment.module'])->paginate(20),
            'module_assignment'=>ModuleAssignment::with(['module','programModuleAssignment'])->findOrFail($mod_assign_id),
            'student'=>$request->has('registration_number')? Student::where('registration_number',$request->get('registration_number'))->first() : null,
-           'semesters'=>Semester::all()
+           'semesters'=>Semester::all(),
+           'staff'=>User::find(Auth::user()->id)->staff
     	];
     	return view('dashboard.academic.special-exams',$data)->withTitle('Special Exams');
     }

@@ -7,8 +7,9 @@ use App\Domain\Academic\Models\StreamComponent;
 use App\Domain\Academic\Models\StudyAcademicYear;
 use App\Domain\Academic\Models\CampusProgram;
 use App\Domain\Academic\Actions\StreamComponentAction;
+use App\Models\User;
 use App\Utils\Util;
-use Validator;
+use Validator, Auth;
 
 class StreamComponentController extends Controller
 {
@@ -23,7 +24,8 @@ class StreamComponentController extends Controller
                   $query->where('study_academic_year_id',$request->get('study_academic_year_id'));
                }])->find($request->get('study_academic_year_id')) : null,
            'campus_program'=>$request->has('campus_program_id')? CampusProgram::with('program')->find($request->get('campus_program_id')) : null,
-           'component'=>StreamComponent::find($request->get('stream_component_id'))
+           'component'=>StreamComponent::find($request->get('stream_component_id')),
+           'staff'=>User::find(Auth::user()->id)->staff
     	];
     	return view('dashboard.academic.stream-components',$data)->withTitle('Stream Components');
         }catch(\Exception $e){

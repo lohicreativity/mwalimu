@@ -7,8 +7,9 @@ use App\Domain\Academic\Models\GradingPolicy;
 use App\Domain\Settings\Models\NTALevel;
 use App\Domain\Academic\Models\StudyAcademicYear;
 use App\Domain\Academic\Actions\GradingPolicyAction;
+use App\Models\User;
 use App\Utils\Util;
-use Validator;
+use Validator, Auth;
 
 class GradingPolicyController extends Controller
 {
@@ -21,7 +22,8 @@ class GradingPolicyController extends Controller
     	   'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
            'study_academic_year'=>$request->has('study_academic_year_id')? StudyAcademicYear::with('academicYear')->find($request->get('study_academic_year_id')) : null,
            'policies'=>GradingPolicy::with('ntaLevel')->where('study_academic_year_id',$request->get('study_academic_year_id'))->paginate(20),
-           'nta_levels'=>NTALevel::all()
+           'nta_levels'=>NTALevel::all(),
+           'staff'=>User::find(Auth::user()->id)->staff
     	];
     	return view('dashboard.academic.grading-policies',$data)->withTitle('Grading Policies');
     }

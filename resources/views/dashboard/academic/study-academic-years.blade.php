@@ -68,10 +68,8 @@
                   <div class="form-group col-4">
                     {!! Form::label('','Academic year') !!}
                     <select name="academic_year_id" class="form-control" required>
-                      <option value="">Select Academic Year</option>
-                      @foreach($academic_years as $yr)
-                      <option value="{{ $yr->id }}">{{ $yr->year }}</option>
-                      @endforeach
+                      <option value="{{ now()->format('Y') }}/{{ now()->addYear()->format('Y') }}">{{ now()->format('Y') }}/{{ now()->addYear()->format('Y') }}</option>
+          
                     </select>
                   </div>
                   <div class="form-group col-4">
@@ -150,7 +148,7 @@
                                       <select name="academic_year_id" class="form-control" required>
                                         <option value="">Select Academic Year</option>
                                         @foreach($academic_years as $yr)
-                                        <option value="{{ $yr->id }}" @if($yr->id == $year->academic_year_id) selected="selected" @endif>{{ $yr->year }}</option>
+                                        <option value="{{ $yr->id }}" @if($yr->id == $year->academic_year_id) selected="selected" @else disabled="disabled" @endif>{{ $yr->year }}</option>
                                         @endforeach
                                       </select>
                                       {!! Form::input('hidden','study_academic_year_id',$year->id) !!}
@@ -231,7 +229,6 @@
                               </i>
                               Activate
                        </a>
-
                       @endif
                     </td>
                   </tr>

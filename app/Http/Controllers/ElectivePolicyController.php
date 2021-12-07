@@ -8,8 +8,9 @@ use App\Domain\Academic\Models\StudyAcademicYear;
 use App\Domain\Academic\Models\CampusProgram;
 use App\Domain\Academic\Models\Semester;
 use App\Domain\Academic\Actions\ElectivePolicyAction;
+use App\Models\User;
 use App\Utils\Util;
-use Validator;
+use Validator, Auth;
 
 
 class ElectivePolicyController extends Controller
@@ -24,7 +25,8 @@ class ElectivePolicyController extends Controller
            'study_academic_year'=>$request->has('study_academic_year_id')? StudyAcademicYear::with('academicYear')->find($request->get('study_academic_year_id')) : null,
            'elective_policies'=>ElectivePolicy::with(['campusProgram.program','campusProgram.campus','semester','studyAcademicYear.academicYear'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->paginate(20),
            'campus_programs'=>CampusProgram::with(['program','campus'])->get(),
-           'semesters'=>Semester::all()
+           'semesters'=>Semester::all(),
+           'staff'=>User::find(Auth::user()->id)->staff
     	];
     	return view('dashboard.academic.elective-policies',$data)->withTitle('Elective Policies');
     }

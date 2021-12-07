@@ -8,8 +8,9 @@ use App\Domain\Academic\Models\Award;
 use App\Domain\Academic\Models\Module;
 use App\Domain\Academic\Models\Program;
 use App\Domain\Settings\Actions\NTALevelAction;
+use App\Models\User;
 use App\Utils\Util;
-use Validator;
+use Validator, Auth;
 
 class NTALevelController extends Controller
 {
@@ -20,7 +21,8 @@ class NTALevelController extends Controller
     {
     	$data = [
            'nta_levels'=>NTALevel::with(['award','programs'])->paginate(20),
-           'awards'=>Award::all()
+           'awards'=>Award::all(),
+           'staff'=>User::find(Auth::user()->id)->staff
     	];
     	return view('dashboard.settings.nta-levels',$data)->withTitle('NTA Levels');
     }

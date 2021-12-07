@@ -53,8 +53,7 @@ class GroupController extends Controller
 	           'group'=>$group,
 	           'department'=>Department::findOrFail($group->stream->campusProgram->program->department_id)
 	    	];
-    	    $pdf = PDF::loadView('dashboard.academic.reports.students-in-group', $data)->setPaper('a4','landscape');
-            return $pdf->stream();
+    	    return view('dashboard.academic.reports.students-in-group', $data);
         }catch(\Exception $e){
         	return redirect()->back()->with('error','Unable to get the resource specified in this request');
         }

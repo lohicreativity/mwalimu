@@ -5,8 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Domain\Settings\Models\Intake;
 use App\Domain\Settings\Actions\IntakeAction;
+use App\Models\User;
 use App\Utils\Util;
-use Validator;
+use Validator, Auth;
 
 class IntakeController extends Controller
 {
@@ -16,7 +17,8 @@ class IntakeController extends Controller
     public function index()
     {
     	$data = [
-           'intakes'=>Intake::with('applicants')->paginate(20)
+           'intakes'=>Intake::with('applicants')->paginate(20),
+           'staff'=>User::find(Auth::user()->id)->staff
     	];
     	return view('dashboard.settings.intakes',$data)->withTitle('Intakes');
     }

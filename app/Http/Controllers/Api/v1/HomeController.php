@@ -8,6 +8,7 @@ use App\Domain\Settings\Models\Region;
 use App\Domain\Settings\Models\District;
 use App\Domain\Settings\Models\Ward;
 use App\Domain\Academic\Models\Module;
+use App\Domain\Settings\Models\NTALevel;
 
 class HomeController extends Controller
 {
@@ -61,5 +62,44 @@ class HomeController extends Controller
     	}else{
     		return response()->json(['status'=>'failed','wards'=>$modules]);
     	}
+    }
+
+    /**
+     * Return NTA level
+     */
+    public function getNTALevel(Request $request)
+    {
+        $nta_level = NTALevel::find($request->get('nta_level_id'));
+        if($nta_level){
+            return response()->json(['status'=>'success','nta_level'=>$nta_level]);
+        }else{
+            return response()->json(['status'=>'failed','nta_level'=>null]);
+        }
+    }
+
+    /**
+     * Return NTA level by code
+     */
+    public function getNTALevelByCode(Request $request)
+    {
+        $nta_level = NTALevel::where('name','LIKE','%'.substr(str_replace(' ', '',$request->get('code')),4,1).'%')->first();
+        if($nta_level){
+            return response()->json(['status'=>'success','nta_level'=>$nta_level]);
+        }else{
+            return response()->json(['status'=>'failed','nta_level'=>null]);
+        }
+    }
+
+    /**
+     * Return NTA level by code
+     */
+    public function getModuleById(Request $request)
+    {
+        $module = Module::find($request->get('module_id'));
+        if($module){
+            return response()->json(['status'=>'success','module'=>$module]);
+        }else{
+            return response()->json(['status'=>'failed','module'=>null]);
+        }
     }
 }

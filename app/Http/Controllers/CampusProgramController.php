@@ -12,8 +12,9 @@ use App\Domain\Registration\Models\Student;
 use App\Domain\Settings\Models\Campus;
 use App\Domain\Academic\Models\Program;
 use App\Domain\Academic\Actions\CampusProgramAction;
+use App\Models\User;
 use App\Utils\Util;
-use Validator, PDF;
+use Validator, PDF, Auth;
 
 class CampusProgramController extends Controller
 {
@@ -26,7 +27,8 @@ class CampusProgramController extends Controller
 	    	$data = [
 	           'campus_programs'=>CampusProgram::with('program')->where('campus_id',$id)->paginate(20),
 	           'campus'=>Campus::findOrFail($id),
-	           'programs'=>Program::all()
+	           'programs'=>Program::all(),
+               'staff'=>User::find(Auth::user()->id)->staff
 	    	];
 	    	return view('dashboard.academic.campus-programs',$data)->withTitle('Campus Programs');
         }catch(\Exception $e){

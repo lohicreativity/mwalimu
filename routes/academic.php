@@ -146,6 +146,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 
 	Route::get('program-module-assignments', [ProgramModuleAssignmentController::class,'index']);
 	Route::get('program-module-assignment/{ac_year_id}/{campus_prog_id}/assign', [ProgramModuleAssignmentController::class,'assignModules']);
+	Route::get('program-module-assignment/{ac_year_id}/{campus_prog_id}/assign-as-previous', [ProgramModuleAssignmentController::class,'assignPreviousModules']);
 	Route::post('program-module-assignment/store',[ProgramModuleAssignmentController::class,'store']);
     Route::post('program-module-assignment/update',[ProgramModuleAssignmentController::class,'update']);
     Route::get('program-module-assignment/{id}/destroy', [ProgramModuleAssignmentController::class,'destroy']);

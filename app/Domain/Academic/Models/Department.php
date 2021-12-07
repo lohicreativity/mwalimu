@@ -38,4 +38,20 @@ class Department extends Model
     {
         return $this->belongsToMany(Campus::class,'campus_department','department_id','campus_id');
     }
+
+    /**
+     * Set name attribute
+     */
+    public function setNameAttribute($value)
+    {
+        $this->attributes['name'] = ucwords($value);
+    }
+
+    /**
+     * Get name attribute
+     */
+    public function getNameAttribute($value)
+    {
+        return ucwords($value);
+    }
 }
