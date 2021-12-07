@@ -4,6 +4,7 @@ namespace App\Domain\Settings\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Domain\Application\Models\Applicant;
 
 class Intake extends Model
 {
@@ -16,6 +17,6 @@ class Intake extends Model
      */
     public function applicants()
     {
-    	return $this->hasMany(App\Domain\Application\Models\Applicant::class,'intake_id');
+    	return $this->hasMany(Applicant::class,'intake_id');
     }
 }
