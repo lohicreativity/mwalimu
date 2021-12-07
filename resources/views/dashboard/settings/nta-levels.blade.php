@@ -62,7 +62,7 @@
                     {!! Form::text('name',null,$name) !!}
                   </div>
                   <div class="form-group col-6">
-                    {!! Form::label('','Award') !!}
+                    {!! Form::label('','Description') !!}
                     <select name="award_id" class="form-control">
                       <option value="">Select Award</option>
                       @foreach($awards as $award)
@@ -92,7 +92,7 @@
                   <thead>
                   <tr>
                     <th>Name</th>
-                    <th>Award</th>
+                    <th>Description</th>
                     <th>Actions</th>
                   </tr>
                   </thead>
@@ -127,7 +127,7 @@
                                         {!! Form::input('hidden','level_id',$level->id) !!}
                                       </div>
                                       <div class="form-group col-6">
-                                        {!! Form::label('','level') !!}
+                                        {!! Form::label('','Description') !!}
                                         <select name="award_id" class="form-control">
                                           <option value="">Select Award</option>
                                           @foreach($awards as $award)
