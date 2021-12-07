@@ -89,7 +89,7 @@
                   <tr>
                     <td>{{ $intake->name }}</td>
                     <td>
-                      <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-edit-intake-{{ $intake->id }}">
+                      <a class="btn btn-info btn-sm" href="#" @if(count($intake->applicants) != 0) data-toggle="modal" data-target="#ss-edit-intake-{{ $intake->id }}" @else disabled="disabled" @endif>
                               <i class="fas fa-pencil-alt">
                               </i>
                               Edit

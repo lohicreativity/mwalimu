@@ -35,7 +35,7 @@ class AwardsTableSeeder extends Seeder
 
            [
               'id'=>3,
-              'name'=>'HIGH DIPLOMA',
+              'name'=>'HIGHER DIPLOMA',
               'code'=>'HD',
               'level_id'=>1,
               'created_at'=>now(),
