@@ -85,9 +85,10 @@
                 <div class="card-body">
                   <div class="row">
                   <div class="form-group col-6">
-                    {!! Form::label('','Name') !!}
-                    {!! Form::text('name',null,$name) !!}
+                    {!! Form::label('','Code') !!}
+                    {!! Form::text('code',null,$code) !!}
                   </div>
+                  
                   <div class="form-group col-6">
                     {!! Form::label('','Department') !!}
                     <select name="department_id" class="form-control" required>
@@ -100,8 +101,8 @@
                  </div>
                   <div class="row">
                   <div class="form-group col-6">
-                    {!! Form::label('','Code') !!}
-                    {!! Form::text('code',null,$code) !!}
+                    {!! Form::label('','Name') !!}
+                    {!! Form::text('name',null,$name) !!}
                   </div>
                   <div class="form-group col-6">
                     {!! Form::label('','Credit') !!}
@@ -124,7 +125,7 @@
                     </select>
                   </div>
                    <div class="form-group col-6">
-                    {!! Form::label('','Upload module syllabus') !!}
+                    {!! Form::label('','Upload module syllabus (PDF Format)') !!}
                     {!! Form::file('syllabus',['class'=>'form-control']) !!}
                   </div>
                  </div><!-- end of row -->
@@ -220,10 +221,8 @@
                                 {!! Form::open(['url'=>'academic/module/update','class'=>'ss-form-processing','files'=>true]) !!}
                                   <div class="row">
                                     <div class="form-group col-6">
-                                      {!! Form::label('','Name') !!}
-                                      {!! Form::text('name',$module->name,$name) !!}
-
-                                      {!! Form::input('hidden','module_id',$module->id) !!}
+                                      {!! Form::label('','Code') !!}
+                                      {!! Form::text('code',$module->code,$code) !!}
                                     </div>
                                     <div class="form-group col-6">
                                       {!! Form::label('','Department') !!}
@@ -237,9 +236,12 @@
                                    </div>
                                     <div class="row">
                                     <div class="form-group col-6">
-                                      {!! Form::label('','Code') !!}
-                                      {!! Form::text('code',$module->code,$code) !!}
+                                      {!! Form::label('','Name') !!}
+                                      {!! Form::text('name',$module->name,$name) !!}
+
+                                      {!! Form::input('hidden','module_id',$module->id) !!}
                                     </div>
+                                    
                                     <div class="form-group col-6">
                                       {!! Form::label('','Credit') !!}
                                       <select name="credit" class="form-control" required>
@@ -262,7 +264,7 @@
                                         </select>
                                       </div>
                                        <div class="form-group col-6">
-                                        {!! Form::label('','Upload module syllabus') !!}
+                                        {!! Form::label('','Upload module syllabus (PDF Format)') !!}
                                         {!! Form::file('syllabus',['class'=>'form-control']) !!}
                                       </div>
                                    </div>
@@ -312,7 +314,7 @@
                                     <div id="ss-confirmation-container">
                                        <p id="ss-confirmation-text">Are you sure you want to delete this module from the list?</p>
                                        <div class="ss-form-controls">
-                                         <button type="button" class="btn btn-default" data-dismiss="modal">Abort</button>
+                                         <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                                          <a href="{{ url('academic/module/'.$module->id.'/destroy') }}" class="btn btn-danger">Delete</a>
                                          </div><!-- end of ss-form-controls -->
                                       </div><!-- end of ss-confirmation-container -->

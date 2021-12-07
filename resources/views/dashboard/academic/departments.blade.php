@@ -235,7 +235,7 @@
                                     <div id="ss-confirmation-container">
                                        <p id="ss-confirmation-text">Are you sure you want to delete this department from the list?</p>
                                        <div class="ss-form-controls">
-                                         <button type="button" class="btn btn-default" data-dismiss="modal">Abort</button>
+                                         <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                                          <a href="{{ url('academic/department/'.$department->id.'/destroy') }}" class="btn btn-danger">Delete</a>
                                          </div><!-- end of ss-form-controls -->
                                       </div><!-- end of ss-confirmation-container -->

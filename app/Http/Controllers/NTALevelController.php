@@ -19,7 +19,7 @@ class NTALevelController extends Controller
     public function index()
     {
     	$data = [
-           'nta_levels'=>NTALevel::with('award')->paginate(20),
+           'nta_levels'=>NTALevel::with(['award','programs'])->paginate(20),
            'awards'=>Award::all()
     	];
     	return view('dashboard.settings.nta-levels',$data)->withTitle('NTA Levels');

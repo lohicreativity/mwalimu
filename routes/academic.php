@@ -45,6 +45,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 	Route::post('semester/store', [SemesterController::class,'store']);
 	Route::post('semester/update', [SemesterController::class,'update']);
 	Route::get('semester/{id}/destroy', [SemesterController::class,'destroy']);
+	Route::get('semester/{id}/activate', [SemesterController::class,'activate']);
+	Route::get('semester/{id}/deactivate', [SemesterController::class,'deactivate']);
 
 
 	Route::get('departments', [DepartmentController::class,'index']);

@@ -16,7 +16,7 @@ class IntakeController extends Controller
     public function index()
     {
     	$data = [
-           'intakes'=>Intake::paginate(20)
+           'intakes'=>Intake::with('applicants')->paginate(20)
     	];
     	return view('dashboard.settings.intakes',$data)->withTitle('Intakes');
     }

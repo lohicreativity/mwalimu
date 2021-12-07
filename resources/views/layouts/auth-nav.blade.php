@@ -243,7 +243,7 @@
               <li class="nav-item">
                 <a href="{{ url('academic/grading-policies') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>{{ __('Grading Policies') }}</p>
+                  <p>{{ __('Grading System') }}</p>
                 </a>
               </li>
               <li class="nav-item">
@@ -275,12 +275,14 @@
               </p>
             </a>
             <ul class="nav nav-treeview">
+              @if(Auth::user()->hasRole('hod'))
               <li class="nav-item">
                 <a href="{{ url('academic/module-assignments') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Modules Assignment</p>
                 </a>
               </li>
+              @endif
               <li class="nav-item">
                 <a href="{{ url('academic/staff-module-assignments') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>

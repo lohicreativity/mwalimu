@@ -48,7 +48,7 @@
               <!-- form start -->
               @php
                   $code = [
-                     'placeholder'=>'Regulator code',
+                     'placeholder'=>'Regulator Code',
                      'class'=>'form-control',
                      'required'=>true
                   ];
@@ -66,7 +66,7 @@
                     </select>
                   </div>
                   <div class="form-group col-4">
-                    {!! Form::label('','Regulator code') !!}
+                    {!! Form::label('','Regulator Code') !!}
                     {!! Form::text('regulator_code',null,$code) !!}
 
                     {!! Form::input('hidden','campus_id',$campus->id) !!}
@@ -178,7 +178,7 @@
                                     <div id="ss-confirmation-container">
                                        <p id="ss-confirmation-text">Are you sure you want to delete this programme from the list?</p>
                                        <div class="ss-form-controls">
-                                         <button type="button" class="btn btn-default" data-dismiss="modal">Abort</button>
+                                         <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                                          <a href="{{ url('academic/campus/campus-program/'.$program->id.'/destroy') }}" class="btn btn-danger">Delete</a>
                                          </div><!-- end of ss-form-controls -->
                                       </div><!-- end of ss-confirmation-container -->

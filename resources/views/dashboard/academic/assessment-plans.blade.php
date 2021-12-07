@@ -21,7 +21,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>{{ __('Assessment Plans') }} - {{ $module_assignment->module->name }} ({{ $policy->course_work_min_mark }} Wgt)</h1>
+            <h1>{{ __('Assessment Plans') }} - {{ $module_assignment->module->name }} ({{ $policy->course_work_min_mark }} Marks)</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -179,7 +179,7 @@
                                     <div id="ss-confirmation-container">
                                        <p id="ss-confirmation-text">Are you sure you want to reset this assessment plan?</p>
                                        <div class="ss-form-controls">
-                                         <button type="button" class="btn btn-default" data-dismiss="modal">Abort</button>
+                                         <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                                          <a href="{{ url('academic/assessment-plan/'.$module_assignment->id.'/reset') }}" class="btn btn-danger">Delete</a>
                                          </div><!-- end of ss-form-controls -->
                                       </div><!-- end of ss-confirmation-container -->

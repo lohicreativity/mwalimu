@@ -88,6 +88,12 @@
                   @foreach($semesters as $semester)
                   <tr>
                     <td>{{ $semester->name }}</td>
+                    <td>@if($semester->status == 'ACTIVE') 
+                        <span>{{ $semester->status }}</span>
+                        @else
+                        <span class="ss-color-danger">{{ $semester->status }}</span>
+                        @endif
+                    </td>
                     <td>
                       <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-edit-semester-{{ $semester->id }}">
                               <i class="fas fa-pencil-alt">
@@ -156,7 +162,7 @@
                                     <div id="ss-confirmation-container">
                                        <p id="ss-confirmation-text">Are you sure you want to delete this semester from the list?</p>
                                        <div class="ss-form-controls">
-                                         <button type="button" class="btn btn-default" data-dismiss="modal">Abort</button>
+                                         <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                                          <a href="{{ url('academic/semester/'.$semester->id.'/destroy') }}" class="btn btn-danger">Delete</a>
                                          </div><!-- end of ss-form-controls -->
                                       </div><!-- end of ss-confirmation-container -->
@@ -172,6 +178,21 @@
                         <!-- /.modal-dialog -->
                       </div>
                       <!-- /.modal -->
+
+                       @if($semester->status == 'ACTIVE')
+                       <a class="btn btn-danger btn-sm" href="{{ url('academic/semester/'.$semester->id.'/deactivate') }}">
+                              <i class="fas fa-ban">
+                              </i>
+                              Deactivate
+                       </a>
+                      @else
+                       <a class="btn btn-info btn-sm" href="{{ url('academic/semester/'.$semester->id.'/activate') }}">
+                              <i class="fas fa-check-circle">
+                              </i>
+                              Activate
+                       </a>
+
+                      @endif
                     </td>
                   </tr>
                   @endforeach

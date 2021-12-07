@@ -102,7 +102,7 @@
                     <td>{{ $level->name }}</td>
                     <td>{{ $level->award->name }}</td>
                     <td>
-                      <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-edit-level-{{ $level->id }}">
+                      <a class="btn btn-info btn-sm" href="#" @if(count($level->programs) != 0) data-toggle="modal" data-target="#ss-edit-level-{{ $level->id }}" @else disabled="disabled" @endif>
                               <i class="fas fa-pencil-alt">
                               </i>
                               Edit
@@ -151,7 +151,7 @@
                         <!-- /.modal-dialog -->
                       </div>
                       <!-- /.modal -->
-                      <a class="btn btn-danger btn-sm" href="#" data-toggle="modal" data-target="#ss-delete-level-{{ $level->id }}">
+                      <a class="btn btn-danger btn-sm" href="#" @if(count($level->programs) != 0) data-toggle="modal" data-target="#ss-delete-level-{{ $level->id }}" @else disabled="disabled" @endif>
                               <i class="fas fa-trash">
                               </i>
                               Delete
@@ -172,7 +172,7 @@
                                     <div id="ss-confirmation-container">
                                        <p id="ss-confirmation-text">Are you sure you want to delete this level from the list?</p>
                                        <div class="ss-form-controls">
-                                         <button type="button" class="btn btn-default" data-dismiss="modal">Abort</button>
+                                         <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                                          <a href="{{ url('settings/nta-level/'.$level->id.'/destroy') }}" class="btn btn-danger">Delete</a>
                                          </div><!-- end of ss-form-controls -->
                                       </div><!-- end of ss-confirmation-container -->

@@ -111,7 +111,7 @@
                  <p>Students with Final Marks: <a href="{{ url('academic/staff-module-assignment/'.$module_assignment->id.'/results/students-with-final-marks') }}" target="_blank">{{ $students_with_final_marks_count }}</a></p>
                  <p>Students with no Final Marks: {{ $students_with_no_final_marks_count }}</p>
                  <p>Students Passed: <a href="{{ url('academic/staff-module-assignment/'.$module_assignment->id.'/results/students-passed') }}" target="_blank">{{ $students_passed_count }}</a></p>
-                 <p>Students with Supplementary: <a href="{{ url('academic/staff-module-assignment/'.$module_assignment->id.'/results/students-with-supplementary') }}" target="_blank">{{ $students_with_supplemetary_count }}</a></p>
+                 <p>Students with Supplementary Marks: <a href="{{ url('academic/staff-module-assignment/'.$module_assignment->id.'/results/students-with-supplementary') }}" target="_blank">{{ $students_with_supplemetary_count }}</a></p>
                  <p>Abscond: <a href="{{ url('academic/staff-module-assignment/'.$module_assignment->id.'/results/students-with-abscond') }}" target="_blank">{{ $students_with_abscond_count }}</a> </p>
                   
                  {!! Form::open(['url'=>'academic/staff-module-assignment/process-course-work','class'=>'ss-form-processing']) !!}

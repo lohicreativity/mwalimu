@@ -118,7 +118,7 @@
                                     <th>Category</th>
                                     <th>Type</th>
                                     <th>Special Exams</th>
-                                    <th>Examination Irregularity</th>
+                                    <!-- <th>Examination Irregularity</th> -->
                                   </tr>
                                   </thead>
                                   <tbody>
@@ -138,13 +138,13 @@
                                Special Exams
                               </a>
                                     </td>
-                                    <td>
+                                    <!-- <td>
                                       <a class="btn btn-info btn-sm" href="{{ url('academic/module-assignment/'.$assignment->id.'/examination-irregularities') }}">
                               <i class="fas fa-random">
                               </i>
                                Examination Irregularities
                        </a>
-                                    </td>
+                                    </td> -->
                                   </tr>
                                   @endforeach
                                   

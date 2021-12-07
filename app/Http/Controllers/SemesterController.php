@@ -67,6 +67,40 @@ class SemesterController extends Controller
         return Util::requestResponse($request,'Semester updated successfully');
     }
 
+        /**
+     * Activate semester
+     */
+    public function activate($id)
+    {
+        try{
+            $semester = Semester::findOrFail($id);
+            $semester->status = 'ACTIVE';
+            $semester->save();
+
+            Semester::where('id','!=',$semester->id)->update(['status'=>'INACTIVE']);
+
+            return redirect()->back()->with('message','Semester activated successfully');
+        }catch(Exception $e){
+            return redirect()->back()->with('error','Unable to get the resource specified in this request');
+        }
+    }
+
+    /**
+     * Deactivate semester
+     */
+    public function deactivate($id)
+    {
+        try{
+            $semester = Semester::findOrFail($id);
+            $semester->status = 'INACTIVE';
+            $semester->save();
+
+            return redirect()->back()->with('message','Semester deactivated successfully');
+        }catch(Exception $e){
+            return redirect()->back()->with('error','Unable to get the resource specified in this request');
+        }
+    }
+
     /**
      * Remove the specified semester
      */

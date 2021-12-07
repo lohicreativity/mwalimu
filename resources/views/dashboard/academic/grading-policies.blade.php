@@ -21,12 +21,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>{{ __('Grading Policies') }}</h1>
+            <h1>{{ __('Grading System') }}</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">{{ __('Grading Policies') }}</li>
+              <li class="breadcrumb-item active">{{ __('Grading System') }}</li>
             </ol>
           </div>
         </div>
@@ -68,7 +68,7 @@
             @if($study_academic_year)
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">Add Grading Policy - {{ $study_academic_year->academicYear->year }}</h3>
+                <h3 class="card-title">Add Grading System - {{ $study_academic_year->academicYear->year }}</h3>
               </div>
               <!-- /.card-header -->
                 @php
@@ -215,7 +215,7 @@
                         <div class="modal-dialog modal-lg">
                           <div class="modal-content">
                             <div class="modal-header">
-                              <h4 class="modal-title"><i class="fa fa-exclamation-sign"></i> Edit Grading Policy</h4>
+                              <h4 class="modal-title"><i class="fa fa-exclamation-sign"></i> Edit Grading System</h4>
                               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                               </button>
@@ -321,9 +321,9 @@
                               <div class="row">
                                 <div class="col-12">
                                     <div id="ss-confirmation-container">
-                                       <p id="ss-confirmation-text">Are you sure you want to delete this grading policy from the list?</p>
+                                       <p id="ss-confirmation-text">Are you sure you want to delete this grading system from the list?</p>
                                        <div class="ss-form-controls">
-                                         <button type="button" class="btn btn-default" data-dismiss="modal">Abort</button>
+                                         <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                                          <a href="{{ url('academic/grading-policy/'.$policy->id.'/destroy') }}" class="btn btn-danger">Delete</a>
                                          </div><!-- end of ss-form-controls -->
                                       </div><!-- end of ss-confirmation-container -->

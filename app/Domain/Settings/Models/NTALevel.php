@@ -5,6 +5,7 @@ namespace App\Domain\Settings\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Domain\Academic\Models\Award;
+use App\Domain\Academic\Models\Program;
 
 class NTALevel extends Model
 {
@@ -17,7 +18,7 @@ class NTALevel extends Model
      */
     public function programs()
     {
-    	return $this->hasMany(Program::class,'program_id');
+    	return $this->hasMany(Program::class,'nta_level_id');
     }
 
     /**
