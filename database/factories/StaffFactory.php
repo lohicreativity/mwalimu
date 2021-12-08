@@ -27,6 +27,7 @@ class StaffFactory extends Factory
             'check_number'=>$this->faker->numberBetween(100000,999999),
             'vote_number'=>$this->faker->numberBetween(100000,999999),
             'campus_id'=>$this->faker->numberBetween(1,1),
+            'department_id'=>$this->faker->numberBetween(1,3),
             'designation_id'=>$this->faker->numberBetween(1,3),
             'email'=>$this->faker->email(),
             'phone'=>$this->faker->phoneNumber(),

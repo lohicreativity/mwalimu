@@ -104,7 +104,16 @@
                  </div>
                  <div class="row">
                   <div class="form-group col-6">
-                     {!! Form::label('','Number of options') !!}
+                   {!! Form::label('','Year of study') !!}
+                   <select name="year_of_study" class="form-control" required>
+                     <option value="">Select Year of Study</option>
+                     <option value="1">1</option>
+                     <option value="2">2</option>
+                     <option value="3">3</option>
+                   </select>
+                </div>
+                  <div class="form-group col-6">
+                     {!! Form::label('','Number of options allowed') !!}
                      {!! Form::input('number','number_of_options',null,$number_of_options) !!}
 
                      {!! Form::input('hidden','study_academic_year_id',$study_academic_year->id) !!}
@@ -134,6 +143,7 @@
                     <th>Campus</th>
                     <th>Study Academic Year</th>
                     <th>Semester</th>
+                    <th>Year</th>
                     <th>Options</th>
                     <th>Actions</th>
                   </tr>
@@ -145,6 +155,7 @@
                     <td>{{ $policy->campusProgram->campus->name }}</td>
                     <td>{{ $policy->studyAcademicYear->academicYear->year }}</td>
                     <td>{{ $policy->semester->name }}</td>
+                    <td>{{ $policy->year_of_study }}</td>
                     <td>{{ $policy->number_of_options }}</td>
                     <td>
                       <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-edit-policy-{{ $policy->id }}">
@@ -186,7 +197,16 @@
                                </div>
                                <div class="row">
                                 <div class="form-group col-6">
-                                   {!! Form::label('','Number of options') !!}
+                                   {!! Form::label('','Year of study') !!}
+                                   <select name="year_of_study" class="form-control" required>
+                                     <option value="">Select Year of Study</option>
+                                     <option value="1" @if($policy->year_of_study == 1) selected="selected" @endif>1</option>
+                                     <option value="2" @if($policy->year_of_study == 2) selected="selected" @endif>2</option>
+                                     <option value="3" @if($policy->year_of_study == 3) selected="selected" @endif>3</option>
+                                   </select>
+                                </div>
+                                <div class="form-group col-6">
+                                   {!! Form::label('','Number of options allowed') !!}
                                    {!! Form::input('number','number_of_options',$policy->number_of_options,$number_of_options) !!}
 
                                    {!! Form::input('hidden','study_academic_year_id',$policy->study_academic_year_id) !!}

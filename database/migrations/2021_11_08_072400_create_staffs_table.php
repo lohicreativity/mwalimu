@@ -41,6 +41,7 @@ class CreateStaffsTable extends Migration
             $table->string('street');
             $table->unsignedBigInteger('designation_id');
             $table->unsignedBigInteger('campus_id');
+            $table->unsignedBigInteger('department_id');
             $table->unsignedBigInteger('disability_status_id');
             $table->string('marital_status',20)->default('SINGLE');
             $table->string('image')->nullable();
@@ -51,6 +52,8 @@ class CreateStaffsTable extends Migration
             $table->foreign('designation_id')->references('id')->on('designations')->onUpdate('cascade');
 
             $table->foreign('campus_id')->references('id')->on('campuses')->onUpdate('cascade');
+
+            $table->foreign('department_id')->references('id')->on('departments')->onUpdate('cascade');
 
             $table->foreign('disability_status_id')->references('id')->on('disability_statuses')->onUpdate('cascade');
 

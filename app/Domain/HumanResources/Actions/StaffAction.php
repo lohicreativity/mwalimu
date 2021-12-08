@@ -47,6 +47,7 @@ class StaffAction implements StaffInterface{
                 $staff->floor = $request->get('floor');
                 $staff->schedule = $request->get('schedule');
                 $staff->campus_id = $request->get('campus_id');
+                $staff->department_id = $request->get('department_id');
                 $staff->country_id = $request->get('country_id');
                 $staff->region_id = $request->get('region_id');
                 $staff->district_id = $request->get('district_id');
@@ -89,6 +90,7 @@ class StaffAction implements StaffInterface{
                 $staff->floor = $request->get('floor');
                 $staff->schedule = $request->get('schedule');
                 $staff->campus_id = $request->get('campus_id');
+                $staff->department_id = $request->get('department_id');
                 $staff->country_id = $request->get('country_id');
                 $staff->region_id = $request->get('region_id');
                 $staff->district_id = $request->get('district_id');

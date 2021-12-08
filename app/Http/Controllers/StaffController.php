@@ -12,6 +12,7 @@ use App\Domain\Settings\Models\District;
 use App\Domain\Settings\Models\Ward;
 use App\Domain\Settings\Models\DisabilityStatus;
 use App\Domain\Settings\Models\Campus;
+use App\Domain\Academic\Models\Department;
 use App\Domain\HumanResources\Actions\StaffAction;
 use App\Models\User;
 use App\Utils\Util;
@@ -51,6 +52,7 @@ class StaffController extends Controller
            'designations'=>Designation::all(),
            'disabilities'=>DisabilityStatus::all(),
            'campuses'=>Campus::all(),
+           'departments'=>Department::all(),
            'staff'=>User::find(Auth::user()->id)->staff
         ];
         return view('dashboard.human-resources.add-staff',$data)->withTitle('Add Staff');
@@ -79,14 +81,16 @@ class StaffController extends Controller
     {
         try{
             $data = [
-               'staff'=>Staff::findOrFail($id),
+               'edit_staff'=>Staff::findOrFail($id),
                'countries'=>Country::all(),
                'regions'=>Region::all(),
                'districts'=>District::all(),
                'wards'=>Ward::all(),
                'designations'=>Designation::all(),
                'disabilities'=>DisabilityStatus::all(),
-               'campuses'=>Campus::all()
+               'campuses'=>Campus::all(),
+               'departments'=>Department::all(),
+               'staff'=>User::find(Auth::user()->id)->staff
             ];
             return view('dashboard.human-resources.edit-staff',$data)->withTitle('Edit Staff');
         }catch(\Exception $e){

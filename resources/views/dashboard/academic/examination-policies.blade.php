@@ -96,6 +96,7 @@
                        'placeholder'=>'Course work pass score',
                        'id'=>'ss-course-work-pass-score',
                        'steps'=>'any',
+                       'readonly'=>true,
                        'required'=>true
                     ];
 
@@ -104,6 +105,7 @@
                        'placeholder'=>'Final min mark',
                        'id'=>'ss-final-min-mark',
                        'steps'=>'any',
+                       'readonly'=>true,
                        'required'=>true
                     ];
 
@@ -122,6 +124,7 @@
                        'placeholder'=>'Final pass score',
                        'id'=>'ss-final-pass-score',
                        'steps'=>'any',
+                       'readonly'=>true,
                        'required'=>true
                     ];
 
@@ -193,6 +196,11 @@
                 </div>
                 <div class="card-footer">
                   <button type="submit" class="btn btn-primary">{{ __('Add Examination Policy') }}</button>
+                  @if($study_academic_year)
+                    @if(count($study_academic_year->examinationPolicies) == 0)
+                  <a href="{{ url('academic/examination-policy/'.$study_academic_year->id.'/assign-as-previous') }}" class="btn btn-primary ss-right">Assign as Previous</a>
+                    @endif
+                  @endif
                 </div>
               {!! Form::close() !!}
             </div>
@@ -276,6 +284,7 @@
                                      'class'=>'form-control ss-course-work-pass-score',
                                      'placeholder'=>'Course work pass score',
                                      'id'=>'ss-course-work-pass-score-'.$policy->id,
+                                     'readonly'=>true,
                                      'steps'=>'any',
                                      'required'=>true
                                   ];
@@ -284,6 +293,7 @@
                                      'class'=>'form-control ss-final-min-mark',
                                      'placeholder'=>'Final min mark',
                                      'id'=>'ss-final-min-mark-'.$policy->id,
+                                     'readonly'=>true,
                                      'steps'=>'any',
                                      'required'=>true
                                   ];
@@ -302,6 +312,7 @@
                                      'class'=>'form-control ss-final-pass-score',
                                      'placeholder'=>'Final pass score',
                                      'id'=>'ss-final-pass-score-'.$policy->id,
+                                     'readonly'=>true,
                                      'steps'=>'any',
                                      'required'=>true
                                   ];

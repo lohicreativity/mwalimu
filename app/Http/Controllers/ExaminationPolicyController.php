@@ -9,7 +9,7 @@ use App\Domain\Academic\Models\Module;
 use App\Domain\Settings\Models\NTALevel;
 use App\Domain\Academic\Actions\ExaminationPolicyAction;
 use App\Utils\Util;
-use Validator;
+use Validator, DB;
 
 class ExaminationPolicyController extends Controller
 {
@@ -25,6 +25,40 @@ class ExaminationPolicyController extends Controller
            'nta_levels'=>NTALevel::all()
     	];
     	return view('dashboard.academic.examination-policies',$data)->withTitle('Examination Policies');
+    }
+
+    /**
+     * Assign previous policies
+     */
+    public function assignPreviousPolicies(Request $request, $ac_year_id)
+    {
+         DB::beginTransaction();
+         $academic_year = StudyAcademicYear::latest()->take(1)->skip(1)->first();
+         if(!$academic_year){
+             return redirect()->back()->with('error','No previous study academic year');
+         }
+         $policies = ExaminationPolicy::whereHas('studyAcademicYear',function($query) use ($academic_year){
+                  $query->where('id',$academic_year->id);
+         })->get();
+         
+         foreach ($policies as $key => $policy){
+            $system = new ExaminationPolicy;
+            $system->course_work_min_mark = $policy->course_work_min_mark;
+            $system->course_work_percentage_pass = $policy->course_work_percentage_pass;
+            $system->course_work_pass_score = $policy->course_work_pass_score;
+            $system->final_min_mark = $policy->final_min_mark;
+            $system->final_percentage_pass = $policy->final_percentage_pass;
+            $system->final_pass_score = $policy->final_pass_score;
+            $system->module_pass_mark = $policy->module_pass_mark;
+            $system->type = $policy->type;
+            $system->nta_level_id = $policy->nta_level_id;
+            $system->study_academic_year_id = $ac_year_id;
+            $system->save();
+         }
+         DB::commit();
+
+
+         return redirect()->back()->with('message','Examination policy assignment completed successfully');
     }
 
     /**

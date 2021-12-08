@@ -41,25 +41,28 @@
 
             <div class="card">
               <div class="card-header">
-                <ul class="nav nav-pills">
-                  <li class="nav-item"><a class="nav-link" href="{{ url('academic/results') }}">{{ __('Process Results') }}</a></li>
+                <ul class="nav nav-tabs">
+                  <li class="nav-item"><a class="nav-link" href="{{ url('academic/results?study_academic_year_id='.session('active_academic_year_id').'&campus_id='.session('staff_campus_id')) }}">{{ __('Process Results') }}</a></li>
                   <li class="nav-item"><a class="nav-link" href="{{ url('academic/results/show-program-results') }}">{{ __('View Programme Results') }}</a></li>
                   <li class="nav-item"><a class="nav-link" href="{{ url('academic/results/show-module-results') }}">{{ __('View Module Results') }}</a></li>
-                  <li class="nav-item"><a class="nav-link" href="{{ url('academic/results/show-student-results') }}">{{ __('View Student Results') }}</a></li>
+                  <li class="nav-item"><a class="nav-link active" href="{{ url('academic/results/show-student-results') }}">{{ __('View Student Results') }}</a></li>
                   <li class="nav-item"><a class="nav-link" href="{{ url('academic/results/uploaded-modules') }}">{{ __('Uploaded Modules') }}</a></li>
                 </ul>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
-                 <h3>Name: {{ $student->surname }}, {{ $student->first_name }} {{ $student->middle_name }}</h3>
+                 <p class="ss-no-margin">Student Name: {{ $student->surname }}, {{ $student->first_name }} {{ $student->middle_name }}</p>
+                 <p class="ss-no-margin">Programme: {{ $student->campusProgram->program->name }}</p>
+                 <p class="ss-no-margin">Registration Number: {{ $student->registration_number }}</p>
+                 <p class="ss-no-margin">Year of Study: {{ $student->year_of_study }}</p>
 
                  <table class="table table-bordered">
                    @foreach($years_of_studies as $key=>$years)
                    <tr>
-                      <td>Year {{ $key }}</td>
+                      <td>Overall Results for Year {{ $key }}</td>
                       <td>
                         @foreach($years as $yr)
-                        <p class="ss-no-margin"><a href="{{ url('academic/results/'.$student->id.'/'.$yr->id.'/'.$key.'/show-student-results') }}">Results in Academic Year {{ $yr->academicYear->year}}</a></p>
+                        <p class="ss-no-margin"><a href="{{ url('academic/results/'.$student->id.'/'.$yr->id.'/'.$key.'/show-student-results') }}">Results in Academic Year ({{ $yr->academicYear->year}})</a></p>
                         @endforeach
                       </td>
                    </tr>

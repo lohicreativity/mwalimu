@@ -68,7 +68,7 @@
             @if(count($assignments) != 0 && $study_academic_year)
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">{{ __('Module Assignments') }}</h3>
+                <h3 class="card-title">{{ __('Module Assignments') }} - {{ $study_academic_year->academicYear->year }}</h3>
               </div>
               <!-- /.card-header -->
               <div class="card-body">

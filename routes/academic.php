@@ -92,6 +92,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 	Route::get('staff-module-assignment/{id}/results/students-with-final-marks', [ModuleAssignmentController::class,'studentsWithFinalMarks']);
 	Route::get('staff-module-assignment/{id}/results/download-course-work', [ModuleAssignmentController::class,'studentsWithNoFinalMarks']);
 	Route::get('staff-module-assignment/{id}/results/students-with-supplementary', [ModuleAssignmentController::class,'studentsWithSupplementary']);
+	Route::get('staff-module-assignment/{id}/results/students-with-supplementary-marks', [ModuleAssignmentController::class,'studentsWithSupplementaryMarks']);
+	Route::get('staff-module-assignment/{id}/results/students-with-no-supplementary-marks', [ModuleAssignmentController::class,'studentsWithNoSupplementaryMarks']);
 	Route::get('staff-module-assignment/{id}/results/students-with-abscond', [ModuleAssignmentController::class,'studentsWithAbscond']);
 
 
@@ -161,12 +163,14 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 	Route::post('examination-policy/store', [ExaminationPolicyController::class,'store']);
 	Route::post('examination-policy/update', [ExaminationPolicyController::class,'update']);
 	Route::get('examination-policy/{id}/destroy', [ExaminationPolicyController::class,'destroy']);
+	Route::get('examination-policy/{ac_yr_id}/assign-as-previous',[GradingPolicyController::class, 'assignPreviousPolicies']);
 
 
 	Route::get('grading-policies', [GradingPolicyController::class,'index']);
 	Route::post('grading-policy/store', [GradingPolicyController::class,'store']);
 	Route::post('grading-policy/update', [GradingPolicyController::class,'update']);
 	Route::get('grading-policy/{id}/destroy', [GradingPolicyController::class,'destroy']);
+	Route::get('grading-policy/{ac_yr_id}/assign-as-previous',[GradingPolicyController::class, 'assignPreviousPolicies']);
 
 
 	Route::get('postponements', [PostponementController::class,'index']);

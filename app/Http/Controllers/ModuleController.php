@@ -10,7 +10,7 @@ use App\Domain\Settings\Models\NTALevel;
 use App\Domain\Academic\Actions\ModuleAction;
 use App\Models\User;
 use App\Utils\Util;
-use Validator, Auth;
+use Validator, Auth, File;
 
 class ModuleController extends Controller
 {
@@ -91,6 +91,9 @@ class ModuleController extends Controller
     {
         try{
             $module = Module::findOrFail($id);
+            if(!File::exists(public_path('uploads/'.$module->syllabus))){
+                return redirect()->back()->with('error','Syllabus document not found');
+            }
             return response()->download(public_path('uploads/'.$module->syllabus));
         }catch(Exception $e){
             return redirect()->back()->with('error','Unable to get the resource specified in this request');

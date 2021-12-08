@@ -41,8 +41,8 @@
 
             <div class="card">
               <div class="card-header">
-                <ul class="nav nav-pills">
-                  <li class="nav-item"><a class="nav-link" href="{{ url('academic/results') }}">{{ __('Process Results') }}</a></li>
+                <ul class="nav nav-tabs">
+                  <li class="nav-item"><a class="nav-link active" href="{{ url('academic/results?study_academic_year_id='.session('active_academic_year_id').'&campus_id='.session('staff_campus_id')) }}">{{ __('Process Results') }}</a></li>
                   <li class="nav-item"><a class="nav-link" href="{{ url('academic/results/show-program-results') }}">{{ __('View Programme Results') }}</a></li>
                   <li class="nav-item"><a class="nav-link" href="{{ url('academic/results/show-module-results') }}">{{ __('View Module Results') }}</a></li>
                   <li class="nav-item"><a class="nav-link" href="{{ url('academic/results/show-student-results') }}">{{ __('View Student Results') }}</a></li>
@@ -51,6 +51,7 @@
                 </ul>
               </div>
               <!-- /.card-header -->
+              @if(!session('active_academic_year_id'))
               <div class="card-body">
                  {!! Form::open(['url'=>'academic/results','class'=>'ss-form-processing','method'=>'GET']) !!}
                    
@@ -80,6 +81,7 @@
 
                  {!! Form::close() !!}
               </div>
+              @endif
             </div>
             <!-- /.card -->
              
@@ -111,9 +113,15 @@
                     <select name="semester_id" class="form-control" required>
                        <option value="">Select Semester</option>
                        @foreach($semesters as $semester)
-                       <option value="{{ $semester->id }}">{{ $semester->name }}</option>
+                       <option value="{{ $semester->id }}" @if($active_semester) 
+                        @if($active_semester->id == $semester->id) selected="selected" @endif 
+                       @endif>{{ $semester->name }}</option>
                        @endforeach
-                       <option value="SUPPLEMENTARY">Supplementary</option>
+                       <option value="SUPPLEMENTARY" 
+                       @if($active_semester) 
+                        @if(App\Utils\Util::stripSpacesUpper($active_semester->name) == App\Utils\Util::stripSpacesUpper('Semester 2')) 
+                        selected="selected" @endif 
+                       @endif>Supplementary</option>
                     </select>
                     {!! Form::input('hidden','study_academic_year_id',$study_academic_year->id) !!}
                     {!! Form::input('hidden','campus_id',$campus->id) !!}
@@ -179,6 +187,40 @@
             <!-- /.card -->
             @endif
 
+             @if(count($process_records) != 0)
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">{{ __('Results Process Records') }}</h3>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+                <table id="example2" class="table table-bordered table-hover">
+                  <thead>
+                  <tr>
+                    <th>Programme</th>
+                    <th>Semester</th>
+                    <th>Year</th>
+                    <th>Date</th>
+                 </tr>
+               </thead>
+               <tbody>
+                  @foreach($process_records as $record)
+                  <tr>
+                     <td>{{ $record->campusProgram->program->name }}</td>
+                     <td>{{ $record->semester->name }}</td>
+                     <td>{{ $record->year_of_study }}</td>
+                     <td>{{ $record->created_at }}</td>
+                  </tr>
+                  @endforeach
+               </tbody>
+              </table>
+
+              <div class="ss-pagination-links">
+                  {!! $process_records->render() !!}
+              </div>
+            </div>
+          </div>
+          @endif
           </div>
           <!-- /.col -->
         </div>

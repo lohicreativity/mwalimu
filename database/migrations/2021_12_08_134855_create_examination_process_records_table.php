@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateStudentElectivePoliciesTable extends Migration
+class CreateExaminationProcessRecordsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,17 +13,16 @@ class CreateStudentElectivePoliciesTable extends Migration
      */
     public function up()
     {
-        Schema::create('elective_policies', function (Blueprint $table) {
+        Schema::create('examination_process_records', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('campus_program_id');
             $table->unsignedBigInteger('study_academic_year_id');
-            $table->unsignedBigInteger('semester_id');
-            $table->mediumInteger('number_of_options');
+            $table->unsignedBigInteger('semester_id')->default(0);
+            $table->smallInteger('year_of_study');
             $table->timestamps();
 
             $table->foreign('campus_program_id')->references('id')->on('campus_program')->onUpdate('cascade');
             $table->foreign('study_academic_year_id')->references('id')->on('study_academic_years')->onUpdate('cascade');
-            $table->foreign('semester_id')->references('id')->on('semesters')->onUpdate('cascade');
         });
     }
 
@@ -34,6 +33,6 @@ class CreateStudentElectivePoliciesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('elective_policies');
+        Schema::dropIfExists('examination_process_records');
     }
 }

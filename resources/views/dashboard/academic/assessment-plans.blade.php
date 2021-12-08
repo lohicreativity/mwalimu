@@ -21,15 +21,14 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>{{ __('Assessment Plans') }} - {{ $module_assignment->module->name }} ({{ $policy->course_work_min_mark }} Marks)</h1>
+            <h1>{{ __('Assessment Policy') }} - {{ $module_assignment->module->name }} ({{ round($policy->course_work_min_mark) }} Marks)</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
               <li class="breadcrumb-item"><a href="{{ url('academic/staff-module-assignments') }}">{{ __('Module Assignment') }}</a></li>
-              <li class="breadcrumb-item"><a href="{{ url('academic/staff-module-assignment/'.$module_assignment->id.'/syllabus') }}">{{ __('Syllabus') }}</a></li>
               <li class="breadcrumb-item"><a href="{{ url('academic/staff-module-assignment/'.$module_assignment->id.'/results') }}">{{ __('Results') }}</a></li>
-              <li class="breadcrumb-item active">{{ __('Assessment Plans') }}</li>
+              <li class="breadcrumb-item active">{{ __('CA Components') }}</li>
             </ol>
           </div>
         </div>
@@ -45,11 +44,11 @@
             <!-- general form elements -->
             <div class="card card-default">
                 <div class="card-header p-2">
-                <ul class="nav nav-pills">
+                <ul class="nav nav-tabs">
                   <li class="nav-item"><a class="nav-link" href="{{ url('academic/module/'.$module_assignment->module_id.'/download-syllabus') }}">{{ __('Module Syllabus') }}</a></li>
                   <li class="nav-item"><a class="nav-link" href="{{ url('academic/streams') }}">{{ __('Streams and Groups') }}</a></li>
                   <li class="nav-item"><a class="nav-link" href="{{ url('academic/staff-module-assignment/'.$module_assignment->id.'/attendance') }}" target="_blank">{{ __('Attendance Sheet') }}</a></li>
-                  <li class="nav-item"><a class="nav-link" href="{{ url('academic/staff-module-assignment/'.$module_assignment->id.'/assessment-plans') }}">{{ __('Assessment Plans') }}</a></li>
+                  <li class="nav-item"><a class="nav-link active" href="{{ url('academic/staff-module-assignment/'.$module_assignment->id.'/assessment-plans') }}">{{ __('CA Components') }}</a></li>
                   <li class="nav-item"><a class="nav-link" href="{{ url('academic/staff-module-assignment/'.$module_assignment->id.'/results') }}">{{ __('Results Management') }}</a></li>
                 </ul>
               </div><!-- /.card-header -->
@@ -69,7 +68,7 @@
                  </div>
                  <div class="row">
                    <div class="form-group col-6">
-                      {!! Form::label('','Assignement(s)') !!}
+                      {!! Form::label('','Assignment(s)') !!}
                       <select name="assignments" class="form-control" required>
                          @for($i = 0; $i <= 4; $i++)
                          <option value="{{ $i }}">{{ $i }}</option>
@@ -114,7 +113,7 @@
                   ];
 
                   $marks = [
-                     'placeholder'=>'Weights',
+                     'placeholder'=>'Marks',
                      'class'=>'form-control',
                      'min'=>0,
                      'steps'=>'any',
@@ -135,7 +134,7 @@
                     
                   </div>
                   <div class="form-group col-6">
-                    {!! Form::label('','Weights') !!}
+                    {!! Form::label('','Marks') !!}
                     {!! Form::input('number','marks_'.$i.'_component_'.$component->id,null,$marks) !!}
                   </div>
                   </div>
@@ -156,7 +155,7 @@
             @if(count($assessment_plans) != 0)
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">{{ __('Assessment Plans') }}</h3>
+                <h3 class="card-title">{{ __('Assessment Policy') }}</h3>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
@@ -199,7 +198,7 @@
                   <thead>
                   <tr>
                     <th>Name</th>
-                    <th>Weights</th>
+                    <th>Marks</th>
                   </tr>
                   </thead>
                   <tbody>

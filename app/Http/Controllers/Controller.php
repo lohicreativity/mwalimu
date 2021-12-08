@@ -6,8 +6,51 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
+use App\Domain\Academic\Models\StudyAcademicYear;
+use App\Domain\Academic\Models\Semester;
+use App\Domain\HumanResources\Models\Staff;
+use App\Domain\Registration\Models\Student;
+use Illuminate\Contracts\Auth\Guard;
+use App\Models\User;
+use Auth;
 
 class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+    
+    protected $user;
+
+    public function __construct(Guard $guard)
+    {
+    	$this->middleware(function ($request, $next) {
+            $this->user = Auth::user();
+            $study_academic_year = StudyAcademicYear::where('status','ACTIVE')->first();
+	    	$semester = Semester::where('status','ACTIVE')->first();
+	    	
+	    	if($this->user){
+	    	  $staff = User::find($this->user->id)->staff;
+	    	  if($staff){
+	    	     session(['staff_campus_id'=>$staff->campus_id]);
+	    	  }else{
+	    	  	 session(['staff_campus_id'=>null]);
+	    	  }
+	        }else{
+	          session(['staff_campus_id'=>null]);
+	        } 
+	        if($study_academic_year){
+	    	  session(['active_academic_year_id'=>$study_academic_year->id]);
+	        }else{
+	          session(['active_academic_year_id'=>null]);
+	        }
+	        if($semester){
+	          session(['active_semester_id'=>$semester->id]);
+	        }else{
+	          session(['active_semester_id'=>null]);
+	        }
+
+            return $next($request);
+        });
+
+    	
+    }
 }

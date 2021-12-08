@@ -27,8 +27,7 @@
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
               <li class="breadcrumb-item"><a href="{{ url('academic/staff-module-assignments') }}">{{ __('Module Assignment') }}</a></li>
-              <li class="breadcrumb-item"><a href="{{ url('academic/staff-module-assignment/'.$module_assignment->id.'/assessment-plans') }}">{{ __('Assessment Plans') }}</a></li>
-              <li class="breadcrumb-item"><a href="{{ url('academic/staff-module-assignment/'.$module_assignment->id.'/syllabus') }}">{{ __('Syllabus') }}</a></li>
+              <li class="breadcrumb-item"><a href="{{ url('academic/staff-module-assignment/'.$module_assignment->id.'/assessment-plans') }}">{{ __('CA Components') }}</a></li>
               <li class="breadcrumb-item active">{{ __('Results') }}</li>
             </ol>
           </div>
@@ -39,6 +38,21 @@
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
+        <div class="row">
+           <div class="col-12">
+            <div class="card card-default">
+              <div class="card-header">
+              <ul class="nav nav-tabs">
+                  <li class="nav-item"><a class="nav-link" href="{{ url('academic/module/'.$module_assignment->module_id.'/download-syllabus') }}">{{ __('Module Syllabus') }}</a></li>
+                  <li class="nav-item"><a class="nav-link" href="{{ url('academic/streams') }}">{{ __('Streams and Groups') }}</a></li>
+                  <li class="nav-item"><a class="nav-link" href="{{ url('academic/staff-module-assignment/'.$module_assignment->id.'/attendance') }}" target="_blank">{{ __('Attendance Sheet') }}</a></li>
+                  <li class="nav-item"><a class="nav-link" href="{{ url('academic/staff-module-assignment/'.$module_assignment->id.'/assessment-plans') }}">{{ __('CA Components') }}</a></li>
+                  <li class="nav-item"><a class="nav-link active" href="{{ url('academic/staff-module-assignment/'.$module_assignment->id.'/results') }}">{{ __('Results Management') }}</a></li>
+                </ul>
+              </div>
+            </div>
+           </div>
+        </div>
         <div class="row">
           <div class="col-6">
 
@@ -64,7 +78,9 @@
                       @endif
                       @if($module_assignment->course_work_process_status == 'PROCESSED')
                       <option value="FINAL_EXAM">Final Exam</option>
+                      @if($second_semester_publish_status)
                       <option value="SUPPLEMENTARY">Supplementary Exam</option>
+                      @endif
                       @endif
                     </select>
 
@@ -107,12 +123,14 @@
               <div class="card-body">
                  <p>Total Number of Students: <a href="{{ url('academic/staff-module-assignment/'.$module_assignment->id.'/results/total-students') }}" target="_blank">{{ $total_students_count }}</a></p>
                  <p>Students with Coursework: <a href="{{ url('academic/staff-module-assignment/'.$module_assignment->id.'/results/students-with-course-work') }}" target="_blank">{{ $students_with_coursework_count }}</a></p>
-                 <p>Students with no Coursework: {{ $students_with_no_coursework_count }}</p>
+                 <p>Students with no Coursework: <a href="{{ url('academic/staff-module-assignment/'.$module_assignment->id.'/results/students-with-no-course-work') }}" target="_blank">{{ $students_with_no_coursework_count }}</a></p>
                  <p>Students with Final Marks: <a href="{{ url('academic/staff-module-assignment/'.$module_assignment->id.'/results/students-with-final-marks') }}" target="_blank">{{ $students_with_final_marks_count }}</a></p>
                  <p>Students with no Final Marks: {{ $students_with_no_final_marks_count }}</p>
-                 <p>Students Passed: <a href="{{ url('academic/staff-module-assignment/'.$module_assignment->id.'/results/students-passed') }}" target="_blank">{{ $students_passed_count }}</a></p>
-                 <p>Students with Supplementary Marks: <a href="{{ url('academic/staff-module-assignment/'.$module_assignment->id.'/results/students-with-supplementary') }}" target="_blank">{{ $students_with_supplemetary_count }}</a></p>
-                 <p>Abscond: <a href="{{ url('academic/staff-module-assignment/'.$module_assignment->id.'/results/students-with-abscond') }}" target="_blank">{{ $students_with_abscond_count }}</a> </p>
+                 <p>Students with Supplementary Cases: <a href="{{ url('academic/staff-module-assignment/'.$module_assignment->id.'/results/students-with-supplementary') }}" target="_blank">{{ $supp_cases_count }}</a></p>
+                 @if($second_semester_publish_status)
+                 <p>Students with Supplementary Marks: <a href="{{ url('academic/staff-module-assignment/'.$module_assignment->id.'/results/students-with-supplementary-marks') }}" target="_blank">{{ $students_with_supplemetary_count }}</a></p>
+                 <p>Students with no Supplementary Marks: {{ $students_with_no_supplementary_count }}</p>
+                 @endif
                   
                  {!! Form::open(['url'=>'academic/staff-module-assignment/process-course-work','class'=>'ss-form-processing']) !!}
 

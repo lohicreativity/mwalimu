@@ -18,8 +18,10 @@ use App\Domain\Academic\Models\OverallRemark;
 use App\Domain\Academic\Models\ResultPublication;
 use App\Domain\Academic\Models\RetakeHistory;
 use App\Domain\Academic\Models\CarryHistory;
+use App\Domain\Academic\Models\ExaminationProcessRecord;
 use App\Domain\Academic\Models\ProgramModuleAssignment;
 use App\Domain\Registration\Models\Student;
+use App\Models\User;
 use App\Utils\Util;
 use Auth, DB;
 
@@ -30,6 +32,18 @@ class ExaminationResultController extends Controller
      */
     public function showProcess(Request $request)
     {
+      $first_semester_publish_status = false;
+      if(ResultPublication::whereHas('semester',function($query){
+           $query->where('name','LIKE','%1%');
+         })->where('status','PUBLISHED')->where('study_academic_year_id',$request->get('study_academic_year_id'))->count() != 0){
+         $first_semester_publish_status = true;
+      }
+      $second_semester_publish_status = false;
+      if(ResultPublication::whereHas('semester',function($query){
+           $query->where('name','LIKE','%2%');
+         })->where('status','PUBLISHED')->where('study_academic_year_id',$request->get('study_academic_year_id'))->count() != 0){
+         $second_semester_publish_status = true;
+      }
     	$data = [
     	    'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
             'study_academic_year'=>$request->has('study_academic_year_id')? StudyAcademicYear::with('academicYear')->find($request->get('study_academic_year_id')) : null,
@@ -37,7 +51,14 @@ class ExaminationResultController extends Controller
             'campus'=>Campus::find($request->get('campus_id')),
             'semesters'=>Semester::all(),
             'campuses'=>Campus::all(),
-            'publications'=>$request->has('study_academic_year_id')? ResultPublication::with(['studyAcademicYear.academicYear','semester'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->get() : []
+            'active_semester'=>Semester::where('status','ACTIVE')->first(),
+            'first_semester_publish_status'=>$first_semester_publish_status,
+            'second_semester_publish_status'=>$second_semester_publish_status,
+            'publications'=>$request->has('study_academic_year_id')? ResultPublication::with(['studyAcademicYear.academicYear','semester'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->get() : [],
+            'process_records'=>ExaminationProcessRecord::whereHas('campusProgram',function($query) use ($request){
+                  $query->where('campus_id',$request->get('campus_id'));
+               })->with(['campusProgram.program','semester'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->paginate(20),
+            'staff'=>User::find(Auth::user()->id)->staff
     	];
     	return view('dashboard.academic.results-processing',$data)->withTitle('Results Processing');
     }
@@ -74,6 +95,7 @@ class ExaminationResultController extends Controller
         		return redirect()->back()->with('error',$assign->module->name.'-'.$assign->module->code.' course works not processed');
         	}
         	if(ExaminationResult::where('final_uploaded_at',null)->where('module_assignment_id',$assign->id)->count() != 0){
+            DB::rollback();
         		return redirect()->back()->with('error',$assign->module->name.'-'.$assign->module->code.' final not uploaded');
         	}
         }
@@ -85,18 +107,19 @@ class ExaminationResultController extends Controller
 	        	if(Util::stripSpacesUpper($semester->name) == Util::stripSpacesUpper('Semester 2')){
 
 	    		    $core_programs = ProgramModuleAssignment::with(['module'])->where('study_academic_year_id',$assign->study_academic_year_id)->where('year_of_study',$assign->programModuleAssignment->year_of_study)->where('category','COMPULSORY')->where('campus_program_id',$assign->programModuleAssignment->campus_program_id)->get();
-	    		}else{
-	    			$core_programs = ProgramModuleAssignment::with(['module'])->where('study_academic_year_id',$assign->study_academic_year_id)->where('year_of_study',$assign->programModuleAssignment->year_of_study)->where('semester_id',$semester->id)->where('category','COMPULSORY')->where('campus_program_id',$assign->programModuleAssignment->campus_program_id)->get();
-	    		}
+  	    		}else{
+  	    			$core_programs = ProgramModuleAssignment::with(['module'])->where('study_academic_year_id',$assign->study_academic_year_id)->where('year_of_study',$assign->programModuleAssignment->year_of_study)->where('semester_id',$semester->id)->where('category','COMPULSORY')->where('campus_program_id',$assign->programModuleAssignment->campus_program_id)->get();
+  	    		}
     	    }else{
     	    	$core_programs = ProgramModuleAssignment::with(['module'])->where('study_academic_year_id',$assign->study_academic_year_id)->where('year_of_study',$assign->programModuleAssignment->year_of_study)->where('category','COMPULSORY')->where('campus_program_id',$assign->programModuleAssignment->campus_program_id)->get();
     	    }
+
             $annual_credit = 0;
     		foreach($core_programs as $prog){
     			if($request->get('semester_id') != 'SUPPLEMENTARY'){
 	    			if(Util::stripSpacesUpper($semester->name) == Util::stripSpacesUpper('Semester 2')){    			
 		    			$annual_credit += $prog->module->credit;
-	    	     	}
+	    	      }
     	        }else{
     	        	$annual_credit += $prog->module->credit;
     	        }
@@ -136,6 +159,24 @@ class ExaminationResultController extends Controller
     	    }else{
     	    	$core_programs = ProgramModuleAssignment::with(['module'])->where('study_academic_year_id',$assignment->study_academic_year_id)->where('year_of_study',$assignment->programModuleAssignment->year_of_study)->where('category','COMPULSORY')->where('campus_program_id',$assign->programModuleAssignment->campus_program_id)->get();
     	    }
+
+          if(ExaminationResult::whereHas('moduleAssignment.programModuleAssignment',function($query) use($campus_program){
+                 $query->where('campus_program_id',$campus_program->id)->where('category','COMPULSORY');
+            })->whereNotNull('final_uploaded_at')->distinct()->count('module_assignment_id') != count($core_programs)){
+              DB::rollback();
+              return redirect()->back()->with('error','Some modules as missing final marks');
+          }
+
+          $elective_policy = ElectivePolicy::where('campus_program_id',$campus_program->id)->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('semester_id',$request->get('semester_id'))->first();
+
+          if($elective_policy){
+            if(ExaminationResult::whereHas('moduleAssignment.programModuleAssignment',function($query) use($campus_program){
+                   $query->where('campus_program_id',$campus_program->id)->where('category','OPTIONAL');
+              })->whereNotNull('final_uploaded_at')->distinct()->count('module_assignment_id') != $elective_policy->number_of_options){
+                DB::rollback();
+                return redirect()->back()->with('error','Some optional modules as missing final marks');
+            }
+          }
     		$total_credit = 0;
     		
     		if($request->get('semester_id') != 'SUPPLEMENTARY'){
@@ -366,7 +407,15 @@ class ExaminationResultController extends Controller
                	  $publication->published_by_user_id = Auth::user()->id;
                	  $publication->save();
                }
+
     		}
+
+        $process = new ExaminationProcessRecord;
+        $process->study_academic_year_id = $request->get('study_academic_year_id');
+        $process->semester_id = $request->get('semester_id') == 'SUPPLEMENTARY'? 0 : $request->get('semester_id');
+        $process->year_of_study = explode('_',$request->get('campus_program_id'))[2];
+        $process->campus_program_id = explode('_',$request->get('campus_program_id'))[0];
+        $process->save();
     		DB::commit();
 
         return redirect()->back()->with('message','Results processed successfully');
@@ -492,7 +541,7 @@ class ExaminationResultController extends Controller
      */
     public function showStudentResultsReport(Request $request)
     {
-    	$student = Student::where('registration_number',$request->get('registration_number'))->first();
+    	$student = Student::with(['campusProgram.program'])->where('registration_number',$request->get('registration_number'))->first();
     	$results = ExaminationResult::with(['moduleAssignment.programModuleAssignment','moduleAssignment.studyAcademicYear.academicYear'])->where('student_id',$student->id)->get();
     	$years = [];
     	$years_of_studies = [];
@@ -527,7 +576,7 @@ class ExaminationResultController extends Controller
      */
     public function showStudentAcademicYearResults(Request $request, $student_id, $ac_yr_id, $yr_of_study)
     {
-         $student = Student::find($student_id);
+         $student = Student::with(['campusProgram.program'])->find($student_id);
          $study_academic_year = StudyAcademicYear::with('academicYear')->find($ac_yr_id);
          $semesters = Semester::with(['remarks'=>function($query) use ($student, $ac_yr_id){
          	 $query->where('student_id',$student->id)->where('study_academic_year_id',$ac_yr_id);

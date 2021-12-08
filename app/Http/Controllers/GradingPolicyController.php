@@ -9,7 +9,7 @@ use App\Domain\Academic\Models\StudyAcademicYear;
 use App\Domain\Academic\Actions\GradingPolicyAction;
 use App\Models\User;
 use App\Utils\Util;
-use Validator, Auth;
+use Validator, Auth, DB;
 
 class GradingPolicyController extends Controller
 {
@@ -26,6 +26,36 @@ class GradingPolicyController extends Controller
            'staff'=>User::find(Auth::user()->id)->staff
     	];
     	return view('dashboard.academic.grading-policies',$data)->withTitle('Grading Policies');
+    }
+
+    /**
+     * Assign previous policies
+     */
+    public function assignPreviousPolicies(Request $request, $ac_year_id)
+    {
+         DB::beginTransaction();
+         $academic_year = StudyAcademicYear::latest()->take(1)->skip(1)->first();
+         if(!$academic_year){
+             return redirect()->back()->with('error','No previous study academic year');
+         }
+         $policies = GradingPolicy::whereHas('studyAcademicYear',function($query) use ($academic_year){
+                  $query->where('id',$academic_year->id);
+         })->get();
+         
+         foreach ($policies as $key => $policy){
+            $system = new GradingPolicy;
+            $system->min_score = $policy->min_score;
+            $system->max_score = $policy->max_score;
+            $system->grade = $policy->grade;
+            $system->point = $policy->point;
+            $system->remark = $policy->remark;
+            $system->nta_level_id = $policy->nta_level_id;
+            $system->study_academic_year_id = $ac_year_id;
+            $system->save();
+         }
+         DB::commit();
+
+         return redirect()->back()->with('message','Grading policy assignment completed successfully');
     }
 
     /**
@@ -51,6 +81,14 @@ class GradingPolicyController extends Controller
 
         if(GradingPolicy::where('nta_level_id',$request->get('nta_level_id'))->where('grade',$request->get('grade'))->count() != 0){
         	return redirect()->back()->with('error','Grading policy already added for this NTA level');
+        }
+
+        if(GradingPolicy::where('nta_level_id',$request->get('nta_level_id'))->where('min_score','<=',$request->get('min_score'))->where('max_score','>=',$request->get('min_score'))->count() != 0){
+        	return redirect()->back()->with('error','Grading policy overlapping for this NTA level');
+        }
+
+        if(GradingPolicy::where('nta_level_id',$request->get('nta_level_id'))->where('min_score','<=',$request->get('max_score'))->where('max_score','>=',$request->get('max_score'))->count() != 0){
+        	return redirect()->back()->with('error','Grading policy overlapping for this NTA level');
         }
 
 

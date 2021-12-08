@@ -52,6 +52,22 @@ class StudyAcademicYear extends Model
     }
 
     /**
+     * Establish one to many relationship with grading policies
+     */
+    public function gradingPolicies()
+    {
+        return $this->hasMany(GradingPolicy::class,'study_academic_year_id');
+    }
+
+    /**
+     * Establish one to many relationship with examination policies
+     */
+    public function examinationPolicies()
+    {
+        return $this->hasMany(ExaminationPolicy::class,'study_academic_year_id');
+    }
+
+    /**
      * Establish one to many relationship with elective module limits
      */
     public function electiveModuleLimits()

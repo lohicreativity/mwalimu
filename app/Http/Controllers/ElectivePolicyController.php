@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Domain\Academic\Models\ElectivePolicy;
 use App\Domain\Academic\Models\StudyAcademicYear;
+use App\Domain\Academic\Models\ProgramModuleAssignment;
 use App\Domain\Academic\Models\CampusProgram;
 use App\Domain\Academic\Models\Semester;
 use App\Domain\Academic\Actions\ElectivePolicyAction;
@@ -48,6 +49,10 @@ class ElectivePolicyController extends Controller
            }
         }
 
+        if(ProgramModuleAssignment::where('year_of_study',$request->get('year_of_study'))->where('semester_id',$request->get('semester_id'))->where('campus_program_id',$request->get('campus_program_id'))->where('category','OPTIONAL')->count() <= $request->get('number_of_options')){
+        	return redirect()->back()->with('error','Number of options exceed elective modules');
+        }
+
 
         (new ElectivePolicyAction)->store($request);
 
@@ -69,6 +74,10 @@ class ElectivePolicyController extends Controller
            }else{
               return redirect()->back()->withInput()->withErrors($validation->messages());
            }
+        }
+
+        if(ProgramModuleAssignment::where('year_of_study',$request->get('year_of_study'))->where('semester_id',$request->get('semester_id'))->where('campus_program_id',$request->get('campus_program_id'))->where('category','OPTIONAL')->count() <= $request->get('number_of_options')){
+        	return redirect()->back()->with('error','Number of options exceed elective modules');
         }
 
 

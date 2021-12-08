@@ -341,6 +341,17 @@
                     {!! Form::file('image',['class'=>'form-control']) !!}
                   </div>
                   </div>
+                  <div class="row">
+                     <div class="form-group col-6">
+                       {!! Form::label('','Department') !!}
+                       <select name="department_id" class="form-control" required>
+                         <option value="">Select Department</option>
+                         @foreach($departments as $department)
+                         <option value="{{ $department->id }}">{{ $department->name }}</option>
+                         @endforeach
+                       </select>
+                    </div>
+                  </div>
                 </fieldset>
                   
                 </div>

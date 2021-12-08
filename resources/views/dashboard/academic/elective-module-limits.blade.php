@@ -68,7 +68,7 @@
             @if($study_academic_year)
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">Add Elective (Option) Deadline - {{ $study_academic_year->academicYear->year }}</h3>
+                <h3 class="card-title">Add Elective (Option) Selection Deadline - {{ $study_academic_year->academicYear->year }}</h3>
               </div>
               <!-- /.card-header -->
                 @php

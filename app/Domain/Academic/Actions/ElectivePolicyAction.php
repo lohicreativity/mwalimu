@@ -14,6 +14,7 @@ class ElectivePolicyAction implements ElectivePolicyInterface{
                 $policy->study_academic_year_id = $request->get('study_academic_year_id');
                 $policy->semester_id = $request->get('semester_id');
                 $policy->number_of_options = $request->get('number_of_options');
+                $policy->year_of_study = $request->get('year_of_study');
                 $policy->save();
 	}
 
@@ -23,6 +24,7 @@ class ElectivePolicyAction implements ElectivePolicyInterface{
                 $policy->study_academic_year_id = $request->get('study_academic_year_id');
                 $policy->semester_id = $request->get('semester_id');
                 $policy->number_of_options = $request->get('number_of_options');
+                $policy->year_of_study = $request->get('year_of_study');
                 $policy->save();
 	}
 }
