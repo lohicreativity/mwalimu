@@ -127,23 +127,93 @@
           </li>
           <li class="nav-item">
             <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-building"></i>
+              <i class="nav-icon fas fa-folder-open"></i>
               <p>
-                {{ __('Organization') }}
+                {{ __('Teaching') }}
                 <i class="fas fa-angle-left right"></i>
               </p>
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="{{ url('settings/campuses') }}" class="nav-link">
+                <a href="{{ url('academic/staff-module-assignments?study_academic_year_id='.session('active_academic_year_id')) }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Campuses</p>
+                  <p>Staff Modules</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-list-alt"></i>
+              <p>
+                {{ __('Results') }}
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{ url('academic/results?study_academic_year_id='.session('active_academic_year_id').'&campus_id='.session('staff_campus_id')) }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>{{ __('Results Processing') }}</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="{{ url('academic/departments') }}" class="nav-link">
+                <a href="{{ url('academic/results?study_academic_year_id='.session('active_academic_year_id').'&campus_id='.session('staff_campus_id')) }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>{{ __('Departments') }}</p>
+                  <p>{{ __('Results Appeals') }}</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ url('academic/results?study_academic_year_id='.session('active_academic_year_id').'&campus_id='.session('staff_campus_id')) }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>{{ __('Perfomance Reports') }}</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ url('academic/results?study_academic_year_id='.session('active_academic_year_id').'&campus_id='.session('staff_campus_id')) }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>{{ __('Marks Editing') }}</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ url('academic/results?study_academic_year_id='.session('active_academic_year_id').'&campus_id='.session('staff_campus_id')) }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>{{ __('Best Students') }}</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ url('academic/postponements?study_academic_year_id='.session('active_academic_year_id')) }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>{{ __('Postponements') }}</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-bookmark"></i>
+              <p>
+                {{ __('Transcripts') }}
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{ url('academic/staff-module-assignments?study_academic_year_id='.session('active_academic_year_id')) }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Graduants List</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ url('academic/staff-module-assignments?study_academic_year_id='.session('active_academic_year_id')) }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Clearance</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ url('academic/staff-module-assignments?study_academic_year_id='.session('active_academic_year_id')) }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Graduation List</p>
                 </a>
               </li>
             </ul>
@@ -175,7 +245,7 @@
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-book"></i>
               <p>
-                {{ __('Academic') }}
+                {{ __('Academic Settings') }}
                 <i class="fas fa-angle-left right"></i>
               </p>
             </a>
@@ -253,46 +323,27 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="{{ url('academic/postponements?study_academic_year_id='.session('active_academic_year_id')) }}" class="nav-link">
+                <a href="{{ url('settings/nta-levels') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>{{ __('Postponements') }}</p>
+                  <p>NTA Levels</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="{{ url('academic/results?study_academic_year_id='.session('active_academic_year_id').'&campus_id='.session('staff_campus_id')) }}" class="nav-link">
+                <a href="{{ url('settings/intakes') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>{{ __('Results') }}</p>
-                </a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-folder-open"></i>
-              <p>
-                {{ __('Teaching') }}
-                <i class="fas fa-angle-left right"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              
-              <li class="nav-item">
-                <a href="{{ url('academic/module-assignments?study_academic_year_id='.session('active_academic_year_id')) }}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Modules Assignment</p>
+                  <p>Intakes</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="{{ url('academic/module-assignment-requests') }}" class="nav-link">
+                <a href="{{ url('settings/levels') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Modules Requests</p>
+                  <p>Levels of Study</p>
                 </a>
               </li>
-              
               <li class="nav-item">
-                <a href="{{ url('academic/staff-module-assignments?study_academic_year_id='.session('active_academic_year_id')) }}" class="nav-link">
+                <a href="{{ url('academic/awards') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Staff Modules</p>
+                  <p>Awards</p>
                 </a>
               </li>
             </ul>
@@ -301,38 +352,26 @@
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-cogs"></i>
               <p>
-                {{ __('Settings') }}
+                {{ __('General Settings') }}
                 <i class="fas fa-angle-left right"></i>
               </p>
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="{{ url('settings/nta-levels') }}" class="nav-link">
-                  <i class="far fa-users nav-icon"></i>
-                  <p>NTA Levels</p>
+                <a href="{{ url('settings/campuses') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Campuses</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="{{ url('settings/intakes') }}" class="nav-link">
-                  <i class="far fa-users nav-icon"></i>
-                  <p>Intakes</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="{{ url('settings/levels') }}" class="nav-link">
-                  <i class="far fa-users nav-icon"></i>
-                  <p>Levels of Study</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="{{ url('academic/awards') }}" class="nav-link">
-                  <i class="far fa-users nav-icon"></i>
-                  <p>Awards</p>
+                <a href="{{ url('academic/departments') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>{{ __('Departments') }}</p>
                 </a>
               </li>
               <li class="nav-item">
                 <a href="{{ url('settings/roles') }}" class="nav-link">
-                  <i class="far fa-users nav-icon"></i>
+                  <i class="far fa-circle nav-icon"></i>
                   <p>Roles</p>
                 </a>
               </li>

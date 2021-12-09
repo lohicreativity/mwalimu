@@ -108,6 +108,21 @@ class User extends Authenticatable
           return false;
     }
 
+    public function hasPermissionTo($permission) 
+    {
+          return $this->hasPermissionThroughRole($permission);
+    }
+
+    public function hasPermissionThroughRole($permission) 
+    {
+          foreach ($permission->roles as $role){
+            if($this->roles->contains($role)) {
+              return true;
+            }
+          }
+          return false;
+    }
+
     /**
      * Establish one to one relationship with students
      */

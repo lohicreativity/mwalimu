@@ -39,7 +39,15 @@
         <div class="row">
           <div class="col-12">
 
-
+            <div class="card card-default">
+           <div class="card-header">
+                <ul class="nav nav-tabs">
+                  <li class="nav-item"><a class="nav-link" href="{{ url('academic/modules') }}">{{ __('Modules') }}</a></li>
+                  <li class="nav-item"><a class="nav-link" href="{{ url('academic/module-assignments?study_academic_year_id='.session('active_academic_year_id')) }}">{{ __('Module Assignments') }}</a></li>
+                  <li class="nav-item"><a class="nav-link active" href="{{ url('academic/module-assignment-requests') }}">{{ __('Modules Assignment Requests') }}</a></li>
+                </ul>
+              </div>
+            </div>
 
 
             @if(count($requests) != 0)
