@@ -6,7 +6,11 @@
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
+        @if(Auth::check() && Auth::user()->hasRole('student'))
+        <a href="{{ url('student/dashboard') }}" class="nav-link">Home</a>
+        @else
         <a href="{{ url('dashboard') }}" class="nav-link">Home</a>
+        @endif
       </li>
     </ul>
 
@@ -23,15 +27,22 @@
           </a>
           <div class="dropdown-divider"></div>
           <!-- Authentication -->
-                            <form method="POST" action="{{ route('logout') }}">
-                                @csrf
+          @if(Auth::check() && Auth::user()->hasRole('student'))
+            <a href="{{ url('student/logout') }}" class="dropdown-item">
+            <i class="fas fa-sign-out mr-2"></i> Logout
+            </a>
+          @else
+
+           <form method="POST" action="{{ route('logout') }}">
+                  @csrf
                             
-          <a href="{{ route('logout') }}"
+                        <a href="{{ route('logout') }}"
                                          onclick="event.preventDefault();
                                                 this.closest('form').submit();" class="dropdown-item">
             <i class="fas fa-sign-out mr-2"></i> Logout
           </a>
-      </form>
+          </form>
+         @endif
         </div>
       </li>
       <li class="nav-item">
