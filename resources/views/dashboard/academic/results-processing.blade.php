@@ -120,7 +120,7 @@
                        @endif
                        @endforeach
                        @if($active_semester) 
-                        @if(App\Utils\Util::stripSpacesUpper($active_semester->name) == App\Utils\Util::stripSpacesUpper('Semester 2'))
+                        @if(App\Utils\Util::stripSpacesUpper($active_semester->name) == App\Utils\Util::stripSpacesUpper('Semester 2') && $second_semester_publish_status)
                        <option value="SUPPLEMENTARY" selected="selected">Supplementary</option>
                        @endif
                        @endif
