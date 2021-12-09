@@ -257,6 +257,36 @@
                 </a>
               </li>
               <li class="nav-item">
+                <a href="{{ url('academic/study-academic-years') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>{{ __('Study Academic Years') }}</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ url('settings/intakes') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Intakes</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ url('settings/levels') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Levels of Study</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ url('academic/awards') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Awards</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ url('settings/nta-levels') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>NTA Levels</p>
+                </a>
+              </li>
+              <li class="nav-item">
                 <a href="{{ url('academic/programs') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>{{ __('Programmes') }}</p>
@@ -274,12 +304,7 @@
                   <p>{{ __('Academic Years') }}</p>
                 </a>
               </li> -->
-              <li class="nav-item">
-                <a href="{{ url('academic/study-academic-years') }}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>{{ __('Study Academic Years') }}</p>
-                </a>
-              </li>
+              
               <!-- <li class="nav-item">
                 <a href="{{ url('academic/study-academic-year-campus-programs') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
@@ -322,30 +347,6 @@
                   <p>{{ __('Examination Policies') }}</p>
                 </a>
               </li>
-              <li class="nav-item">
-                <a href="{{ url('settings/nta-levels') }}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>NTA Levels</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="{{ url('settings/intakes') }}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Intakes</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="{{ url('settings/levels') }}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Levels of Study</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="{{ url('academic/awards') }}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Awards</p>
-                </a>
-              </li>
             </ul>
           </li>
           <li class="nav-item">
@@ -373,6 +374,12 @@
                 <a href="{{ url('settings/roles') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Roles</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ url('settings/system-modules') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>System Modules</p>
                 </a>
               </li>
             </ul>
