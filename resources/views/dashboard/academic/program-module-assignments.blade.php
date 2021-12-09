@@ -163,14 +163,14 @@
                         <!-- /.modal-dialog -->
                       </div>
                       <!-- /.modal -->
-                      <a class="btn btn-info btn-sm" href="{{ url('academic/program-module-assignment/'.$study_academic_year->id.'/'.$program->id.'/assign') }}">
+                      <a class="btn btn-info btn-sm" @if($program->study_academic_year_id == session('active_academic_year_id')) href="{{ url('academic/program-module-assignment/'.$study_academic_year->id.'/'.$program->id.'/assign') }}" @else disabled="disabled" @endif>
                               <i class="fas fa-plus">
                               </i>
                               Assign Module
                        </a>
                        
                        @if(count($program->programModuleAssignments) == 0)
-                       <a class="btn btn-info btn-sm" href="{{ url('academic/program-module-assignment/'.$study_academic_year->id.'/'.$program->id.'/assign-as-previous') }}">
+                       <a class="btn btn-info btn-sm" @if($program->study_academic_year_id == session('active_academic_year_id')) href="{{ url('academic/program-module-assignment/'.$study_academic_year->id.'/'.$program->id.'/assign-as-previous') }}" @else disabled="disabled" @endif>
                               <i class="fas fa-plus">
                               </i>
                               Assign as Previous
