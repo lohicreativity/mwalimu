@@ -485,6 +485,7 @@ class ExaminationResultController extends Controller
            'study_academic_year'=>$study_academic_year,
            'module_assignments'=>$module_assignments,
            'students'=>$students,
+           'staff'=>User::find(Auth::user()->id)->staff
         ];
         return view('dashboard.academic.reports.final-program-results',$data)->withTitle('Final Program Results - '.$campus_program->program->name);
     }
@@ -503,7 +504,8 @@ class ExaminationResultController extends Controller
             'campus_programs'=>$request->has('campus_id')? CampusProgram::with('program')->where('campus_id',$request->get('campus_id'))->get() : [],
             'modules'=>$request->has('campus_id')? Module::whereHas('moduleAssignments.programModuleAssignment.campusProgram',function($query) use ($request){
             	$query->where('campus_id',$request->get('campus_id'));
-            })->get() : []
+            })->get() : [],
+            'staff'=>User::find(Auth::user()->id)->staff
     	];
         return view('dashboard.academic.module-results',$data)->withTitle('Module Results');
     }
@@ -533,7 +535,8 @@ class ExaminationResultController extends Controller
             'module'=>$module_assignment->module,
             'study_academic_year'=>$module_assignment->studyAcademicYear,
             'module_assignment'=>$module_assignment,
-            'students'=>$students
+            'students'=>$students,
+            'staff'=>User::find(Auth::user()->id)->staff
     	];
         return view('dashboard.academic.reports.final-module-results',$data)->withTitle('Module Results');
     }
@@ -575,8 +578,9 @@ class ExaminationResultController extends Controller
     	}
 
     	$data = [
-    	   'years_of_studies'=>$years_of_studies,
-           'student'=>$student
+    	     'years_of_studies'=>$years_of_studies,
+           'student'=>$student,
+           'staff'=>User::find(Auth::user()->id)->staff
     	];
     	return view('dashboard.academic.reports.final-student-results',$data)->withTitle('Student Results');
     }
@@ -614,7 +618,8 @@ class ExaminationResultController extends Controller
          	'study_academic_year'=>$study_academic_year,
          	'core_programs'=>$core_programs,
          	'optional_programs'=>$optional_programs,
-            'student'=>$student
+          'student'=>$student,
+          'staff'=>User::find(Auth::user()->id)->staff
          ];
          return view('dashboard.academic.reports.final-student-overall-results',$data)->withTitle('Student Results');
     }
@@ -693,7 +698,8 @@ class ExaminationResultController extends Controller
 	            'department'=>$program->campusProgram->program->department,
 	            'campus'=>$program->campusProgram->campus,
 	            'study_academic_year'=>$program->studyAcademicYear,
-	            'results_type'=>$request->get('results_type')
+	            'results_type'=>$request->get('results_type'),
+              'staff'=>User::find(Auth::user()->id)->staff
 	    	];
 	    	return view('dashboard.academic.reports.results-uploaded-modules-students',$data)->withTitle('Module Results');
         }catch(\Exception $e){
