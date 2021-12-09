@@ -15,7 +15,7 @@ use App\Http\Controllers\StudentController;
 */
 Route::get('login',[StudentController::class,'showLogin']);
 Route::post('authenticate',[StudentController::class, 'authenticate']);
-Route::get('student/logout',[StudentController::class, 'logout']);
+Route::get('logout',[StudentController::class, 'logout']);
 
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function(){

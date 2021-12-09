@@ -229,4 +229,13 @@ class StudentController extends Controller
          ];
          return view('dashboard.student.examination-results-report',$data)->withTitle('Examination Results');
     }
+
+    /**
+     * Logout student
+     */
+    public function logout()
+    {
+    	Auth::logout();
+    	return redirect()->to('student/login');
+    }
 }
