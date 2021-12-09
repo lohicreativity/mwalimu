@@ -18,5 +18,3 @@ use App\Http\Controllers\StudentController;
 Route::view('/', 'auth.login');
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', [HomeController::class,'dashboard'])->name('dashboard');
-
-Route::get('students/login',[StudentController::class,'showLogin']);

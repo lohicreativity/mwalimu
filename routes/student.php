@@ -13,8 +13,10 @@ use App\Http\Controllers\StudentController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('login',[StudentController::class,'showLogin']);
 Route::post('authenticate',[StudentController::class, 'authenticate']);
 Route::get('student/logout',[StudentController::class, 'logout']);
+
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function(){
     
