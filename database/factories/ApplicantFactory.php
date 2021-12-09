@@ -26,6 +26,7 @@ class ApplicantFactory extends Factory
             'index_number'=>$this->faker->unique()->numberBetween(100000,999999),
             'application_number'=>$this->faker->unique()->numberBetween(100000,999999),
             'entry_mode'=>'DIRECT',
+            'next_of_kin_id'=>$this->faker->numberBetween(1,100),
             'country_id'=>$this->faker->numberBetween(1,10),
             'region_id'=>$this->faker->numberBetween(1,10),
             'district_id'=>$this->faker->numberBetween(1,10),
