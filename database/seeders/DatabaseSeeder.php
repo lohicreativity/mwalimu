@@ -40,6 +40,7 @@ class DatabaseSeeder extends Seeder
         $this->call(AcademicStatusesTableSeeder::class);
         $this->call(CampusesTableSeeder::class);
         $this->call(CampusProgramTableSeeder::class);
+        \App\Domain\Application\Models\NextOfKin::factory(100)->create();
         \App\Domain\Application\Models\Applicant::factory(1000)->create();
         \App\Domain\Registration\Models\Student::factory(1000)->create();
         \App\Domain\HumanResources\Models\Staff::factory(20)->create();

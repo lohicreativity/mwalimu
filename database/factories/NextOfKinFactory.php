@@ -3,7 +3,7 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use App\Domain\Registration\Models\NextOfKin;
+use App\Domain\Application\Models\NextOfKin;
 
 class NextOfKinFactory extends Factory
 {
