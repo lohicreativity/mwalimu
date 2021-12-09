@@ -197,7 +197,7 @@
                 <div class="card-footer">
                   <button type="submit" class="btn btn-primary">{{ __('Add Examination Policy') }}</button>
                   @if($study_academic_year)
-                    @if(count($study_academic_year->examinationPolicies) == 0)
+                    @if(count($study_academic_year->examinationPolicies) == 0 && $study_academic_year->id == session('active_academic_year_id'))
                   <a href="{{ url('academic/examination-policy/'.$study_academic_year->id.'/assign-as-previous') }}" class="btn btn-primary ss-right">Assign as Previous</a>
                     @endif
                   @endif
@@ -245,7 +245,7 @@
                     <td>{{ $policy->module_pass_mark }}</td>
                     <td>{{ $policy->type }}</td>
                     <td>
-                      <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-edit-policy-{{ $policy->id }}">
+                      <a class="btn btn-info btn-sm" @if($study_academic_year->id == session('active_academic_year_id')) href="#" data-toggle="modal" data-target="#ss-edit-policy-{{ $policy->id }}" @else disabled="disabled" @endif>
                               <i class="fas fa-pencil-alt">
                               </i>
                               Edit
@@ -399,7 +399,7 @@
                       </div>
                       <!-- /.modal -->
 
-                      <a class="btn btn-danger btn-sm" href="#" data-toggle="modal" data-target="#ss-delete-policy-{{ $policy->id }}">
+                      <a class="btn btn-danger btn-sm" @if($study_academic_year->id == session('active_academic_year_id')) href="#" data-toggle="modal" data-target="#ss-delete-policy-{{ $policy->id }}" @else disabled="disabled" @endif>
                               <i class="fas fa-trash">
                               </i>
                               Delete
