@@ -27,7 +27,9 @@ class StreamController extends Controller
             'study_academic_year'=>$request->has('study_academic_year_id')? StudyAcademicYear::with(['academicYear','streams'=>function($query) use ($request){
                    $query->where('study_academic_year_id',$request->get('study_academic_year_id'));
                 },'streams.groups','campusPrograms'])->find($request->get('study_academic_year_id')) : null,
-            'campus_programs'=>CampusProgram::with(['program','campus'])->get(),
+            'campus_programs'=>CampusProgram::with(['program','campus','students.registrations'=>function($query) use($request){
+                   $query->where('study_academic_year_id',$request->get('study_academic_year_id'));
+             },'streams.groups','groups'])->get(),
             'staff'=>User::find(Auth::user()->id)->staff
      	];
      	return view('dashboard.academic.streams-and-groups',$data)->withTitle('Streams and Groups');
@@ -130,8 +132,10 @@ class StreamController extends Controller
             $remaining_streams = Stream::where('stream_component_id',$component->id)->get();
             
             foreach ($remaining_streams as $key => $stream) {
-            	Registration::where('year_of_study',$component->year_of_study)->where('study_academic_year_id',$component->study_academic_year_id)->take($stream->number_of_students)->update(['stream_id'=>$stream->id]);
-            }
+            	Registration::whereHas('student',function($query) use($stream){
+                $query->where('campus_program_id',$stream->campus_program_id);
+		        })->where('year_of_study',$component->year_of_study)->where('study_academic_year_id',$component->study_academic_year_id)->take($stream->number_of_students)->update(['stream_id'=>$stream->id]);
+		    }
                      
             return redirect()->back()->with('message','Stream deleted successfully');
     	}catch(\Exception $e){

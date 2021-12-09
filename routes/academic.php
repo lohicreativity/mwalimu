@@ -12,6 +12,7 @@ use App\Http\Controllers\ModuleController;
 use App\Http\Controllers\ExaminationController;
 use App\Http\Controllers\CampusProgramController;
 use App\Http\Controllers\ModuleAssignmentController;
+use App\Http\Controllers\ModuleAssignmentRequestController;
 use App\Http\Controllers\AssessmentPlanController;
 use App\Http\Controllers\CourseWorkComponentController;
 use App\Http\Controllers\ProgramModuleAssignmentController;
@@ -75,10 +76,16 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 	Route::get('module-assignment/{id}/special-exams',[SpecialExamController::class, 'index']);
 
 
+	Route::get('module-assignment-requests', [ModuleAssignmentRequestController::class,'index']);
+	Route::post('module-assignment-request/store', [ModuleAssignmentRequestController::class,'store']);
+	Route::get('module-assignment-request/{id}/destroy', [ModuleAssignmentRequestController::class,'destroy']);
+
+
 	Route::get('staff-module-assignments', [ModuleAssignmentController::class,'showStaffAssignedModules']);
 	Route::get('staff-module-assignment/{id}/assessment-plans', [ModuleAssignmentController::class,'showAssessmentPlans']);
 	Route::get('staff-module-assignment/{id}/syllabus', [ModuleAssignmentController::class,'showSyllabus']);
 	Route::get('staff-module-assignment/{id}/attendance', [ModuleAssignmentController::class,'showAttendance']);
+	Route::get('staff-module-assignment/{id}/module-attendance', [ModuleAssignmentController::class,'showModuleAttendance']);
 	Route::get('staff-module-assignment/{id}/results', [ModuleAssignmentController::class,'showResultsUpload']);
 	Route::get('staff-module-assignment/{id}/results/compute-course-work', [ModuleAssignmentController::class,'computeCourseWork']);
 	Route::get('staff-module-assignment/results/compute-results', [ModuleAssignmentController::class,'computeResults']);

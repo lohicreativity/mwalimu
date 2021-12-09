@@ -24,8 +24,6 @@ class StaffFactory extends Factory
             'address'=>$this->faker->address(),
             'nin'=>$this->faker->numberBetween(10000000,99999999),
             'pf_number'=>$this->faker->numberBetween(100000,999999),
-            'check_number'=>$this->faker->numberBetween(100000,999999),
-            'vote_number'=>$this->faker->numberBetween(100000,999999),
             'campus_id'=>$this->faker->numberBetween(1,1),
             'department_id'=>$this->faker->numberBetween(1,3),
             'designation_id'=>$this->faker->numberBetween(1,3),
@@ -44,7 +42,6 @@ class StaffFactory extends Factory
             'user_id'=>$this->faker->numberBetween(1,100),
             'schedule'=>'FULLTIME',
             'category'=>'ACADEMIC',
-            'marital_status'=>'SINGLE',
         ];
     }
 }

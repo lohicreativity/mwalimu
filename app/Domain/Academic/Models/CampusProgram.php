@@ -5,12 +5,37 @@ namespace App\Domain\Academic\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Domain\Settings\Models\Campus;
+use App\Domain\Registration\Models\Student;
 
 class CampusProgram extends Model
 {
     use HasFactory;
 
     protected $table = 'campus_program';
+
+    /**
+     * Establish one to many relationship with students
+     */
+    public function students()
+    {
+        return $this->hasMany(Student::class,'campus_program_id');
+    }
+
+    /**
+     * Establish one to many relationship with streams
+     */
+    public function streams()
+    {
+        return $this->hasMany(Stream::class,'campus_program_id');
+    }
+
+    /**
+     * Establish one to many through relationship with groups
+     */
+    public function groups()
+    {
+        return $this->hasManyThrough(Group::class,Stream::class);
+    }
 
     /**
      * Establish one to many relationship with programs

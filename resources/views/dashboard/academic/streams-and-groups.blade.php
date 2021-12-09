@@ -83,13 +83,24 @@
                     </thead>
                     <tbody>
                      @foreach($campus_programs as $cp)
+                       
  
                        @for($i = 1; $i <= $cp->program->min_duration; $i++)
                            @php
                              $stream_created = false;
+                             $students_number = 0;
                            @endphp
+                           @foreach($cp->students as $stud)
+                             @foreach($stud->registrations as $reg)
+                              @if($reg->year_of_study == $i)
+                                 @php
+                                   $students_number += 1;
+                                 @endphp
+                              @endif
+                             @endforeach
+                           @endforeach
                        <tr>
-                        <td><a href="{{ url('academic/campus/campus-program/'.$cp->id.'/attendance?year_of_study='.$i.'&study_academic_year_id='.$study_academic_year->id) }}" target="_blank">{{ $cp->program->name }} - Year {{ $i }}</a>
+                        <td><a href="{{ url('academic/campus/campus-program/'.$cp->id.'/attendance?year_of_study='.$i.'&study_academic_year_id='.$study_academic_year->id) }}" target="_blank">{{ $cp->program->name }} - Year {{ $i }} ({{ $students_number }})</a>
                           @foreach($study_academic_year->streams as $stream)
                              @if($stream->campus_program_id == $cp->id && $stream->year_of_study == $i)
                              @php

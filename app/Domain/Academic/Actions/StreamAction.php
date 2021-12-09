@@ -24,7 +24,9 @@ class StreamAction implements StreamInterface{
                      $stream->stream_component_id = $component->id;
                       $stream->save();
                       
-                     Registration::where('year_of_study',$component->year_of_study)->where('study_academic_year_id',$component->study_academic_year_id)->where('stream_id',0)->take($request->get('number_'.$i.'_component_'.$component->id))->update(['stream_id'=>$stream->id]);
+                     Registration::whereHas('student',function($query) use($request){
+                            $query->where('campus_program_id',$request->get('campus_program_id'));
+                    })->where('year_of_study',$component->year_of_study)->where('study_academic_year_id',$component->study_academic_year_id)->where('stream_id',0)->take($request->get('number_'.$i.'_component_'.$component->id))->update(['stream_id'=>$stream->id]);
               }
          
     }

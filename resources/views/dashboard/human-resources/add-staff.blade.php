@@ -180,7 +180,7 @@
                     </div>
                   </div>
                    <div class="row">
-                    <div class="form-group col-4">
+                    <div class="form-group col-6">
                        {!! Form::label('','Gender') !!}
                        <select name="gender" class="form-control" required>
                          <option value="">Select Gender</option>
@@ -188,16 +188,7 @@
                          <option value="F">Female</option>
                        </select>
                     </div>
-                    <div class="form-group col-4">
-                       {!! Form::label('','Marital Status') !!}
-                       <select name="marital_status" class="form-control" required>
-                         <option value="">Select Marital Status</option>
-                         <option value="SINGLE">Single</option>
-                         <option value="MARRIED">Married</option>
-                         <option value="WIDOWED">Widowed</option>
-                       </select>
-                    </div>
-                    <div class="form-group col-4">
+                    <div class="form-group col-6">
                        {!! Form::label('','Disability status') !!}
                        <select name="disability_status_id" class="form-control" required>
                          <option value="">Disability Status</option>
@@ -301,16 +292,6 @@
                          <option value="{{ $designation->id }}">{{ $designation->name }}</option>
                          @endforeach
                        </select>
-                    </div>
-                  </div>
-                  <div class="row">
-                     <div class="form-group col-6">
-                       {!! Form::label('','Vote number') !!}
-                       {!! Form::text('vote_number',null,$vote_number) !!}
-                    </div>
-                    <div class="form-group col-6">
-                       {!! Form::label('','Check number') !!}
-                       {!! Form::text('check_number',null,$check_number) !!}
                     </div>
                   </div>
                   <div class="row">

@@ -35,7 +35,9 @@ class GroupController extends Controller
             	   $rm_group->save();
             	}
 
-            	Registration::where('year_of_study',$stream->year_of_study)->where('study_academic_year_id',$stream->study_academic_year_id)->where('stream_id',$stream->id)->where('group_id',0)->take($rm_group->number_of_students)->update(['group_id'=>$rm_group->id]);
+            	Registration::whereHas('student',function($query) use($stream){
+                        $query->where('campus_program_id',$stream->campus_program_id);
+                     })->where('year_of_study',$stream->year_of_study)->where('study_academic_year_id',$stream->study_academic_year_id)->where('stream_id',$stream->id)->where('group_id',0)->take($rm_group->number_of_students)->update(['group_id'=>$rm_group->id]);
             }
    
             return redirect()->back()->with('message','Groups created successfully');
@@ -89,11 +91,15 @@ class GroupController extends Controller
            
             $remaining_groups = Group::where('stream_id',$stream->id)->get();
             if(count($remaining_groups) == 0){
-            	Registration::where('year_of_study',$stream->year_of_study)->where('study_academic_year_id',$stream->study_academic_year_id)->where('stream_id',$stream->id)->update(['group_id'=>0]);
+            	Registration::whereHas('student',function($query) use($stream){
+                        $query->where('campus_program_id',$stream->campus_program_id);
+                     })->where('year_of_study',$stream->year_of_study)->where('study_academic_year_id',$stream->study_academic_year_id)->where('stream_id',$stream->id)->update(['group_id'=>0]);
             }else{
             
 	            foreach ($remaining_groups as $key => $group) {
-	            	Registration::where('year_of_study',$stream->year_of_study)->where('study_academic_year_id',$stream->study_academic_year_id)->where('stream_id',$stream->id)->take($group->number_of_students)->where('group_id',0)->update(['group_id'=>$group->id]);
+	            	Registration::whereHas('student',function($query) use($stream){
+                        $query->where('campus_program_id',$stream->campus_program_id);
+                     })->where('year_of_study',$stream->year_of_study)->where('study_academic_year_id',$stream->study_academic_year_id)->where('stream_id',$stream->id)->take($group->number_of_students)->where('group_id',0)->update(['group_id'=>$group->id]);
 	            }
             }
                      

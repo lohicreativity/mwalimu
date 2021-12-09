@@ -113,9 +113,29 @@ class ModuleAssignmentController extends Controller
     }
 
     /**
-     * Show module attendance
+     * Display module attendance 
      */
     public function showAttendance(Request $request, $id)
+    {
+       try{
+          $module_assignment = ModuleAssignment::with(['programModuleAssignment.campusProgram.program.department','programModuleAssignment.campusProgram.campus','studyAcademicYear.academicYear','programModuleAssignment.module'])->findOrFail($id);
+
+          $data = [
+             'module_assignment'=>$module_assignment,
+             'campus_program'=>CampusProgram::with(['students.registrations'=>function($query) use($module_assignment){
+                   $query->where('study_academic_year_id',$module_assignment->study_academic_year_id);
+             },'streams.groups','groups'])->find($module_assignment->programModuleAssignment->campus_program_id),
+          ];
+          return view('dashboard.academic.module-attendance',$data)->withTitle('Module Attendance');
+       }catch(\Exception $e){
+           return redirect()->back()->with('error','Unable to get the resource specified in this request');
+       }
+    }
+
+    /**
+     * Show module attendance
+     */
+    public function showModuleAttendance(Request $request, $id)
     {
          try{
              $module_assignment = ModuleAssignment::with(['programModuleAssignment.campusProgram.program.department','programModuleAssignment.campusProgram.campus','studyAcademicYear.academicYear','programModuleAssignment.module','programModuleAssignment.students','staff','module'])->findOrFail($id);

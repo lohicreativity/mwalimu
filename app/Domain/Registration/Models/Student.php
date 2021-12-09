@@ -18,11 +18,19 @@ class Student extends Model
     protected $table = 'students';
 
     /**
+     * Establish one to many relationship with registrations
+     */
+    public function registrations()
+    {
+    	return $this->hasMany(Registration::class,'student_id');
+    }
+
+    /**
      * Establish one to many relationship with examination results
      */
     public function examinationResults()
     {
-    	return $this->hasMany(ExaminationResult::class,'student_id');
+        return $this->hasMany(ExaminationResult::class,'student_id');
     }
 
     /**

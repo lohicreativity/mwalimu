@@ -21,15 +21,12 @@ class CreateStaffsTable extends Migration
             $table->string('surname');
             $table->string('gender',2);
             $table->date('birth_date');
-            $table->text('qualification')->nullable();
             $table->string('category');
             $table->string('phone');
             $table->string('email');
             $table->string('address');
             $table->string('nin')->nullable();
             $table->string('pf_number');
-            $table->string('vote_number');
-            $table->string('check_number');
             $table->string('block');
             $table->string('room');
             $table->string('floor');
@@ -43,7 +40,6 @@ class CreateStaffsTable extends Migration
             $table->unsignedBigInteger('campus_id');
             $table->unsignedBigInteger('department_id');
             $table->unsignedBigInteger('disability_status_id');
-            $table->string('marital_status',20)->default('SINGLE');
             $table->string('image')->nullable();
             $table->unsignedBigInteger('user_id');
             $table->timestamps();

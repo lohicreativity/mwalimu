@@ -282,6 +282,12 @@
                   <p>Modules Assignment</p>
                 </a>
               </li>
+              <li class="nav-item">
+                <a href="{{ url('academic/module-assignment-requests') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Modules Requests</p>
+                </a>
+              </li>
               
               <li class="nav-item">
                 <a href="{{ url('academic/staff-module-assignments') }}" class="nav-link">

@@ -114,7 +114,7 @@
                   @endphp
                   <div class="row">
                   <div class="form-group col-6">
-                    {!! Form::label('','Stream '.$str) !!}
+                    {!! Form::label('','Name of stream ') !!}
                     {!! Form::text('name_component_'.$component->id,'Stream '.$str,$name) !!}
 
                     {!! Form::input('hidden','name_'.$i.'_component_'.$component->id,$str) !!}

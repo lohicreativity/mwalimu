@@ -32,7 +32,6 @@ class StaffAction implements StaffInterface{
                 $staff->middle_name = $request->get('middle_name');
                 $staff->surname = $request->get('surname');
                 $staff->birth_date = DateMaker::toDBDate($request->get('birth_date'));
-                $staff->qualification = $request->get('qualification');
                 $staff->designation_id = $request->get('designation_id');
                 $staff->gender = $request->get('gender');
                 $staff->category = $request->get('category');
@@ -41,8 +40,6 @@ class StaffAction implements StaffInterface{
                 $staff->address = $request->get('address');
                 $staff->nin = $request->get('nin');
                 $staff->pf_number = $request->get('pf_number');
-                $staff->vote_number = $request->get('vote_number');
-                $staff->check_number = $request->get('check_number');
                 $staff->block = $request->get('block');
                 $staff->floor = $request->get('floor');
                 $staff->schedule = $request->get('schedule');
@@ -75,7 +72,6 @@ class StaffAction implements StaffInterface{
                 $staff->middle_name = $request->get('middle_name');
                 $staff->surname = $request->get('surname');
                 $staff->birth_date = DateMaker::toDBDate($request->get('birth_date'));
-                $staff->qualification = $request->get('qualification');
                 $staff->designation_id = $request->get('designation_id');
                 $staff->gender = $request->get('gender');
                 $staff->category = $request->get('category');
@@ -84,8 +80,6 @@ class StaffAction implements StaffInterface{
                 $staff->address = $request->get('address');
                 $staff->nin = $request->get('nin');
                 $staff->pf_number = $request->get('pf_number');
-                $staff->vote_number = $request->get('vote_number');
-                $staff->check_number = $request->get('check_number');
                 $staff->block = $request->get('block');
                 $staff->floor = $request->get('floor');
                 $staff->schedule = $request->get('schedule');

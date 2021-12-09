@@ -181,7 +181,7 @@
                     </div>
                   </div>
                    <div class="row">
-                    <div class="form-group col-4">
+                    <div class="form-group col-6">
                        {!! Form::label('','Region') !!}
                        <select name="gender" class="form-control" required>
                          <option value="">Select Gender</option>
@@ -189,16 +189,7 @@
                          <option value="F" @if($edit_staff->gender == 'F') selected="selected" @endif>Female</option>
                        </select>
                     </div>
-                    <div class="form-group col-4">
-                       {!! Form::label('','Marital Status') !!}
-                       <select name="marital_status" class="form-control" required>
-                         <option value="">Select Marital Status</option>
-                         <option value="SINGLE" @if($edit_staff->marital_status == 'SINGLE') selected="selected" @endif>Single</option>
-                         <option value="MARRIED" @if($edit_staff->marital_status == 'MARRIED') selected="selected" @endif>Married</option>
-                         <option value="WIDOWED" @if($edit_staff->marital_status == 'WIDOWED') selected="selected" @endif>Widowed</option>
-                       </select>
-                    </div>
-                    <div class="form-group col-4">
+                    <div class="form-group col-6">
                        {!! Form::label('','Disability status') !!}
                        <select name="disability_status_id" class="form-control" required>
                          <option value="">Disability Status</option>
@@ -302,16 +293,6 @@
                          <option value="{{ $designation->id }}" @if($edit_staff->designation_id == $designation->id) selected="selected" @endif>{{ $designation->name }}</option>
                          @endforeach
                        </select>
-                    </div>
-                  </div>
-                  <div class="row">
-                     <div class="form-group col-6">
-                       {!! Form::label('','Vote number') !!}
-                       {!! Form::text('vote_number',$edit_staff->vote_number,$vote_number) !!}
-                    </div>
-                    <div class="form-group col-6">
-                       {!! Form::label('','Check number') !!}
-                       {!! Form::text('check_number',$edit_staff->check_number,$check_number) !!}
                     </div>
                   </div>
                   <div class="row">
