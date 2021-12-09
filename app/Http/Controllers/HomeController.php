@@ -24,6 +24,6 @@ class HomeController extends Controller
         $data = [
            'staff'=>User::find(Auth::user()->id)->staff
         ];
-    	return view('dashboard',$data)->withTitle('Dashboard');
+    	return view('dashboard',$data)->withTitle('Home');
     }
 }

@@ -3,7 +3,7 @@
     <!-- Brand Logo -->
     <a href="index3.html" class="brand-link">
       <img src="{{ asset('dist/img/logo.png') }}" alt="Config::get('constants.SITE_NAME') }}" class="brand-image img-circle elevation-3" style="opacity: .8">
-      <span class="brand-text font-weight-light">{{ Config::get('constants.SITE_NAME') }}</span>
+      <span class="brand-text font-weight-light">{{ Config::get('constants.SITE_SHORT_NAME') }}</span>
     </a>
 
     <!-- Sidebar -->

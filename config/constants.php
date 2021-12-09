@@ -3,6 +3,8 @@
 return [
    'SITE_NAME'=>'Mwalimu Nyerere Memorial Academy',
 
+   'SITE_SHORT_NAME'=>'MNMA',
+
    'SITE_DOMAIN'=>'mnma.ac.tz',
 
    'SITE_WEB_DOMAIN'=>'www.mnma.ac.tz',
