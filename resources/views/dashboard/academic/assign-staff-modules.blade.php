@@ -59,7 +59,7 @@
                     <select name="semester_id" class="form-control" required>
                        <option value="">Select Semester</option>
                        @foreach($semesters as $semester)
-                       <option value="{{ $semester->id }}">{{ $semester->name }}</option>
+                       <option value="{{ $semester->id }}" @if($semester->status == 'ACTIVE') selected="selected" @endif>{{ $semester->name }}</option>
                        @endforeach
                     </select>
                    </div>
