@@ -475,7 +475,7 @@ class ExaminationResultController extends Controller
 
         if(count($students) != 0){
            if(count($students[0]->examinationResults) == 0){
-              return redirect()->back()->with('error','No results processed yet for this program');
+              return redirect()->back()->with('error','No results processed yet for this programme');
            }
         }
         $data = [
