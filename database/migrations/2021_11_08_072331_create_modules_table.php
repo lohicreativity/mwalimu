@@ -18,8 +18,6 @@ class CreateModulesTable extends Migration
             $table->string('name');
             $table->string('code',10);
             $table->integer('credit');
-            $table->decimal('course_work')->default(0.00);
-            $table->decimal('final_exam');
             $table->unsignedBigInteger('department_id');
             $table->unsignedBigInteger('nta_level_id');
             $table->tinyInteger('course_work_based')->default(1);
