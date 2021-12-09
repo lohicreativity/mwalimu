@@ -158,7 +158,7 @@
                     <td>{{ $policy->year_of_study }}</td>
                     <td>{{ $policy->number_of_options }}</td>
                     <td>
-                      <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-edit-policy-{{ $policy->id }}">
+                      <a class="btn btn-info btn-sm" href="#" @if($study_academic_year->id == session('active_academic_year_id')) data-toggle="modal" data-target="#ss-edit-policy-{{ $policy->id }}" @else disabled="disabled" @endif>
                               <i class="fas fa-pencil-alt">
                               </i>
                               Edit
@@ -229,7 +229,7 @@
                       </div>
                       <!-- /.modal -->
 
-                      <a class="btn btn-danger btn-sm" href="#" data-toggle="modal" data-target="#ss-delete-policy-{{ $policy->id }}">
+                      <a class="btn btn-danger btn-sm" @if($study_academic_year->id == session('active_academic_year_id')) href="#" data-toggle="modal" data-target="#ss-delete-policy-{{ $policy->id }}" @else disabled="disabled" @endif>
                               <i class="fas fa-trash">
                               </i>
                               Delete

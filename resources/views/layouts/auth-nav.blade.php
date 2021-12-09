@@ -235,25 +235,25 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="{{ url('academic/elective-policies') }}" class="nav-link">
+                <a href="{{ url('academic/elective-policies?study_academic_year_id='.session('active_academic_year_id')) }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>{{ __('Elective Policies') }}</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="{{ url('academic/grading-policies') }}" class="nav-link">
+                <a href="{{ url('academic/grading-policies?study_academic_year_id='.session('active_academic_year_id')) }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>{{ __('Grading System') }}</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="{{ url('academic/examination-policies') }}" class="nav-link">
+                <a href="{{ url('academic/examination-policies?study_academic_year_id='.session('active_academic_year_id')) }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>{{ __('Examination Policies') }}</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="{{ url('academic/postponements') }}" class="nav-link">
+                <a href="{{ url('academic/postponements?study_academic_year_id='.session('active_academic_year_id')) }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>{{ __('Postponements') }}</p>
                 </a>
@@ -277,7 +277,7 @@
             <ul class="nav nav-treeview">
               
               <li class="nav-item">
-                <a href="{{ url('academic/module-assignments') }}" class="nav-link">
+                <a href="{{ url('academic/module-assignments?study_academic_year_id='.session('active_academic_year_id')) }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Modules Assignment</p>
                 </a>
