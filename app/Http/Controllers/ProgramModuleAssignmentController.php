@@ -100,11 +100,17 @@ class ProgramModuleAssignmentController extends Controller
          DB::beginTransaction();
          $academic_year = StudyAcademicYear::latest()->take(1)->skip(1)->first();
          if(!$academic_year){
+             DB::rollback();
              return redirect()->back()->with('error','No previous study academic year');
          }
          $assignments = ProgramModuleAssignment::whereHas('studyAcademicYear',function($query) use ($academic_year){
                   $query->where('id',$academic_year->id);
          })->get();
+
+         if(count($assignments) == 0){
+             DB::rollback();
+             return redirect()->back()->with('error','No previous study programme module assignments');
+         }
          
          foreach ($assignments as $key => $assignment){
             $assign = new ProgramModuleAssignment;
