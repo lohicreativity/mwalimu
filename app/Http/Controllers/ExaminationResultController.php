@@ -96,6 +96,7 @@ class ExaminationResultController extends Controller
 
         foreach($module_assignments as $assign){
         	if($assign->course_work_process_status != 'PROCESSED'){
+            DB::rollback();
         		return redirect()->back()->with('error',$assign->module->name.'-'.$assign->module->code.' course works not processed');
         	}
         	if(ExaminationResult::where('final_uploaded_at',null)->where('module_assignment_id',$assign->id)->count() != 0){
@@ -166,9 +167,24 @@ class ExaminationResultController extends Controller
 
           if(ExaminationResult::whereHas('moduleAssignment.programModuleAssignment',function($query) use($campus_program){
                  $query->where('campus_program_id',$campus_program->id)->where('category','COMPULSORY');
-            })->whereNotNull('final_uploaded_at')->distinct()->count('module_assignment_id') != count($core_programs)){
+            })->whereNotNull('final_uploaded_at')->distinct()->count('module_assignment_id') < count($core_programs)){
+              
+              $available_programs = ExaminationResult::whereHas('moduleAssignment.programModuleAssignment',function($query) use($campus_program){
+                 $query->where('campus_program_id',$campus_program->id)->where('category','COMPULSORY');
+                })->whereNotNull('final_uploaded_at')->groupBy('module_assignment_id')->distinct()->get();
+              $available_program_ids = [];
+              $missing_programs = [];
+              foreach($available_programs as $pr){
+                  $available_program_ids[] = $pr->moduleAssignment->programModuleAssignment->id;
+              }
+              foreach($core_programs as $prog){
+                  if(!in_array($prog->id, $available_programs)){
+                     $missing_programs[] = $prog->module->code;
+                  }
+              }
+              
               DB::rollback();
-              return redirect()->back()->with('error','Some modules as missing final marks');
+              return redirect()->back()->with('error','Some modules as missing final marks ('.implode(',', $missing_programs).')');
           }
 
           $elective_policy = ElectivePolicy::where('campus_program_id',$campus_program->id)->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('semester_id',$request->get('semester_id'))->first();
