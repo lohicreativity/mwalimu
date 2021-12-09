@@ -21,7 +21,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>{{ __('Attendance') }} - {{ $module_assignment->programModuleAssignment->module->name }}</h1>
+            <h1>{{ __('Attendance') }} - {{ $module_assignment->programModuleAssignment->module->name }} - {{ $module_assignment->programModuleAssignment->module->code }}</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -120,7 +120,7 @@
                   </table>
                   @endif
 
-                  <table>
+                  <table class="table table-bordered">
                      <tr>
                        <td><a class="nav-link active" href="{{ url('academic/staff-module-assignment/'.$module_assignment->id.'/module-attendance') }}">{{ __('Module Attendance') }}</a></td>
                      </tr>

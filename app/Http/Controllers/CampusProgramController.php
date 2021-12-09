@@ -105,8 +105,7 @@ class CampusProgramController extends Controller
                'campus_program'=>$campus_program,
                'department'=>Department::findOrFail($campus_program->program->department_id)
             ];
-            $pdf = PDF::loadView('dashboard.academic.reports.students-in-campus-program', $data)->setPaper('a4','landscape');
-            return $pdf->stream();
+            return view('dashboard.academic.reports.students-in-campus-program', $data);
         }catch(\Exception $e){
             return redirect()->back()->with('error','Unable to get the resource specified in this request');
         }
