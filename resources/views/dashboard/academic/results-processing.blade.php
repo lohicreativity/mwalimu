@@ -113,15 +113,17 @@
                     <select name="semester_id" class="form-control" required>
                        <option value="">Select Semester</option>
                        @foreach($semesters as $semester)
-                       <option value="{{ $semester->id }}" @if($active_semester) 
-                        @if($active_semester->id == $semester->id) selected="selected" @endif 
-                       @endif>{{ $semester->name }}</option>
-                       @endforeach
-                       <option value="SUPPLEMENTARY" 
                        @if($active_semester) 
-                        @if(App\Utils\Util::stripSpacesUpper($active_semester->name) == App\Utils\Util::stripSpacesUpper('Semester 2')) 
-                        selected="selected" @endif 
-                       @endif>Supplementary</option>
+                        @if($active_semester->id == $semester->id) 
+                       <option value="{{ $semester->id }}" selected="selected">{{ $semester->name }}</option>
+                       @endif
+                       @endif
+                       @endforeach
+                       @if($active_semester) 
+                        @if(App\Utils\Util::stripSpacesUpper($active_semester->name) == App\Utils\Util::stripSpacesUpper('Semester 2'))
+                       <option value="SUPPLEMENTARY" selected="selected">Supplementary</option>
+                       @endif
+                       @endif
                     </select>
                     {!! Form::input('hidden','study_academic_year_id',$study_academic_year->id) !!}
                     {!! Form::input('hidden','campus_id',$campus->id) !!}
