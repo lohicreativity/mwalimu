@@ -144,7 +144,7 @@
                 <!-- /.card-body -->
 
                 <div class="card-footer">
-                  <button type="submit" class="btn btn-primary">{{ __('Save Changes') }}</button>
+                  <button type="submit" class="btn btn-primary">{{ __('Add Module') }}</button>
                 </div>
               {!! Form::close() !!}
             </div>
