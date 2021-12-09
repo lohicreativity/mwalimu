@@ -171,7 +171,7 @@
                 <div class="card-footer">
                   <button type="submit" class="btn btn-primary">{{ __('Add Grading Policy') }}</button>
                   @if($study_academic_year)
-                    @if(count($study_academic_year->gradingPolicies) == 0)
+                    @if(count($study_academic_year->gradingPolicies) == 0 && $study_academic_year->id == session('active_academic_year_id'))
                   <a href="{{ url('academic/grading-policy/'.$study_academic_year->id.'/assign-as-previous') }}" class="btn btn-primary ss-right">Assign as Previous</a>
                     @endif
                   @endif
