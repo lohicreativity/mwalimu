@@ -266,6 +266,8 @@
                       @endforeach
                     </tbody>
                     </table>
+                    @else
+                    <p>No Staff Module Assignment Created.</p>
                     @endif
                     
               </div>
