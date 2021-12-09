@@ -165,7 +165,7 @@
                                    <div class="row">
                    <div class="form-group col-8">
                     {!! Form::label('','Module') !!}<br>
-                    <select name="module_id" class="form-control ss-select-tags ss-select-module" required style="width: 100%;" data-year-target="#ss-year-{{ $module->id }}" data-semester-target="#ss-semester-{{ $module->id }}" data-token="{{ session()->token() }}" data-source-url="{{ url('api/v1/get-module-by-id') }}">
+                    <select name="module_id" class="form-control ss-select-tags ss-select-module" required style="width: 100%;" data-year-target="#ss-year-{{ $assignment->module_id }}" data-semester-target="#ss-semester-{{ $assignment->module_id }}" data-token="{{ session()->token() }}" data-source-url="{{ url('api/v1/get-module-by-id') }}">
                        <option value="">Select Module</option>
                        @foreach($inclusive_modules as $module)
                        <option value="{{ $module->id }}" @if($assignment->module_id == $module->id) selected="selected" @else disabled="disabled" @endif>{{ $module->name }} - {{ $module->code }}</option>
