@@ -36,11 +36,17 @@ class GradingPolicyController extends Controller
          DB::beginTransaction();
          $academic_year = StudyAcademicYear::latest()->take(1)->skip(1)->first();
          if(!$academic_year){
+         	DB::rollback();
              return redirect()->back()->with('error','No previous study academic year');
          }
          $policies = GradingPolicy::whereHas('studyAcademicYear',function($query) use ($academic_year){
                   $query->where('id',$academic_year->id);
          })->get();
+
+         if(count($policies) == 0){
+             DB::rollback();
+             return redirect()->back()->with('error','No previous grading policies');
+         }
          
          foreach ($policies as $key => $policy){
             $system = new GradingPolicy;
