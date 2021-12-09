@@ -94,10 +94,12 @@
                 <div class="row">
                   <div class="form-group col-6">
                     {!! Form::label('','Programme') !!}
-                    <select name="campus_program_id" class="form-control" required>
+                    <select name="campus_program_id" class="form-control" required id="ss-select-program-modules" data-target="#ss-select-module" data-source-url="{{ url('api/v1/get-program-modules') }}" data-token="{{ session()->token() }}" data-academic-year-id="{{ $study_academic_year->id }}">
                        <option value="">Select Programme</option>
-                       @foreach($campus_programs as $program)
-                          <option value="{{ $program->id }}">{{ $program->program->name }}</option>
+                        @foreach($campus_programs as $program)
+                          @for($i = 1; $i <= $program->program->min_duration; $i++)
+                          <option value="{{ $program->id }}_year_{{ $i }}">{{ $program->program->name }} - Year {{ $i }}</option>
+                          @endfor
                        @endforeach
                     </select>
                     {!! Form::input('hidden','study_academic_year_id',$study_academic_year->id) !!}
@@ -107,7 +109,7 @@
                 <div class="row">
                    <div class="form-group col-6">
                     {!! Form::label('','Module') !!}
-                    <select name="module_id" class="form-control" required>
+                    <select name="module_id" class="form-control" required id="ss-select-module">
                        <option value="">Select Module</option>
                        @foreach($modules as $module)
                           <option value="{{ $module->id }}">{{ $module->name }} - {{ $module->code }}</option>

@@ -38,6 +38,15 @@ class Module extends Model
     	return $this->hasMany(ModuleAssignment::class,'module_id');
     }
 
+
+    /**
+     * Establish one to many relationship with program module assignments
+     */
+    public function programModuleAssignments()
+    {
+        return $this->hasMany(ProgramModuleAssignment::class,'module_id');
+    }
+
     /**
      * Set name attribute
      */
