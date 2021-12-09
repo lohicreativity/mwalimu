@@ -81,7 +81,7 @@
                     <th>Module</th> 
                     <th>Year</th>
                     <th>Semester</th>
-                    <th>Credit</th>
+                    <th>Credits</th>
                   </tr>
                   </thead>
                   <tbody>

@@ -124,7 +124,9 @@ class ModuleAssignmentController extends Controller
              'module_assignment'=>$module_assignment,
              'campus_program'=>CampusProgram::with(['students.registrations'=>function($query) use($module_assignment){
                    $query->where('study_academic_year_id',$module_assignment->study_academic_year_id);
-             },'streams.groups','groups'])->find($module_assignment->programModuleAssignment->campus_program_id),
+             },'streams'=>function($query) use ($module_assignment){
+                   $query->where('study_academic_year_id',$module_assignment->study_academic_year_id);
+             },'streams.groups'])->find($module_assignment->programModuleAssignment->campus_program_id),
           ];
           return view('dashboard.academic.module-attendance',$data)->withTitle('Module Attendance');
        }catch(\Exception $e){
@@ -158,7 +160,9 @@ class ModuleAssignmentController extends Controller
                     'study_academic_year'=>$module_assignment->studyAcademicYear,
                     'staff'=>$module_assignment->staff,
                     'module'=>$module_assignment->module,
-                    'students'=>Student::where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id)->get()
+                    'students'=>Student::whereHas('registrations',function($query) use ($module_assignment){
+                         $query->where('study_academic_year_id',$module_assignment->study_academic_year_id)->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id);
+                      })->get()
                  ];
                  return view('dashboard.academic.reports.students-in-core-module', $data);
              }
