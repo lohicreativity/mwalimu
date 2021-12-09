@@ -61,6 +61,7 @@
                   <h3>Attendance</h3>
                 </div>
                 <div class="card-body">
+                @if($module_assignment->programModuleAssignment->category == 'COMPULSORY')
             <table class="table table-bordered">
                     <thead>
                        <tr>
@@ -116,6 +117,13 @@
                        </tr>
                     
                     </tbody>
+                  </table>
+                  @endif
+
+                  <table>
+                     <tr>
+                       <td><a class="nav-link active" href="{{ url('academic/staff-module-assignment/'.$module_assignment->id.'/module-attendance') }}">{{ __('Module Attendance') }}</a></td>
+                     </tr>
                   </table>
                 </div>
               </div>
