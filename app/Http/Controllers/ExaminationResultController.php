@@ -528,6 +528,12 @@ class ExaminationResultController extends Controller
         })->with(['examinationResults.moduleAssignment'=>function($query) use($request){
         	$query->where('module_id',$request->get('module_id'));
         }])->get();
+
+      if(count($students) != 0){
+         if(count($students[0]->examinationResults) == 0){
+             return redirect()->back()->with('error','No results processed yet');
+         }
+      }
     	$data = [
     		'program'=>$module_assignment->programModuleAssignment->campusProgram->program,
             'campus'=>$module_assignment->programModuleAssignment->campusProgram->campus,
