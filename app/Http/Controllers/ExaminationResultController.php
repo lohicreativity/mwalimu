@@ -472,6 +472,12 @@ class ExaminationResultController extends Controller
         $students = Student::with(['examinationResults'=>function($query) use($assignmentIds){
         	$query->whereIn('module_assignment_id',$assignmentIds);
         }])->where('campus_program_id',$campus_program->id)->where('year_of_study',explode('_',$request->get('campus_program_id'))[2])->get();
+
+        if(count($students) != 0){
+           if(count($students[0]->examinationResults) == 0){
+              return redirect()->back()->with('error','No results processed yet for this program');
+           }
+        }
         $data = [
            'campus'=>$campus_program->campus,
            'program'=>$campus_program->program,
