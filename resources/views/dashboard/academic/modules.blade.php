@@ -95,9 +95,10 @@
                   <div class="form-group col-6">
                     {!! Form::label('','Department') !!}
                     <select name="department_id" class="form-control" required>
-                      <option value="">Select Department</option>
                       @foreach($departments as $department)
-                      <option value="{{ $department->id }}">{{ $department->name }}</option>
+                      @if($staff->department_id == $department->id)
+                      <option value="{{ $department->id }}" selected="selected">{{ $department->name }}</option>
+                      @endif
                       @endforeach
                     </select>
                   </div>
@@ -241,9 +242,10 @@
                                     <div class="form-group col-6">
                                       {!! Form::label('','Department') !!}
                                       <select name="department_id" class="form-control" required>
-                                        <option value="">Select Department</option>
                                         @foreach($departments as $department)
-                                        <option value="{{ $department->id }}" @if($module->department_id == $department->id) selected="selected" @endif>{{ $department->name }}</option>
+                                        @if($staff->department_id == $department->id)
+                                        <option value="{{ $department->id }}" selected="selected">{{ $department->name }}</option>
+                                        @endif
                                         @endforeach
                                       </select>
                                     </div>
