@@ -22,8 +22,8 @@
           <i class="far fa-user"></i>
         </a>
         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-          <a href="#" class="dropdown-item">
-            <i class="fas fa-lock- mr-2"></i> Profile
+          <a href="{{ url('change-password') }}" class="dropdown-item">
+            <i class="fas fa-lock mr-2"></i> Change Password
           </a>
           <div class="dropdown-divider"></div>
           <!-- Authentication -->
