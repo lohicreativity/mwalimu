@@ -66,6 +66,7 @@
             <!-- /.card -->
              
             @if($study_academic_year)
+            @can('add-examination-policy')
             <div class="card">
               <div class="card-header">
                 <h3 class="card-title">Add Examination Policy - {{ $study_academic_year->academicYear->year }}</h3>
@@ -205,6 +206,7 @@
               {!! Form::close() !!}
             </div>
             <!-- /.card -->
+            @endcan
             @endif
 
             @if(count($examination_policies) != 0 && $study_academic_year)
@@ -243,11 +245,15 @@
                     <td>{{ $policy->module_pass_mark }}</td>
                     <td>{{ $policy->type }}</td>
                     <td>
+                      @can('edit-examination-policy')
                       <a class="btn btn-info btn-sm" @if($study_academic_year->id == session('active_academic_year_id')) href="#" data-toggle="modal" data-target="#ss-edit-policy-{{ $policy->id }}" @else disabled="disabled" @endif>
                               <i class="fas fa-pencil-alt">
                               </i>
                               Edit
                        </a>
+                       @endcan
+
+
                        <div class="modal fade" id="ss-edit-policy-{{ $policy->id }}">
                         <div class="modal-dialog modal-lg">
                           <div class="modal-content">
@@ -396,12 +402,14 @@
                         <!-- /.modal-dialog -->
                       </div>
                       <!-- /.modal -->
-
+                      
+                      @can('delete-examination-policy')
                       <a class="btn btn-danger btn-sm" @if($study_academic_year->id == session('active_academic_year_id')) href="#" data-toggle="modal" data-target="#ss-delete-policy-{{ $policy->id }}" @else disabled="disabled" @endif>
                               <i class="fas fa-trash">
                               </i>
                               Delete
                        </a>
+                       @endcan
 
                        <div class="modal fade" id="ss-delete-policy-{{ $policy->id }}">
                         <div class="modal-dialog modal-lg">

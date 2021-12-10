@@ -109,7 +109,11 @@
                              @endif
                            @endforeach
                            @if($stream_created && $study_academic_year->id == session('active_academic_year_id'))
+
+                           @can('reset-stream')
                           <p><a href="{{ url('academic/stream-reset?year_of_study='.$i.'&campus_program_id='.$cp->id.'&study_academic_year_id='.$study_academic_year->id) }}">{{ __('Reset Streams') }}</a></p>
+                           @endcan
+
                            @endif
                          </td>
                          <td>   
@@ -118,10 +122,18 @@
                             @if($stream->campus_program_id == $cp->id && $stream->year_of_study == $i)
                             <p class="ss-no-margin"><a href="{{ url('academic/stream/'.$stream->id.'/attendance') }}" target="_blank">Stream_{{ $stream->name }}_({{ $stream->number_of_students }})</a></p>
                             @if($study_academic_year->id == session('active_academic_year_id'))
+
+                            @can('delete-stream')
                             <a class="ss-font-xs ss-color-danger" href="{{ url('academic/stream/'.$stream->id.'/destroy') }}">Delete</a><br>
+                            @endcan
+
                             @endif
                             @if(count($stream->groups) == 0 && $study_academic_year->id == session('active_academic_year_id'))
+
+                            @can('create-group')
                             <a class="ss-font-xs" href="#" data-toggle="modal" data-target="#ss-add-group-{{ $i }}-{{ $stream->id }}">Create Groups</a>
+                            @endcan
+
                             @endif
                              @php
                                $stream_created = true;
@@ -180,7 +192,11 @@
                            @endforeach
                              
                            @if(!$stream_created && $study_academic_year->id == session('active_academic_year_id'))
+
+                           @can('create-stream')
                            <a href="#" data-toggle="modal" data-target="#ss-add-stream-{{ $i }}-{{ $cp->id }}">Create Streams</a></a>
+                           @endcan 
+
                            @endif
  
                            <div class="modal fade" id="ss-add-stream-{{ $i }}-{{ $cp->id }}">
@@ -245,7 +261,11 @@
                              @foreach($stream->groups as $group)
                               <p class="ss-no-margin"><a href="{{ url('academic/group/'.$group->id.'/attendance') }}" target="_blank">Group_{{ $group->name }}_Stream_{{ $stream->name }}_({{ $group->number_of_students }})</a></p>
                               @if($study_academic_year->id == session('active_academic_year_id'))
+
+                              @can('delete-group')
                               <a class="ss-font-xs ss-color-danger" href="{{ url('academic/group/'.$group->id.'/destroy')}}">Delete</a>
+                              @endcan 
+
                               @endif
                             @endforeach
                             @endif

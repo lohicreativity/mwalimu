@@ -66,6 +66,7 @@
             <!-- /.card -->
              
             @if($study_academic_year)
+            @can('add-elective-policy')
             <div class="card">
               <div class="card-header">
                 <h3 class="card-title">Add Elective Policy - {{ $study_academic_year->academicYear->year }}</h3>
@@ -126,6 +127,7 @@
               {!! Form::close() !!}
             </div>
             <!-- /.card -->
+            @endcan
             @endif
 
             @if(count($elective_policies) != 0 && $study_academic_year)
@@ -158,11 +160,13 @@
                     <td>{{ $policy->year_of_study }}</td>
                     <td>{{ $policy->number_of_options }}</td>
                     <td>
+                      @can('edit-elective-policy')
                       <a class="btn btn-info btn-sm" href="#" @if($study_academic_year->id == session('active_academic_year_id')) data-toggle="modal" data-target="#ss-edit-policy-{{ $policy->id }}" @else disabled="disabled" @endif>
                               <i class="fas fa-pencil-alt">
                               </i>
                               Edit
                        </a>
+                       @endcan
                        <div class="modal fade" id="ss-edit-policy-{{ $policy->id }}">
                         <div class="modal-dialog modal-lg">
                           <div class="modal-content">
@@ -173,6 +177,13 @@
                               </button>
                             </div>
                             <div class="modal-body">
+                              @php
+                                  $number_of_options = [
+                                     'class'=>'form-control',
+                                     'placeholder'=>'Number of options',
+                                     'required'=>true
+                                  ];
+                               @endphp
                                {!! Form::open(['url'=>'academic/elective-policy/update','class'=>'ss-form-processing']) !!}
 
                                <div class="row">
@@ -228,12 +239,14 @@
                         <!-- /.modal-dialog -->
                       </div>
                       <!-- /.modal -->
-
+                      
+                      @can('delete-elective-policy')
                       <a class="btn btn-danger btn-sm" @if($study_academic_year->id == session('active_academic_year_id')) href="#" data-toggle="modal" data-target="#ss-delete-policy-{{ $policy->id }}" @else disabled="disabled" @endif>
                               <i class="fas fa-trash">
                               </i>
                               Delete
                        </a>
+                      @endcan
 
                        <div class="modal fade" id="ss-delete-policy-{{ $policy->id }}">
                         <div class="modal-dialog modal-lg">

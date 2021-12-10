@@ -38,7 +38,8 @@
       <div class="container-fluid">
         <div class="row">
           <div class="col-12">
-
+           
+            @can('add-department')
             <!-- general form elements -->
             <div class="card card-default">
               <div class="card-header">
@@ -113,6 +114,7 @@
               {!! Form::close() !!}
             </div>
             <!-- /.card -->
+            @endcan
 
             @if(count($departments) != 0)
             <div class="card">
@@ -143,11 +145,13 @@
                       @endforeach
                     </td>
                     <td>
+                      @can('edit-department')
                       <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-edit-department-{{ $department->id }}">
                               <i class="fas fa-pencil-alt">
                               </i>
                               Edit
                        </a>
+                      @endcan
 
                        <div class="modal fade" id="ss-edit-department-{{ $department->id }}">
                         <div class="modal-dialog modal-lg">
@@ -159,6 +163,25 @@
                               </button>
                             </div>
                             <div class="modal-body">
+                                @php
+                                    $name = [
+                                       'placeholder'=>'Name',
+                                       'class'=>'form-control',
+                                       'required'=>true
+                                    ];
+
+                                    $abbreviation = [
+                                       'placeholder'=>'Abbreviation',
+                                       'class'=>'form-control',
+                                       'required'=>true
+                                    ];
+
+                                    $description = [
+                                       'placeholder'=>'Description',
+                                       'class'=>'form-control',
+                                       'rows'=>2
+                                    ];
+                                @endphp
                                 {!! Form::open(['url'=>'academic/department/update','class'=>'ss-form-processing']) !!}
 
                                     <div class="row">
@@ -214,11 +237,13 @@
                         <!-- /.modal-dialog -->
                       </div>
                       <!-- /.modal -->
+                      @can('delete-department')
                       <a class="btn btn-danger btn-sm" href="#" data-toggle="modal" data-target="#ss-delete-department-{{ $department->id }}">
                               <i class="fas fa-trash">
                               </i>
                               Delete
                        </a>
+                       @endcan
 
                        <div class="modal fade" id="ss-delete-department-{{ $department->id }}">
                         <div class="modal-dialog modal-lg">

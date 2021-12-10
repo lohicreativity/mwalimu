@@ -90,11 +90,13 @@
                     <td>{{ $program->program->name }}</td>
                     <td>{{ $program->program->code }}</td>
                     <td>
+                      @can('view-programme-modules')
                       <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-view-modules-{{ $program->id }}">
                               <i class="fas fa-list-alt">
                               </i>
                               View Modules
                        </a>
+                       @endcan
                        <div class="modal fade" id="ss-view-modules-{{ $program->id }}">
                         <div class="modal-dialog modal-xl">
                           <div class="modal-content">
@@ -163,18 +165,22 @@
                         <!-- /.modal-dialog -->
                       </div>
                       <!-- /.modal -->
+                      @can('assign-programme-modules')
                       <a class="btn btn-info btn-sm" @if($study_academic_year->id == session('active_academic_year_id')) href="{{ url('academic/program-module-assignment/'.$study_academic_year->id.'/'.$program->id.'/assign') }}" @else disabled="disabled" @endif>
                               <i class="fas fa-plus">
                               </i>
                               Assign Module
                        </a>
+                      @endcan
                        
                        @if(count($program->programModuleAssignments) == 0)
+                       @can('assign-programme-modules')
                        <a class="btn btn-info btn-sm" @if($study_academic_year->id == session('active_academic_year_id')) href="{{ url('academic/program-module-assignment/'.$study_academic_year->id.'/'.$program->id.'/assign-as-previous') }}" @else disabled="disabled" @endif>
                               <i class="fas fa-plus">
                               </i>
                               Assign as Previous
                        </a>
+                       @endcan
                        @endif
                        
                     </td>

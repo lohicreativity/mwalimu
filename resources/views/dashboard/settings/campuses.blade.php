@@ -38,7 +38,8 @@
       <div class="container-fluid">
         <div class="row">
           <div class="col-12">
-
+            
+            @can('add-campus')
             <!-- general form elements -->
             <div class="card card-default">
               <div class="card-header">
@@ -143,6 +144,7 @@
               {!! Form::close() !!}
             </div>
             <!-- /.card -->
+            @endcan
 
             @if(count($campuses) != 0)
             <div class="card">
@@ -165,11 +167,13 @@
                     <td>{{ $campus->name }}</td>
                     <td>{{ $campus->abbreviation }}</td>
                     <td>
+                      @can('view-campus-programme')
                       <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-view-campus-{{ $campus->id }}">
                               <i class="fas fa-list-alt">
                               </i>
                               View Programmes
                        </a>
+                      @endcan
 
                        <div class="modal fade" id="ss-view-campus-{{ $campus->id }}">
                         <div class="modal-dialog modal-lg">
@@ -216,17 +220,21 @@
                         <!-- /.modal-dialog -->
                       </div>
                       <!-- /.modal -->
+                      @can('assign-campus-programme')
                       <a class="btn btn-info btn-sm" href="{{ url('academic/campus/'.$campus->id.'/campus-programs') }}">
                               <i class="fas fa-plus">
                               </i>
                               Assign Programmes
                        </a>
-
+                      @endcan
+                      
+                      @can('edit-campus')
                       <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-edit-campus-{{ $campus->id }}">
                               <i class="fas fa-pencil-alt">
                               </i>
                               Edit
                        </a>
+                       @endcan
 
                        <div class="modal fade" id="ss-edit-campus-{{ $campus->id }}">
                         <div class="modal-dialog modal-lg">
@@ -238,66 +246,97 @@
                               </button>
                             </div>
                             <div class="modal-body">
+                               @php
+                                  $name = [
+                                     'placeholder'=>'Name',
+                                     'class'=>'form-control',
+                                     'required'=>true
+                                  ];
+
+                                  $abbreviation = [
+                                     'placeholder'=>'Abbreviation',
+                                     'class'=>'form-control',
+                                     'required'=>true
+                                  ];
+
+                                  $phone = [
+                                     'placeholder'=>'Phone',
+                                     'class'=>'form-control',
+                                     'required'=>true
+                                  ];
+
+                                  $email = [
+                                     'placeholder'=>'Email',
+                                     'class'=>'form-control',
+                                     'required'=>true
+                                  ];
+
+                                  $street = [
+                                     'placeholder'=>'Street',
+                                     'class'=>'form-control',
+                                     'required'=>true
+                                  ];
+                              @endphp
 
                                 {!! Form::open(['url'=>'settings/campus/update','class'=>'ss-form-processing']) !!}
 
                                      <div class="row">
-                  <div class="form-group col-8">
-                    {!! Form::label('','Name') !!}
-                    {!! Form::text('name',$campus->name,$name) !!}
+                                      <div class="form-group col-8">
+                                        {!! Form::label('','Name') !!}
+                                        {!! Form::text('name',$campus->name,$name) !!}
 
-                    {!! Form::input('hidden','campus_id',$campus->id) !!}
-                  </div>
-                  <div class="form-group col-4">
-                    {!! Form::label('','Abbreviation') !!}
-                    {!! Form::text('abbreviation',$campus->abbreviation,$abbreviation) !!}
-                  </div>
-                 </div>
-                 <div class="row">
-                  <div class="form-group col-6">
-                    {!! Form::label('','Phone') !!}
-                    {!! Form::text('phone',$campus->phone,$phone) !!}
-                  </div>
-                  <div class="form-group col-6">
-                    {!! Form::label('','Email') !!}
-                    {!! Form::email('email',$campus->email,$email) !!}
-                  </div>
-                 </div>
-                 <div class="row">
-                  <div class="form-group col-6">
-                    {!! Form::label('','Region') !!}
-                    <select name="region_id" class="form-control ss-select-regions" required id="ss-select-regions-{{ $campus->id }}" data-target="#ss-select-districts-{{ $campus->id }}" data-token="{{ session()->token() }}" data-source-url="{{ url('api/v1/get-districts') }}">
-                      <option value="">Select Region</option>
-                      @foreach($regions as $region)
-                      <option value="{{ $region->id }}" @if($campus->region_id = $region->id) selected="selected" @endif>{{ $region->name }}</option>
-                      @endforeach
-                    </select>
-                  </div>
-                  <div class="form-group col-6">
-                    {!! Form::label('','District') !!}
-                    <select name="district_id" class="form-control ss-select-districts" required id="ss-select-districts-{{ $campus->id }}" data-target="#ss-select-wards-{{ $campus->id }}" data-token="{{ session()->token() }}" data-source-url="{{ url('api/v1/get-wards') }}">
-                      <option value="">Select District</option>
-                      @foreach($districts as $district)
-                      <option value="{{ $district->id }}" @if($campus->district_id == $district->id) selected="selected" @endif>{{ $district->name }}</option>
-                      @endforeach
-                    </select>
-                  </div>
-                 </div>
-                 <div class="row">
-                  <div class="form-group col-6">
-                    {!! Form::label('','Ward') !!}
-                    <select name="ward_id" class="form-control ss-select-wards" required id="ss-select-wards-{{ $campus->id }}" data-token="{{ session()->token() }}">
-                      <option value="">Select Ward</option>
-                      @foreach($wards as $ward)
-                      <option value="{{ $ward->id }}" @if($campus->ward_id = $ward->id) selected="selected" @endif>{{ $ward->name }}</option>
-                      @endforeach
-                    </select>
-                  </div>
-                  <div class="form-group col-6">
-                    {!! Form::label('','Street') !!}
-                    {!! Form::text('street',$campus->street,$street) !!}
-                  </div>
-                 </div>
+                                        {!! Form::input('hidden','campus_id',$campus->id) !!}
+                                      </div>
+                                      <div class="form-group col-4">
+                                        {!! Form::label('','Abbreviation') !!}
+                                        {!! Form::text('abbreviation',$campus->abbreviation,$abbreviation) !!}
+                                      </div>
+                                     </div>
+                                     <div class="row">
+                                      <div class="form-group col-6">
+                                        {!! Form::label('','Phone') !!}
+                                        {!! Form::text('phone',$campus->phone,$phone) !!}
+                                      </div>
+                                      <div class="form-group col-6">
+                                        {!! Form::label('','Email') !!}
+                                        {!! Form::email('email',$campus->email,$email) !!}
+                                      </div>
+                                     </div>
+                                     <div class="row">
+                                      <div class="form-group col-6">
+                                        {!! Form::label('','Region') !!}
+                                        <select name="region_id" class="form-control ss-select-regions" required id="ss-select-regions-{{ $campus->id }}" data-target="#ss-select-districts-{{ $campus->id }}" data-token="{{ session()->token() }}" data-source-url="{{ url('api/v1/get-districts') }}">
+                                          <option value="">Select Region</option>
+                                          @foreach($regions as $region)
+                                          <option value="{{ $region->id }}" @if($campus->region_id = $region->id) selected="selected" @endif>{{ $region->name }}</option>
+                                          @endforeach
+                                        </select>
+                                      </div>
+                                      <div class="form-group col-6">
+                                        {!! Form::label('','District') !!}
+                                        <select name="district_id" class="form-control ss-select-districts" required id="ss-select-districts-{{ $campus->id }}" data-target="#ss-select-wards-{{ $campus->id }}" data-token="{{ session()->token() }}" data-source-url="{{ url('api/v1/get-wards') }}">
+                                          <option value="">Select District</option>
+                                          @foreach($districts as $district)
+                                          <option value="{{ $district->id }}" @if($campus->district_id == $district->id) selected="selected" @endif>{{ $district->name }}</option>
+                                          @endforeach
+                                        </select>
+                                      </div>
+                                     </div>
+                                     <div class="row">
+                                      <div class="form-group col-6">
+                                        {!! Form::label('','Ward') !!}
+                                        <select name="ward_id" class="form-control ss-select-wards" required id="ss-select-wards-{{ $campus->id }}" data-token="{{ session()->token() }}">
+                                          <option value="">Select Ward</option>
+                                          @foreach($wards as $ward)
+                                          <option value="{{ $ward->id }}" @if($campus->ward_id = $ward->id) selected="selected" @endif>{{ $ward->name }}</option>
+                                          @endforeach
+                                        </select>
+                                      </div>
+                                      <div class="form-group col-6">
+                                        {!! Form::label('','Street') !!}
+                                        {!! Form::text('street',$campus->street,$street) !!}
+                                      </div>
+                                     </div>
                                       <div class="ss-form-actions">
                                        <button type="submit" class="btn btn-primary">{{ __('Save Changes') }}</button>
                                       </div>
@@ -313,11 +352,13 @@
                         <!-- /.modal-dialog -->
                       </div>
                       <!-- /.modal -->
+                      @can('delete-campus')
                       <a class="btn btn-danger btn-sm" href="#" data-toggle="modal" data-target="#ss-delete-campus-{{ $campus->id }}">
                               <i class="fas fa-trash">
                               </i>
                               Delete
                        </a>
+                      @endcan
 
                        <div class="modal fade" id="ss-delete-campus-{{ $campus->id }}">
                         <div class="modal-dialog modal-lg">

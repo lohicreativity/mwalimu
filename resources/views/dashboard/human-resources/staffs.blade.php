@@ -42,15 +42,26 @@
             <div class="card">
               <div class="card-header">
                 <h3 class="card-title">{{ __('Staff Members') }}</h3><br>
-                <a href="{{ url('staff/staff/create') }}" class="btn btn-info">{{ __('Add Staff') }}</a>
+                @can('add-staff')
+                <a href="{{ url('staff/staff/create') }}" class="btn btn-info ss-right">{{ __('Add Staff') }}</a>
+                @endcan
               </div>
               <!-- /.card-header -->
               <div class="card-body">
                 @if(count($staffs) != 0)
-                <table id="example2" class="table table-bordered table-hover">
+                {!! Form::open(['url'=>'staff/staff-members','method'=>'GET']) !!}
+                <div class="input-group ss-stretch">
+                 <input type="text" name="query" class="form-control" placeholder="Search for staff name of PF number">
+                 <span class="input-group-btn">
+                   <button class="btn btn-default" type="submit"><span class="fa fa-search"></span></button>
+                 </span>
+                </div>
+                {!! Form::close() !!}
+                <table id="example2" class="table table-bordered table-hover ss-margin-top">
                   <thead>
                   <tr>
                     <th>Name</th>
+                    <th>PF Number</th>
                     <th>Category</th>
                     <th>Email</th>
                     <th>Phone</th>
@@ -61,22 +72,26 @@
                   @foreach($staffs as $staff)
                   <tr>
                     <td>{{ $staff->title }} {{ $staff->first_name }} {{ $staff->middle_name }} {{ $staff->surname }}</td>
+                    <td>{{ $staff->pf_number }}</td>
                     <td>{{ $staff->category }}</td>
                     <td>{{ $staff->email }}</td>
                     <td>{{ $staff->phone }}</td>
                     <td>
+                      @can('view-staff')
                       <a class="btn btn-info btn-sm" href="{{ url('staff/staff/'.$staff->id.'/show') }}">
                               <i class="fas fa-id-card">
                               </i>
                               View
                        </a>
-
+                      @endcan
+                        
+                      @can('assign-staff-roles')
                        <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-roles-staff-{{ $staff->id }}">
                               <i class="fas fa-user">
                               </i>
                               Assign Roles
                        </a>
-
+                      @endcan
 
                        <div class="modal fade" id="ss-roles-staff-{{ $staff->id }}">
                         <div class="modal-dialog modal-lg">
@@ -122,19 +137,22 @@
                         <!-- /.modal-dialog -->
                       </div>
                       <!-- /.modal -->
-
+                      
+                      @can('edit-staff')
                       <a class="btn btn-info btn-sm" href="{{ url('staff/staff/'.$staff->id.'/edit') }}">
                               <i class="fas fa-pencil-alt">
                               </i>
                               Edit
                        </a>
+                       @endcan
 
-                       
+                       @can('delete-staff')
                       <a class="btn btn-danger btn-sm" href="#" data-toggle="modal" data-target="#ss-delete-staff-{{ $staff->id }}">
                               <i class="fas fa-trash">
                               </i>
                               Delete
                        </a>
+                       @endcan
 
                        <div class="modal fade" id="ss-delete-staff-{{ $staff->id }}">
                         <div class="modal-dialog modal-lg">
@@ -174,7 +192,7 @@
                   </tbody>
                 </table>
                 <div class="ss-pagination-links">
-                {!! $staffs->render() !!}
+                {!! $staffs->appends($request->except('page'))->render() !!}
                 </div>
                 @endif
               </div>

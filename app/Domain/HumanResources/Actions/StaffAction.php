@@ -53,7 +53,7 @@ class StaffAction implements StaffInterface{
                 $staff->disability_status_id = $request->get('disability_status_id');
                 $staff->user_id = $user->id;
                 if($request->hasFile('image')){
-                  $destination = SystemLocation::uploadsDirectory();
+                  $destination = SystemLocation::avatarsDirectory();
                   $request->file('image')->move($destination, $request->file('image')->getClientOriginalName());
                   // $file_name = SystemLocation::renameFile($destination, $request->file('image')->getClientOriginalName(), $request->file('image')->guessClientExtension());
 
@@ -92,7 +92,7 @@ class StaffAction implements StaffInterface{
                 $staff->street = $request->get('street');
                 $staff->disability_status_id = $request->get('disability_status_id');
                 if($request->hasFile('image')){
-                  $destination = SystemLocation::uploadsDirectory();
+                  $destination = SystemLocation::avatarsDirectory();
                   $request->file('image')->move($destination, $request->file('image')->getClientOriginalName());
                   // $file_name = SystemLocation::renameFile($destination, $request->file('image')->getClientOriginalName(), $request->file('image')->guessClientExtension());
 
@@ -101,4 +101,19 @@ class StaffAction implements StaffInterface{
                 $staff->save();
             
 	}
+
+    public function updateDetails(Request $request){
+                $staff = Staff::find($request->get('staff_id'));
+                $staff->phone = $request->get('phone');
+                $staff->address = $request->get('address');
+                if($request->hasFile('image')){
+                  $destination = SystemLocation::avatarsDirectory();
+                  $request->file('image')->move($destination, $request->file('image')->getClientOriginalName());
+                  // $file_name = SystemLocation::renameFile($destination, $request->file('image')->getClientOriginalName(), $request->file('image')->guessClientExtension());
+
+                  $staff->image = $request->file('image')->getClientOriginalName();
+                }
+                $staff->save();
+            
+    }
 }

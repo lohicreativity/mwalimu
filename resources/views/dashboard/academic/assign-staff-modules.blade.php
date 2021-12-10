@@ -42,9 +42,15 @@
             <div class="card card-default">
            <div class="card-header">
                 <ul class="nav nav-tabs">
+                  @can('view-modules')
                   <li class="nav-item"><a class="nav-link" href="{{ url('academic/modules') }}">{{ __('Modules') }}</a></li>
+                  @endcan
+                  @can('view-module-assignments')
                   <li class="nav-item"><a class="nav-link active" href="{{ url('academic/module-assignments?study_academic_year_id='.session('active_academic_year_id')) }}">{{ __('Module Assignments') }}</a></li>
+                  @endcan
+                  @can('view-module-assignment-requests')
                   <li class="nav-item"><a class="nav-link" href="{{ url('academic/module-assignment-requests') }}">{{ __('Modules Assignment Requests') }}</a></li>
+                  @endcan
                 </ul>
               </div>
             </div>
@@ -137,7 +143,11 @@
                           @if(count($assign->module->moduleAssignments) != 0)
                             <p class="ss-font-xs ss-no-margin ss-bold">Facilitator:</p>
                             @foreach($assign->module->moduleAssignments as $modAssign)
-                            <p class="ss-font-xs ss-no-margin ss-italic">{{ $modAssign->staff->title }} {{ $modAssign->staff->first_name }} {{ $modAssign->staff->middle_name }} {{ $modAssign->staff->surname }}<a href="#" data-toggle="modal" data-target="#ss-delete-module-assignment-{{ $modAssign->id }}" class="ss-color-danger ss-right">Remove</a></p>
+                            <p class="ss-font-xs ss-no-margin ss-italic">{{ $modAssign->staff->title }} {{ $modAssign->staff->first_name }} {{ $modAssign->staff->middle_name }} {{ $modAssign->staff->surname }}
+                            
+                            @can('delete-module-facilitator')
+                            <a href="#" data-toggle="modal" data-target="#ss-delete-module-assignment-{{ $modAssign->id }}" class="ss-color-danger ss-right">Remove</a></p>
+                            @endcan
 
                             <div class="modal fade" id="ss-delete-module-assignment-{{ $modAssign->id }}">
                         <div class="modal-dialog modal-lg">
@@ -197,11 +207,13 @@
                         </td>
                         <td>
                           @if($assign->module->department_id == $staff->department_id)
+                          @can('assign-module-facilitator')
                           <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-assign-module-{{ $assign->module->id }}">
                               <i class="fas fa-plus">
                               </i>
                               Assign Facilitator
                          </a>
+                         @endcan
                          @else
                          {!! Form::open(['url'=>'academic/module-assignment-request/store','class'=>'ss-form-processing']) !!}
                            {!! Form::input('hidden','program_module_assignment_id',$assign->id) !!}
@@ -213,11 +225,14 @@
                            {!! Form::input('hidden','module_id',$assign->module->id) !!}
 
                            {!! Form::input('hidden','campus_program_id',$assign->campus_program_id) !!}
+
+                         @can('request-module-facilitator')
                          <button type="submit" class="btn btn-info btn-sm" href="">
                               <i class="fas fa-plus">
                               </i>
                               Request Facilitator
                          </button>
+                         @endcan
                          {!! Form::close() !!}
                          @endif
 

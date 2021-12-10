@@ -66,12 +66,12 @@
               </p>
             </a>
             <ul class="nav nav-treeview">
-              <li class="nav-item">
+              <!-- <li class="nav-item">
                 <a href="pages/layout/top-nav.html" class="nav-link">
                   <i class="far fa-users nav-icon"></i>
                   <p>Applicants</p>
                 </a>
-              </li>
+              </li> -->
             </ul>
           </li>
           <li class="nav-item">
@@ -83,12 +83,12 @@
               </p>
             </a>
             <ul class="nav nav-treeview">
-              <li class="nav-item">
+              <!-- <li class="nav-item">
                 <a href="pages/charts/chartjs.html" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Admitted Students</p>
                 </a>
-              </li>
+              </li> -->
             </ul>
           </li>
           <li class="nav-item">
@@ -100,12 +100,12 @@
               </p>
             </a>
             <ul class="nav nav-treeview">
-              <li class="nav-item">
+              <!-- <li class="nav-item">
                 <a href="pages/UI/general.html" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Admitted Students</p>
                 </a>
-              </li>
+              </li> -->
             </ul>
           </li>
           <li class="nav-item">
@@ -117,12 +117,12 @@
               </p>
             </a>
             <ul class="nav nav-treeview">
-              <li class="nav-item">
+              <!-- <li class="nav-item">
                 <a href="{{ url('registration/registered-students') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Registered Students</p>
                 </a>
-              </li>
+              </li> -->
             </ul>
           </li>
           <li class="nav-item">
@@ -134,12 +134,14 @@
               </p>
             </a>
             <ul class="nav nav-treeview">
+              @can('view-assigned-modules')
               <li class="nav-item">
                 <a href="{{ url('academic/staff-module-assignments?study_academic_year_id='.session('active_academic_year_id')) }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Staff Modules</p>
                 </a>
               </li>
+              @endcan
             </ul>
           </li>
           <li class="nav-item">
@@ -151,12 +153,14 @@
               </p>
             </a>
             <ul class="nav nav-treeview">
+              @can('process-examination-results')
               <li class="nav-item">
                 <a href="{{ url('academic/results?study_academic_year_id='.session('active_academic_year_id').'&campus_id='.session('staff_campus_id')) }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>{{ __('Results Processing') }}</p>
                 </a>
               </li>
+              @endcan
               <li class="nav-item">
                 <a href="{{ url('academic/results?study_academic_year_id='.session('active_academic_year_id').'&campus_id='.session('staff_campus_id')) }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
@@ -227,18 +231,22 @@
               </p>
             </a>
             <ul class="nav nav-treeview">
-              <li class="nav-item">
+              @can('add-staff')
+              <!-- <li class="nav-item">
                 <a href="{{ url('staff/staff/create') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Add Staff</p>
                 </a>
-              </li>
+              </li> -->
+              @endcan
+              @can('view-staff-members')
               <li class="nav-item">
                 <a href="{{ url('staff/staff-members') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Staff Members</p>
                 </a>
               </li>
+              @endcan
             </ul>
           </li>
           <li class="nav-item">
@@ -250,54 +258,70 @@
               </p>
             </a>
             <ul class="nav nav-treeview">
+              @can('view-semesters')
               <li class="nav-item">
                 <a href="{{ url('academic/semesters') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>{{ __('Semesters') }}</p>
                 </a>
               </li>
+              @endcan
+              @can('view-study-academic-years')
               <li class="nav-item">
                 <a href="{{ url('academic/study-academic-years') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>{{ __('Study Academic Years') }}</p>
                 </a>
               </li>
+              @endcan
+              @can('view-intakes')
               <li class="nav-item">
                 <a href="{{ url('settings/intakes') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Intakes</p>
                 </a>
               </li>
+              @endcan
+              @can('view-level-of-study')
               <li class="nav-item">
                 <a href="{{ url('settings/levels') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Levels of Study</p>
                 </a>
               </li>
+              @endcan
+              @can('view-awards')
               <li class="nav-item">
                 <a href="{{ url('academic/awards') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Awards</p>
                 </a>
               </li>
+              @endcan
+              @can('view-nta-levels')
               <li class="nav-item">
                 <a href="{{ url('settings/nta-levels') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>NTA Levels</p>
                 </a>
               </li>
+              @endcan
+              @can('view-programmes')
               <li class="nav-item">
                 <a href="{{ url('academic/programs') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>{{ __('Programmes') }}</p>
                 </a>
               </li>
+              @endcan
+              @can('view-modules')
               <li class="nav-item">
                 <a href="{{ url('academic/modules') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>{{ __('Modules') }}</p>
                 </a>
               </li>
+              @endcan
               <!-- <li class="nav-item">
                 <a href="{{ url('academic/academic-years') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
@@ -311,42 +335,54 @@
                   <p>{{ __('Academic Year Programs') }}</p>
                 </a>
               </li> -->
+              @can('view-programme-modules')
               <li class="nav-item">
                 <a href="{{ url('academic/program-module-assignments?study_academic_year_id='.session('active_academic_year_id')) }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>{{ __('Programme Modules') }}</p>
                 </a>
               </li>
+              @endcan
+              @can('view-streams-and-groups')
               <li class="nav-item">
                 <a href="{{ url('academic/streams?study_academic_year_id='.session('active_academic_year_id')) }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>{{ __('Streams and Groups') }}</p>
                 </a>
               </li>
+              @endcan
+              @can('view-elective-deadlines')
               <li class="nav-item">
                 <a href="{{ url('academic/elective-module-limits?study_academic_year_id='.session('active_academic_year_id')) }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>{{ __('Elective Deadlines') }}</p>
                 </a>
               </li>
+              @endcan
+              @can('view-elective-policies')
               <li class="nav-item">
                 <a href="{{ url('academic/elective-policies?study_academic_year_id='.session('active_academic_year_id')) }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>{{ __('Elective Policies') }}</p>
                 </a>
               </li>
+              @endcan
+              @can('view-grading-policies')
               <li class="nav-item">
                 <a href="{{ url('academic/grading-policies?study_academic_year_id='.session('active_academic_year_id')) }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>{{ __('Grading System') }}</p>
                 </a>
               </li>
+              @endcan
+              @can('view-examination-policies')
               <li class="nav-item">
                 <a href="{{ url('academic/examination-policies?study_academic_year_id='.session('active_academic_year_id')) }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>{{ __('Examination Policies') }}</p>
                 </a>
               </li>
+              @endcan
             </ul>
           </li>
           <li class="nav-item">
@@ -358,30 +394,38 @@
               </p>
             </a>
             <ul class="nav nav-treeview">
+              @can('view-campuses')
               <li class="nav-item">
                 <a href="{{ url('settings/campuses') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Campuses</p>
                 </a>
               </li>
+              @endcan
+              @can('view-departments')
               <li class="nav-item">
                 <a href="{{ url('academic/departments') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>{{ __('Departments') }}</p>
                 </a>
               </li>
+              @endcan
+              @can('view-roles')
               <li class="nav-item">
                 <a href="{{ url('settings/roles') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Roles</p>
                 </a>
               </li>
+              @endcan
+              @can('view-system-modules')
               <li class="nav-item">
                 <a href="{{ url('settings/system-modules') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>System Modules</p>
                 </a>
               </li>
+              @endcan
             </ul>
           </li>
           @endif

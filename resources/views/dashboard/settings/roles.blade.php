@@ -105,16 +105,19 @@
                     <td>{{ $role->name }}</td>
                     <td>{{ $role->display_name }}</td>
                     <td>
+                      @can('assign-role-permissions')
                       <a class="btn btn-info btn-sm" href="{{ url('settings/role/'.$role->id.'/permissions') }}">
                               <i class="fas fa-check-circle">
                               </i>
-                              Permissions
+                              Assign Permissions
                        </a>
+                      @can('edit-role')
                       <a class="btn btn-info btn-sm" href="#" @if($role->is_system_role == 1) disabled="disabled" @else data-toggle="modal" data-target="#ss-edit-role-{{ $role->id }}" @endif>
                               <i class="fas fa-pencil-alt">
                               </i>
                               Edit
                        </a>
+                      @endcan
 
                        <div class="modal fade" id="ss-edit-role-{{ $role->id }}">
                         <div class="modal-dialog modal-lg">
@@ -156,11 +159,13 @@
                         <!-- /.modal-dialog -->
                       </div>
                       <!-- /.modal -->
+                      @can('delete-role')
                       <a class="btn btn-danger btn-sm" href="#" @if($role->is_system_role == 1) disabled="disabled" @else  data-toggle="modal" data-target="#ss-delete-role-{{ $role->id }}" @endif>
                               <i class="fas fa-trash">
                               </i>
                               Delete
                        </a>
+                       @endcan
 
                        <div class="modal fade" id="ss-delete-role-{{ $role->id }}">
                         <div class="modal-dialog modal-lg">

@@ -38,7 +38,7 @@
       <div class="container-fluid">
         <div class="row">
           <div class="col-12">
-
+            @can('add-intake')
             <!-- general form elements -->
             <div class="card card-default">
               <div class="card-header">
@@ -69,6 +69,7 @@
               {!! Form::close() !!}
             </div>
             <!-- /.card -->
+            @endcan
 
             @if(count($intakes) != 0)
             <div class="card">
@@ -89,11 +90,13 @@
                   <tr>
                     <td>{{ $intake->name }}</td>
                     <td>
+                      @can('edit-intake')
                       <a class="btn btn-info btn-sm" href="#" @if(count($intake->applicants) != 0) data-toggle="modal" data-target="#ss-edit-intake-{{ $intake->id }}" @else disabled="disabled" @endif>
                               <i class="fas fa-pencil-alt">
                               </i>
                               Edit
                        </a>
+                       @endcan
 
                        <div class="modal fade" id="ss-edit-intake-{{ $intake->id }}">
                         <div class="modal-dialog modal-lg">
@@ -105,6 +108,13 @@
                               </button>
                             </div>
                             <div class="modal-body">
+                                @php
+                                    $name = [
+                                       'placeholder'=>'Name',
+                                       'class'=>'form-control',
+                                       'required'=>true
+                                    ];
+                                @endphp
                                 {!! Form::open(['url'=>'settings/intake/update','class'=>'ss-form-processing']) !!}
 
                                     <div class="form-group">
@@ -128,11 +138,13 @@
                         <!-- /.modal-dialog -->
                       </div>
                       <!-- /.modal -->
+                      @can('delete-intake')
                       <a class="btn btn-danger btn-sm" href="#" @if(count($intake->applicants) != 0) data-toggle="modal" data-target="#ss-delete-intake-{{ $intake->id }}" @else disabled="disabled" @endif>
                               <i class="fas fa-trash">
                               </i>
                               Delete
                        </a>
+                       @endcan
 
                        <div class="modal fade" id="ss-delete-intake-{{ $intake->id }}">
                         <div class="modal-dialog modal-lg">

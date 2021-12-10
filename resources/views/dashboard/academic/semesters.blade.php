@@ -38,7 +38,7 @@
       <div class="container-fluid">
         <div class="row">
           <div class="col-12">
-
+            @can('add-semester')
             <!-- general form elements -->
             <div class="card card-default">
               <div class="card-header">
@@ -69,6 +69,7 @@
               {!! Form::close() !!}
             </div>
             <!-- /.card -->
+            @endcan
 
             @if(count($semesters) != 0)
             <div class="card">
@@ -81,6 +82,7 @@
                   <thead>
                   <tr>
                     <th>Name</th>
+                    <th>Status</th>
                     <th>Actions</th>
                   </tr>
                   </thead>
@@ -95,11 +97,13 @@
                         @endif
                     </td>
                     <td>
+                      @can('edit-semester')
                       <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-edit-semester-{{ $semester->id }}">
                               <i class="fas fa-pencil-alt">
                               </i>
                               Edit
                        </a>
+                       @endcan
 
                        <div class="modal fade" id="ss-edit-semester-{{ $semester->id }}">
                         <div class="modal-dialog modal-lg">
@@ -141,11 +145,13 @@
                         <!-- /.modal-dialog -->
                       </div>
                       <!-- /.modal -->
+                      @can('delete-semester')
                       <a class="btn btn-danger btn-sm" href="#" data-toggle="modal" data-target="#ss-delete-semester-{{ $semester->id }}">
                               <i class="fas fa-trash">
                               </i>
                               Delete
                        </a>
+                       @endcan
 
                        <div class="modal fade" id="ss-delete-semester-{{ $semester->id }}">
                         <div class="modal-dialog modal-lg">
@@ -180,18 +186,21 @@
                       <!-- /.modal -->
 
                        @if($semester->status == 'ACTIVE')
+                       @can('deactivate-semester')
                        <a class="btn btn-danger btn-sm" href="{{ url('academic/semester/'.$semester->id.'/deactivate') }}">
                               <i class="fas fa-ban">
                               </i>
                               Deactivate
                        </a>
+                       @endcan
                       @else
+                      @can('activate-semester')
                        <a class="btn btn-info btn-sm" href="{{ url('academic/semester/'.$semester->id.'/activate') }}">
                               <i class="fas fa-check-circle">
                               </i>
                               Activate
                        </a>
-
+                       @endcan
                       @endif
                     </td>
                   </tr>

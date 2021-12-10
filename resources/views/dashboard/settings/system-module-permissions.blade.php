@@ -38,7 +38,7 @@
       <div class="container-fluid">
         <div class="row">
           <div class="col-12">
-
+            @can('add-system-module-permission')
             <!-- general form elements -->
             <div class="card card-default">
               <div class="card-header">
@@ -75,11 +75,12 @@
                 <!-- /.card-body -->
 
                 <div class="card-footer">
-                  <button type="submit" class="btn btn-primary">{{ __('Add System permission') }}</button>
+                  <button type="submit" class="btn btn-primary">{{ __('Add Permission') }}</button>
                 </div>
               {!! Form::close() !!}
             </div>
             <!-- /.card -->
+            @endcan
 
             @if(count($permissions) != 0)
             <div class="card">
@@ -102,11 +103,13 @@
                     <td>{{ $permission->name }}</td>
                     <td>{{ $permission->display_name }}</td>
                     <td>
+                      @can('edit-system-module-permission')
                       <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-edit-permission-{{ $permission->id }}">
                               <i class="fas fa-pencil-alt">
                               </i>
                               Edit
                        </a>
+                       @endcan
 
                        <div class="modal fade" id="ss-edit-permission-{{ $permission->id }}">
                         <div class="modal-dialog modal-lg">
@@ -118,6 +121,19 @@
                               </button>
                             </div>
                             <div class="modal-body">
+                                 @php
+                                    $name = [
+                                       'placeholder'=>'Name',
+                                       'class'=>'form-control',
+                                       'required'=>true
+                                    ];
+
+                                    $display_name = [
+                                       'placeholder'=>'Display name',
+                                       'class'=>'form-control',
+                                       'required'=>true
+                                    ];
+                                @endphp
 
                                 {!! Form::open(['url'=>'settings/permission/update','class'=>'ss-form-processing']) !!}
 
@@ -148,11 +164,13 @@
                         <!-- /.modal-dialog -->
                       </div>
                       <!-- /.modal -->
+                      @can('edit-system-module-permission')
                       <a class="btn btn-danger btn-sm" href="#" data-toggle="modal" data-target="#ss-delete-permission-{{ $permission->id }}">
                               <i class="fas fa-trash">
                               </i>
                               Delete
                        </a>
+                      @endcan
 
                        <div class="modal fade" id="ss-delete-permission-{{ $permission->id }}">
                         <div class="modal-dialog modal-lg">

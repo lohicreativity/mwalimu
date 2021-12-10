@@ -38,7 +38,7 @@
       <div class="container-fluid">
         <div class="row">
           <div class="col-12">
-
+            @can('add-nta-level')
             <!-- general form elements -->
             <div class="card card-default">
               <div class="card-header">
@@ -102,6 +102,7 @@
               {!! Form::close() !!}
             </div>
             <!-- /.card -->
+            @endcan
 
             @if(count($nta_levels) != 0)
             <div class="card">
@@ -128,11 +129,13 @@
                     <td>{{ $level->min_duration }}</td>
                     <td>{{ $level->max_duration }}</td>
                     <td>
+                      @can('edit-nta-level')
                       <a class="btn btn-info btn-sm" href="#" @if(count($level->programs) != 0) data-toggle="modal" data-target="#ss-edit-level-{{ $level->id }}" @else disabled="disabled" @endif>
                               <i class="fas fa-pencil-alt">
                               </i>
                               Edit
                        </a>
+                       @endcan
 
                        <div class="modal fade" id="ss-edit-level-{{ $level->id }}">
                         <div class="modal-dialog modal-lg">
@@ -144,6 +147,25 @@
                               </button>
                             </div>
                             <div class="modal-body">
+                                  @php
+                                      $name = [
+                                         'placeholder'=>'NTA Level',
+                                         'class'=>'form-control',
+                                         'required'=>true
+                                      ];
+
+                                      $min_duration = [
+                                         'placeholder'=>'Min duration',
+                                         'class'=>'form-control',
+                                         'required'=>true
+                                      ];
+
+                                      $max_duration = [
+                                         'placeholder'=>'Max duration',
+                                         'class'=>'form-control',
+                                         'required'=>true
+                                      ];
+                                  @endphp
                                 {!! Form::open(['url'=>'settings/nta-level/update','class'=>'ss-form-processing']) !!}
                                     <div class="row">
                                       <div class="form-group col-6">
@@ -187,11 +209,13 @@
                         <!-- /.modal-dialog -->
                       </div>
                       <!-- /.modal -->
+                      @can('delete-nta-level')
                       <a class="btn btn-danger btn-sm" href="#" @if(count($level->programs) != 0) data-toggle="modal" data-target="#ss-delete-level-{{ $level->id }}" @else disabled="disabled" @endif>
                               <i class="fas fa-trash">
                               </i>
                               Delete
                        </a>
+                       @endcan
 
                        <div class="modal fade" id="ss-delete-level-{{ $level->id }}">
                         <div class="modal-dialog modal-lg">

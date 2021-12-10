@@ -38,7 +38,8 @@
       <div class="container-fluid">
         <div class="row">
           <div class="col-12">
-
+            
+            @can('add-campus-programme')
             <!-- general form elements -->
             <div class="card card-default">
               <div class="card-header">
@@ -81,6 +82,7 @@
               {!! Form::close() !!}
             </div>
             <!-- /.card -->
+            @endcan
 
             @if(count($campus_programs) != 0)
             <div class="card">
@@ -105,11 +107,13 @@
                     <th>{{ $campus->name }}</th>
                     <th>{{ $program->regulator_code }}</th>
                     <td>
+                      @can('edit-campus-programme')
                       <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-edit-program-{{ $program->id }}">
                               <i class="fas fa-pencil-alt">
                               </i>
                               Edit
                        </a>
+                       @endcan
 
                        <div class="modal fade" id="ss-edit-program-{{ $program->id }}">
                         <div class="modal-dialog modal-lg">
@@ -157,11 +161,13 @@
                         <!-- /.modal-dialog -->
                       </div>
                       <!-- /.modal -->
+                      @can('delete-campus-programme')
                       <a class="btn btn-danger btn-sm" href="#" data-toggle="modal" data-target="#ss-delete-program-{{ $program->id }}">
                               <i class="fas fa-trash">
                               </i>
                               Delete
                        </a>
+                      @endcan
 
                        <div class="modal fade" id="ss-delete-program-{{ $program->id }}">
                         <div class="modal-dialog modal-lg">

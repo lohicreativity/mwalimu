@@ -66,6 +66,7 @@
             <!-- /.card -->
              
             @if($study_academic_year)
+            @can('add-grading-policy')
             <div class="card">
               <div class="card-header">
                 <h3 class="card-title">Add Grading System - {{ $study_academic_year->academicYear->year }}</h3>
@@ -179,6 +180,7 @@
               {!! Form::close() !!}
             </div>
             <!-- /.card -->
+            @endcan
             @endif
 
             @if(count($policies) != 0 && $study_academic_year)
@@ -211,11 +213,14 @@
                     <td>{{ $policy->remark }}</td>
                     <td>{{ $policy->ntaLevel->name }}</td>
                     <td>
+                      @can('edit-grading-policy')
                       <a class="btn btn-info btn-sm" @if($study_academic_year->id == session('active_academic_year_id')) href="#" data-toggle="modal" data-target="#ss-edit-policy-{{ $policy->id }}" @else disabled="disabled" @endif>
                               <i class="fas fa-pencil-alt">
                               </i>
                               Edit
                        </a>
+                      @endcan
+
                        <div class="modal fade" id="ss-edit-policy-{{ $policy->id }}">
                         <div class="modal-dialog modal-lg">
                           <div class="modal-content">
@@ -226,6 +231,40 @@
                               </button>
                             </div>
                             <div class="modal-body">
+                              @php
+                                  $min_score = [
+                                     'class'=>'form-control',
+                                     'placeholder'=>'Min score',
+                                     'steps'=>'any',
+                                     'required'=>true
+                                  ];
+
+                                  $max_score = [
+                                     'class'=>'form-control',
+                                     'placeholder'=>'Max score',
+                                     'steps'=>'any',
+                                     'required'=>true
+                                  ];
+
+                                  $grade = [
+                                     'class'=>'form-control',
+                                     'placeholder'=>'Grade',
+                                     'required'=>true
+                                  ];
+
+                                  $point = [
+                                     'class'=>'form-control',
+                                     'placeholder'=>'Point',
+                                     'steps'=>'any',
+                                     'required'=>true
+                                  ];
+
+                                  $remark = [
+                                     'class'=>'form-control',
+                                     'placeholder'=>'Remark',
+                                     'required'=>true
+                                  ];
+                               @endphp
                                {!! Form::open(['url'=>'academic/grading-policy/update','class'=>'ss-form-processing']) !!}
 
                                <div class="row">
@@ -306,12 +345,14 @@
                         <!-- /.modal-dialog -->
                       </div>
                       <!-- /.modal -->
-
+                      
+                      @can('delete-grading-policy')
                       <a class="btn btn-danger btn-sm" @if($study_academic_year->id == session('active_academic_year_id')) href="#" data-toggle="modal" data-target="#ss-delete-policy-{{ $policy->id }}" @else disabled="disabled" @endif>
                               <i class="fas fa-trash">
                               </i>
                               Delete
                        </a>
+                      @endcan
 
                        <div class="modal fade" id="ss-delete-policy-{{ $policy->id }}">
                         <div class="modal-dialog modal-lg">

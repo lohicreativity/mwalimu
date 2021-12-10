@@ -11,7 +11,12 @@
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-          <img src="{{ asset('img/user-avatar.png') }}" class="img-circle elevation-2" alt="User Image">
+          @if(isset($staff))
+          <img src="{{ asset('avatars/'.$staff->image) }}" class="img-circle elevation-2" onerror="this.src='{{ asset("img/user-avatar.png") }}'">
+          @endif
+          @if(isset($student))
+          <img src="{{ asset('avatars/'.$student->image) }}" class="img-circle elevation-2" onerror="this.src='{{ asset("img/user-avatar.png") }}'">
+          @endif
         </div>
         <div class="info">
           @if(isset($staff))

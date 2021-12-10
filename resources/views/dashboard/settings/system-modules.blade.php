@@ -32,7 +32,8 @@
         </div>
       </div><!-- /.container-fluid -->
     </section>
-
+    
+    @can('add-system-module')
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
@@ -69,6 +70,7 @@
               {!! Form::close() !!}
             </div>
             <!-- /.card -->
+          @endcan
 
             @if(count($modules) != 0)
             <div class="card">
@@ -91,7 +93,7 @@
                     <td>{{ $module->name }}</td>
                     <td>
                       @foreach($module->permissions as $perm)
-                      <span class="ss-custom-lightblue">{{ $perm->name }}</span>
+                      <span class="badge badge-info">{{ $perm->name }}</span>
                       @endforeach
                     </td>
                     <td>
@@ -135,11 +137,13 @@
                         <!-- /.modal-dialog -->
                       </div>
                       <!-- /.modal -->
+                      @can('delete-system-module')
                       <a class="btn btn-danger btn-sm" href="#" data-toggle="modal" data-target="#ss-delete-module-{{ $module->id }}">
                               <i class="fas fa-trash">
                               </i>
                               Delete
                        </a>
+                       @endcan
 
                        <div class="modal fade" id="ss-delete-module-{{ $module->id }}">
                         <div class="modal-dialog modal-lg">
@@ -172,12 +176,14 @@
                         <!-- /.modal-dialog -->
                       </div>
                       <!-- /.modal -->
-
+                       
+                       @can('view-system-module-permissions')
                        <a class="btn btn-info btn-sm" href="{{ url('settings/system-module/'.$module->id.'/permissions') }}">
                               <i class="fas fa-check-circle">
                               </i>
                               Permissions
                        </a>
+                       @endcan
                     </td>
                   </tr>
                   @endforeach

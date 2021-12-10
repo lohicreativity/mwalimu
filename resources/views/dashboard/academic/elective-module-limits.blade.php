@@ -66,6 +66,7 @@
             <!-- /.card -->
              
             @if($study_academic_year)
+            @can('add-elective-deadline')
             <div class="card">
               <div class="card-header">
                 <h3 class="card-title">Add Elective (Option) Selection Deadline - {{ $study_academic_year->academicYear->year }}</h3>
@@ -127,6 +128,7 @@
               {!! Form::close() !!}
             </div>
             <!-- /.card -->
+            @endcan
             @endif
 
             @if(count($elective_module_limits) != 0 && $study_academic_year)
@@ -157,11 +159,14 @@
                     <td>{{ $limit->semester->name }}</td>
                     <td>{{ $limit->deadline }}</td>
                     <td>
+                      @can('edit-elective-deadline')
                       <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-edit-limit-{{ $limit->id }}">
                               <i class="fas fa-pencil-alt">
                               </i>
                               Edit
                        </a>
+                       @endcan
+
                        <div class="modal fade" id="ss-edit-limit-{{ $limit->id }}">
                         <div class="modal-dialog modal-lg">
                           <div class="modal-content">
@@ -172,6 +177,14 @@
                               </button>
                             </div>
                             <div class="modal-body">
+                              @php
+                                  $deadline = [
+                                     'class'=>'form-control ss-datepicker',
+                                     'placeholder'=>'Deadline',
+                                     'autofocus'=>'off',
+                                     'required'=>true
+                                  ];
+                               @endphp
                                {!! Form::open(['url'=>'academic/elective-module-limit/update','class'=>'ss-form-processing']) !!}
 
                                <div class="row">
@@ -227,12 +240,14 @@
                         <!-- /.modal-dialog -->
                       </div>
                       <!-- /.modal -->
-
+                      
+                      @can('delete-elective-deadline')
                       <a class="btn btn-danger btn-sm" href="#" data-toggle="modal" data-target="#ss-delete-limit-{{ $limit->id }}">
                               <i class="fas fa-trash">
                               </i>
                               Delete
                        </a>
+                      @endcan
 
                        <div class="modal fade" id="ss-delete-limit-{{ $limit->id }}">
                         <div class="modal-dialog modal-lg">

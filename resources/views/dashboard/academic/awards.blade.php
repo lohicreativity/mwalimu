@@ -38,7 +38,7 @@
       <div class="container-fluid">
         <div class="row">
           <div class="col-12">
-
+            @can('add-award')
             <!-- general form elements -->
             <div class="card card-default">
               <div class="card-header">
@@ -87,11 +87,12 @@
                 <!-- /.card-body -->
 
                 <div class="card-footer">
-                  <button type="submit" class="btn btn-primary">{{ __('Save Changes') }}</button>
+                  <button type="submit" class="btn btn-primary">{{ __('Add Award') }}</button>
                 </div>
               {!! Form::close() !!}
             </div>
             <!-- /.card -->
+            @endcan
 
             @if(count($awards) != 0)
             <div class="card">
@@ -116,11 +117,13 @@
                     <td>{{ $award->code }}</td>
                     <td>{{ $award->level->name }}</td>
                     <td>
+                      @can('edit-award')
                       <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-edit-award-{{ $award->id }}">
                               <i class="fas fa-pencil-alt">
                               </i>
                               Edit
                        </a>
+                       @endcan
 
                        <div class="modal fade" id="ss-edit-award-{{ $award->id }}">
                         <div class="modal-dialog modal-lg">
@@ -172,11 +175,13 @@
                         <!-- /.modal-dialog -->
                       </div>
                       <!-- /.modal -->
+                      @can('delete-award')
                       <a class="btn btn-danger btn-sm" href="#" data-toggle="modal" data-target="#ss-delete-award-{{ $award->id }}">
                               <i class="fas fa-trash">
                               </i>
                               Delete
                        </a>
+                       @endcan
 
                        <div class="modal fade" id="ss-delete-award-{{ $award->id }}">
                         <div class="modal-dialog modal-lg">

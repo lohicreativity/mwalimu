@@ -39,15 +39,24 @@
         <div class="row">
           <div class="col-12">
          
+         
          <div class="card card-default">
            <div class="card-header">
                 <ul class="nav nav-tabs">
+                  @can('view-modules')
                   <li class="nav-item"><a class="nav-link active" href="{{ url('academic/modules') }}">{{ __('Modules') }}</a></li>
+                  @endcan
+                  @can('view-module-assignments')
                   <li class="nav-item"><a class="nav-link" href="{{ url('academic/module-assignments?study_academic_year_id='.session('active_academic_year_id')) }}">{{ __('Module Assignments') }}</a></li>
+                  @endcan
+                  @can('view-module-assignment-requests')
                   <li class="nav-item"><a class="nav-link" href="{{ url('academic/module-assignment-requests') }}">{{ __('Modules Assignment Requests') }}</a></li>
+                  @endcan
                 </ul>
               </div>
             </div>
+
+            @can('add-module')
             <!-- general form elements -->
             <div class="card card-default">
               <div class="card-header">
@@ -159,6 +168,7 @@
               {!! Form::close() !!}
             </div>
             <!-- /.card -->
+            @endcan
 
             @if(count($modules) != 0)
             <div class="card">
@@ -195,16 +205,20 @@
                     <td>{{ $module->credit }}</td>
                     <td>{{ $module->ntaLevel->name }}</td>
                     <td>
+                      @can('download-syllabus')
                       <a class="btn btn-info btn-sm" href="{{ url('academic/module/'.$module->id.'/download-syllabus') }}">
                               <i class="fas fa-download">
                               </i>
                               Download Syllabus
                        </a>
+                      @endcan
+                      @can('edit-module')
                       <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-edit-module-{{ $module->id }}">
                               <i class="fas fa-pencil-alt">
                               </i>
                               Edit
                        </a>
+                      @endcan
 
                        <div class="modal fade" id="ss-edit-module-{{ $module->id }}">
                         <div class="modal-dialog modal-xl">
@@ -217,6 +231,12 @@
                             </div>
                             <div class="modal-body">
                               @php
+                                $name = [
+                                   'placeholder'=>'Module name',
+                                   'class'=>'form-control',
+                                   'required'=>true
+                                ];
+
                                 $code = [
                                    'placeholder'=>'Code',
                                    'class'=>'form-control ss-autofill-nta',
@@ -320,11 +340,13 @@
                         <!-- /.modal-dialog -->
                       </div>
                       <!-- /.modal -->
+                      @can('delete-module')
                       <a class="btn btn-danger btn-sm" href="#" data-toggle="modal" data-target="#ss-delete-module-{{ $module->id }}">
                               <i class="fas fa-trash">
                               </i>
                               Delete
                        </a>
+                       @endcan
 
                        <div class="modal fade" id="ss-delete-module-{{ $module->id }}">
                         <div class="modal-dialog modal-lg">

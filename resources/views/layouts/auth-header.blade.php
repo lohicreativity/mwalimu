@@ -22,6 +22,11 @@
           <i class="far fa-user"></i>
         </a>
         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+          @if(!Auth::user()->hasRole('student') && isset($staff))
+          <a href="{{ url('staff/staff/'.$staff->id.'/show') }}" class="dropdown-item">
+            <i class="fas fa-user mr-2"></i> Profile
+          </a>
+          @endif
           <a href="{{ url('change-password') }}" class="dropdown-item">
             <i class="fas fa-lock mr-2"></i> Change Password
           </a>
@@ -29,7 +34,7 @@
           <!-- Authentication -->
           @if(Auth::check() && Auth::user()->hasRole('student'))
             <a href="{{ url('student/logout') }}" class="dropdown-item">
-            <i class="fas fa-sign-out mr-2"></i> Logout
+            <i class="fas fa-logout mr-2"></i> Logout
             </a>
           @else
 

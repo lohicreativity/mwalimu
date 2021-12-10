@@ -42,12 +42,24 @@
             <div class="card">
               <div class="card-header">
                 <ul class="nav nav-tabs">
+                  @can('process-examination-results')
                   <li class="nav-item"><a class="nav-link" href="{{ url('academic/results?study_academic_year_id='.session('active_academic_year_id').'&campus_id='.session('staff_campus_id')) }}">{{ __('Process Results') }}</a></li>
+                  @endcan
+                  @can('view-programme-results')
                   <li class="nav-item"><a class="nav-link" href="{{ url('academic/results/show-program-results?study_academic_year_id='.session('active_academic_year_id').'&campus_id='.session('staff_campus_id')) }}">{{ __('View Programme Results') }}</a></li>
+                  @endcan
+                  @can('view-module-results')
                   <li class="nav-item"><a class="nav-link" href="{{ url('academic/results/show-module-results?study_academic_year_id='.session('active_academic_year_id').'&campus_id='.session('staff_campus_id')) }}">{{ __('View Module Results') }}</a></li>
+                  @endcan
+                  @can('view-student-results')
                   <li class="nav-item"><a class="nav-link active" href="{{ url('academic/results/show-student-results') }}">{{ __('View Student Results') }}</a></li>
+                  @endcan
+                  @can('publish-examination-results')
                   <li class="nav-item"><a class="nav-link" href="{{ url('academic/results-publications') }}">{{ __('Publish Results') }}</a></li>
+                  @endcan         
+                  @can('view-uploaded-modules')
                   <li class="nav-item"><a class="nav-link" href="{{ url('academic/results/uploaded-modules') }}">{{ __('Uploaded Modules') }}</a></li>
+                  @endcan
                 </ul>
               </div>
               <!-- /.card-header -->

@@ -24,10 +24,15 @@ class StaffController extends Controller
     /**
      * Display a list of staffs
      */
-    public function index()
+    public function index(Request $request)
     {
+       if($request->has('query')){
+          $staffs = Staff::with(['country','region','district','ward','designation','user.roles'])->where('first_name','LIKE','%'.$request->get('query').'%')->orWhere('middle_name','LIKE','%'.$request->get('query').'%')->orWhere('surname','LIKE','%'.$request->get('query').'%')->orWhere('pf_number','LIKE','%'.$request->get('query').'%')->paginate(20);
+       }else{
+          $staffs = Staff::with(['country','region','district','ward','designation','user.roles'])->paginate(20);
+       }
     	$data = [
-           'staffs'=>Staff::with(['country','region','district','ward','designation','user.roles'])->paginate(20),
+           'staffs'=>$staffs,
            'roles'=>Role::where('name','!=','student')->get(),
            'countries'=>Country::all(),
            'regions'=>Region::all(),
@@ -36,7 +41,8 @@ class StaffController extends Controller
            'designations'=>Designation::all(),
            'disabilities'=>DisabilityStatus::all(),
            'campuses'=>Campus::all(),
-           'staff'=>User::find(Auth::user()->id)->staff
+           'staff'=>User::find(Auth::user()->id)->staff,
+           'request'=>$request
     	];
     	return view('dashboard.human-resources.staffs',$data)->withTitle('staffs');
     }
@@ -68,7 +74,8 @@ class StaffController extends Controller
     {
         try{
             $data = [
-               'staff'=>Staff::with(['disabilityStatus','country','region','district','designation'])->find($id)
+               'profile_staff'=>Staff::with(['disabilityStatus','country','region','district','ward','designation'])->find($id),
+               'staff'=>User::find(Auth::user()->id)->staff,
             ];
             return view('dashboard.human-resources.staff-details',$data)->withTitle('Staff Details');
         }catch(\Exception $e){
@@ -130,7 +137,8 @@ class StaffController extends Controller
             'email'=>'required|email|unique:users',
             'address'=>'required',
             'phone'=>'required',
-            'nin'=>'required'
+            'nin'=>'required',
+            'image'=>'mimes:png,jpg,jpeg'
         ]);
 
         if($validation->fails()){
@@ -158,7 +166,8 @@ class StaffController extends Controller
             'birth_date'=>'required',
             'address'=>'required',
             'phone'=>'required',
-            'nin'=>'required'
+            'nin'=>'required',
+            'image'=>'mimes:png,jpg,jpeg'
         ]);
 
         if($validation->fails()){
@@ -172,6 +181,30 @@ class StaffController extends Controller
         (new StaffAction)->update($request);
 
         return Util::requestResponse($request,'Staff updated successfully');
+    }
+
+    /**
+     * Update specified staff details
+     */
+    public function updateDetails(Request $request)
+    {
+      $validation = Validator::make($request->all(),[
+            'address'=>'required',
+            'phone'=>'required',
+            'image'=>'mimes:png,jpg,jpeg'
+        ]);
+
+        if($validation->fails()){
+           if($request->ajax()){
+              return response()->json(array('error_messages'=>$validation->messages()));
+           }else{
+              return redirect()->back()->withInput()->withErrors($validation->messages());
+           }
+        }
+
+        (new StaffAction)->updateDetails($request);
+
+        return Util::requestResponse($request,'Staff details updated successfully');
     }
 
     /**

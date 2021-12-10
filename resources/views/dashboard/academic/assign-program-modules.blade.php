@@ -38,7 +38,8 @@
       <div class="container-fluid">
         <div class="row">
           <div class="col-12">
-
+            
+            @can('add-programme-module-assignment')
             <div class="card">
               <div class="card-header">
                 <h3 class="card-title">{{ __('Add Module Assignment') }}</h3>
@@ -112,6 +113,7 @@
               </div>
             </div>
             <!-- /.card -->
+            @endcan
 
             @if(count($assignments) != 0 && $campus_program && $study_academic_year)
             <div class="card">
@@ -144,11 +146,13 @@
                     <td>{{ $assignment->category }}</td>
                     <td>{{ $assignment->type }}</td>
                     <td>
+                      @can('edit-programme-module-assignment')
                       <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-edit-module-assignment-{{ $assignment->id }}">
                               <i class="fas fa-pencil-alt">
                               </i>
                               Edit
                        </a>
+                      @endcan
 
                        <div class="modal fade" id="ss-edit-module-assignment-{{ $assignment->id }}">
                         <div class="modal-dialog modal-lg">
@@ -160,57 +164,64 @@
                               </button>
                             </div>
                             <div class="modal-body">
+                              @php
+                                  $year_of_study = [
+                                     'placeholder'=>'Year of study',
+                                     'class'=>'form-control',
+                                     'required'=>true
+                                  ];
+                               @endphp
                                 {!! Form::open(['url'=>'academic/program-module-assignment/update','class'=>'ss-form-processing']) !!}
 
                                    <div class="row">
-                   <div class="form-group col-8">
-                    {!! Form::label('','Module') !!}<br>
-                    <select name="module_id" class="form-control ss-select-tags ss-select-module" required style="width: 100%;" data-year-target="#ss-year-{{ $assignment->module_id }}" data-semester-target="#ss-semester-{{ $assignment->module_id }}" data-token="{{ session()->token() }}" data-source-url="{{ url('api/v1/get-module-by-id') }}">
-                       <option value="">Select Module</option>
-                       @foreach($inclusive_modules as $module)
-                       <option value="{{ $module->id }}" @if($assignment->module_id == $module->id) selected="selected" @else disabled="disabled" @endif>{{ $module->name }} - {{ $module->code }}</option>
-                       @endforeach
-                    </select>
-                    </div>
-                    <div class="form-group col-4">
-                      {!! Form::label('','Year of study') !!}
-                      <select name="year_of_study" class="form-control" required id="ss-year-{{ $module->id }}">
-                        @for($i = 1; $i <= $campus_program->program->min_duration; $i++)
-                        <option value="{{ $i }}" @if($i == $assignment->year_of_study ) selected="selected" @endif>{{ $i }}</option>
-                        @endfor
-                      </select>
-                    </div>
-                  </div>
-                    <div class="row">
-                    <div class="form-group col-4">
-                    {!! Form::label('','Category') !!}
-                    <select name="category" class="form-control" required>
-                       <option value="COMPULSORY" @if($assignment->category == 'COMPULSORY') selected="selected" @endif>Compulsory</option>
-                       <option value="OPTIONAL" @if($assignment->category == 'OPTIONAL') selected="selected" @endif>Optional</option>
-                    </select>
-                    </div>
-                    <div class="form-group col-4">
-                    {!! Form::label('','Type') !!}
-                    <select name="type" class="form-control" required>
-                       <option value="CORE" @if($assignment->type == 'CORE') selected="selected" @endif>Core</option>
-                       <option value="FUNDAMENTAL" @if($assignment->type == 'FUNDAMENTAL') selected="selected" @endif>Fundamental</option>
-                    </select>
-                    </div>
-                    <div class="form-group col-4">
-                    {!! Form::label('','Semester') !!}
-                    <select name="semester_id" class="form-control" required id="ss-semester-{{ $module->id }}">
-                       <option value="">Select Semester</option>
-                       @foreach($semesters as $semester)
-                       <option value="{{ $semester->id }}" @if($assignment->semester_id == $semester->id) selected="selected" @endif>{{ $semester->name }}</option>
-                       @endforeach
-                    </select>
-                    </div>
-                        {!! Form::input('hidden','study_academic_year_id',$study_academic_year->id) !!}
-                        {!! Form::input('hidden','campus_program_id',$campus_program->id) !!}
-                        {!! Form::input('hidden','program_module_assignment_id',$assignment->id) !!}
+                                     <div class="form-group col-8">
+                                      {!! Form::label('','Module') !!}<br>
+                                      <select name="module_id" class="form-control ss-select-tags ss-select-module" required style="width: 100%;" data-year-target="#ss-year-{{ $assignment->module_id }}" data-semester-target="#ss-semester-{{ $assignment->module_id }}" data-token="{{ session()->token() }}" data-source-url="{{ url('api/v1/get-module-by-id') }}">
+                                         <option value="">Select Module</option>
+                                         @foreach($inclusive_modules as $module)
+                                         <option value="{{ $module->id }}" @if($assignment->module_id == $module->id) selected="selected" @else disabled="disabled" @endif>{{ $module->name }} - {{ $module->code }}</option>
+                                         @endforeach
+                                      </select>
+                                      </div>
+                                      <div class="form-group col-4">
+                                        {!! Form::label('','Year of study') !!}
+                                        <select name="year_of_study" class="form-control" required id="ss-year-{{ $module->id }}">
+                                          @for($i = 1; $i <= $campus_program->program->min_duration; $i++)
+                                          <option value="{{ $i }}" @if($i == $assignment->year_of_study ) selected="selected" @endif>{{ $i }}</option>
+                                          @endfor
+                                        </select>
+                                      </div>
+                                    </div>
+                                      <div class="row">
+                                      <div class="form-group col-4">
+                                      {!! Form::label('','Category') !!}
+                                      <select name="category" class="form-control" required>
+                                         <option value="COMPULSORY" @if($assignment->category == 'COMPULSORY') selected="selected" @endif>Compulsory</option>
+                                         <option value="OPTIONAL" @if($assignment->category == 'OPTIONAL') selected="selected" @endif>Optional</option>
+                                      </select>
+                                      </div>
+                                      <div class="form-group col-4">
+                                      {!! Form::label('','Type') !!}
+                                      <select name="type" class="form-control" required>
+                                         <option value="CORE" @if($assignment->type == 'CORE') selected="selected" @endif>Core</option>
+                                         <option value="FUNDAMENTAL" @if($assignment->type == 'FUNDAMENTAL') selected="selected" @endif>Fundamental</option>
+                                      </select>
+                                      </div>
+                                      <div class="form-group col-4">
+                                      {!! Form::label('','Semester') !!}
+                                      <select name="semester_id" class="form-control" required id="ss-semester-{{ $module->id }}">
+                                         <option value="">Select Semester</option>
+                                         @foreach($semesters as $semester)
+                                         <option value="{{ $semester->id }}" @if($assignment->semester_id == $semester->id) selected="selected" @endif>{{ $semester->name }}</option>
+                                         @endforeach
+                                      </select>
+                                      </div>
+                                          {!! Form::input('hidden','study_academic_year_id',$study_academic_year->id) !!}
+                                          {!! Form::input('hidden','campus_program_id',$campus_program->id) !!}
+                                          {!! Form::input('hidden','program_module_assignment_id',$assignment->id) !!}
 
-                    
-                  </div>
+                                      
+                                    </div>
                                       <div class="ss-form-actions">
                                        <button type="submit" class="btn btn-primary">{{ __('Save Changes') }}</button>
                                       </div>
@@ -226,12 +237,14 @@
                         <!-- /.modal-dialog -->
                       </div>
                       <!-- /.modal -->
-
+                      
+                      @can('delete-programme-module-assignment')
                       <a class="btn btn-danger btn-sm" href="#" data-toggle="modal" data-target="#ss-delete-assignment-{{ $assignment->id }}">
                               <i class="fas fa-trash">
                               </i>
                               Delete
                        </a>
+                      @endcan
 
                        <div class="modal fade" id="ss-delete-assignment-{{ $assignment->id }}">
                         <div class="modal-dialog modal-lg">
@@ -264,11 +277,13 @@
                         <!-- /.modal-dialog -->
                       </div>
                       <!-- /.modal -->
+                      @can('add-examination-irregularities')
                       <a class="btn btn-info btn-sm" href="{{ url('academic/module-assignment/'.$assignment->id.'/examination-irregularities') }}">
                               <i class="fas fa-random">
                               </i>
                                Examination Irregularities
                        </a>
+                       @endcan
                     </td>
                   </tr>
                   @endforeach

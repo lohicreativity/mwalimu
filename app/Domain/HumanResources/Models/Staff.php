@@ -8,6 +8,8 @@ use App\Domain\Settings\Models\Country;
 use App\Domain\Settings\Models\Region;
 use App\Domain\Settings\Models\District;
 use App\Domain\Settings\Models\Ward;
+use App\Domain\Settings\Models\Campus;
+use App\Domain\Academic\Models\Department;
 use App\Domain\HumanResources\Models\Designation;
 use App\Domain\Settings\Models\DisabilityStatus;
 use App\Domain\Academic\Models\ModuleAssignment;
@@ -66,6 +68,22 @@ class Staff extends Model
     public function user()
     {
         return $this->belongsTo(User::class,'user_id');
+    }
+
+    /**
+     * Establish one to one relationship with campuses
+     */
+    public function campus()
+    {
+        return $this->belongsTo(Campus::class,'campus_id');
+    }
+
+    /**
+     * Establish one to one relationship with departments
+     */
+    public function department()
+    {
+        return $this->belongsTo(Department::class,'department_id');
     }
 
     /**
