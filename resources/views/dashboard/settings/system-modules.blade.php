@@ -33,13 +33,13 @@
       </div><!-- /.container-fluid -->
     </section>
     
-    @can('add-system-module')
+    
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
         <div class="row">
           <div class="col-12">
-
+          {{--  @can('add-system-module') --}}
             <!-- general form elements -->
             <div class="card card-default">
               <div class="card-header">
@@ -70,7 +70,7 @@
               {!! Form::close() !!}
             </div>
             <!-- /.card -->
-          @endcan
+         {{-- @endcan --}}
 
             @if(count($modules) != 0)
             <div class="card">
@@ -97,11 +97,13 @@
                       @endforeach
                     </td>
                     <td>
+                      @can('edit-system-module')
                       <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-edit-module-{{ $module->id }}">
                               <i class="fas fa-pencil-alt">
                               </i>
                               Edit
                        </a>
+                       @endcan
 
                        <div class="modal fade" id="ss-edit-module-{{ $module->id }}">
                         <div class="modal-dialog modal-lg">
@@ -113,7 +115,13 @@
                               </button>
                             </div>
                             <div class="modal-body">
-
+                                @php
+                                    $name = [
+                                       'placeholder'=>'Name',
+                                       'class'=>'form-control',
+                                       'required'=>true
+                                    ];
+                                @endphp
                                 {!! Form::open(['url'=>'settings/system-module/update','class'=>'ss-form-processing']) !!}
 
                                     <div class="form-group">
@@ -177,13 +185,13 @@
                       </div>
                       <!-- /.modal -->
                        
-                       @can('view-system-module-permissions')
+                       {{-- @can('view-system-module-permissions') --}}
                        <a class="btn btn-info btn-sm" href="{{ url('settings/system-module/'.$module->id.'/permissions') }}">
                               <i class="fas fa-check-circle">
                               </i>
                               Permissions
                        </a>
-                       @endcan
+                      {{-- @endcan --}}
                     </td>
                   </tr>
                   @endforeach

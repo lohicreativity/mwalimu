@@ -105,12 +105,13 @@
                     <td>{{ $role->name }}</td>
                     <td>{{ $role->display_name }}</td>
                     <td>
-                      @can('assign-role-permissions')
+                      {{-- @can('assign-role-permissions') --}}
                       <a class="btn btn-info btn-sm" href="{{ url('settings/role/'.$role->id.'/permissions') }}">
                               <i class="fas fa-check-circle">
                               </i>
                               Assign Permissions
                        </a>
+                      {{-- @endcan --}}
                       @can('edit-role')
                       <a class="btn btn-info btn-sm" href="#" @if($role->is_system_role == 1) disabled="disabled" @else data-toggle="modal" data-target="#ss-edit-role-{{ $role->id }}" @endif>
                               <i class="fas fa-pencil-alt">

@@ -38,7 +38,7 @@
       <div class="container-fluid">
         <div class="row">
           <div class="col-12">
-            @can('add-system-module-permission')
+           {{-- @can('add-system-module-permission') --}}
             <!-- general form elements -->
             <div class="card card-default">
               <div class="card-header">
@@ -80,7 +80,7 @@
               {!! Form::close() !!}
             </div>
             <!-- /.card -->
-            @endcan
+            {{-- @endcan --}}
 
             @if(count($permissions) != 0)
             <div class="card">
@@ -103,13 +103,13 @@
                     <td>{{ $permission->name }}</td>
                     <td>{{ $permission->display_name }}</td>
                     <td>
-                      @can('edit-system-module-permission')
+                      {{-- @can('edit-system-module-permission') --}}
                       <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-edit-permission-{{ $permission->id }}">
                               <i class="fas fa-pencil-alt">
                               </i>
                               Edit
                        </a>
-                       @endcan
+                       {{-- @endcan --}}
 
                        <div class="modal fade" id="ss-edit-permission-{{ $permission->id }}">
                         <div class="modal-dialog modal-lg">

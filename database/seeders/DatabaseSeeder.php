@@ -32,7 +32,7 @@ class DatabaseSeeder extends Seeder
         $this->call(WardsTableSeeder::class);
         $this->call(DisabilityStatusesTableSeeder::class);
         $this->call(SystemModulesTableSeeder::class);
-        $this->call(PermissionsTableSeeder::class);
+        // $this->call(PermissionsTableSeeder::class);
         $this->call(AcademicYearsTableSeeder::class);
         $this->call(StudyAcademicYearsTableSeeder::class);
         $this->call(InsurancesTableSeeder::class);
