@@ -96,6 +96,7 @@
                   <tr>
                     <th>Name</th>
                     <th>Display Name</th>
+                    <th>Permissions</th>
                     <th>Actions</th>
                   </tr>
                   </thead>
@@ -104,6 +105,11 @@
                   <tr>
                     <td>{{ $role->name }}</td>
                     <td>{{ $role->display_name }}</td>
+                    <td>
+                      @foreach($role->permissions as $perm)
+                      <span class="badge badge-info">{{ $perm->name }}</span>
+                      @endforeach
+                    </td>
                     <td>
                       {{-- @can('assign-role-permissions') --}}
                       <a class="btn btn-info btn-sm" href="{{ url('settings/role/'.$role->id.'/permissions') }}">

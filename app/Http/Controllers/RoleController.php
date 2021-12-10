@@ -18,7 +18,7 @@ class RoleController extends Controller
     public function index()
     {
     	$data = [
-           'roles'=>Role::paginate(20)
+           'roles'=>Role::with('permissions')->paginate(20)
     	];
     	return view('dashboard.settings.roles',$data)->withTitle('Roles');
     }
