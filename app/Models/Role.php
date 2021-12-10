@@ -11,6 +11,11 @@ class Role extends Model
 
     protected $table = 'roles';
 
+    public function users()
+    {
+        return $this->belongsToMany(User::class)->withTimestamps();
+    }
+
     /**
      * Establish many to many relationship with permissions
      */

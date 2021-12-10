@@ -11,6 +11,7 @@ use App\Domain\Settings\Models\Ward;
 use App\Domain\HumanResources\Models\Designation;
 use App\Domain\Settings\Models\DisabilityStatus;
 use App\Domain\Academic\Models\ModuleAssignment;
+use App\Models\User;
 
 class Staff extends Model
 {
@@ -56,6 +57,15 @@ class Staff extends Model
     public function district()
     {
     	return $this->belongsTo(District::class,'district_id');
+    }
+
+
+    /**
+     * Establish one to one relationship with user
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class,'user_id');
     }
 
     /**

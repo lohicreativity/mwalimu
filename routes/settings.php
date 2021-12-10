@@ -10,6 +10,8 @@ use App\Http\Controllers\DistrictController;
 use App\Http\Controllers\WardController;
 use App\Http\Controllers\CampusController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\SystemModuleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -72,5 +74,18 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 	Route::get('role/{id}/permissions', [RoleController::class,'showPermissions']);
 	Route::post('role/permission/update',[RoleController::class,'updatePermissions']);
 	Route::get('role/{id}/destroy', [RoleController::class,'destroy']);
+
+
+	Route::get('system-modules', [SystemModuleController::class,'index'])->name('system-modules');
+	Route::post('system-module/store', [SystemModuleController::class,'store']);
+	Route::post('system-module/update', [SystemModuleController::class,'update']);
+	Route::get('system-module/{id}/destroy', [SystemModuleController::class,'destroy']);
+	Route::get('system-module/{id}/permissions', [SystemModuleController::class,'showPermissions']);
+
+
+
+	Route::post('permission/store', [PermissionController::class,'store']);
+	Route::post('permission/update', [PermissionController::class,'update']);
+	Route::get('permission/{id}/destroy', [PermissionController::class,'destroy']);
 
 });

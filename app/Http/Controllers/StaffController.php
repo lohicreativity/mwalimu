@@ -14,6 +14,7 @@ use App\Domain\Settings\Models\DisabilityStatus;
 use App\Domain\Settings\Models\Campus;
 use App\Domain\Academic\Models\Department;
 use App\Domain\HumanResources\Actions\StaffAction;
+use App\Models\Role;
 use App\Models\User;
 use App\Utils\Util;
 use Validator, Auth;
@@ -26,7 +27,8 @@ class StaffController extends Controller
     public function index()
     {
     	$data = [
-           'staffs'=>Staff::with(['country','region','district','ward','designation'])->paginate(20),
+           'staffs'=>Staff::with(['country','region','district','ward','designation','user.roles'])->paginate(20),
+           'roles'=>Role::where('name','!=','student')->get(),
            'countries'=>Country::all(),
            'regions'=>Region::all(),
            'districts'=>District::all(),
@@ -96,6 +98,24 @@ class StaffController extends Controller
         }catch(\Exception $e){
             return redirect()->back()->with('error','Unable to get the resource specified in this request');
         }
+    }
+
+    /**
+     * Update roles
+     */
+    public function updateRoles(Request $request)
+    {
+        $roles = Role::all();
+        $roleIds = [];
+        $user = User::find($request->get('user_id'));
+        foreach($roles as $role){
+          if($request->get('role_'.$role->id) == $role->id){
+            $roleIds[] = $role->id;
+          }
+        }
+        $user->roles()->sync($roleIds);
+
+        return Util::requestResponse($request,'Roles updated successfully');
     }
 
     /**

@@ -22,5 +22,6 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 	Route::get('staff/{id}/show', [StaffController::class,'show']);
 	Route::post('staff/store', [StaffController::class,'store']);
 	Route::post('staff/update', [StaffController::class,'update']);
+	Route::post('staff/update-roles', [StaffController::class,'updateRoles']);
 	Route::get('staff/{id}/destroy', [StaffController::class,'destroy']);
 });

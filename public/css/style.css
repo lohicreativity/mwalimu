@@ -7,7 +7,7 @@
    text-align: left;
 }
 
-.ss-form-actions{
+.ss-form-actions, .ss-form-controls{
    margin-top: 20px;
 }
 
@@ -49,6 +49,10 @@
 
 .ss-color-info{
    color: #17a2b8;
+}
+
+.ss-custom-lightblue{
+   background-color: lightblue;
 }
 
 .ss-right{

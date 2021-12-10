@@ -21,12 +21,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>{{ __('Staff Members') }}</h1>
+            <h1>{{ __('Permissions') }} - {{ $module->name }}</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">{{ __('Staff Members') }}</li>
+              <li class="breadcrumb-item active">{{ __('Permissions') }} - {{ $module->name }}</li>
             </ol>
           </div>
         </div>
@@ -39,79 +39,105 @@
         <div class="row">
           <div class="col-12">
 
+            <!-- general form elements -->
+            <div class="card card-default">
+              <div class="card-header">
+                <h3 class="card-title">{{ __('Add Permission') }}</h3>
+              </div>
+              <!-- /.card-header -->
+              <!-- form start -->
+              @php
+                  $name = [
+                     'placeholder'=>'Name',
+                     'class'=>'form-control',
+                     'required'=>true
+                  ];
+
+                  $display_name = [
+                     'placeholder'=>'Display name',
+                     'class'=>'form-control',
+                     'required'=>true
+                  ];
+              @endphp
+              {!! Form::open(['url'=>'settings/permission/store','class'=>'ss-form-processing']) !!}
+                <div class="card-body">
+                 <div class="row">
+                  <div class="form-group col-6">
+                    {!! Form::label('','Name') !!}
+                    {!! Form::text('name',null,$name) !!}
+                  </div>
+                  <div class="form-group col-6">
+                    {!! Form::label('','Display name') !!}
+                    {!! Form::text('display_name',null,$display_name) !!}
+                  </div>
+                 </div>
+                </div>
+                <!-- /.card-body -->
+
+                <div class="card-footer">
+                  <button type="submit" class="btn btn-primary">{{ __('Add System permission') }}</button>
+                </div>
+              {!! Form::close() !!}
+            </div>
+            <!-- /.card -->
+
+            @if(count($permissions) != 0)
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">{{ __('Staff Members') }}</h3><br>
-                <a href="{{ url('staff/staff/create') }}" class="btn btn-info">{{ __('Add Staff') }}</a>
+                <h3 class="card-title">{{ __('permissions') }}</h3>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
-                @if(count($staffs) != 0)
                 <table id="example2" class="table table-bordered table-hover">
                   <thead>
                   <tr>
                     <th>Name</th>
-                    <th>Category</th>
-                    <th>Email</th>
-                    <th>Phone</th>
+                    <th>Display Name</th>
                     <th>Actions</th>
                   </tr>
                   </thead>
                   <tbody>
-                  @foreach($staffs as $staff)
+                  @foreach($permissions as $permission)
                   <tr>
-                    <td>{{ $staff->title }} {{ $staff->first_name }} {{ $staff->middle_name }} {{ $staff->surname }}</td>
-                    <td>{{ $staff->category }}</td>
-                    <td>{{ $staff->email }}</td>
-                    <td>{{ $staff->phone }}</td>
+                    <td>{{ $permission->name }}</td>
+                    <td>{{ $permission->display_name }}</td>
                     <td>
-                      <a class="btn btn-info btn-sm" href="{{ url('staff/staff/'.$staff->id.'/show') }}">
-                              <i class="fas fa-id-card">
+                      <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-edit-permission-{{ $permission->id }}">
+                              <i class="fas fa-pencil-alt">
                               </i>
-                              View
+                              Edit
                        </a>
 
-                       <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-roles-staff-{{ $staff->id }}">
-                              <i class="fas fa-user">
-                              </i>
-                              Assign Roles
-                       </a>
-
-
-                       <div class="modal fade" id="ss-roles-staff-{{ $staff->id }}">
+                       <div class="modal fade" id="ss-edit-permission-{{ $permission->id }}">
                         <div class="modal-dialog modal-lg">
                           <div class="modal-content">
                             <div class="modal-header">
-                              <h4 class="modal-title"><i class="fa fa-exclamation-sign"></i> Assign Roles</h4>
+                              <h4 class="modal-title">Edit permission</h4>
                               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                               </button>
                             </div>
                             <div class="modal-body">
-                              
-                                {!! Form::open(['url'=>'staff/staff/update-roles','class'=>'ss-form-processing']) !!}
-                 
 
-                               {!! Form::input('hidden','user_id',$staff->user->id) !!}
-                              <div class="row">
-                                 @foreach($roles as $role)
-                                  <div class="col-4">
-                                   <div class="form-check">
-                                    @if(App\Utils\Util::collectionContains($staff->user->roles,$role))
-                                    <input type="checkbox" name="role_{{ $role->id }}" class="form-check-input" value="{{ $role->id }}" id="ss-role-{{ $role->id }}" checked="checked">
-                                    @else
-                                    <input type="checkbox" name="role_{{ $role->id }}" class="form-check-input" value="{{ $role->id }}" id="ss-role-{{ $role->id }}">
-                                    @endif
-                                    <label class="form-check-label" for="ss-role-{{ $role->id }}">{{ $role->display_name }}</label>
-                                   </div>
-                                  </div>
-                                 @endforeach
-                              </div>
-                               <div class="ss-form-controls">
-                                  <button type="submit" class="btn btn-primary">{{ __('Update Roles') }}</button>
-                                </div>
-                            {!! Form::close() !!}
-                               
+                                {!! Form::open(['url'=>'settings/permission/update','class'=>'ss-form-processing']) !!}
+
+                                    <div class="row">
+                                      <div class="form-group col-6">
+                                        {!! Form::label('','Name') !!}
+                                        {!! Form::text('name',$permission->name,$name) !!}
+
+                                        {!! Form::input('hidden','permission_id',$permission->id) !!}
+                                      </div>
+                                      <div class="form-group col-6">
+                                        {!! Form::label('','Display name') !!}
+                                        {!! Form::text('display_name',$permission->display_name,$display_name) !!}
+                                      </div>
+                                     </div>
+                                      <div class="ss-form-actions">
+                                       <button type="submit" class="btn btn-primary">{{ __('Save Changes') }}</button>
+                                      </div>
+                                {!! Form::close() !!}
+
                             </div>
                             <div class="modal-footer justify-content-between">
                               <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -122,21 +148,13 @@
                         <!-- /.modal-dialog -->
                       </div>
                       <!-- /.modal -->
-
-                      <a class="btn btn-info btn-sm" href="{{ url('staff/staff/'.$staff->id.'/edit') }}">
-                              <i class="fas fa-pencil-alt">
-                              </i>
-                              Edit
-                       </a>
-
-                       
-                      <a class="btn btn-danger btn-sm" href="#" data-toggle="modal" data-target="#ss-delete-staff-{{ $staff->id }}">
+                      <a class="btn btn-danger btn-sm" href="#" data-toggle="modal" data-target="#ss-delete-permission-{{ $permission->id }}">
                               <i class="fas fa-trash">
                               </i>
                               Delete
                        </a>
 
-                       <div class="modal fade" id="ss-delete-staff-{{ $staff->id }}">
+                       <div class="modal fade" id="ss-delete-permission-{{ $permission->id }}">
                         <div class="modal-dialog modal-lg">
                           <div class="modal-content">
                             <div class="modal-header">
@@ -149,10 +167,10 @@
                               <div class="row">
                                 <div class="col-12">
                                     <div id="ss-confirmation-container">
-                                       <p id="ss-confirmation-text">Are you sure you want to delete this staff from the list?</p>
+                                       <p id="ss-confirmation-text">Are you sure you want to delete this permission from the list?</p>
                                        <div class="ss-form-controls">
-                                         <button type="button" class="btn btn-default" data-dismiss="modal">Abort</button>
-                                         <a href="{{ url('staff/staff/'.$staff->id.'/destroy') }}" class="btn btn-danger">Delete</a>
+                                         <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                         <a href="{{ url('settings/permission/'.$permission->id.'/destroy') }}" class="btn btn-danger">Delete</a>
                                          </div><!-- end of ss-form-controls -->
                                       </div><!-- end of ss-confirmation-container -->
                                   </div><!-- end of col-md-12 -->
@@ -174,14 +192,13 @@
                   </tbody>
                 </table>
                 <div class="ss-pagination-links">
-                {!! $staffs->render() !!}
+                {!! $permissions->render() !!}
                 </div>
-                @endif
               </div>
               <!-- /.card-body -->
             </div>
             <!-- /.card -->
-            
+            @endif
           </div>
           <!-- /.col -->
         </div>
