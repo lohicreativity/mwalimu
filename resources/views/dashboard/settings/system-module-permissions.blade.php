@@ -65,6 +65,8 @@
                   <div class="form-group col-6">
                     {!! Form::label('','Name') !!}
                     {!! Form::text('name',null,$name) !!}
+
+                    {!! Form::input('hidden','system_module_id',$module->id) !!}
                   </div>
                   <div class="form-group col-6">
                     {!! Form::label('','Display name') !!}
@@ -143,6 +145,7 @@
                                         {!! Form::text('name',$permission->name,$name) !!}
 
                                         {!! Form::input('hidden','permission_id',$permission->id) !!}
+                                        {!! Form::input('hidden','system_module_id',$module->id) !!}
                                       </div>
                                       <div class="form-group col-6">
                                         {!! Form::label('','Display name') !!}

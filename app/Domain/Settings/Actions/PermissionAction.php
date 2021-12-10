@@ -12,6 +12,7 @@ class PermissionAction implements PermissionInterface{
 	         $permission = new Permission;
            $permission->name = $request->get('name');
            $permission->display_name = $request->get('display_name');
+           $permission->system_module_id = $request->get('system_module_id');
            $permission->save();
 	}
 
@@ -19,6 +20,7 @@ class PermissionAction implements PermissionInterface{
 	         $permission = Permission::find($request->get('permission_id'));
            $permission->name = $request->get('name');
            $permission->display_name = $request->get('display_name');
+           $permission->system_module_id = $request->get('system_module_id');
            $permission->save();
 	}
 }
