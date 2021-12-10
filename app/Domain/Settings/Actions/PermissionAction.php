@@ -3,7 +3,7 @@
 namespace App\Domain\Settings\Actions;
 
 use Illuminate\Http\Request;
-use App\Domain\Settings\Models\Permission;
+use App\Models\Permission;
 use App\Domain\Settings\Repositories\Interfaces\PermissionInterface;
 
 class PermissionAction implements PermissionInterface{
