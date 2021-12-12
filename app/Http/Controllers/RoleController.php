@@ -80,7 +80,8 @@ class RoleController extends Controller
     	   'system_modules'=>SystemModule::all(),
     	   'role'=>Role::with('permissions.systemModule')->find($id),
            'permissions'=>$request->has('system_module_id')? Permission::where('system_module_id',$request->get('system_module_id'))->get() : [],
-           'module'=>SystemModule::find($request->has('system_module_id'))
+           'module'=>SystemModule::find($request->get('system_module_id')),
+           'request'=>$request
     	];
     	return view('dashboard.settings.role-permissions',$data)->withTitle('Role Permissions');
     }
@@ -110,7 +111,7 @@ class RoleController extends Controller
     	$role = Role::find($request->get('role_id'));
         foreach($permissions as $perm){
         	if($request->get('permission_'.$perm->id) == $perm->id){
-        		$permissionIds[$request->get('system_module_id')][] = $perm->id;
+        		$permissionIds[$perm->system_module_id][] = $perm->id;
         	}
         }
 

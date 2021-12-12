@@ -47,7 +47,7 @@
               <!-- /.card-header -->
               <!-- form start -->
 
-              {!! Form::open(['url'=>'settings/role/'.$role->id.'/permissions','class'=>'ss-form-processing','method'=>'GET']) !!}
+              {!! Form::open(['url'=>$request->url(),'class'=>'ss-form-processing','method'=>'GET']) !!}
                 <div class="card-body">
                   <div class="form-group">
                     {!! Form::label('','Select module') !!}

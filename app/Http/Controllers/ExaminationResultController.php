@@ -58,7 +58,8 @@ class ExaminationResultController extends Controller
             'process_records'=>ExaminationProcessRecord::whereHas('campusProgram',function($query) use ($request){
                   $query->where('campus_id',$request->get('campus_id'));
                })->with(['campusProgram.program','semester'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->paginate(20),
-            'staff'=>User::find(Auth::user()->id)->staff
+            'staff'=>User::find(Auth::user()->id)->staff,
+            'request'=>$request
     	];
     	return view('dashboard.academic.results-processing',$data)->withTitle('Results Processing');
     }
@@ -453,6 +454,7 @@ class ExaminationResultController extends Controller
             'campus'=>Campus::find($request->get('campus_id')),
             'semesters'=>Semester::all(),
             'campuses'=>Campus::all(),
+            'request'=>$request
     	];
 
     	return view('dashboard.academic.program-results',$data)->withTitle('Final Results');
@@ -463,7 +465,7 @@ class ExaminationResultController extends Controller
      */
     public function showProgramResultsReport(Request $request)
     {
-        $campus_program = CampusProgram::with(['program.department','campus'])->find(explode('_',$request->get('campus_program_id'))[0]);
+      $campus_program = CampusProgram::with(['program.department','campus'])->find(explode('_',$request->get('campus_program_id'))[0]);
         $study_academic_year = StudyAcademicYear::with('academicYear')->find($request->get('study_academic_year_id'));
     	if($request->get('semester_id') != 'SUPPLEMENTARY'){
 	    	$module_assignments = ModuleAssignment::whereHas('programModuleAssignment',function($query) use($request){
@@ -485,7 +487,9 @@ class ExaminationResultController extends Controller
         	$assignmentIds[] = $assign->id;
         }
 
-        $students = Student::with(['examinationResults'=>function($query) use($assignmentIds){
+        $students = Student::with(['semesterRemarks'=>function($query) use ($request){
+             $query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',explode('_',$request->get('campus_program_id'))[2])->where('semester_id',$request->get('semester_id'));
+        },'examinationResults'=>function($query) use($assignmentIds){
         	$query->whereIn('module_assignment_id',$assignmentIds);
         }])->where('campus_program_id',$campus_program->id)->where('year_of_study',explode('_',$request->get('campus_program_id'))[2])->get();
 
@@ -501,7 +505,8 @@ class ExaminationResultController extends Controller
            'study_academic_year'=>$study_academic_year,
            'module_assignments'=>$module_assignments,
            'students'=>$students,
-           'staff'=>User::find(Auth::user()->id)->staff
+           'staff'=>User::find(Auth::user()->id)->staff,
+           'request'=>$request
         ];
         return view('dashboard.academic.reports.final-program-results',$data)->withTitle('Final Program Results - '.$campus_program->program->name);
     }

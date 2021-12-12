@@ -207,7 +207,7 @@
                     <tr>
                       <td class="ss-bold">SN</td>
                       <td class="ss-bold">REGNO</td>
-                      <td class="ss-bold">@if($results_type == 'FN') EXAM MARKS @else COURSE WORK @endif</td>
+                      <td class="ss-bold">@if($results_type == 'FN') EXAM MARKS @else COURSEWORK @endif</td>
                     </tr>
                     @foreach($program_module_assignment->examinationResults as $key=>$result)
                     <tr>

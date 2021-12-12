@@ -72,7 +72,7 @@
                     <select name="study_academic_year_id" class="form-control" required>
                        <option value="">Select Study Academic Year</option>
                        @foreach($study_academic_years as $year)
-                       <option value="{{ $year->id }}">{{ $year->academicYear->year }}</option>
+                       <option value="{{ $year->id }}" @if($year->id == $request->get('study_academic_year_id')) selected="selected" @endif>{{ $year->academicYear->year }}</option>
                        @endforeach
                     </select>
                   </div>
@@ -81,11 +81,12 @@
                     <select name="campus_id" class="form-control" required>
                        <option value="">Select Campus</option>
                        @foreach($campuses as $cp)
-                       <option value="{{ $cp->id }}">{{ $cp->name }}</option>
+                       <option value="{{ $cp->id }}" @if($cp->id == $request->get('campus_id')) selected="selected" @endif>{{ $cp->name }}</option>
                        @endforeach
                     </select>
                   </div>
                   </div>
+                   
                   <div class="ss-form-actions">
                    <button type="submit" class="btn btn-primary">{{ __('Search') }}</button>
                   </div>
@@ -131,6 +132,26 @@
                     {!! Form::input('hidden','campus_id',$campus->id) !!}
                   </div>
                   </div>
+                  <div class="row">
+                  <div class="form-group col-12">
+                        <label class="radio-inline">
+                          <input type="radio" name="name_display_type" id="inlineRadio2" value="SHOW"> Show Names
+                        </label>&nbsp;
+                        <label class="radio-inline">
+                          <input type="radio" name="name_display_type" id="inlineRadio3" value="HIDE"> Hide Names
+                        </label>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="form-group col-12">
+                        <label class="radio-inline">
+                          <input type="radio" name="reg_display_type" id="inlineRadio2" value="SHOW"> Show Reg Number
+                        </label>&nbsp;
+                        <label class="radio-inline">
+                          <input type="radio" name="reg_display_type" id="inlineRadio3" value="HIDE"> Hide Reg Number
+                        </label>
+                  </div>
+                </div>
               </div>
                <div class="card-footer">
                   <button type="submit" class="btn btn-primary">{{ __('View Results') }}</button>
