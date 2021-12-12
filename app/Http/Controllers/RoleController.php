@@ -110,7 +110,7 @@ class RoleController extends Controller
     	$role = Role::find($request->get('role_id'));
         foreach($permissions as $perm){
         	if($request->get('permission_'.$perm->id) == $perm->id){
-        		$permissionIds[$perm->system_module_id][] = $perm->id;
+        		$permissionIds[$request->get('system_module_id')][] = $perm->id;
         	}
         }
 
