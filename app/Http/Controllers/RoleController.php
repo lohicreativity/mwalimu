@@ -90,14 +90,18 @@ class RoleController extends Controller
     public function updatePermissions(Request $request)
     {
     	$permissions = Permission::all();
+        $modules = SystemModule::all();
     	$permissionIds = [];
     	$role = Role::find($request->get('role_id'));
         foreach($permissions as $perm){
         	if($request->get('permission_'.$perm->id) == $perm->id){
-        		$permissionIds[] = $perm->id;
+        		$permissionIds[$perm->system_module_id][] = $perm->id;
         	}
         }
-        $role->permissions()->attach($permissionIds);
+        foreach($modules as $module){
+            $role->permissions()->sync($permissionIds[$module->id]);
+        }
+        
 
     	return Util::requestResponse($request,'Role persmissions updated successfully');
     }
