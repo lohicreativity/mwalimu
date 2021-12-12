@@ -82,6 +82,7 @@
                  
 
                  {!! Form::input('hidden','role_id',$role->id) !!}
+                 {!! Form::input('hidden','system_module_id',$module->id) !!}
                 <div class="row">
                    @foreach($permissions as $permission)
                      <div class="form-check col-4">

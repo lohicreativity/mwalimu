@@ -113,9 +113,8 @@ class RoleController extends Controller
         		$permissionIds[$perm->system_module_id][] = $perm->id;
         	}
         }
-        foreach($modules as $module){
-            $role->permissions()->sync($permissionIds[$module->id]);
-        }
+
+        $role->permissions()->sync($permissionIds[$request->get('system_module_id')]);
         
 
     	return Util::requestResponse($request,'Role persmissions updated successfully');
