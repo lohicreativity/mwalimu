@@ -21,7 +21,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>{{ __('Roles') }}</h1>
+            <h1>{{ __('Role Permissions') }} - {{ $role->display_name }}</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -74,7 +74,7 @@
             @if(count($permissions) != 0)
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">{{ __('Permissions') }}</h3>
+                <h3 class="card-title">{{ __('Permissions') }} - {{ $module->name }}</h3>
               </div>
               <!-- /.card-header -->
               {!! Form::open(['url'=>'settings/role/permission/update','class'=>'ss-form-processing']) !!}
@@ -103,6 +103,41 @@
               {!! Form::close() !!}
             </div>
             <!-- /.card -->
+            @endif
+
+            @if(count($role->permissions) != 0)
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">{{ __('Role Permissions') }} - {{ $role->name }}</h3>
+              </div>
+              <div class="card-body">
+                 <table class="table table-bordered">
+                   <thead>
+                     <tr>
+                       <th>Permission</th>
+                       <th>Display Name</th>
+                       <th>Action</th>
+                     </tr>
+                   </thead>
+                   <tbody>
+                    @foreach($role->permissions as $permission)
+                     <tr>
+                       <td>
+                          <b>Can: </b>{{ $permission->name }}<br>
+                          <b>Module: </b>{{ $permission->systemModule->name }}
+                       </td>
+                       <td>
+                         {{ $permission->display_name }}
+                       </td>
+                       <td>
+                         <a href="{{ url('settings/role/'.$role->id.'/permissions/'.$permission->id.'/revoke') }}" class="btn btn-danger">Revoke</a>
+                       </td>
+                     </tr>
+                    @endforeach
+                   </tbody>
+                 </table>
+              </div>
+            </div>
             @endif
             
             

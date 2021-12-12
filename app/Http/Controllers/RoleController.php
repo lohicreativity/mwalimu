@@ -78,10 +78,25 @@ class RoleController extends Controller
     {
     	$data = [
     	   'system_modules'=>SystemModule::all(),
-    	   'role'=>Role::with('permissions')->find($id),
-           'permissions'=>$request->has('system_module_id')? Permission::where('system_module_id',$request->get('system_module_id'))->get() : []
+    	   'role'=>Role::with('permissions.systemModule')->find($id),
+           'permissions'=>$request->has('system_module_id')? Permission::where('system_module_id',$request->get('system_module_id'))->get() : [],
+           'module'=>SystemModule::find($request->has('system_module_id'))
     	];
     	return view('dashboard.settings.role-permissions',$data)->withTitle('Role Permissions');
+    }
+
+    /**
+     * Revoke permission from role
+     */
+    public function revokePermission(Request $request, $role_id, $perm_id)
+    {
+        try{
+            $role = Role::findOrFail($role_id);
+            $role->permissions()->detach([$perm_id]);
+            return redirect()->back()->with('message','Permission revoked successfully');
+        }catch(\Exception $e){
+            return redirect()->back()->with('error','Unable to get the resource specified in this request');
+        }
     }
 
     /**

@@ -72,6 +72,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 	Route::post('role/store', [RoleController::class,'store']);
 	Route::post('role/update', [RoleController::class,'update']);
 	Route::get('role/{id}/permissions', [RoleController::class,'showPermissions']);
+	Route::get('role/{role_id}/permissions/{perm_id}/revoke', [RoleController::class,'revokePermission']);
 	Route::post('role/permission/update',[RoleController::class,'updatePermissions']);
 	Route::get('role/{id}/destroy', [RoleController::class,'destroy']);
 
