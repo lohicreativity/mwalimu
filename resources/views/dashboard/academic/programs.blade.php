@@ -124,7 +124,7 @@
                  <div class="row">
                   <div class="form-group col-4">
                     {!! Form::label('','NTA level') !!}
-                    <select name="nta_level_id" class="form-control ss-select-nta-level" required data-min-target="#ss-min-duration" data-max-target="#ss-max-duration" data-token="{{ session()->token() }}" data-source-url="{{ url('api/v1/get-nta-level') }}" data-award-target="#ss-nta-award">
+                    <select name="nta_level_id" class="form-control ss-select-nta-level" required data-min-target="#ss-min-duration" data-max-target="#ss-max-duration" data-token="{{ session()->token() }}" data-source-url="{{ url('api/v1/get-nta-level') }}" data-award-target="#ss-nta-award, #ss-nta-award-input">
                       <option value="">Select NTA level</option>
                       @foreach($nta_levels as $level)
                       <option value="{{ $level->id }}">{{ $level->name }}</option>
@@ -139,7 +139,7 @@
                       <option value="{{ $award->id }}">{{ $award->name }}</option>
                       @endforeach
                     </select>
-                    {!! Form::input('hidden','award_id',null,['id'=>'ss-nta-award']) !!}
+                    {!! Form::input('hidden','award_id',null,['id'=>'ss-nta-award-input']) !!}
                   </div>
                    <div class="form-group col-4">
                       {!! Form::label('','Category') !!}
@@ -269,7 +269,7 @@
                                        <div class="row">
                                         <div class="form-group col-4">
                                           {!! Form::label('','NTA level') !!}
-                                          <select name="nta_level_id" class="form-control ss-select-nta-level" required data-min-target="#ss-min-duration-{{ $program->id}}" data-max-target="#ss-max-duration-{{ $program->id }}" data-token="{{ session()->token() }}" data-source-url="{{ url('api/v1/get-nta-level') }}" data-award-target="#ss-nta-award-{{ $program->id }}">
+                                          <select name="nta_level_id" class="form-control ss-select-nta-level" required data-min-target="#ss-min-duration-{{ $program->id}}" data-max-target="#ss-max-duration-{{ $program->id }}" data-token="{{ session()->token() }}" data-source-url="{{ url('api/v1/get-nta-level') }}" data-award-target="#ss-nta-award-{{ $program->id }}, #ss-nta-award-input-{{ $program->id }}">
                                             <option value="">Select NTA level</option>
                                             @foreach($nta_levels as $level)
                                             <option value="{{ $level->id }}" @if($level->id == $program->nta_level_id) selected="selected" @endif>{{ $level->name }}</option>
@@ -285,7 +285,7 @@
                                             @endforeach
                                           </select>
 
-                                          {!! Form::input('hidden','award_id',$program->award_id,['id'=>'ss-nta-award-'.$program->id]) !!}
+                                          {!! Form::input('hidden','award_id',$program->award_id,['id'=>'ss-nta-award-input-'.$program->id]) !!}
                                         </div>
                                         <div class="form-group col-4">
                                         {!! Form::label('','Category') !!}

@@ -70,6 +70,8 @@
             </div>
             <!-- /.card -->
 
+
+            @if(count($permissions) != 0)
             <div class="card">
               <div class="card-header">
                 <h3 class="card-title">{{ __('Permissions') }}</h3>
@@ -101,6 +103,7 @@
               {!! Form::close() !!}
             </div>
             <!-- /.card -->
+            @endif
             
             
           </div>

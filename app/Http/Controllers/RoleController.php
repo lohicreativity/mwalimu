@@ -97,7 +97,7 @@ class RoleController extends Controller
         		$permissionIds[] = $perm->id;
         	}
         }
-        $role->permissions()->sync($permissionIds);
+        $role->permissions()->attach($permissionIds);
 
     	return Util::requestResponse($request,'Role persmissions updated successfully');
     }

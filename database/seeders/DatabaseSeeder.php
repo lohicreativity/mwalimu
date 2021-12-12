@@ -13,17 +13,17 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        \App\Models\User::factory(1100)->create();
+        // \App\Models\User::factory(1100)->create();
         // $this->call(UsersTableSeeder::class);
         $this->call(RolesTableSeeder::class);
-        $this->call(RoleUserTableSeeder::class);
+        // $this->call(RoleUserTableSeeder::class);
         $this->call(LevelsTableSeeder::class);
         $this->call(AwardsTableSeeder::class);
         $this->call(SemestersTableSeeder::class);
         $this->call(UnitCategoriesTableSeeder::class);
         $this->call(DepartmentsTableSeeder::class);
         $this->call(NTALevelsTableSeeder::class);
-        $this->call(ProgramsTableSeeder::class);
+        // $this->call(ProgramsTableSeeder::class);
         $this->call(IntakesTableSeeder::class);
         $this->call(DesignationsTableSeeder::class);
         $this->call(CountriesTableSeeder::class);
@@ -41,9 +41,9 @@ class DatabaseSeeder extends Seeder
         $this->call(CampusesTableSeeder::class);
         $this->call(CampusProgramTableSeeder::class);
         \App\Domain\Application\Models\NextOfKin::factory(100)->create();
-        \App\Domain\Application\Models\Applicant::factory(1000)->create();
-        \App\Domain\Registration\Models\Student::factory(1000)->create();
-        \App\Domain\HumanResources\Models\Staff::factory(20)->create();
-        \App\Domain\Registration\Models\Registration::factory(1000)->create();
+        // \App\Domain\Application\Models\Applicant::factory(1000)->create();
+        // \App\Domain\Registration\Models\Student::factory(1000)->create();
+        // \App\Domain\HumanResources\Models\Staff::factory(20)->create();
+        // \App\Domain\Registration\Models\Registration::factory(1000)->create();
     }
 }
