@@ -240,7 +240,7 @@
                                 $code = [
                                    'placeholder'=>'Code',
                                    'class'=>'form-control ss-autofill-nta',
-                                   'data-target'=>'#ss-nta-level-'.$module->id.','#ss-nta-level-input-'.$module->id,
+                                   'data-target'=>'#ss-nta-level-'.$module->id.',#ss-nta-level-input-'.$module->id,
                                    'data-token'=>session()->token(),
                                    'data-source-url'=>url('api/v1/get-nta-level-by-code'),
                                    'required'=>true
