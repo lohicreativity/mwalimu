@@ -158,8 +158,8 @@
                                       {!! Form::label('','Select facilitar') !!}<br>
                                       <select name="staff_id" class="form-control ss-select-tags" required style="width: 100%;">
                                         <option value="">Select Facilitator</option>
-                                        @foreach($staffs as $staff)
-                                        <option value="{{ $staff->id }}">{{ $staff->title }} {{ $staff->first_name }} {{ $staff->surname }} - {{ $staff->designation->name }}</option>
+                                        @foreach($staffs as $stf)
+                                        <option value="{{ $stf->id }}">{{ $stf->title }} {{ $stf->first_name }} {{ $stf->surname }} - {{ $stf->designation->name }}</option>
                                         @endforeach
                                       </select>
 
