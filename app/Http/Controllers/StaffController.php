@@ -138,7 +138,7 @@ class StaffController extends Controller
             'address'=>'required',
             'phone'=>'required',
             'nin'=>'required',
-            'image'=>'mimes:png,jpg,jpeg'
+
         ]);
 
         if($validation->fails()){
@@ -167,7 +167,7 @@ class StaffController extends Controller
             'address'=>'required',
             'phone'=>'required',
             'nin'=>'required',
-            'image'=>'mimes:png,jpg,jpeg'
+            
         ]);
 
         if($validation->fails()){

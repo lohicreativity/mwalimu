@@ -595,6 +595,12 @@ class ExaminationResultController extends Controller
               $modules[$assignment->module->code]['supp_total_count'] = 0;
               $modules[$assignment->module->code]['ML']['supp_total_count'] = 0;
               $modules[$assignment->module->code]['FL']['supp_total_count'] = 0;
+              $modules[$assignment->module->code]['supp_carry_count'] = 0;
+              $modules[$assignment->module->code]['ML']['supp_carry_count'] = 0;
+              $modules[$assignment->module->code]['FL']['supp_carry_count'] = 0;
+              $modules[$assignment->module->code]['supp_retake_count'] = 0;
+              $modules[$assignment->module->code]['ML']['supp_retake_count'] = 0;
+              $modules[$assignment->module->code]['FL']['supp_retake_count'] = 0;
 
             foreach($grading_policies as $policy){
               $modules[$assignment->module->code]['grades'][$policy->grade] = 0; 
@@ -658,6 +664,12 @@ class ExaminationResultController extends Controller
                         }else{
                             $modules[$assignment->module->code]['supp_fail_count'] += 1;
                         }
+                        if($result->final_exam_remark == 'CARRY'){
+                            $modules[$assignment->module->code]['supp_carry_count'] += 1;
+                        }
+                        if($result->final_exam_remark == 'RETAKE'){
+                            $modules[$assignment->module->code]['supp_retake_count'] += 1;
+                        }
                         if($student->gender == 'M'){
                            
                              $modules[$assignment->module->code]['ML']['supp_total_count'] += 1;
@@ -665,6 +677,12 @@ class ExaminationResultController extends Controller
                                   $modules[$assignment->module->code]['ML']['supp_pass_count'] += 1;
                               }else{
                                   $modules[$assignment->module->code]['ML']['supp_fail_count'] += 1;
+                              }
+                              if($result->final_exam_remark == 'CARRY'){
+                                  $modules[$assignment->module->code]['ML']['supp_carry_count'] += 1;
+                              }
+                              if($result->final_exam_remark == 'RETAKE'){
+                                  $modules[$assignment->module->code]['ML']['supp_retake_count'] += 1;
                               }
                            
                         }elseif($student->gender == 'F'){
@@ -674,6 +692,12 @@ class ExaminationResultController extends Controller
                                   $modules[$assignment->module->code]['FL']['supp_pass_count'] += 1;
                               }else{
                                   $modules[$assignment->module->code]['FL']['supp_fail_count'] += 1;
+                              }
+                              if($result->final_exam_remark == 'CARRY'){
+                                  $modules[$assignment->module->code]['FL']['supp_carry_count'] += 1;
+                              }
+                              if($result->final_exam_remark == 'RETAKE'){
+                                  $modules[$assignment->module->code]['FL']['supp_retake_count'] += 1;
                               }
                         }
                     }else{

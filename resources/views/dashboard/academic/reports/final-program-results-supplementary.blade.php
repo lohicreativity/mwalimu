@@ -345,29 +345,17 @@
                       <tr>
                         <td class="ss-bold" rowspan="2">CODE</td>
                         <td class="ss-bold" rowspan="2">NAME</td>
-                        @foreach($grading_policies as $policy)
-                        <td class="ss-bold" colspan="3">{{ $policy->grade }}</td>
-                        @endforeach
-                        <td class="ss-bold" colspan="3">IC</td>
-                        <td class="ss-bold" colspan="3">IF</td>
+                        <td class="ss-bold" colspan="3">C</td>
+                        <td class="ss-bold" colspan="3">F</td>
                         <td class="ss-bold" colspan="3">I</td>
                         <td class="ss-bold" colspan="3">POST</td>
-                        <td class="ss-bold" colspan="3">DS</td>
                         <td class="ss-bold" colspan="3">TOTAL</td>
                         <td class="ss-bold" colspan="3">PASS</td>
                         <td class="ss-bold" colspan="3">FAIL</td>
-                        <td class="ss-bold" colspan="3">FAIL FE</td>
+                        <td class="ss-bold" colspan="3">CARRY</td>
                         <td class="ss-bold" colspan="3">RETAKE</td>
                       </tr>
                       <tr>
-                        @foreach($grading_policies as $policy)
-                        <td class="ss-bold">M</td>
-                        <td class="ss-bold">F</td>
-                        <td class="ss-bold">TT</td>
-                        @endforeach
-                        <td class="ss-bold">M</td>
-                        <td class="ss-bold">F</td>
-                        <td class="ss-bold">TT</td>
                         <td class="ss-bold">M</td>
                         <td class="ss-bold">F</td>
                         <td class="ss-bold">TT</td>
@@ -400,43 +388,33 @@
                       <tr>
                         <td>{{ $modKey }}</td>
                         <td>{{ $mod['name'] }}</td>
-                        @foreach($grading_policies as $pol)
-                           @if(in_array($pol->grade,$mod['grades']))
-                            <td>{{ $mod['grades']['ML'][$pol->grade] }}</td>
-                            <td>{{ $mod['grades']['FL'][$pol->grade] }}</td>
-                            <td>{{ $mod['grades'][$pol->grade] }}</td>
-                           @endif
-                        @endforeach
-                        <td>{{ $mod['ML']['ic_count'] }}</td>
-                        <td>{{ $mod['FL']['ic_count'] }}</td>
-                        <td>{{ $mod['ic_count'] }}</td>
-                        <td>{{ $mod['ML']['if_count'] }}</td>
-                        <td>{{ $mod['FL']['if_count'] }}</td>
-                        <td>{{ $mod['if_count'] }}</td>
-                        <td>{{ $mod['ML']['inc_count'] }}</td>
-                        <td>{{ $mod['FL']['inc_count'] }}</td>
-                        <td>{{ $mod['inc_count'] }}</td>
-                        <td>{{ $mod['ML']['pst_count'] }}</td>
-                        <td>{{ $mod['FL']['pst_count'] }}</td>
-                        <td>{{ $mod['pst_count'] }}</td>
-                        <td>{{ $mod['ML']['ds_count'] }}</td>
-                        <td>{{ $mod['FL']['ds_count'] }}</td>
-                        <td>{{ $mod['ds_count'] }}</td>
-                        <td>{{ $mod['ML']['total_count'] }}</td>
-                        <td>{{ $mod['FL']['total_count'] }}</td>
-                        <td>{{ $mod['total_count'] }}</td>
-                        <td>{{ $mod['ML']['pass_count'] }}</td>
-                        <td>{{ $mod['FL']['pass_count'] }}</td>
-                        <td>{{ $mod['pass_count'] }}</td>
-                        <td>{{ $mod['ML']['fail_count'] }}</td>
-                        <td>{{ $mod['FL']['fail_count'] }}</td>
-                        <td>{{ $mod['fail_count'] }}</td>
-                        <td>{{ $mod['ML']['fail_fe_count'] }}</td>
-                        <td>{{ $mod['FL']['fail_fe_count'] }}</td>
-                        <td>{{ $mod['fail_fe_count'] }}</td>
-                        <td>{{ $mod['ML']['retake_count'] }}</td>
-                        <td>{{ $mod['FL']['retake_count'] }}</td>
-                        <td>{{ $mod['retake_count'] }}</td>
+                        <td>{{ $mod['ML']['supp_pass_count'] }}</td>
+                        <td>{{ $mod['FL']['supp_pass_count'] }}</td>
+                        <td>{{ $mod['supp_pass_count'] }}</td>
+                        <td>{{ $mod['ML']['supp_fail_count'] }}</td>
+                        <td>{{ $mod['FL']['supp_fail_count'] }}</td>
+                        <td>{{ $mod['supp_fail_count'] }}</td>
+                        <td>{{ $mod['ML']['supp_inc_count'] }}</td>
+                        <td>{{ $mod['FL']['supp_inc_count'] }}</td>
+                        <td>{{ $mod['supp_inc_count'] }}</td>
+                        <td>{{ $mod['ML']['supp_pst_count'] }}</td>
+                        <td>{{ $mod['FL']['supp_pst_count'] }}</td>
+                        <td>{{ $mod['supp_pst_count'] }}</td>
+                        <td>{{ $mod['ML']['supp_total_count'] }}</td>
+                        <td>{{ $mod['FL']['supp_total_count'] }}</td>
+                        <td>{{ $mod['supp_total_count'] }}</td>
+                        <td>{{ $mod['ML']['supp_pass_count'] }}</td>
+                        <td>{{ $mod['FL']['supp_pass_count'] }}</td>
+                        <td>{{ $mod['supp_pass_count'] }}</td>
+                        <td>{{ $mod['ML']['supp_fail_count'] }}</td>
+                        <td>{{ $mod['FL']['supp_fail_count'] }}</td>
+                        <td>{{ $mod['supp_fail_count'] }}</td>
+                        <td>{{ $mod['ML']['supp_carry_count'] }}</td>
+                        <td>{{ $mod['FL']['supp_carry_count'] }}</td>
+                        <td>{{ $mod['supp_carry_count'] }}</td>
+                        <td>{{ $mod['ML']['supp_retake_count'] }}</td>
+                        <td>{{ $mod['FL']['supp_retake_count'] }}</td>
+                        <td>{{ $mod['supp_retake_count'] }}</td>
                       </tr>
                       @endforeach
                    </table>
@@ -444,47 +422,7 @@
         </div>
         </div>
 
-        <div class="row">
-        <div class="col-md-12">
-             <h3 class="ss-bold">COURSE MODULES RESULTS SUMMARY</h3>
-                <div class="table-responsive">
-                   <table class="table table-condensed table-bordered">
-                      <tr>
-                        <td class="ss-bold">CODE</td>
-                        <td class="ss-bold">NAME</td>
-                        @foreach($grading_policies as $policy)
-                        <td class="ss-bold">{{ $policy->grade }}</td>
-                        @endforeach
-                        <td class="ss-bold">I</td>
-                        <td class="ss-bold">IC</td>
-                        <td class="ss-bold">IF</td>
-                        <td class="ss-bold">POST</td>
-                        <td class="ss-bold">DS</td>
-                        <td class="ss-bold">PASS</td>
-                        <td class="ss-bold">FAIL</td>
-                      </tr>
-                      @foreach($modules as $modKey=>$mod)
-                      <tr>
-                        <td>{{ $modKey }}</td>
-                        <td>{{ $mod['name'] }}</td>
-                        @foreach($grading_policies as $pol)
-                           @if(in_array($pol->grade,$mod['grades']))
-                            <td>{{ round($mod['grades_perc'][$pol->grade],2) }}%</td>
-                           @endif
-                        @endforeach
-                        <td>{{ round($mod['inc_rate'],2) }}%</td>
-                        <td>{{ round($mod['ic_rate'],2) }}%</td>
-                        <td>{{ round($mod['if_rate'],2) }}%</td>
-                        <td>{{ round($mod['pst_rate'],2) }}%</td>
-                        <td>{{ round($mod['ds_rate'],2) }}%</td>
-                        <td>{{ round($mod['pass_rate'],2) }}%</td>
-                        <td>{{ round($mod['fail_rate'],2) }}%</td>
-                      </tr>
-                      @endforeach
-                   </table>
-                </div><!-- end of table-responsive -->
-        </div>
-        </div>
+        
 
          <div class="row">
         <div class="col-md-8">
