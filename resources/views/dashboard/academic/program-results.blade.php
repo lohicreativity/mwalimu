@@ -135,7 +135,7 @@
                   <div class="row">
                   <div class="form-group col-12">
                         <label class="radio-inline">
-                          <input type="radio" name="name_display_type" id="inlineRadio2" value="SHOW"> Show Names
+                          <input type="radio" name="name_display_type" id="inlineRadio2" value="SHOW" checked="checked"> Show Names
                         </label>&nbsp;
                         <label class="radio-inline">
                           <input type="radio" name="name_display_type" id="inlineRadio3" value="HIDE"> Hide Names
@@ -145,10 +145,20 @@
                 <div class="row">
                   <div class="form-group col-12">
                         <label class="radio-inline">
-                          <input type="radio" name="reg_display_type" id="inlineRadio2" value="SHOW"> Show Reg Number
+                          <input type="radio" name="reg_display_type" id="inlineRadio2" value="SHOW" checked="checked"> Show Reg Number
                         </label>&nbsp;
                         <label class="radio-inline">
                           <input type="radio" name="reg_display_type" id="inlineRadio3" value="HIDE"> Hide Reg Number
+                        </label>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="form-group col-12">
+                        <label class="radio-inline">
+                          <input type="radio" name="gender_display_type" id="inlineRadio2" value="SHOW" checked="checked"> Show Gender
+                        </label>&nbsp;
+                        <label class="radio-inline">
+                          <input type="radio" name="gender_display_type" id="inlineRadio3" value="HIDE"> Hide Gender
                         </label>
                   </div>
                 </div>

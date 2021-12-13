@@ -12,6 +12,7 @@ use App\Domain\Academic\Models\ProgramModuleAssignment;
 use App\Domain\Academic\Models\SemesterRemark;
 use App\Domain\Academic\Models\AnnualRemark;
 use App\Domain\Academic\Models\OverallRemark;
+use App\Domain\Academic\Models\SpecialExam;
 
 class Student extends Model
 {
@@ -42,6 +43,14 @@ class Student extends Model
     public function annualRemarks()
     {
         return $this->hasMany(AnnualRemark::class,'student_id');
+    }
+
+    /**
+     * Establish one to many relationship with special exams
+     */
+    public function specialExams()
+    {
+        return $this->hasMany(SpecialExam::class,'student_id');
     }
 
     /**

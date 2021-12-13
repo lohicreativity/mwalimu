@@ -38,11 +38,9 @@ class StudyAcademicYearController extends Controller
     public function store(Request $request)
     {
     	$validation = Validator::make($request->all(),[
-            'academic_year_id'=>'required|unique:study_academic_years',
+            'academic_year_id'=>'required',
             'begin_date'=>'required',
             'end_date'=>'required'
-        ],[
-            'academic_year_id'=>'Academic year cannot be dupplicated'
         ]);
 
         if($validation->fails()){

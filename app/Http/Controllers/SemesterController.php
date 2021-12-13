@@ -115,6 +115,5 @@ class SemesterController extends Controller
         }catch(Exception $e){
             return redirect()->back()->with('error','Unable to get the resource specified in this request');
         }
-
     }
 }
