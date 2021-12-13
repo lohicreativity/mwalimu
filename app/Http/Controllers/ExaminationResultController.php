@@ -611,6 +611,18 @@ class ExaminationResultController extends Controller
              
             }
         }
+        
+        $semesters = Semester::all();
+        $special_exam_first_semester_students = [];
+        $special_exam_second_semester_students = [];
+        $sem_modules = [];
+        foreach($semesters as $sem){
+           foreach($module_assignments as $assign){
+            if($assign->programModuleAssignment->semester_id == $sem->id){
+               $sem_modules[$sem->name][] = $assign;
+            }
+           }
+        }
 
         foreach($students as $key=>$student){
             
@@ -705,6 +717,8 @@ class ExaminationResultController extends Controller
                          if($exam->study_academic_year_id == $assignment->study_academic_year_id && $exam->module_assignment_id == $assignment->id && $exam->type == 'SUPP'){
 
                            $supp_ic_status = false;
+
+                           $special_exam_first_semester_students[] = $student;
 
                             $modules[$assignment->module->code]['supp_pst_count'] += 1;
                             if($student->gender == 'M'){
@@ -860,7 +874,8 @@ class ExaminationResultController extends Controller
            'students'=>$students,
            'modules'=>$modules,
            'semester'=>$semester,
-           'semesters'=>Semester::all(),
+           'semesters'=>$semesters,
+           'sem_modules'=>$sem_modules,
            'year_of_study'=>explode('_',$request->get('campus_program_id'))[2],
            'grading_policies'=>$grading_policies,
            'staff'=>User::find(Auth::user()->id)->staff,

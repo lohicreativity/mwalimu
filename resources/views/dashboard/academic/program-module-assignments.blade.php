@@ -166,7 +166,7 @@
                       </div>
                       <!-- /.modal -->
                       @can('assign-programme-modules')
-                      <a class="btn btn-info btn-sm" @if($study_academic_year->id == session('active_academic_year_id')) href="{{ url('academic/program-module-assignment/'.$study_academic_year->id.'/'.$program->id.'/assign') }}" @else disabled="disabled" @endif>
+                      <a class="btn btn-info btn-sm" @if($study_academic_year->id == $request->get('study_academic_year_id')) href="{{ url('academic/program-module-assignment/'.$study_academic_year->id.'/'.$program->id.'/assign') }}" @else disabled="disabled" @endif>
                               <i class="fas fa-plus">
                               </i>
                               Assign Module

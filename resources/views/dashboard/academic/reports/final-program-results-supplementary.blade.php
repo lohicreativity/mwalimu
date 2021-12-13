@@ -226,18 +226,6 @@
                       <td class="ss-bold" rowspan="4">GENDER</td>
                       @endif
                       <!-- <td class="ss-bold" rowspan="2">CLASS MODE</td> -->
-                       @php
-                         $sem_modules = [];
-                      @endphp
-                      @foreach($semesters as $sem)
-                         @foreach($module_assignments as $assign)
-                          @if($assign->programModuleAssignment->semester_id == $sem->id)
-                           @php
-                             $sem_modules[$sem->name][] = $assign;
-                           @endphp
-                          @endif
-                         @endforeach
-                      @endforeach
                       
                       @foreach($sem_modules as $mdKey=>$mod)
                       <td class="ss-bold" colspan="{{ 2*count($mod)+1 }}">{{ $mdKey }}</td>

@@ -25,7 +25,8 @@ class ProgramModuleAssignmentController extends Controller
            'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
            'study_academic_year'=>$request->has('study_academic_year_id')? StudyAcademicYear::with('academicYear')->find($request->get('study_academic_year_id')) : null,
            'campuses'=>Campus::with(['campusPrograms.program','campusPrograms.programModuleAssignments.module'])->get(),
-           'staff'=>User::find(Auth::user()->id)->staff
+           'staff'=>User::find(Auth::user()->id)->staff,
+           'request'=>$request
     	];
     	return view('dashboard.academic.program-module-assignments',$data)->withTitle('Program Module Assignment');
     }
