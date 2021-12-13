@@ -410,6 +410,105 @@
         </div>
         </div>
 
+        <div class="row">
+          <div class="col-md-12">
+              <div class="table-responsive ss-margin-bottom">
+                  <table class="table table-condensed table-bordered">
+                    <tr>
+                      <td class="ss-bold" rowspan="2">SN</td>
+                      @if($request->get('reg_display_type') == 'SHOW')
+                      <td class="ss-bold" rowspan="2">REGNO</td>
+                      @endif
+                      @if($request->get('name_display_type') == 'SHOW')
+                      <td class="ss-bold" rowspan="2">NAME</td>
+                      @endif
+                      @if($request->get('gender_display_type') == 'SHOW')
+                      <td class="ss-bold" rowspan="2">GENDER</td>
+                      @endif
+                      <!-- <td class="ss-bold" rowspan="2">CLASS MODE</td> -->
+                      @foreach($sem_modules as $mdKey=>$mods)
+                          @foreach($mods as $assignment)
+                      <td class="ss-bold" colspan="4">{{ $assignment->module->code }} ({{ $assignment->module->credit }})</td>
+                          @endforeach
+                      @endforeach
+                      <td colspan="2"></td>
+                    </tr>
+                    <tr>
+                      
+                      @foreach($module_assignments as $assignment)
+                      <td class="ss-bold">CA</td>
+                      <td class="ss-bold">FE</td>
+                      <td class="ss-bold">TT</td>
+                      <td class="ss-bold">GD</td>
+                      @endforeach
+                      
+                      <td class="ss-bold">GPA</td>
+                      <td class="ss-bold">REMARK</td>
+                    </tr>
+                    
+                    
+
+                    @foreach($special_exam_first_semester_students as $key=>$student)
+                    <tr>
+                      <td>{{ $key+1 }}</td>
+                      @if($request->get('reg_display_type') == 'SHOW')
+                      <td>{{ $student->registration_number }}</td>
+                      @endif
+                      @if($request->get('name_display_type') == 'SHOW')
+                      <td>{{ $student->surname }}, {{ $student->first_name }} {{ $student->middle_name}}</td>
+                      @endif
+                      @if($request->get('gender_display_type') == 'SHOW')
+                      <td>{{ $student->gender }}</td>
+                      @endif
+                         
+
+                      @foreach($sem_modules as $mdKey=>$mods)
+                          @foreach($mods as $assignment)
+
+                          
+                          @if($assignment->programModuleAssignment->semester_id == $first_semester->id)
+
+                      
+                          @foreach($student->examinationResults as $result)
+                            @if($result->module_assignment_id == $assignment->id)
+                             
+
+
+                      
+                            <td @if($result->course_work_remark == 'FAIL') class="ss-custom-grey" @endif>{{ $result->course_work_score }}</td>
+                            <td @if($result->final_remark == 'FAIL') class="ss-custom-grey" @endif>{{ $result->final_score }}</td>
+                            <td @if($result->course_work_remark == 'FAIL' || $result->final_remark == 'FAIL') class="ss-custom-grey" @endif>{{ $result->total_score }}</td>
+                            <td @if($result->course_work_remark == 'FAIL' || $result->final_remark == 'FAIL') class="ss-custom-grey" @endif>{{ $result->grade }}</td>
+                            @endif
+
+
+                          @endforeach
+
+                          @endif
+                        
+                        @endforeach
+
+                      @endforeach
+                      @for($i = 0; $i < count($module_assignments)-count($student->examinationResults); $i++)
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                      @endfor
+                      <td>@if(count($student->semesterRemarks) != 0)   
+                        @if($student->semesterRemarks[0]->gpa) {{ bcdiv($student->semesterRemarks[0]->gpa,1,1) }} @else N/A @endif 
+                      @endif</td>
+                      <td>@if(count($student->semesterRemarks) != 0)   
+                        @if($student->semesterRemarks[0]->remark) {{ $student->semesterRemarks[0]->remark }} @else N/A @endif 
+                      @endif</td>
+                    </tr>
+                      
+                    @endforeach
+                  </table>
+                </div><!-- end of table-responsive -->
+          </div><!-- end of col-md-12 -->
+        </div><!-- end of row -->
+
         
 
          <div class="row">

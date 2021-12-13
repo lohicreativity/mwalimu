@@ -615,6 +615,8 @@ class ExaminationResultController extends Controller
         $semesters = Semester::all();
         $special_exam_first_semester_students = [];
         $special_exam_second_semester_students = [];
+        $first_semester = Semester::where('name','LIKE','%1%')->first();
+        $second_semester = Semester::where('name','LIKE','%2%')->first();
         $sem_modules = [];
         foreach($semesters as $sem){
            foreach($module_assignments as $assign){
@@ -717,8 +719,18 @@ class ExaminationResultController extends Controller
                          if($exam->study_academic_year_id == $assignment->study_academic_year_id && $exam->module_assignment_id == $assignment->id && $exam->type == 'SUPP'){
 
                            $supp_ic_status = false;
+                           
+                           if($exam->semester_id == $first_semester->id){
+                              $special_exam_first_semester_students[] = $student;
+                           }
 
-                           $special_exam_first_semester_students[] = $student;
+                           if($exam->semester_id == $second_semester->id){
+                              $special_exam_second_semester_students[] = $student;
+                           }
+
+
+                           
+
 
                             $modules[$assignment->module->code]['supp_pst_count'] += 1;
                             if($student->gender == 'M'){
@@ -876,6 +888,8 @@ class ExaminationResultController extends Controller
            'semester'=>$semester,
            'semesters'=>$semesters,
            'sem_modules'=>$sem_modules,
+           'special_exam_first_semester_students'=>$special_exam_first_semester_students,
+           'special_exam_second_semester_students'=>$special_exam_second_semester_students,
            'year_of_study'=>explode('_',$request->get('campus_program_id'))[2],
            'grading_policies'=>$grading_policies,
            'staff'=>User::find(Auth::user()->id)->staff,
