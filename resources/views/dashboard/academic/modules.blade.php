@@ -74,7 +74,7 @@
                   $code = [
                      'placeholder'=>'Code',
                      'class'=>'form-control ss-autofill-nta',
-                     'data-target'=>'#ss-nta-level',
+                     'data-target'=>'#ss-nta-level, #ss-nta-level-input',
                      'data-token'=>session()->token(),
                      'data-source-url'=>url('api/v1/get-nta-level-by-code'),
                      'required'=>true
@@ -146,7 +146,7 @@
                       @endforeach
                     </select>
 
-                    {!! Form::input('hidden','nta_level_id',null,['id'=>'ss-nta-level']) !!}
+                    {!! Form::input('hidden','nta_level_id',null,['id'=>'ss-nta-level-input']) !!}
                   </div>
                    <div class="form-group col-6">
                     {!! Form::label('','Upload module syllabus (PDF)') !!}
@@ -240,7 +240,7 @@
                                 $code = [
                                    'placeholder'=>'Code',
                                    'class'=>'form-control ss-autofill-nta',
-                                   'data-target'=>'#ss-nta-level-'.$module->id,
+                                   'data-target'=>'#ss-nta-level-'.$module->id.','#ss-nta-level-input-'.$module->id,
                                    'data-token'=>session()->token(),
                                    'data-source-url'=>url('api/v1/get-nta-level-by-code'),
                                    'required'=>true
@@ -308,7 +308,7 @@
                                           @endforeach
                                         </select>
 
-                                        {!! Form::input('hidden','nta_level_id',$module->nta_level_id,['id'=>'ss-nta-level-'.$module->id]) !!}
+                                        {!! Form::input('hidden','nta_level_id',$module->nta_level_id,['id'=>'ss-nta-level-input-'.$module->id]) !!}
                                       </div>
                                        <div class="form-group col-6">
                                         {!! Form::label('','Upload module syllabus (PDF)') !!}
