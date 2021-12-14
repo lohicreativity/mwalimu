@@ -125,12 +125,12 @@ class ExaminationResultController extends Controller
             $annual_credit = 0;
     		foreach($core_programs as $prog){
     			if($request->get('semester_id') != 'SUPPLEMENTARY'){
-	    			if(Util::stripSpacesUpper($semester->name) == Util::stripSpacesUpper('Semester 2')){    			
-		    			$annual_credit += $prog->module->credit;
+	    			  if(Util::stripSpacesUpper($semester->name) == Util::stripSpacesUpper('Semester 2')){    			
+		    			   $annual_credit += $prog->module->credit;
 	    	      }
-    	        }else{
-    	        	$annual_credit += $prog->module->credit;
-    	        }
+    	     }else{
+    	        	  $annual_credit += $prog->module->credit;
+    	     }
     		}
             
         	foreach($annual_results as $key=>$result){
@@ -623,13 +623,14 @@ class ExaminationResultController extends Controller
             }else{
               $core_programs = ProgramModuleAssignment::with(['module'])->where('study_academic_year_id',$assign->study_academic_year_id)->where('year_of_study',$assign->programModuleAssignment->year_of_study)->where('semester_id',$semester->id)->where('category','COMPULSORY')->where('campus_program_id',$assign->programModuleAssignment->campus_program_id)->get();
             }
-
+      
             $annual_credit = 0;
-        foreach($core_programs as $prog){
+          foreach($core_programs as $prog){
 
             if(Util::stripSpacesUpper($semester->name) == Util::stripSpacesUpper('Semester 2')){          
                 $annual_credit += $prog->module->credit;
               }
+          }
             
           foreach($annual_results as $key=>$result){
                 
@@ -645,7 +646,7 @@ class ExaminationResultController extends Controller
                    $student_buffer[$student->id]['annual_credit'] = $student_buffer[$student->id]['opt_credit'] + $annual_credit;
                }
             }
-        }
+      
 
           foreach ($module_assignments as $assignment) {
             $results = ExaminationResult::where('module_assignment_id',$assignment->id)->where('student_id',$student->id)->get();
@@ -807,8 +808,6 @@ class ExaminationResultController extends Controller
 
             }
           }
-
-          return $student_buffer;
         
 
           foreach($student_buffer as $key=>$buffer){
