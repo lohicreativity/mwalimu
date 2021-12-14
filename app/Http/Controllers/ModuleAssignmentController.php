@@ -709,9 +709,7 @@ class ModuleAssignmentController extends Controller
                      $query->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)->where('semester_id',$module_assignment->programModuleAssignment->semester_id)->where('study_academic_year_id',$module_assignment->programModuleAssignment->study_academic_year_id);
                 })->whereHas('studentshipStatus',function($query){
                       $query->where('name','ACTIVE');
-                })->where('registration_number',str_replace(' ', '', $line[0]))->where('campus_program_id',$module_assignment->programModuleAssignment->campusProgram->id)->first();
-
-                return $student;
+                })->where('registration_number',str_replace(' ', '', $line[0]))->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id)->first();
 
                 if($student){
                   if($request->get('assessment_plan_id') == 'FINAL_EXAM'){
