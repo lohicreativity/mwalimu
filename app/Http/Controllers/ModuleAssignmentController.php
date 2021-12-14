@@ -672,15 +672,14 @@ class ModuleAssignmentController extends Controller
               $csvFile = $destination.$csvFileName;
               $file_handle = fopen($csvFile, 'r');
               while (!feof($file_handle)) {
-                  $line_of_text[] = fgetcsv($file_handle, 0, ',');
+                  $line_of_text[] = fgets($file_handle); //fgetcsv($file_handle, 0, ',');
               }
               fclose($file_handle);
               foreach($line_of_text as $line){
-                 if(!empty($line)){
+                   $line = explode(',', $line);
                    if(floatval(str_replace(' ', '', $line[1])) < 0 || floatval(str_replace(' ', '', $line[1])) > 100){
                      $validationStatus = false;
                    }
-                 }
               }
 
               if(!$validationStatus){
@@ -703,10 +702,11 @@ class ModuleAssignmentController extends Controller
               $csvFile = $destination.$csvFileName;
               $file_handle = fopen($csvFile, 'r');
               while (!feof($file_handle)) {
-                  $line_of_text[] = fgetcsv($file_handle, 0, ',');
+                  $line_of_text[] = fgets($file_handle); //fgetcsv($file_handle, 0, ',');
               }
               fclose($file_handle);
               foreach($line_of_text as $line){
+                $line = explode(',', $line);
                 $student = Student::whereHas('registrations',function($query) use($module_assignment){
                      $query->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)->where('semester_id',$module_assignment->programModuleAssignment->semester_id)->where('study_academic_year_id',$module_assignment->programModuleAssignment->study_academic_year_id);
                 })->whereHas('studentshipStatus',function($query){
