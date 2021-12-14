@@ -90,7 +90,6 @@ class ExaminationResultController extends Controller
     	        })->with('module.ntaLevel','programModuleAssignment.campusProgram.program','studyAcademicYear')->where('study_academic_year_id',$request->get('study_academic_year_id'))->get();
          }
         	
-        return $module_assignments;
       if(count($module_assignments) == 0){
           DB::rollback();
           return redirect()->back()->with('error','No results to process');
