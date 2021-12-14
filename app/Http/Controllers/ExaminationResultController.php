@@ -78,7 +78,7 @@ class ExaminationResultController extends Controller
     	         })->whereHas('programModuleAssignment.campusProgram',function($query) use($campus_program){
 	    	    	$query->where('program_id',$campus_program->program->id);
 	    	    })->with('module.ntaLevel','programModuleAssignment.campusProgram.program','studyAcademicYear')->where('study_academic_year_id',$request->get('study_academic_year_id'))->get();
-
+       return $module_assignments;
     	 $annual_module_assignments = $module_assignments;
 
     	if($request->get('semester_id') != 'SUPPLEMENTARY'){
