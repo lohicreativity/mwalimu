@@ -644,7 +644,7 @@ class ModuleAssignmentController extends Controller
                 }
                 fclose($file_handle);
                 foreach($line_of_text as $line){
-                   $stud = Student::where('registration_number',$line[0])->first();
+                   $stud = Student::where('registration_number',trim($line[0]))->first();
                    if($stud){
                       $uploaded_students[] = $stud;
                    }
@@ -672,13 +672,11 @@ class ModuleAssignmentController extends Controller
               $csvFile = $destination.$csvFileName;
               $file_handle = fopen($csvFile, 'r');
               while (!feof($file_handle)) {
-                  $line_of_text[] = fgets($file_handle); //fgetcsv($file_handle, 0, ',');
+                  $line_of_text[] = fgetcsv($file_handle, 0, ',');
               }
               fclose($file_handle);
-              foreach($line_of_text as $ln){
-                   $line = explode(',', $ln);
-                   return dd(trim($line[1]));
-                   if(floatval(str_replace(' ', '', $line[1])) < 0 || floatval(str_replace(' ', '', $line[1])) > 100){
+              foreach($line_of_text as $line){
+                   if(floatval(trim($line[1])) < 0 || floatval(trim($line[1])) > 100){
                      $validationStatus = false;
                    }
               }
@@ -703,16 +701,15 @@ class ModuleAssignmentController extends Controller
               $csvFile = $destination.$csvFileName;
               $file_handle = fopen($csvFile, 'r');
               while (!feof($file_handle)) {
-                  $line_of_text[] = fgets($file_handle); //fgetcsv($file_handle, 0, ',');
+                  $line_of_text[] = fgetcsv($file_handle, 0, ',');
               }
               fclose($file_handle);
-              foreach($line_of_text as $ln){
-                $line = explode(',', $ln);
+              foreach($line_of_text as $line){
                 $student = Student::whereHas('registrations',function($query) use($module_assignment){
                      $query->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)->where('semester_id',$module_assignment->programModuleAssignment->semester_id)->where('study_academic_year_id',$module_assignment->programModuleAssignment->study_academic_year_id);
                 })->whereHas('studentshipStatus',function($query){
                       $query->where('name','ACTIVE');
-                })->where('registration_number',str_replace(' ', '', $line[0]))->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id)->first();
+                })->where('registration_number',trim($line[0]))->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id)->first();
 
                 if($student){
                   if($request->get('assessment_plan_id') == 'FINAL_EXAM'){
@@ -729,7 +726,7 @@ class ModuleAssignmentController extends Controller
                       $result_log = new ExaminationResultLog;
                       $result_log->module_assignment_id = $request->get('module_assignment_id');
                       $result_log->student_id = $student->id;
-                      $result_log->final_score = !$special_exam? (str_replace(' ', '', $line[1])*$policy->final_min_marks)/100 : null;
+                      $result_log->final_score = !$special_exam? (trim($line[1])*$policy->final_min_marks)/100 : null;
                       if($carry_history){
                          $result_log->exam_category = 'CARRY';
                       }
@@ -754,7 +751,7 @@ class ModuleAssignmentController extends Controller
                       }
                       $result->module_assignment_id = $request->get('module_assignment_id');
                       $result->student_id = $student->id;
-                      $result->final_score = !$special_exam? (str_replace(' ', '', $line[1])*$policy->final_min_mark)/100 : null;
+                      $result->final_score = !$special_exam? (trim($line[1])*$policy->final_min_mark)/100 : null;
                       $result->exam_type = 'FINAL';
                       if($carry_history){
                          $result->exam_category = 'CARRY';
@@ -796,11 +793,11 @@ class ModuleAssignmentController extends Controller
                           $result->module_assignment_id = $request->get('module_assignment_id');
                           $result->student_id = $student->id;
                           if($special_exam){
-                             $result->final_score = !$special_exam? (str_replace(' ', '', $line[1])*$policy->final_min_mark)/100 : null;
+                             $result->final_score = !$special_exam? (trim($line[1])*$policy->final_min_mark)/100 : null;
                              $result->final_remark = $policy->final_pass_score <= $result->final_score? 'PASS' : 'FAIL';
                              $result->supp_score = null;
                           }else{
-                             $result->supp_score = str_replace(' ', '', $line[1]);
+                             $result->supp_score = trim($line[1]);
                              if($result->supp_score < $policy->module_pass_mark){
                                $result->grade = 'F';
                              }else{
@@ -819,7 +816,7 @@ class ModuleAssignmentController extends Controller
                       $result_log->module_assignment_id = $request->get('module_assignment_id');
                       $result_log->assessment_plan_id = $plan->id;
                       $result_log->student_id = $student->id;
-                      $result_log->score = (str_replace(' ', '', $line[1])*$plan->weight)/100;
+                      $result_log->score = (trim($line[1])*$plan->weight)/100;
                       $result_log->uploaded_by_user_id = Auth::user()->id;
                       $result_log->save();
                       
@@ -831,7 +828,7 @@ class ModuleAssignmentController extends Controller
                       $result->module_assignment_id = $request->get('module_assignment_id');
                       $result->assessment_plan_id = $plan->id;
                       $result->student_id = $student->id;
-                      $result->score = (str_replace(' ', '', $line[1])*$plan->weight)/100;
+                      $result->score = (trim($line[1])*$plan->weight)/100;
                       $result->uploaded_by_user_id = Auth::user()->id;
                       $result->save();
                   }
