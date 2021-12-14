@@ -672,7 +672,7 @@ class ExaminationResultController extends Controller
                       $available_program_ids[] = $pr->moduleAssignment->programModuleAssignment->id;
                   }
                   foreach($core_programs as $prog){
-                      if(!in_array($prog->id, $available_programs)){
+                      if(!in_array($prog->id, $available_program_ids)){
                          $missing_programs[] = $prog->module->code;
                       }
                   }
