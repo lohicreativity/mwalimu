@@ -105,7 +105,7 @@ class ModuleAssignmentController extends Controller
                'final_upload_status'=>$final_upload_status,
                'assessment_plans'=>AssessmentPlan::where('module_assignment_id',$id)->get(),
                'course_work_components'=>CourseWorkComponent::where('module_assignment_id',$id)->get(),
-               'staff'=>User::find(Auth::user()->id)->staff
+               'staff'=>User::find(Auth::user()->id)->staff,
                'policy'=>$policy
             ];
             return view('dashboard.academic.assessment-plans',$data)->withTitle('Module Assessment Plans');
