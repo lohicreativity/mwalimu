@@ -711,6 +711,8 @@ class ModuleAssignmentController extends Controller
                       $query->where('name','ACTIVE');
                 })->where('registration_number',str_replace(' ', '', $line[0]))->where('campus_program_id',$module_assignment->programModuleAssignment->campusProgram->id)->first();
 
+                return $student;
+
                 if($student){
                   if($request->get('assessment_plan_id') == 'FINAL_EXAM'){
                       $special_exam = SpecialExam::where('student_id',$student->id)->where('module_assignment_id',$module_assignment->id)->where('type','FINAL')->where('status','APPROVED')->first();
