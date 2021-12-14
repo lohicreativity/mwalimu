@@ -676,8 +676,10 @@ class ModuleAssignmentController extends Controller
               }
               fclose($file_handle);
               foreach($line_of_text as $line){
-                 if(floatval(str_replace(' ', '', $line[1])) < 0 || floatval(str_replace(' ', '', $line[1])) > 100){
-                   $validationStatus = false;
+                 if(!empty($line)){
+                   if(floatval(str_replace(' ', '', $line[1])) < 0 || floatval(str_replace(' ', '', $line[1])) > 100){
+                     $validationStatus = false;
+                   }
                  }
               }
 

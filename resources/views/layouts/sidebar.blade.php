@@ -14,7 +14,7 @@
           @if(isset($staff))
           <img src="{{ asset('avatars/'.$staff->image) }}" class="img-circle elevation-2" onerror="this.src='{{ asset("img/user-avatar.png") }}'">
           @endif
-          @if(isset($student))
+          @if(isset($student) && Auth::user()->hasRole('student'))
           <img src="{{ asset('avatars/'.$student->image) }}" class="img-circle elevation-2" onerror="this.src='{{ asset("img/user-avatar.png") }}'">
           @endif
         </div>
