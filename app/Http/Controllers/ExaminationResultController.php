@@ -1257,47 +1257,6 @@ class ExaminationResultController extends Controller
          return view('dashboard.academic.reports.final-student-overall-results',$data)->withTitle('Student Results');
     }
 
-    /**
-     * Update student examination result
-     */
-    public function update(Request $request)
-    {
-    	$validation = Validator::make($request->all(),[
-            'student_id'=>'required',
-            'module_assignment_id'=>'required',
-        ]);
-
-        if($validation->fails()){
-           if($request->ajax()){
-              return response()->json(array('error_messages'=>$validation->messages()));
-           }else{
-              return redirect()->back()->withInput()->withErrors($validation->messages());
-           }
-        }
-
-        $student = Student::with(['campusProgram.program','examinationResults'])->find($request->get('student_id'));
-
-        $module_assignments = ModuleAssignment::whereHas('programModuleAssignment',function($query) use($student){
-                $query->where('campus_program_id',$student->campusProgram->id)->where('year_of_study',$student->year_of_study);
-    	         })->whereHas('programModuleAssignment.campusProgram',function($query) use($campus_program){
-	    	    	$query->where('program_id',$studet->campusProgram->program->id);
-	    	    })->with('module.ntaLevel','programModuleAssignment.campusProgram.program','studyAcademicYear')->where('study_academic_year_id',$request->get('study_academic_year_id'))->get();
-
-    	if(Util::stripSpacesUpper($semester->name) == Util::stripSpacesUpper('Semester 2')){
-
-    		    $core_programs = ProgramModuleAssignment::with(['module'])->where('study_academic_year_id',$assignment->study_academic_year_id)->where('year_of_study',$assignment->programModuleAssignment->year_of_study)->where('category','COMPULSORY')->get();
-    		}else{
-    			$core_programs = ProgramModuleAssignment::with(['module'])->where('study_academic_year_id',$assignment->study_academic_year_id)->where('year_of_study',$assignment->programModuleAssignment->year_of_study)->where('semester_id',$semester->id)->where('category','COMPULSORY')->get();
-    		}
-    		$total_credit = 0;
-
-    	foreach($module_assignments as $assinment){
-
-    	}
-
-
-    }
-
 
     /**
      * Display uploaded modules
