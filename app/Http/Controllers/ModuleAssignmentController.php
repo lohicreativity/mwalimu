@@ -640,10 +640,11 @@ class ModuleAssignmentController extends Controller
                 $csvFile = $destination.$csvFileName;
                 $file_handle = fopen($csvFile, 'r');
                 while (!feof($file_handle)) {
-                    $line_of_text[] = fgetcsv($file_handle, 0, ',');
+                    $line_of_text[] = fgets($file_handle); //fgetcsv($file_handle, 0, ',');
                 }
                 fclose($file_handle);
-                foreach($line_of_text as $line){
+                foreach($line_of_text as $ln){
+                   $line = explode(',', $ln);
                    $stud = Student::where('registration_number',trim($line[0]))->first();
                    if($stud){
                       $uploaded_students[] = $stud;
@@ -672,10 +673,11 @@ class ModuleAssignmentController extends Controller
               $csvFile = $destination.$csvFileName;
               $file_handle = fopen($csvFile, 'r');
               while (!feof($file_handle)) {
-                  $line_of_text[] = fgetcsv($file_handle, 0, ',');
+                  $line_of_text[] = fgets($file_handle); //fgetcsv($file_handle, 0, ',');
               }
               fclose($file_handle);
-              foreach($line_of_text as $line){
+              foreach($line_of_text as $ln){
+                   $line = explode(',', $ln);
                    if(floatval(trim($line[1])) < 0 || floatval(trim($line[1])) > 100){
                      $validationStatus = false;
                    }
@@ -701,10 +703,11 @@ class ModuleAssignmentController extends Controller
               $csvFile = $destination.$csvFileName;
               $file_handle = fopen($csvFile, 'r');
               while (!feof($file_handle)) {
-                  $line_of_text[] = fgetcsv($file_handle, 0, ',');
+                  $line_of_text[] = fgets($file_handle); //fgetcsv($file_handle, 0, ',');
               }
               fclose($file_handle);
-              foreach($line_of_text as $line){
+              foreach($line_of_text as $ln){
+                $line = explode(',', $ln);
                 $student = Student::whereHas('registrations',function($query) use($module_assignment){
                      $query->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)->where('semester_id',$module_assignment->programModuleAssignment->semester_id)->where('study_academic_year_id',$module_assignment->programModuleAssignment->study_academic_year_id);
                 })->whereHas('studentshipStatus',function($query){
