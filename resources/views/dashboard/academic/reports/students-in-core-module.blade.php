@@ -203,7 +203,7 @@
               </div>
                <div class="ss-left">
                  <h3 class="ss-no-margin">MODULE: {{ $module->name }}</h3>
-                 <h3 class="ss-no-margin">LECTURER: {{ $staff->first_name}} {{ $staff->middle_name }} {{ $staff->surname }}</h3>
+                 <h3 class="ss-no-margin">LECTURER: {{ $staff->title }} {{ $staff->first_name}} {{ $staff->middle_name }} {{ $staff->surname }}</h3>
                  <h3 class="ss-no-margin">MONTH: ..................................</h3>
                </div>
                <div class="table-responsive ss-margin-bottom">
