@@ -105,6 +105,7 @@ class ModuleAssignmentController extends Controller
                'final_upload_status'=>$final_upload_status,
                'assessment_plans'=>AssessmentPlan::where('module_assignment_id',$id)->get(),
                'course_work_components'=>CourseWorkComponent::where('module_assignment_id',$id)->get(),
+               'staff'=>User::find(Auth::user()->id)->staff
                'policy'=>$policy
             ];
             return view('dashboard.academic.assessment-plans',$data)->withTitle('Module Assessment Plans');
@@ -313,6 +314,7 @@ class ModuleAssignmentController extends Controller
              }else{
                 $students = Student::where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id)->get();
              }
+             return $students;
              DB::beginTransaction();
              foreach ($students as $key => $student) {
                 $course_work = CourseWorkResult::where('module_assignment_id',$module_assignment->id)->where('student_id',$student->id)->sum('score');

@@ -17,7 +17,7 @@ class CreateExaminationResultsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('student_id');
             $table->unsignedBigInteger('module_assignment_id');
-            $table->decimal('course_work_score',8,1)->default(0.0);
+            $table->decimal('course_work_score',8,1)->nullable();
             $table->decimal('final_score',8,1)->nullable();
             $table->decimal('supp_score',8,1)->nullable();
             $table->decimal('total_score',8,1)->nullable();
