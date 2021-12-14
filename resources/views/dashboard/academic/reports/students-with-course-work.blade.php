@@ -220,19 +220,19 @@
                       <td class="ss-bold">COURSEWORK</td>
                       <td class="ss-bold">SIGNATURE</td>
                     </tr>
-                    @foreach($students as $key=>$student)
+                    @foreach($registrations as $key=>$reg)
                     <tr>
                       <td>{{ $key+1 }}</td>
-                      <td>{{ $student->registration_number }}</td>
-                      <td>{{ $student->surname }}, {{ $student->first_name }} {{ $student->middle_name}}</td>
+                      <td>{{ $reg->student->registration_number }}</td>
+                      <td>{{ $reg->student->surname }}, {{ $reg->student->first_name }} {{ $reg->student->middle_name}}</td>
                         @php 
                             $cw_available = true;
-                            $empty_columns = count($assessment_plans) - count($student->courseWorkResults);
+                            $empty_columns = count($assessment_plans) - count($reg->student->courseWorkResults);
                             $cw_total = 0;
                         @endphp
                       @foreach($assessment_plans as $plan)
                         
-                        @foreach($student->courseWorkResults as $result)
+                        @foreach($reg->student->courseWorkResults as $result)
                           @if($result->assessment_plan_id == $plan->id)
                           <td>{{ $result->score }}</td>
                             @php 
@@ -252,7 +252,7 @@
                       @for($i = 0; $i < $empty_columns; $i++)
                         <td>-</td>
                       @endfor
-                      <td>@if(count($student->courseWorkResults) != 0 && $course_work_processed) {{ $cw_total }} @else - @endif</td>
+                      <td>@if(count($reg->student->courseWorkResults) != 0 && $course_work_processed) {{ $cw_total }} @else - @endif</td>
                       <td></td>
                     </tr>
                     @endforeach
