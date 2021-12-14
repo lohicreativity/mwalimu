@@ -214,12 +214,12 @@ class ExaminationResultController extends Controller
     	        	$annual_credit += $prog->module->credit;
     	        }
 
-	     		if($prog->semester_id == $request->get('semester_id')){
-    			   $total_credit += $prog->module->credit;
-    		    }
-    		}
+	     		   if($prog->semester_id == $request->get('semester_id')){
+    			      $total_credit += $prog->module->credit;
+    		      }
+    		  }
 
-    		foreach($results as $key=>$result){
+    		  foreach($results as $key=>$result){
     			$student = Student::find($result->student_id);
                 
     			
@@ -320,8 +320,8 @@ class ExaminationResultController extends Controller
                     		$history->save();
                     	}
 
-    		}
-    	}
+    		  }
+    	   }
         
 
            foreach($student_buffer as $key=>$buffer){
@@ -625,11 +625,8 @@ class ExaminationResultController extends Controller
             }
       
             $annual_credit = 0;
-          foreach($core_programs as $prog){
-
-            if(Util::stripSpacesUpper($semester->name) == Util::stripSpacesUpper('Semester 2')){          
+          foreach($core_programs as $prog){            
                 $annual_credit += $prog->module->credit;
-              }
           }
             
           foreach($annual_results as $key=>$result){
@@ -646,7 +643,7 @@ class ExaminationResultController extends Controller
                    $student_buffer[$student->id]['annual_credit'] = $student_buffer[$student->id]['opt_credit'] + $annual_credit;
                }
             }
-      
+          }
 
           foreach ($module_assignments as $assignment) {
             $results = ExaminationResult::where('module_assignment_id',$assignment->id)->where('student_id',$student->id)->get();
@@ -863,29 +860,27 @@ class ExaminationResultController extends Controller
                 $remark->save();
                
                
-                 $sem_remarks = SemesterRemark::where('student_id',$key)->where('study_academic_year_id',$ac_yr_id)->where('semester_id',$request->get('semester_id'))->where('year_of_study',$buffer['year_of_study'])->get();
-                 
-                 if(Util::stripSpacesUpper($semester->name) == Util::stripSpacesUpper('Semester 2')){
+                 $sem_remarks = SemesterRemark::where('student_id',$key)->where('study_academic_year_id',$ac_yr_id)->where('year_of_study',$buffer['year_of_study'])->get();
+                
                     
-                     if($rm = AnnualRemark::where('student_id',$key)->where('study_academic_year_id',$ac_yr_id)->where('year_of_study',$buffer['year_of_study'])->first()){
+                   if($rm = AnnualRemark::where('student_id',$key)->where('study_academic_year_id',$ac_yr_id)->where('year_of_study',$buffer['year_of_study'])->first()){
                         $remark = $rm;
-                        
-                     }else{
+                      
+                    }else{
                         $remark = new AnnualRemark;
-                     }
-                        $remark->student_id = $key;
-                        $remark->year_of_study = $buffer['year_of_study'];
-                        $remark->study_academic_year_id = $ac_yr_id;
-                        $remark->remark = Util::getAnnualRemark($sem_remarks,$buffer['annual_results']);
-                        if($remark->remark == 'INCOMPLETE' || $remark->remark == 'INCOMPLETE' || $remark->remark == 'POSTPONED'){
-                           $remark->gpa = null;
-                        }else{
-                             $remark->gpa = Util::computeGPA($buffer['annual_credit'],$buffer['annual_results']);
-                        }
-                        $remark->save();
-                 }
+                    }
+                    $remark->student_id = $key;
+                    $remark->year_of_study = $buffer['year_of_study'];
+                    $remark->study_academic_year_id = $ac_yr_id;
+                    $remark->remark = Util::getAnnualRemark($sem_remarks,$buffer['annual_results']);
+                    if($remark->remark == 'INCOMPLETE' || $remark->remark == 'INCOMPLETE' || $remark->remark == 'POSTPONED'){
+                       $remark->gpa = null;
+                    }else{
+                         $remark->gpa = Util::computeGPA($buffer['annual_credit'],$buffer['annual_results']);
+                    }
+                    $remark->save();
                }
-             }
+
            DB::commit();
 
            return redirect()->to('academic/results/'.$student->id.'/'.$ac_yr_id.'/'.$yr_of_study.'/show-student-results')->with('message','Results processed successfully');
