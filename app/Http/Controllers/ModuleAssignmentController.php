@@ -685,7 +685,7 @@ class ModuleAssignmentController extends Controller
                  return redirect()->back()->with('error','Result file contains invalid data');
               }
               
-              // DB::beginTransaction();
+              DB::beginTransaction();
               $file = new ResultFile;
               $file->file_name = $file_name;
               $file->extension = $request->file('results_file')->guessClientExtension();
@@ -834,7 +834,7 @@ class ModuleAssignmentController extends Controller
                   }
                 }
               }
-              // DB::commit();
+              DB::commit();
           }
           return redirect()->back()->with('message','Results uploaded successfully');
     }
