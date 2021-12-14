@@ -77,7 +77,7 @@
                            @endphp
                            @foreach($campus_program->students as $stud)
                              @foreach($stud->registrations as $reg)
-                              @if($reg->year_of_study == $module_assignment->programModuleAssignment->year_of_study)
+                              @if($reg->year_of_study == $module_assignment->programModuleAssignment->year_of_study && $reg->semester_id == $module_assignment->programModuleAssignment->semester_id)
                                  @php
                                    $students_number += 1;
                                  @endphp
@@ -85,7 +85,7 @@
                              @endforeach
                            @endforeach
                        <tr>
-                        <td><a href="{{ url('academic/campus/campus-program/'.$campus_program->id.'/attendance?year_of_study='.$module_assignment->programModuleAssignment->year_of_study.'&study_academic_year_id='.$module_assignment->programModuleAssignment->study_academic_year_id) }}" target="_blank">{{ $campus_program->program->name }} - Year {{ $module_assignment->programModuleAssignment->year_of_study }} ({{ $students_number }})</a>
+                        <td><a href="{{ url('academic/campus/campus-program/'.$campus_program->id.'/attendance?year_of_study='.$module_assignment->programModuleAssignment->year_of_study.'&study_academic_year_id='.$module_assignment->programModuleAssignment->study_academic_year_id.'&semester_id='.$module_assignment->programModuleAssignment->semester_id) }}" target="_blank">{{ $campus_program->program->name }} - Year {{ $module_assignment->programModuleAssignment->year_of_study }} ({{ $students_number }})</a>
                          </td>
                          <td>   
 
@@ -122,7 +122,7 @@
 
                   <table class="table table-bordered">
                      <tr>
-                       <td><a class="nav-link active" href="{{ url('academic/staff-module-assignment/'.$module_assignment->id.'/module-attendance') }}">{{ __('Module Attendance') }}</a></td>
+                       <td><a class="nav-link active" href="{{ url('academic/staff-module-assignment/'.$module_assignment->id.'/module-attendance') }}" target="_blank">{{ __('Module Attendance') }}</a></td>
                      </tr>
                   </table>
                 </div>

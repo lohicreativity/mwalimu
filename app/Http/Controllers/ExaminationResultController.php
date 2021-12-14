@@ -479,7 +479,8 @@ class ExaminationResultController extends Controller
             $data = [
                'result'=>ExaminationResult::whereHas('moduleAssignment.programModuleAssignment',function($query) use($prog_id,$ac_yr_id){
                     $query->where('id',$prog_id)->where('study_academic_year_id',$ac_yr_id);
-                 })->where('student_id',$student_id)->firstOrFail()
+                 })->where('student_id',$student->id)->firstOrFail(),
+               'student'=>$student
             ];
             return view('dashboard.academic.edit-examination-results',$data)->withTitle('Edit Examination Results');
         }catch(\Exception $e){

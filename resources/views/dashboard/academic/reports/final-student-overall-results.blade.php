@@ -106,7 +106,7 @@
                         @if($semester->id == $program->semester_id && !in_array($program->id,$programIds))
                          <tr>
                           <td>{{ $count }}</td>
-                          <td><a href="{{ url('academic/results/'.$student->id.'/'.$study_academic_year->id.'/'.$program->id.'/edit-student-results') }}"> {{ $program->module->code }}</a></td>
+                          <td>{{ $program->module->code }}</td>
                           <td>{{ $program->module->name }}</td>
                           <td></td>
                           <td></td>
@@ -122,7 +122,7 @@
                          @if($result->moduleAssignment->programModuleAssignment->semester_id == $semester->id && $result->moduleAssignment->programModuleAssignment->id == $program->id)
                          <tr>
                           <td>{{ $count }}</td>
-                          <td>{{ $result->moduleAssignment->module->code }}</td>
+                          <td><a href="{{ url('academic/results/'.$student->id.'/'.$study_academic_year->id.'/'.$result->moduleAssignment->programModuleAssignment->id.'/edit-student-results') }}">{{ $result->moduleAssignment->module->code }}</a></td>
                           <td>{{ $result->moduleAssignment->module->name }}</td>
                           <td>@if(!$result->supp_processed_at) {{ $result->course_work_score }} @else N/A @endif</td>
                           <td>@if(!$result->supp_processed_at) {{ $result->final_score }} @else N/A @endif</td>

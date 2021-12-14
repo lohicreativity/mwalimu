@@ -46,16 +46,16 @@
                <!-- /.card-header -->
                <div class="card-body">
                   {!! Form::open(['url'=>'academic/streams','class'=>'ss-form-processing','method'=>'GET']) !!}
-                    
-                    <div class="form-group">
+                    <div class="row">
+                    <div class="form-group col-12">
                      <select name="study_academic_year_id" class="form-control" required>
                         <option value="">Select Study Academic Year</option>
                         @foreach($study_academic_years as $year)
                         <option value="{{ $year->id }}">{{ $year->academicYear->year }}</option>
                         @endforeach
                      </select>
-                      
                    </div>
+                 </div>
                    <div class="ss-form-actions">
                     <button type="submit" class="btn btn-primary">{{ __('Search') }}</button>
                    </div>
@@ -100,7 +100,7 @@
                              @endforeach
                            @endforeach
                        <tr>
-                        <td><a href="{{ url('academic/campus/campus-program/'.$cp->id.'/attendance?year_of_study='.$i.'&study_academic_year_id='.$study_academic_year->id) }}" target="_blank">{{ $cp->program->name }} - Year {{ $i }} ({{ $students_number }})</a>
+                        <td><a href="{{ url('academic/campus/campus-program/'.$cp->id.'/attendance?year_of_study='.$i.'&study_academic_year_id='.$study_academic_year->id.'&semester_id='.$semester->id) }}" target="_blank">{{ $cp->program->name }} - Year {{ $i }} ({{ $students_number }})</a>
                           @foreach($study_academic_year->streams as $stream)
                              @if($stream->campus_program_id == $cp->id && $stream->year_of_study == $i)
                              @php

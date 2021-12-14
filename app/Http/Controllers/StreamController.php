@@ -10,6 +10,7 @@ use App\Domain\Registration\Models\Registration;
 use App\Domain\Registration\Models\Student;
 use App\Domain\Academic\Models\StudyAcademicYear;
 use App\Domain\Academic\Models\CampusProgram;
+use App\Domain\Academic\Models\Semester;
 use App\Domain\Academic\Actions\StreamAction;
 use App\Models\User;
 use App\Utils\Util;
@@ -27,10 +28,13 @@ class StreamController extends Controller
             'study_academic_year'=>$request->has('study_academic_year_id')? StudyAcademicYear::with(['academicYear','streams'=>function($query) use ($request){
                    $query->where('study_academic_year_id',$request->get('study_academic_year_id'));
                 },'streams.groups','campusPrograms'])->find($request->get('study_academic_year_id')) : null,
+            'semester'=>Semester::find($request->get('semester_id')),
+            'semesters'=>Semester::all(),
             'campus_programs'=>CampusProgram::with(['program','campus','students.registrations'=>function($query) use($request){
                    $query->where('study_academic_year_id',$request->get('study_academic_year_id'));
              },'streams.groups','groups'])->get(),
-            'staff'=>User::find(Auth::user()->id)->staff
+            'staff'=>User::find(Auth::user()->id)->staff,
+            'request'=>$request
      	];
      	return view('dashboard.academic.streams-and-groups',$data)->withTitle('Streams and Groups');
      }
