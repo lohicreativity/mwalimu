@@ -675,7 +675,6 @@ class ModuleAssignmentController extends Controller
                   $line_of_text[] = fgetcsv($file_handle, 0, ',');
               }
               fclose($file_handle);
-              return dd($line_of_text);
               foreach($line_of_text as $line){
                    if(floatval(trim($line[1])) < 0 || floatval(trim($line[1])) > 100){
                      $validationStatus = false;
