@@ -91,14 +91,14 @@ class ExaminationResultController extends Controller
          }
         	
       if(count($module_assignments) == 0){
-          DB::rollback();
+          // DB::rollback();
           return redirect()->back()->with('error','No results to process');
       }
 
 
         foreach($module_assignments as $assign){
         	if($assign->course_work_process_status != 'PROCESSED'){
-            DB::rollback();
+            // DB::rollback();
         		return redirect()->back()->with('error',$assign->module->name.'-'.$assign->module->code.' course works not processed');
         	}
         	if(ExaminationResult::where('final_uploaded_at',null)->where('module_assignment_id',$assign->id)->count() != 0){
@@ -185,7 +185,7 @@ class ExaminationResultController extends Controller
                   }
               }
               
-              DB::rollback();
+              // DB::rollback();
               return redirect()->back()->with('error','Some modules as missing final marks ('.implode(',', $missing_programs).')');
           }
 
@@ -595,18 +595,18 @@ class ExaminationResultController extends Controller
 
                   
               if(count($module_assignments) == 0){
-                  DB::rollback();
+                  // DB::rollback();
                   return redirect()->back()->with('error','No results to process');
               }
 
 
               foreach($module_assignments as $assign){
                 if($assign->course_work_process_status != 'PROCESSED'){
-                  DB::rollback();
+                  // DB::rollback();
                   return redirect()->back()->with('error',$assign->module->name.'-'.$assign->module->code.' course works not processed');
                 }
                 if(ExaminationResult::where('final_uploaded_at',null)->where('module_assignment_id',$assign->id)->where('student_id',$student->id)->count() != 0){
-                  DB::rollback();
+                  // DB::rollback();
                   return redirect()->back()->with('error',$assign->module->name.'-'.$assign->module->code.' final not uploaded');
                 }
               }
@@ -676,7 +676,7 @@ class ExaminationResultController extends Controller
                       }
                   }
                   
-                  DB::rollback();
+                  // DB::rollback();
                   return redirect()->back()->with('error','Some modules as missing final marks ('.implode(',', $missing_programs).')');
               }
 
@@ -686,7 +686,7 @@ class ExaminationResultController extends Controller
                 if(ExaminationResult::whereHas('moduleAssignment.programModuleAssignment',function($query) use($campus_program){
                        $query->where('campus_program_id',$campus_program->id)->where('category','OPTIONAL');
                   })->whereNotNull('final_uploaded_at')->where('student_id',$student->id)->distinct()->count('module_assignment_id') != $elective_policy->number_of_options){
-                    DB::rollback();
+                    // DB::rollback();
                     return redirect()->back()->with('error','Some optional modules as missing final marks');
                 }
               }
