@@ -536,15 +536,13 @@ class ExaminationResultController extends Controller
                 }else{
                    $result->final_score = null;
                 }
-                if($request->has('supp_score')){
+                if($request->get('supp_score')){
                    $result->supp_score = $request->get('supp_score');
-                   $result->supp_uploaded_by_user_id = Auth::user()->id;
-                   $result->supp_uploaded_at = now();
+                   $result->supp_processed_by_user_id = Auth::user()->id;
                    $result->supp_processed_at = now();
                 }else{
                    $result->supp_score = null;
-                   $result->supp_uploaded_by_user_id = Auth::user()->id;
-                   $result->supp_uploaded_at = null;
+                   $result->supp_processed_by_user_id = Auth::user()->id;
                    $result->supp_processed_at = null;
                 }
                 $result->exam_type = $request->get('exam_type');
@@ -640,7 +638,7 @@ class ExaminationResultController extends Controller
                     })->with(['module'])->where('study_academic_year_id',$assign->study_academic_year_id)->where('year_of_study',$assign->programModuleAssignment->year_of_study)->where('category','OPTIONAL')->get();
                
                $student_buffer[$student->id]['annual_results'][] =  $result;
-               $student_buffer[$student->id]['year_of_study'] = $student->year_of_study;
+               $student_buffer[$student->id]['year_of_study'] = $yr_of_study;
                $student_buffer[$student->id]['annual_credit'] = $annual_credit;
                foreach($optional_programs as $prog){
                    $student_buffer[$student->id]['opt_credit'] += $prog->module->credit;
@@ -809,6 +807,8 @@ class ExaminationResultController extends Controller
 
             }
           }
+
+          return $student_buffer;
         
 
           foreach($student_buffer as $key=>$buffer){
