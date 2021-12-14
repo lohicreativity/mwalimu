@@ -174,7 +174,7 @@ class ExaminationResultController extends Controller
               
               $available_programs = ExaminationResult::whereHas('moduleAssignment.programModuleAssignment',function($query) use($campus_program){
                  $query->where('campus_program_id',$campus_program->id)->where('category','COMPULSORY');
-                })->whereNotNull('final_uploaded_at')->groupBy('module_assignment_id')->distinct()->get();
+                })->whereNotNull('final_uploaded_at')->unique('module_assignment_id')->get();
               $available_program_ids = [];
               $missing_programs = [];
               foreach($available_programs as $pr){
@@ -666,7 +666,7 @@ class ExaminationResultController extends Controller
                   
                   $available_programs = ExaminationResult::whereHas('moduleAssignment.programModuleAssignment',function($query) use($campus_program){
                      $query->where('campus_program_id',$campus_program->id)->where('category','COMPULSORY');
-                    })->whereNotNull('final_uploaded_at')->where('student_id',$student->id)->groupBy('module_assignment_id')->distinct()->get();
+                    })->whereNotNull('final_uploaded_at')->where('student_id',$student->id)->unique('module_assignment_id')->get();
                   $available_program_ids = [];
                   $missing_programs = [];
                   foreach($available_programs as $pr){
