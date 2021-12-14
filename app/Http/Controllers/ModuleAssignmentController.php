@@ -316,7 +316,7 @@ class ModuleAssignmentController extends Controller
                       $query->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)->where('semester_id',$module_assignment->programModuleAssignment->semester_id);
                 })->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id)->get();
              }
-             return $students;
+             
              DB::beginTransaction();
              foreach ($students as $key => $student) {
                 $course_work = CourseWorkResult::where('module_assignment_id',$module_assignment->id)->where('student_id',$student->id)->sum('score');
