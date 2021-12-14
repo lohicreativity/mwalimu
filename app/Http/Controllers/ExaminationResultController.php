@@ -71,7 +71,7 @@ class ExaminationResultController extends Controller
      */
     public function process(Request $request)
     {
-    	DB::beginTransaction();
+    	// DB::beginTransaction();
     	$campus_program = CampusProgram::with('program')->find(explode('_',$request->get('campus_program_id'))[0]);
     	$module_assignments = ModuleAssignment::whereHas('programModuleAssignment',function($query) use($request){
                 $query->where('campus_program_id',explode('_',$request->get('campus_program_id'))[0])->where('year_of_study',explode('_',$request->get('campus_program_id'))[2]);
@@ -437,7 +437,7 @@ class ExaminationResultController extends Controller
         $process->year_of_study = explode('_',$request->get('campus_program_id'))[2];
         $process->campus_program_id = explode('_',$request->get('campus_program_id'))[0];
         $process->save();
-    		DB::commit();
+    		// DB::commit();
 
         return redirect()->back()->with('message','Results processed successfully');
     }
@@ -575,7 +575,7 @@ class ExaminationResultController extends Controller
     {
          
          try{
-            DB::beginTransaction();
+            // DB::beginTransaction();
             $student = Student::findOrFail($student_id);
             $campus_program = CampusProgram::with('program')->find($student->campus_program_id);
             $semester = Semester::find($request->get('semester_id'));
@@ -879,7 +879,7 @@ class ExaminationResultController extends Controller
                     $remark->save();
                }
 
-           DB::commit();
+           // DB::commit();
 
            return redirect()->to('academic/results/'.$student->id.'/'.$ac_yr_id.'/'.$yr_of_study.'/show-student-results')->with('message','Results processed successfully');
         }catch(\Exception $e){

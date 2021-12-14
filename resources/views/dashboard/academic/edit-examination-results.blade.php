@@ -74,7 +74,7 @@
                     </div>
                     <div class="form-group col-4">
                       {!! Form::label('','Final score') !!}
-                      {!! Form::text('final_score',$result->final_score*100/$policy->final_min_mark,$final_score) !!}
+                      {!! Form::text('final_score',round($result->final_score*100/$policy->final_min_mark,1),$final_score) !!}
                     </div>
                     <div class="form-group col-4">
                       {!! Form::label('','Supp score') !!}
