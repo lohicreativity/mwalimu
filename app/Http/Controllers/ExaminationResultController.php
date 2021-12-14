@@ -443,6 +443,107 @@ class ExaminationResultController extends Controller
     }
 
     /**
+     * Display form for adding results
+     */
+    public function create(Request $request, $student_id,$ac_yr_id,$yr_of_study)
+    {
+        try{
+            $student = Student::findOrFail($student_id);
+            $results = ExaminationResult::with(['moduleAssignment.programModuleAssignment','moduleAssignment.studyAcademicYear.academicYear'])->where('student_id',$student->id)->get();
+              $programs = [];
+              foreach($results as $key=>$result){
+                if(!array_key_exists($result->moduleAssignment->programModuleAssignment->id, $programs)){
+                       $programs[$result->moduleAssignment->programModuleAssignment->id] = $result->moduleAssignment->programModuleAssignment;  
+                }        
+              }
+
+            $data = [
+               'core_programs'=>ProgramModuleAssignment::where('study_academic_year_id',$ac_yr_id)->where('year_of_study',$yr_of_study)->where('category','COMPULSORY')->whereNotIn('id',array_keys($programs))->get(),
+               'opt_programs'=>ProgramModuleAssignment::whereHas('students',function($query) use($student){
+                     $query->where('id',$student->id);
+                 })->where('study_academic_year_id',$ac_yr_id)->where('year_of_study',$yr_of_study)->where('category','OPTIONAL')->whereNotIn('id',array_keys($programs))->get()
+            ];
+            return view('dashboard.academic.add-examination-results',$data)->withTitle('Add Examination Results');
+        }catch(\Exception $e){
+            return redirect()->back()->with('error','Unable to get the resource specified in this request');
+        }
+    }
+
+    /**
+     * Display form for editing results
+     */
+    public function edit(Request $request, $student_id,$ac_yr_id,$prog_id)
+    {
+        try{
+            $student = Student::findOrFail($student_id);
+            $data = [
+               'result'=>ExaminationResult::whereHas('moduleAssignment.programModuleAssignment',function($query) use($prog_id,$ac_yr_id){
+                    $query->where('id',$prog_id)->where('study_academic_year_id',$ac_yr_id);
+                 })->where('student_id',$student_id)->firstOrFail()
+            ];
+            return view('dashboard.academic.edit-examination-results',$data)->withTitle('Edit Examination Results');
+        }catch(\Exception $e){
+            return redirect()->back()->with('error','Unable to get the resource specified in this request');
+        }
+    }
+
+    /**
+     * Update examination results
+     */
+    public function update(Request $request)
+    {
+        try{
+            $module_assignment = ModuleAssignment::with(['module','studyAcademicYear.academicYear','programModuleAssignment.campusProgram.program'])->find($request->get('module_assignment_id'));
+              $academicYear = $module_assignment->studyAcademicYear->academicYear;
+
+            $module = Module::with('ntaLevel')->find($module_assignment->module_id);
+            $policy = ExaminationPolicy::where('nta_level_id',$module->ntaLevel->id)->where('study_academic_year_id',$module_assignment->study_academic_year_id)->where('type',$module_assignment->programModuleAssignment->campusProgram->program->category)->first();
+            if(!$policy){
+                  return redirect()->back()->withInput()->with('error','No examination policy defined for this module NTA level and study academic year');
+            }
+
+            $student = Student::find($request->get('student_id'));
+
+            $special_exam = SpecialExam::where('student_id',$student->id)->where('module_assignment_id',$module_assignment->id)->where('type',$request->get('exam_type'))->where('status','APPROVED')->first();
+
+            $retake_history = RetakeHistory::whereHas('moduleAssignment',function($query) use($module){
+                  $query->where('module_id',$module->id);
+            })->where('student_id',$student->id)->first();
+
+            $carry_history = CarryHistory::whereHas('moduleAssignment',function($query) use($module){
+                            $query->where('module_id',$module->id);
+                      })->where('student_id',$student->id)->first();
+
+            if($res = ExaminationResult::where('module_assignment_id',$request->get('module_assignment_id'))->where('student_id',$request->get('student_id'))->where('exam_type',$request->get('exam_type'))->first()){
+                  $result = $res;
+              }else{
+                  $result = new ExaminationResult;
+              }
+              $result->module_assignment_id = $request->get('module_assignment_id');
+                $result->student_id = $request->get('student_id');
+                $result->final_score = !$special_exam? (str_replace(' ', '', $line[1])*$policy->final_min_mark)/100 : null;
+                $result->exam_type = $request->get('exam_type');
+                if($carry_history){
+                   $result->exam_category = 'CARRY';
+                }
+                if($retake_history){
+                   $result->exam_category = 'RETAKE';
+                }
+                if($special_exam){
+                   $result->final_remark = 'POSTPONED';
+                }else{
+                   $result->final_remark = $policy->final_pass_score <= $result->final_score? 'PASS' : 'FAIL';
+                }
+                $result->final_uploaded_at = now();
+                $result->uploaded_by_user_id = Auth::user()->id;
+                $result->save();
+          return redirect()->to('academic/results/'.$request->get('student_id').'/'.$request->get('study_academic_year_id').'/process-student-results');
+        }catch(\Exception $e){
+            return redirect()->back()->with('error','Unable to get the resource specified in this request'); 
+        }
+    }
+
+    /**
      * Display results page
      */
     public function showProgramResults(Request $request)
@@ -565,12 +666,30 @@ class ExaminationResultController extends Controller
               $modules[$assignment->module->code]['ds_count'] = 0;
               $modules[$assignment->module->code]['ML']['ds_count'] = 0;
               $modules[$assignment->module->code]['FL']['ds_count'] = 0;
+              $modules[$assignment->module->code]['special_ds_count'] = 0;
+              $modules[$assignment->module->code]['ML']['special_ds_count'] = 0;
+              $modules[$assignment->module->code]['FL']['special_ds_count'] = 0;
+              $modules[$assignment->module->code]['special_inc_count'] = 0;
+              $modules[$assignment->module->code]['ML']['special_inc_count'] = 0;
+              $modules[$assignment->module->code]['FL']['special_inc_count'] = 0;
+              $modules[$assignment->module->code]['special_pst_count'] = 0;
+              $modules[$assignment->module->code]['ML']['special_pst_count'] = 0;
+              $modules[$assignment->module->code]['FL']['special_pst_count'] = 0;
+              $modules[$assignment->module->code]['special_total_count'] = 0;
+              $modules[$assignment->module->code]['ML']['special_total_count'] = 0;
+              $modules[$assignment->module->code]['FL']['special_total_count'] = 0;
+              $modules[$assignment->module->code]['special_pass_count'] = 0;
+              $modules[$assignment->module->code]['ML']['special_pass_count'] = 0;
+              $modules[$assignment->module->code]['FL']['special_pass_count'] = 0;
+              $modules[$assignment->module->code]['special_fail_count'] = 0;
+              $modules[$assignment->module->code]['ML']['special_fail_count'] = 0;
+              $modules[$assignment->module->code]['FL']['special_fail_count'] = 0;
               $modules[$assignment->module->code]['total_count'] = count($students);
+              $modules[$assignment->module->code]['ML']['total_count'] = 0;
+              $modules[$assignment->module->code]['FL']['total_count'] = 0;
               $modules[$assignment->module->code]['ML']['fail_fe_count'] = 0;
               $modules[$assignment->module->code]['FL']['fail_fe_count'] = 0;
               $modules[$assignment->module->code]['fail_fe_count'] = 0;
-              $modules[$assignment->module->code]['ML']['total_count'] = 0;
-              $modules[$assignment->module->code]['FL']['total_count'] = 0;
               $modules[$assignment->module->code]['total_rate'] = 100;
               $modules[$assignment->module->code]['ML']['total_rate'] = 100;
               $modules[$assignment->module->code]['FL']['total_rate'] = 100;
@@ -606,6 +725,9 @@ class ExaminationResultController extends Controller
               $modules[$assignment->module->code]['grades'][$policy->grade] = 0; 
               $modules[$assignment->module->code]['grades']['ML'][$policy->grade] = 0; 
               $modules[$assignment->module->code]['grades']['FL'][$policy->grade] = 0;
+              $modules[$assignment->module->code]['special_grades'][$policy->grade] = 0; 
+              $modules[$assignment->module->code]['special_grades']['ML'][$policy->grade] = 0; 
+              $modules[$assignment->module->code]['special_grades']['FL'][$policy->grade] = 0;
               $modules[$assignment->module->code]['grades']['ML']['na_count'] = 0;
               $modules[$assignment->module->code]['grades']['FL']['na_count'] = 0;
              
@@ -629,8 +751,9 @@ class ExaminationResultController extends Controller
         foreach($students as $key=>$student){
             
             foreach($module_assignments as $assignment){
+
                      if($student->gender == 'M'){
-                                   
+                         $modules[$assignment->module->code]['semester_id'] = $assignment->programModuleAssignment->semester_id;          
                          $modules[$assignment->module->code]['ML']['total_count'] += 1;
                          
                       }elseif($student->gender == 'F'){
@@ -728,13 +851,99 @@ class ExaminationResultController extends Controller
                               $special_exam_second_semester_students[] = $student;
                            }
 
+                           foreach($grading_policies as $policy){
+                                if($policy->grade == $result->grade){
+                             
+                                   $modules[$assignment->module->code]['special_grades'][$result->grade] += 1;
+
+                                    if($student->gender == 'M'){
+                                       
+                                       $modules[$assignment->module->code]['special_grades']['ML'][$result->grade] += 1;
+                                       
+                                    }elseif($student->gender == 'F'){
+                                       
+                                       $modules[$assignment->module->code]['special_grades']['FL'][$result->grade] += 1;
+                                      
+                                    }
+                                }
+                                
+                              }
 
                            
+                           if($result->final_score){
+                               $modules[$assignment->module->code]['special_total_count'] += 1;
+                  
+                                if($student->gender == 'M'){
+                                     
+                                     $modules[$assignment->module->code]['ML']['special_total_count'] += 1;
+                                   
+                                }elseif($student->gender == 'F'){
+                                   
+                                     $modules[$assignment->module->code]['FL']['special_total_count'] += 1;
+                                   
+                                }
+                            }
+
+                            if($result->final_exam_remark == 'PASS'){
+                               $modules[$assignment->module->code]['special_pass_count'] += 1;
+                  
+                                if($student->gender == 'M'){
+                                     
+                                     $modules[$assignment->module->code]['ML']['special_pass_count'] += 1;
+                                   
+                                }elseif($student->gender == 'F'){
+                                   
+                                     $modules[$assignment->module->code]['FL']['special_pass_count'] += 1;
+                                   
+                                }
+                            }
+
+                            if($result->final_exam_remark == 'FAIL'){
+                               $modules[$assignment->module->code]['special_fail_count'] += 1;
+                  
+                                if($student->gender == 'M'){
+                                     
+                                     $modules[$assignment->module->code]['ML']['special_fail_count'] += 1;
+                                   
+                                }elseif($student->gender == 'F'){
+                                   
+                                     $modules[$assignment->module->code]['FL']['special_fail_count'] += 1;
+                                   
+                                }
+                            }
+
+                            if($result->course_work_remark == 'FAIL' || $result->final_remark == 'FAIL'){
+                               $modules[$assignment->module->code]['special_ds_count'] += 1;
+                  
+                                if($student->gender == 'M'){
+                                     
+                                     $modules[$assignment->module->code]['ML']['special_ds_count'] += 1;
+                                   
+                                }elseif($student->gender == 'F'){
+                                   
+                                     $modules[$assignment->module->code]['FL']['special_ds_count'] += 1;
+                                   
+                                }
+                            }
+
+                            if($result->final_exam_remark == 'INCOMPLETE'){
+                               $modules[$assignment->module->code]['special_inc_count'] += 1;
+                  
+                                if($student->gender == 'M'){
+                                     
+                                     $modules[$assignment->module->code]['ML']['special_inc_count'] += 1;
+                                   
+                                }elseif($student->gender == 'F'){
+                                   
+                                     $modules[$assignment->module->code]['FL']['special_inc_count'] += 1;
+                                   
+                                }
+                            }
 
 
                             $modules[$assignment->module->code]['supp_pst_count'] += 1;
                             if($student->gender == 'M'){
-                           
+                                 
                                  $modules[$assignment->module->code]['ML']['supp_pst_count'] += 1;
                                
                             }elseif($student->gender == 'F'){
@@ -888,6 +1097,8 @@ class ExaminationResultController extends Controller
            'semester'=>$semester,
            'semesters'=>$semesters,
            'sem_modules'=>$sem_modules,
+           'first_semester'=>$first_semester,
+           'second_semester'=>$second_semester,
            'special_exam_first_semester_students'=>$special_exam_first_semester_students,
            'special_exam_second_semester_students'=>$special_exam_second_semester_students,
            'year_of_study'=>explode('_',$request->get('campus_program_id'))[2],
@@ -996,7 +1207,6 @@ class ExaminationResultController extends Controller
     		foreach ($year as $yr) {
     			$years_of_studies[$key][] = StudyAcademicYear::with('academicYear')->find($yr);
     		}
-    		
     	}
 
     	$data = [
@@ -1037,6 +1247,7 @@ class ExaminationResultController extends Controller
          	'semesters'=>$semesters,
          	'annual_remark'=>$annual_remark,
          	'results'=>$results,
+          'year_of_study'=>$yr_of_study,
          	'study_academic_year'=>$study_academic_year,
          	'core_programs'=>$core_programs,
          	'optional_programs'=>$optional_programs,

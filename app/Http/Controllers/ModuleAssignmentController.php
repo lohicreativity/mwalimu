@@ -199,6 +199,15 @@ class ModuleAssignmentController extends Controller
              }
         }
 
+        if(ModuleAssignment::where('study_academic_year_id',$request->get('study_academic_year_id'))->where('module_id',$request->get('module_id'))->count() != 0){
+
+             if($request->ajax()){
+                return response()->json(array('error_messages'=>'Module already assigned staff in this study academic year'));
+             }else{
+                return redirect()->back()->with('error','Module already assigned staff in this study academic year');
+             }
+        }
+
         $module = Module::find($request->get('module_id'));
         if(GradingPolicy::where('nta_level_id',$module->nta_level_id)->where('study_academic_year_id',$request->get('study_academic_year_id'))->count() == 0){
             return redirect()->back()->with('error','No grading policy set for this academic year');
@@ -273,14 +282,14 @@ class ModuleAssignmentController extends Controller
          try{
               
               $module_assignment = ModuleAssignment::with('assessmentPlans','module','programModuleAssignment.campusProgram.program')->findOrFail($request->get('module_assignment_id'));
-              $module_assignment->course_work_process_status = 'PROCESSED';
-              $module_assignment->save();
 
               $module = Module::with('ntaLevel')->find($module_assignment->module_id);
               $policy = ExaminationPolicy::where('nta_level_id',$module->ntaLevel->id)->where('study_academic_year_id',$module_assignment->study_academic_year_id)->where('type',$module_assignment->programModuleAssignment->campusProgram->program->category)->first();
               if(!$policy){
                   return redirect()->back()->withInput()->with('error','No examination policy defined for this module NTA level and study academic year');
               }
+              $module_assignment->course_work_process_status = 'PROCESSED';
+              $module_assignment->save();
               // Check if all components are uploaded
               $assessment_upload_status = true;
               $assessment_plans = AssessmentPlan::where('module_assignment_id',$module_assignment->id)->get();
