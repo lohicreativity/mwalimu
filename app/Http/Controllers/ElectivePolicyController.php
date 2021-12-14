@@ -27,7 +27,8 @@ class ElectivePolicyController extends Controller
            'elective_policies'=>ElectivePolicy::with(['campusProgram.program','campusProgram.campus','semester','studyAcademicYear.academicYear'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->paginate(20),
            'campus_programs'=>CampusProgram::with(['program','campus'])->get(),
            'semesters'=>Semester::all(),
-           'staff'=>User::find(Auth::user()->id)->staff
+           'staff'=>User::find(Auth::user()->id)->staff,
+           'request'=>$request
     	];
     	return view('dashboard.academic.elective-policies',$data)->withTitle('Elective Policies');
     }

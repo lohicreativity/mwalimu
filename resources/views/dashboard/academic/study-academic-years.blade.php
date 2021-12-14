@@ -152,7 +152,7 @@
                                       <select name="academic_year_id" class="form-control" required>
                                         <option value="">Select Academic Year</option>
                                         @foreach($academic_years as $yr)
-                                        <option value="{{ $yr->id }}" @if($yr->id == $year->academic_year_id) selected="selected" @else disabled="disabled" @endif>{{ $yr->year }}</option>
+                                        <option value="{{ $yr->year }}" @if($yr->id == $year->academic_year_id) selected="selected" @else disabled="disabled" @endif>{{ $yr->year }}</option>
                                         @endforeach
                                       </select>
                                       {!! Form::input('hidden','study_academic_year_id',$year->id) !!}

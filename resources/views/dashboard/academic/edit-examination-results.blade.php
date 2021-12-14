@@ -48,37 +48,44 @@
               <!-- form start -->
               @php
                   $course_work_score = [
-                     'placeholder'=>'CW score',
+                     'placeholder'=>'Coursework score',
                      'class'=>'form-control',
+                     'readonly'=>true,
                      'required'=>true
                   ];
 
                   $final_score = [
-                     'placeholder'=>'CW score',
+                     'placeholder'=>'Final score',
                      'class'=>'form-control',
                      'required'=>true
                   ];
 
                   $supp_score = [
-                     'placeholder'=>'CW score',
-                     'class'=>'form-control',
-                     'required'=>true
+                     'placeholder'=>'Supp score',
+                     'class'=>'form-control'
                   ];
               @endphp
-              {!! Form::open(['url'=>'academic/update-examination-results','class'=>'ss-form-processing']) !!}
+              {!! Form::open(['url'=>'academic/results/update-examination-results','class'=>'ss-form-processing']) !!}
                 <div class="card-body">
                   <div class="row">
                     <div class="form-group col-4">
                       {!! Form::label('','Coursework score') !!}
-                      {!! Form::text('course_work_score',null,$course_work_score) !!}
+                      {!! Form::text('course_work_score',$result->course_work_score,$course_work_score) !!}
                     </div>
                     <div class="form-group col-4">
                       {!! Form::label('','Final score') !!}
-                      {!! Form::text('final_score',null,$final_score) !!}
+                      {!! Form::text('final_score',$result->final_score*100/$policy->final_min_mark,$final_score) !!}
                     </div>
                     <div class="form-group col-4">
                       {!! Form::label('','Supp score') !!}
-                      {!! Form::text('supp_score',null,$supp_score) !!}
+                      {!! Form::text('supp_score',$result->supp_score,$supp_score) !!}
+
+                      {!! Form::input('hidden','student_id',$student->id) !!}
+                      {!! Form::input('hidden','exam_type',$result->exam_type) !!}
+
+                      {!! Form::input('hidden','study_academic_year_id',$result->moduleAssignment->study_academic_year_id) !!}
+
+                      {!! Form::input('hidden','module_assignment_id',$result->moduleAssignment->id) !!}
                     </div>
                   </div>
                 </div>
