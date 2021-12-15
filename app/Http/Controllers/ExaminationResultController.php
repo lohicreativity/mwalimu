@@ -861,6 +861,8 @@ class ExaminationResultController extends Controller
                 $remark->year_of_study = $buffer['year_of_study'];
                 $remark->serialized = count($supp_exams) != 0? serialize(['supp_exams'=>$supp_exams,'carry_exams'=>$carry_exams,'retake_exams'=>$retake_exams]) : null;
                 $remark->save();
+
+                return $buffer['results'];
                
                
                  $sem_remarks = SemesterRemark::where('student_id',$key)->where('study_academic_year_id',$ac_yr_id)->where('year_of_study',$buffer['year_of_study'])->get();
