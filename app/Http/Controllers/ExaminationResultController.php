@@ -966,7 +966,7 @@ class ExaminationResultController extends Controller
                    $query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',explode('_',$request->get('campus_program_id'))[2]);
               },'examinationResults'=>function($query) use($assignmentIds){
                 $query->whereIn('module_assignment_id',$assignmentIds);
-              },'specialExams'])->where('campus_program_id',$campus_program->id)->where('year_of_study',explode('_',$request->get('campus_program_id'))[2])->get();
+              },'specialExams'])->where('campus_program_id',$campus_program->id)->get();
         }
 
 
