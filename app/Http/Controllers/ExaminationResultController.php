@@ -948,7 +948,7 @@ class ExaminationResultController extends Controller
               $students = Student::whereHas('registrations',function($query) use($request){
                  $query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',explode('_',$request->get('campus_program_id'))[2]);
                })->with(['semesterRemarks'=>function($query) use ($request){
-                   $query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',explode('_',$request->get('campus_program_id'))[2])->where('semester_id',$request->get('semester_id'));
+                   $query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',explode('_',$request->get('campus_program_id'))[2]);
               },'semesterRemarks.semester','examinationResults'=>function($query) use($assignmentIds){
                 $query->whereIn('module_assignment_id',$assignmentIds);
               }])->where('campus_program_id',$campus_program->id)->get();
@@ -956,7 +956,7 @@ class ExaminationResultController extends Controller
               $students = Student::whereHas('registrations',function($query) use($request){
                  $query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',explode('_',$request->get('campus_program_id'))[2]);
               })->with(['semesterRemarks'=>function($query) use ($request){
-                   $query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',explode('_',$request->get('campus_program_id'))[2])->where('semester_id',$request->get('semester_id'));
+                   $query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',explode('_',$request->get('campus_program_id'))[2]);
               },'semesterRemarks.semester','annualRemarks'=>function($query) use($request){
                    $query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',explode('_',$request->get('campus_program_id'))[2]);
               },'examinationResults'=>function($query) use($assignmentIds){
