@@ -179,7 +179,6 @@ class StudentController extends Controller
     		foreach ($year as $yr) {
     			$years_of_studies[$key][] = StudyAcademicYear::with('academicYear')->find($yr);
     		}
-    		
     	}
 
     	$data = [
