@@ -66,7 +66,7 @@
               <div class="card-body">
                  <p class="ss-no-margin"><strong>Student Name:</strong> {{ $student->surname }}, {{ $student->first_name }} {{ $student->middle_name }}</p>
                  <p class="ss-no-margin"><strong>Programme:</strong> {{ $student->campusProgram->program->name }}</p>
-                 <p class="ss-no-margin"><strong>Registration Number:</s> {{ $student->registration_number }}</p>
+                 <p class="ss-no-margin"><strong>Registration Number:</strong> {{ $student->registration_number }}</p>
                  <p class="ss-no-margin"><strong>Year of Study:</strong> {{ $student->year_of_study }}</p>
 
                  @php
