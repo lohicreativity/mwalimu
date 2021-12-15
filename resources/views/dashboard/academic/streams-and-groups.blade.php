@@ -100,7 +100,7 @@
                              @endforeach
                            @endforeach
                        <tr>
-                        <td><a href="{{ url('academic/campus/campus-program/'.$cp->id.'/attendance?year_of_study='.$i.'&study_academic_year_id='.$study_academic_year->id.'&semester_id='.$semester->id) }}" target="_blank">{{ $cp->program->name }} - Year {{ $i }} ({{ $students_number }})</a>
+                        <td><a href="{{ url('academic/campus/campus-program/'.$cp->id.'/attendance?year_of_study='.$i.'&study_academic_year_id='.$study_academic_year->id) }}" target="_blank">{{ $cp->program->name }} - Year {{ $i }} ({{ $students_number }})</a>
                           @foreach($study_academic_year->streams as $stream)
                              @if($stream->campus_program_id == $cp->id && $stream->year_of_study == $i)
                              @php
