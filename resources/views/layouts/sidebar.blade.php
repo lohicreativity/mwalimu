@@ -22,7 +22,7 @@
           @if(isset($staff))
           <a href="#" class="d-block">{{ $staff->first_name }} {{ $staff->surname }}</a>
           @endif
-          @if(isset($student))
+          @if(isset($student) && Auth::user()->hasRole('student'))
           <a href="#" class="d-block">{{ $student->first_name }} {{ $student->surname }}</a>
           @endif
 
