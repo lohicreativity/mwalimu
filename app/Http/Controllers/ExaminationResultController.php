@@ -1577,8 +1577,8 @@ class ExaminationResultController extends Controller
     {
          $student = Student::with(['campusProgram.program'])->find($student_id);
          $study_academic_year = StudyAcademicYear::with('academicYear')->find($ac_yr_id);
-         $semesters = Semester::with(['remarks'=>function($query) use ($student, $ac_yr_id){
-         	 $query->where('student_id',$student->id)->where('study_academic_year_id',$ac_yr_id);
+         $semesters = Semester::with(['remarks'=>function($query) use ($student, $ac_yr_id, $yr_of_study){
+         	 $query->where('student_id',$student->id)->where('study_academic_year_id',$ac_yr_id)->where('year_of_study',$yr_of_study);
          }])->get();
          $results = ExaminationResult::whereHas('moduleAssignment',function($query) use ($ac_yr_id, $student_id){
          	   $query->where('study_academic_year_id',$ac_yr_id)->where('student_id',$student_id);
