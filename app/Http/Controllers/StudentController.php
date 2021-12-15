@@ -181,6 +181,8 @@ class StudentController extends Controller
     		}
     	}
 
+    	return $years_of_studies;
+
     	$data = [
     	   'years_of_studies'=>$years_of_studies,
            'student'=>$student
