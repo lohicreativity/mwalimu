@@ -970,11 +970,11 @@ class ExaminationResultController extends Controller
         }
 
 
-        if(count($students) != 0){
-           if(count($students[0]->examinationResults) == 0){
-              return redirect()->back()->with('error','No results processed yet for this programme');
-           }
-        }
+        // if(count($students) != 0){
+        //    if(count($students[0]->examinationResults) == 0){
+        //       return redirect()->back()->with('error','No results processed yet for this programme');
+        //    }
+        // }
         $grading_policies = GradingPolicy::where('nta_level_id',$campus_program->program->nta_level_id)->where('study_academic_year_id',$request->get('study_academic_year_id'))->orderBy('grade')->get();
 
         $modules = [];
