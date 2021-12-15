@@ -309,10 +309,10 @@
                       
                       @if(count($student->semesterRemarks) != 0)
                       <td>
-                        @if($student->semesterRemarks[1]->remark) {{ $student->semesterRemarks[1]->remark }} @else N/A @endif
+                        @if($student->semesterRemarks[1]) {{ $student->semesterRemarks[1]->remark }} @else N/A @endif
                       </td>
                       <td>
-                        @if($student->semesterRemarks[0]->remark) {{ $student->semesterRemarks[0]->remark }} @else N/A @endif
+                        @if($student->semesterRemarks[0]) {{ $student->semesterRemarks[0]->remark }} @else N/A @endif
                       </td>
                       @endif
                       @if($student->annualRemarks)
