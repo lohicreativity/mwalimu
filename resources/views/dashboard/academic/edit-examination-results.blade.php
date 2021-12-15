@@ -85,6 +85,8 @@
 
                       {!! Form::input('hidden','study_academic_year_id',$result->moduleAssignment->study_academic_year_id) !!}
 
+                      {!! Form::input('hidden','semester_id',$result->moduleAssignment->semester_id) !!}
+
                       {!! Form::input('hidden','module_assignment_id',$result->moduleAssignment->id) !!}
                     </div>
                   </div>

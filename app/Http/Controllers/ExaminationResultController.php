@@ -561,7 +561,9 @@ class ExaminationResultController extends Controller
                 $result->final_uploaded_at = now();
                 $result->uploaded_by_user_id = Auth::user()->id;
                 $result->save();
-          return redirect()->to('academic/results/'.$request->get('student_id').'/'.$module_assignment->study_academic_year_id.'/'.$module_assignment->programModuleAssignment->year_of_study.'/process-student-results?semester_id='.$module_assignment->programModuleAssignment->semester_id);
+
+                $this->processStudentResults($request,$request->get('student_id'),$module_assignment->study_academic_year_id,$module_assignment->programModuleAssignment->year_of_study);
+          // return redirect()->to('academic/results/'.$request->get('student_id').'/'.$module_assignment->study_academic_year_id.'/'.$module_assignment->programModuleAssignment->year_of_study.'/process-student-results?semester_id='.$module_assignment->programModuleAssignment->semester_id);
         }catch(\Exception $e){
             return redirect()->back()->with('error','Unable to get the resource specified in this request'); 
         }
