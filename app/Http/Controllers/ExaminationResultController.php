@@ -242,7 +242,7 @@ class ExaminationResultController extends Controller
                 	$processed_result->total_score = round($result->course_work_score + $result->final_score);
                 }
 
-                $grading_policy = GradingPolicy::where('nta_level_id',$assignment->module->ntaLevel->id)->where('study_academic_year_id',$assignment->studyAcademicYear->id)->where('min_score','<=',round($result->total_score))->where('max_score','>=',round($result->total_score))->first();
+                $grading_policy = GradingPolicy::where('nta_level_id',$assignment->module->ntaLevel->id)->where('study_academic_year_id',$assignment->studyAcademicYear->id)->where('min_score','<=',round($processed_result->total_score))->where('max_score','>=',round($processed_result->total_score))->first();
   
                 if(!$grading_policy){
                    return redirect()->back()->with('error','Some programmes NTA level are missing grading policies');
@@ -500,6 +500,7 @@ class ExaminationResultController extends Controller
     public function update(Request $request)
     {
         try{
+            DB::beginTransaction();
             $module_assignment = ModuleAssignment::with(['module','studyAcademicYear.academicYear','programModuleAssignment.campusProgram.program'])->find($request->get('module_assignment_id'));
               $academicYear = $module_assignment->studyAcademicYear->academicYear;
 
@@ -561,8 +562,10 @@ class ExaminationResultController extends Controller
                 $result->final_uploaded_at = now();
                 $result->uploaded_by_user_id = Auth::user()->id;
                 $result->save();
+                DB::commit();
 
-                return $this->processStudentResults($request,$request->get('student_id'),$module_assignment->study_academic_year_id,$module_assignment->programModuleAssignment->year_of_study);
+                return $this->processStudentResults($request,$student->id,$module_assignment->study_academic_year_id,$module_assignment->programModuleAssignment->year_of_study);
+
           // return redirect()->to('academic/results/'.$request->get('student_id').'/'.$module_assignment->study_academic_year_id.'/'.$module_assignment->programModuleAssignment->year_of_study.'/process-student-results?semester_id='.$module_assignment->programModuleAssignment->semester_id);
         }catch(\Exception $e){
             return redirect()->back()->with('error','Unable to get the resource specified in this request'); 
@@ -725,9 +728,10 @@ class ExaminationResultController extends Controller
                       $processed_result->total_score = round($result->course_work_score + $result->final_score);
                     }
 
-                    $grading_policy = GradingPolicy::where('nta_level_id',$assignment->module->ntaLevel->id)->where('study_academic_year_id',$assignment->studyAcademicYear->id)->where('min_score','<=',round($result->total_score))->where('max_score','>=',round($result->total_score))->first();
+                    $grading_policy = GradingPolicy::where('nta_level_id',$assignment->module->ntaLevel->id)->where('study_academic_year_id',$assignment->studyAcademicYear->id)->where('min_score','<=',round($processed_result->total_score))->where('max_score','>=',round($processed_result->total_score))->first();
       
                     if(!$grading_policy){
+                       DB::rollback();
                        return redirect()->back()->with('error','Some programmes NTA level are missing grading policies');
                     }
                     
@@ -863,21 +867,21 @@ class ExaminationResultController extends Controller
                 
                     
                    if($rm = AnnualRemark::where('student_id',$key)->where('study_academic_year_id',$ac_yr_id)->where('year_of_study',$buffer['year_of_study'])->first()){
-                        $remark = $rm;
+                        $rem = $rm;
                       
                     }else{
-                        $remark = new AnnualRemark;
+                        $rem = new AnnualRemark;
                     }
-                    $remark->student_id = $key;
-                    $remark->year_of_study = $buffer['year_of_study'];
-                    $remark->study_academic_year_id = $ac_yr_id;
-                    $remark->remark = Util::getAnnualRemark($sem_remarks,$buffer['annual_results']);
-                    if($remark->remark == 'INCOMPLETE' || $remark->remark == 'INCOMPLETE' || $remark->remark == 'POSTPONED'){
-                       $remark->gpa = null;
+                    $rem->student_id = $key;
+                    $rem->year_of_study = $buffer['year_of_study'];
+                    $rem->study_academic_year_id = $ac_yr_id;
+                    $rem->remark = Util::getAnnualRemark($sem_remarks,$buffer['annual_results']);
+                    if($rem->remark == 'INCOMPLETE' || $rem->remark == 'INCOMPLETE' || $rem->remark == 'POSTPONED'){
+                       $rem->gpa = null;
                     }else{
-                         $remark->gpa = Util::computeGPA($buffer['annual_credit'],$buffer['annual_results']);
+                         $rem->gpa = Util::computeGPA($buffer['annual_credit'],$buffer['annual_results']);
                     }
-                    $remark->save();
+                    $rem->save();
                }
 
            DB::commit();
