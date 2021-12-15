@@ -64,10 +64,10 @@
               </div>
               <!-- /.card-header -->
               <div class="card-body">
-                 <p class="ss-no-margin">Student Name: {{ $student->surname }}, {{ $student->first_name }} {{ $student->middle_name }}</p>
-                 <p class="ss-no-margin">Programme: {{ $student->campusProgram->program->name }}</p>
-                 <p class="ss-no-margin">Registration Number: {{ $student->registration_number }}</p>
-                 <p class="ss-no-margin">Year of Study: {{ $student->year_of_study }}</p>
+                 <p class="ss-no-margin"><strong>Student Name:</strong> {{ $student->surname }}, {{ $student->first_name }} {{ $student->middle_name }}</p>
+                 <p class="ss-no-margin"><strong>Programme:</strong> {{ $student->campusProgram->program->name }}</p>
+                 <p class="ss-no-margin"><strong>Registration Number:</s> {{ $student->registration_number }}</p>
+                 <p class="ss-no-margin"><strong>Year of Study:</strong> {{ $student->year_of_study }}</p>
 
                  @php
                     $programIds = [];
@@ -168,6 +168,7 @@
                    </thead>
                    <tbody>
                       @foreach($semester->remarks as $remark)
+
                       <tr>
                          <td><strong>{{ $remark->remark }}</strong>
                              @if($remark->serialized) [{{ implode(', ',unserialize($remark->serialized)['supp_exams']) }}] @endif
