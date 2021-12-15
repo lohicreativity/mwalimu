@@ -64,10 +64,10 @@
               </div>
               <!-- /.card-header -->
               <div class="card-body">
-                 <p class="ss-no-margin">Student Name: {{ $student->surname }}, {{ $student->first_name }} {{ $student->middle_name }}</p>
-                 <p class="ss-no-margin">Programme: {{ $student->campusProgram->program->name }}</p>
-                 <p class="ss-no-margin">Registration Number: {{ $student->registration_number }}</p>
-                 <p class="ss-no-margin">Year of Study: {{ $student->year_of_study }}</p>
+                 <p class="ss-no-margin"><b>Student Name:</b> {{ $student->surname }}, {{ $student->first_name }} {{ $student->middle_name }}</p>
+                 <p class="ss-no-margin"><b>Programme:</b> {{ $student->campusProgram->program->name }}</p>
+                 <p class="ss-no-margin"><b>Registration Number:</b> {{ $student->registration_number }}</p>
+                 <p class="ss-no-margin"><b>Year of Study:</b> {{ $student->year_of_study }}</p>
 
                  <table class="table table-bordered">
                    @foreach($years_of_studies as $key=>$years)
