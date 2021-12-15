@@ -318,7 +318,7 @@ class ExaminationResultController extends Controller
                     })->with(['module'])->where('study_academic_year_id',$assign->study_academic_year_id)->where('year_of_study',$assign->programModuleAssignment->year_of_study)->where('category','OPTIONAL')->get();
                
                $student_buffer[$student->id]['annual_results'][] =  $result;
-               $student_buffer[$student->id]['year_of_study'] = $student->year_of_study;
+               $student_buffer[$student->id]['year_of_study'] = explode('_',$request->get('campus_program_id'))[2];
                $student_buffer[$student->id]['annual_credit'] = $annual_credit;
                foreach($optional_programs as $prog){
                    $student_buffer[$student->id]['opt_credit'] += $prog->module->credit;
