@@ -161,6 +161,8 @@ class StudentController extends Controller
     {
     	$student = User::find(Auth::user()->id)->student;
     	$results = ExaminationResult::with(['moduleAssignment.programModuleAssignment','moduleAssignment.studyAcademicYear.academicYear'])->where('student_id',$student->id)->get();
+
+    	return $results;
     	$years = [];
     	$years_of_studies = [];
     	$academic_years = [];
@@ -180,8 +182,6 @@ class StudentController extends Controller
     			$years_of_studies[$key][] = StudyAcademicYear::with('academicYear')->find($yr);
     		}
     	}
-
-    	return $years_of_studies;
 
     	$data = [
     	   'years_of_studies'=>$years_of_studies,
