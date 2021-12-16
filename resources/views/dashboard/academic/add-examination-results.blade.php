@@ -26,7 +26,7 @@
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">{{ __('Edit Examination Results') }}</li>
+              <li class="breadcrumb-item active">{{ __('Add Examination Results') }}</li>
             </ol>
           </div>
         </div>
@@ -42,7 +42,7 @@
             <!-- general form elements -->
             <div class="card card-default">
               <div class="card-header">
-                <h3 class="card-title">{{ __('Edit Examination Results') }} - {{ $student->surname }}, {{ $student->first_name }} {{ $student->middle_name }} </h3>
+                <h3 class="card-title">{{ __('Add Examination Results') }} - {{ $student->surname }}, {{ $student->first_name }} {{ $student->middle_name }} </h3>
               </div>
               <!-- /.card-header -->
               <!-- form start -->
@@ -65,31 +65,33 @@
                      'class'=>'form-control'
                   ];
               @endphp
-              {!! Form::open(['url'=>'academic/results/update-examination-results','class'=>'ss-form-processing']) !!}
+              {!! Form::open(['url'=>'academic/results/store-examination-results','class'=>'ss-form-processing']) !!}
                 <div class="card-body">
                   <div class="row">
-                    <div class="form-group col-4">
+                    <div class="form-group col-3">
+                      {!! Form::label('','Module') !!}
+                      <select name="module_assignment_id" class="form-control" required>
+                          <option value="">Select Module</option>
+                          @foreach($missing_modules as $module)
+                          <option value="{{ $module->id }}">{{ $module->programModuleAssignment->module->code }}</option>
+                          @endforeach
+                      </select>
+                    </div>
+                    <div class="form-group col-3">
                       {!! Form::label('','Coursework score') !!}
-                      {!! Form::text('course_work_score',$result->course_work_score,$course_work_score) !!}
-
-                      <a href="{{ url('academic/results/'.$student->id.'/'.$result->moduleAssignment->id.'/'.$result->id.'/edit-course-work-results') }}" class="ss-margin-top">Edit Coursework</a>
+                      {!! Form::text('course_work_score',null,$course_work_score) !!}
                     </div>
-                    <div class="form-group col-4">
+                    <div class="form-group col-3">
                       {!! Form::label('','Final score (/100)') !!}
-                      {!! Form::text('final_score',round($result->final_score*100/$policy->final_min_mark,1),$final_score) !!}
+                      {!! Form::text('final_score',null,$final_score) !!}
                     </div>
-                    <div class="form-group col-4">
+                    <div class="form-group col-3">
                       {!! Form::label('','Supp score') !!}
-                      {!! Form::text('supp_score',$result->supp_score,$supp_score) !!}
+                      {!! Form::text('supp_score',null,$supp_score) !!}
 
                       {!! Form::input('hidden','student_id',$student->id) !!}
-                      {!! Form::input('hidden','exam_type',$result->exam_type) !!}
+                      {!! Form::input('hidden','exam_type','FIRST') !!}
 
-                      {!! Form::input('hidden','study_academic_year_id',$result->moduleAssignment->study_academic_year_id) !!}
-
-                      {!! Form::input('hidden','semester_id',$result->moduleAssignment->programModuleAssignment->semester_id) !!}
-
-                      {!! Form::input('hidden','module_assignment_id',$result->moduleAssignment->id) !!}
                     </div>
                   </div>
                 </div>

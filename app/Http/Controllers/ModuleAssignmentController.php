@@ -316,7 +316,7 @@ class ModuleAssignmentController extends Controller
                       $query->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)->where('semester_id',$module_assignment->programModuleAssignment->semester_id);
                 })->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id)->get();
              }
-             
+
              DB::beginTransaction();
              foreach ($students as $key => $student) {
                 $course_work = CourseWorkResult::where('module_assignment_id',$module_assignment->id)->where('student_id',$student->id)->sum('score');
@@ -733,9 +733,13 @@ class ModuleAssignmentController extends Controller
                       $result_log->final_score = !$special_exam? (trim($line[1])*$policy->final_min_marks)/100 : null;
                       if($carry_history){
                          $result_log->exam_category = 'CARRY';
+                         $result_log->retakable_id = $carry_history->id;
+                         $result_log->retakable_type = 'carry_history';
                       }
                       if($retake_history){
                          $result_log->exam_category = 'RETAKE';
+                         $result_log->retakable_id = $retake_history->id;
+                         $result_log->retakable_type = 'retake_history';
                       }
                       $result_log->exam_type = 'FINAL';
                       if($special_exam){
@@ -759,9 +763,13 @@ class ModuleAssignmentController extends Controller
                       $result->exam_type = 'FINAL';
                       if($carry_history){
                          $result->exam_category = 'CARRY';
+                         $result->retakable_id = $carry_history->id;
+                         $result->retakable_type = 'carry_history';
                       }
                       if($retake_history){
                          $result->exam_category = 'RETAKE';
+                         $result->retakable_id = $retake_history->id;
+                         $result->retakable_type = 'retake_history';
                       }
                       if($special_exam){
                          $result->final_remark = 'POSTPONED';

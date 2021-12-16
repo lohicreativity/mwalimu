@@ -114,7 +114,7 @@
                           <td>{{ $result->moduleAssignment->module->name }}</td>
                           <td>@if(!$result->supp_processed_at) {{ $result->course_work_score }} @else N/A @endif</td>
                           <td>@if(!$result->supp_processed_at) {{ $result->final_score }} @else N/A @endif</td>
-                          <td>@if(!$result->supp_processed_at) {{ $result->total_score }} @else {{ $result->supp_score }}@endif</td>
+                          <td>@if(!$result->supp_processed_at) {{ round($result->total_score) }} @else {{ round($result->supp_score) }}@endif</td>
                           <td>{{ $result->grade }}</td>
                           <td>{{ $result->final_exam_remark }}</td>
                         </tr>
@@ -140,6 +140,23 @@
                           $count += 1;
                         @endphp
                        @endif
+                       @foreach($results as $result)
+                         @if($result->moduleAssignment->programModuleAssignment->semester_id == $semester->id && $result->moduleAssignment->programModuleAssignment->id == $program->id)
+                         <tr>
+                          <td>{{ $count }}</td>
+                          <td>{{ $result->moduleAssignment->module->code }}</td>
+                          <td>{{ $result->moduleAssignment->module->name }}</td>
+                          <td>@if(!$result->supp_processed_at) {{ $result->course_work_score }} @else N/A @endif</td>
+                          <td>@if(!$result->supp_processed_at) {{ $result->final_score }} @else N/A @endif</td>
+                          <td>@if(!$result->supp_processed_at) {{ round($result->total_score) }} @else {{ round($result->supp_score) }}@endif</td>
+                          <td>{{ $result->grade }}</td>
+                          <td>{{ $result->final_exam_remark }}</td>
+                        </tr>
+                          @php
+                            $count += 1;
+                          @endphp
+                         @endif
+                      @endforeach
                      @endforeach
                     </tbody>
                  </table>

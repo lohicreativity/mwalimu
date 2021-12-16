@@ -1,76 +1,220 @@
-@extends('layouts.app')
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <title>{{ Config::get('constants.SITE_NAME') }}</title>
+  <style type="text/css">
+      
+      body{
+         font-family: helvetica;
+      }
+     .container {
+        padding-right: 15px;
+        padding-left: 15px;
+        margin-right: auto;
+        margin-left: auto;
+      }
+      .container-fluid {
+        padding-right: 15px;
+        padding-left: 15px;
+        margin-right: auto;
+        margin-left: auto;
+      }
+      .row {
+        margin-right: -15px;
+        margin-left: -15px;
+      }
+      .col-md-1, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-md-10, .col-md-11, .col-md-12 {
+        float: left;
+      }
+      .col-md-12 {
+        width: 100%;
+      }
+      .col-md-11 {
+        width: 91.66666667%;
+      }
+      .col-md-10 {
+        width: 83.33333333%;
+      }
+      .col-md-9 {
+        width: 75%;
+      }
+      .col-md-8 {
+        width: 66.66666667%;
+      }
+      .col-md-7 {
+        width: 58.33333333%;
+      }
+      .col-md-6 {
+        width: 50%;
+      }
+      .col-md-5 {
+        width: 41.66666667%;
+      }
+      .col-md-4 {
+        width: 33.33333333%;
+      }
+      .col-md-3 {
+        width: 25%;
+      }
+      .col-md-2 {
+        width: 16.66666667%;
+      }
+      .col-md-1 {
+        width: 8.33333333%;
+      }
+     table {
+        background-color: transparent;
+      }
+      caption {
+        padding-top: 8px;
+        padding-bottom: 8px;
+        color: #777;
+        text-align: left;
+      }
+      th {
+        text-align: left;
+      }
+      .table {
+        width: 100%;
+        max-width: 100%;
+        margin-bottom: 20px;
+        border-collapse: collapse;
+      }
+      .table > thead > tr > th,
+      .table > tbody > tr > th,
+      .table > tfoot > tr > th,
+      .table > thead > tr > td,
+      .table > tbody > tr > td,
+      .table > tfoot > tr > td {
+        padding: 8px;
+        line-height: 1.42857143;
+        vertical-align: top;
+        border-top: 1px solid #ddd;
+      }
+      .table > thead > tr > th {
+        vertical-align: bottom;
+        border-bottom: 2px solid #ddd;
+      }
+      .table > caption + thead > tr:first-child > th,
+      .table > colgroup + thead > tr:first-child > th,
+      .table > thead:first-child > tr:first-child > th,
+      .table > caption + thead > tr:first-child > td,
+      .table > colgroup + thead > tr:first-child > td,
+      .table > thead:first-child > tr:first-child > td {
+        border-top: 0;
+      }
+      .table > tbody + tbody {
+        border-top: 2px solid #ddd;
+      }
+      .table .table {
+        background-color: #fff;
+      }
+      .table-condensed > thead > tr > th,
+      .table-condensed > tbody > tr > th,
+      .table-condensed > tfoot > tr > th,
+      .table-condensed > thead > tr > td,
+      .table-condensed > tbody > tr > td,
+      .table-condensed > tfoot > tr > td {
+        padding: 5px;
+      }
+      .table-bordered {
+        border: 1px solid #ddd;
+      }
+      .table-bordered > thead > tr > th,
+      .table-bordered > tbody > tr > th,
+      .table-bordered > tfoot > tr > th,
+      .table-bordered > thead > tr > td,
+      .table-bordered > tbody > tr > td,
+      .table-bordered > tfoot > tr > td {
+        border: 1px solid #ddd;
+      }
+      .table-bordered > thead > tr > th,
+      .table-bordered > thead > tr > td {
+        border-bottom-width: 2px;
+      }
 
-@section('content')
 
-<div class="wrapper">
+     .page-break {
+          page-break-after: always;
+      }
+      .ss-bold{
+         font-weight: bold;
+      }
+      .ss-center{
+         text-align: center;
+      }
+      .ss-left{
+         text-align: left;
+      }
+      .ss-right{
+         text-align: right;
+      }
+      .ss-italic{
+        font-style: italic;
+      }
+     .ss-no-margin{
+        margin: 0px;
+     }
+     .ss-margin-top-lg{
+         margin-top: 80px;
+      } 
+     .ss-margin-bottom-lg{
+         margin-bottom: 50px;
+     }
+     .ss-margin-bottom{
+         margin-bottom: 20px;
+     }
+     .ss-font-sm{
+        font-size: 14px;
+     }
+     .ss-font-xs{
+        font-size: 12px;
+     }
+     .ss-letter-head{
+        /*margin-bottom: 20px;*/
+        /*text-align: right;*/
+        text-transform: uppercase;
+     }
+     .ss-letter-head h1, .ss-letter-head h3{
+        margin: 0px;
+     }
+     .ss-sign-column{
+        min-width: 120px !important;
+     }
+     .ss-black-line{
+       width: 100%;
+       height: 5px;
+       background-color: #000;
+     }
+     .ss-photo{
+       width: 120px;
+     }
+     .ss-logo{
+       width: 120px;
+       height: auto;
+     }
+  
+  </style>
+</head>
 
-  <!-- Preloader -->
-  <div class="preloader flex-column justify-content-center align-items-center">
-    <img class="animation__shake" src="{{ asset('dist/img/logo.png') }}" alt="{{ Config::get('constants.SITE_NAME') }}" height="60" width="60">
-  </div>
-
-  @include('layouts.auth-header')
-
-  @include('layouts.sidebar')
-
-  <!-- Content Wrapper. Contains page content -->
-  <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
-      <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-6">
-            <h1>{{ __('Overall Examination Results') }} - {{ $study_academic_year->academicYear->year }}</h1>
-          </div>
-          <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item"><a href="{{ url('academic/results/show-student-report?registration_number='.$student->registration_number) }}">{{ __('Examination Results') }} - {{ $student->first_name }} {{ $student->middle_name }} {{ $student->last_name }}</a></li>
-              <li class="breadcrumb-item active">{{ __('Overall Examination Results') }}</li>
-            </ol>
-          </div>
-        </div>
-      </div><!-- /.container-fluid -->
-    </section>
-
-    <!-- Main content -->
-    <section class="content">
-      <div class="container-fluid">
+      <div class="container">
         <div class="row">
-          <div class="col-12">
-
-            <div class="card">
-              <div class="card-header">
-                <ul class="nav nav-tabs">
-                  @can('process-examination-results')
-                  <li class="nav-item"><a class="nav-link" href="{{ url('academic/results?study_academic_year_id='.session('active_academic_year_id').'&campus_id='.session('staff_campus_id')) }}">{{ __('Process Results') }}</a></li>
-                  @endcan
-                  @can('view-programme-results')
-                  <li class="nav-item"><a class="nav-link" href="{{ url('academic/results/show-program-results?study_academic_year_id='.session('active_academic_year_id').'&campus_id='.session('staff_campus_id')) }}">{{ __('View Programme Results') }}</a></li>
-                  @endcan
-                  @can('view-module-results')
-                  <li class="nav-item"><a class="nav-link" href="{{ url('academic/results/show-module-results?study_academic_year_id='.session('active_academic_year_id').'&campus_id='.session('staff_campus_id')) }}">{{ __('View Module Results') }}</a></li>
-                  @endcan
-                  @can('view-student-results')
-                  <li class="nav-item"><a class="nav-link active" href="{{ url('academic/results/show-student-results') }}">{{ __('View Student Results') }}</a></li>
-                  @endcan
-                  @can('publish-examination-results')
-                  <li class="nav-item"><a class="nav-link" href="{{ url('academic/results-publications') }}">{{ __('Publish Results') }}</a></li>
-                  @endcan
-                  @can('view-uploaded-modules')
-                  <li class="nav-item"><a class="nav-link" href="{{ url('academic/results/uploaded-modules') }}">{{ __('Uploaded Modules') }}</a></li>
-                  @endcan
-                </ul>
+          <div class="col-md-3 ss-center">
+             <img src="{{ asset('dist/img/logo.png') }}" alt="Config::get('constants.SITE_NAME') }}" class="ss-logo">
+          </div><!-- end of col-md-3 -->
+          <div class="col-md-6 ss-center">
+             <div class="ss-letter-head  ss-center">
+               <h3>MWALIMU NYERERE MEMORIAL ACADEMY</h3>
+               <h3>{{ $student->campusProgram->program->department->name }}</h3>
+               <h3>{{ $student->campusProgram->program->name }}</h3>
+               <h3>STATEMENT OF EXAMINATION RESULTS</h3>
               </div>
-              <!-- /.card-header -->
-              <div class="card-body">
-                 <p><a href="{{ url('academic/results/'.$student->id.'/'.$study_academic_year->id.'/'.$year_of_study.'/show-student-perfomance-report') }}">Perfomance Report</a></p>
-                 <p class="ss-no-margin"><strong>Student Name:</strong> {{ $student->surname }}, {{ $student->first_name }} {{ $student->middle_name }}</p>
-                 <p class="ss-no-margin"><strong>Programme:</strong> {{ $student->campusProgram->program->name }}</p>
-                 <p class="ss-no-margin"><strong>Registration Number:</strong> {{ $student->registration_number }}</p>
-                 <p class="ss-no-margin"><strong>Year of Study:</strong> {{ $student->year_of_study }}</p>
-
+          </div><!-- end of col-md-6 -->
+          <div class="col-md-3 ss-center">
+             <img class="ss-photo" src="{{ asset('avatars/'.$student->image) }}"  onerror="this.src='{{ asset("img/user-avatar.png") }}'">
+          </div><!-- end of col-md-3 -->
+        </div><!-- end of row -->
                  @php
                     $programIds = [];
                  @endphp
@@ -85,7 +229,7 @@
 
                    @if(count($semester->remarks) != 0)
                 <div class="row">
-                <div class="col-12">
+                <div class="col-md-12">
                  <h4 class="ss-no-margin">{{ $semester->name }}</h4>
                  <table class="table table-bordered">
                     <thead>
@@ -268,9 +412,10 @@
                      @endforeach
                     </tbody>
                  </table>
-               </div>
-                 <br>
-                 <div class="col-6">
+               </div><!-- end of col-md-12 -->
+             </div><!-- end of row -->
+                 <div class="row">
+                 <div class="col-md-6">
                  <p class="ss-bold">Summary: {{ $semester->name }}</p>
                  <table class="table table-bordered">
                    <thead>
@@ -296,7 +441,7 @@
                </div>
                  
                    @if($annual_remark && $key == (count($semesters)-1))
-                   <div class="col-6">
+                   <div class="col-md-6">
                     <p class="ss-bold">Annual Remark</p>
                      <table class="table table-bordered">
                    <thead>
@@ -313,34 +458,67 @@
                    </tbody>
                  </table>
                  <br>
-               </div>
-                   @endif
-                   
-                 </div>
+               </div><!-- end of col-md-6 -->
+                 
+                  @endif
+                  </div><!-- end of row -->
                  @endif
                  @endforeach
-              </div>
-            </div>
-            <!-- /.card -->
 
-          </div>
-          <!-- /.col -->
-        </div>
-        <!-- /.row -->
-      </div>
-      <!-- /.container-fluid -->
-    </section>
-    <!-- /.content -->
-  </div>
-  <!-- /.content-wrapper -->
-  @include('layouts.footer')
+                 <div class="row">
+                   <div class="col-md-12">
+                     <h3>KEYS</h3>
+                     <p>1. This transcript is valid if and only if it bears the University Stamp</p>
+                     <p>2. Key for Subject/Module Units: ONE UNIT IS EQUIVALENT TO TEN CONTACT HOURS. POINTS = GRADE MULTIPLIED BY NUMBER OF UNITS</p>
+                     <p>3. Key to the Grades and other symbols for University Examinations: SEE THE TABLE BELOW</p>
+                     <table class="table table-bordered table-condensed ss-center">
+                        <tr>
+                          <td class="ss-bold">Grade</td>
+                          @foreach($grading_policies as $policy)
+                          <td class="ss-bold">{{ $policy->grade }}</td>
+                          @endforeach
+                        </tr>
+                        <tr>
+                          <td class="ss-bold">Marks</td>
+                          @foreach($grading_policies as $policy)
+                          <td>{{ $policy->min_score }}-{{ $policy->max_score }}</td>
+                          @endforeach
+                        </tr>
+                        <tr>
+                          <td class="ss-bold">Grade Points</td>
+                          @foreach($grading_policies as $policy)
+                          <td>{{ $policy->point }}</td>
+                          @endforeach
+                        </tr>
+                        <tr>
+                          <td class="ss-bold">Remarks</td>
+                          @foreach($grading_policies as $policy)
+                          <td>{{ $policy->remark }}</td>
+                          @endforeach
+                        </tr>
+                     </table>
+                     <br>
+                     <p>4. Key to classification of Awards: SEE THE TABLE BELOW</p>
+                     <table class="table table-condensed table-bordered ss-center">
+                       <tr>
+                          <td class="ss-bold">Overall GPA</td>
+                          <td class="ss-bold">3.50 - 4.00</td>
+                          <td class="ss-bold">3.00 - 3.49</td>
+                          <td class="ss-bold">2.00 - 2.99</td>
+                       </tr>
+                       <tr>
+                         <td>Class</td>
+                         <td>FIRST CLASS</td>
+                         <td>SECOND CLASS</td>
+                         <td>PASS</td>
+                       </tr>
+                     </table>
+                   </div><!-- end of col-md-12 -->
+                 </div><!-- end of row -->
 
-  <!-- Control Sidebar -->
-  <aside class="control-sidebar control-sidebar-dark">
-    <!-- Control sidebar content goes here -->
-  </aside>
-  <!-- /.control-sidebar -->
-</div>
-<!-- ./wrapper -->
 
-@endsection
+      </div><!-- end of container -->
+
+
+</body>
+</html>

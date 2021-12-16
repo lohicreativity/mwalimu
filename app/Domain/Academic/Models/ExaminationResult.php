@@ -19,6 +19,30 @@ class ExaminationResult extends Model
     {
     	return $this->belongsTo(Student::class,'student_id');
     }
+
+    /**
+     * Establish one to many polymorphic relatioship with retakables
+     */
+    public function retakable()
+    {
+        return $this->morphTo();
+    }
+
+    /**
+     * Establish one to many relationship with carry histories
+     */
+    public function carryHistory()
+    {
+        return $this->hasOne(CarryHistory::class,'examination_result_id');
+    }
+
+    /**
+     * Establish one to many relationship with retake histories
+     */
+    public function retakeHistory()
+    {
+        return $this->hasOne(RetakeHistory::class,'examination_result_id');
+    }
     
     /**
      * Establish one to many relationship with module assignment
@@ -28,5 +52,5 @@ class ExaminationResult extends Model
         return $this->belongsTo(ModuleAssignment::class,'module_assignment_id');
     }
 
-
+     
 }

@@ -37,6 +37,22 @@ class ModuleAssignment extends Model
     }
 
     /**
+     * Establish one to many relationship with retake histories
+     */
+    public function retakeHistories()
+    {
+        return $this->hasMany(RetakeHistory::class,'module_assignment_id');
+    }
+
+    /**
+     * Establish one to many relationship with carry histories
+     */
+    public function carryHistories()
+    {
+        return $this->hasMany(CarryHistory::class,'module_assignment_id');
+    }
+
+    /**
      * Establish one to many relationship with examination results
      */
     public function examinationResults()

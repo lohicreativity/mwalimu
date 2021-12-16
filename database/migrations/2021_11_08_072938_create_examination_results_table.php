@@ -23,6 +23,8 @@ class CreateExaminationResultsTable extends Migration
             $table->decimal('total_score',8,1)->nullable();
             $table->string('exam_type')->default('FINAL');
             $table->string('exam_category')->default('FIRST');
+            $table->unsignedBigInteger('retakable_id')->nullable();
+            $table->string('retakable_type',20)->nullable();
             $table->string('grade',10)->nullable();
             $table->integer('point')->nullable();
             $table->string('course_work_remark',20)->nullable();

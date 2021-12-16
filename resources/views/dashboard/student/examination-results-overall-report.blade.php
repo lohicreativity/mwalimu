@@ -21,13 +21,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>{{ __('Overall Examination Results') }} - {{ $study_academic_year->academicYear->year }}</h1>
+            <h1>{{ __('Examination Results') }} - {{ $study_academic_year->academicYear->year }}</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item"><a href="{{ url('academic/results/show-student-report?registration_number='.$student->registration_number) }}">{{ __('Examination Results') }} - {{ $student->first_name }} {{ $student->middle_name }} {{ $student->last_name }}</a></li>
-              <li class="breadcrumb-item active">{{ __('Overall Examination Results') }}</li>
+              <li class="breadcrumb-item active">{{ __('Examination Results') }}</li>
             </ol>
           </div>
         </div>
@@ -42,34 +41,10 @@
 
             <div class="card">
               <div class="card-header">
-                <ul class="nav nav-tabs">
-                  @can('process-examination-results')
-                  <li class="nav-item"><a class="nav-link" href="{{ url('academic/results?study_academic_year_id='.session('active_academic_year_id').'&campus_id='.session('staff_campus_id')) }}">{{ __('Process Results') }}</a></li>
-                  @endcan
-                  @can('view-programme-results')
-                  <li class="nav-item"><a class="nav-link" href="{{ url('academic/results/show-program-results?study_academic_year_id='.session('active_academic_year_id').'&campus_id='.session('staff_campus_id')) }}">{{ __('View Programme Results') }}</a></li>
-                  @endcan
-                  @can('view-module-results')
-                  <li class="nav-item"><a class="nav-link" href="{{ url('academic/results/show-module-results?study_academic_year_id='.session('active_academic_year_id').'&campus_id='.session('staff_campus_id')) }}">{{ __('View Module Results') }}</a></li>
-                  @endcan
-                  @can('view-student-results')
-                  <li class="nav-item"><a class="nav-link active" href="{{ url('academic/results/show-student-results') }}">{{ __('View Student Results') }}</a></li>
-                  @endcan
-                  @can('publish-examination-results')
-                  <li class="nav-item"><a class="nav-link" href="{{ url('academic/results-publications') }}">{{ __('Publish Results') }}</a></li>
-                  @endcan
-                  @can('view-uploaded-modules')
-                  <li class="nav-item"><a class="nav-link" href="{{ url('academic/results/uploaded-modules') }}">{{ __('Uploaded Modules') }}</a></li>
-                  @endcan
-                </ul>
+                 <h3>Examination Results</h3>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
-                 <p><a href="{{ url('academic/results/'.$student->id.'/'.$study_academic_year->id.'/'.$year_of_study.'/show-student-perfomance-report') }}">Perfomance Report</a></p>
-                 <p class="ss-no-margin"><strong>Student Name:</strong> {{ $student->surname }}, {{ $student->first_name }} {{ $student->middle_name }}</p>
-                 <p class="ss-no-margin"><strong>Programme:</strong> {{ $student->campusProgram->program->name }}</p>
-                 <p class="ss-no-margin"><strong>Registration Number:</strong> {{ $student->registration_number }}</p>
-                 <p class="ss-no-margin"><strong>Year of Study:</strong> {{ $student->year_of_study }}</p>
 
                  @php
                     $programIds = [];
@@ -82,8 +57,19 @@
                 
                  
                  @foreach($semesters as $key=>$semester)
+                    @php
+                       $publish_status = false;
+                    @endphp
 
-                   @if(count($semester->remarks) != 0)
+                   @foreach($publications as $publication)
+                      @if($publication->semester_id == $semester->id)
+                        @php
+                          $publish_status = true;
+                        @endphp
+                      @endif
+                   @endforeach
+
+                   @if(count($semester->remarks) != 0 && $publish_status)
                 <div class="row">
                 <div class="col-12">
                  <h4 class="ss-no-margin">{{ $semester->name }}</h4>
@@ -255,7 +241,7 @@
                           <td>{{ $result->moduleAssignment->module->name }}</td>
                           <td>@if(!$result->supp_processed_at) {{ $result->course_work_score }} @else N/A @endif</td>
                           <td>@if(!$result->supp_processed_at) {{ $result->final_score }} @else N/A @endif</td>
-                          <td>@if(!$result->supp_processed_at) {{ $result->total_score }} @else {{ $result->supp_score }}@endif</td>
+                          <td>@if(!$result->supp_processed_at) {{ round($result->total_score) }} @else {{ round($result->supp_score) }}@endif</td>
                           <td>{{ $result->grade }}</td>
                           <td>{{ $result->final_exam_remark }}</td>
                         </tr>
@@ -281,8 +267,7 @@
                    </thead>
                    <tbody>
                       @foreach($semester->remarks as $remark)
-
-                      <tr>
+                       <tr>
                          <td><strong>{{ $remark->remark }}</strong>
                              @if($remark->serialized) @if(!empty(unserialize($remark->serialized)['supp_exams'])) [{{ implode(', ',unserialize($remark->serialized)['supp_exams']) }}] @endif @endif
                              @if($remark->serialized) @if(!empty(unserialize($remark->serialized)['retake_exams'])) [{{ implode(', ',unserialize($remark->serialized)['retake_exams']) }}] @endif @endif
@@ -317,9 +302,14 @@
                    @endif
                    
                  </div>
+                 @else
+                    <p>No Results Published for {{ $semester->name }}</p>
                  @endif
                  @endforeach
               </div>
+
+
+
             </div>
             <!-- /.card -->
 

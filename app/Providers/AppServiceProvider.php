@@ -5,6 +5,9 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Database\Eloquent\Relations\Relation;
+use App\Domain\Academic\Models\RetakeHistory;
+use App\Domain\Academic\Models\CarryHistory;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -15,7 +18,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        Relation::morphMap([
+            'retake_history'=>RetakeHistory::class,
+            'carry_history'=>CarryHistory::class
+        ]);
     }
 
     /**

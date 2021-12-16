@@ -28,6 +28,7 @@ use App\Http\Controllers\PostponementController;
 use App\Http\Controllers\SpecialExamController;
 use App\Http\Controllers\ExaminationResultController;
 use App\Http\Controllers\ResultPublicationController;
+use App\Http\Controllers\CourseWorkResultController;
 
 /*
 |--------------------------------------------------------------------------
@@ -224,8 +225,12 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 	Route::get('results/show-module-results',[ExaminationResultController::class,'showModuleResults']);
 	Route::get('results/show-student-results',[ExaminationResultController::class,'showStudentResults']);
 	Route::get('results/{student_id}/{ac_yr_id}/{yr_of_study}/show-student-results',[ExaminationResultController::class,'showStudentAcademicYearResults']);
+	Route::get('results/{student_id}/{ac_yr_id}/{yr_of_study}/show-student-overall-results',[ExaminationResultController::class,'showStudentOverallResults']);
+	Route::get('results/{student_id}/{ac_yr_id}/{yr_of_study}/show-student-perfomance-report',[ExaminationResultController::class,'showStudentPerfomanceReport']);
+	Route::get('results/{student_id}/{mod_assign_id}/{exam_id}/edit-course-work-results',[CourseWorkResultController::class,'edit']);
+	Route::post('results/update-course-work-results',[CourseWorkResultController::class,'update']);
 	Route::get('results/{student_id}/{ac_yr_id}/{prog_id}/edit-student-results',[ExaminationResultController::class,'edit']);
-	Route::get('results/{student_id}/{ac_yr_id}/{yr_of_study}/add-student-results',[ExaminationResultController::class,'create']);
+	Route::get('results/{student_id}/{ac_yr_id}/{yr_of_study}/{semester_id}/add-student-results',[ExaminationResultController::class,'create']);
 	Route::get('results/{student_id}/{ac_yr_id}/{yr_of_study}/process-student-results',[ExaminationResultController::class,'processStudentResults']);
 	Route::post('results/update-examination-results',[ExaminationResultController::class, 'update']);
 	Route::post('results/store-examination-results',[ExaminationResultController::class, 'store']);
