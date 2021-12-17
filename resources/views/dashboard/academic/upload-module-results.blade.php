@@ -49,7 +49,7 @@
                   <li class="nav-item"><a class="nav-link" href="{{ url('academic/results/show-program-results?study_academic_year_id='.session('active_academic_year_id').'&campus_id='.session('staff_campus_id')) }}">{{ __('View Programme Results') }}</a></li>
                   @endcan
                   @can('view-module-results')
-                  <li class="nav-item"><a class="nav-link active" href="{{ url('academic/results/show-module-results?study_academic_year_id='.session('active_academic_year_id').'&campus_id='.session('staff_campus_id')) }}">{{ __('View Module Results') }}</a></li>
+                  <li class="nav-item"><a class="nav-link" href="{{ url('academic/results/show-module-results?study_academic_year_id='.session('active_academic_year_id').'&campus_id='.session('staff_campus_id')) }}">{{ __('View Module Results') }}</a></li>
                   @endcan
                   @can('view-student-results')
                   <li class="nav-item"><a class="nav-link" href="{{ url('academic/results/show-student-results') }}">{{ __('View Student Results') }}</a></li>
@@ -60,7 +60,7 @@
                   @can('view-uploaded-modules')
                   <li class="nav-item"><a class="nav-link" href="{{ url('academic/results/uploaded-modules') }}">{{ __('Uploaded Modules') }}</a></li>
                   @endcan
-                  <li class="nav-item"><a class="nav-link" href="{{ url('academic/results/upload-module-results?study_academic_year_id='.session('active_academic_year_id').'&campus_id='.session('staff_campus_id')) }}">{{ __('Upload Module Results') }}</a></li>
+                  <li class="nav-item"><a class="nav-link active" href="{{ url('academic/results/upload-module-results?study_academic_year_id='.session('active_academic_year_id').'&campus_id='.session('staff_campus_id')) }}">{{ __('Upload Module Results') }}</a></li>
                 </ul>
               </div>
               <!-- /.card-header -->
@@ -73,7 +73,7 @@
                     <select name="study_academic_year_id" class="form-control" required>
                        <option value="">Select Study Academic Year</option>
                        @foreach($study_academic_years as $year)
-                       <option value="{{ $year->id }}">{{ $year->academicYear->year }}</option>
+                       <option value="{{ $year->id }}" @if($request->get('study_academic_year_id') == $year->id) selected="selected" @endif>{{ $year->academicYear->year }}</option>
                        @endforeach
                     </select>
                   </div>
@@ -82,11 +82,12 @@
                     <select name="campus_id" class="form-control" required>
                        <option value="">Select Campus</option>
                        @foreach($campuses as $cp)
-                       <option value="{{ $cp->id }}">{{ $cp->name }}</option>
+                       <option value="{{ $cp->id }}" @if($request->get('campus_id') == $cp->id) selected="selected" @endif>{{ $cp->name }}</option>
                        @endforeach
                     </select>
                   </div>
                   </div>
+                  
                   <div class="ss-form-actions">
                    <button type="submit" class="btn btn-primary">{{ __('Search') }}</button>
                   </div>
@@ -99,20 +100,22 @@
             @if($study_academic_year && $campus)
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">View Results for {{ $campus->name }} - {{ $study_academic_year->academicYear->year }}</h3>
+                <h3 class="card-title">Upload Results for {{ $campus->name }} - {{ $study_academic_year->academicYear->year }}</h3>
               </div>
               <!-- /.card-header -->
-              {!! Form::open(['url'=>'academic/results/show-module-report','class'=>'ss-form-processing']) !!}
+              {!! Form::open(['url'=>'academic/module-assignment-result/store','class'=>'ss-form-processing','files'=>true]) !!}
               <div class="card-body">
                 <div class="row">
                   <div class="form-group col-6">
                     {!! Form::label('','Programme') !!}
-                    <select name="campus_program_id" class="form-control" required id="ss-select-program-modules" data-target="#ss-select-module" data-source-url="{{ url('api/v1/get-program-modules') }}" data-token="{{ session()->token() }}" data-academic-year-id="{{ $study_academic_year->id }}">
+                    <select name="campus_program_id" class="form-control" required id="ss-select-program-module-assignments" data-target="#ss-select-module-assignments" data-source-url="{{ url('api/v1/get-program-module-assignments') }}" data-token="{{ session()->token() }}" data-academic-year-id="{{ $study_academic_year->id }}">
                        <option value="">Select Programme</option>
                         @foreach($campus_programs as $program)
+                          @if($program->campus_id == $campus->id)
                           @for($i = 1; $i <= $program->program->min_duration; $i++)
                           <option value="{{ $program->id }}_year_{{ $i }}">{{ $program->program->name }} - Year {{ $i }}</option>
                           @endfor
+                          @endif
                        @endforeach
                     </select>
                     {!! Form::input('hidden','study_academic_year_id',$study_academic_year->id) !!}
@@ -122,18 +125,32 @@
                 <div class="row">
                    <div class="form-group col-6">
                     {!! Form::label('','Module') !!}
-                    <select name="module_id" class="form-control" required id="ss-select-module">
+                    <select name="module_assignment_id" class="form-control" required id="ss-select-module-assignments">
                        <option value="">Select Module</option>
-                       @foreach($modules as $module)
-                          <option value="{{ $module->id }}">{{ $module->name }} - {{ $module->code }}</option>
-                       @endforeach
+                       
                     </select>
                   </div>
                 </div>
-                
+                <div class="row">
+                  <div class="form-group col-6">
+                    {!! Form::label('','Assessment') !!}
+                    <select name="assessment_plan_id" class="form-control" required>
+                      <option value="">Select Assessment</option>
+                      <option value="FINAL_EXAM">Final Exam</option>
+                      <option value="SUPPLEMENTARY">Supplementary Exam</option>
+                      <option value="CARRY">Carry Exam</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-6">
+                    {!! Form::label('','Upload results') !!}
+                    {!! Form::file('results_file',['class'=>'form-control','required'=>true]) !!}
+                    </div>
+                 </div>
               </div>
                <div class="card-footer">
-                  <button type="submit" class="btn btn-primary">{{ __('View Results') }}</button>
+                  <button type="submit" class="btn btn-primary">{{ __('Upload Results') }}</button>
                 </div>
               {!! Form::close() !!}
              </div>

@@ -668,6 +668,25 @@ $('#ss-select-program-modules').on('change',function(e){
     });
 });
 
+// Autofill module assignment select
+$('#ss-select-program-module-assignments').on('change',function(e){
+    $.ajax({
+      method:'POST',
+      url:$(e.target).data('source-url'),
+      data:{
+        _token:$(e.target).data('token'),
+        'campus_program_id':$(e.target).val(),
+        'study_academic_year_id':$(e.target).data('academic-year-id')
+      }
+    }).done(function(data){
+        var element = '';
+        for(var i = 0; i < data.modules.length; i++){
+           element += '<option value="'+data.modules[i].id+'">'+data.modules[i].module.name+' - '+data.modules[i].module.code+'</option>';
+        }
+        $($(e.target).data('target')).html(element);
+    });
+});
+
 // Display form processing
 $('.ss-form-processing').submit(function(e){
      var resultsContainer = $(e.target).data('results-container');

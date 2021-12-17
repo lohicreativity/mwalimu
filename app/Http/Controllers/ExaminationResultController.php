@@ -111,7 +111,11 @@ class ExaminationResultController extends Controller
         $annual_credit = 0;
 
       	foreach ($module_assignments as $assignment) {
-      		$results = ExaminationResult::where('module_assignment_id',$assignment->id)->get();
+      		$results = ExaminationResult::with(['retakeHistory.retakableResults'=>function($query){
+                   $query->latest();
+                },'carryHistory.carrableResults'=>function($query){
+                   $query->latest();
+                }])->where('module_assignment_id',$assignment->id)->get();
       		$policy = ExaminationPolicy::where('nta_level_id',$assignment->module->ntaLevel->id)->where('study_academic_year_id',$assignment->study_academic_year_id)->where('type',$assignment->programModuleAssignment->campusProgram->program->category)->first();
       		
       		if(!$policy){
@@ -196,7 +200,13 @@ class ExaminationResultController extends Controller
                      $student_buffer[$student->id]['total_credit'] = $student_buffer[$student->id]['opt_credit'] + $total_credit;
                  }
 
-                  $processed_result = ExaminationResult::find($result->id);
+                  if($result->retakeHistory && isset($result->retakeHistory->retakeHistory->retakableResults[0])){
+                      $processed_result = ExaminationResult::find($result->retakeHistory->retakeHistory->retakableResults[0]->id);
+                  }elseif($result->carryHistory && isset($result->carryHistory->carrableResults[0])){
+                          $processed_result = ExaminationResult::find($result->carryHistory->carrableResults[0]->id);
+                  }else{
+                          $processed_result = ExaminationResult::find($result->id);
+                  }
                   if($result->course_work_remark == 'INCOMPLETE' || $result->final_remark == 'INCOMPLETE' || $result->final_remark == 'POSTPONED'){
                       $processed_result->total_score = null;
                   }else{
@@ -378,6 +388,8 @@ class ExaminationResultController extends Controller
                         }else{
                            $remark->gpa = Util::computeGPA($buffer['total_credit'],$buffer['results']);
                         }
+                        $remark->point = Util::computeGPAPoints($buffer['total_credit'],$buffer['results']);
+                        $remark->credit = $buffer['total_credit'];
                         $remark->year_of_study = $buffer['year_of_study'];
                         $remark->serialized = count($supp_exams) != 0? serialize(['supp_exams'=>$supp_exams,'carry_exams'=>$carry_exams,'retake_exams'=>$retake_exams]) : null;
                         $remark->save();
@@ -396,6 +408,8 @@ class ExaminationResultController extends Controller
                              $remark->gpa = null;
                           }else{
                                $remark->gpa = Util::computeGPA($buffer['annual_credit'],$buffer['annual_results']);
+                               $remark->point = Util::computeGPAPoints($buffer['annual_credit'],$buffer['annual_results']);
+                               $remark->credit = $buffer['annual_credit'];
                           } 
                           $remark->save();
                        }
@@ -417,6 +431,8 @@ class ExaminationResultController extends Controller
                              $remark->gpa = null;
                           }else{
                                $remark->gpa = Util::computeGPA($buffer['annual_credit'],$buffer['annual_results']);
+                               $remark->point = Util::computeGPAPoints($buffer['annual_credit'],$buffer['annual_results']);
+                               $remark->credit = $buffer['annual_credit'];
                           }
                           $remark->save();
                    }
@@ -737,7 +753,11 @@ class ExaminationResultController extends Controller
         $annual_credit = 0;
 
           foreach ($module_assignments as $assignment) {
-            $results = ExaminationResult::where('module_assignment_id',$assignment->id)->where('student_id',$student->id)->get();
+            $results = ExaminationResult::with(['retakeHistory.retakableResults'=>function($query){
+                   $query->latest();
+                },'carryHistory.carrableResults'=>function($query){
+                   $query->latest();
+                }])->where('module_assignment_id',$assignment->id)->where('student_id',$student->id)->get();
             $policy = ExaminationPolicy::where('nta_level_id',$assignment->module->ntaLevel->id)->where('study_academic_year_id',$assignment->study_academic_year_id)->where('type',$assignment->programModuleAssignment->campusProgram->program->category)->first();
             
               if(!$policy){
@@ -806,7 +826,13 @@ class ExaminationResultController extends Controller
                        $student_buffer[$student->id]['total_credit'] = $student_buffer[$student->id]['opt_credit'] + $total_credit;
                    }
 
-                    $processed_result = ExaminationResult::find($result->id);
+                    if($result->retakeHistory && isset($result->retakeHistory->retakeHistory->retakableResults[0])){
+                        $processed_result = ExaminationResult::find($result->retakeHistory->retakeHistory->retakableResults[0]->id);
+                    }elseif($result->carryHistory && isset($result->carryHistory->carrableResults[0])){
+                            $processed_result = ExaminationResult::find($result->carryHistory->carrableResults[0]->id);
+                    }else{
+                            $processed_result = ExaminationResult::find($result->id);
+                    }
                     if($result->course_work_remark == 'INCOMPLETE' || $result->final_remark == 'INCOMPLETE' || $result->final_remark == 'POSTPONED'){
                         $processed_result->total_score = null;
                     }else{
@@ -976,6 +1002,8 @@ class ExaminationResultController extends Controller
                      $remark->gpa = null;
                 }else{
                    $remark->gpa = Util::computeGPA($buffer['total_credit'],$buffer['results']);
+                   $rem->point = Util::computeGPAPoints($buffer['total_credit'],$buffer['results']);
+                   $remark->credit = $buffer['total_credit'];
                 }
                 $remark->year_of_study = $buffer['year_of_study'];
                 $remark->serialized = count($supp_exams) != 0? serialize(['supp_exams'=>$supp_exams,'carry_exams'=>$carry_exams,'retake_exams'=>$retake_exams]) : null;
@@ -999,6 +1027,8 @@ class ExaminationResultController extends Controller
                        $rem->gpa = null;
                     }else{
                          $rem->gpa = Util::computeGPA($buffer['annual_credit'],$buffer['annual_results']);
+                         $rem->point = Util::computeGPAPoints($buffer['annual_credit'],$buffer['annual_results']);
+                         $remark->credit = $buffer['annual_credit'];
                     }
                     $rem->save();
                }
@@ -1785,7 +1815,7 @@ class ExaminationResultController extends Controller
              $query->where('study_academic_year_id',$ac_yr_id)->where('student_id',$student_id);
          })->with(['moduleAssignment.programModuleAssignment'=>function($query) use ($ac_yr_id,$yr_of_study){
            $query->where('study_academic_year_id',$ac_yr_id)->where('year_of_study',$yr_of_study);
-         },'moduleAssignment','moduleAssignment.module','carryHistory.carryHistory.carrableResults'=>function($query){
+         },'moduleAssignment','moduleAssignment.module','carryHistory.carrableResults'=>function($query){
             $query->latest();
          },'retakeHistory.retakableResults'=>function($query){
             $query->latest();
@@ -1859,7 +1889,7 @@ class ExaminationResultController extends Controller
      */
     public function showStudentPerfomanceReport(Request $request, $student_id, $ac_yr_id, $yr_of_study)
     {
-         $student = Student::with(['campusProgram.program.department'])->find($student_id);
+         $student = Student::with(['campusProgram.program.department','campusProgram.program.ntaLevel','campusProgram.campus','applicant'])->find($student_id);
          $study_academic_year = StudyAcademicYear::with('academicYear')->find($ac_yr_id);
          $semesters = Semester::with(['remarks'=>function($query) use ($student, $ac_yr_id, $yr_of_study){
            $query->where('student_id',$student->id)->where('study_academic_year_id',$ac_yr_id)->where('year_of_study',$yr_of_study);
@@ -1868,11 +1898,11 @@ class ExaminationResultController extends Controller
              $query->where('study_academic_year_id',$ac_yr_id)->where('student_id',$student_id);
          })->with(['moduleAssignment.programModuleAssignment'=>function($query) use ($ac_yr_id,$yr_of_study){
            $query->where('study_academic_year_id',$ac_yr_id)->where('year_of_study',$yr_of_study);
-         },'moduleAssignment','moduleAssignment.module','carryHistory.carryHistory.carrableResults'=>function($query){
+         },'moduleAssignment','moduleAssignment.module','carryHistory.carrableResults'=>function($query){
             $query->latest();
          },'retakeHistory.retakableResults'=>function($query){
             $query->latest();
-         }])->where('student_id',$student->id)->get();
+         },'retakeHistory.retakableResults.moduleAssignment.module','carryHistory.carryHistory.carrableResults.moduleAssignment.module'])->where('student_id',$student->id)->get();
 
          $core_programs = ProgramModuleAssignment::with(['module'])->where('study_academic_year_id',$ac_yr_id)->where('year_of_study',$yr_of_study)->where('category','COMPULSORY')->where('campus_program_id',$student->campus_program_id)->get();
          $optional_programs = ProgramModuleAssignment::whereHas('students',function($query) use($student_id){
@@ -1951,5 +1981,21 @@ class ExaminationResultController extends Controller
         	return $e->getMessage();
         	return redirect()->back()->with('error','Unable to get the resource specified in this request');
         }
+    }
+
+    /**
+     * Display form for uploading module results
+     */
+    public function uploadModuleResults(Request $request)
+    {
+        $data = [
+           'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
+           'study_academic_year'=>$request->has('study_academic_year_id')? StudyAcademicYear::with('academicYear')->find($request->get('study_academic_year_id')) : null,
+           'campus'=>Campus::find($request->get('campus_id')),
+           'campuses'=>Campus::all(),
+           'campus_programs'=>CampusProgram::with(['program'])->get(),
+           'request'=>$request
+        ];
+        return view('dashboard.academic.upload-module-results',$data)->withTitle('Upload Module Results');
     }
 }

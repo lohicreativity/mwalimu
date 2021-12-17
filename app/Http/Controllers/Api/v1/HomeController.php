@@ -8,6 +8,7 @@ use App\Domain\Settings\Models\Region;
 use App\Domain\Settings\Models\District;
 use App\Domain\Settings\Models\Ward;
 use App\Domain\Academic\Models\Module;
+use App\Domain\Academic\Models\ModuleAssignment;
 use App\Domain\Settings\Models\NTALevel;
 
 class HomeController extends Controller
@@ -72,6 +73,21 @@ class HomeController extends Controller
         $modules =  Module::whereHas('programModuleAssignments',function($query) use($request){
                  $query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('campus_program_id',explode('_',$request->get('campus_program_id'))[0])->where('year_of_study',explode('_',$request->get('campus_program_id'))[2]);
         })->get();
+        if(count($modules) != 0){
+            return response()->json(['status'=>'success','modules'=>$modules]);
+        }else{
+            return response()->json(['status'=>'failed','modules'=>$modules]);
+        }
+    }
+
+    /**
+     * Return a list of modules give nta level id
+     */
+    public function getProgramModuleAssignments(Request $request)
+    {
+        $modules =  ModuleAssignment::whereHas('programModuleAssignment',function($query) use($request){
+                 $query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('campus_program_id',explode('_',$request->get('campus_program_id'))[0])->where('year_of_study',explode('_',$request->get('campus_program_id'))[2]);
+        })->with('module')->get();
         if(count($modules) != 0){
             return response()->json(['status'=>'success','modules'=>$modules]);
         }else{

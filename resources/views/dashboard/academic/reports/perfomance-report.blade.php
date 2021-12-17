@@ -194,6 +194,9 @@
        width: 120px;
        height: auto;
      }
+     .ss-line-bottom{
+       border-bottom: 2px solid #000;
+     }
   
   </style>
 </head>
@@ -215,6 +218,35 @@
              <img class="ss-photo" src="{{ asset('avatars/'.$student->image) }}"  onerror="this.src='{{ asset("img/user-avatar.png") }}'">
           </div><!-- end of col-md-3 -->
         </div><!-- end of row -->
+             <div class="row">
+                <div class="col-md-12"> 
+
+                 <table class="table table-bordered">
+                    <tr>
+                      <td><strong>NAME:</strong> {{ strtoupper($student->first_name) }} {{ strtoupper($student->middle_name) }} {{ strtoupper($student->surname) }}</td>
+                      <td><strong>SEX:</strong> @if($student->gender == 'M') MALE @else FEMALE @endif</td>
+                      <td><strong>RegNo:</strong> {{ $student->registration_number }}</td>
+                    </tr>
+                    <tr>
+                      <td><strong>CITIZENSHIP:</strong> {{ $student->nationality }}</td>
+                      <td colspan="2"><strong>ADDRESS:</strong> {{ $student->applicant->address }}</td>
+                    </tr>
+                    <tr>
+                      <td><strong>DATE OF BIRTH:</strong> {{ App\Utils\DateMaker::toStandardDate(App\Utils\DateMaker::toDashedDate($student->birth_date)) }}</td>
+                      <td colspan="2"><strong>ADMITTED:</strong> {{ $student->registration_year }}</td>
+                    </tr>
+                    <tr>
+                      <td colspan="3"><strong>CAMPUS:</strong> {{ strtoupper($student->campusProgram->campus->name) }}</td>
+                    </tr>
+                    <tr>
+                      <td colspan="3"><strong>PROGRAM:</strong> {{ strtoupper($student->campusProgram->program->name) }}</td>
+                    </tr>
+                    <tr>
+                      <td colspan="3"><strong>AWARD LEVEL:</strong> {{ strtoupper($student->campusProgram->program->ntaLevel->name ) }} <span class="ss-italic">(Programme Accredited by the National Council of Technical Education)</span></td>
+                    </tr>
+                 </table>
+                </div><!-- end of col-md-12 -->
+             </div><!-- end of row -->
                  @php
                     $programIds = [];
                  @endphp
@@ -229,19 +261,21 @@
 
                    @if(count($semester->remarks) != 0)
                 <div class="row">
-                <div class="col-md-12">
-                 <h4 class="ss-no-margin">{{ $semester->name }}</h4>
+                <div class="col-md-12"> 
+
                  <table class="table table-bordered">
                     <thead>
+                      <tr>
+                        <th colspan="6">{{ strtoupper($semester->name) }}</th>
+                      </tr>
                       <tr>
                         <th>SN</th>
                         <th>Code</th>
                         <th>Module Name</th>
-                        <th>C/Work</th>
-                        <th>Final</th>
-                        <th>Total</th>
+                        <th>Credits</th>
                         <th>Grade</th>
                         <th>Remark</th>
+                        <th>GPA</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -254,7 +288,6 @@
                           <td>{{ $count }}</td>
                           <td>{{ $program->module->code }}</td>
                           <td>{{ $program->module->name }}</td>
-                          <td></td>
                           <td></td>
                           <td></td>
                           <td></td>
@@ -276,11 +309,10 @@
                                     <td>{{ $count }}</td>
                                     <td>{{ $res->moduleAssignment->module->code }}</td>
                                     <td>{{ $res->moduleAssignment->module->name }}</td>
-                                    <td>@if(!$res->supp_processed_at) {{ $res->course_work_score }} @else N/A @endif</td>
-                                    <td>@if(!$res->supp_processed_at) {{ $res->final_score }} @else N/A @endif</td>
-                                    <td>@if(!$res->supp_processed_at) {{ $res->total_score }} @else {{ $res->supp_score }}@endif</td>
+                                    <td>{{ $res->moduleAssignment->module->credit }}</td>
                                     <td>{{ $res->grade }}</td>
                                     <td>{{ $res->final_exam_remark }}</td>
+                                    <td></td>
                                   </tr>
                                     @php
                                       $count += 1;
@@ -298,11 +330,10 @@
                                     <td>{{ $count }}</td>
                                     <td>{{ $res->moduleAssignment->module->code }}</td>
                                     <td>{{ $res->moduleAssignment->module->name }}</td>
-                                    <td>@if(!$res->supp_processed_at) {{ $res->course_work_score }} @else N/A @endif</td>
-                                    <td>@if(!$res->supp_processed_at) {{ $res->final_score }} @else N/A @endif</td>
-                                    <td>@if(!$res->supp_processed_at) {{ $res->total_score }} @else {{ $res->supp_score }}@endif</td>
+                                    <td>{{ $res->moduleAssignment->module->credit }}</td>
                                     <td>{{ $res->grade }}</td>
                                     <td>{{ $res->final_exam_remark }}</td>
+                                    <td></td>
                                   </tr>
                                     @php
                                       $count += 1;
@@ -316,11 +347,10 @@
                           <td>{{ $count }}</td>
                           <td>{{ $result->moduleAssignment->module->code }}</td>
                           <td>{{ $result->moduleAssignment->module->name }}</td>
-                          <td>@if(!$result->supp_processed_at) {{ $result->course_work_score }} @else N/A @endif</td>
-                          <td>@if(!$result->supp_processed_at) {{ $result->final_score }} @else N/A @endif</td>
-                          <td>@if(!$result->supp_processed_at) {{ $result->total_score }} @else {{ $result->supp_score }}@endif</td>
+                          <td>{{ $result->moduleAssignment->module->credit }}</td>
                           <td>{{ $result->grade }}</td>
                           <td>{{ $result->final_exam_remark }}</td>
+                          <td></td>
                         </tr>
                           @php
                             $count += 1;
@@ -335,7 +365,6 @@
                           <td>{{ $count }}</td>
                           <td>{{ $program->module->code }}</td>
                           <td>{{ $program->module->name }}</td>
-                          <td></td>
                           <td></td>
                           <td></td>
                           <td></td>
@@ -357,11 +386,10 @@
                                     <td>{{ $count }}</td>
                                     <td>{{ $res->moduleAssignment->module->code }}</td>
                                     <td>{{ $res->moduleAssignment->module->name }}</td>
-                                    <td>@if(!$res->supp_processed_at) {{ $res->course_work_score }} @else N/A @endif</td>
-                                    <td>@if(!$res->supp_processed_at) {{ $res->final_score }} @else N/A @endif</td>
-                                    <td>@if(!$res->supp_processed_at) {{ $res->total_score }} @else {{ $res->supp_score }}@endif</td>
+                                    <td>{{ $res->moduleAssignment->module->credit }}</td>
                                     <td>{{ $res->grade }}</td>
                                     <td>{{ $res->final_exam_remark }}</td>
+                                    <td></td>
                                   </tr>
                                     @php
                                       $count += 1;
@@ -379,11 +407,10 @@
                                     <td>{{ $count }}</td>
                                     <td>{{ $res->moduleAssignment->module->code }}</td>
                                     <td>{{ $res->moduleAssignment->module->name }}</td>
-                                    <td>@if(!$res->supp_processed_at) {{ $res->course_work_score }} @else N/A @endif</td>
-                                    <td>@if(!$res->supp_processed_at) {{ $res->final_score }} @else N/A @endif</td>
-                                    <td>@if(!$res->supp_processed_at) {{ $res->total_score }} @else {{ $res->supp_score }}@endif</td>
+                                    <td>{{ $result->moduleAssignment->module->credit }}</td>
                                     <td>{{ $res->grade }}</td>
                                     <td>{{ $res->final_exam_remark }}</td>
+                                    <td></td>
                                   </tr>
                                     @php
                                       $count += 1;
@@ -397,11 +424,10 @@
                           <td>{{ $count }}</td>
                           <td>{{ $result->moduleAssignment->module->code }}</td>
                           <td>{{ $result->moduleAssignment->module->name }}</td>
-                          <td>@if(!$result->supp_processed_at) {{ $result->course_work_score }} @else N/A @endif</td>
-                          <td>@if(!$result->supp_processed_at) {{ $result->final_score }} @else N/A @endif</td>
-                          <td>@if(!$result->supp_processed_at) {{ $result->total_score }} @else {{ $result->supp_score }}@endif</td>
+                          <td>{{ $result->moduleAssignment->module->credit }}</td>
                           <td>{{ $result->grade }}</td>
                           <td>{{ $result->final_exam_remark }}</td>
+                          <td></td>
                         </tr>
                           @php
                             $count += 1;
@@ -410,55 +436,27 @@
                          @endif
                       @endforeach
                      @endforeach
+                     @foreach($semester->remarks as $remark)
+                      <tr>
+                        <td colspan="2" class="ss-bold">SUBTOTAL</td>
+                        <td class="ss-bold">{{ $remark->credit }}</td>
+                        <td></td>
+                        <td class="ss-bold">{{ $remark->point }}</td>
+                        <td class="ss-bold">{{ $remark->remark}}</td>
+                        <td class="ss-bold">{{ bcdiv($remark->gpa,1,1) }}</td>
+                      </tr>
+                      @endforeach
                     </tbody>
                  </table>
                </div><!-- end of col-md-12 -->
              </div><!-- end of row -->
                  <div class="row">
-                 <div class="col-md-6">
-                 <p class="ss-bold">Summary: {{ $semester->name }}</p>
-                 <table class="table table-bordered">
-                   <thead>
-                      <tr>
-                        <th>Remark</th>
-                        <th>GPA</th>
-                      </tr>
-                   </thead>
-                   <tbody>
-                      @foreach($semester->remarks as $remark)
-
-                      <tr>
-                         <td><strong>{{ $remark->remark }}</strong>
-                             @if($remark->serialized) @if(!empty(unserialize($remark->serialized)['supp_exams'])) [{{ implode(', ',unserialize($remark->serialized)['supp_exams']) }}] @endif @endif
-                             @if($remark->serialized) @if(!empty(unserialize($remark->serialized)['retake_exams'])) [{{ implode(', ',unserialize($remark->serialized)['retake_exams']) }}] @endif @endif
-                             @if($remark->serialized) @if(!empty(unserialize($remark->serialized)['carry_exams'])) [{{ implode(', ',unserialize($remark->serialized)['carry_exams']) }}] @endif @endif
-                         </td>
-                         <td>@if($remark->gpa) {{ bcdiv($remark->gpa,1,1) }} @else N/A @endif</td>
-                      </tr>
-                      @endforeach
-                   </tbody>
-                 </table>
-               </div>
                  
                    @if($annual_remark && $key == (count($semesters)-1))
-                   <div class="col-md-6">
-                    <p class="ss-bold">Annual Remark</p>
-                     <table class="table table-bordered">
-                   <thead>
-                      <tr>
-                        <th>Remark</th>
-                        <th>GPA</th>
-                      </tr>
-                   </thead>
-                   <tbody>
-                      <tr>
-                        <td><strong>{{ $annual_remark->remark }}</strong></td>
-                        <td>@if($annual_remark->gpa) {{ bcdiv($annual_remark->gpa,1,1) }} @else N/A @endif</td>
-                       </tr>
-                   </tbody>
-                 </table>
+                   <div class="col-md-12">
+                    <p class="ss-bold ss-line-bottom">OVERALL GPA: @if($annual_remark->gpa) {{ bcdiv($annual_remark->gpa,1,1) }} @else N/A @endif</p>
                  <br>
-               </div><!-- end of col-md-6 -->
+               </div><!-- end of col-md-12 -->
                  
                   @endif
                   </div><!-- end of row -->

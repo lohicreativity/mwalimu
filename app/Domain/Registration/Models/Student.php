@@ -13,6 +13,7 @@ use App\Domain\Academic\Models\SemesterRemark;
 use App\Domain\Academic\Models\AnnualRemark;
 use App\Domain\Academic\Models\OverallRemark;
 use App\Domain\Academic\Models\SpecialExam;
+use App\Domain\Application\Models\Applicant;
 
 class Student extends Model
 {
@@ -91,6 +92,14 @@ class Student extends Model
     public function studentshipStatus()
     {
         return $this->belongsTo(StudentshipStatus::class,'studentship_status_id');
+    }
+
+    /**
+     * Establish one to one relationship with applicants
+     */
+    public function applicant()
+    {
+        return $this->belongsTo(Applicant::class,'applicant_id');
     }
 
     /**

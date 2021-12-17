@@ -823,6 +823,82 @@ class ModuleAssignmentController extends Controller
                           if($supp_upload_allowed && $upload_allowed){
                             $result->save();
                           }
+
+                          $semester_remark = SemesterRemark::where('semester_id',$module_assignment->programModuleAssignment->semester_id)->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('student_id',$student->id)->first();
+                      
+                          $supp_upload_allowed = true;
+                          if($semester_remark){
+                              if($semester_remark->remark != 'FAIL&DISCO' || $Semester_remark->remark != 'PASS'){
+                                  $supp_upload_allowed = false;
+                              }
+                          }
+
+                          $special_exam = SpecialExam::where('student_id',$student->id)->where('module_assignment_id',$module_assignment->id)->where('type','SUPP')->where('status','APPROVED')->first();
+                          $grading_policy = GradingPolicy::where('nta_level_id',$module_assignment->module->ntaLevel->id)->where('grade','C')->first();
+                              
+                              $upload_allowed = true;
+                              if($res = ExaminationResultLog::where('module_assignment_id',$request->get('module_assignment_id'))->where('student_id',$student->id)->where('exam_type','FINAL')->first()){
+                                  $result = $res;
+                                  if($res->final_exam_remark == 'PASS'){
+                                      $upload_allowed = false; 
+                                  }
+                              }else{
+                                 $result = new ExaminationResultLog;
+                              }
+                              $result->module_assignment_id = $request->get('module_assignment_id');
+                              $result->student_id = $student->id;
+                              if($special_exam){
+                                 $result->final_score = !$special_exam? (trim($line[1])*$policy->final_min_mark)/100 : null;
+                                 $result->final_remark = $policy->final_pass_score <= $result->final_score? 'PASS' : 'FAIL';
+                                 $result->supp_score = null;
+                              }else{
+                                 $result->supp_score = trim($line[1]);
+                                 if($result->supp_score < $policy->module_pass_mark){
+                                   $result->grade = 'F';
+                                 }else{
+                                    $result->grade = $grading_policy? $grading_policy->grade : 'C';
+                                 }
+                                 $result->point = $grading_policy? $grading_policy->point : 2;
+                                 $result->final_exam_remark = $policy->module_pass_mark <= $result->supp_score? 'PASS' : 'FAIL';
+                              }
+                              $result->final_uploaded_at = now();
+                              $result->uploaded_by_user_id = Auth::user()->id;
+                              if($supp_upload_allowed && $upload_allowed){
+                                $result->save();
+                              }
+                  }elseif($request->get('assessment_plan_id') == 'CARRY'){
+
+                      $special_exam = SpecialExam::where('student_id',$student->id)->where('module_assignment_id',$module_assignment->id)->where('type','CARRY')->where('status','APPROVED')->first();
+                      $grading_policy = GradingPolicy::where('nta_level_id',$module_assignment->module->ntaLevel->id)->where('grade','C')->first();
+                          
+                          $upload_allowed = true;
+                          if($res = ExaminationResult::where('module_assignment_id',$request->get('module_assignment_id'))->where('student_id',$student->id)->where('exam_type','FINAL')->first()){
+                              $result = $res;
+                              if($res->final_exam_remark == 'PASS'){
+                                  $upload_allowed = false; 
+                              }
+                          }else{
+                             $result = new ExaminationResult;
+                          }
+                          $result->module_assignment_id = $request->get('module_assignment_id');
+                          $result->student_id = $student->id;
+                          if($special_exam){
+                             $result->final_score = trim($line[1]);
+                             $result->final_remark = $policy->final_pass_score <= $result->final_score? 'PASS' : 'FAIL';
+                             $result->final_score = null;
+                          }else{
+                             $result->final_score = trim($line[1]);
+                             if($result->final_score < $policy->module_pass_mark){
+                               $result->grade = 'F';
+                             }else{
+                                $result->grade = $grading_policy? $grading_policy->grade : 'C';
+                             }
+                             $result->point = $grading_policy? $grading_policy->point : 2;
+                             $result->final_exam_remark = $policy->module_pass_mark <= $result->final_score? 'PASS' : 'FAIL';
+                          }
+                          $result->final_uploaded_at = now();
+                          $result->uploaded_by_user_id = Auth::user()->id;
+                          $result->save();
                   }else{
                       $result_log = new CourseWorkResultLog;
                       $result_log->module_assignment_id = $request->get('module_assignment_id');

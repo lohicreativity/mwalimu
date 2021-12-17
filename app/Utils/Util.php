@@ -37,6 +37,26 @@ class Util {
    }
 
    /**
+    * Compute GPA
+    */
+   public static function computeGPAPoints($total_credits, $results)
+   {
+       $total_weights = 0;
+       foreach($results as $res){
+          $total_weights += $res->point*$res->moduleAssignment->module->credit;
+       }
+       return $total_weights;
+   }
+
+   /**
+    * Get overall remark
+    */
+   public function getOverallRemark($remarks, $results = [], $retake = [], $carry = [])
+   {
+      return $remark = $this->getAnnualRemark($remarks,$results,$retake,$carry);
+   }
+
+   /**
     * Get annual remark
     */
    public static function getAnnualRemark($remarks, $results = [], $retake = [], $carry = [])
@@ -47,7 +67,7 @@ class Util {
               $supp_exams[] = $result->moduleAssignment->module->code;
           }
        }
-       
+
        $remark = 'PASS';
        if(count($supp_exams) > (count($results)/2)){
           $remark = 'FAIL&DISCO';
