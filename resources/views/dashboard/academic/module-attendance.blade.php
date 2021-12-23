@@ -122,7 +122,7 @@
 
                   <table class="table table-bordered">
                      <tr>
-                       <td><a class="nav-link active" href="{{ url('academic/staff-module-assignment/'.$module_assignment->id.'/module-attendance') }}" target="_blank">{{ __('Module Attendance') }}</a></td>
+                       <td><a href="{{ url('academic/staff-module-assignment/'.$module_assignment->id.'/module-attendance') }}" target="_blank">{{ __('Module Attendance') }}</a></td>
                      </tr>
                   </table>
                 </div>

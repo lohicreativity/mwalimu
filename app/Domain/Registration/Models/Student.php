@@ -14,6 +14,7 @@ use App\Domain\Academic\Models\AnnualRemark;
 use App\Domain\Academic\Models\OverallRemark;
 use App\Domain\Academic\Models\SpecialExam;
 use App\Domain\Application\Models\Applicant;
+use App\Domain\Settings\Models\DisabilityStatus;
 
 class Student extends Model
 {
@@ -124,6 +125,15 @@ class Student extends Model
     public function getSurnameAttribute($value)
     {
         return strtoupper($value);
+    }
+
+
+    /**
+     * Establish one to many relationship with disability statuses
+     */
+    public function disabilityStatus()
+    {
+        return $this->belongsTo(DisabilityStatus::class,'disability_status_id');
     }
 
 }

@@ -124,7 +124,7 @@
                  <p>Students with Coursework: <a href="{{ url('academic/staff-module-assignment/'.$module_assignment->id.'/results/students-with-course-work') }}" target="_blank">{{ $students_with_coursework_count }}</a></p>
                  <p>Students with no Coursework: <a href="{{ url('academic/staff-module-assignment/'.$module_assignment->id.'/results/students-with-no-course-work') }}" target="_blank">{{ $students_with_no_coursework_count }}</a></p>
                  <p>Students with Final Marks: <a href="{{ url('academic/staff-module-assignment/'.$module_assignment->id.'/results/students-with-final-marks') }}" target="_blank">{{ $students_with_final_marks_count }}</a></p>
-                 <p>Students with no Final Marks: {{ $students_with_no_final_marks_count }}</p>
+                 <p>Students with no Final Marks: <a href="{{ url('academic/staff-module-assignment/'.$module_assignment->id.'/results/students-with-no-final-marks') }}" target="_blank">{{ $students_with_no_final_marks_count }}</a></p>
                  <p>Students with Supplementary Cases: <a href="{{ url('academic/staff-module-assignment/'.$module_assignment->id.'/results/students-with-supplementary') }}" target="_blank">{{ $supp_cases_count }}</a></p>
                  @if($second_semester_publish_status)
                  <p>Students with Supplementary Marks: <a href="{{ url('academic/staff-module-assignment/'.$module_assignment->id.'/results/students-with-supplementary-marks') }}" target="_blank">{{ $students_with_supplemetary_count }}</a></p>

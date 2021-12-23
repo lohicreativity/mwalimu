@@ -1637,7 +1637,8 @@ class ExaminationResultController extends Controller
             'modules'=>$request->has('campus_id')? Module::whereHas('moduleAssignments.programModuleAssignment.campusProgram',function($query) use ($request){
             	$query->where('campus_id',$request->get('campus_id'));
             })->get() : [],
-            'staff'=>User::find(Auth::user()->id)->staff
+            'staff'=>User::find(Auth::user()->id)->staff,
+            'request'=>$request
     	];
         return view('dashboard.academic.module-results',$data)->withTitle('Module Results');
     }
@@ -1693,6 +1694,15 @@ class ExaminationResultController extends Controller
     public function showStudentResultsReport(Request $request)
     {
     	$student = Student::with(['campusProgram.program'])->where('registration_number',$request->get('registration_number'))->first();
+      $staff = User::find(Auth::user()->id)->staff;
+      if(!$student){
+          return redirect()->back()->with('error','No student found with searched registration number');
+      }
+
+      if($student->campusProgram->program->department_id != $staff->department_id){
+          return redirect()->back()->with('error','Student not in the same deprtment.');
+      }
+
     	$results = ExaminationResult::with(['moduleAssignment.programModuleAssignment','moduleAssignment.studyAcademicYear.academicYear'])->where('student_id',$student->id)->get();
     	$years = [];
     	$years_of_studies = [];
@@ -1717,7 +1727,7 @@ class ExaminationResultController extends Controller
     	$data = [
     	     'years_of_studies'=>$years_of_studies,
            'student'=>$student,
-           'staff'=>User::find(Auth::user()->id)->staff
+           'staff'=>$staff
     	];
     	return view('dashboard.academic.reports.final-student-results',$data)->withTitle('Student Results');
     }

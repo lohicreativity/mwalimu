@@ -107,6 +107,17 @@ class StudentController extends Controller
     }
 
     /**
+     * Display modules
+     */
+    public function showProfile(Request $request)
+    {
+    	$data = [
+            'student'=>User::find(Auth::user()->id)->student()->with(['applicant.country','applicant.district','applicant.ward','campusProgram.campus','disabilityStatus'])->first()
+    	];
+    	return view('dashboard.student.profile',$data)->withTitle('Profile');
+    }
+
+    /**
      * Opt elective
      */
     public function optModule(Request $request, $id)

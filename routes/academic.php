@@ -98,6 +98,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 	Route::get('staff-module-assignment/{id}/results/students-with-course-work', [ModuleAssignmentController::class,'studentsWithCourseWork']);
 	Route::get('staff-module-assignment/{id}/results/students-with-no-course-work', [ModuleAssignmentController::class,'studentsWithNoCourseWork']);
 	Route::get('staff-module-assignment/{id}/results/students-with-final-marks', [ModuleAssignmentController::class,'studentsWithFinalMarks']);
+	Route::get('staff-module-assignment/{id}/results/students-with-no-final-marks', [ModuleAssignmentController::class,'studentsWithNoFinalMarks']);
 	Route::get('staff-module-assignment/{id}/results/download-course-work', [ModuleAssignmentController::class,'studentsWithNoFinalMarks']);
 	Route::get('staff-module-assignment/{id}/results/students-with-supplementary', [ModuleAssignmentController::class,'studentsWithSupplementary']);
 	Route::get('staff-module-assignment/{id}/results/students-with-supplementary-marks', [ModuleAssignmentController::class,'studentsWithSupplementaryMarks']);

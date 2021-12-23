@@ -18,7 +18,7 @@ class CreateGraduantsTable extends Migration
             $table->unsignedBigInteger('study_academic_year_id');
             $table->unsignedBigInteger('student_id');
             $table->unsignedBigInteger('overall_remark_id');
-            $table->unsignedBigInteger('clearance_status')->default('PENDING');
+            $table->string('clearance_status',40)->default('PENDING');
             $table->timestamps();
 
             $table->foreign('study_academic_year_id')->references('id')->on('study_academic_years')->onUpdate('cascade');

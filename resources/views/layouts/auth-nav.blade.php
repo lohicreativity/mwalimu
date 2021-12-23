@@ -138,7 +138,7 @@
               <li class="nav-item">
                 <a href="{{ url('academic/staff-module-assignments?study_academic_year_id='.session('active_academic_year_id')) }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Staff Modules</p>
+                  <p>Assigned Modules</p>
                 </a>
               </li>
               @endcan

@@ -492,6 +492,29 @@ class ModuleAssignmentController extends Controller
     }
 
     /**
+     * Show students with final marks
+     */
+    public function studentsWithNoFinalMarks(Request $request,$id)
+    {
+        try{
+           $module_assignment = ModuleAssignment::with(['programModuleAssignment.campusProgram.program.department','programModuleAssignment.campusProgram.campus','studyAcademicYear.academicYear','programModuleAssignment.module','programModuleAssignment.students','module'])->findOrFail($id);
+
+           $data = [
+                'program'=>$module_assignment->programModuleAssignment->campusProgram->program,
+                'campus'=>$module_assignment->programModuleAssignment->campusProgram->campus,
+                'department'=>$module_assignment->programModuleAssignment->campusProgram->program->department,
+                'module'=>$module_assignment->module,
+                'study_academic_year'=>$module_assignment->studyAcademicYear,
+                'results'=>ExaminationResult::with('student')->where('module_assignment_id',$module_assignment->id)->whereNull('final_uploaded_at')->get()
+            ];
+            return view('dashboard.academic.reports.students-with-final',$data);
+
+        }catch(\Exception $e){
+            return redirect()->back()->with('error','Unable to get the resource specified in this request');
+        }
+    }
+
+    /**
      * Show students with supp marks
      */
     public function studentsWithSupplementaryMarks(Request $request,$id)

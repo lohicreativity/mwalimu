@@ -232,11 +232,11 @@
                       <td class="ss-bold">REGNO</td>
                       <td class="ss-bold" colspan="5">STUDENT SIGNATURE</td>
                     </tr>
-                    @foreach($students as $key=>$student)
+                    @foreach($registrations as $key=>$reg)
                     <tr>
                       <td>{{ $key+1 }}</td>
-                      <td>{{ $reg->student->surname }}, {{ $student->first_name }} {{ $student->middle_name}}</td>
-                      <td>{{ $student->registration_number }}</td>
+                      <td>{{ $reg->student->surname }}, {{ substr($reg->student->first_name,0,1) }}</td>
+                      <td>{{ $reg->student->registration_number }}</td>
                       <td class="ss-sign-column"></td>
                       <td class="ss-sign-column"></td>
                       <td class="ss-sign-column"></td>

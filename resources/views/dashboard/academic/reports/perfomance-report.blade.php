@@ -225,7 +225,7 @@
                     <tr>
                       <td><strong>NAME:</strong> {{ strtoupper($student->first_name) }} {{ strtoupper($student->middle_name) }} {{ strtoupper($student->surname) }}</td>
                       <td><strong>SEX:</strong> @if($student->gender == 'M') MALE @else FEMALE @endif</td>
-                      <td><strong>RegNo:</strong> {{ $student->registration_number }}</td>
+                      <td><strong>Reg. No:</strong> {{ $student->registration_number }}</td>
                     </tr>
                     <tr>
                       <td><strong>CITIZENSHIP:</strong> {{ $student->nationality }}</td>
@@ -239,7 +239,7 @@
                       <td colspan="3"><strong>CAMPUS:</strong> {{ strtoupper($student->campusProgram->campus->name) }}</td>
                     </tr>
                     <tr>
-                      <td colspan="3"><strong>PROGRAM:</strong> {{ strtoupper($student->campusProgram->program->name) }}</td>
+                      <td colspan="3"><strong>PROGRAMME:</strong> {{ strtoupper($student->campusProgram->program->name) }}</td>
                     </tr>
                     <tr>
                       <td colspan="3"><strong>AWARD LEVEL:</strong> {{ strtoupper($student->campusProgram->program->ntaLevel->name ) }} <span class="ss-italic">(Programme Accredited by the National Council of Technical Education)</span></td>
@@ -439,8 +439,9 @@
                      @foreach($semester->remarks as $remark)
                       <tr>
                         <td colspan="2" class="ss-bold">SUBTOTAL</td>
-                        <td class="ss-bold">{{ $remark->credit }}</td>
                         <td></td>
+                        <td class="ss-bold">{{ $remark->credit }}</td>
+                        
                         <td class="ss-bold">{{ $remark->point }}</td>
                         <td class="ss-bold">{{ $remark->remark}}</td>
                         <td class="ss-bold">{{ bcdiv($remark->gpa,1,1) }}</td>
@@ -471,25 +472,25 @@
                      <p>3. Key to the Grades and other symbols for University Examinations: SEE THE TABLE BELOW</p>
                      <table class="table table-bordered table-condensed ss-center">
                         <tr>
-                          <td class="ss-bold">Grade</td>
+                          <td class="ss-bold ss-left">Grade</td>
                           @foreach($grading_policies as $policy)
                           <td class="ss-bold">{{ $policy->grade }}</td>
                           @endforeach
                         </tr>
                         <tr>
-                          <td class="ss-bold">Marks</td>
+                          <td class="ss-bold ss-left">Marks</td>
                           @foreach($grading_policies as $policy)
                           <td>{{ $policy->min_score }}-{{ $policy->max_score }}</td>
                           @endforeach
                         </tr>
                         <tr>
-                          <td class="ss-bold">Grade Points</td>
+                          <td class="ss-bold ss-left">Grade Points</td>
                           @foreach($grading_policies as $policy)
                           <td>{{ $policy->point }}</td>
                           @endforeach
                         </tr>
                         <tr>
-                          <td class="ss-bold">Remarks</td>
+                          <td class="ss-bold ss-left">Remarks</td>
                           @foreach($grading_policies as $policy)
                           <td>{{ $policy->remark }}</td>
                           @endforeach

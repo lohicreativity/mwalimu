@@ -200,13 +200,12 @@
                <h3>{{ $department->name }}</h3>
                <h3>{{ $program->name }} ({{ $study_academic_year->academicYear->year }})</h3>
                <h3>{{ $module->name }} - {{ $module->code }}</h3>
-               <h3>STUDENTS LIST</h3>
               </div>
                <div class="table-responsive ss-margin-bottom">
                   <table class="table table-condensed table-bordered">
                     <tr>
                       <td class="ss-bold" colspan="3"></td>
-                      <td class="ss-bold" colspan="{{ count($assessment_plans) }}">ASSESSMENTS</td>
+                      <td class="ss-bold ss-center" colspan="{{ count($assessment_plans) }}">ASSESSMENTS</td>
                       <td class="ss-bold"></td>
                       <td class="ss-bold"></td>
                     </tr>

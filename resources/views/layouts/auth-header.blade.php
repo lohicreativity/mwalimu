@@ -33,6 +33,9 @@
           <div class="dropdown-divider"></div>
           <!-- Authentication -->
           @if(Auth::check() && Auth::user()->hasRole('student'))
+            <a href="{{ url('student/profile') }}" class="dropdown-item">
+            <i class="fas fa-user mr-2"></i> Profile
+            </a>
             <a href="{{ url('student/logout') }}" class="dropdown-item">
             <i class="fas fa-logout mr-2"></i> Logout
             </a>

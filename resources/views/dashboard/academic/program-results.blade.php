@@ -46,13 +46,13 @@
                   <li class="nav-item"><a class="nav-link" href="{{ url('academic/results?study_academic_year_id='.session('active_academic_year_id').'&campus_id='.session('staff_campus_id')) }}">{{ __('Process Results') }}</a></li>
                   @endcan
                   @can('view-programme-results')
-                  <li class="nav-item"><a class="nav-link active" href="{{ url('academic/results/show-program-results?study_academic_year_id='.session('active_academic_year_id').'&campus_id='.session('staff_campus_id')) }}">{{ __('View Programme Results') }}</a></li>
+                  <li class="nav-item"><a class="nav-link active" href="{{ url('academic/results/show-program-results?study_academic_year_id='.session('active_academic_year_id').'&campus_id='.session('staff_campus_id')) }}">{{ __('Programme Results') }}</a></li>
                   @endcan
                   @can('view-module-results')
-                  <li class="nav-item"><a class="nav-link" href="{{ url('academic/results/show-module-results?study_academic_year_id='.session('active_academic_year_id').'&campus_id='.session('staff_campus_id')) }}">{{ __('View Module Results') }}</a></li>
+                  <li class="nav-item"><a class="nav-link" href="{{ url('academic/results/show-module-results?study_academic_year_id='.session('active_academic_year_id').'&campus_id='.session('staff_campus_id')) }}">{{ __('Module Results') }}</a></li>
                   @endcan
                   @can('view-student-results')
-                  <li class="nav-item"><a class="nav-link" href="{{ url('academic/results/show-student-results') }}">{{ __('View Student Results') }}</a></li>
+                  <li class="nav-item"><a class="nav-link" href="{{ url('academic/results/show-student-results') }}">{{ __('Student Results') }}</a></li>
                   @endcan
                   @can('publish-examination-results')
                   <li class="nav-item"><a class="nav-link" href="{{ url('academic/results-publications') }}">{{ __('Publish Results') }}</a></li>
@@ -81,7 +81,9 @@
                     <select name="campus_id" class="form-control" required>
                        <option value="">Select Campus</option>
                        @foreach($campuses as $cp)
+                       @if(session('staff_campus_id') == $cp->id)
                        <option value="{{ $cp->id }}" @if($cp->id == $request->get('campus_id')) selected="selected" @endif>{{ $cp->name }}</option>
+                       @endif
                        @endforeach
                     </select>
                   </div>
@@ -124,7 +126,7 @@
                     <select name="semester_id" class="form-control" required>
                        <option value="">Select Semester</option>
                        @foreach($semesters as $semester)
-                       <option value="{{ $semester->id }}">{{ $semester->name }}</option>
+                       <option value="{{ $semester->id }}" @if($semester->status == 'ACTIVE') selected="selected" @endif>{{ $semester->name }}</option>
                        @endforeach
                        <option value="SUPPLEMENTARY">Supplementary</option>
                     </select>

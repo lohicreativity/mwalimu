@@ -22,6 +22,13 @@ class CreateProgramModuleAssigmentsTable extends Migration
             $table->mediumInteger('year_of_study');
             $table->string('category',20)->default('COMPULSORY');
             $table->string('type',20)->default('CORE');
+            $table->decimal('course_work_min_mark',10,2);
+            $table->decimal('course_work_percentage_pass',10,2);
+            $table->decimal('course_work_pass_score',10,2);
+            $table->decimal('final_min_mark',10,2);
+            $table->decimal('final_percentage_pass',10,2);
+            $table->decimal('final_pass_score',10,2);
+            $table->decimal('module_pass_mark',10,2);
             $table->timestamps();
 
             $table->foreign('study_academic_year_id','study_ac_yr_prog_mod_assign')->references('id')->on('study_academic_years')->onUpdate('cascade');
