@@ -23,7 +23,7 @@ class DatabaseSeeder extends Seeder
         $this->call(UnitCategoriesTableSeeder::class);
         $this->call(DepartmentsTableSeeder::class);
         $this->call(NTALevelsTableSeeder::class);
-        // $this->call(ProgramsTableSeeder::class);
+        $this->call(ProgramsTableSeeder::class);
         $this->call(IntakesTableSeeder::class);
         $this->call(DesignationsTableSeeder::class);
         $this->call(CountriesTableSeeder::class);
