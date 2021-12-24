@@ -29,6 +29,7 @@ use App\Http\Controllers\SpecialExamController;
 use App\Http\Controllers\ExaminationResultController;
 use App\Http\Controllers\ResultPublicationController;
 use App\Http\Controllers\CourseWorkResultController;
+use App\Http\Controllers\ClearanceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -254,4 +255,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 	Route::get('result-publication/{id}/destroy', [ResultPublicationController::class,'destroy']);
 	Route::get('result-publication/{id}/publish', [ResultPublicationController::class,'publish']);
 	Route::get('result-publication/{id}/unpublish', [ResultPublicationController::class,'unpublish']);
+
+	Route::get('clearance',[ClearanceController::class,'showList']);
+	Route::post('clearance/update',[ClearanceController::class,'update']);
 });

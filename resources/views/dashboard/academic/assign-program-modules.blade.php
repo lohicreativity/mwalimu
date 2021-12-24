@@ -52,6 +52,70 @@
                        'class'=>'form-control',
                        'required'=>true
                     ];
+
+                    $course_work_min_mark = [
+                       'class'=>'form-control ss-course-work-min-mark',
+                       'placeholder'=>'Course work min mark',
+                       'data-target'=>'#ss-final-min-mark',
+                       'id'=>'ss-course-work-min-mark',
+                       'steps'=>'any',
+                       'required'=>true
+                    ];
+
+                    $course_work_percentage_pass = [
+                       'class'=>'form-control ss-course-work-percentage-pass',
+                       'placeholder'=>'Course work percentage pass',
+                       'data-from'=>'#ss-course-work-min-mark',
+                       'data-target'=>'#ss-course-work-pass-score',
+                       'id'=>'ss-course-work-percentage-pass',
+                       'steps'=>'any',
+                       'required'=>true
+                    ];
+
+                    $course_work_pass_score = [
+                       'class'=>'form-control ss-course-work-pass-score',
+                       'placeholder'=>'Course work pass score',
+                       'id'=>'ss-course-work-pass-score',
+                       'steps'=>'any',
+                       'readonly'=>true,
+                       'required'=>true
+                    ];
+
+                    $final_min_mark = [
+                       'class'=>'form-control ss-final-min-mark',
+                       'placeholder'=>'Final min mark',
+                       'id'=>'ss-final-min-mark',
+                       'steps'=>'any',
+                       'readonly'=>true,
+                       'required'=>true
+                    ];
+
+                    $final_percentage_pass = [
+                       'class'=>'form-control ss-final-percentage-pass',
+                       'placeholder'=>'Final percentage pass',
+                       'data-from'=>'#ss-final-min-mark',
+                       'data-target'=>'#ss-final-pass-score',
+                       'id'=>'ss-final-percentage-pass',
+                       'steps'=>'any',
+                       'required'=>true
+                    ];
+
+                    $final_pass_score = [
+                       'class'=>'form-control ss-final-pass-score',
+                       'placeholder'=>'Final pass score',
+                       'id'=>'ss-final-pass-score',
+                       'steps'=>'any',
+                       'readonly'=>true,
+                       'required'=>true
+                    ];
+
+                    $module_pass_mark = [
+                       'class'=>'form-control ss-module-pass-mark',
+                       'placeholder'=>'Module pass mark',
+                       'id'=>'ss-module-pass-mark',
+                       'steps'=>'any',
+                       'required'=>true
+                    ];
                  @endphp
 
                  {!! Form::open(['url'=>'academic/program-module-assignment/store','class'=>'ss-form-processing']) !!}
@@ -105,6 +169,42 @@
                   {!! Form::input('hidden','campus_program_id',$campus_program->id) !!}
                     
                   </div>
+                  <div class="row">
+                    <div class="form-group col-4">
+                      {!! Form::label('','Course work min mark') !!}
+                      {!! Form::input('number','course_work_min_mark',null,$course_work_min_mark) !!}
+                    </div>
+                    <div class="form-group col-4">
+                      {!! Form::label('','Course work percentage pass') !!}
+                      {!! Form::input('number','course_work_percentage_pass',null,$course_work_percentage_pass) !!}
+                    </div>
+                    <div class="form-group col-4">
+                     {!! Form::label('','Course work pass score') !!}
+                     {!! Form::input('number','course_work_pass_score',null,$course_work_pass_score) !!}
+
+                     {!! Form::input('hidden','study_academic_year_id',$study_academic_year->id) !!}
+                  </div>
+                 </div>
+                 <div class="row">
+                  <div class="form-group col-6">
+                      {!! Form::label('','Final min mark') !!}
+                      {!! Form::input('number','final_min_mark',null,$final_min_mark) !!}
+                  </div>
+                  <div class="form-group col-6">
+                      {!! Form::label('','Final percentage pass') !!}
+                      {!! Form::input('number','final_percentage_pass',null,$final_percentage_pass) !!}
+                  </div>
+                </div>
+                <div class="row">
+                   <div class="form-group col-6">
+                      {!! Form::label('','Final pass score') !!}
+                      {!! Form::input('number','final_pass_score',null,$final_pass_score) !!}
+                  </div>
+                  <div class="form-group col-6">
+                      {!! Form::label('','Module pass mark') !!}
+                      {!! Form::input('number','module_pass_mark',null,$module_pass_mark) !!}
+                  </div>
+                </div>
                   <div class="ss-form-actions">
                    <button type="submit" class="btn btn-primary">{{ __('Assign Module') }}</button>
                   </div>
@@ -170,6 +270,70 @@
                                      'class'=>'form-control',
                                      'required'=>true
                                   ];
+
+                                  $course_work_min_mark = [
+                                     'class'=>'form-control ss-course-work-min-mark',
+                                     'placeholder'=>'Course work min mark',
+                                     'data-target'=>'#ss-final-min-mark-'.$assignment->id,
+                                     'id'=>'ss-course-work-min-mark-'.$assignment->id,
+                                     'steps'=>'any',
+                                     'required'=>true
+                                  ];
+
+                                  $course_work_percentage_pass = [
+                                     'class'=>'form-control ss-course-work-percentage-pass',
+                                     'placeholder'=>'Course work percentage pass',
+                                     'data-from'=>'#ss-course-work-min-mark-'.$assignment->id,
+                                     'data-target'=>'#ss-course-work-pass-score-'.$assignment->id,
+                                     'id'=>'ss-course-work-percentage-pass-'.$assignment->id,
+                                     'steps'=>'any',
+                                     'required'=>true
+                                  ];
+
+                                  $course_work_pass_score = [
+                                     'class'=>'form-control ss-course-work-pass-score',
+                                     'placeholder'=>'Course work pass score',
+                                     'id'=>'ss-course-work-pass-score-'.$assignment->id,
+                                     'readonly'=>true,
+                                     'steps'=>'any',
+                                     'required'=>true
+                                  ];
+
+                                  $final_min_mark = [
+                                     'class'=>'form-control ss-final-min-mark',
+                                     'placeholder'=>'Final min mark',
+                                     'id'=>'ss-final-min-mark-'.$assignment->id,
+                                     'readonly'=>true,
+                                     'steps'=>'any',
+                                     'required'=>true
+                                  ];
+
+                                  $final_percentage_pass = [
+                                     'class'=>'form-control ss-final-percentage-pass',
+                                     'placeholder'=>'Final percentage pass',
+                                     'data-from'=>'#ss-final-min-mark-'.$assignment->id,
+                                     'data-target'=>'#ss-final-pass-score-'.$assignment->id,
+                                     'id'=>'ss-final-percentage-pass-'.$assignment->id,
+                                     'steps'=>'any',
+                                     'required'=>true
+                                  ];
+
+                                  $final_pass_score = [
+                                     'class'=>'form-control ss-final-pass-score',
+                                     'placeholder'=>'Final pass score',
+                                     'id'=>'ss-final-pass-score-'.$assignment->id,
+                                     'readonly'=>true,
+                                     'steps'=>'any',
+                                     'required'=>true
+                                  ];
+
+                                  $module_pass_mark = [
+                                     'class'=>'form-control ss-module-pass-mark',
+                                     'placeholder'=>'Module pass mark',
+                                     'id'=>'ss-module-pass-mark-'.$assignment->id,
+                                     'steps'=>'any',
+                                     'required'=>true
+                                  ];
                                @endphp
                                 {!! Form::open(['url'=>'academic/program-module-assignment/update','class'=>'ss-form-processing']) !!}
 
@@ -222,6 +386,43 @@
 
                                       
                                     </div>
+                                    <div class="row">
+                                <div class="form-group col-4">
+                                  {!! Form::label('','Course work min mark') !!}
+                                  {!! Form::input('number','course_work_min_mark',$assignment->course_work_min_mark,$course_work_min_mark) !!}
+                                </div>
+                                <div class="form-group col-4">
+                                  {!! Form::label('','Course work percentage pass') !!}
+                                  {!! Form::input('number','course_work_percentage_pass',$assignment->course_work_percentage_pass,$course_work_percentage_pass) !!}
+                                </div>
+                                <div class="form-group col-4">
+                                 {!! Form::label('','Course work pass score') !!}
+                                 {!! Form::input('number','course_work_pass_score',$assignment->course_work_pass_score,$course_work_pass_score) !!}
+
+                                 {!! Form::input('hidden','study_academic_year_id',$study_academic_year->id) !!}
+                              </div>
+                             </div>
+                             <div class="row">
+                              
+                              <div class="form-group col-6">
+                                  {!! Form::label('','Final min mark') !!}
+                                  {!! Form::input('number','final_min_mark',$assignment->final_min_mark,$final_min_mark) !!}
+                              </div>
+                              <div class="form-group col-6">
+                                  {!! Form::label('','Final percentage pass') !!}
+                                  {!! Form::input('number','final_percentage_pass',$assignment->final_percentage_pass,$final_percentage_pass) !!}
+                              </div>
+                            </div>
+                            <div class="row">
+                               <div class="form-group col-6">
+                                  {!! Form::label('','Final pass score') !!}
+                                  {!! Form::input('number','final_pass_score',$assignment->final_pass_score,$final_pass_score) !!}
+                              </div>
+                              <div class="form-group col-6">
+                                  {!! Form::label('','Module pass mark') !!}
+                                  {!! Form::input('number','module_pass_mark',$assignment->module_pass_mark,$module_pass_mark) !!}
+                              </div>
+                            </div>
                                       <div class="ss-form-actions">
                                        <button type="submit" class="btn btn-primary">{{ __('Save Changes') }}</button>
                                       </div>

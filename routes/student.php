@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\ClearanceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,4 +33,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 
 	Route::get('profile', [StudentController::class,'showProfile']);
 	Route::get('payments', [StudentController::class,'showPayments']);
+
+	Route::get('clearance',[ClearanceController::class,'index']);
+	Route::post('clearance/store',[ClearanceController::class,'store']);
 });

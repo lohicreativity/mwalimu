@@ -17,6 +17,13 @@ class ProgramModuleAssignmentAction implements ProgramModuleAssignmentInterface{
                 $assignment->year_of_study = $request->get('year_of_study');
                 $assignment->category = $request->get('category');
                 $assignment->type = $request->get('type');
+                $assignment->course_work_min_mark = $request->get('course_work_min_mark');
+                $assignment->course_work_percentage_pass = $request->get('course_work_percentage_pass');
+                $assignment->course_work_pass_score = $request->get('course_work_pass_score');
+                $assignment->final_min_mark = $request->get('final_min_mark');
+                $assignment->final_percentage_pass = $request->get('final_percentage_pass');
+                $assignment->final_pass_score = $request->get('final_pass_score');
+                $assignment->module_pass_mark = $request->get('module_pass_mark');
                 $assignment->save();
 	}
 
@@ -29,6 +36,13 @@ class ProgramModuleAssignmentAction implements ProgramModuleAssignmentInterface{
                 $assignment->year_of_study = $request->get('year_of_study');
                 $assignment->category = $request->get('category');
                 $assignment->type = $request->get('type');
+                $assignment->course_work_min_mark = $request->get('course_work_min_mark');
+                $assignment->course_work_percentage_pass = $request->get('course_work_percentage_pass');
+                $assignment->course_work_pass_score = $request->get('course_work_pass_score');
+                $assignment->final_min_mark = $request->get('final_min_mark');
+                $assignment->final_percentage_pass = $request->get('final_percentage_pass');
+                $assignment->final_pass_score = $request->get('final_pass_score');
+                $assignment->module_pass_mark = $request->get('module_pass_mark');
                 $assignment->save();
 	}
 }

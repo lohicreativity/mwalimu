@@ -122,6 +122,13 @@ class ProgramModuleAssignmentController extends Controller
             $assign->year_of_study = $assignment->year_of_study;
             $assign->category = $assignment->category;
             $assign->type = $assignment->type;
+            $assign->course_work_min_mark = $assignment->course_work_min_mark;
+            $assign->course_work_percentage_pass = $assignment->course_work_percentage_pass;
+            $assign->course_work_pass_score = $assignment->course_work_pass_score;
+            $assign->final_min_mark = $assignment->final_min_mark;
+            $assign->final_percentage_pass = $assignment->final_percentage_pass;
+            $assign->final_pass_score = $assignment->final_pass_score;
+            $assign->module_pass_mark = $assignment->module_pass_mark;
             $assign->save();
          }
          DB::commit();

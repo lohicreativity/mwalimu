@@ -231,14 +231,14 @@ class ExaminationResultController extends Controller
                          $processed_result->grade = 'F';
                          $processed_result->point = 0;
                       }else{
-                        $processed_result->final_exam_remark = $policy->module_pass_mark <= $processed_result->total_score? 'PASS' : 'FAIL';
+                        $processed_result->final_exam_remark = $assignment->programModuleAssignment->module_pass_mark <= $processed_result->total_score? 'PASS' : 'FAIL';
                       }
 
                       if($processed_result->supp_score){
                       	if(Util::stripSpacesUpper($assignment->module->ntaLevel->name) == Util::stripSpacesUpper('NTA Level 7')){
-                              $processed_result->final_exam_remark = $policy->module_pass_mark <= $processed_result->supp_score? 'PASS' : 'CARRY';
+                              $processed_result->final_exam_remark = $assignment->programModuleAssignment->module_pass_mark <= $processed_result->supp_score? 'PASS' : 'CARRY';
                       	}else{
-                              $processed_result->final_exam_remark = $policy->module_pass_mark <= $processed_result->supp_score? 'PASS' : 'RETAKE';
+                              $processed_result->final_exam_remark = $assignment->programModuleAssignment->module_pass_mark <= $processed_result->supp_score? 'PASS' : 'RETAKE';
                       	}
 
                       	$processed_result->supp_processed_at = now();
@@ -858,14 +858,14 @@ class ExaminationResultController extends Controller
                            $processed_result->grade = 'F';
                            $processed_result->point = 0;
                         }else{
-                          $processed_result->final_exam_remark = $policy->module_pass_mark <= $processed_result->total_score? 'PASS' : 'FAIL';
+                          $processed_result->final_exam_remark = $assignment->programModuleAssignment->module_pass_mark <= $processed_result->total_score? 'PASS' : 'FAIL';
                         }
 
                         if($processed_result->supp_score){
                           if(Util::stripSpacesUpper($assignment->module->ntaLevel->name) == Util::stripSpacesUpper('NTA Level 7')){
-                                $processed_result->final_exam_remark = $policy->module_pass_mark <= $processed_result->supp_score? 'PASS' : 'CARRY';
+                                $processed_result->final_exam_remark = $assignment->programModuleAssignment->module_pass_mark <= $processed_result->supp_score? 'PASS' : 'CARRY';
                           }else{
-                                $processed_result->final_exam_remark = $policy->module_pass_mark <= $processed_result->supp_score? 'PASS' : 'RETAKE';
+                                $processed_result->final_exam_remark = $assignment->programModuleAssignment->module_pass_mark <= $processed_result->supp_score? 'PASS' : 'RETAKE';
                           }
 
                           $processed_result->supp_processed_at = now();
@@ -1126,7 +1126,7 @@ class ExaminationResultController extends Controller
               return redirect()->back()->with('error','No results processed yet for this programme');
            }
         }
-        $grading_policies = GradingPolicy::where('nta_level_id',$campus_program->program->nta_level_id)->where('study_academic_year_id',$request->get('study_academic_year_id'))->orderBy('grade')->get();
+        $grading_policies = GradingPolicy::where('nta_level_id',$campus_program->program->nta_level_id)->where('study_academic_year_id',$request->get('study_academic_year_id'))->orderBy('min_score')->get();
 
         $modules = [];
 
