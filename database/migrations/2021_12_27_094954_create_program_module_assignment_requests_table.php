@@ -20,7 +20,7 @@ class CreateProgramModuleAssignmentRequestsTable extends Migration
             $table->timestamps();
 
             $table->foreign('staff_id')->references('id')->on('staffs')->onUpdate('cascade');
-            $table->foreign('program_module_assignment_id','prog_mod_assign_request')->references('id')->on('program_module_assignments')->onUpdate('cascade');
+            $table->foreign('program_module_assignment_id','prog_mod_assign_request')->references('id')->on('program_module_assignments')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 
