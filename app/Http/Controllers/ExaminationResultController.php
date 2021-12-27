@@ -549,6 +549,19 @@ class ExaminationResultController extends Controller
     public function store(Request $request)
     {
         try{
+            $validation = Validator::make($request->all(),[
+                'final_score'=>'min:0|max:100',
+                'supp_score'=>'min:0|max:100',
+            ]);
+
+            if($validation->fails()){
+               if($request->ajax()){
+                  return response()->json(array('error_messages'=>$validation->messages()));
+               }else{
+                  return redirect()->back()->withInput()->withErrors($validation->messages());
+               }
+            }
+
             DB::beginTransaction();
             $module_assignment = ModuleAssignment::with(['module','studyAcademicYear.academicYear','programModuleAssignment.campusProgram.program'])->find($request->get('module_assignment_id'));
               $academicYear = $module_assignment->studyAcademicYear->academicYear;
@@ -633,6 +646,19 @@ class ExaminationResultController extends Controller
     public function update(Request $request)
     {
         try{
+            $validation = Validator::make($request->all(),[
+                'final_score'=>'min:0|max:100',
+                'supp_score'=>'min:0|max:100',
+            ]);
+
+            if($validation->fails()){
+               if($request->ajax()){
+                  return response()->json(array('error_messages'=>$validation->messages()));
+               }else{
+                  return redirect()->back()->withInput()->withErrors($validation->messages());
+               }
+            }
+            
             DB::beginTransaction();
             $module_assignment = ModuleAssignment::with(['module','studyAcademicYear.academicYear','programModuleAssignment.campusProgram.program'])->find($request->get('module_assignment_id'));
               $academicYear = $module_assignment->studyAcademicYear->academicYear;
