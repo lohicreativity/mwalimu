@@ -210,15 +210,15 @@
                                       <div class="form-group col-4">
                                       {!! Form::label('','Category') !!}
                                       <select name="category" class="form-control" required>
-                                         <option value="COMPULSORY" @if($request->programModuleAssignment->category == 'COMPULSORY') selected="selected" @endif>Compulsory</option>
-                                         <option value="OPTIONAL" @if($request->programModuleAssignment->category == 'OPTIONAL') selected="selected" @endif>Optional</option>
+                                         <option value="COMPULSORY" @if($request->programModuleAssignment->category == 'COMPULSORY') selected="selected" @else disabled="disabled" @endif>Compulsory</option>
+                                         <option value="OPTIONAL" @if($request->programModuleAssignment->category == 'OPTIONAL') selected="selected" @else disabled="disabled" @endif>Optional</option>
                                       </select>
                                       </div>
                                       <div class="form-group col-4">
                                       {!! Form::label('','Type') !!}
                                       <select name="type" class="form-control" required>
-                                         <option value="CORE" @if($request->programModuleAssignment->type == 'CORE') selected="selected" @endif>Core</option>
-                                         <option value="FUNDAMENTAL" @if($request->programModuleAssignment->type == 'FUNDAMENTAL') selected="selected" @endif>Fundamental</option>
+                                         <option value="CORE" @if($request->programModuleAssignment->type == 'CORE') selected="selected" @else disabled="disabled" @endif>Core</option>
+                                         <option value="FUNDAMENTAL" @if($request->programModuleAssignment->type == 'FUNDAMENTAL') selected="selected" @else disabled="disabled" @endif>Fundamental</option>
                                       </select>
                                       </div>
                                       <div class="form-group col-4">
@@ -226,7 +226,7 @@
                                       <select name="semester_id" class="form-control" required id="ss-semester-{{ $module->id }}">
                                          <option value="">Select Semester</option>
                                          @foreach($semesters as $semester)
-                                         <option value="{{ $semester->id }}" @if($request->programModuleAssignment->semester_id == $semester->id) selected="selected" @endif>{{ $semester->name }}</option>
+                                         <option value="{{ $semester->id }}" @if($request->programModuleAssignment->semester_id == $semester->id) selected="selected" @else disabled="disabled" @endif>{{ $semester->name }}</option>
                                          @endforeach
                                       </select>
                                       </div>
