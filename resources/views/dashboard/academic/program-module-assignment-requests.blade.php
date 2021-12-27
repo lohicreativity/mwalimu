@@ -239,15 +239,15 @@
                                     <div class="row">
                                 <div class="form-group col-4">
                                   {!! Form::label('','Course work min mark') !!}
-                                  {!! Form::input('number','course_work_min_mark',$request->programModuleAssignment->course_work_min_mark,$course_work_min_mark) !!}
+                                  {!! Form::input('number','course_work_min_mark',null,$course_work_min_mark) !!}
                                 </div>
                                 <div class="form-group col-4">
                                   {!! Form::label('','Course work percentage pass') !!}
-                                  {!! Form::input('number','course_work_percentage_pass',$request->programModuleAssignment->course_work_percentage_pass,$course_work_percentage_pass) !!}
+                                  {!! Form::input('number','course_work_percentage_pass',null,$course_work_percentage_pass) !!}
                                 </div>
                                 <div class="form-group col-4">
                                  {!! Form::label('','Course work pass score') !!}
-                                 {!! Form::input('number','course_work_pass_score',$request->programModuleAssignment->course_work_pass_score,$course_work_pass_score) !!}
+                                 {!! Form::input('number','course_work_pass_score',null,$course_work_pass_score) !!}
 
                                  {!! Form::input('hidden','study_academic_year_id',$study_academic_year->id) !!}
                               </div>
@@ -256,21 +256,21 @@
                               
                               <div class="form-group col-6">
                                   {!! Form::label('','Final min mark') !!}
-                                  {!! Form::input('number','final_min_mark',$request->programModuleAssignment->final_min_mark,$final_min_mark) !!}
+                                  {!! Form::input('number','final_min_mark',null,$final_min_mark) !!}
                               </div>
                               <div class="form-group col-6">
                                   {!! Form::label('','Final percentage pass') !!}
-                                  {!! Form::input('number','final_percentage_pass',$request->programModuleAssignment->final_percentage_pass,$final_percentage_pass) !!}
+                                  {!! Form::input('number','final_percentage_pass',null,$final_percentage_pass) !!}
                               </div>
                             </div>
                             <div class="row">
                                <div class="form-group col-6">
                                   {!! Form::label('','Final pass score') !!}
-                                  {!! Form::input('number','final_pass_score',$request->programModuleAssignment->final_pass_score,$final_pass_score) !!}
+                                  {!! Form::input('number','final_pass_score',null,$final_pass_score) !!}
                               </div>
                               <div class="form-group col-6">
                                   {!! Form::label('','Module pass mark') !!}
-                                  {!! Form::input('number','module_pass_mark',$request->programModuleAssignment->module_pass_mark,$module_pass_mark) !!}
+                                  {!! Form::input('number','module_pass_mark',null,$module_pass_mark) !!}
                               </div>
                             </div>
                                       <div class="ss-form-actions">

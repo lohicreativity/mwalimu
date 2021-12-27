@@ -38,7 +38,10 @@ class ProgramModuleAssignmentAction implements ProgramModuleAssignmentInterface{
                     $req->staff_id = $staff->id;
                     $req->program_module_assignment_id = $assignment->id;
                     $req->save();
+
+                    return redirect()->back()->with('message','Module assignment request sent successfully');
                 }
+                return redirect()->back()->with('message','Programme module assignment created successfully');
 	}
 
 	public function update(Request $request){

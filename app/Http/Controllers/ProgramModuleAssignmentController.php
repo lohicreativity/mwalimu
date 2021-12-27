@@ -160,9 +160,9 @@ class ProgramModuleAssignmentController extends Controller
         }
 
 
-        (new ProgramModuleAssignmentAction)->store($request);
+        return (new ProgramModuleAssignmentAction)->store($request);
 
-        return Util::requestResponse($request,'Program module assignment created successfully');
+        //return Util::requestResponse($request,'Program module assignment created successfully');
     }
 
     /**
