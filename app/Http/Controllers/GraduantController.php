@@ -8,6 +8,7 @@ use App\Domain\Settings\Models\Campus;
 use App\Domain\Academic\Models\Graduant;
 use App\Domain\Academic\Models\CampusProgram;
 use App\Domain\Registration\Models\Student;
+use App\Domain\Registration\Models\StudentshipStatus;
 use App\Utils\Util;
 
 class GraduantController extends Controller
@@ -37,6 +38,7 @@ class GraduantController extends Controller
     	$campus_program = CampusProgram::with('program')->find($request->get('campus_program_id'));
     	$students = Student::with(['annualRemarks'])->where('campus_program_id',$campus_program->id)->where('year_of_study',$campus_program->program->min_duration)->get();
     	$excluded_list = [];
+    	$status = StudentshipStatus::where('name','GRADUANT')->first();
     	foreach($students as $student){
     		if($student->overallRemark){
 	    		if($grad = Graduant::where('student_id',$student->id)->first()){
@@ -57,6 +59,10 @@ class GraduantController extends Controller
 	    		}
 	    		$graduant->save();
     	    }
+
+    	    $student = Student::find($student->id);
+    	    $student->studentship_status = $status->id;
+    	    $student->save();
     	}
 
     	return redirect()->back()->with('message','Graduants sorted successfully');
