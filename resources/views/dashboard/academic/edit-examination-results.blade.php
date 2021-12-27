@@ -60,11 +60,25 @@
                      'required'=>true
                   ];
 
+              @endphp
+              
+              @if($result->supp_score == null)
+               @php
                   $supp_score = [
                      'placeholder'=>'Supp score',
-                     'class'=>'form-control'
+                     'class'=>'form-control',
+                     'readonly'=>true
+
                   ];
               @endphp
+              @else
+              @php
+                  $supp_score = [
+                     'placeholder'=>'Supp score',
+                     'class'=>'form-control',
+                  ];
+              @endphp
+              @endif
               {!! Form::open(['url'=>'academic/results/update-examination-results','class'=>'ss-form-processing']) !!}
                 <div class="card-body">
                   <div class="row">
