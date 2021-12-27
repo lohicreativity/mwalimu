@@ -49,7 +49,7 @@
               </div>
               <!-- /.card-header -->
               <div class="card-body">
-                 {!! Form::open(['url'=>'academic/examination-policies','class'=>'ss-form-processing','method'=>'GET']) !!}
+                 {!! Form::open(['url'=>'academic/excluded-graduants','class'=>'ss-form-processing','method'=>'GET']) !!}
                    
                    <div class="form-group">
                     <select name="study_academic_year_id" class="form-control" required>
