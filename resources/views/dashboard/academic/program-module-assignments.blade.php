@@ -46,16 +46,27 @@
               <!-- /.card-header -->
               <div class="card-body">
                  {!! Form::open(['url'=>'academic/program-module-assignments','class'=>'ss-form-processing','method'=>'GET']) !!}
-                   
-                   <div class="form-group">
+                  <div class="row">
+                   <div class="form-group col-6">
+                    {!! Form::label('','Select study academic year') !!}
                     <select name="study_academic_year_id" class="form-control" required>
                        <option value="">Select Study Academic Year</option>
                        @foreach($study_academic_years as $year)
                        <option value="{{ $year->id }}" @if($year->status == 'ACTIVE') selected="selected" @endif>{{ $year->academicYear->year }}</option>
                        @endforeach
                     </select>
-                     
                   </div>
+                   <div class="form-group col-6">
+                    {!! Form::label('','Select campus') !!}
+                    <select name="campus_id" class="form-control" required>
+                       <option value="">Select Campus</option>
+                       @foreach($campuses as $cp)
+                       <option value="{{ $cp->id }}" @if($cp->id == $request->get('campus_id')) selected="selected" @endif>{{ $cp->name }}</option>
+                       @endforeach
+                    </select>
+                  </div>
+                  </div>
+
                   <div class="ss-form-actions">
                    <button type="submit" class="btn btn-primary">{{ __('Search') }}</button>
                   </div>
@@ -68,8 +79,7 @@
 
 
 
-            @if(count($campuses) != 0 && $study_academic_year)
-            @foreach($campuses as $campus)
+            @if($campus && $study_academic_year)
             <div class="card">
               <div class="card-header">
                 <h3 class="card-title">{{ $campus->name }} - {{ $study_academic_year->academicYear->year }}</h3>
@@ -193,7 +203,6 @@
               <!-- /.card-body -->
             </div>
             <!-- /.card -->
-            @endforeach
             @else
             <div class="card">
               <div class="card-header">

@@ -125,6 +125,13 @@
                               </button>
                             </div>
                             <div class="modal-body">
+                               @php
+                                    $code = [
+                                       'placeholder'=>'Regulator Code',
+                                       'class'=>'form-control',
+                                       'required'=>true
+                                    ];
+                                @endphp
 
                                 {!! Form::open(['url'=>'academic/campus/campus-program/update','class'=>'ss-form-processing']) !!}
 
