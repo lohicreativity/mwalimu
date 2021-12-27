@@ -97,7 +97,9 @@
     "closeButton" : true,
     "progressBar" : true
   } 
-        @if(is_string($errors->all()))
+        @if(!is_string($errors->all()))
+        toastr.error("{{ $errors->all() }}");
+        @else
         toastr.error("{{ $errors->all() }}");
         @endif
   @endif
