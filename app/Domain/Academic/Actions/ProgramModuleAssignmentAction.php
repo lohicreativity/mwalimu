@@ -28,12 +28,14 @@ class ProgramModuleAssignmentAction implements ProgramModuleAssignmentInterface{
                 $assignment->final_percentage_pass = $request->get('final_percentage_pass');
                 $assignment->final_pass_score = $request->get('final_pass_score');
                 $assignment->module_pass_mark = $request->get('module_pass_mark');
-                $assignment->save();
 
                 $module = Module::find($request->get('module_id'));
                 $staff = User::find(Auth::user()->id)->staff;
-
                 if($module->department_id != $staff->department_id){
+                $assignment->policy_assigned = 0;
+                $assignment->save();
+
+                
                     $req = new ProgramModuleAssignmentRequest;
                     $req->staff_id = $staff->id;
                     $req->program_module_assignment_id = $assignment->id;
@@ -60,6 +62,7 @@ class ProgramModuleAssignmentAction implements ProgramModuleAssignmentInterface{
                 $assignment->final_percentage_pass = $request->get('final_percentage_pass');
                 $assignment->final_pass_score = $request->get('final_pass_score');
                 $assignment->module_pass_mark = $request->get('module_pass_mark');
+                $assignment->policy_assigned = 1;
                 $assignment->save();
 	}
 }

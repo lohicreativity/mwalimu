@@ -29,6 +29,7 @@ class CreateProgramModuleAssigmentsTable extends Migration
             $table->decimal('final_percentage_pass',10,2);
             $table->decimal('final_pass_score',10,2);
             $table->decimal('module_pass_mark',10,2);
+            $table->tinyInteger('policy_assigned')->default(1);
             $table->timestamps();
 
             $table->foreign('study_academic_year_id','study_ac_yr_prog_mod_assign')->references('id')->on('study_academic_years')->onUpdate('cascade');

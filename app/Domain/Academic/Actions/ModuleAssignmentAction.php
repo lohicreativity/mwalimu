@@ -10,6 +10,10 @@ use Auth;
 class ModuleAssignmentAction implements ModuleAssignmentInterface{
 	
 	public function store(Request $request){
+                $program = ProgramModuleAssignment::find($request->get('program_module_assignment_id'));
+                if($program->policy_assigned == 0){
+                   return redirect()->back()->with('error','Examination policy not set for this programme');
+                }
 		$assignment = new ModuleAssignment;
                 $assignment->staff_id = $request->get('staff_id');
                 $assignment->study_academic_year_id = $request->get('study_academic_year_id');
@@ -17,6 +21,7 @@ class ModuleAssignmentAction implements ModuleAssignmentInterface{
                 $assignment->program_module_assignment_id = $request->get('program_module_assignment_id');
                 $assignment->assigned_by_user_id = Auth::user()->id;
                 $assignment->save();
+                return redirect()->back()->with('message','Module assigned to staff successfully');
 	}
 
 	public function update(Request $request){

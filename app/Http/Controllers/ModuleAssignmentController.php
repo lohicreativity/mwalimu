@@ -216,9 +216,9 @@ class ModuleAssignmentController extends Controller
         }
 
 
-        (new ModuleAssignmentAction)->store($request);
+        return (new ModuleAssignmentAction)->store($request);
 
-        return Util::requestResponse($request,'Module assignment created successfully');
+        //return Util::requestResponse($request,'Module assignment created successfully');
     }
 
     /**
