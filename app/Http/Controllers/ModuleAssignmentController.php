@@ -768,7 +768,7 @@ class ModuleAssignmentController extends Controller
                       if($special_exam){
                          $result_log->final_remark = 'POSTPONED';
                       }else{
-                         $result_log->final_remark = $policy->final_pass_score <= $result_log->final_score? 'PASS' : 'FAIL';
+                         $result_log->final_remark = $module_assignment->programModuleAssignment->final_pass_score <= $result_log->final_score? 'PASS' : 'FAIL';
                       }
                       
                       $result_log->final_uploaded_at = now();

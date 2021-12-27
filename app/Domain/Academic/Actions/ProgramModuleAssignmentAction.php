@@ -4,7 +4,11 @@ namespace App\Domain\Academic\Actions;
 
 use Illuminate\Http\Request;
 use App\Domain\Academic\Models\ProgramModuleAssignment;
+use App\Domain\Academic\Models\ProgramModuleAssignmentRequest;
 use App\Domain\Academic\Repositories\Interfaces\ProgramModuleAssignmentInterface;
+use App\Domain\Academic\Models\Module;
+use App\Models\User;
+use Auth;
 
 class ProgramModuleAssignmentAction implements ProgramModuleAssignmentInterface{
 	
@@ -25,6 +29,16 @@ class ProgramModuleAssignmentAction implements ProgramModuleAssignmentInterface{
                 $assignment->final_pass_score = $request->get('final_pass_score');
                 $assignment->module_pass_mark = $request->get('module_pass_mark');
                 $assignment->save();
+
+                $module = Module::find($request->get('module_id'));
+                $staff = User::find(Auth::user()->id)->staff;
+
+                if($module->department_id != $staff->department_id){
+                    $req = new ProgramModuleAssignmentRequest;
+                    $req->staff_id = $staff->id;
+                    $req->program_module_assignment_id = $assignment->id;
+                    $req->save();
+                }
 	}
 
 	public function update(Request $request){

@@ -203,7 +203,7 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="{{ url('academic/staff-module-assignments?study_academic_year_id='.session('active_academic_year_id')) }}" class="nav-link">
+                <a href="{{ url('academic/run-graduants?study_academic_year_id='.session('active_academic_year_id').'&campus_id='.session('staff_campus_id')) }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Graduants List</p>
                 </a>
@@ -340,6 +340,12 @@
                 <a href="{{ url('academic/program-module-assignments?study_academic_year_id='.session('active_academic_year_id')) }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>{{ __('Programme Modules') }}</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ url('academic/program-module-assignment-requests?study_academic_year_id='.session('active_academic_year_id')) }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>{{ __('Programme Module Requests') }}</p>
                 </a>
               </li>
               @endcan

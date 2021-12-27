@@ -16,6 +16,7 @@ use App\Http\Controllers\ModuleAssignmentRequestController;
 use App\Http\Controllers\AssessmentPlanController;
 use App\Http\Controllers\CourseWorkComponentController;
 use App\Http\Controllers\ProgramModuleAssignmentController;
+use App\Http\Controllers\ProgramModuleAssignmentRequestController;
 use App\Http\Controllers\StreamController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\StreamComponentController;
@@ -30,6 +31,7 @@ use App\Http\Controllers\ExaminationResultController;
 use App\Http\Controllers\ResultPublicationController;
 use App\Http\Controllers\CourseWorkResultController;
 use App\Http\Controllers\ClearanceController;
+use App\Http\Controllers\GraduantController;
 
 /*
 |--------------------------------------------------------------------------
@@ -156,6 +158,9 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 	Route::post('study-academic-year-campus-programs/update', [StudyAcademicYearController::class,'updatePrograms']);
 
 
+	Route::get('program-module-assignment-requests', [ProgramModuleAssignmentRequestController::class,'index']);
+
+
 	Route::get('program-module-assignments', [ProgramModuleAssignmentController::class,'index']);
 	Route::get('program-module-assignment/{ac_year_id}/{campus_prog_id}/assign', [ProgramModuleAssignmentController::class,'assignModules']);
 	Route::get('program-module-assignment/{ac_year_id}/{campus_prog_id}/assign-as-previous', [ProgramModuleAssignmentController::class,'assignPreviousModules']);
@@ -258,4 +263,10 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 
 	Route::get('clearance',[ClearanceController::class,'showList']);
 	Route::post('clearance/update',[ClearanceController::class,'update']);
+
+	Route::get('run-graduants',[GraduantController::class,'runGraduants']);
+	Route::post('graduants/sort',[GraduantController::class,'sortGraduants']);
+	Route::get('graduants',[GraduantController::class,'showGraduants']);
+	Route::get('excluded-graduants',[GraduantController::class,'showExcludedGraduants']);
+
 });
