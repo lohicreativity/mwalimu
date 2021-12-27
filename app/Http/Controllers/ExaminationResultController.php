@@ -550,8 +550,8 @@ class ExaminationResultController extends Controller
     {
         try{
             $validation = Validator::make($request->all(),[
-                'final_score'=>'min:0|max:100',
-                'supp_score'=>'min:0|max:100',
+                'final_score'=>'numeric|min:0|max:100',
+                'supp_score'=>'numeric|min:0|max:100',
             ]);
 
             if($validation->fails()){
@@ -647,8 +647,8 @@ class ExaminationResultController extends Controller
     {
         try{
             $validation = Validator::make($request->all(),[
-                'final_score'=>'min:0|max:100',
-                'supp_score'=>'min:0|max:100',
+                'final_score'=>'numeric|min:0|max:100',
+                'supp_score'=>'numeric|min:0|max:100',
             ]);
 
             if($validation->fails()){
