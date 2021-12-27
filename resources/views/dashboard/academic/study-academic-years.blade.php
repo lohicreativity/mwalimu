@@ -144,6 +144,22 @@
                             </div>
                             <div class="modal-body">
 
+                                 @php
+                                      $begin_date = [
+                                         'placeholder'=>'Begin date',
+                                         'class'=>'form-control ss-datepicker',
+                                         'autocomplete'=>'off',
+                                         'required'=>true
+                                      ];
+
+                                      $end_date = [
+                                         'placeholder'=>'End date',
+                                         'class'=>'form-control ss-datepicker',
+                                         'autocomplete'=>'off',
+                                         'required'=>true
+                                      ];
+                                  @endphp
+
                                 {!! Form::open(['url'=>'academic/study-academic-year/update','class'=>'ss-form-processing']) !!}
 
                                     <div class="row">

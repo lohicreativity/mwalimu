@@ -135,7 +135,20 @@
                               </button>
                             </div>
                             <div class="modal-body">
+                                @php
+                                    $name = [
+                                       'placeholder'=>'Name',
+                                       'class'=>'form-control',
+                                       'required'=>true
+                                    ];
 
+                                    $code = [
+                                       'placeholder'=>'Code',
+                                       'class'=>'form-control',
+                                       'required'=>true
+                                    ];
+
+                                @endphp 
                                 {!! Form::open(['url'=>'academic/award/update','class'=>'ss-form-processing']) !!}
                                   <div class="row">
                                     <div class="form-group col-12">
