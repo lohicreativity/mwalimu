@@ -25,7 +25,7 @@ use App\Domain\Academic\Models\ProgramModuleAssignment;
 use App\Domain\Registration\Models\Student;
 use App\Models\User;
 use App\Utils\Util;
-use Auth, DB;
+use Auth, DB, Validator;
 
 class ExaminationResultController extends Controller
 {
@@ -658,7 +658,7 @@ class ExaminationResultController extends Controller
                   return redirect()->back()->withInput()->withErrors($validation->messages());
                }
             }
-            
+
             DB::beginTransaction();
             $module_assignment = ModuleAssignment::with(['module','studyAcademicYear.academicYear','programModuleAssignment.campusProgram.program'])->find($request->get('module_assignment_id'));
               $academicYear = $module_assignment->studyAcademicYear->academicYear;
