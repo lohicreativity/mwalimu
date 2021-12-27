@@ -211,6 +211,25 @@
                             </div>
                             <div class="modal-body">
                                 @php
+                                    $name = [
+                                       'placeholder'=>'Name',
+                                       'class'=>'form-control',
+                                       'required'=>true
+                                    ];
+
+                                    $code = [
+                                       'placeholder'=>'Code',
+                                       'class'=>'form-control',
+                                       'required'=>true
+                                    ];
+
+                                    $description = [
+                                       'placeholder'=>'Description',
+                                       'class'=>'form-control',
+                                       'rows'=>2,
+                                       'required'=>true
+                                    ];
+
                                    $min_duration = [
                                      'placeholder'=>'Min duration',
                                      'class'=>'form-control',

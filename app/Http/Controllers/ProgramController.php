@@ -26,7 +26,7 @@ class ProgramController extends Controller
            'awards'=>Award::all(),
            'staff'=>User::find(Auth::user()->id)->staff
     	];
-    	return view('dashboard.academic.programs',$data)->withTitle('programs');
+    	return view('dashboard.academic.programs',$data)->withTitle('Programmes');
     }
 
     /**
