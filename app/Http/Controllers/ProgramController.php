@@ -21,12 +21,12 @@ class ProgramController extends Controller
     {
       $staff = User::find(Auth::user()->id)->staff;
       if(Auth::user()->hasRole('hod')){
-          $programs = Program::with(['department','ntaLevel','award'])->where('department_id',$staff->department_id)->latest()->paginate(20)
+          $programs = Program::with(['department','ntaLevel','award'])->where('department_id',$staff->department_id)->latest()->paginate(20);
       }else{
           $programs = Program::with(['department','ntaLevel','award'])->latest()->paginate(20);
       }
     	$data = [
-           'programs'=>,
+           'programs'=>$programs,
            'departments'=>Department::all(),
            'nta_levels'=>NTALevel::all(),
            'awards'=>Award::all(),
