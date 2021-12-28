@@ -623,7 +623,7 @@ $('.ss-select-tags').on('change',function(e){
            $($(e.target).data('year-target')).val(year);
            $($(e.target).data('semester-target')).val(semester_id);
            
-           if(data.module.course_work_based == 0){
+           if(data.module.course_work_based == '0'){
               $($(e.target).data('cw-min-mark-target')).val(0);
               $($(e.target).data('cw-percentage-pass-target')).val(0);
               $($(e.target).data('cw-pass-score-target')).val(0);
