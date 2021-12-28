@@ -98,7 +98,7 @@
     "progressBar" : true
   } 
         @if(!is_string($errors->all()))
-        toastr.error("{{ $errors->all() }}");
+        toastr.error("{{ implode($errors->all(),'\n') }}");
         @else
         toastr.error("{{ $errors->all() }}");
         @endif
