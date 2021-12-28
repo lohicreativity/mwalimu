@@ -627,6 +627,12 @@ $('.ss-select-tags').on('change',function(e){
               $($(e.target).data('cw-min-mark-target')).val(0);
               $($(e.target).data('cw-percentage-pass-target')).val(0);
               $($(e.target).data('cw-pass-score-target')).val(0);
+              $($(e.target).data('final-min-mark-target')).val(100);
+
+              $($(e.target).data('cw-min-mark-target')).attr('readonly','readonly');
+              $($(e.target).data('cw-percentage-pass-target')).attr('readonly','readonly');
+              $($(e.target).data('cw-pass-score-target')).attr('readonly','readonly');
+              $($(e.target).data('final-min-mark-target')).attr('readonly','readonly');
            }
         }
     });
