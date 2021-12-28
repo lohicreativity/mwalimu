@@ -123,7 +123,7 @@
                    <div class="row">
                    <div class="form-group col-8">
                     {!! Form::label('','Module') !!}
-                    <select name="module_id" class="form-control ss-select-tags" required data-year-target="#ss-year" data-semester-target="#ss-semester" data-token="{{ session()->token() }}" data-source-url="{{ url('api/v1/get-module-by-id') }}">
+                    <select name="module_id" class="form-control ss-select-tags" required data-year-target="#ss-year" data-semester-target="#ss-semester" data-token="{{ session()->token() }}" data-source-url="{{ url('api/v1/get-module-by-id') }}" data-cw-min-mark-target="#ss-course-work-min-mark" data-cw-percentage-pass="#ss-course-work-percentage-pass">
                        <option value="">Select Module</option>
                        @foreach($modules as $module)
                        <option value="{{ $module->id }}">{{ $module->name }} - {{ $module->code }}</option>
@@ -145,6 +145,7 @@
                     <div class="form-group col-4">
                     {!! Form::label('','Category') !!}
                     <select name="category" class="form-control" required>
+                       <option value="">Select Category</option>
                        <option value="COMPULSORY">Compulsory</option>
                        <option value="OPTIONAL">Optional</option>
                     </select>
@@ -152,6 +153,7 @@
                     <div class="form-group col-4">
                     {!! Form::label('','Type') !!}
                     <select name="type" class="form-control" required>
+                       <option value="">Select Type</option>
                        <option value="CORE">Core</option>
                        <option value="FUNDAMENTAL">Fundamental</option>
                     </select>
@@ -360,6 +362,7 @@
                                       <div class="form-group col-4">
                                       {!! Form::label('','Category') !!}
                                       <select name="category" class="form-control" required>
+                                         <option value="">Select Category</option>
                                          <option value="COMPULSORY" @if($assignment->category == 'COMPULSORY') selected="selected" @endif>Compulsory</option>
                                          <option value="OPTIONAL" @if($assignment->category == 'OPTIONAL') selected="selected" @endif>Optional</option>
                                       </select>
@@ -367,13 +370,14 @@
                                       <div class="form-group col-4">
                                       {!! Form::label('','Type') !!}
                                       <select name="type" class="form-control" required>
+                                         <option value="">Select Type</option>
                                          <option value="CORE" @if($assignment->type == 'CORE') selected="selected" @endif>Core</option>
                                          <option value="FUNDAMENTAL" @if($assignment->type == 'FUNDAMENTAL') selected="selected" @endif>Fundamental</option>
                                       </select>
                                       </div>
                                       <div class="form-group col-4">
                                       {!! Form::label('','Semester') !!}
-                                      <select name="semester_id" class="form-control" required id="ss-semester-{{ $module->id }}">
+                                      <select name="semester_id" class="form-control" required id="ss-semester-{{ $assignment->module->id }}">
                                          <option value="">Select Semester</option>
                                          @foreach($semesters as $semester)
                                          <option value="{{ $semester->id }}" @if($assignment->semester_id == $semester->id) selected="selected" @endif>{{ $semester->name }}</option>

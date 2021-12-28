@@ -50,9 +50,17 @@ class Module extends Model
     /**
      * Set name attribute
      */
+    public function setCodeAttribute($value)
+    {
+        $this->attributes['code'] = substr($value, 0,3).' '.str_replace(' ','',substr($value, 3));
+    }
+
+    /**
+     * Set name attribute
+     */
     public function setNameAttribute($value)
     {
-        $this->attributes['name'] = ucwords($value);
+        $this->attributes['name'] = ucwords(strtolower($value));
     }
 
     /**

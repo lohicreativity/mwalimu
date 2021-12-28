@@ -19,12 +19,13 @@ class ProgramController extends Controller
      */
     public function index()
     {
+      $staff = User::find(Auth::user()->id)->staff;
     	$data = [
-           'programs'=>Program::with(['department','ntaLevel','award'])->latest()->paginate(20),
+           'programs'=>Program::with(['department','ntaLevel','award'])->where('department_id',$staff->department_id)->latest()->paginate(20),
            'departments'=>Department::all(),
            'nta_levels'=>NTALevel::all(),
            'awards'=>Award::all(),
-           'staff'=>User::find(Auth::user()->id)->staff
+           'staff'=>$staff
     	];
     	return view('dashboard.academic.programs',$data)->withTitle('Programmes');
     }

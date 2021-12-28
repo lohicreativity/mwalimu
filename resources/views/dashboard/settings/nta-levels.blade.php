@@ -130,7 +130,7 @@
                     <td>{{ $level->max_duration }}</td>
                     <td>
                       @can('edit-nta-level')
-                      <a class="btn btn-info btn-sm" href="#" @if(count($level->programs) != 0) data-toggle="modal" data-target="#ss-edit-level-{{ $level->id }}" @else disabled="disabled" @endif>
+                      <a class="btn btn-info btn-sm" href="#" @if(count($level->programs) == 0) data-toggle="modal" data-target="#ss-edit-level-{{ $level->id }}" @else disabled="disabled" @endif>
                               <i class="fas fa-pencil-alt">
                               </i>
                               Edit
@@ -210,7 +210,7 @@
                       </div>
                       <!-- /.modal -->
                       @can('delete-nta-level')
-                      <a class="btn btn-danger btn-sm" href="#" @if(count($level->programs) != 0) data-toggle="modal" data-target="#ss-delete-level-{{ $level->id }}" @else disabled="disabled" @endif>
+                      <a class="btn btn-danger btn-sm" href="#" @if(count($level->programs) == 0) data-toggle="modal" data-target="#ss-delete-level-{{ $level->id }}" @else disabled="disabled" @endif>
                               <i class="fas fa-trash">
                               </i>
                               Delete
