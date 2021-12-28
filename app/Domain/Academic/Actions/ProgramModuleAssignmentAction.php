@@ -42,6 +42,9 @@ class ProgramModuleAssignmentAction implements ProgramModuleAssignmentInterface{
                     $req->save();
 
                     return redirect()->back()->with('info','Module assignment request sent successfully');
+                }else{
+                    $assignment->policy_assigned = 1;
+                    $assignment->save();   
                 }
                 return redirect()->back()->with('message','Programme module assignment created successfully');
 	}
