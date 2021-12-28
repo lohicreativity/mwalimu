@@ -43,7 +43,7 @@ class ModuleController extends Controller
             'name'=>'required|unique:modules',
             'code'=>'required|unique:modules',
             'credit'=>'required|numeric',
-            'syllabus'=>'required|mimes:pdf'
+            'syllabus'=>'mimes:pdf'
         ]);
 
         if($validation->fails()){

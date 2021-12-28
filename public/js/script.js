@@ -626,6 +626,7 @@ $('.ss-select-tags').on('change',function(e){
            if(data.module.course_work_based == 0){
               $($(e.target).data('cw-min-mark-target')).val(0);
               $($(e.target).data('cw-percentage-pass-target')).val(0);
+              $($(e.target).data('cw-pass-score-target')).val(0);
            }
         }
     });
