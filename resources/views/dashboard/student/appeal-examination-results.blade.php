@@ -50,10 +50,10 @@
                  <table class="table table-bordered">
                    @foreach($years_of_studies as $key=>$years)
                    <tr>
-                      <td><a href="{{ url('student/results/'.$student->id.'/'.$years[0]->id.'/'.$key.'/show-student-overall-results') }}">Overall Results for Year {{ $key }}</a></td>
+                      <td>Year {{ $key }}</td>
                       <td>
                         @foreach($years as $yr)
-                        <p class="ss-no-margin"><a href="{{ url('student/results/'.$yr->id.'/'.$key.'/report') }}">Results in Academic Year {{ $yr->academicYear->year}}</a></p>
+                        <p class="ss-no-margin"><a href="{{ url('student/results/'.$yr->id.'/'.$key.'/report/appeal') }}">Results in Academic Year {{ $yr->academicYear->year}}</a></p>
                         @endforeach
                       </td>
                    </tr>

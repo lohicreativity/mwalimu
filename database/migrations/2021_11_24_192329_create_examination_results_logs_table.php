@@ -20,6 +20,8 @@ class CreateExaminationResultsLogsTable extends Migration
             $table->decimal('course_work_score',8,1)->nullable();
             $table->decimal('final_score',8,1)->nullable();
             $table->decimal('supp_score',8,1)->nullable();
+            $table->decimal('appeal_score',8,1)->nullable();
+            $table->decimal('appeal_supp_score',8,1)->nullable();
             $table->decimal('total_score',8,1)->nullable();
             $table->string('exam_type')->default('FINAL');
             $table->string('exam_category')->default('FIRST');

@@ -32,6 +32,7 @@ use App\Http\Controllers\ResultPublicationController;
 use App\Http\Controllers\CourseWorkResultController;
 use App\Http\Controllers\ClearanceController;
 use App\Http\Controllers\GraduantController;
+use App\Http\Controllers\AppealController;
 
 /*
 |--------------------------------------------------------------------------
@@ -268,5 +269,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 	Route::post('graduants/sort',[GraduantController::class,'sortGraduants']);
 	Route::get('graduants',[GraduantController::class,'showGraduants']);
 	Route::get('excluded-graduants',[GraduantController::class,'showExcludedGraduants']);
+
+
+	Route::get('results/appeals',[AppealController::class,'index']);
 
 });

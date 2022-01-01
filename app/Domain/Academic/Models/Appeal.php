@@ -22,6 +22,22 @@ class Appeal extends Model
     }
 
     /**
+     * Establish one to many relationship with examination results
+     */
+    public function examinationResult()
+    {
+        return $this->belongsTo(ExaminationResult::class,'examination_result_id');
+    }
+
+    /**
+     * Establish one to many relationship with students
+     */
+    public function moduleAssignment()
+    {
+        return $this->belongsTo(moduleAssignment::class,'module_assignment_id');
+    }
+
+    /**
      * Establish one to many polymorphic relationship with payments
      */
     public function payment()

@@ -648,7 +648,7 @@ class ExaminationResultController extends Controller
         try{
             $validation = Validator::make($request->all(),[
                 'final_score'=>'numeric|min:0|max:100',
-                'supp_score'=>'numeric|min:0|max:100',
+                'supp_score'=>'min:0|max:100',
             ]);
 
             if($validation->fails()){
@@ -690,11 +690,18 @@ class ExaminationResultController extends Controller
                 $result->student_id = $request->get('student_id');
                 if($request->has('final_score')){
                 $result->course_work_score = $request->get('course_work_score');
-                $result->final_score = ($request->get('final_score')*$policy->final_min_mark)/100;
+                $result->final_score = ($request->get('final_score')*$module_assignment->programModuleAssignment->final_min_mark)/100;
                 }else{
                    $result->final_score = null;
                 }
+                if($request->get('appeal_score')){
+                   $result->appeal_score = ($request->get('appeal_score')*$module_assignment->programModuleAssignment->final_min_mark)/100;
+                }
+                if($request->get('appeal_supp_score')){
+                   $result->appeal_supp_score = $request->get('appeal_supp_score');
+                }
                 if($request->get('supp_score')){
+                   $result->exam_type = 'SUPP';
                    $result->supp_score = $request->get('supp_score');
                    $result->supp_processed_by_user_id = Auth::user()->id;
                    $result->supp_processed_at = now();
@@ -713,10 +720,10 @@ class ExaminationResultController extends Controller
                 if($special_exam && !$request->get('final_score')){
                    $result->final_remark = 'POSTPONED';
                 }else{
-                   $result->final_remark = $policy->final_pass_score <= $result->final_score? 'PASS' : 'FAIL';
+                   $result->final_remark = $module_assignment->programModuleAssignment->final_pass_score <= $result->final_score? 'PASS' : 'FAIL';
                 }
                 if($result->supp_score){
-                   $result->final_exam_remark = $policy->module_pass_score <= $result->supp_score? 'PASS' : 'FAIL';
+                   $result->final_exam_remark = $module_assignment->programModuleAssignment->module_pass_score <= $result->supp_score? 'PASS' : 'FAIL';
                 }
                 $result->final_uploaded_at = now();
                 $result->uploaded_by_user_id = Auth::user()->id;
@@ -866,6 +873,10 @@ class ExaminationResultController extends Controller
                     }
 
                     $grading_policy = GradingPolicy::where('nta_level_id',$assignment->module->ntaLevel->id)->where('study_academic_year_id',$assignment->studyAcademicYear->id)->where('min_score','<=',round($processed_result->total_score))->where('max_score','>=',round($processed_result->total_score))->first();
+
+                    if($processed_result->appeal_score){
+                      $grading_policy = GradingPolicy::where('nta_level_id',$assignment->module->ntaLevel->id)->where('study_academic_year_id',$assignment->studyAcademicYear->id)->where('min_score','<=',round($processed_result->appeal_score))->where('max_score','>=',round($processed_result->appeal_score))->first();
+                    }
       
                     if(!$grading_policy){
                        DB::rollback();

@@ -11,6 +11,7 @@ use App\Domain\Academic\Models\ElectiveModuleLimit;
 use App\Domain\Academic\Models\ProgramModuleAssignment;
 use App\Domain\Academic\Models\AnnualRemark;
 use App\Domain\Academic\Models\ExaminationResult;
+use App\Domain\Academic\Models\ModuleAssignment;
 use App\Domain\Registration\Models\Student;
 use App\Domain\Academic\Models\ResultPublication;
 use App\Models\User;
@@ -239,6 +240,101 @@ class StudentController extends Controller
             'student'=>$student
          ];
          return view('dashboard.student.examination-results-report',$data)->withTitle('Examination Results');
+    }
+
+
+    /**
+     * Display student overall results
+     */
+    public function showStudentOverallResults(Request $request, $student_id, $ac_yr_id, $yr_of_study)
+    {
+         $student = Student::with(['campusProgram.program'])->find($student_id);
+         $study_academic_year = StudyAcademicYear::with('academicYear')->find($ac_yr_id);
+         $semesters = Semester::with(['remarks'=>function($query) use ($student, $ac_yr_id, $yr_of_study){
+           $query->where('student_id',$student->id)->where('study_academic_year_id',$ac_yr_id)->where('year_of_study',$yr_of_study);
+         }])->get();
+         $results = ExaminationResult::whereHas('moduleAssignment',function($query) use ($ac_yr_id, $student_id){
+             $query->where('study_academic_year_id',$ac_yr_id)->where('student_id',$student_id);
+         })->with(['moduleAssignment.programModuleAssignment'=>function($query) use ($ac_yr_id,$yr_of_study){
+           $query->where('study_academic_year_id',$ac_yr_id)->where('year_of_study',$yr_of_study);
+         },'moduleAssignment','moduleAssignment.module','carryHistory.carrableResults'=>function($query){
+            $query->latest();
+         },'retakeHistory.retakableResults'=>function($query){
+            $query->latest();
+         }])->where('student_id',$student->id)->get();
+
+         $core_programs = ProgramModuleAssignment::with(['module'])->where('study_academic_year_id',$ac_yr_id)->where('year_of_study',$yr_of_study)->where('category','COMPULSORY')->where('campus_program_id',$student->campus_program_id)->get();
+         $optional_programs = ProgramModuleAssignment::whereHas('students',function($query) use($student_id){
+             $query->where('id',$student_id);
+             })->with(['module'])->where('study_academic_year_id',$ac_yr_id)->where('year_of_study',$yr_of_study)->where('category','OPTIONAL')->get();
+
+          $annual_remark = AnnualRemark::where('student_id',$student_id)->where('study_academic_year_id',$ac_yr_id)->where('year_of_study',$yr_of_study)->first();
+         // if(count($optional_programs) == 0){
+         //   $optional_programs = ProgramModuleAssignment::with(['module'])->where('study_academic_year_id',$ac_yr_id)->where('year_of_study',$yr_of_study)->where('category','OPTIONAL')->get();
+         // }
+
+         $core_program_modules = ModuleAssignment::whereHas('programModuleAssignment',function($query) use ($ac_yr_id,$yr_of_study){
+                   $query->where('study_academic_year_id',$ac_yr_id)->where('year_of_study',$yr_of_study)->where('category','COMPULSORY');
+                 })->get();
+            $opt_program_modules = ModuleAssignment::whereHas('programModuleAssignment.students',function($query) use($student){
+                     $query->where('id',$student->id);
+                 })->whereHas('programModuleAssignment',function($query) use($ac_yr_id,$yr_of_study){
+                     $query->where('study_academic_year_id',$ac_yr_id)->where('year_of_study',$yr_of_study)->where('category','OPTIONAL');
+                })->get();
+
+            $publications = ResultPublication::where('study_academic_year_id',$ac_yr_id)->where('status','PUBLISHED')->get();
+
+              $moduleIds = [];
+              foreach ($core_program_modules as $module) {
+                foreach($results as $result){
+                   if($result->module_assignment_id == $module->id){
+                      $moduleIds[] = $module->id;
+                   }
+                }
+              }
+
+              foreach ($opt_program_modules as $module) {
+                foreach($results as $result){
+                   if($result->module_assignment_id == $module->id){
+                      $moduleIds[] = $module->id;
+                   }
+                }
+              }
+              
+              $missing_modules = [];
+              foreach ($core_program_modules as $module) {
+                 if(!in_array($module->id, $moduleIds)){
+                    $missing_modules[$module->programModuleAssignment->semester_id][] = $module;
+                 }
+              }
+              foreach ($opt_program_modules as $module) {
+                 if(!in_array($module->id, $moduleIds)){
+                    $missing_modules[$module->programModuleAssignment->semester_id][] = $module;
+                 }
+              }
+
+         $data = [
+          'semesters'=>$semesters,
+          'annual_remark'=>$annual_remark,
+          'results'=>$results,
+          'year_of_study'=>$yr_of_study,
+          'study_academic_year'=>$study_academic_year,
+          'core_programs'=>$core_programs,
+          'optional_programs'=>$optional_programs,
+          'missing_modules' => $missing_modules,
+          'student'=>$student,
+          'publications'=>$publications,
+          'staff'=>User::find(Auth::user()->id)->staff
+         ];
+         return view('dashboard.student.examination-results-overall-report',$data)->withTitle('Student Overall Results');
+    }
+
+    /**
+     * Results appeal
+     */
+    public function resultsAppeal(Request $request)
+    {
+        return view('dashboard.student.results-appeal')->withTItle('Results Appeal');
     }
 
     /**

@@ -4,6 +4,7 @@ namespace App\Domain\Academic\Actions;
 
 use Illuminate\Http\Request;
 use App\Domain\Academic\Models\ModuleAssignment;
+use App\Domain\Academic\Models\ProgramModuleAssignment;
 use App\Domain\Academic\Repositories\Interfaces\ModuleAssignmentInterface;
 use Auth;
 

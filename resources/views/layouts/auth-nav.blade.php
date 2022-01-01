@@ -37,6 +37,12 @@
                   <p>My Results</p>
                 </a>
               </li>
+              <li class="nav-item">
+                <a href="{{ url('student/results/appeal') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Results Appleal</p>
+                </a>
+              </li>
             </ul>
           </li>
           <li class="nav-item">
@@ -162,7 +168,7 @@
               </li>
               @endcan
               <li class="nav-item">
-                <a href="{{ url('academic/results?study_academic_year_id='.session('active_academic_year_id').'&campus_id='.session('staff_campus_id')) }}" class="nav-link">
+                <a href="{{ url('academic/results/appeals?study_academic_year_id='.session('active_academic_year_id').'&campus_id='.session('staff_campus_id')) }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>{{ __('Results Appeals') }}</p>
                 </a>
