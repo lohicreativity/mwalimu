@@ -22,7 +22,7 @@ class AssessmentPlanController extends Controller
     	$components = CourseWorkComponent::where('module_assignment_id',$request->get('module_assignment_id'))->get();
 
         // Check is assessment plan does not exceed module weight
-        $module_assignment = ModuleAssignment::find($request->get('module_assignment_id'));
+        $module_assignment = ModuleAssignment::with('programModuleAssignment')->find($request->get('module_assignment_id'));
         $module = Module::with('ntaLevel')->find($module_assignment->module_id);
         $sum = 0;
         foreach($components as $comp){
@@ -31,11 +31,11 @@ class AssessmentPlanController extends Controller
             }
         }
 
-        if($sum > $policy->course_work_min_mark){
+        if($sum > $module_assignment->programModuleAssignment->course_work_min_mark){
             return redirect()->back()->withInput()->with('error','Assessment plans marks cannot exceed module weight');
         }
 
-        if($sum < $policy->course_work_min_mark){
+        if($sum < $module_assignment->programModuleAssignment->course_work_min_mark){
             return redirect()->back()->withInput()->with('error','Assessment plans marks cannot be below module weight');
         }
 
@@ -90,7 +90,7 @@ class AssessmentPlanController extends Controller
         }
         
         // Check is assessment plan does not exceed module weight
-        $module_assignment = ModuleAssignment::find($request->get('module_assignment_id'));
+        $module_assignment = ModuleAssignment::with('programModuleAssignment')->find($request->get('module_assignment_id'));
         $module = Module::with('ntaLevel')->find($module_assignment->module_id);
         $plans = AssessmentPlan::where('module_assignment_id',$request->get('module_assignment_id'))->get();
         $sum = 0;
@@ -98,11 +98,11 @@ class AssessmentPlanController extends Controller
            $sum += $plan->marks;
         }
         $sum += $request->get('marks');
-        if($sum > $module->course_work){
+        if($sum > $module_assignment->programModuleAssignment->course_work_min_mark){
             return redirect()->back()->withInput()->with('error','Assessment plans marks cannot exceed module weight');
         }
 
-        if($sum < $policy->course_work_min_mark){
+        if($sum < $module_assignment->programModuleAssignment->course_work_min_mark){
             return redirect()->back()->withInput()->with('error','Assessment plans marks cannot be below module weight');
         }
 
