@@ -194,7 +194,10 @@ class ProgramModuleAssignmentController extends Controller
     public function destroy($id)
     {
         try{
-            $program = ProgramModuleAssignment::findOrFail($id);
+            $program = ProgramModuleAssignment::with('moduleAssignments')->findOrFail($id);
+            if(count($program->moduleAssignments) != 0){
+                return redirect()->back()->with('error','Module already assigned staff');
+            }
             $program->delete();
             return redirect()->back()->with('message','Program module assignment deleted successfully');
         }catch(Exception $e){
