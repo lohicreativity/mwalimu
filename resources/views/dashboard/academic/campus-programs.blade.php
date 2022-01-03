@@ -61,7 +61,7 @@
                     {!! Form::label('','Programmes') !!}
                     <select name="program_id" class="form-control" required>
                       <option value="">Select Programme</option>
-                      @foreach($programs as $prog)
+                      @foreach($filtered_programs as $prog)
                       <option value="{{ $prog->id }}">{{ $prog->name }} - {{ $prog->code }}</option>
                       @endforeach
                     </select>

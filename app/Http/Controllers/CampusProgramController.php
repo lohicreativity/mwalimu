@@ -24,10 +24,17 @@ class CampusProgramController extends Controller
     public function index($id)
     {
     	try{
+        $programids = [];
+        $campus_programs = CampusProgram::with('program')->where('campus_id',$id)->get();
+        foreach ($campus_programs as $key => $prog) {
+           $programIds[] = $prog->id;
+        }
+
 	    	$data = [
 	           'campus_programs'=>CampusProgram::with('program')->where('campus_id',$id)->paginate(20),
 	           'campus'=>Campus::findOrFail($id),
 	           'programs'=>Program::all(),
+             'filtered_programs'=>Program::whereNotIn('id',$programIds)->get(),
                'staff'=>User::find(Auth::user()->id)->staff
 	    	];
 	    	return view('dashboard.academic.campus-programs',$data)->withTitle('Campus Programs');
@@ -123,8 +130,8 @@ class CampusProgramController extends Controller
             if(ProgramModuleAssignment::where('campus_program_id',$program->id)->count() != 0 || Student::where('campus_program_id',$program->id)->count() != 0){
                return redirect()->back()->with('error','Campus program cannot be deleted because it has program mudule assignments or students');
             }else{
-              $program->delete();
-              return redirect()->back()->with('message','Campus program deleted successfully');
+               $program->delete();
+               return redirect()->back()->with('message','Campus program deleted successfully');
             }
         }catch(Exception $e){
             return redirect()->back()->with('error','Unable to get the resource specified in this request');

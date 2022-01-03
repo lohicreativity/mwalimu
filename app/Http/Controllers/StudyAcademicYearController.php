@@ -51,6 +51,10 @@ class StudyAcademicYearController extends Controller
            }
         }
 
+        if(AcademicYear::where('year',$request->get('academic_year_id'))->count() != 0){
+            return redirect()->back()->with('error','Study academic year aleady exists');
+        }
+
         if(strtotime($request->get('begin_date')) > strtotime($request->get('end_date'))){
 			return redirect()->back()->with('error','End date cannot be less than begin date');
 		}elseif(strtotime($request->get('begin_date')) < strtotime(now()->format('Y-m-d'))){
