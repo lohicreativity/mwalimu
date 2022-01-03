@@ -44,6 +44,10 @@ class ModuleAssignmentRequestController extends Controller
            }
         }
 
+        if(ModuleAssignmentRequest::where('study_academic_year_id',$request->get('study_academic_year_id'))->where('campus_program_id',$request->get('campus_program_id'))->where('program_module_assignment_id',$request->get('program_module_assignment_id'))->where('department_id',$request->get('department_id'))->count() != 0){
+            return redirect()->back()->with('error','Facilitator already requested');
+        }
+
 
         (new ModuleAssignmentRequestAction)->store($request);
 
