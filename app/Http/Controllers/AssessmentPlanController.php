@@ -24,10 +24,6 @@ class AssessmentPlanController extends Controller
         // Check is assessment plan does not exceed module weight
         $module_assignment = ModuleAssignment::find($request->get('module_assignment_id'));
         $module = Module::with('ntaLevel')->find($module_assignment->module_id);
-        $policy = ExaminationPolicy::where('nta_level_id',$module->ntaLevel->id)->where('study_academic_year_id',$module_assignment->study_academic_year_id)->first();
-        if(!$policy){
-            return redirect()->back()->withInput()->with('error','No examination policy defined for this module NTA level and study academic year');
-        }
         $sum = 0;
         foreach($components as $comp){
             for($i = 1; $i <= $comp->quantity; $i++){
