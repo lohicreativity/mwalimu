@@ -90,7 +90,7 @@
                       <select name="campus_id" class="form-control" required>
                          <option value="">Select Campus</option>
                          @foreach($campuses as $campus)
-                         <option value="{{ $campus->id }}">{{ $campus->name }}</option>
+                         <option value="{{ $campus->id }}" @if($campus->id == session('staff_campus_id')) selected="selected" @endif>{{ $campus->name }}</option>
                          @endforeach
                       </select>
                     </div>
@@ -99,7 +99,7 @@
                       <select name="semester_id" class="form-control" required>
                          <option value="">Select Semester</option>
                          @foreach($semesters as $semester)
-                         <option value="{{ $semester->id }}">{{ $semester->name }}</option>
+                         <option value="{{ $semester->id }}" @if($semester->id == session('active_semester_id')) selected="selected" @endif>{{ $semester->name }}</option>
                          @endforeach
                       </select>
                     </div>

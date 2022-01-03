@@ -39,7 +39,7 @@ class ElectivePolicyController extends Controller
     public function store(Request $request)
     {
     	$validation = Validator::make($request->all(),[
-            'number_of_options'=>'required'
+            'number_of_options'=>'required|numeric|min:1'
         ]);
 
         if($validation->fails()){
@@ -48,6 +48,10 @@ class ElectivePolicyController extends Controller
            }else{
               return redirect()->back()->withInput()->withErrors($validation->messages());
            }
+        }
+
+        if(ElectivePolicy::where('year_of_study',$request->get('year_of_study'))->where('semester_id',$request->get('semester_id'))->where('campus_program_id',$request->get('campus_program_id'))->where('study_academic_year_id',$request->get('study_academic_year_id'))->count() != 0){
+          return redirect()->back()->with('error','Elective policy already exists for this programme');
         }
 
         if(ProgramModuleAssignment::where('year_of_study',$request->get('year_of_study'))->where('semester_id',$request->get('semester_id'))->where('campus_program_id',$request->get('campus_program_id'))->where('category','OPTIONAL')->count() <= $request->get('number_of_options')){
