@@ -78,6 +78,7 @@
                 <table id="example2" class="table table-bordered table-hover">
                   <thead>
                   <tr>
+                    <th>Programme</th>
                     <th>Module</th>
                     <th>Code</th>
                     <th>Year</th>
@@ -92,6 +93,7 @@
                   <tbody>
                   @foreach($requests as $request)
                   <tr>
+                    <td>{{ $request->programModuleAssignment->campusProgram->program->name }}</td>
                     <td>{{ $request->programModuleAssignment->module->name }}</td>
                     <td>{{ $request->programModuleAssignment->module->code }}</td>
                     <td>{{ $request->programModuleAssignment->year_of_study }}</td>
