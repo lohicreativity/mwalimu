@@ -44,14 +44,17 @@ class ProgramModuleAssignmentAction implements ProgramModuleAssignmentInterface{
                 $module = Module::find($request->get('module_id'));
                 $staff = User::find(Auth::user()->id)->staff;
                 if($module->department_id != $staff->department_id){
-                $assignment->policy_assigned = 0;
-                $assignment->save();
-
-                
                     $req = new ProgramModuleAssignmentRequest;
                     $req->staff_id = $staff->id;
                     $req->program_module_assignment_id = $assignment->id;
-                    $req->save();
+                  if($prog){
+                    $assignment->policy_assigned = 1;
+                    $req->is_ready = 1;
+                  }else{
+                    $assignment->policy_assigned = 0;
+                  }
+                  $assignment->save();
+                  $req->save();
 
                     return redirect()->back()->with('info','Module assignment request sent successfully');
                 }else{

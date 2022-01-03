@@ -100,9 +100,9 @@
                     <td>{{ $request->programModuleAssignment->category }}</td>
                     <td>{{ $request->programModuleAssignment->type }}</td>
                     <td>@if($request->is_ready == 1)
-                          <span class="label lebel-success">Ready</span>
+                          <span class="badge badge-success">Attended</span>
                         @else
-                          <span class="label lebel-warning">Not Ready</span>
+                          <span class="badge badge-warning">Not Attended</span>
                         @endif
                     </td>
                     <td>
