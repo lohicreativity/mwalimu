@@ -17,6 +17,7 @@ class CreateProgramModuleAssignmentRequestsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('staff_id');
             $table->unsignedBigInteger('program_module_assignment_id');
+            $table->tinyInteger('is_ready')->default(0);
             $table->timestamps();
 
             $table->foreign('staff_id')->references('id')->on('staffs')->onUpdate('cascade');

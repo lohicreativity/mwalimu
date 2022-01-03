@@ -21,13 +21,25 @@ class ProgramModuleAssignmentAction implements ProgramModuleAssignmentInterface{
                 $assignment->year_of_study = $request->get('year_of_study');
                 $assignment->category = $request->get('category');
                 $assignment->type = $request->get('type');
-                $assignment->course_work_min_mark = $request->get('course_work_min_mark');
-                $assignment->course_work_percentage_pass = $request->get('course_work_percentage_pass');
-                $assignment->course_work_pass_score = $request->get('course_work_pass_score');
-                $assignment->final_min_mark = $request->get('final_min_mark');
-                $assignment->final_percentage_pass = $request->get('final_percentage_pass');
-                $assignment->final_pass_score = $request->get('final_pass_score');
-                $assignment->module_pass_mark = $request->get('module_pass_mark');
+
+                $prog = ProgramModuleAssignment::where('module_id',$request->get('module_id'))->where('year_of_study',$request->get('year_of_study'))->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('policy_assigned',1)->first();
+                if($prog){
+                      $assignment->course_work_min_mark = $prog->course_work_min_mark;
+                      $assignment->course_work_percentage_pass = $prog->course_work_percentage_pass;
+                      $assignment->course_work_pass_score = $prog->course_work_pass_score;
+                      $assignment->final_min_mark = $prog->final_min_mark;
+                      $assignment->final_percentage_pass = $prog->final_percentage_pass;
+                      $assignment->final_pass_score = $prog->final_pass_score;
+                      $assignment->module_pass_mark = $prog->module_pass_mark;
+                }else{
+                        $assignment->course_work_min_mark = $request->get('course_work_min_mark');
+                        $assignment->course_work_percentage_pass = $request->get('course_work_percentage_pass');
+                        $assignment->course_work_pass_score = $request->get('course_work_pass_score');
+                        $assignment->final_min_mark = $request->get('final_min_mark');
+                        $assignment->final_percentage_pass = $request->get('final_percentage_pass');
+                        $assignment->final_pass_score = $request->get('final_pass_score');
+                        $assignment->module_pass_mark = $request->get('module_pass_mark');
+                }
 
                 $module = Module::find($request->get('module_id'));
                 $staff = User::find(Auth::user()->id)->staff;
@@ -67,5 +79,20 @@ class ProgramModuleAssignmentAction implements ProgramModuleAssignmentInterface{
                 $assignment->module_pass_mark = $request->get('module_pass_mark');
                 $assignment->policy_assigned = 1;
                 $assignment->save();
+
+                ProgramModuleAssignment::where('module_id',$request->get('module_id'))->where('year_of_study',$request->get('year_of_study'))->where('study_academic_year_id',$request->get('study_academic_year_id'))->update([
+                        'course_work_min_mark'=>$request->get('course_work_min_mark'),
+                        'course_work_pass_score'=>$request->get('course_work_pass_score'),
+                        'course_work_percentage_pass'=>$request->get('course_work_percentage_pass'),
+                        'final_min_mark'=>$request->get('final_min_mark'),
+                        'final_pass_score'=>$request->get('final_pass_score'),
+                        'final_percentage_pass'=>$request->get('final_percentage_pass'),
+                        'module_pass_mark'=>$request->get('module_pass_mark'),
+                        'policy_assigned'=>1
+                ]);
+
+                ProgramModuleAssignmentRequest::whereHas('ProgramModuleAssignment',function($query) use ($request){
+                        $query->where('module_id',$request->get('module_id'))->where('year_of_study',$request->get('year_of_study'))->where('study_academic_year_id',$request->get('study_academic_year_id');
+                })->update(['is_ready',1]);
 	}
 }

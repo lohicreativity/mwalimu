@@ -85,6 +85,7 @@
                     <th>Semester</th>
                     <th>Category</th>
                     <th>Type</th>
+                    <th>Status</th>
                     <th>Actions</th>
                   </tr>
                   </thead>
@@ -98,6 +99,12 @@
                     <td>{{ $request->programModuleAssignment->semester->name }}</td>
                     <td>{{ $request->programModuleAssignment->category }}</td>
                     <td>{{ $request->programModuleAssignment->type }}</td>
+                    <td>@if($request->is_ready == 1)
+                          <span class="label lebel-success">Ready</span>
+                        @else
+                          <span class="label lebel-warning">Not Ready</span>
+                        @endif
+                    </td>
                     <td>
                       @can('edit-programme-module-assignment')
                       <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-edit-module-assignment-{{ $request->programModuleAssignment->id }}">
