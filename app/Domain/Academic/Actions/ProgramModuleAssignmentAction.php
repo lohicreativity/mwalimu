@@ -91,8 +91,8 @@ class ProgramModuleAssignmentAction implements ProgramModuleAssignmentInterface{
                         'policy_assigned'=>1
                 ]);
 
-                ProgramModuleAssignmentRequest::whereHas('ProgramModuleAssignment',function($query) use ($request){
-                        $query->where('module_id',$request->get('module_id'))->where('year_of_study',$request->get('year_of_study'))->where('study_academic_year_id',$request->get('study_academic_year_id');
+                ProgramModuleAssignmentRequest::whereHas('programModuleAssignment',function($query) use ($request){
+                        $query->where('module_id',$request->get('module_id'))->where('year_of_study',$request->get('year_of_study'))->where('study_academic_year_id',$request->get('study_academic_year_id'));
                 })->update(['is_ready',1]);
 	}
 }
