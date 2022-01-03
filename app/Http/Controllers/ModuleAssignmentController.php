@@ -93,9 +93,6 @@ class ModuleAssignmentController extends Controller
             $module_assignment = ModuleAssignment::with(['module.ntaLevel','programModuleAssignment.campusProgram.program','studyAcademicYear'])->findOrFail($id);
             $policy = ExaminationPolicy::where('nta_level_id',$module_assignment->module->ntaLevel->id)->where('study_academic_year_id',$module_assignment->study_academic_year_id)->where('type',$module_assignment->programModuleAssignment->campusProgram->program->category)->first();
 
-            if(!$policy){
-                  return redirect()->back()->with('error','No examination policy defined for this module NTA level and study academic year');
-            }
             $final_upload_status = false;
              if(ExaminationResult::where('module_assignment_id',$module_assignment->id)->where('final_uploaded_at','!=',null)->count() != 0){
                 $final_upload_status = true;
