@@ -89,7 +89,13 @@
                       <select name="campus_program_id" class="form-control" required>
                          <option value="">Select Campus Programme</option>
                          @foreach($campus_programs as $prog)
+                         @if(Auth::user()->hasRole('hod'))
+                         @if($staff->campus_id == $prog->campus_id && $staff->department_id == $prog->program->department_id)
                          <option value="{{ $prog->id }}">{{ $prog->program->name }} - {{ $prog->campus->name }}</option>
+                         @endif
+                         @else
+                         <option value="{{ $prog->id }}">{{ $prog->program->name }} - {{ $prog->campus->name }}</option>
+                         @endif
                          @endforeach
                       </select>
                     </div>
