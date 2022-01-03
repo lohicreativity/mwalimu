@@ -18,14 +18,17 @@ class ProgramModuleAssignmentRequestController extends Controller
      */
     public function index(Request $request)
     {
+    	$staff = User::find(Auth::user()->id)->staff;
     	$data = [
            'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
            'study_academic_year'=>$request->has('study_academic_year_id')? StudyAcademicYear::with('academicYear')->find($request->get('study_academic_year_id')) : null,
            'inclusive_modules'=>Module::all(),
            'semesters'=>Semester::all(),
-           'staff'=>User::find(Auth::user()->id)->staff,
+           'staff'=>$staff,
            'requests'=>ProgramModuleAssignmentRequest::whereHas('programModuleAssignment',function($query) use ($request){
            	       $query->where('study_academic_year_id',$request->get('study_academic_year_id'));
+               })->whereHas('programModuleAssignment.module',function($query) use ($staff){
+           	       $query->where('department_id',$staff->department_id);
                })->with(['programModuleAssignment.module','programModuleAssignment.campusProgram.program'])->paginate(20),
            'request'=>$request
     	];

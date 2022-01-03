@@ -52,7 +52,7 @@ class Module extends Model
      */
     public function setCodeAttribute($value)
     {
-        $this->attributes['code'] = substr($value, 0,3).' '.str_replace(' ','',substr($value, 3));
+        $this->attributes['code'] = strtoupper(substr($value, 0,3)).' '.strtoupper(str_replace(' ','',substr($value, 3)));
     }
 
     /**

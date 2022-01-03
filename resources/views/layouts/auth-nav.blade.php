@@ -348,12 +348,6 @@
                   <p>{{ __('Programme Modules') }}</p>
                 </a>
               </li>
-              <li class="nav-item">
-                <a href="{{ url('academic/program-module-assignment-requests?study_academic_year_id='.session('active_academic_year_id')) }}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>{{ __('Programme Module Requests') }}</p>
-                </a>
-              </li>
               @endcan
               @can('view-streams-and-groups')
               <li class="nav-item">

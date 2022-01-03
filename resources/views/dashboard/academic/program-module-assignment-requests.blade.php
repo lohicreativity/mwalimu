@@ -41,7 +41,10 @@
 
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">{{ __('Select Study Academic Year') }}</h3>
+               <ul class="nav nav-tabs">
+                    <li class="nav-item"><a class="nav-link" href="{{ url('academic/program-module-assignments?study_academic_year_id='.session('active_academic_year_id').'&campus_id='.session('staff_campus_id')) }}">{{ __('Programme Modules') }}</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="{{ url('academic/program-module-assignment-requests?study_academic_year_id='.session('active_academic_year_id')) }}">{{ __('Programme Module Requests') }}</a></li>
+                </ul>
               </div>
               <!-- /.card-header -->
               <div class="card-body">

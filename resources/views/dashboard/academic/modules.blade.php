@@ -213,7 +213,7 @@
                        </a>
                       @endcan
                       @can('edit-module')
-                      <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-edit-module-{{ $module->id }}">
+                      <a class="btn btn-info btn-sm" href="#" @if(Auth::user()->hasRole('hod') && $staff->department_id == $module->department_id) data-toggle="modal" data-target="#ss-edit-module-{{ $module->id }}" @else disabled="disabled" @endif>
                               <i class="fas fa-pencil-alt">
                               </i>
                               Edit
@@ -341,7 +341,7 @@
                       </div>
                       <!-- /.modal -->
                       @can('delete-module')
-                      <a class="btn btn-danger btn-sm" href="#" data-toggle="modal" data-target="#ss-delete-module-{{ $module->id }}">
+                      <a class="btn btn-danger btn-sm" href="#" @if(Auth::user()->hasRole('hod') && $staff->department_id == $module->department_id) data-toggle="modal" data-target="#ss-delete-module-{{ $module->id }}" @else disabled="disabled" @endif>
                               <i class="fas fa-trash">
                               </i>
                               Delete
