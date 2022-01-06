@@ -953,7 +953,10 @@ class ModuleAssignmentController extends Controller
     public function destroy(Request $request, $id)
     {
         try{
-            $assignment = ModuleAssignment::findOrFail($id);
+            $assignment = ModuleAssignment::with('assessmentPlans')->findOrFail($id);
+            if(count($assignment->assessmentPlans) != 0){
+                return redirect()->back()->with('info','Module assignment cannot be deleted because it has assessment plans');
+            }
             $assignment->delete();
             return redirect()->back()->with('message','Module assignment deleted successfully');
         }catch(Exception $e){
