@@ -78,13 +78,13 @@
                           </tr>
                           </thead>
                           <tbody>  
-                      @foreach($requests as $assign)
+                      @foreach($requests as $req)
 
                         <tr>
-                        <td>{{ $assign->module->name }}
-                          @if(count($assign->programModuleAssignment->moduleAssignments) != 0)
+                        <td>{{ $req->module->name }}
+                          @if(count($req->programModuleAssignment->moduleAssignments) != 0)
                             <p class="ss-font-xs ss-no-margin ss-bold">Facilitator:</p>
-                            @foreach($assign->programModuleAssignment->moduleAssignments as $modAssign)
+                            @foreach($req->programModuleAssignment->moduleAssignments as $modAssign)
                             <p class="ss-font-xs ss-no-margin ss-italic">{{ $modAssign->staff->title }} {{ $modAssign->staff->first_name }} {{ $modAssign->staff->middle_name }} {{ $modAssign->staff->surname }}
                             
                             @can('delete-module-facilitator')
@@ -126,21 +126,21 @@
                             @endforeach
                           @endif
                         </td>
-                        <td>{{ $assign->campusProgram->program->name }}</td>
-                        <td>{{ $assign->studyAcademicYear->academicYear->year }}</td>
-                        <td>{{ $assign->module->code }}</td>
-                        <td>{{ $assign->programModuleAssignment->year_of_study }}</td>
-                        <td>{{ $assign->programModuleAssignment->semester->name }}</td>
+                        <td>{{ $req->campusProgram->program->name }}</td>
+                        <td>{{ $req->studyAcademicYear->academicYear->year }}</td>
+                        <td>{{ $req->module->code }}</td>
+                        <td>{{ $req->programModuleAssignment->year_of_study }}</td>
+                        <td>{{ $req->programModuleAssignment->semester->name }}</td>
                         <td>
                           @can('assign-module-facilitator')
-                          <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-assign-module-{{ $assign->module->id }}">
+                          <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-assign-module-{{ $req->module->id }}">
                               <i class="fas fa-plus">
                               </i>
                               Assign Facilitator
                          </a>
                          @endcan
 
-                         <div class="modal fade" id="ss-assign-module-{{ $assign->module->id }}">
+                         <div class="modal fade" id="ss-assign-module-{{ $req->module->id }}">
                         <div class="modal-dialog modal-lg">
                           <div class="modal-content">
                             <div class="modal-header">
@@ -163,9 +163,9 @@
                                         @endforeach
                                       </select>
 
-                                      {!! Form::input('hidden','module_id',$assign->module_id) !!}
-                                      {!! Form::input('hidden','study_academic_year_id',$assign->study_academic_year_id) !!}
-                                      {!! Form::input('hidden','program_module_assignment_id',$assign->program_module_assignment_id) !!}
+                                      {!! Form::input('hidden','module_id',$req->module_id) !!}
+                                      {!! Form::input('hidden','study_academic_year_id',$req->study_academic_year_id) !!}
+                                      {!! Form::input('hidden','program_module_assignment_id',$req->program_module_assignment_id) !!}
                                     </div>
                                       
 
