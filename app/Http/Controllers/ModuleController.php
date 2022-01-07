@@ -107,7 +107,7 @@ class ModuleController extends Controller
     {
         try{
             $module = Module::findOrFail($id);
-            $module->delete();
+            $module->forceDelete();
             return redirect()->back()->with('message','Module deleted successfully');
         }catch(Exception $e){
             return redirect()->back()->with('error','Unable to get the resource specified in this request');
