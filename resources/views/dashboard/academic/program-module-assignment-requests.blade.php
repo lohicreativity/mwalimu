@@ -213,7 +213,7 @@
                                         {!! Form::label('','Year of study') !!}
                                         <select name="year_of_study" class="form-control" required id="ss-year-{{ $module->id }}">
                                           @for($i = 1; $i <= $request->programModuleAssignment->campusProgram->program->min_duration; $i++)
-                                          <option value="{{ $i }}" @if($i == $request->programModuleAssignment->year_of_study ) selected="selected" @endif>{{ $i }}</option>
+                                          <option value="{{ $i }}" @if($i == $request->programModuleAssignment->year_of_study ) selected="selected" @else disabled="disabled" @endif>{{ $i }}</option>
                                           @endfor
                                         </select>
                                       </div>
