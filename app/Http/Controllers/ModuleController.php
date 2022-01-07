@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Domain\Academic\Models\Module;
+use App\Domain\Academic\Models\ProgramModuleAssignment;
 use App\Domain\Academic\Models\Department;
 use App\Domain\Academic\Models\ExaminationPolicy;
 use App\Domain\Settings\Models\NTALevel;
@@ -107,6 +108,9 @@ class ModuleController extends Controller
     {
         try{
             $module = Module::findOrFail($id);
+            if(ProgramModuleAssignment::where('module_id',$module->id)->count() != 0){
+                return redirect()->back()->with('info','Module cannot be deleted because it has already been assigned');
+            }
             $module->forceDelete();
             return redirect()->back()->with('message','Module deleted successfully');
         }catch(Exception $e){
