@@ -18,7 +18,7 @@ class ProgramAction implements ProgramInterface{
                 $program->description = $request->get('description');
                 $program->min_duration = $request->get('min_duration');
                 $program->max_duration = $request->get('max_duration');
-                $program->category = $request->get('category');
+                // $program->category = $request->get('category');
                 $program->save();
 	}
 
@@ -32,7 +32,7 @@ class ProgramAction implements ProgramInterface{
                 $program->description = $request->get('description');
                 $program->min_duration = $request->get('min_duration');
                 $program->max_duration = $request->get('max_duration');
-                $program->category = $request->get('category');
+                // $program->category = $request->get('category');
                 $program->save();
 	}
 }

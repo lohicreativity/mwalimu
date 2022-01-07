@@ -141,14 +141,7 @@
                     </select>
                     {!! Form::input('hidden','award_id',null,['id'=>'ss-nta-award-input']) !!}
                   </div>
-                   <div class="form-group col-4">
-                      {!! Form::label('','Category') !!}
-                      <select name="category" class="form-control" required>
-                         <option value="">Select Category</option>
-                         <option value="COMMUNITY DEVELOPMENT">Community Development</option>
-                         <option value="NON-COMMUNITY DEVELOPMENT">Non-Community Development</option>
-                      </select>
-                  </div>
+                   
                  </div>
                 </div>
                 <!-- /.card-body -->
@@ -306,14 +299,7 @@
 
                                           {!! Form::input('hidden','award_id',$program->award_id,['id'=>'ss-nta-award-input-'.$program->id]) !!}
                                         </div>
-                                        <div class="form-group col-4">
-                                        {!! Form::label('','Category') !!}
-                                        <select name="category" class="form-control" required>
-                                           <option value="">Select Category</option>
-                                           <option value="COMMUNITY DEVELOPMENT" @if($program->category == 'COMMUNITY DEVELOPMENT') selected="selected" @endif>Community Development</option>
-                                           <option value="NON-COMMUNITY DEVELOPMENT" @if($program->category == 'NON-COMMUNITY DEVELOPMENT') selected="selected" @endif>Non-Community Development</option>
-                                        </select>
-                                    </div>
+                                        
                                        </div>
                                       <div class="ss-form-actions">
                                        <button type="submit" class="btn btn-primary">{{ __('Save Changes') }}</button>
