@@ -189,23 +189,23 @@ class ModuleAssignmentController extends Controller
            }
         }
 
-        if(ModuleAssignment::where('study_academic_year_id',$request->get('study_academic_year_id'))->where('staff_id',$request->get('staff_id'))->where('module_id',$request->get('module_id'))->count() != 0){
-
-             if($request->ajax()){
-                return response()->json(array('error_messages'=>'Module already assigned for this staff in this study academic year'));
-             }else{
-                return redirect()->back()->with('error','Module already assigned for this staff in this study academic year');
-             }
-        }
-
-        // if(ModuleAssignment::where('study_academic_year_id',$request->get('study_academic_year_id'))->where('module_id',$request->get('module_id'))->count() != 0){
+        // if(ModuleAssignment::where('study_academic_year_id',$request->get('study_academic_year_id'))->where('staff_id',$request->get('staff_id'))->where('module_id',$request->get('module_id'))->count() != 0){
 
         //      if($request->ajax()){
-        //         return response()->json(array('error_messages'=>'Module already assigned staff in this study academic year'));
+        //         return response()->json(array('error_messages'=>'Module already assigned for this staff in this study academic year'));
         //      }else{
-        //         return redirect()->back()->with('error','Module already assigned staff in this study academic year');
+        //         return redirect()->back()->with('error','Module already assigned for this staff in this study academic year');
         //      }
         // }
+
+        if(ModuleAssignment::where('study_academic_year_id',$request->get('study_academic_year_id'))->where('module_id',$request->get('module_id'))->count() != 0){
+
+             if($request->ajax()){
+                return response()->json(array('error_messages'=>'Module already assigned staff in this study academic year'));
+             }else{
+                return redirect()->back()->with('error','Module already assigned staff in this study academic year');
+             }
+        }
 
         $module = Module::find($request->get('module_id'));
         if(GradingPolicy::where('nta_level_id',$module->nta_level_id)->where('study_academic_year_id',$request->get('study_academic_year_id'))->count() == 0){
