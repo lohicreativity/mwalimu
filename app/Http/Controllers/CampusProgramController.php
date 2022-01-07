@@ -27,7 +27,7 @@ class CampusProgramController extends Controller
         $programIds = [];
         $campus_programs = CampusProgram::with('program')->where('campus_id',$id)->get();
         foreach ($campus_programs as $key => $prog) {
-           $programIds[] = $prog->id;
+           $programIds[] = $prog->program->id;
         }
 
 	    	$data = [
@@ -39,7 +39,6 @@ class CampusProgramController extends Controller
 	    	];
 	    	return view('dashboard.academic.campus-programs',$data)->withTitle('Campus Programs');
         }catch(\Exception $e){
-          return $e->getMessage();
         	return redirect()->back()->with('error','Unable to get the resource specified in this request');
         }
     }
