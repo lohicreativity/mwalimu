@@ -16,6 +16,6 @@ class AssessmentPlan extends Model
      */
     public function moduleAssignment()
     {
-    	return $this->belongsTo(App\Domain\Academic\Models\ModuleAssignment::class,'module_assignment_id');
+    	return $this->belongsTo(ModuleAssignment::class,'module_assignment_id');
     }
 }
