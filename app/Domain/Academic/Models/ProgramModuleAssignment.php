@@ -68,4 +68,12 @@ class ProgramModuleAssignment extends Model
     {
         return $this->belongsToMany(Student::class,'student_program_module_assignment','program_module_assignment_id','student_id');
     }
+
+    /**
+     * Establish one to many relationship with program module assignment requests
+     */
+    public function programModuleAssignmentRequests()
+    {
+        return $this->hasMany(ProgramModuleAssignmentRequest::class,'program_module_assignment_id');
+    }
 }

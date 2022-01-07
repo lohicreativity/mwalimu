@@ -233,11 +233,15 @@
                            {!! Form::input('hidden','campus_program_id',$assign->campus_program_id) !!}
 
                          @can('request-module-facilitator')
+                         @if(count($assign->programModuleAssignmentRequests) != 0)
+                            <i>Facilitator Requested</i>
+                         @else
                          <button type="submit" class="btn btn-info btn-sm" href="">
                               <i class="fas fa-plus">
                               </i>
                               Request Facilitator
                          </button>
+                         @endif
                          @endcan
                          {!! Form::close() !!}
                          @endif

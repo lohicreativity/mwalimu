@@ -359,7 +359,7 @@
                                         <select name="region_id" class="form-control ss-select-regions" required id="ss-select-regions-{{ $campus->id }}" data-target="#ss-select-districts-{{ $campus->id }}" data-token="{{ session()->token() }}" data-source-url="{{ url('api/v1/get-districts') }}">
                                           <option value="">Select Region</option>
                                           @foreach($regions as $region)
-                                          <option value="{{ $region->id }}" @if($campus->region_id = $region->id) selected="selected" @endif>{{ $region->name }}</option>
+                                          <option value="{{ $region->id }}" @if($campus->region_id == $region->id) selected="selected" @endif>{{ $region->name }}</option>
                                           @endforeach
                                         </select>
                                       </div>
@@ -379,7 +379,7 @@
                                         <select name="ward_id" class="form-control ss-select-wards" required id="ss-select-wards-{{ $campus->id }}" data-token="{{ session()->token() }}">
                                           <option value="">Select Ward</option>
                                           @foreach($wards as $ward)
-                                          <option value="{{ $ward->id }}" @if($campus->ward_id = $ward->id) selected="selected" @endif>{{ $ward->name }}</option>
+                                          <option value="{{ $ward->id }}" @if($campus->ward_id == $ward->id) selected="selected" @endif>{{ $ward->name }}</option>
                                           @endforeach
                                         </select>
                                       </div>

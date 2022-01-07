@@ -39,6 +39,7 @@ class CampusProgramController extends Controller
 	    	];
 	    	return view('dashboard.academic.campus-programs',$data)->withTitle('Campus Programs');
         }catch(\Exception $e){
+          return $e->getMessage();
         	return redirect()->back()->with('error','Unable to get the resource specified in this request');
         }
     }

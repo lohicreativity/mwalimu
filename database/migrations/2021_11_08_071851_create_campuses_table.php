@@ -24,7 +24,6 @@ class CreateCampusesTable extends Migration
             $table->unsignedBigInteger('ward_id');
             $table->string('street')->nullable();
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 
