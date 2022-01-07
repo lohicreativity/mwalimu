@@ -165,7 +165,7 @@
 
                                       {!! Form::input('hidden','module_id',$assign->module_id) !!}
                                       {!! Form::input('hidden','study_academic_year_id',$assign->study_academic_year_id) !!}
-                                      {!! Form::input('hidden','program_module_assignment_id',$assign->program_module_assignment_id) !!}
+                                      {!! Form::input('text','program_module_assignment_id',$assign->program_module_assignment_id) !!}
                                     </div>
                                       
 
