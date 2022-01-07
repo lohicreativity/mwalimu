@@ -170,7 +170,6 @@
                     <th>NTA Level</th>
                     <th>Min Duration</th>
                     <th>Max Duration</th>
-                    <th>Category</th>
                     <th>Actions</th>
                   </tr>
                   </thead>
@@ -183,7 +182,6 @@
                     <td>{{ $program->ntaLevel->name }}</td>
                     <td>{{ $program->min_duration }}</td>
                     <td>{{ $program->max_duration }}</td>
-                    <td>{{ $program->category }}</td>
                     <td>
                       @can('edit-programme')
                       <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-edit-program-{{ $program->id }}">
