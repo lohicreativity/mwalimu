@@ -123,7 +123,7 @@
                    <div class="row">
                    <div class="form-group col-8">
                     {!! Form::label('','Module') !!}
-                    <select name="module_id" class="form-control ss-select-tags" required data-year-target="#ss-year" data-semester-target="#ss-semester" data-token="{{ session()->token() }}" data-source-url="{{ url('api/v1/get-module-by-id') }}" data-cw-min-mark-target="#ss-course-work-min-mark" data-cw-percentage-pass-target="#ss-course-work-percentage-pass" data-cw-pass-score-target="#ss-course-work-pass-score" data-final-min-mark-target="#ss-final-min-mark">
+                    <select name="module_id" class="form-control ss-select-tags" required data-year-target="#ss-year" data-semester-target="#ss-semester, #ss-semester-input" data-token="{{ session()->token() }}" data-source-url="{{ url('api/v1/get-module-by-id') }}" data-cw-min-mark-target="#ss-course-work-min-mark" data-cw-percentage-pass-target="#ss-course-work-percentage-pass" data-cw-pass-score-target="#ss-course-work-pass-score" data-final-min-mark-target="#ss-final-min-mark">
                        <option value="">Select Module</option>
                        @foreach($modules as $module)
                        <option value="{{ $module->id }}">{{ $module->name }} - {{ $module->code }}</option>
@@ -160,13 +160,14 @@
                     </div>
                     <div class="form-group col-4">
                     {!! Form::label('','Semester') !!}
-                    <select name="semester_id" class="form-control" required id="ss-semester">
+                    <select name="semester_id" class="form-control" required id="ss-semester" disabled="disabled">
                        <option value="">Select Semester</option>
                        @foreach($semesters as $semester)
                        <option value="{{ $semester->id }}">{{ $semester->name }}</option>
                        @endforeach
                     </select>
                     </div>
+                  {!! Form::input('hidden','semester_id',null,['id'=>'ss-semester-input']) !!}
                   {!! Form::input('hidden','study_academic_year_id',$study_academic_year->id) !!}
                   {!! Form::input('hidden','campus_program_id',$campus_program->id) !!}
                     

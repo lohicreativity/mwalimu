@@ -109,7 +109,7 @@ class ModuleController extends Controller
         try{
             $module = Module::findOrFail($id);
             if(ProgramModuleAssignment::where('module_id',$module->id)->count() != 0){
-                return redirect()->back()->with('info','Module cannot be deleted because it has already been assigned');
+                return redirect()->back()->with('error','Module cannot be deleted because it has already been assigned');
             }
             $module->forceDelete();
             return redirect()->back()->with('message','Module deleted successfully');
