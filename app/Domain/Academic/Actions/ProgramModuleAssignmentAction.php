@@ -4,6 +4,7 @@ namespace App\Domain\Academic\Actions;
 
 use Illuminate\Http\Request;
 use App\Domain\Academic\Models\ProgramModuleAssignment;
+use App\Domain\Academic\Models\AssessmentPlan;
 use App\Domain\Academic\Models\ProgramModuleAssignmentRequest;
 use App\Domain\Academic\Repositories\Interfaces\ProgramModuleAssignmentInterface;
 use App\Domain\Academic\Models\Module;
@@ -99,5 +100,9 @@ class ProgramModuleAssignmentAction implements ProgramModuleAssignmentInterface{
                 ProgramModuleAssignmentRequest::whereHas('programModuleAssignment',function($query) use ($request){
                         $query->where('module_id',$request->get('module_id'))->where('year_of_study',$request->get('year_of_study'))->where('study_academic_year_id',$request->get('study_academic_year_id'));
                 })->update(['is_ready'=>1]);
+
+                AssessmentPlan::whereHas('moduleAssignment.programModuleAssignment',function($query) use ($request){
+                        $query->where('module_id',$request->get('module_id'));
+                })->delete();
 	}
 }
