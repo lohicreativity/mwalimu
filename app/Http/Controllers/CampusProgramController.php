@@ -24,7 +24,7 @@ class CampusProgramController extends Controller
     public function index($id)
     {
     	try{
-        $programids = [];
+        $programIds = [];
         $campus_programs = CampusProgram::with('program')->where('campus_id',$id)->get();
         foreach ($campus_programs as $key => $prog) {
            $programIds[] = $prog->id;
