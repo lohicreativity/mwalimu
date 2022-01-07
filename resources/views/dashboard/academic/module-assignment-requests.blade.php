@@ -133,14 +133,14 @@
                         <td>{{ $req->programModuleAssignment->semester->name }}</td>
                         <td>
                           @can('assign-module-facilitator')
-                          <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-assign-module-{{ $req->module->id }}">
+                          <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-assign-module-{{ $req->id }}">
                               <i class="fas fa-plus">
                               </i>
                               Assign Facilitator
                          </a>
                          @endcan
 
-                         <div class="modal fade" id="ss-assign-module-{{ $req->module->id }}">
+                         <div class="modal fade" id="ss-assign-module-{{ $req->id }}">
                         <div class="modal-dialog modal-lg">
                           <div class="modal-content">
                             <div class="modal-header">
@@ -165,7 +165,7 @@
 
                                       {!! Form::input('hidden','module_id',$req->module_id) !!}
                                       {!! Form::input('hidden','study_academic_year_id',$req->study_academic_year_id) !!}
-                                      {!! Form::input('hidden','program_module_assignment_id',5) !!}
+                                      {!! Form::input('hidden','program_module_assignment_id',$req->program_module_assignment_id) !!}
                                     </div>
                                       
 
