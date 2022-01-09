@@ -288,9 +288,7 @@ class ModuleAssignmentController extends Controller
 
               $module = Module::with('ntaLevel')->find($module_assignment->module_id);
               $policy = ExaminationPolicy::where('nta_level_id',$module->ntaLevel->id)->where('study_academic_year_id',$module_assignment->study_academic_year_id)->where('type',$module_assignment->programModuleAssignment->campusProgram->program->category)->first();
-              if(!$policy){
-                  return redirect()->back()->withInput()->with('error','No examination policy defined for this module NTA level and study academic year');
-              }
+
               $module_assignment->course_work_process_status = 'PROCESSED';
               $module_assignment->save();
               // Check if all components are uploaded
@@ -329,7 +327,7 @@ class ModuleAssignmentController extends Controller
                         if(is_null($course_work) || $course_work_count < 2){
                            $exam_result->course_work_remark = 'INCOMPLETE';
                         }else{
-                           $exam_result->course_work_remark = $policy->course_work_pass_score <= $course_work? 'PASS' : 'FAIL';
+                           $exam_result->course_work_remark = $module_assignment->programModuleAssignment->course_work_pass_score <= $course_work? 'PASS' : 'FAIL';
                         }
                         
                         $exam_result->processed_by_user_id = Auth::user()->id;
@@ -343,7 +341,7 @@ class ModuleAssignmentController extends Controller
                         if(is_null($course_work) || $course_work_count < 2){
                            $exam_result->course_work_remark = 'INCOMPLETE';
                         }else{
-                           $exam_result->course_work_remark = $policy->course_work_pass_score <= $course_work? 'PASS' : 'FAIL';
+                           $exam_result->course_work_remark = $module_assignment->programModuleAssignment->course_work_pass_score <= $course_work? 'PASS' : 'FAIL';
                         }
                         $exam_result->uploaded_by_user_id = Auth::user()->id;
                         $exam_result->processed_by_user_id = Auth::user()->id;
