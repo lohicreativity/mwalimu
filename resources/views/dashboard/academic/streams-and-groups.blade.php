@@ -111,7 +111,7 @@
                            @if($stream_created && $study_academic_year->id == session('active_academic_year_id'))
 
                            @can('reset-stream')
-                          <p><a href="{{ url('academic/stream-reset?year_of_study='.$i.'&campus_program_id='.$cp->id.'&study_academic_year_id='.$study_academic_year->id) }}">{{ __('Reset Streams') }}</a></p>
+                          <p><a href="{{ url('academic/stream-reset?year_of_study='.$i.'&campus_program_id='.$cp->id.'&study_academic_year_id='.$study_academic_year->id) }}" class="ss-italic ss-color-danger">{{ __('Reset Streams') }}</a></p>
                            @endcan
 
                            @endif
@@ -124,7 +124,7 @@
                             @if($study_academic_year->id == session('active_academic_year_id'))
 
                             @can('delete-stream')
-                            <a class="ss-font-xs ss-color-danger" href="{{ url('academic/stream/'.$stream->id.'/destroy') }}">Delete</a><br>
+                            <a class="ss-font-xs ss-color-danger ss-italic" href="{{ url('academic/stream/'.$stream->id.'/destroy') }}">Delete</a><br>
                             @endcan
 
                             @endif
@@ -263,7 +263,7 @@
                               @if($study_academic_year->id == session('active_academic_year_id'))
 
                               @can('delete-group')
-                              <a class="ss-font-xs ss-color-danger" href="{{ url('academic/group/'.$group->id.'/destroy')}}">Delete</a>
+                              <a class="ss-font-xs ss-color-danger ss-italic" href="{{ url('academic/group/'.$group->id.'/destroy')}}">Delete</a>
                               @endcan 
 
                               @endif

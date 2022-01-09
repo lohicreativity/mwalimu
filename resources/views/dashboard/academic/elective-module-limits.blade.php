@@ -193,7 +193,7 @@
                                     <select name="campus_id" class="form-control" required>
                                        <option value="">Select Campus</option>
                                        @foreach($campuses as $campus)
-                                       <option value="{{ $campus->id }}" @if($campus->id == $limit->campus_id) selected="selected" @endif>{{ $campus->name }}</option>
+                                       <option value="{{ $campus->id }}" @if($campus->id == $limit->campus_id) selected="selected" @else disabled="disabled" @endif>{{ $campus->name }}</option>
                                        @endforeach
                                     </select>
                                   </div>
@@ -202,7 +202,7 @@
                                     <select name="semester_id" class="form-control" required>
                                        <option value="">Select Semester</option>
                                        @foreach($semesters as $semester)
-                                       <option value="{{ $semester->id }}" @if($limit->semester_id == $semester->id) selected="selected" @endif>{{ $semester->name }}</option>
+                                       <option value="{{ $semester->id }}" @if($limit->semester_id == $semester->id) selected="selected" @else disabled="disabled" @endif>{{ $semester->name }}</option>
                                        @endforeach
                                     </select>
                                   </div>
@@ -213,7 +213,7 @@
                                     <select name="award_id" class="form-control" required>
                                        <option value="">Select Award</option>
                                        @foreach($awards as $award)
-                                       <option value="{{ $award->id }}" @if($limit->award_id == $award->id) selected="selected" @endif>{{ $award->name }}</option>
+                                       <option value="{{ $award->id }}" @if($limit->award_id == $award->id) selected="selected" @else disabled="disabled" @endif>{{ $award->name }}</option>
                                        @endforeach
                                     </select>
                                   </div>

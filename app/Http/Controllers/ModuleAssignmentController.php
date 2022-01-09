@@ -633,9 +633,7 @@ class ModuleAssignmentController extends Controller
 
               $module = Module::with('ntaLevel')->find($module_assignment->module_id);
               $policy = ExaminationPolicy::where('nta_level_id',$module->ntaLevel->id)->where('study_academic_year_id',$module_assignment->study_academic_year_id)->where('type',$module_assignment->programModuleAssignment->campusProgram->program->category)->first();
-              if(!$policy){
-                  return redirect()->back()->withInput()->with('error','No examination policy defined for this module NTA level and study academic year');
-              }
+
 
               if($request->get('assessment_plan_id') == 'FINAL_EXAM'){
                   $plan = null;
@@ -779,7 +777,7 @@ class ModuleAssignmentController extends Controller
                       }
                       $result->module_assignment_id = $request->get('module_assignment_id');
                       $result->student_id = $student->id;
-                      $result->final_score = !$special_exam? (trim($line[1])*$policy->final_min_mark)/100 : null;
+                      $result->final_score = !$special_exam? (trim($line[1])*$module_assignment->programModuleAssignment->final_min_mark)/100 : null;
                       $result->exam_type = 'FINAL';
                       if($carry_history){
                          $result->exam_category = 'CARRY';
@@ -825,18 +823,18 @@ class ModuleAssignmentController extends Controller
                           $result->module_assignment_id = $request->get('module_assignment_id');
                           $result->student_id = $student->id;
                           if($special_exam){
-                             $result->final_score = !$special_exam? (trim($line[1])*$policy->final_min_mark)/100 : null;
-                             $result->final_remark = $policy->final_pass_score <= $result->final_score? 'PASS' : 'FAIL';
+                             $result->final_score = !$special_exam? (trim($line[1])*$module_assignment->programModuleAssignment->final_min_mark)/100 : null;
+                             $result->final_remark = $module_assignment->programModuleAssignment->final_pass_score <= $result->final_score? 'PASS' : 'FAIL';
                              $result->supp_score = null;
                           }else{
                              $result->supp_score = trim($line[1]);
-                             if($result->supp_score < $policy->module_pass_mark){
+                             if($result->supp_score < $module_assignment->programModuleAssignment->module_pass_mark){
                                $result->grade = 'F';
                              }else{
                                 $result->grade = $grading_policy? $grading_policy->grade : 'C';
                              }
                              $result->point = $grading_policy? $grading_policy->point : 2;
-                             $result->final_exam_remark = $policy->module_pass_mark <= $result->supp_score? 'PASS' : 'FAIL';
+                             $result->final_exam_remark = $module_assignment->programModuleAssignment->module_pass_mark <= $result->supp_score? 'PASS' : 'FAIL';
                           }
                           $result->final_uploaded_at = now();
                           $result->uploaded_by_user_id = Auth::user()->id;
@@ -868,12 +866,12 @@ class ModuleAssignmentController extends Controller
                               $result->module_assignment_id = $request->get('module_assignment_id');
                               $result->student_id = $student->id;
                               if($special_exam){
-                                 $result->final_score = !$special_exam? (trim($line[1])*$policy->final_min_mark)/100 : null;
-                                 $result->final_remark = $policy->final_pass_score <= $result->final_score? 'PASS' : 'FAIL';
+                                 $result->final_score = !$special_exam? (trim($line[1])*$module_assignment->programModuleAssignment->final_min_mark)/100 : null;
+                                 $result->final_remark = $module_assignment->programModuleAssignment->final_pass_score <= $result->final_score? 'PASS' : 'FAIL';
                                  $result->supp_score = null;
                               }else{
                                  $result->supp_score = trim($line[1]);
-                                 if($result->supp_score < $policy->module_pass_mark){
+                                 if($result->supp_score < $module_assignment->programModuleAssignment->module_pass_mark){
                                    $result->grade = 'F';
                                  }else{
                                     $result->grade = $grading_policy? $grading_policy->grade : 'C';
@@ -904,17 +902,17 @@ class ModuleAssignmentController extends Controller
                           $result->student_id = $student->id;
                           if($special_exam){
                              $result->final_score = trim($line[1]);
-                             $result->final_remark = $policy->final_pass_score <= $result->final_score? 'PASS' : 'FAIL';
+                             $result->final_remark = $module_assignment->programModuleAssignment->final_pass_score <= $result->final_score? 'PASS' : 'FAIL';
                              $result->final_score = null;
                           }else{
                              $result->final_score = trim($line[1]);
-                             if($result->final_score < $policy->module_pass_mark){
+                             if($result->final_score < $module_assignment->programModuleAssignment->module_pass_mark){
                                $result->grade = 'F';
                              }else{
                                 $result->grade = $grading_policy? $grading_policy->grade : 'C';
                              }
                              $result->point = $grading_policy? $grading_policy->point : 2;
-                             $result->final_exam_remark = $policy->module_pass_mark <= $result->final_score? 'PASS' : 'FAIL';
+                             $result->final_exam_remark = $module_assignment->programModuleAssignment->module_pass_mark <= $result->final_score? 'PASS' : 'FAIL';
                           }
                           $result->final_uploaded_at = now();
                           $result->uploaded_by_user_id = Auth::user()->id;
