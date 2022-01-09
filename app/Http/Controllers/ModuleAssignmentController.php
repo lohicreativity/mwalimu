@@ -922,7 +922,7 @@ class ModuleAssignmentController extends Controller
                       $result_log->module_assignment_id = $request->get('module_assignment_id');
                       $result_log->assessment_plan_id = $plan->id;
                       $result_log->student_id = $student->id;
-                      return trim($line[1]);
+                      return $line[1];
                       $result_log->score = (trim($line[1])*$plan->weight)/100;
                       $result_log->uploaded_by_user_id = Auth::user()->id;
                       $result_log->save();
