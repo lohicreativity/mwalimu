@@ -94,6 +94,8 @@ class StudentController extends Controller
             'options'=>Student::find($student->id)->options
     	];
 
+        return $data['semesters'];
+
     	return view('dashboard.student.modules',$data)->withTitle('Modules');
     }
 
