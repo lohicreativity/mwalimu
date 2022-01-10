@@ -14,6 +14,7 @@ use App\Domain\Academic\Models\ExaminationResult;
 use App\Domain\Academic\Models\ModuleAssignment;
 use App\Domain\Registration\Models\Student;
 use App\Domain\Academic\Models\ResultPublication;
+use App\Domain\Finance\Models\PaymentCategory;
 use App\Models\User;
 use Auth, Validator;
 
@@ -334,7 +335,11 @@ class StudentController extends Controller
      */
     public function resultsAppeal(Request $request)
     {
-        return view('dashboard.student.results-appeal')->withTItle('Results Appeal');
+        $data = [
+           'payment_categories'=>PaymentCategory::all(),
+           'student'=>User::find(Auth::user()->id)->student
+        ];
+        return view('dashboard.student.results-appeal',$data)->withTItle('Results Appeal');
     }
 
     /**

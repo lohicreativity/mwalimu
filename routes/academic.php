@@ -169,6 +169,10 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
     Route::post('program-module-assignment/update',[ProgramModuleAssignmentController::class,'update']);
     Route::get('program-module-assignment/{id}/destroy', [ProgramModuleAssignmentController::class,'destroy']);
 
+
+    Route::get('options-allocations',[ProgramModuleAssignmentController::class,'allocateOptions']);
+    Route::post('allocate-options',[ProgramModuleAssignmentController::class,'allocateStudentOptions']);
+
 	Route::get('examinations', [ExaminationController::class,'index']);
 	Route::post('examination/store', [ExaminationController::class,'store']);
 	Route::post('examination/update', [ExaminationController::class,'update']);

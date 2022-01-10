@@ -7,6 +7,8 @@ use App\Domain\Academic\Models\ProgramModuleAssignment;
 use App\Domain\Academic\Models\StudyAcademicYear;
 use App\Domain\Academic\Models\Semester;
 use App\Domain\Academic\Models\Module;
+use App\Domain\Academic\Models\Department;
+use App\Domain\Academic\Models\ElectivePolicy;
 use App\Domain\Academic\Models\CampusProgram;
 use App\Domain\Settings\Models\Campus;
 use App\Domain\Academic\Actions\ProgramModuleAssignmentAction;
@@ -31,6 +33,58 @@ class ProgramModuleAssignmentController extends Controller
            'request'=>$request
     	];
     	return view('dashboard.academic.program-module-assignments',$data)->withTitle('Program Module Assignment');
+    }
+
+    /**
+     * Allocate options
+     */
+    public function allocateOptions(Request $request)
+    {
+        $data = [
+            'staff'=>User::find(Auth::user()->id)->staff()->with('department')->first(),
+            'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
+            'study_academic_year'=>$request->has('study_academic_year_id')? StudyAcademicYear::with('academicYear')->find($request->get('study_academic_year_id')) : null,
+            'semesters'=>Semester::all(),
+            'semester'=>Semester::find($request->get('semester_id')),
+            'request'=>$request
+        ];
+        return view('dashboard.academic.allocate-options',$data)->withTitle('Allocate Options');
+    }
+
+    /**
+     * Allocate student options
+     */
+    public function allocateStudentOptions(Request $request)
+    {
+        $department = Department::with('programs')->find($request->get('department_id'));
+        $prog = [];
+        foreach($department->programs as $program){
+            for($yr = 1; $yr <= $program->min_duration; $yr++){
+              $campus_program = CampusProgram::where('program_id',$program->id)->first();
+              if($campus_program){
+              $elective_policy = ElectivePolicy::where('study_academic_year_id',$request->get('study_academic_year_id'))->where('campus_program_id',$campus_program->id)->where('year_of_study',$yr)->where('semester_id',$request->get('semester_id'))->first();
+
+              $optional_modules = ProgramModuleAssignment::where('study_academic_year_id',$request->get('study_academic_year_id'))->where('campus_program_id',$campus_program->id)->where('year_of_study',$yr)->where('semester_id',$request->get('semester_id'))->where('category','OPTIONAL')->get();
+                 
+              foreach($optional_modules as $key=>$module){
+                  if($key < $elective_policy->number_of_options);
+                      $non_opt_students = Student::whereDoesntHave('options',function($query) use($module){
+                          $query->where('id',$module->id);
+                      })->get();
+
+                      $program_mod_assign = ProgramModuleAssignment::find($module->id);
+                      $program_mod_assign->students()->attach($non_opt_students->map(function($value){
+                         return $value->id;
+                      }));
+                  }
+              } 
+            }
+          }
+        
+        
+        return redirect()->back()->with('message','Options allocated successfully');
+        
+
     }
 
     /**

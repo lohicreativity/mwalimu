@@ -211,6 +211,12 @@ class ModuleAssignmentController extends Controller
         if(GradingPolicy::where('nta_level_id',$module->nta_level_id)->where('study_academic_year_id',$request->get('study_academic_year_id'))->count() == 0){
             return redirect()->back()->with('error','No grading policy set for this academic year');
         }
+        
+        $program_module_assignment = ProgramModuleAssignment::find($request->get('program_module_assignment_id'));
+
+        if(ElectivePolicy::where('campus_program_id',$program_module_assignment->campus_program_id)->where('semester_id',$program_module_assignment->semester_id)->where('year_of_study',$program_module_assignment->year_of_study)->where('study_academic_year_id',$request->get('study_academic_year_id'))->count() == 0 && $program_module_assignment->category == 'OPTIONAL'){
+            return redirect()->back()->with('error','No elective policy set for this academic year');
+        }
 
 
         return (new ModuleAssignmentAction)->store($request);

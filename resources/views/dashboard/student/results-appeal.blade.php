@@ -49,6 +49,19 @@
               {!! Form::open(['url'=>'student/resutls/appeal/get-control-number','class'=>'ss-form-processing']) !!}
               <div class="card-body">
                  <div class="form-group">
+                   {!! Form::label('','Payment Category') !!}
+                   <select name="payment_category_id" class="form-control">
+                      <option value="">Select Payment Category</option>
+                      @foreach($payment_categories as $category)
+                      <option value="{{ $category->id }}">{{ $category->name }}</option>
+                      @endforeach
+                   </select>
+                 </div>
+                 {!! Form::input('hidden','payable_type','student') !!}
+                 {!! Form::input('hidden','payable_id',$student->id) !!}
+                 {!! Form::input('hidden','amount',null) !!}
+                 
+                 <div class="form-group">
                    {!! Form::label('','Select number of subjects') !!}
                    <select name="number_of_modules" class="form-control">
                        <option value="1">1</option>

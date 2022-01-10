@@ -148,6 +148,12 @@
                 </a>
               </li>
               @endcan
+              <li class="nav-item">
+                <a href="{{ url('academic/options-allocations?study_academic_year_id='.session('active_academic_year_id').'&semester_id='.session('active_semester_id')) }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Allocate Options</p>
+                </a>
+              </li>
             </ul>
           </li>
           <li class="nav-item">
