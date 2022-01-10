@@ -49,7 +49,7 @@ class ElectiveModuleLimitController extends Controller
            }
         }
 
-        if(strtotime(now()->format('Y-m-d')) >= strtotime($request->get('deadline'))){
+        if(strtotime(now()->format('Y-m-d')) > strtotime($request->get('deadline'))){
             return redirect()->back()->with('error','Deadline cannot be previous date than today');
         }
 
@@ -75,7 +75,7 @@ class ElectiveModuleLimitController extends Controller
            }
         }
  
-        if(strtotime(now()->format('Y-m-d')) >= strtotime($request->get('deadline'))){
+        if(strtotime(now()->format('Y-m-d')) > strtotime($request->get('deadline'))){
             return redirect()->back()->with('error','Deadline cannot be previous date than today');
         }
 
