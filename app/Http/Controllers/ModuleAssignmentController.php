@@ -746,7 +746,7 @@ class ModuleAssignmentController extends Controller
                       $result_log = new ExaminationResultLog;
                       $result_log->module_assignment_id = $request->get('module_assignment_id');
                       $result_log->student_id = $student->id;
-                      $result_log->final_score = !$special_exam? (trim($line[1])*$policy->final_min_marks)/100 : null;
+                      $result_log->final_score = !$special_exam? (trim($line[1])*$module_assignment->programModuleAssignment->final_min_marks)/100 : null;
                       if($carry_history){
                          $result_log->exam_category = 'CARRY';
                          $result_log->retakable_id = $carry_history->id;
@@ -790,7 +790,7 @@ class ModuleAssignmentController extends Controller
                       if($special_exam){
                          $result->final_remark = 'POSTPONED';
                       }else{
-                         $result->final_remark = $policy->final_pass_score <= $result->final_score? 'PASS' : 'FAIL';
+                         $result->final_remark = $module_assignment->programModuleAssignment->final_pass_score <= $result->final_score? 'PASS' : 'FAIL';
                       }
                       $result->final_uploaded_at = now();
                       $result->uploaded_by_user_id = Auth::user()->id;
@@ -875,7 +875,7 @@ class ModuleAssignmentController extends Controller
                                     $result->grade = $grading_policy? $grading_policy->grade : 'C';
                                  }
                                  $result->point = $grading_policy? $grading_policy->point : 2;
-                                 $result->final_exam_remark = $policy->module_pass_mark <= $result->supp_score? 'PASS' : 'FAIL';
+                                 $result->final_exam_remark = $module_assignment->programModuleAssignment->module_pass_mark <= $result->supp_score? 'PASS' : 'FAIL';
                               }
                               $result->final_uploaded_at = now();
                               $result->uploaded_by_user_id = Auth::user()->id;
