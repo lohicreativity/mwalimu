@@ -88,8 +88,8 @@ class StudentController extends Controller
             'study_academic_year'=>$study_academic_year,
             'semesters'=>Semester::with(['electivePolicies'=>function($query) use ($student,$study_academic_year){
                     $query->where('campus_program_id',$student->campus_program_id)->where('study_academic_year_id',$study_academic_year->id);
-                },'electiveDeadlines'=>function($query) use($student,$study_academic_year,$campus,$program){
-                    $query->where('campus_id',$campus->id)->where('study_academic_year_id',$study_academic_year->id)->where('award_id',$program->award_id);
+                },'electiveDeadlines'=>function($query) use($study_academic_year,$campus,$program){
+                    
                 }])->get(),
             'options'=>Student::find($student->id)->options
     	];
