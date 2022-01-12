@@ -483,13 +483,6 @@
                         <!-- /.modal-dialog -->
                       </div>
                       <!-- /.modal -->
-                      @can('add-examination-irregularities')
-                      <a class="btn btn-info btn-sm" href="{{ url('academic/module-assignment/'.$assignment->id.'/examination-irregularities') }}">
-                              <i class="fas fa-random">
-                              </i>
-                               Examination Irregularities
-                       </a>
-                       @endcan
                     </td>
                   </tr>
                   @endforeach

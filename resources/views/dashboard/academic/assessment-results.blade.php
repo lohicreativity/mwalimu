@@ -59,6 +59,7 @@
             <div class="card card-default">
               <div class="card-header">
                 <h3 class="card-title">{{ __('Upload Assessment Results') }}</h3>
+                <a href="{{ url('academic/staff-module-assignment/'.$module_assignment->id.'/csv/download') }}" class="ss-right">Download Formatted CSV File?</a>
               </div>
               <!-- /.card-header -->
               <!-- form start -->

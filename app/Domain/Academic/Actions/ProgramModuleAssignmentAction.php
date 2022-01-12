@@ -101,7 +101,9 @@ class ProgramModuleAssignmentAction implements ProgramModuleAssignmentInterface{
                         $query->where('module_id',$request->get('module_id'))->where('year_of_study',$request->get('year_of_study'))->where('study_academic_year_id',$request->get('study_academic_year_id'));
                 })->update(['is_ready'=>1]);
 
-                AssessmentPlan::whereHas('moduleAssignment.programModuleAssignment',function($query) use ($request){
+                AssessmentPlan::whereHas('moduleAssignment',function($query) use ($request){
+                        $query->whereNull('course_work_process_status');
+                })->whereHas('moduleAssignment.programModuleAssignment',function($query) use ($request){
                         $query->where('module_id',$request->get('module_id'));
                 })->delete();
 	}

@@ -165,6 +165,14 @@
               </p>
             </a>
             <ul class="nav nav-treeview">
+              @can('add-examination-irregularities')
+              <li class="nav-item">
+                <a href="{{ url('academic/results/examination-irregularities?study_academic_year_id='.session('active_academic_year_id').'&campus_id='.session('staff_campus_id')) }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>{{ __('Irregularities') }}</p>
+                </a>
+              </li>
+              @endcan
               @can('process-examination-results')
               <li class="nav-item">
                 <a href="{{ url('academic/results?study_academic_year_id='.session('active_academic_year_id').'&campus_id='.session('staff_campus_id')) }}" class="nav-link">
@@ -172,7 +180,8 @@
                   <p>{{ __('Results Processing') }}</p>
                 </a>
               </li>
-              @endcan
+              @endcan 
+               
               <li class="nav-item">
                 <a href="{{ url('academic/results/appeals?study_academic_year_id='.session('active_academic_year_id').'&campus_id='.session('staff_campus_id')) }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>

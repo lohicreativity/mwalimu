@@ -6,7 +6,10 @@ use Illuminate\Http\Request;
 use App\Domain\Academic\Models\ExaminationIrregularity;
 use App\Domain\Academic\Models\StudyAcademicYear;
 use App\Domain\Academic\Models\ModuleAssignment;
+use App\Domain\Academic\Models\ProgramModuleAssignment;
+use App\Domain\Academic\Models\CampusProgram;
 use App\Domain\Academic\Models\Semester;
+use App\Domain\Settings\Models\Campus;
 use App\Domain\Registration\Models\Student;
 use App\Domain\Academic\Actions\ExaminationIrregularityAction;
 use App\Models\User;
@@ -33,6 +36,43 @@ class ExaminationIrregularityController extends Controller
         }catch(\Exception $e){
         	return redirect()->back()->with('error','Unable to get the resource specified in this request');
         }
+    }
+
+
+    /**
+     * Display program module assignments
+     */
+    public function showProgramModuleIrregularities(Request $request)
+    {
+      $staff = User::find(Auth::user()->id)->staff;
+        $data = [
+           'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
+           'study_academic_year'=>$request->has('study_academic_year_id')? StudyAcademicYear::with('academicYear')->find($request->get('study_academic_year_id')) : null,
+           'campuses'=>Campus::all(),
+           'campus'=>Campus::with(['campusPrograms.program'=>function($query) use ($request){
+                  $query->where('name','LIKE','%'.$request->get('query').'%')->orWhere('code','LIKE','%'.$request->get('query').'%');
+           },'campusPrograms.programModuleAssignments.module'])->find($request->get('campus_id')),
+           'staff'=>$staff,
+           'request'=>$request
+        ];
+        return view('dashboard.academic.program-module-irregularities',$data)->withTitle('Program Module Irregularities');
+    }
+
+    /**
+     * Assign program module irregularities
+     */
+    public function assignIrregularities(Request $request, $ac_year_id,$campus_prog_id)
+    {
+        $assignments = ProgramModuleAssignment::with(['module','semester'])->where('study_academic_year_id',$ac_year_id)->where('campus_program_id',$campus_prog_id)->get();
+        $campus_program = CampusProgram::with('program')->find($campus_prog_id);
+        $data = [
+            'study_academic_year'=>StudyAcademicYear::with('academicYear')->find($ac_year_id),
+            'campus_program'=>$campus_program,
+            'semesters'=>Semester::all(),
+            'assignments'=>$assignments,
+            'staff'=>User::find(Auth::user()->id)->staff
+        ];
+        return view('dashboard.academic.program-module-examination-irregularities',$data)->withTitle('Program Module Assignment');
     }
 
     /**

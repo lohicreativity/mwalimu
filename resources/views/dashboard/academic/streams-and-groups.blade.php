@@ -83,6 +83,8 @@
                     </thead>
                     <tbody>
                      @foreach($campus_programs as $cp)
+
+                     @if($cp->program->department_id == $staff->department_id)
                        
  
                        @for($i = 1; $i <= $cp->program->min_duration; $i++)
@@ -118,12 +120,13 @@
                          </td>
                          <td>   
 
-                           @foreach($study_academic_year->streams as $stream)
+                           @foreach($study_academic_year->streams as $stKey=>$stream)
                             @if($stream->campus_program_id == $cp->id && $stream->year_of_study == $i)
                             <p class="ss-no-margin"><a href="{{ url('academic/stream/'.$stream->id.'/attendance') }}" target="_blank">Stream_{{ $stream->name }}_({{ $stream->number_of_students }})</a></p>
                             @if($study_academic_year->id == session('active_academic_year_id'))
 
                             @can('delete-stream')
+                            @if($stKey == count($study_academic_year->streams)-1)
                             <a class="ss-font-xs ss-color-danger ss-italic" href="{{ url('academic/stream/'.$stream->id.'/destroy') }}">Delete</a><br>
                             @endcan
 
@@ -258,11 +261,12 @@
                         <td>
                           @foreach($study_academic_year->streams as $stream)
                             @if($stream->campus_program_id == $cp->id && $stream->year_of_study == $i)
-                             @foreach($stream->groups as $group)
+                             @foreach($stream->groups as $grKey=>$group)
                               <p class="ss-no-margin"><a href="{{ url('academic/group/'.$group->id.'/attendance') }}" target="_blank">Group_{{ $group->name }}_Stream_{{ $stream->name }}_({{ $group->number_of_students }})</a></p>
                               @if($study_academic_year->id == session('active_academic_year_id'))
 
                               @can('delete-group')
+                              @if($grKey == count($stream->groups)-1)
                               <a class="ss-font-xs ss-color-danger ss-italic" href="{{ url('academic/group/'.$group->id.'/destroy')}}">Delete</a>
                               @endcan 
 
@@ -273,6 +277,7 @@
                          </td>
                        </tr>
                        @endfor
+                       @endif
                      @endforeach
                     </tbody>
                   </table>

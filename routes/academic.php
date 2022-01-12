@@ -98,6 +98,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 	Route::post('module-assignment-result/store',[ModuleAssignmentController::class,'uploadResults']);
 	Route::post('staff-module-assignment/process-course-work',[ModuleAssignmentController::class,'processCourseWork']);
 	Route::post('module-assignment/process-results',[ModuleAssignmentController::class,'processFinalResults']);
+	Route::get('staff-module-assignment/{id}/csv/download', [ModuleAssignmentController::class,'totalStudentsFormattedCSV']);
 	Route::get('staff-module-assignment/{id}/results/total-students', [ModuleAssignmentController::class,'totalStudents']);
 	Route::get('staff-module-assignment/{id}/results/students-with-course-work', [ModuleAssignmentController::class,'studentsWithCourseWork']);
 	Route::get('staff-module-assignment/{id}/results/students-with-no-course-work', [ModuleAssignmentController::class,'studentsWithNoCourseWork']);
@@ -251,6 +252,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 	Route::post('results/show-module-report',[ExaminationResultController::class,'showModuleResultsReport']);
 	Route::get('results/show-student-report',[ExaminationResultController::class,'showStudentResultsReport']);
 	Route::get('results/show-results-upload',[ExaminationResultController::class,'showResultsUpload']);
+	Route::get('results/examination-irregularities',[ExaminationIrregularityController::class,'showProgramModuleIrregularities']);
+	Route::get('results/program-module-assignment/{ac_yr_id}/{prog_id}/examination-irregularities',[ExaminationIrregularityController::class,'assignIrregularities']);
 
 
 
