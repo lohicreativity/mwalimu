@@ -112,7 +112,8 @@ class CampusProgramController extends Controller
                    })->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',$request->get('year_of_study'))->get(),
                'study_academic_year'=>StudyAcademicYear::with('academicYear')->find($request->get('study_academic_year_id')),
                'campus_program'=>$campus_program,
-               'department'=>Department::findOrFail($campus_program->program->department_id)
+               'department'=>Department::findOrFail($campus_program->program->department_id),
+               'request'=>$request
             ];
             return view('dashboard.academic.reports.students-in-campus-program', $data);
         }catch(\Exception $e){

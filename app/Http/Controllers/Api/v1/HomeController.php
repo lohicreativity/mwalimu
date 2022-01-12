@@ -10,6 +10,7 @@ use App\Domain\Settings\Models\Ward;
 use App\Domain\Academic\Models\Module;
 use App\Domain\Academic\Models\ModuleAssignment;
 use App\Domain\Settings\Models\NTALevel;
+use App\Domain\Finance\Models\PaymentCategory;
 
 class HomeController extends Controller
 {
@@ -63,6 +64,19 @@ class HomeController extends Controller
     	}else{
     		return response()->json(['status'=>'failed','wards'=>$modules]);
     	}
+    }
+
+    /**
+     * Return payment category from id
+     */
+    public function getPaymentCategory(Request $request)
+    {
+        $category = PaymentCategory::find($request->get('payment_category_id'));
+        if($category){
+            return response()->json(['status'=>'success','category'=>$category]);
+        }else{
+            return response()->json(['status'=>'failed','category'=>$category]);
+        }
     }
 
     /**

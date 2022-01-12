@@ -25,6 +25,7 @@ use App\Domain\Academic\Models\SemesterRemark;
 use App\Domain\Academic\Models\CarryHistory;
 use App\Domain\Academic\Models\RetakeHistory;
 use App\Domain\Academic\Models\ResultPublication;
+use App\Domain\Academic\Models\ProgramModuleAssignment;
 use App\Domain\Registration\Models\Registration;
 use App\Domain\Academic\Actions\ModuleAssignmentAction;
 use App\Models\User;
@@ -157,6 +158,7 @@ class ModuleAssignmentController extends Controller
                     'campus'=>$module_assignment->programModuleAssignment->campusProgram->campus,
                     'department'=>$module_assignment->programModuleAssignment->campusProgram->program->department,
                     'study_academic_year'=>$module_assignment->studyAcademicYear,
+                    'year_of_study'=>$module_assignment->programModuleAssignment->year_of_study,
                     'staff'=>$module_assignment->staff,
                     'module'=>$module_assignment->module,
                     'students'=>Student::whereHas('registrations',function($query) use ($module_assignment){

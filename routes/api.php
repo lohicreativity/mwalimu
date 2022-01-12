@@ -27,3 +27,4 @@ Route::post('v1/get-program-modules',[HomeController::class,'getProgramModules']
 Route::post('v1/get-program-module-assignments',[HomeController::class,'getProgramModuleAssignments']);
 Route::post('v1/get-nta-level',[HomeController::class,'getNTALevel']);
 Route::post('v1/get-nta-level-by-code',[HomeController::class,'getNTALevelByCode']);
+Route::post('v1/get-payment-category',[HomeController::class,'getPaymentCategory']);

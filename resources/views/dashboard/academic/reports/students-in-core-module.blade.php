@@ -198,7 +198,7 @@
                <h3>MWALIMU NYERERE MEMORIAL ACADEMY</h3>
                <h3>{{ $campus->name }}</h3>
                <h3>{{ $department->name }}</h3>
-               <h3>{{ $program->name }} ({{ $study_academic_year->academicYear->year }})</h3>
+               <h3>{{ $program->name }} ({{ $study_academic_year->academicYear->year }}) - YEAR {{ $year_of_study }}</h3>
                <h3>ATTENDANCE SHEET</h3>
               </div>
                <div class="ss-left">

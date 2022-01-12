@@ -16,6 +16,8 @@ class CreatePaymentCategoriesTable extends Migration
         Schema::create('payment_categories', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->double('amount',16,2);
+            $table->string('currency',5)->default('TZS');
             $table->timestamps();
         });
     }
