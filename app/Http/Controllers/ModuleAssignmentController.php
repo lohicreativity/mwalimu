@@ -19,6 +19,7 @@ use App\Domain\Academic\Models\ExaminationResultLog;
 use App\Domain\HumanResources\Models\Staff;
 use App\Domain\Registration\Models\Student;
 use App\Domain\Academic\Models\ExaminationPolicy;
+use App\Domain\Academic\Models\ElectivePolicy;
 use App\Domain\Academic\Models\GradingPolicy;
 use App\Domain\Academic\Models\SpecialExam;
 use App\Domain\Academic\Models\SemesterRemark;
