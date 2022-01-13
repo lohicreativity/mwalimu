@@ -279,19 +279,19 @@
               </p>
             </a>
             <ul class="nav nav-treeview">
-              @can('view-semesters')
-              <li class="nav-item">
-                <a href="{{ url('academic/semesters') }}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>{{ __('Semesters') }}</p>
-                </a>
-              </li>
-              @endcan
               @can('view-study-academic-years')
               <li class="nav-item">
                 <a href="{{ url('academic/study-academic-years') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>{{ __('Study Academic Years') }}</p>
+                </a>
+              </li>
+              @endcan
+              @can('view-semesters')
+              <li class="nav-item">
+                <a href="{{ url('academic/semesters') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>{{ __('Semesters') }}</p>
                 </a>
               </li>
               @endcan

@@ -1011,7 +1011,7 @@ class ModuleAssignmentController extends Controller
                   }
                 }
               }
-              DB::commit();
+              // DB::commit();
           }
           return redirect()->back()->with('message','Results uploaded successfully');
     }
