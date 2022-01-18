@@ -84,6 +84,7 @@
                    
                    <div class="form-group">
                     {!! Form::input('hidden','study_academic_year_id',$study_academic_year->id) !!}
+                     {!! Form::input('hidden','semester_id',$request->get('semester_id')) !!}
                     {!! Form::input('hidden','department_id',$staff->department_id) !!}
                   </div>
                   <div class="ss-form-actions">

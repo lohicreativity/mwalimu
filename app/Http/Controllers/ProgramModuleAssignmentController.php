@@ -11,6 +11,7 @@ use App\Domain\Academic\Models\Department;
 use App\Domain\Academic\Models\ElectivePolicy;
 use App\Domain\Academic\Models\CampusProgram;
 use App\Domain\Settings\Models\Campus;
+use App\Domain\Registration\Models\Student;
 use App\Domain\Academic\Actions\ProgramModuleAssignmentAction;
 use App\Models\User;
 use App\Utils\Util;
@@ -65,17 +66,21 @@ class ProgramModuleAssignmentController extends Controller
               $elective_policy = ElectivePolicy::where('study_academic_year_id',$request->get('study_academic_year_id'))->where('campus_program_id',$campus_program->id)->where('year_of_study',$yr)->where('semester_id',$request->get('semester_id'))->first();
 
               $optional_modules = ProgramModuleAssignment::where('study_academic_year_id',$request->get('study_academic_year_id'))->where('campus_program_id',$campus_program->id)->where('year_of_study',$yr)->where('semester_id',$request->get('semester_id'))->where('category','OPTIONAL')->get();
+
                  
               foreach($optional_modules as $key=>$module){
-                  if($key < $elective_policy->number_of_options);
+                  if($key < $elective_policy->number_of_options){
+
                       $non_opt_students = Student::whereDoesntHave('options',function($query) use($module){
                           $query->where('id',$module->id);
-                      })->get();
+                      })->where('year_of_study',$yr)->where('campus_program_id',$campus_program->id)->get();
 
                       $program_mod_assign = ProgramModuleAssignment::find($module->id);
                       $program_mod_assign->students()->attach($non_opt_students->map(function($value){
                          return $value->id;
                       }));
+
+                    }
                   }
               } 
             }
