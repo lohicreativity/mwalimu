@@ -20,7 +20,8 @@ class CreateModuleAssignmentsTable extends Migration
             $table->unsignedBigInteger('study_academic_year_id');
             $table->unsignedBigInteger('program_module_assignment_id');
             $table->unsignedBigInteger('assigned_by_user_id');
-            $table->string('course_work_process_status')->nullable();
+            $table->string('course_work_process_status',20)->nullable();
+            $table->string('final_upload_status',20)->nullable();
             $table->timestamps();
 
             $table->foreign('module_id')->references('id')->on('modules')->onUpdate('cascade');

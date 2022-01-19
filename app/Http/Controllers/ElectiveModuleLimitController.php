@@ -53,6 +53,10 @@ class ElectiveModuleLimitController extends Controller
             return redirect()->back()->with('error','Deadline cannot be previous date than today');
         }
 
+        if(ElectiveModuleLimit::where('award_id',$request->get('award_id'))->where('campus_id',$request->get('campus_id'))->where('semester_id',$request->get('semester_id'))->where('study_academic_year_id',$request->get('study_academic_year_id'))->count() != 0){
+            return redirect()->back()->with('error','Elective deadline for this award already created for this academic year');
+        }
+
         (new ElectiveModuleLimitAction)->store($request);
 
         return Util::requestResponse($request,'Elective module limit created successfully');

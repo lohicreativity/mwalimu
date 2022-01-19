@@ -272,19 +272,35 @@
                               View Programmes
                        </a>
                       @can('assign-campus-programme')
-                      <a class="btn btn-info btn-sm" href="{{ url('academic/campus/'.$campus->id.'/campus-programs') }}">
+                       @if(Auth::user()->hasRole('administrator'))
+                       <a class="btn btn-info btn-sm" href="{{ url('academic/campus/'.$campus->id.'/campus-programs') }}">
                               <i class="fas fa-plus">
                               </i>
                               Assign Programmes
                        </a>
+                       @else
+                       <a class="btn btn-info btn-sm" @if($staff->campus_id == $campus->id) href="{{ url('academic/campus/'.$campus->id.'/campus-programs') }}" @else disabled="disabled" @endif>
+                              <i class="fas fa-plus">
+                              </i>
+                              Assign Programmes
+                       </a>
+                       @endif
                       @endcan
                       
                       @can('edit-campus')
+                      @if(Auth::user()->hasRole('administrator'))
                       <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-edit-campus-{{ $campus->id }}">
                               <i class="fas fa-pencil-alt">
                               </i>
                               Edit
                        </a>
+                       @else
+                       <a class="btn btn-info btn-sm" href="#" @if($staff->campus_id == $campus->id) data-toggle="modal" data-target="#ss-edit-campus-{{ $campus->id }}" @else disabled="disabled" @endif>
+                              <i class="fas fa-pencil-alt">
+                              </i>
+                              Edit
+                       </a>
+                       @endif
                        @endcan
 
                        <div class="modal fade" id="ss-edit-campus-{{ $campus->id }}">
@@ -404,11 +420,19 @@
                       </div>
                       <!-- /.modal -->
                       @can('delete-campus')
+                      @if(Auth::user()->hasRole('administrator'))
                       <a class="btn btn-danger btn-sm" href="#" data-toggle="modal" data-target="#ss-delete-campus-{{ $campus->id }}">
                               <i class="fas fa-trash">
                               </i>
                               Delete
                        </a>
+                      @else
+                       <a class="btn btn-danger btn-sm" href="#" @if($staff->campus_id == $campus->id) data-toggle="modal" data-target="#ss-delete-campus-{{ $campus->id }}" @else disabled="disabled" @endif>
+                              <i class="fas fa-trash">
+                              </i>
+                              Delete
+                       </a>
+                      @endif
                       @endcan
 
                        <div class="modal fade" id="ss-delete-campus-{{ $campus->id }}">

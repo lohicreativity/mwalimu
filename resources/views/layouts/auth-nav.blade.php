@@ -335,14 +335,7 @@
                 </a>
               </li>
               @endcan
-              @can('view-modules')
-              <li class="nav-item">
-                <a href="{{ url('academic/modules') }}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>{{ __('Modules') }}</p>
-                </a>
-              </li>
-              @endcan
+              
               <!-- <li class="nav-item">
                 <a href="{{ url('academic/academic-years') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
@@ -361,6 +354,14 @@
                 <a href="{{ url('academic/program-module-assignments?study_academic_year_id='.session('active_academic_year_id').'&campus_id='.session('staff_campus_id')) }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>{{ __('Programme Modules') }}</p>
+                </a>
+              </li>
+              @endcan
+              @can('view-modules')
+              <li class="nav-item">
+                <a href="{{ url('academic/modules') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>{{ __('Modules') }}</p>
                 </a>
               </li>
               @endcan
