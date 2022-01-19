@@ -112,11 +112,11 @@
                     <select name="campus_program_id" class="form-control" required>
                        <option value="">Select Programme</option>
                        @foreach($campus_programs as $program)
-                          @if($program->department_id == $staff->department_id)
+                          
                           @for($i = 1; $i <= $program->program->min_duration; $i++)
                           <option value="{{ $program->id }}_year_{{ $i }}">{{ $program->program->name }} - Year {{ $i }}</option>
                           @endfor
-                          @endif
+                          
                        @endforeach
                     </select>
                   </div>

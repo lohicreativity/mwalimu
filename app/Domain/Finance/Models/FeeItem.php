@@ -1,0 +1,22 @@
+<?php
+
+namespace App\Domain\Finance\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class FeeItem extends Model
+{
+    use HasFactory;
+
+    protected $table = 'fee_items';
+
+    /**
+     * Establish one to many relationship with fee types
+     */
+    public function feeType()
+    {
+    	return $this->belongsTo(FeeType::class,'fee_type_id');
+    }
+
+}

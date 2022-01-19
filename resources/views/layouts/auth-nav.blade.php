@@ -423,6 +423,24 @@
                 </a>
               </li>
               @endcan
+              <li class="nav-item">
+                <a href="{{ url('finance/fee-types') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>{{ __('Fee Types') }}</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ url('finance/fee-items') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>{{ __('Fee Items') }}</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ url('finance/fee-amounts') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>{{ __('Fee Amounts') }}</p>
+                </a>
+              </li>
               {{-- @can('view-roles') --}}
               <li class="nav-item">
                 <a href="{{ url('settings/roles') }}" class="nav-link">

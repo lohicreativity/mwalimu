@@ -15,7 +15,14 @@ class CreateFeeItemsTable extends Migration
     {
         Schema::create('fee_items', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->string('description');
+            $table->tinyInteger('is_mandatory');
+            $table->smallInteger('payment_order');
+            $table->unsignedBigInteger('fee_type_id');
             $table->timestamps();
+
+            $table->foreign('fee_type_id')->references('id')->on('fee_types')->onUpdate('cascade');
         });
     }
 
