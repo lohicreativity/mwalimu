@@ -71,7 +71,7 @@ class ExaminationResultController extends Controller
      */
     public function process(Request $request)
     {
-    	// DB::beginTransaction();
+    	DB::beginTransaction();
     	$campus_program = CampusProgram::with('program')->find(explode('_',$request->get('campus_program_id'))[0]);
     	$module_assignments = ModuleAssignment::whereHas('programModuleAssignment',function($query) use($request){
                 $query->where('campus_program_id',explode('_',$request->get('campus_program_id'))[0])->where('year_of_study',explode('_',$request->get('campus_program_id'))[2]);
@@ -118,9 +118,9 @@ class ExaminationResultController extends Controller
                 }])->where('module_assignment_id',$assignment->id)->get();
       		$policy = ExaminationPolicy::where('nta_level_id',$assignment->module->ntaLevel->id)->where('study_academic_year_id',$assignment->study_academic_year_id)->where('type',$assignment->programModuleAssignment->campusProgram->program->category)->first();
       		
-      		if(!$policy){
-      			return redirect()->back()->with('error','Some programmes are missing examination policy');
-      		}
+      		// if(!$policy){
+      		// 	return redirect()->back()->with('error','Some programmes are missing examination policy');
+      		// }
       		if($request->get('semester_id') != 'SUPPLEMENTARY'){
   	            if(Util::stripSpacesUpper($semester->name) == Util::stripSpacesUpper('Semester 2')){
 
@@ -456,7 +456,7 @@ class ExaminationResultController extends Controller
         $process->year_of_study = explode('_',$request->get('campus_program_id'))[2];
         $process->campus_program_id = explode('_',$request->get('campus_program_id'))[0];
         $process->save();
-    		// DB::commit();
+    		DB::commit();
 
         return redirect()->back()->with('message','Results processed successfully');
     }
