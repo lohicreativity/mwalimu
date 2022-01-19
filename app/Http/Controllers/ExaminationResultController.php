@@ -101,7 +101,7 @@ class ExaminationResultController extends Controller
             DB::rollback();
         		return redirect()->back()->with('error',$assign->module->name.'-'.$assign->module->code.' course works not processed');
         	}
-        	if($module_assignment->final_upload_status == null){
+        	if($assign->final_uploaded_status == null){
             DB::rollback();
         		return redirect()->back()->with('error',$assign->module->name.'-'.$assign->module->code.' final not uploaded');
         	}
