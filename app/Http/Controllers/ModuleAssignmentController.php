@@ -201,14 +201,14 @@ class ModuleAssignmentController extends Controller
         //      }
         // }
 
-        // if(ModuleAssignment::where('study_academic_year_id',$request->get('study_academic_year_id'))->where('module_id',$request->get('module_id'))->count() != 0){
+        if(ModuleAssignment::where('study_academic_year_id',$request->get('study_academic_year_id'))->where('module_id',$request->get('module_id'))->count() != 0){
 
-        //      if($request->ajax()){
-        //         return response()->json(array('error_messages'=>'Module already assigned staff in this study academic year'));
-        //      }else{
-        //         return redirect()->back()->with('error','Module already assigned staff in this study academic year');
-        //      }
-        // }
+             if($request->ajax()){
+                return response()->json(array('error_messages'=>'Module already assigned staff in this study academic year'));
+             }else{
+                return redirect()->back()->with('error','Module already assigned staff in this study academic year');
+             }
+        }
 
         $module = Module::find($request->get('module_id'));
         if(GradingPolicy::where('nta_level_id',$module->nta_level_id)->where('study_academic_year_id',$request->get('study_academic_year_id'))->count() == 0){
@@ -383,7 +383,7 @@ class ModuleAssignmentController extends Controller
                     'study_academic_year'=>$module_assignment->studyAcademicYear,
                     'staff'=>$module_assignment->staff,
                     'module'=>$module_assignment->module,
-                    'students'=>$module_assignment->programModuleAssignment->students()->get()
+                    'students'=>$module_assignment->programModuleAssignment->students()->orderBy('registration_number')->get()
                 ];
 
                 
@@ -397,7 +397,7 @@ class ModuleAssignmentController extends Controller
                     'study_academic_year'=>$module_assignment->studyAcademicYear,
                     'students'=>Student::whereHas('registrations',function($query) use($module_assignment){
                           $query->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)->where('semester_id',$module_assignment->programModuleAssignment->semester_id)->where('study_academic_year_id',$module_assignment->programModuleAssignment->study_academic_year_id);
-                      })->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id)->get()
+                      })->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id)->orderBy('registration_number')->get()
                 ];
             }
               $headers = [
@@ -425,7 +425,6 @@ class ModuleAssignmentController extends Controller
               return response()->stream($callback, 200, $headers);
             
         }catch(\Exception $e){
-            return $e->getMessage();
             return redirect()->back()->with('error','Unable to get the resource specified in this request');
         }
     }
@@ -1024,7 +1023,7 @@ class ModuleAssignmentController extends Controller
     {
         try{
             $assignment = ModuleAssignment::with('assessmentPlans')->findOrFail($id);
-            if(count($assignment->assessmentPlans) != 0){
+            if(AssessmentPlan::has('courseWorkResults')->where('module_assignment_id',$id)->count() != 0){
                 return redirect()->back()->with('info','Module assignment cannot be deleted because it has assessment plans');
             }
             $assignment->delete();

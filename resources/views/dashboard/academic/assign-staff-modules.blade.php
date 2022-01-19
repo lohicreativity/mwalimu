@@ -41,15 +41,15 @@
 
             <div class="card card-default">
            <div class="card-header">
-                <ul class="nav nav-tabs">
-                  @can('view-modules')
-                  <li class="nav-item"><a class="nav-link" href="{{ url('academic/modules') }}">{{ __('Modules') }}</a></li>
-                  @endcan
+                <ul class="nav nav-tabs">       
                   @can('view-module-assignments')
                   <li class="nav-item"><a class="nav-link active" href="{{ url('academic/module-assignments?study_academic_year_id='.session('active_academic_year_id')) }}">{{ __('Module Assignments') }}</a></li>
                   @endcan
                   @can('view-module-assignment-requests')
                   <li class="nav-item"><a class="nav-link" href="{{ url('academic/module-assignment-requests') }}">{{ __('Modules Assignment Requests') }}</a></li>
+                  @endcan
+                  @can('view-modules')
+                  <li class="nav-item"><a class="nav-link" href="{{ url('academic/modules') }}">{{ __('Modules') }}</a></li>
                   @endcan
                 </ul>
               </div>
@@ -153,6 +153,7 @@
                             @can('delete-module-facilitator')
                             @if($staff->department_id == $assign->module->department_id)
                             <a href="#" data-toggle="modal" data-target="#ss-delete-module-assignment-{{ $modAssign->id }}" class="ss-color-danger ss-right">Remove</a></p>
+                            <p class="ss-font-xs ss-no-margin ss-italic">{{ $modAssign->staff->phone }}, {{ $modAssign->staff->email }}</p>
                             @endif
                             @endcan
 

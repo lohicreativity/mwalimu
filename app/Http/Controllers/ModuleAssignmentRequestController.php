@@ -48,6 +48,13 @@ class ModuleAssignmentRequestController extends Controller
             return redirect()->back()->with('error','Facilitator already requested');
         }
 
+        $program_module_assignment = ProgramModuleAssignment::find($request->get('program_module_assignment_id'));
+        if($program_module_assignment->category == 'OPTIONAL'){
+            if(ElectivePolicy::where('study_academic_year_id',$request->get('study_academic_year_id'))->where('campus_program_id',$request->get('campus_program_id'))->where('semester_id',$program_module_assignment->semester_id)->where('year_of_study',$program_module_assignment->year_of_study)->count() == 0){
+                return redirect()->back()->with('error','No elective policy defined for this academic year');
+            }
+        }
+
 
         (new ModuleAssignmentRequestAction)->store($request);
 
