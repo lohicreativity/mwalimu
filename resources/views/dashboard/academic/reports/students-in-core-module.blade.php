@@ -229,7 +229,7 @@
                     <tr>
                       <td class="ss-bold">SN</td>
                       <td class="ss-bold">NAME</td>
-                      <td class="ss-bold">REGNO</td>
+                      <td class="ss-bold">REG. NO.</td>
                       <td class="ss-bold" colspan="5">STUDENT SIGNATURE</td>
                     </tr>
                     @foreach($students as $key=>$student)

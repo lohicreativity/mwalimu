@@ -217,7 +217,7 @@
                     <tr>
                       <td class="ss-bold" rowspan="2">SN</td>
                       @if($request->get('reg_display_type') == 'SHOW')
-                      <td class="ss-bold" rowspan="2">REGNO</td>
+                      <td class="ss-bold" rowspan="2">REG. NO.</td>
                       @endif
                       @if($request->get('name_display_type') == 'SHOW')
                       <td class="ss-bold" rowspan="2">NAME</td>

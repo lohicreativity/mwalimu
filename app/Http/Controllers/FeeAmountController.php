@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Domain\Finance\Models\FeeAmount;
+use App\Domain\Finance\Models\FeeItem;
+use App\Domain\Academic\Models\StudyAcademicYear;
 use App\Domain\Finance\Actions\FeeAmountAction;
 use App\Models\User;
 use App\Utils\Util;
@@ -18,6 +20,8 @@ class FeeAmountController extends Controller
     {
     	$data = [
            'amounts'=>FeeAmount::paginate(20),
+           'fee_items'=>FeeItem::all(),
+           'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
            'staff'=>User::find(Auth::user()->id)->staff
     	];
     	return view('dashboard.finance.fee-amounts',$data)->withTitle('Fee Amounts');

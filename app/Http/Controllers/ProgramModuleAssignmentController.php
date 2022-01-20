@@ -241,6 +241,16 @@ class ProgramModuleAssignmentController extends Controller
            }
         }
 
+        $program_mod_assign = ProgramModuleAssignment::find($request->get('program_module_assignment_id'));
+        if($program_mod_assign->category == 'OPTIONAL'){
+            if(ProgramModuleAssignment::find($request->get('program_module_assignment_id'))->students()->count() != 0){
+               return redirect()->back()->with('error','This optional module already has students');
+            }
+        }
+        
+        if(ModuleAssignment::whereNotNull('final_upload_status')->where('program_module_assignment_id',$request->get('program_module_assignment_id'))->count() != 0){
+             return redirect()->back()->with('error','Final marks already uploaded');
+        }
 
         (new ProgramModuleAssignmentAction)->update($request);
 

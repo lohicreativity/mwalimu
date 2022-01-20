@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Domain\Finance\Models\FeeItem;
+use App\Domain\Finance\Models\FeeType;
 use App\Domain\Finance\Actions\FeeItemAction;
 use App\Models\User;
 use App\Utils\Util;
@@ -18,6 +19,7 @@ class FeeItemController extends Controller
     {
     	$data = [
            'items'=>FeeItem::paginate(20),
+           'fee_types'=>FeeType::all(),
            'staff'=>User::find(Auth::user()->id)->staff
     	];
     	return view('dashboard.finance.fee-items',$data)->withTitle('Fee Items');

@@ -206,7 +206,7 @@
                   <table class="table table-condensed table-bordered">
                     <tr>
                       <td class="ss-bold">SN</td>
-                      <td class="ss-bold">REGNO</td>
+                      <td class="ss-bold">REG. NO.</td>
                       <td class="ss-bold">NAME</td>
                       <td class="ss-bold">COURSEWORK</td>
                       <td class="ss-bold">EXAM MARKS</td>

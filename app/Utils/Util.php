@@ -33,7 +33,7 @@ class Util {
        foreach($results as $res){
           $total_weights += $res->point*$res->moduleAssignment->module->credit;
        }
-       return number_format($total_weights/$total_credits,4);
+       return bcdiv($total_weights/$total_credits,1,4);
    }
 
    /**

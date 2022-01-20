@@ -212,13 +212,13 @@
                     </tr>
                     <tr>
                       <td class="ss-bold">SN</td>
-                      <td class="ss-bold">REGNO</td>
+                      <td class="ss-bold">REG. NO.</td>
                       <td class="ss-bold">NAME</td>
                       @foreach($assessment_plans as $plan)
                       <td>{{ $plan->name }}</td>
                       @endforeach
                       <td class="ss-bold">COURSEWORK</td>
-                      <td class="ss-bold">SIGNATURE</td>
+                      <td class="ss-bold ss-center">SIGNATURE</td>
                     </tr>
                     @foreach($results as $key=>$result)
                     <tr>

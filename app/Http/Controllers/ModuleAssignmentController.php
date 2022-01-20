@@ -494,6 +494,7 @@ class ModuleAssignmentController extends Controller
                     'campus'=>$module_assignment->programModuleAssignment->campusProgram->campus,
                     'department'=>$module_assignment->programModuleAssignment->campusProgram->program->department,
                     'module'=>$module_assignment->module,
+                    'year_of_study'=>$module_assignment->programModuleAssignment->year_of_study,
                     'study_academic_year'=>$module_assignment->studyAcademicYear,
                     'course_work_processed'=> $module_assignment->course_work_process_status == 'PROCESSED'? true : false,
                     'assessment_plans'=>AssessmentPlan::where('module_assignment_id',$module_assignment->id)->get(),
@@ -502,7 +503,6 @@ class ModuleAssignmentController extends Controller
 
                 return view('dashboard.academic.reports.students-with-course-work',$data);
         }catch(\Exception $e){
-            return $e->getMessage();
             return redirect()->back()->with('error','Unable to get the resource specified in this request');
         }
     }
@@ -724,23 +724,25 @@ class ModuleAssignmentController extends Controller
 
               $file_name = SystemLocation::renameFile($destination, $request->file('results_file')->getClientOriginalName(),'csv', $academicYear->year.'_'.$module->code.'_'.Auth::user()->id.'_'.now()->format('YmdHms').'_'.$assessment);
 
+              $uploaded_students = [];
+              $csvFileName = $file_name;
+              $csvFile = $destination.$csvFileName;
+              $file_handle = fopen($csvFile, 'r');
+              while (!feof($file_handle)) {
+                  $line_of_text[] = fgetcsv($file_handle, 0, ',');
+              }
+              fclose($file_handle);
+              foreach($line_of_text as $line){
+                 $stud = Student::where('registration_number',trim($line[0]))->first();
+                 if($stud){
+                    $uploaded_students[] = $stud;
+                 }
+              }
+
               // Get students taking the module
               if($module_assignment->programModuleAssignment->category == 'OPTIONAL'){
                 $students = $module_assignment->programModuleAssignment->students()->get();
-                $uploaded_students = [];
-                $csvFileName = $file_name;
-                $csvFile = $destination.$csvFileName;
-                $file_handle = fopen($csvFile, 'r');
-                while (!feof($file_handle)) {
-                    $line_of_text[] = fgetcsv($file_handle, 0, ',');
-                }
-                fclose($file_handle);
-                foreach($line_of_text as $line){
-                   $stud = Student::where('registration_number',trim($line[0]))->first();
-                   if($stud){
-                      $uploaded_students[] = $stud;
-                   }
-                }
+                
                 $non_opted_students = [];
                 foreach($uploaded_students as $up_stud){
                    if($module_assignment->programModuleAssignment->students()->where('id',$up_stud->id)->count() == 0){
@@ -755,6 +757,19 @@ class ModuleAssignmentController extends Controller
                 $students = Student::whereHas('registrations',function($query) use($module_assignment){
                      $query->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)->where('semester_id',$module_assignment->programModuleAssignment->semester_id)->where('study_academic_year_id',$module_assignment->programModuleAssignment->study_academic_year_id);
                 })->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id)->get();
+
+                $invalid_students = [];
+                foreach($uploaded_students as $up_stud){
+                   if(Student::whereHas('registrations',function($query) use($module_assignment){
+                     $query->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)->where('semester_id',$module_assignment->programModuleAssignment->semester_id)->where('study_academic_year_id',$module_assignment->programModuleAssignment->study_academic_year_id);
+                })->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id)->where('registration_number',$up_stud[1])->count() == 0){
+                      $invalid_students[] = $up_stud;
+                   }
+                }
+                if(count($invalid_students) != 0){
+                    session()->flash('invalid_students',$non_opted_students);
+                    return redirect()->back()->with('error','Uploaded students do not exists');
+                }
               }
 
               

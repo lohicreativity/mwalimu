@@ -1,6 +1,12 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\FeeTypeController;
+use App\Http\Controllers\FeeItemController;
+use App\Http\Controllers\FeeAmountController;
+
+
+
 
 /*
 |--------------------------------------------------------------------------

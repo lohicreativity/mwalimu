@@ -198,7 +198,7 @@
                <h3>MWALIMU NYERERE MEMORIAL ACADEMY</h3>
                <h3>{{ $campus->name }}</h3>
                <h3>{{ $department->name }}</h3>
-               <h3>{{ $program->name }} ({{ $study_academic_year->academicYear->year }})</h3>
+               <h3>{{ $program->name }} ({{ $study_academic_year->academicYear->year }}) - YEAR {{ $year_of_study }}</h3>
                <h3>{{ $module->name }} - {{ $module->code }}</h3>
               </div>
                <div class="table-responsive ss-margin-bottom">
@@ -211,19 +211,19 @@
                     </tr>
                     <tr>
                       <td class="ss-bold">SN</td>
-                      <td class="ss-bold">REGNO</td>
                       <td class="ss-bold">NAME</td>
+                      <td class="ss-bold">REG. NO.</td>
                       @foreach($assessment_plans as $plan)
                       <td>{{ $plan->name }}</td>
                       @endforeach
                       <td class="ss-bold">COURSEWORK</td>
-                      <td class="ss-bold">SIGNATURE</td>
+                      <td class="ss-bold ss-center">SIGNATURE</td>
                     </tr>
                     @foreach($registrations as $key=>$reg)
                     <tr>
                       <td>{{ $key+1 }}</td>
+                      <td>{{ $reg->student->surname }}, {{ substr($reg->student->first_name,0,1) }}</td>
                       <td>{{ $reg->student->registration_number }}</td>
-                      <td>{{ $reg->student->surname }}, {{ $reg->student->first_name }} {{ $reg->student->middle_name}}</td>
                         @php 
                             $cw_available = true;
                             $empty_columns = count($assessment_plans) - count($reg->student->courseWorkResults);

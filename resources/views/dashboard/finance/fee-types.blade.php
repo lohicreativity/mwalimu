@@ -38,7 +38,6 @@
       <div class="container-fluid">
         <div class="row">
           <div class="col-12">
-            @can('add-type')
             <!-- general form elements -->
             <div class="card card-default">
               <div class="card-header">
@@ -52,29 +51,102 @@
                      'class'=>'form-control',
                      'required'=>true
                   ];
-              @endphp
-              {!! Form::open(['url'=>'settings/type/store','class'=>'ss-form-processing']) !!}
-                <div class="card-body">
 
-                  <div class="form-group">
+                  $code = [
+                     'placeholder'=>'Code',
+                     'class'=>'form-control',
+                     'required'=>true
+                  ];
+
+                  $gfs_code = [
+                     'placeholder'=>'GFS code',
+                     'class'=>'form-control',
+                     'required'=>true
+                  ];
+
+                  $description = [
+                     'placeholder'=>'Description',
+                     'class'=>'form-control',
+                     'required'=>true
+                  ];
+              @endphp
+              {!! Form::open(['url'=>'finance/fee-type/store','class'=>'ss-form-processing']) !!}
+                <div class="card-body">
+                  <div class="row">
+                  <div class="form-group col-4">
                     {!! Form::label('','Name') !!}
                     {!! Form::text('name',null,$name) !!}
                   </div>
+                  <div class="form-group col-4">
+                    {!! Form::label('','Code') !!}
+                    {!! Form::text('code',null,$code) !!}
+                  </div>
+                  <div class="form-group col-4">
+                    {!! Form::label('','GFS code') !!}
+                    {!! Form::text('gfs_code',null,$gfs_code) !!}
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="form-group col-4">
+                    {!! Form::label('','Description') !!}
+                    {!! Form::text('description',null,$description) !!}
+                  </div>
+                  <div class="form-group col-4">
+                    {!! Form::label('','Duration') !!}
+                    <select name="duration" class="form-control">
+                      <option value="">Select Duration</option>
+                      @for($i = 10; $i <= 360; $i++)
+                        <option value="{{ $i }}">{{ $i }} Days</option>
+                        @php
+                          $i = $i+10; 
+                        @endphp
+                      @endfor
+                    </select>
+                  </div>
+                  <div class="form-group col-4">
+                    {!! Form::label('','Payment order') !!}
+                    <select name="payment_order" class="form-control">
+                      <option value="">Select Payment Order</option>
+                      @for($i = 1; $i <= 10; $i++)
+                        <option value="{{ $i }}">{{ $i }} Days</option>
+                      @endfor
+                    </select>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="form-group col-4">
+                    {!! Form::label('','Payer') !!}
+                    <select name="payer" class="form-control">
+                      <option value="">Select Duration</option>
+                      <option value="INTERNAL">Internal</option>
+                      <option value="EXTERNAL">External</option>
+                      <option value="BOTH">Internal and External</option>
+                    </select>
+                  </div>
+                  <div class="form-group col-4">
+                    {!! Form::label('','When paid?') !!}
+                    <select name="when_paid" class="form-control">
+                      <option value="">Select When Paid</option>
+                      <option value="INTERNAL">Internal</option>
+                      <option value="EXTERNAL">External</option>
+                      <option value="BOTH">Internal and External</option>
+                    </select>
+                  </div>
+                </div>
                 </div>
                 <!-- /.card-body -->
 
                 <div class="card-footer">
-                  <button type="submit" class="btn btn-primary">{{ __('Add type') }}</button>
+                  <button type="submit" class="btn btn-primary">{{ __('Add Fee Type') }}</button>
                 </div>
               {!! Form::close() !!}
             </div>
             <!-- /.card -->
-            @endcan
 
             @if(count($types) != 0)
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">{{ __('List of types') }}</h3>
+                <h3 class="card-title">{{ __('List of Fee Types') }}</h3>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
@@ -82,6 +154,11 @@
                   <thead>
                   <tr>
                     <th>Name</th>
+                    <th>GFS Code</th>
+                    <th>Duration</th>
+                    <th>Order</th>
+                    <th>Payer</th>
+                    <th>When Paid</th>
                     <th>Actions</th>
                   </tr>
                   </thead>
@@ -89,40 +166,126 @@
                   @foreach($types as $type)
                   <tr>
                     <td>{{ $type->name }}</td>
+                    <td>{{ $type->gfs_code }}</td>
+                    <td>{{ $type->duration }}</td>
+                    <td>{{ $type->payment_order }}</td>
                     <td>
-                      @can('edit-type')
-                      <a class="btn btn-info btn-sm" href="#" @if(count($type->applicants) != 0) data-toggle="modal" data-target="#ss-edit-type-{{ $type->id }}" @else disabled="disabled" @endif>
+                      @if($type->is_internal == 1 && $type->is_external == 1)
+                        Internal and External
+                      @elseif($type->is_internal == 1 && $type->is_external == 0)
+                        Internal
+                      @else
+                        External
+                      @endif
+                    </td>
+                    <td>
+                      
+                    </td>
+                    <td>
+                      <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-edit-type-{{ $type->id }}">
                               <i class="fas fa-pencil-alt">
                               </i>
                               Edit
                        </a>
-                       @endcan
 
                        <div class="modal fade" id="ss-edit-type-{{ $type->id }}">
                         <div class="modal-dialog modal-lg">
                           <div class="modal-content">
                             <div class="modal-header">
-                              <h4 class="modal-title">Edit type</h4>
+                              <h4 class="modal-title">Edit Fee Type</h4>
                               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                               </button>
                             </div>
                             <div class="modal-body">
                                 @php
-                                    $name = [
-                                       'placeholder'=>'Name',
-                                       'class'=>'form-control',
-                                       'required'=>true
-                                    ];
-                                @endphp
-                                {!! Form::open(['url'=>'settings/type/update','class'=>'ss-form-processing']) !!}
+                                      $name = [
+                                         'placeholder'=>'Name',
+                                         'class'=>'form-control',
+                                         'required'=>true
+                                      ];
 
-                                    <div class="form-group">
-                                      {!! Form::label('','Name') !!}
-                                      {!! Form::text('name',$type->name,$name) !!}
+                                      $code = [
+                                         'placeholder'=>'Code',
+                                         'class'=>'form-control',
+                                         'required'=>true
+                                      ];
 
-                                      {!! Form::input('hidden','type_id',$type->id) !!}
-                                    </div>
+                                      $gfs_code = [
+                                         'placeholder'=>'GFS code',
+                                         'class'=>'form-control',
+                                         'required'=>true
+                                      ];
+
+                                      $description = [
+                                         'placeholder'=>'Description',
+                                         'class'=>'form-control',
+                                         'required'=>true
+                                      ];
+                                  @endphp
+                                  {!! Form::open(['url'=>'finance/fee-type/store','class'=>'ss-form-processing']) !!}
+
+                                    <div class="row">
+                                        <div class="form-group col-4">
+                                          {!! Form::label('','Name') !!}
+                                          {!! Form::text('name',$type->name,$name) !!}
+                                        </div>
+                                        <div class="form-group col-4">
+                                          {!! Form::label('','Code') !!}
+                                          {!! Form::text('code',$type->code,$code) !!}
+                                        </div>
+                                        <div class="form-group col-4">
+                                          {!! Form::label('','GFS code') !!}
+                                          {!! Form::text('gfs_code',$type->gfs_code,$gfs_code) !!}
+                                        </div>
+                                      </div>
+                                      <div class="row">
+                                        <div class="form-group col-4">
+                                          {!! Form::label('','Description') !!}
+                                          {!! Form::text('description',$type->description,$description) !!}
+                                        </div>
+                                        <div class="form-group col-4">
+                                          {!! Form::label('','Duration') !!}
+                                          <select name="duration" class="form-control">
+                                            <option value="">Select Duration</option>
+                                            @for($i = 10; $i <= 360; $i++)
+                                              <option value="{{ $i }}" @if($i == $type->duration) selected="selected" @endif>{{ $i }} Days</option>
+                                              @php
+                                                $i = $i+10; 
+                                              @endphp
+                                            @endfor
+                                          </select>
+                                        </div>
+                                        <div class="form-group col-4">
+                                          {!! Form::label('','Payment order') !!}
+                                          <select name="payment_order" class="form-control">
+                                            <option value="">Select Payment Order</option>
+                                            @for($i = 1; $i <= 10; $i++)
+                                              <option value="{{ $i }}" @if($i == $type->payment_order) selected="selected" @endif>{{ $i }} Days</option>
+                                            @endfor
+                                          </select>
+                                        </div>
+                                      </div>
+                                      <div class="row">
+                                        <div class="form-group col-4">
+                                          {!! Form::label('','Payer') !!}
+                                          <select name="when_paid" class="form-control">
+                                            <option value="">Select Payer</option>
+                                            <option value="INTERNAL" @if($type->is_internal == 1 && $type->is_external == 0) selected="selected" @endif>Internal</option>
+                                            <option value="EXTERNAL" @if($type->is_internal == 0 && $type->is_external == 1) selected="selected" @endif>External</option>
+                                            <option value="BOTH" @if($type->is_internal == 1 && $type->is_external == 1) selected="selected" @endif>Internal and External</option>
+                                          </select>
+                                        </div>
+                                        <div class="form-group col-4">
+                                          {!! Form::label('','When paid?') !!}
+                                          <select name="payer" class="form-control">
+                                            <option value="">Select When Paid</option>
+                                            <option value="INTERNAL">Internal</option>
+                                            <option value="EXTERNAL">External</option>
+                                            <option value="BOTH">Internal and External</option>
+                                          </select>
+                                        </div>
+                                      </div>
                                       <div class="ss-form-actions">
                                        <button type="submit" class="btn btn-primary">{{ __('Save Changes') }}</button>
                                       </div>
@@ -138,13 +301,12 @@
                         <!-- /.modal-dialog -->
                       </div>
                       <!-- /.modal -->
-                      @can('delete-type')
-                      <a class="btn btn-danger btn-sm" href="#" @if(count($type->applicants) != 0) data-toggle="modal" data-target="#ss-delete-type-{{ $type->id }}" @else disabled="disabled" @endif>
+
+                      <a class="btn btn-danger btn-sm" href="#" data-toggle="modal" data-target="#ss-delete-type-{{ $type->id }}">
                               <i class="fas fa-trash">
                               </i>
                               Delete
                        </a>
-                       @endcan
 
                        <div class="modal fade" id="ss-delete-type-{{ $type->id }}">
                         <div class="modal-dialog modal-lg">
@@ -159,10 +321,10 @@
                               <div class="row">
                                 <div class="col-12">
                                     <div id="ss-confirmation-container">
-                                       <p id="ss-confirmation-text">Are you sure you want to delete this type from the list?</p>
+                                       <p id="ss-confirmation-text">Are you sure you want to delete this fee type from the list?</p>
                                        <div class="ss-form-controls">
                                          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                                         <a href="{{ url('settings/type/'.$type->id.'/destroy') }}" class="btn btn-danger">Delete</a>
+                                         <a href="{{ url('finance/fee-type/'.$type->id.'/destroy') }}" class="btn btn-danger">Delete</a>
                                          </div><!-- end of ss-form-controls -->
                                       </div><!-- end of ss-confirmation-container -->
                                   </div><!-- end of col-md-12 -->
