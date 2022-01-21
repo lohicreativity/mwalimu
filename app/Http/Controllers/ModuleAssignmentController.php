@@ -278,7 +278,8 @@ class ModuleAssignmentController extends Controller
                 'students_passed_count'=>$students_passed_count,
                 'students_with_abscond_count'=>$students_with_abscond_count,
                 'supp_cases_count'=>$supp_cases_count,
-                'second_semester_publish_status'=>$second_semester_publish_status
+                'second_semester_publish_status'=>$second_semester_publish_status,
+                'staff'=>User::find(Auth::user()->id)->staff
              ];
              return view('dashboard.academic.assessment-results',$data)->withTitle('Upload Module Assignment Results');
           }catch(\Exception $e){
@@ -708,7 +709,7 @@ class ModuleAssignmentController extends Controller
                   $plan = null;
                   $assessment = 'FINAL';
                   $destination = public_path('final_results_uploads/');
-                  ModuleAssignment::where('id',$module_assignment)->update(['final_uploaded_status'=>'UPLOADED']);
+                  ModuleAssignment::where('id',$module_assignment)->update(['final_upload_status'=>'UPLOADED']);
               }elseif($request->get('assessment_plan_id') == 'SUPPLEMENTARY'){
                   $plan = null;
                   $assessment = 'SUPP';
