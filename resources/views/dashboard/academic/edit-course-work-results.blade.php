@@ -78,7 +78,7 @@
                   </div>
                   <div class="form-group col-6">
                     {!! Form::label('','Marks') !!}
-                    {!! Form::input('number','plan_'.$plan->id.'_score',round(100*$result->score/$plan->weight,1),$marks) !!}
+                    {!! Form::text('plan_'.$plan->id.'_score',round(100*$result->score/$plan->weight,1),$marks) !!}
                   </div>
                   </div>
                     @endif
