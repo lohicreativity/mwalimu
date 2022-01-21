@@ -79,6 +79,10 @@ class ProgramModuleAssignmentAction implements ProgramModuleAssignmentInterface{
                 $assignment->year_of_study = $request->get('year_of_study');
                 $assignment->category = $request->get('category');
                 $assignment->type = $request->get('type');
+                $course_work_min_mark_changed = false;
+                if($assignment->course_work_min_mark != $request->get('course_work_min_mark')){
+                      $course_work_min_mark_changed = true;
+                }
                 $assignment->course_work_min_mark = $request->get('course_work_min_mark');
                 $assignment->course_work_percentage_pass = $request->get('course_work_percentage_pass');
                 $assignment->course_work_pass_score = $request->get('course_work_pass_score');
@@ -104,15 +108,16 @@ class ProgramModuleAssignmentAction implements ProgramModuleAssignmentInterface{
                         $query->where('module_id',$request->get('module_id'))->where('year_of_study',$request->get('year_of_study'))->where('study_academic_year_id',$request->get('study_academic_year_id'));
                 })->update(['is_ready'=>1]);
 
-                AssessmentPlan::whereHas('moduleAssignment.programModuleAssignment',function($query) use ($request){
-                        $query->where('module_id',$request->get('module_id'));
-                })->delete();
+                if($course_work_min_mark_changed){
+                        AssessmentPlan::whereHas('moduleAssignment.programModuleAssignment',function($query) use ($request){
+                                $query->where('module_id',$request->get('module_id'));
+                        })->delete();
 
-                ModuleAssignment::where('program_module_assignment_id',$request->get('program_module_assignment_id'))->update(['course_work_process_status'=>null,'final_upload_status'=>null]);
+                        ModuleAssignment::where('program_module_assignment_id',$request->get('program_module_assignment_id'))->update(['course_work_process_status'=>null,'final_upload_status'=>null]);
 
-                $module_assignment = ModuleAssignment::where('program_module_assignment_id',$request->get('program_module_assignment_id'))->first();
+                        $module_assignment = ModuleAssignment::where('program_module_assignment_id',$request->get('program_module_assignment_id'))->first();
 
-                CourseWorkResult::where('module_assignment_id',$module_assignment->id)->delete();
-                ExaminationResult::where('module_assignment_id',$module_assignment->id)->delete();
+                        CourseWorkResult::where('module_assignment_id',$module_assignment->id)->delete();
+                }
 	}
 }
