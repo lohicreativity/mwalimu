@@ -244,7 +244,7 @@ class ProgramModuleAssignmentController extends Controller
 
         $program_mod_assign = ProgramModuleAssignment::find($request->get('program_module_assignment_id'));
         if($program_mod_assign->category == 'OPTIONAL'){
-            if(ProgramModuleAssignment::find($request->get('program_module_assignment_id'))->students()->count() != 0){
+            if(ProgramModuleAssignment::find($request->get('program_module_assignment_id'))->students()->count() != 0 && $program_mod_assign->category != $request->get('category')){
                return redirect()->back()->with('error','This optional module already has students');
             }
         }
