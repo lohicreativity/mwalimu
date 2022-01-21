@@ -751,7 +751,7 @@ class ExaminationResultController extends Controller
     {
          
          try{
-            DB::beginTransaction();
+            // DB::beginTransaction();
             $student = Student::findOrFail($student_id);
             $campus_program = CampusProgram::with('program')->find($student->campus_program_id);
             $semester = Semester::find($request->get('semester_id'));
@@ -1075,7 +1075,7 @@ class ExaminationResultController extends Controller
                     $rem->save();
                }
 
-           DB::commit();
+           // DB::commit();
 
            return redirect()->to('academic/results/'.$student->id.'/'.$ac_yr_id.'/'.$yr_of_study.'/show-student-results')->with('message','Results processed successfully');
         }catch(\Exception $e){
