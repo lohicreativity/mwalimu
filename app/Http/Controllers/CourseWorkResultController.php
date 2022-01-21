@@ -82,7 +82,7 @@ class CourseWorkResultController extends Controller
                         if(is_null($course_work) || $course_work_count < 2){
                            $exam_result->course_work_remark = 'INCOMPLETE';
                         }else{
-                           $exam_result->course_work_remark = $policy->course_work_pass_score <= $course_work? 'PASS' : 'FAIL';
+                           $exam_result->course_work_remark = $module_assignment->programModuleAssignment->course_work_pass_score <= $course_work? 'PASS' : 'FAIL';
                         }
                         
                         $exam_result->processed_by_user_id = Auth::user()->id;
