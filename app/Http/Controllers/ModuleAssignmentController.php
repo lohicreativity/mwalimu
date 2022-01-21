@@ -766,10 +766,10 @@ class ModuleAssignmentController extends Controller
                       $invalid_students[] = $up_stud;
                    }
                 }
-                if(count($invalid_students) != 0){
-                    session()->flash('invalid_students',$invalid_students);
-                    return redirect()->back()->with('error','Uploaded students do not exists');
-                }
+                // if(count($invalid_students) != 0){
+                //     session()->flash('invalid_students',$invalid_students);
+                //     return redirect()->back()->with('error','Uploaded students do not exists');
+                // }
               }
 
               
