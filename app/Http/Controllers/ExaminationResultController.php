@@ -853,6 +853,8 @@ class ExaminationResultController extends Controller
                 }
             }
 
+            $student_buffer[$student->id]['opt_credit'] = 0;
+
             foreach($results as $key=>$result){          
               
                     $optional_programs = ProgramModuleAssignment::whereHas('students',function($query) use($student){
