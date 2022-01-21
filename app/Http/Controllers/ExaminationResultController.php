@@ -536,9 +536,7 @@ class ExaminationResultController extends Controller
                     $query->where('id',$prog_id)->where('study_academic_year_id',$ac_yr_id);
                  })->with(['moduleAssignment.programModuleAssignment.module.ntaLevel','moduleAssignment.programModuleAssignment.campusProgram.program'])->where('student_id',$student->id)->firstOrFail();
             $policy = ExaminationPolicy::where('nta_level_id',$result->moduleAssignment->programModuleAssignment->module->ntaLevel->id)->where('study_academic_year_id',$result->moduleAssignment->study_academic_year_id)->where('type',$result->moduleAssignment->programModuleAssignment->campusProgram->program->category)->first();
-            if(!$policy){
-               return redirect()->back()->with('error','No examination policy defined for this NTA level this academic year');
-            }
+
             $data = [
                'result'=>$result,
                'policy'=>$policy,
