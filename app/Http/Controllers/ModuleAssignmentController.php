@@ -709,7 +709,7 @@ class ModuleAssignmentController extends Controller
                   $plan = null;
                   $assessment = 'FINAL';
                   $destination = public_path('final_results_uploads/');
-                  ModuleAssignment::where('id',$module_assignment)->update(['final_upload_status'=>'UPLOADED']);
+                  ModuleAssignment::where('id',$module_assignment->id)->update(['final_upload_status'=>'UPLOADED']);
               }elseif($request->get('assessment_plan_id') == 'SUPPLEMENTARY'){
                   $plan = null;
                   $assessment = 'SUPP';
