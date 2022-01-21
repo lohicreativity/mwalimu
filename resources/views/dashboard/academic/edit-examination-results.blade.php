@@ -57,6 +57,7 @@
                   $final_score = [
                      'placeholder'=>'Final score',
                      'class'=>'form-control',
+                     'steps'=>'any',
                      'required'=>true
                   ];
 
