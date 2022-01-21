@@ -71,7 +71,7 @@ class HomeController extends Controller
      */
     public function getFeeType(Request $request)
     {
-        $type = FeeType::find($request->get('fee_type_id'));
+        $type = FeeType::with(['feeItems.feeAmounts'])->find($request->get('fee_type_id'));
         if($type){
             return response()->json(['status'=>'success','type'=>$type]);
         }else{

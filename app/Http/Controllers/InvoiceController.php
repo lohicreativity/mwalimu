@@ -36,21 +36,24 @@ class InvoiceController extends Controller
 
 
         $payable = Invoice::find($invoice->id)->payable;
-        $payment_category = PaymentCategory::find($request->get('payment_category_id'));
+        $fee_type = FeeType::find($request->get('fee_type_id'));
+
+        $generated_by = 'SP';
+        $approved_by = 'SP';
 
         $this->requestControlNumber($invoice->reference_no,
         	                        $inst_id,
         	                        $invoice->amount,
-        	                        $payment_category->description,
-        	                        $gfs_code,
-        	                        $payment_option,
+        	                        $fee_type->description,
+        	                        $fee_type->gfs_code,
+        	                        $fee_type->payment_option,
         	                        $payable->id,
         	                        $payable->first_name.' '.$payable->middle_name.' '.$payable->surname,
         	                        $payable->phone,
         	                        $payable->email,
         	                        $generated_by,
         	                        $approved_by,
-        	                        $days,
+        	                        $fee_type->duration,
         	                        $invoice->currency);
 	}
     

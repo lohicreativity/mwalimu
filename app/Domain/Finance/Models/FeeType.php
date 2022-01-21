@@ -11,4 +11,12 @@ class FeeType extends Model
 
     protected $table = 'fee_types';
 
+    /**
+     * Establish one to many relationship with fee amounts
+     */
+    public function feeItems()
+    {
+        return $this->hasMany(FeeItem::class,'fee_type_id');
+    }
+
 }

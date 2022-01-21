@@ -59,7 +59,7 @@
               <div class="card-body">
                  <div class="form-group">
                    {!! Form::label('','Fee type') !!}
-                   <select name="fee_item_id" class="form-control" data-token="{{ session()->token() }}" data-source-url="{{ url('api/v1/get-fee-type') }}" data-target="#ss-amount" id="ss-select-fee-type">
+                   <select name="fee_type_id" class="form-control" data-token="{{ session()->token() }}" data-source-url="{{ url('api/v1/get-fee-type') }}" data-target="#ss-amount" id="ss-select-fee-type">
                       <option value="">Select Fee Type</option>
                       @foreach($fee_types as $type)
                       <option value="{{ $type->id }}">{{ $type->name }}</option>

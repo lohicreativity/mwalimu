@@ -599,7 +599,9 @@ $('#ss-select-fee-type').on('change',function(e){
        }
     }).done(function(data, success){
         if(data.status == 'success'){
-           $($(e.target).data('target')).val($('#ss-subjects-number').val()*data.type.feeItems[0].feeAmounts[0].amount_in_tzs);
+           // if(data.type.name == 'Appeal'){
+              $($(e.target).data('target')).val($('#ss-subjects-number').val()*data.type.fee_items[0].fee_amounts[0].amount_in_tzs);
+           // }
         }
     });
 });

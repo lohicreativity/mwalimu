@@ -19,4 +19,12 @@ class FeeItem extends Model
     	return $this->belongsTo(FeeType::class,'fee_type_id');
     }
 
+    /**
+     * Establish one to many relationship with fee amounts
+     */
+    public function feeAmounts()
+    {
+    	return $this->hasMany(FeeAmount::class,'fee_item_id');
+    }
+
 }
