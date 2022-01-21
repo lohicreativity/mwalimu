@@ -249,9 +249,9 @@ class ProgramModuleAssignmentController extends Controller
             }
         }
         
-        if(ModuleAssignment::whereNotNull('final_upload_status')->where('program_module_assignment_id',$request->get('program_module_assignment_id'))->count() != 0){
-             return redirect()->back()->with('error','Final marks already uploaded');
-        }
+        // if(ModuleAssignment::whereNotNull('final_upload_status')->where('program_module_assignment_id',$request->get('program_module_assignment_id'))->count() != 0){
+        //      return redirect()->back()->with('error','Final marks already uploaded');
+        // }
 
         (new ProgramModuleAssignmentAction)->update($request);
 
