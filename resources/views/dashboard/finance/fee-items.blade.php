@@ -69,9 +69,9 @@
                     {!! Form::label('','Description') !!}
                     {!! Form::text('description',null,$description) !!}
                   </div>
-                  <div class="form-group col-6">
+                  <div class="form-group col-4">
                     {!! Form::label('','Payment order') !!}
-                    <select name="fee_item_id" class="form-control">
+                    <select name="payment_order" class="form-control">
                       <option value="">Select Payment Order</option>
                       @for($i = 1; $i <= 10; $i++)
                         <option value="{{ $i }}">{{ $i }}</option>
@@ -180,9 +180,9 @@
                                         {!! Form::label('','Description') !!}
                                         {!! Form::text('description',$item->description,$description) !!}
                                       </div>
-                                      <div class="form-group col-6">
+                                      <div class="form-group col-4">
                                         {!! Form::label('','Payment order') !!}
-                                        <select name="fee_item_id" class="form-control">
+                                        <select name="payment_order" class="form-control">
                                           <option value="">Select Payment Order</option>
                                           @for($i = 1; $i <= 10; $i++)
                                             <option value="{{ $i }}" @if($i == $item->payment_order) selected="selected" @endif>{{ $i }}</option>

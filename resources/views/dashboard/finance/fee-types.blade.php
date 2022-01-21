@@ -98,18 +98,18 @@
                       @for($i = 10; $i <= 360; $i++)
                         <option value="{{ $i }}">{{ $i }} Days</option>
                         @php
-                          $i = $i+10; 
+                          $i = $i+9; 
                         @endphp
                       @endfor
                     </select>
                   </div>
                   <div class="form-group col-4">
                     {!! Form::label('','Payment order') !!}
-                    <select name="payment_order" class="form-control">
-                      <option value="">Select Payment Order</option>
-                      @for($i = 1; $i <= 10; $i++)
-                        <option value="{{ $i }}">{{ $i }} Days</option>
-                      @endfor
+                    <select name="payment_option" class="form-control" required>
+                      <option value="">Select Payment Option</option>
+                      <option value="0">Full Payment</option>
+                      <option value="1">Partial Payment</option>
+                      <option value="2">Exact Payment</option>
                     </select>
                   </div>
                 </div>
@@ -127,9 +127,9 @@
                     {!! Form::label('','When paid?') !!}
                     <select name="when_paid" class="form-control">
                       <option value="">Select When Paid</option>
-                      <option value="INTERNAL">Internal</option>
-                      <option value="EXTERNAL">External</option>
-                      <option value="BOTH">Internal and External</option>
+                      <option value="PAID_ONCE">Once</option>
+                      <option value="PAID_ONCE_PER_SEMESTER">Once Per Semester</option>
+                      <option value="PAID_MULTIPLE_TIMES">Multiple Times</option>
                     </select>
                   </div>
                 </div>
@@ -223,12 +223,14 @@
                                          'required'=>true
                                       ];
                                   @endphp
-                                  {!! Form::open(['url'=>'finance/fee-type/store','class'=>'ss-form-processing']) !!}
+                                  {!! Form::open(['url'=>'finance/fee-type/update','class'=>'ss-form-processing']) !!}
 
                                     <div class="row">
                                         <div class="form-group col-4">
                                           {!! Form::label('','Name') !!}
                                           {!! Form::text('name',$type->name,$name) !!}
+
+                                          {!! Form::input('hidden','fee_type_id',$type->id) !!}
                                         </div>
                                         <div class="form-group col-4">
                                           {!! Form::label('','Code') !!}
@@ -251,18 +253,18 @@
                                             @for($i = 10; $i <= 360; $i++)
                                               <option value="{{ $i }}" @if($i == $type->duration) selected="selected" @endif>{{ $i }} Days</option>
                                               @php
-                                                $i = $i+10; 
+                                                $i = $i+9; 
                                               @endphp
                                             @endfor
                                           </select>
                                         </div>
                                         <div class="form-group col-4">
                                           {!! Form::label('','Payment order') !!}
-                                          <select name="payment_order" class="form-control">
-                                            <option value="">Select Payment Order</option>
-                                            @for($i = 1; $i <= 10; $i++)
-                                              <option value="{{ $i }}" @if($i == $type->payment_order) selected="selected" @endif>{{ $i }} Days</option>
-                                            @endfor
+                                          <select name="payment_option" class="form-control" required>
+                                            <option value="">Select Payment Option</option>
+                                            <option value="0" @if($type->payment_option == 0) selected="selected" @endif>Full Payment</option>
+                                            <option value="1" @if($type->payment_option == 1) selected="selected" @endif>Partial Payment</option>
+                                            <option value="2" @if($type->payment_option == 2) selected="selected" @endif>Exact Payment</option>
                                           </select>
                                         </div>
                                       </div>
@@ -280,9 +282,9 @@
                                           {!! Form::label('','When paid?') !!}
                                           <select name="payer" class="form-control">
                                             <option value="">Select When Paid</option>
-                                            <option value="INTERNAL">Internal</option>
-                                            <option value="EXTERNAL">External</option>
-                                            <option value="BOTH">Internal and External</option>
+                                            <option value="PAID_ONCE">Once</option>
+                                            <option value="PAID_ONCE_PER_SEMESTER">Once Per Semester</option>
+                                            <option value="PAID_MULTIPLE_TIMES">Multiple Times</option>
                                           </select>
                                         </div>
                                       </div>

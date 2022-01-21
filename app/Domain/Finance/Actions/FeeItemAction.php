@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\Academic\Actions;
+namespace App\Domain\Finance\Actions;
 
 use Illuminate\Http\Request;
 use App\Domain\Finance\Models\FeeItem;
@@ -13,7 +13,7 @@ class FeeItemAction implements FeeItemInterface{
                 $item->name = $request->get('name');
                 $item->description = $request->get('description');
                 $item->payment_order = $request->get('payment_order');
-                $item->fee_item_id = $request->get('fee_item_id');
+                $item->fee_type_id = $request->get('fee_type_id');
                 $item->is_mandatory = $request->get('is_mandatory');
                 $item->save();
 	}
@@ -23,7 +23,7 @@ class FeeItemAction implements FeeItemInterface{
                 $item->name = $request->get('name');
                 $item->description = $request->get('description');
                 $item->payment_order = $request->get('payment_order');
-                $item->fee_item_id = $request->get('fee_item_id');
+                $item->fee_type_id = $request->get('fee_type_id');
                 $item->is_mandatory = $request->get('is_mandatory');
                 $item->save();
 	}

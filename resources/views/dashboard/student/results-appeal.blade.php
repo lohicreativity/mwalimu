@@ -58,11 +58,11 @@
                 @endphp
               <div class="card-body">
                  <div class="form-group">
-                   {!! Form::label('','Payment Category') !!}
-                   <select name="payment_category_id" class="form-control" data-token="{{ session()->token() }}" data-source-url="{{ url('api/v1/get-payment-category') }}" data-target="#ss-amount" id="ss-select-payment-category">
-                      <option value="">Select Payment Category</option>
-                      @foreach($payment_categories as $category)
-                      <option value="{{ $category->id }}">{{ $category->name }}</option>
+                   {!! Form::label('','Fee type') !!}
+                   <select name="fee_item_id" class="form-control" data-token="{{ session()->token() }}" data-source-url="{{ url('api/v1/get-fee-type') }}" data-target="#ss-amount" id="ss-select-fee-type">
+                      <option value="">Select Fee Type</option>
+                      @foreach($fee_types as $type)
+                      <option value="{{ $type->id }}">{{ $type->name }}</option>
                       @endforeach
                    </select>
                  </div>

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\Academic\Actions;
+namespace App\Domain\Finance\Actions;
 
 use Illuminate\Http\Request;
 use App\Domain\Finance\Models\FeeType;

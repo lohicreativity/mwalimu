@@ -14,7 +14,7 @@ use App\Domain\Academic\Models\ExaminationResult;
 use App\Domain\Academic\Models\ModuleAssignment;
 use App\Domain\Registration\Models\Student;
 use App\Domain\Academic\Models\ResultPublication;
-use App\Domain\Finance\Models\PaymentCategory;
+use App\Domain\Finance\Models\FeeType;
 use App\Models\User;
 use Auth, Validator;
 
@@ -336,7 +336,7 @@ class StudentController extends Controller
     public function resultsAppeal(Request $request)
     {
         $data = [
-           'payment_categories'=>PaymentCategory::all(),
+           'fee_types'=>FeeType::all(),
            'student'=>User::find(Auth::user()->id)->student
         ];
         return view('dashboard.student.results-appeal',$data)->withTItle('Results Appeal');

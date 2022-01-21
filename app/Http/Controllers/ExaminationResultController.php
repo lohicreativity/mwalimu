@@ -208,9 +208,14 @@ class ExaminationResultController extends Controller
                   }else{
                           $processed_result = ExaminationResult::find($result->id);
                   }
+
                   if($result->course_work_remark == 'INCOMPLETE' || $result->final_remark == 'INCOMPLETE' || $result->final_remark == 'POSTPONED'){
                       $processed_result->total_score = null;
                   }else{
+                    $processed_result->course_work_remark = $assignment->programModuleAssignment->course_work_pass_score <= $processed_result->course_work_score ? 'PASS' : 'FAIL';
+
+                    $processed_result->final_remark = $assignment->programModuleAssignment->final_pass_score <= $processed_result->final_score? 'PASS' : 'FAIL';
+
                   	$processed_result->total_score = round($result->course_work_score + $result->final_score);
                   }
 

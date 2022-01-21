@@ -80,7 +80,7 @@
                       @endforeach
                     </select>
                   </div>
-                  <div class="form-group col-4">
+                  <div class="form-group col-6">
                     {!! Form::label('','Study academic year') !!}
                     <select name="study_academic_year_id" class="form-control">
                       <option value="">Select Study Academic Year</option>
@@ -163,7 +163,7 @@
                                       </div>
                                       <div class="form-group col-6">
                                         {!! Form::label('','Amount in USD') !!}
-                                        {!! Form::text('amount_in_usd',$amount_in_usd,$amount_in_usd) !!}
+                                        {!! Form::text('amount_in_usd',$amount->amount_in_usd,$amount_in_usd) !!}
                                       </div>
                                     </div>
                                     <div class="row">
@@ -176,7 +176,7 @@
                                           @endforeach
                                         </select>
                                       </div>
-                                      <div class="form-group col-4">
+                                      <div class="form-group col-6">
                                         {!! Form::label('','Study academic year') !!}
                                         <select name="study_academic_year_id" class="form-control">
                                           <option value="">Select Study Academic Year</option>

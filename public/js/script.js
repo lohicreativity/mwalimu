@@ -589,17 +589,17 @@ $('.ss-select-nta-level').on('change',function(e){
 });
 
 // Select NTA Level
-$('#ss-select-payment-category').on('change',function(e){
+$('#ss-select-fee-type').on('change',function(e){
     $.ajax({
        'method':'POST',
        'url':$(e.target).data('source-url'),
        'data':{
           '_token':$(e.target).data('token'),
-          'payment_category_id':$(e.target).val()
+          'fee_type_id':$(e.target).val()
        }
     }).done(function(data, success){
         if(data.status == 'success'){
-           $($(e.target).data('target')).val($('#ss-subjects-number').val()*data.category.amount);
+           $($(e.target).data('target')).val($('#ss-subjects-number').val()*data.type.feeItems[0].feeAmounts[0].amount_in_tzs);
         }
     });
 });

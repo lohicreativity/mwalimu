@@ -10,7 +10,7 @@ use App\Domain\Settings\Models\Ward;
 use App\Domain\Academic\Models\Module;
 use App\Domain\Academic\Models\ModuleAssignment;
 use App\Domain\Settings\Models\NTALevel;
-use App\Domain\Finance\Models\PaymentCategory;
+use App\Domain\Finance\Models\FeeType;
 
 class HomeController extends Controller
 {
@@ -67,15 +67,15 @@ class HomeController extends Controller
     }
 
     /**
-     * Return payment category from id
+     * Return fee type from id
      */
-    public function getPaymentCategory(Request $request)
+    public function getFeeType(Request $request)
     {
-        $category = PaymentCategory::find($request->get('payment_category_id'));
-        if($category){
-            return response()->json(['status'=>'success','category'=>$category]);
+        $type = FeeType::find($request->get('fee_type_id'));
+        if($type){
+            return response()->json(['status'=>'success','type'=>$type]);
         }else{
-            return response()->json(['status'=>'failed','category'=>$category]);
+            return response()->json(['status'=>'failed','type'=>$type]);
         }
     }
 
