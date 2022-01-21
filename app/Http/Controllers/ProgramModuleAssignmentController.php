@@ -13,7 +13,7 @@ use App\Domain\Academic\Models\CampusProgram;
 use App\Domain\Settings\Models\Campus;
 use App\Domain\Registration\Models\Student;
 use App\Domain\Academic\Actions\ProgramModuleAssignmentAction;
-use App\Domain\Academic\Actions\ModuleAssignmentAction;
+use App\Domain\Academic\Models\ModuleAssignment;
 use App\Models\User;
 use App\Utils\Util;
 use Validator, DB, Auth;
