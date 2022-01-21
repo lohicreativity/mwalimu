@@ -51,9 +51,6 @@ class CourseWorkResultController extends Controller
 
         $module = Module::with('ntaLevel')->find($module_assignment->module_id);
     	$policy = ExaminationPolicy::where('nta_level_id',$module->ntaLevel->id)->where('study_academic_year_id',$module_assignment->study_academic_year_id)->where('type',$module_assignment->programModuleAssignment->campusProgram->program->category)->first();
-	    if(!$policy){
-	        return redirect()->back()->withInput()->with('error','No examination policy defined for this module NTA level and study academic year');
-	    }
 
     	$assessment_plans = AssessmentPlan::where('module_assignment_id',$request->get('module_assignment_id'))->get();
     	foreach($assessment_plans as $plan){
