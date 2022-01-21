@@ -750,7 +750,7 @@ class ExaminationResultController extends Controller
     public function processStudentResults(Request $request, $student_id, $ac_yr_id,$yr_of_study)
     {
          
-         // try{
+         try{
             DB::beginTransaction();
             $student = Student::findOrFail($student_id);
             $campus_program = CampusProgram::with('program')->find($student->campus_program_id);
@@ -1080,10 +1080,10 @@ class ExaminationResultController extends Controller
            DB::commit();
 
            return redirect()->to('academic/results/'.$student->id.'/'.$ac_yr_id.'/'.$yr_of_study.'/show-student-results')->with('message','Results processed successfully');
-        // }catch(\Exception $e){
-        //    return $e->getMessage();
-        //    return redirect()->back()->with('error','Unable to get the resource specified in this request');
-        // }
+        }catch(\Exception $e){
+           return $e->getMessage();
+           return redirect()->back()->with('error','Unable to get the resource specified in this request');
+        }
     }
 
     /**
