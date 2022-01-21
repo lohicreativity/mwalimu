@@ -4,10 +4,13 @@ namespace App\Domain\Academic\Actions;
 
 use Illuminate\Http\Request;
 use App\Domain\Academic\Models\ProgramModuleAssignment;
+use App\Domain\Academic\Models\ModuleAssignment;
 use App\Domain\Academic\Models\AssessmentPlan;
 use App\Domain\Academic\Models\ProgramModuleAssignmentRequest;
 use App\Domain\Academic\Repositories\Interfaces\ProgramModuleAssignmentInterface;
 use App\Domain\Academic\Models\Module;
+use App\Domain\Academic\Models\CourseWorkResult;
+use App\Domain\Academic\Models\ExaminationResult;
 use App\Models\User;
 use Auth;
 
@@ -101,10 +104,15 @@ class ProgramModuleAssignmentAction implements ProgramModuleAssignmentInterface{
                         $query->where('module_id',$request->get('module_id'))->where('year_of_study',$request->get('year_of_study'))->where('study_academic_year_id',$request->get('study_academic_year_id'));
                 })->update(['is_ready'=>1]);
 
-                AssessmentPlan::whereHas('moduleAssignment',function($query) use ($request){
-                        $query->whereNull('course_work_process_status');
-                })->whereHas('moduleAssignment.programModuleAssignment',function($query) use ($request){
+                AssessmentPlan::whereHas('moduleAssignment.programModuleAssignment',function($query) use ($request){
                         $query->where('module_id',$request->get('module_id'));
                 })->delete();
+
+                ModuleAssignment::where('program_module_assignment_id',$request->get('program_module_assignment_id'))->update(['course_work_process_status'=>null,'final_upload_status'=>null]);
+
+                $module_assignment = ModuleAssignment::where('program_module_assignment_id',$request->get('program_module_assignment_id'))->first();
+
+                CourseWorkResult::where('module_assignment_id',$module_assignment->id)->delete();
+                ExaminationResult::where('module_assignment_id',$module_assignment->id)->delete();
 	}
 }
