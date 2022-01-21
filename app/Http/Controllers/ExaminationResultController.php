@@ -798,9 +798,9 @@ class ExaminationResultController extends Controller
                 }])->where('module_assignment_id',$assignment->id)->where('student_id',$student->id)->get();
             $policy = ExaminationPolicy::where('nta_level_id',$assignment->module->ntaLevel->id)->where('study_academic_year_id',$assignment->study_academic_year_id)->where('type',$assignment->programModuleAssignment->campusProgram->program->category)->first();
             
-              if(!$policy){
-                 return redirect()->back()->with('error','Some programmes are missing examination policy');
-              }
+              // if(!$policy){
+              //    return redirect()->back()->with('error','Some programmes are missing examination policy');
+              // }
 
               if(Util::stripSpacesUpper($semester->name) == Util::stripSpacesUpper('Semester 2')){
 
@@ -827,7 +827,7 @@ class ExaminationResultController extends Controller
                       }
                   }
                   
-                  DB::rollback();
+                  // DB::rollback();
                   return redirect()->back()->with('error','Some modules as missing final marks ('.implode(',', $missing_programs).')');
               }
 
@@ -884,7 +884,7 @@ class ExaminationResultController extends Controller
                     }
       
                     if(!$grading_policy){
-                       DB::rollback();
+                       // DB::rollback();
                        return redirect()->back()->with('error','Some programmes NTA level are missing grading policies');
                     }
                     
