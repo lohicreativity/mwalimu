@@ -127,7 +127,10 @@ class RoleController extends Controller
     public function destroy($id)
     {
         try{
-            $role = Role::findOrFail($id);
+            $role = Role::with('users')->findOrFail($id);
+            if(count($role->users) != 0){
+                return redirect()->back()->with('error','Role has users and cannot be deleted');
+            }
             $role->delete();
             return redirect()->back()->with('message','Role deleted successfully');
         }catch(Exception $e){

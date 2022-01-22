@@ -41,6 +41,10 @@ class PermissionController extends Controller
            }
         }
 
+        if(Permission::where('name',$request->get('name'))->count() != 0){
+            return redirect()->back()->with('error','Permission already exists');
+        }
+
 
         (new PermissionAction)->store($request);
 

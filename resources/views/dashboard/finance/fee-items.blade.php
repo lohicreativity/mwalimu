@@ -71,7 +71,7 @@
                   </div>
                   <div class="form-group col-4">
                     {!! Form::label('','Payment order') !!}
-                    <select name="payment_order" class="form-control">
+                    <select name="payment_order" class="form-control" required>
                       <option value="">Select Payment Order</option>
                       @for($i = 1; $i <= 10; $i++)
                         <option value="{{ $i }}">{{ $i }}</option>
@@ -89,7 +89,7 @@
                   </div>
                   <div class="form-group col-4">
                     {!! Form::label('','Fee type') !!}
-                    <select name="fee_type_id" class="form-control">
+                    <select name="fee_type_id" class="form-control" required>
                       <option value="">Select Fee Type</option>
                       @foreach($fee_types as $type)
                       <option value="{{ $type->id }}">{{ $type->name }}</option>
@@ -182,7 +182,7 @@
                                       </div>
                                       <div class="form-group col-4">
                                         {!! Form::label('','Payment order') !!}
-                                        <select name="payment_order" class="form-control">
+                                        <select name="payment_order" class="form-control" required>
                                           <option value="">Select Payment Order</option>
                                           @for($i = 1; $i <= 10; $i++)
                                             <option value="{{ $i }}" @if($i == $item->payment_order) selected="selected" @endif>{{ $i }}</option>
@@ -200,10 +200,10 @@
                                       </div>
                                       <div class="form-group col-4">
                                         {!! Form::label('','Fee type') !!}
-                                        <select name="fee_type_id" class="form-control">
+                                        <select name="fee_type_id" class="form-control" required>
                                           <option value="">Select Fee Type</option>
                                           @foreach($fee_types as $type)
-                                          <option value="{{ $type->id }}">{{ $type->name }}</option>
+                                          <option value="{{ $type->id }}" @if($type->id == $item->fee_type_id) selected="selected" @endif>{{ $type->name }}</option>
                                           @endforeach
                                         </select>
                                       </div>

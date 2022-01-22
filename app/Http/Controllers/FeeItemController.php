@@ -44,6 +44,14 @@ class FeeItemController extends Controller
            }
         }
 
+        if(FeeItem::where('fee_type_id',$request->get('fee_type_id'))->count() != 0){
+            return redirect()->back()->with('error','Fee item with this fee type already exists');
+        }
+
+        if(FeeItem::where('fee_type_id',$request->get('fee_type_id'))->where('payment_order',$request->get('payment_order'))->count() != 0){
+            return redirect()->back()->with('error','Fee item with this payment order already exists');
+        }
+
 
         (new FeeItemAction)->store($request);
 
@@ -81,7 +89,10 @@ class FeeItemController extends Controller
     public function destroy(Request $request, $id)
     {
         try{
-            $item = FeeItem::findOrFail($id);
+            $item = FeeItem::with('feeAmounts')->findOrFail($id);
+            if(count($item->feeAmounts) != 0){
+                return redirect()->back()->with('error','Fee item has amounts and cannot be deleted successfully');
+            }
             $item->delete();
             return redirect()->back()->with('message','Fee item deleted successfully');
         }catch(Exception $e){

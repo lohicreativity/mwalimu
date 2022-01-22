@@ -634,7 +634,7 @@ $('.ss-select-tags').on('change',function(e){
            }else if(code.substring(4,6) == '74'){
               year = 2;
               semester_id = 2;
-           }else if(code.substring(4,6) == '8'){
+           }else if(code.substring(4,5) == '8'){
               year = 3;
            }
 

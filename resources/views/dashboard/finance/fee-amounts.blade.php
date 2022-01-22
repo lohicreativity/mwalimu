@@ -154,12 +154,14 @@
                                          'required'=>true
                                       ];
                                   @endphp
-                                  {!! Form::open(['url'=>'finance/fee-amount/store','class'=>'ss-form-processing']) !!}
+                                  {!! Form::open(['url'=>'finance/fee-amount/update','class'=>'ss-form-processing']) !!}
 
                                     <div class="row">
                                       <div class="form-group col-6">
                                         {!! Form::label('','Amount in TZS') !!}
                                         {!! Form::text('amount_in_tzs',$amount->amount_in_tzs,$amount_in_tzs) !!}
+
+                                        {!! Form::input('hidden','fee_amount_id',$amount->id) !!}
                                       </div>
                                       <div class="form-group col-6">
                                         {!! Form::label('','Amount in USD') !!}
@@ -172,7 +174,7 @@
                                         <select name="fee_item_id" class="form-control">
                                           <option value="">Select Study Academic Year</option>
                                           @foreach($fee_items as $item)
-                                            <option value="{{ $item->id }}" @if($item->fee_item_id == $item->id) selected="selected" @endif>{{ $item->name }}</option>
+                                            <option value="{{ $item->id }}" @if($amount->fee_item_id == $item->id) selected="selected" @endif>{{ $item->name }}</option>
                                           @endforeach
                                         </select>
                                       </div>

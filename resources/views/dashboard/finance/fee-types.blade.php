@@ -104,7 +104,7 @@
                     </select>
                   </div>
                   <div class="form-group col-4">
-                    {!! Form::label('','Payment order') !!}
+                    {!! Form::label('','Payment option') !!}
                     <select name="payment_option" class="form-control" required>
                       <option value="">Select Payment Option</option>
                       <option value="0">Full Payment</option>
@@ -115,7 +115,7 @@
                 </div>
                 <div class="row">
                   <div class="form-group col-4">
-                    {!! Form::label('','Payer') !!}
+                    {!! Form::label('','Payer category') !!}
                     <select name="payer" class="form-control">
                       <option value="">Select Duration</option>
                       <option value="INTERNAL">Internal</option>
@@ -157,7 +157,7 @@
                     <th>GFS Code</th>
                     <th>Duration</th>
                     <th>Order</th>
-                    <th>Payer</th>
+                    <th>Payer Category</th>
                     <th>When Paid</th>
                     <th>Actions</th>
                   </tr>
@@ -179,7 +179,13 @@
                       @endif
                     </td>
                     <td>
-                      
+                      @if($type->is_paid_once == 1)
+                        Paid Once
+                      @elseif($type->is_paid_per_semester == 1)
+                        Paid Per Semester
+                      @else
+                        Multiple Times
+                      @endif
                     </td>
                     <td>
                       <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-edit-type-{{ $type->id }}">
@@ -259,7 +265,7 @@
                                           </select>
                                         </div>
                                         <div class="form-group col-4">
-                                          {!! Form::label('','Payment order') !!}
+                                          {!! Form::label('','Payment option') !!}
                                           <select name="payment_option" class="form-control" required>
                                             <option value="">Select Payment Option</option>
                                             <option value="0" @if($type->payment_option == 0) selected="selected" @endif>Full Payment</option>
@@ -270,7 +276,7 @@
                                       </div>
                                       <div class="row">
                                         <div class="form-group col-4">
-                                          {!! Form::label('','Payer') !!}
+                                          {!! Form::label('','Payer category') !!}
                                           <select name="when_paid" class="form-control">
                                             <option value="">Select Payer</option>
                                             <option value="INTERNAL" @if($type->is_internal == 1 && $type->is_external == 0) selected="selected" @endif>Internal</option>

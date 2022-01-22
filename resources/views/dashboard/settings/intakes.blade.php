@@ -139,7 +139,7 @@
                       </div>
                       <!-- /.modal -->
                       @can('delete-intake')
-                      <a class="btn btn-danger btn-sm" href="#" @if(count($intake->applicants) != 0) data-toggle="modal" data-target="#ss-delete-intake-{{ $intake->id }}" @else disabled="disabled" @endif>
+                      <a class="btn btn-danger btn-sm" href="#" data-toggle="modal" data-target="#ss-delete-intake-{{ $intake->id }}">
                               <i class="fas fa-trash">
                               </i>
                               Delete
