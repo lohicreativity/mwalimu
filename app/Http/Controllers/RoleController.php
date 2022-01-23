@@ -119,7 +119,7 @@ class RoleController extends Controller
         foreach($current_module->permissions as $perm){
             $current_perm_ids[] = $perm->id;
         }
-        $role->permissions()->deattach($current_perm_ids);
+        $role->permissions()->detach($current_perm_ids);
         $role->permissions()->attach($permissionIds[$request->get('system_module_id')]);
         
 
