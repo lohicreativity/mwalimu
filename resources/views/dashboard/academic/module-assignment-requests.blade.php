@@ -81,7 +81,7 @@
                       @foreach($requests as $req)
 
                         <tr>
-                        <td>{{ $req->module->name }}
+                        <td>
                           @if($req->programModuleAssignment)
                           @if(count($req->programModuleAssignment->moduleAssignments) != 0)
                             <p class="ss-font-xs ss-no-margin ss-bold">Facilitator:</p>
