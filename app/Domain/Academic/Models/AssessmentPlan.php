@@ -18,4 +18,12 @@ class AssessmentPlan extends Model
     {
     	return $this->belongsTo(ModuleAssignment::class,'module_assignment_id');
     }
+
+    /**
+     * Establish one to many relationship with module assignments
+     */
+    public function courseWorkResults()
+    {
+    	return $this->hasMany(CourseWorkResult::class,'assessment_plan_id');
+    }
 }
