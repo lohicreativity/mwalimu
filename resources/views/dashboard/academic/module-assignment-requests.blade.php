@@ -81,7 +81,7 @@
                       @foreach($requests as $req)
 
                         <tr>
-                        <td>
+                        <td>{{ $req->module->name }}
                           @if($req->programModuleAssignment)
                           @if(count($req->programModuleAssignment->moduleAssignments) != 0)
                             <p class="ss-font-xs ss-no-margin ss-bold">Facilitator:</p>
@@ -161,7 +161,7 @@
                                       <select name="staff_id" class="form-control ss-select-tags" required style="width: 100%;">
                                         <option value="">Select Facilitator</option>
                                         @foreach($staffs as $stf)
-                                        <option value="{{ $stf->id }}">{{ $stf->title }} {{ $stf->first_name }} {{ $stf->surname }} - {{ $stf->designation->name }} ({{ $stf->campus->name }})</option>
+                                        <option value="{{ $stf->id }}">{{ $stf->title }} {{ $stf->first_name }} {{ $stf->surname }} </option>
                                         @endforeach
                                       </select>
 
