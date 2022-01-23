@@ -84,7 +84,7 @@ class AwardController extends Controller
             if(Program::where('award_id',$award->id)->count() != 0){
                return redirect()->back()->with('message','Award cannot be deleted because it has programs');
             }else{
-               $award->delete();
+               $award->forceDelete();
                return redirect()->back()->with('message','Award deleted successfully');
             }
         }catch(Exception $e){

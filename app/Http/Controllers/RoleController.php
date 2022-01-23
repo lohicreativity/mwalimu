@@ -107,14 +107,19 @@ class RoleController extends Controller
     {
     	$permissions = Permission::all();
         $modules = SystemModule::all();
+        $current_module = SystemModule::with('persmissions')->find($request->get('system_module_id'));
     	$permissionIds = [];
+        $current_perm_ids = [];
     	$role = Role::find($request->get('role_id'));
         foreach($permissions as $perm){
         	if($request->get('permission_'.$perm->id) == $perm->id){
         		$permissionIds[$perm->system_module_id][] = $perm->id;
         	}
         }
-
+        foreach($current_module->persmissions as $perm){
+            $current_perm_ids[] = $perm->id;
+        }
+        $role->permissions()->deattach($current_perm_ids);
         $role->permissions()->attach($permissionIds[$request->get('system_module_id')]);
         
 
