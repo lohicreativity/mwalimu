@@ -25,7 +25,6 @@ class ModuleAssignmentRequestController extends Controller
            'staffs'=>Staff::with(['campus'])->where('department_id',$staff->department_id)->get(),
            'staff'=>$staff
     	];
-        return $data['requests'];
     	return view('dashboard.academic.module-assignment-requests',$data)->withTitle('Module Assignments Requests');
     }
 
