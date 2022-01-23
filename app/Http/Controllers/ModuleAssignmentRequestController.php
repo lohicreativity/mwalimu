@@ -20,7 +20,7 @@ class ModuleAssignmentRequestController extends Controller
     	$staff = User::find(Auth::user()->id)->staff;
     	$data = [
            'requests'=>ModuleAssignmentRequest::with(['department','module','programModuleAssignment.moduleAssignments.staff','campusProgram.program','studyAcademicYear.academicYear'])->where('department_id',$staff->department_id)->latest()->paginate(20),
-           'staffs'=>Staff::where('department_id',$staff->department_id)->get(),
+           'staffs'=>Staff::with(['campus'])->where('department_id',$staff->department_id)->get(),
            'staff'=>$staff
     	];
     	return view('dashboard.academic.module-assignment-requests',$data)->withTitle('Module Assignments Requests');
