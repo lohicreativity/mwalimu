@@ -156,7 +156,7 @@
                     <th>Name</th>
                     <th>GFS Code</th>
                     <th>Duration</th>
-                    <th>Order</th>
+                    <th>Option</th>
                     <th>Payer Category</th>
                     <th>When Paid</th>
                     <th>Actions</th>
@@ -168,7 +168,15 @@
                     <td>{{ $type->name }}</td>
                     <td>{{ $type->gfs_code }}</td>
                     <td>{{ $type->duration }}</td>
-                    <td>{{ $type->payment_order }}</td>
+                    <td>
+                      @if($type->payment_option == 0)
+                        Full Payment
+                      @elseif($type->payment_option == 1)
+                        Partial Payment
+                      @else
+                        Exact Payment
+                      @endif
+                    </td>
                     <td>
                       @if($type->is_internal == 1 && $type->is_external == 1)
                         Internal and External
