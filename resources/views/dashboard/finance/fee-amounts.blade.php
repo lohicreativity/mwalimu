@@ -61,26 +61,24 @@
               {!! Form::open(['url'=>'finance/fee-amount/store','class'=>'ss-form-processing']) !!}
                 <div class="card-body">
                   <div class="row">
-                  <div class="form-group col-6">
+                  <div class="form-group col-3">
                     {!! Form::label('','Amount in TZS') !!}
                     {!! Form::text('amount_in_tzs',null,$amount_in_tzs) !!}
                   </div>
-                  <div class="form-group col-6">
+                  <div class="form-group col-3">
                     {!! Form::label('','Amount in USD') !!}
                     {!! Form::text('amount_in_usd',null,$amount_in_usd) !!}
                   </div>
-                </div>
-                <div class="row">
-                  <div class="form-group col-6">
+                  <div class="form-group col-3">
                     {!! Form::label('','Fee item') !!}
                     <select name="fee_item_id" class="form-control">
-                      <option value="">Select Study Academic Year</option>
+                      <option value="">Select Fee Item</option>
                       @foreach($fee_items as $item)
                         <option value="{{ $item->id }}">{{ $item->name }}</option>
                       @endforeach
                     </select>
                   </div>
-                  <div class="form-group col-6">
+                  <div class="form-group col-3">
                     {!! Form::label('','Study academic year') !!}
                     <select name="study_academic_year_id" class="form-control">
                       <option value="">Select Study Academic Year</option>
@@ -157,28 +155,26 @@
                                   {!! Form::open(['url'=>'finance/fee-amount/update','class'=>'ss-form-processing']) !!}
 
                                     <div class="row">
-                                      <div class="form-group col-6">
+                                      <div class="form-group col-3">
                                         {!! Form::label('','Amount in TZS') !!}
                                         {!! Form::text('amount_in_tzs',$amount->amount_in_tzs,$amount_in_tzs) !!}
 
                                         {!! Form::input('hidden','fee_amount_id',$amount->id) !!}
                                       </div>
-                                      <div class="form-group col-6">
+                                      <div class="form-group col-3">
                                         {!! Form::label('','Amount in USD') !!}
                                         {!! Form::text('amount_in_usd',$amount->amount_in_usd,$amount_in_usd) !!}
                                       </div>
-                                    </div>
-                                    <div class="row">
-                                      <div class="form-group col-6">
+                                      <div class="form-group col-3">
                                         {!! Form::label('','Fee item') !!}
                                         <select name="fee_item_id" class="form-control">
-                                          <option value="">Select Study Academic Year</option>
+                                          <option value="">Select Fee Item</option>
                                           @foreach($fee_items as $item)
                                             <option value="{{ $item->id }}" @if($amount->fee_item_id == $item->id) selected="selected" @endif>{{ $item->name }}</option>
                                           @endforeach
                                         </select>
                                       </div>
-                                      <div class="form-group col-6">
+                                      <div class="form-group col-3">
                                         {!! Form::label('','Study academic year') !!}
                                         <select name="study_academic_year_id" class="form-control">
                                           <option value="">Select Study Academic Year</option>

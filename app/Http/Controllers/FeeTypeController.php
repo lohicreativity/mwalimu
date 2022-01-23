@@ -41,6 +41,10 @@ class FeeTypeController extends Controller
            }
         }
 
+        if(FeeType::where('name',$request->get('name'))->count() != 0){
+            return redirect()->back()->with('error','Fee type already exists');
+        }
+
 
         (new FeeTypeAction)->store($request);
 
