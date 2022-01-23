@@ -76,13 +76,12 @@ class LevelController extends Controller
     public function destroy(Request $request, $id)
     {
         try{
-            $level = Level::findOrFail($id);
-            if(Award::where('level_id',$level->id)->count() != 0){
+            $level = Level::with('awards')->findOrFail($id);
+            if(count($level->awards) != 0){
                return redirect()->back()->with('message','Level cannot be deleted because it has awards');
-            }else{
+            }
                $level->delete();
                return redirect()->back()->with('message','Level deleted successfully');
-            }
         }catch(Exception $e){
             return redirect()->back()->with('error','Unable to get the resource specified in this request');
         }

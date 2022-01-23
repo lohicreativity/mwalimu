@@ -4,6 +4,7 @@ namespace App\Domain\Settings\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Domain\Academic\Models\Award;
 
 class Level extends Model
 {
@@ -16,7 +17,7 @@ class Level extends Model
      */
     public function awards()
     {
-    	return $this->hasMany(App\Domain\Academic\Models\Award::class,'level_id');
+    	return $this->hasMany(Award::class,'level_id');
     }
 
     /**
