@@ -147,7 +147,7 @@
                           @if(count($assign->module->moduleAssignments) != 0)
                             <p class="ss-font-xs ss-no-margin ss-bold">Facilitator:</p>
                             @foreach($assign->module->moduleAssignments as $modAssign)
-                              @if($modAssign->program_module_assignment_id == $assign->id && $campus_program->campus_id == $staff->campus_id)
+                              @if($modAssign->program_module_assignment_id == $assign->id)
                             <p class="ss-font-xs ss-no-margin ss-italic">{{ $modAssign->staff->title }} {{ $modAssign->staff->first_name }} {{ $modAssign->staff->middle_name }} {{ $modAssign->staff->surname }}
                             
                             @can('delete-module-facilitator')
