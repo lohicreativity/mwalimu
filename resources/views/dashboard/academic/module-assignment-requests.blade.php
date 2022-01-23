@@ -82,6 +82,7 @@
 
                         <tr>
                         <td>{{ $req->module->name }}
+                          @if($req->programModuleAssignment)
                           @if(count($req->programModuleAssignment->moduleAssignments) != 0)
                             <p class="ss-font-xs ss-no-margin ss-bold">Facilitator:</p>
                             @foreach($req->programModuleAssignment->moduleAssignments as $modAssign)
@@ -124,6 +125,7 @@
                       <!-- /.modal -->
 
                             @endforeach
+                            @endif
                           @endif
                         </td>
                         <td>{{ $req->campusProgram->program->name }}</td>
