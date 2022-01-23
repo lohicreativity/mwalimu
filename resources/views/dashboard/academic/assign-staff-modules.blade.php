@@ -259,7 +259,7 @@
                                    
                                    <div class="row">
                                     <div class="form-group col-12">
-                                      {!! Form::label('','Select facilitor') !!}<br>
+                                      {!! Form::label('','Select facilitator') !!}<br>
                                       <select name="staff_id" class="form-control ss-select-tags" required style="width: 100%;">
                                         <option value="">Select Facilitator</option>
                                         @foreach($staffs as $stf)
