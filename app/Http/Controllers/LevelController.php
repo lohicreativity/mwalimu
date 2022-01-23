@@ -77,6 +77,7 @@ class LevelController extends Controller
     {
         try{
             $level = Level::with('awards')->findOrFail($id);
+            return $level->awards;
             if(count($level->awards) != 0){
                return redirect()->back()->with('message','Level cannot be deleted because it has awards');
             }
