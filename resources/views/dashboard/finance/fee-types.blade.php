@@ -93,7 +93,7 @@
                   </div>
                   <div class="form-group col-4">
                     {!! Form::label('','Duration') !!}
-                    <select name="duration" class="form-control">
+                    <select name="duration" class="form-control" required>
                       <option value="">Select Duration</option>
                       @for($i = 10; $i <= 360; $i++)
                         <option value="{{ $i }}">{{ $i }} Days</option>
@@ -117,7 +117,7 @@
                   <div class="form-group col-4">
                     {!! Form::label('','Payer category') !!}
                     <select name="payer" class="form-control">
-                      <option value="">Select Duration</option>
+                      <option value="">Select Payer Category</option>
                       <option value="INTERNAL">Internal</option>
                       <option value="EXTERNAL">External</option>
                       <option value="BOTH">Internal and External</option>
@@ -156,7 +156,7 @@
                     <th>Name</th>
                     <th>GFS Code</th>
                     <th>Duration</th>
-                    <th>Option</th>
+                    <th>Payment Option</th>
                     <th>Payer Category</th>
                     <th>When Paid</th>
                     <th>Actions</th>
@@ -286,7 +286,7 @@
                                         <div class="form-group col-4">
                                           {!! Form::label('','Payer category') !!}
                                           <select name="when_paid" class="form-control">
-                                            <option value="">Select Payer</option>
+                                            <option value="">Select Payer Category</option>
                                             <option value="INTERNAL" @if($type->is_internal == 1 && $type->is_external == 0) selected="selected" @endif>Internal</option>
                                             <option value="EXTERNAL" @if($type->is_internal == 0 && $type->is_external == 1) selected="selected" @endif>External</option>
                                             <option value="BOTH" @if($type->is_internal == 1 && $type->is_external == 1) selected="selected" @endif>Internal and External</option>
