@@ -161,7 +161,7 @@
                                       <select name="staff_id" class="form-control ss-select-tags" required style="width: 100%;">
                                         <option value="">Select Facilitator</option>
                                         @foreach($staffs as $stf)
-                                        <option value="{{ $stf->id }}">{{ $stf->title }} {{ $stf->first_name }} {{ $stf->surname }} </option>
+                                        <option value="{{ $stf->id }}">{{ $stf->title }} {{ $stf->first_name }} {{ $stf->surname }} @if($stf->designation) - {{ $stf->designation->name }} @endif @if($stf->campus) ({{ $stf->campus->name }}) @endif</option>
                                         @endforeach
                                       </select>
 
