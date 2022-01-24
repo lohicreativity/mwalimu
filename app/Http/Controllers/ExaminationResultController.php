@@ -531,6 +531,12 @@ class ExaminationResultController extends Controller
     public function edit(Request $request, $student_id,$ac_yr_id,$prog_id)
     {
         try{
+            if(Auth::user()->hasRole('staff')){
+              $module_assignment = ModuleAssignment::where('program_module_assignment_id',$prog_id)->first();
+              if($module_assignment->final_process_status == 'PROCESSED'){
+                  return redirect()->back()->with('error','Unable to edit results because results already processed');
+              }
+            }
             $student = Student::findOrFail($student_id);
             $result = ExaminationResult::whereHas('moduleAssignment.programModuleAssignment',function($query) use($prog_id,$ac_yr_id){
                     $query->where('id',$prog_id)->where('study_academic_year_id',$ac_yr_id);

@@ -128,9 +128,10 @@
                             @can('delete-stream')
                             @if($stKey == count($study_academic_year->streams)-1)
                             <a class="ss-font-xs ss-color-danger ss-italic" href="{{ url('academic/stream/'.$stream->id.'/destroy') }}">Delete</a><br>
+                            @endif
                             @endcan
 
-                            @endif
+                            
                             @if(count($stream->groups) == 0 && $study_academic_year->id == session('active_academic_year_id'))
 
                             @can('create-group')

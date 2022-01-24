@@ -256,7 +256,7 @@ class ModuleAssignmentController extends Controller
              $students_with_no_supplementary_count = $students_with_final_marks_count - $students_with_supplemetary_count;
              $students_with_abscond_count = ExaminationResult::where('module_assignment_id',$module_assignment->id)->where('final_uploaded_at','!=',null)->where('course_work_remark','INCOMPLETE')->orWhere('final_remark','INCOMPLETE')->count();
              $final_upload_status = false;
-             if(ExaminationResult::where('module_assignment_id',$module_assignment->id)->where('final_uploaded_at','!=',null)->count() != 0){
+             if(ExaminationResult::where('module_assignment_id',$module_assignment->id)->whereNotNull('final_uploaded_at')->count() != 0){
                 $final_upload_status = true;
              }
              $second_semester_publish_status = false;
@@ -265,9 +265,15 @@ class ModuleAssignmentController extends Controller
              })->where('study_academic_year_id',$module_assignment->study_academic_year_id)->where('status','PUBLISHED')->count() != 0){
                 $second_semester_publish_status = true;
              }
+             
+             $program_results_process_status = false;
+             if(ExaminationResult::where('module_assignment_id',$module_assignment->id)->whereNotNull('final_processed_at')->count() != 0){
+                $program_results_process_status = true;
+             }
              $data = [
                 'module_assignment'=>$module_assignment,
                 'final_upload_status'=>$final_upload_status,
+                'program_results_process_status'=>$program_results_process_status,
                 'total_students_count'=>$total_students_count,
                 'students_with_coursework_count'=>count($students_with_coursework_count),
                 'students_with_no_coursework_count'=>$students_with_no_coursework_count,

@@ -21,6 +21,12 @@ class CourseWorkResultController extends Controller
     public function edit(Request $request, $student_id, $mod_assign_id, $exam_id)
     {
     	try{
+            if(Auth::user()->hasRole('staff')){
+              $module_assignment = ModuleAssignment::where('program_module_assignment_id',$prog_id)->first();
+              if($module_assignment->final_process_status == 'UPLOADED'){
+                  return redirect()->back()->with('error','Unable to edit course work because final already processed');
+              }
+            }
     		$assessment_plans = AssessmentPlan::where('module_assignment_id',$mod_assign_id)->get();
     		if(count($assessment_plans) == 0){
     			return redirect()->back()->with('error','No assessment plan defined for this module');
