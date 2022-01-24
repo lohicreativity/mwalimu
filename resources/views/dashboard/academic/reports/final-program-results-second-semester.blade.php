@@ -274,7 +274,7 @@
                       @foreach($module_assignments as $assignment)
 
                           @php
-                            $results_present = true;
+                            $results_present = false;
                           @endphp
 
                       
