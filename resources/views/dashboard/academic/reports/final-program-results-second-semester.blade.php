@@ -273,14 +273,16 @@
 
                       @foreach($module_assignments as $assignment)
 
-                          @php
-                            $results_present = false;
-                          @endphp
+                          
 
                       
                           @foreach($student->examinationResults as $result)
+
+                            @php
+                            $results_present = false;
+                            @endphp
+                            
                             @if($result->module_assignment_id == $assignment->id)
-                             
 
                             @php
                               $results_present = true;
