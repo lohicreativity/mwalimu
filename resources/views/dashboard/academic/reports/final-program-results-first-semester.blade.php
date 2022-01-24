@@ -260,9 +260,9 @@
                       @endif
                          
 
-                      @foreach($module_assignments as $key=>$assignment)
+                      @foreach($module_assignments as $asKey=>$assignment)
 
-                          @if($key == count($module_assignments))
+                          @if($asKey == count($module_assignments))
                           @php
                             $results_present = true;
                           @endphp
