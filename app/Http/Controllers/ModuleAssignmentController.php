@@ -504,6 +504,7 @@ class ModuleAssignmentController extends Controller
 
                 return view('dashboard.academic.reports.students-with-course-work',$data);
         }catch(\Exception $e){
+            return $e->getMessage();
             return redirect()->back()->with('error','Unable to get the resource specified in this request');
         }
     }
