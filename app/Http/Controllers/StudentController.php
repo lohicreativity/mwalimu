@@ -139,7 +139,7 @@ class StudentController extends Controller
            	   	  return redirect()->back()->with('error','Options selection deadline already passed');
            	   }
            }
-           $options = Student::find($student->id)->options;
+           $options = Student::find($student->id)->options()->where('semester_id',$assignment->semester_id)->get();
 
            if($elective_policy->number_of_options <= count($options)){
               return redirect()->back()->with('error','Options cannot exceed '.$elective_policy->number_of_options);
