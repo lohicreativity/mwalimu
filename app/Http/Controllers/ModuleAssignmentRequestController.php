@@ -17,11 +17,12 @@ class ModuleAssignmentRequestController extends Controller
     /**
      * Display a list of module assignments requests
      */
-    public function index()
+    public function index(Request $request)
     {
-    	$staff = User::find(Auth::user()->id)->staff;
+    	$staff = User::find(Auth::user()->id)->staff()->with(['department'])->first();
     	$data = [
-           'requests'=>ModuleAssignmentRequest::with(['department','module','programModuleAssignment.moduleAssignments.staff','campusProgram.program','studyAcademicYear.academicYear'])->where('department_id',$staff->department_id)->latest()->paginate(20),
+           'study_academic_year'=>StudyAcademicYear::find($request->get('study_academic_year_id')),
+           'requests'=>ModuleAssignmentRequest::with(['department','module','programModuleAssignment.moduleAssignments.staff','campusProgram.program','studyAcademicYear.academicYear','user.staff.campus'])->where('department_id',$staff->department_id)->latest()->where('study_academic_year_id',$request->get('study_academic_year_id'))->paginate(20),
            'staffs'=>Staff::with(['campus','designation'])->where('department_id',$staff->department_id)->get(),
            'staff'=>$staff
     	];

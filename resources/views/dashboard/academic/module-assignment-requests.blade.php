@@ -39,6 +39,32 @@
         <div class="row">
           <div class="col-12">
 
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">{{ __('Select Study Academic Year') }}</h3>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+                 {!! Form::open(['url'=>'academic/module-assignment-requests','class'=>'ss-form-processing','method'=>'GET']) !!}
+                   
+                   <div class="form-group">
+                    <select name="study_academic_year_id" class="form-control" required>
+                       <option value="">Select Study Academic Year</option>
+                       @foreach($study_academic_years as $year)
+                       <option value="{{ $year->id }}">{{ $year->academicYear->year }}</option>
+                       @endforeach
+                    </select>
+                     
+                  </div>
+                  <div class="ss-form-actions">
+                   <button type="submit" class="btn btn-primary">{{ __('Search') }}</button>
+                  </div>
+
+                 {!! Form::close() !!}
+              </div>
+            </div>
+            <!-- /.card -->
+
             <div class="card card-default">
            <div class="card-header">
                 <ul class="nav nav-tabs">
@@ -56,10 +82,10 @@
             </div>
 
 
-            @if(count($requests) != 0)
+            @if(count($requests) != 0 && $study_academic_year)
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">Module Assignment Requests</h3>
+                <h3 class="card-title">Module Assignment Requests - {{ $staff->department->name }}</h3>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
@@ -69,7 +95,7 @@
                         <thead>
                           <tr>
                             <th>Module</th>
-                            <th>Program</th>
+                            <th>Programme</th>
                             <th>Study Academic Year</th>
                             <th>Code</th>
                             <th>Year</th>
@@ -84,6 +110,8 @@
                         <td>{{ $req->module->name }}
                           @if($req->programModuleAssignment)
                           @if(count($req->programModuleAssignment->moduleAssignments) != 0)
+                            <p class="ss-font-xs ss-no-margin ss-bold">Requested By:</p>
+                            <p class="ss-font-xs ss-no-margin ss-italic">{{ $req->user->staff->title }} {{ $req->user->staff->first_name }} {{ $req->user->staff->middle_name }} {{ $req->user->staff->surname }} - {{ $req->user->staff->campus->name }}</p>
                             <p class="ss-font-xs ss-no-margin ss-bold">Facilitator:</p>
                             @foreach($req->programModuleAssignment->moduleAssignments as $modAssign)
                             <p class="ss-font-xs ss-no-margin ss-italic">{{ $modAssign->staff->title }} {{ $modAssign->staff->first_name }} {{ $modAssign->staff->middle_name }} {{ $modAssign->staff->surname }}
@@ -157,7 +185,7 @@
                                    
                                    <div class="row">
                                     <div class="form-group col-12">
-                                      {!! Form::label('','Select facilitar') !!}<br>
+                                      {!! Form::label('','Select facilitator') !!}<br>
                                       <select name="staff_id" class="form-control ss-select-tags" required style="width: 100%;">
                                         <option value="">Select Facilitator</option>
                                         @foreach($staffs as $stf)
