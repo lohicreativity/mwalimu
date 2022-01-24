@@ -85,7 +85,7 @@
             @if(count($requests) != 0 && $study_academic_year)
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">Module Assignment Requests - {{ $staff->department->name }}</h3>
+                <h3 class="card-title">Module Assignment Requests - {{ $staff->department->name }} - {{ $study_academic_year->academicYear->year }}</h3>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
@@ -96,7 +96,6 @@
                           <tr>
                             <th>Module</th>
                             <th>Programme</th>
-                            <th>Study Academic Year</th>
                             <th>Code</th>
                             <th>Year</th>
                             <th>Semester</th>
@@ -108,10 +107,11 @@
 
                         <tr>
                         <td>{{ $req->module->name }}
+                          <p class="ss-font-xs ss-no-margin ss-bold">Requested By:</p>
+                            <p class="ss-font-xs ss-no-margin ss-italic">{{ $req->user->staff->title }} {{ $req->user->staff->first_name }} {{ $req->user->staff->middle_name }} {{ $req->user->staff->surname }} - {{ $req->user->staff->campus->name }}</p>
                           @if($req->programModuleAssignment)
                           @if(count($req->programModuleAssignment->moduleAssignments) != 0)
-                            <p class="ss-font-xs ss-no-margin ss-bold">Requested By:</p>
-                            <p class="ss-font-xs ss-no-margin ss-italic">{{ $req->user->staff->title }} {{ $req->user->staff->first_name }} {{ $req->user->staff->middle_name }} {{ $req->user->staff->surname }} - {{ $req->user->staff->campus->name }}</p>
+                            
                             <p class="ss-font-xs ss-no-margin ss-bold">Facilitator:</p>
                             @foreach($req->programModuleAssignment->moduleAssignments as $modAssign)
                             <p class="ss-font-xs ss-no-margin ss-italic">{{ $modAssign->staff->title }} {{ $modAssign->staff->first_name }} {{ $modAssign->staff->middle_name }} {{ $modAssign->staff->surname }}
@@ -157,7 +157,6 @@
                           @endif
                         </td>
                         <td>{{ $req->campusProgram->program->name }}</td>
-                        <td>{{ $req->studyAcademicYear->academicYear->year }}</td>
                         <td>{{ $req->module->code }}</td>
                         <td>{{ $req->programModuleAssignment->year_of_study }}</td>
                         <td>{{ $req->programModuleAssignment->semester->name }}</td>
