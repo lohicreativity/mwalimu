@@ -71,7 +71,7 @@
             @if(count($requests) != 0 && $study_academic_year)
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">{{ __('Programme Modules') }}</h3>
+                <h3 class="card-title">{{ __('Programme Modules Requests') }} - {{ $staff->department->name }} - {{ $study_academic_year->academicYear->year }}</h3>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
@@ -93,7 +93,12 @@
                   <tbody>
                   @foreach($requests as $request)
                   <tr>
-                    <td>{{ $request->programModuleAssignment->campusProgram->program->name }}</td>
+                    <td>{{ $request->programModuleAssignment->campusProgram->program->name }}
+                    @if($request->user)
+                    <p class="ss-font-xs ss-no-margin ss-bold">Requested By:</p>
+                            <p class="ss-font-xs ss-no-margin ss-italic">{{ $request->user->staff->title }} {{ $request->user->staff->first_name }} {{ $request->user->staff->middle_name }} {{ $request->user->staff->surname }} - {{ $request->user->staff->campus->name }}</p>
+                    @endif
+                    </td>
                     <td>{{ $request->programModuleAssignment->module->name }}</td>
                     <td>{{ $request->programModuleAssignment->module->code }}</td>
                     <td>{{ $request->programModuleAssignment->year_of_study }}</td>
