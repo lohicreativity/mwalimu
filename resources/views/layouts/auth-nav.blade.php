@@ -388,7 +388,7 @@
               @endcan
               @can('view-modules')
               <li class="nav-item">
-                <a href="{{ url('academic/modules') }}" class="nav-link">
+                <a href="{{ url('academic/module-assignments?study_academic_year_id='.session('active_academic_year_id')) }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>{{ __('Modules') }}</p>
                 </a>
