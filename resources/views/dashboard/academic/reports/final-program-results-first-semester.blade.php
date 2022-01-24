@@ -366,11 +366,9 @@
                         <td>{{ $modKey }}</td>
                         <td>{{ $mod['name'] }}</td>
                         @foreach($grading_policies as $pol)
-                           {{-- @if(in_array($pol->grade,$mod['grades'])) --}}
                             <td>{{ $mod['grades']['ML'][$pol->grade] }}</td>
                             <td>{{ $mod['grades']['FL'][$pol->grade] }}</td>
                             <td>{{ $mod['grades'][$pol->grade] }}</td>
-                           {{-- @endif --}}
                         @endforeach
                         <td>{{ $mod['ML']['ic_count'] }}</td>
                         <td>{{ $mod['FL']['ic_count'] }}</td>
@@ -433,9 +431,7 @@
                         <td>{{ $modKey }}</td>
                         <td>{{ $mod['name'] }}</td>
                         @foreach($grading_policies as $pol)
-                           @if(in_array($pol->grade,$mod['grades']))
                             <td>{{ round($mod['grades_perc'][$pol->grade],2) }}%</td>
-                           @endif
                         @endforeach
                         <td>{{ round($mod['inc_rate'],2) }}%</td>
                         <td>{{ round($mod['ic_rate'],2) }}%</td>
@@ -519,14 +515,14 @@
 
         <div class="row">
           <div class="col-md-6">
-             <div class="ss-letter-head ss-left">
+             <div class="ss-bold ss-left">
                  <h3>Name of Head of Department: .................................</h3>
                  <h3>Signature of Head of Department: ..............................</h3>
                  <h3>Date: ..................................</h3>
              </div>
           </div><!--end of col-md-6 -->
           <div class="col-md-6">
-             <div class="ss-letter-head ss-left">
+             <div class="ss-bold ss-left">
                  <h3>Name of Examination Officer: .................................</h3>
                  <h3>Signature of Examination Officer: .............................</h3>
                  <h3>Date: ..................................</h3>

@@ -773,11 +773,9 @@
                         <td>{{ $modKey }}</td>
                         <td>{{ $mod['name'] }}</td>
                         @foreach($grading_policies as $pol)
-                           @if(in_array($pol->grade,$mod['grades']))
                             <td>{{ $mod['special_grades']['ML'][$pol->grade] }}</td>
                             <td>{{ $mod['special_grades']['FL'][$pol->grade] }}</td>
                             <td>{{ $mod['special_grades'][$pol->grade] }}</td>
-                           @endif
                         @endforeach
                         <td>{{ $mod['ML']['special_inc_count'] }}</td>
                         <td>{{ $mod['FL']['special_inc_count'] }}</td>
@@ -877,14 +875,14 @@
 
         <div class="row">
           <div class="col-md-6">
-             <div class="ss-letter-head ss-left">
+             <div class="ss-bold ss-left">
                  <h3>Name of Head of Department: .................................</h3>
                  <h3>Signature of Head of Department: ..............................</h3>
                  <h3>Date: ..................................</h3>
              </div>
           </div><!--end of col-md-6 -->
           <div class="col-md-6">
-             <div class="ss-letter-head ss-left">
+             <div class="ss-bold ss-left">
                  <h3>Name of Examination Officer: .................................</h3>
                  <h3>Signature of Examination Officer: .............................</h3>
                  <h3>Date: ..................................</h3>
