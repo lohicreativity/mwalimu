@@ -774,6 +774,59 @@ class ModuleAssignmentController extends Controller
                 // }
               }
 
+              $missing_students = [];
+              foreach($students as $stud){
+                  $student_present = false;
+                  foreach($uploaded_students as $up_stud){
+                      if($up_stud->id == $stud->id){
+                          $student_present = true;
+                      }
+                  }
+                  if(!$student_present){
+                      $missing_students[] = $stud;
+                  }
+              }
+
+              foreach($missing_students as $student){
+                if($request->get('assessment_plan_id') == 'FINAL_EXAM'){
+                  $special_exam = SpecialExam::where('student_id',$student->id)->where('module_assignment_id',$module_assignment->id)->where('type','FINAL')->where('status','APPROVED')->first();
+
+                      $result_log = new ExaminationResultLog;
+                      $result_log->module_assignment_id = $request->get('module_assignment_id');
+                      $result_log->student_id = $student->id;
+                      $result_log->final_score = null;
+                      
+                      $result_log->exam_type = 'FINAL';
+                      if($special_exam){
+                         $result_log->final_remark = 'POSTPONED';
+                      }else{
+                         $result_log->final_remark = 'INCOMPLETE';
+                      }
+                      
+                      $result_log->final_uploaded_at = now();
+                      $result_log->uploaded_by_user_id = Auth::user()->id;
+                      $result_log->save();
+                      
+                      if($res = ExaminationResult::where('module_assignment_id',$request->get('module_assignment_id'))->where('student_id',$student->id)->where('exam_type','FINAL')->first()){
+                          $result = $res;
+                      }else{
+                         $result = new ExaminationResult;
+                      }
+                      $result->module_assignment_id = $request->get('module_assignment_id');
+                      $result->student_id = $student->id;
+                      $result->final_score = !$special_exam? (trim($line[1])*$module_assignment->programModuleAssignment->final_min_mark)/100 : null;
+                      $result->exam_type = 'FINAL';
+                      if($special_exam){
+                         $result->final_remark = 'POSTPONED';
+                      }else{
+                         $result->final_remark = 'INCOMPLETE';
+                      }
+                      $result->final_uploaded_at = now();
+                      $result->uploaded_by_user_id = Auth::user()->id;
+                      $result->save();
+                  }
+              }
+
               
               // Validate clean results
               $validationStatus = true;
