@@ -269,22 +269,23 @@
                       
                           @foreach($student->examinationResults as $result)
                             @if($result->module_assignment_id == $assignment->id)
+                            @if($key < count($module_assignments))
                             @php
                               $results_present = true;
                             @endphp
+                            @endif
                             <td @if($result->course_work_remark == 'FAIL') class="ss-custom-grey" @endif>{{ $result->course_work_score }}</td>
                             <td @if($result->final_remark == 'FAIL') class="ss-custom-grey" @endif>{{ $result->final_score }}</td>
                             <td @if($result->course_work_remark == 'FAIL' || $result->final_remark == 'FAIL') class="ss-custom-grey" @endif>{{ round($result->total_score) }}</td>
                             <td @if($result->course_work_remark == 'FAIL' || $result->final_remark == 'FAIL') class="ss-custom-grey" @endif>{{ $result->grade }}</td>
                             @endif
                           @endforeach
-                          @if($key < count($module_assignments))
+                          
                           @if(!$results_present)
                             <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
-                          @endif
                           @endif
                       
                       @endforeach
