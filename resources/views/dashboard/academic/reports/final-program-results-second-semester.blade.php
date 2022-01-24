@@ -197,7 +197,7 @@
          background-color: lightblue;
       }
       .ss-custom-grey{
-         background-color: #555;
+         background-color: #f0f0f0;
       }
   </style>
 </head>
