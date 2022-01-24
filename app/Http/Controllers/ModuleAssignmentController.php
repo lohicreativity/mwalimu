@@ -481,7 +481,7 @@ class ModuleAssignmentController extends Controller
 
            if($module_assignment->programModuleAssignment->category == 'OPTIONAL'){
                 $students = $module_assignment->programModuleAssignment->students()->get(); 
-                $registrations = Registration::whereHas('student.programModuleAssignment.moduleAssignments',function($query){
+                $registrations = Registration::whereHas('student.options.moduleAssignment',function($query){
                      $query->where('id',$module_assignment->id);
                 })->with(['student.courseWorkResults.assessmentPlan'])->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)->where('study_academic_year_id',$module_assignment->programModuleAssignment->study_academic_year_id)->where('semester_id',$module_assignment->programModuleAssignment->semester_id)->get();
             }else{
