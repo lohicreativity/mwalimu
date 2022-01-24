@@ -278,11 +278,13 @@
                             <td @if($result->course_work_remark == 'FAIL' || $result->final_remark == 'FAIL') class="ss-custom-grey" @endif>{{ $result->grade }}</td>
                             @endif
                           @endforeach
+                          @if($key < count($module_assignments))
                           @if(!$results_present)
                             <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
+                          @endif
                           @endif
                       
                       @endforeach
