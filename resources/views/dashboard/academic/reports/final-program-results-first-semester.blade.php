@@ -260,7 +260,7 @@
                       @endif
                          
 
-                      @foreach($module_assignments as $assignment)
+                      @foreach($module_assignments as $key=>$assignment)
 
                           @php
                              $results_present = false;
