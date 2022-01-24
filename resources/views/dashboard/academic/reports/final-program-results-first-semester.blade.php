@@ -197,7 +197,7 @@
          background-color: lightblue;
       }
       .ss-custom-grey{
-         background-color: #F5F5F5;
+         background-color: #555;
       }
   </style>
 </head>
@@ -209,7 +209,7 @@
                <h3>MWALIMU NYERERE MEMORIAL ACADEMY</h3>
                <h3>{{ $campus->name }}</h3>
                <h3>{{ $department->name }}</h3>
-               <h3>{{ $program->name }} ({{ $study_academic_year->academicYear->year }}) (Year {{ $year_of_study }})</h3>
+               <h3>{{ $program->name }} - YEAR {{ $year_of_study }} ({{ $study_academic_year->academicYear->year }})</h3>
                <h3>@if($semester) - {{ strtoupper($semester->name) }} @endif EXAMINATION RESULTS</h3>
               </div>
                <div class="table-responsive ss-margin-bottom">
