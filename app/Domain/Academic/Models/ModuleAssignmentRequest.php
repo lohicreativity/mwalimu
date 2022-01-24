@@ -5,6 +5,7 @@ namespace App\Domain\Academic\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Domain\HumanResources\Models\Staff;
+use App\Models\User;
 
 class ModuleAssignmentRequest extends Model
 {
@@ -59,5 +60,13 @@ class ModuleAssignmentRequest extends Model
     public function module()
     {
     	return $this->belongsTo(Module::class,'module_id');
+    }
+
+    /**
+     * Establish one to many relationship with users
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class,'user_id');
     }
 }
