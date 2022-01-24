@@ -21,13 +21,16 @@ class ElectivePolicyController extends Controller
      */
     public function index(Request $request)
     {
+      $staff = User::find(Auth::user()->id)->staff;
     	$data = [
            'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
            'study_academic_year'=>$request->has('study_academic_year_id')? StudyAcademicYear::with('academicYear')->find($request->get('study_academic_year_id')) : null,
-           'elective_policies'=>ElectivePolicy::with(['campusProgram.program','campusProgram.campus','semester','studyAcademicYear.academicYear'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->paginate(20),
+           'elective_policies'=>ElectivePolicy::whereHas('CampusProgram.program',function($query) use($staff){
+              $query->where('department_id',$staff->department_id);
+           })->with(['campusProgram.program','campusProgram.campus','semester','studyAcademicYear.academicYear'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->paginate(20),
            'campus_programs'=>CampusProgram::with(['program','campus'])->get(),
            'semesters'=>Semester::all(),
-           'staff'=>User::find(Auth::user()->id)->staff,
+           'staff'=>$staff,
            'request'=>$request
     	];
     	return view('dashboard.academic.elective-policies',$data)->withTitle('Elective Policies');

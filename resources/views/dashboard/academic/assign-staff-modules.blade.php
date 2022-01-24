@@ -143,16 +143,16 @@
                         <tr>
                         <td>{{ $assign->module->name }}
                           @if(count($assign->module->moduleAssignments) != 0)
-                            <p class="ss-font-xs ss-no-margin ss-bold">Facilitator:</p>
                             @foreach($assign->module->moduleAssignments as $modAssign)
                               @if($modAssign->program_module_assignment_id == $assign->id)
+                            <p class="ss-font-xs ss-no-margin ss-bold">Facilitator:</p>
                             <p class="ss-font-xs ss-no-margin ss-italic">{{ $modAssign->staff->title }} {{ $modAssign->staff->first_name }} {{ $modAssign->staff->middle_name }} {{ $modAssign->staff->surname }}
                             
                             @can('delete-module-facilitator')
                             @if($staff->department_id == $assign->module->department_id)
                             <a href="#" data-toggle="modal" data-target="#ss-delete-module-assignment-{{ $modAssign->id }}" class="ss-color-danger ss-right">Remove</a></p>
-                            <p class="ss-font-xs ss-no-margin ss-italic">{{ $modAssign->staff->phone }}, {{ $modAssign->staff->email }}</p>
                             @endif
+                            <p class="ss-font-xs ss-no-margin ss-italic">{{ $modAssign->staff->phone }}, {{ $modAssign->staff->email }}</p>
                             @endcan
 
                             <div class="modal fade" id="ss-delete-module-assignment-{{ $modAssign->id }}">
