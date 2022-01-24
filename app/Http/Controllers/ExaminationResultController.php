@@ -350,7 +350,6 @@ class ExaminationResultController extends Controller
                  $supp_exams = [];
                  $retake_exams = [];
                  $carry_exams = [];
-                 return $buffer['results'];
                  foreach($buffer['results'] as $res){
                     if($res->final_exam_remark == 'INCOMPLETE'){
                         $pass_status = 'INCOMPLETE';
