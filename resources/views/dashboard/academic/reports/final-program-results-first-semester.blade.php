@@ -209,8 +209,8 @@
                <h3>MWALIMU NYERERE MEMORIAL ACADEMY</h3>
                <h3>{{ $campus->name }}</h3>
                <h3>{{ $department->name }}</h3>
-               <h3>{{ $program->name }} ({{ $study_academic_year->academicYear->year }}) (Year {{ $year_of_study }}) @if($semester) - {{ $semester->name }} @endif</h3>
-               <h3>EXAMINATION RESULTS</h3>
+               <h3>{{ $program->name }} ({{ $study_academic_year->academicYear->year }}) (Year {{ $year_of_study }})</h3>
+               <h3>@if($semester) - {{ strtoupper($semester->name) }} @endif EXAMINATION RESULTS</h3>
               </div>
                <div class="table-responsive ss-margin-bottom">
                   <table class="table table-condensed table-bordered">
@@ -223,7 +223,7 @@
                       <td class="ss-bold" rowspan="2">NAME</td>
                       @endif
                       @if($request->get('gender_display_type') == 'SHOW')
-                      <td class="ss-bold" rowspan="2">GENDER</td>
+                      <td class="ss-bold" rowspan="2">SEX</td>
                       @endif
                       <!-- <td class="ss-bold" rowspan="2">CLASS MODE</td> -->
                       @foreach($module_assignments as $assignment)
@@ -262,29 +262,31 @@
 
                       @foreach($module_assignments as $assignment)
 
-
+                          @php
+                             $results_present = false;
+                          @endphp
 
                       
                           @foreach($student->examinationResults as $result)
                             @if($result->module_assignment_id == $assignment->id)
-                             
-
-
-                      
+                            @php
+                              $results_present = true;
+                            @endphp
                             <td @if($result->course_work_remark == 'FAIL') class="ss-custom-grey" @endif>{{ $result->course_work_score }}</td>
                             <td @if($result->final_remark == 'FAIL') class="ss-custom-grey" @endif>{{ $result->final_score }}</td>
                             <td @if($result->course_work_remark == 'FAIL' || $result->final_remark == 'FAIL') class="ss-custom-grey" @endif>{{ $result->total_score }}</td>
                             <td @if($result->course_work_remark == 'FAIL' || $result->final_remark == 'FAIL') class="ss-custom-grey" @endif>{{ $result->grade }}</td>
                             @endif
                           @endforeach
+                          @if(!$results_present)
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                          @endif
                       
                       @endforeach
-                      @for($i = 0; $i < count($module_assignments)-count($student->examinationResults); $i++)
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                      @endfor
+                      
                       <td>@if(count($student->semesterRemarks) != 0)   
                         @if($student->semesterRemarks[0]->gpa) {{ bcdiv($student->semesterRemarks[0]->gpa,1,1) }} @else N/A @endif 
                       @endif</td>

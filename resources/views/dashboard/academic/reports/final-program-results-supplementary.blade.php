@@ -209,8 +209,8 @@
                <h3>MWALIMU NYERERE MEMORIAL ACADEMY</h3>
                <h3>{{ $campus->name }}</h3>
                <h3>{{ $department->name }}</h3>
-               <h3>{{ $program->name }} ({{ $study_academic_year->academicYear->year }}) (Year {{ $year_of_study }}) @if($semester) - {{ $semester->name }} @endif</h3>
-               <h3>EXAMINATION RESULTS</h3>
+               <h3>{{ $program->name }} - YEAR {{ $year_of_study }} ({{ $study_academic_year->academicYear->year }})</h3>
+               <h3>@if($semester) - {{ strtoupper($semester->name) }} @endif EXAMINATION RESULTS</h3>
               </div>
                <div class="table-responsive ss-margin-bottom">
                   <table class="table table-condensed table-bordered">
@@ -223,7 +223,7 @@
                       <td class="ss-bold" rowspan="4">NAME</td>
                       @endif
                       @if($request->get('gender_display_type') == 'SHOW')
-                      <td class="ss-bold" rowspan="4">GENDER</td>
+                      <td class="ss-bold" rowspan="4">SEX</td>
                       @endif
                       <!-- <td class="ss-bold" rowspan="2">CLASS MODE</td> -->
                       
