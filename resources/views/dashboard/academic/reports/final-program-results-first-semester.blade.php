@@ -366,6 +366,7 @@
                         <td>{{ $modKey }}</td>
                         <td>{{ $mod['name'] }}</td>
                         @foreach($grading_policies as $pol)
+                           <td>{{ $mod['grades'][$pol->grade] }}</td>
                            @if(in_array($pol->grade,$mod['grades']))
                             <td>{{ $mod['grades']['ML'][$pol->grade] }}</td>
                             <td>{{ $mod['grades']['FL'][$pol->grade] }}</td>
