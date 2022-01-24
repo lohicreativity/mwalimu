@@ -304,7 +304,7 @@
         </div><!-- end of row -->
         <div class="row">
         <div class="col-md-12">
-             <h3 class="ss-bold">COURSE MODULES RESULTS SUMMARY</h3>
+             <h3 class="ss-bold">PROGRAMME MODULES RESULTS SUMMARY BY SEX</h3>
                 <div class="table-responsive">
                    <table class="table table-condensed table-bordered">
                       <tr>
@@ -411,7 +411,7 @@
 
         <div class="row">
         <div class="col-md-12">
-             <h3 class="ss-bold">COURSE MODULES RESULTS SUMMARY</h3>
+             <h3 class="ss-bold">PERFORMANCE SUMMARY</h3>
                 <div class="table-responsive">
                    <table class="table table-condensed table-bordered">
                       <tr>
@@ -486,19 +486,19 @@
                      </tr>
                      <tr>
                        <td>PASS</td>
-                       <td>Passed all Courses</td>
+                       <td>Passed all Modules</td>
                      </tr>
                      <tr>
                        <td>RETAKE</td>
-                       <td>Repeat Course Semester/Year No Promotion</td>
+                       <td>Repeat Course Semester/Year - No Promotion</td>
                      </tr>
                      <tr>
                        <td>CARRY</td>
-                       <td>Repeat Course Semester/Year with Promotion</td>
+                       <td>Repeat Course Semester/Year - With Promotion</td>
                      </tr>
                      <tr>
                        <td>FE</td>
-                       <td>Final Exam/University Exam</td>
+                       <td>Final Exam</td>
                      </tr>
                      <tr>
                        <td>CA</td>
@@ -516,6 +516,23 @@
            </div><!-- end of table-responsive -->
           </div>
         </div>
+
+        <div class="row">
+          <div class="col-md-6">
+             <div class="ss-letter-head ss-left">
+                 <h3>Name of Head of Department: .................................</h3>
+                 <h3>Signature of Head of Department: ..............................</h3>
+                 <h3>Date: ..................................</h3>
+             </div>
+          </div><!--end of col-md-6 -->
+          <div class="col-md-6">
+             <div class="ss-letter-head ss-left">
+                 <h3>Name of Examination Officer: .................................</h3>
+                 <h3>Signature of Examination Officer: .............................</h3>
+                 <h3>Date: ..................................</h3>
+             </div>
+          </div><!--end of col-md-6 -->
+        </div><!-- end of row -->
 
       </div><!-- end of container -->
 

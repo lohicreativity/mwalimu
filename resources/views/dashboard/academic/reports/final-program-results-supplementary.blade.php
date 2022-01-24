@@ -840,19 +840,19 @@
                      </tr>
                      <tr>
                        <td>PASS</td>
-                       <td>Passed all Courses</td>
+                       <td>Passed all Modules</td>
                      </tr>
                      <tr>
                        <td>RETAKE</td>
-                       <td>Repeat Course Semester/Year No Promotion</td>
+                       <td>Repeat Course Semester/Year - No Promotion</td>
                      </tr>
                      <tr>
                        <td>CARRY</td>
-                       <td>Repeat Course Semester/Year with Promotion</td>
+                       <td>Repeat Course Semester/Year - With Promotion</td>
                      </tr>
                      <tr>
                        <td>FE</td>
-                       <td>Final Exam/University Exam</td>
+                       <td>Final Exam</td>
                      </tr>
                      <tr>
                        <td>CA</td>
@@ -873,6 +873,23 @@
                   </table>
            </div><!-- end of table-responsive -->
           </div><!-- end of col-md-12 -->
+        </div><!-- end of row -->
+
+        <div class="row">
+          <div class="col-md-6">
+             <div class="ss-letter-head ss-left">
+                 <h3>Name of Head of Department: .................................</h3>
+                 <h3>Signature of Head of Department: ..............................</h3>
+                 <h3>Date: ..................................</h3>
+             </div>
+          </div><!--end of col-md-6 -->
+          <div class="col-md-6">
+             <div class="ss-letter-head ss-left">
+                 <h3>Name of Examination Officer: .................................</h3>
+                 <h3>Signature of Examination Officer: .............................</h3>
+                 <h3>Date: ..................................</h3>
+             </div>
+          </div><!--end of col-md-6 -->
         </div><!-- end of row -->
 
         
