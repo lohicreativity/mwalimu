@@ -23,6 +23,7 @@ class ModuleAssignmentRequestController extends Controller
     	$staff = User::find(Auth::user()->id)->staff()->with(['department'])->first();
     	$data = [
            'study_academic_year'=>StudyAcademicYear::find($request->get('study_academic_year_id')),
+           'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
            'requests'=>ModuleAssignmentRequest::with(['department','module','programModuleAssignment.moduleAssignments.staff','campusProgram.program','studyAcademicYear.academicYear','user.staff.campus'])->where('department_id',$staff->department_id)->latest()->where('study_academic_year_id',$request->get('study_academic_year_id'))->paginate(20),
            'staffs'=>Staff::with(['campus','designation'])->where('department_id',$staff->department_id)->get(),
            'staff'=>$staff
