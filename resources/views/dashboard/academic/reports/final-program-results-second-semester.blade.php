@@ -304,16 +304,6 @@
                             <td></td>
                           @endif
                       @endforeach
-
-                      @if(count($module_assignments)-count($student->examinationResults) != 0)
-                         @if(App\Utils\Util::stripSpacesUpper($semester->name) == App\Utils\Util::stripSpacesUpper('Semester 2'))
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                         @endif
-
-                      @endif
                       
                       @if(count($student->semesterRemarks) != 0)
                       <td>
