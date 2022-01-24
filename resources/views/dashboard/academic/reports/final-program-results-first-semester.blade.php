@@ -262,13 +262,13 @@
 
                       @foreach($module_assignments as $key=>$assignment)
 
-                          @if($key < count($module_assignments))
+                          @if($key == count($module_assignments))
                           @php
-                            $results_present = false;
+                            $results_present = true;
                           @endphp
                           @else
                           @php
-                            $results_present = true;
+                            $results_present = false;
                           @endphp
                           @endif
 
