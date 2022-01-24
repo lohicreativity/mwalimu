@@ -94,10 +94,8 @@
                   @foreach($requests as $request)
                   <tr>
                     <td>{{ $request->programModuleAssignment->campusProgram->program->name }}
-                    @if($request->user)
                     <p class="ss-font-xs ss-no-margin ss-bold">Requested By:</p>
-                            <p class="ss-font-xs ss-no-margin ss-italic">{{ $request->user->staff->title }} {{ $request->user->staff->first_name }} {{ $request->user->staff->middle_name }} {{ $request->user->staff->surname }} - {{ $request->user->staff->campus->name }}</p>
-                    @endif
+                            <p class="ss-font-xs ss-no-margin ss-italic">{{ $request->staff->title }} {{ $request->staff->first_name }} {{ $request->staff->middle_name }} {{ $request->staff->surname }} - {{ $request->staff->campus->name }}</p>
                     </td>
                     <td>{{ $request->programModuleAssignment->module->name }}</td>
                     <td>{{ $request->programModuleAssignment->module->code }}</td>

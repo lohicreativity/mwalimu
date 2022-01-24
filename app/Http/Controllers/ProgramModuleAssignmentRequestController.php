@@ -31,7 +31,7 @@ class ProgramModuleAssignmentRequestController extends Controller
            	       $query->where('department_id',$staff->department_id);
                })->whereHas('staff',function($query) use ($staff){
                    $query->where('campus_id',$staff->campus_id);
-               })->with(['programModuleAssignment.module','programModuleAssignment.campusProgram.program','user.staff.campus'])->paginate(20),
+               })->with(['programModuleAssignment.module','programModuleAssignment.campusProgram.program','staff.campus'])->paginate(20),
            'request'=>$request
     	];
     	return view('dashboard.academic.program-module-assignment-requests',$data)->withTitle('Program Module Assignment Requests');
