@@ -273,6 +273,8 @@
                               <a class="ss-font-xs ss-color-danger ss-italic" href="{{ url('academic/group/'.$group->id.'/destroy')}}">Delete</a>
                               @endif
                               @endcan
+
+                              @endif
                             @endforeach
                             @endif
                           @endforeach
