@@ -143,6 +143,7 @@
                                $stream_created = true;
                              @endphp
                             @endif
+                            @endif
 
                             <div class="modal fade" id="ss-add-group-{{ $i }}-{{ $stream->id }}">
                         <div class="modal-dialog modal-lg">
