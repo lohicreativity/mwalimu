@@ -143,7 +143,7 @@
                                $stream_created = true;
                              @endphp
                             @endif
-                            @endif
+                            
 
                             <div class="modal fade" id="ss-add-group-{{ $i }}-{{ $stream->id }}">
                         <div class="modal-dialog modal-lg">
@@ -193,6 +193,7 @@
                         <!-- /.modal-dialog -->
                       </div>
                       <!-- /.modal -->
+                           @endif
 
                            @endforeach
                              
@@ -270,9 +271,8 @@
                               @can('delete-group')
                               @if($grKey == count($stream->groups)-1)
                               <a class="ss-font-xs ss-color-danger ss-italic" href="{{ url('academic/group/'.$group->id.'/destroy')}}">Delete</a>
-                              @endcan 
-
                               @endif
+                              @endcan
                             @endforeach
                             @endif
                           @endforeach
