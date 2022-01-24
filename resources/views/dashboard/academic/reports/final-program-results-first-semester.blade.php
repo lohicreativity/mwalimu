@@ -210,7 +210,7 @@
                <h3>{{ $campus->name }}</h3>
                <h3>{{ $department->name }}</h3>
                <h3>{{ $program->name }} - YEAR {{ $year_of_study }} ({{ $study_academic_year->academicYear->year }})</h3>
-               <h3>@if($semester) - {{ strtoupper($semester->name) }} @endif EXAMINATION RESULTS</h3>
+               <h3>@if($semester) {{ strtoupper($semester->name) }} @endif EXAMINATION RESULTS</h3>
               </div>
                <div class="table-responsive ss-margin-bottom">
                   <table class="table table-condensed table-bordered">
@@ -274,7 +274,7 @@
                             @endphp
                             <td @if($result->course_work_remark == 'FAIL') class="ss-custom-grey" @endif>{{ $result->course_work_score }}</td>
                             <td @if($result->final_remark == 'FAIL') class="ss-custom-grey" @endif>{{ $result->final_score }}</td>
-                            <td @if($result->course_work_remark == 'FAIL' || $result->final_remark == 'FAIL') class="ss-custom-grey" @endif>{{ $result->total_score }}</td>
+                            <td @if($result->course_work_remark == 'FAIL' || $result->final_remark == 'FAIL') class="ss-custom-grey" @endif>{{ round($result->total_score) }}</td>
                             <td @if($result->course_work_remark == 'FAIL' || $result->final_remark == 'FAIL') class="ss-custom-grey" @endif>{{ $result->grade }}</td>
                             @endif
                           @endforeach
