@@ -60,6 +60,9 @@
                   @can('view-uploaded-modules')
                   <li class="nav-item"><a class="nav-link active" href="{{ url('academic/results/uploaded-modules') }}">{{ __('Uploaded Modules') }}</a></li>
                   @endcan
+                  @can('upload-module-results')
+                  <li class="nav-item"><a class="nav-link" href="{{ url('academic/results/upload-module-results?study_academic_year_id='.session('active_academic_year_id').'&campus_id='.session('staff_campus_id')) }}">{{ __('Upload Module Results') }}</a></li>
+                  @endcan
                 </ul>
               </div>
               <!-- /.card-header -->

@@ -438,7 +438,7 @@
                      @endforeach
                      @foreach($semester->remarks as $remark)
                       <tr>
-                        <td colspan="2" class="ss-bold">SUBTOTAL</td>
+                        <td colspan="2" class="ss-bold">SUB TOTAL</td>
                         <td></td>
                         <td class="ss-bold">{{ $remark->credit }}</td>
                         
@@ -467,9 +467,9 @@
                  <div class="row">
                    <div class="col-md-12">
                      <h3>KEYS</h3>
-                     <p>1. This transcript is valid if and only if it bears the University Stamp</p>
+                     <p>1. This transcript is valid if and only if it bears the Academy Stamp</p>
                      <p>2. Key for Subject/Module Units: ONE UNIT IS EQUIVALENT TO TEN CONTACT HOURS. POINTS = GRADE MULTIPLIED BY NUMBER OF UNITS</p>
-                     <p>3. Key to the Grades and other symbols for University Examinations: SEE THE TABLE BELOW</p>
+                     <p>3. Key to the Grades and other symbols: SEE THE TABLE BELOW</p>
                      <table class="table table-bordered table-condensed ss-center">
                         <tr>
                           <td class="ss-bold ss-left">Grade</td>

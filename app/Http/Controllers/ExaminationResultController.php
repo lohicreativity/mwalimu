@@ -171,17 +171,17 @@ class ExaminationResultController extends Controller
               }
       		foreach($core_programs as $prog){
       			if($request->get('semester_id') != 'SUPPLEMENTARY'){
-      			if(Util::stripSpacesUpper($semester->name) == Util::stripSpacesUpper('Semester 2')){    			
-  	    			$annual_credit += $prog->module->credit;
-      	     	}
-      	        }else{
-      	        	$annual_credit += $prog->module->credit;
-      	        }
+      			   if(Util::stripSpacesUpper($semester->name) == Util::stripSpacesUpper('Semester 2')){    			
+  	    			   $annual_credit += $prog->module->credit;
+      	     	 }
+      	    }else{
+      	         $annual_credit += $prog->module->credit;
+      	    }
 
-  	     		   if($prog->semester_id == $request->get('semester_id')){
-      			      $total_credit += $prog->module->credit;
-      		      }
-      		  }
+     		    if($prog->semester_id == $request->get('semester_id')){
+  			      $total_credit += $prog->module->credit;
+  		      }
+      		}
 
       		  foreach($results as $key=>$result){
       			$student = Student::find($result->student_id);
@@ -197,9 +197,9 @@ class ExaminationResultController extends Controller
                  $student_buffer[$student->id]['opt_credit'] = 0;
 
                  foreach($optional_programs as $prog){
-                     $student_buffer[$student->id]['opt_credit'] += $prog->module->credit;
-                     $student_buffer[$student->id]['total_credit'] = $student_buffer[$student->id]['opt_credit'] + $total_credit;
+                     $student_buffer[$student->id]['opt_credit'] += $prog->module->credit; 
                  }
+                 $student_buffer[$student->id]['total_credit'] = $student_buffer[$student->id]['opt_credit'] + $total_credit;
 
                   if($result->retakeHistory && isset($result->retakeHistory->retakeHistory->retakableResults[0])){
                       $processed_result = ExaminationResult::find($result->retakeHistory->retakeHistory->retakableResults[0]->id);
@@ -875,8 +875,8 @@ class ExaminationResultController extends Controller
 
                    foreach($optional_programs as $prog){
                        $student_buffer[$student->id]['opt_credit'] += $prog->module->credit;
-                       $student_buffer[$student->id]['total_credit'] = $student_buffer[$student->id]['opt_credit'] + $total_credit;
                    }
+                   $student_buffer[$student->id]['total_credit'] = $student_buffer[$student->id]['opt_credit'] + $total_credit;
 
                     if($result->retakeHistory && isset($result->retakeHistory->retakeHistory->retakableResults[0])){
                         $processed_result = ExaminationResult::find($result->retakeHistory->retakeHistory->retakableResults[0]->id);
