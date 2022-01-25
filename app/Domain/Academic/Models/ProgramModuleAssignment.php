@@ -20,6 +20,16 @@ class ProgramModuleAssignment extends Model
     	return $this->belongsTo(Module::class,'module_id');
     }
 
+
+    /**
+     * Establish one to many relationship with opted students pivot
+     */
+    public function optedStudents()
+    {
+        return $this->hasMany(StudentProgramModuleAssignment::class,'program_module_assignment_id');
+    }
+
+
     /**
      * Establish one to many relationship with study academic years
      */

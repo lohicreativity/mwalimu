@@ -187,7 +187,7 @@ class ExaminationResultController extends Controller
       			$student = Student::find($result->student_id);
                   
       			
-                  $optional_programs = ProgramModuleAssignment::whereHas('students',function($query) use($student){
+                  $optional_programs = ProgramModuleAssignment::whereHas('optedStudents',function($query) use($student){
            	        $query->where('student_id',$student->id);
                       })->with(['module'])->where('study_academic_year_id',$assignment->study_academic_year_id)->where('year_of_study',$assignment->programModuleAssignment->year_of_study)->where('category','OPTIONAL')->get();
                  
@@ -869,7 +869,7 @@ class ExaminationResultController extends Controller
 
             foreach($results as $key=>$result){          
               
-                    $optional_programs = ProgramModuleAssignment::whereHas('students',function($query) use($student){
+                    $optional_programs = ProgramModuleAssignment::whereHas('optedStudents',function($query) use($student){
                       $query->where('student_id',$student->id);
                         })->with(['module'])->where('study_academic_year_id',$assignment->study_academic_year_id)->where('year_of_study',$assignment->programModuleAssignment->year_of_study)->where('category','OPTIONAL')->get();
 
