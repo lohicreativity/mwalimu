@@ -1713,6 +1713,12 @@ class ExaminationResultController extends Controller
     		return redirect()->back()->with('error','No module assignment for selected academic year');
     	}
 
+      if(Auth::user()->hasRole('staff') && !Auth::user()->hasRole('hod')){
+          if($module_assignment->staff_id != $staff->id){
+             return redirect()->back()->with('error','You are not allowed to view this module results');
+          }
+      }
+
     	$students = Student::whereHas('examinationResults.moduleAssignment',function($query) use($request){
         	$query->where('module_id',$request->get('module_id'));
         })->with(['examinationResults.moduleAssignment'=>function($query) use($request){
