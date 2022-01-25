@@ -23,7 +23,7 @@ class CourseWorkResultController extends Controller
     	try{
             if(Auth::user()->hasRole('staff')){
               $module_assignment = ModuleAssignment::find($mod_assign_id);
-              if($module_assignment->final_process_status == 'UPLOADED'){
+              if($module_assignment->final_process_status == 'PROCESSED'){
                   return redirect()->back()->with('error','Unable to edit course work because final already processed');
               }
             }
