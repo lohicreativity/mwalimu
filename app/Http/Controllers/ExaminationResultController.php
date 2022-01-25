@@ -1771,7 +1771,7 @@ class ExaminationResultController extends Controller
           if(ExaminationResult::whereHas('moduleAssignment',function($query) use($staff){
               $query->where('staff_id',$staff->id)->where('study_academic_year_id',session('active_academic_year_id'));
           })->where('student_id',$student->id)->count() == 0){
-              return redirect()->back()->with('error','Unable to view student details because he/she is not one of your students this academic year');
+              return redirect()->back()->with('error','Unable to view student details because he/she is not one of your students in this academic year');
           }
       }
 
