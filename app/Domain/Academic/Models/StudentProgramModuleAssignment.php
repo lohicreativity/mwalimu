@@ -9,5 +9,5 @@ class StudentProgramModuleAssignment extends Model
 {
     use HasFactory;
 
-    protected $table = 'student_program_module_assignments';
+    protected $table = 'student_program_module_assignment';
 }
