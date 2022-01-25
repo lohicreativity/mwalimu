@@ -191,7 +191,7 @@ class ExaminationResultController extends Controller
            	        $query->where('id',$student->id);
                       })->with(['module'])->where('study_academic_year_id',$assignment->study_academic_year_id)->where('year_of_study',$assignment->programModuleAssignment->year_of_study)->where('category','OPTIONAL')->get();
                  
-                 $student_buffer[$student->id]['results'][] =  $result;
+                 
                  $student_buffer[$student->id]['year_of_study'] = explode('_',$request->get('campus_program_id'))[2];
                  $student_buffer[$student->id]['total_credit'] = $total_credit;
                  $student_buffer[$student->id]['opt_credit'] = 0;
@@ -267,6 +267,8 @@ class ExaminationResultController extends Controller
                   $processed_result->final_processed_by_user_id = Auth::user()->id;
                   $processed_result->final_processed_at = now();
                   $processed_result->save();
+
+                  $student_buffer[$student->id]['results'][] =  $processed_result;
 
                   if($processed_result->final_exam_remark == 'RETAKE'){
                       		if($hist = RetakeHistory::where('study_academic_year_id',$request->get('study_academic_year_id'))->where('student_id',$student->id)->where('module_assignment_id',$assignment->id)->first()){

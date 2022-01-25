@@ -100,6 +100,7 @@ class Util {
           
           if($rem->remark == 'SUPP'){
              $remark = 'SUPP';
+             break;
           } 
 
            
