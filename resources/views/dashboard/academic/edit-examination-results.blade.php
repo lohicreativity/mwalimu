@@ -42,7 +42,7 @@
             <!-- general form elements -->
             <div class="card card-default">
               <div class="card-header">
-                <h3 class="card-title">{{ __('Edit Examination Results') }} - {{ $student->surname }}, {{ $student->first_name }} {{ $student->middle_name }} </h3>
+                <h3 class="card-title">{{ __('Edit Examination Results') }} - {{ $student->surname }}, {{ $student->first_name }} {{ $student->middle_name }} - {{ $module_assignment->module->code }}</h3>
               </div>
               <!-- /.card-header -->
               <!-- form start -->
