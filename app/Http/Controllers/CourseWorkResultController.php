@@ -24,7 +24,7 @@ class CourseWorkResultController extends Controller
             if(Auth::user()->hasRole('staff')){
               $module_assignment = ModuleAssignment::find($mod_assign_id);
               if($module_assignment->final_upload_status == 'UPLOADED'){
-                  return redirect()->back()->with('error','Unable to edit course work because final already processed');
+                  return redirect()->back()->with('error','Unable to edit coursework because final results already uploaded');
               }
             }
     		$assessment_plans = AssessmentPlan::where('module_assignment_id',$mod_assign_id)->get();

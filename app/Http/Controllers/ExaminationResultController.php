@@ -538,7 +538,7 @@ class ExaminationResultController extends Controller
         try{
             if(Auth::user()->hasRole('staff')){
               $module_assignment = ModuleAssignment::where('program_module_assignment_id',$prog_id)->first();
-              if($module_assignment->final_process_status == 'PROCESSED'){
+              if(ExaminationResult::where('module_assignment_id',$module_assignment->id)->whereNotNull('final_processed_at')->count() != 0){
                   return redirect()->back()->with('error','Unable to edit results because results already processed');
               }
             }
