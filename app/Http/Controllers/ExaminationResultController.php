@@ -197,7 +197,11 @@ class ExaminationResultController extends Controller
                  $student_buffer[$student->id]['opt_credit'] = 0;
 
                  foreach($optional_programs as $prog){
+                    if(Student::whereHas('options',function($query) use($prog){
+                        $query->where('id',$prog->id);
+                    })->where('id',$student->id)->count() != 0){
                      $student_buffer[$student->id]['opt_credit'] += $prog->module->credit; 
+                    }
                  }
                  $student_buffer[$student->id]['total_credit'] = $student_buffer[$student->id]['opt_credit'] + $total_credit;
 
@@ -874,7 +878,11 @@ class ExaminationResultController extends Controller
                         })->with(['module'])->where('study_academic_year_id',$assignment->study_academic_year_id)->where('year_of_study',$assignment->programModuleAssignment->year_of_study)->where('category','OPTIONAL')->get();
 
                    foreach($optional_programs as $prog){
+                      if(Student::whereHas('options',function($query) use($prog){
+                        $query->where('id',$prog->id);
+                      })->where('id',$student->id)->count() != 0){
                        $student_buffer[$student->id]['opt_credit'] += $prog->module->credit;
+                      }
                    }
                    $student_buffer[$student->id]['total_credit'] = $student_buffer[$student->id]['opt_credit'] + $total_credit;
 
