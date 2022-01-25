@@ -1755,8 +1755,24 @@ class ExaminationResultController extends Controller
           return redirect()->back()->with('error','No student found with searched registration number');
       }
 
-      if($student->campusProgram->program->department_id != $staff->department_id){
-          return redirect()->back()->with('error','Student not in the same deprtment.');
+      if(Auth::user()->hasRole('examination-officer')){
+          if($student->campusProgram->campus_id != $staff->campus_id){
+           return redirect()->back()->with('error','Student not in the same campus.');
+        }
+      }
+      
+      if(!Auth::user()->hasRole('staff') && Auth::user()->hasRole('hod')){
+        if($student->campusProgram->program->department_id != $staff->department_id){
+           return redirect()->back()->with('error','Student not in the same deprtment.');
+        }
+      }
+      
+      if(Auth::user()->hasRole('staff') && !Auth::user()->hasRole('hod')){
+          if(ExaminationResult::whereHas('moduleAssignment',function($query) use($staff){
+              $query->where('staff_id',$staff->id)->where('study_academic_year_id',session('active_academic_year_id'));
+          })->where('student_id',$student->id)->count() == 0){
+              return redirect()->back()->with('error','Unable to view student details because he/she is not one of your students this academic year');
+          }
       }
 
     	$results = ExaminationResult::with(['moduleAssignment.programModuleAssignment','moduleAssignment.studyAcademicYear.academicYear'])->where('student_id',$student->id)->get();
