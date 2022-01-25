@@ -75,32 +75,32 @@ class Util {
        foreach($remarks as $rem){
           if($rem->remark == 'FAIL&DISCO'){
              $remark = 'FAIL&DISCO';
-             break 1;
+             break;
           }
 
           if($rem->remark == 'INCOMPLETE'){
              $remark = 'INCOMPLETE';
-             break 1;
+             break;
           }
 
           if($rem->remark == 'POSTPONED'){
              $remark = 'POSTPONED';
-             break 1;
+             break;
           }
 
           if($rem->remark == 'CARRY'){
              $remark = 'CARRY';
-             break 1;
+             break;
           } 
 
           if($rem->remark == 'RETAKE'){
              $remark = 'RETAKE';
-             break 1;
+             break;
           }
           
           if($rem->remark == 'SUPP'){
              $remark = 'SUPP';
-             break 1;
+             break;
           }
        }
        
