@@ -1709,6 +1709,8 @@ class ExaminationResultController extends Controller
     		     $query->where('campus_program_id',$request->get('campus_program_id'));
     	    })->where('module_id',$request->get('module_id'))->with('module.ntaLevel','programModuleAssignment.campusProgram.program.department','studyAcademicYear')->where('study_academic_year_id',$request->get('study_academic_year_id'))->first();
 
+      $staff = User::find(Auth::user()->id)->staff;
+
     	if(!$module_assignment){
     		return redirect()->back()->with('error','No module assignment for selected academic year');
     	}
