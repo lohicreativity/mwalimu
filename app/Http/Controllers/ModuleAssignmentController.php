@@ -249,7 +249,7 @@ class ModuleAssignmentController extends Controller
              $students_with_final_marks_count = ExaminationResult::where('module_assignment_id',$module_assignment->id)->where('exam_type','FINAL')->whereNotNull('final_uploaded_at')->count();
              $students_with_no_final_marks_count = $total_students_count - $students_with_final_marks_count;
 
-             $students_with_supplemetary_count = ExaminationResult::where('module_assignment_id',$module_assignment->id)->whereNotNull('supp_score')->where('course_work_remark','FAIL')->orWhere('module_assignment_id',$module_assignment->id)->whereNotNull('supp_score')->where('final_remark','FAIL')->count();
+             $students_with_supplemetary_count = ExaminationResult::where('module_assignment_id',$module_assignment->id)->whereNotNull('supp_score')->count();
 
              $students_passed_count = $students_with_supplemetary_count = ExaminationResult::where('module_assignment_id',$module_assignment->id)->where('final_remark','!=','FAIL')->where('exam_type','FINAL')->count();
              $supp_cases_count = ExaminationResult::where('module_assignment_id',$module_assignment->id)->whereNotNull('final_uploaded_at')->where('final_exam_remark','FAIL')->count();
@@ -602,12 +602,11 @@ class ModuleAssignmentController extends Controller
                 'department'=>$module_assignment->programModuleAssignment->campusProgram->program->department,
                 'module'=>$module_assignment->module,
                 'study_academic_year'=>$module_assignment->studyAcademicYear,
-                'results'=>ExaminationResult::with('student')->where('module_assignment_id',$module_assignment->id)->whereNotNull('supp_score')->whereNotNull('final_uploaded_at')->where('course_work_remark','FAIL')->orWhere('final_remark','FAIL')->get()
+                'results'=>ExaminationResult::with('student')->where('module_assignment_id',$module_assignment->id)->whereNotNull('supp_score')->get()
             ];
             return view('dashboard.academic.reports.students-with-supplementary',$data);
 
         }catch(\Exception $e){
-            return $e->getMessage();
             return redirect()->back()->with('error','Unable to get the resource specified in this request');
         }
     }
