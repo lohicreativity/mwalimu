@@ -256,10 +256,6 @@ class ExaminationResultController extends Controller
                                   $processed_result->final_exam_remark = $assignment->programModuleAssignment->module_pass_mark <= $processed_result->supp_score? 'PASS' : 'RETAKE';
                           	}
                             
-                            if($processed_result->final_exam_remark == 'CARRY'){
-                               return $processed_result->final_exam_remark;
-                            }
-                            
                           	$processed_result->supp_processed_at = now();
                           	$processed_result->supp_processed_by_user_id = Auth::user()->id;
                         	}
@@ -391,6 +387,7 @@ class ExaminationResultController extends Controller
                     if($res->final_exam_remark == 'FAIL'){
                         $pass_status = 'SUPP'; 
                         $supp_exams[] = $res->moduleAssignment->module->code;
+                        break;
                     }   
                     
                  }
