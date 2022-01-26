@@ -251,6 +251,8 @@ class ModuleAssignmentController extends Controller
 
              $students_with_supplemetary_count = ExaminationResult::where('module_assignment_id',$module_assignment->id)->whereNotNull('supp_score')->count();
 
+             return $students_with_supplemetary_count;
+
              $students_passed_count = $students_with_supplemetary_count = ExaminationResult::where('module_assignment_id',$module_assignment->id)->where('final_remark','!=','FAIL')->where('exam_type','FINAL')->count();
              $supp_cases_count = ExaminationResult::where('module_assignment_id',$module_assignment->id)->whereNotNull('final_uploaded_at')->where('final_exam_remark','FAIL')->count();
              $students_with_no_supplementary_count = $students_with_final_marks_count - $students_with_supplemetary_count;
