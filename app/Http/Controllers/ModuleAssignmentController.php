@@ -983,13 +983,13 @@ class ModuleAssignmentController extends Controller
                              $result->supp_score = null;
                           }else{
                              $result->supp_score = trim($line[1]);
-                             if($result->supp_score < $module_assignment->programModuleAssignment->module_pass_mark){
-                               $result->grade = 'F';
-                             }else{
-                                $result->grade = $grading_policy? $grading_policy->grade : 'C';
-                             }
-                             $result->point = $grading_policy? $grading_policy->point : 2;
-                             $result->final_exam_remark = $module_assignment->programModuleAssignment->module_pass_mark <= $result->supp_score? 'PASS' : 'FAIL';
+                             // if($result->supp_score < $module_assignment->programModuleAssignment->module_pass_mark){
+                             //   $result->grade = 'F';
+                             // }else{
+                             //    $result->grade = $grading_policy? $grading_policy->grade : 'C';
+                             // }
+                             // $result->point = $grading_policy? $grading_policy->point : 2;
+                             // $result->final_exam_remark = $module_assignment->programModuleAssignment->module_pass_mark <= $result->supp_score? 'PASS' : 'FAIL';
                           }
                           $result->final_uploaded_at = now();
                           $result->uploaded_by_user_id = Auth::user()->id;
