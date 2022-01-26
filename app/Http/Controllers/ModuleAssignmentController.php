@@ -265,6 +265,13 @@ class ModuleAssignmentController extends Controller
              })->where('study_academic_year_id',$module_assignment->study_academic_year_id)->where('status','PUBLISHED')->count() != 0){
                 $second_semester_publish_status = true;
              }
+
+             $first_semester_publish_status = false;
+             if(ResultPublication::whereHas('semester',function($query){
+                 $query->where('name','LIKE','%1%');
+             })->where('study_academic_year_id',$module_assignment->study_academic_year_id)->where('status','PUBLISHED')->count() != 0){
+                $first_semester_publish_status = true;
+             }
              
              $program_results_process_status = false;
              if(ExaminationResult::where('module_assignment_id',$module_assignment->id)->whereNotNull('final_processed_at')->count() != 0){
@@ -284,6 +291,7 @@ class ModuleAssignmentController extends Controller
                 'students_passed_count'=>$students_passed_count,
                 'students_with_abscond_count'=>$students_with_abscond_count,
                 'supp_cases_count'=>$supp_cases_count,
+                'first_semester_publish_status'=>$first_semester_publish_status,
                 'second_semester_publish_status'=>$second_semester_publish_status,
                 'staff'=>User::find(Auth::user()->id)->staff
              ];
