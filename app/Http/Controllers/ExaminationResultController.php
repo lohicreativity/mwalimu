@@ -1139,6 +1139,7 @@ class ExaminationResultController extends Controller
             'campus'=>Campus::find($request->get('campus_id')),
             'semesters'=>Semester::all(),
             'campuses'=>Campus::all(),
+            'staff'=>User::find(Auth::user()->id)->staff,
             'request'=>$request
     	];
 

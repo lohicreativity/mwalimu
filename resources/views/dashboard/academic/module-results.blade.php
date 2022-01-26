@@ -112,9 +112,11 @@
                     <select name="campus_program_id" class="form-control" required id="ss-select-program-modules" data-target="#ss-select-module" data-source-url="{{ url('api/v1/get-program-modules') }}" data-token="{{ session()->token() }}" data-academic-year-id="{{ $study_academic_year->id }}">
                        <option value="">Select Programme</option>
                         @foreach($campus_programs as $program)
+                          @if($staff->department_id == $program->program->department_id)
                           @for($i = 1; $i <= $program->program->min_duration; $i++)
                           <option value="{{ $program->id }}_year_{{ $i }}">{{ $program->program->name }} - Year {{ $i }}</option>
                           @endfor
+                          @endif
                        @endforeach
                     </select>
                     {!! Form::input('hidden','study_academic_year_id',$study_academic_year->id) !!}
