@@ -67,9 +67,6 @@ class ProgramModuleAssignmentController extends Controller
               $elective_policy = ElectivePolicy::where('study_academic_year_id',$request->get('study_academic_year_id'))->where('campus_program_id',$campus_program->id)->where('year_of_study',$yr)->where('semester_id',$request->get('semester_id'))->first();
 
               $optional_modules = ProgramModuleAssignment::where('study_academic_year_id',$request->get('study_academic_year_id'))->where('campus_program_id',$campus_program->id)->where('year_of_study',$yr)->where('semester_id',$request->get('semester_id'))->where('category','OPTIONAL')->get();
-
-
-              return $optional_modules;
               
               $opt_mod_ids = [];
               foreach($optional_modules as $mod){
