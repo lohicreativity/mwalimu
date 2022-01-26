@@ -244,11 +244,11 @@ class ExaminationResultController extends Controller
                         if($request->get('semester_id') == 'SUPPLEMENTARY'){
                            if($processed_result->supp_score < $assignment->programModuleAssignment->module_pass_mark){
                                $processed_result->grade = 'F';
+                               $processed_result->point = 0;
                            }else{
                               $processed_result->grade = $grading_policy? $grading_policy->grade : 'C';
+                              $processed_result->point = 2;
                            }
-                           $processed_result->point = $grading_policy? $grading_policy->point : 2;
-                           $processed_result->final_exam_remark = $assignment->programModuleAssignment->module_pass_mark <= $processed_result->supp_score? 'PASS' : 'FAIL';
 
                         	if(Util::stripSpacesUpper($assignment->module->ntaLevel->name) == Util::stripSpacesUpper('NTA Level 7')){
                                 $processed_result->final_exam_remark = $assignment->programModuleAssignment->module_pass_mark <= $processed_result->supp_score? 'PASS' : 'CARRY';
