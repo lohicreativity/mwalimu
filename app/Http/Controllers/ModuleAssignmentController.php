@@ -252,7 +252,7 @@ class ModuleAssignmentController extends Controller
              $students_with_supplemetary_count = ExaminationResult::where('module_assignment_id',$module_assignment->id)->whereNotNull('supp_score')->count();
 
              $students_passed_count = ExaminationResult::where('module_assignment_id',$module_assignment->id)->where('final_remark','!=','FAIL')->where('exam_type','FINAL')->count();
-             $supp_cases_count = ExaminationResult::where('module_assignment_id',$module_assignment->id)->whereNotNull('final_uploaded_at')->where('course_work_remark','FAIL')->orWhere('final_remark','FAIL')->count();
+             $supp_cases_count = ExaminationResult::where('module_assignment_id',$module_assignment->id)->whereNotNull('final_uploaded_at')->where('final_exam_remark','FAIL')->count();
              $students_with_no_supplementary_count = ExaminationResult::where('module_assignment_id',$module_assignment->id)->where('final_remark','!=','PASS')->where('exam_type','PASS')->count();
              $students_with_abscond_count = ExaminationResult::where('module_assignment_id',$module_assignment->id)->where('final_uploaded_at','!=',null)->where('course_work_remark','INCOMPLETE')->orWhere('final_remark','INCOMPLETE')->count();
              $final_upload_status = false;
@@ -648,7 +648,7 @@ class ModuleAssignmentController extends Controller
                 'department'=>$module_assignment->programModuleAssignment->campusProgram->program->department,
                 'module'=>$module_assignment->module,
                 'study_academic_year'=>$module_assignment->studyAcademicYear,
-                'results'=>ExaminationResult::with('student')->where('module_assignment_id',$module_assignment->id)->whereNotNull('final_uploaded_at')->where('course_work_remark','FAIL')->orWhere('final_remark','FAIL')->get()
+                'results'=>ExaminationResult::with('student')->where('module_assignment_id',$module_assignment->id)->whereNotNull('final_uploaded_at')->where('final_exam_remark','FAIL')->get()
             ];
             return view('dashboard.academic.reports.students-with-supplementary',$data);
 
