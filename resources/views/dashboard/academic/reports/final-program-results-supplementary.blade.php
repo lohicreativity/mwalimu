@@ -279,9 +279,9 @@
                                @foreach($student->examinationResults as $result)
                                  @if($result->module_assignment_id == $assignment->id)
                                     @if($result->supp_score)
-                                      {{ $result->supp_score }}
+                                      @if($result->supp_score) {{ round($result->supp_score) }} @else {{ $result->supp_score }} @endif
                                     @else
-                                      {{ $result->total_score }}
+                                      @if($result->total_score) {{ round($result->total_score) }} @else {{ $result->total_score }} @endif
                                     @endif
                                  @endif
                                @endforeach
@@ -290,7 +290,7 @@
                                @foreach($student->examinationResults as $result)
                                  @if($result->module_assignment_id == $assignment->id)
                                     @if($result->supp_score)
-                                      {{ $result->grade }}*
+                                      {{ $result->grade }} @if($result->grade == 'C')*@endif
                                     @else
                                       {{ $result->grade }}
                                     @endif
