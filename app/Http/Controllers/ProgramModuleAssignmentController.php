@@ -89,12 +89,12 @@ class ProgramModuleAssignmentController extends Controller
                      }
                      if($count <= $skip){
                         if($stKey >= $studCount){
-                        if(Student::find($student->id)->options()->whereIn($opt_mod_ids)->count() < $elective_policy->number_of_options){
-                          $program_mod_assign = ProgramModuleAssignment::find($module->id);
-                          $program_mod_assign->students()->attach([$student->id]);
-                        }
-                        }
-                        $studCount += 1;
+                          if(Student::find($student->id)->options()->whereIn('id',$opt_mod_ids)->count() < $elective_policy->number_of_options){
+                            $program_mod_assign = ProgramModuleAssignment::find($module->id);
+                            $program_mod_assign->students()->attach([$student->id]);
+                          }
+                          $studCount += 1;
+                        } 
                      }
                      $count += 1;
                   }
