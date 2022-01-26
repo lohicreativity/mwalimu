@@ -198,9 +198,8 @@
                <h3>MWALIMU NYERERE MEMORIAL ACADEMY</h3>
                <h3>{{ $campus->name }}</h3>
                <h3>{{ $department->name }}</h3>
-               <h3>{{ $program->name }} ({{ $study_academic_year->academicYear->year }})</h3>
-               <h3>{{ $module->name }} - {{ $module->code }}</h3>
-               <h3>MODULE RESULTS</h3>
+               <h3>{{ $program->name }} - YEAR {{ $year_of_study }} ({{ $study_academic_year->academicYear->year }})</h3>
+               <h3>{{ strtoupper($module_assignment->programModuleAssignment->semester->name) }} {{ $module->name }} ({{ $module->code }}) RESULTS</h3>
               </div>
                <div class="table-responsive ss-margin-bottom">
                   <table class="table table-condensed table-bordered">
@@ -212,7 +211,7 @@
                       <td class="ss-bold">FN</td>
                       <td class="ss-bold">TT</td>
                       <td class="ss-bold">GD</td>
-                      <td class="ss-bold">Remark</td>
+                      <td class="ss-bold">REMARK</td>
                     </tr>
                     @foreach($students as $key=>$student)
                     <tr>
