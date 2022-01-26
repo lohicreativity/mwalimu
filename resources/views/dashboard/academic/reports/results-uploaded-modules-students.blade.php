@@ -207,13 +207,13 @@
                     <tr>
                       <td class="ss-bold">SN</td>
                       <td class="ss-bold">REG. NO.</td>
-                      <td class="ss-bold">@if($results_type == 'FN') EXAM MARKS @else COURSEWORK @endif</td>
+                      <td class="ss-bold">@if($result_type == 'FN') EXAM MARKS @else COURSEWORK @endif</td>
                     </tr>
                     @foreach($program_module_assignment->examinationResults as $key=>$result)
                     <tr>
                       <td>{{ $key+1 }}</td>
                       <td>{{ $result->student->registration_number }}</td>
-                      <td>@if($results_type == 'FN') {{ $result->final_score }} @else {{ $result->course_work_score }} @endif</td>
+                      <td>@if($result_type == 'FN') {{ $result->final_score }} @else {{ $result->course_work_score }} @endif</td>
                     </tr>
                     @endforeach
                   </table>

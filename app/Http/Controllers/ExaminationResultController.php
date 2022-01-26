@@ -2096,12 +2096,11 @@ class ExaminationResultController extends Controller
 	            'department'=>$program->campusProgram->program->department,
 	            'campus'=>$program->campusProgram->campus,
 	            'study_academic_year'=>$program->studyAcademicYear,
-	            'results_type'=>$request->get('results_type'),
+	            'result_type'=>$request->get('result_type'),
               'staff'=>User::find(Auth::user()->id)->staff
 	    	];
 	    	return view('dashboard.academic.reports.results-uploaded-modules-students',$data)->withTitle('Module Results');
         }catch(\Exception $e){
-        	return $e->getMessage();
         	return redirect()->back()->with('error','Unable to get the resource specified in this request');
         }
     }
