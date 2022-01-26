@@ -58,7 +58,7 @@
                   <li class="nav-item"><a class="nav-link" href="{{ url('academic/results-publications') }}">{{ __('Publish Results') }}</a></li>
                   @endcan
                   @can('view-uploaded-modules')
-                  <li class="nav-item"><a class="nav-link active" href="{{ url('academic/results/uploaded-modules') }}">{{ __('Uploaded Modules') }}</a></li>
+                  <li class="nav-item"><a class="nav-link active" href="{{ url('academic/results/uploaded-modules?study_academic_year_id='.session('active_academic_year_id').'&campus_id='.session('staff_campus_id').'&semester_id='.session('active_semester_id')) }}">{{ __('Uploaded Modules') }}</a></li>
                   @endcan
                   @can('upload-module-results')
                   <li class="nav-item"><a class="nav-link" href="{{ url('academic/results/upload-module-results?study_academic_year_id='.session('active_academic_year_id').'&campus_id='.session('staff_campus_id')) }}">{{ __('Upload Module Results') }}</a></li>
@@ -75,7 +75,7 @@
                     <select name="campus_id" class="form-control" required>
                        <option value="">Select Campus</option>
                        @foreach($campuses as $cp)
-                       <option value="{{ $cp->id }}">{{ $cp->name }}</option>
+                       <option value="{{ $cp->id }}" @if($request->get('campus_id') == $cp->id) selected="selected" @endif>{{ $cp->name }}</option>
                        @endforeach
                     </select>
                   </div>
@@ -104,9 +104,11 @@
                     <select name="campus_program_id" class="form-control" required>
                        <option value="">Select Programme</option>
                        @foreach($campus_programs as $program)
+                          @if($program->program->department_id == $staff->department_id)
                           @for($i = 1; $i <= $program->program->min_duration; $i++)
                           <option value="{{ $program->id }}_year_{{ $i }}">{{ $program->program->name }} - Year {{ $i }}</option>
                           @endfor
+                          @endif
                        @endforeach
                     </select>
                   </div>
@@ -117,7 +119,7 @@
                     <select name="study_academic_year_id" class="form-control" required>
                        <option value="">Select Study Academic Year</option>
                        @foreach($study_academic_years as $year)
-                       <option value="{{ $year->id }}">{{ $year->academicYear->year }}</option>
+                       <option value="{{ $year->id }}" @if($request->get('study_academic_year_id') == $year->id) selected="selected" @endif>{{ $year->academicYear->year }}</option>
                        @endforeach
                     </select>
                   </div>
@@ -128,7 +130,7 @@
                     <select name="semester_id" class="form-control" required>
                        <option value="">Select Semester</option>
                        @foreach($semesters as $semester)
-                       <option value="{{ $semester->id }}">{{ $semester->name }}</option>
+                       <option value="{{ $semester->id }}" @if($request->get('semester_id') == $semester->id) selected="selected" @endif>{{ $semester->name }}</option>
                        @endforeach
                     </select>
                     {!! Form::input('hidden','campus_id',$campus->id) !!}
