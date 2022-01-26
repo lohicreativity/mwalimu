@@ -390,11 +390,6 @@ class ExaminationResultController extends Controller
                     }   
                     
                  }
-                 
-
-                 if($pass_status == 'CARRY'){
-                    return $pass_status;
-                 }
 
                  if($request->get('semester_id') != 'SUPPLEMENTARY'){
                      if($rem = SemesterRemark::where('student_id',$key)->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('semester_id',$request->get('semester_id'))->where('year_of_study',$buffer['year_of_study'])->first()){
@@ -417,6 +412,27 @@ class ExaminationResultController extends Controller
                         $remark->serialized = count($supp_exams) != 0? serialize(['supp_exams'=>$supp_exams,'carry_exams'=>$carry_exams,'retake_exams'=>$retake_exams]) : null;
                         $remark->save();
                  }
+
+                 // if($request->get('semester_id') == 'SUPPLEMENTARY'){
+                 //     $sem_remarks = SemesterRemark::where('student_id',$key)->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',$buffer['year_of_study'])->get();
+
+                 //     foreach ($sem_remarks as $rem) {
+                 //        $remark = SemesterRemark::find($rem->id);
+                 //        $remark->study_academic_year_id = $request->get('study_academic_year_id');
+                 //        $remark->student_id = $key;
+                 //        $remark->remark = $sem_status[$rem->semester_id];
+                 //        if($remark->remark == 'INCOMPLETE' || $remark->remark == 'INCOMPLETE' || $remark->remark == 'POSTPONED'){
+                 //             $remark->gpa = null;
+                 //        }else{
+                 //           $remark->gpa = Util::computeGPA($buffer['total_credit'],$buffer['results']);
+                 //        }
+                 //        $remark->point = Util::computeGPAPoints($buffer['total_credit'],$buffer['results']);
+                 //        $remark->credit = $buffer['total_credit'];
+                 //        $remark->year_of_study = $buffer['year_of_study'];
+                 //        $remark->serialized = count($supp_exams) != 0? serialize(['supp_exams'=>$supp_exams,'carry_exams'=>$carry_exams,'retake_exams'=>$retake_exams]) : null;
+                 //        $remark->save();
+                 //     }  
+                 // }
                  
                  if($request->get('semester_id') == 'SUPPLEMENTARY'){
                      $sem_remarks = SemesterRemark::where('student_id',$key)->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',$buffer['year_of_study'])->get();
@@ -1180,7 +1196,9 @@ class ExaminationResultController extends Controller
         }else{
             $students = Student::whereHas('registrations',function($query) use($request){
                  $query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',explode('_',$request->get('campus_program_id'))[2]);
-            })->with(['semesterRemarks'=>function($query) use ($request){
+            })->whereHas('annualRemarks',function($query) use($request){
+                   $query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',explode('_',$request->get('campus_program_id'))[2])->where('remark','!=','PASS');
+              })->with(['semesterRemarks'=>function($query) use ($request){
                    $query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',explode('_',$request->get('campus_program_id'))[2]);
               },'semesterRemarks.semester','annualRemarks'=>function($query) use($request){
                    $query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',explode('_',$request->get('campus_program_id'))[2]);
