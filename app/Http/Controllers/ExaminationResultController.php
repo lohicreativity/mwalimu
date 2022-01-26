@@ -246,7 +246,7 @@ class ExaminationResultController extends Controller
                                $processed_result->grade = 'F';
                                $processed_result->point = 0;
                            }else{
-                              $processed_result->grade = $grading_policy? $grading_policy->grade : 'C';
+                              $processed_result->grade = 'C';
                               $processed_result->point = 2;
                            }
 
