@@ -255,8 +255,10 @@ class ExaminationResultController extends Controller
                           	}else{
                                   $processed_result->final_exam_remark = $assignment->programModuleAssignment->module_pass_mark <= $processed_result->supp_score? 'PASS' : 'RETAKE';
                           	}
-
-                            return $processed_result->final_exam_remark;
+                            
+                            if($processed_result->final_exam_remark == 'CARRY'){
+                               return $processed_result->final_exam_remark;
+                            }
                             
                           	$processed_result->supp_processed_at = now();
                           	$processed_result->supp_processed_by_user_id = Auth::user()->id;
