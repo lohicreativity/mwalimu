@@ -387,7 +387,6 @@ class ExaminationResultController extends Controller
                     if($res->final_exam_remark == 'FAIL'){
                         $pass_status = 'SUPP'; 
                         $supp_exams[] = $res->moduleAssignment->module->code;
-                        break;
                     }   
                     
                  }
