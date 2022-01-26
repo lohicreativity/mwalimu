@@ -253,7 +253,7 @@ class ModuleAssignmentController extends Controller
 
              $students_passed_count = ExaminationResult::where('module_assignment_id',$module_assignment->id)->where('final_remark','!=','FAIL')->where('exam_type','FINAL')->count();
              $supp_cases_count = ExaminationResult::where('module_assignment_id',$module_assignment->id)->whereNotNull('final_uploaded_at')->where('final_exam_remark','FAIL')->count();
-             $students_with_no_supplementary_count = $students_with_final_marks_count - $students_with_supplemetary_count;
+             $students_with_no_supplementary_count = ExaminationResult::where('module_assignment_id',$module_assignment->id)->where('final_remark','!=','PASS')->where('exam_type','PASS')->count();
              $students_with_abscond_count = ExaminationResult::where('module_assignment_id',$module_assignment->id)->where('final_uploaded_at','!=',null)->where('course_work_remark','INCOMPLETE')->orWhere('final_remark','INCOMPLETE')->count();
              $final_upload_status = false;
              if(ExaminationResult::where('module_assignment_id',$module_assignment->id)->whereNotNull('final_uploaded_at')->count() != 0){
