@@ -140,24 +140,30 @@
               </p>
             </a>
             <ul class="nav nav-treeview">
+              @can('view-fee-types')
               <li class="nav-item">
                 <a href="{{ url('finance/fee-types') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>{{ __('Fee Types') }}</p>
                 </a>
               </li>
+              @endcan
+              @can('view-fee-items')
               <li class="nav-item">
                 <a href="{{ url('finance/fee-items') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>{{ __('Fee Items') }}</p>
                 </a>
               </li>
+              @endcan
+              @can('view-fee-amounts')
               <li class="nav-item">
                 <a href="{{ url('finance/fee-amounts') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>{{ __('Fee Amounts') }}</p>
                 </a>
               </li>
+              @endcan
             </ul>
           </li>
           <li class="nav-item">
@@ -177,12 +183,14 @@
                 </a>
               </li>
               @endcan
+              @can('allocate-options')
               <li class="nav-item">
                 <a href="{{ url('academic/options-allocations?study_academic_year_id='.session('active_academic_year_id').'&semester_id='.session('active_semester_id')) }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Allocate Options</p>
                 </a>
               </li>
+              @endcan
             </ul>
           </li>
           <li class="nav-item">
@@ -453,23 +461,22 @@
                 </a>
               </li>
               @endcan
-              
-              {{-- @can('view-roles') --}}
+             @can('view-roles')
               <li class="nav-item">
                 <a href="{{ url('settings/roles') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Roles</p>
                 </a>
               </li>
-              {{-- @endcan --}}
-             {{-- @can('view-system-modules') --}}
+              @endcan
+             @can('view-system-modules')
               <li class="nav-item">
                 <a href="{{ url('settings/system-modules') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>System Modules</p>
                 </a>
               </li>
-              {{-- @endcan --}}
+              @endcan
             </ul>
           </li>
           @endif
