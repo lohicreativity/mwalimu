@@ -278,7 +278,7 @@
                             <td>
                                @foreach($student->examinationResults as $result)
                                  @if($result->module_assignment_id == $assignment->id)
-                                    {{ $result->supp_score }}
+                                    {{ $result->supp_score }}*
                                  @endif
                                @endforeach
                             </td>
@@ -286,7 +286,7 @@
                                @foreach($student->examinationResults as $result)
                                  @if($result->module_assignment_id == $assignment->id)
                                     @if($result->supp_score)
-                                    {{ $result->grade }}
+                                    {{ $result->grade }}*
                                     @endif
                                  @endif
                                @endforeach
@@ -565,11 +565,9 @@
                         <td>{{ $modKey }}</td>
                         <td>{{ $mod['name'] }}</td>
                         @foreach($grading_policies as $pol)
-                           @if(in_array($pol->grade,$mod['grades']))
                             <td>{{ $mod['special_grades']['ML'][$pol->grade] }}</td>
                             <td>{{ $mod['special_grades']['FL'][$pol->grade] }}</td>
                             <td>{{ $mod['special_grades'][$pol->grade] }}</td>
-                           @endif
                         @endforeach
                         <td>{{ $mod['ML']['special_inc_count'] }}</td>
                         <td>{{ $mod['FL']['special_inc_count'] }}</td>
