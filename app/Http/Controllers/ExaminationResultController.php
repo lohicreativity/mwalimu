@@ -190,6 +190,8 @@ class ExaminationResultController extends Controller
                   $optional_programs = ProgramModuleAssignment::whereHas('optedStudents',function($query) use($student){
            	        $query->where('student_id',$student->id);
                       })->with(['module'])->where('study_academic_year_id',$assignment->study_academic_year_id)->where('year_of_study',$assignment->programModuleAssignment->year_of_study)->where('category','OPTIONAL')->get();
+
+                  return $optional_programs;
                  
                  
                  $student_buffer[$student->id]['year_of_study'] = explode('_',$request->get('campus_program_id'))[2];
@@ -331,8 +333,8 @@ class ExaminationResultController extends Controller
             foreach($annual_results as $key=>$result){
             $student = Student::find($result->student_id);
                   
-                  $optional_programs = ProgramModuleAssignment::whereHas('students',function($query) use($student){
-                    $query->where('id',$student->id);
+                  $optional_programs = ProgramModuleAssignment::whereHas('optedStudents',function($query) use($student){
+                    $query->where('student_id',$student->id);
                       })->with(['module'])->where('study_academic_year_id',$assign->study_academic_year_id)->where('year_of_study',$assign->programModuleAssignment->year_of_study)->where('category','OPTIONAL')->get();
                  
                  $student_buffer[$student->id]['annual_results'][] =  $result;
