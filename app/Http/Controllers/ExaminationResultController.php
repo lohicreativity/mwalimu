@@ -239,26 +239,26 @@ class ExaminationResultController extends Controller
                       }else{
                         $processed_result->final_exam_remark = $assignment->programModuleAssignment->module_pass_mark <= $processed_result->total_score? 'PASS' : 'FAIL';
                       }
+                      
+                      if($request->get('semester_id') == 'SUPPLEMENTARY'){
+                        if($processed_result->supp_score){ 
+                             if($processed_result->supp_score < $assignment->programModuleAssignment->module_pass_mark){
+                                 $processed_result->grade = 'F';
+                                 $processed_result->point = 0;
+                             }else{
+                                $processed_result->grade = 'C';
+                                $processed_result->point = 2;
+                             }
 
-                      if($processed_result->supp_score){
-                        if($request->get('semester_id') == 'SUPPLEMENTARY'){
-                           if($processed_result->supp_score < $assignment->programModuleAssignment->module_pass_mark){
-                               $processed_result->grade = 'F';
-                               $processed_result->point = 0;
-                           }else{
-                              $processed_result->grade = 'C';
-                              $processed_result->point = 2;
-                           }
-
-                        	if(Util::stripSpacesUpper($assignment->module->ntaLevel->name) == Util::stripSpacesUpper('NTA Level 7')){
-                                $processed_result->final_exam_remark = $assignment->programModuleAssignment->module_pass_mark <= $processed_result->supp_score? 'PASS' : 'CARRY';
-                        	}else{
-                                $processed_result->final_exam_remark = $assignment->programModuleAssignment->module_pass_mark <= $processed_result->supp_score? 'PASS' : 'RETAKE';
+                          	if(Util::stripSpacesUpper($assignment->module->ntaLevel->name) == Util::stripSpacesUpper('NTA Level 7')){
+                                  $processed_result->final_exam_remark = $assignment->programModuleAssignment->module_pass_mark <= $processed_result->supp_score? 'PASS' : 'CARRY';
+                          	}else{
+                                  $processed_result->final_exam_remark = $assignment->programModuleAssignment->module_pass_mark <= $processed_result->supp_score? 'PASS' : 'RETAKE';
+                          	}
+                            
+                          	$processed_result->supp_processed_at = now();
+                          	$processed_result->supp_processed_by_user_id = Auth::user()->id;
                         	}
-                          
-                        	$processed_result->supp_processed_at = now();
-                        	$processed_result->supp_processed_by_user_id = Auth::user()->id;
-                      	}
                       }
                   }
 
