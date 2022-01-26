@@ -251,8 +251,8 @@
                     <tr>
                       
                       @foreach($module_assignments as $assignment)
-                      <td class="ss-bold">MRK</td>
-                      <td class="ss-bold">GRD</td>
+                      <td class="ss-bold">TT</td>
+                      <td class="ss-bold">GD</td>
                       @endforeach
                       
                     </tr>
@@ -278,7 +278,11 @@
                             <td>
                                @foreach($student->examinationResults as $result)
                                  @if($result->module_assignment_id == $assignment->id)
-                                    {{ $result->supp_score }}*
+                                    @if($result->supp_score)
+                                      {{ $result->supp_score }}
+                                    @else
+                                      {{ $result->total_score }}
+                                    @endif
                                  @endif
                                @endforeach
                             </td>
@@ -286,7 +290,9 @@
                                @foreach($student->examinationResults as $result)
                                  @if($result->module_assignment_id == $assignment->id)
                                     @if($result->supp_score)
-                                    {{ $result->grade }}*
+                                      {{ $result->grade }}*
+                                    @else
+                                      {{ $result->grade }}
                                     @endif
                                  @endif
                                @endforeach
