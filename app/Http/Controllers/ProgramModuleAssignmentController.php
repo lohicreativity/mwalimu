@@ -73,21 +73,32 @@ class ProgramModuleAssignmentController extends Controller
                   $opt_mod_ids[] = $mod->id;
               }
 
-                 
-              foreach($optional_modules as $key=>$module){
-                  if($key < $elective_policy->number_of_options){
-
-                      $non_opt_students = Student::whereDoesntHave('options',function($query) use($module){
-                          $query->whereIn('id',$module->id);
+              $non_opt_students = Student::whereDoesntHave('options',function($query) use($opt_mod_ids){
+                          $query->whereIn('id',$opt_mod_ids);
                       })->where('year_of_study',$yr)->where('campus_program_id',$campus_program->id)->get();
 
-                      $program_mod_assign = ProgramModuleAssignment::find($module->id);
-                      $program_mod_assign->students()->attach($non_opt_students->map(function($value){
-                         return $value->id;
-                      }));
-
-                    }
+              $skip = count($optional_modules) != 0? intdiv(count($non_opt_students),count($optional_modules)) : 0;
+              $remainder = count($optional_modules) != 0? count($non_opt_students)%count($optional_modules) : 0;
+              $studCount = 0;
+                 
+              foreach($optional_modules as $key=>$module){
+                  $count = 0;
+                  foreach($non_opt_students as $stKey=>$student){
+                     if($key == (count($optional_modules)-1)){
+                        $skip = $skip + $remainder;
+                     }
+                     if($count <= $skip){
+                        if($stKey >= $studCount){
+                        if(Student::find($student->id)->options()->whereIn($opt_mod_ids)->count() < $elective_policy->number_of_options){
+                          $program_mod_assign = ProgramModuleAssignment::find($module->id);
+                          $program_mod_assign->students()->attach([$student->id]);
+                        }
+                        }
+                        $studCount += 1;
+                     }
+                     $count += 1;
                   }
+                }
               } 
             }
           }
