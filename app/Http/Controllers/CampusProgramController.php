@@ -24,6 +24,11 @@ class CampusProgramController extends Controller
     public function index($id)
     {
     	try{
+        $staff = User::find(Auth::user()->id)->staff;
+        
+        if(Auth::user()->hasRole('admission-officer') && $staff->campus_id != $id){
+            return redirect()->back()->with('error','Unable to assign programmes because this is not your campus');
+        }
         $programIds = [];
         $campus_programs = CampusProgram::with('program')->where('campus_id',$id)->get();
         foreach ($campus_programs as $key => $prog) {
@@ -35,7 +40,7 @@ class CampusProgramController extends Controller
 	           'campus'=>Campus::findOrFail($id),
 	           'programs'=>Program::all(),
              'filtered_programs'=>Program::whereNotIn('id',$programIds)->get(),
-               'staff'=>User::find(Auth::user()->id)->staff
+               'staff'=>$staff
 	    	];
 	    	return view('dashboard.academic.campus-programs',$data)->withTitle('Campus Programs');
         }catch(\Exception $e){
