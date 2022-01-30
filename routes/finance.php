@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FeeTypeController;
 use App\Http\Controllers\FeeItemController;
 use App\Http\Controllers\FeeAmountController;
+use App\Http\Controllers\ProgramFeeController;
 
 
 
@@ -35,5 +36,11 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 	Route::post('fee-amount/store', [FeeAmountController::class,'store']);
 	Route::post('fee-amount/update', [FeeAmountController::class,'update']);
 	Route::get('fee-amount/{id}/destroy', [FeeAmountController::class,'destroy']);
+
+	Route::get('program-fees', [ProgramFeeController::class,'index'])->name('fee-items');
+	Route::post('program-fee/store', [ProgramFeeController::class,'store']);
+	Route::post('program-fee/update', [ProgramFeeController::class,'update']);
+	Route::get('program-fee/{id}/structure', [ProgramFeeController::class,'feeStructure']);
+	Route::get('program-fee/{id}/destroy', [ProgramFeeController::class,'destroy']);
 
 });

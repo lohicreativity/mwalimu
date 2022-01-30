@@ -164,6 +164,12 @@
                 </a>
               </li>
               @endcan
+              <li class="nav-item">
+                <a href="{{ url('finance/program-fees') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>{{ __('Programme Fees') }}</p>
+                </a>
+              </li>
             </ul>
           </li>
           <li class="nav-item">
