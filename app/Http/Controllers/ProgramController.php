@@ -17,7 +17,7 @@ class ProgramController extends Controller
     /**
      * Display a list of programs
      */
-    public function index()
+    public function index(Request $request)
     {
       $staff = User::find(Auth::user()->id)->staff;
       if(Auth::user()->hasRole('hod')){
