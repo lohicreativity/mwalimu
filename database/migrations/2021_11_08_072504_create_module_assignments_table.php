@@ -22,13 +22,14 @@ class CreateModuleAssignmentsTable extends Migration
             $table->unsignedBigInteger('assigned_by_user_id');
             $table->string('course_work_process_status',20)->nullable();
             $table->string('final_upload_status',20)->nullable();
+            $table->tinyInteger('confirmed')->default(0);
             $table->timestamps();
 
             $table->foreign('module_id')->references('id')->on('modules')->onUpdate('cascade');
             $table->foreign('staff_id')->references('id')->on('staffs')->onUpdate('cascade');
             $table->foreign('study_academic_year_id')->references('id')->on('study_academic_years')->onUpdate('cascade');
-            $table->foreign('program_module_assignment_id','prog_mod_assign')->references('id')->on('program_module_assignments')->onUpdate('cascade');
-            $table->foreign('assigned_by_user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('program_module_assignment_id','prog_mod_assign')->references('id')->on('program_module_assignments')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('assigned_by_user_id')->references('id')->on('users')->onUpdate('cascade');
         });
     }
 
