@@ -55,8 +55,8 @@ class ProgramController extends Controller
     public function store(Request $request)
     {
     	$validation = Validator::make($request->all(),[
-            'name'=>'required|unique:programs',
-            'code'=>'required|unique:programs'
+            'name'=>'required',
+            'code'=>'required'
         ]);
 
         if($validation->fails()){

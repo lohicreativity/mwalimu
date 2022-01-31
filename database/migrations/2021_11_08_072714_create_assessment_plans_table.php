@@ -20,7 +20,7 @@ class CreateAssessmentPlansTable extends Migration
             $table->unsignedBigInteger('module_assignment_id');
             $table->timestamps();
 
-            $table->foreign('module_assignment_id')->references('id')->on('module_assignments')->onUpdate('cascade');
+            $table->foreign('module_assignment_id')->references('id')->on('module_assignments')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 
