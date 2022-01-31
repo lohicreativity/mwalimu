@@ -9,10 +9,14 @@ use App\Domain\Academic\Repositories\Interfaces\ProgramInterface;
 class ProgramAction implements ProgramInterface{
 	
 	public function store(Request $request){
-		$program = new Program;
+                if($prog = Program::where('code',$request->get('code'))->first()){
+                    $program = $prog;
+                }else{
+                    $program = new Program;
+                }
                 $program->name = $request->get('name');
                 $program->code = $request->get('code');
-                $program->department_id = $request->get('department_id');
+                // $program->department_id = $request->get('department_id');
                 $program->nta_level_id = $request->get('nta_level_id');
                 $program->award_id = $request->get('award_id');
                 $program->description = $request->get('description');
@@ -20,13 +24,15 @@ class ProgramAction implements ProgramInterface{
                 $program->max_duration = $request->get('max_duration');
                 // $program->category = $request->get('category');
                 $program->save();
+
+                $program->departments()->attach([$request->get('department_id')=>['campus_id'=>$request->get('campus_id')]]);
 	}
 
 	public function update(Request $request){
 		$program = Program::find($request->get('program_id'));
                 $program->name = $request->get('name');
                 $program->code = $request->get('code');
-                $program->department_id = $request->get('department_id');
+                // $program->department_id = $request->get('department_id');
                 $program->nta_level_id = $request->get('nta_level_id');
                 $program->award_id = $request->get('award_id');
                 $program->description = $request->get('description');
@@ -34,5 +40,7 @@ class ProgramAction implements ProgramInterface{
                 $program->max_duration = $request->get('max_duration');
                 // $program->category = $request->get('category');
                 $program->save();
+
+                $program->departments()->sync([$request->get('department_id')=>['campus_id'=>$request->get('campus_id')]]);
 	}
 }

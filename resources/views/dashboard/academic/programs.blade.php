@@ -140,6 +140,7 @@
                       @endforeach
                     </select>
                     {!! Form::input('hidden','award_id',null,['id'=>'ss-nta-award-input']) !!}
+                    {!! Form::input('hidden','campus_id',$staff->campus_id) !!}
                   </div>
                    
                  </div>
@@ -166,7 +167,6 @@
                   <tr>
                     <th>Name</th>
                     <th>Code</th>
-                    <th>Department</th>
                     <th>NTA Level</th>
                     <th>Min Duration</th>
                     <th>Max Duration</th>
@@ -178,7 +178,6 @@
                   <tr>
                     <td>{{ $program->name }}</td>
                     <td>{{ $program->code }}</td>
-                    <td>{{ $program->department->name }}</td>
                     <td>{{ $program->ntaLevel->name }}</td>
                     <td>{{ $program->min_duration }}</td>
                     <td>{{ $program->max_duration }}</td>
@@ -245,6 +244,7 @@
                                       {!! Form::text('name',$program->name,$name) !!}
 
                                       {!! Form::input('hidden','program_id',$program->id) !!}
+                                      {!! Form::input('hidden','campus_id',$staff->campus_id) !!}
                                     </div>
                                     <div class="form-group col-4">
                                       {!! Form::label('','Code') !!}

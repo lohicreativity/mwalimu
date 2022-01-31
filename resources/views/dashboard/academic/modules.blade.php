@@ -147,6 +147,7 @@
                     </select>
 
                     {!! Form::input('hidden','nta_level_id',null,['id'=>'ss-nta-level-input']) !!}
+                    {!! Form::input('hidden','campus_id',$staff->campus_id) !!}
                   </div>
                    <div class="form-group col-6">
                     {!! Form::label('','Upload module syllabus (PDF)') !!}
@@ -189,7 +190,6 @@
                   <thead>
                   <tr>
                     <th>Name</th>
-                    <th>Department</th>
                     <th>Code</th>
                     <th>Credit</th>
                     <th>NTA Level</th>
@@ -200,7 +200,6 @@
                   @foreach($modules as $module)
                   <tr>
                     <td>{{ $module->name }}</td>
-                    <td>{{ $module->department->name }}</td>
                     <td>{{ $module->code }}</td>
                     <td>{{ $module->credit }}</td>
                     <td>{{ $module->ntaLevel->name }}</td>
@@ -285,6 +284,7 @@
                                       {!! Form::text('name',$module->name,$name) !!}
 
                                       {!! Form::input('hidden','module_id',$module->id) !!}
+                                      {!! Form::input('hidden','campus_id',$staff->campus_id) !!}
                                     </div>
                                     
                                     <div class="form-group col-6">

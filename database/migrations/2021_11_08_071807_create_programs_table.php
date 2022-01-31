@@ -20,13 +20,13 @@ class CreateProgramsTable extends Migration
             $table->string('code')->unique();
             $table->integer('min_duration');
             $table->integer('max_duration');
-            $table->unsignedBigInteger('department_id');
+            // $table->unsignedBigInteger('department_id');
             $table->unsignedBigInteger('nta_level_id');
             $table->unsignedBigInteger('award_id');
             $table->timestamps();
             $table->softDeletes();
 
-            $table->foreign('department_id')->references('id')->on('departments')->onUpdate('cascade');
+            // $table->foreign('department_id')->references('id')->on('departments')->onUpdate('cascade');
             $table->foreign('nta_level_id')->references('id')->on('nta_levels')->onUpdate('cascade');
             $table->foreign('award_id')->references('id')->on('awards')->onUpdate('cascade');
         });

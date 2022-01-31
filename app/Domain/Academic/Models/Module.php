@@ -23,6 +23,14 @@ class Module extends Model
     }
 
     /**
+     * Establish many to many relationship with departments
+     */
+    public function departments()
+    {
+        return $this->belongsToMany(Department::class,'module_department','module_id','department_id')->withPivot('campus_id');
+    }
+
+    /**
      * Establish one to many relationship with nta levels
      */
     public function ntaLevel()

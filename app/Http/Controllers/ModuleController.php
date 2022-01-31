@@ -25,11 +25,12 @@ class ModuleController extends Controller
         }else{
             $modules = Module::with(['department','ntaLevel'])->latest()->paginate(20);
         }
+        $staff = User::find(Auth::user()->id)->staff;
     	$data = [
            'modules'=>$modules,
            'nta_levels'=>NTALevel::all(),
            'departments'=>Department::all(),
-           'staff'=>User::find(Auth::user()->id)->staff,
+           'staff'=>$staff,
            'request'=>$request
     	];
     	return view('dashboard.academic.modules',$data)->withTitle('Modules');

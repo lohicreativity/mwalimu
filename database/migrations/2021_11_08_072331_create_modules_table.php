@@ -18,14 +18,14 @@ class CreateModulesTable extends Migration
             $table->string('name');
             $table->string('code',10);
             $table->integer('credit');
-            $table->unsignedBigInteger('department_id');
+            // $table->unsignedBigInteger('department_id');
             $table->unsignedBigInteger('nta_level_id');
             $table->tinyInteger('course_work_based')->default(1);
             $table->string('syllabus')->nullable();
             $table->timestamps();
             $table->softDeletes();
 
-            $table->foreign('department_id')->references('id')->on('departments')->onUpdate('cascade');
+            // $table->foreign('department_id')->references('id')->on('departments')->onUpdate('cascade');
             $table->foreign('nta_level_id')->references('id')->on('nta_levels')->onUpdate('cascade');
         });
     }
