@@ -46,7 +46,7 @@ class ModuleAssignmentController extends Controller
            'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
            'study_academic_year'=>$request->has('study_academic_year_id')? StudyAcademicYear::with('academicYear')->find($request->get('study_academic_year_id')) : null,
            'semester'=>$request->has('semester_id')? Semester::find($request->get('semester_id')) : null,
-           'campus_programs'=>CampusProgram::with('program')->get(),
+           'campus_programs'=>CampusProgram::with(['program.departments'])->get(),
 
            'campus_program'=>CampusProgram::with(['program','programModuleAssignments'=>function($query) use ($request){
                  $query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',$request->get('year_of_study'))->where('semester_id',$request->get('semester_id'));
@@ -65,6 +65,56 @@ class ModuleAssignmentController extends Controller
       ];
 		return view('dashboard.academic.assign-staff-modules',$data)->withTitle('Staff Module Assignment');
 	}
+
+  /**
+   * Display a list of staffs to assign modules
+   */
+  public function assignmentConfirmation(Request $request)
+  {
+    $staff = User::find(Auth::user()->id)->staff;
+    $data = [
+           'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
+           'study_academic_year'=>$request->has('study_academic_year_id')? StudyAcademicYear::with('academicYear')->find($request->get('study_academic_year_id')) : null,
+           'semester'=>$request->has('semester_id')? Semester::find($request->get('semester_id')) : null,
+           'campus_programs'=>CampusProgram::with(['program.departments'])->get(),
+
+           'campus_program'=>CampusProgram::with(['program','programModuleAssignments'=>function($query) use ($request){
+                 $query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',$request->get('year_of_study'))->where('semester_id',$request->get('semester_id'));
+           },'programModuleAssignments.module','programModuleAssignments.semester','programModuleAssignments.programModuleAssignmentRequests','programModuleAssignments.module.moduleAssignments'=>function($query) use ($request){
+                 $query->where('study_academic_year_id',$request->get('study_academic_year_id'));
+           },'programModuleAssignments.module.moduleAssignments.staff'])->find($request->get('campus_program_id')),
+
+           'previous_campus_program'=>CampusProgram::with(['program','programModuleAssignments'=>function($query) use ($request){
+                 $query->where('study_academic_year_id','!=',$request->get('study_academic_year_id'))->latest();
+           },'programModuleAssignments.module','programModuleAssignments.semester','programModuleAssignments.module.moduleAssignments'=>function($query) use ($request){
+                 $query->where('study_academic_year_id',$request->get('study_academic_year_id'));
+           },'programModuleAssignments.module.moduleAssignments.staff'])->find($request->get('campus_program_id')),
+           'staffs'=>Staff::with(['designation','campus'])->where('department_id',$staff->department_id)->get(),
+           'semesters'=>Semester::all(),
+           'staff'=>$staff
+      ];
+    return view('dashboard.academic.assign-staff-modules-confirmation',$data)->withTitle('Staff Module Assignment Confirmation');
+  }
+
+  /**
+   * Accept confirmation
+   */
+  public function acceptConfirmation(Request $request,$id)
+  {
+      (new ModuleAssignmentAction)->acceptConfirmation($request,$id);
+
+      return redirect()->back()->with('message','Module assignment confirmed successfully');
+  }
+
+  /**
+   * Accept confirmation
+   */
+  public function rejectConfirmation(Request $request,$id)
+  {
+      (new ModuleAssignmentAction)->rejectConfirmation($request,$id);
+
+      return redirect()->back()->with('message','Module assignment rejected successfully');
+  }
 
   /**
      * Disaplay staff assigned modules 

@@ -45,7 +45,7 @@
               </div>
               <!-- /.card-header -->
               <div class="card-body">
-                 {!! Form::open(['url'=>'academic/module-assignments','class'=>'ss-form-processing','method'=>'GET']) !!}
+                 {!! Form::open(['url'=>'academic/module-assignment/confirmation','class'=>'ss-form-processing','method'=>'GET']) !!}
                   <div class="row">
                    <div class="form-group col-3">
                     <select name="study_academic_year_id" class="form-control" required>
@@ -100,11 +100,12 @@
               <div class="card-header">
                 <ul class="nav nav-tabs">       
                   @can('view-module-assignments')
-                  <li class="nav-item"><a class="nav-link active" href="{{ url('academic/module-assignments?study_academic_year_id='.session('active_academic_year_id')) }}">{{ __('Module Assignments') }}</a></li>
+                  <li class="nav-item"><a class="nav-link" href="{{ url('academic/module-assignments?study_academic_year_id='.session('active_academic_year_id')) }}">{{ __('Module Assignments') }}</a></li>
                   @endcan
                   @can('view-module-assignment-requests')
-                  <li class="nav-item"><a class="nav-link" href="{{ url('academic/module-assignment-requests') }}">{{ __('Modules Assignment Requests') }}</a></li>
+                  <li class="nav-item"><a class="nav-link active" href="{{ url('academic/module-assignment-requests') }}">{{ __('Modules Assignment Requests') }}</a></li>
                   @endcan
+                  <li class="nav-item"><a class="nav-link" href="{{ url('academic/module-assignment/confirmation?study_academic_year_id='.session('active_academic_year_id')) }}">{{ __('Modules Assignment Confirmation') }}</a></li>
                   @can('view-modules')
                   <li class="nav-item"><a class="nav-link" href="{{ url('academic/modules') }}">{{ __('Modules') }}</a></li>
                   @endcan
@@ -148,12 +149,12 @@
                             <p class="ss-font-xs ss-no-margin ss-bold">Facilitator:</p>
                             <p class="ss-font-xs ss-no-margin ss-italic">{{ $modAssign->staff->title }} {{ $modAssign->staff->first_name }} {{ $modAssign->staff->middle_name }} {{ $modAssign->staff->surname }}
                             
-                            @can('delete-module-facilitator')
-                            @if($staff->department_id == $assign->module->department_id)
-                            <a href="#" data-toggle="modal" data-target="#ss-delete-module-assignment-{{ $modAssign->id }}" class="ss-color-danger ss-right">Remove</a></p>
-                            @endif
+                            <a href="{{ url('academic/module-assignment/'.$assign->id.'/confirmation/accept') }}" class="ss-color-success ss-right">Accept</a></p>
+
+                            <a href="{{ url('academic/module-assignment/'.$assign->id.'/confirmation/reject') }}" class="ss-color-danger ss-right">Reject</a></p>
+
                             <p class="ss-font-xs ss-no-margin ss-italic">{{ $modAssign->staff->phone }}, {{ $modAssign->staff->email }}</p>
-                            @endcan
+                           
 
                             <div class="modal fade" id="ss-delete-module-assignment-{{ $modAssign->id }}">
                         <div class="modal-dialog modal-lg">

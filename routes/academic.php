@@ -75,6 +75,9 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 
 
 	Route::get('module-assignments', [ModuleAssignmentController::class,'index']);
+	Route::get('module-assignment/confirmation', [ModuleAssignmentController::class,'assignmentConfirmation']);
+	Route::get('module-assignment/{id}/confirmation/accept', [ModuleAssignmentController::class,'acceptConfirmation']);
+	Route::get('module-assignment/{id}/confirmation/reject', [ModuleAssignmentController::class,'rejectConfirmation']);
 	Route::post('module-assignment/store', [ModuleAssignmentController::class,'store']);
 	Route::get('module-assignment/{id}/destroy', [ModuleAssignmentController::class,'destroy']);
 	Route::get('module-assignment/{id}/examination-irregularities',[ExaminationIrregularityController::class, 'index']);

@@ -49,6 +49,7 @@
                   @can('view-module-assignment-requests')
                   <li class="nav-item"><a class="nav-link" href="{{ url('academic/module-assignment-requests') }}">{{ __('Modules Assignment Requests') }}</a></li>
                   @endcan
+                  <li class="nav-item"><a class="nav-link" href="{{ url('academic/module-assignment/confirmation?study_academic_year_id='.session('active_academic_year_id')) }}">{{ __('Modules Assignment Confirmation') }}</a></li>
                   @can('view-modules')
                   <li class="nav-item"><a class="nav-link active" href="{{ url('academic/modules') }}">{{ __('Modules') }}</a></li>
                   @endcan

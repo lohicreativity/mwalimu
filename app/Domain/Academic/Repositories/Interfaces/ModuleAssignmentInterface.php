@@ -9,5 +9,7 @@ interface ModuleAssignmentInterface{
 
 	public function update(Request $request);
 
-	public function updateConfirmation(Request $request);
+	public function acceptConfirmation(Request $request, $id);
+
+	public function rejectConfirmation(Request $request, $id);
 }

@@ -47,10 +47,17 @@ class ModuleAssignmentAction implements ModuleAssignmentInterface{
 	}
 
 
-    public function updateConfirmation(Request $request)
+    public function acceptConfirmation(Request $request,$id)
     {
-        $assignment = ModuleAssignment::find($request->get('module_assignment_id'));
+        $assignment = ModuleAssignment::find($id);
         $assignment->confirmed = 1;
+        $assignment->save();
+    }
+
+    public function rejectConfirmation(Request $request,$id)
+    {
+        $assignment = ModuleAssignment::find($id);
+        $assignment->confirmed = 0;
         $assignment->save();
     }
 }
