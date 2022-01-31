@@ -161,8 +161,8 @@
                           <label for="customRadio1" class="custom-control-label">Coursework Based</label>
                         </div>
                         <div class="custom-control custom-radio">
-                          <input class="custom-control-input" type="radio" id="customRadio1" name="course_work_based" value="0" required>
-                          <label for="customRadio1" class="custom-control-label">Non-Coursework Based</label>
+                          <input class="custom-control-input" type="radio" id="customRadio2" name="course_work_based" value="0" required>
+                          <label for="customRadio2" class="custom-control-label">Non-Coursework Based</label>
                         </div>
                     </div>
                  </div>
@@ -328,8 +328,8 @@
                                           <label for="customRadio1" class="custom-control-label">Coursework Based</label>
                                         </div>
                                         <div class="custom-control custom-radio">
-                                          <input class="custom-control-input" type="radio" id="customRadio1" name="course_work_based" value="0" @if($module->course_work_based == 0) checked="checked" @endif required>
-                                          <label for="customRadio1" class="custom-control-label">Non-Coursework Based</label>
+                                          <input class="custom-control-input" type="radio" id="customRadio2" name="course_work_based" value="0" @if($module->course_work_based == 0) checked="checked" @endif required>
+                                          <label for="customRadio2" class="custom-control-label">Non-Coursework Based</label>
                                         </div>
                                     </div>
                                      </div>
