@@ -149,7 +149,7 @@ class Util {
     * Check if collection contains ID
     */
    public static function collectionContainsKey($collection,$target){
-      if(is_iterable($collection) && is_object($target)){
+      if(is_iterable($collection)){
          $status = false;
          foreach($collection as $item){
             if($item->id == $target){
