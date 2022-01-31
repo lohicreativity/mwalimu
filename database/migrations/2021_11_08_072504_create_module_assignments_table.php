@@ -28,7 +28,7 @@ class CreateModuleAssignmentsTable extends Migration
             $table->foreign('staff_id')->references('id')->on('staffs')->onUpdate('cascade');
             $table->foreign('study_academic_year_id')->references('id')->on('study_academic_years')->onUpdate('cascade');
             $table->foreign('program_module_assignment_id','prog_mod_assign')->references('id')->on('program_module_assignments')->onUpdate('cascade');
-            $table->foreign('assigned_by_user_id')->references('id')->on('users')->onUpdate('cascade');
+            $table->foreign('assigned_by_user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 
