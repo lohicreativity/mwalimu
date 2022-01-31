@@ -29,6 +29,7 @@ class ProgramController extends Controller
           $programs = Program::whereHas('departments',function($query) use($staff){
              $query->where('id',$staff->department_id);
           })->with(['departments','ntaLevel','award'])->orderBy('code')->paginate(20);
+        }
       }else{
           if($request->has('query')){
             $programs = Program::with(['departments','ntaLevel','award'])->where('name','LIKE','%'.$request->get('query').'%')->OrWhere('code','LIKE','%'.$request->get('query').'%')->orderBy('code')->paginate(20);
