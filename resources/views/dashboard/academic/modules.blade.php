@@ -155,10 +155,16 @@
                   </div>
                  </div><!-- end of row -->
                  <div class="row">
-                    <div class="form-group form-check">
-                    <input type="checkbox" name="course_work_based" class="form-check-input" value="1" id="exampleCheck1">
-                    <label class="form-check-label" for="exampleCheck1">Coursework based?</label>
-                  </div>
+                    <div class="form-group">
+                        <div class="custom-control custom-radio">
+                          <input class="custom-control-input" type="radio" id="customRadio1" name="course_work_based" value="1" required>
+                          <label for="customRadio1" class="custom-control-label">Coursework Based</label>
+                        </div>
+                        <div class="custom-control custom-radio">
+                          <input class="custom-control-input" type="radio" id="customRadio1" name="course_work_based" value="0" required>
+                          <label for="customRadio1" class="custom-control-label">Non-Coursework Based</label>
+                        </div>
+                    </div>
                  </div>
                 </div>
                 <!-- /.card-body -->
@@ -316,14 +322,16 @@
                                       </div>
                                    </div>
                                    <div class="row">
-                                    <div class="form-group form-check">
-                                      @if($module->course_work_based == 1)
-                                        <input type="checkbox" name="course_work_based" class="form-check-input" value="1" checked="checked" id="exampleCheck1">
-                                      @else
-                                        <input type="checkbox" name="course_work_based" class="form-check-input" value="1" id="exampleCheck1">
-                                      @endif
-                                        <label class="form-check-label" for="exampleCheck1">Coursework based?</label>
-                                      </div>
+                                    <div class="form-group">
+                                        <div class="custom-control custom-radio">
+                                          <input class="custom-control-input" type="radio" id="customRadio1" name="course_work_based" value="1" @if($module->course_work_based == 1) checked="checked" @endif required>
+                                          <label for="customRadio1" class="custom-control-label">Coursework Based</label>
+                                        </div>
+                                        <div class="custom-control custom-radio">
+                                          <input class="custom-control-input" type="radio" id="customRadio1" name="course_work_based" value="0" @if($module->course_work_based == 0) checked="checked" @endif required>
+                                          <label for="customRadio1" class="custom-control-label">Non-Coursework Based</label>
+                                        </div>
+                                    </div>
                                      </div>
                                       <div class="ss-form-actions">
                                        <button type="submit" class="btn btn-primary">{{ __('Save Changes') }}</button>
