@@ -111,7 +111,7 @@
                   </thead>
                   <tbody>
                   @foreach($campus->campusPrograms as $program)
-                  
+                  @if(App\Utils\Util::collectionContainsKey($program->program->departments,$staff->department_id))
                   <tr>
                     <td>{{ $program->program->name }}</td>
                     <td>{{ $program->program->code }}</td>
@@ -211,7 +211,7 @@
                        
                     </td>
                   </tr>
-                  
+                  @endif
                   @endforeach
                   
                   </tbody>
