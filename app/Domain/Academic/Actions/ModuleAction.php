@@ -10,6 +10,9 @@ use App\Utils\SystemLocation;
 class ModuleAction implements ModuleInterface{
 	
 	public function store(Request $request){
+            if($mod = Module::where('code',$request->get('code'))->where('name',$request->get('name'))->first()){
+                    $module = $mod;
+            }else{
 		            $module = new Module;
                 $module->name = $request->get('name');
                 $module->code = $request->get('code');
@@ -26,6 +29,7 @@ class ModuleAction implements ModuleInterface{
                   $module->syllabus = $request->file('syllabus')->getClientOriginalName();
                 }
                 $module->save();
+            }
 
                 $module->departments()->attach([$request->get('department_id')=>['campus_id'=>$request->get('campus_id')]]);
 	}

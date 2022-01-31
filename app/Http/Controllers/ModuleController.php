@@ -45,7 +45,7 @@ class ModuleController extends Controller
     {
     	$validation = Validator::make($request->all(),[
             'name'=>'required',
-            'code'=>'required|unique:modules',
+            'code'=>'required',
             'credit'=>'required|numeric',
             'syllabus'=>'mimes:pdf'
         ]);
