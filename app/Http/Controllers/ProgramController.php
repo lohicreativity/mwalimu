@@ -42,7 +42,7 @@ class ProgramController extends Controller
            'departments'=>Department::whereHas('campuses',function($query) use($staff){
                  $query->where('id',$staff->campus_id);
             })->get(),
-           'nta_levels'=>NTALevel::all(),
+           'nta_levels'=>NTALevel::where('name','!=','NTA Level 7')->get(),
            'awards'=>Award::all(),
            'staff'=>$staff
     	];
