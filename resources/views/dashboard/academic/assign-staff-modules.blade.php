@@ -225,7 +225,7 @@
                          {!! Form::open(['url'=>'academic/module-assignment-request/store','class'=>'ss-form-processing']) !!}
                            {!! Form::input('hidden','program_module_assignment_id',$assign->id) !!}
 
-                           {!! Form::input('hidden','department_id',$assign->module->department_id) !!}
+                           {!! Form::input('hidden','department_id',$staff->department_id) !!}
 
                            {!! Form::input('hidden','study_academic_year_id',$assign->study_academic_year_id) !!}
 
