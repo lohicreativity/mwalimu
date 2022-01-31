@@ -27,8 +27,8 @@ class ProgramModuleAssignmentRequestController extends Controller
            'staff'=>$staff,
            'requests'=>ProgramModuleAssignmentRequest::whereHas('programModuleAssignment',function($query) use ($request){
            	       $query->where('study_academic_year_id',$request->get('study_academic_year_id'));
-               })->whereHas('programModuleAssignment.module',function($query) use ($staff){
-           	       $query->where('department_id',$staff->department_id);
+               })->whereHas('programModuleAssignment.module.departments',function($query) use ($staff){
+           	       $query->where('id',$staff->department_id);
                })->whereHas('staff',function($query) use ($staff){
                    $query->where('campus_id',$staff->campus_id);
                })->with(['programModuleAssignment.module','programModuleAssignment.campusProgram.program','staff.campus'])->paginate(20),
