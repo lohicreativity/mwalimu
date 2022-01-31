@@ -25,8 +25,8 @@ class CampusProgramController extends Controller
     {
     	try{
         $staff = User::find(Auth::user()->id)->staff;
-        
-        if(Auth::user()->hasRole('admission-officer') && $staff->campus_id != $id){
+
+        if(!Auth::user()->hasRole('administrator') && $staff->campus_id != $id){
             return redirect()->back()->with('error','Unable to assign programmes because this is not your campus');
         }
         $programIds = [];

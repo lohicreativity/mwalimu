@@ -280,7 +280,9 @@ class ProgramModuleAssignmentController extends Controller
     public function destroy($id)
     {
         try{
-            $program = ProgramModuleAssignment::with('moduleAssignments')->findOrFail($id);
+            $program = ProgramModuleAssignment::with(['moduleAssignments'=>function($query){
+                 $query->whereNull('course_work_process_status');
+            }])->findOrFail($id);
             if(count($program->moduleAssignments) != 0){
                 return redirect()->back()->with('error','Module already assigned staff');
             }

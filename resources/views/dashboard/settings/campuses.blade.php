@@ -279,7 +279,7 @@
                               Assign Programmes
                        </a>
                        @else
-                       <a class="btn btn-info btn-sm" @if($staff->campus_id == $campus->id) href="{{ url('academic/campus/'.$campus->id.'/campus-programs') }}" @else disabled="disabled" @endif>
+                       <a class="btn btn-info btn-sm" href="{{ url('academic/campus/'.$campus->id.'/campus-programs') }}" >
                               <i class="fas fa-plus">
                               </i>
                               Assign Programmes
