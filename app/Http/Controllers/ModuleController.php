@@ -29,7 +29,9 @@ class ModuleController extends Controller
     	$data = [
            'modules'=>$modules,
            'nta_levels'=>NTALevel::all(),
-           'departments'=>Department::all(),
+           'departments'=>Department::whereHas('campuses',function($query) use($staff){
+                 $query->where('id',$staff->campus_id);
+            })->get(),
            'staff'=>$staff,
            'request'=>$request
     	];
