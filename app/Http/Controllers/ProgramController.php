@@ -21,9 +21,20 @@ class ProgramController extends Controller
     {
       $staff = User::find(Auth::user()->id)->staff;
       if(Auth::user()->hasRole('hod')){
-          $programs = Program::with(['department','ntaLevel','award'])->where('department_id',$staff->department_id)->orderBy('code')->paginate(20);
+        if($request->has('query')){
+            $programs = Program::whereHas('departments',function($query) use($staff){
+             $query->where('id',$staff->department_id);
+          })->with(['departments','ntaLevel','award'])->where('name','LIKE','%'.$request->get('query').'%')->OrWhere('code','LIKE','%'.$request->get('query').'%')->orderBy('code')->paginate(20);
+        }else{
+          $programs = Program::whereHas('departments',function($query) use($staff){
+             $query->where('id',$staff->department_id);
+          })->with(['departments','ntaLevel','award'])->orderBy('code')->paginate(20);
       }else{
-          $programs = Program::with(['department','ntaLevel','award'])->orderBy('code')->paginate(20);
+          if($request->has('query')){
+            $programs = Program::with(['departments','ntaLevel','award'])->where('name','LIKE','%'.$request->get('query').'%')->OrWhere('code','LIKE','%'.$request->get('query').'%')->orderBy('code')->paginate(20);
+          }else{
+             $programs = Program::with(['department','ntaLevel','award'])->orderBy('code')->paginate(20);
+          }
       }
     	$data = [
            'programs'=>$programs,
