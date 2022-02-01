@@ -75,4 +75,12 @@ class ModuleAssignment extends Model
     {
     	return $this->belongsTo(Module::class,'module_id');
     }
+
+    /**
+     * Establish one to many relationship with users
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class,'assigned_by_user_id');
+    }
 }
