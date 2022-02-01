@@ -20,12 +20,17 @@ class ModuleController extends Controller
      */
     public function index(Request $request)
     {
-        if($request->has('query')){
-            $modules = Module::with(['department','ntaLevel'])->where('name','LIKE','%'.$request->get('query').'%')->OrWhere('code','LIKE','%'.$request->get('query').'%')->paginate(20);
-        }else{
-            $modules = Module::with(['department','ntaLevel'])->latest()->paginate(20);
-        }
         $staff = User::find(Auth::user()->id)->staff;
+        if($request->has('query')){
+            $modules = Module::whereHas('departments',function($query) use($staff){
+                 $query->where('campus_id',$staff->campus_id);
+            })->with(['departments','ntaLevel'])->where('name','LIKE','%'.$request->get('query').'%')->OrWhere('code','LIKE','%'.$request->get('query').'%')->paginate(20);
+        }else{
+            $modules = Module::whereHas('departments',function($query) use($staff){
+                 $query->where('campus_id',$staff->campus_id);
+            })->with(['departments','ntaLevel'])->latest()->paginate(20);
+        }
+        
     	$data = [
            'modules'=>$modules,
            'nta_levels'=>NTALevel::all(),
