@@ -179,11 +179,11 @@
                       {!! Form::input('number','course_work_min_mark',null,$course_work_min_mark) !!}
                     </div>
                     <div class="form-group col-4">
-                      {!! Form::label('','Course work percentage pass') !!}
+                      {!! Form::label('','Coursework percentage pass') !!}
                       {!! Form::input('number','course_work_percentage_pass',null,$course_work_percentage_pass) !!}
                     </div>
                     <div class="form-group col-4">
-                     {!! Form::label('','Course work pass score') !!}
+                     {!! Form::label('','Coursework pass score') !!}
                      {!! Form::input('number','course_work_pass_score',null,$course_work_pass_score) !!}
 
                      {!! Form::input('hidden','study_academic_year_id',$study_academic_year->id) !!}
@@ -398,11 +398,11 @@
                                   {!! Form::input('number','course_work_min_mark',$assignment->course_work_min_mark,$course_work_min_mark) !!}
                                 </div>
                                 <div class="form-group col-4">
-                                  {!! Form::label('','Course work percentage pass') !!}
+                                  {!! Form::label('','Coursework percentage pass') !!}
                                   {!! Form::input('number','course_work_percentage_pass',$assignment->course_work_percentage_pass,$course_work_percentage_pass) !!}
                                 </div>
                                 <div class="form-group col-4">
-                                 {!! Form::label('','Course work pass score') !!}
+                                 {!! Form::label('','Coursework pass score') !!}
                                  {!! Form::input('number','course_work_pass_score',$assignment->course_work_pass_score,$course_work_pass_score) !!}
 
                                  {!! Form::input('hidden','study_academic_year_id',$study_academic_year->id) !!}

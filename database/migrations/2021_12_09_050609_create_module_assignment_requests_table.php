@@ -28,7 +28,7 @@ class CreateModuleAssignmentRequestsTable extends Migration
             $table->foreign('department_id')->references('id')->on('departments')->onUpdate('cascade');
             $table->foreign('campus_program_id')->references('id')->on('campus_program')->onUpdate('cascade');
             $table->foreign('study_academic_year_id')->references('id')->on('study_academic_years')->onUpdate('cascade');
-            $table->foreign('program_module_assignment_id','prog_mod_assign_req')->references('id')->on('program_module_assignments')->onUpdate('cascade');
+            $table->foreign('program_module_assignment_id','prog_mod_assign_req')->references('id')->on('program_module_assignments')->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('requested_by_user_id')->references('id')->on('users')->onUpdate('cascade');
         });
     }
