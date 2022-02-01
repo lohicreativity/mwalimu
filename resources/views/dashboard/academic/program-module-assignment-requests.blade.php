@@ -253,15 +253,15 @@
                                     </div>
                                     <div class="row">
                                 <div class="form-group col-4">
-                                  {!! Form::label('','Course work min mark') !!}
+                                  {!! Form::label('','Coursework max mark') !!}
                                   {!! Form::input('number','course_work_min_mark',null,$course_work_min_mark) !!}
                                 </div>
                                 <div class="form-group col-4">
-                                  {!! Form::label('','Course work percentage pass') !!}
+                                  {!! Form::label('','Coursework percentage pass') !!}
                                   {!! Form::input('number','course_work_percentage_pass',null,$course_work_percentage_pass) !!}
                                 </div>
                                 <div class="form-group col-4">
-                                 {!! Form::label('','Course work pass score') !!}
+                                 {!! Form::label('','Coursework pass score') !!}
                                  {!! Form::input('number','course_work_pass_score',null,$course_work_pass_score) !!}
 
                                  {!! Form::input('hidden','study_academic_year_id',$study_academic_year->id) !!}
@@ -270,7 +270,7 @@
                              <div class="row">
                               
                               <div class="form-group col-6">
-                                  {!! Form::label('','Final min mark') !!}
+                                  {!! Form::label('','Final max mark') !!}
                                   {!! Form::input('number','final_min_mark',null,$final_min_mark) !!}
                               </div>
                               <div class="form-group col-6">
