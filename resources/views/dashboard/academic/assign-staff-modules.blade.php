@@ -263,7 +263,7 @@
                                         <option value="">Select Facilitator</option>
                                         @foreach($staffs as $stf)
                       
-                                        <option value="{{ $stf->id }}">{{ $stf->title }} {{ $stf->first_name }} {{ $stf->surname }} - {{ $stf->designation->name }} ({{ $stf->campus->name }}) ({{ $stf->department->name }})</option>
+                                        <option value="{{ $stf->id }}">{{ $stf->title }} {{ $stf->first_name }} {{ $stf->surname }} - {{ $stf->designation->name }} ({{ $stf->campus->name }} - {{ $stf->department->name }})</option>
                                         
                                         @endforeach
                                       </select>
