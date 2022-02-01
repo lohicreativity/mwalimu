@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Domain\Academic\Models\ModuleAssignment;
 use App\Domain\Academic\Models\Module;
 use App\Domain\Academic\Models\ProgramModuleAssignment;
+use App\Domain\HumanResources\Models\Staff;
 use App\Domain\Academic\Repositories\Interfaces\ModuleAssignmentInterface;
 use App\Models\User;
 use App\Utils\Util;
