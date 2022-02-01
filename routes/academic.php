@@ -240,6 +240,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 	Route::get('results/show-program-results',[ExaminationResultController::class,'showProgramResults']);
 	Route::get('results/show-module-results',[ExaminationResultController::class,'showModuleResults']);
 	Route::get('results/show-student-results',[ExaminationResultController::class,'showStudentResults']);
+	Route::get('results/student-mark-editing',[CourseWorkResultController::class,'markEdit']);
+	Route::get('results/post-mark-edit',[CourseWorkResultController::class,'postMarkEdit']);
 	Route::get('results/{student_id}/{ac_yr_id}/{yr_of_study}/show-student-results',[ExaminationResultController::class,'showStudentAcademicYearResults']);
 	Route::get('results/{student_id}/{ac_yr_id}/{yr_of_study}/show-student-overall-results',[ExaminationResultController::class,'showStudentOverallResults']);
 	Route::get('results/{student_id}/{ac_yr_id}/{yr_of_study}/show-student-perfomance-report',[ExaminationResultController::class,'showStudentPerfomanceReport']);

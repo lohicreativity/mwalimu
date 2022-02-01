@@ -163,7 +163,13 @@
               <!-- /.card-header -->
               <div class="card-body">
                 {!! Form::open(['url'=>'academic/programs','method'=>'GET']) !!}
-                <div class="input-group ss-stretch">
+                <div class="form-group col-3">
+                  <select name="nta_level" class="form-control">
+                    <option value="ASC">ASC</option>
+                    <option value="DESC">DESC</option>
+                  </select>
+                </div>
+                <div class="input-group ss-stretch col-9">
                  <input type="text" name="query" class="form-control" placeholder="Search for module name or code">
                  <span class="input-group-btn">
                    <button class="btn btn-default" type="submit"><span class="fa fa-search"></span></button>
@@ -368,7 +374,7 @@
                   </tbody>
                 </table>
                 <div class="ss-pagination-links">
-                {!! $programs->render() !!}
+                {!! $programs->appends($request->except('page'))->render() !!}
                 </div>
               </div>
               <!-- /.card-body -->

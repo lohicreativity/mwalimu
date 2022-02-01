@@ -18,7 +18,7 @@ class CourseWorkResultController extends Controller
     /**
      * Display form for editing cw components
      */
-    public function edit(Request $request, $student_id, $mod_assign_id, $exam_id)
+    public function edit(Request $request, $student_id, $mod_assign_id, $exam_id, $redirect_url = null)
     {
     	try{
             if(Auth::user()->hasRole('staff')){
@@ -37,12 +37,42 @@ class CourseWorkResultController extends Controller
 	          'exam_result'=>ExaminationResult::findOrFail($exam_id),
 	          'results'=>CourseWorkResult::where('student_id',$student_id)->where('module_assignment_id',$mod_assign_id)->get(),
 	          'module_assignment'=>ModuleAssignment::with('assessmentPlans','module','programModuleAssignment.campusProgram.program')->findOrFail($mod_assign_id),
+            'redirect_url'=>$redirect_url,
 	          'staff'=>User::find(Auth::user()->id)->staff
 	        ];
 	        return view('dashboard.academic.edit-course-work-results',$data)->withTitle('Edit Course Work Results');
         }catch(\Exception $e){
         	return redirect()->back()->with('error','Unable to get the resource specified in this request');
         }
+    }
+
+    /**
+     * Display mark editing
+     */
+    public function markEdit(Request $request)
+    {
+        $staff = User::find(Auth::user()->id)->staff;
+        $data = [
+            'module_assignments'=>ModuleAssignment::whereHas('programModuleAssignment',function($query){
+                    // $query->where('semester_id',session('active_semester_id'));
+            })->with(['module'])->where('study_academic_year_id',session('active_academic_year_id'))->where('staff_id',$staff->id)->get(),
+            'staff'=>$staff
+        ];
+        return view('dashboard.academic.student-mark-editing',$data)->withTitle('Marks Editing');
+    }
+
+    /**
+     * Redirect mark editing
+     */
+    public function postMarkEdit(Request $request)
+    {
+        $student = Student::where('registration_number',$request->get('registration_number'))->first();
+        if(!$student){
+            return redirect()->back()->with('error','Student does not exist');
+        }
+        $mod_assign = ModuleAssignment::find($request->get('module_assignment_id'));
+        $exam = ExaminationResult::where('student_id',$student->id)->where('module_assignment_id',$request->get('module_assignment_id'))->first();
+        return $this->edit($request,$student->id,$mod_assign->id,$exam->id, url('academic/results/student-mark-editing'));
     }
 
 
@@ -109,6 +139,10 @@ class CourseWorkResultController extends Controller
                         $exam_result->processed_at = now();
                         $exam_result->save();
                     }
+
+             if($request->get('redirect_url')){
+                return redirect()->to($request->get('redirect_url'))->with('message','Marks updated successfully');
+             }
 
              return redirect()->to('academic/results/'.$request->get('student_id').'/'.$module_assignment->study_academic_year_id.'/'.$module_assignment->programModuleAssignment->year_of_study.'/process-student-results?semester_id='.$module_assignment->programModuleAssignment->semester_id);
         }catch(\Exception $e){

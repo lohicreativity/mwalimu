@@ -106,6 +106,7 @@
                 {!! Form::input('hidden','student_id',$student->id) !!}
                 {!! Form::input('hidden','examination_result_id',$exam_result->id) !!}
                 {!! Form::input('hidden','module_assignment_id',$module_assignment->id) !!}
+                {!! Form::input('hidden','redirect_url',$redirect_url) !!}
                 <div class="card-footer">
                   <button type="submit" class="btn btn-primary">{{ __('Save Changes') }}</button>
                 </div>
