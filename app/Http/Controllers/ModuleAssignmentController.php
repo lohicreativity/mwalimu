@@ -59,7 +59,7 @@ class ModuleAssignmentController extends Controller
            },'programModuleAssignments.module','programModuleAssignments.semester','programModuleAssignments.module.moduleAssignments'=>function($query) use ($request){
                  $query->where('study_academic_year_id',$request->get('study_academic_year_id'));
            },'programModuleAssignments.module.moduleAssignments.staff'])->find($request->get('campus_program_id')),
-           'staffs'=>Staff::with(['designation','campus'])->get(),
+           'staffs'=>Staff::with(['designation','campus','department'])->get(),
            'semesters'=>Semester::all(),
            'staff'=>$staff
       ];

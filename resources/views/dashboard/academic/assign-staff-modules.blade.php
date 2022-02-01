@@ -262,9 +262,9 @@
                                       <select name="staff_id" class="form-control ss-select-tags" required style="width: 100%;">
                                         <option value="">Select Facilitator</option>
                                         @foreach($staffs as $stf)
-                                        @if($stf->department_id == $staff->department_id)
-                                        <option value="{{ $stf->id }}">{{ $stf->title }} {{ $stf->first_name }} {{ $stf->surname }} - {{ $stf->designation->name }} ({{ $stf->campus->name }})</option>
-                                        @endif
+                      
+                                        <option value="{{ $stf->id }}">{{ $stf->title }} {{ $stf->first_name }} {{ $stf->surname }} - {{ $stf->designation->name }} ({{ $stf->campus->name }}) ({{ $stf->department->name }})</option>
+                                        
                                         @endforeach
                                       </select>
 
