@@ -50,7 +50,7 @@ class ModuleAssignmentController extends Controller
 
            'campus_program'=>CampusProgram::with(['program','programModuleAssignments'=>function($query) use ($request){
                  $query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',$request->get('year_of_study'))->where('semester_id',$request->get('semester_id'));
-           },'programModuleAssignments.module','programModuleAssignments.semester','programModuleAssignments.programModuleAssignmentRequests','programModuleAssignments.module.moduleAssignments'=>function($query) use ($request){
+           },'programModuleAssignments.module.departments','programModuleAssignments.semester','programModuleAssignments.programModuleAssignmentRequests','programModuleAssignments.module.moduleAssignments'=>function($query) use ($request){
                  $query->where('study_academic_year_id',$request->get('study_academic_year_id'));
            },'programModuleAssignments.module.moduleAssignments.staff'])->find($request->get('campus_program_id')),
 

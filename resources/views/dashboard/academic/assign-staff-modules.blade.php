@@ -213,7 +213,7 @@
                            {{ $text }}
                         </td>
                         <td>
-                          @if($assign->module->department_id == $staff->department_id)
+                          @if(App\Utils\Util::collectionContainsKey($assign->module->departments,$staff->department_id))
                           @can('assign-module-facilitator')
                           <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-assign-module-{{ $assign->module->id }}">
                               <i class="fas fa-plus">
