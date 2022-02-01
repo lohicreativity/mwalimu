@@ -116,10 +116,6 @@
                             <p class="ss-font-xs ss-no-margin ss-bold">Facilitator:</p>
                             @foreach($assign->programModuleAssignment->moduleAssignments as $modAssign)
                             <p class="ss-font-xs ss-no-margin ss-italic">{{ $modAssign->staff->title }} {{ $modAssign->staff->first_name }} {{ $modAssign->staff->middle_name }} {{ $modAssign->staff->surname }}
-                            
-                            @can('delete-module-facilitator')
-                            <a href="#" data-toggle="modal" data-target="#ss-delete-module-assignment-{{ $modAssign->id }}" class="ss-color-danger ss-right">Remove</a></p>
-                            @endcan
 
                             <div class="modal fade" id="ss-delete-module-assignment-{{ $modAssign->id }}">
                         <div class="modal-dialog modal-lg">
