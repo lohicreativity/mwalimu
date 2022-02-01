@@ -29,7 +29,7 @@ class ModuleAssignmentAction implements ModuleAssignmentInterface{
                 $assignment->program_module_assignment_id = $request->get('program_module_assignment_id');
                 $assignment->assigned_by_user_id = Auth::user()->id;
 
-                if(Util::collectionContainsKey($module->departments,$assigned_staff->department_id)){
+                if($staff->department_id == $assigned_staff->department_id){
                     $assignment->confirmed = 1;
                 }
                 
