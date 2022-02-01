@@ -116,10 +116,6 @@
                             <p class="ss-font-xs ss-no-margin ss-bold">Facilitator:</p>
                             @foreach($assign->programModuleAssignment->moduleAssignments as $modAssign)
                             <p class="ss-font-xs ss-no-margin ss-italic">{{ $modAssign->staff->title }} {{ $modAssign->staff->first_name }} {{ $modAssign->staff->middle_name }} {{ $modAssign->staff->surname }}
-
-                            <a href="{{ url('academic/module-assignment/'.$assign->id.'/confirmation/accept') }}" class="ss-color-success ss-right">Accept</a></p>
-
-                            <a href="{{ url('academic/module-assignment/'.$assign->id.'/confirmation/reject') }}" class="ss-color-danger ss-right">Reject</a></p>
                             
                             @can('delete-module-facilitator')
                             <a href="#" data-toggle="modal" data-target="#ss-delete-module-assignment-{{ $modAssign->id }}" class="ss-color-danger ss-right">Remove</a></p>
@@ -166,59 +162,10 @@
                         <td>{{ $assign->programModuleAssignment->year_of_study }}</td>
                         <td>{{ $assign->programModuleAssignment->semester->name }}</td>
                         <td>
-                          @can('assign-module-facilitator')
-                          <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-assign-module-{{ $assign->id }}">
-                              <i class="fas fa-plus">
-                              </i>
-                              Assign Facilitator
-                         </a>
-                         @endcan
+                          <a class="btn btn-info btn-sm" href="{{ url('academic/module-assignment/'.$assign->id.'/confirmation/accept') }}" class="ss-color-success ss-right"><i class="fas fa-check"></i> Accept</a></p>
 
-                         <div class="modal fade" id="ss-assign-module-{{ $assign->id }}">
-                        <div class="modal-dialog modal-lg">
-                          <div class="modal-content">
-                            <div class="modal-header">
-                              <h4 class="modal-title">Assign Facilitator</h4>
-                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                              </button>
-                            </div>
-                            <div class="modal-body">
-
-                                {!! Form::open(['url'=>'academic/module-assignment/store','class'=>'ss-form-processing']) !!}
-                                   
-                                   <div class="row">
-                                    <div class="form-group col-12">
-                                      {!! Form::label('','Select facilitator') !!}<br>
-                                      <select name="staff_id" class="form-control ss-select-tags" required style="width: 100%;">
-                                        <option value="">Select Facilitator</option>
-                                        @foreach($staffs as $stf)
-                                        <option value="{{ $stf->id }}">{{ $stf->title }} {{ $stf->first_name }} {{ $stf->surname }} @if($stf->designation) - {{ $stf->designation->name }} @endif @if($stf->campus) ({{ $stf->campus->name }}) @endif</option>
-                                        @endforeach
-                                      </select>
-
-                                      {!! Form::input('hidden','module_id',$assign->module_id) !!}
-                                      {!! Form::input('hidden','study_academic_year_id',$assign->study_academic_year_id) !!}
-                                      {!! Form::input('hidden','program_module_assignment_id',$assign->program_module_assignment_id) !!}
-                                    </div>
-                                      
-
-                                  </div>
-                                      <div class="ss-form-actions">
-                                       <button type="submit" class="btn btn-primary">{{ __('Assign Facilitator') }}</button>
-                                      </div>
-                                {!! Form::close() !!}
-
-                            </div>
-                            <div class="modal-footer justify-content-between">
-                              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                            </div>
-                          </div>
-                          <!-- /.modal-content -->
-                        </div>
-                        <!-- /.modal-dialog -->
-                      </div>
-                      <!-- /.modal -->
+                          <a class="btn btn-warning btn-sm" href="{{ url('academic/module-assignment/'.$assign->id.'/confirmation/reject') }}" class="ss-color-danger ss-right"><i class="fas fa-ban"></i> Reject</a></p>
+                          
                         </td>
                         </tr>
 
