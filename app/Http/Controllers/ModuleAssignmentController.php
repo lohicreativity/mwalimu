@@ -71,29 +71,17 @@ class ModuleAssignmentController extends Controller
    */
   public function assignmentConfirmation(Request $request)
   {
-    $staff = User::find(Auth::user()->id)->staff;
-    $data = [
+    $staff = User::find(Auth::user()->id)->staff()->with(['department'])->first();
+      $data = [
+           'study_academic_year'=>StudyAcademicYear::find($request->get('study_academic_year_id')),
            'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
-           'study_academic_year'=>$request->has('study_academic_year_id')? StudyAcademicYear::with('academicYear')->find($request->get('study_academic_year_id')) : null,
-           'semester'=>$request->has('semester_id')? Semester::find($request->get('semester_id')) : null,
-           'campus_programs'=>CampusProgram::with(['program.departments'])->get(),
-
-           'campus_program'=>CampusProgram::with(['program','programModuleAssignments'=>function($query) use ($request){
-                 $query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',$request->get('year_of_study'))->where('semester_id',$request->get('semester_id'));
-           },'programModuleAssignments.module','programModuleAssignments.semester','programModuleAssignments.programModuleAssignmentRequests','programModuleAssignments.module.moduleAssignments'=>function($query) use ($request){
-                 $query->where('study_academic_year_id',$request->get('study_academic_year_id'));
-           },'programModuleAssignments.module.moduleAssignments.staff'])->find($request->get('campus_program_id')),
-
-           'previous_campus_program'=>CampusProgram::with(['program','programModuleAssignments'=>function($query) use ($request){
-                 $query->where('study_academic_year_id','!=',$request->get('study_academic_year_id'))->latest();
-           },'programModuleAssignments.module','programModuleAssignments.semester','programModuleAssignments.module.moduleAssignments'=>function($query) use ($request){
-                 $query->where('study_academic_year_id',$request->get('study_academic_year_id'));
-           },'programModuleAssignments.module.moduleAssignments.staff'])->find($request->get('campus_program_id')),
-           'staffs'=>Staff::with(['designation','campus'])->where('department_id',$staff->department_id)->get(),
-           'semesters'=>Semester::all(),
+           'assignments'=>ModuleAssignment::whereHas('programModuleAssignment.module.departments',function($query) use ($staff){
+                    $query->where('id',$staff->department_id);
+               })->with(['programModuleAssignment.moduleAssignments.staff','campusProgram.program','studyAcademicYear.academicYear','user.staff.campus'])->latest()->where('study_academic_year_id',$request->get('study_academic_year_id'))->paginate(20),
+           'staffs'=>Staff::with(['campus','designation'])->where('department_id',$staff->department_id)->get(),
            'staff'=>$staff
       ];
-    return view('dashboard.academic.assign-staff-modules-confirmation',$data)->withTitle('Staff Module Assignment Confirmation');
+      return view('dashboard.academic.assign-staff-modules-confirmation',$data)->withTitle('Module Assignments Confirmation');
   }
 
   /**

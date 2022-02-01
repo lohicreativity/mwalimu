@@ -21,12 +21,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>{{ __('Staff Module Assignment') }}</h1>
+            <h1>{{ __('Module Assignment Requests') }}</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">{{ __('Staff Module Assignment') }}</li>
+              <li class="breadcrumb-item active">{{ __('Module Assignment Requests') }}</li>
             </ol>
           </div>
         </div>
@@ -45,47 +45,16 @@
               </div>
               <!-- /.card-header -->
               <div class="card-body">
-                 {!! Form::open(['url'=>'academic/module-assignment/confirmation','class'=>'ss-form-processing','method'=>'GET']) !!}
-                  <div class="row">
-                   <div class="form-group col-3">
+                 {!! Form::open(['url'=>'academic/module-assignment-requests','class'=>'ss-form-processing','method'=>'GET']) !!}
+                   
+                   <div class="form-group">
                     <select name="study_academic_year_id" class="form-control" required>
                        <option value="">Select Study Academic Year</option>
                        @foreach($study_academic_years as $year)
-                       <option value="{{ $year->id }}" @if($year->status == 'ACTIVE') selected="selected" @endif>{{ $year->academicYear->year }}</option>
+                       <option value="{{ $year->id }}">{{ $year->academicYear->year }}</option>
                        @endforeach
                     </select>
-                   </div>
-                   <div class="form-group col-3">
-                    <select name="semester_id" class="form-control" required>
-                       <option value="">Select Semester</option>
-                       @foreach($semesters as $semester)
-                       <option value="{{ $semester->id }}" @if($semester->status == 'ACTIVE') selected="selected" @endif>{{ $semester->name }}</option>
-                       @endforeach
-                    </select>
-                   </div>
-                   <div class="form-group col-4">
-                    <select name="campus_program_id" class="form-control" required>
-                       <option value="">Select Programme</option>
-                       @foreach($campus_programs as $prog)
-                         @if(Auth::user()->hasRole('hod'))
-                         @if($staff->campus_id == $prog->campus_id && App\Utils\Util::collectionContainsKey($prog->program->departments,$staff->department_id))
-                         <option value="{{ $prog->id }}">{{ $prog->program->name }} - {{ $prog->program->code }} - {{ $prog->campus->name }}</option>
-                         @endif
-                         @else
-                         <option value="{{ $prog->id }}">{{ $prog->program->name }} - {{ $prog->program->code }} - {{ $prog->campus->name }}</option>
-                         @endif
-                       @endforeach
-                    </select>
-                   </div>
-                   
-                   <div class="form-group col-2">
-                    <select name="year_of_study" class="form-control" required>
-                       <option value="">Select Year of Study</option>
-                       <option value="1">1</option>
-                       <option value="2">2</option>
-                       <option value="3">3</option>
-                    </select>
-                   </div>
+                     
                   </div>
                   <div class="ss-form-actions">
                    <button type="submit" class="btn btn-primary">{{ __('Search') }}</button>
@@ -96,16 +65,16 @@
             </div>
             <!-- /.card -->
 
-           <div class="card card-default">
-              <div class="card-header">
-                <ul class="nav nav-tabs">       
+            <div class="card card-default">
+           <div class="card-header">
+                <ul class="nav nav-tabs">
                   @can('view-module-assignments')
                   <li class="nav-item"><a class="nav-link" href="{{ url('academic/module-assignments?study_academic_year_id='.session('active_academic_year_id')) }}">{{ __('Module Assignments') }}</a></li>
                   @endcan
                   @can('view-module-assignment-requests')
-                  <li class="nav-item"><a class="nav-link active" href="{{ url('academic/module-assignment-requests') }}">{{ __('Modules Assignment Requests') }}</a></li>
+                  <li class="nav-item"><a class="nav-link" href="{{ url('academic/module-assignment-requests?study_academic_year_id='.session('active_academic_year_id')) }}">{{ __('Modules Assignment Requests') }}</a></li>
                   @endcan
-                  <li class="nav-item"><a class="nav-link" href="{{ url('academic/module-assignment/confirmation?study_academic_year_id='.session('active_academic_year_id')) }}">{{ __('Modules Assignment Confirmation') }}</a></li>
+                  <li class="nav-item"><a class="nav-link active" href="{{ url('academic/module-assignment/confirmation?study_academic_year_id='.session('active_academic_year_id')) }}">{{ __('Modules Assignment Confirmation') }}</a></li>
                   @can('view-modules')
                   <li class="nav-item"><a class="nav-link" href="{{ url('academic/modules') }}">{{ __('Modules') }}</a></li>
                   @endcan
@@ -114,47 +83,47 @@
             </div>
 
 
-            @if($study_academic_year && $campus_program)
+            @if(count($assignments) != 0 && $study_academic_year)
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">{{ $campus_program->program->name }} - {{ $study_academic_year->academicYear->year }}</h3>
+                <h3 class="card-title">Module Assignment Requests - {{ $staff->department->name }} - {{ $study_academic_year->academicYear->year }}</h3>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
           
-                      @if(count($campus_program->programModuleAssignments) != 0)
+                      
                       <table class="table table-bordered">
                         <thead>
                           <tr>
                             <th>Module</th>
+                            <th>Programme</th>
                             <th>Code</th>
                             <th>Year</th>
                             <th>Semester</th>
-                            <th>Prev Facilitator</th>
                             <th>Action</th>
                           </tr>
                           </thead>
                           <tbody>  
-                      @foreach($campus_program->programModuleAssignments as $assign)
-                        @for($i = 1; $i<=3; $i++)
-                        @if($i == $assign->year_of_study)
+                      @foreach($assignments as $assign)
 
-                        @for($j = 1; $j<=2; $j++)
-                        @if($j == $assign->semester->id)
                         <tr>
                         <td>{{ $assign->module->name }}
-                          @if(count($assign->module->moduleAssignments) != 0)
-                            @foreach($assign->module->moduleAssignments as $modAssign)
-                              @if($modAssign->program_module_assignment_id == $assign->id)
-                            <p class="ss-font-xs ss-no-margin ss-bold">Facilitator:</p>
-                            <p class="ss-font-xs ss-no-margin ss-italic">{{ $modAssign->staff->title }} {{ $modAssign->staff->first_name }} {{ $modAssign->staff->middle_name }} {{ $modAssign->staff->surname }}
+                          <p class="ss-font-xs ss-no-margin ss-bold">Requested By:</p>
+                            <p class="ss-font-xs ss-no-margin ss-italic">{{ $assign->user->staff->title }} {{ $assign->user->staff->first_name }} {{ $assign->user->staff->middle_name }} {{ $assign->user->staff->surname }} - {{ $assign->user->staff->campus->name }}</p>
+                          @if($assign->programModuleAssignment)
+                          @if(count($assign->programModuleAssignment->moduleAssignments) != 0)
                             
+                            <p class="ss-font-xs ss-no-margin ss-bold">Facilitator:</p>
+                            @foreach($assign->programModuleAssignment->moduleAssignments as $modAssign)
+                            <p class="ss-font-xs ss-no-margin ss-italic">{{ $modAssign->staff->title }} {{ $modAssign->staff->first_name }} {{ $modAssign->staff->middle_name }} {{ $modAssign->staff->surname }}
+
                             <a href="{{ url('academic/module-assignment/'.$assign->id.'/confirmation/accept') }}" class="ss-color-success ss-right">Accept</a></p>
 
                             <a href="{{ url('academic/module-assignment/'.$assign->id.'/confirmation/reject') }}" class="ss-color-danger ss-right">Reject</a></p>
-
-                            <p class="ss-font-xs ss-no-margin ss-italic">{{ $modAssign->staff->phone }}, {{ $modAssign->staff->email }}</p>
-                           
+                            
+                            @can('delete-module-facilitator')
+                            <a href="#" data-toggle="modal" data-target="#ss-delete-module-assignment-{{ $modAssign->id }}" class="ss-color-danger ss-right">Remove</a></p>
+                            @endcan
 
                             <div class="modal fade" id="ss-delete-module-assignment-{{ $modAssign->id }}">
                         <div class="modal-dialog modal-lg">
@@ -187,63 +156,25 @@
                         <!-- /.modal-dialog -->
                       </div>
                       <!-- /.modal -->
-                              @endif
+
                             @endforeach
+                            @endif
                           @endif
                         </td>
+                        <td>{{ $assign->campusProgram->program->name }}</td>
                         <td>{{ $assign->module->code }}</td>
-                        <td>{{ $assign->year_of_study }}</td>
-                        <td>{{ $assign->semester->name }}</td>
+                        <td>{{ $assign->programModuleAssignment->year_of_study }}</td>
+                        <td>{{ $assign->programModuleAssignment->semester->name }}</td>
                         <td>
-                           @php
-                             $text = 'Not Available';
-                           @endphp
-                           
-                           @foreach($previous_campus_program->programModuleAssignments as $k=>$asg)
-                             @if($asg->id == $assign->id)
-                                   @foreach($asg->module->moduleAssignments as $key=>$mdAsg)
-                                      @if($key == 0)
-                                      @php
-                                       $text = $mdAsg->staff->title.' '.$mdAsg->staff->first_name.' '.$mdAsg->staff->middle_name.' '.$mdAsg->staff->surname;
-                                       @endphp
-                                      @endif
-                                   @endforeach
-                             @endif
-                           @endforeach
-                           {{ $text }}
-                        </td>
-                        <td>
-                          @if($assign->module->department_id == $staff->department_id)
                           @can('assign-module-facilitator')
-                          <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-assign-module-{{ $assign->module->id }}">
+                          <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-assign-module-{{ $assign->id }}">
                               <i class="fas fa-plus">
                               </i>
                               Assign Facilitator
                          </a>
                          @endcan
-                         @else
-                         {!! Form::open(['url'=>'academic/module-assignment-request/store','class'=>'ss-form-processing']) !!}
-                           {!! Form::input('hidden','program_module_assignment_id',$assign->id) !!}
 
-                           {!! Form::input('hidden','department_id',$assign->module->department_id) !!}
-
-                           {!! Form::input('hidden','study_academic_year_id',$assign->study_academic_year_id) !!}
-
-                           {!! Form::input('hidden','module_id',$assign->module->id) !!}
-
-                           {!! Form::input('hidden','campus_program_id',$assign->campus_program_id) !!}
-
-                         @can('request-module-facilitator')
-                         <button type="submit" class="btn btn-info btn-sm" href="">
-                              <i class="fas fa-plus">
-                              </i>
-                              Request Facilitator
-                         </button>
-                         @endcan
-                         {!! Form::close() !!}
-                         @endif
-
-                         <div class="modal fade" id="ss-assign-module-{{ $assign->module->id }}">
+                         <div class="modal fade" id="ss-assign-module-{{ $assign->id }}">
                         <div class="modal-dialog modal-lg">
                           <div class="modal-content">
                             <div class="modal-header">
@@ -262,15 +193,13 @@
                                       <select name="staff_id" class="form-control ss-select-tags" required style="width: 100%;">
                                         <option value="">Select Facilitator</option>
                                         @foreach($staffs as $stf)
-                                        @if($stf->department_id == $staff->department_id)
-                                        <option value="{{ $stf->id }}">{{ $stf->title }} {{ $stf->first_name }} {{ $stf->surname }} - {{ $stf->designation->name }} ({{ $stf->campus->name }})</option>
-                                        @endif
+                                        <option value="{{ $stf->id }}">{{ $stf->title }} {{ $stf->first_name }} {{ $stf->surname }} @if($stf->designation) - {{ $stf->designation->name }} @endif @if($stf->campus) ({{ $stf->campus->name }}) @endif</option>
                                         @endforeach
                                       </select>
 
-                                      {!! Form::input('hidden','module_id',$assign->module->id) !!}
-                                      {!! Form::input('hidden','study_academic_year_id',$study_academic_year->id) !!}
-                                      {!! Form::input('hidden','program_module_assignment_id',$assign->id) !!}
+                                      {!! Form::input('hidden','module_id',$assign->module_id) !!}
+                                      {!! Form::input('hidden','study_academic_year_id',$assign->study_academic_year_id) !!}
+                                      {!! Form::input('hidden','program_module_assignment_id',$assign->program_module_assignment_id) !!}
                                     </div>
                                       
 
@@ -292,17 +221,11 @@
                       <!-- /.modal -->
                         </td>
                         </tr>
-                        @endif
-                        @endfor
 
-                        @endif
-                        @endfor
                       @endforeach
                     </tbody>
                     </table>
-                    @else
-                    <p>No Staff Module Assignment Created.</p>
-                    @endif
+                 
                     
               </div>
               <!-- /.card-body -->
@@ -311,7 +234,7 @@
             @else
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">{{ __('No Campus Programs Created') }}</h3>
+                <h3 class="card-title">{{ __('No Module Assignment Requests Created') }}</h3>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
@@ -341,3 +264,4 @@
 <!-- ./wrapper -->
 
 @endsection
+
