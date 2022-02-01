@@ -22,7 +22,7 @@ class CreateModuleAssignmentsTable extends Migration
             $table->unsignedBigInteger('assigned_by_user_id');
             $table->string('course_work_process_status',20)->nullable();
             $table->string('final_upload_status',20)->nullable();
-            $table->tinyInteger('confirmed')->default(0);
+            $table->tinyInteger('confirmed')->nullable();
             $table->timestamps();
 
             $table->foreign('module_id')->references('id')->on('modules')->onUpdate('cascade');
