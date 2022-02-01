@@ -161,7 +161,7 @@
                             @endif
                           @endif
                         </td>
-                        <td>{{ $assign->campusProgram->program->name }}</td>
+                        <td>{{ $assign->programModuleAssignment->campusProgram->program->name }}</td>
                         <td>{{ $assign->module->code }}</td>
                         <td>{{ $assign->programModuleAssignment->year_of_study }}</td>
                         <td>{{ $assign->programModuleAssignment->semester->name }}</td>
