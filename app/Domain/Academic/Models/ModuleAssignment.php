@@ -5,6 +5,7 @@ namespace App\Domain\Academic\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Domain\HumanResources\Models\Staff;
+use App\Models\User;
 
 class ModuleAssignment extends Model
 {
