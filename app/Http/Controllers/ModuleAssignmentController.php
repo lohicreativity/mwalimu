@@ -98,7 +98,10 @@ class ModuleAssignmentController extends Controller
    * Accept confirmation
    */
   public function rejectConfirmation(Request $request,$id)
-  {
+  { 
+      if(ModuleAssignment::find($id)->course_work_process_status == 'PROCESSED'){
+          return redirect()->back()->with('error','Unable to reject. Module coursework already processed');
+      }
       (new ModuleAssignmentAction)->rejectConfirmation($request,$id);
 
       return redirect()->back()->with('message','Module assignment rejected successfully');
