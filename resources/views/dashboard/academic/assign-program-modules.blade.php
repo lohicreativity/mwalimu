@@ -175,7 +175,7 @@
                   </div>
                   <div class="row">
                     <div class="form-group col-4">
-                      {!! Form::label('','Course work min mark') !!}
+                      {!! Form::label('','Coursework max mark') !!}
                       {!! Form::input('number','course_work_min_mark',null,$course_work_min_mark) !!}
                     </div>
                     <div class="form-group col-4">
@@ -191,7 +191,7 @@
                  </div>
                  <div class="row">
                   <div class="form-group col-6">
-                      {!! Form::label('','Final min mark') !!}
+                      {!! Form::label('','Final max mark') !!}
                       {!! Form::input('number','final_min_mark',null,$final_min_mark) !!}
                   </div>
                   <div class="form-group col-6">
@@ -394,7 +394,7 @@
                                     </div>
                                     <div class="row">
                                 <div class="form-group col-4">
-                                  {!! Form::label('','Course work min mark') !!}
+                                  {!! Form::label('','Coursework max mark') !!}
                                   {!! Form::input('number','course_work_min_mark',$assignment->course_work_min_mark,$course_work_min_mark) !!}
                                 </div>
                                 <div class="form-group col-4">
@@ -411,7 +411,7 @@
                              <div class="row">
                               
                               <div class="form-group col-6">
-                                  {!! Form::label('','Final min mark') !!}
+                                  {!! Form::label('','Final max mark') !!}
                                   {!! Form::input('number','final_min_mark',$assignment->final_min_mark,$final_min_mark) !!}
                               </div>
                               <div class="form-group col-6">

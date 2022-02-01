@@ -51,6 +51,6 @@ class ModuleAction implements ModuleInterface{
                 }
                 $module->save();
 
-                $module->departments()->sync([$request->get('department_id')=>['campus_id'=>$request->get('campus_id')]]);
+                $module->departments()->attach([$request->get('department_id')=>['campus_id'=>$request->get('campus_id')]]);
 	}
 }

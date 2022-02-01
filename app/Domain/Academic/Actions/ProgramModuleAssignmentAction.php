@@ -13,6 +13,7 @@ use App\Domain\Academic\Models\Module;
 use App\Domain\Academic\Models\CourseWorkResult;
 use App\Domain\Academic\Models\ExaminationResult;
 use App\Models\User;
+use App\Utils\Util;
 use Auth;
 
 class ProgramModuleAssignmentAction implements ProgramModuleAssignmentInterface{
@@ -49,9 +50,9 @@ class ProgramModuleAssignmentAction implements ProgramModuleAssignmentInterface{
                         $assignment->module_pass_mark = $request->get('module_pass_mark');
                 }
 
-                $module = Module::find($request->get('module_id'));
+                $module = Module::with('departments')->find($request->get('module_id'));
                 $staff = User::find(Auth::user()->id)->staff;
-                if($module->department_id != $staff->department_id){
+                if(!Util::collectionContainsKey($module->departments,$staff->department_id)){
                   if($prog){
                     $assignment->policy_assigned = 1;
                   }else{
