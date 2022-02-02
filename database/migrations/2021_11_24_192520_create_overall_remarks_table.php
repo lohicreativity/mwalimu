@@ -20,6 +20,7 @@ class CreateOverallRemarksTable extends Migration
             $table->integer('point')->nullable();
             $table->decimal('gpa',8,4);
             $table->string('remark',20);
+            $table->string('class')->nullable();
             $table->timestamps();
 
             $table->foreign('student_id')->references('id')->on('students')->onUpdate('cascade');

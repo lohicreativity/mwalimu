@@ -20,6 +20,7 @@ use App\Domain\Academic\Models\OverallRemark;
 use App\Domain\Academic\Models\ResultPublication;
 use App\Domain\Academic\Models\RetakeHistory;
 use App\Domain\Academic\Models\CarryHistory;
+use App\Domain\Academic\Models\GPAClassification;
 use App\Domain\Academic\Models\ExaminationProcessRecord;
 use App\Domain\Academic\Models\ProgramModuleAssignment;
 use App\Domain\Registration\Models\Student;
@@ -184,7 +185,7 @@ class ExaminationResultController extends Controller
       		}
 
       		  foreach($results as $key=>$result){
-      			$student = Student::find($result->student_id);
+      			$student = Student::with(['campusProgram.program.ntaLevel'])->find($result->student_id);
                   
       			
                   $optional_programs = ProgramModuleAssignment::whereHas('optedStudents',function($query) use($student){
@@ -193,6 +194,7 @@ class ExaminationResultController extends Controller
                  
                  
                  $student_buffer[$student->id]['year_of_study'] = explode('_',$request->get('campus_program_id'))[2];
+                 $student_buffer[$student->id]['nta_level'] = $student->campusProgram->program->ntaLevel;
                  $student_buffer[$student->id]['total_credit'] = $total_credit;
                  $student_buffer[$student->id]['opt_credit'] = 0;
 
@@ -409,6 +411,10 @@ class ExaminationResultController extends Controller
                         $remark->point = Util::computeGPAPoints($buffer['total_credit'],$buffer['results']);
                         $remark->credit = $buffer['total_credit'];
                         $remark->year_of_study = $buffer['year_of_study'];
+                        $gpa_class = GPAClassification::where('nta_level_id',$buffer['nta_level']->id)->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('min_gpa','>=',bcdiv($remark->gpa,1,1))->where('max_gpa','<=',bcdiv($remark->gpa,1,1))->first();
+                        if($gpa_class){
+                          $remark->class = $gpa_class->name;
+                        }
                         $remark->serialized = count($supp_exams) != 0? serialize(['supp_exams'=>$supp_exams,'carry_exams'=>$carry_exams,'retake_exams'=>$retake_exams]) : null;
                         $remark->save();
                  }
@@ -450,6 +456,10 @@ class ExaminationResultController extends Controller
                                $remark->point = Util::computeGPAPoints($buffer['annual_credit'],$buffer['annual_results']);
                                $remark->credit = $buffer['annual_credit'];
                           } 
+                          $gpa_class = GPAClassification::where('nta_level_id',$buffer['nta_level']->id)->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('min_gpa','>=',bcdiv($remark->gpa,1,1))->where('max_gpa','<=',bcdiv($remark->gpa,1,1))->first();
+                          if($gpa_class){
+                            $remark->class = $gpa_class->name;
+                          }
                           $remark->save();
                        }
                  }else{
@@ -472,6 +482,10 @@ class ExaminationResultController extends Controller
                                  $remark->gpa = Util::computeGPA($buffer['annual_credit'],$buffer['annual_results']);
                                  $remark->point = Util::computeGPAPoints($buffer['annual_credit'],$buffer['annual_results']);
                                  $remark->credit = $buffer['annual_credit'];
+                            }
+                            $gpa_class = GPAClassification::where('nta_level_id',$buffer['nta_level']->id)->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('min_gpa','>=',bcdiv($remark->gpa,1,1))->where('max_gpa','<=',bcdiv($remark->gpa,1,1))->first();
+                            if($gpa_class){
+                              $remark->class = $gpa_class->name;
                             }
                             $remark->save();
                      }

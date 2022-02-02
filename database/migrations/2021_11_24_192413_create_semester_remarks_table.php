@@ -23,6 +23,7 @@ class CreateSemesterRemarksTable extends Migration
             $table->integer('point')->nullable();
             $table->decimal('gpa',8,4)->nullable();
             $table->string('remark',20);
+            $table->string('class')->nullable();
             $table->text('serialized')->nullable();
             $table->timestamps();
 
