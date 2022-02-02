@@ -190,7 +190,20 @@
               </div>
               <!-- /.card-header -->
               <div class="card-body">
-                 
+                 {!! Form::open(['url'=>'academic/grading-policies','method'=>'GET']) !!}
+                <div class="row">
+                  {!! Form::input('hidden','study_academic_year_id',$study_academic_year->id) !!}
+                <div class="input-group col-12">
+                <select name="nta_level" class="form-control" required>
+                    <option value="ASC">NTA Level ASC</option>
+                    <option value="DESC">NTA Level DESC</option>
+                  </select>
+                 <span class="input-group-btn">
+                   <button class="btn btn-default" type="submit"><span class="fa fa-search"></span></button>
+                 </span>
+                </div>
+              </div>
+                {!! Form::close() !!}
                 <table id="example2" class="table table-bordered table-hover">
                   <thead>
                   <tr>
@@ -391,6 +404,10 @@
                   
                   </tbody>
                 </table>
+
+                <div class="ss-pagination-links">
+                   {!! $policies->render() !!}
+                </div>
               </div>
               <!-- /.card-body -->
             </div>
