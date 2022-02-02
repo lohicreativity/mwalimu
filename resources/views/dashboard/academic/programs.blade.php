@@ -164,8 +164,9 @@
               <div class="card-body">
                 {!! Form::open(['url'=>'academic/programs','method'=>'GET']) !!}
                 <div class="row">
+                {!! Form::label('','Order NTA Level') !!}
                 <div class="form-group col-3">
-                  <select name="nta_level" class="form-control">
+                  <select name="nta_level" class="form-control" required>
                     <option value="ASC">ASC</option>
                     <option value="DESC">DESC</option>
                   </select>
