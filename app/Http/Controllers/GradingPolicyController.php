@@ -19,7 +19,7 @@ class GradingPolicyController extends Controller
     public function index(Request $request)
     {
         if($request->has('nta_level')){
-            $policies = GradingPolicy::with('ntaLevel')->where('study_academic_year_id',$request->get('study_academic_year_id'))->orderBy('nta_level_id',$request->has('nta_level'))->paginate(20);
+            $policies = GradingPolicy::with('ntaLevel')->where('study_academic_year_id',$request->get('study_academic_year_id'))->orderBy('nta_level_id',$request->get('nta_level'))->paginate(20);
         }else{
             $policies = GradingPolicy::with('ntaLevel')->where('study_academic_year_id',$request->get('study_academic_year_id'))->paginate(20);
         }
