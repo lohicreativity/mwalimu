@@ -11,6 +11,7 @@ use App\Domain\Academic\Models\ProgramModuleAssignmentRequest;
 use App\Domain\Academic\Repositories\Interfaces\ProgramModuleAssignmentInterface;
 use App\Domain\Academic\Models\Module;
 use App\Domain\Academic\Models\CourseWorkResult;
+use App\Domain\Academic\Models\CourseWorkComponent;
 use App\Domain\Academic\Models\ExaminationResult;
 use App\Models\User;
 use App\Utils\Util;
@@ -115,6 +116,10 @@ class ProgramModuleAssignmentAction implements ProgramModuleAssignmentInterface{
 
                 if($course_work_min_mark_changed){
                         AssessmentPlan::whereHas('moduleAssignment.programModuleAssignment',function($query) use ($request){
+                                $query->where('module_id',$request->get('module_id'));
+                        })->delete();
+
+                        CourseWorkComponent::whereHas('moduleAssignment.programModuleAssignment',function($query) use ($request){
                                 $query->where('module_id',$request->get('module_id'));
                         })->delete();
 
