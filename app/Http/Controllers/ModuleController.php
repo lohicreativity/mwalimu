@@ -124,9 +124,12 @@ class ModuleController extends Controller
             if(ProgramModuleAssignment::whereHas('moduleAssignments',function($query){
                    $query->where('course_work_process_status','PROCESSED');
                })->where('module_id',$module->id)->count() != 0){
-                return redirect()->back()->with('error','Module cannot be deleted because it has already been assigned');
+                return redirect()->back()->with('error','Cannot delete module with coursework');
             }
             $module->departments()->detach([$staff->department_id]);
+            ProgramModuleAssignment::whereHas('campusProgram',function($query) use ($staff){
+                $query->where('campus_id',$staff->campus_id);
+            })->where('module_id',$module->id)->delete();
             return redirect()->back()->with('message','Module deleted successfully');
         }catch(Exception $e){
             return redirect()->back()->with('error','Unable to get the resource specified in this request');
