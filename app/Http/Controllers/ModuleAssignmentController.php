@@ -81,6 +81,7 @@ class ModuleAssignmentController extends Controller
                     $query->where('department_id',$staff->department_id)->where('campus_id',$staff->campus_id);
                })->with(['programModuleAssignment.moduleAssignments.staff','programModuleAssignment.campusProgram.program','studyAcademicYear.academicYear','staff.campus','user.staff'])->latest()->where('study_academic_year_id',$request->get('study_academic_year_id'))->paginate(20),
            'staffs'=>Staff::with(['campus','designation'])->where('department_id',$staff->department_id)->get(),
+           'request'=>$request,
            'staff'=>$staff
       ];
       return view('dashboard.academic.assign-staff-modules-confirmation',$data)->withTitle('Module Assignments Confirmation');
