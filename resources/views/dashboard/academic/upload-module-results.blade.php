@@ -58,7 +58,7 @@
                   <li class="nav-item"><a class="nav-link" href="{{ url('academic/results-publications') }}">{{ __('Publish Results') }}</a></li>
                   @endcan
                   @can('view-uploaded-modules')
-                  <li class="nav-item"><a class="nav-link" href="{{ url('academic/results/uploaded-modules?study_academic_year_id='.session('active_academic_year_id').'&campus_id='.session('staff_campus_id').'&semester_id='.session('active_semester_id')) }}">{{ __('Uploaded Modules') }}</a></li>
+                  <li class="nav-item"><a class="nav-link" href="{{ url('academic/results/uploaded-modules?campus_id='.session('staff_campus_id')) }}">{{ __('Uploaded Modules') }}</a></li>
                   @endcan
                   @can('upload-module-results')
                   <li class="nav-item"><a class="nav-link active" href="{{ url('academic/results/upload-module-results?study_academic_year_id='.session('active_academic_year_id').'&campus_id='.session('staff_campus_id')) }}">{{ __('Upload Module Results') }}</a></li>
