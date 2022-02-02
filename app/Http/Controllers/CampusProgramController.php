@@ -110,7 +110,7 @@ class CampusProgramController extends Controller
         // try{
             $campus_program = CampusProgram::with(['program.departments','campus'])->findOrFail($id);
             foreach($campus_program->program->departments as $dpt){
-                if($dpt->campus_id == $campus_program->campus_id){
+                if($dpt->pivot->campus_id == $campus_program->campus_id){
                     $department = $dpt;
                 }
             }
