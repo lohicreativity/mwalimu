@@ -163,18 +163,20 @@
               <!-- /.card-header -->
               <div class="card-body">
                 {!! Form::open(['url'=>'academic/programs','method'=>'GET']) !!}
+                <div class="row">
                 <div class="form-group col-3">
                   <select name="nta_level" class="form-control">
                     <option value="ASC">ASC</option>
                     <option value="DESC">DESC</option>
                   </select>
                 </div>
-                <div class="input-group ss-stretch col-9">
+                <div class="input-group col-9">
                  <input type="text" name="query" class="form-control" placeholder="Search for module name or code">
                  <span class="input-group-btn">
                    <button class="btn btn-default" type="submit"><span class="fa fa-search"></span></button>
                  </span>
                 </div>
+              </div>
                 {!! Form::close() !!}
                 <table id="example2" class="table table-bordered table-hover">
                   <thead>
