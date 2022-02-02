@@ -95,7 +95,7 @@ class StreamController extends Controller
             $staff = User::find(Auth::user()->id)->staff;
     		$stream = Stream::with(['studyAcademicYear.academicYear','campusProgram.program.departments','campusProgram.campus'])->findOrFail($id);
             foreach($stream->campusProgram->program->departments as $dpt){
-                if($dpt->campus_id == $stream->campusProgram->campus_id){
+                if($dpt->pivot->campus_id == $stream->campusProgram->campus_id){
                     $department = $dpt;
                 }
             }

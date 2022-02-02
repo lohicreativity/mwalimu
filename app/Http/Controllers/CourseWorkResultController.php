@@ -100,6 +100,9 @@ class CourseWorkResultController extends Controller
     	$assessment_plans = AssessmentPlan::where('module_assignment_id',$request->get('module_assignment_id'))->get();
     	foreach($assessment_plans as $plan){
     		if($request->has('plan_'.$plan->id.'_score')){
+          if($request->get('plan_'.$plan->id.'_score') < 0 || $request->get('plan_'.$plan->id.'_score') > 100){
+              return redirect()->back()->with('error','Invalid score entered');
+          }
 	    		if($res = CourseWorkResult::where('student_id',$request->get('student_id'))->where('assessment_plan_id',$plan->id)->first()){
 	    			$result = $res;
 	    		}else{

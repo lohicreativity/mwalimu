@@ -107,7 +107,7 @@ class CampusProgramController extends Controller
      */
     public function showAttendance(Request $request, $id)
     {
-        // try{
+        try{
             $campus_program = CampusProgram::with(['program.departments','campus'])->findOrFail($id);
             foreach($campus_program->program->departments as $dpt){
                 if($dpt->pivot->campus_id == $campus_program->campus_id){
@@ -126,9 +126,9 @@ class CampusProgramController extends Controller
                'request'=>$request
             ];
             return view('dashboard.academic.reports.students-in-campus-program', $data);
-        // }catch(\Exception $e){
-        //     return redirect()->back()->with('error','Unable to get the resource specified in this request');
-        // }
+        }catch(\Exception $e){
+            return redirect()->back()->with('error','Unable to get the resource specified in this request');
+        }
     }
 
     /**
