@@ -242,6 +242,7 @@
                       
                       <td class="ss-bold">GPA</td>
                       <td class="ss-bold">REMARK</td>
+                      <td class="ss-bold">CLASS</td>
                     </tr>
                     
                     
@@ -301,6 +302,9 @@
                       @endif</td>
                       <td>@if(count($student->semesterRemarks) != 0)   
                         @if($student->semesterRemarks[0]->remark) {{ $student->semesterRemarks[0]->remark }} @else N/A @endif 
+                      @endif</td>
+                      <td>@if(count($student->semesterRemarks) != 0)   
+                        @if($student->semesterRemarks[0]->class) {{ $student->semesterRemarks[0]->class }} @else N/A @endif 
                       @endif</td>
                     </tr>
                     @endforeach

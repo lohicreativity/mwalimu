@@ -250,6 +250,7 @@
                          @else
                           <td class="ss-bold">REMARK</td>
                           <td class="ss-bold">GPA</td>
+                          <td class="ss-bold">CLASS</td>
                          @endif
                       @endif
                       
@@ -320,6 +321,9 @@
                       </td>
                       <td>
                         @if($student->annualRemarks[0]->remark) {{ $student->annualRemarks[0]->remark }} @else N/A @endif
+                      </td>
+                      <td>
+                        @if($student->annualRemarks[0]->class) {{ $student->annualRemarks[0]->class }} @else N/A @endif
                       </td>
                       @endif
                       @endif
