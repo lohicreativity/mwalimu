@@ -93,13 +93,16 @@ class StreamController extends Controller
     {
     	// try{
             $staff = User::find(Auth::user()->id)->staff;
-    		$stream = Stream::with(['studyAcademicYear.academicYear','campusProgram.program.departments'=>function($query) use($staff){
-                $query->where('department_id',$staff->department_id);
-           },'campusProgram.campus'])->findOrFail($id);
+    		$stream = Stream::with(['studyAcademicYear.academicYear','campusProgram.program.departments','campusProgram.campus'])->findOrFail($id);
+            foreach($stream->campusProgram->program->departments as $dpt){
+                if($dpt->campus_id == $stream->campusProgram->campus_id){
+                    $department = $dpt;
+                }
+            }
 	    	$data = [
 	           'registrations'=>Registration::with('student')->where('stream_id',$id)->get(),
 	           'stream'=>$stream,
-	           'department'=>$stream->campusProgram->program->departments[0]
+	           'department'=>$department
 	    	];
     	    return view('dashboard.academic.reports.students-in-stream', $data);
         // }catch(\Exception $e){
