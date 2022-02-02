@@ -115,18 +115,18 @@ class ModuleController extends Controller
     public function destroy($id)
     {
         try{
-            $module = Module::findOrFail($id);
+            $module = Module::with('departments')->findOrFail($id);
             $staff = User::find(Auth::user()->id)->staff;
         
-            if(Auth::user()->hasRole('hod') && $staff->department_id != $module->department_id){
-                return redirect()->back()->with('error','Unable to assign module because this is not your department');
+            if(Auth::user()->hasRole('hod') && Util::collectionContainsKey($module->departments,$staff->department_id)){
+                return redirect()->back()->with('error','Unable to delete module because this is not your department');
             }
             if(ProgramModuleAssignment::whereHas('moduleAssignments',function($query){
                    $query->whereNull('course_work_process_status');
                })->where('module_id',$module->id)->count() != 0){
                 return redirect()->back()->with('error','Module cannot be deleted because it has already been assigned');
             }
-            $module->forceDelete();
+            $module->departments()->detach([$staff->department_id]);
             return redirect()->back()->with('message','Module deleted successfully');
         }catch(Exception $e){
             return redirect()->back()->with('error','Unable to get the resource specified in this request');
