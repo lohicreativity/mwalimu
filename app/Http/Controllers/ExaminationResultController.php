@@ -1739,7 +1739,7 @@ class ExaminationResultController extends Controller
     {
     	$module_assignment = ModuleAssignment::whereHas('programModuleAssignment',function($query) use ($request){
     		     $query->where('campus_program_id',$request->get('campus_program_id'));
-    	    })->with(['programModuleAssignment.semester'])->where('module_id',$request->get('module_id'))->with('module.ntaLevel','programModuleAssignment.campusProgram.program.department','studyAcademicYear')->where('study_academic_year_id',$request->get('study_academic_year_id'))->first();
+    	    })->with(['programModuleAssignment.semester'])->where('module_id',$request->get('module_id'))->with('module.ntaLevel','programModuleAssignment.campusProgram.program.departments','studyAcademicYear')->where('study_academic_year_id',$request->get('study_academic_year_id'))->first();
 
       $staff = User::find(Auth::user()->id)->staff;
 
@@ -1764,10 +1764,15 @@ class ExaminationResultController extends Controller
              return redirect()->back()->with('error','No results processed yet');
          }
       }
+      foreach($module_assignment->programModuleAssignment->CampusProgram->program->departments as $dpt){
+                if($dpt->pivot->campus_id == $module_assignment->programModuleAssignment->CampusProgram->campus_id){
+                    $department = $dpt;
+                }
+             }
     	$data = [
     		'program'=>$module_assignment->programModuleAssignment->campusProgram->program,
             'campus'=>$module_assignment->programModuleAssignment->campusProgram->campus,
-            'department'=>$module_assignment->programModuleAssignment->campusProgram->program->department,
+            'department'=>$department,
             'module'=>$module_assignment->module,
             'year_of_study'=>$module_assignment->programModuleAssignment->year_of_study,
             'study_academic_year'=>$module_assignment->studyAcademicYear,
