@@ -306,10 +306,10 @@ class ProgramModuleAssignmentController extends Controller
     {
         try{
             $program = ProgramModuleAssignment::with(['moduleAssignments'=>function($query){
-                 $query->whereNull('course_work_process_status');
+                 $query->where('course_work_process_status','PROCESSED');
             }])->findOrFail($id);
             if(count($program->moduleAssignments) != 0){
-                return redirect()->back()->with('error','Module already assigned staff');
+                return redirect()->back()->with('error','Cannot delete module with coursework');
             }
             $program->delete();
             return redirect()->back()->with('message','Program module assignment deleted successfully');
