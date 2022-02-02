@@ -71,7 +71,16 @@ class CourseWorkResultController extends Controller
             return redirect()->back()->with('error','Student does not exist');
         }
         $mod_assign = ModuleAssignment::find($request->get('module_assignment_id'));
-        $exam = ExaminationResult::where('student_id',$student->id)->where('module_assignment_id',$request->get('module_assignment_id'))->first();
+        if($exam = ExaminationResult::where('student_id',$student->id)->where('module_assignment_id',$request->get('module_assignment_id'))->first()){
+           $exam = $exam;
+        }else{
+           $exam = new ExaminationResult;
+           $exam->module_assignment_id = $request->get('module_assignment_id');
+           $exam->student_id = $student->id;
+           $exam->save();
+        }
+      
+
         return $this->edit($request,$student->id,$mod_assign->id,$exam->id, url('academic/results/student-mark-editing'));
     }
 
