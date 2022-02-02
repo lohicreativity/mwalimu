@@ -187,15 +187,17 @@ class ModuleAssignmentController extends Controller
     public function showModuleAttendance(Request $request, $id)
     {
          try{
-            $staff = User::find(Auth::user()->id)->staff;
-             $module_assignment = ModuleAssignment::with(['programModuleAssignment.campusProgram.program.departments'=>function($query) use($staff){
-                $query->where('department_id',$staff->department_id);
-           },'programModuleAssignment.campusProgram.campus','studyAcademicYear.academicYear','programModuleAssignment.module','programModuleAssignment.students','staff','module'])->findOrFail($id);
+             $module_assignment = ModuleAssignment::with(['programModuleAssignment.campusProgram.program.departments','programModuleAssignment.campusProgram.campus','studyAcademicYear.academicYear','programModuleAssignment.module','programModuleAssignment.students','staff','module'])->findOrFail($id);
+             foreach($module_assignment->programModuleAssignment->CampusProgram->program->departments as $dpt){
+                if($dpt->pivot->campus_id == $module_assignment->programModuleAssignment->CampusProgram->campus_id){
+                    $department = $dpt;
+                }
+             }
              if($module_assignment->programModuleAssignment->category == 'OPTIONAL'){
                  $data = [
                     'program'=>$module_assignment->programModuleAssignment->campusProgram->program,
                     'campus'=>$module_assignment->programModuleAssignment->campusProgram->campus,
-                    'department'=>$module_assignment->programModuleAssignment->campusProgram->program->departments[0],
+                    'department'=>$department,
                     'study_academic_year'=>$module_assignment->studyAcademicYear,
                     'staff'=>$module_assignment->staff,
                     'module'=>$module_assignment->module,
@@ -206,7 +208,7 @@ class ModuleAssignmentController extends Controller
                  $data = [
                     'program'=>$module_assignment->programModuleAssignment->campusProgram->program,
                     'campus'=>$module_assignment->programModuleAssignment->campusProgram->campus,
-                    'department'=>$module_assignment->programModuleAssignment->campusProgram->program->departments[0],
+                    'department'=>$department,
                     'study_academic_year'=>$module_assignment->studyAcademicYear,
                     'year_of_study'=>$module_assignment->programModuleAssignment->year_of_study,
                     'staff'=>$module_assignment->staff,
@@ -543,11 +545,12 @@ class ModuleAssignmentController extends Controller
     public function studentsWithCourseWork(Request $request,$id)
     {
         try{
-           $staff = User::find(Auth::user()->id)->staff;
-           $module_assignment = ModuleAssignment::with(['programModuleAssignment.campusProgram.program.departments'=>function($query) use($staff){
-                $query->where('department_id',$staff->department_id);
-           },'programModuleAssignment.campusProgram.campus','studyAcademicYear.academicYear','programModuleAssignment.module','programModuleAssignment.students','module'])->findOrFail($id);
-
+           $module_assignment = ModuleAssignment::with(['programModuleAssignment.campusProgram.program.departments','programModuleAssignment.campusProgram.campus','studyAcademicYear.academicYear','programModuleAssignment.module','programModuleAssignment.students','module'])->findOrFail($id);
+           foreach($module_assignment->programModuleAssignment->CampusProgram->program->departments as $dpt){
+                if($dpt->pivot->campus_id == $module_assignment->programModuleAssignment->CampusProgram->campus_id){
+                    $department = $dpt;
+                }
+             }
            if($module_assignment->programModuleAssignment->category == 'OPTIONAL'){
                 $students = $module_assignment->programModuleAssignment->students()->get(); 
                 $registrations = Registration::whereHas('student.options.moduleAssignments',function($query) use($module_assignment){
@@ -562,7 +565,7 @@ class ModuleAssignmentController extends Controller
                 $data = [
                     'program'=>$module_assignment->programModuleAssignment->campusProgram->program,
                     'campus'=>$module_assignment->programModuleAssignment->campusProgram->campus,
-                    'department'=>$module_assignment->programModuleAssignment->campusProgram->program->departments[0],
+                    'department'=>$department,
                     'module'=>$module_assignment->module,
                     'year_of_study'=>$module_assignment->programModuleAssignment->year_of_study,
                     'study_academic_year'=>$module_assignment->studyAcademicYear,
@@ -584,15 +587,16 @@ class ModuleAssignmentController extends Controller
     public function studentsWithNoCourseWork(Request $request,$id)
     {
         try{
-           $staff = User::find(Auth::user()->id)->staff;
-           $module_assignment = ModuleAssignment::with(['programModuleAssignment.campusProgram.program.departments'=>function($query) use($staff){
-                $query->where('department_id',$staff->department_id);
-           },'programModuleAssignment.campusProgram.campus','studyAcademicYear.academicYear','programModuleAssignment.module','programModuleAssignment.students','module'])->findOrFail($id);
-
+           $module_assignment = ModuleAssignment::with(['programModuleAssignment.campusProgram.program.departments','programModuleAssignment.campusProgram.campus','studyAcademicYear.academicYear','programModuleAssignment.module','programModuleAssignment.students','module'])->findOrFail($id);
+            foreach($module_assignment->programModuleAssignment->CampusProgram->program->departments as $dpt){
+                if($dpt->pivot->campus_id == $module_assignment->programModuleAssignment->CampusProgram->campus_id){
+                    $department = $dpt;
+                }
+             }
                 $data = [
                     'program'=>$module_assignment->programModuleAssignment->campusProgram->program,
                     'campus'=>$module_assignment->programModuleAssignment->campusProgram->campus,
-                    'department'=>$module_assignment->programModuleAssignment->campusProgram->program->departments[0],
+                    'department'=>$department,
                     'module'=>$module_assignment->module,
                     'study_academic_year'=>$module_assignment->studyAcademicYear,
                     'course_work_processed'=> $module_assignment->course_work_process_status == 'PROCESSED'? true : false,
@@ -614,15 +618,16 @@ class ModuleAssignmentController extends Controller
     public function studentsWithFinalMarks(Request $request,$id)
     {
         try{
-           $staff = User::find(Auth::user()->id)->staff;
-           $module_assignment = ModuleAssignment::with(['programModuleAssignment.campusProgram.program.departments'=>function($query) use($staff){
-                $query->where('department_id',$staff->department_id);
-           },'programModuleAssignment.campusProgram.campus','studyAcademicYear.academicYear','programModuleAssignment.module','programModuleAssignment.students','module'])->findOrFail($id);
-
+           $module_assignment = ModuleAssignment::with(['programModuleAssignment.campusProgram.program.departments','programModuleAssignment.campusProgram.campus','studyAcademicYear.academicYear','programModuleAssignment.module','programModuleAssignment.students','module'])->findOrFail($id);
+           foreach($module_assignment->programModuleAssignment->CampusProgram->program->departments as $dpt){
+                if($dpt->pivot->campus_id == $module_assignment->programModuleAssignment->CampusProgram->campus_id){
+                    $department = $dpt;
+                }
+             }
            $data = [
                 'program'=>$module_assignment->programModuleAssignment->campusProgram->program,
                 'campus'=>$module_assignment->programModuleAssignment->campusProgram->campus,
-                'department'=>$module_assignment->programModuleAssignment->campusProgram->program->departments[0],
+                'department'=>$department,
                 'module'=>$module_assignment->module,
                 'study_academic_year'=>$module_assignment->studyAcademicYear,
                 'results'=>ExaminationResult::with('student')->where('module_assignment_id',$module_assignment->id)->whereNotNull('final_uploaded_at')->get()
@@ -640,15 +645,16 @@ class ModuleAssignmentController extends Controller
     public function studentsWithNoFinalMarks(Request $request,$id)
     {
         try{
-           $staff = User::find(Auth::user()->id)->staff;
-           $module_assignment = ModuleAssignment::with(['programModuleAssignment.campusProgram.program.departments'=>function($query) use($staff){
-                $query->where('department_id',$staff->department_id);
-           },'programModuleAssignment.campusProgram.campus','studyAcademicYear.academicYear','programModuleAssignment.module','programModuleAssignment.students','module'])->findOrFail($id);
-
+           $module_assignment = ModuleAssignment::with(['programModuleAssignment.campusProgram.program.departments','programModuleAssignment.campusProgram.campus','studyAcademicYear.academicYear','programModuleAssignment.module','programModuleAssignment.students','module'])->findOrFail($id);
+           foreach($module_assignment->programModuleAssignment->CampusProgram->program->departments as $dpt){
+                if($dpt->pivot->campus_id == $module_assignment->programModuleAssignment->CampusProgram->campus_id){
+                    $department = $dpt;
+                }
+             }
            $data = [
                 'program'=>$module_assignment->programModuleAssignment->campusProgram->program,
                 'campus'=>$module_assignment->programModuleAssignment->campusProgram->campus,
-                'department'=>$module_assignment->programModuleAssignment->campusProgram->program->departments[0],
+                'department'=>$department,
                 'module'=>$module_assignment->module,
                 'study_academic_year'=>$module_assignment->studyAcademicYear,
                 'results'=>ExaminationResult::with('student')->where('module_assignment_id',$module_assignment->id)->whereNull('final_uploaded_at')->get()
@@ -666,15 +672,16 @@ class ModuleAssignmentController extends Controller
     public function studentsWithSupplementaryMarks(Request $request,$id)
     {
         try{
-           $staff = User::find(Auth::user()->id)->staff;
-           $module_assignment = ModuleAssignment::with(['programModuleAssignment.campusProgram.program.departments'=>function($query) use($staff){
-                $query->where('department_id',$staff->department_id);
-           },'programModuleAssignment.campusProgram.campus','studyAcademicYear.academicYear','programModuleAssignment.module','programModuleAssignment.students','module'])->findOrFail($id);
-
+           $module_assignment = ModuleAssignment::with(['programModuleAssignment.campusProgram.program.departments','programModuleAssignment.campusProgram.campus','studyAcademicYear.academicYear','programModuleAssignment.module','programModuleAssignment.students','module'])->findOrFail($id);
+           foreach($module_assignment->programModuleAssignment->CampusProgram->program->departments as $dpt){
+                if($dpt->pivot->campus_id == $module_assignment->programModuleAssignment->CampusProgram->campus_id){
+                    $department = $dpt;
+                }
+             }
            $data = [
                 'program'=>$module_assignment->programModuleAssignment->campusProgram->program,
                 'campus'=>$module_assignment->programModuleAssignment->campusProgram->campus,
-                'department'=>$module_assignment->programModuleAssignment->campusProgram->program->departments[0],
+                'department'=>$department,
                 'module'=>$module_assignment->module,
                 'study_academic_year'=>$module_assignment->studyAcademicYear,
                 'results'=>ExaminationResult::with('student')->where('module_assignment_id',$module_assignment->id)->whereNotNull('supp_score')->get()
@@ -692,15 +699,16 @@ class ModuleAssignmentController extends Controller
     public function studentsWithNoSupplementaryMarks(Request $request,$id)
     {
         try{
-           $staff = User::find(Auth::user()->id)->staff;
-           $module_assignment = ModuleAssignment::with(['programModuleAssignment.campusProgram.program.departments'=>function($query) use($staff){
-                $query->where('department_id',$staff->department_id);
-           },'programModuleAssignment.campusProgram.campus','studyAcademicYear.academicYear','programModuleAssignment.module','programModuleAssignment.students','module'])->findOrFail($id);
-
+           $module_assignment = ModuleAssignment::with(['programModuleAssignment.campusProgram.program.departments','programModuleAssignment.campusProgram.campus','studyAcademicYear.academicYear','programModuleAssignment.module','programModuleAssignment.students','module'])->findOrFail($id);
+           foreach($module_assignment->programModuleAssignment->CampusProgram->program->departments as $dpt){
+                if($dpt->pivot->campus_id == $module_assignment->programModuleAssignment->CampusProgram->campus_id){
+                    $department = $dpt;
+                }
+             }
            $data = [
                 'program'=>$module_assignment->programModuleAssignment->campusProgram->program,
                 'campus'=>$module_assignment->programModuleAssignment->campusProgram->campus,
-                'department'=>$module_assignment->programModuleAssignment->campusProgram->program->departments[0],
+                'department'=>$department,
                 'module'=>$module_assignment->module,
                 'study_academic_year'=>$module_assignment->studyAcademicYear,
                 'results'=>ExaminationResult::with('student')->where('module_assignment_id',$module_assignment->id)->where('supp_score',null)->where('final_exam_remark','FAIL')->get()
@@ -718,15 +726,16 @@ class ModuleAssignmentController extends Controller
     public function studentsWithSupplementary(Request $request,$id)
     {
         try{
-           $staff = User::find(Auth::user()->id)->staff;
-           $module_assignment = ModuleAssignment::with(['programModuleAssignment.campusProgram.program.departments'=>function($query) use($staff){
-                $query->where('department_id',$staff->department_id);
-           },'programModuleAssignment.campusProgram.campus','studyAcademicYear.academicYear','programModuleAssignment.module','programModuleAssignment.students','module'])->findOrFail($id);
-
+           $module_assignment = ModuleAssignment::with(['programModuleAssignment.campusProgram.program.departments','programModuleAssignment.campusProgram.campus','studyAcademicYear.academicYear','programModuleAssignment.module','programModuleAssignment.students','module'])->findOrFail($id);
+           foreach($module_assignment->programModuleAssignment->CampusProgram->program->departments as $dpt){
+                if($dpt->pivot->campus_id == $module_assignment->programModuleAssignment->CampusProgram->campus_id){
+                    $department = $dpt;
+                }
+             }
            $data = [
                 'program'=>$module_assignment->programModuleAssignment->campusProgram->program,
                 'campus'=>$module_assignment->programModuleAssignment->campusProgram->campus,
-                'department'=>$module_assignment->programModuleAssignment->campusProgram->program->departments[0],
+                'department'=>$department,
                 'module'=>$module_assignment->module,
                 'study_academic_year'=>$module_assignment->studyAcademicYear,
                 'results'=>ExaminationResult::with('student')->where('module_assignment_id',$module_assignment->id)->whereNotNull('final_uploaded_at')->where('final_exam_remark','FAIL')->get()
