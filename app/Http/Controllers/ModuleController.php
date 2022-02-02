@@ -118,7 +118,7 @@ class ModuleController extends Controller
             $module = Module::with('departments')->findOrFail($id);
             $staff = User::find(Auth::user()->id)->staff;
         
-            if(Auth::user()->hasRole('hod') && Util::collectionContainsKey($module->departments,$staff->department_id)){
+            if(Auth::user()->hasRole('hod') && !Util::collectionContainsKey($module->departments,$staff->department_id)){
                 return redirect()->back()->with('error','Unable to delete module because this is not your department');
             }
             if(ProgramModuleAssignment::whereHas('moduleAssignments',function($query){
