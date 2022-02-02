@@ -177,8 +177,12 @@ class ProgramModuleAssignmentController extends Controller
                           $query->where('name','LIKE','NTA level 4');
                       })->get();
     	}else{
-    		$modules = Module::whereNotIn('id',$moduleIds)->get();
-        $inclusive_modules = Module::all();
+    		$modules = Module::whereHas('departments',function($query) use($staff){
+                            $query->where('campus_id',$staff->campus_id);
+                      })->whereNotIn('id',$moduleIds)->get();
+        $inclusive_modules = Module::whereHas('departments',function($query) use($staff){
+                            $query->where('campus_id',$staff->campus_id);
+                      })->get();
     	}
     	$data = [
             'study_academic_year'=>StudyAcademicYear::with('academicYear')->find($ac_year_id),
