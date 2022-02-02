@@ -191,7 +191,7 @@
               <!-- /.card-header -->
               <div class="card-body">
                  {!! Form::open(['url'=>'academic/grading-policies','method'=>'GET']) !!}
-                <div class="row">
+                <div class="row ss-margin-bottom">
                   {!! Form::input('hidden','study_academic_year_id',$study_academic_year->id) !!}
                 <div class="input-group col-12">
                 <select name="nta_level" class="form-control" required>
