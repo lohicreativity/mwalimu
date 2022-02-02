@@ -1764,7 +1764,7 @@ class ExaminationResultController extends Controller
              return redirect()->back()->with('error','No results processed yet');
          }
       }
-      foreach($module_assignment->programModuleAssignment->CampusProgram->program->departments as $dpt){
+      foreach($module_assignment->programModuleAssignment->campusProgram->program->departments as $dpt){
                 if($dpt->pivot->campus_id == $module_assignment->programModuleAssignment->campusProgram->campus_id){
                     $department = $dpt;
                 }

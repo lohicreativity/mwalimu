@@ -502,7 +502,7 @@ class ModuleAssignmentController extends Controller
     {
         try{
             $module_assignment = ModuleAssignment::with(['programModuleAssignment.campusProgram.program.departments','programModuleAssignment.campusProgram.campus','studyAcademicYear.academicYear','programModuleAssignment.module','programModuleAssignment.students','module'])->findOrFail($id);
-            foreach($module_assignment->programModuleAssignment->CampusProgram->program->departments as $dpt){
+            foreach($module_assignment->programModuleAssignment->campusProgram->program->departments as $dpt){
                 if($dpt->pivot->campus_id == $module_assignment->programModuleAssignment->campusProgram->campus_id){
                     $department = $dpt;
                 }
@@ -548,7 +548,7 @@ class ModuleAssignmentController extends Controller
     {
         try{
            $module_assignment = ModuleAssignment::with(['programModuleAssignment.campusProgram.program.departments','programModuleAssignment.campusProgram.campus','studyAcademicYear.academicYear','programModuleAssignment.module','programModuleAssignment.students','module'])->findOrFail($id);
-           foreach($module_assignment->programModuleAssignment->CampusProgram->program->departments as $dpt){
+           foreach($module_assignment->programModuleAssignment->campusProgram->program->departments as $dpt){
                 if($dpt->pivot->campus_id == $module_assignment->programModuleAssignment->campusProgram->campus_id){
                     $department = $dpt;
                 }
@@ -590,7 +590,7 @@ class ModuleAssignmentController extends Controller
     {
         try{
            $module_assignment = ModuleAssignment::with(['programModuleAssignment.campusProgram.program.departments','programModuleAssignment.campusProgram.campus','studyAcademicYear.academicYear','programModuleAssignment.module','programModuleAssignment.students','module'])->findOrFail($id);
-            foreach($module_assignment->programModuleAssignment->CampusProgram->program->departments as $dpt){
+            foreach($module_assignment->programModuleAssignment->campusProgram->program->departments as $dpt){
                 if($dpt->pivot->campus_id == $module_assignment->programModuleAssignment->campusProgram->campus_id){
                     $department = $dpt;
                 }
@@ -621,7 +621,7 @@ class ModuleAssignmentController extends Controller
     {
         try{
            $module_assignment = ModuleAssignment::with(['programModuleAssignment.campusProgram.program.departments','programModuleAssignment.campusProgram.campus','studyAcademicYear.academicYear','programModuleAssignment.module','programModuleAssignment.students','module'])->findOrFail($id);
-           foreach($module_assignment->programModuleAssignment->CampusProgram->program->departments as $dpt){
+           foreach($module_assignment->programModuleAssignment->campusProgram->program->departments as $dpt){
                 if($dpt->pivot->campus_id == $module_assignment->programModuleAssignment->campusProgram->campus_id){
                     $department = $dpt;
                 }
@@ -648,7 +648,7 @@ class ModuleAssignmentController extends Controller
     {
         try{
            $module_assignment = ModuleAssignment::with(['programModuleAssignment.campusProgram.program.departments','programModuleAssignment.campusProgram.campus','studyAcademicYear.academicYear','programModuleAssignment.module','programModuleAssignment.students','module'])->findOrFail($id);
-           foreach($module_assignment->programModuleAssignment->CampusProgram->program->departments as $dpt){
+           foreach($module_assignment->programModuleAssignment->campusProgram->program->departments as $dpt){
                 if($dpt->pivot->campus_id == $module_assignment->programModuleAssignment->campusProgram->campus_id){
                     $department = $dpt;
                 }
@@ -675,7 +675,7 @@ class ModuleAssignmentController extends Controller
     {
         try{
            $module_assignment = ModuleAssignment::with(['programModuleAssignment.campusProgram.program.departments','programModuleAssignment.campusProgram.campus','studyAcademicYear.academicYear','programModuleAssignment.module','programModuleAssignment.students','module'])->findOrFail($id);
-           foreach($module_assignment->programModuleAssignment->CampusProgram->program->departments as $dpt){
+           foreach($module_assignment->programModuleAssignment->campusProgram->program->departments as $dpt){
                 if($dpt->pivot->campus_id == $module_assignment->programModuleAssignment->campusProgram->campus_id){
                     $department = $dpt;
                 }
@@ -702,7 +702,7 @@ class ModuleAssignmentController extends Controller
     {
         try{
            $module_assignment = ModuleAssignment::with(['programModuleAssignment.campusProgram.program.departments','programModuleAssignment.campusProgram.campus','studyAcademicYear.academicYear','programModuleAssignment.module','programModuleAssignment.students','module'])->findOrFail($id);
-           foreach($module_assignment->programModuleAssignment->CampusProgram->program->departments as $dpt){
+           foreach($module_assignment->programModuleAssignment->campusProgram->program->departments as $dpt){
                 if($dpt->pivot->campus_id == $module_assignment->programModuleAssignment->campusProgram->campus_id){
                     $department = $dpt;
                 }
@@ -729,7 +729,7 @@ class ModuleAssignmentController extends Controller
     {
         try{
            $module_assignment = ModuleAssignment::with(['programModuleAssignment.campusProgram.program.departments','programModuleAssignment.campusProgram.campus','studyAcademicYear.academicYear','programModuleAssignment.module','programModuleAssignment.students','module'])->findOrFail($id);
-           foreach($module_assignment->programModuleAssignment->CampusProgram->program->departments as $dpt){
+           foreach($module_assignment->programModuleAssignment->campusProgram->program->departments as $dpt){
                 if($dpt->pivot->campus_id == $module_assignment->programModuleAssignment->campusProgram->campus_id){
                     $department = $dpt;
                 }
