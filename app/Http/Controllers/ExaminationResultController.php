@@ -1769,7 +1769,6 @@ class ExaminationResultController extends Controller
                     $department = $dpt;
                 }
              }
-      return $department;
     	$data = [
     		    'program'=>$module_assignment->programModuleAssignment->campusProgram->program,
             'campus'=>$module_assignment->programModuleAssignment->campusProgram->campus,
@@ -2099,12 +2098,17 @@ class ExaminationResultController extends Controller
     public function showUploadedModuleStudents(Request $request, $id)
     {
     	try{
-    		$program = ProgramModuleAssignment::with(['examinationResults.student','module','campusProgram.program.department','campusProgram.campus','studyAcademicYear.academicYear'])->findOrFail($id);
+    		$program = ProgramModuleAssignment::with(['examinationResults.student','module','campusProgram.program.departments','campusProgram.campus','studyAcademicYear.academicYear'])->findOrFail($id);
+        foreach($program->campusProgram->program->departments as $dpt){
+                if($dpt->pivot->campus_id == $program->campusProgram->campus_id){
+                    $department = $dpt;
+                }
+             }
 	    	$data = [
 	            'program_module_assignment'=>$program,
 	            'module'=>$program->module,
 	            'program'=>$program->campusProgram->program,
-	            'department'=>$program->campusProgram->program->department,
+	            'department'=>$department,
 	            'campus'=>$program->campusProgram->campus,
 	            'study_academic_year'=>$program->studyAcademicYear,
 	            'result_type'=>$request->get('result_type'),
