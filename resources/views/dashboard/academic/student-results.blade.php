@@ -58,7 +58,7 @@
                   <li class="nav-item"><a class="nav-link" href="{{ url('academic/results-publications') }}">{{ __('Publish Results') }}</a></li>
                   @endcan         
                   @can('view-uploaded-modules')
-                  <li class="nav-item"><a class="nav-link" href="{{ url('academic/results/uploaded-modules') }}">{{ __('Uploaded Modules') }}</a></li>
+                  <li class="nav-item"><a class="nav-link" href="{{ url('academic/results/uploaded-modules?campus_id='.session('staff_campus_id')) }}">{{ __('Uploaded Modules') }}</a></li>
                   @endcan
                 </ul>
               </div>
