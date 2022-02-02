@@ -1796,7 +1796,7 @@ class ExaminationResultController extends Controller
      */
     public function showStudentResultsReport(Request $request)
     {
-    	$student = Student::with(['campusProgram.program'])->where('registration_number',$request->get('registration_number'))->first();
+    	$student = Student::with(['campusProgram.program.departments'])->where('registration_number',$request->get('registration_number'))->first();
       $staff = User::find(Auth::user()->id)->staff;
       if(!$student){
           return redirect()->back()->with('error','No student found with searched registration number');
@@ -1812,7 +1812,7 @@ class ExaminationResultController extends Controller
       }
       
       if(!Auth::user()->hasRole('staff') && Auth::user()->hasRole('hod')){
-        if($student->campusProgram->program->department_id != $staff->department_id){
+        if(Util::collectionContainsKey($student->campusProgram->program->departments, $staff->department_id)){
            return redirect()->back()->with('error','Student not in the same deprtment.');
         }
       }

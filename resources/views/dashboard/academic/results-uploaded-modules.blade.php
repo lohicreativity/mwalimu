@@ -157,7 +157,7 @@
             @if(count($modules) != 0)
              <div class="card">
               <div class="card-header">
-                <h3 class="card-title">Uploaded Modules</h3>
+                <h3 class="card-title">Uploaded Modules - @if($request->get('results_type') == 'FN') Final @else Coursework @endif</h3>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
