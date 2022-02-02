@@ -411,7 +411,7 @@ class ExaminationResultController extends Controller
                         $remark->point = Util::computeGPAPoints($buffer['total_credit'],$buffer['results']);
                         $remark->credit = $buffer['total_credit'];
                         $remark->year_of_study = $buffer['year_of_study'];
-                        $gpa_class = GPAClassification::where('nta_level_id',$buffer['nta_level']->id)->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('min_gpa','>=',bcdiv($remark->gpa,1,1))->where('max_gpa','<=',bcdiv($remark->gpa,1,1))->first();
+                        $gpa_class = GPAClassification::where('nta_level_id',$buffer['nta_level']->id)->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('min_gpa','<=',bcdiv($remark->gpa,1,1))->where('max_gpa','>=',bcdiv($remark->gpa,1,1))->first();
                         if($gpa_class){
                           $remark->class = $gpa_class->name;
                         }
@@ -456,7 +456,7 @@ class ExaminationResultController extends Controller
                                $remark->point = Util::computeGPAPoints($buffer['annual_credit'],$buffer['annual_results']);
                                $remark->credit = $buffer['annual_credit'];
                           } 
-                          $gpa_class = GPAClassification::where('nta_level_id',$buffer['nta_level']->id)->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('min_gpa','>=',bcdiv($remark->gpa,1,1))->where('max_gpa','<=',bcdiv($remark->gpa,1,1))->first();
+                          $gpa_class = GPAClassification::where('nta_level_id',$buffer['nta_level']->id)->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('min_gpa','<=',bcdiv($remark->gpa,1,1))->where('max_gpa','>=',bcdiv($remark->gpa,1,1))->first();
                           if($gpa_class){
                             $remark->class = $gpa_class->name;
                           }
@@ -483,7 +483,7 @@ class ExaminationResultController extends Controller
                                  $remark->point = Util::computeGPAPoints($buffer['annual_credit'],$buffer['annual_results']);
                                  $remark->credit = $buffer['annual_credit'];
                             }
-                            $gpa_class = GPAClassification::where('nta_level_id',$buffer['nta_level']->id)->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('min_gpa','>=',bcdiv($remark->gpa,1,1))->where('max_gpa','<=',bcdiv($remark->gpa,1,1))->first();
+                           $gpa_class = GPAClassification::where('nta_level_id',$buffer['nta_level']->id)->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('min_gpa','<=',bcdiv($remark->gpa,1,1))->where('max_gpa','>=',bcdiv($remark->gpa,1,1))->first();
                             if($gpa_class){
                               $remark->class = $gpa_class->name;
                             }
