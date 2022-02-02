@@ -92,11 +92,14 @@ class StreamController extends Controller
     public function showAttendance(Request $request, $id)
     {
     	try{
-    		$stream = Stream::with(['studyAcademicYear.academicYear','campusProgram.program','campusProgram.campus'])->findOrFail($id);
+            $staff = User::find(Auth::user()->id)->staff;
+    		$stream = Stream::with(['studyAcademicYear.academicYear','campusProgram.program.departments'=>function($query) use($staff){
+                $query->where('department_id',$staff->department_id);
+           },'campusProgram.campus'])->findOrFail($id);
 	    	$data = [
 	           'registrations'=>Registration::with('student')->where('stream_id',$id)->get(),
 	           'stream'=>$stream,
-	           'department'=>Department::findOrFail($stream->campusProgram->program->department_id)
+	           'department'=>$stream->campusProgram->program->departments[0]
 	    	];
     	    return view('dashboard.academic.reports.students-in-stream', $data);
         }catch(\Exception $e){

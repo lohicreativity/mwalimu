@@ -8,6 +8,7 @@ use App\Domain\Academic\Models\Stream;
 use App\Domain\Academic\Models\Department;
 use App\Domain\Registration\Models\Registration;
 use App\Utils\Util;
+use App\Models\User;
 use Validator, PDF;
 
 class GroupController extends Controller
@@ -49,11 +50,14 @@ class GroupController extends Controller
     public function showAttendance(Request $request, $id)
     {
     	try{
-    		$group = Group::with(['stream.studyAcademicYear.academicYear','stream.campusProgram.program','stream.campusProgram.campus'])->findOrFail($id);
+            $staff = User::find(Auth::user()->id)->staff;
+    		$group = Group::with(['stream.studyAcademicYear.academicYear','stream.campusProgram.program.departments'=>function($query) use($staff){
+                $query->where('department_id',$staff->department_id);
+           },'stream.campusProgram.campus'])->findOrFail($id);
 	    	$data = [
 	           'registrations'=>Registration::with('student')->where('group_id',$id)->get(),
 	           'group'=>$group,
-	           'department'=>Department::findOrFail($group->stream->campusProgram->program->department_id)
+	           'department'=>$group->stream->campusProgram->program->departments[0]
 	    	];
     	    return view('dashboard.academic.reports.students-in-group', $data);
         }catch(\Exception $e){
