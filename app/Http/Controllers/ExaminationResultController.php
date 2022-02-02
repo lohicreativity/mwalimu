@@ -1765,7 +1765,7 @@ class ExaminationResultController extends Controller
          }
       }
       foreach($module_assignment->programModuleAssignment->CampusProgram->program->departments as $dpt){
-                if($dpt->pivot->campus_id == $module_assignment->programModuleAssignment->CampusProgram->campus_id){
+                if($dpt->pivot->campus_id == $module_assignment->programModuleAssignment->campusProgram->campus_id){
                     $department = $dpt;
                 }
              }
