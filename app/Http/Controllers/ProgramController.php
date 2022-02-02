@@ -44,6 +44,7 @@ class ProgramController extends Controller
             })->get(),
            'nta_levels'=>NTALevel::where('name','!=','NTA Level 7')->get(),
            'awards'=>Award::all(),
+           'request'=>$request,
            'staff'=>$staff
     	];
     	return view('dashboard.academic.programs',$data)->withTitle('Programmes');

@@ -54,7 +54,7 @@ class CourseWorkResultController extends Controller
         $staff = User::find(Auth::user()->id)->staff;
         $data = [
             'module_assignments'=>ModuleAssignment::whereHas('programModuleAssignment',function($query){
-                    // $query->where('semester_id',session('active_semester_id'));
+                    $query->where('semester_id',session('active_semester_id'));
             })->with(['module'])->where('study_academic_year_id',session('active_academic_year_id'))->where('staff_id',$staff->id)->get(),
             'staff'=>$staff
         ];
