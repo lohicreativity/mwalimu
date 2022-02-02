@@ -1812,7 +1812,7 @@ class ExaminationResultController extends Controller
       }
       
       if(!Auth::user()->hasRole('staff') && Auth::user()->hasRole('hod')){
-        if(Util::collectionContainsKey($student->campusProgram->program->departments, $staff->department_id)){
+        if(!Util::collectionContainsKey($student->campusProgram->program->departments, $staff->department_id)){
            return redirect()->back()->with('error','Student not in the same deprtment.');
         }
       }
