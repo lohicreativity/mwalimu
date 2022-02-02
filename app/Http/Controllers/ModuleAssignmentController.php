@@ -160,7 +160,10 @@ class ModuleAssignmentController extends Controller
     public function showAttendance(Request $request, $id)
     {
        try{
-          $module_assignment = ModuleAssignment::with(['programModuleAssignment.campusProgram.program.department','programModuleAssignment.campusProgram.campus','studyAcademicYear.academicYear','programModuleAssignment.module'])->findOrFail($id);
+          $staff = User::find(Auth::user()->id)->staff;
+          $module_assignment = ModuleAssignment::with(['programModuleAssignment.campusProgram.program.departments'=>function($query) use($staff){
+                $query->where('department_id',$staff->department_id);
+           },'programModuleAssignment.campusProgram.campus','studyAcademicYear.academicYear','programModuleAssignment.module'])->findOrFail($id);
 
           $data = [
              'module_assignment'=>$module_assignment,
@@ -182,12 +185,15 @@ class ModuleAssignmentController extends Controller
     public function showModuleAttendance(Request $request, $id)
     {
          try{
-             $module_assignment = ModuleAssignment::with(['programModuleAssignment.campusProgram.program.department','programModuleAssignment.campusProgram.campus','studyAcademicYear.academicYear','programModuleAssignment.module','programModuleAssignment.students','staff','module'])->findOrFail($id);
+            $staff = User::find(Auth::user()->id)->staff;
+             $module_assignment = ModuleAssignment::with(['programModuleAssignment.campusProgram.program.departments'=>function($query) use($staff){
+                $query->where('department_id',$staff->department_id);
+           },'programModuleAssignment.campusProgram.campus','studyAcademicYear.academicYear','programModuleAssignment.module','programModuleAssignment.students','staff','module'])->findOrFail($id);
              if($module_assignment->programModuleAssignment->category == 'OPTIONAL'){
                  $data = [
                     'program'=>$module_assignment->programModuleAssignment->campusProgram->program,
                     'campus'=>$module_assignment->programModuleAssignment->campusProgram->campus,
-                    'department'=>$module_assignment->programModuleAssignment->campusProgram->program->department,
+                    'department'=>$module_assignment->programModuleAssignment->campusProgram->program->departments[0],
                     'study_academic_year'=>$module_assignment->studyAcademicYear,
                     'staff'=>$module_assignment->staff,
                     'module'=>$module_assignment->module,
@@ -198,7 +204,7 @@ class ModuleAssignmentController extends Controller
                  $data = [
                     'program'=>$module_assignment->programModuleAssignment->campusProgram->program,
                     'campus'=>$module_assignment->programModuleAssignment->campusProgram->campus,
-                    'department'=>$module_assignment->programModuleAssignment->campusProgram->program->department,
+                    'department'=>$module_assignment->programModuleAssignment->campusProgram->program->departments[0],
                     'study_academic_year'=>$module_assignment->studyAcademicYear,
                     'year_of_study'=>$module_assignment->programModuleAssignment->year_of_study,
                     'staff'=>$module_assignment->staff,
