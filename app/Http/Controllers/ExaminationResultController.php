@@ -1769,8 +1769,9 @@ class ExaminationResultController extends Controller
                     $department = $dpt;
                 }
              }
+      return $department;
     	$data = [
-    		'program'=>$module_assignment->programModuleAssignment->campusProgram->program,
+    		    'program'=>$module_assignment->programModuleAssignment->campusProgram->program,
             'campus'=>$module_assignment->programModuleAssignment->campusProgram->campus,
             'department'=>$department,
             'module'=>$module_assignment->module,
