@@ -91,7 +91,7 @@ class StreamController extends Controller
      */
     public function showAttendance(Request $request, $id)
     {
-    	try{
+    	// try{
             $staff = User::find(Auth::user()->id)->staff;
     		$stream = Stream::with(['studyAcademicYear.academicYear','campusProgram.program.departments'=>function($query) use($staff){
                 $query->where('department_id',$staff->department_id);
@@ -102,9 +102,9 @@ class StreamController extends Controller
 	           'department'=>$stream->campusProgram->program->departments[0]
 	    	];
     	    return view('dashboard.academic.reports.students-in-stream', $data);
-        }catch(\Exception $e){
-        	return redirect()->back()->with('error','Unable to get the resource specified in this request');
-        }
+        // }catch(\Exception $e){
+        // 	return redirect()->back()->with('error','Unable to get the resource specified in this request');
+        // }
     }
 
     /**
