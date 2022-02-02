@@ -108,7 +108,12 @@ class CampusProgramController extends Controller
     public function showAttendance(Request $request, $id)
     {
         try{
-            $campus_program = CampusProgram::with(['program','campus'])->findOrFail($id);
+            $campus_program = CampusProgram::with(['program.departments','campus'])->findOrFail($id);
+            foreach($campus_rogram->program->departments as $dpt){
+                if($dpt->campus_id == $campus_program->campus_id){
+                    $department = $dpt;
+                }
+            }
             $data = [
                'registrations'=>$request->has('semester_id')? Registration::with(['student'])->whereHas('student.campusProgram',function($query) use($id){
                       $query->where('id',$id);
@@ -117,7 +122,7 @@ class CampusProgramController extends Controller
                    })->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',$request->get('year_of_study'))->get(),
                'study_academic_year'=>StudyAcademicYear::with('academicYear')->find($request->get('study_academic_year_id')),
                'campus_program'=>$campus_program,
-               'department'=>Department::findOrFail($campus_program->program->department_id),
+               'department'=>$department,
                'request'=>$request
             ];
             return view('dashboard.academic.reports.students-in-campus-program', $data);
