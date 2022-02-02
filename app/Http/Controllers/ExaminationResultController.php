@@ -1155,7 +1155,7 @@ class ExaminationResultController extends Controller
         $study_academic_year = StudyAcademicYear::with('academicYear')->find($request->get('study_academic_year_id'));
       $semester = Semester::find($request->get('semester_id'));
       foreach($campus_program->program->departments as $dpt){
-         if($dpt->pivot->campus_id == $campus_rogram->campus_id){
+         if($dpt->pivot->campus_id == $campus_program->campus_id){
             $department = $dpt;
          }
       }
