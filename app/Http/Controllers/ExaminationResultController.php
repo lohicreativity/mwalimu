@@ -1151,9 +1151,14 @@ class ExaminationResultController extends Controller
      */
     public function showProgramResultsReport(Request $request)
     {
-      $campus_program = CampusProgram::with(['program.department','campus'])->find(explode('_',$request->get('campus_program_id'))[0]);
+      $campus_program = CampusProgram::with(['program.departments','campus'])->find(explode('_',$request->get('campus_program_id'))[0]);
         $study_academic_year = StudyAcademicYear::with('academicYear')->find($request->get('study_academic_year_id'));
       $semester = Semester::find($request->get('semester_id'));
+      foreach($campus_program->program->departments as $dpt){
+         if($dpt->pivot->campus_id == $campus_rogram->campus_id){
+            $department = $dpt;
+         }
+      }
     	if($request->get('semester_id') != 'SUPPLEMENTARY'){
 	    	$module_assignments = ModuleAssignment::whereHas('programModuleAssignment',function($query) use($request){
 	                $query->where('campus_program_id',explode('_',$request->get('campus_program_id'))[0])->where('year_of_study',explode('_',$request->get('campus_program_id'))[2])->where('semester_id',$request->get('semester_id'));
@@ -1682,7 +1687,7 @@ class ExaminationResultController extends Controller
         $data = [
            'campus'=>$campus_program->campus,
            'program'=>$campus_program->program,
-           'department'=>$campus_program->program->department,
+           'department'=>$department,
            'study_academic_year'=>$study_academic_year,
            'module_assignments'=>$module_assignments,
            'students'=>$students,
