@@ -2074,7 +2074,7 @@ class ExaminationResultController extends Controller
     public function showUploadedModules(Request $request)
     {
     	$data = [
-           'campus_programs'=>$request->has('campus_id')? CampusProgram::with('program')->where('campus_id',$request->get('campus_id'))->get() : [],
+           'campus_programs'=>$request->has('campus_id')? CampusProgram::with(['program.departments'])->where('campus_id',$request->get('campus_id'))->get() : [],
            'campus'=>Campus::find($request->get('campus_id')),
            'semesters'=>Semester::all(),
            'campuses'=>Campus::all(),
