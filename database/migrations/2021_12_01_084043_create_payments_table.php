@@ -15,18 +15,20 @@ class CreatePaymentsTable extends Migration
     {
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('payment_category_id');
+            $table->unsignedBigInteger('fee_type_id');
             $table->unsignedBigInteger('payable_id');
             $table->string('payable_type',30);
             $table->double('amount',16,8)->default(0.00);
             $table->string('currency',10)->default('TZS');
             $table->string('reference_number');
+            $table->string('invoice_number');
+            $table->string('receipt_number');
             $table->string('control_number');
             $table->unsignedBigInteger('usable_id');
             $table->string('usable_type',30);
             $table->timestamps();
 
-            $table->foreign('payment_category_id')->references('id')->on('payment_categories')->onUpdate('cascade');
+            $table->foreign('fee_type_id')->references('id')->on('fee_types')->onUpdate('cascade');
         });
     }
 

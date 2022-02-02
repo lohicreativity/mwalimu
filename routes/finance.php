@@ -5,6 +5,7 @@ use App\Http\Controllers\FeeTypeController;
 use App\Http\Controllers\FeeItemController;
 use App\Http\Controllers\FeeAmountController;
 use App\Http\Controllers\ProgramFeeController;
+use App\Http\Controllers\PaymentController;
 
 
 
@@ -42,5 +43,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 	Route::post('program-fee/update', [ProgramFeeController::class,'update']);
 	Route::get('program-fee/{id}/structure', [ProgramFeeController::class,'feeStructure']);
 	Route::get('program-fee/{id}/destroy', [ProgramFeeController::class,'destroy']);
+
+	Route::get('payments',[PaymentController::class, 'index']);
 
 });

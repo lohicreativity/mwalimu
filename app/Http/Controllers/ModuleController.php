@@ -122,7 +122,7 @@ class ModuleController extends Controller
                 return redirect()->back()->with('error','Unable to delete module because this is not your department');
             }
             if(ProgramModuleAssignment::whereHas('moduleAssignments',function($query){
-                   $query->whereNull('course_work_process_status');
+                   $query->where('course_work_process_status','PROCESSED');
                })->where('module_id',$module->id)->count() != 0){
                 return redirect()->back()->with('error','Module cannot be deleted because it has already been assigned');
             }
