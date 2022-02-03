@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Validator;
+use Validator, Config;
+use App\Domain\Finance\Models\Invoice;
+use App\Domain\Finance\Models\FeeType;
 
 class InvoiceController extends Controller
 {
@@ -31,7 +33,7 @@ class InvoiceController extends Controller
         $invoice->currency = 'TZS';
         $invoice->payable_id = $request->get('payable_id');
         $invoice->payable_type = $request->get('payable_type');
-        $invoice->payment_category_id = $request->get('payment_category_id');
+        $invoice->fee_type_id = $request->get('fee_type_id');
         $invoice->save();
 
 
@@ -40,8 +42,9 @@ class InvoiceController extends Controller
 
         $generated_by = 'SP';
         $approved_by = 'SP';
+        $inst_id = Config::get('constants.SPCODE');
 
-        $this->requestControlNumber($invoice->reference_no,
+        return $this->requestControlNumber($invoice->reference_no,
         	                        $inst_id,
         	                        $invoice->amount,
         	                        $fee_type->description,

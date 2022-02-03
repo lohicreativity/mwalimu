@@ -99,7 +99,15 @@
                       @endforeach
                     </select>
                   </div>
-                  <div class="form-group col-3">
+                  <div class="form-group col-2">
+                    {!! Form::label('','Year of study') !!}
+                    <select name="year_of_study" class="form-control">
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                    </select>
+                  </div>
+                  <div class="form-group col-2">
                     {!! Form::label('','Semester') !!}
                     <select name="semester_id" class="form-control">
                       <option value="">Select Semester</option>
@@ -108,7 +116,7 @@
                       @endforeach
                     </select>
                   </div>
-                  <div class="form-group col-3">
+                  <div class="form-group col-2">
                     {!! Form::label('','Is Approved') !!}
                     <select name="is_approved" class="form-control">
                       <option value="1">Yes</option>
@@ -233,7 +241,15 @@
                                           @endforeach
                                         </select>
                                       </div>
-                                        <div class="form-group col-3">
+                                      <div class="form-group col-2">
+                                        {!! Form::label('','Year of study') !!}
+                                        <select name="year_of_study" class="form-control">
+                                          <option value="1" @if($fee->year_of_study == 1) selected="selected" @endif>1</option>
+                                          <option value="2" @if($fee->year_of_study == 2) selected="selected" @endif>2</option>
+                                          <option value="3" @if($fee->year_of_study == 3) selected="selected" @endif>3</option>
+                                        </select>
+                                      </div>
+                                        <div class="form-group col-2">
                                           {!! Form::label('','Semester') !!}
                                           <select name="semester_id" class="form-control">
                                             <option value="">Select Semester</option>
@@ -242,7 +258,7 @@
                                             @endforeach
                                           </select>
                                         </div>
-                                        <div class="form-group col-3">
+                                        <div class="form-group col-2">
                                           {!! Form::label('','Is Approved') !!}
                                           <select name="is_approved" class="form-control">
                                             <option value="1" @if($fee->is_approved == 1) selected="selected" @endif>Yes</option>

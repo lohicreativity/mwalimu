@@ -16,8 +16,6 @@ class CreatePaymentsTable extends Migration
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('fee_type_id');
-            $table->unsignedBigInteger('payable_id');
-            $table->string('payable_type',30);
             $table->double('amount',16,8)->default(0.00);
             $table->string('currency',10)->default('TZS');
             $table->string('reference_number');

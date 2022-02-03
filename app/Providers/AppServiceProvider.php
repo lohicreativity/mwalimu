@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use App\Domain\Academic\Models\RetakeHistory;
 use App\Domain\Academic\Models\CarryHistory;
+use App\Domain\Registration\Models\Student;
+use App\Domain\Registration\Models\Applicant;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -20,7 +22,9 @@ class AppServiceProvider extends ServiceProvider
     {
         Relation::morphMap([
             'retake_history'=>RetakeHistory::class,
-            'carry_history'=>CarryHistory::class
+            'carry_history'=>CarryHistory::class,
+            'student'=>Student::class,
+            'applicant'=>Applicant::class
         ]);
     }
 

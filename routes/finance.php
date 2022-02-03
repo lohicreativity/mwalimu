@@ -45,5 +45,6 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 	Route::get('program-fee/{id}/destroy', [ProgramFeeController::class,'destroy']);
 
 	Route::get('payments',[PaymentController::class, 'index']);
+	Route::get('payment/{id}/distributions',[PaymentController::class, 'showDistributions']);
 
 });

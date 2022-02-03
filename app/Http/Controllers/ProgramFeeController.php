@@ -32,6 +32,17 @@ class ProgramFeeController extends Controller
     }
 
     /**
+     * Display fee structure
+     */
+    public function feeStructure(Request $request)
+    {
+    	   $data = [
+            'fees'=>ProgramFee::with(['StudyAcademicYear.academicYear'])->paginate(20)
+         ];
+         return view('dashboard.finance.program-fee-structure',$data)->withTitle('Fee Structure');
+    }
+
+    /**
      * Store amount into database
      */
     public function store(Request $request)

@@ -37,12 +37,7 @@
                   <p>My Results</p>
                 </a>
               </li>
-              <li class="nav-item">
-                <a href="{{ url('student/results/appeal') }}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Results Appleal</p>
-                </a>
-              </li>
+              
             </ul>
           </li>
           <li class="nav-item">
@@ -58,6 +53,12 @@
                 <a href="{{ url('student/payments') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>My Payments</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ url('student/results/appeal') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Request Control Number</p>
                 </a>
               </li>
             </ul>
