@@ -115,13 +115,17 @@ class ProgramModuleAssignmentAction implements ProgramModuleAssignmentInterface{
                 })->update(['is_ready'=>1]);
 
                 if($course_work_min_mark_changed){
-                        AssessmentPlan::whereHas('moduleAssignment.programModuleAssignment',function($query) use ($request){
-                                $query->where('module_id',$request->get('module_id'));
+                        AssessmentPlan::whereHas('moduleAssignment',function($query) use ($request){
+                                $query->where('program_module_assignment_id',$request->get('program_module_assignment_id'));
                         })->delete();
 
-                        CourseWorkComponent::whereHas('moduleAssignment.programModuleAssignment',function($query) use ($request){
-                                $query->where('module_id',$request->get('module_id'));
+                        CourseWorkComponent::whereHas('moduleAssignment',function($query) use ($request){
+                                $query->where('program_module_assignment_id',$request->get('program_module_assignment_id'));
                         })->delete();
+
+                        ExaminationResult::whereHas('moduleAssignment',function($query) use ($request){
+                                $query->where('program_module_assignment_id',$request->get('program_module_assignment_id'));
+                        })->update(['final_processed_at'=>null]);
 
                         ModuleAssignment::where('program_module_assignment_id',$request->get('program_module_assignment_id'))->update(['course_work_process_status'=>null,'final_upload_status'=>null]);
 
