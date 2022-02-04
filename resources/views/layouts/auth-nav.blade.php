@@ -474,14 +474,14 @@
                 </a>
               </li>
               @endcan
-             {{--@can('view-roles') --}}
+             @can('view-roles')
               <li class="nav-item">
                 <a href="{{ url('settings/roles') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Roles</p>
                 </a>
               </li>
-             {{-- @endcan --}}
+             @endcan 
              @can('view-system-modules')
               <li class="nav-item">
                 <a href="{{ url('settings/system-modules') }}" class="nav-link">

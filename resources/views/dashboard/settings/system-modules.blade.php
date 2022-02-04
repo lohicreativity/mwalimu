@@ -39,7 +39,7 @@
       <div class="container-fluid">
         <div class="row">
           <div class="col-12">
-          {{--  @can('add-system-module') --}}
+         @can('add-system-module') 
             <!-- general form elements -->
             <div class="card card-default">
               <div class="card-header">
@@ -70,7 +70,7 @@
               {!! Form::close() !!}
             </div>
             <!-- /.card -->
-         {{-- @endcan --}}
+         @endcan
 
             @if(count($modules) != 0)
             <div class="card">
