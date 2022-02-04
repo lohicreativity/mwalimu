@@ -291,7 +291,7 @@ class ProgramModuleAssignmentController extends Controller
             }
         }
 
-        if(ResultPublication::where('semester_id',$request->get('semester_id'))->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('is_published',1)->count() != 0){
+        if(ResultPublication::where('semester_id',$request->get('semester_id'))->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('status','PUBLISHED')->count() != 0){
              return redirect()->back()->with('error','Unable to edit programme module. Results already published');
         }
         
