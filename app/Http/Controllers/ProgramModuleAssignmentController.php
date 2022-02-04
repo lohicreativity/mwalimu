@@ -14,6 +14,7 @@ use App\Domain\Settings\Models\Campus;
 use App\Domain\Registration\Models\Student;
 use App\Domain\Academic\Actions\ProgramModuleAssignmentAction;
 use App\Domain\Academic\Models\ModuleAssignment;
+use App\Domain\Academic\Models\ResultPublication;
 use App\Models\User;
 use App\Utils\Util;
 use Validator, DB, Auth;
@@ -289,6 +290,10 @@ class ProgramModuleAssignmentController extends Controller
                return redirect()->back()->with('error','This optional module already has students');
             }
         }
+
+        if(ResultPublication::where('semester_id',$request->get('semester_id'))->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('is_published',1)->count() != 0){
+             return redirect()->back()->with('error','Unable to edit programme module. Results already published');
+        }
         
         // if(ModuleAssignment::whereNotNull('final_upload_status')->where('program_module_assignment_id',$request->get('program_module_assignment_id'))->count() != 0){
         //      return redirect()->back()->with('error','Final marks already uploaded');
@@ -316,7 +321,6 @@ class ProgramModuleAssignmentController extends Controller
         }catch(Exception $e){
             return redirect()->back()->with('error','Unable to get the resource specified in this request');
         }
-
     }
 
 }
