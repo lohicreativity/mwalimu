@@ -132,10 +132,6 @@ class ProgramModuleAssignmentAction implements ProgramModuleAssignmentInterface{
                         $module_assignment = ModuleAssignment::where('program_module_assignment_id',$request->get('program_module_assignment_id'))->first();
 
                         CourseWorkResult::where('module_assignment_id',$module_assignment->id)->delete();
-
-                        ExaminationResult::whereHas('moduleAssignment.programModuleAssignment',function($query) use ($request){
-                                $query->where('module_id',$request->get('module_id'));
-                        })->update([''])
                 }
 	}
 }
