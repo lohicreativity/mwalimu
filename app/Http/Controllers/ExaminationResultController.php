@@ -615,7 +615,6 @@ class ExaminationResultController extends Controller
         try{
             $validation = Validator::make($request->all(),[
                 'final_score'=>'numeric|min:0|max:100',
-                'supp_score'=>'numeric|min:0|max:100',
             ]);
 
             if($validation->fails()){
