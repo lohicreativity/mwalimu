@@ -125,7 +125,7 @@ class ProgramModuleAssignmentAction implements ProgramModuleAssignmentInterface{
 
                         ExaminationResult::whereHas('moduleAssignment',function($query) use ($request){
                                 $query->where('program_module_assignment_id',$request->get('program_module_assignment_id'));
-                        })->update(['final_processed_at'=>null,'final_remark'=>null,'course_work_remark'=>null,'grade'=>null,'total_score'=>null,'final_score'=>null]);
+                        })->update(['final_processed_at'=>null,'final_remark'=>null,'course_work_remark'=>null,'grade'=>null,'total_score'=>null,'final_score'=>null,'final_uploaded_at'=>null,'exam_type'=>null,'exam_category'=>null,'final_uploaded_by_user_id'=>0]);
 
                         ModuleAssignment::where('program_module_assignment_id',$request->get('program_module_assignment_id'))->update(['course_work_process_status'=>null,'final_upload_status'=>null]);
 
