@@ -62,7 +62,8 @@
 
                   $supp_score = [
                      'placeholder'=>'Supp score',
-                     'class'=>'form-control'
+                     'class'=>'form-control',
+                     'readonly'=>true
                   ];
               @endphp
               {!! Form::open(['url'=>'academic/results/store-examination-results','class'=>'ss-form-processing']) !!}
