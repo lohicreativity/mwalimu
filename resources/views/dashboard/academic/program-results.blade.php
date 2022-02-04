@@ -140,6 +140,17 @@
                   </div>
                   </div>
                   <div class="row">
+                     <div class="form-group col-6">
+                     {!! Form::label('','Intake') !!}
+                     <select name="intake_id" class="form-control" required>
+                       <option value="">Select Intake</option>
+                       @foreach($intakes as $intake)
+                       <option value="{{ $intake->id }}" @if($intake->name == 'September') selected="selected" @endif>{{ $intake->name }}</option>
+                       @endforeach
+                     </select>
+                  </div>
+                  </div>
+                  <div class="row">
                   <div class="form-group col-12">
                         <label class="radio-inline">
                           <input type="radio" name="name_display_type" id="inlineRadio2" value="SHOW" checked="checked"> Show Names

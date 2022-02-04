@@ -24,6 +24,7 @@ use App\Domain\Academic\Models\GPAClassification;
 use App\Domain\Academic\Models\ExaminationProcessRecord;
 use App\Domain\Academic\Models\ProgramModuleAssignment;
 use App\Domain\Registration\Models\Student;
+use App\Domain\Settings\Models\Intake;
 use App\Models\User;
 use App\Utils\Util;
 use Auth, DB, Validator;
@@ -54,6 +55,7 @@ class ExaminationResultController extends Controller
             'campus'=>Campus::find($request->get('campus_id')),
             'semesters'=>Semester::all(),
             'campuses'=>Campus::all(),
+            'intakes'=>Intake::all(),
             'active_semester'=>Semester::where('status','ACTIVE')->first(),
             'first_semester_publish_status'=>$first_semester_publish_status,
             'second_semester_publish_status'=>$second_semester_publish_status,
@@ -112,7 +114,9 @@ class ExaminationResultController extends Controller
         $annual_credit = 0;
 
       	foreach ($module_assignments as $assignment) {
-      		$results = ExaminationResult::with(['retakeHistory.retakableResults'=>function($query){
+      		$results = ExaminationResult::whereHas('student.applicant',function($query) use($request){
+                  $query->where('intake_id',$request->get('intake_id'));
+          })->with(['retakeHistory.retakableResults'=>function($query){
                    $query->latest();
                 },'carryHistory.carrableResults'=>function($query){
                    $query->latest();
@@ -1153,6 +1157,7 @@ class ExaminationResultController extends Controller
             'campus'=>Campus::find($request->get('campus_id')),
             'semesters'=>Semester::all(),
             'campuses'=>Campus::all(),
+            'intakes'=>Intake::all(),
             'staff'=>User::find(Auth::user()->id)->staff,
             'request'=>$request
     	];
@@ -1195,7 +1200,9 @@ class ExaminationResultController extends Controller
 
         if($request->get('semester_id') != 'SUPPLEMENTARY'){
            if(Util::stripSpacesUpper($semester->name) == Util::stripSpacesUpper('Semester 1')){
-              $students = Student::whereHas('registrations',function($query) use($request){
+              $students = Student::whereHas('applicant',function($query) use($request){
+                  $query->where('intake_id',$request->get('intake_id'));
+              })->whereHas('registrations',function($query) use($request){
                  $query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',explode('_',$request->get('campus_program_id'))[2]);
                })->with(['semesterRemarks'=>function($query) use ($request){
                    $query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',explode('_',$request->get('campus_program_id'))[2]);
@@ -1203,7 +1210,9 @@ class ExaminationResultController extends Controller
                 $query->whereIn('module_assignment_id',$assignmentIds);
               }])->where('campus_program_id',$campus_program->id)->get();
            }else{
-              $students = Student::whereHas('registrations',function($query) use($request){
+              $students = Student::whereHas('applicant',function($query) use($request){
+                  $query->where('intake_id',$request->get('intake_id'));
+              })->whereHas('registrations',function($query) use($request){
                  $query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',explode('_',$request->get('campus_program_id'))[2]);
               })->with(['semesterRemarks'=>function($query) use ($request){
                    $query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',explode('_',$request->get('campus_program_id'))[2]);
@@ -1214,7 +1223,9 @@ class ExaminationResultController extends Controller
               }])->where('campus_program_id',$campus_program->id)->get();
           }
         }else{
-            $students = Student::whereHas('registrations',function($query) use($request){
+            $students = Student::whereHas('applicant',function($query) use($request){
+                  $query->where('intake_id',$request->get('intake_id'));
+              })->whereHas('registrations',function($query) use($request){
                  $query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',explode('_',$request->get('campus_program_id'))[2]);
             })->whereHas('annualRemarks',function($query) use($request){
                    $query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',explode('_',$request->get('campus_program_id'))[2])->where('remark','!=','PASS');
@@ -1707,6 +1718,7 @@ class ExaminationResultController extends Controller
            'students'=>$students,
            'modules'=>$modules,
            'semester'=>$semester,
+           'intake'=>Intake::find($request->get('intake_id')),
            'semesters'=>$semesters,
            'sem_modules'=>$sem_modules,
            'first_semester'=>$first_semester,

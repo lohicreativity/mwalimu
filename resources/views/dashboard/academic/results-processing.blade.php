@@ -63,7 +63,7 @@
                   @can('upload-module-results')
                   <li class="nav-item"><a class="nav-link" href="{{ url('academic/results/upload-module-results?study_academic_year_id='.session('active_academic_year_id').'&campus_id='.session('staff_campus_id')) }}">{{ __('Upload Module Results') }}</a></li>
                   @endcan
-                  
+
                 </ul>
               </div>
               <!-- /.card-header -->
@@ -147,6 +147,17 @@
                     {!! Form::input('hidden','campus_id',$campus->id) !!}
                   </div>
                   </div>
+                <div class="row">
+                  <div class="form-group col-6">
+                     {!! Form::label('','Intake') !!}
+                     <select name="intake_id" class="form-control" required>
+                       <option value="">Select Intake</option>
+                       @foreach($intakes as $intake)
+                       <option value="{{ $intake->id }}" @if($intake->name == 'September') selected="selected" @endif>{{ $intake->name }}</option>
+                       @endforeach
+                     </select>
+                  </div>
+                </div>
               </div>
                <div class="card-footer">
                   <button type="submit" class="btn btn-primary">{{ __('Process Results') }}</button>

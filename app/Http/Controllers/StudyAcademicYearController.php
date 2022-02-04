@@ -19,12 +19,12 @@ class StudyAcademicYearController extends Controller
      */
     public function index()
     {
-    	$years = StudyAcademicYear::all();
-    	foreach($years as $year){
-    		if(strtotime(now()->format('Y-m-d')) > strtotime($year->end_date)){
-    			StudyAcademicYear::where('id',$year->id)->update(['status'=>'INACTIVE']);
-    		}
-    	}
+    	// $years = StudyAcademicYear::all();
+    	// foreach($years as $year){
+    	// 	if(strtotime(now()->format('Y-m-d')) > strtotime($year->end_date)){
+    	// 		StudyAcademicYear::where('id',$year->id)->update(['status'=>'INACTIVE']);
+    	// 	}
+    	// }
     	$data = [
            'study_academic_years'=>StudyAcademicYear::with('academicYear')->latest()->paginate(20),
            'academic_years'=>AcademicYear::all()
@@ -145,9 +145,9 @@ class StudyAcademicYearController extends Controller
     {
     	try{
     		$academic_year = StudyAcademicYear::findOrFail($id);
-    		if(strtotime(now()->format('Y-m-d')) > strtotime($academic_year->begin_date)){
-    			return redirect()->back()->with('error','Academic year must be within current dates');
-    		}
+    		// if(strtotime(now()->format('Y-m-d')) > strtotime($academic_year->begin_date)){
+    		// 	return redirect()->back()->with('error','Academic year must be within current dates');
+    		// }
             $academic_year->status = 'ACTIVE';
             $academic_year->save();
 
