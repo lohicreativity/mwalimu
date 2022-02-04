@@ -630,10 +630,10 @@ class ExaminationResultController extends Controller
               $academicYear = $module_assignment->studyAcademicYear->academicYear;
 
             $module = Module::with('ntaLevel')->find($module_assignment->module_id);
-            $policy = ExaminationPolicy::where('nta_level_id',$module->ntaLevel->id)->where('study_academic_year_id',$module_assignment->study_academic_year_id)->where('type',$module_assignment->programModuleAssignment->campusProgram->program->category)->first();
-            if(!$policy){
-                  return redirect()->back()->withInput()->with('error','No examination policy defined for this module NTA level and study academic year');
-            }
+            // $policy = ExaminationPolicy::where('nta_level_id',$module->ntaLevel->id)->where('study_academic_year_id',$module_assignment->study_academic_year_id)->where('type',$module_assignment->programModuleAssignment->campusProgram->program->category)->first();
+            // if(!$policy){
+            //       return redirect()->back()->withInput()->with('error','No examination policy defined for this module NTA level and study academic year');
+            // }
 
             $student = Student::find($request->get('student_id'));
 
@@ -680,10 +680,10 @@ class ExaminationResultController extends Controller
                 if($special_exam && !$request->get('final_score')){
                    $result->final_remark = 'POSTPONED';
                 }else{
-                   $result->final_remark = $policy->final_pass_score <= $result->final_score? 'PASS' : 'FAIL';
+                   $result->final_remark = $module_assignment->programModuleAssignment->final_pass_score <= $result->final_score? 'PASS' : 'FAIL';
                 }
                 if($result->supp_score){
-                   $result->final_exam_remark = $policy->module_pass_score <= $result->supp_score? 'PASS' : 'FAIL';
+                   $result->final_exam_remark = $$module_assignment->programModuleAssignment->module_pass_score <= $result->supp_score? 'PASS' : 'FAIL';
                 }
                 if(!$result->course_work_score){
                    $result->course_work_remark = 'INCOMPLETE';
