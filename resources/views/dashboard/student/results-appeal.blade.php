@@ -46,7 +46,7 @@
                 <h3 class="card-title">Select number of subjects</h3>
               </div>
               <!-- /.card-header -->
-              {!! Form::open(['url'=>'student/resutls/appeal/get-control-number','class'=>'ss-form-processing']) !!}
+              {!! Form::open(['url'=>'student/get-control-number','class'=>'ss-form-processing']) !!}
                 @php
                    $amount = [
                       'placeholder'=>'Amount',

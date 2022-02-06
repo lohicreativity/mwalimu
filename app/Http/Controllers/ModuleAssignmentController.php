@@ -913,7 +913,7 @@ class ModuleAssignmentController extends Controller
                       }
                       $result->module_assignment_id = $request->get('module_assignment_id');
                       $result->student_id = $student->id;
-                      $result->final_score = !$special_exam? (trim($line[1])*$module_assignment->programModuleAssignment->final_min_mark)/100 : null;
+                      $result->final_score = null;
                       $result->exam_type = 'FINAL';
                       if($special_exam){
                          $result->final_remark = 'POSTPONED';
@@ -988,7 +988,7 @@ class ModuleAssignmentController extends Controller
                       $result_log = new ExaminationResultLog;
                       $result_log->module_assignment_id = $request->get('module_assignment_id');
                       $result_log->student_id = $student->id;
-                      $result_log->final_score = !$special_exam? (trim($line[1])*$module_assignment->programModuleAssignment->final_min_marks)/100 : null;
+                      $result_log->final_score = !$special_exam? (trim($line[1])*$module_assignment->programModuleAssignment->final_min_mark)/100 : null;
                       if($carry_history){
                          $result_log->exam_category = 'CARRY';
                          $result_log->retakable_id = $carry_history->id;

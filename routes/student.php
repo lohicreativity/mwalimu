@@ -42,7 +42,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 
 	Route::get('results/appeal',[StudentController::class,'resultsAppeal']);
 
-	Route::post('resutls/appeal/get-control-number',[InvoiceController::class,'store']);
+	Route::post('get-control-number',[InvoiceController::class,'store']);
     
     Route::get('results/{ac_year_id}/{yr_of_study}/report/appeal',[AppealController::class,'showAcademicYearResults']);
 
