@@ -83,7 +83,7 @@ class InvoiceController extends Controller
 
 			//$txt=print_r($data, true);
 			//$myfile = file_put_contents('/var/public_html/ifm/logs/req_bill.txt', $txt.PHP_EOL , FILE_APPEND | LOCK_EX);
-            $url = "http://127.0.0.1/gepg-api/public/bills/post_bill";
+            $url = "http://127.0.0.1/gepg-api/bills/post_bill";
 			$ch = curl_init(); 
 			curl_setopt($ch,CURLOPT_URL, $url);
 			//curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
