@@ -11,7 +11,7 @@ use App\Domain\Academic\Models\ExaminationResult;
 use App\Domain\Academic\Models\Module;
 use App\Domain\Registration\Models\Student;
 use App\Models\User;
-use Auth;
+use Auth, Validator;
 
 class CourseWorkResultController extends Controller
 {
