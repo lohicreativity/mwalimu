@@ -729,15 +729,15 @@ class ExaminationResultController extends Controller
                }
             }
 
-            // DB::beginTransaction();
+            DB::beginTransaction();
             $module_assignment = ModuleAssignment::with(['module','studyAcademicYear.academicYear','programModuleAssignment.campusProgram.program'])->find($request->get('module_assignment_id'));
               $academicYear = $module_assignment->studyAcademicYear->academicYear;
 
             $module = Module::with('ntaLevel')->find($module_assignment->module_id);
-            $policy = ExaminationPolicy::where('nta_level_id',$module->ntaLevel->id)->where('study_academic_year_id',$module_assignment->study_academic_year_id)->where('type',$module_assignment->programModuleAssignment->campusProgram->program->category)->first();
-            if(!$policy){
-                  return redirect()->back()->withInput()->with('error','No examination policy defined for this module NTA level and study academic year');
-            }
+            // $policy = ExaminationPolicy::where('nta_level_id',$module->ntaLevel->id)->where('study_academic_year_id',$module_assignment->study_academic_year_id)->where('type',$module_assignment->programModuleAssignment->campusProgram->program->category)->first();
+            // if(!$policy){
+            //       return redirect()->back()->withInput()->with('error','No examination policy defined for this module NTA level and study academic year');
+            // }
 
             $student = Student::find($request->get('student_id'));
 
@@ -798,7 +798,7 @@ class ExaminationResultController extends Controller
                 $result->final_uploaded_at = now();
                 $result->uploaded_by_user_id = Auth::user()->id;
                 $result->save();
-                // DB::commit();
+                DB::commit();
 
                 // return $this->processStudentResults($request,$student->id,$module_assignment->study_academic_year_id,$module_assignment->programModuleAssignment->year_of_study);
 
