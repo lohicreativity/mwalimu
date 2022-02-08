@@ -89,7 +89,25 @@ class CourseWorkResultController extends Controller
      * Update course work results
      */
     public function update(Request $request)
-    {
+    {   
+        $validations = [];
+        $assessment_plans = AssessmentPlan::where('module_assignment_id',$request->get('module_assignment_id'))->get();
+        foreach($assessment_plans as $plan){
+           if($request->has('plan_'.$plan->id.'_score')){
+              $validations[$request->get('plan_'.$plan->id.'_score')] = 'numeric';
+           }
+        }
+
+        $validation = Validator::make($request->all(),$validations);
+
+        if($validation->fails()){
+           if($request->ajax()){
+              return response()->json(array('error_messages'=>$validation->messages()));
+           }else{
+              return redirect()->back()->withInput()->withErrors($validation->messages());
+           }
+        }
+
         try{
     	$module_assignment = ModuleAssignment::with('assessmentPlans','module','programModuleAssignment.campusProgram.program')->findOrFail($request->get('module_assignment_id'));
               
