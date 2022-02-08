@@ -588,7 +588,7 @@ class ExaminationResultController extends Controller
      */
     public function edit(Request $request, $student_id,$ac_yr_id,$prog_id)
     {
-        try{
+        // try{
             if(Auth::user()->hasRole('staff')){
               $module_assignment = ModuleAssignment::with('module')->where('program_module_assignment_id',$prog_id)->first();
               if(ExaminationResult::where('module_assignment_id',$module_assignment->id)->whereNotNull('final_processed_at')->count() != 0){
@@ -608,9 +608,9 @@ class ExaminationResultController extends Controller
                'module_assignment'=>$module_assignment
             ];
             return view('dashboard.academic.edit-examination-results',$data)->withTitle('Edit Examination Results');
-        }catch(\Exception $e){
-            return redirect()->back()->with('error','Unable to get the resource specified in this request');
-        }
+        // }catch(\Exception $e){
+        //     return redirect()->back()->with('error','Unable to get the resource specified in this request');
+        // }
     }
 
     /**
