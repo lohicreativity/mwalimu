@@ -134,11 +134,13 @@ class CourseWorkResultController extends Controller
 	    		$result->module_assignment_id = $request->get('module_assignment_id');
 	    		$result->uploaded_by_user_id = Auth::user()->id;
 	    		$result->save();
+
+          return $result;
     	  }
     	}
     	$course_work = CourseWorkResult::where('module_assignment_id',$request->get('module_assignment_id'))->where('student_id',$request->get('student_id'))->sum('score');
 
-      return $result;
+
                 $course_work_count = CourseWorkResult::whereHas('assessmentPlan',function($query) use ($request){
                      $query->where('name','LIKE','%Test%');
                   })->where('module_assignment_id',$request->get('module_assignment_id'))->where('student_id',$request->get('student_id'))->count();
