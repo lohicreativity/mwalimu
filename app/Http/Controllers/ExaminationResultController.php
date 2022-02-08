@@ -234,7 +234,12 @@ class ExaminationResultController extends Controller
                   if($result->course_work_remark == 'INCOMPLETE' || $result->final_remark == 'INCOMPLETE' || $result->final_remark == 'POSTPONED'){
                   	$processed_result->grade = null;
                       $processed_result->point = null;
-                      $processed_result->final_exam_remark = $result->final_remark == 'POSTPONED' || $result->final_remark == 'INCOMPLETE'? $result->final_remark : null;
+                      if($processed_result->final_remark == 'INCOMPLETE' || $processed_result->final_remark == 'POSTPONED'){
+                          $processed_result->final_exam_remark = $processed_result->final_remark;
+                      }
+                      if($processed_result->course_work_remark == 'INCOMPLETE' || $processed_result->course_work_remark == 'POSTPONED'){
+                          $processed_result->final_exam_remark = $processed_result->course_work_remark;
+                      }
                   }else{
                   	$processed_result->grade = $grading_policy? $grading_policy->grade : null;
                       $processed_result->point = $grading_policy? $grading_policy->point : null;
@@ -958,7 +963,12 @@ class ExaminationResultController extends Controller
                     if($processed_result->course_work_remark == 'INCOMPLETE' || $processed_result->final_remark == 'INCOMPLETE' || $processed_result->final_remark == 'POSTPONED'){
                       $processed_result->grade = null;
                         $processed_result->point = null;
-                      $processed_result->final_exam_remark = $result->final_remark == 'POSTPONED' || $result->final_remark == 'INCOMPLETE'? $result->final_remark : null;
+                      if($processed_result->final_remark == 'INCOMPLETE' || $processed_result->final_remark == 'POSTPONED'){
+                          $processed_result->final_exam_remark = $processed_result->final_remark;
+                      }
+                      if($processed_result->course_work_remark == 'INCOMPLETE' || $processed_result->course_work_remark == 'POSTPONED'){
+                          $processed_result->final_exam_remark = $processed_result->course_work_remark;
+                      }
                     }else{
                       $processed_result->grade = $grading_policy? $grading_policy->grade : null;
                         $processed_result->point = $grading_policy? $grading_policy->point : null;

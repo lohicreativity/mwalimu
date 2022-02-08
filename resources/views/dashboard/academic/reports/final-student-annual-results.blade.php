@@ -161,7 +161,7 @@
                           <td>{{ $result->moduleAssignment->module->name }}</td>
                           <td>@if(!$result->supp_processed_at) {{ $result->course_work_score }} @else N/A @endif</td>
                           <td>@if(!$result->supp_processed_at) {{ $result->final_score }} @else N/A @endif</td>
-                          <td>@if(!$result->supp_processed_at) {{ round($result->total_score) }} @else {{ round($result->supp_score) }}@endif</td>
+                          <td>@if(!$result->supp_processed_at) @if($result->total_score) {{ round($result->total_score) }} @endif @else {{ round($result->supp_score) }}@endif</td>
                           <td>{{ $result->grade }}</td>
                           <td>{{ $result->final_exam_remark }}</td>
                         </tr>
