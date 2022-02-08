@@ -715,7 +715,7 @@ class ExaminationResultController extends Controller
      */
     public function update(Request $request)
     {
-        // try{
+        try{
             $validation = Validator::make($request->all(),[
                 'final_score'=>'numeric|min:0|max:100',
                 'supp_score'=>'min:0|max:100',
@@ -729,7 +729,7 @@ class ExaminationResultController extends Controller
                }
             }
 
-            DB::beginTransaction();
+            // DB::beginTransaction();
             $module_assignment = ModuleAssignment::with(['module','studyAcademicYear.academicYear','programModuleAssignment.campusProgram.program'])->find($request->get('module_assignment_id'));
               $academicYear = $module_assignment->studyAcademicYear->academicYear;
 
@@ -798,15 +798,15 @@ class ExaminationResultController extends Controller
                 $result->final_uploaded_at = now();
                 $result->uploaded_by_user_id = Auth::user()->id;
                 $result->save();
-                DB::commit();
+                // DB::commit();
 
                 // return $this->processStudentResults($request,$student->id,$module_assignment->study_academic_year_id,$module_assignment->programModuleAssignment->year_of_study);
 
                return redirect()->to('academic/results/'.$request->get('student_id').'/'.$module_assignment->study_academic_year_id.'/'.$module_assignment->programModuleAssignment->year_of_study.'/process-student-results?semester_id='.$module_assignment->programModuleAssignment->semester_id);
 
-        // }catch(\Exception $e){
-        //     return redirect()->back()->with('error','Unable to get the resource specified in this request'); 
-        // }
+        }catch(\Exception $e){
+            return redirect()->back()->with('error','Unable to get the resource specified in this request'); 
+        }
     }
 
     /**
@@ -815,8 +815,8 @@ class ExaminationResultController extends Controller
     public function processStudentResults(Request $request, $student_id, $ac_yr_id,$yr_of_study)
     {
          
-         // try{
-         //    DB::beginTransaction();
+         try{
+            DB::beginTransaction();
             $student = Student::findOrFail($student_id);
             $campus_program = CampusProgram::with(['program.ntaLevel'])->find($student->campus_program_id);
             $semester = Semester::find($request->get('semester_id'));
@@ -1155,13 +1155,13 @@ class ExaminationResultController extends Controller
                     $rem->save();
                }
 
-           //DB::commit();
+           DB::commit();
 
            return redirect()->to('academic/results/'.$student->id.'/'.$ac_yr_id.'/'.$yr_of_study.'/show-student-results')->with('message','Results processed successfully');
-        // }catch(\Exception $e){
-        //    return $e->getMessage();
-        //    return redirect()->back()->with('error','Unable to get the resource specified in this request');
-        // }
+        }catch(\Exception $e){
+           return $e->getMessage();
+           return redirect()->back()->with('error','Unable to get the resource specified in this request');
+        }
     }
 
     /**
