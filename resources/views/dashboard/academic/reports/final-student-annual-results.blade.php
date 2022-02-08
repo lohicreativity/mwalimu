@@ -125,9 +125,9 @@
                           <td>{{ $count }}</td>
                           <td><a href="{{ url('academic/results/'.$student->id.'/'.$study_academic_year->id.'/'.$result->moduleAssignment->programModuleAssignment->id.'/edit-student-results') }}">{{ $result->moduleAssignment->module->code }}</a></td>
                           <td>{{ $result->moduleAssignment->module->name }}</td>
-                          <td>@if(!$result->supp_processed_at) {{ $result->course_work_score }} @else N/A @endif</td>
+                          <td>@if(!$result->supp_processed_at) @if($result->course_work_score) {{ $result->course_work_score }} @else - @endif @else N/A @endif</td>
                           <td>@if(!$result->supp_processed_at) {{ $result->final_score }} @else N/A @endif</td>
-                          <td>@if(!$result->supp_processed_at) {{ round($result->total_score) }} @else {{ round($result->supp_score) }}@endif</td>
+                          <td>@if(!$result->supp_processed_at) @if($result->total_score) {{ round($result->total_score) }} @else - @endif @else {{ round($result->supp_score) }}@endif</td>
                           <td>{{ $result->grade }}</td>
                           <td>{{ $result->final_exam_remark }}</td>
                         </tr>
