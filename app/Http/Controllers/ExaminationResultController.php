@@ -715,7 +715,7 @@ class ExaminationResultController extends Controller
      */
     public function update(Request $request)
     {
-        try{
+        // try{
             $validation = Validator::make($request->all(),[
                 'final_score'=>'numeric|min:0|max:100',
                 'supp_score'=>'min:0|max:100',
@@ -804,9 +804,9 @@ class ExaminationResultController extends Controller
 
                return redirect()->to('academic/results/'.$request->get('student_id').'/'.$module_assignment->study_academic_year_id.'/'.$module_assignment->programModuleAssignment->year_of_study.'/process-student-results?semester_id='.$module_assignment->programModuleAssignment->semester_id);
 
-        }catch(\Exception $e){
-            return redirect()->back()->with('error','Unable to get the resource specified in this request'); 
-        }
+        // }catch(\Exception $e){
+        //     return redirect()->back()->with('error','Unable to get the resource specified in this request'); 
+        // }
     }
 
     /**
