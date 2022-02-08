@@ -27,7 +27,7 @@ class ElectivePolicyController extends Controller
            'study_academic_year'=>$request->has('study_academic_year_id')? StudyAcademicYear::with('academicYear')->find($request->get('study_academic_year_id')) : null,
            'elective_policies'=>ElectivePolicy::whereHas('CampusProgram.program.departments',function($query) use($staff){
               $query->where('id',$staff->department_id);
-           })->with(['campusProgram.program','campusProgram.campus','semester','studyAcademicYear.academicYear'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->paginate(20),
+           })->with(['campusProgram.program.departments','campusProgram.campus','semester','studyAcademicYear.academicYear'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->paginate(20),
            'campus_programs'=>CampusProgram::with(['program','campus'])->get(),
            'semesters'=>Semester::all(),
            'staff'=>$staff,

@@ -90,7 +90,7 @@
                          <option value="">Select Campus Programme</option>
                          @foreach($campus_programs as $prog)
                          @if(Auth::user()->hasRole('hod'))
-                         @if($staff->campus_id == $prog->campus_id && $staff->department_id == $prog->program->department_id)
+                         @if($staff->campus_id == $prog->campus_id && App\Utils\Util::collectionContainsKey($prog->program->departments,$staff->department_id))
                          <option value="{{ $prog->id }}">{{ $prog->program->name }} - {{ $prog->campus->name }}</option>
                          @endif
                          @else
