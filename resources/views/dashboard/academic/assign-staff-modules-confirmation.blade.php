@@ -158,7 +158,7 @@
                         <td>{{ $assign->module->code }}</td>
                         <td>{{ $assign->programModuleAssignment->year_of_study }}</td>
                         <td>{{ $assign->programModuleAssignment->semester->name }}</td>
-                        <td>@if($assign->confirmed == 1) <span class="badge badge-success">Approved</span> @elseif($assign->confirmed == 0) <span class="badge badge-warning">Rejected</span> @else <span class="badge badge-warning">Pending Approval</span> @endif</td>
+                        <td>@if($assign->confirmed === 1) <span class="badge badge-success">Approved</span> @elseif($assign->confirmed === 0) <span class="badge badge-warning">Rejected</span> @else <span class="badge badge-warning">Pending Approval</span> @endif</td>
                         <td>
                           <a class="btn btn-info btn-sm" href="{{ url('academic/module-assignment/'.$assign->id.'/confirmation/accept') }}" class="ss-color-success ss-right"><i class="fas fa-check"></i> Accept</a></p>
 
