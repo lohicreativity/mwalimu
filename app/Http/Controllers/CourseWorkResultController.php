@@ -114,12 +114,12 @@ class CourseWorkResultController extends Controller
     	$module_assignment = ModuleAssignment::with('assessmentPlans','module','programModuleAssignment.campusProgram.program')->findOrFail($request->get('module_assignment_id'));
               
 
-        $module = Module::with('ntaLevel')->find($module_assignment->module_id);
-    	$policy = ExaminationPolicy::where('nta_level_id',$module->ntaLevel->id)->where('study_academic_year_id',$module_assignment->study_academic_year_id)->where('type',$module_assignment->programModuleAssignment->campusProgram->program->category)->first();
+      $module = Module::with('ntaLevel')->find($module_assignment->module_id);
+    	// $policy = ExaminationPolicy::where('nta_level_id',$module->ntaLevel->id)->where('study_academic_year_id',$module_assignment->study_academic_year_id)->where('type',$module_assignment->programModuleAssignment->campusProgram->program->category)->first();
 
     	$assessment_plans = AssessmentPlan::where('module_assignment_id',$request->get('module_assignment_id'))->get();
     	foreach($assessment_plans as $plan){
-    		if($request->get('plan_'.$plan->id.'_score')){
+    		if($request->has('plan_'.$plan->id.'_score')){
           if($request->get('plan_'.$plan->id.'_score') < 0 || $request->get('plan_'.$plan->id.'_score') > 100){
               return redirect()->back()->with('error','Invalid score entered');
           }
