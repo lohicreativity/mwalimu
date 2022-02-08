@@ -91,14 +91,16 @@ class CourseWorkResultController extends Controller
     public function update(Request $request)
     {   
         $validations = [];
+        $messages = [];
         $assessment_plans = AssessmentPlan::where('module_assignment_id',$request->get('module_assignment_id'))->get();
         foreach($assessment_plans as $plan){
            if($request->has('plan_'.$plan->id.'_score')){
               $validations['plan_'.$plan->id.'_score'] = 'numeric|min:0|max:100';
+              $messages['plan_'.$plan->id.'_score'] = $plan->name.' must be numeric';
            }
         }
 
-        $validation = Validator::make($request->all(),$validations);
+        $validation = Validator::make($request->all(),$validations,$messages);
 
         if($validation->fails()){
            if($request->ajax()){
@@ -176,7 +178,6 @@ class CourseWorkResultController extends Controller
 
              return redirect()->to('academic/results/'.$request->get('student_id').'/'.$module_assignment->study_academic_year_id.'/'.$module_assignment->programModuleAssignment->year_of_study.'/process-student-results?semester_id='.$module_assignment->programModuleAssignment->semester_id);
         }catch(\Exception $e){
-        	return $e->getMessage();
         	return redirect()->back()->with('error','Unable to get the resource specified in this request');
         }
     }
