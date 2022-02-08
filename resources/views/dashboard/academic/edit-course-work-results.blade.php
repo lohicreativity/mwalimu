@@ -94,7 +94,7 @@
                   </div>
                   <div class="form-group col-6">
                     {!! Form::label('','Marks') !!}
-                    {!! Form::text('plan_'.$plan->id,null,$marks) !!}
+                    {!! Form::text('plan_'.$plan->id.'_score',null,$marks) !!}
                   </div>
                   </div>
                     @endif

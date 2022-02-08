@@ -110,7 +110,7 @@ class CourseWorkResultController extends Controller
            }
         }
 
-        // try{
+        try{
     	$module_assignment = ModuleAssignment::with('assessmentPlans','module','programModuleAssignment.campusProgram.program')->findOrFail($request->get('module_assignment_id'));
               
 
@@ -134,8 +134,6 @@ class CourseWorkResultController extends Controller
 	    		$result->module_assignment_id = $request->get('module_assignment_id');
 	    		$result->uploaded_by_user_id = Auth::user()->id;
 	    		$result->save();
-
-          return $result;
     	  }
     	}
     	$course_work = CourseWorkResult::where('module_assignment_id',$request->get('module_assignment_id'))->where('student_id',$request->get('student_id'))->sum('score');
@@ -179,9 +177,9 @@ class CourseWorkResultController extends Controller
                 return redirect()->to($request->get('redirect_url'))->with('message','Marks updated successfully');
              }
 
-             // return redirect()->to('academic/results/'.$request->get('student_id').'/'.$module_assignment->study_academic_year_id.'/'.$module_assignment->programModuleAssignment->year_of_study.'/process-student-results?semester_id='.$module_assignment->programModuleAssignment->semester_id);
-        // }catch(\Exception $e){
-        // 	return redirect()->back()->with('error','Unable to get the resource specified in this request');
-        // }
+             return redirect()->to('academic/results/'.$request->get('student_id').'/'.$module_assignment->study_academic_year_id.'/'.$module_assignment->programModuleAssignment->year_of_study.'/process-student-results?semester_id='.$module_assignment->programModuleAssignment->semester_id);
+        }catch(\Exception $e){
+        	return redirect()->back()->with('error','Unable to get the resource specified in this request');
+        }
     }
 }
