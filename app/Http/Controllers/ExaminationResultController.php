@@ -1792,6 +1792,42 @@ class ExaminationResultController extends Controller
     }
 
     /**
+     * Display global report form
+     */
+    public function showGlobalReport(Request $request)
+    {
+        $data = [
+           'study_academic_years'=>StudyAcademicYear::with('academicYear')->get()
+        ];
+        return view('dashboard.academic.show-global-report',$data)->withTitle('Global Report');
+    }
+
+
+    /**
+     * Display global report
+     */
+    public function getGlobalReport(Request $request)
+    {
+        $report = [];
+        $departments = Department::with(['programs.ntaLevel'])->get();
+        $nta_levels = NTALevel::all();
+        foreach($nta_level as $level){
+            foreach($departments as $department){
+                $report[$level->name]['departments'][] = $department->name;
+            }
+        }
+
+        $results = ExaminationResult::whereHas('moduleAssignment',function($query) use($request){
+            $query->where('study_academic_year_id',$request->get('study_academic_year_id'));
+        })->with('moduleAssignment.programModuleAssignment.module.ntaLevel')->get();
+
+        foreach($results as $key=>$result){
+            
+        }
+
+    }
+
+    /**
      * Display module results 
      */
     public function showModuleResults(Request $request)
