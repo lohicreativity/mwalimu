@@ -16,11 +16,11 @@ class Department extends Model
     protected $table = 'departments';
 
     /**
-     * Establish one to many relationship with programs
+     * Establish many to many relationship with programs
      */
     public function programs()
     {
-    	return $this->hasMany(Program::class,'department_id');
+        return $this->belongsToMany(Program::class,'program_department','department_id','program_id')->withPivot('campus_id');
     }
 
     /**
