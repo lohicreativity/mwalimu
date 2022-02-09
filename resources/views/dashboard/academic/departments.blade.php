@@ -86,7 +86,7 @@
                   </div>
                   </div>
                   <div class="row">
-                  <div class="form-group col-6">
+                  <div class="form-group col-4">
                     {!! Form::label('','Type') !!}
                     <select name="unit_category_id" class="form-control" required>
                        <option value="">Select Type</option>
@@ -95,7 +95,16 @@
                        @endforeach
                     </select>
                   </div>
-                  <div class="form-group col-6">
+                  <div class="form-group col-4">
+                    {!! Form::label('','Parent') !!}
+                    <select name="parent_id" class="form-control" required>
+                       <option value="">Select Parent</option>
+                       @foreach($departments as $department)
+                       <option value="{{ $department->id }}">{{ $department->name }}</option>
+                       @endforeach
+                    </select>
+                  </div>
+                  <div class="form-group col-4">
                     {!! Form::label('','Campus') !!}
                     <select name="campuses[]" class="form-control ss-select-tags" multiple="multiple">
                          <option value="">Select Parent</option>
@@ -203,7 +212,7 @@
                                     </div>
                                     </div>
                                     <div class="row">
-                                    <div class="form-group col-6">
+                                    <div class="form-group col-4">
                                       {!! Form::label('','Type') !!}
                                       <select name="unit_category_id" class="form-control" required>
                                          <option value="">Select Type</option>
@@ -212,7 +221,16 @@
                                          @endforeach
                                       </select>
                                     </div>
-                                    <div class="form-group col-6">
+                                    <div class="form-group col-4">
+                                      {!! Form::label('','Parent') !!}
+                                      <select name="parent_id" class="form-control" required>
+                                         <option value="">Select Parent</option>
+                                         @foreach($all_departments as $dept)
+                                         <option value="{{ $dept->id }}" @if($dept->id == $department->parent_id) selected="selected" @endif>{{ $dept->name }}</option>
+                                         @endforeach
+                                      </select>
+                                    </div>
+                                    <div class="form-group col-4">
                                       {!! Form::label('','Campus') !!}<br>
                                       <select name="campuses[]" class="form-control ss-select-tags" style="width: 100%;" multiple="multiple">
                                          <option value="">Select Parent</option>

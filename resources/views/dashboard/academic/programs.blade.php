@@ -171,7 +171,7 @@
                   </select>
                 </div>
                 <div class="input-group col-9">
-                 <input type="text" name="query" class="form-control" placeholder="Search for module name or code">
+                 <input type="text" name="query" class="form-control" placeholder="Search for programme name or code">
                  <span class="input-group-btn">
                    <button class="btn btn-default" type="submit"><span class="fa fa-search"></span></button>
                  </span>

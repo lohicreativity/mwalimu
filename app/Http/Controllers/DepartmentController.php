@@ -23,6 +23,7 @@ class DepartmentController extends Controller
     	$data = [
            'departments'=>Department::with('unitCategory','campuses')->paginate(20),
            'unit_categories'=>UnitCategory::all(),
+           'all_departments'=>Department::all(),
            'campuses'=>Campus::all(),
            'staff'=>User::find(Auth::user()->id)->staff
     	];

@@ -32,6 +32,14 @@ class Department extends Model
     }
 
     /**
+     * Establish one to many relationship with parents
+     */
+    public function parent()
+    {
+        return $this->belongsTo(Department::class,'parent_id');
+    }
+
+    /**
      * Establish many to many relationship with campuses
      */
     public function campuses()

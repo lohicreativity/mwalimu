@@ -19,6 +19,7 @@ class CreateDepartmentsTable extends Migration
             $table->string('abbreviation');
             $table->text('description');
             $table->unsignedBigInteger('unit_category_id');
+            $table->unsignedBigInteger('parent_id')->default(0);
             $table->timestamps();
             $table->softDeletes();
 
