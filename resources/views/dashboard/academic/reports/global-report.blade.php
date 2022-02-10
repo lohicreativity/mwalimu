@@ -253,7 +253,7 @@
                   <td>{{ $report[$level->name][$department->name][$program->name]['FL']['post_students'] }}</td>
                   <td>{{ $report[$level->name][$department->name][$program->name]['ML']['inc_students'] }}</td>
                   <td>{{ $report[$level->name][$department->name][$program->name]['FL']['inc_students'] }}</td>
-                @end
+                @endforeach
                 </tr>
                 @endforeach
               </table>
