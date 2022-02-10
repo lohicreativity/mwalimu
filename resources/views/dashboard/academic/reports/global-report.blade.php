@@ -213,7 +213,7 @@
                   <td rowspan="3">Programme</td>
                   <td rowspan="3">NTA Level</td>
                   <td colspan="4" rowspan="2">Exam Takers Students</td>
-                  <td colspan="4">Exam Miss-takers Students</td>
+                  <td colspan="6">Exam Miss-takers Students</td>
                 </tr>
                 <tr class="ss-bold">
                   <td>POST</td>

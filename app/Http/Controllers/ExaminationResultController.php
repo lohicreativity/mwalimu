@@ -1819,7 +1819,7 @@ class ExaminationResultController extends Controller
                 $report[$level->name][$department->name]['programs'] = [];
 
                 foreach($department->programs as $program){
-                   // if(Util::collectionContainsKey($program->departments,$department->id)){
+                   if($program->nta_level_id == $level->id){
                       $report[$level->name][$department->name]['programs'][] = $program;
                       $report[$level->name][$department->name][$program->name]['total_students'] = 0;
                       $report[$level->name][$department->name][$program->name]['take_students'] = 0;
@@ -1840,7 +1840,7 @@ class ExaminationResultController extends Controller
                       $report[$level->name][$department->name][$program->name]['FL']['pass_students'] = 0;
                       $report[$level->name][$department->name][$program->name]['ML']['fail_students'] = 0;
                       $report[$level->name][$department->name][$program->name]['FL']['fail_students'] = 0;
-                   // }
+                   }
                    
                 }
             }
@@ -1858,7 +1858,7 @@ class ExaminationResultController extends Controller
                   foreach($departments as $department){
                    // $report[$level->name]['departments'][] = $department->name;
                     foreach($department->programs as $program){
-                       if(Util::collectionContainsKey($program->departments,$department->id)){
+                      
                           $report[$result->moduleAssignment->programModuleAssignment->module->ntaLevel->name][$department->name][$program->name]['total_students'] += 1;
                           if($result->final_exam_remark == 'PASS' || $result->final_exam_remark == 'FAIL' || $result->final_exam_remark == 'RETAKE' || $result->final_exam_remark == 'CARRY'){
                                $report[$result->moduleAssignment->programModuleAssignment->module->ntaLevel->name][$department->name][$program->name]['take_students'] += 1;
@@ -1935,8 +1935,6 @@ class ExaminationResultController extends Controller
 
                                $report[$result->moduleAssignment->programModuleAssignment->module->ntaLevel->name][$department->name][$program->name]['miss_take_students_rate'] = $report[$result->moduleAssignment->programModuleAssignment->module->ntaLevel->name][$department->name][$program->name]['miss_take_students']*100/$report[$result->moduleAssignment->programModuleAssignment->module->ntaLevel->name][$department->name][$program->name]['total_students'];
                           }
-
-                       }
                        
                     }
                   }
