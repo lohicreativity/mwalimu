@@ -288,4 +288,6 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 	Route::get('results/global-report',[ExaminationResultController::class,'showGlobalReport']);
 	Route::post('results/get-global-report',[ExaminationResultController::class,'getGlobalReport']);
 
+	Route::get('transcript/{student_id}',[ExaminationResultController::class,'showStudentTranscript']);
+
 });

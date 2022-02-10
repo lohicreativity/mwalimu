@@ -102,11 +102,12 @@ class ExaminationResultController extends Controller
 
 
         foreach($module_assignments as $assign){
-        	if($assign->course_work_process_status != 'PROCESSED'){
+          $exam_student_count = ExaminationResult::where('module_assignment_id',$assignment->id)->count();
+        	if($assign->course_work_process_status != 'PROCESSED' && $exam_student_count != 0){
             DB::rollback();
         		return redirect()->back()->with('error',$assign->module->name.'-'.$assign->module->code.' course works not processed');
         	}
-        	if($assign->final_upload_status == null){
+        	if($assign->final_upload_status == null && $exam_student_count != 0){
             DB::rollback();
         		return redirect()->back()->with('error',$assign->module->name.'-'.$assign->module->code.' final not uploaded');
         	}
@@ -2316,6 +2317,74 @@ class ExaminationResultController extends Controller
           'staff'=>User::find(Auth::user()->id)->staff
          ];
          return view('dashboard.academic.reports.perfomance-report',$data)->withTitle('Student Perfomance Report');
+    }
+
+    /**
+     * Display student perfomance report
+     */
+    public function showStudentTranscript(Request $request, $student_id)
+    {
+         $student = Student::with(['campusProgram.program.departments','campusProgram.program.ntaLevel','campusProgram.campus','applicant'])->find($student_id);
+        
+          $results = ExaminationResult::with(['moduleAssignment.programModuleAssignment','moduleAssignment.studyAcademicYear.academicYear'])->where('student_id',$student->id)->get();
+          $semesters = Semester::all();
+          $years = [];
+          $years_of_studies = [];
+          $academic_years = [];
+          foreach($results as $key=>$result){
+            if(!array_key_exists($result->moduleAssignment->programModuleAssignment->year_of_study, $years)){
+                   $years[$result->moduleAssignment->programModuleAssignment->year_of_study] = [];  
+                   $years[$result->moduleAssignment->programModuleAssignment->year_of_study][] = $result->moduleAssignment->studyAcademicYear->id;
+            }
+                if(!in_array($result->moduleAssignment->studyAcademicYear->id, $years[$result->moduleAssignment->programModuleAssignment->year_of_study])){
+
+                  $years[$result->moduleAssignment->programModuleAssignment->year_of_study][] = $result->moduleAssignment->studyAcademicYear->id;
+                }
+          }
+
+          foreach($years as $key=>$year){
+            foreach ($year as $yr) {
+              $years_of_studies[$key]['ac_year'] = StudyAcademicYear::with('academicYear')->find($yr);
+              $ac_yr_id = $years_of_studies[$key]['ac_year']->id;
+              $yr_of_study = $key;
+               foreach ($semesters as $semester) {
+                   $years_of_studies[$key][$semester->name]['results'] = ExaminationResult::whereHas('moduleAssignment',function($query) use ($ac_yr_id, $student_id){
+                       $query->where('study_academic_year_id',$ac_yr_id)->where('student_id',$student_id);
+                   })->with(['moduleAssignment.programModuleAssignment'=>function($query) use ($ac_yr_id,$yr_of_study, $semester){
+                     $query->where('study_academic_year_id',$ac_yr_id)->where('year_of_study',$yr_of_study)->where('semester_id',$semester->id);
+                   },'moduleAssignment','moduleAssignment.module','carryHistory.carrableResults'=>function($query){
+                      $query->latest();
+                   },'retakeHistory.retakableResults'=>function($query){
+                      $query->latest();
+                   },'retakeHistory.retakableResults.moduleAssignment.module','carryHistory.carryHistory.carrableResults.moduleAssignment.module'])->where('student_id',$student->id)->get();
+
+                  $years_of_studies[$key][$semester->name]['core_programs'] = ProgramModuleAssignment::with(['module'])->where('study_academic_year_id',$ac_yr_id)->where('year_of_study',$yr_of_study)->where('category','COMPULSORY')->where('semester_id',$semester->id)->where('campus_program_id',$student->campus_program_id)->get();
+                  $years_of_studies[$key][$semester->name]['optional_programs'] = ProgramModuleAssignment::whereHas('students',function($query) use($student_id){
+                   $query->where('id',$student_id);
+                   })->with(['module'])->where('study_academic_year_id',$ac_yr_id)->where('year_of_study',$yr_of_study)->where('semester_id',$semester->id)->where('campus_program_id',$student->campus_program_id)->where('category','OPTIONAL')->get();
+                  $years_of_studies[$key][$semester->name]['semester_remark'] = SemesterRemark::where('study_academic_year_id',$years_of_studies[$key]['ac_year']->id)->where('student_id',$student->id)->where('semester_id',$semester->id)->where('year_of_study',$yr_of_study)->first();
+                  $years_of_studies[$key][$semester->name]['annual_remark'] = AnnualRemark::where('study_academic_year_id',$years_of_studies[$key]['ac_year']->id)->where('student_id',$student->id)->where('year_of_study',$yr_of_study)->first();
+               }
+            }
+          }
+
+          $grading_policies = GradingPolicy::where('nta_level_id',$student->campusProgram->program->nta_level_id)->where('study_academic_year_id',$ac_yr_id)->orderBy('grade')->get();
+
+          foreach($student->campusProgram->program->departments as $dpt){
+                if($dpt->pivot->campus_id == $student->campusProgram->campus_id){
+                    $department = $dpt;
+                }
+             }
+
+         $data = [
+          'semesters'=>$semesters,
+          'years_of_studies'=>$years_of_studies,
+          'student'=>$student,
+          // 'department'=>$department,
+          'grading_policies'=>$grading_policies,
+          'staff'=>User::find(Auth::user()->id)->staff
+         ];
+         return view('dashboard.academic.reports.transcript',$data)->withTitle('Transcript');
     }
 
 
