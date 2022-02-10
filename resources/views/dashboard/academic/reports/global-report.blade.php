@@ -215,6 +215,10 @@
                   <td colspan="4" rowspan="2">Exam Takers Students</td>
                   <td colspan="6">Exam Miss-takers Students</td>
                 </tr>
+                <tr>
+                  <td>POST</td>
+                  <td>INC</td>
+                </tr>
                 <tr class="ss-bold">
                   <td>M</td>
                   <td>F</td>
