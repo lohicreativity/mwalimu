@@ -216,10 +216,6 @@
                   <td colspan="6">Exam Miss-takers Students</td>
                 </tr>
                 <tr class="ss-bold">
-                  <td>POST</td>
-                  <td>INC</td>
-                </tr>
-                <tr class="ss-bold">
                   <td>M</td>
                   <td>F</td>
                   <td>T</td>
@@ -255,6 +251,53 @@
                   <td>{{ $report[$level->name][$department->name][$program->name]['FL']['inc_students'] }}</td>
                   <td>{{ $report[$level->name][$department->name][$program->name]['miss_take_students'] }}</td>
                   <td>{{ $report[$level->name][$department->name][$program->name]['miss_take_students_rate'] }}</td>
+                @endforeach
+                </tr>
+                @endforeach
+              </table>
+
+              <table class="table table-bordered">
+                <tr class="ss-bold">
+                  <td rowspan="3">Department</td>
+                  <td rowspan="3">Programme</td>
+                  <td rowspan="3">Total</td>
+                  <td colspan="4" rowspan="2">Passed Students</td>
+                  <td colspan="4">Failed Students</td>
+                </tr>
+                <tr class="ss-bold">
+                  <td>M</td>
+                  <td>F</td>
+                  <td>T</td>
+                  <td>%</td>
+                  <td>M</td>
+                  <td>F</td>
+                  <td>T</td>
+                  <td>%</td>
+                </tr>
+                @foreach($report[$level->name]['departments'] as $department)
+                <tr rowspan="{{ count($report[$level->name][$department->name]['programs']) }}">
+                   <td>{{ $department->name }}</td>
+                   <td>
+                @foreach($report[$level->name][$department->name]['programs'] as $program)
+                   
+                      <table>
+                        <tr>
+                          <td>{{ $program->name }}</td>
+                        </tr>
+                      </table>
+                  
+                @endforeach
+                  </td>
+                @foreach($report[$level->name][$department->name]['programs'] as $program)
+                  <td>{{ $report[$level->name][$department->name][$program->name]['total_students'] }}</td>
+                  <td>{{ $report[$level->name][$department->name][$program->name]['ML']['pass_students'] }}</td>
+                  <td>{{ $report[$level->name][$department->name][$program->name]['FL']['pass_students'] }}</td>
+                  <td>{{ $report[$level->name][$department->name][$program->name]['pass_students'] }}</td>
+                  <td>{{ $report[$level->name][$department->name][$program->name]['pass_students_rate'] }}</td>
+                  <td>{{ $report[$level->name][$department->name][$program->name]['ML']['fail_students'] }}</td>
+                  <td>{{ $report[$level->name][$department->name][$program->name]['FL']['fail_students'] }}</td>
+                  <td>{{ $report[$level->name][$department->name][$program->name]['fail_students'] }}</td>
+                  <td>{{ $report[$level->name][$department->name][$program->name]['fail_students_rate'] }}</td>
                 @endforeach
                 </tr>
                 @endforeach
