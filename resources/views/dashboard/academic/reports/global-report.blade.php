@@ -258,10 +258,10 @@
 
               <table class="table table-bordered">
                 <tr class="ss-bold">
-                  <td rowspan="3">Department</td>
-                  <td rowspan="3">Programme</td>
-                  <td rowspan="3">Total</td>
-                  <td colspan="4" rowspan="2">Passed Students</td>
+                  <td rowspan="2">Department</td>
+                  <td rowspan="2">Programme</td>
+                  <td rowspan="2">Total</td>
+                  <td colspan="4">Passed Students</td>
                   <td colspan="4">Failed Students</td>
                 </tr>
                 <tr class="ss-bold">
