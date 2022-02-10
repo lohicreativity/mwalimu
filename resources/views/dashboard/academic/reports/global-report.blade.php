@@ -245,14 +245,14 @@
                   </td>
                 @foreach($report[$level->name][$department->name]['programs'] as $program)
                   <td>{{ $level->name }}</td>
-                  <td>{{ $report[$level->name][$department->name]['ML']['take_students'] }}</td>
-                  <td>{{ $report[$level->name][$department->name]['FL']['take_students'] }}</td>
-                  <td>{{ $report[$level->name][$department->name]['take_students'] }}</td>
-                  <td>{{ $report[$level->name][$department->name]['take_students_rate'] }}</td>
-                  <td>{{ $report[$level->name][$department->name]['ML']['post_students'] }}</td>
-                  <td>{{ $report[$level->name][$department->name]['FL']['post_students'] }}</td>
-                  <td>{{ $report[$level->name][$department->name]['ML']['inc_students'] }}</td>
-                  <td>{{ $report[$level->name][$department->name]['FL']['inc_students'] }}</td>
+                  <td>{{ $report[$level->name][$department->name][$program->name]['ML']['take_students'] }}</td>
+                  <td>{{ $report[$level->name][$department->name][$program->name]['FL']['take_students'] }}</td>
+                  <td>{{ $report[$level->name][$department->name][$program->name]['take_students'] }}</td>
+                  <td>{{ $report[$level->name][$department->name][$program->name]['take_students_rate'] }}</td>
+                  <td>{{ $report[$level->name][$department->name][$program->name]['ML']['post_students'] }}</td>
+                  <td>{{ $report[$level->name][$department->name][$program->name]['FL']['post_students'] }}</td>
+                  <td>{{ $report[$level->name][$department->name][$program->name]['ML']['inc_students'] }}</td>
+                  <td>{{ $report[$level->name][$department->name][$program->name]['FL']['inc_students'] }}</td>
                 @end
                 </tr>
                 @endforeach
