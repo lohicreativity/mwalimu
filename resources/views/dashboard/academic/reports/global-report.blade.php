@@ -215,7 +215,7 @@
                 @foreach($report[$level->name][$department->name]['programs'] as $program)
                    
                     <tr>
-                     <td>{{ $program->name }}</td>
+                     <td>{{ $program->name }}...</td>
                     </tr>
                   
                 @endforeach
