@@ -1409,6 +1409,7 @@ class ExaminationResultController extends Controller
 
             foreach($grading_policies as $policy){
               $modules[$assignment->module->code]['grades'][$policy->grade] = 0; 
+              $modules[$assignment->module->code]['grades_perc'][$policy->grade] = 0;
               $modules[$assignment->module->code]['grades']['ML'][$policy->grade] = 0; 
               $modules[$assignment->module->code]['grades']['FL'][$policy->grade] = 0;
               $modules[$assignment->module->code]['special_grades'][$policy->grade] = 0; 
