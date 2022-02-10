@@ -212,7 +212,13 @@
                 <tr>
                    <td rowspan="{{ count($report[$level->name][$department->name]['programs']) }}">{{ $department->name }}</td>
                 </tr>
-                
+                @foreach($report[$level->name][$department->name]['programs'] as $program)
+                   
+                    <tr>
+                     <td>{{ $program->name }}</td>
+                    </tr>
+                  
+                @endforeach
                 @endforeach
               </table>
             @endforeach

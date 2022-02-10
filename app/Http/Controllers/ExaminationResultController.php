@@ -1811,15 +1811,15 @@ class ExaminationResultController extends Controller
     public function getGlobalReport(Request $request)
     {
         $report = [];
-        $departments = Department::with(['programs.ntaLevel','programs.departments'])->get();
+        $departments = Department::with(['programs.ntaLevel'])->get();
         $nta_levels = NTALevel::all();
         foreach($nta_levels as $level){
             foreach($departments as $department){
                 $report[$level->name]['departments'][] = $department;
                 $report[$level->name][$department->name]['programs'] = [];
-                
+
                 foreach($department->programs as $program){
-                   if(Util::collectionContainsKey($program->departments,$department->id)){
+                   // if(Util::collectionContainsKey($program->departments,$department->id)){
                       $report[$level->name][$department->name]['programs'][] = $program;
                       $report[$level->name][$department->name][$program->name]['total_students'] = 0;
                       $report[$level->name][$department->name][$program->name]['take_students'] = 0;
@@ -1837,7 +1837,7 @@ class ExaminationResultController extends Controller
                       $report[$level->name][$department->name][$program->name]['FL']['pass_students'] = 0;
                       $report[$level->name][$department->name][$program->name]['ML']['fail_students'] = 0;
                       $report[$level->name][$department->name][$program->name]['FL']['fail_students'] = 0;
-                   }
+                   // }
                    
                 }
             }
