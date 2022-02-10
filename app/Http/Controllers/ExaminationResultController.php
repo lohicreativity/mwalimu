@@ -102,15 +102,26 @@ class ExaminationResultController extends Controller
 
 
         foreach($module_assignments as $assign){
-          $exam_student_count = ExaminationResult::where('module_assignment_id',$assign->id)->count();
-        	if($assign->course_work_process_status != 'PROCESSED' && $exam_student_count != 0){
-            DB::rollback();
-        		return redirect()->back()->with('error',$assign->module->name.'-'.$assign->module->code.' course works not processed');
-        	}
-        	if($assign->final_upload_status == null && $exam_student_count != 0){
-            DB::rollback();
-        		return redirect()->back()->with('error',$assign->module->name.'-'.$assign->module->code.' final not uploaded');
-        	}
+          if($assign->programModuleAssignment->category == 'COMPULSORY'){
+          	if($assign->course_work_process_status != 'PROCESSED'){
+              DB::rollback();
+          		return redirect()->back()->with('error',$assign->module->name.'-'.$assign->module->code.' course works not processed');
+          	}
+          	if($assign->final_upload_status == null){
+              DB::rollback();
+          		return redirect()->back()->with('error',$assign->module->name.'-'.$assign->module->code.' final not uploaded');
+          	}
+          }else{
+            $exam_student_count = ModuleAssignment::find($assign->id)->programModuleAssignment()->students()->count();
+            if($assign->course_work_process_status != 'PROCESSED' && $exam_student_count != 0){
+              DB::rollback();
+              return redirect()->back()->with('error',$assign->module->name.'-'.$assign->module->code.' course works not processed');
+            }
+            if($assign->final_upload_status == null && $exam_student_count != 0){
+              DB::rollback();
+              return redirect()->back()->with('error',$assign->module->name.'-'.$assign->module->code.' final not uploaded');
+            }
+          }
         }
 
         $student_buffer = [];
