@@ -112,7 +112,7 @@ class ExaminationResultController extends Controller
           		return redirect()->back()->with('error',$assign->module->name.'-'.$assign->module->code.' final not uploaded');
           	}
           }else{
-            $exam_student_count = ModuleAssignment::find($assign->id)->programModuleAssignment()->optedStudents()->count();
+            $exam_student_count = ProgramModuleAssignment::find($assign->program_module_assignment_id)->optedStudents()->count();
             if($assign->course_work_process_status != 'PROCESSED' && $exam_student_count != 0){
               DB::rollback();
               return redirect()->back()->with('error',$assign->module->name.'-'.$assign->module->code.' course works not processed');
