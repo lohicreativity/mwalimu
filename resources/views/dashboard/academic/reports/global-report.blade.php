@@ -232,15 +232,18 @@
                 @foreach($report[$level->name]['departments'] as $department)
                 <tr rowspan="{{ count($report[$level->name][$department->name]['programs']) }}">
                    <td>{{ $department->name }}</td>
-                @foreach($report[$level->name][$department->name]['programs'] as $program)
                    <td>
+                @foreach($report[$level->name][$department->name]['programs'] as $program)
+                   
                       <table>
                         <tr>
                           <td>{{ $program->name }}</td>
                         </tr>
                       </table>
-                  </td>
+                  
                 @endforeach
+                  </td>
+                @foreach($report[$level->name][$department->name]['programs'] as $program)
                   <td>{{ $level->name }}</td>
                   <td>{{ $report[$level->name][$department->name]['ML']['take_students'] }}</td>
                   <td>{{ $report[$level->name][$department->name]['FL']['take_students'] }}</td>
@@ -250,6 +253,7 @@
                   <td>{{ $report[$level->name][$department->name]['FL']['post_students'] }}</td>
                   <td>{{ $report[$level->name][$department->name]['ML']['inc_students'] }}</td>
                   <td>{{ $report[$level->name][$department->name]['FL']['inc_students'] }}</td>
+                @end
                 </tr>
                 @endforeach
               </table>
