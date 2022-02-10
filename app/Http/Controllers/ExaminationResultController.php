@@ -1935,6 +1935,8 @@ class ExaminationResultController extends Controller
             }
         }
 
+        return dd($report);
+
         $data = [
             'report'=>$report,
             'study_academic_year'=>StudyAcademicYear::with('academicYear')->find($request->get('study_academic_year_id')),
