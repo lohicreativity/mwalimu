@@ -1832,7 +1832,7 @@ class ExaminationResultController extends Controller
                 $report[$level->name][$department->name]['programs'] = [];
 
                 foreach($department->programs as $program){
-                   // if($program->nta_level_id == $level->id){
+                   if($program->nta_level_id == $level->id){
                       $report[$level->name][$department->name]['programs'][] = $program;
                       $report[$level->name][$department->name][$program->name]['total_students'] = 0;
                       $report[$level->name][$department->name][$program->name]['take_students'] = 0;
@@ -1855,7 +1855,7 @@ class ExaminationResultController extends Controller
                       $report[$level->name][$department->name][$program->name]['FL']['pass_students'] = 0;
                       $report[$level->name][$department->name][$program->name]['ML']['fail_students'] = 0;
                       $report[$level->name][$department->name][$program->name]['FL']['fail_students'] = 0;
-                   // }
+                   }
                    
                 }
             }
@@ -1957,6 +1957,8 @@ class ExaminationResultController extends Controller
                }
             }
         }
+
+        return dd($report);
 
         $data = [
             'report'=>$report,
