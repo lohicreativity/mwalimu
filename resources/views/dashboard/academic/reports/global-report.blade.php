@@ -209,8 +209,8 @@
             @foreach($nta_levels as $level)
               <table class="table table-bordered">
                 @foreach($report[$level->name]['departments'] as $department)
-                <tr rowspan="{{ count($report[$level->name][$department->name]['programs']) }}">
-                   <td>{{ $department->name }}</td>
+                <tr>
+                   <td rowspan="{{ count($report[$level->name][$department->name]['programs']) }}">{{ $department->name }}</td>
                 @foreach($report[$level->name][$department->name]['programs'] as $program)
                    <tr>
                    <td>{{ $program->name }}</td>
