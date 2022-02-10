@@ -1827,6 +1827,8 @@ class ExaminationResultController extends Controller
                       $report[$level->name][$department->name][$program->name]['inc_students'] = 0;
                       $report[$level->name][$department->name][$program->name]['pass_students'] = 0;
                       $report[$level->name][$department->name][$program->name]['fail_students'] = 0;
+                      $report[$level->name][$department->name][$program->name]['take_students_rate'] = 0;
+                      $report[$level->name][$department->name][$program->name]['miss_take_students_rate'] = 0;
                       $report[$level->name][$department->name][$program->name]['ML']['take_students'] = 0;
                       $report[$level->name][$department->name][$program->name]['FL']['take_students'] = 0;
                       $report[$level->name][$department->name][$program->name]['ML']['post_students'] = 0;
@@ -1927,6 +1929,12 @@ class ExaminationResultController extends Controller
                                }
                           }
 
+                          if($result->final_exam_remark == 'INCOMPLETE' || $result->final_exam_remark == 'POSTPONED'){
+                               $report[$result->moduleAssignment->programModuleAssignment->module->ntaLevel->name][$department->name][$program->name]['miss_take_students'] += 1;
+
+                               $report[$result->moduleAssignment->programModuleAssignment->module->ntaLevel->name][$department->name][$program->name]['miss_take_students_rate'] = $report[$result->moduleAssignment->programModuleAssignment->module->ntaLevel->name][$department->name][$program->name]['miss_take_students']*100/$report[$result->moduleAssignment->programModuleAssignment->module->ntaLevel->name][$department->name][$program->name]['total_students'];
+                          }
+
                        }
                        
                     }
@@ -1934,8 +1942,6 @@ class ExaminationResultController extends Controller
                }
             }
         }
-
-        return dd($report);
 
         $data = [
             'report'=>$report,

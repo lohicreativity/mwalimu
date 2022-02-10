@@ -253,6 +253,8 @@
                   <td>{{ $report[$level->name][$department->name][$program->name]['FL']['post_students'] }}</td>
                   <td>{{ $report[$level->name][$department->name][$program->name]['ML']['inc_students'] }}</td>
                   <td>{{ $report[$level->name][$department->name][$program->name]['FL']['inc_students'] }}</td>
+                  <td>{{ $report[$level->name][$department->name][$program->name]['miss_take_students'] }}</td>
+                  <td>{{ $report[$level->name][$department->name][$program->name]['miss_take_students_rate'] }}</td>
                 @endforeach
                 </tr>
                 @endforeach
