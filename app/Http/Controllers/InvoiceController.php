@@ -111,14 +111,14 @@ class InvoiceController extends Controller
 		   */
 		   //die( $request->get("payer_name") );
         //$this->validate($request, ['payment_ref' => 'required']);
-    	$valid = $this->validateRequest($request);
-    	if($valid->fails()){
-            if($request->ajax()){
-              return response()->json(array('error_messages'=>$valid->messages()));
-           }else{
-              return redirect()->back()->withInput()->withErrors($valid->messages());
-           }
-        }
+    	// $valid = $this->validateRequest($request);
+    	// if($valid->fails()){
+     //        if($request->ajax()){
+     //          return response()->json(array('error_messages'=>$valid->messages()));
+     //       }else{
+     //          return redirect()->back()->withInput()->withErrors($valid->messages());
+     //       }
+     //    }
 
     	
     	#set expire da//
