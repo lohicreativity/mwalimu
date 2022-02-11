@@ -25,6 +25,12 @@ $app = new Illuminate\Foundation\Application(
 | incoming requests to this application from both the web and CLI.
 |
 */
+// $app->configure('amqp');
+// $app->register(Bschmitt\Amqp\LumenServiceProvider::class);
+
+// $app->withFacades(true, [
+//     'Bschmitt\Amqp\Facades\Amqp' => 'Amqp',
+// ]);
 
 $app->singleton(
     Illuminate\Contracts\Http\Kernel::class,

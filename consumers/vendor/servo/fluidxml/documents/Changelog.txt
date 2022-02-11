@@ -1,0 +1,238 @@
+[+]: new   [~]: changed   [-]: removed   [#]: fixed   [@]: internal
+
+
+1.20.3: (2016-07-12)
+fixes wrong handling of null/empty node value.
+
+  [#] Fixed:
+  * fixes #13.
+
+
+1.20.2:
+fixes some leaked PHP notices.
+
+  [#] Fixed:
+  * fix.
+
+
+1.20.1:
+internal cleanup.
+
+  [@] Internal:
+  * refactoring.
+
+
+1.20: (2016-02-21)
+is a major step forward breaking compatibility with the past.
+Under the hood there is a general reorganization to be PSR-0/4 compliant,
+a general cleanup of the API for being consistent and allowing future clean APIs
+growth, some notable additions like the ->filter() method to programmatically
+filter the query results and ->html() to output the document as valid HTML 5 string.
+Just because awesomenesses are never enough, ->query() supports CSS Selectors.
+
+  [+] New:
+  * ->html()                is part of the family.
+  * ->filter()              is part of the family.
+  * ->comment()             is part of the family.
+  * ->setComment()          is part of the family.
+  * ->addComment()          is part of the family.
+  * ->size()                is an alias of ->length().
+  * ->__invoke()            is an alias of ->query().
+  * ->__toString()          is an alias of ->xml().
+  * ->array()               replaces ->asArray().
+  * ->addChild()            replaces ->appendChild().
+  * ->addText()             replaces ->appendText().
+  * ->addCdata()            replaces ->appendCdata().
+
+  [~] Changed:
+  * ->query()               supports CSS Selectors.
+  * fluidxml()              has gained the super powers of fluidify().
+  * FluidXml->__construct() has gained the super powers of FluidXml::load().
+  * ->attr()                can set attributes without value.
+  * ->setAttribute()        can set attributes without value.
+  * ::load()/fluidify()     can be ONLY used to load an XML file.
+
+  [-] Removed:
+  * ->asArray()             has been removed superseded by ->array().
+  * ->appendText()          has been removed superseded by ->addText().
+  * ->appendCdata()         has been removed superseded by ->addCdata().
+  * ->appendChild()         has been removed superseded by ->addChild().
+  * ->insertSiblingBefore() has been removed superseded by ->prependSibling().
+  * ->insertSiblingAfter()  has been removed superseded by ->appendSibling().
+
+  [@] Internal:
+  * PSR-0/4 compliance.
+  * FluidXml.php is still there for people not using Composer/PSR-0/4 loaders.
+  * refactoring.
+
+
+1.13: (2016-01-24)
+introduces the '->save()' method.
+
+  [+] New:
+  * ->save() is part of the family.
+
+
+1.12.4:
+internal cleanup.
+
+  [@] Internal:
+  * cleanup.
+
+
+1.12.3:
+refactoring improving the code design.
+
+  [@] Internal:
+  * refactoring.
+
+
+1.12.2:
+internal refactoring and performance regression fix.
+
+  [@] Internal:
+  * refactoring. Performances are normal.
+
+
+1.12.1:
+'->times()' and '->each()' are bound to the context. $this behaves as expected.
+
+  [@] Internal:
+  * refactoring. Performances are worst but code is much better.
+
+
+1.12:
+introduces the '->times()' method.
+
+  [+] New:
+  * ->times() is part of the family.
+
+
+1.11:
+supports the special syntax '@<attribute>' and '@' for setting attributes and
+text content when adding elements using an array.
+
+  [~] Changed:
+  * ->appendChild()     supports the '@' special syntax.
+  * ->appendSibling()   supports the '@' special syntax.
+  * ->prependSibling()  supports the '@' special syntax.
+
+
+1.10:
+introduces the '->each()' method and the '->setCdata()'/'->cdata()' twins
+methods together with an internal refactoring.
+
+  [+] New:
+  * ->each()        is part of the family.
+  * ->setCdata()    is part of the family.
+  * ->cdata()       is part of the family.
+
+  [@] Internal:
+  * refactoring.
+
+
+1.9:
+wraps classes and functions under the FluidXml namespace.
+
+  [+] New:
+  * FluidXml namespace wraps classes and functions.
+
+
+1.8:
+gives super powers to the manipulation APIs.
+
+  [~] Changed:
+  * ->appendChild()     has the super powers of ->appendXml().
+  * ->appendSibling()   has the super powers of ->appendXml().
+  * ->prependSibling()  has the super powers of ->appendXml().
+
+  [-] Removed:
+  * ->appendXml()       has been removed superseded by ->appendChild().
+
+
+1.7:
+improves dealing with other XML object instances.
+
+  [~] Changed:
+  * ::load()        adds support for DOM{Node,NodeList} and FluidXml.
+  * ->xml()         can export any node with its descendants.
+  * ->xml()         accepts a boolean flag to remove the XML declaration headers.
+  * ->appendXml()   adds support for DOM{Document,Node,NodeList}, SimpleXMLElement,
+                    FluidXml and XML strings.
+
+
+1.6.2:
+fixes a wrong path of the Composer autoloader.
+
+  [#] Fixes:
+  * Composer autoload path.
+
+
+1.6.1:
+fixes a wrong path of the Composer autoloader.
+
+  [#] Fixes:
+  * Composer autoload path.
+
+
+1.6:
+lowers the minimum PHP version to PHP 5.6 (it was PHP 7).
+
+  [~] Changed:
+  * PHP 5.6 is the minimum version.
+
+  [@] Internal:
+  * cleanup.
+
+
+1.5:
+introduces support for importing XML documents from DOMDocument, SimpleXMLElement,
+XML strings and XML files.
+
+  [+] New:
+  * fluidify()          is part of the family.
+  * FluidXml::new()     is part of the family.
+  * FluidXml::load()    is part of the family.
+
+
+1.4:
+improves the removal of nodes.
+
+  [~] Changed:
+  * ->remove() can remove the results of a query and accepts multiple XPath strings.
+
+
+1.3:
+helps customizing the root element of a document.
+
+  [~] Changed:
+  * FluidXml->__construct accepts a root element as first argument.
+
+
+1.2:
+improves the registration of XML namespaces and the query experience.
+
+  [~] Changed:
+  * ->query()       supports a variable number of XPaths.
+  * ->namespace()   supports a variable number of FluidNamespace instances.
+  * ->namespace()   supports a namespace id, uri and mode as arguments.
+  * ->namespaces()  returns all registered namespaces.
+  * FluidNamespace  instances are read-only.
+  * FluidNamespace::{id/uri/mode}() can't mutate the instance.
+
+
+1.1.1:
+fixes a notice error.
+
+
+1.1:
+introduces the XML namespaces support.
+
+  [+] New:
+  * ->namespace()  is part of the family.
+  * ->namespaces() is part of the family.
+  * FluidNamespace is part of the family.
+
+
+1.0: (2015-11-19)
+is the initial release of the XML library with the Super Cow powers.

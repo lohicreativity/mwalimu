@@ -15,7 +15,7 @@ return [
    
    'VERSION'=>1.0,
 
-   'GePG_SERVER' => 'http://154.118.230.202:80/',
+    'GePG_SERVER' => 'http://154.118.230.202:80/',
     'POST_BILL_PATH' => 'api/bill/qrequest',
     'POST_SIGNED_BILL_PATH'=>'api/bill/sigqrequest',
     'CANCEL_BILL_PATH' => 'api/bill/sigcancel_request',
