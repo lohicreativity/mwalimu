@@ -113,7 +113,11 @@ class InvoiceController extends Controller
         //$this->validate($request, ['payment_ref' => 'required']);
     	$valid = $this->validateRequest($request);
     	if($valid->fails()){
-            return $this->error($valid->errors()->first(),500);
+            if($request->ajax()){
+              return response()->json(array('error_messages'=>$valid->messages()));
+           }else{
+              return redirect()->back()->withInput()->withErrors($valid->messages());
+           }
         }
 
     	
