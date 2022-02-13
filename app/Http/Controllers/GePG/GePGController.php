@@ -1,8 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\GePG;
 
 use Illuminate\Http\Request;
+use Validator, Config, Amqp;
+use function \FluidXml\fluidxml;
 
 class GePGController extends Controller
 {

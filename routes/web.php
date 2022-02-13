@@ -3,6 +3,9 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SessionController;
+use App\Http\Controllers\GePG\BillController;
+use App\Http\Controllers\GePG\ConsumerController;
+use App\Http\Controllers\GePG\GePGController;
 
 /*
 |--------------------------------------------------------------------------
