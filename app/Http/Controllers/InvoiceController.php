@@ -90,6 +90,7 @@ class InvoiceController extends Controller
 			$result = Http::post($url,$data);
 
 			return $result;
+
 			
 		return redirect()->back()->with('message','The bill with id '.$billno.' has been queued.', 200);
 						
