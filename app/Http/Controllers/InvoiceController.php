@@ -81,7 +81,8 @@ class InvoiceController extends Controller
 				'days_expires_after'=> $days,
 				'generated_by'=>$generated_by,
 				'approved_by'=>$approved_by,
-				'currency'=>$currency
+				'currency'=>$currency,
+				'_token'=>session()->token()
  			);
 
 			//$txt=print_r($data, true);
