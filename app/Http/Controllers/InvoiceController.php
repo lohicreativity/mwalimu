@@ -82,7 +82,7 @@ class InvoiceController extends Controller
 				'generated_by'=>$generated_by,
 				'approved_by'=>$approved_by,
 				'currency'=>$currency,
-				'_token'=>session()->token()
+				'_token'=>csrf_token()
  			);
 
 			//$txt=print_r($data, true);
