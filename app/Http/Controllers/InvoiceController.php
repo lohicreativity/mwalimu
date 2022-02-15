@@ -87,7 +87,7 @@ class InvoiceController extends Controller
 			//$txt=print_r($data, true);
 			//$myfile = file_put_contents('/var/public_html/ifm/logs/req_bill.txt', $txt.PHP_EOL , FILE_APPEND | LOCK_EX);
             $url = url('bills/post_bill');
-			$result = Http::withToken('token')->post($url,$data);
+			$result = Http::withToken(session()->token())->post($url,$data);
 
 			return $result;
 
