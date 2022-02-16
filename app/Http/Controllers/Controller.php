@@ -53,4 +53,26 @@ class Controller extends BaseController
 
     	
     }
+
+    /**
+     * Return a JSON response for success.
+     *
+     * @param  array  $data
+     * @param  string $code
+     * @return \Illuminate\Http\JsonResponse
+     */
+	public function success($data, $code = 200){
+		return response()->json(['error' => false, 'data' => $data], $code);
+	}
+	
+    /**
+     * Return a JSON response for error.
+     *
+     * @param  array  $message
+     * @param  string $code
+     * @return \Illuminate\Http\JsonResponse
+     */
+	public function error($message, $code = 500){
+		return response()->json(['error' => true, 'message' => $message], $code);
+	}
 }
