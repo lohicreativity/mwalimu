@@ -182,137 +182,137 @@ class BillController extends Controller
     }
 
 */
-    public function destroy($bill_id = null)
-    {        
-        //$valid = $this->validateRequest($request);
-        if(is_null($bill_id)) {
-            return $this->error("Invalid Bill ID.", 500);
-        }
+    // public function destroy($bill_id = null)
+    // {        
+    //     //$valid = $this->validateRequest($request);
+    //     if(is_null($bill_id)) {
+    //         return $this->error("Invalid Bill ID.", 500);
+    //     }
           
 
-        //dd("BillID: ".$bill_id);
-        # Compose BillCancel XML
-        $bill_cancel_req = fluidxml(false);         
-        $bill_cancel_req->add('gepgBillCanclReq', true)
-                ->add('SpCode', config('constants.SPCODE'))
-                ->add('SpSysId', config('constants.SPSYSID'))
-                ->add('BillId', $bill_id);  
+    //     //dd("BillID: ".$bill_id);
+    //     # Compose BillCancel XML
+    //     $bill_cancel_req = fluidxml(false);         
+    //     $bill_cancel_req->add('gepgBillCanclReq', true)
+    //             ->add('SpCode', config('constants.SPCODE'))
+    //             ->add('SpSysId', config('constants.SPSYSID'))
+    //             ->add('BillId', $bill_id);  
 
-        $req_body = str_replace('> <','><', preg_replace('/\s+/', ' ', $bill_cancel_req->xml(true)));
+    //     $req_body = str_replace('> <','><', preg_replace('/\s+/', ' ', $bill_cancel_req->xml(true)));
         
-        Log::info("CANCEL-BODY: ".$req_body); 
-        # Opening Certificate
-        if (!$cert_store = file_get_contents("consumers/gepgclientprivatekey.pfx")) {
-            echo " ** Error: Unable to read the cert file", "\n";
-            exit;
-        }
-        else
-        {
-            # Reading Certificate Info
-            if (openssl_pkcs12_read($cert_store, $cert_info, config('constants.CERT_PASSWORD')))   
-            {  
-                # Create signature
-                openssl_sign($req_body, $signature, $cert_info['pkey'], "sha1WithRSAEncryption");
+    //     Log::info("CANCEL-BODY: ".$req_body); 
+    //     # Opening Certificate
+    //     if (!$cert_store = file_get_contents("consumers/gepgclientprivatekey.pfx")) {
+    //         echo " ** Error: Unable to read the cert file", "\n";
+    //         exit;
+    //     }
+    //     else
+    //     {
+    //         # Reading Certificate Info
+    //         if (openssl_pkcs12_read($cert_store, $cert_info, config('constants.CERT_PASSWORD')))   
+    //         {  
+    //             # Create signature
+    //             openssl_sign($req_body, $signature, $cert_info['pkey'], "sha1WithRSAEncryption");
 
-                # output crypted data base64 encoded
-                $signature = base64_encode($signature);                         
+    //             # output crypted data base64 encoded
+    //             $signature = base64_encode($signature);                         
 
-                # Combine signature and content signed
-                $body = fluidxml(false);
-                $body->add("Gepg", true)
-                     ->add($req_body)
-                     ->add("gepgSignature", $signature);
+    //             # Combine signature and content signed
+    //             $body = fluidxml(false);
+    //             $body->add("Gepg", true)
+    //                  ->add($req_body)
+    //                  ->add("gepgSignature", $signature);
                      
-                $body = str_replace('> <','><', preg_replace('/\s+/', ' ', $body->xml(true)));
+    //             $body = str_replace('> <','><', preg_replace('/\s+/', ' ', $body->xml(true)));
 
-                $url = config('constants.GePG_SERVER').config('constants.CANCEL_BILL_PATH');       
-                Log::info('URL '.$url);
-                Log::info("CANCEL-BODY: ".$body); 
-                #var_dump($message->body);
-                $headers = [
-                    'Content-Type:application/xml',
-                    'Gepg-Com:default.sp.in',
-                    'Gepg-Code:'. config('constants.SPCODE')
-                ];
+    //             $url = config('constants.GePG_SERVER').config('constants.CANCEL_BILL_PATH');       
+    //             Log::info('URL '.$url);
+    //             Log::info("CANCEL-BODY: ".$body); 
+    //             #var_dump($message->body);
+    //             $headers = [
+    //                 'Content-Type:application/xml',
+    //                 'Gepg-Com:default.sp.in',
+    //                 'Gepg-Code:'. config('constants.SPCODE')
+    //             ];
 
-                $response = curlRequest($url, null, $body, $headers);
+    //             $response = curlRequest($url, null, $body, $headers);
 
-                Log::info( $response['code']);
-                Log::info( $response['body']. "\n");
+    //             Log::info( $response['code']);
+    //             Log::info( $response['body']. "\n");
 
-                 if( $response['code'] == 200 ) {
+    //              if( $response['code'] == 200 ) {
 
-                    # Get data and signature from response
-                    $vdata = getDataString($response['body'], config('constants.CANCEL_DATA_TAG'));
-                    $vsignature = getSignatureString($response['body'], config('constants.SIGN_TAG'));
+    //                 # Get data and signature from response
+    //                 $vdata = getDataString($response['body'], config('constants.CANCEL_DATA_TAG'));
+    //                 $vsignature = getSignatureString($response['body'], config('constants.SIGN_TAG'));
 
-                    # Get Certificate contents
-                    if (!$pcert_store = file_get_contents("consumers/gepgpubliccertificate.pfx")) {
-                    Log::info(" ** Error: Unable to read the GePG Public Cert File\n");
-                    //exit;
-                    } else {
+    //                 # Get Certificate contents
+    //                 if (!$pcert_store = file_get_contents("consumers/gepgpubliccertificate.pfx")) {
+    //                 Log::info(" ** Error: Unable to read the GePG Public Cert File\n");
+    //                 //exit;
+    //                 } else {
 
-                        # Read Certificate
-                       // if (openssl_pkcs12_read($pcert_store, $pcert_info, config('constants.PUBLIC_CERT_PASSWORD'))) {
+    //                     # Read Certificate
+    //                    // if (openssl_pkcs12_read($pcert_store, $pcert_info, config('constants.PUBLIC_CERT_PASSWORD'))) {
 
-                            # Decode Received Signature String
-                           // $rawsignature = base64_decode($vsignature);
+    //                         # Decode Received Signature String
+    //                        // $rawsignature = base64_decode($vsignature);
 
-                            # Verify Signature and state whether signature is okay or not
-                            $vdata = str_replace('> <', '><', preg_replace('/\s+/', ' ', $vdata));                
-                           // $ok = openssl_verify($vdata, $rawsignature, $pcert_info['extracerts']['0']);
+    //                         # Verify Signature and state whether signature is okay or not
+    //                         $vdata = str_replace('> <', '><', preg_replace('/\s+/', ' ', $vdata));                
+    //                        // $ok = openssl_verify($vdata, $rawsignature, $pcert_info['extracerts']['0']);
 
-                           // if ($ok == 1) {
-                                // echo "Signature Status:";
-                                // echo "GOOD";
+    //                        // if ($ok == 1) {
+    //                             // echo "Signature Status:";
+    //                             // echo "GOOD";
 
-                                Log::info("\n * Cancel Response: ".json_encode($response['body']));  
-                                $cancel_resp = fluidxml();
-                                $cancel_resp->add($vdata);
+    //                             Log::info("\n * Cancel Response: ".json_encode($response['body']));  
+    //                             $cancel_resp = fluidxml();
+    //                             $cancel_resp->add($vdata);
                                 
-                                $sxml = simplexml_load_string($cancel_resp->xml());
-                                $data = json_decode(json_encode($sxml), true);    
+    //                             $sxml = simplexml_load_string($cancel_resp->xml());
+    //                             $data = json_decode(json_encode($sxml), true);    
 
-                                $cancel_trx = $data['gepgBillCanclResp']['BillCanclTrxDt'];
+    //                             $cancel_trx = $data['gepgBillCanclResp']['BillCanclTrxDt'];
 
-                                if($cancel_trx['TrxSts'] == 'GS') {
-                                    $return = [
-                                        'message'   =>  'Successful',
-                                        'data'      =>  ['bill_id' => $cancel_trx['BillId']]
-                                    ];                
-                                    return $this->success($return, 200);            
-                                }
-                                else {
-                                    $return = [
-                                        'message'   =>  $cancel_trx['TrxStsCode'],
-                                        'data'      =>  ['bill_id' => $cancel_trx['BillId']]
-                                    ];    
-                                    return $this->error($return, 200);            
-                                } 
-                            /*    
-                            }
+    //                             if($cancel_trx['TrxSts'] == 'GS') {
+    //                                 $return = [
+    //                                     'message'   =>  'Successful',
+    //                                     'data'      =>  ['bill_id' => $cancel_trx['BillId']]
+    //                                 ];                
+    //                                 return $this->success($return, 200);            
+    //                             }
+    //                             else {
+    //                                 $return = [
+    //                                     'message'   =>  $cancel_trx['TrxStsCode'],
+    //                                     'data'      =>  ['bill_id' => $cancel_trx['BillId']]
+    //                                 ];    
+    //                                 return $this->error($return, 200);            
+    //                             } 
+    //                         /*    
+    //                         }
 
-                            else 
-                            {
-                                return $this->error("Invalid Signature from GePG.", 500);
-                            }
-                        }//end opening public certificate
-                       */
+    //                         else 
+    //                         {
+    //                             return $this->error("Invalid Signature from GePG.", 500);
+    //                         }
+    //                     }//end opening public certificate
+    //                    */
 
-                    }
-                }
-                else
-                {
-                    $return = [
-                        'message'   =>  $response['code'].": Server Error, Check Logs.",
-                        'data'      =>  []
-                    ];
-                    return $this->error($return, 200);
-                }
+    //                 }
+    //             }
+    //             else
+    //             {
+    //                 $return = [
+    //                     'message'   =>  $response['code'].": Server Error, Check Logs.",
+    //                     'data'      =>  []
+    //                 ];
+    //                 return $this->error($return, 200);
+    //             }
 
-            }
-        }                    
-    }
+    //         }
+    //     }                    
+    // }
 
 
     public function validateRequest(Request $request){
