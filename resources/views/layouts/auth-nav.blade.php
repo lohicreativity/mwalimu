@@ -3,8 +3,55 @@
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
-
-          @if(Auth::user()->hasRole('student'))
+          @if(Auth::user()->hasRole('applicant'))
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-folder-open"></i>
+              <p>
+                {{ __('Application') }}
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{ url('application/basic-information') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Basic Information</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ url('application/next-of-kin') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Next of Kin</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ url('application/payments') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Payments</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ url('application/results') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Request Results</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ url('application/programs') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Select Programmes</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ url('application/submission') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Submit Application</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+          @elseif(Auth::user()->hasRole('student'))
           <li class="nav-item">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-building"></i>

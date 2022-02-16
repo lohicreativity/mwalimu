@@ -34,7 +34,7 @@ class CreateApplicantsTable extends Migration
             $table->string('index_number')->unique();
             $table->string('entry_mode');
             $table->mediumInteger('admission_year');
-            $table->string('application_number')->unique();
+            $table->unsignedBigInteger('program_level_id');
             $table->unsignedBigInteger('intake_id');
             $table->unsignedBigInteger('disability_status_id');
             $table->unsignedBigInteger('next_of_kin_id');

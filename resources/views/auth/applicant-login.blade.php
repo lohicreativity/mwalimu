@@ -8,21 +8,21 @@
   <!-- /.login-logo -->
   <div class="card">
     <div class="card-body login-card-body">
-      <p class="login-box-msg">Staffs Login</p>
+      <p class="login-box-msg">Applicant Login</p>
 
-        @if(session('status'))
+      @if (session('status'))
             <div class="mb-4 font-medium text-sm text-green-600">
                 {{ session('status') }}
             </div>
         @endif
 
-      <form action="{{ route('login') }}" method="POST">
+      <form action="{{ url('application/authenticate') }}" method="POST">
         @csrf
         <div class="input-group mb-3">
-          <input type="email" name="email" class="form-control" placeholder="Email">
+          <input type="text" name="index_number" class="form-control" placeholder="Index number">
           <div class="input-group-append">
             <div class="input-group-text">
-              <span class="fas fa-envelope"></span>
+              <span class="fas fa-user"></span>
             </div>
           </div>
         </div>
@@ -51,10 +51,6 @@
         </div>
       </form>
 
-
-      <p class="mb-1">
-        <a href="{{ route('password.request') }}">I forgot my password</a>
-      </p>
       <!-- <p class="mb-0">
         <a href="register.html" class="text-center">Register a new membership</a>
       </p> -->

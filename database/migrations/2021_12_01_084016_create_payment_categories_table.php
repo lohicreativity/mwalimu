@@ -23,6 +23,8 @@ class CreatePaymentCategoriesTable extends Migration
             $table->string('description');
             $table->tinyInteger('is_external');
             $table->tinyInteger('is_internal');
+            $table->tinyInteger('is_paid_per_semester');
+            $table->tinyInteger('is_paid_only_once');
             $table->timestamps();
         });
     }

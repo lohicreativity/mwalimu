@@ -177,12 +177,12 @@
                     </div>
                     <div class="form-group col-3">
                        {!! Form::label('','Birth date') !!}
-                       {!! Form::text('birth_date',$edit_staff->birth_date,$birth_date) !!}
+                       {!! Form::text('birth_date',App\Utils\DateMaker::toStandardDate($edit_staff->birth_date),$birth_date) !!}
                     </div>
                   </div>
                    <div class="row">
                     <div class="form-group col-6">
-                       {!! Form::label('','Region') !!}
+                       {!! Form::label('','Gender') !!}
                        <select name="gender" class="form-control" required>
                          <option value="">Select Gender</option>
                          <option value="M" @if($edit_staff->gender == 'M') selected="selected" @endif>Male</option>

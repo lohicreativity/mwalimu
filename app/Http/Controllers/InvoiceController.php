@@ -88,7 +88,7 @@ class InvoiceController extends Controller
 			//$myfile = file_put_contents('/var/public_html/ifm/logs/req_bill.txt', $txt.PHP_EOL , FILE_APPEND | LOCK_EX);
             $url = url('bills/post_bill');
 			$result = Http::withHeaders([
-                        'X-CSRF-Token'=> csrf_token()
+                        'X-CSRF-TOKEN'=> csrf_token()
 			          ])->post($url,$data);
 
 			return $result;

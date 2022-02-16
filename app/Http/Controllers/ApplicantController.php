@@ -4,10 +4,20 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Domain\Application\Models\Applicant;
+use App\Domain\Application\Models\NextOfKin;
 use App\Domain\Application\Models\ApplicationCycle;
-use App\Domain\Academic\Actions\ApplicantAction;
+use App\Domain\Application\Actions\ApplicantAction;
+use App\Domain\Settings\Models\Country;
+use App\Domain\Settings\Models\Region;
+use App\Domain\Settings\Models\District;
+use App\Domain\Settings\Models\Ward;
+use App\Domain\Settings\Models\DisabilityStatus;
+use App\Domain\Finance\Models\FeeType;
+use App\Domain\Finance\Models\FeeItem;
+use App\Domain\Finance\Models\FeeAmount;
+use App\Models\User;
 use App\Utils\Util;
-use Validator;
+use Validator, Auth;
 
 class ApplicantController extends Controller
 {
@@ -22,15 +32,104 @@ class ApplicantController extends Controller
     	return view('dashboard.application.applicants',$data)->withTitle('Applicants');
     }
 
+
+    /**
+     * Display login form
+     */
+    public function showLogin(Request $request)
+    {
+        return view('auth.applicant-login')->withTitle('Student Login');
+    }
+
+    /**
+     * Authenticate student
+     */
+    public function authenticate(Request $request)
+    {
+        $validation = Validator::make($request->all(),[
+            'index_number'=>'required',
+            'password'=>'required'
+        ]);
+
+        if($validation->fails()){
+           if($request->ajax()){
+              return response()->json(array('error_messages'=>$validation->messages()));
+           }else{
+              return redirect()->back()->withInput()->withErrors($validation->messages());
+           }
+        }
+
+        $credentials = [
+            'username'=>$request->get('index_number'),
+            'password'=>$request->get('password')
+        ];
+
+        if(Auth::attempt($credentials)){
+            return redirect()->to('application/dashboard')->with('message','Logged in successfully');
+        }else{
+           return redirect()->back()->with('error','Incorrect index number or password');
+        }
+    }
+
+    /**
+     * Edit basic information
+     */
+    public function editBasicInfo(Request $request)
+    {
+        $data = [
+           'applicant'=>User::find(Auth::user()->id)->applicant,
+           'countries'=>Country::all(),
+           'regions'=>Region::all(),
+           'districts'=>District::all(),
+           'wards'=>Ward::all(),
+           'disabilities'=>DisabilityStatus::all(),
+        ];
+
+        return view('dashboard.application.edit-basic-information',$data)->withTitle('Edit Basic Information');
+    }
+
+       /**
+     * Edit basic information
+     */
+    public function editNextOfKin(Request $request)
+    {
+        $applicant = User::find(Auth::user()->id)->applicant;
+        $data = [
+           'applicant'=>$applicant,
+           'next_of_kin'=>NextOfKin::find($applicant->next_of_kin_id),
+           'countries'=>Country::all(),
+           'regions'=>Region::all(),
+           'districts'=>District::all(),
+           'wards'=>Ward::all(),
+           'disabilities'=>DisabilityStatus::all(),
+        ];
+
+        return view('dashboard.application.edit-next-of-kin',$data)->withTitle('Edit Next of Kin');
+    }
+
+    /**
+     * Make application payment
+     */
+    public function payments(Request $request)
+    {
+        $data = [
+           'fee_type'=>FeeType::with('feeItems')->where('name','LIKE','%Application%')->where('study_academic_year_id',$study_academic_year->id)->first()
+        ];
+        return view('dashboard.application.payments',$data)->withTitle('Payments');
+    }
+
     /**
      * Store applicant into database
      */
-    public function store(Request $request)
+    public function updateBasicInfo(Request $request)
     {
     	$validation = Validator::make($request->all(),[
             'first_name'=>'required',
-            'last_name'=>'required',
-            'birth_date'=>'required'
+            'surname'=>'required',
+            'birth_date'=>'required',
+            'address'=>'required',
+            'nationality'=>'required',
+            'street'=>'required'
         ]);
 
         if($validation->fails()){
@@ -42,7 +141,7 @@ class ApplicantController extends Controller
         }
 
 
-        (new applicantAction)->store($request);
+        (new ApplicantAction)->update($request);
 
         return Util::requestResponse($request,'Applicant updated successfully');
     }
@@ -54,7 +153,7 @@ class ApplicantController extends Controller
     {
     	$validation = Validator::make($request->all(),[
             'first_name'=>'required',
-            'last_name'=>'required',
+            'surname'=>'required',
             'birth_date'=>'required'
         ]);
 

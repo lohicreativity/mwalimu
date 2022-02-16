@@ -13,7 +13,7 @@ class Applicant extends Model
 {
     use HasFactory;
 
-    protected $table = 'applicants';
+    protected $table = 'applicants_old';
 
     /**
      * Establish one to many relationship with countries
@@ -45,5 +45,13 @@ class Applicant extends Model
     public function ward()
     {
     	return $this->belongsTo(Ward::class,'ward_id');
+    }
+
+    /**
+     * Establish one to one relationship with next of kins
+     */
+    public function nextOfKin()
+    {
+        return $this->belongsTo(NextOfKin::class,'next_of_kin_id');
     }
 }

@@ -13,6 +13,7 @@ use Laravel\Sanctum\HasApiTokens;
 
 use App\Domain\Registration\Models\Student;
 use App\Domain\HumanResources\Models\Staff;
+use App\Domain\Application\Models\Applicant;
 
 class User extends Authenticatable
 {
@@ -128,5 +129,13 @@ class User extends Authenticatable
     public function staff()
     {
         return $this->hasOne(Staff::class,'user_id');
+    }
+
+    /**
+     * Establish one to one relationship with staffs
+     */
+    public function applicant()
+    {
+        return $this->hasOne(Applicant::class,'user_id');
     }
 }
