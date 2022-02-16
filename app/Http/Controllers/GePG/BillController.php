@@ -4,6 +4,9 @@ namespace App\Http\Controllers\GePG;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
+use function \FluidXml\fluidxml;
+use Validator, Amqp;
 
 class BillController extends Controller
 {
