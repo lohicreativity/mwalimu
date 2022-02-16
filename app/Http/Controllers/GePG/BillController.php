@@ -322,7 +322,7 @@ class BillController extends Controller
 			'amount' => 'required', 
 			'desc' => 'required',
 			'gfs_code' => 'required|numeric', 
-			'payment_type' => 'required|in:1,2,3',
+			'payment_type' => 'required|in:0,1,2,3',
 			'payerid' => 'required', 
 			'payer_name' => 'required',
 			'payer_cell' => 'required|digits:12', 
