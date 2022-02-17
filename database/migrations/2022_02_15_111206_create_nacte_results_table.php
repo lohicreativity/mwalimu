@@ -20,7 +20,7 @@ class CreateNacteResultsTable extends Migration
             $table->string('grade',5);
             $table->timestamps();
 
-            $table->foreign('applicant_id')->references('id')->on('applicants')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('applicant_id')->references('id')->on('applicants_old')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 

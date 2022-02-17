@@ -7,6 +7,7 @@ use App\Domain\Application\Models\Applicant;
 use App\Domain\Application\Models\NextOfKin;
 use App\Domain\Application\Models\ApplicationCycle;
 use App\Domain\Application\Actions\ApplicantAction;
+use App\Domain\Academic\Models\CampusProgram;
 use App\Domain\Settings\Models\Country;
 use App\Domain\Settings\Models\Region;
 use App\Domain\Settings\Models\District;
@@ -15,6 +16,9 @@ use App\Domain\Settings\Models\DisabilityStatus;
 use App\Domain\Finance\Models\FeeType;
 use App\Domain\Finance\Models\FeeItem;
 use App\Domain\Finance\Models\FeeAmount;
+use App\Domain\Application\Models\ApplicationWindow;
+use App\Domain\Academic\Models\StudyAcademicYear;
+use Illuminate\Support\Facades\Http;
 use App\Models\User;
 use App\Utils\Util;
 use Validator, Auth;
@@ -72,6 +76,17 @@ class ApplicantController extends Controller
     }
 
     /**
+     * Applicant dashboard
+     */
+    public function dashboard(Request $request)
+    {
+        $data = [
+           'applicant'=>User::find(Auth::user()->id)->applicant
+        ];
+        return view('dashboard.application.dashboard',$data)->withTitle('Dashboard');
+    }
+
+    /**
      * Edit basic information
      */
     public function editBasicInfo(Request $request)
@@ -112,10 +127,28 @@ class ApplicantController extends Controller
      */
     public function payments(Request $request)
     {
+        $study_academic_year = StudyAcademicYear::where('status','ACTIVE')->first();
         $data = [
-           'fee_type'=>FeeType::with('feeItems')->where('name','LIKE','%Application%')->where('study_academic_year_id',$study_academic_year->id)->first()
+           'applicant'=>User::find(Auth::user()->id)->applicant()->with('country')->first(),
+           'fee_amount'=>FeeAmount::whereHas('feeItem.feeType',function($query){
+                  $query->where('name','LIKE','%Application Fee%');
+            })->with(['feeItem.feeType'])->where('study_academic_year_id',$study_academic_year->id)->first()
         ];
+
         return view('dashboard.application.payments',$data)->withTitle('Payments');
+    }
+
+    /**
+     * Select programs
+     */
+    public function selectPrograms(Request $request)
+    {
+        $data = [
+           'applicant'=>User::find(Auth::user()->id)->applicant()->with(['selections.campusProgram.program','selections.campusProgram.campus'])->first(),
+           'application_window'=>ApplicationWindow::where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->first(),
+           'campus_programs'=>CampusProgram::with(['program','campus'])->get()
+        ];
+        return view('dashboard.application.select-programs',$data)->withTitle('Select Programmes');
     }
 
     /**

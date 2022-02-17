@@ -120,12 +120,12 @@
               </p>
             </a>
             <ul class="nav nav-treeview">
-              <!-- <li class="nav-item">
-                <a href="pages/layout/top-nav.html" class="nav-link">
-                  <i class="far fa-users nav-icon"></i>
-                  <p>Applicants</p>
+              <li class="nav-item">
+                <a href="{{ url('application/application-windows') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Application Windows</p>
                 </a>
-              </li> -->
+              </li>
             </ul>
           </li>
           <li class="nav-item">

@@ -37,6 +37,47 @@
     <section class="content">
       <div class="container-fluid">
         <!-- Small boxes (Stat box) -->
+        <div class="row">
+          <div class="col-12">
+
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Payments</h3>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+                @if($fee_amount)
+                 <table class="table table-bordered">
+                    <tr>
+                       <td>Fee Item</td>
+                       <td>Fee Amount</td>
+                    </tr>
+                    <tr>
+                       <td>{{ $fee_amount->feeItem->feeType->name }}</td>
+                       @if($applicant->country->code == 'TZ')
+                       <td>{{ $fee_amount->amount_in_tzs }} TZS</td>
+                       @else
+                       <td>{{ $fee_amount->amount_in_usd }} USD</td>
+                       @endif
+                    </tr>
+                    <tr>
+                      <td>
+                        {!! Form::open(['url'=>'application/request-control-number','class'=>'ss-form-processing']) !!}
+                          {!! Form::input('hidden','fee_amount_id',$fee_amount->id) !!}
+                          {!! Form::input('hidden','applicant_id',$applicant->id) !!}
+
+                          <button type="submit" class="btn btn-primary">Request Control Number</button>
+                        {!! Form::close() !!}
+                      </td>
+                    </tr>
+                 </table>
+                 @endif
+              </div>
+            </div>
+            <!-- / .card -->
+          </div>
+        </div>
+        <!-- / .row -->
         
       </div><!-- /.container-fluid -->
     </section>

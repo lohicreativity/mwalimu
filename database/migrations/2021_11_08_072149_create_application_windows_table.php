@@ -1,4 +1,4 @@
-<?php
+                <?php
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -18,6 +18,8 @@ class CreateApplicationWindowsTable extends Migration
             $table->unsignedBigInteger('intake_id');
             $table->unsignedBigInteger('study_academic_year_id');
             $table->integer('capacity');
+            $table->date('begin_date');
+            $table->date('end_date');
             $table->timestamps();
 
             $table->foreign('study_academic_year_id','study_ac_year_app_window')->references('id')->on('study_academic_years')->onUpdate('cascade');

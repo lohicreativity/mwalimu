@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\Relation;
 use App\Domain\Academic\Models\RetakeHistory;
 use App\Domain\Academic\Models\CarryHistory;
 use App\Domain\Registration\Models\Student;
-use App\Domain\Registration\Models\Applicant;
+use App\Domain\Application\Models\Applicant;
 
 class AppServiceProvider extends ServiceProvider
 {

@@ -20,7 +20,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Welcome, {{ $applicant->title }} {{ $applicant->first_name }} {{ $applicant->surname }}</h1>
+            <h1 class="m-0">Select Programmes</h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -36,6 +36,82 @@
     <section class="content">
       <div class="container-fluid">
         <!-- Small boxes (Stat box) -->
+        <div class="row">
+          <div class="col-12">
+            
+            $if(count($applicant->selections) != 0)
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Selections</h3>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+                 <table class="table table-bordered">
+                    <thead>
+                       <tr>
+                         <th>Choice</th>
+                         <th>Programme</th>
+                         <th>Campus</th>
+                       </tr>
+                    </thead>
+                    <tbody>
+                    @foreach($applicant->selections as $selection)
+                    <tr>
+                       <td>{{ $selection->order }}</td>
+                       <td>{{ $selection->campusProgram->program->name }}</td>
+                       <td>{{ $selection->campusProgram->campus->name }}</td>
+                    </tr>
+                    @endforeach
+                  </tbody>
+                 </table>
+              </div>
+            </div>
+            @endif
+
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Programmes</h3>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+                 @if(count($campus_programs) != 0)
+                 <table class="table table-bordered">
+                   <thead>
+                     <tr>
+                       <th>Programme</th>
+                       <th>Campus</th>
+                       <th>Action</th>
+                     </tr>
+                   </thead>
+                   <tbody>
+                      @foreach($campus_programs as $prog)
+                      <tr>
+                          <td>{{ $prog->program->name }}</td>
+                          <td>{{ $prog->campus->name }}</td>
+                          <td>
+                            @if(App\Domain\Application\Models\ApplicantProgramSelection::hasSelected($applicant->selections,$prog))
+                             <span>SELECTED</span>
+                            @else
+                              {!! Form::open(['url'=>'application/program/select','class'=>'ss-form-processing']) !!}
+
+                                 {!! Form::input('hidden','applicant_id',$applicant->id) !!}
+
+                                 {!! Form::input('hidden','campus_program_id',$prog->id) !!}
+
+                                 {!! Form::input('hidden','application_window_id',$application_window->id) !!}
+                            <button type="submit" class="btn btn-primary">Select</button>
+                              {!! Form::close() !!}
+                            @endif
+                          </td>
+                      </tr>
+                      @endforeach
+                   </tbody>
+                 </table>
+                 @endif
+              </div>
+            </div>
+          </div>
+        </div>
         
       </div><!-- /.container-fluid -->
     </section>

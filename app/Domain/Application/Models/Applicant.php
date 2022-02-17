@@ -54,4 +54,12 @@ class Applicant extends Model
     {
         return $this->belongsTo(NextOfKin::class,'next_of_kin_id');
     }
+
+    /**
+     * Establish one to many relationship with selections
+     */
+    public function selections()
+    {
+        return $this->hasMany(ApplicantProgramSelection::class,'applicant_id');
+    }
 }
