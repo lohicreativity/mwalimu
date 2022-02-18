@@ -14,28 +14,28 @@ class GePGResponseController extends Controller
      */
     public function getBill(Request $request)
     {
-  //   	$arrContextOptions=array(
-		//       "ssl"=>array(
-		//             "verify_peer"=>false,
-		//             "verify_peer_name"=>false,
-		//         ),
-		//     );  
-		// //$jsondata = file_get_contents('php://input');
-		// $jsondata =file_get_contents('php://input', false, stream_context_create($arrContextOptions));
+    	$arrContextOptions=array(
+		      "ssl"=>array(
+		            "verify_peer"=>false,
+		            "verify_peer_name"=>false,
+		        ),
+		    );  
+		//$jsondata = file_get_contents('php://input');
+		$jsondata =file_get_contents('php://input', false, stream_context_create($arrContextOptions));
 
-		// //convert json object to php associative array
-		// $data = json_decode($jsondata, true);
+		//convert json object to php associative array
+		$data = json_decode($jsondata, true);
 
-		//  //get response details
-		// $status = $data['status'];
-		// $message = $data['message'];
-		// $bill_id = $data['data']['bill_id'];
-		// $control_no = $data['data']['control_no'];
+		 //get response details
+		$status = $data['status'];
+		$message = $data['message'];
+		$bill_id = $data['data']['bill_id'];
+		$control_no = $data['data']['control_no'];
 
-		$bill_id = 'MNMA-1643902233';
-		$control_no = 'MNMA-1643902233';
-		$message = 'MNMA-1643902233';
-		$status = 'MNMA-1643902233';
+		// $bill_id = 'MNMA-1643902233';
+		// $control_no = 'MNMA-1643902233';
+		// $message = 'MNMA-1643902233';
+		// $status = 'MNMA-1643902233';
 
 		$invoice = Invoice::where('reference_no',$bill_id)->first();
 		$invoice->control_no = $control_no;
