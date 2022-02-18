@@ -23,7 +23,7 @@ class CreateApplicantProgramSelectionsTable extends Migration
             $table->timestamp('status_changed_at')->nullable();
             $table->timestamps();
 
-            $table->foreign('applicant_id')->references('id')->on('applicants_old')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('applicant_id')->references('id')->on('applicants')->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('campus_program_id')->references('id')->on('campus_program')->onUpdate('cascade');
             $table->foreign('application_window_id')->references('id')->on('application_windows')->onUpdate('cascade');
         });

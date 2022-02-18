@@ -117,8 +117,8 @@ class GePGResponseController extends Controller
                 $ReconcRsv1 = $recon_data['ReconcRsv1'];
                 $ReconcRsv2= $recon_data['ReconcRsv2'];
                 $ReconcRsv3= $recon_data['ReconcRsv3'];
-				//$ReconcRsv2=NULL;
-                //$ReconcRsv3=NULL;
+				$ReconcRsv2=NULL;
+                $ReconcRsv3=NULL;
 				
 				// $rquery=$db->runquery("replace into gepg_reconcile(SpReconcReqId,ReconcStsCode,SpBillId,BillCtrNum,pspTrxId,PaidAmt,CCy,PayRefId,TrxDtTm,
 				// 	   CtrAccNum,UsdPayChnl,PspName,PspCode,DptCellNum,DptName,DptEmailAddr,Remarks,ReconcRsv1,ReconcRsv2,ReconcRsv3)
@@ -127,7 +127,30 @@ class GePGResponseController extends Controller
 				// 					'$CCy','$PayRefId','$TrxDtTm', '$CtrAccNum', '$UsdPayChnl', '$PspName','$PspCode',
 				// 					'$DptCellNum','$DptName','$DptEmailAddr','$Remarks','$ReconcRsv1','$ReconcRsv2','$ReconcRsv3')");
 
-        $x++;
-}
+				$recon = new PaymentReconciliation;
+				$recon->SpReconcReqId = $SpReconcReqId;
+				$recon->ReconcStsCode = $ReconcStsCode;
+				$recon->SpBillId = $SpBillId;
+				$recon->BillCtrNum = $BillCtrNum;
+				$recon->pspTrxId = $pspTrxId;
+				$recon->PaidAmt = $PaidAmt;
+				$recon->CCy = $CCy;
+				$recon->PayRefId = $PayRefId;
+				$recon->TrxDtTm = $TrxDtTm;
+				$recon->CtrAccNum = $CtrAccNum;
+				$recon->UsdPayChnl = $UsdPayChnl;
+				$recon->PspName = $PspName;
+				$recon->PspCode = $PspCode;
+				$recon->DptCellNum = $DptCellNum;
+				$recon->DptName = $DptName;
+				$recon->DptEmailAddr = $DptEmailAddr;
+				$recon->Remarks = $Remarks;
+				$recon->ReconcRsv1 = $ReconcRsv1;
+				$recon->ReconcRsv2 = $ReconcRsv2;
+				$recon->ReconcRsv3 = $ReconcRsv3;
+				$recon->save();
+
+           $x++;
+        }
     }
 }
