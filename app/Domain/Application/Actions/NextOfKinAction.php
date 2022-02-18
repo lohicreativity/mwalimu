@@ -17,6 +17,7 @@ class NextOfKinAction implements NextOfKinInterface{
                 $next_of_kin->email = $request->get('email');
                 $next_of_kin->phone = $request->get('phone');
                 $next_of_kin->nationality = $request->get('nationality');
+                $next_of_kin->relationship = $request->get('relationship');
                 $next_of_kin->gender = $request->get('gender');
                 $next_of_kin->address = $request->get('address');
                 $next_of_kin->country_id = $request->get('country_id');
@@ -39,6 +40,7 @@ class NextOfKinAction implements NextOfKinInterface{
                 $next_of_kin->email = $request->get('email');
                 $next_of_kin->phone = $request->get('phone');
                 $next_of_kin->nationality = $request->get('nationality');
+                $next_of_kin->relationship = $request->get('relationship');
                 $next_of_kin->gender = $request->get('gender');
                 $next_of_kin->address = $request->get('address');
                 $next_of_kin->country_id = $request->get('country_id');

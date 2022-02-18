@@ -5,6 +5,7 @@ namespace App\Domain\Settings\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Domain\Application\Models\Applicant;
+use App\Domain\Application\Models\ApplicationWindow;
 
 class Intake extends Model
 {
@@ -18,6 +19,14 @@ class Intake extends Model
     public function applicants()
     {
     	return $this->hasMany(Applicant::class,'intake_id');
+    }
+
+    /**
+     * Establish one to many relationship with application windows
+     */
+    public function applicationWindows()
+    {
+        return $this->hasMany(ApplicationWindow::class,'intake_id');
     }
 
     /**

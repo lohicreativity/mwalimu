@@ -8,11 +8,12 @@ use App\Domain\Settings\Models\Intake;
 use App\Domain\Application\Models\Applicant;
 use App\Domain\Finance\Models\FeeAmount;
 use App\Domain\Finance\Models\Invoice;
+use App\Domain\Application\Models\ApplicationWindow;
 use App\Domain\Application\Models\ApplicantProgramSelection;
 use Illuminate\Support\Facades\Http;
 use App\Models\User;
 use App\Models\Role;
-use Validator, Hash, Config;
+use Validator, Hash, Config, Auth;
 
 class ApplicationController extends Controller
 {
@@ -26,6 +27,24 @@ class ApplicationController extends Controller
            'intakes'=>Intake::all()
     	];
     	return view('dashboard.application.register',$data)->withTitle('Applicant Registration');
+    }
+
+
+    /**
+     * Show applicants list
+     */
+    public function showApplicantsList(Request $request)
+    {
+        $staff = User::find(Auth::user()->id)->staff;
+        $data = [
+            'staff'=>$staff,
+            'application_windows'=>ApplicationWindow::all(),
+            'application_window'=>ApplicationWindow::find($request->get('application_window_id')),
+            'applicants'=>Applicant::whereHas('intake.applicationWindows',function($query) use($request){
+                 $query->where('id',$request->get('application_window_id'));
+            })->with(['nextOfKin','intake'])->paginate(20)
+        ];
+        return view('dashboard.application.applicants-list',$data)->withTitle('Applicants');
     }
 
     /**

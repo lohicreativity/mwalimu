@@ -21,6 +21,7 @@ class CreateNextOfKinsTable extends Migration
             $table->string('nationality');
             $table->string('gender',2);
             $table->string('email')->nullable();
+            $table->string('relationship');
             $table->string('phone',20);
             $table->string('address');
             $table->unsignedBigInteger('country_id');

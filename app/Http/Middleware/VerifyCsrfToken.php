@@ -12,6 +12,9 @@ class VerifyCsrfToken extends Middleware
      * @var array
      */
     protected $except = [
-        'bills/post_bill'
+        'bills/post_bill',
+        'gepg/bill',
+        'gepg/receipt',
+        'gepg/reconcile'
     ];
 }

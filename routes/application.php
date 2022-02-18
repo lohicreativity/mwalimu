@@ -49,4 +49,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 	Route::get('application-window/{id}/destroy', [ApplicationWindowController::class,'destroy']);
 
 
+	Route::get('applicants/list',[ApplicationController::class,'showApplicantsList']);
+
+
 });

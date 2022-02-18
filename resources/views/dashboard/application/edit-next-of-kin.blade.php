@@ -140,7 +140,7 @@
                     </div>
                   </div>
                    <div class="row">
-                    <div class="form-group col-6">
+                    <div class="form-group col-4">
                        {!! Form::label('','Gender') !!}
                        <select name="gender" class="form-control" required>
                          <option value="">Select Gender</option>
@@ -148,9 +148,22 @@
                          <option value="F" @if($next_of_kin->gender == 'F') selected="selected" @endif>Female</option>
                        </select>
                     </div>
-                    <div class="form-group col-6">
+                    <div class="form-group col-4">
                        {!! Form::label('','Nationality') !!}
                        {!! Form::text('nationality',$next_of_kin->nationality,$nationality) !!}
+                    </div>
+                    <div class="form-group col-4">
+                       {!! Form::label('','Relationship') !!}
+                       <select name="relationship" class="form-control" required>
+                         <option value="">Select Relationship</option>
+                         <option value="Father" @if($next_of_kin->relationship == 'Father') selected="selected" @endif>Father</option>
+                         <option value="Mother" @if($next_of_kin->relationship == 'Mother') selected="selected" @endif>Mother</option>
+                         <option value="Uncle" @if($next_of_kin->relationship == 'Uncle') selected="selected" @endif>Uncle</option>
+                         <option value="Aunt" @if($next_of_kin->relationship == 'Aunt') selected="selected" @endif>Aunt</option>
+                         <option value="Brother" @if($next_of_kin->relationship == 'Brother') selected="selected" @endif>Brother</option>
+                         <option value="Sister" @if($next_of_kin->relationship == 'Sister') selected="selected" @endif>Sister</option>
+                         <option value="Guardian" @if($next_of_kin->relationship == 'Guardian') selected="selected" @endif>Guardian</option>
+                       </select>
                     </div>
                   </div>
                 </fieldset>
@@ -317,7 +330,7 @@
                     </div>
                   </div>
                    <div class="row">
-                    <div class="form-group col-6">
+                    <div class="form-group col-4">
                        {!! Form::label('','Gender') !!}
                        <select name="gender" class="form-control" required>
                          <option value="">Select Gender</option>
@@ -325,9 +338,22 @@
                          <option value="F">Female</option>
                        </select>
                     </div>
-                    <div class="form-group col-6">
+                    <div class="form-group col-4">
                        {!! Form::label('','Nationality') !!}
                        {!! Form::text('nationality',null,$nationality) !!}
+                    </div>
+                    <div class="form-group col-4">
+                       {!! Form::label('','Relationship') !!}
+                       <select name="relationship" class="form-control" required>
+                         <option value="">Select Relationship</option>
+                         <option value="Father">Father</option>
+                         <option value="Mother">Mother</option>
+                         <option value="Uncle">Uncle</option>
+                         <option value="Aunt">Aunt</option>
+                         <option value="Brother">Brother</option>
+                         <option value="Sister">Sister</option>
+                         <option value="Guardian">Guardian</option>
+                       </select>
                     </div>
                   </div>
                 </fieldset>

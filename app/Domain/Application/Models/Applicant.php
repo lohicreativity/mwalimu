@@ -8,6 +8,7 @@ use App\Domain\Settings\Models\Country;
 use App\Domain\Settings\Models\Region;
 use App\Domain\Settings\Models\District;
 use App\Domain\Settings\Models\Ward;
+use App\Domain\Settings\Models\Intake;
 
 class Applicant extends Model
 {
@@ -45,6 +46,14 @@ class Applicant extends Model
     public function ward()
     {
     	return $this->belongsTo(Ward::class,'ward_id');
+    }
+
+    /**
+     * Establish one to many relationship with intakes
+     */
+    public function intake()
+    {
+        return $this->belongsTo(Intake::class,'intake_id');
     }
 
     /**
