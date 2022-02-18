@@ -18,6 +18,8 @@ class CreateInvoicesTable extends Migration
             $table->string('reference_no');
             $table->decimal('amount',16,2);
             $table->string('control_number')->nullable();
+            $table->string('message')->nullable();
+            $table->string('status')->nullable();
             $table->string('currency',5)->default('TZS');
             $table->unsignedBigInteger('payable_id');
             $table->string('payable_type',30);

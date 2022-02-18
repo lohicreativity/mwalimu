@@ -54,7 +54,7 @@ class BillController extends Controller
                     ->add('BillGenDt', date('Y-m-d'.'\T'.'h:i:s'))
                     ->add('BillGenBy', $request->get("generated_by"))
                     ->add('BillApprBy', $request->get("approved_by"))
-                    ->add('PyrCellNum', $request->get("payer_cell"))
+                    ->add('PyrCellNum', '255759623399')
                     ->add('PyrEmail', $request->get("payer_email"))
                     ->add('Ccy', $request->get("currency"))
                     ->add('BillEqvAmt', $EquivAmount)
@@ -72,13 +72,13 @@ class BillController extends Controller
 
 
              //die( $request->get("payer_name") );              
-       print_r ($bill->xml(true));
-       die();
+       // print_r ($bill->xml(true));
+       // die();
 
        //die();
        # Add Bill to Q                    
-		// Amqp::publish('gepg.bill.out', $bill->xml(true), ['exchange' => 'sp_exchange', 'queue' => 'bill.to.gepg']);
-		// return $this->success("The bill with id {$request->get('payment_ref')} has been queued.", 200);
+		Amqp::publish('gepg.bill.out', $bill->xml(true), ['exchange' => 'sp_exchange', 'queue' => 'bill.to.gepg']);
+		return $this->success("The bill with id {$request->get('payment_ref')} has been queued.", 200);
     }
 
 

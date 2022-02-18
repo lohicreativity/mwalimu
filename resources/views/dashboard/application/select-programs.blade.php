@@ -39,7 +39,7 @@
         <div class="row">
           <div class="col-12">
             
-            $if(count($applicant->selections) != 0)
+            @if(count($applicant->selections) != 0)
             <div class="card">
               <div class="card-header">
                 <h3 class="card-title">Selections</h3>
