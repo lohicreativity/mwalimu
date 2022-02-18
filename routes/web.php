@@ -37,7 +37,7 @@ Route::get('/consumers/post_receipt_to_sp', [ConsumerController::class,'postRece
 Route::get('/consumers/post_reconciliation_to_sp', [ConsumerController::class,'postRecon']);
 
 # GePG
-Route::post('/gepg/bill', [GePGResponseController::class,'getBill']);
+Route::get('/gepg/bill', [GePGResponseController::class,'getBill']);
 Route::post('/gepg/receipt', [GePGResponseController::class,'getReceipt']);
 Route::post('/gepg/reconcile', [GePGResponseController::class,'getReconciliation']);
 

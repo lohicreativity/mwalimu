@@ -29,7 +29,7 @@ class CreateGatewayPaymentsTable extends Migration
             $table->string('payer_email');
             $table->string('payer_name');
             $table->string('psp_receipt_no');
-            $table->string('psp_name');
+            $table->string('psp_name')->nullable();
             $table->string('ctry_AccNum')->nullable();
             $table->integer('flag')->nullable();
             $table->timestamps();
