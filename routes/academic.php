@@ -30,6 +30,7 @@ use App\Http\Controllers\SpecialExamController;
 use App\Http\Controllers\ExaminationResultController;
 use App\Http\Controllers\ResultPublicationController;
 use App\Http\Controllers\CourseWorkResultController;
+use App\Http\Controllers\ApplicationWindowController;
 use App\Http\Controllers\ClearanceController;
 use App\Http\Controllers\GraduantController;
 use App\Http\Controllers\AppealController;
@@ -158,9 +159,6 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 	Route::get('study-academic-year/{id}/deactivate', [StudyAcademicYearController::class,'deactivate']);
 	Route::get('study-academic-year/{id}/destroy', [StudyAcademicYearController::class,'destroy']);
 
-
-	Route::get('study-academic-year-campus-programs', [StudyAcademicYearController::class,'showPrograms']);
-	Route::post('study-academic-year-campus-programs/update', [StudyAcademicYearController::class,'updatePrograms']);
 
 
 	Route::get('program-module-assignment-requests', [ProgramModuleAssignmentRequestController::class,'index']);

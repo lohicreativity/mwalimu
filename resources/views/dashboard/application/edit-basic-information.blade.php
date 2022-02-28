@@ -223,6 +223,12 @@
                        {!! Form::text('street',$applicant->street,$street) !!}
                     </div>
                   </div>
+                  <div class="row">
+                    <div class="form-group col-6">
+                      {!! Form::label('','Upload birth certificate') !!}
+                      {!! Form::file('birth_certificate',['class'=>'form-control']) !!}
+                    </div>
+                  </div>
                 </fieldset>               
                   
                 </div>

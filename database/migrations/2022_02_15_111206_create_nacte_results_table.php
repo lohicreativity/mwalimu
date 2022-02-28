@@ -16,7 +16,7 @@ class CreateNacteResultsTable extends Migration
         Schema::create('nacte_results', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('applicant_id');
-            $table->string('subject',20);
+            $table->string('subject');
             $table->string('grade',5);
             $table->timestamps();
 

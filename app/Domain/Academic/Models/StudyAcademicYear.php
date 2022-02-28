@@ -20,14 +20,6 @@ class StudyAcademicYear extends Model
     }
 
     /**
-     * Estalish many to many relationship with programs
-     */
-    public function campusPrograms()
-    {
-    	return $this->belongsToMany(CampusProgram::class,'study_academic_year_campus_program','study_academic_year_id','campus_program_id');
-    }
-
-    /**
      * Establish one to many relationship with program module assignments
      */
     public function moduleAssignments()

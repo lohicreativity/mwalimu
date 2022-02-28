@@ -19,6 +19,7 @@ class CreateNectaResultsTable extends Migration
             $table->string('subject_code',20);
             $table->string('subject_name',20);
             $table->string('grade',5);
+            $table->unsignedBigInteger('necta_result_detail_id');
             $table->timestamps();
 
             $table->foreign('applicant_id')->references('id')->on('applicants')->onUpdate('cascade')->onDelete('cascade');

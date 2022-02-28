@@ -5,6 +5,10 @@ use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\ApplicantController;
 use App\Http\Controllers\NextOfKinController;
 use App\Http\Controllers\ApplicationWindowController;
+use App\Http\Controllers\NectaResultController;
+use App\Http\Controllers\NacteResultController;
+use App\Http\Controllers\ResultsRequests\NECTAServiceController;
+use App\Http\Controllers\ResultsRequests\NACTEServiceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -50,6 +54,15 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 
 
 	Route::get('applicants/list',[ApplicationController::class,'showApplicantsList']);
+    Route::get('fetch-necta-results/{index_number}/{id}/{year}',[NECTAServiceController::class,'getResults']);
+    Route::get('fetch-nacte-results/{avn}',[NACTEServiceController::class,'getResults']);
+    Route::post('get-necta-results',[ApplicantController::class,'getNectaResults']);
+    Route::post('get-nacte-results',[ApplicantController::class,'getNacteResults']);
+
+    Route::post('necta-result/decline',[NectaResultController::class,'destroy']);
+    Route::post('nacte-result/decline',[NacteResultController::class,'destroy']);
 
 
+    Route::get('application-window-campus-programs', [ApplicationWindowController::class,'showPrograms']);
+	Route::post('application-window-campus-programs/update', [ApplicationWindowController::class,'updatePrograms']);
 });

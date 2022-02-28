@@ -38,7 +38,7 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="{{ url('application/programs') }}" class="nav-link">
+                <a href="{{ url('application/select-programs') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Select Programmes</p>
                 </a>
@@ -124,6 +124,12 @@
                 <a href="{{ url('application/application-windows') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Application Windows</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ url('application/application-window-campus-programs') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>{{ __('Application Programs') }}</p>
                 </a>
               </li>
               <li class="nav-item">
@@ -452,12 +458,7 @@
                 </a>
               </li> -->
               
-              <!-- <li class="nav-item">
-                <a href="{{ url('academic/study-academic-year-campus-programs') }}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>{{ __('Academic Year Programs') }}</p>
-                </a>
-              </li> -->
+              
               @can('view-programme-modules')
               <li class="nav-item">
                 <a href="{{ url('academic/program-module-assignments?study_academic_year_id='.session('active_academic_year_id').'&campus_id='.session('staff_campus_id')) }}" class="nav-link">

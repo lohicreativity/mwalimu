@@ -16,6 +16,10 @@ use App\Domain\Settings\Models\DisabilityStatus;
 use App\Domain\Finance\Models\FeeType;
 use App\Domain\Finance\Models\FeeItem;
 use App\Domain\Finance\Models\FeeAmount;
+use App\Domain\Application\Models\NectaResult;
+use App\Domain\Application\Models\NacteResult;
+use App\Domain\Application\Models\NectaResultDetail;
+use App\Domain\Application\Models\NacteResultDetail;
 use App\Domain\Application\Models\ApplicationWindow;
 use App\Domain\Academic\Models\StudyAcademicYear;
 use Illuminate\Support\Facades\Http;
@@ -91,6 +95,21 @@ class ApplicantController extends Controller
      */
     public function editBasicInfo(Request $request)
     {
+      /**
+        $url='http://api.tcu.go.tz/applicants/checkStatus';
+        $fullindex=str_replace('-','/',Auth::user()->username);
+        $xml_request='<?xml version="1.0" encoding="UTF-8"?> 
+              <Request>
+                <UsernameToken> 
+                   <Username>'.config('constants.TCU_USERNAME').'</Username>
+                  <SessionToken>'.config('constants.TCU_TOKEN').'</SessionToken>
+                </UsernameToken>
+                <RequestParameters>
+                  <f4indexno>'.$fullindex.'</f4indexno>
+                </RequestParameters>
+              </Request>';
+          $xml_response=simplexml_load_string($this->sendXmlOverPost($url,$xml_request));
+        **/
         $data = [
            'applicant'=>User::find(Auth::user()->id)->applicant,
            'countries'=>Country::all(),
@@ -139,6 +158,21 @@ class ApplicantController extends Controller
     }
 
     /**
+     * Request results
+     */
+    public function requestResults(Request $results)
+    {
+        $applicant = User::find(Auth::user()->id)->applicant;
+        $data = [
+           'applicant'=>$applicant,
+           'o_level_necta_results'=>NectaResultDetail::with('results')->where('applicant_id',$applicant->id)->where('exam_id','1')->get(),
+           'a_level_necta_results'=>NectaResultDetail::with('results')->where('applicant_id',$applicant->id)->where('exam_id','2')->get(),
+           'nacte_results'=>NacteResultDetail::with('results')->where('applicant_id',$applicant->id) ->get()
+        ];
+        return view('dashboard.application.request-results',$data)->withTitle('Request Results');
+    }
+
+    /**
      * Select programs
      */
     public function selectPrograms(Request $request)
@@ -146,7 +180,7 @@ class ApplicantController extends Controller
         $data = [
            'applicant'=>User::find(Auth::user()->id)->applicant()->with(['selections.campusProgram.program','selections.campusProgram.campus'])->first(),
            'application_window'=>ApplicationWindow::where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->first(),
-           'campus_programs'=>CampusProgram::with(['program','campus'])->get()
+           'campus_programs'=>ApplicationWindow::where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->first()->campusPrograms()->with(['program','campus'])->get()
         ];
         return view('dashboard.application.select-programs',$data)->withTitle('Select Programmes');
     }

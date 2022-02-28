@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Domain\Application\Models\Applicant;
 use App\Domain\Application\Repositories\Interfaces\ApplicantInterface;
 use App\Utils\DateMaker;
+use App\Utils\SystemLocation;
 
 class ApplicantAction implements ApplicantInterface{
 	
@@ -17,6 +18,7 @@ class ApplicantAction implements ApplicantInterface{
                 $applicant->birth_date = $request->get('birth_date');
                 $applicant->nationality = $request->get('nationality');
                 $applicant->gender = $request->get('gender');
+
                 $applicant->save();
 	}
 
@@ -37,6 +39,13 @@ class ApplicantAction implements ApplicantInterface{
                 $applicant->district_id = $request->get('district_id');
                 $applicant->ward_id = $request->get('ward_id');
                 $applicant->street = $request->get('street');
+                if($request->hasFile('birth_certificate')){
+                  $destination = SystemLocation::uploadsDirectory();
+                  $request->file('birth_certificate')->move($destination, $request->file('birth_certificate')->getClientOriginalName());
+                  // $file_name = SystemLocation::renameFile($destination, $request->file('image')->getClientOriginalName(), $request->file('image')->guessClientExtension());
+
+                  $applicant->birth_certificate = $request->file('birth_certificate')->getClientOriginalName();
+                }
                 $applicant->save();
 	}
 }
