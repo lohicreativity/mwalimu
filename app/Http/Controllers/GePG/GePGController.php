@@ -35,7 +35,7 @@ class GePGController extends Controller
         $vsignature = $this->getSignatureString($bill_resp, config('constants.SIGN_TAG'));
         
         # Get Certificate contents
-        if (!$pcert_store = file_get_contents("consumers/gepgpubliccertificate.pfx")) {
+        if (!$pcert_store = file_get_contents("/home/public_html/mnmaa_new/consumers/gepgpubliccertificate.pfx")) {
             //echo " ** Error: Unable to read the GePG Public Cert File\n";
             //exit;
 
