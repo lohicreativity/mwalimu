@@ -44,7 +44,7 @@ class InvoiceController extends Controller
 
         $generated_by = 'SP';
         $approved_by = 'SP';
-        $inst_id = Config::get('constants.SPCODE');
+        $inst_id = Config::get('constants.SUBSPCODE');
 
         return $this->requestControlNumber($request,
         	                        $invoice->reference_no,
