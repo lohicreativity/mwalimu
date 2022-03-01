@@ -41,6 +41,10 @@ Route::post('/gepg/bill', [GePGController::class,'getBill']);
 Route::post('/gepg/receipt', [GePGController::class,'getReceipt']);
 Route::post('/gepg/reconcile', [GePGController::class,'getReconciliation']);
 
+Route::post('/response/gepg/bill', [GePGResponseController::class,'getBill']);
+Route::post('/response/gepg/receipt', [GePGResponseController::class,'getReceipt']);
+Route::post('/response/gepg/reconcile', [GePGResponseController::class,'getReconciliation']);
+
 Route::middleware(['auth:sanctum', 'verified'])->group(function(){
      Route::get('change-password',[SessionController::class, 'changePassword']);
      Route::post('update-password',[SessionController::class, 'update']);

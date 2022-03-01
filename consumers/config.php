@@ -19,9 +19,9 @@ define('RETRY_COUNT', 4); //70
 # Retry Interval in Milli-Seconds
 define('RETRY_INTERVAL', 15000); //300000
 define('SP_SERVER', 'http://41.59.91.194/');
-define('SP_BILL_PATH', 'mnmaa_new/public/gepg/bill');
-define('SP_RECEIPT_PATH', 'mnmaa_new/public/gepg/receipt');
-define('SP_RECON_PATH', 'mnmaa_new/public/gepg/reconcile');
+define('SP_BILL_PATH', 'response/gepg/bill');
+define('SP_RECEIPT_PATH', 'response/gepg/receipt');
+define('SP_RECON_PATH', 'response/gepg/reconcile');
 /*Certificates*/
 define('CERT_PASSWORD', 'MnmaPassword');
 define('RECON_DATA_TAG', 'gepgSpReconcReqAck');
