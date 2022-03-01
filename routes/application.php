@@ -49,6 +49,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 	Route::get('reset-program-selection/{id}',[ApplicationController::class,'resetProgramSelection']);
 	Route::post('request-control-number',[ApplicationController::class,'getControlNumber']);
 	Route::post('program/select',[ApplicationController::class,'selectProgram']);
+	Route::post('submit-application',[ApplicationController::class,'submitApplication']);
 
 
 	Route::get('application-windows', [ApplicationWindowController::class,'index']);

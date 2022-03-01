@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Domain\Finance\Models\Invoice;
 use App\Domain\Finance\Models\GatewayPayment;
+use App\Domain\Finance\Models\PaymentReconciliation;
 
 class GePGResponseController extends Controller
 {

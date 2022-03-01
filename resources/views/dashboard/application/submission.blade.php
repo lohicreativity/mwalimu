@@ -41,6 +41,7 @@
           <div class="col-12">
             
             <!-- general form elements -->
+            @if($applicant->submission_complete_status == 0)
             <div class="card card-default">
               <div class="card-header">
                 <h3 class="card-title">{{ __('Application Submission') }}</h3>
@@ -54,7 +55,7 @@
                   {!! Form::input('hidden','applicant_id',$applicant->id) !!}
                   <div class="form-group col-12">
                     <div class="custom-control custom-checkbox">
-                          <input class="custom-control-input" type="checkbox" id="customCheckbox2" checked>
+                          <input class="custom-control-input" type="checkbox" id="customCheckbox2" name="agreement_check" value="1" required>
                           <label for="customCheckbox2" class="custom-control-label">I agree that information provided is true.</label>
                         </div>
                   </div>
@@ -65,6 +66,18 @@
                 </div>
               {!! Form::close() !!}
               </div>
+              @else
+              <div class="card card-default">
+              <div class="card-header">
+                <h3 class="card-title">{{ __('Application Submission') }}</h3>
+              </div>
+              <!-- /.card-header -->
+              <!-- form start -->
+                <div class="card-body ss-center">
+                  <h3 class="ss-color-success"><i class="fa fa-check-circle"></i> Your application has been submitted successfully.</h3>
+                </div>
+              </div>
+            @endif
           </div>
         </div>
       </div><!-- /.container-fluid -->

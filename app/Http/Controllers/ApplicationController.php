@@ -133,6 +133,32 @@ class ApplicationController extends Controller
     }
 
     /**
+     * Submit application
+     */
+    public function submitApplication(Request $request)
+    {
+       $applicant = Applicant::find($request->get('applicant_id'));
+       if($applicant->basic_info_complete_status == 0){
+          return redirect()->back()->with('error','Basic information section not completed');
+       }
+       if($applicant->next_of_kin_complete_status == 0){
+          return redirect()->back()->with('error','Next of kin section not completed');
+       }
+       if($applicant->payment_complete_status == 0){
+          return redirect()->back()->with('error','Payment section not completed');
+       }
+       if($applicant->results_complete_status == 0){
+          return redirect()->back()->with('error','Results section not completed');
+       }
+       if($applicant->documents_complete_status == 0){
+          return redirect()->back()->with('error','Upload documents section not completed');
+       }
+       $applicant->submission_complete_status = 1;
+       $applicant->save();
+       return redirect()->back()->with('message','Application Submitted Successfully');
+    }
+
+    /**
      * Request control number 
      */
     public function getControlNumber(Request $request)

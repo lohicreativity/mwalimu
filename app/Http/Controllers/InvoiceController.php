@@ -49,7 +49,7 @@ class InvoiceController extends Controller
         return $this->requestControlNumber($request,
         	                        $invoice->reference_no,
         	                        $inst_id,
-        	                        100,//$invoice->amount,
+        	                        $invoice->amount,
         	                        $fee_type->description,
         	                        $fee_type->gfs_code,
         	                        $fee_type->payment_option,
