@@ -31,8 +31,8 @@ class GePGController extends Controller
         //Log::info(print_r($bill_resp,true));
 
         # Get data and signature from response
-        $vdata = getDataString($bill_resp, config('constants.CN_DATA_TAG'));
-        $vsignature = getSignatureString($bill_resp, config('constants.SIGN_TAG'));
+        $vdata = $this->getDataString($bill_resp, config('constants.CN_DATA_TAG'));
+        $vsignature = $this->getSignatureString($bill_resp, config('constants.SIGN_TAG'));
         
         # Get Certificate contents
         if (!$pcert_store = file_get_contents("consumers/gepgpubliccertificate.pfx")) {
@@ -131,8 +131,8 @@ class GePGController extends Controller
         //Log::info(print_r($payment_receipt,true));
 
         # Get data and signature from response
-        $vdata = getDataString($payment_receipt, config('constants.RECPT_DATA_TAG'));
-        $vsignature = getSignatureString($payment_receipt, config('constants.SIGN_TAG'));
+        $vdata = $this->getDataString($payment_receipt, config('constants.RECPT_DATA_TAG'));
+        $vsignature = $this->getSignatureString($payment_receipt, config('constants.SIGN_TAG'));
 
         # Get Certificate contents
     if (!$pcert_store = file_get_contents("consumers/gepgpubliccertificate.pfx")) {
@@ -219,8 +219,8 @@ ini_set('memory_limit', '-1');
 }
 
         # Get data and signature from response
-$vdata = getDataString($reconciliation_data, config('constants.RECON_DATA_TAG'));
-$vsignature = getSignatureString($reconciliation_data, config('constants.SIGN_TAG'));
+$vdata = $this->getDataString($reconciliation_data, config('constants.RECON_DATA_TAG'));
+$vsignature = $this->getSignatureString($reconciliation_data, config('constants.SIGN_TAG'));
 
         # Get Certificate contents
 if (!$pcert_store = file_get_contents("consumers/gepgpubliccertificate.pfx")) {
@@ -483,4 +483,20 @@ Log::info(print_r('Print out'.$body,true));
 
 
      //test
+
+     //Function to get Data string
+    public function getDataString($inputstr,$datatag){
+        $datastartpos = strpos($inputstr, $datatag);
+        $dataendpos = strrpos($inputstr, $datatag);
+        $data=substr($inputstr,$datastartpos - 1,$dataendpos + strlen($datatag)+2 - $datastartpos);
+        return $data;
+    }
+    
+    //Function to get Signature string
+    public function getSignatureString($inputstr,$sigtag){
+        $sigstartpos = strpos($inputstr, $sigtag);
+        $sigendpos = strrpos($inputstr, $sigtag);
+        $signature=substr($inputstr,$sigstartpos + strlen($sigtag)+1,$sigendpos - $sigstartpos -strlen($sigtag)-3);
+        return $signature;
+    }
 }
