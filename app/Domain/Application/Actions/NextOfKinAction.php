@@ -29,6 +29,7 @@ class NextOfKinAction implements NextOfKinInterface{
 
                 $applicant = Applicant::find($request->get('applicant_id'));
                 $applicant->next_of_kin_id = $next_of_kin->id;
+                $applicant->next_of_kin_complete_status = 1;
                 $applicant->save();
 	}
 
@@ -52,6 +53,7 @@ class NextOfKinAction implements NextOfKinInterface{
 
                 $applicant = Applicant::find($request->get('applicant_id'));
                 $applicant->next_of_kin_id = $next_of_kin->id;
+                $applicant->next_of_kin_complete_status = 1;
                 $applicant->save();
 	}
 }

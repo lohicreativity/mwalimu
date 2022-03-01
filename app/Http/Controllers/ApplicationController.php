@@ -279,7 +279,7 @@ class ApplicationController extends Controller
         $user->save();
 
         $role = Role::where('name','applicant')->first();
-        $user->roles->sync([$role->id]);
+        $user->roles()->sync([$role->id]);
 
         $applicant = new Applicant;
         $applicant->first_name = $request->get('first_name');
@@ -292,7 +292,7 @@ class ApplicationController extends Controller
         $applicant->intake_id = $request->get('intake_id');
         $applicant->save();
         
-        return redirect()->back()->with('message','Applicant registered successfully');
+        return redirect()->to('application/login')->with('message','Applicant registered successfully');
 
     }
 }

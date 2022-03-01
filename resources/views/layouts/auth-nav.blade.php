@@ -32,7 +32,7 @@
               <li class="nav-item">
                 <a href="{{ url('application/select-programs') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Select Programmes @if($applicant->select_orograms_complete_status == 1) <i class="fa fa-check"></i> @endif</p>
+                  <p>Select Programmes @if($applicant->select_programs_complete_status == 1) <i class="fa fa-check"></i> @endif</p>
                 </a>
               </li>
               <li class="nav-item">
