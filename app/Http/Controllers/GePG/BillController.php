@@ -202,7 +202,7 @@ class BillController extends Controller
         
         Log::info("CANCEL-BODY: ".$req_body); 
         # Opening Certificate
-        if (!$cert_store = file_get_contents("consumers/gepgclientprivatekey.pfx")) {
+        if (!$cert_store = file_get_contents("/home/public_html/mnmaa_new/consumers/gepgclientprivatekey.pfx")) {
             echo " ** Error: Unable to read the cert file", "\n";
             exit;
         }
@@ -247,7 +247,7 @@ class BillController extends Controller
                     $vsignature = getSignatureString($response['body'], config('constants.SIGN_TAG'));
 
                     # Get Certificate contents
-                    if (!$pcert_store = file_get_contents("consumers/gepgpubliccertificate.pfx")) {
+                    if (!$pcert_store = file_get_contents("/home/public_html/mnmaa_new/consumers/gepgpubliccertificate.pfx")) {
                     Log::info(" ** Error: Unable to read the GePG Public Cert File\n");
                     //exit;
                     } else {
