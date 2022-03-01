@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\GePG;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Validator, Config, Amqp, Log;
 use function \FluidXml\fluidxml;
