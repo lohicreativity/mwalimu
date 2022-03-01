@@ -18,7 +18,7 @@ define('GEPG_STS_SUCCESS', 7101);
 define('RETRY_COUNT', 4); //70
 # Retry Interval in Milli-Seconds
 define('RETRY_INTERVAL', 15000); //300000
-define('SP_SERVER', 'http://41.59.91.194/');
+define('SP_SERVER', 'http://127.0.0.1:80/');
 define('SP_BILL_PATH', 'response/gepg/bill');
 define('SP_RECEIPT_PATH', 'response/gepg/receipt');
 define('SP_RECON_PATH', 'response/gepg/reconcile');

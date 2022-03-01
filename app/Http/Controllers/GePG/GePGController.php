@@ -135,7 +135,7 @@ class GePGController extends Controller
         $vsignature = $this->getSignatureString($payment_receipt, config('constants.SIGN_TAG'));
 
         # Get Certificate contents
-    if (!$pcert_store = file_get_contents("consumers/gepgpubliccertificate.pfx")) {
+    if (!$pcert_store = file_get_contents("/home/public_html/mnmaa_new/consumers/gepgpubliccertificate.pfx")) {
       	 Log::info(" ** Error: Unable to read the GePG Public Cert File\n");
 	 throw new Exception(" ** Error: Unable to read the GePG Public Cert File\n");            
     } 
@@ -223,7 +223,7 @@ $vdata = $this->getDataString($reconciliation_data, config('constants.RECON_DATA
 $vsignature = $this->getSignatureString($reconciliation_data, config('constants.SIGN_TAG'));
 
         # Get Certificate contents
-if (!$pcert_store = file_get_contents("consumers/gepgpubliccertificate.pfx")) {
+if (!$pcert_store = file_get_contents("/home/public_html/mnmaa_new/consumers/gepgpubliccertificate.pfx")) {
     throw new Exception(" ** Error: Unable to read the GePG Public Cert File\n");            
 } 
 else 
@@ -302,7 +302,7 @@ return $this->gepgSpReconcRespAck();
         //$ack_body = "<gepgBillSubRespAck><TrxStsCode>7101</TrxStsCode></gepgBillSubRespAck>";
         Log::info("ACK-BODY: ".$ack_body); 
 	# Opening Certificate
-        if (!$cert_store = file_get_contents("consumers/gepgclientprivatekey.pfx")) {
+        if (!$cert_store = file_get_contents("/home/public_html/mnmaa_new/consumers/gepgclientprivatekey.pfx")) {
             echo " ** Error: Unable to read the cert file", "\n";
             exit;
         }
@@ -354,7 +354,7 @@ return $this->gepgSpReconcRespAck();
         
         $ack_body = str_replace('> <','><', preg_replace('/\s+/', ' ', $ack->xml(true)));
         # Opening Certificate
-        if (!$cert_store = file_get_contents("consumers/gepgclientprivatekey.pfx")) {
+        if (!$cert_store = file_get_contents("/home/public_html/mnmaa_new/consumers/gepgclientprivatekey.pfx")) {
             echo " ** Error: Unable to read the cert file", "\n";
             exit;
         }
@@ -407,7 +407,7 @@ Log::info(print_r('Print out'.$body,true));
         //$ack_body='<gepgPmtSpInfoAck><TrxStsCode>7101</TrxStsCode></gepgPmtSpInfoAck>';
         //$ack_body=$ack->xml(true);
         # Opening Certificate
-        if (!$cert_store = file_get_contents("consumers/gepgclientprivatekey.pfx")) {
+        if (!$cert_store = file_get_contents("/home/public_html/mnmaa_new/consumers/gepgclientprivatekey.pfx")) {
             echo " ** Error: Unable to read the cert file", "\n";
             exit;
         }
