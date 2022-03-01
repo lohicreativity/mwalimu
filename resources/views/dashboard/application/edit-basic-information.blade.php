@@ -108,7 +108,11 @@
               @endphp
               {!! Form::open(['url'=>'application/update-basic-info','class'=>'ss-form-processing','files'=>true]) !!}
                 <div class="card-body">
-                
+                @if($status_code != 202)
+                <div class="alert alert-warning">
+                   You cannot proceed with this application because you have prior admission with another institution.
+                </div>
+                @endif
                 <fieldset>
                   <legend>Personal Details</legend>
                   <div class="row">
@@ -235,7 +239,7 @@
                 <!-- /.card-body -->
 
                 <div class="card-footer">
-                  <button type="submit" class="btn btn-primary">{{ __('Save') }}</button>
+                  <button @if($status_code != 202) disabled="disabled" @else type="submit" @endif class="btn btn-primary">{{ __('Save') }}</button>
                 </div>
               {!! Form::close() !!}
             </div>

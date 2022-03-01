@@ -10,6 +10,7 @@ use App\Domain\Finance\Models\FeeAmount;
 use App\Domain\Finance\Models\Invoice;
 use App\Domain\Application\Models\ApplicationWindow;
 use App\Domain\Application\Models\ApplicantProgramSelection;
+use App\Domain\Application\Actions\ApplicantAction;
 use Illuminate\Support\Facades\Http;
 use App\Models\User;
 use App\Models\Role;
@@ -63,7 +64,7 @@ class ApplicationController extends Controller
                  $selection->applicant_id = $request->get('applicant_id');
                  $selection->campus_program_id = $request->campus_program_id;
                  $selection->application_window_id = $request->get('application_window_id');
-                 $selection->order = $count + 1;
+                 $selection->order = $request->get('choice');
                  $selection->save();
 
                  return redirect()->back()->with('message','Programme selected successfully');
@@ -71,6 +72,64 @@ class ApplicationController extends Controller
         }else{
            return redirect()->back()->with('error','Programme already selected');
         }
+    }
+
+    /**
+     * Reset program selection 
+     */
+    public function resetProgramSelection($id)
+    {
+        try{
+          $selection = ApplicantProgramSelection::findOrFail($id);
+          $selection->delete();
+          return redirect()->back()->with('message','Selection reset successfully');
+        }catch(\Exception $e){
+           return redirect()->back()->with('error','Unable to get the resource specified in this request');
+        }
+    }
+
+    /**
+     * Upload documents
+     */
+    public function uploadDocuments(Request $request)
+    {
+        (new ApplicantAction)->uploadDocuments($request);
+
+        return redirect()->back()->with('message','Document uploaded successfully');
+    }
+
+    /**
+     * Delete uploaded document
+     */
+    public function deleteDocument(Request $request)
+    {
+        $applicant = Applicant::where('user_id',Auth::user()->id)->first();
+        if($request->get('name') == 'birth_certificate'){
+           unlink(public_path().'/uploads/'.$applicant->birth_certificate);
+           $applicant->birth_certificate = null;
+           $applicant->save();
+        }
+
+        if($request->get('name') == 'o_level_certificate'){
+           unlink(public_path().'/uploads/'.$applicant->o_level_certificate);
+           $applicant->o_level_certificate = null;
+           $applicant->save();
+        }
+
+        if($request->get('name') == 'a_level_certificate'){
+           unlink(public_path().'/uploads/'.$applicant->a_level_certificate);
+           $applicant->a_level_certificate = null;
+           $applicant->save();
+        }
+
+        if($request->get('name') == 'diploma_certificate'){
+           unlink(public_path().'/uploads/'.$applicant->diploma_certificate);
+           $applicant->diploma_certificate = null;
+           $applicant->save();
+        }
+
+
+        return redirect()->back()->with('message','File deleted successfully');
     }
 
     /**

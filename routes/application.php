@@ -31,18 +31,22 @@ Route::post('authenticate',[ApplicantController::class,'authenticate']);
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 
-	Route::get('dashboard',[ApplicantController::class,'dashboard']);
+	Route::get('dashboard',[ApplicantController::class,'editBasicInfo']);
 	Route::get('basic-information',[ApplicantController::class,'editBasicInfo']);
 	Route::get('next-of-kin',[ApplicantController::class,'editNextOfKin']);
 	Route::get('payments',[ApplicantController::class,'payments']);
 	Route::get('results',[ApplicantController::class,'requestResults']);
 	Route::get('select-programs',[ApplicantController::class,'selectPrograms']);
+	Route::get('upload-documents',[ApplicantController::class,'uploadDocuments']);
 	Route::get('submission',[ApplicantController::class,'submission']);
 
 	Route::post('update-basic-info',[ApplicantController::class,'updateBasicInfo']);
 	Route::post('next-of-kin/store',[NextOfKinController::class,'store']);
 	Route::post('next-of-kin/update',[NextOfKinController::class,'update']);
+	Route::post('upload-documents',[ApplicationController::class,'uploadDocuments']);
+	Route::get('delete-document',[ApplicationController::class,'deleteDocument']);
 	Route::post('store-program-selection',[ApplicantController::class,'storeProgramSelection']);
+	Route::get('reset-program-selection/{id}',[ApplicationController::class,'resetProgramSelection']);
 	Route::post('request-control-number',[ApplicationController::class,'getControlNumber']);
 	Route::post('program/select',[ApplicationController::class,'selectProgram']);
 
@@ -54,7 +58,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 
 
 	Route::get('applicants/list',[ApplicationController::class,'showApplicantsList']);
-    Route::get('fetch-necta-results/{index_number}/{id}/{year}',[NECTAServiceController::class,'getResults']);
+    Route::get('fetch-necta-results/{index_number}/{exam_id}',[NECTAServiceController::class,'getResults']);
     Route::get('fetch-nacte-results/{avn}',[NACTEServiceController::class,'getResults']);
     Route::post('get-necta-results',[ApplicantController::class,'getNectaResults']);
     Route::post('get-nacte-results',[ApplicantController::class,'getNacteResults']);

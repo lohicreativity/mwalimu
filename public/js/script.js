@@ -744,7 +744,7 @@ $('.ss-form-processing-necta').submit(function(e){
      }
 
      $.ajax({
-        url:'/application/fetch-necta-results/'+$(e.target).find('input[name=index_number]').val()+'/'+$(e.target).find('input[name=exam_id]').val()+'/'+$(e.target).find('input[name=year]').val()+'?applicant_id='+$(e.target).find('input[name=applicant_id]').val(),
+        url:'/application/fetch-necta-results/'+$(e.target).find('input[name=index_number]').val().replaceAll('/','-')+'/'+$(e.target).find('input[name=exam_id]').val()+'?applicant_id='+$(e.target).find('input[name=applicant_id]').val(),
         method:'GET',
      }).done(function(data,success){
          $(e.target).find('button[type=submit]').text(submitText);
@@ -771,7 +771,7 @@ $('.ss-form-processing-necta').submit(function(e){
          $($(e.target).find('input[name=display_modal]').val()+' input[name=index_number]').val($(e.target).find('input[name=index_number]').val());
          $($(e.target).find('input[name=display_modal]').val()+' input[name=year]').val($(e.target).find('input[name=year]').val());
          $($(e.target).find('input[name=display_modal]').val()+' input[name=exam_id]').val($(e.target).find('input[name=exam_id]').val());
-         $($(e.target).find('input[name=display_modal]').val()+' input[name=nacte_result_detail_id]').val(data.details.id);
+         $($(e.target).find('input[name=display_modal]').val()+' input[name=necta_result_detail_id]').val(data.details.id);
      });
 });
 

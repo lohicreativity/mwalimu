@@ -39,13 +39,39 @@ class ApplicantAction implements ApplicantInterface{
                 $applicant->district_id = $request->get('district_id');
                 $applicant->ward_id = $request->get('ward_id');
                 $applicant->street = $request->get('street');
-                if($request->hasFile('birth_certificate')){
-                  $destination = SystemLocation::uploadsDirectory();
-                  $request->file('birth_certificate')->move($destination, $request->file('birth_certificate')->getClientOriginalName());
-                  // $file_name = SystemLocation::renameFile($destination, $request->file('image')->getClientOriginalName(), $request->file('image')->guessClientExtension());
-
-                  $applicant->birth_certificate = $request->file('birth_certificate')->getClientOriginalName();
-                }
+                $applicant->basic_info_complete_status = 1;
                 $applicant->save();
 	}
+
+        /**
+         * Upload documents
+         */
+        public function uploadDocuments(Request $request)
+        {
+            $applicant = Applicant::find($request->get('applicant_id'));
+
+            if($request->hasFile('document')){
+                $destination = SystemLocation::uploadsDirectory();
+                $request->file('document')->move($destination, $request->file('document')->getClientOriginalName());
+                // $file_name = SystemLocation::renameFile($destination, $request->file('image')->getClientOriginalName(), $request->file('image')->guessClientExtension());
+                if($request->get('document_name') == 'birth_certificate'){
+                    $applicant->birth_certificate = $request->file('document')->getClientOriginalName();
+                }
+
+                if($request->get('document_name') == '0_level_certificate'){
+                    $applicant->o_level_certificate = $request->file('document')->getClientOriginalName();
+                }
+                
+                if($request->get('document_name') == 'a_level_certificate'){
+                    $applicant->a_level_certificate = $request->file('document')->getClientOriginalName();
+                }
+
+                if($request->get('document_name') == 'diploma_certificate'){
+                    $applicant->a_level_certificate = $request->file('document')->getClientOriginalName(); 
+                }
+
+            }
+
+            $applicant->save();
+        }
 }

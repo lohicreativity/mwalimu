@@ -4,31 +4,23 @@
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
           @if(Auth::user()->hasRole('applicant'))
-          <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-folder-open"></i>
-              <p>
-                {{ __('Application') }}
-                <i class="fas fa-angle-left right"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
+          
               <li class="nav-item">
                 <a href="{{ url('application/basic-information') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Basic Information</p>
+                  <p>Basic Information @if($applicant->basic_info_complete_status == 1) <i class="fa fa-check"></i> @endif</p>
                 </a>
               </li>
               <li class="nav-item">
                 <a href="{{ url('application/next-of-kin') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Next of Kin</p>
+                  <p>Next of Kin @if($applicant->next_of_kin_complete_status == 1) <i class="fa fa-check"></i> @endif</p>
                 </a>
               </li>
               <li class="nav-item">
                 <a href="{{ url('application/payments') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Payments</p>
+                  <p>Payments @if($applicant->payment_complete_status == 1) <i class="fa fa-check"></i> @endif</p>
                 </a>
               </li>
               <li class="nav-item">
@@ -40,17 +32,21 @@
               <li class="nav-item">
                 <a href="{{ url('application/select-programs') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Select Programmes</p>
+                  <p>Select Programmes @if($applicant->select_orograms_complete_status == 1) <i class="fa fa-check"></i> @endif</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ url('application/upload-documents') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Upload Documents @if($applicant->upload_documents_complete_status == 1) <i class="fa fa-check"></i> @endif</p>
                 </a>
               </li>
               <li class="nav-item">
                 <a href="{{ url('application/submission') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Submit Application</p>
+                  <p>Submit Application @if($applicant->submission_complete_status == 1) <i class="fa fa-check"></i> @endif</p>
                 </a>
               </li>
-            </ul>
-          </li>
           @elseif(Auth::user()->hasRole('student'))
           <li class="nav-item">
             <a href="#" class="nav-link">

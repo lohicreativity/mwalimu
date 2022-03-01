@@ -95,7 +95,7 @@ class ApplicantController extends Controller
      */
     public function editBasicInfo(Request $request)
     {
-      /**
+      
         $url='http://api.tcu.go.tz/applicants/checkStatus';
         $fullindex=str_replace('-','/',Auth::user()->username);
         $xml_request='<?xml version="1.0" encoding="UTF-8"?> 
@@ -109,17 +109,38 @@ class ApplicantController extends Controller
                 </RequestParameters>
               </Request>';
           $xml_response=simplexml_load_string($this->sendXmlOverPost($url,$xml_request));
-        **/
+          $json = json_encode($xml_response);
+          $array = json_decode($json,TRUE);
+        
         $data = [
            'applicant'=>User::find(Auth::user()->id)->applicant,
            'countries'=>Country::all(),
            'regions'=>Region::all(),
            'districts'=>District::all(),
+           'status_code'=>$array['Response']['ResponseParameters']['StatusCode'],
            'wards'=>Ward::all(),
            'disabilities'=>DisabilityStatus::all(),
         ];
 
         return view('dashboard.application.edit-basic-information',$data)->withTitle('Edit Basic Information');
+    }
+
+    /**
+     * Send XML over POST
+     */
+    public function sendXmlOverPost($url,$xml_request)
+    {
+          $ch = curl_init();
+          curl_setopt($ch, CURLOPT_URL, $url);
+          // For xml, change the content-type.
+          curl_setopt ($ch, CURLOPT_HTTPHEADER, Array("Content-Type: application/xml"));
+          curl_setopt($ch, CURLOPT_POST, 1);
+          curl_setopt($ch, CURLOPT_POSTFIELDS, $xml_request);
+          curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); // ask for results to be returned
+          // Send to remote and return data to caller.
+          $result = curl_exec($ch);
+          curl_close($ch);
+          return $result;
     }
 
        /**
@@ -178,11 +199,35 @@ class ApplicantController extends Controller
     public function selectPrograms(Request $request)
     {
         $data = [
-           'applicant'=>User::find(Auth::user()->id)->applicant()->with(['selections.campusProgram.program','selections.campusProgram.campus'])->first(),
+           'applicant'=>User::find(Auth::user()->id)->applicant()->with(['selections.campusProgram.program','selections'=>function($query){
+                $query->orderBy('order','asc');
+            },'selections.campusProgram.campus'])->first(),
            'application_window'=>ApplicationWindow::where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->first(),
            'campus_programs'=>ApplicationWindow::where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->first()->campusPrograms()->with(['program','campus'])->get()
         ];
         return view('dashboard.application.select-programs',$data)->withTitle('Select Programmes');
+    }
+
+    /**
+     * Upload documents
+     */
+    public function uploadDocuments(Request $request)
+    {
+       $data = [
+          'applicant'=>User::find(Auth::user()->id)->applicant
+       ];
+       return view('dashboard.application.upload-documents',$data)->withTitle('Upload Documents');
+    }
+
+    /**
+     * Application submission
+     */
+    public function submission(Request $request)
+    {
+        $data = [
+            'applicant'=>User::find(Auth::user()->id)->applicant
+        ];
+        return view('dashboard.application.submission',$data)->withTitle('Submission');
     }
 
     /**

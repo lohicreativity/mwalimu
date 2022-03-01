@@ -48,7 +48,7 @@
               <!-- form start -->
               @php
                   $index_number = [
-                     'placeholder'=>'S1000-0231',
+                     'placeholder'=>'S1000/0231/2015',
                      'class'=>'form-control',
                      'required'=>true
                   ];
@@ -68,11 +68,7 @@
                     {!! Form::label('','Index number') !!}
                     {!! Form::text('index_number',null,$index_number) !!}
                   </div>
-                  <div class="form-group col-2">
-                    {!! Form::label('','Year') !!}
-                    {!! Form::text('year',null,$year) !!}
-                  </div>
-                  <div class="form-group col-4">
+                  <div class="form-group col-6">
 
                     {!! Form::input('hidden','applicant_id',$applicant->id) !!}
 
@@ -108,7 +104,7 @@
               <!-- form start -->
               @php
                   $index_number = [
-                     'placeholder'=>'S1000-0231',
+                     'placeholder'=>'S1000/0231/2015',
                      'class'=>'form-control',
                      'required'=>true
                   ];
@@ -128,11 +124,7 @@
                     {!! Form::label('','Index number') !!}
                     {!! Form::text('index_number',null,$index_number) !!}
                   </div>
-                  <div class="form-group col-2">
-                    {!! Form::label('','Year') !!}
-                    {!! Form::text('year',null,$year) !!}
-                  </div>
-                  <div class="form-group col-4">
+                  <div class="form-group col-6">
 
                     {!! Form::input('hidden','applicant_id',$applicant->id) !!}
 

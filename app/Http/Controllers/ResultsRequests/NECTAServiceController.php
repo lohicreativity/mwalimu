@@ -16,17 +16,20 @@ class NECTAServiceController extends Controller
          return json_decode($response)->token;
     }
 
-    public function getResults(Request $request,$index_number,$exam_id,$exam_year)
+    public function getResults(Request $request,$index_number,$exam_id)
     {
-        if($details = NectaResultDetail::with('results')->where('index_number',$index_number)->where('exam_id',$exam_id)->where('applicant_id',$request->get('applicant_id'))->first()){
+        $index_no = explode('-',$index_number)[0].'-'.explode('-',$index_number)[1];
+        $exam_year = explode('-',$index_number)[2];
+
+        if($details = NectaResultDetail::with('results')->where('index_number',$index_no)->where('exam_id',$exam_id)->where('applicant_id',$request->get('applicant_id'))->first()){
             return response()->json(['details'=>$details]);
         }else{
             $token = $this->getToken(config('constants.NECTA_API_KEY'));
-            $response = Http::get('https://api.necta.go.tz/api/public/results/'.$index_number.'/'.$exam_id.'/'.$exam_year.'/'.$token);
+            $response = Http::get('https://api.necta.go.tz/api/public/results/'.$index_no.'/'.$exam_id.'/'.$exam_year.'/'.$token);
             if(!isset(json_decode($response)->results)){
                 return redirect()->back()->with('error','Invalid Index number or year');
             }
-            if($det = NectaResultDetail::where('index_number',$index_number)->where('exam_id',$exam_id)->where('applicant_id',$request->get('applicant_id'))->first()){
+            if($det = NectaResultDetail::where('index_number',$index_no)->where('exam_id',$exam_id)->where('applicant_id',$request->get('applicant_id'))->first()){
                 $detail = $det;
             }else{
                 $detail = new NectaResultDetail;

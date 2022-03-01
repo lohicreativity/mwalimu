@@ -31,17 +31,43 @@ class ApplicantProgramSelection extends Model
     /**
      * Check if applicant has selected
      */
-    public function hasSelected($selections,$program)
+    public function hasSelected($selections,$program,$choice = null)
     {
     	$status = false;
     	if(is_iterable($selections)){
-           foreach($selections as $selection){
-           	  if($selection->campus_program_id == $program->id){
-           	  	 $status = true;
-           	  	 break;
-           	  }
+           if($choice){
+               foreach($selections as $selection){
+               	  if($selection->campus_program_id == $program->id && $selection->order == $choice){
+               	  	 $status = true;
+               	  	 break;
+               	  }
+               }
+           }else{
+               foreach($selections as $selection){
+                  if($selection->campus_program_id == $program->id){
+                     $status = true;
+                     break;
+                  }
+               }
            }
     	}
     	return $status;
+    }
+
+    /**
+     * Check if applicant has selected
+     */
+    public function hasSelectedChoice($selections,$choice)
+    {
+        $status = false;
+        if(is_iterable($selections)){
+           foreach($selections as $selection){
+              if($selection->order == $choice){
+                 $status = true;
+                 break;
+              }
+           }
+        }
+        return $status;
     }
 }

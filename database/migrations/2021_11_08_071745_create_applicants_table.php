@@ -40,6 +40,9 @@ class CreateApplicantsTable extends Migration
             $table->unsignedBigInteger('next_of_kin_id');
             $table->unsignedBigInteger('user_id');
             $table->string('birth_certificate')->nullable();
+            $table->string('o_level_certificate')->nullable();
+            $table->string('a_level_certificate')->nullable();
+            $table->string('diploma_certificate')->nullable();
             $table->tinyInteger('basic_info_complete_status')->default(0);
             $table->tinyInteger('next_of_kin_complete_status')->default(0);
             $table->tinyInteger('payment_complete_status')->default(0);
