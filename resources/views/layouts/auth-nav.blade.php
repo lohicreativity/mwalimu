@@ -158,9 +158,9 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="{{ url('application/admitted-students') }}" class="nav-link">
+                <a href="{{ url('application/selected-applicants') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Admitted Students</p>
+                  <p>Selected Applicants</p>
                 </a>
               </li>
             </ul>
