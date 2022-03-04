@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use App\Domain\Application\Models\NectaResultDetail;
 use App\Domain\Application\Models\NectaResult;
+use App\Domain\Application\Models\Applicant;
 
 class NECTAServiceController extends Controller
 {
@@ -59,6 +60,10 @@ class NECTAServiceController extends Controller
                 $res->necta_result_detail_id = $detail->id;
                 $res->save();
             }
+
+            $applicant = Applicant::find($request->get('applicant_id'));
+            $applicant->results_complete_status = 1;
+            $applicant->save();
 
             $details = NectaResultDetail::with('results')->find($detail->id);
             return response()->json(['details'=>$details]);

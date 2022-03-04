@@ -9,6 +9,7 @@ use App\Domain\Settings\Models\Region;
 use App\Domain\Settings\Models\District;
 use App\Domain\Settings\Models\Ward;
 use App\Domain\Settings\Models\Intake;
+use App\Domain\Settings\Models\DisabilityStatus;
 
 class Applicant extends Model
 {
@@ -51,6 +52,14 @@ class Applicant extends Model
     /**
      * Establish one to many relationship with intakes
      */
+    public function disabilityStatus()
+    {
+        return $this->belongsTo(DisabilityStatus::class,'disability_status_id');
+    }
+
+    /**
+     * Establish one to many relationship with intakes
+     */
     public function intake()
     {
         return $this->belongsTo(Intake::class,'intake_id');
@@ -70,5 +79,21 @@ class Applicant extends Model
     public function selections()
     {
         return $this->hasMany(ApplicantProgramSelection::class,'applicant_id');
+    }
+
+    /**
+     * Establish one to many relationship with necta result details
+     */
+    public function nectaResultDetails()
+    {
+        return $this->hasMany(NectaResultDetail::class,'applicant_id');
+    }
+
+    /**
+     * Establish one to many relationship with nacte result details
+     */
+    public function nacteResultDetails()
+    {
+        return $this->hasMany(NacteResultDetail::class,'applicant_id');
     }
 }

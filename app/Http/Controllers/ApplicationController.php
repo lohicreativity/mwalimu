@@ -6,15 +6,18 @@ use Illuminate\Http\Request;
 use App\Domain\Academic\Models\Award;
 use App\Domain\Settings\Models\Intake;
 use App\Domain\Application\Models\Applicant;
+use App\Domain\Academic\Models\CampusProgram;
+use App\Domain\Academic\Models\Department;
 use App\Domain\Finance\Models\FeeAmount;
 use App\Domain\Finance\Models\Invoice;
+use App\Domain\Settings\Models\NTALevel;
 use App\Domain\Application\Models\ApplicationWindow;
 use App\Domain\Application\Models\ApplicantProgramSelection;
 use App\Domain\Application\Actions\ApplicantAction;
 use Illuminate\Support\Facades\Http;
 use App\Models\User;
 use App\Models\Role;
-use Validator, Hash, Config, Auth;
+use Validator, Hash, Config, Auth, PDF;
 
 class ApplicationController extends Controller
 {
@@ -37,13 +40,46 @@ class ApplicationController extends Controller
     public function showApplicantsList(Request $request)
     {
         $staff = User::find(Auth::user()->id)->staff;
+        if($request->get('department_id') != null){
+           $applicants = Applicant::whereHas('intake.applicationWindows',function($query) use($request){
+                 $query->where('id',$request->get('application_window_id'));
+            })->whereHas('selections.campusProgram.program.departments',function($query) use($request){
+                 $query->where('id',$request->get('department_id'));
+            })->with(['nextOfKin','intake'])->paginate(20);
+        }elseif($request->get('duration') == 'TODAY'){
+           $applicants = Applicant::whereHas('intake.applicationWindows',function($query) use($request){
+                 $query->where('id',$request->get('application_window_id'));
+            })->with(['nextOfKin','intake'])->where('created_at','<=',now()->subDays(1))->paginate(20);
+        }elseif($request->get('gender') != null){
+           $applicants = Applicant::whereHas('intake.applicationWindows',function($query) use($request){
+                 $query->where('id',$request->get('application_window_id'));
+            })->with(['nextOfKin','intake'])->where('gender',$request->get('gender'))->paginate(20);
+        }elseif($request->get('nta_level_id') != null){
+           $applicants = Applicant::whereHas('intake.applicationWindows',function($query) use($request){
+                 $query->where('id',$request->get('application_window_id'));
+            })->whereHas('selections.campusProgram.program',function($query) use($request){
+                 $query->where('nta_level_id',$request->get('campus_program_id'));
+            })->with(['nextOfKin','intake'])->paginate(20);
+        }elseif($request->get('campus_program_id') != null){
+           $applicants = Applicant::whereHas('intake.applicationWindows',function($query) use($request){
+                 $query->where('id',$request->get('application_window_id'));
+            })->whereHas('selections',function($query) use($request){
+                 $query->where('campus_program_id',$request->get('campus_program_id'));
+            })->with(['nextOfKin','intake'])->paginate(20);
+        }else{
+           $applicants = Applicant::whereHas('intake.applicationWindows',function($query) use($request){
+                 $query->where('id',$request->get('application_window_id'));
+            })->with(['nextOfKin','intake'])->paginate(20);
+        }
         $data = [
             'staff'=>$staff,
             'application_windows'=>ApplicationWindow::all(),
             'application_window'=>ApplicationWindow::find($request->get('application_window_id')),
-            'applicants'=>Applicant::whereHas('intake.applicationWindows',function($query) use($request){
-                 $query->where('id',$request->get('application_window_id'));
-            })->with(['nextOfKin','intake'])->paginate(20)
+            'nta_levels'=>NTALevel::all(),
+            'departments'=>Department::all(),
+            'campus_programs'=>CampusProgram::with('program')->get(),
+            'applicants'=>$applicants,
+            'request'=>$request
         ];
         return view('dashboard.application.applicants-list',$data)->withTitle('Applicants');
     }
@@ -133,6 +169,20 @@ class ApplicationController extends Controller
     }
 
     /**
+     * Download application summary
+     */
+    public function downloadSummary(Request $request)
+    {
+        $applicant = User::find(Auth::user()->id)->applicant()->with(['nextOfKin.country','nextOfKin.region','nextOfKin.district','nextOfKin.ward','country','region','district','ward','disabilityStatus'])->first();
+        $data = [
+           'applicant'=>$applicant,
+           'selections'=>ApplicantProgramSelection::with(['campusProgram.program'])->where('applicant_id',$applicant->id)->get()
+        ];
+        $pdf = PDF::loadView('dashboard.application.summary', $data)->setPaper('a4','portrait');
+        return $pdf->stream();
+    }
+
+    /**
      * Submit application
      */
     public function submitApplication(Request $request)
@@ -180,7 +230,7 @@ class ApplicationController extends Controller
         $fee_amount = FeeAmount::with(['feeItem.feeType'])->find($request->get('fee_amount_id'));
 
         $invoice = new Invoice;
-        $invoice->reference_no = 'MNMA-'.$applicant->index_number.'-'.time();
+        $invoice->reference_no = 'MNMA-'.str_replace('/', '-', $applicant->index_number).'-'.time();
         if($applicant->country->code == 'TZ'){
            $invoice->amount = $fee_amount->amount_in_tzs;
            $invoice->currency = 'TZS';
@@ -199,7 +249,7 @@ class ApplicationController extends Controller
 
         $generated_by = 'SP';
         $approved_by = 'SP';
-        $inst_id = Config::get('constants.SPCODE');
+        $inst_id = Config::get('constants.SUBSPCODE');
 
         return $this->requestControlNumber($request,
                                   $invoice->reference_no,
@@ -241,7 +291,7 @@ class ApplicationController extends Controller
 
       //$txt=print_r($data, true);
       //$myfile = file_put_contents('/var/public_html/ifm/logs/req_bill.txt', $txt.PHP_EOL , FILE_APPEND | LOCK_EX);
-            $url = url('bills/post_bill');
+      $url = url('bills/post_bill');
       $result = Http::withHeaders([
                         'X-CSRF-TOKEN'=> csrf_token()
                 ])->post($url,$data);
@@ -294,5 +344,169 @@ class ApplicationController extends Controller
         
         return redirect()->to('application/login')->with('message','Applicant registered successfully');
 
+    }
+
+    /**
+     * Display run selection page
+     */
+    public function showRunSelection(Request $request)
+    {
+        $data = [
+           'staff'=>User::find(Auth::user()->id)->staff,
+           'awards'=>Award::all(),
+           'application_windows'=>ApplicationWindow::all(),
+           'application_window'=>ApplicationWindow::find($request->get('application_window_id'))
+        ];
+        return view('dashboard.application.run-selection',$data)->withTitle('Run Selection');
+    }
+
+    /**
+     * Run application selection
+     */
+    public function runSelection(Request $request)
+    {
+        // Phase I
+        $campus_programs = CampusProgram::whereHas('program',function($query) use($request){
+             $query->where('award_id',$request->get('award_id'));
+        })->with(['entryRequirements'=>function($query) use($request){
+            $query->where('application_window_id',$request->get('application_window_id'));
+        }])->get();
+
+        $award = Award::find($request->get('award_id'));
+
+        $applicants = Applicant::with(['selections','nectaResultDetails.results','nacteResultDetails.results'])->where('program_level_id',$request->get('award_id'))->whereHas('selections',function($query) use($request){
+            $query->where('application_window_id',$request->get('application_window_id'));
+        })->get();
+
+        $o_level_grades = ['A'=>5,'B'=>4,'C'=>3,'D'=>2,'E'=>1,'F'=>0];
+
+        $diploma_grades = ['A'=>5,'B+'=>4,'B'=>3,'C'=>2,'D'=>1,'F'=>0];
+        
+        foreach($applicants as $applicant){
+           $index_number = $applicant->index_number;
+           $exam_year = explode('/', $index_number)[2];
+
+           if($exam_year < 2014 || $exam_year > 2015){
+             $a_level_grades = ['A'=>5,'B'=>4,'C'=>3,'D'=>2,'E'=>1,'S'=>0.5];
+           }else{
+             $a_level_grades = ['A'=>5,'B+'=>4,'B'=>3,'C'=>2,'D'=>1,'E'=>0.5];
+           }
+           foreach($applicant->selections as $selection){
+              foreach($campus_programs as $program){
+                if($program->id == $selection->campus_program_id){
+                   // Certificate
+                   if(str_contains($award->name,'Certificate')){
+                       $o_level_pass_count = 0;
+                       foreach ($applicant->nectaResultDetails as $detailKey=>$detail) {
+                         if($detail->exam_id == 1){
+                           foreach ($detail->results as $key => $result) {
+                              if($o_level_grades[$result->grade] >= $o_level_grades[$program->entryRequirements[0]->pass_grade]){
+                                 if(!in_array($result->subject_name, unserialize($program->entryRequirements[0]->exclude_subjects)) || in_array($result->subject_name, unserialize($program->entryRequirements[0]->must_subjects))){
+                                 $o_level_pass_count += 1;
+                                 }
+                              }
+                           }
+                         }
+                         if($o_level_pass_count >= $program->entryRequirements[0]->pass_subjects && count($applicant->nectaResultDetails) == ($detailKey+1)){
+                           $select = ApplicantProgramSelection::find($selection->id);
+                           $select->status = 'ELIGIBLE';
+                           $select->status_changed_at = now();
+                           $select->save();
+                         }
+                       }
+                   }
+
+                   // Diploma
+                   if(str_contains($award->name,'Diploma')){
+                       $o_level_pass_count = 0;
+                       foreach ($applicant->nectaResultDetails as $detailKey=>$detail) {
+                         if($detail->exam_id == 1){
+                           foreach ($detail->results as $key => $result) {
+                              if($o_level_grades[$result->grade] >= $o_level_grades[$program->entryRequirements[0]->pass_grade]){
+                                 if(!in_array($result->subject_name, unserialize($program->entryRequirements[0]->exclude_subjects)) || in_array($result->subject_name, unserialize($program->entryRequirements[0]->must_subjects))){
+                                 $o_level_pass_count += 1;
+                                 }
+                              }
+                           }
+                         }
+                         if($o_level_pass_count >= $program->entryRequirements[0]->pass_subjects && count($applicant->nectaResultDetails) == ($detailKey+1)){
+                           $select = ApplicantProgramSelection::find($selection->id);
+                           $select->status = 'ELIGIBLE';
+                           $select->status_changed_at = now();
+                           $select->save();
+                         }
+                       }
+                   }
+
+                   // Certificate
+                   if(str_contains($award->name,'Bachelor')){
+                       $o_level_pass_count = 0;
+                       $a_level_pass_count = 0;
+                       $diploma_pass_count = 0;
+                       foreach ($applicant->nectaResultDetails as $detailKey=>$detail) {
+
+                           if($detail->exam_id == 2){
+                           foreach ($detail->results as $key => $result) {
+                              if($a_level_grades[$result->grade] >= $program->entryRequirements[0]->principle_pass_points){
+                                 if(!in_array($result->subject_name, unserialize($program->entryRequirements[0]->exclude_subjects)) || in_array($result->subject_name, unserialize($program->entryRequirements[0]->principle_subjects))){
+                                   $a_level_pass_count += 1;
+                                 }
+                              }
+                           }
+                         }
+                         if($a_level_pass_count >= $program->entryRequirements[0]->principle_pass_subjects && count($applicant->nectaResultDetails) == ($detailKey+1)){
+                           $select = ApplicantProgramSelection::find($selection->id);
+                           $select->status = 'ELIGIBLE';
+                           $select->status_changed_at = now();
+                           $select->save();
+                         }
+                       }
+
+                       foreach ($applicant->nacteResultDetails as $detailKey=>$detail) {
+                         foreach ($detail->results as $key => $result) {
+                              if($diploma_grades[$result->grade] >= $diploma_grades[$program->entryRequirements[0]->equivalent_average_grade]){
+                                 $diploma_pass_count += 1;
+                              }
+                           }
+                         if($diploma_pass_count >= $program->entryRequirements[0]->equivalent_pass_subjects && $detail->diploma_gpa >= $program->entryRequirements[0]->equivalent_gpa && count($applicant->nacteResultDetails) == ($detailKey+1)){
+                           $select = ApplicantProgramSelection::find($selection->id);
+                           $select->status = 'ELIGIBLE';
+                           $select->status_changed_at = now();
+                           $select->save();
+                         }
+                       }
+                   }
+                   break;
+                }
+              }
+           }
+        }
+
+        // Phase II
+        $choices = [1,2,3];
+        $applicants = Applicant::with(['selections','nectaResultDetails.results','nacteResultDetails.results'])->where('program_level_id',$request->get('award_id'))->whereHas('selections',function($query) use($request){
+            $query->where('application_window_id',$request->get('application_window_id'))->where('status','ELIGIBLE');
+        })->get();
+        foreach($choices as $choice){   
+            foreach ($campus_programs as $program) {
+                $count = 0;
+                foreach($applicants as $applicant){
+                  foreach($applicant->selections as $selection){
+                     if($selection->order == $choice && $selection->campus_program_id == $program->id){
+                        if($count <= $program->entryRequirements[0]->max_capacity && $selection->status == 'ELIGIBLE'){
+                           $select = ApplicantProgramSelection::find($selection->id);
+                           $select->status = 'APPROVING';
+                           $select->status_changed_at = now();
+                           $select->save();
+
+                           $count++;
+                        }
+                     }
+                  }
+              }
+           }
+        }
+
+        return redirect()->back()->with('message','Selection run successfully');
     }
 }

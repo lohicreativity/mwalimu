@@ -23,7 +23,7 @@ return [
     'SIGNED_RECONCILE_PATH' => 'api/reconciliations/sig_sp_qrequest',
     'SPCODE' => 'SP412',
     'SPSYSID' => 'LMNMA002',
-    'SUBSPCODE' => '1002',
+    'SUBSPCODE' => '1001',
 
     'SP_SERVER' => 'http://127.0.0.1:80/',
     'SP_BILL_PATH' => 'payment/bills',

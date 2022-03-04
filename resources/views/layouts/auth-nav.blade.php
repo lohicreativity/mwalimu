@@ -145,12 +145,24 @@
               </p>
             </a>
             <ul class="nav nav-treeview">
-              <!-- <li class="nav-item">
-                <a href="pages/charts/chartjs.html" class="nav-link">
+              <li class="nav-item">
+                <a href="{{ url('application/entry-requirements') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Entry Requirements</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ url('application/run-selection') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Run Selection</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ url('application/admitted-students') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Admitted Students</p>
                 </a>
-              </li> -->
+              </li>
             </ul>
           </li>
           <li class="nav-item">

@@ -52,7 +52,7 @@
                      <select name="application_window_id" class="form-control" required>
                         <option value="">Select Application Window</option>
                         @foreach($application_windows as $window)
-                        <option value="{{ $window->id }}">{{ $window->begin_date }} - {{ $window->end_date }} </option>
+                        <option value="{{ $window->id }}" @if($request->get('application_window_id') == $window->id) selected="selected" @endif>{{ $window->begin_date }} - {{ $window->end_date }} </option>
                         @endforeach
                      </select>
                    </div>
@@ -72,7 +72,44 @@
                </div>
                <!-- /.card-header -->
                <div class="card-body">
-                  <table class="table table-bordered">
+                  {!! Form::open(['url'=>'application/applicants/list','method'=>'GET']) !!}
+
+                  {!! Form::input('hidden','application_window_id',$application_window->id) !!}
+                  <div class="input-group">
+                   <select name="department_id" class="form-control">
+                      <option value="">Select Department</option>
+                      @foreach($departments as $department)
+                      <option value="{{ $department->id }}">{{ $department->name }}</option>
+                      @endforeach
+                   </select>
+                   <select name="nta_level_id" class="form-control">
+                      <option value="">Select NTA Level</option>
+                      @foreach($nta_levels as $level)
+                      <option value="{{ $level->id }}">{{ $level->name }}</option>
+                      @endforeach
+                   </select>
+                   <select name="campus_program_id" class="form-control">
+                      <option value="">Select Programme</option>
+                      @foreach($campus_programs as $program)
+                      <option value="{{ $program->id }}">{{ $program->program->name }}</option>
+                      @endforeach
+                   </select>
+                   <select name="gender" class="form-control">
+                      <option value="">Select Gender</option>
+                      <option value="M">Male</option>
+                      <option value="F">Female</option>
+                   </select>
+                   <select name="duration" class="form-control">
+                      <option value="">Select Duration</option>
+                      <option value="TODAY">Today</option>
+                   </select>
+                   <span class="input-group-btn">
+                     <button class="btn btn-default" type="submit"><span class="fa fa-search"></span></button>
+                   </span>
+                  </div>
+                  {!! Form::close() !!}
+
+                  <table class="table table-bordered ss-margin-top">
                     <thead>
                         <tr>
                           <th>Name</th>
@@ -97,7 +134,7 @@
                   </table>
 
                   <div class="ss-pagination-links">
-                     {!! $applicants->render() !!}
+                     {!! $applicants->appends($request->except('page'))->render() !!}
                   </div>
                </div>
             </div>

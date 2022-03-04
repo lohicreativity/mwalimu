@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Domain\Settings\Models\Campus;
 use App\Domain\Registration\Models\Student;
+use App\Domain\Application\Models\EntryRequirement;
 
 class CampusProgram extends Model
 {
@@ -19,6 +20,14 @@ class CampusProgram extends Model
     public function students()
     {
         return $this->hasMany(Student::class,'campus_program_id');
+    }
+
+     /**
+     * Establish one to many relationship with students
+     */
+    public function entryRequirements()
+    {
+        return $this->hasMany(EntryRequirement::class,'campus_program_id');
     }
 
     /**

@@ -52,11 +52,13 @@
               {!! Form::open(['url'=>'application/submit-application','files'=>true,'class'=>'ss-form-processing']) !!}
                 <div class="card-body">
 
+                  <p><a href="{{ url('application/summary') }}">Download Application Preview</a></p>
+
                   {!! Form::input('hidden','applicant_id',$applicant->id) !!}
                   <div class="form-group col-12">
                     <div class="custom-control custom-checkbox">
                           <input class="custom-control-input" type="checkbox" id="customCheckbox2" name="agreement_check" value="1" required>
-                          <label for="customCheckbox2" class="custom-control-label">I agree that information provided is true.</label>
+                          <label for="customCheckbox2" class="custom-control-label">I have read and agreed to the terms of MNMA admission agreement and that the information provided is true.</label>
                         </div>
                   </div>
 

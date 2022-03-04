@@ -7,6 +7,7 @@ use App\Http\Controllers\NextOfKinController;
 use App\Http\Controllers\ApplicationWindowController;
 use App\Http\Controllers\NectaResultController;
 use App\Http\Controllers\NacteResultController;
+use App\Http\Controllers\EntryRequirementController;
 use App\Http\Controllers\ResultsRequests\NECTAServiceController;
 use App\Http\Controllers\ResultsRequests\NACTEServiceController;
 
@@ -50,12 +51,19 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 	Route::post('request-control-number',[ApplicationController::class,'getControlNumber']);
 	Route::post('program/select',[ApplicationController::class,'selectProgram']);
 	Route::post('submit-application',[ApplicationController::class,'submitApplication']);
+	Route::get('summary',[ApplicationController::class,'downloadSummary']);
 
 
 	Route::get('application-windows', [ApplicationWindowController::class,'index']);
 	Route::post('application-window/store', [ApplicationWindowController::class,'store']);
 	Route::post('application-window/update', [ApplicationWindowController::class,'update']);
 	Route::get('application-window/{id}/destroy', [ApplicationWindowController::class,'destroy']);
+
+
+	Route::get('entry-requirements', [EntryRequirementController::class,'index']);
+	Route::post('entry-requirement/store', [EntryRequirementController::class,'store']);
+	Route::post('entry-requirement/update', [EntryRequirementController::class,'update']);
+	Route::get('entry-requirement/{id}/destroy', [EntryRequirementController::class,'destroy']);
 
 
 	Route::get('applicants/list',[ApplicationController::class,'showApplicantsList']);
@@ -70,4 +78,10 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 
     Route::get('application-window-campus-programs', [ApplicationWindowController::class,'showPrograms']);
 	Route::post('application-window-campus-programs/update', [ApplicationWindowController::class,'updatePrograms']);
+
+
+	Route::get('run-selection',[ApplicationController::class,'showRunSelection']);
+	Route::post('run-applicants-selection',[ApplicationController::class,'runSelection']);
+
+
 });
