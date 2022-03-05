@@ -16,7 +16,7 @@ class CreatePaymentReconciliationsTable extends Migration
         Schema::create('payment_reconciliations', function (Blueprint $table) {
             $table->id();
             $table->string('SpReconcReqId');
-            $table->string('ReconcStsCode');
+            //$table->string('ReconcStsCode');
             $table->string('SpBillId');
             $table->string('BillCtrNum');
             $table->string('pspTrxId');

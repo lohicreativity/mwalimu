@@ -105,8 +105,8 @@ class GePGResponseController extends Controller
 		$response = json_decode($jsondata, true);
 		$x=0;												
 		foreach ($response['ReconcTrans']['ReconcTrxInf'] as $recon_data) {
-                $SpReconcReqId = $response['ReconcBatchInfo']['SpReconcReqId'];
-                $SpCode = $response['ReconcBatchInfo']['ReconcStsCode'];
+                $SpReconcReqId = $recon_data['ReconcBatchInfo']['SpReconcReqId'];
+                $SpCode = $recon_data['ReconcBatchInfo']['ReconcStsCode'];
                 $SpBillId = $recon_data['SpBillId'];
                 $BillCtrNum = $recon_data['BillCtrNum'];
                 $pspTrxId = $recon_data['pspTrxId'];
