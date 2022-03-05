@@ -16,7 +16,7 @@ class CreateGatewayPaymentsTable extends Migration
         Schema::create('gateway_payments', function (Blueprint $table) {
             $table->id();
             $table->string('transaction_id');
-            $table->string('sp_code',20)->nullable();
+            // $table->string('sp_code',20)->nullable();
             $table->string('pay_refId')->nullable();
             $table->string('bill_id');
             $table->string('control_no');
@@ -24,14 +24,14 @@ class CreateGatewayPaymentsTable extends Migration
             $table->decimal('paid_amount',10,2);
             $table->smallInteger('bill_payOpt')->nullable();
             $table->string('ccy',10)->nullable();
-            $table->string('payment_channel',100);
-            $table->string('cell_number',50);
-            $table->string('payer_email');
-            $table->string('payer_name');
-            $table->string('psp_receipt_no');
+            $table->string('payment_channel',100)->nullable();
+            $table->string('cell_number',50)->nullable();
+            $table->string('payer_email')->nullable();
+            $table->string('payer_name')->nullable();
+            $table->string('psp_receipt_no')->nullable();
             $table->string('psp_name')->nullable();
             $table->string('ctry_AccNum')->nullable();
-            $table->integer('flag')->nullable();
+            // $table->integer('flag')->nullable();
             $table->timestamps();
         });
     }
