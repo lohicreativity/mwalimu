@@ -69,6 +69,11 @@ class GePGResponseController extends Controller
 		$payer_email = $data['payer_email'];
 		$payer_name = $data['payer_name'];
 		$psp_receipt_no = $data['psp_receipt_no'];
+		$psp_name = $data['psp_name'];
+        $ctry_AccNum = $data['credited_acc_num'];
+
+
+
 
 		$gatepay = new GatewayPayment;
 		$gatepay->transaction_id = $transaction_id;
@@ -86,6 +91,8 @@ class GePGResponseController extends Controller
 		$gatepay->payer_email = $payer_email;
 		$gatepay->payer_name = $payer_name;
 		$gatepay->psp_receipt_no = $psp_receipt_no;
+		$gatepay->ctry_AccNum = $ctry_AccNum;
+		$gatepay->psp_name = $psp_name;
 		$gatepay->save();
     }
 
