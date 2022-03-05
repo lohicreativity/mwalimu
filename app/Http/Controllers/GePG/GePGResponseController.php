@@ -125,8 +125,8 @@ class GePGResponseController extends Controller
                 $ReconcRsv1 = $recon_data['ReconcRsv1'];
                 $ReconcRsv2= $recon_data['ReconcRsv2'];
                 $ReconcRsv3= $recon_data['ReconcRsv3'];
-				$ReconcRsv2=NULL;
-                $ReconcRsv3=NULL;
+				// $ReconcRsv2=NULL;
+    //             $ReconcRsv3=NULL;
 				
 				// $rquery=$db->runquery("replace into gepg_reconcile(SpReconcReqId,ReconcStsCode,SpBillId,BillCtrNum,pspTrxId,PaidAmt,CCy,PayRefId,TrxDtTm,
 				// 	   CtrAccNum,UsdPayChnl,PspName,PspCode,DptCellNum,DptName,DptEmailAddr,Remarks,ReconcRsv1,ReconcRsv2,ReconcRsv3)
@@ -137,7 +137,7 @@ class GePGResponseController extends Controller
 
 				$recon = new PaymentReconciliation;
 				$recon->SpReconcReqId = $SpReconcReqId;
-				$recon->ReconcStsCode = $ReconcStsCode;
+				//$recon->ReconcStsCode = $ReconcStsCode;
 				$recon->SpBillId = $SpBillId;
 				$recon->BillCtrNum = $BillCtrNum;
 				$recon->pspTrxId = $pspTrxId;
