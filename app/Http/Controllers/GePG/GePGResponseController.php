@@ -50,8 +50,15 @@ class GePGResponseController extends Controller
      */
     public function getReceipt(Request $request)
     {
-    	$jsondata = file_get_contents('php://input');
-		$data = json_decode($jsondata, true);
+    	$arrContextOptions=array(
+		      "ssl"=>array(
+		            "verify_peer"=>false,
+		            "verify_peer_name"=>false,
+		        ),
+		    );  
+    	//$jsondata = file_get_contents('php://input');
+		//$data = json_decode($jsondata, true);
+		$jsondata =file_get_contents('php://input', false, stream_context_create($arrContextOptions));
 
 		 //get response details
 		$transaction_id = $data['transaction_id'];
