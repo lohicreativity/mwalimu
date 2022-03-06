@@ -75,7 +75,7 @@ class GePGResponseController extends Controller
 		$datetime = $data['datetime'];
 		$payment_channel = $data['payment_channel'];
 		$cell_number = $data['cell_number'];
-		$payer_email = $data['payer_email'];
+		$payer_email = !is_array($data['payer_email'])? $data['payer_email'] : null;
 		$payer_name = $data['payer_name'];
 		$psp_receipt_no = $data['psp_receipt_no'];
 		$psp_name = $data['psp_name'];
