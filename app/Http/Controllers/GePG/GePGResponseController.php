@@ -50,33 +50,33 @@ class GePGResponseController extends Controller
      */
     public function getReceipt(Request $request)
     {
-    	$jsondata = file_get_contents('php://input');
-		$data = json_decode($jsondata, true);
+  //   	$jsondata = file_get_contents('php://input');
+		// $data = json_decode($jsondata, true);
 
-		 //get response details
-		$transaction_id = $data['transaction_id'];
-		$sp_code = $data['sp_code'];
-		$pay_refId= $data['pay_ref_id'];
-		$bill_id = $data['bill_id'];
-		$control_no = $data['control_no'];
-		$bill_amount = $data['bill_amount'];
-		$paid_amount = $data['paid_amount'];
-		$bill_payOpt = $data['pay_option'];
-		$ccy = $data['currency'];
-		$datetime = $data['datetime'];
-		$payment_channel = $data['payment_channel'];
-		$cell_number = $data['cell_number'];
-		$payer_email = $data['payer_email'];
-		$payer_name = $data['payer_name'];
-		$psp_receipt_no = $data['psp_receipt_no'];
-		$psp_name = $data['psp_name'];
-        $ctry_AccNum = $data['credited_acc_num'];
+		//  //get response details
+		// $transaction_id = $data['transaction_id'];
+		// $sp_code = $data['sp_code'];
+		// $pay_refId= $data['pay_ref_id'];
+		// $bill_id = $data['bill_id'];
+		// $control_no = $data['control_no'];
+		// $bill_amount = $data['bill_amount'];
+		// $paid_amount = $data['paid_amount'];
+		// $bill_payOpt = $data['pay_option'];
+		// $ccy = $data['currency'];
+		// $datetime = $data['datetime'];
+		// $payment_channel = $data['payment_channel'];
+		// $cell_number = $data['cell_number'];
+		// $payer_email = $data['payer_email'];
+		// $payer_name = $data['payer_name'];
+		// $psp_receipt_no = $data['psp_receipt_no'];
+		// $psp_name = $data['psp_name'];
+  //       $ctry_AccNum = $data['credited_acc_num'];
 
 
 
 
 		$gatepay = new GatewayPayment;
-		$gatepay->transaction_id = $transaction_id;
+		$gatepay->transaction_id = 'EC101250707521IP';//$transaction_id;
 		// $gatepay->sp_code = $sp_code;
 		$gatepay->pay_refId = '922063097134883'; //$pay_refId;
 		$gatepay->bill_id = 'MNMA-1646413596'; //$bill_id;
