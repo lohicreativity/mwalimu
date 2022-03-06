@@ -58,7 +58,7 @@ class GePGResponseController extends Controller
 		    );  
     	//$jsondata = file_get_contents('php://input');
 		//$data = json_decode($jsondata, true);
-		$jsondata =file_get_contents('php://input', false, stream_context_create($arrContextOptions));
+		$data =file_get_contents('php://input', false, stream_context_create($arrContextOptions));
 
 		 //get response details
 		$transaction_id = $data['transaction_id'];
