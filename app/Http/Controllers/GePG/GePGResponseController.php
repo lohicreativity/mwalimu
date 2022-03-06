@@ -77,22 +77,22 @@ class GePGResponseController extends Controller
 
 		$gatepay = new GatewayPayment;
 		$gatepay->transaction_id = $transaction_id;
-		$gatepay->sp_code = $sp_code;
-		$gatepay->pay_refId = $pay_refId;
-		$gatepay->bill_id = $bill_id;
-		$gatepay->control_no = $control_no;
-		$gatepay->bill_amount = $bill_amount;
-		$gatepay->paid_amount = $paid_amount;
-		$gatepay->bill_payOpt = $bill_payOpt;
-		$gatepay->ccy = $ccy;
-		$gatepay->datetime = $datetime;
-		$gatepay->payment_channel = $payment_channel;
-		$gatepay->cell_number = $cell_number;
-		$gatepay->payer_email = $payer_email;
-		$gatepay->payer_name = $payer_name;
-		$gatepay->psp_receipt_no = $psp_receipt_no;
-		$gatepay->ctry_AccNum = $ctry_AccNum;
-		$gatepay->psp_name = $psp_name;
+		// $gatepay->sp_code = $sp_code;
+		$gatepay->pay_refId = '922063097134883'; //$pay_refId;
+		$gatepay->bill_id = 'MNMA-1646413596'; //$bill_id;
+		$gatepay->control_no = '994120230824';//$control_no;
+		$gatepay->bill_amount = 100; //$bill_amount;
+		$gatepay->paid_amount = 100;//$paid_amount;
+		$gatepay->bill_payOpt = 1;//$bill_payOpt;
+		$gatepay->ccy = 'TZS';//$ccy;
+		$gatepay->datetime = '2022-03-04T20:13:11';//$datetime;
+		$gatepay->payment_channel = 'TIGOPESA';//$payment_channel;
+		$gatepay->cell_number = '255713376533';//$cell_number;
+		$gatepay->payer_email = 'ayubuassajile@gmail.com';//$payer_email;
+		$gatepay->payer_name = 'AYUBU A MOLOHANI';//$payer_name;
+		$gatepay->psp_receipt_no = 'EC100614465229IP';//$psp_receipt_no;
+		$gatepay->ctry_AccNum = '24510005628';//$ctry_AccNum;
+		$gatepay->psp_name = 'National Microfinance Bank';//$psp_name;
 		$gatepay->save();
     }
 
