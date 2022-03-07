@@ -81,7 +81,7 @@
                     {!! Form::input('hidden','results_container','#ss-results-container') !!}
 
                     {!! Form::input('hidden','results_link','#ss-results-confirmation-link') !!}
-
+                    <a href="#" onclick="window.location.reload();"><i class="fa fa-refresh" ></i> Refresh</a>                               
                     @foreach($o_level_necta_results as $result)
                      <p class="ss-font-xs">Center Name: {{ $result->center_name }} <br>Division: {{ $result->division }} &nbsp; Points: {{ $result->points }} <i class="fa fa-check"></i></p>
                     @endforeach
@@ -97,7 +97,7 @@
             </div>
             <!-- /.card -->
             
-            @if($applicant->entry_mode == 'DIRECT')
+            @if($applicant->entry_mode == 'DIRECT' && !str_contains($applicant->programLevel->name,'Certificate'))
             <div class="card card-default">
               <div class="card-header">
                 <h3 class="card-title">{{ __('Add A-Level NECTA Results') }}</h3>

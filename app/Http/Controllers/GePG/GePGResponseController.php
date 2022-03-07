@@ -106,7 +106,7 @@ class GePGResponseController extends Controller
 		$gatepay->save();
 
 
-		$invoice = Invoice::where('reference_no',$bill_id)->first();
+		$invoice = Invoice::where('control_no',$control_no)->first();
 		if($invoice->payable_type == 'applicant'){
 			$applicant = Applicant::find($invoice->payable_id);
 			$applicant->payment_complete_status = 1;

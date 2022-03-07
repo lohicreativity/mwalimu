@@ -189,7 +189,7 @@ class ApplicantController extends Controller
      */
     public function requestResults(Request $results)
     {
-        $applicant = User::find(Auth::user()->id)->applicant;
+        $applicant = User::find(Auth::user()->id)->applicant()->with('programLevel')->first();
         $data = [
            'applicant'=>$applicant,
            'o_level_necta_results'=>NectaResultDetail::with('results')->where('applicant_id',$applicant->id)->where('exam_id','1')->get(),
