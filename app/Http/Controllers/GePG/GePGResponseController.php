@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Gepg;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Domain\Application\Models\Applicant;
 use App\Domain\Finance\Models\Invoice;
 use App\Domain\Finance\Models\GatewayPayment;
 use App\Domain\Finance\Models\PaymentReconciliation;
@@ -103,6 +104,14 @@ class GePGResponseController extends Controller
 		$gatepay->ctry_AccNum = $ctry_AccNum;
 		$gatepay->psp_name = $psp_name;
 		$gatepay->save();
+
+
+		$invoice = Invoice::where('reference_no',$bill_id)->first();
+		if($invoice->payable_type == 'applicant'){
+			$applicant = Applicant::find($invoice->payable_id);
+			$applicant->payment_complete_status = 1;
+			$applicant->save();
+		}
     }
 
     /**

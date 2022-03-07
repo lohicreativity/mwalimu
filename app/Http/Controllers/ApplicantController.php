@@ -168,11 +168,15 @@ class ApplicantController extends Controller
     public function payments(Request $request)
     {
         $study_academic_year = StudyAcademicYear::where('status','ACTIVE')->first();
+        $applicant = User::find(Auth::user()->id)->applicant()->with('country')->first();
+        $invoice = Invoice::where('payable_id',$applicant->id)->where('payable_type','applicant')->first();
         $data = [
-           'applicant'=>User::find(Auth::user()->id)->applicant()->with('country')->first(),
+           'applicant'=>$applicant,
            'fee_amount'=>FeeAmount::whereHas('feeItem.feeType',function($query){
                   $query->where('name','LIKE','%Application Fee%');
-            })->with(['feeItem.feeType'])->where('study_academic_year_id',$study_academic_year->id)->first()
+            })->with(['feeItem.feeType'])->where('study_academic_year_id',$study_academic_year->id)->first(),
+           'invoice'=>$invoice,
+           'gateway_payment'=>GatewayPayment::where('control_no',$invoice->control_no)->first()
         ];
 
         return view('dashboard.application.payments',$data)->withTitle('Payments');

@@ -46,6 +46,9 @@
               </div>
               <!-- /.card-header -->
               <div class="card-body">
+                @if($gateway_payment)
+                   <div class="alert alert-success">Payment Completed Successfully.</div>
+                @endif
                 @if($fee_amount)
                  <table class="table table-bordered">
                     <tr>
@@ -60,6 +63,13 @@
                        <td>{{ $fee_amount->amount_in_usd }} USD</td>
                        @endif
                     </tr>
+                    @if($invoice)
+                    <tr>
+                      <td>Control Number</td>
+                      <td>{{ $invoice->control_no }}</td>
+                    </tr>
+                    @endif
+                    @if(!$invoice)
                     <tr>
                       <td>
                         {!! Form::open(['url'=>'application/request-control-number','class'=>'ss-form-processing']) !!}
@@ -70,6 +80,7 @@
                         {!! Form::close() !!}
                       </td>
                     </tr>
+                    @endif
                  </table>
                  @endif
               </div>
