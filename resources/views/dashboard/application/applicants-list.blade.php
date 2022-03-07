@@ -66,6 +66,7 @@
              </div>
              <!-- /.card -->
 
+            @if($appplication_window)
              <div class="card">
                <div class="card-header">
                  <h3 class="card-title">{{ __('Select Application Window') }}</h3>
@@ -138,7 +139,7 @@
                   </div>
                </div>
             </div>
-
+            @endif
            </div>
           </div>
       </div><!-- /.container-fluid -->
