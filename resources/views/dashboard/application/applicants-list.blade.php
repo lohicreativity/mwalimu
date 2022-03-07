@@ -115,6 +115,7 @@
                         <tr>
                           <th>Name</th>
                           <th>Gender</th>
+                          <th>Phone</th>
                           <th>Submission Status</th>
                         </tr>
                     </thead>
@@ -123,6 +124,7 @@
                    <tr>
                       <td>{{ $applicant->first_name }} {{ $applicant->middle_name }} {{ $applicant->surname }}</td>
                       <td>{{ $applicant->gender }}</td>
+                      <td>{{ $applicant->phone }}</td>
                       <td>@if($applicant->submission_complete_status == 1)
                            <span class="badge badge-success">Submitted</span>
                           @else
