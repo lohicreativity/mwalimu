@@ -329,7 +329,7 @@ class ApplicationController extends Controller
         $validation = Validator::make($request->all(),[
             'first_name'=>'required',
             'surname'=>'required',
-            'index_number'=>'required|unique:applicants_old',
+            'index_number'=>'required|unique:applicants',
             'entry_mode'=>'required',
             'password'=>'required|min:8'
         ]);
