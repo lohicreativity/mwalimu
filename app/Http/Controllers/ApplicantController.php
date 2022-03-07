@@ -178,7 +178,7 @@ class ApplicantController extends Controller
                   $query->where('name','LIKE','%Application Fee%');
             })->with(['feeItem.feeType'])->where('study_academic_year_id',$study_academic_year->id)->first(),
            'invoice'=>$invoice,
-           'gateway_payment'=>GatewayPayment::where('control_no',$invoice->control_no)->first()
+           'gateway_payment'=>$invoice? GatewayPayment::where('control_no',$invoice->control_no)->first() : null
         ];
 
         return view('dashboard.application.payments',$data)->withTitle('Payments');
