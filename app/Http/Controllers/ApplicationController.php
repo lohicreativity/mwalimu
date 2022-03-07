@@ -41,35 +41,23 @@ class ApplicationController extends Controller
     {
         $staff = User::find(Auth::user()->id)->staff;
         if($request->get('department_id') != null){
-           $applicants = Applicant::whereHas('intake.applicationWindows',function($query) use($request){
-                 $query->where('id',$request->get('application_window_id'));
-            })->whereHas('selections.campusProgram.program.departments',function($query) use($request){
+           $applicants = Applicant::where('application_window_id',$request->get('application_window_id'))->whereHas('selections.campusProgram.program.departments',function($query) use($request){
                  $query->where('id',$request->get('department_id'));
             })->with(['nextOfKin','intake'])->paginate(20);
         }elseif($request->get('duration') == 'TODAY'){
-           $applicants = Applicant::whereHas('intake.applicationWindows',function($query) use($request){
-                 $query->where('id',$request->get('application_window_id'));
-            })->with(['nextOfKin','intake'])->where('created_at','<=',now()->subDays(1))->paginate(20);
+           $applicants = Applicant::where('application_window_id',$request->get('application_window_id'))->with(['nextOfKin','intake'])->where('created_at','<=',now()->subDays(1))->paginate(20);
         }elseif($request->get('gender') != null){
-           $applicants = Applicant::whereHas('intake.applicationWindows',function($query) use($request){
-                 $query->where('id',$request->get('application_window_id'));
-            })->with(['nextOfKin','intake'])->where('gender',$request->get('gender'))->paginate(20);
+           $applicants = Applicant::where('application_window_id',$request->get('application_window_id'))->with(['nextOfKin','intake'])->where('gender',$request->get('gender'))->paginate(20);
         }elseif($request->get('nta_level_id') != null){
-           $applicants = Applicant::whereHas('intake.applicationWindows',function($query) use($request){
-                 $query->where('id',$request->get('application_window_id'));
-            })->whereHas('selections.campusProgram.program',function($query) use($request){
+           $applicants = Applicant::where('application_window_id',$request->get('application_window_id'))->whereHas('selections.campusProgram.program',function($query) use($request){
                  $query->where('nta_level_id',$request->get('campus_program_id'));
             })->with(['nextOfKin','intake'])->paginate(20);
         }elseif($request->get('campus_program_id') != null){
-           $applicants = Applicant::whereHas('intake.applicationWindows',function($query) use($request){
-                 $query->where('id',$request->get('application_window_id'));
-            })->whereHas('selections',function($query) use($request){
+           $applicants = Applicant::where('application_window_id',$request->get('application_window_id'))->whereHas('selections',function($query) use($request){
                  $query->where('campus_program_id',$request->get('campus_program_id'));
             })->with(['nextOfKin','intake'])->paginate(20);
         }else{
-           $applicants = Applicant::whereHas('intake.applicationWindows',function($query) use($request){
-                 $query->where('id',$request->get('application_window_id'));
-            })->with(['nextOfKin','intake'])->paginate(20);
+           $applicants = Applicant::where('application_window_id',$request->get('application_window_id'))->with(['nextOfKin','intake'])->paginate(20);
         }
         $data = [
             'staff'=>$staff,
@@ -352,6 +340,12 @@ class ApplicationController extends Controller
            }
         }
 
+        $window = ApplicationWindow::where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->first();
+
+        if(!$window){
+          return  redirect()->back()->with('error','No open application window at the moment');
+        }
+
         $user = new User;
         $user->username = $request->get('index_number');
         $user->password = Hash::make($request->get('password'));
@@ -369,6 +363,7 @@ class ApplicationController extends Controller
         $applicant->entry_mode = $request->get('entry_mode');
         $applicant->program_level_id = $request->get('program_level_id');
         $applicant->intake_id = $request->get('intake_id');
+        $applicant->application_window_id = $window->id;
         $applicant->save();
         
         return redirect()->to('application/login')->with('message','Applicant registered successfully');
