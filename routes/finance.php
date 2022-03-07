@@ -6,6 +6,7 @@ use App\Http\Controllers\FeeItemController;
 use App\Http\Controllers\FeeAmountController;
 use App\Http\Controllers\ProgramFeeController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\InvoiceController;
 
 
 
@@ -46,5 +47,9 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 
 	Route::get('payments',[PaymentController::class, 'index']);
 	Route::get('payment/{id}/distributions',[PaymentController::class, 'showDistributions']);
+
+    Route::get('get-reconcile',[InvoiceController::class,'showReconcile']);
+	Route::post('post-reconcile',[InvoiceController::class,'postReconcile']);
+	Route::post('post-reconciliation',[InvoiceController::class,'postReconciliation']);
 
 });

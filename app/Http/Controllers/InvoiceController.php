@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Validator, Config, Amqp;
 use App\Domain\Finance\Models\Invoice;
 use App\Domain\Finance\Models\FeeType;
+use App\Domain\Finance\Models\PaymentReconciliation;
 use Illuminate\Support\Facades\Http;
 use function \FluidXml\fluidxml;
 
@@ -96,6 +97,68 @@ class InvoiceController extends Controller
 						
 		}
 
+        public function showReconcile(Request $request)
+        {
+            return view('dashboard.finance.post-reconciliation')->withTitle('Post Reconciliation');
+        }
 
-		
+        public function postReconcile(Request $request)
+        {
+                // $rqueryRecon1=$db->runquery("select max(SpReconcReqId)+1 id from gepg_reconcile");
+    
+                //  while($resRecon1=$db->fetch($rqueryRecon1)){
+                //      if( $resRecon1["id"]==NULL || $resRecon1["id"]==""){
+                //          $id=2;
+                //      }else{
+                //           $id=$resRecon1["id"];
+                //      }
+                //  }
+
+                 $reconcile_id = PaymentReconciliation::max('id');
+                 //new id
+                 $trx_id=$reconcile_id? ($reconcile_id + 1) : 2;
+                 //new date
+                 $date = date('Y-m-d', time());
+                 $trx_date = date('Y-m-d', strtotime($date .' -5 day'));
+                 $recon_type=1;
+                 
+                 $data = array(
+                            'trx_id'=>$trx_id,
+                            'trx_date'=>$trx_date,
+                            'recon_type'=>$recon_type
+                 );
+
+                 $url = url('finance/post-reconciliation');
+                 $result = Http::withHeaders([
+                        'X-CSRF-TOKEN'=> csrf_token()
+                      ])->post($url,$data);
+
+                 return $result;
+        }
+
+
+		public function postReconciliation(Request $request)
+        {   
+
+            // Log::info(print_r($request->all(), true)); die;    
+            $valid = $this->validateReconRequest($request);
+            if($valid->fails()){
+                return $this->error($valid->errors()->first(),500);
+            }        
+                
+            # Compose Reconciliation Request XML
+            $reconcile_req = fluidxml(false);         
+            $reconcile_req->add('gepgSpReconcReq', true)
+                            ->add('SpReconcReqId', $request->get('trx_id'))
+                            ->add('SpCode', config('constants.SPCODE'))
+                            ->add('SpSysId', config('constants.SPSYSID'))
+                            ->add('TnxDt', $request->get('trx_date'))
+                            ->add('ReconcOpt', $request->get('recon_type')); 
+
+            $ack_body = str_replace('> <','><', preg_replace('/\s+/', ' ', $reconcile_req->xml(true)));
+                # Add Bill to Q                    
+                \Amqp::publish('gepg.recon.out', $ack_body, ['exchange' => 'sp_exchange', 'queue' => 'recon.to.gepg']);
+                
+                return $this->success("The Reconciliation Request with Transaction ID {$request->get('trx_id')} has been queued.", 200);                
+        }
 }

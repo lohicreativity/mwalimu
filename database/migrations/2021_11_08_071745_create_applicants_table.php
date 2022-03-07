@@ -48,7 +48,7 @@ class CreateApplicantsTable extends Migration
             $table->tinyInteger('next_of_kin_complete_status')->default(0);
             $table->tinyInteger('payment_complete_status')->default(0);
             $table->tinyInteger('results_complete_status')->default(0);
-            $table->tinyInteger('preview_complete_status')->default(0);
+            $table->tinyInteger('programs_complete_status')->default(0);
             $table->tinyInteger('submission_complete_status')->default(0);
             $table->timestamps();
             $table->softDeletes();

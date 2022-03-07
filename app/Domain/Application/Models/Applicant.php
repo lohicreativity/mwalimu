@@ -9,6 +9,7 @@ use App\Domain\Settings\Models\Region;
 use App\Domain\Settings\Models\District;
 use App\Domain\Settings\Models\Ward;
 use App\Domain\Settings\Models\Intake;
+use App\Domain\Academic\Models\Award;
 use App\Domain\Settings\Models\DisabilityStatus;
 
 class Applicant extends Model
@@ -71,6 +72,14 @@ class Applicant extends Model
     public function nextOfKin()
     {
         return $this->belongsTo(NextOfKin::class,'next_of_kin_id');
+    }
+
+    /**
+     * Establish one to one relationship with program levels
+     */
+    public function programLevel()
+    {
+        return $this->belongsTo(Award::class,'program_level_id');
     }
 
     /**

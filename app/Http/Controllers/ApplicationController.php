@@ -122,6 +122,13 @@ class ApplicationController extends Controller
                  $selection->order = $request->get('choice');
                  $selection->save();
 
+                 $select_count = ApplicantProgramSelection::where('applicant_id',$request->get('applicant_id'))->count();
+                 if($select_count == 3){
+                    $applicant = Applicant::find($request->get('applicant_id'));
+                    $applicant->programs_complete_status = 1;
+                    $applicant->save();
+                 }
+
                  return redirect()->back()->with('message','Programme selected successfully');
              }
         }else{
@@ -218,6 +225,9 @@ class ApplicationController extends Controller
        }
        if($applicant->results_complete_status == 0){
           return redirect()->back()->with('error','Results section not completed');
+       }
+       if($applicant->programs_complete_status == 0){
+          return redirect()->back()->with('error','Programmes selection section not completed');
        }
        if($applicant->documents_complete_status == 0){
           return redirect()->back()->with('error','Upload documents section not completed');
