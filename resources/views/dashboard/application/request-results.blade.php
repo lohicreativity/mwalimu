@@ -176,8 +176,20 @@
                                {!! Form::input('hidden','necta_result_detail_id',null) !!}
                                {!! Form::input('hidden','applicant_id',$applicant->id) !!}
                                <div class="ss-form-controls">
-                                 <button class="btn btn-danger" id="ss-result-confirmation-link">Decline Results</button>
-                                 <button class="btn btn-primary" data-dismiss="modal">Confirm Results</button>
+                                 <button class="btn btn-danger" id="ss-result-confirmation-link" type="submit"
+                                >Decline Results</button>        
+                               </div><!-- end of ss-form-controls -->
+                               {!! Form::close() !!}
+
+                               {!! Form::open(['url'=>'application/necta-result/confirm','class'=>'ss-form-processing']) !!}
+                               
+                               {!! Form::input('hidden','index_number',null) !!}
+                               {!! Form::input('hidden','year',null) !!}
+                               {!! Form::input('hidden','exam_id',null) !!}
+                               {!! Form::input('hidden','necta_result_detail_id',null) !!}
+                               {!! Form::input('hidden','applicant_id',$applicant->id) !!}
+                               <div class="ss-form-controls">       
+                                 <button class="btn btn-primary" type="submit">Confirm Results</button>
                                </div><!-- end of ss-form-controls -->
                                {!! Form::close() !!}
                               </div><!-- end of ss-confirmation-container -->
@@ -266,8 +278,18 @@
                                {!! Form::input('hidden','applicant_id',$applicant->id) !!}
                                {!! Form::input('hidden','nacte_result_detail_id',null) !!}
                                <div class="ss-form-controls">
-                                 <button class="btn btn-danger" id="ss-result-confirmation-link">Decline Results</button>
-                                 <button class="btn btn-primary" data-dismiss="modal">Confirm Results</button>
+                                 <button class="btn btn-danger" id="ss-result-confirmation-link" type="submit">Decline Results</button>
+                            
+                               </div><!-- end of ss-form-controls -->
+                               {!! Form::close() !!}
+
+                               {!! Form::open(['url'=>'application/nacte-result/confirm','class'=>'ss-form-processing']) !!}
+                               
+                               {!! Form::input('hidden','avn',null) !!}
+                               {!! Form::input('hidden','applicant_id',$applicant->id) !!}
+                               {!! Form::input('hidden','nacte_result_detail_id',null) !!}
+                               <div class="ss-form-controls">
+                                 <button class="btn btn-primary" type="submit">Confirm Results</button>
                                </div><!-- end of ss-form-controls -->
                                {!! Form::close() !!}
                               </div><!-- end of ss-confirmation-container -->
