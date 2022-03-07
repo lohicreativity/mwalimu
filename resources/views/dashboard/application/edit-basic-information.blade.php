@@ -76,15 +76,14 @@
                   ];
 
                   $address = [
-                     'placeholder'=>'Address',
+                     'placeholder'=>'P. O. Box 3918 Dar Es Salaam',
                      'class'=>'form-control',
                      'required'=>true
                   ];
 
                   $email = [
                      'placeholder'=>'Email',
-                     'class'=>'form-control',
-                     'required'=>true
+                     'class'=>'form-control'
                   ];
 
                   $phone = [
@@ -123,7 +122,7 @@
                        {!! Form::input('hidden','applicant_id',$applicant->id) !!}
                     </div>
                     <div class="form-group col-4">
-                       {!! Form::label('','Middle name') !!}
+                       {!! Form::label('','Middle name (Optional)') !!}
                        {!! Form::text('middle_name',$applicant->middle_name,$middle_name) !!}
                     </div>
                     <div class="form-group col-4">
@@ -133,7 +132,7 @@
                   </div>
                   <div class="row">
                     <div class="form-group col-6">
-                       {!! Form::label('','Email') !!}
+                       {!! Form::label('','Email (Optional)') !!}
                        {!! Form::email('email',$applicant->email,$email) !!}
                     </div>
                     <div class="form-group col-3">
@@ -170,7 +169,7 @@
                        {!! Form::text('nationality',$applicant->nationality,$nationality) !!}
                     </div>
                     <div class="form-group col-6">
-                       {!! Form::label('','National Identification Number') !!}
+                       {!! Form::label('','National Identification Number (Optional)') !!}
                        {!! Form::text('nin',$applicant->nin,$nin) !!}
                     </div>
                   </div><!-- end of row -->
@@ -179,7 +178,7 @@
                   <legend>Contact Details</legend>
                   <div class="row">
                      <div class="form-group col-6">
-                       {!! Form::label('','Address') !!}
+                       {!! Form::label('','Mailing Address') !!}
                        {!! Form::text('address',$applicant->address,$address) !!}
                     </div>
                     <div class="form-group col-6">
@@ -227,12 +226,7 @@
                        {!! Form::text('street',$applicant->street,$street) !!}
                     </div>
                   </div>
-                  <div class="row">
-                    <div class="form-group col-6">
-                      {!! Form::label('','Upload birth certificate') !!}
-                      {!! Form::file('birth_certificate',['class'=>'form-control']) !!}
-                    </div>
-                  </div>
+                  
                 </fieldset>               
                   
                 </div>

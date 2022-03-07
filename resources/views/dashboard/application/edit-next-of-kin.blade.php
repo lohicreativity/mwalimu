@@ -85,7 +85,6 @@
                   $email = [
                      'placeholder'=>'Email',
                      'class'=>'form-control',
-                     'required'=>true
                   ];
 
                   $phone = [
@@ -121,7 +120,7 @@
                        {!! Form::input('hidden','next_of_kin_id',$next_of_kin->id) !!}
                     </div>
                     <div class="form-group col-4">
-                       {!! Form::label('','Middle name') !!}
+                       {!! Form::label('','Middle name (Optional)') !!}
                        {!! Form::text('middle_name',$next_of_kin->middle_name,$middle_name) !!}
                     </div>
                     <div class="form-group col-4">
@@ -131,7 +130,7 @@
                   </div>
                   <div class="row">
                     <div class="form-group col-6">
-                       {!! Form::label('','Email') !!}
+                       {!! Form::label('','Email (Optional)') !!}
                        {!! Form::email('email',$next_of_kin->email,$email) !!}
                     </div>
                     <div class="form-group col-6">
@@ -179,7 +178,7 @@
                        <select name="country_id" class="form-control" required id="ss-select-countries" data-target="#ss-select-regions" data-token="{{ session()->token() }}" data-source-url="{{ url('api/v1/get-regions') }}">
                          <option value="">Select Country</option>
                          @foreach($countries as $country)
-                         <option value="{{ $country->id }}" @if($next_of_kin->country_id == $country->id) selected="selected" @endif>{{ $country->name }}</option>
+                         <option value="{{ $country->id }}" @if($next_of_kin->country_id == $country->id) selected="selected" @endif @if($country->code != 'TZ') disabled="disabled" @endif>{{ $country->name }}</option>
                          @endforeach
                        </select>
                     </div>
@@ -269,8 +268,7 @@
 
                   $address = [
                      'placeholder'=>'Address',
-                     'class'=>'form-control',
-                     'required'=>true
+                     'class'=>'form-control'
                   ];
 
                   $email = [
@@ -311,7 +309,7 @@
                        {!! Form::input('hidden','applicant_id',$applicant->id) !!}
                     </div>
                     <div class="form-group col-4">
-                       {!! Form::label('','Middle name') !!}
+                       {!! Form::label('','Middle name (Optional)') !!}
                        {!! Form::text('middle_name',null,$middle_name) !!}
                     </div>
                     <div class="form-group col-4">
@@ -321,7 +319,7 @@
                   </div>
                   <div class="row">
                     <div class="form-group col-6">
-                       {!! Form::label('','Email') !!}
+                       {!! Form::label('','Email (Optional)') !!}
                        {!! Form::email('email',null,$email) !!}
                     </div>
                     <div class="form-group col-6">
@@ -361,7 +359,7 @@
                   <legend>Contact Details</legend>
                   <div class="row">
                      <div class="form-group col-6">
-                       {!! Form::label('','Address') !!}
+                       {!! Form::label('','Mailing Address') !!}
                        {!! Form::text('address',null,$address) !!}
                     </div>
                     <div class="form-group col-6">
