@@ -58,7 +58,7 @@ class ApplicantAction implements ApplicantInterface{
                     $applicant->birth_certificate = $request->file('document')->getClientOriginalName();
                 }
 
-                if($request->get('document_name') == '0_level_certificate'){
+                if($request->get('document_name') == 'o_level_certificate'){
                     $applicant->o_level_certificate = $request->file('document')->getClientOriginalName();
                 }
                 
