@@ -31,7 +31,7 @@ class ApplicantProgramSelection extends Model
     /**
      * Check if applicant has selected
      */
-    public function hasSelected($selections,$program,$choice = null)
+    public static function hasSelected($selections,$program,$choice = null)
     {
     	$status = false;
     	if(is_iterable($selections)){
@@ -57,7 +57,7 @@ class ApplicantProgramSelection extends Model
     /**
      * Check if applicant has selected
      */
-    public function hasSelectedChoice($selections,$choice)
+    public static function hasSelectedChoice($selections,$choice)
     {
         $status = false;
         if(is_iterable($selections)){
