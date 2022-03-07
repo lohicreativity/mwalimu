@@ -15,7 +15,7 @@ class Applicant extends Model
 {
     use HasFactory;
 
-    protected $table = 'applicants_old';
+    protected $table = 'applicants';
 
     /**
      * Establish one to many relationship with countries
