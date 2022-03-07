@@ -204,12 +204,14 @@ class ApplicantController extends Controller
      */
     public function selectPrograms(Request $request)
     {
+
+        $window = ApplicationWindow::where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->first();
         $data = [
            'applicant'=>User::find(Auth::user()->id)->applicant()->with(['selections.campusProgram.program','selections'=>function($query){
                 $query->orderBy('order','asc');
             },'selections.campusProgram.campus'])->first(),
-           'application_window'=>ApplicationWindow::where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->first(),
-           'campus_programs'=>ApplicationWindow::where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->first()->campusPrograms()->with(['program','campus'])->get()
+           'application_window'=>$window,
+           'campus_programs'=>$window? $window->campusPrograms()->with(['program','campus'])->get() : []
         ];
         return view('dashboard.application.select-programs',$data)->withTitle('Select Programmes');
     }
