@@ -66,7 +66,7 @@
                     @if($invoice)
                     <tr>
                       <td>Control Number</td>
-                      <td>{{ $invoice->control_no }} <a href="#"><i class="fa fa-refresh" onclick="window.location.reload();"></i> Refresh</a></td>
+                      <td>{{ $invoice->control_no }} <a href="#" onclick="window.location.reload();"><i class="fa fa-refresh" ></i> Refresh</a></td>
                     </tr>
                     @endif
                     @if(!$invoice)
