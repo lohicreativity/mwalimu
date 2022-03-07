@@ -17,6 +17,7 @@ use App\Domain\Finance\Models\FeeType;
 use App\Domain\Finance\Models\FeeItem;
 use App\Domain\Finance\Models\FeeAmount;
 use App\Domain\Finance\Models\Invoice;
+use App\Domain\Finance\Models\GatewayPayment;
 use App\Domain\Application\Models\NectaResult;
 use App\Domain\Application\Models\NacteResult;
 use App\Domain\Application\Models\NectaResultDetail;
