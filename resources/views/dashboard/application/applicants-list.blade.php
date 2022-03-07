@@ -124,7 +124,7 @@
                       <td>{{ $applicant->first_name }} {{ $applicant->middle_name }} {{ $applicant->surname }}</td>
                       <td>{{ $applicant->gender }}</td>
                       <td>@if($applicant->submission_complete_status == 1)
-                           <span class="badge badge-warning">Submitted</span>
+                           <span class="badge badge-success">Submitted</span>
                           @else
                            <span class="badge badge-warning">Pending</span>
                           @endif
