@@ -141,10 +141,10 @@ class InvoiceController extends Controller
         {   
 
             // Log::info(print_r($request->all(), true)); die;    
-            $valid = $this->validateReconRequest($request);
-            if($valid->fails()){
-                return $this->error($valid->errors()->first(),500);
-            }        
+            // $valid = $this->validateReconRequest($request);
+            // if($valid->fails()){
+            //     return $this->error($valid->errors()->first(),500);
+            // }        
                 
             # Compose Reconciliation Request XML
             $reconcile_req = fluidxml(false);         
