@@ -46,7 +46,7 @@
               <!-- /.card-header -->
               <!-- form start -->
               
-              {!! Form::open(['url'=>'finance/post-reconcile','class'=>'ss-form-processing']) !!}
+              {!! Form::open(['url'=>'bills/reconcile','class'=>'ss-form-processing']) !!}
                 <div class="card-body">
                   
                 </div>
