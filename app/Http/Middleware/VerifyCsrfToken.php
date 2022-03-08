@@ -19,6 +19,6 @@ class VerifyCsrfToken extends Middleware
         'response/gepg/bill',
         'response/gepg/receipt',
         'response/gepg/reconcile',
-        'post-reconciliation'
+        'finance/post-reconciliation'
     ];
 }
