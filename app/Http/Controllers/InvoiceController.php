@@ -156,9 +156,6 @@ class InvoiceController extends Controller
                             ->add('ReconcOpt', $request->get('recon_type')); 
 
             $ack_body = str_replace('> <','><', preg_replace('/\s+/', ' ', $reconcile_req->xml(true)));
-
-            return dd($ack_body);
-            die();
                 # Add Bill to Q                    
                 \Amqp::publish('gepg.recon.out', $ack_body, ['exchange' => 'sp_exchange', 'queue' => 'recon.to.gepg']);
                 
