@@ -208,10 +208,89 @@ class GePGController extends Controller
 }
 
 
+// public function getReconciliation()
+// {
+// ini_set('memory_limit', '-1');
+//     	# get the raw POST data
+//    $reconciliation_data = file_get_contents("php://input");        
+
+//    if ( is_null($reconciliation_data) ) {
+//     throw new Exception("Invalid reconciliation data provided.");
+// }
+
+//         # Get data and signature from response
+// $vdata = $this->getDataString($reconciliation_data, config('constants.RECON_DATA_TAG'));
+// $vsignature = $this->getSignatureString($reconciliation_data, config('constants.SIGN_TAG'));
+
+//         # Get Certificate contents
+// if (!$pcert_store = file_get_contents("/home/public_html/mnmaa_new/consumers/gepgpubliccertificate.pfx")) {
+//     throw new Exception(" ** Error: Unable to read the GePG Public Cert File\n");            
+// } 
+// else 
+// {
+//             # Read Certificate
+//    // if (openssl_pkcs12_read($pcert_store, $pcert_info, config('constants.PUBLIC_CERT_PASSWORD'))) {                
+//                     # Decode Received Signature String
+//        // $rawsignature = base64_decode($vsignature);
+
+//                     # Verify Signature and state whether signature is okay or not
+//         $vdata = str_replace('> <', '><', preg_replace('/\s+/', ' ', $vdata));                
+//         //$ok = openssl_verify($vdata, $rawsignature, $pcert_info['extracerts']['0']);
+
+//        // if ($ok == 1) {
+//                         // echo "Signature Status:";
+//                         // echo "GOOD";
+
+//             $resp = fluidxml();
+//             $resp->add($vdata);
+
+//             $sxml = simplexml_load_string($resp->xml());
+//             $data = json_decode(json_encode($sxml), true);
+//                         //$data = $data['Gepg'];
+//                         // Log::info(print_r($data,true));           
+
+//             //$recon_data = $data['gepgSpReconcResp']; 
+//               $recon_data1 = $data['gepgSpReconcResp'];     
+//  Log::info("Middleware Recon GEPG:",
+//             [
+//                 "data" => $recon_data1,
+               
+//             ]);
+        
+//                 Log::info($recon_data1['ReconcBatchInfo']['SpReconcReqId'].":   TUNAIPELEKA KWA QQQQ");
+//          $data_rec= ['data'=> $recon_data1] ;  
+//         Log::info("Recon GEPG:",
+//         [
+//             "data" =>  json_encode($recon_data1),
+
+//         ]); 
+
+
+
+//                        # Q Reconciliation for sending to SP            
+//          \Amqp::publish('gepg.recon', json_encode($recon_data1), ['exchange' => 'sp_exchange', 'queue' => 'recon.to.sp']);		
+// return $this->gepgSpReconcRespAck();
+           
+//         /*    
+//         }
+//         else
+//         {
+//             throw new Exception(" ** Error: Invalid Signature Provided\n");                                    
+//         }
+//       */
+//     //}// end reading signature
+
+
+
+// }
+                  
+// }
+
+
 public function getReconciliation()
 {
 ini_set('memory_limit', '-1');
-    	# get the raw POST data
+        # get the raw POST data
    $reconciliation_data = file_get_contents("php://input");        
 
    if ( is_null($reconciliation_data) ) {
@@ -248,27 +327,34 @@ else
             $data = json_decode(json_encode($sxml), true);
                         //$data = $data['Gepg'];
                         // Log::info(print_r($data,true));           
-
-            //$recon_data = $data['gepgSpReconcResp']; 
-              $recon_data1 = $data['gepgSpReconcResp'];     
- Log::info("Middleware Recon GEPG:",
-            [
-                "data" => $recon_data1,
-               
-            ]);
-        
-                Log::info($recon_data1['ReconcBatchInfo']['SpReconcReqId'].":   TUNAIPELEKA KWA QQQQ");
-         $data_rec= ['data'=> $recon_data1] ;  
-        Log::info("Recon GEPG:",
-        [
-            "data" =>  json_encode($recon_data1),
-
-        ]); 
-
-
+                        
+             $recon_data = $data['gepgSpReconcResp'];  
+             Log::info($recon_data['ReconcBatchInfo']['SpReconcReqId'].":   TUNAIPELEKA KWA QQQQ");
+                $recons = [
+                    'spReconcReqId'    =>  $recon_data['ReconcBatchInfo']['SpReconcReqId'],
+                    'reconcStsCode'    =>  $recon_data['ReconcBatchInfo']['ReconcStsCode'],
+                    'spbillId' =>  $recon_data['ReconcTrans']['ReconcTrxInf']['SpBillId'],
+                    'billCtrNum' =>  $recon_data['ReconcTrans']['ReconcTrxInf']['BillCtrNum'],
+                    'pspTrxId' =>  $recon_data['ReconcTrans']['ReconcTrxInf']['pspTrxId'],
+                    'paidAmt' =>  $recon_data['ReconcTrans']['ReconcTrxInf']['PaidAmt'],
+                    'ccy' =>  $recon_data['ReconcTrans']['ReconcTrxInf']['CCy'],
+                    'PayRefId' =>  $recon_data['ReconcTrans']['ReconcTrxInf']['PayRefId'],
+                    'trxDtTm' =>  $recon_data['ReconcTrans']['ReconcTrxInf']['TrxDtTm'],
+                    'ctrNum' =>  $recon_data['ReconcTrans']['ReconcTrxInf']['CtrAccNum'],
+                    'usdPayChnl' =>  $recon_data['ReconcTrans']['ReconcTrxInf']['UsdPayChnl'],
+                    'pspname' =>  $recon_data['ReconcTrans']['ReconcTrxInf']['PspName'],
+                    'pspcode' =>  $recon_data['ReconcTrans']['ReconcTrxInf']['PspCode'],
+                    'deptcell' =>  $recon_data['ReconcTrans']['ReconcTrxInf']['DptCellNum'],
+                    'deptname' =>  $recon_data['ReconcTrans']['ReconcTrxInf']['DptName'],
+                    'dptemail' =>  $recon_data['ReconcTrans']['ReconcTrxInf']['DptEmailAddr'],
+                    'remarks' =>  $recon_data['ReconcTrans']['ReconcTrxInf']['Remarks'],
+                    'reconcRsv1' =>  $recon_data['ReconcTrans']['ReconcTrxInf']['ReconcRsv1'],
+                    'reconcRsv2' =>  $recon_data['ReconcTrans']['ReconcTrxInf']['ReconcRsv2'],
+                    'reconcRsv3' =>  $recon_data['ReconcTrans']['ReconcTrxInf']['ReconcRsv3']
+                ];   
 
                        # Q Reconciliation for sending to SP            
-         \Amqp::publish('gepg.recon', json_encode($recon_data1), ['exchange' => 'sp_exchange', 'queue' => 'recon.to.sp']);		
+         \Amqp::publish('gepg.recon', json_encode($recons), ['exchange' => 'sp_exchange', 'queue' => 'recon.to.sp']);       
 return $this->gepgSpReconcRespAck();
            
         /*    
@@ -279,10 +365,7 @@ return $this->gepgSpReconcRespAck();
         }
       */
     //}// end reading signature
-
-
-
-}
+  }
                   
 }
 
