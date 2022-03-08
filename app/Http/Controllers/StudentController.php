@@ -15,6 +15,7 @@ use App\Domain\Academic\Models\ModuleAssignment;
 use App\Domain\Registration\Models\Student;
 use App\Domain\Academic\Models\ResultPublication;
 use App\Domain\Finance\Models\FeeType;
+use App\Domain\Finance\Models\Invoice;
 use App\Models\User;
 use Auth, Validator;
 
@@ -64,7 +65,7 @@ class StudentController extends Controller
         if(Auth::attempt($credentials)){
         	return redirect()->to('student/dashboard')->with('message','Logged in successfully');
         }else{
-           return redirect()->back()->with('error','Incorrect registratin number or password');
+           return redirect()->back()->with('error','Incorrect registration number or password');
         }
     }
 
@@ -335,9 +336,11 @@ class StudentController extends Controller
      */
     public function resultsAppeal(Request $request)
     {
+        $student = User::find(Auth::user()->id)->student;
         $data = [
            'fee_types'=>FeeType::all(),
-           'student'=>User::find(Auth::user()->id)->student
+           'student'=>$student,
+           'invoices'=>Invoice::where('payable_id',$student->id)->where('payable_type','student')->with(['feeType'])->latest()->paginate(20)
         ];
         return view('dashboard.student.results-appeal',$data)->withTItle('Results Appeal');
     }

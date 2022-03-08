@@ -22,8 +22,8 @@ class Invoice extends Model
     /**
      * Establish one to many relationship with payment categories
      */
-    public function category()
+    public function feeType()
     {
-    	return $this->belongsTo(PaymentCategory::class,'payment_category_id');
+    	return $this->belongsTo(FeeType::class,'fee_type_id');
     }
 }

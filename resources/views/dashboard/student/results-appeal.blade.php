@@ -93,6 +93,38 @@
                  {!! Form::close() !!}
             </div>
           </div>
+
+        </div>
+      </div>
+          
+          <div class="row">
+          <!-- Left col -->
+          <div class="col-12">
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">List of Control Numbers</h3>
+            </div>
+            <div class="card-body">
+               <table class="table table-bordered">
+                  <thead>
+                    <tr>
+                      <th>Fee Item</th>
+                      <th>Control Number</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  @foreach($invoices as $invoice)
+                  <tr>
+                      <td>{{ $invoice->feeType->name }}</td>
+                      <td>{{ $invoice->control_no }}</td>
+                  </tr>
+                  @endforeach
+                  </tbody>
+               </table>
+            </div>
+          </div>
+          </div>
+        </div>
           
         </div>
         <!-- /.row (main row) -->

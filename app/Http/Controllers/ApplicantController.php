@@ -305,4 +305,15 @@ class ApplicantController extends Controller
             return redirect()->back()->with('error','Unable to get the resource specified in this request');
         }
     }
+
+    /**
+     * Logout student
+     */
+    public function logout(Request $request)
+    {
+      Auth::logout();
+      $request->session()->invalidate();
+      $request->session()->regenerateToken();
+      return redirect()->to('application/login');
+    }
 }

@@ -50,7 +50,7 @@
           @elseif(Auth::user()->hasRole('student'))
           <li class="nav-item">
             <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-building"></i>
+              <i class="nav-icon fas fa-list-alt"></i>
               <p>
                 {{ __('Modules') }}
                 <i class="fas fa-angle-left right"></i>
@@ -67,7 +67,7 @@
           </li>
           <li class="nav-item">
             <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-building"></i>
+              <i class="nav-icon fas fa-file-pdf"></i>
               <p>
                 {{ __('Results') }}
                 <i class="fas fa-angle-left right"></i>
@@ -85,7 +85,7 @@
           </li>
           <li class="nav-item">
             <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-building"></i>
+              <i class="nav-icon fas fa-coins"></i>
               <p>
                 {{ __('Payments') }}
                 <i class="fas fa-angle-left right"></i>

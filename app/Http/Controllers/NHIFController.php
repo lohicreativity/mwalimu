@@ -41,4 +41,18 @@ class NHIFController extends Controller
              'Authorization'=>'Bearer '.config('NHIF_TOKEN')
     	])->post($url,$data);
     }
+
+    /**
+     * Check status
+     */
+    public function checkCardStatus(Request $request)
+    {
+    	$url = 'http://196.13.105.15/OMRS/api/v1/Verification/GetStudentsCardStatus?CardNo=101502255519';//.$request->get('card_no');
+    	$response = Http::withHeaders([
+             'Content-Type'=>'application/json',
+             'Authorization'=>'Bearer '.config('NHIF_TOKEN')
+    	])->get($url);
+
+        return $response;
+    }
 }
