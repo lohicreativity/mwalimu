@@ -48,8 +48,11 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 	Route::get('payments',[PaymentController::class, 'index']);
 	Route::get('payment/{id}/distributions',[PaymentController::class, 'showDistributions']);
 
-    Route::get('get-reconcile',[InvoiceController::class,'showReconcile']);
-	Route::post('post-reconcile',[InvoiceController::class,'postReconcile']);
-	Route::post('post-reconciliation',[InvoiceController::class,'postReconciliation']);
+    
 
 });
+
+
+Route::get('get-reconcile',[InvoiceController::class,'showReconcile']);
+	Route::post('post-reconcile',[InvoiceController::class,'postReconcile']);
+	Route::post('post-reconciliation',[InvoiceController::class,'postReconciliation']);
