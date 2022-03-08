@@ -128,7 +128,7 @@ class InvoiceController extends Controller
                             'recon_type'=>$recon_type
                  );
 
-                 $url = url('finance/post-reconciliation');
+                 $url = url('bills/reconcile');
                  $result = Http::withHeaders([
                         'X-CSRF-TOKEN'=> csrf_token()
                       ])->post($url,$data);
