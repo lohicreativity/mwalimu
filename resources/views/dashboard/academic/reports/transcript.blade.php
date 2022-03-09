@@ -274,7 +274,7 @@
                         $count = 1;
                       @endphp
                       @foreach($year[$semester->name]['results'] as $result)
-                         @if($result->moduleAssignment->programModuleAssignment->semester_id == $semester->id && $result->moduleAssignment->programModuleAssignment->id == $program->id)
+                         @if($result->moduleAssignment->programModuleAssignment->semester_id == $semester->id)
 
                          @if($result->retakeHistory)
                            @if(count($result->retakeHistory->retakableResults) != 0)
@@ -332,7 +332,7 @@
                       @endforeach
 
                        @foreach($year[$semester->name]['results'] as $result)
-                         @if($result->moduleAssignment->programModuleAssignment->semester_id == $semester->id && $result->moduleAssignment->programModuleAssignment->id == $program->id)
+                         @if($result->moduleAssignment->programModuleAssignment->semester_id == $semester->id)
 
                          @if($result->retakeHistory)
                            @if(count($result->retakeHistory->retakableResults) != 0)
