@@ -2381,7 +2381,7 @@ class ExaminationResultController extends Controller
             }
           }
 
-          $grading_policies = GradingPolicy::where('nta_level_id',$student->campusProgram->program->nta_level_id)->where('study_academic_year_id',$ac_yr_id)->orderBy('grade')->get();
+          $grading_policies = GradingPolicy::where('nta_level_id',$student->campusProgram->program->nta_level_id)->orderBy('grade')->get();
 
           foreach($student->campusProgram->program->departments as $dpt){
                 if($dpt->pivot->campus_id == $student->campusProgram->campus_id){
