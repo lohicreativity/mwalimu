@@ -274,7 +274,61 @@
                         $count = 1;
                       @endphp
                       @foreach($year[$semester->name]['results'] as $result)
-                         @php dd($result); @endphp
+                         @if($result->moduleAssignment->programModuleAssignment->semester_id == $semester->id)
+
+                         @if($result->retakeHistory)
+                           @if(count($result->retakeHistory->retakableResults) != 0)
+
+                           @foreach($result->retakeHistory->retakableResults as $key=>$res)
+                              @if($key == 0)
+                                 <tr>
+                                    <td>{{ $count }}</td>
+                                    <td>{{ $res->moduleAssignment->module->code }}</td>
+                                    <td>{{ $res->moduleAssignment->module->name }}</td>
+                                    <td>{{ $res->moduleAssignment->module->credit }}</td>
+                                    <td>{{ $res->grade }}</td>
+                                    <td></td>
+                                  </tr>
+                                    @php
+                                      $count += 1;
+                                    @endphp
+                              @endif
+                           @endforeach
+
+                           @endif
+                         @elseif($result->carryHistory)
+                           @if(count($result->carryHistory->carrableResults) != 0)
+
+                           @foreach($result->carryHistory->carrableResults as $key=>$res)
+                              @if($key == 0)
+                                 <tr>
+                                    <td>{{ $count }}</td>
+                                    <td>{{ $res->moduleAssignment->module->code }}</td>
+                                    <td>{{ $res->moduleAssignment->module->name }}</td>
+                                    <td>{{ $res->moduleAssignment->module->credit }}</td>
+                                    <td>{{ $res->grade }}</td>
+                                    <td>{{ $res->final_exam_remark }}</td>
+                                    <td></td>
+                                  </tr>
+                                    @php
+                                      $count += 1;
+                                    @endphp
+                              @endif
+                           @endforeach
+
+                           @endif
+                         @else
+                         <tr>
+                          <td>{{ $count }}</td>
+                          <td>{{ $result->moduleAssignment->module->code }}</td>
+                          <td>{{ $result->moduleAssignment->module->name }}</td>
+                          <td>{{ $result->moduleAssignment->module->credit }}</td>
+                          <td>{{ $result->grade }}</td>
+                          <td>{{ $result->final_exam_remark }}</td>
+                          <td></td>
+                        </tr>
+                         @endif
+                         @endif
                       @endforeach
 
                       
