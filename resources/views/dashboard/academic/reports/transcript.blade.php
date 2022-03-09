@@ -273,17 +273,6 @@
                       @php
                         $count = 1;
                       @endphp
-                    @foreach($year[$semester->name]['core_programs'] as $program)
-                        @if($semester->id == $program->semester_id)
-                         <tr>
-                          <td>{{ $count }}</td>
-                          <td>{{ $program->module->code }}</td>
-                          <td>{{ $program->module->name }}</td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                        </tr>
-                       @endif
                       @foreach($year[$semester->name]['results'] as $result)
                          @if($result->moduleAssignment->programModuleAssignment->semester_id == $semester->id && $result->moduleAssignment->programModuleAssignment->id == $program->id)
 
@@ -341,19 +330,7 @@
                          @endif
                          @endif
                       @endforeach
-                    @endforeach
-                    @foreach($year[$semester->name]['optional_programs'] as $program)
-                        @if($semester->id == $program->semester_id)
-                         <tr>
-                          <td>{{ $count }}</td>
-                          <td>{{ $program->module->code }}</td>
-                          <td>{{ $program->module->name }}</td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                        </tr>
-                       @endif
+
                        @foreach($year[$semester->name]['results'] as $result)
                          @if($result->moduleAssignment->programModuleAssignment->semester_id == $semester->id && $result->moduleAssignment->programModuleAssignment->id == $program->id)
 
@@ -413,7 +390,6 @@
                          @endif
                          @endif
                       @endforeach
-                     @endforeach
                      @foreach($semester->remarks as $remark)
                       <tr>
                         <td colspan="2" class="ss-bold">SUB TOTAL</td>
