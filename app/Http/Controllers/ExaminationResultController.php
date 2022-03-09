@@ -2381,8 +2381,6 @@ class ExaminationResultController extends Controller
             }
           }
 
-          return dd($years_of_studies);
-
           $grading_policies = GradingPolicy::where('nta_level_id',$student->campusProgram->program->nta_level_id)->where('study_academic_year_id',$ac_yr_id)->orderBy('grade')->get();
 
           foreach($student->campusProgram->program->departments as $dpt){
