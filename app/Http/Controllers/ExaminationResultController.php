@@ -2355,8 +2355,6 @@ class ExaminationResultController extends Controller
                 }
           }
 
-          return dd($years);
-
           foreach($years as $key=>$year){
             foreach ($year as $yr) {
               $years_of_studies[$key]['ac_year'] = StudyAcademicYear::with('academicYear')->find($yr);
