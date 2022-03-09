@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Validator, Config, Amqp;
 use App\Domain\Finance\Models\Invoice;
 use App\Domain\Finance\Models\FeeType;
+use App\Domain\Academic\Models\TranscriptRequest;
 use App\Domain\Finance\Models\PaymentReconciliation;
 use Illuminate\Support\Facades\Http;
 use function \FluidXml\fluidxml;
@@ -42,6 +43,13 @@ class InvoiceController extends Controller
 
         $payable = Invoice::find($invoice->id)->payable;
         $fee_type = FeeType::find($request->get('fee_type_id'));
+
+        if(str_contains($fee_type->name,'Transcript')){
+            $transcript_req = new TranscriptRequest;
+            $transcript_req->student_id = $request->payable_id;
+            $transcript_req->payment_status = 'PENDING';
+            $transcript_req->save();
+        }
 
         $generated_by = 'SP';
         $approved_by = 'SP';

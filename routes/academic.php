@@ -34,6 +34,7 @@ use App\Http\Controllers\ApplicationWindowController;
 use App\Http\Controllers\ClearanceController;
 use App\Http\Controllers\GraduantController;
 use App\Http\Controllers\AppealController;
+use App\Http\Controllers\TranscriptRequestController;
 
 /*
 |--------------------------------------------------------------------------
@@ -287,5 +288,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 	Route::post('results/get-global-report',[ExaminationResultController::class,'getGlobalReport']);
 
 	Route::get('transcript/{student_id}',[ExaminationResultController::class,'showStudentTranscript']);
+    Route::get('transcript-requests',[TranscriptRequestController::class,'index']);
+
 
 });
