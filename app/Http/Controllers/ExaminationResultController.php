@@ -2348,12 +2348,14 @@ class ExaminationResultController extends Controller
             if(!array_key_exists($result->moduleAssignment->programModuleAssignment->year_of_study, $years)){
                    $years[$result->moduleAssignment->programModuleAssignment->year_of_study] = [];  
                    $years[$result->moduleAssignment->programModuleAssignment->year_of_study][] = $result->moduleAssignment->studyAcademicYear->id;
-            }
+             }
                 if(!in_array($result->moduleAssignment->studyAcademicYear->id, $years[$result->moduleAssignment->programModuleAssignment->year_of_study])){
 
                   $years[$result->moduleAssignment->programModuleAssignment->year_of_study][] = $result->moduleAssignment->studyAcademicYear->id;
                 }
           }
+
+          return dd($years);
 
           foreach($years as $key=>$year){
             foreach ($year as $yr) {
@@ -2381,7 +2383,7 @@ class ExaminationResultController extends Controller
             }
           }
 
-          $grading_policies = GradingPolicy::where('nta_level_id',$student->campusProgram->program->nta_level_id)->orderBy('grade')->get();
+          $grading_policies = GradingPolicy::where('nta_level_id',$student->campusProgram->program->nta_level_id)->where('study_academic_year_id',$ac_yr_id)->orderBy('grade')->get();
 
           foreach($student->campusProgram->program->departments as $dpt){
                 if($dpt->pivot->campus_id == $student->campusProgram->campus_id){
