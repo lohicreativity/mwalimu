@@ -324,7 +324,7 @@
                           <td>{{ $result->moduleAssignment->module->name }}</td>
                           <td>{{ $result->moduleAssignment->module->credit }}</td>
                           <td>{{ $result->grade }}</td>
-                          <td>{{ ($result->point*$res->moduleAssignment->module->credit) }}</td>
+                          <td>{{ ($result->point*$result->moduleAssignment->module->credit) }}</td>
                           <td>{{ $result->final_exam_remark }}</td>
                           <td></td>
                         </tr>
