@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Gepg;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Domain\Application\Models\Applicant;
+use App\Domain\Academic\Models\Appeal;
 use App\Domain\Finance\Models\Invoice;
 use App\Domain\Finance\Models\GatewayPayment;
 use App\Domain\Finance\Models\PaymentReconciliation;
@@ -106,11 +107,17 @@ class GePGResponseController extends Controller
 		$gatepay->save();
 
 
-		$invoice = Invoice::where('control_no',$control_no)->first();
+		$invoice = Invoice::with('feeType')->where('control_no',$control_no)->first();
 		if($invoice->payable_type == 'applicant'){
 			$applicant = Applicant::find($invoice->payable_id);
 			$applicant->payment_complete_status = 1;
 			$applicant->save();
+		}
+
+		if($invoice->payable_type == 'student'){
+			if(str_contains($invoice->feeType->name,'Appeal')){
+				 Appeal::where('student_id',$invoice->payable_id)->update(['is_paid'=>1]);
+			}
 		}
     }
 

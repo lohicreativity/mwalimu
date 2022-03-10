@@ -59,12 +59,14 @@
                  @foreach($semesters as $key=>$semester)
                     @php
                        $publish_status = false;
+                       $appeal_date = now();
                     @endphp
 
                    @foreach($publications as $publication)
                       @if($publication->semester_id == $semester->id)
                         @php
                           $publish_status = true;
+                          $appeal_date = $publication->created_at;
                         @endphp
                       @endif
                    @endforeach
@@ -72,7 +74,7 @@
                    @if(count($semester->remarks) != 0 && $publish_status)
                 <div class="row">
                 <div class="col-12">
-                 <h4 class="ss-no-margin">{{ $semester->name }}</h4>
+                 <h4 class="ss-no-margin">{{ $semester->name }} - Appeal Deadline ({{ Carbon\Carbon::parse($appeal_date)->addDays(7) }})</h4>
                  <table class="table table-bordered">
                     <thead>
                       <tr>
@@ -165,7 +167,7 @@
                           <td>
                         {!! Form::input('hidden','year_of_study',$year_of_study) !!}
                         {!! Form::input('hidden','study_academic_year_id',$study_academic_year->id) !!}
-                        <button type="submit" class="btn btn-primary">Appeal Results</button>
+                        <button @if(Carbon\Carbon::parse($appeal_date)->addDays(7) >= now()) disabled="disabled" @else type="submit" @endif class="btn btn-primary">Appeal Results</button>
                           </td>
                       </tr>
                       {!! Form::close() !!}
