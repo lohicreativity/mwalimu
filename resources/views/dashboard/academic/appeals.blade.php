@@ -21,12 +21,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>{{ __('Graduants List') }}</h1>
+            <h1>{{ __('Appeals List') }}</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">{{ __('Graduants List') }}</li>
+              <li class="breadcrumb-item active">{{ __('Appeals List') }}</li>
             </ol>
           </div>
         </div>
@@ -184,7 +184,7 @@
             @else
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">{{ __('No Graduants Obtained') }}</h3>
+                <h3 class="card-title">{{ __('No Appeals List Obtained') }}</h3>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
