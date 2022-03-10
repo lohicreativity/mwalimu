@@ -265,6 +265,7 @@
                         <th>Module Name</th>
                         <th>Credits</th>
                         <th>Grade</th>
+                        <th>Points</th>
                         <th>GPA</th>
                       </tr>
                     </thead>
@@ -285,6 +286,8 @@
                                     <td>{{ $res->moduleAssignment->module->name }}</td>
                                     <td>{{ $res->moduleAssignment->module->credit }}</td>
                                     <td>{{ $res->grade }}</td>
+                                    <td>{{ ($res->point*$res->moduleAssignment->module->credit) }}</td>
+                                    <td>{{ $res->final_exam_remark }}</td>
                                     <td></td>
                                   </tr>
                                     @php
@@ -304,6 +307,7 @@
                                     <td>{{ $res->moduleAssignment->module->name }}</td>
                                     <td>{{ $res->moduleAssignment->module->credit }}</td>
                                     <td>{{ $res->grade }}</td>
+                                    <td>{{ ($res->point*$res->moduleAssignment->module->credit) }}</td>
                                     <td>{{ $res->final_exam_remark }}</td>
                                     <td></td>
                                   </tr>
@@ -320,6 +324,7 @@
                           <td>{{ $result->moduleAssignment->module->name }}</td>
                           <td>{{ $result->moduleAssignment->module->credit }}</td>
                           <td>{{ $result->grade }}</td>
+                          <td>{{ ($result->point*$res->moduleAssignment->module->credit) }}</td>
                           <td>{{ $result->final_exam_remark }}</td>
                           <td></td>
                         </tr>
