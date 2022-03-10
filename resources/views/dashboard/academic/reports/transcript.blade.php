@@ -258,10 +258,9 @@
                  <table class="table table-bordered">
                     <thead>
                       <tr>
-                        <th colspan="6">{{ strtoupper($semester->name) }}</th>
+                        <th colspan="6">{{ $year['ac_year']->academicYear->year }} @if($yk == 1) FIRST @elseif($yk == 2) SECOND @elseif($yk == 3) THIRD @endif YEAR EXAMINATION RESULTS: {{ strtoupper($semester->name) }}</th>
                       </tr>
                       <tr>
-                        <th>SN</th>
                         <th>Code</th>
                         <th>Module Name</th>
                         <th>Credits</th>
@@ -282,7 +281,6 @@
                            @foreach($result->retakeHistory->retakableResults as $key=>$res)
                               @if($key == 0)
                                  <tr>
-                                    <td>{{ $count }}</td>
                                     <td>{{ $res->moduleAssignment->module->code }}</td>
                                     <td>{{ $res->moduleAssignment->module->name }}</td>
                                     <td>{{ $res->moduleAssignment->module->credit }}</td>
@@ -302,7 +300,6 @@
                            @foreach($result->carryHistory->carrableResults as $key=>$res)
                               @if($key == 0)
                                  <tr>
-                                    <td>{{ $count }}</td>
                                     <td>{{ $res->moduleAssignment->module->code }}</td>
                                     <td>{{ $res->moduleAssignment->module->name }}</td>
                                     <td>{{ $res->moduleAssignment->module->credit }}</td>
@@ -319,7 +316,6 @@
                            @endif
                          @else
                          <tr>
-                          <td>{{ $count }}</td>
                           <td>{{ $result->moduleAssignment->module->code }}</td>
                           <td>{{ $result->moduleAssignment->module->name }}</td>
                           <td>{{ $result->moduleAssignment->module->credit }}</td>
