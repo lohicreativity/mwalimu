@@ -74,7 +74,7 @@
                    @if(count($semester->remarks) != 0 && $publish_status)
                 <div class="row">
                 <div class="col-12">
-                 <h4 class="ss-no-margin">{{ $semester->name }} - Appeal Deadline ({{ Carbon\Carbon::parse($appeal_date)->addDays(7) }})</h4>
+                 <h4 class="ss-no-margin">{{ $semester->name }} - Appeal Deadline ({{ Carbon\Carbon::parse($appeal_date)->addDays(7)->format('Y-m-d') }})</h4>
                  <table class="table table-bordered">
                     <thead>
                       <tr>

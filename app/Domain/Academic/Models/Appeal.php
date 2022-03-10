@@ -34,7 +34,7 @@ class Appeal extends Model
      */
     public function moduleAssignment()
     {
-        return $this->belongsTo(moduleAssignment::class,'module_assignment_id');
+        return $this->belongsTo(ModuleAssignment::class,'module_assignment_id');
     }
 
     /**
