@@ -2361,13 +2361,12 @@ class ExaminationResultController extends Controller
               $ac_yr_id = $years_of_studies[$key]['ac_year']->id;
               $yr_of_study = $key;
 
-              return $ac_yr_id;
                foreach ($semesters as $semester) {
                    $years_of_studies[$key][$semester->name]['results'] = ExaminationResult::whereHas('moduleAssignment',function($query) use ($ac_yr_id, $student_id){
                        $query->where('study_academic_year_id',$ac_yr_id)->where('student_id',$student_id);
-                   })->with(['moduleAssignment.programModuleAssignment'=>function($query) use ($ac_yr_id,$yr_of_study, $semester){
-                     $query->where('study_academic_year_id',$ac_yr_id)->where('year_of_study',$yr_of_study)->where('semester_id',$semester->id);
-                   },'moduleAssignment','moduleAssignment.module','carryHistory.carrableResults'=>function($query){
+                   })->whereHas('moduleAssignment.programModuleAssignment',function($query) use ($ac_yr_id, $yr_of_study,$semester){
+                       $query->where('study_academic_year_id',$ac_yr_id)->where('year_of_study',$yr_of_study)->where('semester_id',$semester->id);
+                   })->with(['moduleAssignment.programModuleAssignment','moduleAssignment.module','carryHistory.carrableResults'=>function($query){
                       $query->latest();
                    },'retakeHistory.retakableResults'=>function($query){
                       $query->latest();
