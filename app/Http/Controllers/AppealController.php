@@ -29,7 +29,7 @@ class AppealController extends Controller
            'study_academic_year'=>$request->has('study_academic_year_id')? StudyAcademicYear::with('academicYear')->find($request->get('study_academic_year_id')) : null,
             'appeals'=>Appeal::whereHas('moduleAssignment',function($query) use($request){
             	 $query->where('study_academic_year_id',$request->get('study_academic_year_id'));
-            })->with(['student','moduleAssignment.studyAcademicYear.academicYear','moduleAssignment.module'])->where('is_paid',1)->latest()->paginate(20)
+            })->with(['student','moduleAssignment.studyAcademicYear.academicYear','moduleAssignment.module'])->latest()->paginate(20)
         ];
         return view('dashboard.academic.appeals',$data)->withTitle('Appeals');
 	}
