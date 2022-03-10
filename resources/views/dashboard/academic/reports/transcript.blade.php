@@ -203,20 +203,37 @@
 
       <div class="container">
         <div class="row">
-          <div class="col-md-3 ss-center">
-             <img src="{{ asset('dist/img/logo.png') }}" alt="Config::get('constants.SITE_NAME') }}" class="ss-logo">
-          </div><!-- end of col-md-3 -->
-          <div class="col-md-6 ss-center">
-             <div class="ss-letter-head  ss-center">
-               <h3>MWALIMU NYERERE MEMORIAL ACADEMY</h3>
-               {{--<h3>{{ $student->campusProgram->program->department->name }}</h3> --}}
-               <h3>{{ $student->campusProgram->program->name }}</h3>
-               <h3>EXAMINATION RESULTS TRANSCRIPT</h3>
+            <div class="ss-letter-head  ss-center">
+               <h1>THE MWALIMU NYERERE MEMORIAL ACADEMY</h1>
               </div>
+        </div><!-- end of row -->
+        <div class="row">
+          <div class="col-md-4 ss-center">
+              <div class="ss-letter-head ss-right">
+               <h3>Tel: +255 (22) 2820041</h3>
+               <h3>Fax: +255 (0) 22 2152496</h3>
+               <h3>Email: rector@mnma.ac.tz</h3>
+              </div>
+          </div><!-- end of col-md-3 -->
+          <div class="col-md-2 ss-center">
+              <img src="{{ asset('dist/img/logo.png') }}" alt="Config::get('constants.SITE_NAME') }}" class="ss-logo">
           </div><!-- end of col-md-6 -->
+          <div class="col-md-3 ss-center">
+              <div class="ss-letter-head ss-left">
+               <h3>P. O. Box 9193</h3>
+               <h3>Dar Es Salaam</h3>
+               <h3>TANZANIA</h3>
+               <h3>www.mnma.ac.tz</h3>
+              </div>
+          </div><!-- end of col-md-3 -->
           <div class="col-md-3 ss-center">
              <img class="ss-photo" src="{{ asset('avatars/'.$student->image) }}"  onerror="this.src='{{ asset("img/user-avatar.png") }}'">
           </div><!-- end of col-md-3 -->
+        </div><!-- end of row -->
+        <div class="row">
+            <div class="ss-letter-head  ss-center">
+               <h3>TRANSCRIPT OF EXAMINATION RESULTS</h3>
+              </div>
         </div><!-- end of row -->
              <div class="row">
                 <div class="col-md-12"> 
