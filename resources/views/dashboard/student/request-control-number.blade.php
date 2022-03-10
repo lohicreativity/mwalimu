@@ -109,6 +109,8 @@
                   <thead>
                     <tr>
                       <th>Fee Item</th>
+                      <th>Amount</th>
+                      <th>Currency</th>
                       <th>Control Number</th>
                     </tr>
                   </thead>
@@ -116,6 +118,8 @@
                   @foreach($invoices as $invoice)
                   <tr>
                       <td>{{ $invoice->feeType->name }}</td>
+                      <td>{{ $invoice->amount }}</td>
+                      <td>{{ $invoice->currency }}</td>
                       <td>{{ $invoice->control_no }}</td>
                   </tr>
                   @endforeach

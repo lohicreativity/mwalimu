@@ -10,6 +10,9 @@ use App\Domain\Academic\Models\ExaminationResult;
 use App\Domain\Academic\Models\AnnualRemark;
 use App\Domain\Academic\Models\ResultPublication;
 use App\Domain\Academic\Models\Appeal;
+use App\Domain\Finance\Models\Invoice;
+use App\Domain\Finance\Models\FeeAmount;
+use Illuminate\Support\Facades\Http;
 use App\Models\User;
 use Auth;
 
@@ -34,7 +37,7 @@ class AppealController extends Controller
     /**
      * Get control number 
      */
-    public function getControlNumber(Request $request)
+    public function appealResults(Request $request)
     {
     	// $headers = array('Accept' => 'application/json');
      //    $options = array('auth' => array('user', 'pass'));
@@ -117,14 +120,14 @@ class AppealController extends Controller
      */
     public function store(Request $request)
     {
-    	 $student = User::find(Auth::user()->id)->student;
+    	 $student = User::find(Auth::user()->id)->student()->with('applicant')->first();
          $results = ExaminationResult::whereHas('moduleAssignment',function($query) use ($request, $student){
          	   $query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('student_id',$student->id);
          })->with(['moduleAssignment.programModuleAssignment'=>function($query) use ($request){
          	 $query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',$request->get('year_of_study'));
          },'moduleAssignment.module'])->where('student_id',$student->id)->get();
 
-
+         $count = 0;
          foreach($results as $result){
          	 if($request->get('result_'.$result->id)){
          	 	 $appeal = new Appeal;
@@ -132,9 +135,84 @@ class AppealController extends Controller
          	 	 $appeal->module_assignment_id = $result->module_assignment_id;
          	 	 $appeal->student_id = $result->student_id;
          	 	 $appeal->save();
+                 $count++;
          	 }
          }
 
-        return redirect()->back()->with('message','Results appeals submitted successfully');
+         $fee_amount = FeeAmount::whereHas('feeItem',function($query){
+                   return $query->where('name','LIKE','%Appeal%');
+            })->where()->where('study_academic_year_id',$result->moduleAssignment->study_academic_year_id)->first();
+
+         if($student->applicant->country->code == 'TZ'){
+             $amount = $count*$fee_amount->amount_in_tzs;
+             $currency = 'TZS';
+         }else{
+             $amount = $count*$fee_amount->amount_in_usd;
+             $currency = 'USD';
+         }
+
+        $invoice = new Invoice;
+        $invoice->reference_no = 'MNMA-'.time();
+        $invoice->amount = $amount;
+        $invoice->currency = $currency;
+        $invoice->payable_id = $student->id;
+        $invoice->payable_type = 'student';
+        $invoice->fee_type_id = $fee_amount->feeItem->feeType->id;
+        $invoice->save();
+
+        $generated_by = 'SP';
+        $approved_by = 'SP';
+        $inst_id = config('constants.SUBSPCODE');
+
+        $this->requestControlNumber($request,
+                                    $invoice->reference_no,
+                                    $inst_id,
+                                    $invoice->amount,
+                                    $fee_amount->feeItem->feeType->description,
+                                    $fee_amount->feeItem->feeType->gfs_code,
+                                    $fee_amount->feeItem->feeType->payment_option,
+                                    $student->id,
+                                    $student->first_name.' '.$student->middle_name.' '.$student->surname,
+                                    $student->phone,
+                                    $student->email,
+                                    $generated_by,
+                                    $approved_by,
+                                    $fee_amount->feeItem->feeType->duration,
+                                    $invoice->currency);
+
+        return redirect()->to('student/request-control-number')->with('message','Results appeals submitted successfully');
     }
+
+    /**
+     * Request control number
+     */
+    public function requestControlNumber(Request $request,$billno,$inst_id,$amount,$description,$gfs_code,$payment_option,$payerid,$payer_name,$payer_cell,$payer_email,$generated_by,$approved_by,$days,$currency){
+            $data = array(
+                'payment_ref'=>$billno,
+                'sub_sp_code'=>$inst_id,
+                'amount'=> $amount,
+                'desc'=> $description,
+                'gfs_code'=> $gfs_code,
+                'payment_type'=> $payment_option,
+                'payerid'=> $payerid,
+                'payer_name'=> $payer_name,
+                'payer_cell'=> $payer_cell,
+                'payer_email'=> $payer_email,
+                'days_expires_after'=> $days,
+                'generated_by'=>$generated_by,
+                'approved_by'=>$approved_by,
+                'currency'=>$currency
+            );
+
+            //$txt=print_r($data, true);
+            //$myfile = file_put_contents('/var/public_html/ifm/logs/req_bill.txt', $txt.PHP_EOL , FILE_APPEND | LOCK_EX);
+            $url = url('bills/post_bill');
+            $result = Http::withHeaders([
+                        'X-CSRF-TOKEN'=> csrf_token()
+                      ])->post($url,$data);
+
+            
+        return redirect()->back()->with('message','The bill with id '.$billno.' has been queued.', 200);
+                        
+        }
 }

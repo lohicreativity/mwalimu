@@ -334,7 +334,7 @@ class StudentController extends Controller
     /**
      * Results appeal
      */
-    public function resultsAppeal(Request $request)
+    public function requestControlNumber(Request $request)
     {
         $student = User::find(Auth::user()->id)->student;
         $data = [
@@ -342,7 +342,7 @@ class StudentController extends Controller
            'student'=>$student,
            'invoices'=>Invoice::where('payable_id',$student->id)->where('payable_type','student')->with(['feeType'])->latest()->paginate(20)
         ];
-        return view('dashboard.student.results-appeal',$data)->withTItle('Results Appeal');
+        return view('dashboard.student.request-control-number',$data)->withTItle('Request Control Number');
     }
 
     /**

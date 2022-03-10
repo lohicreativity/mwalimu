@@ -40,7 +40,9 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 	Route::get('clearance',[ClearanceController::class,'index']);
 	Route::post('clearance/store',[ClearanceController::class,'store']);
 
-	Route::get('results/appeal',[StudentController::class,'resultsAppeal']);
+	Route::get('results/appeal',[AppealController::class,'appealResults']);
+
+	Route::get('request-control-number',[StudentController::class,'requestControlNumber']);
 
 	Route::post('get-control-number',[InvoiceController::class,'store']);
     

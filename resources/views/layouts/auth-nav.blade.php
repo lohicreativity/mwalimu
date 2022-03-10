@@ -80,6 +80,12 @@
                   <p>My Results</p>
                 </a>
               </li>
+              <li class="nav-item">
+                <a href="{{ url('student/results/appeal') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Appeal Results</p>
+                </a>
+              </li>
               
             </ul>
           </li>
@@ -99,7 +105,7 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="{{ url('student/results/appeal') }}" class="nav-link">
+                <a href="{{ url('student/request-control-number') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Request Control Number</p>
                 </a>
