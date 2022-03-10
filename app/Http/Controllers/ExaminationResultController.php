@@ -2371,6 +2371,8 @@ class ExaminationResultController extends Controller
                       $query->latest();
                    },'retakeHistory.retakableResults.moduleAssignment.module','carryHistory.carryHistory.carrableResults.moduleAssignment.module'])->where('student_id',$student->id)->get();
 
+                   return $years_of_studies[$key][$semester->name]['results'];
+
                   $years_of_studies[$key][$semester->name]['core_programs'] = ProgramModuleAssignment::with(['module'])->where('study_academic_year_id',$ac_yr_id)->where('year_of_study',$yr_of_study)->where('category','COMPULSORY')->where('semester_id',$semester->id)->where('campus_program_id',$student->campus_program_id)->get();
                   $years_of_studies[$key][$semester->name]['optional_programs'] = ProgramModuleAssignment::whereHas('students',function($query) use($student_id){
                    $query->where('id',$student_id);
