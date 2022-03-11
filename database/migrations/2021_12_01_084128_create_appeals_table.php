@@ -19,6 +19,7 @@ class CreateAppealsTable extends Migration
             $table->unsignedBigInteger('module_assignment_id');
             $table->unsignedBigInteger('examination_result_id');
             $table->tinyInteger('is_paid')->default(0);
+            $table->tinyInteger('is_downloaded')->default(0);
             $table->timestamps();
 
             $table->foreign('student_id')->references('id')->on('students')->onUpdate('cascade');

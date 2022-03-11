@@ -290,5 +290,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 	Route::get('transcript/{student_id}',[ExaminationResultController::class,'showStudentTranscript']);
     Route::get('transcript-requests',[TranscriptRequestController::class,'index']);
 
+    Route::get('download-appeal-list',[AppealController::class,'downloadAppealList']);
+
 
 });

@@ -29,10 +29,46 @@ class AppealController extends Controller
            'study_academic_year'=>$request->has('study_academic_year_id')? StudyAcademicYear::with('academicYear')->find($request->get('study_academic_year_id')) : null,
             'appeals'=>Appeal::whereHas('moduleAssignment',function($query) use($request){
             	 $query->where('study_academic_year_id',$request->get('study_academic_year_id'));
-            })->with(['student','moduleAssignment.studyAcademicYear.academicYear','moduleAssignment.module'])->latest()->paginate(20)
+            })->with(['student','moduleAssignment.studyAcademicYear.academicYear','moduleAssignment.module'])->where('is_paid',1)->latest()->paginate(20)
         ];
         return view('dashboard.academic.appeals',$data)->withTitle('Appeals');
 	}
+
+    /**
+     * Download appeal list
+     */
+    public function downloadAppealList(Request $request)
+    {
+              $headers = [
+                      'Cache-Control'       => 'must-revalidate, post-check=0, pre-check=0',   
+                      'Content-type'        => 'text/csv',
+                      'Content-Disposition' => 'attachment; filename=appeals-list.csv',
+                      'Expires'             => '0',
+                      'Pragma'              => 'public'
+              ];
+
+              $list = Appeal::whereHas('moduleAssignment',function($query) use($request){
+                 $query->where('study_academic_year_id',$request->get('study_academic_year_id'));
+            })->with(['student','moduleAssignment.studyAcademicYear.academicYear','moduleAssignment.module'])->where('is_paid',1)->where('is_downloaded',0)->get();
+
+            Appeal::whereHas('moduleAssignment',function($query) use($request){
+                 $query->where('study_academic_year_id',$request->get('study_academic_year_id'));
+            })->with(['student','moduleAssignment.studyAcademicYear.academicYear','moduleAssignment.module'])->where('is_paid',1)->update(['is_downloaded'=>1]);
+
+              # add headers for each column in the CSV download
+              // array_unshift($list, array_keys($list[0]));
+
+             $callback = function() use ($list) 
+              {
+                  $file_handle = fopen('php://output', 'w');
+                  foreach ($list as $row) { 
+                      fputcsv($file_handle, [$row->student->first_name.' '.$row->student->middle_name.' '.$row->student->surname,$row->student->registration_number]);
+                  }
+                  fclose($file_handle);
+              };
+
+              return response()->stream($callback, 200, $headers);
+    }
 
     /**
      * Get control number 
