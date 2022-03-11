@@ -291,6 +291,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
     Route::get('transcript-requests',[TranscriptRequestController::class,'index']);
 
     Route::get('download-appeal-list',[AppealController::class,'downloadAppealList']);
+    Route::post('upload-appeal-list',[AppealController::class,'uploadAppealList']);
 
 
 });

@@ -14,7 +14,7 @@ use App\Domain\Finance\Models\Invoice;
 use App\Domain\Finance\Models\FeeAmount;
 use Illuminate\Support\Facades\Http;
 use App\Models\User;
-use Auth;
+use Auth, Validator;
 
 class AppealController extends Controller
 {

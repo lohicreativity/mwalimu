@@ -70,7 +70,7 @@
               </div>
               <!-- /.card-header -->
               <div class="card-body">
-                 {!! Form::open(['url'=>'academic/upload-appeal-list','class'=>'ss-form-processing']) !!}
+                 {!! Form::open(['url'=>'academic/upload-appeal-list','class'=>'ss-form-processing','files'=>true]) !!}
                    
                   <div class="form-group">
                     {!! Form::label('','Upload completed appeals list') !!}
