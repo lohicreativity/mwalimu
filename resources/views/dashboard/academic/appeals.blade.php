@@ -64,6 +64,28 @@
             </div>
             <!-- /.card -->
 
+            <div class="card">
+              <div class="card-header">
+                 <h3 class="card-title">Upload Completed Appeals List</h3>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+                 {!! Form::open(['url'=>'academic/upload-appeal-list','class'=>'ss-form-processing']) !!}
+                   
+                  <div class="form-group">
+                    {!! Form::label('','Upload completed appeals list') !!}
+                    {!! Form::file('appeals_file',['class'=>'form-control','required'=>true]) !!}
+                    
+                  </div>
+                  <div class="ss-form-actions">
+                   <button type="submit" class="btn btn-primary">{{ __('Upload') }}</button>
+                  </div>
+
+                 {!! Form::close() !!}
+              </div>
+            </div>
+            <!-- /.card -->
+
             @if(count($appeals) != 0 && $study_academic_year)
             <div class="card">
               <div class="card-header">
@@ -78,6 +100,7 @@
                   <tr>
                     <th>Student</th>
                     <td>Module</td>
+                    <td>Is Downloaded</td>
                     <th>Actions</th>
                   </tr>
                   </thead>
@@ -86,6 +109,9 @@
                     <tr>
                       <td>{{ $appeal->student->first_name }} {{ $appeal->student->middle_name }} {{ $appeal->student->surname }}</td>
                       <td>{{ $appeal->moduleAssignment->module->name }}</td>
+                      <td>
+                          @if($appeal->is_downloaded == 1) Yes @else No @endif
+                      </td>
                       <td><a href="#" class="btn btn-primary" data-toggle="modal" data-target="#ss-update-appeal-{{ $appeal->id }}">Update Results</a></td>
 
                       <div class="modal fade" id="ss-update-appeal-{{ $appeal->id }}">

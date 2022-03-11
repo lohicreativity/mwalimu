@@ -62,12 +62,67 @@ class AppealController extends Controller
               {
                   $file_handle = fopen('php://output', 'w');
                   foreach ($list as $row) { 
-                      fputcsv($file_handle, [$row->student->first_name.' '.$row->student->middle_name.' '.$row->student->surname,$row->student->registration_number]);
+                      fputcsv($file_handle, [$row->student->first_name.' '.$row->student->middle_name.' '.$row->student->surname,$row->student->registration_number,$row->moduleAssignment->module->code]);
                   }
                   fclose($file_handle);
               };
 
               return response()->stream($callback, 200, $headers);
+    }
+
+    /**
+     * Upload appeals file
+     */
+    public function uploadAppealList(Request $request)
+    {
+        $validation = Validator::make($request->all(),[
+            'appeals_file'=>'required|mimes:csv,txt'
+         ]);
+
+         if($validation->fails()){
+             if($request->ajax()){
+                return response()->json(array('error_messages'=>$validation->messages()));
+             }else{
+                return redirect()->back()->withInput()->withErrors($validation->messages());
+             }
+         }
+
+         if($request->hasFile('appeals_file')){
+
+              $destination = public_path('uploads/');
+              $request->file('appeals_file')->move($destination, $request->file('appeals_file')->getClientOriginalName());
+
+              $file_name = $request->file('appeals_file')->getClientOriginalName();
+
+              $uploaded_students = [];
+              $csvFileName = $file_name;
+              $csvFile = $destination.$csvFileName;
+              $file_handle = fopen($csvFile, 'r');
+              while (!feof($file_handle)) {
+                  $line_of_text[] = fgetcsv($file_handle, 0, ',');
+              }
+              fclose($file_handle);
+              foreach($line_of_text as $line){
+                    $uploaded_students[] = $line;
+              }
+
+              foreach($uploaded_students as $student){
+                  $result = ExaminationResult::whereHas('student',function($query) use($student){
+                      $query->where('registration_number',$student[1]);
+                  })->whereHas('moduleAssignment.module',function($query) use($student){
+                       $query->where('code',$student[2]);
+                  })->with(['moduleAssignment.programModuleAssignment'])->first();
+
+                  $result->final_score = ($student[3]*$result->moduleAassignment->programModuleAssignment->final_min_mark)/100;
+                  $result->final_remark = $result->moduleAssignment->programModuleAssignment->final_min_mark < $student[3]? 'FAIL' : 'PASS';
+                  $result->save();
+
+                  $response = Http::get('academic/results/'.$result->student_id.'/'.$result->moduleAssignment->study_academic_year_id.'/'.$result->moduleAssignment->programModuleAssignment->year_of_study.'/process-student-results?semester_id='.$result->moduleAssignment->programModuleAssignment->semester_id);
+
+              }
+          }
+
+          return redirect()->back()->with('message','Appeals processed successfully');
     }
 
     /**
