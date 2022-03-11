@@ -2281,7 +2281,7 @@ class ExaminationResultController extends Controller
      */
     public function showStudentPerfomanceReport(Request $request, $student_id, $ac_yr_id, $yr_of_study)
     {
-         $student = Student::with(['campusProgram.program.department','campusProgram.program.ntaLevel','campusProgram.campus','applicant'])->find($student_id);
+         $student = Student::with(['campusProgram.program.departments','campusProgram.program.ntaLevel','campusProgram.campus','applicant'])->find($student_id);
          $study_academic_year = StudyAcademicYear::with('academicYear')->find($ac_yr_id);
          $semesters = Semester::with(['remarks'=>function($query) use ($student, $ac_yr_id, $yr_of_study){
            $query->where('student_id',$student->id)->where('study_academic_year_id',$ac_yr_id)->where('year_of_study',$yr_of_study);
@@ -2317,10 +2317,17 @@ class ExaminationResultController extends Controller
 
             $grading_policies = GradingPolicy::where('nta_level_id',$student->campusProgram->program->nta_level_id)->where('study_academic_year_id',$ac_yr_id)->orderBy('grade')->get();
 
+            foreach($student->campusProgram->program->departments as $dpt){
+                if($dpt->pivot->campus_id == $student->campusProgram->campus_id){
+                    $department = $dpt;
+                }
+             }
+
          $data = [
           'semesters'=>$semesters,
           'annual_remark'=>$annual_remark,
           'results'=>$results,
+          'department'=>$department,
           'year_of_study'=>$yr_of_study,
           'study_academic_year'=>$study_academic_year,
           'core_programs'=>$core_programs,

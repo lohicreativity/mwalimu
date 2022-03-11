@@ -209,7 +209,7 @@
           <div class="col-md-6 ss-center">
              <div class="ss-letter-head  ss-center">
                <h3>MWALIMU NYERERE MEMORIAL ACADEMY</h3>
-               <h3>{{ $student->campusProgram->program->department->name }}</h3>
+               <h3>{{ $department->name }}</h3>
                <h3>{{ $student->campusProgram->program->name }}</h3>
                <h3>STATEMENT OF EXAMINATION RESULTS</h3>
               </div>
