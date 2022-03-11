@@ -82,7 +82,7 @@
                   </tr>
                   </thead>
                   <tbody>
-                    @foreach($perfomance_report_requests as $report)
+                    @foreach($performance_report_requests as $report)
                     <tr>
                       <td>{{ $report->student->first_name }} {{ $report->student->middle_name }} {{ $report->student->surname }}</td>
                       <td>{{ $report->year_of_study }}</td>
