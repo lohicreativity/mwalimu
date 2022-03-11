@@ -19,6 +19,8 @@ class PerformanceReportRequestController extends Controller
     public function index(Request $request)
     {
     	$data = [
+    	   'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
+           'study_academic_year'=>StudyAcademicYear::find($request->get('study_academic_year_id')),
            'performance_report_requests'=>PerformanceReportRequest::latest()->paginate(20)
     	];
     	return view('dashboard.academic.performance-report-requests',$data)->withTitle('Performance Report Requests');
