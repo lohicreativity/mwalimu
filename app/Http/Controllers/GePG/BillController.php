@@ -100,6 +100,8 @@ class BillController extends Controller
                         ->add('TnxDt', $request->get('trx_date'))
                         ->add('ReconcOpt', $request->get('recon_type')); 
 
+    return dd($reconcile_req);
+
     // $ack_body = str_replace('> <','><', preg_replace('/\s+/', ' ', $reconcile_req->xml(true)));
     //     # Add Bill to Q                    
     //     \Amqp::publish('gepg.recon.out', $ack_body, ['exchange' => 'sp_exchange', 'queue' => 'recon.to.gepg']);
