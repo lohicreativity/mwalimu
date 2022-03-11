@@ -123,9 +123,9 @@
                       <td>{{ $invoice->currency }}</td>
                       <td>{{ $invoice->control_no }}</td>
                       <td>
-                        @if($invoice->gatewayPayment)
+                        @if($invoice->gatewayPayment && $invoice->control_no)
                          <span class="badge badge-success">Paid</span>
-                        @else
+                        @elseif($invoice->control_no)
                          <span class="badge badge-warning">Unpaid</span>
                         @endif
                       </td>
