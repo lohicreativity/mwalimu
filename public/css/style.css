@@ -3,6 +3,10 @@
     height: auto;
 }
 
+.ss-hidden{
+   display: none;
+}
+
 .ss-align-left{
    text-align: left;
 }
