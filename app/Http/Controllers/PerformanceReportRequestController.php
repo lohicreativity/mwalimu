@@ -46,10 +46,10 @@ class PerformanceReportRequestController extends Controller
          }
 
          if($student->applicant->country->code == 'TZ'){
-             $amount = $count*$fee_amount->amount_in_tzs;
+             $amount = $fee_amount->amount_in_tzs;
              $currency = 'TZS';
          }else{
-             $amount = $count*$fee_amount->amount_in_usd;
+             $amount = $fee_amount->amount_in_usd;
              $currency = 'USD';
          }
 
