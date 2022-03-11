@@ -35,6 +35,7 @@ use App\Http\Controllers\ClearanceController;
 use App\Http\Controllers\GraduantController;
 use App\Http\Controllers\AppealController;
 use App\Http\Controllers\TranscriptRequestController;
+use App\Http\Controllers\PerformanceReportRequestController;
 
 /*
 |--------------------------------------------------------------------------
@@ -292,6 +293,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 
     Route::get('download-appeal-list',[AppealController::class,'downloadAppealList']);
     Route::post('upload-appeal-list',[AppealController::class,'uploadAppealList']);
+   
 
+    Route::get('performance-report-requests',[PerformanceReportRequestController::class,'index']);
 
 });

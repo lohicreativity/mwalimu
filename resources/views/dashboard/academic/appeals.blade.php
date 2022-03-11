@@ -110,7 +110,7 @@
                       <td>{{ $appeal->student->first_name }} {{ $appeal->student->middle_name }} {{ $appeal->student->surname }}</td>
                       <td>{{ $appeal->moduleAssignment->module->name }}</td>
                       <td>
-                          @if($appeal->is_downloaded == 1) <span class="badge badge-warning">On Progress</span> @else <span class="badge badge-warning">Pending</span> @endif
+                          @if($appeal->is_downloaded == 1) <span class="badge badge-warning">On Progress</span> @elseif($appeal->is_downloaded == 0) <span class="badge badge-warning">Pending</span> @else <span class="badge badge-success">Completed</span> @endif
                       </td>
                       <td><a href="#" class="btn btn-primary" data-toggle="modal" data-target="#ss-update-appeal-{{ $appeal->id }}">Update Results</a></td>
 

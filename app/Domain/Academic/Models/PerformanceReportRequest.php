@@ -6,11 +6,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Domain\Registration\Models\Student;
 
-class TranscriptRequest extends Model
+class PerformanceReportRequest extends Model
 {
     use HasFactory;
 
-    protected $table = 'transcript_requests';
+    protected $table = 'performance_report_requests';
 
     /**
      * Establish one to many relationship with students

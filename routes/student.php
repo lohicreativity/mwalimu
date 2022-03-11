@@ -5,6 +5,7 @@ use App\Http\Controllers\StudentController;
 use App\Http\Controllers\ClearanceController;
 use App\Http\Controllers\AppealController;
 use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\PerformanceReportRequestController;
 
 /*
 |--------------------------------------------------------------------------
@@ -49,5 +50,6 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
     Route::get('results/{ac_year_id}/{yr_of_study}/report/appeal',[AppealController::class,'showAcademicYearResults']);
 
     Route::post('appeal/store',[AppealController::class,'store']);
+    Route::get('request-performance-report',[PerformanceReportRequestController::class,'store']);
 
 });
