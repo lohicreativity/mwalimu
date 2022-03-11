@@ -78,6 +78,7 @@
                  <table class="table table-bordered">
                     <thead>
                       <tr>
+                        <th></th>
                         <th>SN</th>
                         <th>Code</th>
                         <th>Module Name</th>
