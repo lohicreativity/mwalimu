@@ -41,7 +41,7 @@
         <div class="row">
           <!-- Left col -->
           <div class="col-6">
-            <div class="card ss-hidden">
+            <div class="card ss-hidden" style="display: none;">
               <div class="card-header">
                 <h3 class="card-title">Select number of subjects</h3>
               </div>
