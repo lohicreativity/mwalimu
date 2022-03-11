@@ -113,7 +113,7 @@ class AppealController extends Controller
                        $query->where('code',$student[2]);
                   })->with(['moduleAssignment.programModuleAssignment'])->first();
 
-                  $result->final_score = ($student[3]*$result->moduleAassignment->programModuleAssignment->final_min_mark)/100;
+                  $result->final_score = ($student[3]*$result->moduleAssignment->programModuleAssignment->final_min_mark)/100;
                   $result->final_remark = $result->moduleAssignment->programModuleAssignment->final_min_mark < $student[3]? 'FAIL' : 'PASS';
                   $result->save();
 
