@@ -20,7 +20,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Results Appeal</h1>
+            <h1 class="m-0">Payments</h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -112,6 +112,7 @@
                       <th>Amount</th>
                       <th>Currency</th>
                       <th>Control Number</th>
+                      <th>Status</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -121,6 +122,13 @@
                       <td>{{ $invoice->amount }}</td>
                       <td>{{ $invoice->currency }}</td>
                       <td>{{ $invoice->control_no }}</td>
+                      <td>
+                        @if($invoice->gatewayPayment)
+                         <span class="badge badge-success">Paid</span>
+                        @else
+                         <span class="badge badge-warning">Unpaid</span>
+                        @endif
+                      </td>
                   </tr>
                   @endforeach
                   </tbody>

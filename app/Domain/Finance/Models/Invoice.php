@@ -26,4 +26,12 @@ class Invoice extends Model
     {
     	return $this->belongsTo(FeeType::class,'fee_type_id');
     }
+
+    /**
+     * Establish one to one relationship with gateway payments
+     */
+    public function gatewayPayment()
+    {
+        return $this->hasOne(GatewayPayment::class,'control_no');
+    }
 }
