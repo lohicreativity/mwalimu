@@ -86,8 +86,8 @@
                     <tr>
                       <td>{{ $report->student->first_name }} {{ $report->student->middle_name }} {{ $report->student->surname }}</td>
                       <td>{{ $report->year_of_study }}</td>
-                      <td>$report->payment_status</td>
-                      <td><a href="{{ url('student/results/'.$report->student_id.'/'.$report->study_academic_year_id.'/'.$report->year_of_study.'/show-student-overall-results') }}" class="btn btn-primary">View Report</a></td>
+                      <td>{{ $report->payment_status }}</td>
+                      <td><a href="{{ url('academic/results/'.$report->student_id.'/'.$report->study_academic_year_id.'/'.$report->year_of_study.'/show-student-perfomance-report') }}" target="_blank" class="btn btn-primary">View Report</a></td>
                     </tr>
                     @endforeach                  
                   </tbody>
