@@ -100,15 +100,13 @@ class BillController extends Controller
                         ->add('TnxDt', $request->get('trx_date'))
                         ->add('ReconcOpt', $request->get('recon_type')); 
 
-    return dd($reconcile_req);
-
     // $ack_body = str_replace('> <','><', preg_replace('/\s+/', ' ', $reconcile_req->xml(true)));
     //     # Add Bill to Q                    
     //     \Amqp::publish('gepg.recon.out', $ack_body, ['exchange' => 'sp_exchange', 'queue' => 'recon.to.gepg']);
         
     //     return $this->success("The Reconciliation Request with Transaction ID {$request->get('trx_id')} has been queued.", 200);        
         Amqp::publish('gepg.recon.out', $reconcile_req->xml(true), ['exchange' => 'sp_exchange', 'queue' => 'recon.to.gepg']);
-        return $this->success("The Reconciliation Request with Transaction ID {$request->get('trx_id')} has been queued.", 200);          
+        return $this->success("The Reconciliation Request with TransactionX ID {$request->get('trx_id')} has been queued.", 200);          
     }
 
 /*
