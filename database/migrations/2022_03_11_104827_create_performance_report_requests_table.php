@@ -19,7 +19,7 @@ class CreatePerformanceReportRequestsTable extends Migration
             $table->unsignedBigInteger('study_academic_year_id');
             $table->tinyInteger('year_of_study');
             $table->string('payment_status',10);
-            $table->string('status',10);
+            $table->string('status',10)->nullable();
             $table->timestamps();
 
             $table->foreign('student_id')->references('id')->on('students')->onUpdate('cascade')->onDelete('cascade');
