@@ -67,8 +67,8 @@
             @if(count($appeals) != 0 && $study_academic_year)
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">List of Appeals - {{ $study_academic_year->academicYear->year }}</h3>
-                <a href="{{ url('download-appeal-list?study_academic_year_id='.$study_academic_year->id) }}" class="btn btn-primary"><i class="fa fa-download"></i> Download Appeal List</a>
+                <h3 class="card-title">List of Appeals - {{ $study_academic_year->academicYear->year }}</h3><br>
+                <a href="{{ url('academic/download-appeal-list?study_academic_year_id='.$study_academic_year->id) }}" class="btn btn-primary"><i class="fa fa-download"></i> Download Appeal List</a>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
