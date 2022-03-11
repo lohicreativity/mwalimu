@@ -33,6 +33,9 @@ class PerformanceReportRequestController extends Controller
     {
     	 $student = User::find(Auth::user()->id)->student()->with('applicant')->first();
          
+
+         $perf = PerformanceReportRequest::where('student_id',$student->id)->where('year_of_study',$request->get('year_of_study'))->whereDate('created_at','=',date('Y-m-d'))->first();
+         if(!$perf){
          $performance = new PerformanceReportRequest;
          $performance->student_id = $student->id;
          $performance->study_academic_year_id = $request->get('study_academic_year_id');
@@ -85,6 +88,7 @@ class PerformanceReportRequestController extends Controller
                                     $approved_by,
                                     $fee_amount->feeItem->feeType->duration,
                                     $invoice->currency);
+        }
 
         return redirect()->to('student/request-control-number')->with('message','Performance report requested successfully');
     }
