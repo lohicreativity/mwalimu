@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Domain\Academic\Models\TranscriptRequest;
+use App\Models\User;
+use Auth;
 
 class TranscriptRequestController extends Controller
 {
