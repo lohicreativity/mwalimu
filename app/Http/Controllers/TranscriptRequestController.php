@@ -33,7 +33,7 @@ class TranscriptRequestController extends Controller
           $transcript = new TranscriptRequest;
           $transcript->student_id = $student->id;
           $transcript->payment_status = 'PENDING';
-          $tra->save();
+          $transcript->save();
           
          $study_academic_year = StudyAcademicYear::where('status','ACTIVE')->first();
          $fee_amount = FeeAmount::whereHas('feeItem',function($query){
