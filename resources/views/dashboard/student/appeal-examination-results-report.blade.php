@@ -168,7 +168,7 @@
                           <td>
                         {!! Form::input('hidden','year_of_study',$year_of_study) !!}
                         {!! Form::input('hidden','study_academic_year_id',$study_academic_year->id) !!}
-                        <button @if(Carbon\Carbon::parse($appeal_date)->addDays(7) >= now()) disabled="disabled" @else type="submit" @endif class="btn btn-primary">Appeal Results</button>
+                        <button @if(Carbon\Carbon::parse($appeal_date)->addDays(7) < now()) disabled="disabled" @else type="submit" @endif class="btn btn-primary">Appeal Results</button>
                           </td>
                       </tr>
                       {!! Form::close() !!}
