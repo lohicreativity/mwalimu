@@ -115,6 +115,7 @@ class AppealController extends Controller
 
                   $result->final_score = ($student[3]*$result->moduleAssignment->programModuleAssignment->final_min_mark)/100;
                   $result->final_remark = $result->moduleAssignment->programModuleAssignment->final_min_mark < $student[3]? 'FAIL' : 'PASS';
+                  $result->exam_type = 'APPEAL';
                   $result->save();
 
                   $response = Http::get(url('academic/results/'.$result->student_id.'/'.$result->moduleAssignment->study_academic_year_id.'/'.$result->moduleAssignment->programModuleAssignment->year_of_study.'/process-student-results?semester_id='.$result->moduleAssignment->programModuleAssignment->semester_id));

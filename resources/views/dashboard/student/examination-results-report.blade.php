@@ -108,7 +108,7 @@
                        @endif
                       @foreach($results as $result)
                          @if($result->moduleAssignment->programModuleAssignment->semester_id == $semester->id && $result->moduleAssignment->programModuleAssignment->id == $program->id)
-                         <tr>
+                         <tr @if($result->exam_type == 'APPEAL') class="ss-grey" @endif>
                           <td>{{ $count }}</td>
                           <td>{{ $result->moduleAssignment->module->code }}</td>
                           <td>{{ $result->moduleAssignment->module->name }}</td>
@@ -142,7 +142,7 @@
                        @endif
                        @foreach($results as $result)
                          @if($result->moduleAssignment->programModuleAssignment->semester_id == $semester->id && $result->moduleAssignment->programModuleAssignment->id == $program->id)
-                         <tr>
+                         <tr @if($result->exam_type == 'APPEAL') class="ss-grey" @endif>
                           <td>{{ $count }}</td>
                           <td>{{ $result->moduleAssignment->module->code }}</td>
                           <td>{{ $result->moduleAssignment->module->name }}</td>

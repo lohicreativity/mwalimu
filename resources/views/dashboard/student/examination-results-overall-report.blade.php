@@ -114,7 +114,7 @@
 
                            @foreach($result->retakeHistory->retakableResults as $key=>$res)
                               @if($key == 0)
-                                 <tr>
+                                 <tr @if($result->exam_type == 'APPEAL') class="ss-grey" @endif>
                                     <td>{{ $count }}</td>
                                     <td>{{ $res->moduleAssignment->module->code }}</td>
                                     <td>{{ $res->moduleAssignment->module->name }}</td>
@@ -136,7 +136,7 @@
 
                            @foreach($result->carryHistory->carrableResults as $key=>$res)
                               @if($key == 0)
-                                 <tr>
+                                 <tr @if($result->exam_type == 'APPEAL') class="ss-grey" @endif>
                                     <td>{{ $count }}</td>
                                     <td>{{ $res->moduleAssignment->module->code }}</td>
                                     <td>{{ $res->moduleAssignment->module->name }}</td>

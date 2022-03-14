@@ -48,7 +48,11 @@
                 </ul>
               </div>
               <!-- /.card-header -->
-              <div class="card-body">
+            </div>
+
+            <div class="card">
+              <div class="card-header">
+                 <div class="card-body">
                  {!! Form::open(['url'=>'academic/graduants','class'=>'ss-form-processing','method'=>'GET']) !!}
                    
                    <div class="form-group">

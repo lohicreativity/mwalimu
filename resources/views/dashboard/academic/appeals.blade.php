@@ -173,7 +173,7 @@
                                     {!! Form::text('supp_score',$appeal->examinationResult->supp_score,$supp_score) !!}
 
                                     {!! Form::input('hidden','student_id',$appeal->student_id) !!}
-                                    {!! Form::input('hidden','exam_type',$appeal->examinationResult->exam_type) !!}
+                                    {!! Form::input('hidden','exam_type','APPEAL') !!}
 
                                     {!! Form::input('hidden','study_academic_year_id',$appeal->examinationResult->moduleAssignment->study_academic_year_id) !!}
 

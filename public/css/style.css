@@ -7,6 +7,10 @@
    display: none;
 }
 
+.ss-grey{
+   background: #ddd;
+}
+
 .ss-align-left{
    text-align: left;
 }

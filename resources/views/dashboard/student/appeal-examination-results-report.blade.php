@@ -97,7 +97,7 @@
                     @foreach($core_programs as $program)
                       @foreach($results as $result)
                          @if($result->moduleAssignment->programModuleAssignment->semester_id == $semester->id && $result->moduleAssignment->programModuleAssignment->id == $program->id)
-                         <tr>
+                         <tr @if($result->exam_type == 'APPEAL') class="ss-grey" @endif>
                           <td>
                             @if(App\Domain\Academic\Models\Appeal::exists($appeals,$result))
                             {!! Form::checkbox('result_'.$result->id,$result->id,true,['disabled'=>'disabled']) !!}
@@ -123,7 +123,7 @@
                     @foreach($optional_programs as $program)
                        @foreach($results as $result)
                          @if($result->moduleAssignment->programModuleAssignment->semester_id == $semester->id && $result->moduleAssignment->programModuleAssignment->id == $program->id)
-                         <tr>
+                         <tr @if($result->exam_type == 'APPEAL') class="ss-grey" @endif>
                           <td>@if(App\Domain\Academic\Models\Appeal::exists($appeals,$result))
                             {!! Form::checkbox('result_'.$result->id,$result->id,true,['disabled'=>'disabled']) !!}
                             @else
