@@ -58,7 +58,7 @@ class GraduantController extends Controller
 	    			}
 	    		}
 	    		$graduant->save();
-    	    }
+    	  }
 
     	    $student = Student::find($student->id);
     	    $student->studentship_status_id = $status->id;

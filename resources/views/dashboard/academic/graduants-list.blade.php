@@ -82,13 +82,14 @@
                 <table id="example2" class="table table-bordered table-hover">
                   <thead>
                   <tr>
+                    <th>SN</th>
                     <th>Student</th>
-                    <th>Actions</th>
                   </tr>
                   </thead>
                   <tbody>
-                    @foreach($graduants as $graduant)
+                    @foreach($graduants as $key=>$graduant)
                     <tr>
+                      <td>{{ ($key+1) }}</td>
                       <td>{{ $graduant->student->first_name }} {{ $graduant->student->middle_name }} {{ $graduant->student->surname }}</td>
                     </tr>
                     @endforeach                  
