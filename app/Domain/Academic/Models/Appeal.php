@@ -44,4 +44,15 @@ class Appeal extends Model
     {
         return $this->morphOne(Payment::class,'payable');
     }
+
+    public static function exists($appeals,$result)
+    {
+        $status = false;
+        foreach($appeals as $appeal){
+            if($appeal->examination_result_id == $result->id){
+                $status = true;
+            }
+        }
+        return $status;
+    }
 }

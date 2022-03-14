@@ -172,7 +172,7 @@ class AppealController extends Controller
          $study_academic_year = StudyAcademicYear::with('academicYear')->find($ac_yr_id);
          $semesters = Semester::with(['remarks'=>function($query) use ($student, $ac_yr_id){
          	 $query->where('student_id',$student->id)->where('study_academic_year_id',$ac_yr_id);
-         }])->get();
+         }])->where('id',$request->get('semester_id'))->get();
          $results = ExaminationResult::whereHas('moduleAssignment',function($query) use ($ac_yr_id){
          	   $query->where('study_academic_year_id',$ac_yr_id);
          })->whereHas('moduleAssignment.programModuleAssignment',function($query) use ($ac_yr_id, $yr_of_study){
@@ -193,6 +193,8 @@ class AppealController extends Controller
          // 	$optional_programs = ProgramModuleAssignment::with(['module'])->where('study_academic_year_id',$ac_yr_id)->where('year_of_study',$yr_of_study)->where('category','OPTIONAL')->get();
          // }
 
+          $appeals = Appeal::where('student_id',$student->id)->get();
+
          $data = [
          	'semesters'=>$semesters,
          	'annual_remark'=>$annual_remark,
@@ -202,6 +204,7 @@ class AppealController extends Controller
          	'publications'=>$publications,
          	'optional_programs'=>$optional_programs,
          	'year_of_study'=>$yr_of_study,
+            'appeals'=>$appeals,
             'student'=>$student
          ];
          return view('dashboard.student.appeal-examination-results-report',$data)->withTitle('Examination Results');

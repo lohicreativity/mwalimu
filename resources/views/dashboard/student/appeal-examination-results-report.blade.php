@@ -113,7 +113,13 @@
                       @foreach($results as $result)
                          @if($result->moduleAssignment->programModuleAssignment->semester_id == $semester->id && $result->moduleAssignment->programModuleAssignment->id == $program->id)
                          <tr>
-                          <td>{!! Form::checkbox('result_'.$result->id,$result->id) !!}</td>
+                          <td>
+                            @if(App\Domain\Academic\Models\Appeal::exists($appeals,$result))
+                            {!! Form::checkbox('result_'.$result->id,$result->id,true,['disabled'=>'disabled']) !!}
+                            @else
+                            {!! Form::checkbox('result_'.$result->id,$result->id) !!}
+                            @endif
+                          </td>
                           <td>{{ $count }}</td>
                           <td>{{ $result->moduleAssignment->module->code }}</td>
                           <td>{{ $result->moduleAssignment->module->name }}</td>
@@ -148,7 +154,12 @@
                        @foreach($results as $result)
                          @if($result->moduleAssignment->programModuleAssignment->semester_id == $semester->id && $result->moduleAssignment->programModuleAssignment->id == $program->id)
                          <tr>
-                          <td>{!! Form::checkbox('result_'.$result->id,$result->id) !!}</td>
+                          <td>@if(App\Domain\Academic\Models\Appeal::exists($appeals,$result))
+                            {!! Form::checkbox('result_'.$result->id,$result->id,true,['disabled'=>'disabled']) !!}
+                            @else
+                            {!! Form::checkbox('result_'.$result->id,$result->id) !!}
+                            @endif
+                          </td>
                           <td>{{ $count }}</td>
                           <td>{{ $result->moduleAssignment->module->code }}</td>
                           <td>{{ $result->moduleAssignment->module->name }}</td>
