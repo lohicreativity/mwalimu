@@ -51,7 +51,6 @@
             </div>
 
             <div class="card">
-              <div class="card-header">
                  <div class="card-body">
                  {!! Form::open(['url'=>'academic/graduants','class'=>'ss-form-processing','method'=>'GET']) !!}
                    
