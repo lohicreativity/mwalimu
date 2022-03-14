@@ -5,6 +5,7 @@ use App\Http\Controllers\StudentController;
 use App\Http\Controllers\ClearanceController;
 use App\Http\Controllers\AppealController;
 use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\TranscriptRequestController;
 use App\Http\Controllers\PerformanceReportRequestController;
 
 /*
@@ -44,6 +45,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 	Route::get('results/appeal',[AppealController::class,'appealResults']);
 
 	Route::get('request-control-number',[StudentController::class,'requestControlNumber']);
+
+	Route::get('request-transcript',[TranscriptRequestController::class, 'store']);
 
 	Route::post('get-control-number',[InvoiceController::class,'store']);
     

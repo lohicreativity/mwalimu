@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Domain\Application\Models\Applicant;
 use App\Domain\Academic\Models\Appeal;
 use App\Domain\Academic\Models\PerfomanceReportRequest;
+use App\Domain\Academic\Models\TranscriptRequest;
 use App\Domain\Finance\Models\Invoice;
 use App\Domain\Finance\Models\GatewayPayment;
 use App\Domain\Finance\Models\PaymentReconciliation;
@@ -122,6 +123,10 @@ class GePGResponseController extends Controller
 
 			if(str_contains($invoice->feeType->name,'Performance Report')){
 				 PerfomanceReportRequest::where('student_id',$invoice->payable_id)->update(['payment_status'=>'PAID']);
+			}
+
+			if(str_contains($invoice->feeType->name,'Transcript')){
+				 TranscriptRequest::where('student_id',$invoice->payable_id)->update(['payment_status'=>'PAID']);
 			}
 		}
     }
