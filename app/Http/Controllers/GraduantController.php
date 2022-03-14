@@ -50,12 +50,20 @@ class GraduantController extends Controller
 	    		$graduant->overall_remark_id = $student->overallRemark->id;
 	    		$graduant->study_academic_year_id = $request->get('study_academic_year_id');
 	    		$graduant->status = 'GRADUATING';
+          $count = 0;
 	    		foreach($student->annualRemarks as $remark){
 	    			if($remark->remark != 'PASS'){
 	    			   $graduant->status = 'EXCLUDED';
 	                   $excluded_list[] = $student;
 	                   break;
-	    			}
+	    			}else{
+               $count++;
+            }
+            if($count >= 3){
+               $graduant->status = 'GRADUATING';
+            }else{
+               $graduant->status = 'EXCLUDED';
+            }
 	    		}
 	    		$graduant->save();
     	  }
