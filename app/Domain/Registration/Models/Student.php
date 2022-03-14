@@ -58,7 +58,7 @@ class Student extends Model
     /**
      * Establish one to one relationship with overall remarks
      */
-    public function overallRemarks()
+    public function overallRemark()
     {
         return $this->hasOne(OverallRemark::class,'student_id');
     }

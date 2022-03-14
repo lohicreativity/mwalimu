@@ -36,7 +36,7 @@ class GraduantController extends Controller
     public function sortGraduants(Request $request)
     {
     	$campus_program = CampusProgram::with('program')->find($request->get('campus_program_id'));
-    	$students = Student::with(['annualRemarks'])->where('campus_program_id',$campus_program->id)->where('year_of_study',$campus_program->program->min_duration)->get();
+    	$students = Student::with(['annualRemarks','overallRemark'])->where('campus_program_id',$campus_program->id)->where('year_of_study',$campus_program->program->min_duration)->get();
     	$excluded_list = [];
     	$status = StudentshipStatus::where('name','GRADUANT')->first();
     	foreach($students as $student){
