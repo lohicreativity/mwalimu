@@ -79,18 +79,23 @@
                 <table id="example2" class="table table-bordered table-hover">
                   <thead>
                   <tr>
+                    <th>SN</th>
                     <th>Student</th>
-                    <th>Actions</th>
+                    
                   </tr>
                   </thead>
                   <tbody>
-                    @foreach($non_graduants as $graduant)
+                    @foreach($non_graduants as $key=>$graduant)
                     <tr>
+                      <td>{{ ($key+1) }}</td>
                       <td>{{ $graduant->student->first_name }} {{ $graduant->student->middle_name }} {{ $graduant->student->surname }}</td>
                     </tr>
                     @endforeach                  
                   </tbody>
                 </table>
+                <div class="ss-pagination-links">
+                    {!! $non_graduants->render() !!}
+                </div>
               </div>
               <!-- /.card-body -->
             </div>

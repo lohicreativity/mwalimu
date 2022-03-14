@@ -95,6 +95,9 @@
                     @endforeach                  
                   </tbody>
                 </table>
+                <div class="ss-pagination-links">
+                    {!! $graduants->render() !!}
+                </div>
               </div>
               <!-- /.card-body -->
             </div>
