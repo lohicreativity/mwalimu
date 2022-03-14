@@ -81,7 +81,6 @@
                   <tr>
                     <th>SN</th>
                     <th>Student</th>
-                    
                   </tr>
                   </thead>
                   <tbody>
