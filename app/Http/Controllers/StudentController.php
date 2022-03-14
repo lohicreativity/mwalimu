@@ -257,8 +257,10 @@ class StudentController extends Controller
          $semesters = Semester::with(['remarks'=>function($query) use ($student, $ac_yr_id, $yr_of_study){
            $query->where('student_id',$student->id)->where('study_academic_year_id',$ac_yr_id)->where('year_of_study',$yr_of_study);
          }])->get();
-         $results = ExaminationResult::whereHas('moduleAssignment',function($query) use ($ac_yr_id, $student_id){
-             $query->where('study_academic_year_id',$ac_yr_id)->where('student_id',$student_id);
+         $results = ExaminationResult::whereHas('moduleAssignment',function($query) use ($ac_yr_id){
+             $query->where('study_academic_year_id',$ac_yr_id);
+         })->whereHas('moduleAssignment.programModuleAssignment',function($query) use ($ac_yr_id, $yr_of_study){
+             $query->where('study_academic_year_id',$ac_yr_id)->where('year_of_study',$yr_of_study);
          })->with(['moduleAssignment.programModuleAssignment'=>function($query) use ($ac_yr_id,$yr_of_study){
            $query->where('study_academic_year_id',$ac_yr_id)->where('year_of_study',$yr_of_study);
          },'moduleAssignment','moduleAssignment.module','carryHistory.carrableResults'=>function($query){
