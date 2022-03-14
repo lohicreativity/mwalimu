@@ -48,6 +48,7 @@
                   <li class="nav-item"><a class="nav-link" href="{{ url('academic/excluded-graduants?study_academic_year_id='.session('active_academic_year_id').'&campus_id='.session('staff_campus_id')) }}">{{ __('Excluded List') }}</a></li>
                 </ul>
               </div>
+            </div>
               <!-- /.card-header -->
               <div class="card-body">
                  {!! Form::open(['url'=>'academic/run-graduants','class'=>'ss-form-processing','method'=>'GET']) !!}

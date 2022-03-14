@@ -61,7 +61,7 @@ class GraduantController extends Controller
     	    }
 
     	    $student = Student::find($student->id);
-    	    $student->studentship_status = $status->id;
+    	    $student->studentship_status_id = $status->id;
     	    $student->save();
     	}
 
