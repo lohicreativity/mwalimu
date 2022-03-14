@@ -45,7 +45,7 @@ class PerformanceReportRequestController extends Controller
           
          $study_academic_year = StudyAcademicYear::where('status','ACTIVE')->first();
          $fee_amount = FeeAmount::whereHas('feeItem',function($query){
-                   return $query->where('name','LIKE','%Performance Report%');
+                       $query->where('name','LIKE','%Performance Report%');
             })->with(['feeItem.feeType'])->where('study_academic_year_id',$study_academic_year->id)->first();
 
          if(!$fee_amount){
