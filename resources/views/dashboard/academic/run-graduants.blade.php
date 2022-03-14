@@ -84,7 +84,7 @@
             @if($campus && $study_academic_year)
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">List of Examination Policies - {{ $study_academic_year->academicYear->year }}</h3>
+                <h3 class="card-title">Run Graduants - {{ $study_academic_year->academicYear->year }}</h3>
               </div>
               <!-- /.card-header -->
               {!! Form::open(['url'=>'academic/graduants/sort','class'=>'ss-form-processing']) !!}
