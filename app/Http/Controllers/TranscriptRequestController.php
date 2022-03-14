@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Domain\Academic\Models\TranscriptRequest;
+use App\Domain\Academic\Models\StudyAcademicYear;
 use App\Models\User;
 use Auth;
 
