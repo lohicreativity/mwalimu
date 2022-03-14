@@ -97,6 +97,7 @@
                     @foreach($core_programs as $program)
                         @if($semester->id == $program->semester_id && !in_array($program->id,$programIds))
                          <tr>
+                          <td></td>
                           <td>{{ $count }}</td>
                           <td>{{ $program->module->code }}</td>
                           <td>{{ $program->module->name }}</td>
@@ -138,6 +139,7 @@
                     @foreach($optional_programs as $program)
                         @if($semester->id == $program->semester_id && !in_array($program->id,$programIds))
                          <tr>
+                          <td></td>
                           <td>{{ $count }}</td>
                           <td>{{ $program->module->code }}</td>
                           <td>{{ $program->module->name }}</td>
