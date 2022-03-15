@@ -203,6 +203,9 @@
      .ss-margin-top{
         margin-top: 20px;
      }
+     .ss-color-blue{
+        color: #006e8c;
+     }
   
   </style>
 </head>
@@ -211,7 +214,7 @@
         <div class="row">
           <div class="col-md-12">
              <div class="ss-letter-head  ss-center">
-               <h2>THE MWALIMU NYERERE MEMORIAL ACADEMY</h2>
+               <h2 class="ss-color-blue">THE MWALIMU NYERERE MEMORIAL ACADEMY</h2>
               </div>
           </div>
         </div>
@@ -221,7 +224,7 @@
           </div><!-- end of col-md-3 -->
           <div class="col-md-6 ss-center">
              <div class="ss-center">
-               <h4>P. O. Box 9193, Dar Es Salaam, TANZANIA, +255 (22) 2820041</h4>
+               <h4 class="ss-color-blue">P. O. Box 9193, Dar Es Salaam, TANZANIA, +255 (22) 2820041</h4>
                <h3 class="ss-uppercase">{{ $department->name }}</h3>
                <h4>STATEMENT OF EXAMINATION RESULTS</h4>
               </div>
@@ -285,7 +288,7 @@
                         <th>Module Name</th>
                         <th>Credits</th>
                         <th>Grade</th>
-                        <th>Remark</th>
+                        <th>Points</th>
                         <th>GPA</th>
                       </tr>
                     </thead>
@@ -320,7 +323,7 @@
                                     <td>{{ $res->moduleAssignment->module->name }}</td>
                                     <td>{{ $res->moduleAssignment->module->credit }}</td>
                                     <td>{{ $res->grade }}</td>
-                                    <td>{{ $res->final_exam_remark }}</td>
+                                    <td>{{ ($res->point*$res->moduleAssignment->module->credit) }}</td>
                                     <td></td>
                                   </tr>
                                     @php
@@ -340,7 +343,7 @@
                                     <td>{{ $res->moduleAssignment->module->name }}</td>
                                     <td>{{ $res->moduleAssignment->module->credit }}</td>
                                     <td>{{ $res->grade }}</td>
-                                    <td>{{ $res->final_exam_remark }}</td>
+                                    <td>{{ ($res->point*$res->moduleAssignment->module->credit) }}</td>
                                     <td></td>
                                   </tr>
                                     @php
@@ -356,7 +359,7 @@
                           <td>{{ $result->moduleAssignment->module->name }}</td>
                           <td>{{ $result->moduleAssignment->module->credit }}</td>
                           <td>{{ $result->grade }}</td>
-                          <td>{{ $result->final_exam_remark }}</td>
+                          <td>{{ ($result->point*$result->moduleAssignment->module->credit) }}</td>
                           <td></td>
                         </tr>
                           @php
@@ -393,7 +396,7 @@
                                     <td>{{ $res->moduleAssignment->module->name }}</td>
                                     <td>{{ $res->moduleAssignment->module->credit }}</td>
                                     <td>{{ $res->grade }}</td>
-                                    <td>{{ $res->final_exam_remark }}</td>
+                                    <td>{{ ($res->point*$res->moduleAssignment->module->credit) }}</td>
                                     <td></td>
                                   </tr>
                                     @php
@@ -413,7 +416,7 @@
                                     <td>{{ $res->moduleAssignment->module->name }}</td>
                                     <td>{{ $result->moduleAssignment->module->credit }}</td>
                                     <td>{{ $res->grade }}</td>
-                                    <td>{{ $res->final_exam_remark }}</td>
+                                    <td>{{ ($res->point*$res->moduleAssignment->module->credit) }}</td>
                                     <td></td>
                                   </tr>
                                     @php
@@ -429,7 +432,7 @@
                           <td>{{ $result->moduleAssignment->module->name }}</td>
                           <td>{{ $result->moduleAssignment->module->credit }}</td>
                           <td>{{ $result->grade }}</td>
-                          <td>{{ $result->final_exam_remark }}</td>
+                          <td>{{ ($result->point*$result->moduleAssignment->module->credit) }}</td>
                           <td></td>
                         </tr>
                           @php
