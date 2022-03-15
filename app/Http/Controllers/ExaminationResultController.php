@@ -2337,9 +2337,9 @@ class ExaminationResultController extends Controller
           'staff'=>User::find(Auth::user()->id)->staff
          ];
 
-         $pdf = PDF::loadView('dashboard.academic.reports.perfomance-report', $data)->setPaper('a4','portrait');
-         return $pdf->stream();
-         // return view('dashboard.academic.reports.perfomance-report',$data)->withTitle('Student Perfomance Report');
+         // $pdf = PDF::loadView('dashboard.academic.reports.perfomance-report', $data)->setPaper('a4','portrait');
+         // return $pdf->stream();
+         return view('dashboard.academic.reports.perfomance-report',$data)->withTitle('Student Perfomance Report');
     }
 
     /**
