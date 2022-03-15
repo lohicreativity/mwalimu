@@ -473,8 +473,8 @@
                     <div class="col-md-6">
                       {!! QrCode::size(120)->generate('mnma.ac.tz'); !!}
                     </div>
-                    <div class="col-md-6">
-                         ..................................<br>
+                    <div class="col-md-6 ss-center">
+                         ......................................<br>
                          <p class="ss-uppercase ss-bold">{{ $staff->first_name }} {{ $staff->middle_name }} {{ $staff->surname }}</p>
                          <p class="ss-bold">EXAMINATIONS OFFICER</p>
                     </div>
