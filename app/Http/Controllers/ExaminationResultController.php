@@ -29,7 +29,7 @@ use App\Domain\Registration\Models\Student;
 use App\Domain\Settings\Models\Intake;
 use App\Models\User;
 use App\Utils\Util;
-use Auth, DB, Validator;
+use Auth, DB, Validator, PDF;
 
 class ExaminationResultController extends Controller
 {
@@ -2336,7 +2336,10 @@ class ExaminationResultController extends Controller
           'grading_policies'=>$grading_policies,
           'staff'=>User::find(Auth::user()->id)->staff
          ];
-         return view('dashboard.academic.reports.perfomance-report',$data)->withTitle('Student Perfomance Report');
+
+         $pdf = PDF::loadView('dashboard.academic.reports.perfomance-report', $data)->setPaper('a4','portrait');
+         return $pdf->stream();
+         // return view('dashboard.academic.reports.perfomance-report',$data)->withTitle('Student Perfomance Report');
     }
 
     /**
