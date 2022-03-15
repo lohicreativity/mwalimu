@@ -284,11 +284,11 @@
                         <th colspan="6">{{ strtoupper($semester->name) }}</th>
                       </tr>
                       <tr>
-                        <th>Code</th>
-                        <th>Module Name</th>
-                        <th>Credits</th>
-                        <th>Grade</th>
-                        <th>Points</th>
+                        <th>CODE</th>
+                        <th>MODULE NAME</th>
+                        <th>CREDITS</th>
+                        <th>GRADE</th>
+                        <th>POINTS</th>
                         <th>GPA</th>
                       </tr>
                     </thead>
@@ -327,7 +327,7 @@
                                     <td></td>
                                   </tr>
                                     @php
-                                      $count += 1;
+                                      $count += ($res->point*$res->moduleAssignment->module->credit);
                                     @endphp
                               @endif
                            @endforeach
@@ -347,7 +347,7 @@
                                     <td></td>
                                   </tr>
                                     @php
-                                      $count += 1;
+                                      $count += ($res->point*$res->moduleAssignment->module->credit);
                                     @endphp
                               @endif
                            @endforeach
@@ -363,7 +363,7 @@
                           <td></td>
                         </tr>
                           @php
-                            $count += 1;
+                            $count += ($result->point*$result->moduleAssignment->module->credit);
                           @endphp
                          @endif
                          @endif
@@ -379,9 +379,6 @@
                           <td></td>
                           <td></td>
                         </tr>
-                        @php
-                          $count += 1;
-                        @endphp
                        @endif
                        @foreach($results as $result)
                          @if($result->moduleAssignment->programModuleAssignment->semester_id == $semester->id && $result->moduleAssignment->programModuleAssignment->id == $program->id)
@@ -400,7 +397,7 @@
                                     <td></td>
                                   </tr>
                                     @php
-                                      $count += 1;
+                                      $count += ($res->point*$res->moduleAssignment->module->credit);
                                     @endphp
                               @endif
                            @endforeach
@@ -420,7 +417,7 @@
                                     <td></td>
                                   </tr>
                                     @php
-                                      $count += 1;
+                                      $count += ($res->point*$res->moduleAssignment->module->credit);
                                     @endphp
                               @endif
                            @endforeach
@@ -436,7 +433,7 @@
                           <td></td>
                         </tr>
                           @php
-                            $count += 1;
+                            $count += ($result->point*$result->moduleAssignment->module->credit);
                           @endphp
                          @endif
                          @endif
@@ -444,11 +441,11 @@
                      @endforeach
                      @foreach($semester->remarks as $remark)
                       <tr>
-                        <td colspan="2" class="ss-bold">SUB TOTAL</td>
+                        <td colspan="2" class="ss-bold">SUB TOTAL:</td>
                         <td class="ss-bold">{{ $remark->credit }}</td>
                         
-                        <td class="ss-bold"></td>
                         <td class="ss-bold">{{ $remark->point}}</td>
+                        <td class="ss-bold">{{ $count }}</td>
                         <td class="ss-bold">{{ bcdiv($remark->gpa,1,1) }}</td>
                       </tr>
                       @endforeach
