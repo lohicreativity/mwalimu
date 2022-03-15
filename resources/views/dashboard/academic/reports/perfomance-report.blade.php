@@ -442,7 +442,6 @@
                      @foreach($semester->remarks as $remark)
                       <tr>
                         <td colspan="2" class="ss-bold">SUB TOTAL</td>
-                        <td></td>
                         <td class="ss-bold">{{ $remark->credit }}</td>
                         
                         <td class="ss-bold">{{ $remark->point }}</td>
