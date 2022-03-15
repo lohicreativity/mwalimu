@@ -206,16 +206,21 @@
 
       <div class="container">
         <div class="row">
+          <div class="col-md-12">
+             <div class="ss-letter-head  ss-center">
+               <h1>THE MWALIMU NYERERE MEMORIAL ACADEMY</h1>
+              </div>
+          </div>
+        </div>
+        <div class="row">
           <div class="col-md-3 ss-center">
              <img src="{{ asset('dist/img/logo.png') }}" alt="Config::get('constants.SITE_NAME') }}" class="ss-logo">
           </div><!-- end of col-md-3 -->
           <div class="col-md-6 ss-center">
              <div class="ss-letter-head  ss-center">
-               <h1>MWALIMU NYERERE MEMORIAL ACADEMY</h1>
                <h3>P. O. Box 9193, Dar Es Salaam, TANZANIA, +255 (22) 2820041</h3>
                <h3>{{ $department->name }}</h3>
-               <h3>{{ $student->campusProgram->program->name }}</h3>
-               <h3>STATEMENT OF EXAMINATION RESULTS</h3>
+               <h4>STATEMENT OF EXAMINATION RESULTS</h4>
               </div>
           </div><!-- end of col-md-6 -->
           <div class="col-md-3 ss-center">
@@ -246,7 +251,7 @@
                       <td colspan="3"><strong>PROGRAMME:</strong> {{ strtoupper($student->campusProgram->program->name) }}</td>
                     </tr>
                     <tr>
-                      <td colspan="3"><strong>AWARD LEVEL:</strong> {{ strtoupper($student->campusProgram->program->ntaLevel->name ) }} <span class="ss-italic">(Programme Accredited by the National Council of Technical Education)</span></td>
+                      <td colspan="3"><strong>AWARD LEVEL:</strong> @if($student->year_of_study == 2) NTA LEVEL 7 @else {{ strtoupper($student->campusProgram->program->ntaLevel->name ) }} @endif <span class="ss-italic">(Programme Accredited by the National Council of Technical Education)</span></td>
                     </tr>
                  </table>
                 </div><!-- end of col-md-12 -->
