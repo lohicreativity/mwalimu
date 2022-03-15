@@ -42,7 +42,7 @@ class PerformanceReportRequestController extends Controller
             })->with(['feeItem.feeType'])->where('study_academic_year_id',$study_academic_year->id)->first();
 
          if(!$fee_amount){
-            return redirect()->back()->with('error','No fee amount set for results appeal');
+            return redirect()->back()->with('error','No fee amount set for results for performance report');
          }
 
          $performance = new PerformanceReportRequest;
@@ -73,7 +73,7 @@ class PerformanceReportRequestController extends Controller
         $approved_by = 'SP';
         $inst_id = config('constants.SUBSPCODE');
 
-       return  $this->requestControlNumber($request,
+        return $this->requestControlNumber($request,
                                     $invoice->reference_no,
                                     $inst_id,
                                     $invoice->amount,
@@ -90,7 +90,7 @@ class PerformanceReportRequestController extends Controller
                                     $invoice->currency);
         }
 
-        return redirect()->to('student/request-control-number')->with('message','Performance report requested successfully');
+        //return redirect()->to('student/request-control-number')->with('message','Performance report requested successfully');
     }
 
     /**
