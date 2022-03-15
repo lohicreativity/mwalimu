@@ -121,6 +121,8 @@ class PerformanceReportRequestController extends Controller
                         'X-CSRF-TOKEN'=> csrf_token()
                       ])->post($url,$data);
 
+            return $result;
+
             
         return redirect()->back()->with('message','The bill with id '.$billno.' has been queued.', 200);
                         
