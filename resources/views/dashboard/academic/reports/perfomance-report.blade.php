@@ -204,7 +204,7 @@
         margin-top: 20px;
      }
      .ss-color-blue{
-        color: #006e8c;
+        color: #371261;
      }
   
   </style>
