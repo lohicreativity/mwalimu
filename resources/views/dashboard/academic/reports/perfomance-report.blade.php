@@ -457,6 +457,8 @@
                    <div class="col-md-12">
                     <p class="ss-bold ss-line-bottom">OVERALL GPA: @if($annual_remark->gpa) {{ bcdiv($annual_remark->gpa,1,1) }} @else N/A @endif</p>
                  <br>
+
+                   {!! QrCode::size(250)->generate('mnma.ac.tz'); !!}
                </div><!-- end of col-md-12 -->
                  
                   @endif
