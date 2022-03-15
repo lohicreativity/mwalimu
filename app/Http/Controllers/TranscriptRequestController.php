@@ -32,10 +32,7 @@ class TranscriptRequestController extends Controller
 
          $tranx = TranscriptRequest::where('student_id',$student->id)->whereDate('created_at','=',date('Y-m-d'))->first();
          if(!$tranx){
-          $transcript = new TranscriptRequest;
-          $transcript->student_id = $student->id;
-          $transcript->payment_status = 'PENDING';
-          $transcript->save();
+          
           
          $study_academic_year = StudyAcademicYear::where('status','ACTIVE')->first();
          $fee_amount = FeeAmount::whereHas('feeItem',function($query){
@@ -45,6 +42,11 @@ class TranscriptRequestController extends Controller
          if(!$fee_amount){
             return redirect()->back()->with('error','No fee amount set for transcript request');
          }
+
+          $transcript = new TranscriptRequest;
+          $transcript->student_id = $student->id;
+          $transcript->payment_status = 'PENDING';
+          $transcript->save();
 
          if($student->applicant->country->code == 'TZ'){
              $amount = $fee_amount->amount_in_tzs;
