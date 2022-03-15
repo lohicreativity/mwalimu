@@ -473,7 +473,7 @@
                       {!! QrCode::size(120)->generate('mnma.ac.tz'); !!}
                     </div>
                     <div class="col-md-6 ss-center">
-                         ......................................<br>
+                         <p class="ss-margin-top">......................................</p>
                          <p class="ss-uppercase ss-bold">{{ $staff->first_name }} {{ $staff->middle_name }} {{ $staff->surname }}</p>
                          <p class="ss-bold">EXAMINATIONS OFFICER</p>
                     </div>
@@ -482,7 +482,7 @@
                  <div class="row">
                    <div class="col-md-12">
                      <h3>KEYS</h3>
-                     <p>1. This transcript is valid if and only if it bears the Academy Stamp</p>
+                     <p>1. This statement of results is valid if and only if it bears the Academy Stamp</p>
                      <p>2. Key for Subject/Module Units: ONE UNIT IS EQUIVALENT TO TEN CONTACT HOURS. POINTS = GRADE MULTIPLIED BY NUMBER OF UNITS</p>
                      <p>3. Key to the Grades and other symbols: SEE THE TABLE BELOW</p>
                      <table class="table table-bordered table-condensed ss-center">
