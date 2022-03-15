@@ -67,7 +67,7 @@
             @if(count($performance_report_requests) != 0)
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">List of Performance Report Requests</h3>
+                <h3 class="card-title">List of Statement of Results Requests</h3>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
@@ -96,7 +96,7 @@
                       <td>{{ $report->student->campusProgram->program->code }}</td>
                       <td>{{ $report->year_of_study }}</td>
                       <td>@if($report->status) <span class="badge badge-success">{{ $report->status }}</span>@endif</td>
-                      <td><a href="{{ url('academic/performance-report/ready?report_id='.$report->id) }}" target="_blank" class="btn btn-primary">View Report</a></td>
+                      <td><a href="{{ url('academic/performance-report/ready?report_id='.$report->id) }}" target="_blank" class="btn btn-primary">Print Statement</a></td>
                     </tr>
                     @endforeach                  
                   </tbody>
