@@ -72,8 +72,8 @@ class BillController extends Controller
 
 
              //die( $request->get("payer_name") );              
-       // print_r ($bill->xml(true));
-       // die();
+       print_r ($bill->xml(true));
+       die();
 
        //die();
        # Add Bill to Q                    
