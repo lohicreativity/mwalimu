@@ -35,14 +35,7 @@ class PerformanceReportRequestController extends Controller
          
 
          $perf = PerformanceReportRequest::where('student_id',$student->id)->where('year_of_study',$request->get('year_of_study'))->whereDate('created_at','=',date('Y-m-d'))->first();
-         if(!$perf){
-         $performance = new PerformanceReportRequest;
-         $performance->student_id = $student->id;
-         $performance->study_academic_year_id = $request->get('study_academic_year_id');
-         $performance->year_of_study = $request->get('year_of_study');
-         $performance->payment_status = 'PENDING';
-         $performance->save();
-          
+         if(!$perf){   
          $study_academic_year = StudyAcademicYear::where('status','ACTIVE')->first();
          $fee_amount = FeeAmount::whereHas('feeItem',function($query){
                        $query->where('name','LIKE','%Performance Report%');
@@ -51,6 +44,13 @@ class PerformanceReportRequestController extends Controller
          if(!$fee_amount){
             return redirect()->back()->with('error','No fee amount set for results appeal');
          }
+
+         $performance = new PerformanceReportRequest;
+         $performance->student_id = $student->id;
+         $performance->study_academic_year_id = $request->get('study_academic_year_id');
+         $performance->year_of_study = $request->get('year_of_study');
+         $performance->payment_status = 'PENDING';
+         $performance->save();
 
          if($student->applicant->country->code == 'TZ'){
              $amount = $fee_amount->amount_in_tzs;
