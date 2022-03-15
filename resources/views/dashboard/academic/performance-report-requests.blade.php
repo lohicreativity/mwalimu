@@ -71,11 +71,19 @@
               </div>
               <!-- /.card-header -->
               <div class="card-body">
-                 
-                <table id="example2" class="table table-bordered table-hover">
+                 {!! Form::open(['url'=>'academic/performance-report-requests','method'=>'GET']) !!}
+                <div class="input-group ss-stretch">
+                 <input type="text" name="query" class="form-control" placeholder="Search for student name or registration number">
+                 <span class="input-group-btn">
+                   <button class="btn btn-default" type="submit"><span class="fa fa-search"></span></button>
+                 </span>
+                </div>
+                {!! Form::close() !!}
+                <table id="example2" class="table table-bordered table-hover ss-margin-top">
                   <thead>
                   <tr>
                     <th>Student</th>
+                    <th>Programme</th>
                     <th>Year of Study</th>
                     <th>Payment Status</th>
                     <th>Status</th>
@@ -86,6 +94,7 @@
                     @foreach($performance_report_requests as $report)
                     <tr>
                       <td>{{ $report->student->first_name }} {{ $report->student->middle_name }} {{ $report->student->surname }}</td>
+                      <td>{{ $report->student->campusProgram->program->code }}</td>
                       <td>{{ $report->year_of_study }}</td>
                       <td>{{ $report->payment_status }}</td>
                       <td>@if($report->status) <span class="badge badge-success">{{ $report->status }}</span>@endif</td>
