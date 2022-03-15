@@ -75,8 +75,6 @@ class BillController extends Controller
        // print_r ($bill->xml(true));
        // die();
 
-        return $bill->xml(true);
-
        //die();
        # Add Bill to Q                    
 		Amqp::publish('gepg.bill.out', $bill->xml(true), ['exchange' => 'sp_exchange', 'queue' => 'bill.to.gepg']);
