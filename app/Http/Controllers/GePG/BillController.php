@@ -80,8 +80,8 @@ class BillController extends Controller
 
        //die();
        # Add Bill to Q                    
-		Amqp::publish('gepg.bill.out', $bill->xml(true), ['exchange' => 'sp_exchange', 'queue' => 'bill.to.gepg']);
-		return $this->success("The bill with id {$request->get('payment_ref')} has been queued.", 200);
+		// Amqp::publish('gepg.bill.out', $bill->xml(true), ['exchange' => 'sp_exchange', 'queue' => 'bill.to.gepg']);
+		// return $this->success("The bill with id {$request->get('payment_ref')} has been queued.", 200);
     }
 
 
