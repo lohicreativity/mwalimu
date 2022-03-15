@@ -208,7 +208,7 @@
         <div class="row">
           <div class="col-md-12">
              <div class="ss-letter-head  ss-center">
-               <h1>THE MWALIMU NYERERE MEMORIAL ACADEMY</h1>
+               <h2>THE MWALIMU NYERERE MEMORIAL ACADEMY</h2>
               </div>
           </div>
         </div>
