@@ -471,11 +471,12 @@
 
                  <div class="row">
                     <div class="col-md-6">
-                      {!! QrCode::size(200)->generate('mnma.ac.tz'); !!}
+                      {!! QrCode::size(120)->generate('mnma.ac.tz'); !!}
                     </div>
                     <div class="col-md-6">
                          ..................................<br>
                          <p class="ss-uppercase ss-bold">{{ $staff->first_name }} {{ $staff->middle_name }} {{ $staff->surname }}</p>
+                         <p class="ss-bold">EXAMINATIONS OFFICER</p>
                     </div>
                 </div><!-- end of row -->
 
