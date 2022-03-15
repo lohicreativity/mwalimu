@@ -516,9 +516,9 @@
                      <table class="table table-condensed table-bordered ss-center">
                        <tr>
                           <td class="ss-bold">Overall GPA</td>
-                          <td class="ss-bold">3.50 - 4.00</td>
-                          <td class="ss-bold">3.00 - 3.49</td>
-                          <td class="ss-bold">2.00 - 2.99</td>
+                          <td class="ss-bold">3.5 - 4.0</td>
+                          <td class="ss-bold">3.0 - 3.4</td>
+                          <td class="ss-bold">2.0 - 2.9</td>
                        </tr>
                        <tr>
                          <td>Class</td>
