@@ -200,6 +200,9 @@
      .ss-uppercase{
         text-transform: uppercase;
      }
+     .ss-margin-top{
+        margin-top: 20px;
+     }
   
   </style>
 </head>
@@ -217,9 +220,9 @@
              <img src="{{ asset('dist/img/logo.png') }}" alt="Config::get('constants.SITE_NAME') }}" class="ss-logo">
           </div><!-- end of col-md-3 -->
           <div class="col-md-6 ss-center">
-             <div class="ss-letter-head  ss-center">
+             <div class="ss-center">
                <h3>P. O. Box 9193, Dar Es Salaam, TANZANIA, +255 (22) 2820041</h3>
-               <h3>{{ $department->name }}</h3>
+               <h3 class="ss-uppercase">{{ $department->name }}</h3>
                <h4>STATEMENT OF EXAMINATION RESULTS</h4>
               </div>
           </div><!-- end of col-md-6 -->
@@ -230,7 +233,7 @@
              <div class="row">
                 <div class="col-md-12"> 
 
-                 <table class="table table-bordered">
+                 <table class="table table-bordered ss-margin-top">
                     <tr>
                       <td><strong>NAME:</strong> {{ strtoupper($student->first_name) }} {{ strtoupper($student->middle_name) }} {{ strtoupper($student->surname) }}</td>
                       <td><strong>SEX:</strong> @if($student->gender == 'M') MALE @else FEMALE @endif</td>
