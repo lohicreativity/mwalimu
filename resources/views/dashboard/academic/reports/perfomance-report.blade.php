@@ -197,6 +197,9 @@
      .ss-line-bottom{
        border-bottom: 2px solid #000;
      }
+     .ss-uppercase{
+        text-transform: uppercase;
+     }
   
   </style>
 </head>
@@ -458,13 +461,23 @@
                     <p class="ss-bold ss-line-bottom">OVERALL GPA: @if($annual_remark->gpa) {{ bcdiv($annual_remark->gpa,1,1) }} @else N/A @endif</p>
                  <br>
 
-                   {!! QrCode::size(250)->generate('mnma.ac.tz'); !!}
+                   
                </div><!-- end of col-md-12 -->
                  
                   @endif
                   </div><!-- end of row -->
                  @endif
                  @endforeach
+
+                 <div class="row">
+                    <div class="col-md-6">
+                      {!! QrCode::size(250)->generate('mnma.ac.tz'); !!}
+                    </div>
+                    <div class="col-md-12">
+                         ..................................<br>
+                         <p class="ss-uppercase">{{ $staff->first_name }} {{ $staff->middle_name }} {{ $staff->surname }}</p>
+                    </div>
+                </div><!-- end of row -->
 
                  <div class="row">
                    <div class="col-md-12">
