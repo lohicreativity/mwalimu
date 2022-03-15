@@ -41,6 +41,8 @@ class PerformanceReportRequestController extends Controller
                        $query->where('name','LIKE','%Performance%');
             })->with(['feeItem.feeType'])->where('study_academic_year_id',$study_academic_year->id)->first();
 
+         return $study_academic_year;
+
          if(!$fee_amount){
             return redirect()->back()->with('error','No fee amount set for results appeal');
          }
