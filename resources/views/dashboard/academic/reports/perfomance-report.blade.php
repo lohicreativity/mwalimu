@@ -257,7 +257,7 @@
                       <td colspan="3"><strong>PROGRAMME:</strong> {{ strtoupper($student->campusProgram->program->name) }}</td>
                     </tr>
                     <tr>
-                      <td colspan="3"><strong>AWARD LEVEL:</strong> @if($student->year_of_study == 2) NTA LEVEL 7 @else {{ strtoupper($student->campusProgram->program->ntaLevel->name ) }} @endif <span class="ss-italic ss-font-xs">(Programme Accredited by the National Council of Technical Education)</span></td>
+                      <td colspan="3"><strong>AWARD LEVEL:</strong> @if($year_of_study == 2) NTA LEVEL 7 @else {{ strtoupper($student->campusProgram->program->ntaLevel->name ) }} @endif <span class="ss-italic ss-font-xs">(Programme Accredited by the National Council of Technical Education)</span></td>
                     </tr>
                  </table>
                 </div><!-- end of col-md-12 -->
