@@ -2345,6 +2345,71 @@ class ExaminationResultController extends Controller
     /**
      * Display student perfomance report
      */
+    public function showStudentStatementOfResults(Request $request, $student_id)
+    {
+         $student = Student::with(['campusProgram.program.departments','campusProgram.program.ntaLevel','campusProgram.campus','applicant'])->find($student_id);
+         $semesters = Semester::with(['remarks'=>function($query) use ($student){
+           $query->where('student_id',$student->id);
+         }])->get();
+         $sems = ProgramModuleAssignment::whereHas('moduleAssignments.examinationResults',function($query) use($student){
+              $query->where('student_id',$student->id);
+         })->distinct()->get('year_of_study','semester_id');
+         return $sems;
+         $results = ExaminationResult::with(['moduleAssignment.programModuleAssignment','moduleAssignment','moduleAssignment.module','carryHistory.carrableResults'=>function($query){
+            $query->latest();
+         },'retakeHistory.retakableResults'=>function($query){
+            $query->latest();
+         },'retakeHistory.retakableResults.moduleAssignment.module','carryHistory.carryHistory.carrableResults.moduleAssignment.module'])->where('student_id',$student->id)->get();
+
+         $core_programs = ProgramModuleAssignment::with(['module'])->where('study_academic_year_id',$ac_yr_id)->where('year_of_study',$yr_of_study)->where('category','COMPULSORY')->where('campus_program_id',$student->campus_program_id)->get();
+         $optional_programs = ProgramModuleAssignment::whereHas('students',function($query) use($student_id){
+             $query->where('id',$student_id);
+             })->with(['module'])->where('study_academic_year_id',$ac_yr_id)->where('year_of_study',$yr_of_study)->where('category','OPTIONAL')->get();
+
+          $annual_remark = AnnualRemark::where('student_id',$student_id)->where('study_academic_year_id',$ac_yr_id)->where('year_of_study',$yr_of_study)->first();
+         // if(count($optional_programs) == 0){
+         //   $optional_programs = ProgramModuleAssignment::with(['module'])->where('study_academic_year_id',$ac_yr_id)->where('year_of_study',$yr_of_study)->where('category','OPTIONAL')->get();
+         // }
+
+         $core_program_modules = ModuleAssignment::whereHas('programModuleAssignment',function($query) use ($ac_yr_id,$yr_of_study){
+                   $query->where('study_academic_year_id',$ac_yr_id)->where('year_of_study',$yr_of_study)->where('category','COMPULSORY');
+                 })->get();
+            $opt_program_modules = ModuleAssignment::whereHas('programModuleAssignment.students',function($query) use($student){
+                     $query->where('id',$student->id);
+                 })->whereHas('programModuleAssignment',function($query) use($ac_yr_id,$yr_of_study){
+                     $query->where('study_academic_year_id',$ac_yr_id)->where('year_of_study',$yr_of_study)->where('category','OPTIONAL');
+                })->get();
+
+            $grading_policies = GradingPolicy::where('nta_level_id',$student->campusProgram->program->nta_level_id)->where('study_academic_year_id',$ac_yr_id)->orderBy('min_score','DESC')->get();
+
+            foreach($student->campusProgram->program->departments as $dpt){
+                if($dpt->pivot->campus_id == $student->campusProgram->campus_id){
+                    $department = $dpt;
+                }
+             }
+
+         $data = [
+          'semesters'=>$semesters,
+          'annual_remark'=>$annual_remark,
+          'results'=>$results,
+          'department'=>$department,
+          'year_of_study'=>$yr_of_study,
+          'study_academic_year'=>$study_academic_year,
+          'core_programs'=>$core_programs,
+          'optional_programs'=>$optional_programs,
+          'student'=>$student,
+          'grading_policies'=>$grading_policies,
+          'staff'=>User::find(Auth::user()->id)->staff
+         ];
+
+         // $pdf = PDF::loadView('dashboard.academic.reports.perfomance-report', $data)->setPaper('a4','portrait');
+         // return $pdf->stream();
+         return view('dashboard.academic.reports.statement-of-results',$data)->withTitle('Student Statement of Results');
+    }
+
+    /**
+     * Display student perfomance report
+     */
     public function showStudentTranscript(Request $request, $student_id)
     {
          $student = Student::with(['campusProgram.program.departments','campusProgram.program.ntaLevel','campusProgram.campus','applicant'])->find($student_id);
