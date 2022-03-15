@@ -89,7 +89,7 @@
                       <td>{{ $report->year_of_study }}</td>
                       <td>{{ $report->payment_status }}</td>
                       <td>@if($report->status) <span class="badge badge-success">{{ $report->status }}</span>@endif</td>
-                      <td><a href="{{ url('academic/performance-report/ready?report_id=$report->id') }}" target="_blank" class="btn btn-primary">View Report</a></td>
+                      <td><a href="{{ url('academic/performance-report/ready?report_id='.$report->id) }}" target="_blank" class="btn btn-primary">View Report</a></td>
                     </tr>
                     @endforeach                  
                   </tbody>
