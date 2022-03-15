@@ -221,7 +221,7 @@
           </div><!-- end of col-md-3 -->
           <div class="col-md-6 ss-center">
              <div class="ss-center">
-               <h3>P. O. Box 9193, Dar Es Salaam, TANZANIA, +255 (22) 2820041</h3>
+               <h4>P. O. Box 9193, Dar Es Salaam, TANZANIA, +255 (22) 2820041</h4>
                <h3 class="ss-uppercase">{{ $department->name }}</h3>
                <h4>STATEMENT OF EXAMINATION RESULTS</h4>
               </div>
@@ -281,7 +281,6 @@
                         <th colspan="6">{{ strtoupper($semester->name) }}</th>
                       </tr>
                       <tr>
-                        <th>SN</th>
                         <th>Code</th>
                         <th>Module Name</th>
                         <th>Credits</th>
@@ -297,7 +296,6 @@
                     @foreach($core_programs as $program)
                         @if($semester->id == $program->semester_id && !in_array($program->id,$programIds))
                          <tr>
-                          <td>{{ $count }}</td>
                           <td>{{ $program->module->code }}</td>
                           <td>{{ $program->module->name }}</td>
                           <td></td>
@@ -318,7 +316,6 @@
                            @foreach($result->retakeHistory->retakableResults as $key=>$res)
                               @if($key == 0)
                                  <tr>
-                                    <td>{{ $count }}</td>
                                     <td>{{ $res->moduleAssignment->module->code }}</td>
                                     <td>{{ $res->moduleAssignment->module->name }}</td>
                                     <td>{{ $res->moduleAssignment->module->credit }}</td>
@@ -339,7 +336,6 @@
                            @foreach($result->carryHistory->carrableResults as $key=>$res)
                               @if($key == 0)
                                  <tr>
-                                    <td>{{ $count }}</td>
                                     <td>{{ $res->moduleAssignment->module->code }}</td>
                                     <td>{{ $res->moduleAssignment->module->name }}</td>
                                     <td>{{ $res->moduleAssignment->module->credit }}</td>
@@ -356,7 +352,6 @@
                            @endif
                          @else
                          <tr>
-                          <td>{{ $count }}</td>
                           <td>{{ $result->moduleAssignment->module->code }}</td>
                           <td>{{ $result->moduleAssignment->module->name }}</td>
                           <td>{{ $result->moduleAssignment->module->credit }}</td>
@@ -374,7 +369,6 @@
                     @foreach($optional_programs as $program)
                         @if($semester->id == $program->semester_id && !in_array($program->id,$programIds))
                          <tr>
-                          <td>{{ $count }}</td>
                           <td>{{ $program->module->code }}</td>
                           <td>{{ $program->module->name }}</td>
                           <td></td>
@@ -395,7 +389,6 @@
                            @foreach($result->retakeHistory->retakableResults as $key=>$res)
                               @if($key == 0)
                                  <tr>
-                                    <td>{{ $count }}</td>
                                     <td>{{ $res->moduleAssignment->module->code }}</td>
                                     <td>{{ $res->moduleAssignment->module->name }}</td>
                                     <td>{{ $res->moduleAssignment->module->credit }}</td>
@@ -416,7 +409,6 @@
                            @foreach($result->carryHistory->carrableResults as $key=>$res)
                               @if($key == 0)
                                  <tr>
-                                    <td>{{ $count }}</td>
                                     <td>{{ $res->moduleAssignment->module->code }}</td>
                                     <td>{{ $res->moduleAssignment->module->name }}</td>
                                     <td>{{ $result->moduleAssignment->module->credit }}</td>
@@ -433,7 +425,6 @@
                            @endif
                          @else
                          <tr>
-                          <td>{{ $count }}</td>
                           <td>{{ $result->moduleAssignment->module->code }}</td>
                           <td>{{ $result->moduleAssignment->module->name }}</td>
                           <td>{{ $result->moduleAssignment->module->credit }}</td>
