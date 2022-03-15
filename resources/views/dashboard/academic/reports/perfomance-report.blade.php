@@ -495,7 +495,7 @@
                         <tr>
                           <td class="ss-bold ss-left">Marks</td>
                           @foreach($grading_policies as $policy)
-                          <td>{{ $policy->min_score }}-{{ $policy->max_score }}</td>
+                          <td>{{ round($policy->min_score) }}-{{ round($policy->max_score) }}</td>
                           @endforeach
                         </tr>
                         <tr>
