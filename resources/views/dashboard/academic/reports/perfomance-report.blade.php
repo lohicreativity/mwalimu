@@ -240,8 +240,8 @@
                       <td><strong>Reg. No:</strong> {{ $student->registration_number }}</td>
                     </tr>
                     <tr>
-                      <td><strong>CITIZENSHIP:</strong> {{ $student->nationality }}</td>
-                      <td colspan="2"><strong>ADDRESS:</strong> {{ $student->applicant->address }}</td>
+                      <td><strong>CITIZENSHIP:</strong> {{ strtoupper($student->nationality) }}</td>
+                      <td colspan="2"><strong>ADDRESS:</strong> {{ strtoupper($student->applicant->address) }}</td>
                     </tr>
                     <tr>
                       <td><strong>DATE OF BIRTH:</strong> {{ App\Utils\DateMaker::toStandardDate(App\Utils\DateMaker::toDashedDate($student->birth_date)) }}</td>
@@ -254,7 +254,7 @@
                       <td colspan="3"><strong>PROGRAMME:</strong> {{ strtoupper($student->campusProgram->program->name) }}</td>
                     </tr>
                     <tr>
-                      <td colspan="3"><strong>AWARD LEVEL:</strong> @if($student->year_of_study == 2) NTA LEVEL 7 @else {{ strtoupper($student->campusProgram->program->ntaLevel->name ) }} @endif <span class="ss-italic">(Programme Accredited by the National Council of Technical Education)</span></td>
+                      <td colspan="3"><strong>AWARD LEVEL:</strong> @if($student->year_of_study == 2) NTA LEVEL 7 @else {{ strtoupper($student->campusProgram->program->ntaLevel->name ) }} @endif <span class="ss-italic ss-font-xs">(Programme Accredited by the National Council of Technical Education)</span></td>
                     </tr>
                  </table>
                 </div><!-- end of col-md-12 -->
