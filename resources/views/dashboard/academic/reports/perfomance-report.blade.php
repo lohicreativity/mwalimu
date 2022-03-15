@@ -281,14 +281,14 @@
                  <table class="table table-bordered">
                     <thead>
                       <tr>
-                        <th colspan="6">{{ strtoupper($semester->name) }}</th>
+                        <th colspan="6">@if($year_of_study == 1) FIRST @elseif($year_of_study == 2) SECOND @elseif($year_of_study == 3) THIRD @endif YEAR, {{ strtoupper($semester->name) }}</th>
                       </tr>
                       <tr>
-                        <th>CODE</th>
-                        <th>MODULE NAME</th>
-                        <th>CREDITS</th>
-                        <th>GRADE</th>
-                        <th>POINTS</th>
+                        <th>Code</th>
+                        <th>Module Name</th>
+                        <th>Credits</th>
+                        <th>Grade</th>
+                        <th>Points</th>
                         <th>GPA</th>
                       </tr>
                     </thead>
@@ -444,7 +444,7 @@
                         <td colspan="2" class="ss-bold">SUB TOTAL:</td>
                         <td class="ss-bold">{{ $remark->credit }}</td>
                         
-                        <td class="ss-bold">{{ $remark->point}}</td>
+                        <td class="ss-bold"></td>
                         <td class="ss-bold">{{ $count }}</td>
                         <td class="ss-bold">{{ bcdiv($remark->gpa,1,1) }}</td>
                       </tr>
