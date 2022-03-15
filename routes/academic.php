@@ -296,5 +296,6 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
    
 
     Route::get('performance-report-requests',[PerformanceReportRequestController::class,'index']);
+    Route::get('performance-report/ready',[PerformanceReportRequestController::class,'ready']);
 
 });

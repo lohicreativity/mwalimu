@@ -26,6 +26,18 @@ class PerformanceReportRequestController extends Controller
     	return view('dashboard.academic.performance-report-requests',$data)->withTitle('Performance Report Requests');
     }
 
+    /**
+     * Attend report
+     */
+    public function ready(Request $request)
+    {
+        $report = PerformanceReportRequest::find($request->get('report_id'));
+        $report->status = 'ATTENDED';
+        $report->save();
+
+        return redirect()->to('academic/results/'.$report->student_id.'/'.$report->study_academic_year_id.'/'.$report->year_of_study.'/show-student-perfomance-report');
+    }
+
      /**
      * Store appeals
      */

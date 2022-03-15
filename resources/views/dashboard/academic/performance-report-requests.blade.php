@@ -78,6 +78,7 @@
                     <th>Student</th>
                     <th>Year of Study</th>
                     <th>Payment Status</th>
+                    <th>Status</th>
                     <th>Actions</th>
                   </tr>
                   </thead>
@@ -87,7 +88,8 @@
                       <td>{{ $report->student->first_name }} {{ $report->student->middle_name }} {{ $report->student->surname }}</td>
                       <td>{{ $report->year_of_study }}</td>
                       <td>{{ $report->payment_status }}</td>
-                      <td><a href="{{ url('academic/results/'.$report->student_id.'/'.$report->study_academic_year_id.'/'.$report->year_of_study.'/show-student-perfomance-report') }}" target="_blank" class="btn btn-primary">View Report</a></td>
+                      <td>@if($report->status) <span class="badge badge-success">{{ $report->status }}</span>@endif</td>
+                      <td><a href="{{ url('academic/performance-report/ready?report_id=$report->id') }}" target="_blank" class="btn btn-primary">View Report</a></td>
                     </tr>
                     @endforeach                  
                   </tbody>
