@@ -353,7 +353,7 @@
                     
                      @foreach($semester->remarks as $remark)
 
-                      @if($remark->semester_id == $semester->id)
+                      @if($remark->semester_id == $semester->id && $remark->year_of_study == $sem->year_of_study)
                       <tr>
                         <td colspan="2" class="ss-bold">SUB TOTAL:</td>
                         <td class="ss-bold">{{ $remark->credit }}</td>
