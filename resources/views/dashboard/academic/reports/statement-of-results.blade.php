@@ -382,7 +382,7 @@
 
                  <div class="row">
                     <div class="col-md-4">
-                      {!! QrCode::size(120)->generate($student->first_name.' '.$student->middle_name.' '.$student->surname.' '.$student->campusProgram->program->name.' '.$student->campusProgram->campus->name); !!}
+                      {!! QrCode::size(120)->generate($student->first_name.' '.$student->middle_name.' '.$student->surname.' '.$student->registration_number.' '.$student->campusProgram->program->name.' '.$student->campusProgram->campus->name.' '.$student->campusProgram->program->ntaLevel->name); !!}
                     </div>
                     <div class="col-md-6 ss-center">
                          <p class="ss-margin-top">......................................</p>
