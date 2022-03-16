@@ -294,6 +294,9 @@
                       </tr>
                     </thead>
                     <tbody>
+                      @php
+                        $count = 0;
+                      @endphp
                      
                       @foreach($results as $result)
                          @if($result->moduleAssignment->programModuleAssignment->semester_id == $semester->id && $result->moduleAssignment->programModuleAssignment->year_of_study == $sem->year_of_study)
