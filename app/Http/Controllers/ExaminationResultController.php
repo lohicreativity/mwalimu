@@ -2351,9 +2351,10 @@ class ExaminationResultController extends Controller
          $semesters = Semester::with(['remarks'=>function($query) use ($student){
            $query->where('student_id',$student->id);
          }])->get();
+
          $sems = ProgramModuleAssignment::whereHas('moduleAssignments.examinationResults',function($query) use($student){
               $query->where('student_id',$student->id);
-         })->distinct()->groupBy(['year_of_study','semester_id'])->get(['year_of_study','semester_id']);
+         })->distinct()->groupBy(['year_of_study','semester_id'])->get(['year_of_study','semester_id','study_academic_year_id']);
 
          $results = ExaminationResult::with(['moduleAssignment.programModuleAssignment','moduleAssignment','moduleAssignment.module','carryHistory.carrableResults'=>function($query){
             $query->latest();
@@ -2366,7 +2367,7 @@ class ExaminationResultController extends Controller
          //   $optional_programs = ProgramModuleAssignment::with(['module'])->where('study_academic_year_id',$ac_yr_id)->where('year_of_study',$yr_of_study)->where('category','OPTIONAL')->get();
          // }
 
-            $grading_policies = GradingPolicy::where('nta_level_id',$student->campusProgram->program->nta_level_id)->orderBy('min_score','DESC')->get();
+            $grading_policies = GradingPolicy::where('nta_level_id',$student->campusProgram->program->nta_level_id)->orderBy('min_score','DESC')->where('study_academic_year_id',$sems[0]->study_academic_year_id)->get();
 
             foreach($student->campusProgram->program->departments as $dpt){
                 if($dpt->pivot->campus_id == $student->campusProgram->campus_id){
@@ -2378,7 +2379,7 @@ class ExaminationResultController extends Controller
           'semesters'=>$semesters,
           'annual_remark'=>$annual_remark,
           'results'=>$results,
-          // 'department'=>$department,
+          'department'=>$department,
           // 'study_academic_year'=>$study_academic_year,
           'sems'=>$sems,
           'student'=>$student,
