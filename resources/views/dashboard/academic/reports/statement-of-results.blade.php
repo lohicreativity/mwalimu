@@ -225,7 +225,7 @@
           <div class="col-md-6 ss-center">
              <div class="ss-center">
                <h4 class="ss-color-blue">P. O. Box 9193, Dar Es Salaam, TANZANIA, +255 (22) 2820041</h4>
-               
+               <h3>{{ strtoupper($department->name) }}</h3>
                <h4>STATEMENT OF EXAMINATION RESULTS</h4>
               </div>
           </div><!-- end of col-md-6 -->
