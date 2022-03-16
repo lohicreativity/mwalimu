@@ -282,7 +282,7 @@
                  <table class="table table-bordered">
                     <thead>
                       <tr>
-                        <th colspan="6">@if($year_of_study == 1) FIRST @elseif($year_of_study == 2) SECOND @elseif($year_of_study == 3) THIRD @endif YEAR, {{ strtoupper($semester->name) }}</th>
+                        <th colspan="6">@if($sem->year_of_study == 1) FIRST @elseif($sem->year_of_study == 2) SECOND @elseif($sem->year_of_study == 3) THIRD @endif YEAR, {{ strtoupper($semester->name) }}</th>
                       </tr>
                       <tr>
                         <th>Code</th>
