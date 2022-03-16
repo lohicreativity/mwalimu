@@ -376,7 +376,7 @@
                    
             
                  
-                  @endif
+                  
                   </div><!-- end of row -->
                  @endif
                  @endforeach
