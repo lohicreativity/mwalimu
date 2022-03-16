@@ -262,18 +262,12 @@
                  </table>
                 </div><!-- end of col-md-12 -->
              </div><!-- end of row -->
-                 @php
-                    $programIds = [];
-                 @endphp
-                 @foreach($results as $res)
-                   @php
-                      $programIds[] = $res->moduleAssignment->programModuleAssignment->id;
-                   @endphp
-                 @endforeach
                 
                  
               @foreach($sems as $sem)
                  @foreach($semesters as $key=>$semester)
+
+                 @if($sem->semester_id == $semester->id)
 
                    @if(count($semester->remarks) != 0)
                 <div class="row">
@@ -381,6 +375,7 @@
                  
                   
                   </div><!-- end of row -->
+                 @endif
                  @endif
                  @endforeach
               @endforeach
