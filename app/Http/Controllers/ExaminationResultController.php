@@ -2353,7 +2353,9 @@ class ExaminationResultController extends Controller
          }])->get();
          $sems = ProgramModuleAssignment::whereHas('moduleAssignments.examinationResults',function($query) use($student){
               $query->where('student_id',$student->id);
-         })->distinct()->get(['year_of_study','semester_id']);
+         })->distinct()->groupBy(['year_of_study','semester_id'])->get(['year_of_study','semester_id']);
+
+         return $sems;
 
          $results = ExaminationResult::with(['moduleAssignment.programModuleAssignment','moduleAssignment','moduleAssignment.module','carryHistory.carrableResults'=>function($query){
             $query->latest();
