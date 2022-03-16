@@ -2353,34 +2353,20 @@ class ExaminationResultController extends Controller
          }])->get();
          $sems = ProgramModuleAssignment::whereHas('moduleAssignments.examinationResults',function($query) use($student){
               $query->where('student_id',$student->id);
-         })->distinct()->get('year_of_study','semester_id');
-         return $sems;
+         })->distinct()->get(['year_of_study','semester_id']);
+
          $results = ExaminationResult::with(['moduleAssignment.programModuleAssignment','moduleAssignment','moduleAssignment.module','carryHistory.carrableResults'=>function($query){
             $query->latest();
          },'retakeHistory.retakableResults'=>function($query){
             $query->latest();
          },'retakeHistory.retakableResults.moduleAssignment.module','carryHistory.carryHistory.carrableResults.moduleAssignment.module'])->where('student_id',$student->id)->get();
 
-         $core_programs = ProgramModuleAssignment::with(['module'])->where('study_academic_year_id',$ac_yr_id)->where('year_of_study',$yr_of_study)->where('category','COMPULSORY')->where('campus_program_id',$student->campus_program_id)->get();
-         $optional_programs = ProgramModuleAssignment::whereHas('students',function($query) use($student_id){
-             $query->where('id',$student_id);
-             })->with(['module'])->where('study_academic_year_id',$ac_yr_id)->where('year_of_study',$yr_of_study)->where('category','OPTIONAL')->get();
-
-          $annual_remark = AnnualRemark::where('student_id',$student_id)->where('study_academic_year_id',$ac_yr_id)->where('year_of_study',$yr_of_study)->first();
+          $annual_remark = AnnualRemark::where('student_id',$student_id)->get();
          // if(count($optional_programs) == 0){
          //   $optional_programs = ProgramModuleAssignment::with(['module'])->where('study_academic_year_id',$ac_yr_id)->where('year_of_study',$yr_of_study)->where('category','OPTIONAL')->get();
          // }
 
-         $core_program_modules = ModuleAssignment::whereHas('programModuleAssignment',function($query) use ($ac_yr_id,$yr_of_study){
-                   $query->where('study_academic_year_id',$ac_yr_id)->where('year_of_study',$yr_of_study)->where('category','COMPULSORY');
-                 })->get();
-            $opt_program_modules = ModuleAssignment::whereHas('programModuleAssignment.students',function($query) use($student){
-                     $query->where('id',$student->id);
-                 })->whereHas('programModuleAssignment',function($query) use($ac_yr_id,$yr_of_study){
-                     $query->where('study_academic_year_id',$ac_yr_id)->where('year_of_study',$yr_of_study)->where('category','OPTIONAL');
-                })->get();
-
-            $grading_policies = GradingPolicy::where('nta_level_id',$student->campusProgram->program->nta_level_id)->where('study_academic_year_id',$ac_yr_id)->orderBy('min_score','DESC')->get();
+            $grading_policies = GradingPolicy::where('nta_level_id',$student->campusProgram->program->nta_level_id)->orderBy('min_score','DESC')->get();
 
             foreach($student->campusProgram->program->departments as $dpt){
                 if($dpt->pivot->campus_id == $student->campusProgram->campus_id){
@@ -2392,11 +2378,9 @@ class ExaminationResultController extends Controller
           'semesters'=>$semesters,
           'annual_remark'=>$annual_remark,
           'results'=>$results,
-          'department'=>$department,
-          'year_of_study'=>$yr_of_study,
-          'study_academic_year'=>$study_academic_year,
-          'core_programs'=>$core_programs,
-          'optional_programs'=>$optional_programs,
+          // 'department'=>$department,
+          // 'study_academic_year'=>$study_academic_year,
+          'sems'=>$sems,
           'student'=>$student,
           'grading_policies'=>$grading_policies,
           'staff'=>User::find(Auth::user()->id)->staff

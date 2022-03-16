@@ -225,7 +225,7 @@
           <div class="col-md-6 ss-center">
              <div class="ss-center">
                <h4 class="ss-color-blue">P. O. Box 9193, Dar Es Salaam, TANZANIA, +255 (22) 2820041</h4>
-               <h3 class="ss-uppercase">{{ $department->name }}</h3>
+               
                <h4>STATEMENT OF EXAMINATION RESULTS</h4>
               </div>
           </div><!-- end of col-md-6 -->
@@ -257,7 +257,7 @@
                       <td colspan="3"><strong>PROGRAMME:</strong> {{ strtoupper($student->campusProgram->program->name) }}</td>
                     </tr>
                     <tr>
-                      <td colspan="3"><strong>AWARD LEVEL:</strong> @if($year_of_study == 2) NTA LEVEL 7 @elseif($year_of_study == 1) NTA LEVEL 7 @else {{ strtoupper($student->campusProgram->program->ntaLevel->name ) }} @endif <span class="ss-italic ss-font-xs">(Programme Accredited by the National Council of Technical Education)</span></td>
+                      <td colspan="3"><strong>AWARD LEVEL:</strong> {{ strtoupper($student->campusProgram->program->ntaLevel->name ) }} <span class="ss-italic ss-font-xs">(Programme Accredited by the National Council of Technical Education)</span></td>
                     </tr>
                  </table>
                 </div><!-- end of col-md-12 -->
@@ -272,6 +272,7 @@
                  @endforeach
                 
                  
+              @foreach($sems as $sem)
                  @foreach($semesters as $key=>$semester)
 
                    @if(count($semester->remarks) != 0)
@@ -293,25 +294,9 @@
                       </tr>
                     </thead>
                     <tbody>
-                      @php
-                        $count = 1;
-                      @endphp
-                    @foreach($core_programs as $program)
-                        @if($semester->id == $program->semester_id && !in_array($program->id,$programIds))
-                         <tr>
-                          <td>{{ $program->module->code }}</td>
-                          <td>{{ $program->module->name }}</td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                        </tr>
-                        @php
-                          $count += 1;
-                        @endphp
-                       @endif
+                     
                       @foreach($results as $result)
-                         @if($result->moduleAssignment->programModuleAssignment->semester_id == $semester->id && $result->moduleAssignment->programModuleAssignment->id == $program->id)
+                         @if($result->moduleAssignment->programModuleAssignment->semester_id == $semester->id && $result->moduleAssignment->programModuleAssignment->year_of_study == $sem->year_of_study)
 
                          @if($result->retakeHistory)
                            @if(count($result->retakeHistory->retakableResults) != 0)
@@ -368,77 +353,7 @@
                          @endif
                          @endif
                       @endforeach
-                    @endforeach
-                    @foreach($optional_programs as $program)
-                        @if($semester->id == $program->semester_id && !in_array($program->id,$programIds))
-                         <tr>
-                          <td>{{ $program->module->code }}</td>
-                          <td>{{ $program->module->name }}</td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                        </tr>
-                       @endif
-                       @foreach($results as $result)
-                         @if($result->moduleAssignment->programModuleAssignment->semester_id == $semester->id && $result->moduleAssignment->programModuleAssignment->id == $program->id)
-
-                         @if($result->retakeHistory)
-                           @if(count($result->retakeHistory->retakableResults) != 0)
-
-                           @foreach($result->retakeHistory->retakableResults as $key=>$res)
-                              @if($key == 0)
-                                 <tr>
-                                    <td>{{ $res->moduleAssignment->module->code }}</td>
-                                    <td>{{ $res->moduleAssignment->module->name }}</td>
-                                    <td>{{ $res->moduleAssignment->module->credit }}</td>
-                                    <td>{{ $res->grade }}</td>
-                                    <td>{{ ($res->point*$res->moduleAssignment->module->credit) }}</td>
-                                    <td></td>
-                                  </tr>
-                                    @php
-                                      $count += ($res->point*$res->moduleAssignment->module->credit);
-                                    @endphp
-                              @endif
-                           @endforeach
-
-                           @endif
-                         @elseif($result->carryHistory)
-                           @if(count($result->carryHistory->carrableResults) != 0)
-
-                           @foreach($result->carryHistory->carrableResults as $key=>$res)
-                              @if($key == 0)
-                                 <tr>
-                                    <td>{{ $res->moduleAssignment->module->code }}</td>
-                                    <td>{{ $res->moduleAssignment->module->name }}</td>
-                                    <td>{{ $result->moduleAssignment->module->credit }}</td>
-                                    <td>{{ $res->grade }}</td>
-                                    <td>{{ ($res->point*$res->moduleAssignment->module->credit) }}</td>
-                                    <td></td>
-                                  </tr>
-                                    @php
-                                      $count += ($res->point*$res->moduleAssignment->module->credit);
-                                    @endphp
-                              @endif
-                           @endforeach
-
-                           @endif
-                         @else
-                         <tr>
-                          <td>{{ $result->moduleAssignment->module->code }}</td>
-                          <td>{{ $result->moduleAssignment->module->name }}</td>
-                          <td>{{ $result->moduleAssignment->module->credit }}</td>
-                          <td>{{ $result->grade }}</td>
-                          <td>{{ ($result->point*$result->moduleAssignment->module->credit) }}</td>
-                          <td></td>
-                        </tr>
-                          @php
-                            $count += ($result->point*$result->moduleAssignment->module->credit);
-                          @endphp
-                         @endif
-                         @endif
-                      @endforeach
-                     @endforeach
+                    
                      @foreach($semester->remarks as $remark)
                       <tr>
                         <td colspan="2" class="ss-bold">SUB TOTAL:</td>
@@ -467,6 +382,7 @@
                   </div><!-- end of row -->
                  @endif
                  @endforeach
+              @endforeach
 
                  <div class="row">
                     <div class="col-md-4">
