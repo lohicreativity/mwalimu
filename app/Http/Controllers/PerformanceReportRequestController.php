@@ -87,7 +87,7 @@ class PerformanceReportRequestController extends Controller
         $approved_by = 'SP';
         $inst_id = config('constants.SUBSPCODE');
 
-        $this->requestControlNumber($request,
+        $result = $this->requestControlNumber($request,
                                     $invoice->reference_no,
                                     $inst_id,
                                     $invoice->amount,
@@ -138,7 +138,7 @@ class PerformanceReportRequestController extends Controller
             return $result;
 
             
-            return redirect()->back()->with('message','The bill with id '.$billno.' has been posted to bill controller.', 200);
+            //return redirect()->back()->with('message','The bill with id '.$billno.' has been posted to bill controller.', 200);
                         
         }
 }
