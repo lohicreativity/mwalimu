@@ -63,6 +63,7 @@ class GraduantController extends Controller
                $graduant->status = 'GRADUATING';
             }else{
                $graduant->status = 'EXCLUDED';
+               $graduant->reason = 'Incomplete Results';
             }
 	    		}
 	    		$graduant->save();

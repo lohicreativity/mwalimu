@@ -20,6 +20,7 @@ class CreateGraduantsTable extends Migration
             $table->unsignedBigInteger('overall_remark_id');
             $table->string('clearance_status',40)->default('PENDING');
             $table->string('status',40)->default('GRADUATING');
+            $table->string('reason')->nullable();
             $table->timestamps();
 
             $table->foreign('study_academic_year_id')->references('id')->on('study_academic_years')->onUpdate('cascade');

@@ -87,7 +87,7 @@ class PerformanceReportRequestController extends Controller
         $approved_by = 'SP';
         $inst_id = config('constants.SUBSPCODE');
 
-        $this->requestControlNumber($request,
+        return $this->requestControlNumber($request,
                                     $invoice->reference_no,
                                     $inst_id,
                                     $invoice->amount,
