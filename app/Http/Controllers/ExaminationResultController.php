@@ -1867,7 +1867,7 @@ class ExaminationResultController extends Controller
 
         $module_assignments = ModuleAssignment::where('study_academic_year_id',$request->get('study_academic_year_id'))->get();
 
-        return $module_assignments;
+        return $results;
 
         foreach($results as $key=>$result){
             foreach($module_assignments as $assignment){
