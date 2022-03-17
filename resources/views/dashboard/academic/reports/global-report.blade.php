@@ -216,8 +216,8 @@
                   <td colspan="6">Exam Miss-takers Students</td>
                 </tr>
                 <tr class="ss-bold">
-                  <td>POST</td>
-                  <td>INC</td>
+                  <td colspan="2">POST</td>
+                  <td colspan="2">INC</td>
                 </tr>
                 <tr class="ss-bold">
                   <td>M</td>
@@ -245,7 +245,10 @@
                   
                 @endforeach
                   </td>
+                  <td>
                 @foreach($report[$level->name][$department->name]['programs'] as $program)
+                  <table>
+                  <tr>
                   <td>{{ $level->name }}</td>
                   <td>{{ $report[$level->name][$department->name][$program->name]['ML']['take_students'] }}</td>
                   <td>{{ $report[$level->name][$department->name][$program->name]['FL']['take_students'] }}</td>
@@ -257,7 +260,10 @@
                   <td>{{ $report[$level->name][$department->name][$program->name]['FL']['inc_students'] }}</td>
                   <td>{{ $report[$level->name][$department->name][$program->name]['miss_take_students'] }}</td>
                   <td>{{ $report[$level->name][$department->name][$program->name]['miss_take_students_rate'] }}</td>
+                  </tr>
+                </table>
                 @endforeach
+                </td>
                 </tr>
                 @endforeach
               </table>
