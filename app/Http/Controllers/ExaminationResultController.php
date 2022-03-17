@@ -2376,6 +2376,17 @@ class ExaminationResultController extends Controller
                     $department = $dpt;
                 }
              }
+          
+          $points = 0;
+          $credits = 0;
+          foreach($semesters as $semester){
+             foreach($semester->remarks as $remark){
+               $points += $remark->point;
+               $credits += $remark->credit;
+             }
+          }
+
+          $overall_gpa = bcdiv($points/$credit, 1,1);
 
          $data = [
           'semesters'=>$semesters,
@@ -2383,6 +2394,7 @@ class ExaminationResultController extends Controller
           'results'=>$results,
           'department'=>$department,
           // 'study_academic_year'=>$study_academic_year,
+          'overall_gpa'=>$overall_gpa,
           'sems'=>$sems,
           'student'=>$student,
           'grading_policies'=>$grading_policies,

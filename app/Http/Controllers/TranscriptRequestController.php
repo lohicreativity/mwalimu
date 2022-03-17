@@ -57,7 +57,7 @@ class TranscriptRequestController extends Controller
          }
 
         $invoice = new Invoice;
-        $invoice->reference_no = 'MNMA-'.$student->registration_number.'-'.time();
+        $invoice->reference_no = 'MNMA-'.time();
         $invoice->amount = $amount;
         $invoice->currency = $currency;
         $invoice->payable_id = $student->id;
@@ -69,7 +69,7 @@ class TranscriptRequestController extends Controller
         $approved_by = 'SP';
         $inst_id = config('constants.SUBSPCODE');
 
-        $this->requestControlNumber($request,
+        $result = $this->requestControlNumber($request,
                                     $invoice->reference_no,
                                     $inst_id,
                                     $invoice->amount,
