@@ -75,7 +75,7 @@ class BillController extends Controller
        // print_r ($bill->xml(true));
        // die();
 
-       return $bill->xml(true);
+       return dd($bill->xml(true));
        die();
 
        //die();
