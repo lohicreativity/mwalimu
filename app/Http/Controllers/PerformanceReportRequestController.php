@@ -75,7 +75,7 @@ class PerformanceReportRequestController extends Controller
          }
 
         $invoice = new Invoice;
-        $invoice->reference_no = 'MNMA-'.$student->registration_number.'-'.time();
+        $invoice->reference_no = 'MNMA-'.time();
         $invoice->amount = $amount;
         $invoice->currency = $currency;
         $invoice->payable_id = $student->id;
