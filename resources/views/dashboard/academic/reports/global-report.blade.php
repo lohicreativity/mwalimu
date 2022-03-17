@@ -247,7 +247,7 @@
                   </td>
                   <td>
                 @foreach($report[$level->name][$department->name]['programs'] as $program)
-                  <table>
+                  <table class="table table-bordered">
                   <tr>
                   <td>{{ $level->name }}</td>
                   <td>{{ $report[$level->name][$department->name][$program->name]['ML']['take_students'] }}</td>
