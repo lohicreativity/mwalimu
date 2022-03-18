@@ -237,9 +237,11 @@
           </div><!-- end of col-md-3 -->
         </div><!-- end of row -->
         <div class="row">
+          <div class="col-md-12">
             <div class="ss-letter-head  ss-center">
                <h3>TRANSCRIPT OF EXAMINATION RESULTS</h3>
               </div>
+            </div>
         </div><!-- end of row -->
              <div class="row">
                 <div class="col-md-12"> 
