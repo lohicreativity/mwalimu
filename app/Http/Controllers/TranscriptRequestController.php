@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Domain\Academic\Models\TranscriptRequest;
 use App\Domain\Academic\Models\StudyAcademicYear;
+use App\Domain\Academic\Models\Graduant;
 use App\Domain\Finance\Models\FeeAmount;
 use App\Models\User;
 use Auth;
@@ -28,6 +29,10 @@ class TranscriptRequestController extends Controller
     public function store(Request $request)
     {
     	 $student = User::find(Auth::user()->id)->student()->with('applicant')->first();
+
+    	 if(Graduant::where('student_id',$student->id)->where('status','GRADUATING')->count() == 0){
+    	 	return redirect()->back()->with('error','You cannot request for transcript because you are not in the graduants list');
+    	 }
          
 
          $tranx = TranscriptRequest::where('student_id',$student->id)->whereDate('created_at','=',date('Y-m-d'))->first();
