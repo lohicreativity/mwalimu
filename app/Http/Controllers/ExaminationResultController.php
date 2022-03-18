@@ -2478,7 +2478,7 @@ class ExaminationResultController extends Controller
           }
           
           $overall_gpa = bcdiv($points/$credits, 1,1);
-          $gpa_class = GPAClassification::where('nta_level_id',$student->ampusProgram->program->nta_level_id)->where('study_academic_year_id',$ac_yr_id)->where('min_gpa','<=',bcdiv($overall_gpa,1,1))->where('max_gpa','>=',bcdiv($overall_gpa,1,1))->first();
+          $gpa_class = GPAClassification::where('nta_level_id',$student->campusProgram->program->nta_level_id)->where('study_academic_year_id',$ac_yr_id)->where('min_gpa','<=',bcdiv($overall_gpa,1,1))->where('max_gpa','>=',bcdiv($overall_gpa,1,1))->first();
           if($gpa_class){
              $overall_remark = $gpa_class->class;
           }else{
