@@ -2385,8 +2385,8 @@ class ExaminationResultController extends Controller
                $credits += $remark->credit;
              }
           }
-
-          $overall_gpa = bcdiv($points/$credit, 1,1);
+          
+          $overall_gpa = bcdiv($points/$credits, 1,1);
 
          $data = [
           'semesters'=>$semesters,
