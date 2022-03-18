@@ -195,7 +195,7 @@
        background-color: #000;
      }
      .ss-photo{
-       width: 120px;
+       width: 80px;
      }
      .ss-logo{
        width: 120px;
