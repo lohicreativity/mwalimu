@@ -2379,16 +2379,12 @@ class ExaminationResultController extends Controller
           
           $points = 0;
           $credits = 0;
-          foreach($semesters as $semester){
-             foreach($semester->remarks as $remark){
-               $points += $remark->point;
-               $credits += $remark->credit;
-             }
+          foreach($results as $result){
+               $points += $result->point*$result->moduleAssignment->programModuleAssignment->module->credit;
+               $credits += $result->moduleAssignment->programModuleAssignment->module->credit;
           }
           
           $overall_gpa = bcdiv($points/$credits, 1,1);
-
-          return $points/$credits;
 
          $data = [
           'semesters'=>$semesters,
