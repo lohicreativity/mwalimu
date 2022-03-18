@@ -375,7 +375,6 @@
                  <br>
                </div><!-- end of col-md-12 -->
                  
-                  @endif
                   </div><!-- end of row -->
                  
                   
