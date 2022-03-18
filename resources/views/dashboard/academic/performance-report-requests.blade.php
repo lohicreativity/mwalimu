@@ -45,7 +45,7 @@
               </div>
               <!-- /.card-header -->
               <div class="card-body">
-                 {!! Form::open(['url'=>'academic/results/appeals','class'=>'ss-form-processing','method'=>'GET']) !!}
+                 {!! Form::open(['url'=>'academic/performance-report-requests','class'=>'ss-form-processing','method'=>'GET']) !!}
                    
                    <div class="form-group">
                     <select name="study_academic_year_id" class="form-control" required>
