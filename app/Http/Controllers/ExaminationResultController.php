@@ -2361,7 +2361,7 @@ class ExaminationResultController extends Controller
          })->distinct()->groupBy(['year_of_study','semester_id','study_academic_year_id'])->orderBy('year_of_study')->get(['year_of_study','semester_id','study_academic_year_id']);
 
 
-         $sems = DB::select("SELECT DISTINCT p.year_of_study,p.semester_id,p.study_academic_year FROM semester_remarks a JOIN program_module_assignments p ON s.study_academic_year_id = p.study_academic_year_id WHERE s.remark != 'INCOMPLETE' and s.semester_id = p.semester_id and s.student_id = ".$student->id." ORDER BY p.year_of_study ASC");
+         $sems = DB::select("SELECT DISTINCT p.year_of_study,p.semester_id,p.study_academic_year_id FROM semester_remarks a JOIN program_module_assignments p ON s.study_academic_year_id = p.study_academic_year_id WHERE s.remark != 'INCOMPLETE' and s.semester_id = p.semester_id and s.student_id = ".$student->id." ORDER BY p.year_of_study ASC");
 
          return $sems;
 
