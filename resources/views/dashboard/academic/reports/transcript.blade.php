@@ -216,9 +216,9 @@
         <div class="row">
           <div class="col-md-4 ss-center">
               <div class="ss-letter-head ss-right">
-               <h3>Tel: +255 (22) 2820041</h3>
-               <h3>Fax: +255 (0) 22 2152496</h3>
-               <h3>Email: rector@mnma.ac.tz</h3>
+               <h4>Tel: +255 (22) 2820041</h4>
+               <h4>Fax: +255 (0) 22 2152496</h4>
+               <h4>Email: rector@mnma.ac.tz</h4>
               </div>
           </div><!-- end of col-md-3 -->
           <div class="col-md-2 ss-center">
@@ -226,10 +226,10 @@
           </div><!-- end of col-md-6 -->
           <div class="col-md-3 ss-center">
               <div class="ss-letter-head ss-left">
-               <h3>P. O. Box 9193</h3>
-               <h3>Dar Es Salaam</h3>
-               <h3>TANZANIA</h3>
-               <h3>www.mnma.ac.tz</h3>
+               <h4>P. O. Box 9193</h4>
+               <h4>Dar Es Salaam</h4>
+               <h4>TANZANIA</h4>
+               <h4>www.mnma.ac.tz</h4>
               </div>
           </div><!-- end of col-md-3 -->
           <div class="col-md-3 ss-center">
@@ -377,6 +377,21 @@
 
                  @endforeach
                  @endforeach
+
+                 <div class="row ss-center">
+                   <div class="col-md-4">
+                     <p class="ss-margin-top-lg">...........................</p>
+                     <p class="ss-bold">Deputy Rector Academic</p>
+                   </div>
+                   <div class="col-md-4">
+                     <p class="ss-margin-top-lg">...........................</p>
+                     <p class="ss-bold">Date</p>
+                   </div>
+                   <div class="col-md-4">
+                     <p class="ss-margin-top-lg">...........................</p>
+                     <p class="ss-bold">Examination Officer</p>
+                   </div>
+                </div>
 
                  <div class="row">
                    <div class="col-md-12">
