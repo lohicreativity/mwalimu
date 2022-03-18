@@ -368,21 +368,17 @@
                  </table>
                </div><!-- end of col-md-12 -->
              </div><!-- end of row -->
-                 <div class="row">
+                 @endif
+                 @endif
+                 @endforeach
+              @endforeach
+               <div class="row">
                  
                    <div class="col-md-12">
                     <p class="ss-bold ss-line-bottom">OVERALL GPA: @if($overall_gpa) {{ $overall_gpa }} @else N/A @endif</p>
                  <br>
                </div><!-- end of col-md-12 -->
-                 
-                  </div><!-- end of row -->
-                 
-                  
-                  </div><!-- end of row -->
-                 @endif
-                 @endif
-                 @endforeach
-              @endforeach
+              </div><!-- end of row -->
 
                  <div class="row">
                     <div class="col-md-4">
