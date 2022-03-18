@@ -215,7 +215,7 @@
         </div><!-- end of row -->
         <div class="row">
           <div class="col-md-4 ss-center">
-              <div class="ss-letter-head ss-right">
+              <div class="ss-right">
                <h4>Tel: +255 (22) 2820041</h4>
                <h4>Fax: +255 (0) 22 2152496</h4>
                <h4>Email: rector@mnma.ac.tz</h4>
@@ -225,7 +225,7 @@
               <img src="{{ asset('dist/img/logo.png') }}" alt="Config::get('constants.SITE_NAME') }}" class="ss-logo">
           </div><!-- end of col-md-6 -->
           <div class="col-md-3 ss-center">
-              <div class="ss-letter-head ss-left">
+              <div class="ss-left">
                <h4>P. O. Box 9193</h4>
                <h4>Dar Es Salaam</h4>
                <h4>TANZANIA</h4>
