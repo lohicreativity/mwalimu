@@ -216,9 +216,9 @@
         <div class="row">
           <div class="col-md-4 ss-center">
               <div class="ss-right">
-               <h4>Tel: +255 (22) 2820041</h4>
-               <h4>Fax: +255 (0) 22 2152496</h4>
-               <h4>Email: rector@mnma.ac.tz</h4>
+               <h4 class="ss-no-margin">Tel: +255 (22) 2820041</h4>
+               <h4 class="ss-no-margin">Fax: +255 (0) 22 2152496</h4>
+               <h4 class="ss-no-margin">Email: rector@mnma.ac.tz</h4>
               </div>
           </div><!-- end of col-md-3 -->
           <div class="col-md-2 ss-center">
@@ -226,10 +226,10 @@
           </div><!-- end of col-md-6 -->
           <div class="col-md-3 ss-center">
               <div class="ss-left">
-               <h4>P. O. Box 9193</h4>
-               <h4>Dar Es Salaam</h4>
-               <h4>TANZANIA</h4>
-               <h4>www.mnma.ac.tz</h4>
+               <h4 class="ss-no-margin">P. O. Box 9193</h4>
+               <h4 class="ss-no-margin">Dar Es Salaam</h4>
+               <h4 class="ss-no-margin">TANZANIA</h4>
+               <h4 class="ss-no-margin">www.mnma.ac.tz</h4>
               </div>
           </div><!-- end of col-md-3 -->
           <div class="col-md-3 ss-center">
