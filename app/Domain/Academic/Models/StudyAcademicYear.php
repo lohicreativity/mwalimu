@@ -74,4 +74,12 @@ class StudyAcademicYear extends Model
     {
         return ucwords($value);
     }
+
+    /**
+     * Establish one to many relationship with semester
+     */
+    public function semesterRemarks()
+    {
+        return $this->hasMany(SemesterRemark::class,'study_academic_year_id');
+    }
 }

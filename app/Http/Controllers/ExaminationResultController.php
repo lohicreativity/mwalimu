@@ -2356,9 +2356,13 @@ class ExaminationResultController extends Controller
 
          $sems = ProgramModuleAssignment::whereHas('moduleAssignments.examinationResults',function($query) use($student){
               $query->where('student_id',$student->id);
+         })->whereHas('studyAcademicYear.semesterRemarks',function($query) use($student){
+              $query->where('remark','!=','INCOMPLETE');
          })->distinct()->groupBy(['year_of_study','semester_id','study_academic_year_id'])->orderBy('year_of_study')->get(['year_of_study','semester_id','study_academic_year_id']);
 
-         $results = ExaminationResult::with(['moduleAssignment.programModuleAssignment','moduleAssignment','moduleAssignment.module','carryHistory.carrableResults'=>function($query){
+         $results = ExaminationResult::whereHas('moduleAssignment.studyAcademicYear.semesterRemarks',function($query) use($student){
+              $query->where('remark','!=','INCOMPLETE');
+         })->with(['moduleAssignment.programModuleAssignment','moduleAssignment','moduleAssignment.module','carryHistory.carrableResults'=>function($query){
             $query->latest();
          },'retakeHistory.retakableResults'=>function($query){
             $query->latest();
