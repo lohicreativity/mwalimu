@@ -150,6 +150,12 @@
       .ss-right{
          text-align: right;
       }
+      .ss-float-right{
+         float: right;
+      }
+      .ss-float-left{
+        float: left;
+      }
       .ss-italic{
         font-style: italic;
       }
@@ -275,7 +281,7 @@
                  <table class="table table-bordered">
                     <thead>
                       <tr>
-                        <th colspan="6">{{ $year['ac_year']->academicYear->year }} @if($yk == 1) FIRST @elseif($yk == 2) SECOND @elseif($yk == 3) THIRD @endif YEAR EXAMINATION RESULTS: {{ strtoupper($semester->name) }}</th>
+                        <th colspan="6">@if($yk == 1) FIRST @elseif($yk == 2) SECOND @elseif($yk == 3) THIRD @endif YEAR EXAMINATION RESULTS: {{ strtoupper($semester->name) }}</th>
                       </tr>
                       <tr>
                         <th>Code</th>
@@ -364,7 +370,7 @@
              </div><!-- end of row -->
              <div class="row">
                    <div class="col-md-12">
-                    <p class="ss-bold ss-line-bottom">OVERALL GPA: @if($overall_gpa) {{ $overall_gpa }} @else N/A @endif <span class="ss-right">CLASSFICATION: {{ $overall_remark }}</span></p>
+                    <p class="ss-bold ss-line-bottom">OVERALL GPA: @if($overall_gpa) {{ $overall_gpa }} @else N/A @endif <span class="ss-float-right">CLASSFICATION: {{ $overall_remark }}</span></p>
                  <br>
                </div><!-- end of col-md-12 -->
               </div><!-- end of row -->
