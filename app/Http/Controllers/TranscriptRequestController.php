@@ -8,6 +8,7 @@ use App\Domain\Academic\Models\StudyAcademicYear;
 use App\Domain\Academic\Models\Graduant;
 use App\Domain\Academic\Models\Clearance;
 use App\Domain\Finance\Models\FeeAmount;
+use App\Domain\Finance\Models\Invoice;
 use App\Models\User;
 use Auth;
 
