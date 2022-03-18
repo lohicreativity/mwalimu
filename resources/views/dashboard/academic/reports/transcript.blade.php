@@ -348,7 +348,7 @@
 
                       
                      @foreach($semester->remarks as $remark)
-                     @if($remark->student_id == $student->id && $remark->semester_id == $semester_id)
+                     @if($remark->student_id == $student->id && $remark->semester_id == $semester->id)
                       <tr>
                         <td colspan="2" class="ss-bold">SUB TOTAL</td>
                         <td></td>
