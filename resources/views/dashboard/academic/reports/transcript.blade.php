@@ -348,6 +348,7 @@
 
                       
                      @foreach($semester->remarks as $remark)
+                     @if($remark->student_id == $student->id)
                       <tr>
                         <td colspan="2" class="ss-bold">SUB TOTAL</td>
                         <td></td>
@@ -357,6 +358,7 @@
                         <td class="ss-bold">{{ $remark->remark}}</td>
                         <td class="ss-bold">{{ bcdiv($remark->gpa,1,1) }}</td>
                       </tr>
+                      @endif
                       @endforeach
                     </tbody>
                  </table>
