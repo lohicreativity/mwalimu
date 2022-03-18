@@ -60,6 +60,8 @@
                    </tr>
                    @endforeach
                    <tr>
+                     <td></td>
+                     <td></td>
                      <td>
                        <a class="btn btn-primary" href="{{ url('student/request-performance-report?type=overall') }}">Request Overall Statement of Results</a>
                      </td>
