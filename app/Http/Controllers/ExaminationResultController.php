@@ -2470,11 +2470,28 @@ class ExaminationResultController extends Controller
                 }
              }
 
+          $points = 0;
+          $credits = 0;
+          foreach($results as $result){
+               $points += $result->point*$result->moduleAssignment->programModuleAssignment->module->credit;
+               $credits += $result->moduleAssignment->programModuleAssignment->module->credit;
+          }
+          
+          $overall_gpa = bcdiv($points/$credits, 1,1);
+          $gpa_class = GPAClassification::where('nta_level_id',$student->ampusProgram->program->nta_level_id)->where('study_academic_year_id',$ac_yr_id)->where('min_gpa','<=',bcdiv($overall_gpa,1,1))->where('max_gpa','>=',bcdiv($overall_gpa,1,1))->first();
+          if($gpa_class){
+             $overall_remark = $gpa_class->class;
+          }else{
+             $overall_remark = 'N/A';
+          }
+
          $data = [
           'semesters'=>$semesters,
           'years_of_studies'=>$years_of_studies,
           'student'=>$student,
-          // 'department'=>$department,
+          'department'=>$department,
+          'overall_gpa'=>$overall_gpa,
+          'overall_remark'=>$overall_remark,
           'grading_policies'=>$grading_policies,
           'staff'=>User::find(Auth::user()->id)->staff
          ];
