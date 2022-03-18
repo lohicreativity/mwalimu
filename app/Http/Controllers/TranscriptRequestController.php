@@ -9,6 +9,7 @@ use App\Domain\Academic\Models\Graduant;
 use App\Domain\Academic\Models\Clearance;
 use App\Domain\Finance\Models\FeeAmount;
 use App\Domain\Finance\Models\Invoice;
+use Illuminate\Support\Facades\Http;
 use App\Models\User;
 use Auth;
 
@@ -43,7 +44,6 @@ class TranscriptRequestController extends Controller
 
          $tranx = TranscriptRequest::where('student_id',$student->id)->whereDate('created_at','=',date('Y-m-d'))->first();
          if(!$tranx){
-          
           
          $study_academic_year = StudyAcademicYear::where('status','ACTIVE')->first();
          $fee_amount = FeeAmount::whereHas('feeItem',function($query){
