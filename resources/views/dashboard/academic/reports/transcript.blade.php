@@ -117,6 +117,7 @@
       .table-condensed > tbody > tr > td,
       .table-condensed > tfoot > tr > td {
         padding: 5px;
+        font-size: 12px;
       }
       .table-bordered {
         border: 1px solid #ddd;
@@ -210,15 +211,15 @@
       <div class="container">
         <div class="row">
             <div class="ss-letter-head  ss-center">
-               <h1>THE MWALIMU NYERERE MEMORIAL ACADEMY</h1>
+               <h2>THE MWALIMU NYERERE MEMORIAL ACADEMY</h2>
               </div>
         </div><!-- end of row -->
         <div class="row">
           <div class="col-md-4 ss-center">
               <div class="ss-right">
-               <h4 class="ss-no-margin">Tel: +255 (22) 2820041</h4>
-               <h4 class="ss-no-margin">Fax: +255 (0) 22 2152496</h4>
-               <h4 class="ss-no-margin">Email: rector@mnma.ac.tz</h4>
+               <p class="ss-no-margin">Tel: +255 (22) 2820041</p>
+               <p class="ss-no-margin">Fax: +255 (0) 22 2152496</p>
+               <p class="ss-no-margin">Email: rector@mnma.ac.tz</p>
               </div>
           </div><!-- end of col-md-3 -->
           <div class="col-md-2 ss-center">
@@ -226,10 +227,10 @@
           </div><!-- end of col-md-6 -->
           <div class="col-md-3 ss-center">
               <div class="ss-left">
-               <h4 class="ss-no-margin">P. O. Box 9193</h4>
-               <h4 class="ss-no-margin">Dar Es Salaam</h4>
-               <h4 class="ss-no-margin">TANZANIA</h4>
-               <h4 class="ss-no-margin">www.mnma.ac.tz</h4>
+               <p class="ss-no-margin">P. O. Box 9193</p>
+               <p class="ss-no-margin">Dar Es Salaam</p>
+               <p class="ss-no-margin">TANZANIA</p>
+               <p class="ss-no-margin">www.mnma.ac.tz</p>
               </div>
           </div><!-- end of col-md-3 -->
           <div class="col-md-3 ss-center">
