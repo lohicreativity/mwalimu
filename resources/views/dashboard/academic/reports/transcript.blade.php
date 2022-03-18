@@ -348,12 +348,11 @@
 
                       
                      @foreach($semester->remarks as $remark)
-                     @if($remark->student_id == $student->id && $remark->semester_id == $semester->id)
+                     @if($remark->student_id == $student->id && $remark->semester_id == $semester->id && $yk == $remark->year_of_study)
                       <tr>
                         <td colspan="2" class="ss-bold">SUB TOTAL</td>
-                        <td></td>
                         <td class="ss-bold">{{ $remark->credit }}</td>
-                        
+                        <td></td>
                         <td class="ss-bold">{{ $remark->point }}</td>
                         <td class="ss-bold">{{ bcdiv($remark->gpa,1,1) }}</td>
                       </tr>
@@ -404,9 +403,9 @@
                      <table class="table table-condensed table-bordered ss-center">
                        <tr>
                           <td class="ss-bold">Overall GPA</td>
-                          <td class="ss-bold">3.50 - 4.00</td>
-                          <td class="ss-bold">3.00 - 3.49</td>
-                          <td class="ss-bold">2.00 - 2.99</td>
+                          <td class="ss-bold">3.5 - 4.0</td>
+                          <td class="ss-bold">3.0 - 3.4</td>
+                          <td class="ss-bold">2.0 - 2.9</td>
                        </tr>
                        <tr>
                          <td>Class</td>
