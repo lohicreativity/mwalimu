@@ -2356,9 +2356,14 @@ class ExaminationResultController extends Controller
 
          $sems = ProgramModuleAssignment::whereHas('moduleAssignments.examinationResults',function($query) use($student){
               $query->where('student_id',$student->id);
-         })->distinct()->groupBy(['year_of_study','semester_id','study_academic_year_id'])->whereHas('studyAcademicYear.semesterRemarks',function($query) use($student){
+         })->whereHas('studyAcademicYear.semesterRemarks',function($query) use($student){
               $query->where('remark','!=','INCOMPLETE');
-         })->orderBy('year_of_study')->get(['year_of_study','semester_id','study_academic_year_id']);
+         })->distinct()->groupBy(['year_of_study','semester_id','study_academic_year_id'])->orderBy('year_of_study')->get(['year_of_study','semester_id','study_academic_year_id']);
+
+
+         $sems = DB::selectRaw("SELECT DISTINCT p.year_of_study,p.semester_id,p.study_academic_year FROM semester_remarks a JOIN program_module_assignments p ON s.study_academic_year_id = p.study_academic_year_id WHERE s.remark != 'INCOMPLETE' and s.semester_id = p.semester_id and s.student_id = ".$student->id." ORDER BY p.year_of_study ASC");
+
+         return $sems;
 
          $results = ExaminationResult::whereHas('moduleAssignment.studyAcademicYear.semesterRemarks',function($query) use($student){
               $query->where('remark','!=','INCOMPLETE');
