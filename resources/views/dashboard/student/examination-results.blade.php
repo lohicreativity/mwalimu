@@ -56,9 +56,14 @@
                         <p class="ss-no-margin"><a href="{{ url('student/results/'.$yr->id.'/'.$key.'/report') }}">Results in Academic Year {{ $yr->academicYear->year}}</a></p>
                         @endforeach
                       </td>
-                      <td><a class="btn btn-primary" href="{{ url('student/request-performance-report?year_of_study='.$key.'&study_academic_year_id='.$years[0]->id) }}">Request Statement of Results</a></td>
+                      <td><a class="btn btn-primary" href="{{ url('student/request-performance-report?year_of_study='.$key.'&study_academic_year_id='.$years[0]->id) }}">Request Annual Statement of Results</a></td>
                    </tr>
                    @endforeach
+                   <tr>
+                     <td>
+                       <a class="btn btn-primary" href="{{ url('student/request-performance-report?type=overall') }}">Request Overall Statement of Results</a>
+                     </td>
+                   </tr>
                  </table>
 
               </div>

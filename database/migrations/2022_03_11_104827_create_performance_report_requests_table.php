@@ -16,8 +16,8 @@ class CreatePerformanceReportRequestsTable extends Migration
         Schema::create('performance_report_requests', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('student_id');
-            $table->unsignedBigInteger('study_academic_year_id');
-            $table->tinyInteger('year_of_study');
+            $table->unsignedBigInteger('study_academic_year_id')->nullable();
+            $table->tinyInteger('year_of_study')->nullable();
             $table->string('payment_status',10);
             $table->string('status',10)->nullable();
             $table->timestamps();
