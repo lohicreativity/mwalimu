@@ -210,7 +210,7 @@
      .ss-color-red{
         color: #f75b43;
      }
-     #ss-stats-table-1, #ss-stats-table-2{
+     #ss-stats-table-1 > td, #ss-stats-table-2 > td{
         font-size: 10px !important;
      }
   </style>
