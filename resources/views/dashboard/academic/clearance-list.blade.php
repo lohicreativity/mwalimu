@@ -101,8 +101,8 @@
                               {!! Form::open(['url'=>'academic/clearance/update','class'=>'ss-form-processing']) !!}
                                  <select name="status" class="form-control" required>
                                      <option value="">Select Status</option>
-                                     <option value="CLEARED">Cleared</option>
-                                     <option value="NOT_CLEARED">Not Cleared</option>
+                                     <option value="1">Cleared</option>
+                                     <option value="0">Not Cleared</option>
                                  </select>
 
                                  {!! Form::input('hidden','clearance_id',$clearance->id) !!}
@@ -141,8 +141,8 @@
                               {!! Form::open(['url'=>'academic/clearance/update','class'=>'ss-form-processing']) !!}
                                  <select name="status" class="form-control" required>
                                      <option value="">Select Status</option>
-                                     <option value="CLEARED">Cleared</option>
-                                     <option value="NOT_CLEARED">Not Cleared</option>
+                                     <option value="1">Cleared</option>
+                                     <option value="0">Not Cleared</option>
                                  </select>
 
                                  {!! Form::input('hidden','clearance_id',$clearance->id) !!}
@@ -181,8 +181,8 @@
                               {!! Form::open(['url'=>'academic/clearance/update','class'=>'ss-form-processing']) !!}
                                  <select name="status" class="form-control" required>
                                      <option value="">Select Status</option>
-                                     <option value="CLEARED">Cleared</option>
-                                     <option value="NOT_CLEARED">Not Cleared</option>
+                                     <option value="1">Cleared</option>
+                                     <option value="0">Not Cleared</option>
                                  </select>
 
                                  {!! Form::input('hidden','clearance_id',$clearance->id) !!}
@@ -221,8 +221,8 @@
                               {!! Form::open(['url'=>'academic/clearance/update','class'=>'ss-form-processing']) !!}
                                  <select name="status" class="form-control" required>
                                      <option value="">Select Status</option>
-                                     <option value="CLEARED">Cleared</option>
-                                     <option value="NOT_CLEARED">Not Cleared</option>
+                                     <option value="1">Cleared</option>
+                                     <option value="0">Not Cleared</option>
                                  </select>
 
                                  {!! Form::input('hidden','clearance_id',$clearance->id) !!}
@@ -261,8 +261,8 @@
                               {!! Form::open(['url'=>'academic/clearance/update','class'=>'ss-form-processing']) !!}
                                  <select name="status" class="form-control" required>
                                      <option value="">Select Status</option>
-                                     <option value="CLEARED">Cleared</option>
-                                     <option value="NOT_CLEARED">Not Cleared</option>
+                                     <option value="1">Cleared</option>
+                                     <option value="0">Not Cleared</option>
                                  </select>
 
                                  {!! Form::input('hidden','clearance_id',$clearance->id) !!}
