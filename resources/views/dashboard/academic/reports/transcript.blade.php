@@ -441,7 +441,7 @@
                         </tr>
                      </table>
                      <p class="ss-no-margin">4. Key to classification of Awards: SEE THE TABLE BELOW</p>
-                     <table class="table table-condensed table-bordered ss-center ss-font-xs" id="ss-stats-table-2">
+                     <table class="table table-condensed table-bordered ss-center ss-font-xs" id="ss-stats-table-2" style="font-size: 10px;">
                        <tr>
                           <td class="ss-bold" colspan="2">NTA 9</td>
                           <td class="ss-bold" colspan="2">NTA 7-8 </td>
