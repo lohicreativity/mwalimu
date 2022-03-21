@@ -43,7 +43,7 @@ class AppealController extends Controller
            'study_academic_year'=>$request->has('study_academic_year_id')? StudyAcademicYear::with('academicYear')->find($request->get('study_academic_year_id')) : null,
             'appeals'=>$request->has('query')? Appeal::whereHas('moduleAssignment',function($query) use($request){
                  $query->where('study_academic_year_id',$request->get('study_academic_year_id'));
-            })->whereHas('usable.gatewayPayment',function($query) use($request, $appeal_deadline){
+            })->whereHas('invoice.gatewayPayment',function($query) use($request, $appeal_deadline){
                  $query->where('created_at','<=',$appeal_deadline);
             })->whereHas('student',function($query) use($request){
                  $query->where('first_name','LIKE','%'.$request->get('query').'%')->orWhere('middle_name','LIKE','%'.$request->get('query').'%')->orWhere('surname','LIKE','%'.$request->get('query').'%')->orWhere('registration_number','LIKE','%'.$request->get('query').'%');
