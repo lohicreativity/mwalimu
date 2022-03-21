@@ -172,6 +172,9 @@
      .ss-margin-bottom{
          margin-bottom: 20px;
      }
+     .ss-margin-bottom-xs{
+         margin-bottom: 5px;
+     }
      .ss-font-sm{
         font-size: 14px;
      }
@@ -242,8 +245,8 @@
         </div><!-- end of row -->
         <div class="row">
           <div class="col-md-12">
-            <div class="ss-letter-head  ss-center">
-               <h4 class="ss-color-red">TRANSCRIPT OF EXAMINATION RESULTS</h4>
+            <div class="ss-center">
+               <h4 class="ss-color-red ss-no-margin">TRANSCRIPT OF EXAMINATION RESULTS</h4>
               </div>
             </div>
         </div><!-- end of row -->
@@ -287,7 +290,7 @@
                 <div class="row">
                 <div class="col-md-12"> 
 
-                 <table class="table table-bordered table-condensed ss-no-margin">
+                 <table class="table table-bordered table-condensed ss-margin-bottom-xs">
                     <thead>
                       <tr>
                         <th colspan="6">@if($yk == 1) FIRST @elseif($yk == 2) SECOND @elseif($yk == 3) THIRD @endif YEAR EXAMINATION RESULTS: {{ strtoupper($semester->name) }}</th>
