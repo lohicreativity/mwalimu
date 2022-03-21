@@ -4,6 +4,7 @@ namespace App\Domain\Finance\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Domain\Academic\Models\Appeal;
 
 class Invoice extends Model
 {
@@ -41,5 +42,13 @@ class Invoice extends Model
     public function gatewayPayment()
     {
         return $this->hasOne(GatewayPayment::class,'control_no');
+    }
+
+    /**
+     * Establish one to many relationship with appeals
+     */
+    public function appeals()
+    {
+        return $this->hasMany(Appeal::class,'invoice_id');
     }
 }

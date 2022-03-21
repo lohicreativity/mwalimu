@@ -612,6 +612,10 @@ class AppealController extends Controller
              }
          }
 
+         if($count == 0){
+            return redirect()->back()->with('error','No subject selected for appeal');
+         }
+
          $fee_amount = FeeAmount::whereHas('feeItem',function($query){
                    return $query->where('name','LIKE','%Appeal%');
             })->with(['feeItem.feeType'])->where('study_academic_year_id',$results[0]->moduleAssignment->study_academic_year_id)->first();
