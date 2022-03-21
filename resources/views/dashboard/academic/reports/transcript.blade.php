@@ -233,7 +233,7 @@
           <div class="col-md-4 ss-center">
               <img src="{{ asset('dist/img/logo.png') }}" alt="Config::get('constants.SITE_NAME') }}" class="ss-logo">
           </div><!-- end of col-md-6 -->
-          <div class="col-md-3 ss-center">
+          <div class="col-md-2 ss-center">
               <div class="ss-left">
                <p class="ss-no-margin ss-font-xs">P. O. Box 9193</p>
                <p class="ss-no-margin ss-font-xs">Dar Es Salaam</p>
@@ -241,7 +241,7 @@
                <p class="ss-no-margin ss-font-xs">www.mnma.ac.tz</p>
               </div>
           </div><!-- end of col-md-3 -->
-          <div class="col-md-1 ss-center">
+          <div class="col-md-2 ss-center">
              <img class="ss-photo" src="{{ asset('avatars/'.$student->image) }}"  onerror="this.src='{{ asset("img/user-avatar.png") }}'">
           </div><!-- end of col-md-3 -->
         </div><!-- end of row -->
