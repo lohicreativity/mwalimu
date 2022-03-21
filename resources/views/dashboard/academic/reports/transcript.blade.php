@@ -210,7 +210,9 @@
      .ss-color-red{
         color: #f75b43;
      }
-  
+     #ss-stats-table-1, #ss-stats-table-2{
+        font-size: 10px !important;
+     }
   </style>
 </head>
 
@@ -412,7 +414,7 @@
                      <p class="ss-no-margin">1. This transcript is valid if and only if it bears the Academy Stamp</p>
                      <p class="ss-no-margin">2. Key for Subject/Module Units: ONE UNIT IS EQUIVALENT TO TEN CONTACT HOURS. POINTS = GRADE MULTIPLIED BY NUMBER OF UNITS</p>
                      <p class="ss-no-margin">3. Key to the Grades and other symbols: SEE THE TABLE BELOW</p>
-                     <table class="table table-bordered table-condensed ss-center ss-font-xs">
+                     <table class="table table-bordered table-condensed ss-center ss-font-xs" id="ss-stats-table-1">
                         <tr>
                           <td class="ss-bold ss-left">Grade</td>
                           @foreach($grading_policies as $policy)
@@ -439,7 +441,7 @@
                         </tr>
                      </table>
                      <p class="ss-no-margin">4. Key to classification of Awards: SEE THE TABLE BELOW</p>
-                     <table class="table table-condensed table-bordered ss-center ss-font-xs">
+                     <table class="table table-condensed table-bordered ss-center ss-font-xs" id="ss-stats-table-2">
                        <tr>
                           <td class="ss-bold" colspan="2">NTA 9</td>
                           <td class="ss-bold" colspan="2">NTA 7-8 </td>
