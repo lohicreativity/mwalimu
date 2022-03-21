@@ -14,6 +14,7 @@ use App\Domain\Academic\Models\RetakeHistory;
 use App\Domain\Academic\Models\CarryHistory;
 use App\Domain\Academic\Models\ExaminationPolicy;
 use App\Domain\Academic\Models\ElectivePolicy;
+use App\Domain\Academic\Models\GradingPolicy;
 use App\Domain\Academic\Models\CampusProgram;
 use App\Domain\Academic\Models\GPAClassification;
 use App\Domain\Academic\Models\ResultPublication;
