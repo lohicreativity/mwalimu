@@ -125,7 +125,7 @@ class AppealController extends Controller
                   })->with(['moduleAssignment.programModuleAssignment'])->first();
 
                   $result->final_score = ($student[3]*$result->moduleAssignment->programModuleAssignment->final_min_mark)/100;
-                  $result->final_remark = $result->moduleAssignment->programModuleAssignment->final_pass_score < $student[3]? 'FAIL' : 'PASS';
+                  $result->final_remark = $result->moduleAssignment->programModuleAssignment->final_pass_score <= $student[3]? 'PASS' : 'FAIL';
                   $result->exam_type = 'APPEAL';
                   $result->save();
 
