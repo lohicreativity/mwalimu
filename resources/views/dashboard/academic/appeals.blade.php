@@ -94,8 +94,16 @@
               </div>
               <!-- /.card-header -->
               <div class="card-body">
-                 
-                <table id="example2" class="table table-bordered table-hover">
+                 {!! Form::open(['url'=>'academic/appeals','method'=>'GET']) !!}
+                 {!! Form::input('hidden','study_academic_year_id',$study_academic_year->id) !!}
+                <div class="input-group ss-stretch">
+                 <input type="text" name="query" class="form-control" placeholder="Search for student name or registration number">
+                 <span class="input-group-btn">
+                   <button class="btn btn-default" type="submit"><span class="fa fa-search"></span></button>
+                 </span>
+                </div>
+                {!! Form::close() !!}
+                <table id="example2" class="table table-bordered table-hover ss-margin-top">
                   <thead>
                   <tr>
                     <th>Student</th>
@@ -110,7 +118,7 @@
                       <td>{{ $appeal->student->first_name }} {{ $appeal->student->middle_name }} {{ $appeal->student->surname }}</td>
                       <td>{{ $appeal->moduleAssignment->module->name }}</td>
                       <td>
-                          @if($appeal->is_downloaded == 1) <span class="badge badge-warning">On Progress</span> @elseif($appeal->is_downloaded == 0 && $appeal->is_attended == 0) <span class="badge badge-warning">Pending</span> @else <span class="badge badge-success">Completed</span> @elseif($appeal->is_attended == 1) <span class="badge badge-success">Completed</span> @else <span class="badge badge-success">Completed</span> @endif
+                          @if($appeal->is_downloaded == 1) <span class="badge badge-warning">On Progress</span> @elseif($appeal->is_downloaded == 0 && $appeal->is_attended == 0) <span class="badge badge-warning">Pending</span> @elseif($appeal->is_attended == 1) <span class="badge badge-success">Completed</span> @else <span class="badge badge-success">Completed</span> @endif
                       </td>
                       <td><a href="#" class="btn btn-primary" data-toggle="modal" data-target="#ss-update-appeal-{{ $appeal->id }}">Update Results</a></td>
 
