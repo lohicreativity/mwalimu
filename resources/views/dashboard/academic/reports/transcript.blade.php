@@ -176,7 +176,7 @@
          margin-bottom: 5px;
      }
      .ss-font-sm{
-        font-size: 14px;
+        font-size: 12px;
      }
      .ss-font-xs{
         font-size: 10px !important;
@@ -255,7 +255,7 @@
              <div class="row">
                 <div class="col-md-12"> 
 
-                 <table class="table table-bordered table-condensed">
+                 <table class="table table-bordered table-condensed ss-margin-bottom-xs">
                     <tr>
                       <td><strong>NAME:</strong> {{ strtoupper($student->first_name) }} {{ strtoupper($student->middle_name) }} {{ strtoupper($student->surname) }}</td>
                       <td><strong>SEX:</strong> @if($student->gender == 'M') MALE @else FEMALE @endif</td>
@@ -410,10 +410,10 @@
 
                  <div class="row">
                    <div class="col-md-12">
-                     <h3 class="ss-no-margin">KEYS</h3>
-                     <p class="ss-no-margin">1. This transcript is valid if and only if it bears the Academy Stamp</p>
-                     <p class="ss-no-margin">2. Key for Subject/Module Units: ONE UNIT IS EQUIVALENT TO TEN CONTACT HOURS. POINTS = GRADE MULTIPLIED BY NUMBER OF UNITS</p>
-                     <p class="ss-no-margin">3. Key to the Grades and other symbols: SEE THE TABLE BELOW</p>
+                     <h4 class="ss-no-margin">KEYS</h4>
+                     <p class="ss-no-margin ss-font-sm">1. This transcript is valid if and only if it bears the Academy Stamp</p>
+                     <p class="ss-no-margin ss-font-sm">2. Key for Subject/Module Units: ONE UNIT IS EQUIVALENT TO TEN CONTACT HOURS. POINTS = GRADE MULTIPLIED BY NUMBER OF UNITS</p>
+                     <p class="ss-no-margin ss-font-sm">3. Key to the Grades and other symbols: SEE THE TABLE BELOW</p>
                      <table class="table table-bordered table-condensed ss-center ss-font-xs" id="ss-stats-table-1">
                         <tr>
                           <td class="ss-bold ss-left">Grade</td>
@@ -440,7 +440,7 @@
                           @endforeach
                         </tr>
                      </table>
-                     <p class="ss-no-margin">4. Key to classification of Awards: SEE THE TABLE BELOW</p>
+                     <p class="ss-no-margin ss-font-sm">4. Key to classification of Awards: SEE THE TABLE BELOW</p>
                      <table class="table table-condensed table-bordered ss-center ss-font-xs" id="ss-stats-table-2">
                        <tr>
                           <td class="ss-bold ss-font-xs" colspan="2">NTA 9</td>
