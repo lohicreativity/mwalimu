@@ -125,7 +125,7 @@ class AppealController extends Controller
                   })->with(['moduleAssignment.programModuleAssignment'])->first();
 
                   $result->final_score = ($student[3]*$result->moduleAssignment->programModuleAssignment->final_min_mark)/100;
-                  $result->final_remark = $result->moduleAssignment->programModuleAssignment->final_min_mark < $student[3]? 'FAIL' : 'PASS';
+                  $result->final_remark = $result->moduleAssignment->programModuleAssignment->final_pass_score < $student[3]? 'FAIL' : 'PASS';
                   $result->exam_type = 'APPEAL';
                   $result->save();
 
@@ -288,7 +288,7 @@ class AppealController extends Controller
                                   $processed_result->grade = $grading_policy? $grading_policy->grade : null;
                                     $processed_result->point = $grading_policy? $grading_policy->point : null;
                                     $processed_result->final_exam_remark = $assignment->programModuleAssignment->module_pass_mark <= $processed_result->total_score? 'PASS' : 'FAIL';
-                                    
+
                                     if($processed_result->course_work_remark == 'FAIL' || $processed_result->final_remark == 'FAIL'){
                                        $processed_result->final_exam_remark = 'FAIL';
                                        // $processed_result->grade = 'F';
