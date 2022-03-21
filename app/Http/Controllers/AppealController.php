@@ -287,13 +287,15 @@ class AppealController extends Controller
                                 }else{
                                   $processed_result->grade = $grading_policy? $grading_policy->grade : null;
                                     $processed_result->point = $grading_policy? $grading_policy->point : null;
+                                    $processed_result->final_exam_remark = $assignment->programModuleAssignment->module_pass_mark <= $processed_result->total_score? 'PASS' : 'FAIL';
+                                    
                                     if($processed_result->course_work_remark == 'FAIL' || $processed_result->final_remark == 'FAIL'){
                                        $processed_result->final_exam_remark = 'FAIL';
                                        // $processed_result->grade = 'F';
                                        // $processed_result->point = 0;
-                                    }else{
-                                      $processed_result->final_exam_remark = $assignment->programModuleAssignment->module_pass_mark <= $processed_result->total_score? 'PASS' : 'FAIL';
                                     }
+                                      
+                                    
 
                                     if($processed_result->supp_score){
                                       if(Util::stripSpacesUpper($assignment->module->ntaLevel->name) == Util::stripSpacesUpper('NTA Level 7')){
