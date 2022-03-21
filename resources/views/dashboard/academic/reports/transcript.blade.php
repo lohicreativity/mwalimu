@@ -219,13 +219,13 @@
         </div><!-- end of row -->
         <div class="row">
           <div class="col-md-4 ss-center">
-              <div class="ss-left">
+              <div class="ss-right">
                <p class="ss-no-margin ss-font-xs">Tel: +255 (22) 2820041</p>
                <p class="ss-no-margin ss-font-xs">Fax: +255 (0) 22 2152496</p>
                <p class="ss-no-margin ss-font-xs">Email: rector@mnma.ac.tz</p>
               </div>
           </div><!-- end of col-md-3 -->
-          <div class="col-md-2 ss-right">
+          <div class="col-md-3 ss-right">
               <img src="{{ asset('dist/img/logo.png') }}" alt="Config::get('constants.SITE_NAME') }}" class="ss-logo">
           </div><!-- end of col-md-6 -->
           <div class="col-md-3 ss-center">
@@ -236,7 +236,7 @@
                <p class="ss-no-margin ss-font-xs">www.mnma.ac.tz</p>
               </div>
           </div><!-- end of col-md-3 -->
-          <div class="col-md-3 ss-center">
+          <div class="col-md-2 ss-center">
              <img class="ss-photo" src="{{ asset('avatars/'.$student->image) }}"  onerror="this.src='{{ asset("img/user-avatar.png") }}'">
           </div><!-- end of col-md-3 -->
         </div><!-- end of row -->
@@ -387,15 +387,15 @@
 
                  <div class="row ss-center">
                    <div class="col-md-4">
-                     <p class="ss-margin-top-lg">...........................</p>
+                     <p class="ss-margin-top">...........................</p>
                      <p class="ss-bold">Deputy Rector Academic</p>
                    </div>
                    <div class="col-md-4">
-                     <p class="ss-margin-top-lg">...........................</p>
+                     <p class="ss-margin-top">...........................</p>
                      <p class="ss-bold">Date</p>
                    </div>
                    <div class="col-md-4">
-                     <p class="ss-margin-top-lg">...........................</p>
+                     <p class="ss-margin-top">...........................</p>
                      <p class="ss-bold">Examination Officer</p>
                    </div>
                 </div>
