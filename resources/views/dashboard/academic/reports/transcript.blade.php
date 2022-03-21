@@ -402,10 +402,10 @@
 
                  <div class="row">
                    <div class="col-md-12">
-                     <h3>KEYS</h3>
-                     <p>1. This transcript is valid if and only if it bears the Academy Stamp</p>
-                     <p>2. Key for Subject/Module Units: ONE UNIT IS EQUIVALENT TO TEN CONTACT HOURS. POINTS = GRADE MULTIPLIED BY NUMBER OF UNITS</p>
-                     <p>3. Key to the Grades and other symbols: SEE THE TABLE BELOW</p>
+                     <h3 class="ss-no-margin">KEYS</h3>
+                     <p class="ss-no-margin">1. This transcript is valid if and only if it bears the Academy Stamp</p>
+                     <p class="ss-no-margin">2. Key for Subject/Module Units: ONE UNIT IS EQUIVALENT TO TEN CONTACT HOURS. POINTS = GRADE MULTIPLIED BY NUMBER OF UNITS</p>
+                     <p class="ss-no-margin">3. Key to the Grades and other symbols: SEE THE TABLE BELOW</p>
                      <table class="table table-bordered table-condensed ss-center">
                         <tr>
                           <td class="ss-bold ss-left">Grade</td>
@@ -433,20 +433,64 @@
                         </tr>
                      </table>
                      <br>
-                     <p>4. Key to classification of Awards: SEE THE TABLE BELOW</p>
+                     <p class="ss-no-margin">4. Key to classification of Awards: SEE THE TABLE BELOW</p>
                      <table class="table table-condensed table-bordered ss-center">
                        <tr>
-                          <td class="ss-bold">Overall GPA</td>
-                          <td class="ss-bold">3.5 - 4.0</td>
-                          <td class="ss-bold">3.0 - 3.4</td>
-                          <td class="ss-bold">2.0 - 2.9</td>
+                          <td class="ss-bold" colspan="2">NTA 9</td>
+                          <td class="ss-bold" colspan="2">NTA 7-8 </td>
+                          <td class="ss-bold" colspan="2"> NTA 6</td>
+                          <td class="ss-bold" colspan="2">NTA 4-5</td>
                        </tr>
                        <tr>
+                         <td>Overall GPA</td>
                          <td>Class</td>
-                         <td>FIRST CLASS</td>
-                         <td>SECOND CLASS</td>
-                         <td>PASS</td>
+                         <td>Overall GPA</td>
+                         <td>Class</td>
+                         <td>Overall GPA</td>
+                         <td>Class</td>
+                         <td>Overall GPA</td>
+                         <td>Class</td>
                        </tr>
+                       <tr>
+                         <td>4.4-5.0</td>
+                         <td>FIRST CLASS</td>
+                         <td>4.4-5.0</td>
+                         <td>FIRST CLASS</td>
+                         <td>4.4-5.0</td>
+                         <td>FIRST CLASS</td>
+                         <td>3.5-4.0</td>
+                         <td>FIRST CLASS</td>
+                       </tr>
+                       <tr>
+                         <td>3.5-4.3</td>
+                         <td>SECOND CLASS</td>
+                         <td>3.5-4.3</td>
+                         <td>UPPER SECOND</td>
+                         <td>3.5-4.3</td>
+                         <td>UPPER SECOND</td>
+                         <td>3.0-3.4</td>
+                         <td>SECOND CLASS</td>
+                       </tr>
+                       <td>
+                         <td>3.0-3.4</td>
+                         <td>PASS</td>
+                         <td>2.7-3.4</td>
+                         <td>LOWER SECOND</td>
+                         <td>2.7-3.4</td>
+                         <td>LOWER SECOND</td>
+                         <td>2.0-2.9</td>
+                         <td>PASS</td>
+                       </td>
+                       <td>
+                         <td></td>
+                         <td></td>
+                         <td>2.0-2.6</td>
+                         <td>PASS</td>
+                         <td>2.0-2.6</td>
+                         <td>PASS</td>
+                         <td></td>
+                         <td></td>
+                       </td>
                      </table>
                    </div><!-- end of col-md-12 -->
                  </div><!-- end of row -->
