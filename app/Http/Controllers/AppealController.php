@@ -437,7 +437,7 @@ class AppealController extends Controller
                                  $remark->gpa = null;
                             }else{
                                $remark->gpa = Util::computeGPA($buffer['total_credit'],$buffer['results']);
-                               $rem->point = Util::computeGPAPoints($buffer['total_credit'],$buffer['results']);
+                               $remark->point = Util::computeGPAPoints($buffer['total_credit'],$buffer['results']);
                                $remark->credit = $buffer['total_credit'];
                             }
                             $remark->year_of_study = $buffer['year_of_study'];

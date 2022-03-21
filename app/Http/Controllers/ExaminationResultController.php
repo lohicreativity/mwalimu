@@ -871,8 +871,8 @@ class ExaminationResultController extends Controller
                 }
               }
 
-        $student_buffer = [];
-        $annual_credit = 0;
+          $student_buffer = [];
+          $annual_credit = 0;
 
           foreach ($module_assignments as $assignment) {
             $results = ExaminationResult::with(['retakeHistory.retakableResults'=>function($query){
@@ -1059,7 +1059,7 @@ class ExaminationResultController extends Controller
           }
           
           foreach ($annual_module_assignments as $assign) {
-          $annual_results = ExaminationResult::where('module_assignment_id',$assign->id)->where('student_id',$student->id)->get();
+            $annual_results = ExaminationResult::where('module_assignment_id',$assign->id)->where('student_id',$student->id)->get();
 
             if(Util::stripSpacesUpper($semester->name) == Util::stripSpacesUpper('Semester 2')){
 
@@ -1136,7 +1136,7 @@ class ExaminationResultController extends Controller
                      $remark->gpa = null;
                 }else{
                    $remark->gpa = Util::computeGPA($buffer['total_credit'],$buffer['results']);
-                   $rem->point = Util::computeGPAPoints($buffer['total_credit'],$buffer['results']);
+                   $remark->point = Util::computeGPAPoints($buffer['total_credit'],$buffer['results']);
                    $remark->credit = $buffer['total_credit'];
                 }
                 $remark->year_of_study = $buffer['year_of_study'];
@@ -1183,7 +1183,6 @@ class ExaminationResultController extends Controller
 
            return redirect()->to('academic/results/'.$student->id.'/'.$ac_yr_id.'/'.$yr_of_study.'/show-student-results')->with('message','Results processed successfully');
         }catch(\Exception $e){
-           return $e->getMessage();
            return redirect()->back()->with('error','Unable to get the resource specified in this request');
         }
     }
