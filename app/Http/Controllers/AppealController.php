@@ -25,7 +25,8 @@ use App\Domain\Finance\Models\FeeAmount;
 use Illuminate\Support\Facades\Http;
 use App\Models\User;
 use App\Utils\Util;
-use Auth, Validator, DB, Carbon;
+use Carbon\Carbon;
+use Auth, Validator, DB;
 
 class AppealController extends Controller
 {
@@ -40,7 +41,13 @@ class AppealController extends Controller
         $data = [
            'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
            'study_academic_year'=>$request->has('study_academic_year_id')? StudyAcademicYear::with('academicYear')->find($request->get('study_academic_year_id')) : null,
-            'appeals'=>Appeal::whereHas('moduleAssignment',function($query) use($request){
+            'appeals'=>$request->has('query')? Appeal::whereHas('moduleAssignment',function($query) use($request){
+                 $query->where('study_academic_year_id',$request->get('study_academic_year_id'));
+            })->whereHas('usable.gatewayPayment',function($query) use($request, $appeal_deadline){
+                 $query->where('created_at','<=',$appeal_deadline);
+            })->whereHas('student',function($query) use($request){
+                 $query->where('first_name','LIKE','%'.$request->get('query').'%')->orWhere('middle_name','LIKE','%'.$request->get('query').'%')->orWhere('surname','LIKE','%'.$request->get('query').'%')->orWhere('registration_number','LIKE','%'.$request->get('query').'%');
+            })->with(['student','moduleAssignment.studyAcademicYear.academicYear','moduleAssignment.module'])->where('is_paid',1)->latest()->paginate(20) : Appeal::whereHas('moduleAssignment',function($query) use($request){
             	 $query->where('study_academic_year_id',$request->get('study_academic_year_id'));
             })->whereHas('usable.gatewayPayment',function($query) use($request, $appeal_deadline){
                  $query->where('created_at','<=',$appeal_deadline);
