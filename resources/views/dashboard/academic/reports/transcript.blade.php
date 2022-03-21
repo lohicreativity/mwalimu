@@ -117,7 +117,7 @@
       .table-condensed > tbody > tr > td,
       .table-condensed > tfoot > tr > td {
         padding: 2px 5px;
-        font-size: 12px;
+        font-size: 10px;
       }
       .table-bordered {
         border: 1px solid #ddd;
