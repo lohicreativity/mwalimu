@@ -609,7 +609,7 @@ class AppealController extends Controller
 
          $fee_amount = FeeAmount::whereHas('feeItem',function($query){
                    return $query->where('name','LIKE','%Appeal%');
-            })->with(['feeItem.feeType'])->where('study_academic_year_id',$result->moduleAssignment->study_academic_year_id)->first();
+            })->with(['feeItem.feeType'])->where('study_academic_year_id',$results[0]->moduleAssignment->study_academic_year_id)->first();
 
          if(!$fee_amount){
             return redirect()->back()->with('error','No fee amount set for results appeal');
