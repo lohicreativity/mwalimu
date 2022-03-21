@@ -117,7 +117,7 @@
       .table-condensed > tbody > tr > td,
       .table-condensed > tfoot > tr > td {
         padding: 2px 5px;
-        font-size: 10px;
+        font-size: 12px;
       }
       .table-bordered {
         border: 1px solid #ddd;
@@ -412,7 +412,7 @@
                      <p class="ss-no-margin">1. This transcript is valid if and only if it bears the Academy Stamp</p>
                      <p class="ss-no-margin">2. Key for Subject/Module Units: ONE UNIT IS EQUIVALENT TO TEN CONTACT HOURS. POINTS = GRADE MULTIPLIED BY NUMBER OF UNITS</p>
                      <p class="ss-no-margin">3. Key to the Grades and other symbols: SEE THE TABLE BELOW</p>
-                     <table class="table table-bordered table-condensed ss-center">
+                     <table class="table table-bordered table-condensed ss-center ss-font-xs">
                         <tr>
                           <td class="ss-bold ss-left">Grade</td>
                           @foreach($grading_policies as $policy)
