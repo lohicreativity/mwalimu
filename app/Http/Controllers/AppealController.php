@@ -15,6 +15,7 @@ use App\Domain\Academic\Models\CarryHistory;
 use App\Domain\Academic\Models\GPAClassification;
 use App\Domain\Academic\Models\ResultPublication;
 use App\Domain\Academic\Models\Appeal;
+use App\Domain\Registration\Models\Student;
 use App\Domain\Finance\Models\Invoice;
 use App\Domain\Finance\Models\FeeAmount;
 use Illuminate\Support\Facades\Http;
