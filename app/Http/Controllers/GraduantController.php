@@ -59,11 +59,15 @@ class GraduantController extends Controller
 	    			}else{
                $count++;
             }
-            if($count >= 3){
+            if($count >= $campus_program->program->min_duration){
                $graduant->status = 'GRADUATING';
             }else{
                $graduant->status = 'EXCLUDED';
-               $graduant->reason = 'Incomplete Results';
+               if($remark->remark == 'POSTPONED'){
+                 $graduant->reason = 'Postponed Results';
+               }else{
+                 $graduant->reason = 'Incomplete Results';
+               }
             }
 	    		}
 	    		$graduant->save();
