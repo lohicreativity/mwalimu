@@ -483,7 +483,7 @@ class AppealController extends Controller
                        DB::commit();
 
                     }catch(\Exception $e){
-                       
+                       return $e->getMessage();
                     }
               }
           }
