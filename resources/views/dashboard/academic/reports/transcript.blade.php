@@ -116,7 +116,7 @@
       .table-condensed > thead > tr > td,
       .table-condensed > tbody > tr > td,
       .table-condensed > tfoot > tr > td {
-        padding: 5px;
+        padding: 2px 5px;
         font-size: 12px;
       }
       .table-bordered {
