@@ -605,7 +605,12 @@ class AppealController extends Controller
          	 $query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',$request->get('year_of_study'));
          },'moduleAssignment.module'])->where('student_id',$student->id)->get();
 
-         
+         $count = 0;
+         foreach($results as $result){
+             if($request->get('result_'.$result->id)){
+                 $count++;
+             }
+         }
 
          $fee_amount = FeeAmount::whereHas('feeItem',function($query){
                    return $query->where('name','LIKE','%Appeal%');
