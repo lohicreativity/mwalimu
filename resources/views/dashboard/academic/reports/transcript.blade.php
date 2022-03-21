@@ -441,60 +441,60 @@
                         </tr>
                      </table>
                      <p class="ss-no-margin">4. Key to classification of Awards: SEE THE TABLE BELOW</p>
-                     <table class="table table-condensed table-bordered ss-center ss-font-xs" id="ss-stats-table-2" style="font-size: 10px;">
+                     <table class="table table-condensed table-bordered ss-center ss-font-xs" id="ss-stats-table-2">
                        <tr>
-                          <td class="ss-bold" colspan="2">NTA 9</td>
-                          <td class="ss-bold" colspan="2">NTA 7-8 </td>
-                          <td class="ss-bold" colspan="2"> NTA 6</td>
-                          <td class="ss-bold" colspan="2">NTA 4-5</td>
+                          <td class="ss-bold ss-font-xs" colspan="2">NTA 9</td>
+                          <td class="ss-bold ss-font-xs" colspan="2">NTA 7-8 </td>
+                          <td class="ss-bold ss-font-xs" colspan="2"> NTA 6</td>
+                          <td class="ss-bold ss-font-xs" colspan="2">NTA 4-5</td>
                        </tr>
                        <tr>
-                         <td>Overall GPA</td>
-                         <td>Class</td>
-                         <td>Overall GPA</td>
-                         <td>Class</td>
-                         <td>Overall GPA</td>
-                         <td>Class</td>
-                         <td>Overall GPA</td>
-                         <td>Class</td>
+                         <td class="ss-font-xs">Overall GPA</td>
+                         <td class="ss-font-xs">Class</td>
+                         <td class="ss-font-xs">Overall GPA</td>
+                         <td class="ss-font-xs">Class</td>
+                         <td class="ss-font-xs">Overall GPA</td>
+                         <td class="ss-font-xs">Class</td>
+                         <td class="ss-font-xs">Overall GPA</td>
+                         <td class="ss-font-xs">Class</td>
                        </tr>
                        <tr>
-                         <td>4.4-5.0</td>
-                         <td>FIRST CLASS</td>
-                         <td>4.4-5.0</td>
-                         <td>FIRST CLASS</td>
-                         <td>4.4-5.0</td>
-                         <td>FIRST CLASS</td>
-                         <td>3.5-4.0</td>
-                         <td>FIRST CLASS</td>
+                         <td class="ss-font-xs">4.4-5.0</td>
+                         <td class="ss-font-xs">FIRST CLASS</td>
+                         <td class="ss-font-xs">4.4-5.0</td>
+                         <td class="ss-font-xs">FIRST CLASS</td>
+                         <td class="ss-font-xs">4.4-5.0</td>
+                         <td class="ss-font-xs">FIRST CLASS</td>
+                         <td class="ss-font-xs">3.5-4.0</td>
+                         <td class="ss-font-xs">FIRST CLASS</td>
                        </tr>
                        <tr>
-                         <td>3.5-4.3</td>
-                         <td>SECOND CLASS</td>
-                         <td>3.5-4.3</td>
-                         <td>UPPER SECOND</td>
-                         <td>3.5-4.3</td>
-                         <td>UPPER SECOND</td>
-                         <td>3.0-3.4</td>
-                         <td>SECOND CLASS</td>
+                         <td class="ss-font-xs">3.5-4.3</td>
+                         <td class="ss-font-xs">SECOND CLASS</td>
+                         <td class="ss-font-xs">3.5-4.3</td>
+                         <td class="ss-font-xs">UPPER SECOND</td>
+                         <td class="ss-font-xs">3.5-4.3</td>
+                         <td class="ss-font-xs">UPPER SECOND</td>
+                         <td class="ss-font-xs">3.0-3.4</td>
+                         <td class="ss-font-xs">SECOND CLASS</td>
                        </tr>
                        <tr>
-                         <td>3.0-3.4</td>
-                         <td>PASS</td>
-                         <td>2.7-3.4</td>
-                         <td>LOWER SECOND</td>
-                         <td>2.7-3.4</td>
-                         <td>LOWER SECOND</td>
-                         <td>2.0-2.9</td>
-                         <td>PASS</td>
+                         <td class="ss-font-xs">3.0-3.4</td>
+                         <td class="ss-font-xs">PASS</td>
+                         <td class="ss-font-xs">2.7-3.4</td>
+                         <td class="ss-font-xs">LOWER SECOND</td>
+                         <td class="ss-font-xs">2.7-3.4</td>
+                         <td class="ss-font-xs">LOWER SECOND</td>
+                         <td class="ss-font-xs">2.0-2.9</td>
+                         <td class="ss-font-xs">PASS</td>
                        </tr>
                        <tr>
                          <td></td>
                          <td></td>
-                         <td>2.0-2.6</td>
-                         <td>PASS</td>
-                         <td>2.0-2.6</td>
-                         <td>PASS</td>
+                         <td class="ss-font-xs">2.0-2.6</td>
+                         <td class="ss-font-xs">PASS</td>
+                         <td class="ss-font-xs">2.0-2.6</td>
+                         <td class="ss-font-xs">PASS</td>
                          <td></td>
                          <td></td>
                        </tr>
