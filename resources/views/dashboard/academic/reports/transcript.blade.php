@@ -438,7 +438,6 @@
                           @endforeach
                         </tr>
                      </table>
-                     <br>
                      <p class="ss-no-margin">4. Key to classification of Awards: SEE THE TABLE BELOW</p>
                      <table class="table table-condensed table-bordered ss-center">
                        <tr>
