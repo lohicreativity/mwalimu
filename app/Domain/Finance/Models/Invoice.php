@@ -20,6 +20,14 @@ class Invoice extends Model
     }
 
     /**
+     * Establish one to many polymorphic relationship with usables
+     */
+    public function usable()
+    {
+        return $this->morphTo();
+    }
+
+    /**
      * Establish one to many relationship with payment categories
      */
     public function feeType()

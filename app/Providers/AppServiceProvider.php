@@ -8,8 +8,10 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use App\Domain\Academic\Models\RetakeHistory;
 use App\Domain\Academic\Models\CarryHistory;
+use App\Domain\Academic\Models\Appeal;
 use App\Domain\Registration\Models\Student;
 use App\Domain\Application\Models\Applicant;
+use App\Models\User;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -24,7 +26,9 @@ class AppServiceProvider extends ServiceProvider
             'retake_history'=>RetakeHistory::class,
             'carry_history'=>CarryHistory::class,
             'student'=>Student::class,
-            'applicant'=>Applicant::class
+            'applicant'=>Applicant::class,
+            'user'=>User::class,
+            'appeal'=>Appeal::class
         ]);
     }
 

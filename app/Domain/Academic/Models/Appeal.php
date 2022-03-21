@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Domain\Registration\Models\Student;
 use App\Domain\Finance\Models\Payment;
+use App\Domain\Finance\Models\Invoice;
 
 class Appeal extends Model
 {
@@ -43,6 +44,14 @@ class Appeal extends Model
     public function payment()
     {
         return $this->morphOne(Payment::class,'payable');
+    }
+
+    /**
+     * Establish one to many polymorphic relationship with invoices
+     */
+    public function invoice()
+    {
+        return $this->morphOne(Invoice::class,'usable');
     }
 
     public static function exists($appeals,$result)

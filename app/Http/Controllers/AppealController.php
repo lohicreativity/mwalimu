@@ -25,7 +25,7 @@ use App\Domain\Finance\Models\FeeAmount;
 use Illuminate\Support\Facades\Http;
 use App\Models\User;
 use App\Utils\Util;
-use Auth, Validator, DB;
+use Auth, Validator, DB, Carbon;
 
 class AppealController extends Controller
 {
@@ -35,11 +35,15 @@ class AppealController extends Controller
 	 */
 	public function index(Request $request)
 	{
+        $result_pub = ResultPublication::latest()->first();
+        $appeal_deadline = Carbon::parse($result_pub->created_at)->addDays(30);
         $data = [
            'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
            'study_academic_year'=>$request->has('study_academic_year_id')? StudyAcademicYear::with('academicYear')->find($request->get('study_academic_year_id')) : null,
             'appeals'=>Appeal::whereHas('moduleAssignment',function($query) use($request){
             	 $query->where('study_academic_year_id',$request->get('study_academic_year_id'));
+            })->whereHas('usable.gatewayPayment',function($query) use($request, $appeal_deadline){
+                 $query->where('created_at','<=',$appeal_deadline);
             })->with(['student','moduleAssignment.studyAcademicYear.academicYear','moduleAssignment.module'])->where('is_paid',1)->latest()->paginate(20)
         ];
         return view('dashboard.academic.appeals',$data)->withTitle('Appeals');
@@ -118,6 +122,7 @@ class AppealController extends Controller
               }
 
               foreach($uploaded_students as $student){
+
                   $result = ExaminationResult::whereHas('student',function($query) use($student){
                       $query->where('registration_number',$student[1]);
                   })->whereHas('moduleAssignment.module',function($query) use($student){
@@ -128,6 +133,8 @@ class AppealController extends Controller
                   $result->final_remark = $result->moduleAssignment->programModuleAssignment->final_pass_score <= $student[3]? 'PASS' : 'FAIL';
                   $result->exam_type = 'APPEAL';
                   $result->save();
+
+                  Appeal::where('student_id',$result->student_id)->where('module_assignment_id',$result->module_assignment_id)->update(['is_attended'=>1]);
 
                   // $response = redirect()->to('academic/results/'.$result->student_id.'/'.$result->moduleAssignment->study_academic_year_id.'/'.$result->moduleAssignment->programModuleAssignment->year_of_study.'/process-student-results?semester_id='.$result->moduleAssignment->programModuleAssignment->semester_id);
 
