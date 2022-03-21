@@ -471,7 +471,7 @@
                          <td>3.0-3.4</td>
                          <td>SECOND CLASS</td>
                        </tr>
-                       <td>
+                       <tr>
                          <td>3.0-3.4</td>
                          <td>PASS</td>
                          <td>2.7-3.4</td>
@@ -480,8 +480,8 @@
                          <td>LOWER SECOND</td>
                          <td>2.0-2.9</td>
                          <td>PASS</td>
-                       </td>
-                       <td>
+                       </tr>
+                       <tr>
                          <td></td>
                          <td></td>
                          <td>2.0-2.6</td>
@@ -490,7 +490,7 @@
                          <td>PASS</td>
                          <td></td>
                          <td></td>
-                       </td>
+                       </tr>
                      </table>
                    </div><!-- end of col-md-12 -->
                  </div><!-- end of row -->
