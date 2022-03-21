@@ -234,7 +234,7 @@
               <img src="{{ asset('dist/img/logo.png') }}" alt="Config::get('constants.SITE_NAME') }}" class="ss-logo">
           </div><!-- end of col-md-6 -->
           <div class="col-md-3 ss-center">
-              <div class="ss-left">
+              <div class="ss-right">
                <p class="ss-no-margin ss-font-xs">P. O. Box 9193</p>
                <p class="ss-no-margin ss-font-xs">Dar Es Salaam</p>
                <p class="ss-no-margin ss-font-xs">TANZANIA</p>
