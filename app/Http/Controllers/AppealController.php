@@ -49,7 +49,7 @@ class AppealController extends Controller
                  $query->where('first_name','LIKE','%'.$request->get('query').'%')->orWhere('middle_name','LIKE','%'.$request->get('query').'%')->orWhere('surname','LIKE','%'.$request->get('query').'%')->orWhere('registration_number','LIKE','%'.$request->get('query').'%');
             })->with(['student','moduleAssignment.studyAcademicYear.academicYear','moduleAssignment.module'])->where('is_paid',1)->latest()->paginate(20) : Appeal::whereHas('moduleAssignment',function($query) use($request){
             	 $query->where('study_academic_year_id',$request->get('study_academic_year_id'));
-            })->whereHas('usable.gatewayPayment',function($query) use($request, $appeal_deadline){
+            })->whereHas('invoice.gatewayPayment',function($query) use($request, $appeal_deadline){
                  $query->where('created_at','<=',$appeal_deadline);
             })->with(['student','moduleAssignment.studyAcademicYear.academicYear','moduleAssignment.module'])->where('is_paid',1)->latest()->paginate(20)
         ];
