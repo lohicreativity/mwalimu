@@ -7,6 +7,8 @@ use App\Domain\Academic\Models\StudyAcademicYear;
 use App\Domain\Settings\Models\Campus;
 use App\Domain\Academic\Models\Graduant;
 use App\Domain\Academic\Models\CampusProgram;
+use App\Domain\Academic\Models\ResultPublication;
+use App\Domain\Academic\Models\Appeal;
 use App\Domain\Registration\Models\Student;
 use App\Domain\Registration\Models\StudentshipStatus;
 use App\Utils\Util;
@@ -35,6 +37,14 @@ class GraduantController extends Controller
      */
     public function sortGraduants(Request $request)
     {
+      if(ResultPublication::where('study_academic_year_id',session('active_academic_year_id'))->where('type','SUPP')->count() == 0){
+          return redirect()->back()->with('error','Supplementary results not published');
+      }
+      if(Appeal::whereHas('moduleAssignment',function($query){
+           $query->where('study_academic_year_id',session('active_academic_year_id'));
+      })->where('is_attended',0)->count() != 0){
+         return redirect()->back()->with('error','Appeals not attended completely');
+      }
     	$campus_program = CampusProgram::with('program')->find($request->get('campus_program_id'));
     	$students = Student::with(['annualRemarks','overallRemark'])->where('campus_program_id',$campus_program->id)->where('year_of_study',$campus_program->program->min_duration)->get();
     	$excluded_list = [];
