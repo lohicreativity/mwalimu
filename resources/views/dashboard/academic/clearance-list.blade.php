@@ -87,7 +87,7 @@
                     @foreach($clearances as $clearance)
                      <tr>
                        <td>{{ $clearance->student->first_name }} {{ $clearance->student->middle_name }} {{ $clearance->student->surname }}</td>
-                       <td>{{ $clearance->finance_status }} <a href="#" data-toggle="modal" data-target="#ss-stage-finance-{{ $clearance->id }}">Clear</a>
+                       <td><a href="#" class="btn btn-primary" data-toggle="modal" data-target="#ss-stage-finance-{{ $clearance->id }}">Clear</a>
                             <div class="modal fade" id="ss-stage-finance-{{ $clearance->id }}">
                         <div class="modal-dialog modal-lg">
                           <div class="modal-content">
@@ -126,8 +126,8 @@
                       </div>
                       <!-- /.modal -->
                        </td>
-                       <td>{{ $clearance->library_status }}
-                        <a href="#" data-toggle="modal" data-target="#ss-stage-library-{{ $clearance->id }}">Clear</a>
+                       <td>
+                        <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#ss-stage-library-{{ $clearance->id }}">Clear</a>
                             <div class="modal fade" id="ss-stage-library-{{ $clearance->id }}">
                         <div class="modal-dialog modal-lg">
                           <div class="modal-content">
@@ -166,8 +166,8 @@
                       </div>
                       <!-- /.modal -->
                        </td>
-                       <td>{{ $clearance->hostel_status }}
-                         <a href="#" data-toggle="modal" data-target="#ss-stage-hostel-{{ $clearance->id }}">Clear</a>
+                       <td>
+                         <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#ss-stage-hostel-{{ $clearance->id }}">Clear</a>
                             <div class="modal fade" id="ss-stage-hostel-{{ $clearance->id }}">
                         <div class="modal-dialog modal-lg">
                           <div class="modal-content">
@@ -206,8 +206,8 @@
                       </div>
                       <!-- /.modal -->
                        </td>
-                       <td>{{ $clearance->stud_org_status }}
-                          <a href="#" data-toggle="modal" data-target="#ss-stage-stud-{{ $clearance->id }}">Clear</a>
+                       <td>
+                          <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#ss-stage-stud-{{ $clearance->id }}">Clear</a>
                             <div class="modal fade" id="ss-stage-stud-{{ $clearance->id }}">
                         <div class="modal-dialog modal-lg">
                           <div class="modal-content">
@@ -246,8 +246,8 @@
                       </div>
                       <!-- /.modal -->
                        </td>
-                       <td>{{ $clearance->hod_status }}
-                           <a href="#" data-toggle="modal" data-target="#ss-stage-hod-{{ $clearance->id }}">Clear</a>
+                       <td>
+                           <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#ss-stage-hod-{{ $clearance->id }}">Clear</a>
                             <div class="modal fade" id="ss-stage-hod-{{ $clearance->id }}">
                         <div class="modal-dialog modal-lg">
                           <div class="modal-content">
@@ -290,6 +290,10 @@
                     @endforeach
                    </tbody>
                  </table>
+
+                 <div class="ss-pagination-links">
+                     {!! $clearances->render() !!}
+                 </div>
               </div>
               
             </div>
