@@ -273,6 +273,9 @@
                     <tr>
                       <td colspan="3"><strong>AWARD LEVEL:</strong> {{ strtoupper($student->campusProgram->program->ntaLevel->name ) }} <span class="ss-italic">(Programme Accredited by the National Council of Technical Education)</span></td>
                     </tr>
+                    <tr>
+                      <td colspan="3"><strong>SPONSOR:</strong> Private</td>
+                    </tr>
                  </table>
                 </div><!-- end of col-md-12 -->
              </div><!-- end of row -->
@@ -284,7 +287,7 @@
                 <div class="row">
                 <div class="col-md-12"> 
 
-                 <table class="table table-bordered table-condensed">
+                 <table class="table table-bordered table-condensed ss-no-margin">
                     <thead>
                       <tr>
                         <th colspan="6">@if($yk == 1) FIRST @elseif($yk == 2) SECOND @elseif($yk == 3) THIRD @endif YEAR EXAMINATION RESULTS: {{ strtoupper($semester->name) }}</th>
