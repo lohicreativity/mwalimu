@@ -47,11 +47,11 @@ class Appeal extends Model
     }
 
     /**
-     * Establish one to many polymorphic relationship with invoices
+     * Establish one to many relationship with invoices
      */
     public function invoice()
     {
-        return $this->morphOne(Invoice::class,'usable');
+        return $this->belongsTo(Invoice::class,'invoice_id');
     }
 
     public static function exists($appeals,$result)

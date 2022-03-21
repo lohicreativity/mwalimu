@@ -118,7 +118,7 @@ class GePGResponseController extends Controller
 
 		if($invoice->payable_type == 'student'){
 			if(str_contains($invoice->feeType->name,'Appeal')){
-				 Appeal::where('student_id',$invoice->payable_id)->update(['is_paid'=>1]);
+				 Appeal::where('student_id',$invoice->payable_id)->where('invoice_id',$invoice->id)->update(['is_paid'=>1]);
 			}
 
 			if(str_contains($invoice->feeType->name,'Performance Report')){

@@ -605,17 +605,7 @@ class AppealController extends Controller
          	 $query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',$request->get('year_of_study'));
          },'moduleAssignment.module'])->where('student_id',$student->id)->get();
 
-         $count = 0;
-         foreach($results as $result){
-         	 if($request->get('result_'.$result->id)){
-         	 	 $appeal = new Appeal;
-         	 	 $appeal->examination_result_id = $result->id;
-         	 	 $appeal->module_assignment_id = $result->module_assignment_id;
-         	 	 $appeal->student_id = $result->student_id;
-         	 	 $appeal->save();
-                 $count++;
-         	 }
-         }
+         
 
          $fee_amount = FeeAmount::whereHas('feeItem',function($query){
                    return $query->where('name','LIKE','%Appeal%');
@@ -641,6 +631,19 @@ class AppealController extends Controller
         $invoice->payable_type = 'student';
         $invoice->fee_type_id = $fee_amount->feeItem->feeType->id;
         $invoice->save();
+
+        $count = 0;
+         foreach($results as $result){
+             if($request->get('result_'.$result->id)){
+                 $appeal = new Appeal;
+                 $appeal->examination_result_id = $result->id;
+                 $appeal->module_assignment_id = $result->module_assignment_id;
+                 $appeal->student_id = $result->student_id;
+                 $appeal->invoice_id = $invoice->id;
+                 $appeal->save();
+                 $count++;
+             }
+         }
 
         $generated_by = 'SP';
         $approved_by = 'SP';

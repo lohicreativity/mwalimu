@@ -212,6 +212,10 @@
                     @endforeach                  
                   </tbody>
                 </table>
+
+                <div class="ss-pagination-links">
+                    {!! $appeals->render() !!}
+                </div>
               </div>
               <!-- /.card-body -->
             </div>
