@@ -424,14 +424,14 @@ class AppealController extends Controller
                               }       
                             }
                            
-                           if($rem = SemesterRemark::where('student_id',$key)->where('study_academic_year_id',$ac_yr_id)->where('semester_id',$request->get('semester_id'))->where('year_of_study',$buffer['year_of_study'])->first()){
+                           if($rem = SemesterRemark::where('student_id',$key)->where('study_academic_year_id',$ac_yr_id)->where('semester_id',$semester_id)->where('year_of_study',$buffer['year_of_study'])->first()){
                               $remark = $rem;  
                            }else{
                               $remark = new SemesterRemark;
                            }
                             $remark->study_academic_year_id = $ac_yr_id;
                             $remark->student_id = $key;
-                            $remark->semester_id = $request->get('semester_id');
+                            $remark->semester_id = $semester_id;
                             $remark->remark = $pass_status;
                             if($remark->remark == 'INCOMPLETE' || $remark->remark == 'INCOMPLETE' || $remark->remark == 'POSTPONED'){
                                  $remark->gpa = null;
