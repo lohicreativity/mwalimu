@@ -176,7 +176,7 @@
         font-size: 14px;
      }
      .ss-font-xs{
-        font-size: 12px;
+        font-size: 10px;
      }
      .ss-letter-head{
         /*margin-bottom: 20px;*/
@@ -204,6 +204,9 @@
      .ss-line-bottom{
        border-bottom: 2px solid #000;
      }
+     .ss-color-red{
+        color: #f75b43;
+     }
   
   </style>
 </head>
@@ -217,20 +220,20 @@
         <div class="row">
           <div class="col-md-4 ss-center">
               <div class="ss-left">
-               <p class="ss-no-margin">Tel: +255 (22) 2820041</p>
-               <p class="ss-no-margin">Fax: +255 (0) 22 2152496</p>
-               <p class="ss-no-margin">Email: rector@mnma.ac.tz</p>
+               <p class="ss-no-margin ss-font-xs">Tel: +255 (22) 2820041</p>
+               <p class="ss-no-margin ss-font-xs">Fax: +255 (0) 22 2152496</p>
+               <p class="ss-no-margin ss-font-xs">Email: rector@mnma.ac.tz</p>
               </div>
           </div><!-- end of col-md-3 -->
-          <div class="col-md-2 ss-center">
+          <div class="col-md-2 ss-right">
               <img src="{{ asset('dist/img/logo.png') }}" alt="Config::get('constants.SITE_NAME') }}" class="ss-logo">
           </div><!-- end of col-md-6 -->
           <div class="col-md-3 ss-center">
               <div class="ss-right">
-               <p class="ss-no-margin">P. O. Box 9193</p>
-               <p class="ss-no-margin">Dar Es Salaam</p>
-               <p class="ss-no-margin">TANZANIA</p>
-               <p class="ss-no-margin">www.mnma.ac.tz</p>
+               <p class="ss-no-margin ss-font-xs">P. O. Box 9193</p>
+               <p class="ss-no-margin ss-font-xs">Dar Es Salaam</p>
+               <p class="ss-no-margin ss-font-xs">TANZANIA</p>
+               <p class="ss-no-margin ss-font-xs">www.mnma.ac.tz</p>
               </div>
           </div><!-- end of col-md-3 -->
           <div class="col-md-3 ss-center">
@@ -240,14 +243,14 @@
         <div class="row">
           <div class="col-md-12">
             <div class="ss-letter-head  ss-center">
-               <h3>TRANSCRIPT OF EXAMINATION RESULTS</h3>
+               <h4 class="ss-color-red">TRANSCRIPT OF EXAMINATION RESULTS</h4>
               </div>
             </div>
         </div><!-- end of row -->
              <div class="row">
                 <div class="col-md-12"> 
 
-                 <table class="table table-bordered">
+                 <table class="table table-bordered table-condensed">
                     <tr>
                       <td><strong>NAME:</strong> {{ strtoupper($student->first_name) }} {{ strtoupper($student->middle_name) }} {{ strtoupper($student->surname) }}</td>
                       <td><strong>SEX:</strong> @if($student->gender == 'M') MALE @else FEMALE @endif</td>
@@ -281,7 +284,7 @@
                 <div class="row">
                 <div class="col-md-12"> 
 
-                 <table class="table table-bordered">
+                 <table class="table table-bordered table-condensed">
                     <thead>
                       <tr>
                         <th colspan="6">@if($yk == 1) FIRST @elseif($yk == 2) SECOND @elseif($yk == 3) THIRD @endif YEAR EXAMINATION RESULTS: {{ strtoupper($semester->name) }}</th>
@@ -378,9 +381,9 @@
                  <div class="row">
                    <div class="col-md-12">
                     <p class="ss-bold ss-line-bottom">OVERALL GPA: @if($overall_gpa) {{ $overall_gpa }} @else N/A @endif <span class="ss-float-right">CLASSFICATION: {{ $overall_remark }}</span></p>
-                 <br>
-               </div><!-- end of col-md-12 -->
-              </div><!-- end of row -->
+                    <br>
+                   </div><!-- end of col-md-12 -->
+                 </div><!-- end of row -->
 
                  <div class="row ss-center">
                    <div class="col-md-4">
