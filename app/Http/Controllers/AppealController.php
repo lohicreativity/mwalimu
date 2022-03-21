@@ -12,6 +12,7 @@ use App\Domain\Academic\Models\SemesterRemark;
 use App\Domain\Academic\Models\AnnualRemark;
 use App\Domain\Academic\Models\RetakeHistory;
 use App\Domain\Academic\Models\CarryHistory;
+use App\Domain\Academic\Models\CampusProgram;
 use App\Domain\Academic\Models\GPAClassification;
 use App\Domain\Academic\Models\ResultPublication;
 use App\Domain\Academic\Models\Appeal;
