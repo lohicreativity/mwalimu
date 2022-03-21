@@ -118,7 +118,7 @@ class AppealController extends Controller
                   $result->exam_type = 'APPEAL';
                   $result->save();
 
-                  return redirect()->to('academic/results/'.$result->student_id.'/'.$result->moduleAssignment->study_academic_year_id.'/'.$result->moduleAssignment->programModuleAssignment->year_of_study.'/process-student-results?semester_id='.$result->moduleAssignment->programModuleAssignment->semester_id);
+                  $response = Http::get(url('academic/results/'.$result->student_id.'/'.$result->moduleAssignment->study_academic_year_id.'/'.$result->moduleAssignment->programModuleAssignment->year_of_study.'/process-student-results?semester_id='.$result->moduleAssignment->programModuleAssignment->semester_id));
 
               }
           }

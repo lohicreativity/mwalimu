@@ -912,7 +912,7 @@ class ExaminationResultController extends Controller
                   }
                   
                   DB::rollback();
-                  return redirect()->back()->with('error','Some modules as missing final marks ('.implode(',', $missing_programs).')');
+                  return redirect()->back()->with('error','Some modules are missing final marks ('.implode(',', $missing_programs).')');
               }
 
               $elective_policy = ElectivePolicy::where('campus_program_id',$campus_program->id)->where('study_academic_year_id',$ac_yr_id)->where('semester_id',$semester->id)->first();
