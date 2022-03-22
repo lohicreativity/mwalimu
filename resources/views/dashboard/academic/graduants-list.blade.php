@@ -100,7 +100,7 @@
                   </tbody>
                 </table>
                 <div class="ss-pagination-links">
-                    {!! $graduants->render() !!}
+                    {!! $graduants->appends($request->except('page'))->render() !!}
                 </div>
               </div>
               <!-- /.card-body -->
