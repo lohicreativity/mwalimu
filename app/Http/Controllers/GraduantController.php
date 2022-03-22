@@ -77,7 +77,7 @@ class GraduantController extends Controller
       	    			}else{
                      $count++;
                   }
-                  if($count >= $campus_program->program->min_duration){
+                  if($count >= $program->min_duration){
                      $graduant->status = 'GRADUATING';
                      if($cls = Clearance::where('student_id')->first()){
                         $clearance = $cls;
