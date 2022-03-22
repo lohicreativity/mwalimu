@@ -159,7 +159,7 @@ class GraduantController extends Controller
               {
                   $file_handle = fopen('php://output', 'w');
                   foreach ($list as $row) { 
-                      fputcsv($file_handle, [$row->student->first_name.' '.$row->student->middle_name.' '.$row->student->surname,$row->student->gender,$row->student->registration_number);
+                      fputcsv($file_handle, [$row->student->first_name.' '.$row->student->middle_name.' '.$row->student->surname,$row->student->gender,$row->student->registration_number]);
                   }
                   fclose($file_handle);
               };
