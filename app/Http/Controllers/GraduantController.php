@@ -52,8 +52,8 @@ class GraduantController extends Controller
 
       foreach($nta_level->programs as $program){
           	$campus_program = CampusProgram::with('program')->find($request->get('campus_program_id'));
-          	$students = Student::with(['annualRemarks','overallRemark'])->whereHas('campusProgram',function($query) use ($program){
-                 $query->where('program_id',$program->id);
+          	$students = Student::with(['annualRemarks','overallRemark'])->whereHas('campusProgram',function($query) use ($program, $request){
+                 $query->where('program_id',$program->id)->where('campus_id',$request->get('campus_id'));
             })->where('year_of_study',$program->min_duration)->get();
           	$excluded_list = [];
           	$status = StudentshipStatus::where('name','GRADUANT')->first();
@@ -98,10 +98,10 @@ class GraduantController extends Controller
       	    		}
       	    		$graduant->save();
           	  }
-          }
     	    $student = Student::find($student->id);
     	    $student->studentship_status_id = $status->id;
     	    $student->save();
+        }
     	}
 
     	return redirect()->back()->with('message','Graduants sorted successfully');
