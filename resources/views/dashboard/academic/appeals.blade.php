@@ -183,6 +183,8 @@
                                     {!! Form::input('hidden','student_id',$appeal->student_id) !!}
                                     {!! Form::input('hidden','exam_type',$appeal->examinationResult->exam_type) !!}
 
+                                    {!! Form::input('hidden','appeal_id',$appeal->id) !!}
+
                                     {!! Form::input('hidden','study_academic_year_id',$appeal->examinationResult->moduleAssignment->study_academic_year_id) !!}
 
                                     {!! Form::input('hidden','semester_id',$appeal->examinationResult->moduleAssignment->programModuleAssignment->semester_id) !!}

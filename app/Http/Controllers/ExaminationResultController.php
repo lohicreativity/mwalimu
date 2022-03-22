@@ -17,6 +17,7 @@ use App\Domain\Academic\Models\Department;
 use App\Domain\Settings\Models\NTALevel;
 use App\Domain\Academic\Models\SemesterRemark;
 use App\Domain\Academic\Models\SpecialExam;
+use App\Domain\Academic\Models\Appeal;
 use App\Domain\Academic\Models\AnnualRemark;
 use App\Domain\Academic\Models\OverallRemark;
 use App\Domain\Academic\Models\ResultPublication;
@@ -918,6 +919,8 @@ class ExaminationResultController extends Controller
                 $result->final_uploaded_at = now();
                 $result->uploaded_by_user_id = Auth::user()->id;
                 $result->save();
+
+                Appeal::find($request->get('appeal_id'))->update(['is_attended'=>1]);
                 DB::commit();
 
                 // return $this->processStudentResults($request,$student->id,$module_assignment->study_academic_year_id,$module_assignment->programModuleAssignment->year_of_study);
