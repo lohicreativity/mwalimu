@@ -10,7 +10,7 @@ use App\Domain\Academic\Models\CampusProgram;
 use App\Domain\Academic\Models\ResultPublication;
 use App\Domain\Academic\Models\Appeal;
 use App\Domain\Academic\Models\Clearance;
-use App\Domain\Academic\Models\NTALevel;
+use App\Domain\Settings\Models\NTALevel;
 use App\Domain\Registration\Models\Student;
 use App\Domain\Registration\Models\StudentshipStatus;
 use App\Utils\Util;
@@ -46,7 +46,7 @@ class GraduantController extends Controller
       })->where('is_attended',0)->where('is_paid',1)->count() != 0){
          return redirect()->back()->with('error','Appeals not attended completely');
       }
-      
+
       $nta_level = NTALevel::with(['programs'])->find($request->get('nta_level_id'));
 
       foreach($nta_level->programs as $program){
