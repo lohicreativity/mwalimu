@@ -33,9 +33,9 @@ class ClearanceController extends Controller
         if(Auth::user()->hasRole('hod')){
            $clearances = Clearance::with('student')->where('study_academic_year_id',$request->get('study_academic_year_id'))->whereNotNull('hod_status')->latest()->paginate(20);
         }elseif(Auth::user()->hasRole('finance-officer')){
-           $clearances = Clearance::with('student')->where('study_academic_year_id',$request->get('study_academic_year_id'))->whereNotNull('finance_status')->latest()->paginate(20)
+           $clearances = Clearance::with('student')->where('study_academic_year_id',$request->get('study_academic_year_id'))->whereNotNull('finance_status')->latest()->paginate(20);
         }elseif(Auth::user()->hasRole('librarian')){
-           $clearances = Clearance::with('student')->where('study_academic_year_id',$request->get('study_academic_year_id'))->whereNotNull('library_status')->latest()->paginate(20)
+           $clearances = Clearance::with('student')->where('study_academic_year_id',$request->get('study_academic_year_id'))->whereNotNull('library_status')->latest()->paginate(20);
         }elseif(Auth::user()->hasRole('dean-of-students')){
            $clearances = Clearance::with('student')->where('study_academic_year_id',$request->get('study_academic_year_id'))->whereNotNull('hostel_status')->latest()->paginate(20);
         }else{
