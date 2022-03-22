@@ -112,7 +112,7 @@
                     </tr>
                    </thead>
                    <tbody>
-                    {!! Form::open('url'=>'academic/clearance/clear-all','class'=>'ss-form-processing') !!}
+                    {!! Form::open(['url'=>'academic/clearance/clear-all','class'=>'ss-form-processing']) !!}
                     @foreach($clearances as $clearance)
                      <tr>
                        <td>{{ $clearance->student->first_name }} {{ $clearance->student->middle_name }} {{ $clearance->student->surname }}</td>
