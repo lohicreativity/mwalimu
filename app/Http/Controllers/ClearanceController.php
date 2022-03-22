@@ -31,15 +31,25 @@ class ClearanceController extends Controller
     public function showList(Request $request)
     {
         if(Auth::user()->hasRole('hod')){
-           $clearances = Clearance::with(['student.campusProgram.program'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->whereNull('hod_status')->orWhere('hod_status',0)->latest()->paginate(20);
+           $clearances = $request->has('query')? Clearance::whereHas('student',function($query) use($request){
+                 $query->where('first_name','LIKE','%'.$request->get('query').'%')->orWhere('middle_name','LIKE','%'.$request->get('query').'%')->orWhere('surname','LIKE','%'.$request->get('query').'%')->orWhere('registration_number','LIKE','%'.$request->get('query').'%');
+            })->with(['student.campusProgram.program'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->whereNull('hod_status')->orWhere('hod_status',0)->latest()->paginate(20) : Clearance::with(['student.campusProgram.program'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->whereNull('hod_status')->orWhere('hod_status',0)->latest()->paginate(20);;
         }elseif(Auth::user()->hasRole('finance-officer')){
-           $clearances = Clearance::with(['student.campusProgram.program'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->whereNull('finance_status')->orWhere('finance_status',0)->latest()->paginate(20);
+           $clearances = $request->has('query')? Clearance::whereHas('student',function($query) use($request){
+                 $query->where('first_name','LIKE','%'.$request->get('query').'%')->orWhere('middle_name','LIKE','%'.$request->get('query').'%')->orWhere('surname','LIKE','%'.$request->get('query').'%')->orWhere('registration_number','LIKE','%'.$request->get('query').'%');
+            })->with(['student.campusProgram.program'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->whereNull('finance_status')->orWhere('finance_status',0)->latest()->paginate(20) : Clearance::with(['student.campusProgram.program'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->whereNull('finance_status')->orWhere('finance_status',0)->latest()->paginate(20);
         }elseif(Auth::user()->hasRole('librarian')){
-           $clearances = Clearance::with(['student.campusProgram.program'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->whereNull('library_status')->orWhere('library_status',0)->latest()->paginate(20);
+           $clearances = $request->has('query')? Clearance::whereHas('student',function($query) use($request){
+                 $query->where('first_name','LIKE','%'.$request->get('query').'%')->orWhere('middle_name','LIKE','%'.$request->get('query').'%')->orWhere('surname','LIKE','%'.$request->get('query').'%')->orWhere('registration_number','LIKE','%'.$request->get('query').'%');
+            })->with(['student.campusProgram.program'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->whereNull('library_status')->orWhere('library_status',0)->latest()->paginate(20) : Clearance::with(['student.campusProgram.program'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->whereNull('library_status')->orWhere('library_status',0)->latest()->paginate(20);
         }elseif(Auth::user()->hasRole('dean-of-students')){
-           $clearances = Clearance::with(['student.campusProgram.program'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->whereNull('hostel_status')->orWhere('hostel_status',0)->latest()->paginate(20);
+           $clearances = $request->get('query')? Clearance::whereHas('student',function($query) use($request){
+                 $query->where('first_name','LIKE','%'.$request->get('query').'%')->orWhere('middle_name','LIKE','%'.$request->get('query').'%')->orWhere('surname','LIKE','%'.$request->get('query').'%')->orWhere('registration_number','LIKE','%'.$request->get('query').'%');
+            })->with(['student.campusProgram.program'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->whereNull('hostel_status')->orWhere('hostel_status',0)->latest()->paginate(20) : Clearance::with(['student.campusProgram.program'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->whereNull('hostel_status')->orWhere('hostel_status',0)->latest()->paginate(20);
         }else{
-           $clearances = Clearance::with(['student.campusProgram.program'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->latest()->paginate(20);
+           $clearances = $request->has('query')? Clearance::whereHas('student',function($query) use($request){
+                 $query->where('first_name','LIKE','%'.$request->get('query').'%')->orWhere('middle_name','LIKE','%'.$request->get('query').'%')->orWhere('surname','LIKE','%'.$request->get('query').'%')->orWhere('registration_number','LIKE','%'.$request->get('query').'%');
+            })->with(['student.campusProgram.program'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->latest()->paginate(20) : Clearance::with(['student.campusProgram.program'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->latest()->paginate(20);
         }
     	$data = [
            'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),

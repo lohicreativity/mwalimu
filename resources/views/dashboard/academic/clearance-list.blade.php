@@ -72,7 +72,15 @@
                  <h3 class="card-title">Request Clearance</h3>
               </div>
               <div class="card-body">
-                 <table class="table table-bordered">
+                  {!! Form::open(['url'=>'academic/clearance','method'=>'GET']) !!}
+                <div class="input-group ss-stretch">
+                 <input type="text" name="query" class="form-control" placeholder="Search for student name or registration number">
+                 <span class="input-group-btn">
+                   <button class="btn btn-default" type="submit"><span class="fa fa-search"></span></button>
+                 </span>
+                </div>
+                {!! Form::close() !!}
+                 <table class="table table-bordered ss-margin-top">
                    <thead>
                     <tr>
                       <th>Student</th>
