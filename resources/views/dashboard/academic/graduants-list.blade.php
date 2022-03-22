@@ -100,7 +100,7 @@
                       <td>{{ $graduant->student->campusProgram->program->name }}</td>
                       <td>{{ $graduant->student->campusProgram->campus->name }}</td>
                       <td>{{ $graduant->student->campusProgram->program->ntaLevel->name }}</td>
-                      <td>{{ $graduant->student->overallRemark->gpa }}</td>
+                      <td>{{ bcdiv($graduant->student->overallRemark->gpa,1,1) }}</td>
                     </tr>
                     @endforeach                  
                   </tbody>
