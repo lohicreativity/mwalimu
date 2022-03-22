@@ -26,6 +26,7 @@ class CreateInvoicesTable extends Migration
             $table->unsignedBigInteger('usable_id');
             $table->string('usable_type',30);
             $table->unsignedBigInteger('fee_type_id');
+            $table->unsignedBigInteger('gateway_payment_id')->nullable();
             $table->timestamps();
         });
     }
