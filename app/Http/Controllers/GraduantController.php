@@ -78,6 +78,7 @@ class GraduantController extends Controller
                   $clearance = new Clearance;
                }
                $clearance->student_id = $student->id;
+               $clearance->study_academic_year_id = $request->get('study_academic_year_id');
                $clearance->save();
             }else{
                $graduant->status = 'EXCLUDED';
