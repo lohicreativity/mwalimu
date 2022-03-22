@@ -165,7 +165,7 @@
                                 ];
                             @endphp
                             @endif
-                            {!! Form::open(['url'=>'academic/results/update-examination-results','class'=>'ss-form-processing']) !!}
+                            {!! Form::open(['url'=>'academic/results/update-examination-results-appeal','class'=>'ss-form-processing']) !!}
                               <div class="card-body">
                                 <div class="row">
                                   <div class="form-group col-4">
@@ -174,14 +174,14 @@
                                   </div>
                                   <div class="form-group col-4">
                                     {!! Form::label('','Final score (/100)') !!}
-                                    {!! Form::text('appleal_score',round($appeal->examinationResult->final_score*100/$appeal->examinationResult->moduleAssignment->programModuleAssignment->final_min_mark,1),$final_score) !!}
+                                    {!! Form::text('final_score',round($appeal->examinationResult->final_score*100/$appeal->examinationResult->moduleAssignment->programModuleAssignment->final_min_mark,1),$final_score) !!}
                                   </div>
                                   <div class="form-group col-4">
                                     {!! Form::label('','Supp score') !!}
                                     {!! Form::text('supp_score',$appeal->examinationResult->supp_score,$supp_score) !!}
 
                                     {!! Form::input('hidden','student_id',$appeal->student_id) !!}
-                                    {!! Form::input('hidden','exam_type','APPEAL') !!}
+                                    {!! Form::input('hidden','exam_type',$appeal->examinationResult->exam_type) !!}
 
                                     {!! Form::input('hidden','study_academic_year_id',$appeal->examinationResult->moduleAssignment->study_academic_year_id) !!}
 

@@ -828,6 +828,107 @@ class ExaminationResultController extends Controller
         }
     }
 
+
+    /**
+     * Update examination results
+     */
+    public function updateAppeal(Request $request)
+    {
+        try{
+            $validation = Validator::make($request->all(),[
+                'final_score'=>'numeric|min:0|max:100',
+                'supp_score'=>'min:0|max:100',
+            ]);
+
+            if($validation->fails()){
+               if($request->ajax()){
+                  return response()->json(array('error_messages'=>$validation->messages()));
+               }else{
+                  return redirect()->back()->withInput()->withErrors($validation->messages());
+               }
+            }
+
+            DB::beginTransaction();
+            $module_assignment = ModuleAssignment::with(['module','studyAcademicYear.academicYear','programModuleAssignment.campusProgram.program'])->find($request->get('module_assignment_id'));
+              $academicYear = $module_assignment->studyAcademicYear->academicYear;
+
+            $module = Module::with('ntaLevel')->find($module_assignment->module_id);
+            // $policy = ExaminationPolicy::where('nta_level_id',$module->ntaLevel->id)->where('study_academic_year_id',$module_assignment->study_academic_year_id)->where('type',$module_assignment->programModuleAssignment->campusProgram->program->category)->first();
+            // if(!$policy){
+            //       return redirect()->back()->withInput()->with('error','No examination policy defined for this module NTA level and study academic year');
+            // }
+
+            $student = Student::find($request->get('student_id'));
+
+            $special_exam = SpecialExam::where('student_id',$student->id)->where('module_assignment_id',$module_assignment->id)->where('type',$request->get('exam_type'))->where('status','APPROVED')->first();
+
+            $retake_history = RetakeHistory::whereHas('moduleAssignment',function($query) use($module){
+                  $query->where('module_id',$module->id);
+            })->where('student_id',$student->id)->first();
+
+            $carry_history = CarryHistory::whereHas('moduleAssignment',function($query) use($module){
+                            $query->where('module_id',$module->id);
+                      })->where('student_id',$student->id)->first();
+
+            if($res = ExaminationResult::where('module_assignment_id',$request->get('module_assignment_id'))->where('student_id',$request->get('student_id'))->where('exam_type',$request->get('exam_type'))->first()){
+                  $result = $res;
+              }else{
+                  $result = new ExaminationResult;
+              }
+              $result->module_assignment_id = $request->get('module_assignment_id');
+                $result->student_id = $request->get('student_id');
+                $result->exam_type = 'APPEAL';
+                if($request->has('final_score')){
+                $result->course_work_score = $request->get('course_work_score');
+                $result->final_score = ($request->get('final_score')*$module_assignment->programModuleAssignment->final_min_mark)/100;
+                }else{
+                   $result->final_score = null;
+                }
+                if($request->get('appeal_score')){
+                   $result->appeal_score = ($request->get('appeal_score')*$module_assignment->programModuleAssignment->final_min_mark)/100;
+                }
+                if($request->get('appeal_supp_score')){
+                   $result->appeal_supp_score = $request->get('appeal_supp_score');
+                }
+                if($request->get('supp_score')){
+                   $result->exam_type = 'SUPP';
+                   $result->supp_score = $request->get('supp_score');
+                   $result->supp_processed_by_user_id = Auth::user()->id;
+                   $result->supp_processed_at = now();
+                }else{
+                   $result->supp_score = null;
+                   $result->supp_processed_by_user_id = Auth::user()->id;
+                   $result->supp_processed_at = null;
+                }
+                $result->exam_type = $request->get('exam_type');
+                if($carry_history){
+                   $result->exam_category = 'CARRY';
+                }
+                if($retake_history){
+                   $result->exam_category = 'RETAKE';
+                }
+                if($special_exam && !$request->get('final_score')){
+                   $result->final_remark = 'POSTPONED';
+                }else{
+                   $result->final_remark = $module_assignment->programModuleAssignment->final_pass_score <= $result->final_score? 'PASS' : 'FAIL';
+                }
+                if($result->supp_score){
+                   $result->final_exam_remark = $module_assignment->programModuleAssignment->module_pass_score <= $result->supp_score? 'PASS' : 'FAIL';
+                }
+                $result->final_uploaded_at = now();
+                $result->uploaded_by_user_id = Auth::user()->id;
+                $result->save();
+                DB::commit();
+
+                // return $this->processStudentResults($request,$student->id,$module_assignment->study_academic_year_id,$module_assignment->programModuleAssignment->year_of_study);
+
+               return redirect()->to('academic/results/'.$request->get('student_id').'/'.$module_assignment->study_academic_year_id.'/'.$module_assignment->programModuleAssignment->year_of_study.'/process-student-results?semester_id='.$module_assignment->programModuleAssignment->semester_id);
+
+        }catch(\Exception $e){
+            return redirect()->back()->with('error','Unable to get the resource specified in this request'); 
+        }
+    }
+
     /**
      * Process student results
      */
