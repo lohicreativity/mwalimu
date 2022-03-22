@@ -109,7 +109,7 @@
                      <tr>
                        <td>{{ $clearance->student->first_name }} {{ $clearance->student->middle_name }} {{ $clearance->student->surname }}</td>
                        <td>{{ $clearance->student->registration_number }}</td>
-                       <td>{{ $clearance->student->campusProgram->program->middle_name }}</td>
+                       <td>{{ $clearance->student->campusProgram->program->name }}</td>
                        @if(Auth::user()->hasRole('finance-officer'))
                        <td>@if($clearance->finance_status === 0) <i class="fa fa-ban"></i> @endif</td>
                        <td><a href="#" class="btn btn-primary" data-toggle="modal" data-target="#ss-stage-finance-{{ $clearance->id }}">Clear</a>
