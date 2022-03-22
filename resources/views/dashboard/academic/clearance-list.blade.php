@@ -91,21 +91,17 @@
                       <th>Programme</th>
                       @if(Auth::user()->hasRole('finance-officer'))
                       <th></th>
-                      <th></th>
                       <th>Action</th>
                       @endif
                       @if(Auth::user()->hasRole('librarian'))
-                      <th></th>
                       <th></th>
                       <th>Action</th>
                       @endif
                       @if(Auth::user()->hasRole('dean-of-students'))
                       <th></th>
-                      <th></th>
                       <th>Action</th>
                       @endif
                       @if(Auth::user()->hasRole('hod'))
-                      <th></th>
                       <th></th>
                       <th>Action</th>
                       @endif
