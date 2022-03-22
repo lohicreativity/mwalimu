@@ -101,7 +101,7 @@ class GraduantController extends Controller
     	$data = [
            'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
            'study_academic_year'=>$request->has('study_academic_year_id')? StudyAcademicYear::with('academicYear')->find($request->get('study_academic_year_id')) : null,
-           'graduants'=>Graduant::with('student')->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('status','GRADUATING')->paginate(50)
+           'graduants'=>Graduant::with(['student.campusProgram.program'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('status','GRADUATING')->paginate(50)
     	];
     	return view('dashboard.academic.graduants-list',$data)->withTitle('Graduants List');
     }
@@ -114,7 +114,7 @@ class GraduantController extends Controller
     	$data = [
            'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
            'study_academic_year'=>$request->has('study_academic_year_id')? StudyAcademicYear::with('academicYear')->find($request->get('study_academic_year_id')) : null,
-           'non_graduants'=>Graduant::with('student')->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('status','EXCLUDED')->paginate(50)
+           'non_graduants'=>Graduant::with(['student.campusProgram.program'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('status','EXCLUDED')->paginate(50)
     	];
     	return view('dashboard.academic.non-graduants-list',$data)->withTitle('Non Graduants List');
     }

@@ -76,17 +76,25 @@
                    <thead>
                     <tr>
                       <th>Student</th>
+                      @if(Auth::user()->hasRole('finance-officer'))
                       <th>Finance</th>
+                      @endif
+                      @if(Auth::user()->hasRole('librarian'))
                       <th>Library</th>
+                      @endif
+                      @if(Auth::user()->hasRole('dean-of-students'))
                       <th>Hostel</th>
-                      <th>Stud Org</th>
+                      @endif
+                      @if(Auth::user()->hasRole('hod'))
                       <th>HOD</th>
+                      @endif
                     </tr>
                    </thead>
                    <tbody>
                     @foreach($clearances as $clearance)
                      <tr>
                        <td>{{ $clearance->student->first_name }} {{ $clearance->student->middle_name }} {{ $clearance->student->surname }}</td>
+                       @if(Auth::user()->hasRole('finance-officer'))
                        <td><a href="#" class="btn btn-primary" data-toggle="modal" data-target="#ss-stage-finance-{{ $clearance->id }}">Clear</a>
                             <div class="modal fade" id="ss-stage-finance-{{ $clearance->id }}">
                         <div class="modal-dialog modal-lg">
@@ -126,6 +134,8 @@
                       </div>
                       <!-- /.modal -->
                        </td>
+                       @endif
+                       @if(Auth::user()->hasRole('librarian'))
                        <td>
                         <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#ss-stage-library-{{ $clearance->id }}">Clear</a>
                             <div class="modal fade" id="ss-stage-library-{{ $clearance->id }}">
@@ -166,6 +176,8 @@
                       </div>
                       <!-- /.modal -->
                        </td>
+                       @endif
+                       @if(Auth::user()->hasRole('dean-of-students'))
                        <td>
                          <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#ss-stage-hostel-{{ $clearance->id }}">Clear</a>
                             <div class="modal fade" id="ss-stage-hostel-{{ $clearance->id }}">
@@ -206,46 +218,8 @@
                       </div>
                       <!-- /.modal -->
                        </td>
-                       <td>
-                          <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#ss-stage-stud-{{ $clearance->id }}">Clear</a>
-                            <div class="modal fade" id="ss-stage-stud-{{ $clearance->id }}">
-                        <div class="modal-dialog modal-lg">
-                          <div class="modal-content">
-                            <div class="modal-header">
-                              <h4 class="modal-title"><i class="fa fa-exclamation-sign"></i> Confirmation Alert</h4>
-                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                              </button>
-                            </div>
-                            <div class="modal-body">
-                              {!! Form::open(['url'=>'academic/clearance/update','class'=>'ss-form-processing']) !!}
-                                 <select name="status" class="form-control" required>
-                                     <option value="">Select Status</option>
-                                     <option value="1">Cleared</option>
-                                     <option value="0">Not Cleared</option>
-                                 </select>
-
-                                 {!! Form::input('hidden','clearance_id',$clearance->id) !!}
-                                 {!! Form::input('hidden','stage','stud_org') !!}
-
-                                 {!! Form::label('','Comment') !!}
-                                 {!! Form::textarea('comment',null,['class'=>'form-control','rows'=>2,'placehoder'=>'Comment']) !!}
-
-                                  <div class="ss-form-actions">
-                                     <button type="submit" class="btn btn-primary">{{ __('Submit') }}</button>
-                                  </div>
-                              {!! Form::close() !!}
-                            </div>
-                            <div class="modal-footer justify-content-between">
-                              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                            </div>
-                          </div>
-                          <!-- /.modal-content -->
-                        </div>
-                        <!-- /.modal-dialog -->
-                      </div>
-                      <!-- /.modal -->
-                       </td>
+                       @endif
+                      @if(Auth::user()->hasRole('hod'))
                        <td>
                            <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#ss-stage-hod-{{ $clearance->id }}">Clear</a>
                             <div class="modal fade" id="ss-stage-hod-{{ $clearance->id }}">
@@ -286,6 +260,7 @@
                       </div>
                       <!-- /.modal -->
                        </td>
+                       @endif
                      </tr>
                     @endforeach
                    </tbody>

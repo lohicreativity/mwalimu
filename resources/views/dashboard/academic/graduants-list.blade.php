@@ -84,6 +84,8 @@
                   <tr>
                     <th>SN</th>
                     <th>Student</th>
+                    <th>Reg. No.</th>
+                    <th>Programme</th>
                   </tr>
                   </thead>
                   <tbody>
@@ -91,6 +93,8 @@
                     <tr>
                       <td>{{ ($key+1) }}</td>
                       <td>{{ $graduant->student->first_name }} {{ $graduant->student->middle_name }} {{ $graduant->student->surname }}</td>
+                      <td>{{ $graduant->student->registration_number }}</td>
+                      <td>{{ $graduant->student->campusProgram->program->name }}</td>
                     </tr>
                     @endforeach                  
                   </tbody>
