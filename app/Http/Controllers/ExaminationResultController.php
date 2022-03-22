@@ -878,7 +878,7 @@ class ExaminationResultController extends Controller
               }
               $result->module_assignment_id = $request->get('module_assignment_id');
                 $result->student_id = $request->get('student_id');
-                $result->exam_type = 'APPEAL';
+                
                 if($request->has('final_score')){
                 $result->course_work_score = $request->get('course_work_score');
                 $result->final_score = ($request->get('final_score')*$module_assignment->programModuleAssignment->final_min_mark)/100;
@@ -916,6 +916,7 @@ class ExaminationResultController extends Controller
                 if($result->supp_score){
                    $result->final_exam_remark = $module_assignment->programModuleAssignment->module_pass_score <= $result->supp_score? 'PASS' : 'FAIL';
                 }
+                $result->exam_type = 'APPEAL';
                 $result->final_uploaded_at = now();
                 $result->uploaded_by_user_id = Auth::user()->id;
                 $result->save();
