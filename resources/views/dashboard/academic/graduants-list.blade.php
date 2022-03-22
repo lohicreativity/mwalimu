@@ -86,6 +86,9 @@
                     <th>Student</th>
                     <th>Reg. No.</th>
                     <th>Programme</th>
+                    <th>Campus</th>
+                    <th>NTA Level</th>
+                    <th>GPA</th>
                   </tr>
                   </thead>
                   <tbody>
@@ -95,6 +98,9 @@
                       <td>{{ $graduant->student->first_name }} {{ $graduant->student->middle_name }} {{ $graduant->student->surname }}</td>
                       <td>{{ $graduant->student->registration_number }}</td>
                       <td>{{ $graduant->student->campusProgram->program->name }}</td>
+                      <td>{{ $graduant->student->campusProgram->campus->name }}</td>
+                      <td>{{ $graduant->student->campusProgram->program->ntaLevel->name }}</td>
+                      <td>{{ $graduant->student->overallRemark->gpa }}</td>
                     </tr>
                     @endforeach                  
                   </tbody>

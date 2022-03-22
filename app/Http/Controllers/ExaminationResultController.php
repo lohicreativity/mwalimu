@@ -518,10 +518,39 @@ class ExaminationResultController extends Controller
                               $remark->class = null;
                             }
                             $remark->save();
-                     }
+                        }
+                       
+                       $points = 0;
+                      $credits = 0;
 
+                      $results = ExaminationResult::where('student_id',$key)->get();
+                      
+                      foreach($results as $rs){
+                           $points += $rs->point*$result->moduleAssignment->programModuleAssignment->module->credit;
+                           $credits += $rs->moduleAssignment->programModuleAssignment->module->credit;
+                      }
+                      
+                      $overall_gpa = bcdiv($points/$credits, 1,1);
+                      $gpa_class = GPAClassification::where('nta_level_id',$student->campusProgram->program->nta_level_id)->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('min_gpa','<=',bcdiv($overall_gpa,1,1))->where('max_gpa','>=',bcdiv($overall_gpa,1,1))->first();
+                      if($gpa_class){
+                         $overall_remark = $gpa_class->class;
+
+                         if($rm = OverallRemark::where('student_id',$key)->first()){
+                            $remark = $rm;
+                         }else{
+                            $remark = new OverallRemark;
+                         }
+                         $remark->student_id = $student->id;
+                         $remark->gpa = $overall_gpa;
+                         $remark->class = $overall_remark;
+                         $remark->save();
+                      }
                    }
                  }
+
+                  
+
+
                  if($pub = ResultPublication::where('study_academic_year_id',$request->get('study_academic_year_id'))->where('semester_id',$request->get('semester_id'))->first()){
                     $publication = $pub;
                  }else{
