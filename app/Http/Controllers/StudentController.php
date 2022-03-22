@@ -346,6 +346,7 @@ class StudentController extends Controller
            'student'=>$student,
            'invoices'=>Invoice::where('payable_id',$student->id)->where('payable_type','student')->with(['feeType','gatewayPayment'])->latest()->paginate(20)
         ];
+        return $data['invoices'];
         return view('dashboard.student.request-control-number',$data)->withTItle('Request Control Number');
     }
 
