@@ -43,7 +43,7 @@ class GraduantController extends Controller
       }
       if(Appeal::whereHas('moduleAssignment',function($query){
            $query->where('study_academic_year_id',session('active_academic_year_id'));
-      })->where('is_attended',0)->count() != 0){
+      })->where('is_attended',0)->where('is_paid',1)->count() != 0){
          return redirect()->back()->with('error','Appeals not attended completely');
       }
     	$campus_program = CampusProgram::with('program')->find($request->get('campus_program_id'));
