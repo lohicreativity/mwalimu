@@ -92,13 +92,11 @@
                    
                    <div class="row">
                    <div class="form-group col-6">
-                    {!! Form::label('','Programme') !!}
-                    <select name="campus_program_id" class="form-control" required>
-                       <option value="">Select Programme</option>
-                       @foreach($campus_programs as $program)
-                          @if($program->campus_id == $campus->id)
-                          <option value="{{ $program->id }}">{{ $program->program->name }}</option>
-                          @endif
+                    {!! Form::label('','NTA Level') !!}
+                    <select name="nta_level_id" class="form-control" required>
+                       <option value="">Select NTA Level</option>
+                       @foreach($nta_levels as $level)
+                          <option value="{{ $level->id }}">{{ $level->name }}</option>
                        @endforeach
                     </select>
                   </div>
@@ -111,7 +109,7 @@
                   </div>
               </div>
                <div class="card-footer">
-                  <button type="submit" class="btn btn-primary">{{ __('Process Results') }}</button>
+                  <button type="submit" class="btn btn-primary">{{ __('Run Graduants') }}</button>
                 </div>
               {!! Form::close() !!}
              </div>
