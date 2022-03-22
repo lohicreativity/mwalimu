@@ -33,7 +33,7 @@ class ClearanceController extends Controller
     	$data = [
            'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
            'study_academic_year'=>$request->has('study_academic_year_id')? StudyAcademicYear::with('academicYear')->find($request->get('study_academic_year_id')) : null,
-           'clearances'=>Clearance::with('student')->where('study_academic_year_id',$request->get('study_academic_year_id'))->latest()->paginate(20),
+           'clearances'=>Clearance::with('student')->where('study_academic_year_id',$request->get('study_academic_year_id'))->whereNotNull('status')->latest()->paginate(20),
            'staff'=>User::find(Auth::user()->id)->staff
     	];
     	return view('dashboard.academic.clearance-list',$data)->withTitle('Clearance List');

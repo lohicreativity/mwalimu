@@ -9,6 +9,7 @@ use App\Domain\Academic\Models\Graduant;
 use App\Domain\Academic\Models\CampusProgram;
 use App\Domain\Academic\Models\ResultPublication;
 use App\Domain\Academic\Models\Appeal;
+use App\Domain\Academic\Models\Clearance;
 use App\Domain\Registration\Models\Student;
 use App\Domain\Registration\Models\StudentshipStatus;
 use App\Utils\Util;
@@ -71,6 +72,13 @@ class GraduantController extends Controller
             }
             if($count >= $campus_program->program->min_duration){
                $graduant->status = 'GRADUATING';
+               if($cls = Clearance::where('student_id')->first()){
+                  $clearance = $cls;
+               }else{
+                  $clearance = new Clearance;
+               }
+               $clearance->student_id = $student->id;
+               $clearance->save();
             }else{
                $graduant->status = 'EXCLUDED';
                if($remark->remark == 'POSTPONED'){

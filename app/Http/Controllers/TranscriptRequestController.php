@@ -37,7 +37,7 @@ class TranscriptRequestController extends Controller
     	 	return redirect()->back()->with('error','You cannot request for transcript because you are not in the graduants list');
     	 }
 
-    	 if(Clearance::where('student_id',$student->id)->where('library_status',1)->where('hostel_status',1)->where('stud_org_status',1)->where('finance_status',1)->where('hod_status',1)->count() == 0){
+    	 if(Clearance::where('student_id',$student->id)->where('library_status',1)->where('hostel_status',1)->where('finance_status',1)->where('hod_status',1)->count() == 0){
     	 	return redirect()->back()->with('error','You have not finished clearance');
     	 }
          
