@@ -91,29 +91,36 @@
                       <th>Programme</th>
                       @if(Auth::user()->hasRole('finance-officer'))
                       <th></th>
-                      <th>Finance</th>
+                      <th></th>
+                      <th>Action</th>
                       @endif
                       @if(Auth::user()->hasRole('librarian'))
                       <th></th>
-                      <th>Library</th>
+                      <th></th>
+                      <th>Action</th>
                       @endif
                       @if(Auth::user()->hasRole('dean-of-students'))
                       <th></th>
-                      <th>Hostel</th>
+                      <th></th>
+                      <th>Action</th>
                       @endif
                       @if(Auth::user()->hasRole('hod'))
                       <th></th>
-                      <th>HOD</th>
+                      <th></th>
+                      <th>Action</th>
                       @endif
                     </tr>
                    </thead>
                    <tbody>
+                    {!! Form::open('url'=>'academic/clearance/clear-all','class'=>'ss-form-processing') !!}
                     @foreach($clearances as $clearance)
                      <tr>
                        <td>{{ $clearance->student->first_name }} {{ $clearance->student->middle_name }} {{ $clearance->student->surname }}</td>
                        <td>{{ $clearance->student->registration_number }}</td>
                        <td>{{ $clearance->student->campusProgram->program->name }}</td>
+
                        @if(Auth::user()->hasRole('finance-officer'))
+                       <td>{!! Form::checkbox('clearance_'.$clearance->id,1,null,['class'=>'ss-clear-check']) !!}</td>
                        <td>@if($clearance->finance_status === 0) <i class="fa fa-ban"></i> @endif</td>
                        <td><a href="#" class="btn btn-primary" data-toggle="modal" data-target="#ss-stage-finance-{{ $clearance->id }}">Clear</a>
                             <div class="modal fade" id="ss-stage-finance-{{ $clearance->id }}">
@@ -156,6 +163,7 @@
                        </td>
                        @endif
                        @if(Auth::user()->hasRole('librarian'))
+                       <td>{!! Form::checkbox('clearance_'.$clearance->id,1,null,['class'=>'ss-clear-check']) !!}</td>
                        <td>@if($clearance->library_status === 0) <i class="fa fa-ban"></i> @endif</td>
                        <td>
                         <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#ss-stage-library-{{ $clearance->id }}">Clear</a>
@@ -199,6 +207,7 @@
                        </td>
                        @endif
                        @if(Auth::user()->hasRole('dean-of-students'))
+                       <td>{!! Form::checkbox('clearance_'.$clearance->id,1,null,['class'=>'ss-clear-check']) !!}</td>
                        <td>@if($clearance->hostel_status === 0) <i class="fa fa-ban"></i> @endif</td>
                        <td>
                          
@@ -243,7 +252,7 @@
                        </td>
                        @endif
                       @if(Auth::user()->hasRole('hod'))
-
+                       <td>{!! Form::checkbox('clearance_'.$clearance->id,1,null,['class'=>'ss-clear-check']) !!}</td>
                        <td>@if($clearance->hod_status === 0) <i class="fa fa-ban"></i> @endif</td>
                        <td>
                            
@@ -289,6 +298,16 @@
                        @endif
                      </tr>
                     @endforeach
+
+                     <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td><button type="submit" class="btn btn-primary">Clear All</button></td>
+                        <td></td>
+                        <td></td>
+                     </tr>
+                     {!! Form::close() !!}
                    </tbody>
                  </table>
 
