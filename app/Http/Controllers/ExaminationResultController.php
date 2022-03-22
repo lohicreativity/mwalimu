@@ -920,7 +920,9 @@ class ExaminationResultController extends Controller
                 $result->uploaded_by_user_id = Auth::user()->id;
                 $result->save();
 
-                Appeal::find($request->get('appeal_id'))->update(['is_attended'=>1]);
+                $appeal = Appeal::find($request->get('appeal_id'));
+                $appeal->is_attended = 1;
+                $appeal->save();
                 DB::commit();
 
                 // return $this->processStudentResults($request,$student->id,$module_assignment->study_academic_year_id,$module_assignment->programModuleAssignment->year_of_study);
