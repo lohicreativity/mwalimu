@@ -41,7 +41,7 @@ class Invoice extends Model
      */
     public function gatewayPayment()
     {
-        return $this->hasOne(GatewayPayment::class,'control_no');
+        return $this->belongsTo(GatewayPayment::class,'control_no');
     }
 
     /**
