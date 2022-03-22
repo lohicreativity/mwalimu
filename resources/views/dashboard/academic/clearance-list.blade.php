@@ -66,13 +66,16 @@
               </div>
             </div>
             <!-- /.card -->
-
+            
+            @if($study_academic_year)
             <div class="card">
               <div class="card-header">
                  <h3 class="card-title">Request Clearance</h3>
               </div>
               <div class="card-body">
                   {!! Form::open(['url'=>'academic/clearance','method'=>'GET']) !!}
+
+                  {!! Form::input('hidden','study_academic_year_id',$study_academic_year->id) !!}
                 <div class="input-group ss-stretch">
                  <input type="text" name="query" class="form-control" placeholder="Search for student name or registration number">
                  <span class="input-group-btn">
@@ -296,7 +299,7 @@
               
             </div>
           </div>
-          
+           @endif
         </div>
         <!-- /.row (main row) -->
       </div><!-- /.container-fluid -->
