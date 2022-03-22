@@ -300,4 +300,6 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
     Route::get('performance-report/ready',[PerformanceReportRequestController::class,'ready']);
     Route::get('statement-of-results/{student_id}',[ExaminationResultController::class,'showStudentStatementOfResults']);
 
+    Route::get('download-graduant-list',[GraduantController::class,'downloadList']);
+
 });

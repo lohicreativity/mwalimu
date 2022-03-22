@@ -75,6 +75,7 @@
             <div class="card">
               <div class="card-header">
                 <h3 class="card-title">List of Graduants - {{ $study_academic_year->academicYear->year }}</h3>
+                <a href="{{ url('academic/download-graduant-list?study_academic_year_id='.$study_academic_year->id) }}" class="btn btn-primary">Download List</a>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
