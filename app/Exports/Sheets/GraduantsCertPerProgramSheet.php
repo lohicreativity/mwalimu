@@ -49,7 +49,7 @@ class GraduantsCertPerProgramSheet implements FromQuery, WithTitle, WithMapping,
         	[
                $this->program_name
         	],
-        	[ 'Name','Registration Number','Programme','NTA Level','Classification']
+        	[ 'Name','Registration Number','Programme','NTA Level','Classification','Graduation Date']
         ];
     }
 
@@ -62,13 +62,15 @@ class GraduantsCertPerProgramSheet implements FromQuery, WithTitle, WithMapping,
     }
 
     public function map($graduant): array
-    {
+    {   
+        $date = SpecialDate::where('study_academic_year_id',$this->study_academic_year_id)->where('campus_id',$this->campus_id)->where('name','Graduation')->first();
         return [
             $graduant->student->first_name.' '.$graduant->student->middle_name.' '.$graduant->student->surname,
             $graduant->student->registration_number,
             $graduant->student->campusProgram->program->name,
             $graduant->student->campusProgram->program->ntaLevel->name,
-            $graduant->student->overallRemark->class
+            $graduant->student->overallRemark->class,
+            $date->date
         ];
     }
 }
