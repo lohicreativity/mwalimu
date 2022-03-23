@@ -195,30 +195,61 @@ class GraduantController extends Controller
                     }
                  }
            }
-            $data = [
-               'Fname'=>$student->first_name,
-               'Mname'=>$student->middle_name,
-               'Surname'=>$student->surname,
-               'F4indexno'=>$student->applicant->index_number,
-               'Gender'=>$student->gender == 'M'? 'ME' : 'FE',
-               'Nationality'=>$student->applicant->nationality,
-               'DateOfBirth'=>date('Y',strtotime($student->applicant->birth_date)),
-               'ProgrammeCategory'=>$student->campusProgram->program->award->name,
-               'Specialization'=>$department->name,
-               'AdmissionYear'=>$student->admission_year,
-               'ProgrammeCode'=>substr($student->campusProgram->regulator_code,0,2),
-               'RegistrationNumber'=>$student->registration_number,
-               'ProgrammeName'=>$student->campusProgram->program->name,
-               'YearOfStudy'=>$student->year_of_study,
-               'StudyMode'=>$student->study_mode,
-               'IsYearRepeat'=>$is_year_repeat,
-               'EntryMode'=>$student->applicant->entry_mode,
-               'Sponsorship'=>'Private',
-               'PhysicalChallenges'=>$student->applicant->disabilityStatus->name
-            ];
-            $response = Http::post('https://api.tcu.go.tz/applicants/submitEnrolledStudents',$data);
+
+            $url='https://api.tcu.go.tz/applicants/submitEnrolledStudents';
+
+               $xml_request = '<?xml version=”1.0” encoding=” UTF-8”?>
+                <Request>
+                <UsernameToken>
+                <Username>'.config('constants.TCU_USERNAME').'</Username>
+                <SessionToken>'.config('constants.TCU_TOKEN').'</SessionToken>
+                </UsernameToken>
+                <RequestParameters>
+                <Fname>'.$student->first_name.'</Fname>
+                <Mname>'.$student->middle_name.'</Mname>
+                <Surname>'.$student->surname.'</Surname>
+                <F4indexno>'.$student->applicant->index_number.'</F4indexno>
+                <Gender>'.$student->gender.'</Gender>
+                <Nationality>'.$student->applicant->nationality.'</Nationality>
+                <DateOfBirth>'.date('Y',strtotime($student->applicant->birth_date)).'</DateOfBirth>
+                <ProgrammeCategory>'.$student->campusProgram->program->award->name.'</ProgrammeCategory>
+                <Specialization>'.$department->name.'</Specialization>
+                <AdmissionYear>'.$student->admission_year.'</AdmissionYear>
+                <ProgrammeCode>'.$student->campusProgram->regulator_code.'</ProgrammeCode>
+                <RegistrationNumber>'.$student->registration_number.'</RegistrationNumber>
+                <ProgrammeName>'.$student->campusProgram->program->name.'</ProgrammeName>
+                <YearOfStudy>'.$student->year_of_study.'</YearOfStudy >
+                <StudyMode>'.$student->study_mode.'</StudyMode >
+                <IsYearRepeat>'.$is_year_repeat.'</IsYearRepeat >
+                <EntryMode>'.$student->applicant->entry_mode.'</EntryMode >
+                <Sponsorship>Private</Sponsorship >
+                <PhysicalChallenges>'.$student->applicant->disabilityStatus->name.'</PhysicalChallenges>
+                </RequestParameters>
+                </Request>';
+          $xml_response=simplexml_load_string($this->sendXmlOverPost($url,$xml_request));
+          $json = json_encode($xml_response);
+          $array = json_decode($json,TRUE);
+
         }
 
         return redirect()->back()->with('message','Enrolled students submitted successfully');
+    }
+
+    /**
+     * Send XML over POST
+     */
+    public function sendXmlOverPost($url,$xml_request)
+    {
+          $ch = curl_init();
+          curl_setopt($ch, CURLOPT_URL, $url);
+          // For xml, change the content-type.
+          curl_setopt ($ch, CURLOPT_HTTPHEADER, Array("Content-Type: application/xml"));
+          curl_setopt($ch, CURLOPT_POST, 1);
+          curl_setopt($ch, CURLOPT_POSTFIELDS, $xml_request);
+          curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); // ask for results to be returned
+          // Send to remote and return data to caller.
+          $result = curl_exec($ch);
+          curl_close($ch);
+          return $result;
     }
 }
