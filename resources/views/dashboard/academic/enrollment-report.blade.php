@@ -78,7 +78,7 @@
              <div class="card">
               <div class="card-header">
                 <h3 class="card-title">Enrollment Report</h3><br>
-                <a href="{{ url('academic/submit-enrolled-students?nta_level_id='.$request->get('nta_level_id').'&year_of_study='.$request->get('year_of_study')) }}">Submit Enrolled Students</a>
+                <a href="{{ url('academic/submit-enrolled-students?nta_level_id='.$request->get('nta_level_id').'&year_of_study='.$request->get('year_of_study')) }}" class="btn btn-primary">Submit Enrolled Students</a>
               </div>
               <!-- /.card-header -->
               <div class="card-body">

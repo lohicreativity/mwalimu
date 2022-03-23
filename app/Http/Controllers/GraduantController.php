@@ -187,14 +187,12 @@ class GraduantController extends Controller
               }
            }
            $is_year_repeat = 'NO';
-           foreach($student->annualRemarks as $remarks){
-              foreach($remarks as $remark){
+           foreach($student->annualRemarks as $remark){
                  if($remark->year_of_study == $student->year_of_study){
                     if($remark->remark != 'PASS'){
                        $is_year_repeat = 'YES';
                     }
                  }
-              }
            }
             $data = [
                'Fname'=>$student->first_name,
