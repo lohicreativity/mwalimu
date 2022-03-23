@@ -161,11 +161,26 @@ class GraduantController extends Controller
      */
     public function enrollmentReport(Request $request)
     {
+
+        if($request->get('query')){
+           $students = Student::whereHas('campusProgram.program',function($query) use($request){
+                   $query->where('nta_level_id',$request->get('nta_level_id'));
+           })->with(['applicant.disabilityStatus','campusProgram.program.award'])->where('year_of_study',$request->get('year_of_study'))->where('first_name','LIKE','%'.$request->get('query').'%')->orWhere('middle_name','LIKE','%'.$request->get('query').'%')->orWhere('surname','LIKE','%'.$request->get('query').'%')->orWhere('registration_number','LIKE','%'.$request->get('query').'%')->paginate(50);
+        }else{
+           $students = Student::whereHas('campusProgram.program',function($query) use($request){
+                   $query->where('nta_level_id',$request->get('nta_level_id'));
+           })->with(['applicant.disabilityStatus','campusProgram.program.award'])->where('year_of_study',$request->get('year_of_study'))->paginate(50);
+        }
+
+        if($request->get('campus_program_id')){
+            $students = Student::whereHas('campusProgram.program',function($query) use($request){
+                   $query->where('nta_level_id',$request->get('nta_level_id'));
+           })->with(['applicant.disabilityStatus','campusProgram.program.award'])->where('year_of_study',$request->get('year_of_study'))->where('campus_program_id',$request->get('campus_program_id'))->paginate(50);
+        }
         $data = [
            'nta_levels'=>NTALevel::all(),
-           'students'=>Student::whereHas('campusProgram.program',function($query) use($request){
-                   $query->where('nta_level_id',$request->get('nta_level_id'));
-           })->with(['applicant.disabilityStatus','campusProgram.program.award'])->where('year_of_study',$request->get('year_of_study'))->paginate(50),
+           'students'=>$students,
+           'campus_programs'=>CampusProgram::with('program')->get(),
            'request'=>$request
         ];
         return view('dashboard.academic.enrollment-report',$data)->withTitle('Enrollment Report');
