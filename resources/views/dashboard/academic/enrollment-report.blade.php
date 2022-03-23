@@ -49,7 +49,7 @@
                    <div class="row">
                    <div class="form-group col-6">
                     {!! Form::label('','NTA Level') !!}
-                    <select name="study_academic_year_id" class="form-control" required>
+                    <select name="nta_level_id" class="form-control" required>
                        <option value="">Select NTA Level</option>
                        @foreach($nta_levels as $level)
                        <option value="{{ $level->id }}">{{ $level->name }}</option>
@@ -58,7 +58,7 @@
                   </div>
                   <div class="form-group col-6">
                     {!! Form::label('','Year of Study') !!}
-                    <select name="campus_id" class="form-control" required>
+                    <select name="year_of_study" class="form-control" required>
                        <option value="">Select Year of Study</option>
                        @for($i = 1; $i <= 3; $i++)
                        <option value="{{ $i }}">{{ $i }}</option>
