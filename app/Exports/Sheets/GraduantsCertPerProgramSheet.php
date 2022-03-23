@@ -67,7 +67,7 @@ class GraduantsCertPerProgramSheet implements FromQuery, WithTitle, WithMapping,
             $graduant->student->first_name.' '.$graduant->student->middle_name.' '.$graduant->student->surname,
             $graduant->student->registration_number,
             $graduant->student->campusProgram->program->name,
-            $graduant->student->campusProgram->program->ntaLevel->name
+            $graduant->student->campusProgram->program->ntaLevel->name,
             $graduant->student->overallRemark->class
         ];
     }
