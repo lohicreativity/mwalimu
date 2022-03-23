@@ -4,9 +4,10 @@ namespace App\Exports\Sheets;
 
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\WithTitle;
+use Maatwebsite\Excel\Concerns\WithMapping;
 use App\Domain\Academic\Models\Graduant;
 
-class GraduantsPerProgramSheet implements FromQuery, WithTitle
+class GraduantsPerProgramSheet implements FromQuery, WithTitle, WithMapping
 {
     private $program_name;
     private $program_id;
@@ -35,5 +36,14 @@ class GraduantsPerProgramSheet implements FromQuery, WithTitle
     public function title(): string
     {
         return $this->program_name;
+    }
+
+    public function map($graduant): array
+    {
+        return [
+            $graduant->student->first_name.' '.$graduant->student->middle_name.' '.$graduant->student->surname,
+            $graduant->student->gender,
+            $graduant->student->registration_number,
+        ];
     }
 }

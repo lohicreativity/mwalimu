@@ -4,11 +4,10 @@ namespace App\Exports;
 
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
-use Maatwebsite\Excel\Concerns\WithMapping;
 use App\Domain\Academic\Models\Program;
 use App\Exports\Sheets\GraduantsPerProgramSheet;
 
-class GraduantsExport implements WithMultipleSheets, WithMapping
+class GraduantsExport implements WithMultipleSheets
 {
     use Exportable;
 
@@ -35,12 +34,5 @@ class GraduantsExport implements WithMultipleSheets, WithMapping
         return $sheets;
     }
 
-    public function map($graduant): array
-    {
-        return [
-            $graduant->student->first_name.' '.$graduant->student->middle_name.' '.$graduant->student->surname,
-            $graduant->student->gender,
-            $graduant->student->registration_number,
-        ];
-    }
+    
 }
