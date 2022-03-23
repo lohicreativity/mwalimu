@@ -175,6 +175,51 @@ class GraduantController extends Controller
      */
     public function submitEnrolledStudents(Request $request)
     {
-        
+        $students = Student::whereHas('campusProgram.program',function($query) use($request){
+                   $query->where('nta_level_id',$request->get('nta_level_id'));
+           })->with(['applicant.disabilityStatus','campusProgram.program.award','annualRemarks'])->where('year_of_study',$request->get('year_of_study'))->get();
+
+
+        foreach($students as $student){
+            foreach($student->campusProgram->program->departments as $dpt){
+              if($dpt->pivot->campus_id == $student->campusProgram->campus_id){
+                  $department = $dpt;
+              }
+           }
+           $is_year_repeat = 'NO';
+           foreach($student->annualRemarks as $remarks){
+              foreach($remarks as $remark){
+                 if($remark->year_of_study == $student->year_of_study){
+                    if($remark->remark != 'PASS'){
+                       $is_year_repeat = 'YES';
+                    }
+                 }
+              }
+           }
+            $data = [
+               'Fname'=>$student->first_name,
+               'Mname'=>$student->middle_name,
+               'Surname'=>$student->surname,
+               'F4indexno'=>$student->applicant->index_number,
+               'Gender'=>$student->gender == 'M'? 'ME' : 'FE';
+               'Nationality'=>$student->applicant->nationality,
+               'DateOfBirth'=>date($student->applicant->birth_date,'Y'),
+               'ProgrammeCategory'=>$student->campusProgram->program->award->name,
+               'Specialization'=>$department->name,
+               'AdmissionYear'=>$student->admission_year,
+               'ProgrammeCode'=>substr($student->campusProgram->regulator_code,0,2),
+               'RegistrationNumber'=>$student->registration_number,
+               'ProgrammeName'=>$student->campusProgram->program->name,
+               'YearOfStudy'=>$student->year_of_study,
+               'StudyMode'=>$student->study_mode,
+               'IsYearRepeat'=>$is_year_repeat,
+               'EntryMode'=>$student->applicant->entry_mode,
+               'Sponsorship'=>'Private',
+               'PhysicalChallenges'=>$student->applicant->disabilityStatus->name
+            ];
+            $response = Http::post('https://api.tcu.go.tz/applicants/submitEnrolledStudents',$data);
+        }
+
+        return redirect()->back()->with('message','Enrolled students submitted successfully');
     }
 }
