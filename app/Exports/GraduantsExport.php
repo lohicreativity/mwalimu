@@ -25,10 +25,15 @@ class GraduantsExport implements WithMultipleSheets
     {
         $sheets = [];
 
-        $programs = Program::get();
+        $programs = CampusProgram::with(['program.departments','campus'])->get();
 
         foreach ($programs as $key => $program) {
-            $sheets[] = new GraduantsPerProgramSheet($program->id, $program->code, $program->name,$this->study_academic_year_id);
+            foreach($program->departments as $dpt){
+                if($dpt->pivot->campus_id == $program->campus_id){
+                    $department = $dpt;
+                }
+             }
+            $sheets[] = new GraduantsPerProgramSheet($program->id, $program->program->code, $program->program->name, $department->name, $program->campus->name,$this->study_academic_year_id);
         }
 
         return $sheets;
