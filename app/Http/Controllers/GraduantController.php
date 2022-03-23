@@ -13,6 +13,7 @@ use App\Domain\Academic\Models\Clearance;
 use App\Domain\Settings\Models\NTALevel;
 use App\Domain\Registration\Models\Student;
 use App\Domain\Registration\Models\StudentshipStatus;
+use Illuminate\Support\Facades\Http;
 use App\Utils\Util;
 use App\Exports\GraduantsExport;
 use App\Exports\GraduantsCertExport;
