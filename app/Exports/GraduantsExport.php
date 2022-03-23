@@ -28,7 +28,7 @@ class GraduantsExport implements WithMultipleSheets
         $programs = CampusProgram::with(['program.departments','campus'])->get();
 
         foreach ($programs as $key => $program) {
-            foreach($program->departments as $dpt){
+            foreach($program->program->departments as $dpt){
                 if($dpt->pivot->campus_id == $program->campus_id){
                     $department = $dpt;
                 }
