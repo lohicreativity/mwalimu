@@ -107,6 +107,7 @@
                           <td>{{ $student->gender }}</td>
                           <td>{{ $student->applicant->birth_date }}</td>
                           <td>{{ $student->year_of_study }}</td>
+                          @php
                           $is_year_repeat = 'NO';
                            foreach($student->annualRemarks as $remark){
                                  if($remark->year_of_study == $student->year_of_study){
@@ -115,6 +116,7 @@
                                     }
                                  }
                            }
+                           @endphp
                           <td>{{ $is_year_repeat }}</td>
                           <td>Private</td>
                           <td>{{ $student->applicant->admission_year }}</td>
