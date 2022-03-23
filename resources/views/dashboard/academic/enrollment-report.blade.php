@@ -89,23 +89,13 @@
                          <th>Middle Name</th>
                          <th>Surname</th>
                          <th>Gender</th>
-                         <th>Nationality</th>
                          <th>Date of Birth</th>
-                         <th>Award Category</th>
-                         <th>Field Specialization</th>
                          <th>Year of Study</th>
-                         <th>Study Mode</th>
                          <th>Is Year Repeat</th>
-                         <th>Entry Qualification</th>
                          <th>Sponsorship</th>
                          <th>Enrollment Year</th>
-                         <th>Phyical Challenges</th>
-                         <th>F4 Index Number</th>
                          <th>Award Name</th>
                          <th>Registration Number</th>
-                         <th>Institution Code</th>
-                         <th>Programme Code</th>
-                         <th>Status</th>
                        </tr>
                      </thead>
                      <tbody>
@@ -115,31 +105,21 @@
                           <td>{{ $student->middle_name }}</td>
                           <td>{{ $student->surname }}</td>
                           <td>{{ $student->gender }}</td>
-                          <td>{{ $student->applicant->nationality }}</td>
                           <td>{{ $student->applicant->birth_date }}</td>
-                          <td>{{ $student->campusProgram->program->award->name }}</td>
-                          <td>
-                             @php
-                             foreach($student->campusProgram->program->departments as $dpt){
-                                if($dpt->pivot->campus_id == $student->campusProgram->campus_id){
-                                    $department = $dpt;
-                                }
-                             }
-                             @endphp
-                            {{ $department->name }}</td>
                           <td>{{ $student->year_of_study }}</td>
-                          <td>{{ $student->study_mode }}</td>
-                          <td>NO</td>
-                          <td>{{ $student->applicant->entry_mode }}</td>
+                          $is_year_repeat = 'NO';
+                           foreach($student->annualRemarks as $remark){
+                                 if($remark->year_of_study == $student->year_of_study){
+                                    if($remark->remark != 'PASS'){
+                                       $is_year_repeat = 'YES';
+                                    }
+                                 }
+                           }
+                          <td>{{ $is_year_repeat }}</td>
                           <td>Private</td>
                           <td>{{ $student->applicant->admission_year }}</td>
-                          <td>{{ $student->applicant->disabilityStatus->name }}</td>
-                          <td>{{ $student->applicant->index_number }}</td>
                           <td>{{ $student->campusProgram->program->name }}</td>
                           <td>{{ $student->registration_number }}</td>
-                          <td>{{ substr($student->campusProgram->regulator_code,0,2) }}</td>
-                          <td>{{ $student->campusProgram->regulator_code }}</td>
-                          <td>@if($student->year_of_study == 1) FRESHER @else CONTINUING @endif</td>
                          </tr>
                       @endforeach
                      </tbody>
