@@ -15,9 +15,6 @@ use App\Domain\Registration\Models\Student;
 use App\Domain\Registration\Models\StudentshipStatus;
 use App\Utils\Util;
 
-require_once 'PHPExcel.php';
-require_once 'PHPExcel/IOFactory.php';
-
 class GraduantController extends Controller
 {
     /**
@@ -145,39 +142,39 @@ class GraduantController extends Controller
      */
     public function downloadList(Request $request)
     {
-             //  $headers = [
-             //          'Cache-Control'       => 'must-revalidate, post-check=0, pre-check=0',   
-             //          'Content-type'        => 'text/csv',
-             //          'Content-Disposition' => 'attachment; filename=graduants-list.csv',
-             //          'Expires'             => '0',
-             //          'Pragma'              => 'public'
-             //  ];
+              $headers = [
+                      'Cache-Control'       => 'must-revalidate, post-check=0, pre-check=0',   
+                      'Content-type'        => 'text/csv',
+                      'Content-Disposition' => 'attachment; filename=graduants-list.csv',
+                      'Expires'             => '0',
+                      'Pragma'              => 'public'
+              ];
 
-             //  $list = Graduant::with(['student.campusProgram.program.ntaLevel','student.campusProgram.campus','student.overallRemark'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('status','GRADUATING')->get();
+              $list = Graduant::with(['student.campusProgram.program.ntaLevel','student.campusProgram.campus','student.overallRemark'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('status','GRADUATING')->get();
 
-             //  # add headers for each column in the CSV download
-             //  // array_unshift($list, array_keys($list[0]));
+              # add headers for each column in the CSV download
+              // array_unshift($list, array_keys($list[0]));
 
-             // $callback = function() use ($list) 
-             //  {
-             //      $file_handle = fopen('php://output', 'w');
-             //      foreach ($list as $row) { 
-             //          fputcsv($file_handle, [$row->student->first_name.' '.$row->student->middle_name.' '.$row->student->surname,$row->student->gender,$row->student->registration_number]);
-             //      }
-             //      fclose($file_handle);
-             //  };
+             $callback = function() use ($list) 
+              {
+                  $file_handle = fopen('php://output', 'w');
+                  foreach ($list as $row) { 
+                      fputcsv($file_handle, [$row->student->first_name.' '.$row->student->middle_name.' '.$row->student->surname,$row->student->gender,$row->student->registration_number]);
+                  }
+                  fclose($file_handle);
+              };
 
-             //  return response()->stream($callback, 200, $headers);
-          $objPHPExcel = new PHPExcel;
-          $list = Graduant::with(['student.campusProgram.program.ntaLevel','student.campusProgram.campus','student.overallRemark'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('status','GRADUATING')->get();
-          $objPHPExcel->setActiveSheetIndex(0);
-          $objPHPExcel->getActiveSheet()->setCellValue('A1','Something');
-          $objPHPExcel->getActiveSheet()->setTitle('Name of Sheet 1');
+              return response()->stream($callback, 200, $headers);
+          // $objPHPExcel = new PHPExcel;
+          // $list = Graduant::with(['student.campusProgram.program.ntaLevel','student.campusProgram.campus','student.overallRemark'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('status','GRADUATING')->get();
+          // $objPHPExcel->setActiveSheetIndex(0);
+          // $objPHPExcel->getActiveSheet()->setCellValue('A1','Something');
+          // $objPHPExcel->getActiveSheet()->setTitle('Name of Sheet 1');
 
-          header('Content-Type: application/vnd.ms-excel');
-          header('Content-Disposition: attachment;filename="name_of_file.xls"');
-          header('Cache-Control: max-age=0');
-          $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
-          $objWriter->save('php://output');
+          // header('Content-Type: application/vnd.ms-excel');
+          // header('Content-Disposition: attachment;filename="name_of_file.xls"');
+          // header('Cache-Control: max-age=0');
+          // $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+          // $objWriter->save('php://output');
     }
 }

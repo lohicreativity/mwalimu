@@ -17,6 +17,7 @@
         "laravel/tinker": "^2.5",
         "laravelcollective/html": "^6.2",
         "livewire/livewire": "^2.5",
+        "maatwebsite/excel": "^3.1",
         "php-amqplib/php-amqplib": "^3.1",
         "predis/predis": "^1.1",
         "rmccue/requests": "^2.0",
