@@ -305,5 +305,6 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 
     Route::get('enrollment-report',[GraduantController::class,'enrollmentReport']);
     Route::get('submit-enrolled-students',[GraduantController::class,'submitEnrolledStudents']);
+    Route::get('download-enrolled-students',[GraduantController::class,'downloadEnrolledStudents']);
 
 });

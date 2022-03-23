@@ -267,4 +267,63 @@ class GraduantController extends Controller
           curl_close($ch);
           return $result;
     }
+
+    /**
+     * Download enrolled students
+     */
+    public function downloadEnrolledStudents(Request $request)
+    {
+         $headers = [
+                      'Cache-Control'       => 'must-revalidate, post-check=0, pre-check=0',   
+                      'Content-type'        => 'text/csv',
+                      'Content-Disposition' => 'attachment; filename=appeals-list.csv',
+                      'Expires'             => '0',
+                      'Pragma'              => 'public'
+              ];
+
+              $list = Student::whereHas('campusProgram.program',function($query) use($request){
+                   $query->where('nta_level_id',$request->get('nta_level_id'));
+              })->with(['applicant.disabilityStatus','campusProgram.program.award','annualRemarks'])->where('year_of_study',$request->get('year_of_study'))->get();
+
+              # add headers for each column in the CSV download
+              // array_unshift($list, array_keys($list[0]));
+
+             $callback = function() use ($list) 
+              {
+                  $file_handle = fopen('php://output', 'w');
+                  fputcsv($file_handle,['First Name','Middle Name','Surname','Gender','Registration Number','F4 Index No','Nationality','Date of Birth','Is Year Repeat','Study Mode','Year of Study','Entry Qualification','Programme Category','Programme Name','Programme Code','Admission Year','Disability Status']);
+                  foreach ($list as $student) { 
+                       foreach($student->campusProgram->program->departments as $dpt){
+                          if($dpt->pivot->campus_id == $student->campusProgram->campus_id){
+                              $department = $dpt;
+                          }
+                       }
+                       $is_year_repeat = 'NO';
+                       foreach($student->annualRemarks as $remark){
+                             if($remark->year_of_study == $student->year_of_study){
+                                if($remark->remark == 'CARRY' || $remark->remark == 'RETAKE'){
+                                   $is_year_repeat = 'YES';
+                                }
+                             }
+                       }
+
+                      fputcsv($file_handle, [$student->first_name,$student->middle_name,$student->surname,$student->gender,
+                        $student->registration_number,$student->applicant->index_number,
+                        $student->applicant->nationality,
+                        date('Y',strtotime($student->applicant->birth_date)),
+                        $is_year_repeat,
+                        $student->study_mode,
+                        $student->year_of_study,
+                        $student->applicant->entry_mode,
+                        $student->campusProgram->program->award->name,
+                        $student->campusProgram->program->name,
+                        $student->campusProgram->regulator_code,
+                        $student->admission_year,
+                        $student->applicant->disabilityStatus->name]);
+                  }
+                  fclose($file_handle);
+              };
+
+              return response()->stream($callback, 200, $headers);
+    }
 }
