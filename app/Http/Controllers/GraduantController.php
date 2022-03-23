@@ -201,7 +201,7 @@ class GraduantController extends Controller
                'F4indexno'=>$student->applicant->index_number,
                'Gender'=>$student->gender == 'M'? 'ME' : 'FE',
                'Nationality'=>$student->applicant->nationality,
-               'DateOfBirth'=>date($student->applicant->birth_date,'Y'),
+               'DateOfBirth'=>date('Y',strtotime($student->applicant->birth_date)),
                'ProgrammeCategory'=>$student->campusProgram->program->award->name,
                'Specialization'=>$department->name,
                'AdmissionYear'=>$student->admission_year,
