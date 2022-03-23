@@ -321,7 +321,7 @@ class GraduantController extends Controller
                         $student->applicant->disabilityStatus->name,
                         $student->applicant->index_number,
                         $student->campusProgram->program->name,
-                        $student->registration_number
+                        $student->registration_number,
                         substr($student->campusProgram->regulator_code,0,2),
                         $student->campusProgram->regulator_code,
                         ]);
