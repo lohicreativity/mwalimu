@@ -25,9 +25,9 @@ class GraduantsPerProgramSheet implements FromQuery, WithTitle, WithMapping
      */
     public function query()
     {
-        return Graduant::whereHas('student.campusProgram',function($query){
+        return Graduant::query()->whereHas('student.campusProgram',function($query){
         	     $query->where('program_id',$this->program_id);
-               })->with(['student.campusProgram.program.ntaLevel','student.campusProgram.campus','student.overallRemark'])->where('study_academic_year_id',$this->study_academic_year_id)->where('status','GRADUATING')->get();
+               })->with(['student.campusProgram.program.ntaLevel','student.campusProgram.campus','student.overallRemark'])->where('study_academic_year_id',$this->study_academic_year_id)->where('status','GRADUATING');
     }
 
     /**
