@@ -19,6 +19,8 @@ class CreateCertificatesTable extends Migration
             $table->bigInteger('cert_number');
             $table->date('graduation_date');
             $table->timestamps();
+
+            $table->foreign('student_id')->references('id')->on('students')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 

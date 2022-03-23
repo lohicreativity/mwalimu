@@ -12,6 +12,7 @@ use App\Http\Controllers\CampusController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\SystemModuleController;
+use App\Http\Controllers\SpecialDateController;
 
 /*
 |--------------------------------------------------------------------------
@@ -88,5 +89,9 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 	Route::post('permission/store', [PermissionController::class,'store']);
 	Route::post('permission/update', [PermissionController::class,'update']);
 	Route::get('permission/{id}/destroy', [PermissionController::class,'destroy']);
+
+	Route::get('graduation-date',[SpecialDateController::class,'index']);
+	Route::post('graduation-date/store',[SpecialDateController::class,'storeGraduationDate']);
+	Route::post('graduation-date/update',[SpecialDateController::class,'updateGraduationDate']);
 
 });

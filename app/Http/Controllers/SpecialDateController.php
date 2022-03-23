@@ -1,0 +1,83 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\Domain\Academic\Models\StudyAcademicYear;
+use App\Domain\Settings\Models\Campus;
+use App\Domain\Settings\Models\SpecialDate;
+use App\Utils\DateMaker;
+use Validator;
+
+class SpecialDateController extends Controller
+{
+	/**
+	 * Disaplay special dates
+	 */
+	public function index(Request $request)
+	{
+        $data = [
+           'campuses'=>Campus::all(),
+           'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
+           'campus'=>Campus::find($request->get('campus_id')),
+           'study_academic_year'=>StudyAcademicYear::find($request->get('study_academic_year_id')),
+           'graduation_date'=>SpecialDate::where('name','Graduation')->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('campus_id',$request->get('campus_id'))->first(),
+           'request'=>$request
+        ];
+        return view('dashboard.settings.graduation-date',$data)->withTitle('Graduation Date');
+	}
+
+    /**
+     * Store graduation date
+     */
+    public function storeGraduationDate(Request $request)
+    {
+    	$validation = Validator::make($request->all(),[
+            'graduation_date'=>'required',
+        ]);
+
+        if($validation->fails()){
+           if($request->ajax()){
+              return response()->json(array('error_messages'=>$validation->messages()));
+           }else{
+              return redirect()->back()->withInput()->withErrors($validation->messages());
+           }
+        }
+
+        $date = new SpecialDate;
+        $date->date = DateMaker::toDBDate($request->get('graduation_date'));
+        $date->name = $request->get('name');
+        $date->campus_id = $request->get('campus_id');
+        $date->study_academic_year_id = $request->get('study_academic_year_id');
+        $date->save();
+
+        return redirect()->back()->with('message','Graduation date created successfully');
+    }
+
+    /**
+     * Store graduation date
+     */
+    public function updateGraduationDate(Request $request)
+    {
+    	$validation = Validator::make($request->all(),[
+            'graduation_date'=>'required',
+        ]);
+
+        if($validation->fails()){
+           if($request->ajax()){
+              return response()->json(array('error_messages'=>$validation->messages()));
+           }else{
+              return redirect()->back()->withInput()->withErrors($validation->messages());
+           }
+        }
+
+        $date = SpecialDate::find($request->get('special_date_id'));
+        $date->date = DateMaker::toDBDate($request->get('graduation_date'));
+        $date->name = $request->get('name');
+        $date->campus_id = $request->get('campus_id');
+        $date->study_academic_year_id = $request->get('study_academic_year_id');
+        $date->save();
+
+        return redirect()->back()->with('message','Graduation date updated successfully');
+    }
+}
