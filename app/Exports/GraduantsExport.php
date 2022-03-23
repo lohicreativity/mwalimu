@@ -5,6 +5,7 @@ namespace App\Exports;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 use App\Domain\Academic\Models\Program;
+use App\Exports\Sheets\GraduantsPerProgramSheet;
 
 class GraduantsExport implements WithMultipleSheets
 {
@@ -27,7 +28,7 @@ class GraduantsExport implements WithMultipleSheets
         $programs = Program::get();
 
         foreach ($programs as $key => $program) {
-            $sheets[] = new InvoicesPerMonthSheet($program->id, $program->name,$this->study_academic_year_id);
+            $sheets[] = new GraduantsPerProgramSheet($program->id, $program->name,$this->study_academic_year_id);
         }
 
         return $sheets;
