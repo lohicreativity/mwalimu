@@ -277,7 +277,7 @@ class GraduantController extends Controller
          $headers = [
                       'Cache-Control'       => 'must-revalidate, post-check=0, pre-check=0',   
                       'Content-type'        => 'text/csv',
-                      'Content-Disposition' => 'attachment; filename=enrollment-report-year-'.$request->get('year_of_study').'-'.$nta_level->name.'.csv',
+                      'Content-Disposition' => 'attachment; filename=Enrollment-Report-Year-'.$request->get('year_of_study').'-'.$nta_level->name.'.csv',
                       'Expires'             => '0',
                       'Pragma'              => 'public'
               ];
