@@ -33,7 +33,7 @@ class GraduantsExport implements WithMultipleSheets
                     $department = $dpt;
                 }
              }
-            $sheets[] = new GraduantsPerProgramSheet($program->id, $program->program->code, $program->program->name, $department->name, $program->campus->name,$this->study_academic_year_id);
+            $sheets[] = new GraduantsPerProgramSheet($program->program->id, $program->program->code, $program->program->name, $department->name, $program->campus->name,$this->study_academic_year_id);
         }
 
         return $sheets;
