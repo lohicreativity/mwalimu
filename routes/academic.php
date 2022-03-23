@@ -303,4 +303,6 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
     Route::get('download-graduant-list',[GraduantController::class,'downloadList']);
     Route::get('download-graduant-list-cert',[GraduantController::class,'downloadCertList']);
 
+    Route::get('enrollment-report',[GraduantController::class,'enrollmentReport']);
+
 });

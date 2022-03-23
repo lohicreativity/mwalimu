@@ -154,4 +154,27 @@ class GraduantController extends Controller
     {
           return (new GraduantsCertExport($request->get('study_academic_year_id')))->download('graduants-certificates.xlsx');
     }
+
+    /**
+     * Enrollment report
+     */
+    public function enrollmentReport(Request $request)
+    {
+        $data = [
+           'nta_levels'=>NTALevel::all(),
+           'students'=>Student::whereHas('campusProgram.program',function($query) use($request){
+                   $query->where('nta_level_id',$request->get('nta_level_id'));
+           })->with(['applicant.disabilityStatus','campusProgram.program.award'])->where('year_of_study',$request->get('year_of_study'))->paginate(50),
+           'request'=>$request
+        ];
+        return view('dashboard.academic.enrollment-report',$data)->withTitle('Enrollment Report');
+    }
+
+    /**
+     * Submit enrolled students
+     */
+    public function submitEnrolledStudents(Request $request)
+    {
+        
+    }
 }

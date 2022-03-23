@@ -538,6 +538,12 @@
                   <p>{{ __('Graduation Date') }}</p>
                 </a>
               </li>
+              <li class="nav-item">
+                <a href="{{ url('academic/enrollment-report?study_academic_year_id='.session('active_academic_year_id')) }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>{{ __('Enrollment Report') }}</p>
+                </a>
+              </li>
             </ul>
           </li>
           <li class="nav-item">
