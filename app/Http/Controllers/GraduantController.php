@@ -168,7 +168,7 @@ class GraduantController extends Controller
              //  };
 
              //  return response()->stream($callback, 200, $headers);
-          $objPHPExcel = new PHPExcel();
+          $objPHPExcel = new PHPExcel;
           $list = Graduant::with(['student.campusProgram.program.ntaLevel','student.campusProgram.campus','student.overallRemark'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('status','GRADUATING')->get();
           $objPHPExcel->setActiveSheetIndex(0);
           $objPHPExcel->getActiveSheet()->setCellValue('A1','Something');
