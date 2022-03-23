@@ -229,7 +229,7 @@ class GraduantController extends Controller
                 <DateOfBirth>'.date('Y',strtotime($student->applicant->birth_date)).'</DateOfBirth>
                 <ProgrammeCategory>'.$student->campusProgram->program->award->name.'</ProgrammeCategory>
                 <Specialization>'.$department->name.'</Specialization>
-                <AdmissionYear>'.$student->admission_year.'</AdmissionYear>
+                <AdmissionYear>'.$student->applicant->admission_year.'</AdmissionYear>
                 <ProgrammeCode>'.$student->campusProgram->regulator_code.'</ProgrammeCode>
                 <RegistrationNumber>'.$student->registration_number.'</RegistrationNumber>
                 <ProgrammeName>'.$student->campusProgram->program->name.'</ProgrammeName>
@@ -318,7 +318,7 @@ class GraduantController extends Controller
                         $student->campusProgram->program->award->name,
                         $student->campusProgram->program->name,
                         $student->campusProgram->regulator_code,
-                        $student->admission_year,
+                        $student->applicant->admission_year,
                         $student->applicant->disabilityStatus->name]);
                   }
                   fclose($file_handle);
