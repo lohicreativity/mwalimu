@@ -273,10 +273,11 @@ class GraduantController extends Controller
      */
     public function downloadEnrolledStudents(Request $request)
     {
+         $nta_level = NTALevel::find($request->get('nta_level_id'));
          $headers = [
                       'Cache-Control'       => 'must-revalidate, post-check=0, pre-check=0',   
                       'Content-type'        => 'text/csv',
-                      'Content-Disposition' => 'attachment; filename=enrollment-report.csv',
+                      'Content-Disposition' => 'attachment; filename=enrollment-report-year-'.$request->get('year_of_study').'-'.$nta_level->name.'.csv',
                       'Expires'             => '0',
                       'Pragma'              => 'public'
               ];
