@@ -201,7 +201,7 @@ class GraduantController extends Controller
                'Mname'=>$student->middle_name,
                'Surname'=>$student->surname,
                'F4indexno'=>$student->applicant->index_number,
-               'Gender'=>$student->gender == 'M'? 'ME' : 'FE';
+               'Gender'=>$student->gender == 'M'? 'ME' : 'FE',
                'Nationality'=>$student->applicant->nationality,
                'DateOfBirth'=>date($student->applicant->birth_date,'Y'),
                'ProgrammeCategory'=>$student->campusProgram->program->award->name,
