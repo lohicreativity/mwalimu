@@ -24,7 +24,7 @@ class GraduantsExport implements WithMultipleSheets
     {
         $sheets = [];
 
-        $program = Program::get();
+        $programs = Program::get();
 
         foreach ($programs as $key => $program) {
             $sheets[] = new InvoicesPerMonthSheet($program->id, $program->name,$this->study_academic_year_id);
