@@ -190,7 +190,7 @@ class GraduantController extends Controller
            $is_year_repeat = 'NO';
            foreach($student->annualRemarks as $remark){
                  if($remark->year_of_study == $student->year_of_study){
-                    if($remark->remark != 'PASS'){
+                    if($remark->remark == 'CARRY' || $remark->remark == 'RETAKE'){
                        $is_year_repeat = 'YES';
                     }
                  }
