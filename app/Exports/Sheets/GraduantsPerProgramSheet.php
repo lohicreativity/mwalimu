@@ -49,6 +49,7 @@ class GraduantsPerProgramSheet implements FromQuery, WithTitle, WithMapping, Wit
         	[
                $this->program_name
         	]
+        	[ 'Name','Sex','Registration Number']
         ];
     }
 
