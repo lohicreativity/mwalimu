@@ -245,8 +245,6 @@ class GraduantController extends Controller
           $json = json_encode($xml_response);
           $array = json_decode($json,TRUE);
 
-          return dd($array);
-
         }
 
         return redirect()->back()->with('message','Enrolled students submitted successfully');
