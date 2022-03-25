@@ -443,11 +443,11 @@
                  </div>
                  <div class="row">
                    <div class="form-group col-3">
-                    {!! Form::label('','Principle Pass Subjects') !!}
+                    {!! Form::label('','No. of Principle Pass Subjects') !!}
                     {!! Form::text('principle_pass_subjects',null,$principle_pass_subjects) !!}
                    </div>
                    <div class="form-group col-3">
-                    {!! Form::label('','Pass Subjects') !!}
+                    {!! Form::label('','No. of Pass Subjects') !!}
                     {!! Form::text('pass_subjects',null,$pass_subjects) !!}
                   </div>
                   <div class="form-group col-3">
@@ -515,6 +515,14 @@
                   <div class="form-group col-3">
                     {!! Form::label('','Principle Subjects') !!}
                     <select name="principle_subjects[]" class="form-control ss-select-tags" multiple="multiple">
+                       @foreach($subjects as $sub)
+                       <option class="{{ $sub->subject_name }}">{{ $sub->subject_name }}</option>
+                       @endforeach
+                    </select>
+                  </div>
+                   <div class="form-group col-3">
+                    {!! Form::label('','Advance Exclude Subjects') !!}
+                    <select name="advance_exclude_subjects[]" class="form-control ss-select-tags" multiple="multiple">
                        @foreach($subjects as $sub)
                        <option class="{{ $sub->subject_name }}">{{ $sub->subject_name }}</option>
                        @endforeach
