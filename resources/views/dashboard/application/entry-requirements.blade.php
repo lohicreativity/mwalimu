@@ -952,7 +952,7 @@
                                  <div class="row">
                                   <div class="form-group col-3">
                                     {!! Form::label('','Programme') !!}
-                                    <select name="campus_program_id" class="form-control" required multiple="multiple">
+                                    <select name="campus_program_id" class="form-control" required>
                                       <option value="">Select Programme</option>
                                       @foreach($campus_programs as $program)
                                       <option value="{{ $program->id }}" @if($program->id == $requirement->campus_program_id) selected="selected" @endif>{{ $program->program->name }}</option>
