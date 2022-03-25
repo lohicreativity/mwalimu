@@ -474,8 +474,17 @@
                  </div>
                  <div class="row">
                   <div class="form-group col-3">
-                    {!! Form::label('','Award Division') !!}
-                    {!! Form::text('award_division',null,$award_division) !!}
+                    {!! Form::label('','NTA Level') !!}
+                    <select name="nta_level" class="form-control">
+                       <option value="">Select NTA Level</option>
+                       <option value="4">4</option>
+                       <option value="5">5</option>
+                       <option value="6">6</option>
+                       <option value="7">7</option>
+                       <option value="8">8</option>
+                       <option value="9">9</option>
+                       <option value="10">10</option>
+                    </select>
                   </div>
                   <div class="form-group col-3">
                     {!! Form::label('','Exclude Subjects') !!}
