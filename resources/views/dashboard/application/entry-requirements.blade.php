@@ -257,10 +257,6 @@
                  </div>
                  <div class="row">
                   <div class="form-group col-3">
-                    {!! Form::label('','Award Division') !!}
-                    {!! Form::text('award_division',null,$award_division) !!}
-                  </div>
-                  <div class="form-group col-3">
                     {!! Form::label('','Exclude Subjects') !!}
                     <select name="exclude_subjects[]" class="form-control ss-select-tags" multiple="multiple">
                        @foreach($subjects as $sub)
@@ -271,6 +267,14 @@
                   <div class="form-group col-3">
                     {!! Form::label('','Must Subjects') !!}
                     <select name="must_subjects[]" class="form-control ss-select-tags" multiple="multiple">
+                       @foreach($subjects as $sub)
+                       <option class="{{ $sub->subject_name }}">{{ $sub->subject_name }}</option>
+                       @endforeach
+                    </select>
+                  </div>
+                  <div class="form-group col-3">
+                    {!! Form::label('','Other Must Subjects') !!}
+                    <select name="other_must_subjects[]" class="form-control ss-select-tags" multiple="multiple">
                        @foreach($subjects as $sub)
                        <option class="{{ $sub->subject_name }}">{{ $sub->subject_name }}</option>
                        @endforeach
@@ -295,6 +299,7 @@
                     </select>
                   </div>
                  </div>
+
              </div>
              
                <div class="card-footer">
@@ -503,8 +508,8 @@
                     </select>
                   </div>
                   <div class="form-group col-3">
-                    {!! Form::label('','Subsidiary Subjects') !!}
-                    <select name="subsidiary_subjects[]" class="form-control ss-select-tags" multiple="multiple">
+                    {!! Form::label('','Other Must Subjects') !!}
+                    <select name="other_must_subjects[]" class="form-control ss-select-tags" multiple="multiple">
                        @foreach($subjects as $sub)
                        <option class="{{ $sub->subject_name }}">{{ $sub->subject_name }}</option>
                        @endforeach
@@ -512,6 +517,14 @@
                   </div>
                  </div>
                  <div class="row">
+                  <div class="form-group col-3">
+                    {!! Form::label('','Subsidiary Subjects') !!}
+                    <select name="subsidiary_subjects[]" class="form-control ss-select-tags" multiple="multiple">
+                       @foreach($subjects as $sub)
+                       <option class="{{ $sub->subject_name }}">{{ $sub->subject_name }}</option>
+                       @endforeach
+                    </select>
+                  </div>
                   <div class="form-group col-3">
                     {!! Form::label('','Principle Subjects') !!}
                     <select name="principle_subjects[]" class="form-control ss-select-tags" multiple="multiple">
@@ -538,14 +551,6 @@
                   </div>
                  </div>
                  <div class="row">
-                  <div class="form-group col-3">
-                    {!! Form::label('','Other Must Subjects') !!}
-                    <select name="other_must_subjects[]" class="form-control ss-select-tags" multiple="multiple">
-                       @foreach($subjects as $sub)
-                       <option class="{{ $sub->subject_name }}">{{ $sub->subject_name }}</option>
-                       @endforeach
-                    </select>
-                  </div>
                   <div class="form-group col-3">
                     {!! Form::label('','Other Advance Must Subjects') !!}
                     <select name="other_advance_must_subjects[]" class="form-control ss-select-tags" multiple="multiple">
@@ -752,6 +757,17 @@
                     </select>
                   </div>
                   <div class="form-group col-3">
+                    {!! Form::label('','Other Must Subjects') !!}
+                    <select name="other_must_subjects[]" class="form-control ss-select-tags" multiple="multiple">
+                       @foreach($subjects as $sub)
+                       <option class="{{ $sub->subject_name }}">{{ $sub->subject_name }}</option>
+                       @endforeach
+                    </select>
+                  </div>
+                  
+                 </div>
+                 <div class="row">
+                  <div class="form-group col-3">
                     {!! Form::label('','Subsidiary Subjects') !!}
                     <select name="subsidiary_subjects[]" class="form-control ss-select-tags" multiple="multiple">
                        @foreach($subjects as $sub)
@@ -759,8 +775,6 @@
                        @endforeach
                     </select>
                   </div>
-                 </div>
-                 <div class="row">
                   <div class="form-group col-3">
                     {!! Form::label('','Principle Subjects') !!}
                     <select name="principle_subjects[]" class="form-control ss-select-tags" multiple="multiple">
@@ -787,14 +801,7 @@
                   </div>
                  </div>
                  <div class="row">
-                  <div class="form-group col-3">
-                    {!! Form::label('','Other Must Subjects') !!}
-                    <select name="other_must_subjects[]" class="form-control ss-select-tags" multiple="multiple">
-                       @foreach($subjects as $sub)
-                       <option class="{{ $sub->subject_name }}">{{ $sub->subject_name }}</option>
-                       @endforeach
-                    </select>
-                  </div>
+                  
                   <div class="form-group col-3">
                     {!! Form::label('','Other Advance Must Subjects') !!}
                     <select name="other_advance_must_subjects[]" class="form-control ss-select-tags" multiple="multiple">
