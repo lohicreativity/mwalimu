@@ -70,8 +70,223 @@
              <div class="card">
                <div class="card-header">
                  <h3 class="card-title">{{ __('Add Entry Requirement') }}</h3>
+
                </div>
                <!-- /.card-header -->
+               <ul class="nav nav-tabs" id="myList" role="tablist">
+                <li class="nav-item"><a class="nav-link active" data-toggle="list" href="#ss-certificate" role="tab">Certificate</a></li>
+                <li class="nav-item"><a class="nav-link" data-toggle="list" href="#ss-diploma" role="tab">Diploma</a></li>
+                <li class="nav-item"><a class="nav-link" data-toggle="list" href="#ss-degree" role="tab">Degree</a></li>
+              </ul>
+
+               <div class="tab-content">
+                 <div class="tab-pane active" id="ss-certificate" role="tabpanel">
+               @php
+                $equivalent_gpa = [
+                   'placeholder'=>'Equivalent GPA',
+                   'class'=>'form-control',
+                   'readonly'=>true
+                ];
+
+                $equivalent_pass_subjects = [
+                   'placeholder'=>'Equivalent Pass Subjects',
+                   'class'=>'form-control',
+                   'readonly'=>true
+                ];
+
+                $equivalent_average_grade = [
+                   'placeholder'=>'Equivalent Average Grade',
+                   'class'=>'form-control',
+                   'readonly'=>true
+                ];
+
+                $open_equivalent_gpa = [
+                   'placeholder'=>'Open Equivalent GPA',
+                   'class'=>'form-control',
+                   'readonly'=>true
+                ];
+
+                $open_equivalent_pass_subjects = [
+                   'placeholder'=>'Open Equivalent Pass Subjects',
+                   'class'=>'form-control',
+                   'readonly'=>true
+                ];
+
+                $open_equivalent_average_grade = [
+                   'placeholder'=>'Open Equivalent Average Grade',
+                   'class'=>'form-control',
+                   'readonly'=>true
+                ];
+
+                $principle_pass_points = [
+                   'placeholder'=>'Principle Pass Points',
+                   'class'=>'form-control',
+                   'readonly'=>true
+                ];
+
+                $principle_pass_subjects = [
+                   'placeholder'=>'Principle Pass Subjects',
+                   'class'=>'form-control',
+                   'readonly'=>true
+                ];
+
+                $pass_subjects = [
+                   'placeholder'=>'Pass Subjects',
+                   'class'=>'form-control'
+                ];
+
+                $pass_grade = [
+                   'placeholder'=>'Pass Grade',
+                   'class'=>'form-control'
+                ];
+
+                $award_level = [
+                   'placeholder'=>'Award Level',
+                   'class'=>'form-control'
+                ];
+
+                $award_division = [
+                   'placeholder'=>'Award Division',
+                   'class'=>'form-control'
+                ];
+
+                $exclude_subjects = [
+                   'placeholder'=>'Exclude Subjects',
+                   'class'=>'form-control'
+                ];
+
+                $must_subjects = [
+                   'placeholder'=>'Must Subjects',
+                   'class'=>'form-control'
+                ];
+
+                $subsidiary_subjects = [
+                   'placeholder'=>'Subsidiary Subjects',
+                   'class'=>'form-control'
+                ];
+
+                $principle_subjects = [
+                   'placeholder'=>'Principle Subjects',
+                   'class'=>'form-control'
+                ];
+
+                $max_capacity = [
+                   'placeholder'=>'Max Capacity',
+                   'class'=>'form-control'
+                ];
+             @endphp
+
+               {!! Form::open(['url'=>'application/entry-requirement/store','class'=>'ss-form-processing']) !!}
+               <div class="card-body">
+                 
+                 <div class="row">
+                  <div class="form-group col-3">
+                    {!! Form::label('','Programme') !!}
+                    <select name="campus_program_ids[]" class="form-control ss-select-tags" required multiple="multiple">
+                      <option value="">Select Programme</option>
+                      @foreach($campus_programs as $program)
+                      <option value="{{ $program->id }}">{{ $program->program->name }}</option>
+                      @endforeach
+                    </select>
+                  </div>
+                  <div class="form-group col-3">
+                    {!! Form::label('','Equivalent GPA') !!}
+                    {!! Form::text('equivalent_gpa',null,$equivalent_gpa) !!}
+                  </div>
+                  <div class="form-group col-3">
+                    {!! Form::label('','Equivalent Pass Subjects') !!}
+                    {!! Form::text('equivalent_pass_subjects',null,$equivalent_pass_subjects) !!}
+                  </div>
+                  <div class="form-group col-3">
+                    {!! Form::label('','Equivalent Average Grade') !!}
+                    {!! Form::text('equivalent_average_grade',null,$equivalent_average_grade) !!}
+                  </div>
+                  {!! Form::input('hidden','application_window_id',$application_window->id) !!}
+                 </div>
+                 <div class="row">
+                   <div class="form-group col-3">
+                    {!! Form::label('','Open Equivalent GPA') !!}
+                    {!! Form::text('open_equivalent_gpa',null,$open_equivalent_gpa) !!}
+                   </div>
+                   <div class="form-group col-3">
+                    {!! Form::label('','Open Equivalent Pass Subjects') !!}
+                    {!! Form::text('open_equivalent_pass_subjects',null,$open_equivalent_pass_subjects) !!}
+                  </div>
+                  <div class="form-group col-3">
+                    {!! Form::label('','Open Equivalent Average Grade') !!}
+                    {!! Form::text('open_equivalent_average_grade',null,$equivalent_average_grade) !!}
+                  </div>
+                  <div class="form-group col-3">
+                    {!! Form::label('','Principle Pass Points') !!}
+                    {!! Form::text('principle_pass_points',null,$principle_pass_points) !!}
+                  </div>
+                 </div>
+                 <div class="row">
+                   <div class="form-group col-3">
+                    {!! Form::label('','Principle Pass Subjects') !!}
+                    {!! Form::text('principle_pass_subjects',null,$principle_pass_subjects) !!}
+                   </div>
+                   <div class="form-group col-3">
+                    {!! Form::label('','Pass Subjects') !!}
+                    {!! Form::text('pass_subjects',null,$pass_subjects) !!}
+                  </div>
+                  <div class="form-group col-3">
+                    {!! Form::label('','Pass Grade') !!}
+                    {!! Form::text('pass_grade',null,$pass_grade) !!}
+                  </div>
+                  <div class="form-group col-3">
+                    {!! Form::label('','Award Level') !!}
+                    {!! Form::text('award_level',null,$award_level) !!}
+                  </div>
+                 </div>
+                 <div class="row">
+                  <div class="form-group col-3">
+                    {!! Form::label('','Award Division') !!}
+                    {!! Form::text('award_division',null,$award_division) !!}
+                  </div>
+                  <div class="form-group col-3">
+                    {!! Form::label('','Exclude Subjects') !!}
+                    <select name="exclude_subjects[]" class="form-control ss-select-tags" multiple="multiple">
+                       @foreach($subjects as $sub)
+                       <option class="{{ $sub->subject_name }}">{{ $sub->subject_name }}</option>
+                       @endforeach
+                    </select>
+                  </div>
+                  <div class="form-group col-3">
+                    {!! Form::label('','Must Subjects') !!}
+                    <select name="must_subjects[]" class="form-control ss-select-tags" multiple="multiple">
+                       @foreach($subjects as $sub)
+                       <option class="{{ $sub->subject_name }}">{{ $sub->subject_name }}</option>
+                       @endforeach
+                    </select>
+                  </div>
+                  <div class="form-group col-3">
+                    {!! Form::label('','Subsidiary Subjects') !!}
+                    <select name="subsidiary_subjects[]" class="form-control ss-select-tags" multiple="multiple">
+                       @foreach($subjects as $sub)
+                       <option class="{{ $sub->subject_name }}">{{ $sub->subject_name }}</option>
+                       @endforeach
+                    </select>
+                  </div>
+                 </div>
+                 <div class="row">
+                  <div class="form-group col-3">
+                    {!! Form::label('','Principle Subjects') !!}
+                    <select name="principle_subjects[]" class="form-control ss-select-tags" multiple="multiple">
+                       @foreach($subjects as $sub)
+                       <option class="{{ $sub->subject_name }}">{{ $sub->subject_name }}</option>
+                       @endforeach
+                    </select>
+                  </div>
+                 </div>
+             </div>
+             
+               <div class="card-footer">
+                  <button type="submit" class="btn btn-primary">{{ __('Add Entry Requirement') }}</button>
+                </div>
+              {!! Form::close() !!}
+            </div><!-- /tabpane -->
+            <div class="tab-pane" id="ss-diploma" role="tabpanel">
                @php
                 $equivalent_gpa = [
                    'placeholder'=>'Equivalent GPA',
@@ -261,9 +476,203 @@
                        @endforeach
                     </select>
                   </div>
+                 </div>
+             </div>
+             
+               <div class="card-footer">
+                  <button type="submit" class="btn btn-primary">{{ __('Add Entry Requirement') }}</button>
+                </div>
+              {!! Form::close() !!}
+            </div><!-- /tabpane -->
+            <div class="tab-pane" id="ss-degree" role="tabpanel">
+               @php
+                $equivalent_gpa = [
+                   'placeholder'=>'Equivalent GPA',
+                   'class'=>'form-control'
+                ];
+
+                $equivalent_pass_subjects = [
+                   'placeholder'=>'Equivalent Pass Subjects',
+                   'class'=>'form-control'
+                ];
+
+                $equivalent_average_grade = [
+                   'placeholder'=>'Equivalent Average Grade',
+                   'class'=>'form-control'
+                ];
+
+                $open_equivalent_gpa = [
+                   'placeholder'=>'Open Equivalent GPA',
+                   'class'=>'form-control'
+                ];
+
+                $open_equivalent_pass_subjects = [
+                   'placeholder'=>'Open Equivalent Pass Subjects',
+                   'class'=>'form-control'
+                ];
+
+                $open_equivalent_average_grade = [
+                   'placeholder'=>'Open Equivalent Average Grade',
+                   'class'=>'form-control'
+                ];
+
+                $principle_pass_points = [
+                   'placeholder'=>'Principle Pass Points',
+                   'class'=>'form-control'
+                ];
+
+                $principle_pass_subjects = [
+                   'placeholder'=>'Principle Pass Subjects',
+                   'class'=>'form-control'
+                ];
+
+                $pass_subjects = [
+                   'placeholder'=>'Pass Subjects',
+                   'class'=>'form-control'
+                ];
+
+                $pass_grade = [
+                   'placeholder'=>'Pass Grade',
+                   'class'=>'form-control'
+                ];
+
+                $award_level = [
+                   'placeholder'=>'Award Level',
+                   'class'=>'form-control'
+                ];
+
+                $award_division = [
+                   'placeholder'=>'Award Division',
+                   'class'=>'form-control'
+                ];
+
+                $exclude_subjects = [
+                   'placeholder'=>'Exclude Subjects',
+                   'class'=>'form-control'
+                ];
+
+                $must_subjects = [
+                   'placeholder'=>'Must Subjects',
+                   'class'=>'form-control'
+                ];
+
+                $subsidiary_subjects = [
+                   'placeholder'=>'Subsidiary Subjects',
+                   'class'=>'form-control'
+                ];
+
+                $principle_subjects = [
+                   'placeholder'=>'Principle Subjects',
+                   'class'=>'form-control'
+                ];
+
+                $max_capacity = [
+                   'placeholder'=>'Max Capacity',
+                   'class'=>'form-control'
+                ];
+             @endphp
+
+               {!! Form::open(['url'=>'application/entry-requirement/store','class'=>'ss-form-processing']) !!}
+               <div class="card-body">
+                 
+                 <div class="row">
                   <div class="form-group col-3">
-                    {!! Form::label('','Max Capacity') !!}
-                    {!! Form::text('max_capacity',null,$max_capacity) !!}
+                    {!! Form::label('','Programme') !!}
+                    <select name="campus_program_ids[]" class="form-control ss-select-tags" required multiple="multiple">
+                      <option value="">Select Programme</option>
+                      @foreach($campus_programs as $program)
+                      <option value="{{ $program->id }}">{{ $program->program->name }}</option>
+                      @endforeach
+                    </select>
+                  </div>
+                  <div class="form-group col-3">
+                    {!! Form::label('','Equivalent GPA') !!}
+                    {!! Form::text('equivalent_gpa',null,$equivalent_gpa) !!}
+                  </div>
+                  <div class="form-group col-3">
+                    {!! Form::label('','Equivalent Pass Subjects') !!}
+                    {!! Form::text('equivalent_pass_subjects',null,$equivalent_pass_subjects) !!}
+                  </div>
+                  <div class="form-group col-3">
+                    {!! Form::label('','Equivalent Average Grade') !!}
+                    {!! Form::text('equivalent_average_grade',null,$equivalent_average_grade) !!}
+                  </div>
+                  {!! Form::input('hidden','application_window_id',$application_window->id) !!}
+                 </div>
+                 <div class="row">
+                   <div class="form-group col-3">
+                    {!! Form::label('','Open Equivalent GPA') !!}
+                    {!! Form::text('open_equivalent_gpa',null,$open_equivalent_gpa) !!}
+                   </div>
+                   <div class="form-group col-3">
+                    {!! Form::label('','Open Equivalent Pass Subjects') !!}
+                    {!! Form::text('open_equivalent_pass_subjects',null,$open_equivalent_pass_subjects) !!}
+                  </div>
+                  <div class="form-group col-3">
+                    {!! Form::label('','Open Equivalent Average Grade') !!}
+                    {!! Form::text('open_equivalent_average_grade',null,$equivalent_average_grade) !!}
+                  </div>
+                  <div class="form-group col-3">
+                    {!! Form::label('','Principle Pass Points') !!}
+                    {!! Form::text('principle_pass_points',null,$principle_pass_points) !!}
+                  </div>
+                 </div>
+                 <div class="row">
+                   <div class="form-group col-3">
+                    {!! Form::label('','Principle Pass Subjects') !!}
+                    {!! Form::text('principle_pass_subjects',null,$principle_pass_subjects) !!}
+                   </div>
+                   <div class="form-group col-3">
+                    {!! Form::label('','Pass Subjects') !!}
+                    {!! Form::text('pass_subjects',null,$pass_subjects) !!}
+                  </div>
+                  <div class="form-group col-3">
+                    {!! Form::label('','Pass Grade') !!}
+                    {!! Form::text('pass_grade',null,$pass_grade) !!}
+                  </div>
+                  <div class="form-group col-3">
+                    {!! Form::label('','Award Level') !!}
+                    {!! Form::text('award_level',null,$award_level) !!}
+                  </div>
+                 </div>
+                 <div class="row">
+                  <div class="form-group col-3">
+                    {!! Form::label('','Award Division') !!}
+                    {!! Form::text('award_division',null,$award_division) !!}
+                  </div>
+                  <div class="form-group col-3">
+                    {!! Form::label('','Exclude Subjects') !!}
+                    <select name="exclude_subjects[]" class="form-control ss-select-tags" multiple="multiple">
+                       @foreach($subjects as $sub)
+                       <option class="{{ $sub->subject_name }}">{{ $sub->subject_name }}</option>
+                       @endforeach
+                    </select>
+                  </div>
+                  <div class="form-group col-3">
+                    {!! Form::label('','Must Subjects') !!}
+                    <select name="must_subjects[]" class="form-control ss-select-tags" multiple="multiple">
+                       @foreach($subjects as $sub)
+                       <option class="{{ $sub->subject_name }}">{{ $sub->subject_name }}</option>
+                       @endforeach
+                    </select>
+                  </div>
+                  <div class="form-group col-3">
+                    {!! Form::label('','Subsidiary Subjects') !!}
+                    <select name="subsidiary_subjects[]" class="form-control ss-select-tags" multiple="multiple">
+                       @foreach($subjects as $sub)
+                       <option class="{{ $sub->subject_name }}">{{ $sub->subject_name }}</option>
+                       @endforeach
+                    </select>
+                  </div>
+                 </div>
+                 <div class="row">
+                  <div class="form-group col-3">
+                    {!! Form::label('','Principle Subjects') !!}
+                    <select name="principle_subjects[]" class="form-control ss-select-tags" multiple="multiple">
+                       @foreach($subjects as $sub)
+                       <option class="{{ $sub->subject_name }}">{{ $sub->subject_name }}</option>
+                       @endforeach
+                    </select>
                   </div>
                  </div>
              </div>
@@ -272,6 +681,8 @@
                   <button type="submit" class="btn btn-primary">{{ __('Add Entry Requirement') }}</button>
                 </div>
               {!! Form::close() !!}
+            </div><!-- /tabpane -->
+          </div>
             </div>
             
             @if(count($entry_requirements) != 0)
@@ -501,10 +912,6 @@
                                      <option class="{{ $sub->subject_name }}">{{ $sub->subject_name }}</option>
                                      @endforeach
                                   </select>
-                                  </div>
-                                  <div class="form-group col-3">
-                                    {!! Form::label('','Max Capacity') !!}
-                                    {!! Form::text('max_capacity',$requirement->max_capacity,$max_capacity) !!}
                                   </div>
                                  </div>
                              

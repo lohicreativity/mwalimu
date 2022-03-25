@@ -31,6 +31,36 @@ class EntryRequirementController extends Controller
     }
 
     /**
+     * Show capacity
+     */
+    public function showCapacity(Request $request)
+    {
+        $data = [
+           'application_windows'=>ApplicationWindow::all(),
+           'application_window'=>ApplicationWindow::find($request->get('application_window_id')),
+           'entry_requirements'=>EntryRequirement::with(['campusProgram.program'])->where('application_window_id',$request->get('application_window_id'))->get()
+        ];
+        return view('dashboard.application.entry-requirements-capacity',$data)->withTitle('Entry Capacity');
+    }
+
+    /**
+     * Update Capacity
+     */
+    public function updateCapacity(Request $request)
+    {
+         $entry_requirements = EntryRequirement::with(['campusProgram.program'])->where('application_window_id',$request->get('application_window_id'))->get();
+
+         foreach($entry_requirements as $req){
+             if($request->get('requirement_'.$req)){
+                 $requirement = EntryRequirement::find($req->id);
+                 $requirement->max_capacity = $request->get('requirement_'.$req);
+                 $requirement->save();
+             }
+         }
+         return redirect()->back()->with('message','Maximum capacities updated successfully');
+    }
+
+    /**
      * Store entry requirement into database
      */
     public function store(Request $request)

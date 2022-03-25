@@ -163,6 +163,12 @@
                 </a>
               </li>
               <li class="nav-item">
+                <a href="{{ url('application/entry-requirements-capacity') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Program Max Capacity</p>
+                </a>
+              </li>
+              <li class="nav-item">
                 <a href="{{ url('application/run-selection') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Run Selection</p>

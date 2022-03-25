@@ -63,6 +63,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 
 
 	Route::get('entry-requirements', [EntryRequirementController::class,'index']);
+	Route::get('entry-requirements-capacity', [EntryRequirementController::class,'showCapacity']);
+	Route::post('entry-requirements-capacity/update', [EntryRequirementController::class,'updateCapacity']);
 	Route::post('entry-requirement/store', [EntryRequirementController::class,'store']);
 	Route::post('entry-requirement/update', [EntryRequirementController::class,'update']);
 	Route::get('entry-requirement/{id}/destroy', [EntryRequirementController::class,'destroy']);
