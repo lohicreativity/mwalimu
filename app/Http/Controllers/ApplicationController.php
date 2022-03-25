@@ -439,7 +439,7 @@ class ApplicationController extends Controller
                                      }
                                    }                                     
                               }else{
-                                   if(!in_array($result->subject_name, unserialize($program->entryRequirements[0]->exclude_subjects)))){
+                                   if(!in_array($result->subject_name, unserialize($program->entryRequirements[0]->exclude_subjects))){
 
                                       if(unserialize($program->entryRequirements[0]->other_must_subjects) != null){
                                          if(!in_array($result->subject_name, unserialize($program->entryRequirements[0]->exclude_subjects)) || in_array($result->subject_name, unserialize($program->entryRequirements[0]->other_must_subjects))){
