@@ -42,8 +42,7 @@ class EntryRequirementAction implements EntryRequirementInterface{
 	public function update(Request $request)
     {
 		$requirement = EntryRequirement::find($request->get('entry_requirement_id'));
-        foreach($request->get('campus_program_ids') as $id){
-            $requirement->campus_program_id = $id;
+            $requirement->campus_program_id = $request->get('campus_program_id');
             $requirement->application_window_id = $request->get('application_window_id');
             $requirement->equivalent_gpa = $request->get('equivalent_gpa');
             $requirement->equivalent_pass_subjects = $request->get('equivalent_pass_subjects');
@@ -67,6 +66,5 @@ class EntryRequirementAction implements EntryRequirementInterface{
             $requirement->principle_subjects = serialize($requirement->get('principle_subjects'));
             $requirement->max_capacity = $request->get('max_capacity');
             $requirement->save();
-        }
 	}
 }
