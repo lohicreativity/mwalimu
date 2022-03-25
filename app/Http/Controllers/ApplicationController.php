@@ -507,7 +507,7 @@ class ApplicationController extends Controller
         }
 
         // Phase II
-        $choices = [1,2,3];
+        $choices = [1,2,3,4];
         $applicants = Applicant::with(['selections','nectaResultDetails.results','nacteResultDetails.results'])->where('program_level_id',$request->get('award_id'))->whereHas('selections',function($query) use($request){
             $query->where('application_window_id',$request->get('application_window_id'))->where('status','ELIGIBLE');
         })->get();
