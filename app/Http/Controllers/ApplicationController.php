@@ -425,7 +425,7 @@ class ApplicationController extends Controller
                          if($detail->exam_id == 1){
                            foreach ($detail->results as $key => $result) {
                               if($o_level_grades[$result->grade] >= $o_level_grades[$program->entryRequirements[0]->pass_grade]){
-                                 if(!in_array($result->subject_name, unserialize($program->entryRequirements[0]->exclude_subjects)) || in_array($result->subject_name, unserialize($program->entryRequirements[0]->must_subjects))){
+                                 if(!in_array($result->subject_name, unserialize($program->entryRequirements[0]->exclude_subjects)) || in_array($result->subject_name, unserialize($program->entryRequirements[0]->must_subjects)) && in_array($result->subject_name, unserialize($program->entryRequirements[0]->other_must_subjects))){
                                  $o_level_pass_count += 1;
                                  }
                               }
@@ -447,7 +447,7 @@ class ApplicationController extends Controller
                          if($detail->exam_id == 1){
                            foreach ($detail->results as $key => $result) {
                               if($o_level_grades[$result->grade] >= $o_level_grades[$program->entryRequirements[0]->pass_grade]){
-                                 if(!in_array($result->subject_name, unserialize($program->entryRequirements[0]->exclude_subjects)) || in_array($result->subject_name, unserialize($program->entryRequirements[0]->must_subjects))){
+                                 if(!in_array($result->subject_name, unserialize($program->entryRequirements[0]->exclude_subjects)) || in_array($result->subject_name, unserialize($program->entryRequirements[0]->must_subjects)) && in_array($result->subject_name, unserialize($program->entryRequirements[0]->other_must_subjects))){
                                  $o_level_pass_count += 1;
                                  }
                               }
@@ -472,7 +472,7 @@ class ApplicationController extends Controller
                            if($detail->exam_id == 2){
                            foreach ($detail->results as $key => $result) {
                               if($a_level_grades[$result->grade] >= $program->entryRequirements[0]->principle_pass_points){
-                                 if(!in_array($result->subject_name, unserialize($program->entryRequirements[0]->exclude_subjects)) || in_array($result->subject_name, unserialize($program->entryRequirements[0]->principle_subjects))){
+                                 if(!in_array($result->subject_name, unserialize($program->entryRequirements[0]->exclude_subjects)) || in_array($result->subject_name, unserialize($program->entryRequirements[0]->principle_subjects)) && in_array($result->subject_name, unserialize($program->entryRequirements[0]->other_advance_must_subjects))){
                                    $a_level_pass_count += 1;
                                  }
                               }
