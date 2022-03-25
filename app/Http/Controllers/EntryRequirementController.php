@@ -51,9 +51,9 @@ class EntryRequirementController extends Controller
          $entry_requirements = EntryRequirement::with(['campusProgram.program'])->where('application_window_id',$request->get('application_window_id'))->get();
 
          foreach($entry_requirements as $req){
-             if($request->get('requirement_'.$req)){
+             if($request->get('requirement_'.$req->id)){
                  $requirement = EntryRequirement::find($req->id);
-                 $requirement->max_capacity = $request->get('requirement_'.$req);
+                 $requirement->max_capacity = $request->get('requirement_'.$req->id);
                  $requirement->save();
              }
          }
