@@ -9,8 +9,9 @@ use App\Domain\Application\Repositories\Interfaces\EntryRequirementInterface;
 class EntryRequirementAction implements EntryRequirementInterface{
 	
 	public function store(Request $request){
-		$requirement = new EntryRequirement;
+		
         foreach($request->get('campus_program_ids') as $id){
+            $requirement = new EntryRequirement;
             $requirement->campus_program_id = $id;
             $requirement->application_window_id = $request->get('application_window_id');
             $requirement->equivalent_gpa = $request->get('equivalent_gpa');
