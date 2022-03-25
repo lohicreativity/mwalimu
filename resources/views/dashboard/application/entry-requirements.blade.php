@@ -537,6 +537,24 @@
                     </select>
                   </div>
                  </div>
+                 <div class="row">
+                  <div class="form-group col-3">
+                    {!! Form::label('','Other Must Subjects') !!}
+                    <select name="other_must_subjects[]" class="form-control ss-select-tags" multiple="multiple">
+                       @foreach($subjects as $sub)
+                       <option class="{{ $sub->subject_name }}">{{ $sub->subject_name }}</option>
+                       @endforeach
+                    </select>
+                  </div>
+                  <div class="form-group col-3">
+                    {!! Form::label('','Other Advance Must Subjects') !!}
+                    <select name="other_advance_must_subjects[]" class="form-control ss-select-tags" multiple="multiple">
+                       @foreach($subjects as $sub)
+                       <option class="{{ $sub->subject_name }}">{{ $sub->subject_name }}</option>
+                       @endforeach
+                    </select>
+                  </div>
+                </div>
              </div>
              
                <div class="card-footer">
@@ -768,6 +786,24 @@
                     </select>
                   </div>
                  </div>
+                 <div class="row">
+                  <div class="form-group col-3">
+                    {!! Form::label('','Other Must Subjects') !!}
+                    <select name="other_must_subjects[]" class="form-control ss-select-tags" multiple="multiple">
+                       @foreach($subjects as $sub)
+                       <option class="{{ $sub->subject_name }}">{{ $sub->subject_name }}</option>
+                       @endforeach
+                    </select>
+                  </div>
+                  <div class="form-group col-3">
+                    {!! Form::label('','Other Advance Must Subjects') !!}
+                    <select name="other_advance_must_subjects[]" class="form-control ss-select-tags" multiple="multiple">
+                       @foreach($subjects as $sub)
+                       <option class="{{ $sub->subject_name }}">{{ $sub->subject_name }}</option>
+                       @endforeach
+                    </select>
+                  </div>
+                </div>
              </div>
              
                <div class="card-footer">

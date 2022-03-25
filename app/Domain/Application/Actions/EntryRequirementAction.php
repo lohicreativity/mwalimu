@@ -27,6 +27,8 @@ class EntryRequirementAction implements EntryRequirementInterface{
             $requirement->nta_level = $request->get('nta_level');
             $requirement->exclude_subjects = serialize($request->get('exclude_subjects'));
             $requirement->must_subjects = serialize($request->get('must_subjects'));
+            $requirement->other_must_subjects = serialize($request->get('other_must_subjects'));
+            $requirement->other_advance_must_subjects = serialize($request->get('other_advance_must_subjects'));
             $requirement->advance_exclude_subjects = serialize($request->get('advance_exclude_subjects'));
             $requirement->advance_must_subjects = serialize($request->get('advance_must_subjects'));
             $requirement->subsidiary_subjects = serialize($request->get('subsidiary_subjects'));
@@ -57,6 +59,8 @@ class EntryRequirementAction implements EntryRequirementInterface{
             $requirement->nta_level = $request->get('nta_level');
             $requirement->exclude_subjects = serialize($request->get('exclude_subjects'));
             $requirement->must_subjects = serialize($request->get('must_subjects'));
+            $requirement->other_must_subjects = serialize($request->get('other_must_subjects'));
+            $requirement->other_advance_must_subjects = serialize($request->get('other_advance_must_subjects'));
             $requirement->advance_exclude_subjects = serialize($request->get('advance_exclude_subjects'));
             $requirement->advance_must_subjects = serialize($request->get('advance_must_subjects'));
             $requirement->subsidiary_subjects = serialize($request->get('subsidiary_subjects'));
