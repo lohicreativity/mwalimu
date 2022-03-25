@@ -33,7 +33,7 @@ class EntryRequirementAction implements EntryRequirementInterface{
             $requirement->advance_exclude_subjects = serialize($request->get('advance_exclude_subjects'));
             $requirement->advance_must_subjects = serialize($request->get('advance_must_subjects'));
             $requirement->subsidiary_subjects = serialize($request->get('subsidiary_subjects'));
-            $requirement->principle_subjects = serialize($requirement->get('principle_subjects'));
+            $requirement->principle_subjects = serialize($request->get('principle_subjects'));
             $requirement->max_capacity = $request->get('max_capacity');
             $requirement->save();
         }
@@ -64,7 +64,7 @@ class EntryRequirementAction implements EntryRequirementInterface{
             $requirement->advance_exclude_subjects = serialize($request->get('advance_exclude_subjects'));
             $requirement->advance_must_subjects = serialize($request->get('advance_must_subjects'));
             $requirement->subsidiary_subjects = serialize($request->get('subsidiary_subjects'));
-            $requirement->principle_subjects = serialize($requirement->get('principle_subjects'));
+            $requirement->principle_subjects = serialize($request->get('principle_subjects'));
             $requirement->max_capacity = $request->get('max_capacity');
             $requirement->save();
 	}
