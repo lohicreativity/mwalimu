@@ -24,7 +24,7 @@ class EntryRequirementAction implements EntryRequirementInterface{
             $requirement->pass_subjects = $request->get('pass_subjects');
             $requirement->pass_grade = $request->get('pass_grade');
             $requirement->award_level = $request->get('award_level');
-            $requirement->award_division = $request->get('award_division');
+            $requirement->nta_level = $request->get('nta_level');
             $requirement->exclude_subjects = serialize($request->get('exclude_subjects'));
             $requirement->must_subjects = serialize($request->get('must_subjects'));
             $requirement->advance_exclude_subjects = serialize($request->get('advance_exclude_subjects'));
@@ -54,7 +54,7 @@ class EntryRequirementAction implements EntryRequirementInterface{
             $requirement->pass_subjects = $request->get('pass_subjects');
             $requirement->pass_grade = $request->get('pass_grade');
             $requirement->award_level = $request->get('award_level');
-            $requirement->award_division = $request->get('award_division');
+            $requirement->nta_level = $request->get('nta_level');
             $requirement->exclude_subjects = serialize($request->get('exclude_subjects'));
             $requirement->must_subjects = serialize($request->get('must_subjects'));
             $requirement->advance_exclude_subjects = serialize($request->get('advance_exclude_subjects'));
