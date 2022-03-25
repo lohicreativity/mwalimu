@@ -162,12 +162,14 @@
 
                 $subsidiary_subjects = [
                    'placeholder'=>'Subsidiary Subjects',
-                   'class'=>'form-control'
+                   'class'=>'form-control',
+                   'readonly'=>true
                 ];
 
                 $principle_subjects = [
                    'placeholder'=>'Principle Subjects',
-                   'class'=>'form-control'
+                   'class'=>'form-control',
+                   'readonly'=>true
                 ];
 
                 $max_capacity = [
@@ -227,16 +229,29 @@
                     {!! Form::text('principle_pass_subjects',null,$principle_pass_subjects) !!}
                    </div>
                    <div class="form-group col-3">
-                    {!! Form::label('','Pass Subjects') !!}
+                    {!! Form::label('','Number of Pass Subjects') !!}
                     {!! Form::text('pass_subjects',null,$pass_subjects) !!}
                   </div>
                   <div class="form-group col-3">
                     {!! Form::label('','Pass Grade') !!}
-                    {!! Form::text('pass_grade',null,$pass_grade) !!}
+                    <select name="pass_grade" class="form-control">
+                       <option value="">Select Pass Grade</option>
+                       <option value="A">A</option>
+                       <option value="B">B</option>
+                       <option value="C">C</option>
+                       <option value="D">D</option>
+                       <option value="E">E</option>
+                       <option value="F">F</option>
+                    </select>
                   </div>
                   <div class="form-group col-3">
-                    {!! Form::label('','Award Level') !!}
-                    {!! Form::text('award_level',null,$award_level) !!}
+                    {!! Form::label('','NVA Level') !!}
+                    <select name="award_level" class="form-control">
+                       <option value="">Select NVA Level</option>
+                       <option value="I">I</option>
+                       <option value="II">II</option>
+                       <option value="III">III</option>
+                    </select>
                   </div>
                  </div>
                  <div class="row">
@@ -262,7 +277,7 @@
                   </div>
                   <div class="form-group col-3">
                     {!! Form::label('','Subsidiary Subjects') !!}
-                    <select name="subsidiary_subjects[]" class="form-control ss-select-tags" multiple="multiple">
+                    <select name="subsidiary_subjects[]" class="form-control ss-select-tags" multiple="multiple" disabled="disabled">
                        @foreach($subjects as $sub)
                        <option class="{{ $sub->subject_name }}">{{ $sub->subject_name }}</option>
                        @endforeach
@@ -272,7 +287,7 @@
                  <div class="row">
                   <div class="form-group col-3">
                     {!! Form::label('','Principle Subjects') !!}
-                    <select name="principle_subjects[]" class="form-control ss-select-tags" multiple="multiple">
+                    <select name="principle_subjects[]" class="form-control ss-select-tags" multiple="multiple" disabled="disabled">
                        @foreach($subjects as $sub)
                        <option class="{{ $sub->subject_name }}">{{ $sub->subject_name }}</option>
                        @endforeach
@@ -430,7 +445,15 @@
                   </div>
                   <div class="form-group col-3">
                     {!! Form::label('','Pass Grade') !!}
-                    {!! Form::text('pass_grade',null,$pass_grade) !!}
+                    <select name="pass_grade" class="form-control">
+                       <option value="">Select Pass Grade</option>
+                       <option value="A">A</option>
+                       <option value="B">B</option>
+                       <option value="C">C</option>
+                       <option value="D">D</option>
+                       <option value="E">E</option>
+                       <option value="F">F</option>
+                    </select>
                   </div>
                   <div class="form-group col-3">
                     {!! Form::label('','Award Level') !!}
@@ -628,7 +651,15 @@
                   </div>
                   <div class="form-group col-3">
                     {!! Form::label('','Pass Grade') !!}
-                    {!! Form::text('pass_grade',null,$pass_grade) !!}
+                    <select name="pass_grade" class="form-control">
+                       <option value="">Select Pass Grade</option>
+                       <option value="A">A</option>
+                       <option value="B">B</option>
+                       <option value="C">C</option>
+                       <option value="D">D</option>
+                       <option value="E">E</option>
+                       <option value="F">F</option>
+                    </select>
                   </div>
                   <div class="form-group col-3">
                     {!! Form::label('','Award Level') !!}
