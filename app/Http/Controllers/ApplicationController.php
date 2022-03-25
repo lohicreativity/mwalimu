@@ -450,6 +450,7 @@ class ApplicationController extends Controller
                                       }
                                    }
                                 }
+                              }
                            }
                          }
                          if($o_level_pass_count >= $program->entryRequirements[0]->pass_subjects && count($applicant->nectaResultDetails) == ($detailKey+1)){
