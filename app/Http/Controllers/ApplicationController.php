@@ -437,7 +437,8 @@ class ApplicationController extends Controller
                                          $o_level_pass_count += 1;
                                       }
                                      }
-                                }else{
+                                   }                                     
+                              }else{
                                    if(!in_array($result->subject_name, unserialize($program->entryRequirements[0]->exclude_subjects)))){
 
                                       if(unserialize($program->entryRequirements[0]->other_must_subjects) != null){
@@ -447,9 +448,8 @@ class ApplicationController extends Controller
                                       }else{
                                          $o_level_pass_count += 1;
                                       }
-                                     }
+                                   }
                                 }
-                              }
                            }
                          }
                          if($o_level_pass_count >= $program->entryRequirements[0]->pass_subjects && count($applicant->nectaResultDetails) == ($detailKey+1)){
