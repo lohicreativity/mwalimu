@@ -147,7 +147,8 @@
 
                 $award_division = [
                    'placeholder'=>'Award Division',
-                   'class'=>'form-control'
+                   'class'=>'form-control',
+                   'readonly'=>true
                 ];
 
                 $exclude_subjects = [
@@ -305,32 +306,38 @@
                @php
                 $equivalent_gpa = [
                    'placeholder'=>'Equivalent GPA',
-                   'class'=>'form-control'
+                   'class'=>'form-control',
+                   'readonly'=>true
                 ];
 
                 $equivalent_pass_subjects = [
                    'placeholder'=>'Equivalent Pass Subjects',
-                   'class'=>'form-control'
+                   'class'=>'form-control',
+                   'readonly'=>true
                 ];
 
                 $equivalent_average_grade = [
                    'placeholder'=>'Equivalent Average Grade',
-                   'class'=>'form-control'
+                   'class'=>'form-control',
+                   'readonly'=>true
                 ];
 
                 $open_equivalent_gpa = [
                    'placeholder'=>'Open Equivalent GPA',
-                   'class'=>'form-control'
+                   'class'=>'form-control',
+                   'readonly'=>true
                 ];
 
                 $open_equivalent_pass_subjects = [
                    'placeholder'=>'Open Equivalent Pass Subjects',
-                   'class'=>'form-control'
+                   'class'=>'form-control',
+                   'readonly'=>true
                 ];
 
                 $open_equivalent_average_grade = [
                    'placeholder'=>'Open Equivalent Average Grade',
-                   'class'=>'form-control'
+                   'class'=>'form-control',
+                   'readonly'=>true
                 ];
 
                 $principle_pass_points = [
@@ -456,8 +463,13 @@
                     </select>
                   </div>
                   <div class="form-group col-3">
-                    {!! Form::label('','Award Level') !!}
-                    {!! Form::text('award_level',null,$award_level) !!}
+                    {!! Form::label('','NVA Level') !!}
+                    <select name="award_level" class="form-control">
+                       <option value="">Select NVA Level</option>
+                       <option value="I">I</option>
+                       <option value="II">II</option>
+                       <option value="III">III</option>
+                    </select>
                   </div>
                  </div>
                  <div class="row">
