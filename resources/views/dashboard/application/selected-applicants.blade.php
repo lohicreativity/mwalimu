@@ -88,7 +88,8 @@
                         <tr>
                           <th>Name</th>
                           <th>Gender</th>
-                          <th>Submission Status</th>
+                          <th>Programme</th>
+                          <th>Status</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -98,7 +99,13 @@
                       <td>{{ $applicant->gender }}</td>
                       <td>@foreach($applicant->selections as $selection)
                            @if($selection->status == 'APPROVING')
-                           {{ $selection->campusProgram->program->name }} <span class="badge badge-warning">{{ $selection->status }}</span>
+                           {{ $selection->campusProgram->program->name }}
+                           @endif
+                          @endforeach
+                      </td>
+                      <td>@foreach($applicant->selections as $selection)
+                           @if($selection->status == 'APPROVING')
+                           <span class="badge badge-warning">{{ $selection->status }}</span>
                            @endif
                           @endforeach
                       </td>
