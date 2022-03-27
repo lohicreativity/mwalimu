@@ -444,7 +444,7 @@ class ApplicationController extends Controller
                               }
                            }
                          }
-                         if($o_level_pass_count >= $program->entryRequirements[0]->pass_subjects && count($applicant->nectaResultDetails) == ($detailKey+1)){
+                         if($o_level_pass_count >= $program->entryRequirements[0]->pass_subjects){
                            $select = ApplicantProgramSelection::find($selection->id);
                            $select->status = 'ELIGIBLE';
                            $select->status_changed_at = now();
