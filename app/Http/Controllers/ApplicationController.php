@@ -527,6 +527,7 @@ class ApplicationController extends Controller
         foreach($choices as $choice){   
             foreach ($campus_programs as $program) {
                 $count = 0;
+                if(isset($program->entryRequirements[0])){
                 foreach($applicants as $applicant){
                   foreach($applicant->selections as $selection){
                      if($selection->order == $choice && $selection->campus_program_id == $program->id){
@@ -540,6 +541,7 @@ class ApplicationController extends Controller
                         }
                      }
                   }
+                }
               }
            }
         }
