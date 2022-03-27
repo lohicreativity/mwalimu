@@ -347,11 +347,17 @@
 
                 $principle_pass_points = [
                    'placeholder'=>'Principle Pass Points',
-                   'class'=>'form-control'
+                   'class'=>'form-control',
+                   'readonly'=>true
                 ];
 
                 $principle_pass_subjects = [
                    'placeholder'=>'Principle Pass Subjects',
+                   'class'=>'form-control'
+                ];
+
+                $subsidiary_pass_subjects = [
+                   'placeholder'=>'Subsidiary Pass Subjects',
                    'class'=>'form-control'
                 ];
 
@@ -452,6 +458,10 @@
                     {!! Form::text('principle_pass_subjects',null,$principle_pass_subjects) !!}
                    </div>
                    <div class="form-group col-3">
+                    {!! Form::label('','No. of Subsidiary Pass Subjects') !!}
+                    {!! Form::text('subsidiary_pass_subjects',null,$subsidiary_pass_subjects) !!}
+                   </div>
+                   <div class="form-group col-3">
                     {!! Form::label('','No. of Pass Subjects') !!}
                     {!! Form::text('pass_subjects',null,$pass_subjects) !!}
                   </div>
@@ -467,6 +477,8 @@
                        <option value="F">F</option>
                     </select>
                   </div>
+                 </div>
+                 <div class="row">
                   <div class="form-group col-3">
                     {!! Form::label('','NVA Level') !!}
                     <select name="award_level" class="form-control">
@@ -476,8 +488,6 @@
                        <option value="III">III</option>
                     </select>
                   </div>
-                 </div>
-                 <div class="row">
                   <div class="form-group col-3">
                     {!! Form::label('','NTA Level') !!}
                     <select name="nta_level" class="form-control">
@@ -507,27 +517,12 @@
                        @endforeach
                     </select>
                   </div>
-                  <div class="form-group col-3">
-                    {!! Form::label('','Other Must Subjects') !!}
-                    <select name="other_must_subjects[]" class="form-control ss-select-tags" multiple="multiple">
-                       @foreach($subjects as $sub)
-                       <option value="{{ $sub->subject_name }}">{{ $sub->subject_name }}</option>
-                       @endforeach
-                    </select>
-                  </div>
+                  
                  </div>
                  <div class="row">
                   <div class="form-group col-3">
-                    {!! Form::label('','Subsidiary Subjects') !!}
-                    <select name="subsidiary_subjects[]" class="form-control ss-select-tags" multiple="multiple">
-                       @foreach($subjects as $sub)
-                       <option value="{{ $sub->subject_name }}">{{ $sub->subject_name }}</option>
-                       @endforeach
-                    </select>
-                  </div>
-                  <div class="form-group col-3">
-                    {!! Form::label('','Principle Subjects') !!}
-                    <select name="principle_subjects[]" class="form-control ss-select-tags" multiple="multiple">
+                    {!! Form::label('','Other Must Subjects') !!}
+                    <select name="other_must_subjects[]" class="form-control ss-select-tags" multiple="multiple">
                        @foreach($subjects as $sub)
                        <option value="{{ $sub->subject_name }}">{{ $sub->subject_name }}</option>
                        @endforeach
@@ -549,8 +544,7 @@
                        @endforeach
                     </select>
                   </div>
-                 </div>
-                 <div class="row">
+
                   <div class="form-group col-3">
                     {!! Form::label('','Other Advance Must Subjects') !!}
                     <select name="other_advance_must_subjects[]" class="form-control ss-select-tags" multiple="multiple">
