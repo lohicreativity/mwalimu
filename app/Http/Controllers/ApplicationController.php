@@ -524,21 +524,22 @@ class ApplicationController extends Controller
         $applicants = Applicant::with(['selections','nectaResultDetails.results','nacteResultDetails.results'])->where('program_level_id',$request->get('award_id'))->whereHas('selections',function($query) use($request){
             $query->where('application_window_id',$request->get('application_window_id'))->where('status','ELIGIBLE');
         })->get();
+        $selected_program = array();
         foreach($choices as $choice){   
             foreach ($campus_programs as $program) {
                 $count = 0;
                 if(isset($program->entryRequirements[0])){
                 foreach($applicants as $applicant){
-                  $selected_program = false;
+                  $selected_program[$applicant->id] = false;
                   foreach($applicant->selections as $selection){
                      if($selection->order == $choice && $selection->campus_program_id == $program->id){
-                        if($count <= $program->entryRequirements[0]->max_capacity && $selection->status == 'ELIGIBLE' && !$selected_program){
+                        if($count <= $program->entryRequirements[0]->max_capacity && $selection->status == 'ELIGIBLE' && !$selected_program[$applicant->id]){
                            $select = ApplicantProgramSelection::find($selection->id);
                            $select->status = 'APPROVING';
                            $select->status_changed_at = now();
                            $select->save();
 
-                           $selected_program = true;
+                           $selected_program[$applicant->id] = true;
 
                            $count++;
                         }
