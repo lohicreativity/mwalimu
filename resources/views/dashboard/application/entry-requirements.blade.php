@@ -613,6 +613,11 @@
                    'class'=>'form-control'
                 ];
 
+                $min_pass_subjects = [
+                   'placeholder'=>'Min Pass Subjects',
+                   'class'=>'form-control'
+                ];
+
                 $pass_grade = [
                    'placeholder'=>'Pass Grade',
                    'class'=>'form-control'
@@ -705,14 +710,21 @@
                     {!! Form::text('min_principle_pass_points',null,$min_principle_pass_points) !!}
                   </div>
                    <div class="form-group col-3">
-                    {!! Form::label('','Principle Pass Subjects') !!}
+                    {!! Form::label('','No. of Principle Pass Subjects') !!}
                     {!! Form::text('principle_pass_subjects',null,$principle_pass_subjects) !!}
                    </div>
                    <div class="form-group col-3">
-                    {!! Form::label('','Pass Subjects') !!}
+                    {!! Form::label('','No. of Pass Subjects') !!}
                     {!! Form::text('pass_subjects',null,$pass_subjects) !!}
                   </div>
                   <div class="form-group col-3">
+                    {!! Form::label('','No. of Minimum Pass Subjects') !!}
+                    {!! Form::text('min_pass_subjects',null,$min_pass_subjects) !!}
+                  </div>
+                  
+                 </div>
+                 <div class="row">
+                   <div class="form-group col-3">
                     {!! Form::label('','Pass Grade') !!}
                     <select name="pass_grade" class="form-control">
                        <option value="">Select Pass Grade</option>
@@ -724,9 +736,6 @@
                        <option value="F">F</option>
                     </select>
                   </div>
-                  
-                 </div>
-                 <div class="row">
                   <div class="form-group col-3">
                     {!! Form::label('','AVN Level') !!}
                     {!! Form::text('award_level',null,$award_level) !!}
@@ -752,6 +761,9 @@
                        @endforeach
                     </select>
                   </div>
+                  
+                 </div>
+                 <div class="row">
                   <div class="form-group col-3">
                     {!! Form::label('','Must Subjects') !!}
                     <select name="must_subjects[]" class="form-control ss-select-tags" multiple="multiple">
@@ -760,9 +772,6 @@
                        @endforeach
                     </select>
                   </div>
-                  
-                 </div>
-                 <div class="row">
                   <div class="form-group col-3">
                     {!! Form::label('','Other Must Subjects') !!}
                     <select name="other_must_subjects[]" class="form-control ss-select-tags" multiple="multiple">
@@ -787,6 +796,10 @@
                        @endforeach
                     </select>
                   </div>
+                  
+                  
+                 </div>
+                 <div class="row">
                   <div class="form-group col-3">
                     {!! Form::label('','Advance Exclude Subjects') !!}
                     <select name="advance_exclude_subjects[]" class="form-control ss-select-tags" multiple="multiple">
@@ -795,9 +808,6 @@
                        @endforeach
                     </select>
                   </div>
-                  
-                 </div>
-                 <div class="row">
                   <div class="form-group col-3">
                     {!! Form::label('','Advance Must Subjects') !!}
                     <select name="advance_must_subjects[]" class="form-control ss-select-tags" multiple="multiple">
