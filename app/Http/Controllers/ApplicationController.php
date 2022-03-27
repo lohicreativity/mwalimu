@@ -86,7 +86,7 @@ class ApplicationController extends Controller
                  $query->where('id',$request->get('application_window_id'));
             })->whereHas('selections',function($query) use($request){
                  $query->where('status','APPROVING');
-            })->with(['nextOfKin','intake','selections.campusProgram.program'])->where('program_level_id')->paginate(20),
+            })->with(['nextOfKin','intake','selections.campusProgram.program'])->where('program_level_id',$request->get('program_level_id'))->paginate(20),
             'request'=>$request
          ];
          return view('dashboard.application.selected-applicants',$data)->withTitle('Selected Applicants');
