@@ -553,6 +553,7 @@ class ApplicationController extends Controller
                    if(str_contains($award->name,'Bachelor')){
                        $o_level_pass_count = 0;
                        $a_level_principle_pass_count = 0;
+                       $a_level_principle_pass_points = 0;
                        $a_level_subsidiary_pass_count = 0;
                        $diploma_pass_count = 0;
                        foreach ($applicant->nectaResultDetails as $detailKey=>$detail) {
@@ -585,10 +586,12 @@ class ApplicationController extends Controller
                                     if(unserialize($program->entryRequirements[0]->advance_other_must_subjects) != ''){
                                        if(in_array($result->subject_name, unserialize($program->entryRequirements[0]->advance_must_subjects)) || in_array($result->subject_name, unserialize($program->entryRequirements[0]->other_advance_must_subjects))){
                                          $a_level_principle_pass_count += 1;
+                                         $a_level_principle_pass_points += $a_level_grades[$result->grade];
                                        }
                                     }else{
                                        if(in_array($result->subject_name, unserialize($program->entryRequirements[0]->advance_must_subjects))){
                                          $a_level_principle_pass_count += 1;
+                                         $a_level_principle_pass_points += $a_level_grades[$result->grade];
                                        }
                                     }
                                  }elseif(unserialize($program->entryRequirements[0]->advance_exclude_subjects) != ''){
@@ -617,7 +620,7 @@ class ApplicationController extends Controller
                               }
                            }
                          }
-                         if($o_level_pass_count >= $program->entryRequirements[0]->pass_subjects && $a_level_principle_pass_count >= 2){
+                         if($o_level_pass_count >= $program->entryRequirements[0]->pass_subjects && $a_level_principle_pass_count >= 2 && $a_level_principle_pass_points >= $program->entryRequirements[0]->principle_pass_points){
                            $select = ApplicantProgramSelection::find($selection->id);
                            $select->status = 'ELIGIBLE';
                            $select->status_changed_at = now();

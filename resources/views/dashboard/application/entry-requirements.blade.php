@@ -598,6 +598,11 @@
                    'class'=>'form-control'
                 ];
 
+                $min_principle_pass_points = [
+                   'placeholder'=>'Min Principle Pass Points',
+                   'class'=>'form-control'
+                ];
+
                 $principle_pass_subjects = [
                    'placeholder'=>'Principle Pass Subjects',
                    'class'=>'form-control'
@@ -696,6 +701,10 @@
                  </div>
                  <div class="row">
                    <div class="form-group col-3">
+                    {!! Form::label('','Minimum Principle Pass Points') !!}
+                    {!! Form::text('min_principle_pass_points',null,$min_principle_pass_points) !!}
+                  </div>
+                   <div class="form-group col-3">
                     {!! Form::label('','Principle Pass Subjects') !!}
                     {!! Form::text('principle_pass_subjects',null,$principle_pass_subjects) !!}
                    </div>
@@ -715,12 +724,13 @@
                        <option value="F">F</option>
                     </select>
                   </div>
+                  
+                 </div>
+                 <div class="row">
                   <div class="form-group col-3">
                     {!! Form::label('','AVN Level') !!}
                     {!! Form::text('award_level',null,$award_level) !!}
                   </div>
-                 </div>
-                 <div class="row">
                   <div class="form-group col-3">
                      {!! Form::label('','NTA Level') !!}
                     <select name="nta_level" class="form-control">
@@ -750,6 +760,9 @@
                        @endforeach
                     </select>
                   </div>
+                  
+                 </div>
+                 <div class="row">
                   <div class="form-group col-3">
                     {!! Form::label('','Other Must Subjects') !!}
                     <select name="other_must_subjects[]" class="form-control ss-select-tags" multiple="multiple">
@@ -758,9 +771,6 @@
                        @endforeach
                     </select>
                   </div>
-                  
-                 </div>
-                 <div class="row">
                   <div class="form-group col-3">
                     {!! Form::label('','Subsidiary Subjects') !!}
                     <select name="subsidiary_subjects[]" class="form-control ss-select-tags" multiple="multiple">
@@ -785,6 +795,9 @@
                        @endforeach
                     </select>
                   </div>
+                  
+                 </div>
+                 <div class="row">
                   <div class="form-group col-3">
                     {!! Form::label('','Advance Must Subjects') !!}
                     <select name="advance_must_subjects[]" class="form-control ss-select-tags" multiple="multiple">
@@ -793,9 +806,6 @@
                        @endforeach
                     </select>
                   </div>
-                 </div>
-                 <div class="row">
-                  
                   <div class="form-group col-3">
                     {!! Form::label('','Other Advance Must Subjects') !!}
                     <select name="other_advance_must_subjects[]" class="form-control ss-select-tags" multiple="multiple">

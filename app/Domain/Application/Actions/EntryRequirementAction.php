@@ -21,6 +21,7 @@ class EntryRequirementAction implements EntryRequirementInterface{
             $requirement->open_equivalent_pass_subjects = $request->get('open_equivalent_pass_subjects');
             $requirement->open_equivalent_average_grade = $request->get('open_equivalent_average_grade');
             $requirement->principle_pass_points = $request->get('principle_pass_points');
+            $requirement->min_principle_pass_points = $request->get('min_principle_pass_points');
             $requirement->principle_pass_subjects = $request->get('principle_pass_subjects');
             $requirement->subsidiary_pass_subjects = $request->get('subsidiary_pass_subjects');
             $requirement->pass_subjects = $request->get('pass_subjects');
@@ -53,6 +54,7 @@ class EntryRequirementAction implements EntryRequirementInterface{
             $requirement->open_equivalent_pass_subjects = $request->get('open_equivalent_pass_subjects');
             $requirement->open_equivalent_average_grade = $request->get('open_equivalent_average_grade');
             $requirement->principle_pass_points = $request->get('principle_pass_points');
+            $requirement->min_principle_pass_points = $request->get('min_principle_pass_points');
             $requirement->principle_pass_subjects = $request->get('principle_pass_subjects');
             $requirement->subsidiary_pass_subjects = $request->get('subsidiary_pass_subjects');
             $requirement->pass_subjects = $request->get('pass_subjects');
