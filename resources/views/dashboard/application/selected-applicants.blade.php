@@ -78,7 +78,7 @@
 
              <div class="card">
                <div class="card-header">
-                 <h3 class="card-title">{{ __('Select Application Window') }}</h3>
+                 <h3 class="card-title">{{ __('Selected Applicants') }}</h3>
                </div>
                <!-- /.card-header -->
                <div class="card-body">
@@ -97,7 +97,9 @@
                       <td>{{ $applicant->first_name }} {{ $applicant->middle_name }} {{ $applicant->surname }}</td>
                       <td>{{ $applicant->gender }}</td>
                       <td>@foreach($applicant->selections as $selection)
+                           @if($selection->status == 'APPROVING')
                            {{ $selection->campusProgram->program->name }} <span class="badge badge-warning">{{ $selection->status }}</span>
+                           @endif
                           @endforeach
                       </td>
                    </tr>
