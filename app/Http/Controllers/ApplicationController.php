@@ -537,7 +537,7 @@ class ApplicationController extends Controller
                        $has_btc = false;
                        foreach($applicant->nacteResultDetails as $detailKey=>$detail){
                           if(str_contains($detail->programme,'BASIC TECHNICIAN CERTIFICATE')){
-                              $has_btc = 1;
+                              $has_btc = true;
                           }
                        }
 
