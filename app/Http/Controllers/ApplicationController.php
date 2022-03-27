@@ -405,6 +405,8 @@ class ApplicationController extends Controller
         $o_level_grades = ['A'=>5,'B+'=>4,'B'=>3,'C'=>2,'D'=>1,'E'=>0.5,'F'=>0];
 
         $diploma_grades = ['A'=>5,'B+'=>4,'B'=>3,'C'=>2,'D'=>1,'F'=>0];
+
+        $selected_program = array();
         
         foreach($applicants as $applicant){
            $index_number = $applicant->index_number;
@@ -415,6 +417,7 @@ class ApplicationController extends Controller
            }else{
              $a_level_grades = ['A'=>5,'B+'=>4,'B'=>3,'C'=>2,'D'=>1,'E'=>0.5];
            }
+           $selected_program[$applicant->id] = false;
            foreach($applicant->selections as $selection){
               foreach($campus_programs as $program){
                 if($program->id == $selection->campus_program_id && isset($program->entryRequirements[0])){
@@ -524,13 +527,13 @@ class ApplicationController extends Controller
         $applicants = Applicant::with(['selections','nectaResultDetails.results','nacteResultDetails.results'])->where('program_level_id',$request->get('award_id'))->whereHas('selections',function($query) use($request){
             $query->where('application_window_id',$request->get('application_window_id'))->where('status','ELIGIBLE');
         })->get();
-        $selected_program = array();
+        
         foreach($choices as $choice){   
             foreach ($campus_programs as $program) {
                 $count = 0;
                 if(isset($program->entryRequirements[0])){
                 foreach($applicants as $applicant){
-                  $selected_program[$applicant->id] = false;
+                  
                   foreach($applicant->selections as $selection){
                      if($selection->order == $choice && $selection->campus_program_id == $program->id){
                         if($count <= $program->entryRequirements[0]->max_capacity && $selection->status == 'ELIGIBLE' && !$selected_program[$applicant->id]){
