@@ -427,30 +427,21 @@ class ApplicationController extends Controller
                               if($o_level_grades[$result->grade] >= $o_level_grades[$program->entryRequirements[0]->pass_grade]){
 
                                  if(unserialize($program->entryRequirements[0]->must_subjects) != null){
-                                     if(!in_array($result->subject_name, unserialize($program->entryRequirements[0]->exclude_subjects)) || in_array($result->subject_name, unserialize($program->entryRequirements[0]->must_subjects))){
-
-                                      if(unserialize($program->entryRequirements[0]->other_must_subjects) != null){
-                                         if(!in_array($result->subject_name, unserialize($program->entryRequirements[0]->exclude_subjects)) || in_array($result->subject_name, unserialize($program->entryRequirements[0]->must_subjects)) && in_array($result->subject_name, unserialize($program->entryRequirements[0]->other_must_subjects))){
-                                           $o_level_pass_count += 1;
-                                         }
-                                      }else{
+                                    if(unserialize($program->entryRequirements[0]->other_must_subjects) != null){
+                                       if(in_array($result->subject_name, unserialize($program->entryRequirements[0]->must_subjects)) || in_array($result->subject_name, unserialize($program->entryRequirements[0]->other_must_subjects))){
                                          $o_level_pass_count += 1;
-                                      }
-                                     }
-                                   }                                     
-                              }else{
-                                   if(!in_array($result->subject_name, unserialize($program->entryRequirements[0]->exclude_subjects))){
-
-                                      if(unserialize($program->entryRequirements[0]->other_must_subjects) != null){
-                                         if(!in_array($result->subject_name, unserialize($program->entryRequirements[0]->exclude_subjects)) || in_array($result->subject_name, unserialize($program->entryRequirements[0]->other_must_subjects))){
-                                           $o_level_pass_count += 1;
-                                         }
-                                      }else{
+                                       }
+                                    }else{
+                                       if(in_array($result->subject_name, unserialize($program->entryRequirements[0]->must_subjects))){
                                          $o_level_pass_count += 1;
-                                      }
-                                   }
-                                }
-                              
+                                       }
+                                    }
+                                 }elseif(unserialize($program->entryRequirements[0]->exclude_subjects) != null){
+                                    if(!in_array($result->subject_name, unserialize($program->entryRequirements[0]->exclude_subjects))){
+                                         $o_level_pass_count += 1;
+                                    }
+                                 }
+                              }
                            }
                          }
                          if($o_level_pass_count >= $program->entryRequirements[0]->pass_subjects && count($applicant->nectaResultDetails) == ($detailKey+1)){
