@@ -49,6 +49,7 @@
                   {!! Form::open(['url'=>'application/selected-applicants','class'=>'ss-form-processing','method'=>'GET']) !!}
                     <div class="row">
                     <div class="form-group col-6">
+                      {!! Form::label('','Application Window') !!}
                      <select name="application_window_id" class="form-control" required>
                         <option value="">Select Application Window</option>
                         @foreach($application_windows as $window)
