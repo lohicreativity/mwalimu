@@ -19,6 +19,10 @@ use App\Http\Controllers\GePG\GePGResponseController;
 |
 */
 
+Route::get('test',function(){
+    return unserialize('N;');
+});
+
 Route::view('/', 'auth.login');
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', [HomeController::class,'dashboard'])->name('dashboard');
