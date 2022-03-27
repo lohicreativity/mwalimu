@@ -529,13 +529,16 @@ class ApplicationController extends Controller
                 $count = 0;
                 if(isset($program->entryRequirements[0])){
                 foreach($applicants as $applicant){
+                  $selected_program = false;
                   foreach($applicant->selections as $selection){
                      if($selection->order == $choice && $selection->campus_program_id == $program->id){
-                        if($count <= $program->entryRequirements[0]->max_capacity && $selection->status == 'ELIGIBLE'){
+                        if($count <= $program->entryRequirements[0]->max_capacity && $selection->status == 'ELIGIBLE' && !$selected_program){
                            $select = ApplicantProgramSelection::find($selection->id);
                            $select->status = 'APPROVING';
                            $select->status_changed_at = now();
                            $select->save();
+
+                           $selected_program = true;
 
                            $count++;
                         }
