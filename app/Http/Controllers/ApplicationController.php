@@ -80,12 +80,13 @@ class ApplicationController extends Controller
          $data = [
             'staff'=>User::find(Auth::user()->id)->staff,
             'application_windows'=>ApplicationWindow::all(),
+            'awards'=>Award::all(),
             'application_window'=>ApplicationWindow::find($request->get('application_window_id')),
             'applicants'=>Applicant::whereHas('intake.applicationWindows',function($query) use($request){
                  $query->where('id',$request->get('application_window_id'));
             })->whereHas('selections',function($query) use($request){
                  $query->where('status','APPROVING');
-            })->with(['nextOfKin','intake','selections.campusProgram.program'])->paginate(20),
+            })->with(['nextOfKin','intake','selections.campusProgram.program'])->where('program_level_id')->paginate(20),
             'request'=>$request
          ];
          return view('dashboard.application.selected-applicants',$data)->withTitle('Selected Applicants');

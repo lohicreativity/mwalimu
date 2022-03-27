@@ -48,7 +48,7 @@
                <div class="card-body">
                   {!! Form::open(['url'=>'application/selected-applicants','class'=>'ss-form-processing','method'=>'GET']) !!}
                     <div class="row">
-                    <div class="form-group col-12">
+                    <div class="form-group col-6">
                      <select name="application_window_id" class="form-control" required>
                         <option value="">Select Application Window</option>
                         @foreach($application_windows as $window)
@@ -56,6 +56,15 @@
                         @endforeach
                      </select>
                    </div>
+                   <div class="form-group col-6">
+                    {!! Form::label('','Programme Level') !!}
+                    <select name="program_level_id" class="form-control" required>
+                      <option value="">Select Programme Level</option>
+                      @foreach($awards as $award)
+                      <option value="{{ $award->id }}">{{ $award->name }}</option>
+                      @endforeach
+                    </select>
+                  </div>
                  </div>
                    <div class="ss-form-actions">
                     <button type="submit" class="btn btn-primary">{{ __('Search') }}</button>
