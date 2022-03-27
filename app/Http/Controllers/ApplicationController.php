@@ -402,6 +402,8 @@ class ApplicationController extends Controller
             $query->where('application_window_id',$request->get('application_window_id'));
         })->get();
 
+        return $applicants;
+
         $o_level_grades = ['A'=>5,'B'=>4,'C'=>3,'D'=>2,'E'=>1,'F'=>0];
 
         $diploma_grades = ['A'=>5,'B+'=>4,'B'=>3,'C'=>2,'D'=>1,'F'=>0];
