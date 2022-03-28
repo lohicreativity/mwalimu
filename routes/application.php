@@ -88,6 +88,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 
 	Route::get('selected-applicants',[ApplicationController::class,'selectedApplicants']);
 	Route::get('selected-applicants/download',[ApplicationController::class,'downloadSelectedApplicants']);
+	Route::get('submit-selected-applicants',[ApplicationController::class,'submitSelectedApplicants']);
 
 
 	Route::get('run-selection',[ApplicationController::class,'showRunSelection']);

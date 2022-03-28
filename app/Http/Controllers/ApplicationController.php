@@ -192,6 +192,95 @@ class ApplicationController extends Controller
     }
 
     /**
+     * Submit selected applicants
+     */
+    public function submitSelectedApplicants(Requestn $request)
+    {
+        $applicants = Applicant::whereHas('intake.applicationWindows',function($query) use($request){
+                 $query->where('id',$request->get('application_window_id'));
+            })->whereHas('selections',function($query) use($request){
+                 $query->where('status','APPROVING');
+            })->with(['nextOfKin','intake','selections.campusProgram.program','nectaResultDetails'])->where('program_level_id',$request->get('program_level_id'))->get();
+
+
+            foreach($applicants as $applicant){
+                 //$url='https://api.tcu.go.tz/applicants/submitProgramme';
+
+                   $url='http://41.59.90.200/applicants/submitProgramme';
+                   
+                   $selected_programs = array();
+                   foreach($applicant->selections as $selection){
+                       $selected_programs[] = $selection->campusProgram->regulator_code;
+                       if($selection->status == 'APPROVING'){
+                           $approving_selection = $selection;
+                       }
+                   }
+
+                   $f6indexno = null;
+                   foreach ($applicant->nectaResultDetails as $detail) {
+                       if($detail->exam_id == 2){
+                          $f6indexno = $detail->index_number;
+                       }
+                   }
+
+                   if($f6indexno){
+
+                 $xml_request = '<?xml version=”1.0” encoding=” UTF-8”?>
+                  <Request>
+                  <UsernameToken>
+                  <Username>'.config('constants.TCU_USERNAME').'</Username>
+                  <SessionToken>'.config('constants.TCU_TOKEN').'</SessionToken>
+                  </UsernameToken>
+                  <RequestParameters>
+                  <f4indexno>'.$applicant->index_number.'</f4indexno >
+                  <f6indexno> '.$f6indexno.' </f6indexno>
+                  <SelectedProgrammes>'.implode(',', $selected_programs).'</SelectedProgrammes>
+                  <MobileNumber>'.$applicant->phone.'</MobileNumber>
+                  <EmailAddress>'.$applicant->email.'</EmailAddress>
+                  <Category>A</Category>
+                  <AdmissionStatus>provisional admission</AdmissionStatus>
+                  <ProgrammeAdmitted>'.$approving_selection->campusProgram->regulator_code.'</ProgrammeAdmitted>
+                  <Reason>eligible</Reason>
+                  <Nationality >'.$applicant->nationality.'</Nationality>
+                  <Impairment>'.$applicant->disabilityStatus->name.'</Impairment>
+                  <DateOfBirth>'.$applicant->birth_date.'</DateOfBirth> <NationalIdNumber>'.$applicant->nin.'</NationalIdNumber>
+                  </RequestParameters>
+                  </Request>';
+            $xml_response=simplexml_load_string($this->sendXmlOverPost($url,$xml_request));
+            $json = json_encode($xml_response);
+            $array = json_decode($json,TRUE);
+
+            $select = ApplicantProgramSelection::find($approving_selection->id);
+            $select->status = 'SELECTED';
+            $select->save();
+
+            return dd($array);
+            }
+
+          }
+
+        return redirect()->back()->with('message','Applicants submitted to TCU successfully');
+    }
+
+    /**
+     * Send XML over POST
+     */
+    public function sendXmlOverPost($url,$xml_request)
+    {
+          $ch = curl_init();
+          curl_setopt($ch, CURLOPT_URL, $url);
+          // For xml, change the content-type.
+          curl_setopt ($ch, CURLOPT_HTTPHEADER, Array("Content-Type: application/xml"));
+          curl_setopt($ch, CURLOPT_POST, 1);
+          curl_setopt($ch, CURLOPT_POSTFIELDS, $xml_request);
+          curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); // ask for results to be returned
+          // Send to remote and return data to caller.
+          $result = curl_exec($ch);
+          curl_close($ch);
+          return $result;
+    }
+
+    /**
      * Select program
      */
     public function selectProgram(Request $request)
