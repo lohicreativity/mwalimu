@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Domain\Academic\Models\StudyAcademicYear;
 use App\Domain\Academic\Models\Semester;
-use App\Domain\Academic\Models\Program;
+use App\Domain\Academic\Models\CampusProgram;
 
 class ProgramFee extends Model
 {
@@ -17,9 +17,9 @@ class ProgramFee extends Model
      /**
      * Establish one to many relationship with programs
      */
-    public function program()
+    public function campusProgram()
     {
-        return $this->belongsTo(Program::class,'program_id');
+        return $this->belongsTo(CampusProgram::class,'campus_program_id');
     }
 
     /**

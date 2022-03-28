@@ -22,7 +22,7 @@ class ProgramFeeController extends Controller
     public function index()
     {
     	$data = [
-           'fees'=>ProgramFee::with('program')->paginate(20),
+           'fees'=>ProgramFee::with('campusProgram.program')->paginate(20),
            'campus_programs'=>CampusProgram::with('program')->get(),
            'fee_items'=>FeeItem::all(),
            'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),

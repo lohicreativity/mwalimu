@@ -163,7 +163,7 @@
                   <tbody>
                   @foreach($fees as $fee)
                   <tr>
-                    <td>{{ $fee->program->name }}</td>
+                    <td>{{ $fee->campusProgram->program->name }}</td>
                     <td>{{ number_format($fee->amount_in_tzs,2) }}</td>
                     <td>{{ number_format($fee->amount_in_usd,2) }}</td>
                     <td>@if($fee->is_approved == 1) Yes @else No @endif</td>
@@ -204,10 +204,10 @@
                                     <div class="row">
                                       <div class="form-group col-3">
                                         {!! Form::label('','Programme') !!}
-                                        <select name="program_id" class="form-control">
+                                        <select name="campus_program_id" class="form-control">
                                           <option value="">Select Program</option>
-                                          @foreach($programs as $program)
-                                            <option value="{{ $program->id }}" @if($program->id == $fee->program_id) selected="selected" @endif>{{ $program->name }}</option>
+                                          @foreach($campus_programs as $program)
+                                            <option value="{{ $program->id }}" @if($program->id == $fee->campus_program_id) selected="selected" @endif>{{ $program->program->name }}</option>
                                           @endforeach
                                         </select>
                                       </div>
