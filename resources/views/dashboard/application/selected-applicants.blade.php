@@ -78,7 +78,8 @@
 
              <div class="card">
                <div class="card-header">
-                 <h3 class="card-title">{{ __('Selected Applicants') }}</h3>
+                 <h3 class="card-title">{{ __('Selected Applicants') }}</h3><br>
+                 <a href="{{ url('application/selected-applicants/download?application_window_id='.$request->get('application_window_id').'&program_level_id='.$request->get('program_level_id')) }}" class="btn btn-primary">Download List</a>
                </div>
                <!-- /.card-header -->
                <div class="card-body">

@@ -118,6 +118,50 @@ class ApplicationController extends Controller
     }
 
     /**
+     * Download selected applicants list
+     */
+    public function downloadSelectedApplicants(Request $request)
+    {
+
+        $headers = [
+                      'Cache-Control'       => 'must-revalidate, post-check=0, pre-check=0',   
+                      'Content-type'        => 'text/csv',
+                      'Content-Disposition' => 'attachment; filename=Selected-Applicants.csv',
+                      'Expires'             => '0',
+                      'Pragma'              => 'public'
+              ];
+
+              $list = Applicant::whereHas('intake.applicationWindows',function($query) use($request){
+                 $query->where('id',$request->get('application_window_id'));
+            })->whereHas('selections',function($query) use($request){
+                 $query->where('status','APPROVING');
+            })->with(['nextOfKin','intake','selections.campusProgram.program'])->where('program_level_id',$request->get('program_level_id'))->get();
+
+              # add headers for each column in the CSV download
+              // array_unshift($list, array_keys($list[0]));
+
+             $callback = function() use ($list) 
+              {
+                  $file_handle = fopen('php://output', 'w');
+                  fputcsv($file_handle,['First Name','Middle Name','Gender','Programme','Status']);
+                  foreach ($list as $applicant) { 
+
+                      foreach ($applicant->selections as $select) {
+                         if($select->status == 'APPROVING'){
+                            $selection = $select;
+                         }
+                      }
+
+                      fputcsv($file_handle, [$applicant->first_name,$applicant->middle_name,$applicant->surname,$applicant->gender,$selection->campusProgram->program->name, $selection->status
+                        ]);
+                  }
+                  fclose($file_handle);
+              };
+
+              return response()->stream($callback, 200, $headers);
+    }
+
+    /**
      * Select program
      */
     public function selectProgram(Request $request)

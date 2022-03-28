@@ -87,6 +87,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 	Route::post('application-window-campus-programs/update', [ApplicationWindowController::class,'updatePrograms']);
 
 	Route::get('selected-applicants',[ApplicationController::class,'selectedApplicants']);
+	Route::get('selected-applicants-download',[ApplicationController::class,'downloadSelectedApplicants']);
 
 
 	Route::get('run-selection',[ApplicationController::class,'showRunSelection']);
