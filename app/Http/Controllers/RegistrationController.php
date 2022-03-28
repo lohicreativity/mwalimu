@@ -21,27 +21,8 @@ class RegistrationController extends Controller
     public function create(Request $request)
     {
     	$student = User::find(Auth::user()->id)->student()->with('applicant')->first();
-    	$annual_remarks = AnnualRemark::where('student_id',$student->id)->latest()->get();
-        $semester_remarks = SemesterRemark::with('semester')->where('student_id',$student->id)->latest()->get();
-        if(count($annual_remarks) != 0){
-        	$last_annual_remark = $annual_remarks[0];
-        	$year_of_study = $last_annual_remark->year_of_study;
-        	if($last_annual_remark->remark == 'RETAKE'){
-                $year_of_study = $last_annual_remark->year_of_study;
-        	}elseif($last_annual_remark->remark == 'CARRY'){
-                $year_of_study = $last_annual_remark->year_of_study;
-        	}elseif($last_annual_remark->remark == 'PASS'){
-        		if(str_contains($semester_remarks[0]->semester->name,'2')){
-                   $year_of_study = $last_annual_remark->year_of_study + 1;
-        		}else{
-                   $year_of_study = $last_annual_remark->year_of_study;
-        		}
-        	}
-        }elseif(count($semester_remarks) == 1){
-        	$year_of_study = 1;
-        }
 
-    	 $program_fee = ProgramFee::with(['feeItem.feeType'])->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->where('campus_program_id',$student->campus_program_id)->where('year_of_study',$year_of_study)->first();
+    	 $program_fee = ProgramFee::with(['feeItem.feeType'])->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->where('campus_program_id',$student->campus_program_id)->first();
 
          if(!$program_fee){
             return redirect()->back()->with('error','No programme fee set for this academic year');
@@ -63,6 +44,26 @@ class RegistrationController extends Controller
         $invoice->payable_type = 'student';
         $invoice->fee_type_id = $program_fee->feeItem->feeType->id;
         $invoice->save();
+
+        $annual_remarks = AnnualRemark::where('student_id',$student->id)->latest()->get();
+        $semester_remarks = SemesterRemark::with('semester')->where('student_id',$student->id)->latest()->get();
+        if(count($annual_remarks) != 0){
+        	$last_annual_remark = $annual_remarks[0];
+        	$year_of_study = $last_annual_remark->year_of_study;
+        	if($last_annual_remark->remark == 'RETAKE'){
+                $year_of_study = $last_annual_remark->year_of_study;
+        	}elseif($last_annual_remark->remark == 'CARRY'){
+                $year_of_study = $last_annual_remark->year_of_study;
+        	}elseif($last_annual_remark->remark == 'PASS'){
+        		if(str_contains($semester_remarks[0]->semester->name,'2')){
+                   $year_of_study = $last_annual_remark->year_of_study + 1;
+        		}else{
+                   $year_of_study = $last_annual_remark->year_of_study;
+        		}
+        	}
+        }elseif(count($semester_remarks) == 1){
+        	$year_of_study = 1;
+        }
 
         $registration = new Registration;
         $registration->year_of_study = $year_of_study;
