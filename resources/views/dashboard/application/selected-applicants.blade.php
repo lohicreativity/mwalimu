@@ -88,13 +88,14 @@
                   {!! Form::input('hidden','application_window_id',$request->get('application_window_id')) !!}
                   {!! Form::input('hidden','program_level_id',$request->get('program_level_id')) !!}
                   <div class="input-group">
+                   <input type="text" name="query" placeholder="Search for applicant name" class="form-control">
                    <select name="nta_level_id" class="form-control">
                       <option value="">Select NTA Level</option>
                       @foreach($nta_levels as $level)
                       <option value="{{ $level->id }}">{{ $level->name }}</option>
                       @endforeach
                    </select>
-                   <select name="campus_program_id" class="form-control">
+                   <select name="campus_program_id" class="form-control ss-select-search">
                       <option value="">Select Programme</option>
                       @foreach($campus_programs as $program)
                       <option value="{{ $program->id }}">{{ $program->program->name }}</option>
