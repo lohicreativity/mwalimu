@@ -139,11 +139,33 @@ class ApplicationController extends Controller
                       'Pragma'              => 'public'
               ];
 
-              $list = Applicant::whereHas('intake.applicationWindows',function($query) use($request){
+         if($request->get('gender')){
+            $list = Applicant::whereHas('intake.applicationWindows',function($query) use($request){
+                 $query->where('id',$request->get('application_window_id'));
+            })->whereHas('selections',function($query) use($request){
+                 $query->where('status','APPROVING');
+            })->with(['nextOfKin','intake','selections.campusProgram.program'])->where('program_level_id',$request->get('program_level_id'))->where('gender',$request->get('gender'))->get();
+         }elseif($request->get('campus_program_id')){
+            $list = Applicant::whereHas('intake.applicationWindows',function($query) use($request){
+                 $query->where('id',$request->get('application_window_id'));
+            })->whereHas('selections',function($query) use($request){
+                 $query->where('status','APPROVING')->where('campus_program_id',$request->get('campus_program_id'));
+            })->with(['nextOfKin','intake','selections.campusProgram.program'])->where('program_level_id',$request->get('program_level_id'))->get();
+         }elseif($request->get('nta_level_id')){
+             $list = Applicant::whereHas('intake.applicationWindows',function($query) use($request){
+                 $query->where('id',$request->get('application_window_id'));
+            })->whereHas('selections.campusProgram.program',function($query) use($request){
+                 $query->where('nta_level_id',$request->get('nta_level_id'))->where('status','APPROVING');
+            })->whereHas('selections',function($query) use($request){
+                 $query->where('status','APPROVING');
+            })->with(['nextOfKin','intake','selections.campusProgram.program'])->where('program_level_id',$request->get('program_level_id'))->get();
+         }else{
+            $list = Applicant::whereHas('intake.applicationWindows',function($query) use($request){
                  $query->where('id',$request->get('application_window_id'));
             })->whereHas('selections',function($query) use($request){
                  $query->where('status','APPROVING');
             })->with(['nextOfKin','intake','selections.campusProgram.program'])->where('program_level_id',$request->get('program_level_id'))->get();
+         }
 
               # add headers for each column in the CSV download
               // array_unshift($list, array_keys($list[0]));
