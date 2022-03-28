@@ -36,7 +36,23 @@
     <section class="content">
       <div class="container-fluid">
         <!-- Small boxes (Stat box) -->
-        
+          @if(!$registration)
+          <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Registration</h3>
+              </div>
+              <div class="card-body">
+                 
+                   <div class="alert alert-warning">
+                     <h4>You are not registered yet for this semester.</h4>
+                   </div>
+            
+              </div>
+              <div class="card-footer">
+                 <a href="{{ url('student/registration/create') }}" class="btn btn-primary">Register</a>
+              </div>
+            </div>
+          @endif
         <!-- Main row -->
         <div class="row">
           <!-- Left col -->

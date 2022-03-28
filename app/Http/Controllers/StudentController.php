@@ -27,8 +27,10 @@ class StudentController extends Controller
 	 */
 	public function index()
 	{
+    $student = User::find(Auth::user()->id)->student;
 		$data = [
-            'student'=>User::find(Auth::user()->id)->student
+            'student'=>$student,
+            'registration'=>Registration::where('student_id',$student->id)->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->where('status','REGISTERED')->first()
 		];
 		return view('dashboard.student.home',$data)->withTitle('Dashboard');
 	}
