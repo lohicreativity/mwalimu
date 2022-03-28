@@ -95,7 +95,7 @@
                       <option value="{{ $level->id }}">{{ $level->name }}</option>
                       @endforeach
                    </select>
-                   <select name="campus_program_id" class="form-control ss-select-tags">
+                   <select name="campus_program_id" class="form-control ss-select-tags-">
                       <option value="">Select Programme</option>
                       @foreach($campus_programs as $program)
                       <option value="{{ $program->id }}">{{ $program->program->name }}</option>
