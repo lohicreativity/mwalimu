@@ -69,7 +69,7 @@ $('document').ready(function(){
     //  branding: false
     // });
 
-    // $('.ss-select-search, .ss-select-search-lg').select2();   
+    $('.ss-select-search, .ss-select-search-lg').select2();   
 
     $('.ss-select-tags').select2(); 
 
