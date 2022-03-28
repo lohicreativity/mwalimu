@@ -14,6 +14,7 @@ use App\Domain\Academic\Models\ExaminationResult;
 use App\Domain\Academic\Models\ModuleAssignment;
 use App\Domain\Registration\Models\Student;
 use App\Domain\Academic\Models\ResultPublication;
+use App\Domain\Registration\Models\Registration;
 use App\Domain\Finance\Models\FeeType;
 use App\Domain\Finance\Models\Invoice;
 use App\Models\User;
@@ -330,9 +331,22 @@ class StudentController extends Controller
           'missing_modules' => $missing_modules,
           'student'=>$student,
           'publications'=>$publications,
-          'staff'=>User::find(Auth::user()->id)->staff
+          'student'=>User::find(Auth::user()->id)->student
          ];
          return view('dashboard.student.examination-results-overall-report',$data)->withTitle('Student Overall Results');
+    }
+
+    /**
+     * Show registration
+     */
+    public function showRegistration(Request $request)
+    {
+        $student = User::find(Auth::user()->id)->student;
+        $data = [
+            'student'=>$student,
+            'registration'=>Registration::where('student_id',$student->id)->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))
+        ];
+        return view('dashboard.student.registration',$data)->withTitle('Registration');
     }
 
     /**

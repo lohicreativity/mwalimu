@@ -5,6 +5,7 @@ use App\Http\Controllers\StudentController;
 use App\Http\Controllers\ClearanceController;
 use App\Http\Controllers\AppealController;
 use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\RegistrationController;
 use App\Http\Controllers\TranscriptRequestController;
 use App\Http\Controllers\PerformanceReportRequestController;
 
@@ -54,5 +55,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 
     Route::post('appeal/store',[AppealController::class,'store']);
     Route::get('request-performance-report',[PerformanceReportRequestController::class,'store']);
+
+    Route::get('registration',[StudentController::class,'showRegistration']);
+    Route::get('registration/create',[RegistrationController::class,'create']);
 
 });

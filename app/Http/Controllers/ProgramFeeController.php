@@ -7,6 +7,7 @@ use App\Domain\Finance\Models\ProgramFee;
 use App\Domain\Finance\Models\FeeItem;
 use App\Domain\Academic\Models\StudyAcademicYear;
 use App\Domain\Academic\Models\Program;
+use App\Domain\Academic\Models\CampusProgram;
 use App\Domain\Academic\Models\Semester;
 use App\Domain\Finance\Actions\ProgramFeeAction;
 use App\Models\User;
@@ -22,7 +23,7 @@ class ProgramFeeController extends Controller
     {
     	$data = [
            'fees'=>ProgramFee::with('program')->paginate(20),
-           'programs'=>Program::all(),
+           'programs'=>CampusProgram::with('program')->get(),
            'fee_items'=>FeeItem::all(),
            'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
            'semesters'=>Semester::all(),

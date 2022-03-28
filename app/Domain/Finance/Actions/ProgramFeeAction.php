@@ -10,7 +10,7 @@ class ProgramFeeAction implements ProgramFeeInterface{
 	
 	public function store(Request $request){
 		$fee = new ProgramFee;
-                $fee->program_id = $request->get('program_id');
+                $fee->campus_program_id = $request->get('campus_program_id');
                 $fee->amount_in_tzs = $request->get('amount_in_tzs');
                 $fee->amount_in_usd = $request->get('amount_in_usd');
                 $fee->fee_item_id = $request->get('fee_item_id');
@@ -24,7 +24,7 @@ class ProgramFeeAction implements ProgramFeeInterface{
 
 	public function update(Request $request){
 		$fee = ProgramFee::find($request->get('program_fee_id'));
-                $fee->program_id = $request->get('program_id');
+                $fee->campus_program_id = $request->get('campus_program_id');
                 $fee->amount_in_tzs = $request->get('amount_in_tzs');
                 $fee->amount_in_usd = $request->get('amount_in_usd');
                 $fee->fee_item_id = $request->get('fee_item_id');

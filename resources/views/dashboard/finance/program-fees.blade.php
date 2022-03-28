@@ -63,10 +63,10 @@
                   <div class="row">
                   <div class="form-group col-3">
                     {!! Form::label('','Programme') !!}
-                    <select name="program_id" class="form-control">
+                    <select name="campus_program_id" class="form-control">
                       <option value="">Select Program</option>
-                      @foreach($programs as $program)
-                        <option value="{{ $program->id }}">{{ $program->name }}</option>
+                      @foreach($campus_programs as $program)
+                        <option value="{{ $program->id }}">{{ $program->program->name }}</option>
                       @endforeach
                     </select>
                   </div>

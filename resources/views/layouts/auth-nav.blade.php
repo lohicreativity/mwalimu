@@ -67,6 +67,23 @@
           </li>
           <li class="nav-item">
             <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-check-circle"></i>
+              <p>
+                {{ __('Registration') }}
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{ url('student/registration') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>My Registration</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link">
               <i class="nav-icon fas fa-file-pdf"></i>
               <p>
                 {{ __('Results') }}
