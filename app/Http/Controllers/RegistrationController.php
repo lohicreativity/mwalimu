@@ -38,7 +38,7 @@ class RegistrationController extends Controller
         		}
         	}
         }elseif(count($semester_remarks) == 1){
-        	$year_of_study = 1
+        	$year_of_study = 1;
         }
 
     	 $program_fee = ProgramFee::with(['feeItem.feeType'])->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->where('campus_program_id',$student->campus_program_id)->where('year_of_study',$year_of_study)->first();
