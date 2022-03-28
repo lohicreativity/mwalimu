@@ -194,7 +194,7 @@ class ApplicationController extends Controller
     /**
      * Submit selected applicants
      */
-    public function submitSelectedApplicants(Requestn $request)
+    public function submitSelectedApplicants(Request $request)
     {
         $applicants = Applicant::whereHas('intake.applicationWindows',function($query) use($request){
                  $query->where('id',$request->get('application_window_id'));
