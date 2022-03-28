@@ -98,10 +98,10 @@ class ApplicationController extends Controller
          }elseif($request->get('nta_level_id')){
              $applicants = Applicant::whereHas('intake.applicationWindows',function($query) use($request){
                  $query->where('id',$request->get('application_window_id'));
-            })->whereHas('selections',function($query) use($request){
-                 $query->where('status','APPROVING');
             })->whereHas('selections.campusProgram.program',function($query) use($request){
                  $query->where('nta_level_id',$request->get('nta_level_id'));
+            })->whereHas('selections',function($query) use($request){
+                 $query->where('status','APPROVING');
             })->with(['nextOfKin','intake','selections.campusProgram.program'])->where('program_level_id',$request->get('program_level_id'))->paginate(20);
          }else{
             $applicants = Applicant::whereHas('intake.applicationWindows',function($query) use($request){
