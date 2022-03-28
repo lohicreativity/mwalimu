@@ -123,10 +123,12 @@ class ApplicationController extends Controller
     public function downloadSelectedApplicants(Request $request)
     {
 
+
+        $award = Award::find($request->get('program_level_id'));
         $headers = [
                       'Cache-Control'       => 'must-revalidate, post-check=0, pre-check=0',   
                       'Content-type'        => 'text/csv',
-                      'Content-Disposition' => 'attachment; filename=Selected-Applicants.csv',
+                      'Content-Disposition' => 'attachment; filename=Selected-Applicants-'.$award->name.'.csv',
                       'Expires'             => '0',
                       'Pragma'              => 'public'
               ];
@@ -143,7 +145,7 @@ class ApplicationController extends Controller
              $callback = function() use ($list) 
               {
                   $file_handle = fopen('php://output', 'w');
-                  fputcsv($file_handle,['First Name','Middle Name','Gender','Programme','Status']);
+                  fputcsv($file_handle,['First Name','Middle Name','Surname','Gender','Programme','Status']);
                   foreach ($list as $applicant) { 
 
                       foreach ($applicant->selections as $select) {
