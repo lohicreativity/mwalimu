@@ -23,7 +23,7 @@ class ProgramFeeController extends Controller
     {
     	$data = [
            'fees'=>ProgramFee::with('program')->paginate(20),
-           'programs'=>CampusProgram::with('program')->get(),
+           'campus_programs'=>CampusProgram::with('program')->get(),
            'fee_items'=>FeeItem::all(),
            'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
            'semesters'=>Semester::all(),
