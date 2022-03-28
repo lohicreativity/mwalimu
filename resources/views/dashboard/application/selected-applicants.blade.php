@@ -82,7 +82,7 @@
                </div>
                <!-- /.card-header -->
                <div class="card-body">
-                  {!! Form::open(['url'=>'application/applicants/list','method'=>'GET']) !!}
+                  {!! Form::open(['url'=>'application/selected-applicants','method'=>'GET']) !!}
 
                   {!! Form::input('hidden','application_window_id',$request->get('application_window_id')) !!}
                   {!! Form::input('hidden','program_level_id',$request->get('program_level_id')) !!}
