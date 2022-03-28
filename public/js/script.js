@@ -60,7 +60,9 @@ $('document').ready(function(){
     //     maxHeight: null,             // set maximum height of editor
     //     focus: true                  // set focus to editable area after initializing summernote
     //   });
-
+    $('#ss-card-nhif-form').css('display','none');
+    $('#ss-card-other-form').css('display','none');
+    $('#ss-card-none-form').css('display','none');
     
     // // Initialize tinymce
     // tinymce.init({
@@ -68,6 +70,23 @@ $('document').ready(function(){
     //  auto_focus: 'element1',
     //  branding: false
     // });
+    $('#ss-card-nhif').click(function(e){
+         $(e.target.value).css('display','block');
+         $('#ss-card-other-form').css('display','none');
+         $('#ss-card-none-form').css('display','none');
+    });
+
+    $('#ss-card-other').click(function(e){
+         $(e.target.value).css('display','block');
+         $('#ss-card-nhif-form').css('display','none');
+         $('#ss-card-none-form').css('display','none');
+    });
+
+    $('#ss-card-none').click(function(e){
+         $(e.target.value).css('display','block');
+         $('#ss-card-other-form').css('display','none');
+         $('#ss-card-nhif-form').css('display','none');
+    });
 
     $('.ss-select-search, .ss-select-search-lg').select2();   
 

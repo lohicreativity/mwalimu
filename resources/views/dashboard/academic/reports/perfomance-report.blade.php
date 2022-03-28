@@ -454,13 +454,10 @@
                </div><!-- end of col-md-12 -->
              </div><!-- end of row -->
                  <div class="row">
-                 
-                   @if($annual_remark && $key == (count($semesters)-1))
                    <div class="col-md-12">
+                   @if($annual_remark && $key == (count($semesters)-1))
                     <p class="ss-bold ss-line-bottom">OVERALL GPA: @if($annual_remark->gpa) {{ bcdiv($annual_remark->gpa,1,1) }} @else N/A @endif</p>
                  <br>
-
-                   
                </div><!-- end of col-md-12 -->
                  
                   @endif

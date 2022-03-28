@@ -49,9 +49,79 @@
             
               </div>
               <div class="card-footer">
-                 <a href="{{ url('student/registration/create') }}" class="btn btn-primary">Register</a>
+                 <a href="#" data-toggle="modal" data-target="#ss-insurance-card" class="btn btn-primary">Register</a>
               </div>
             </div>
+
+            <div class="modal fade" id="ss-insurance-card">
+              <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h4 class="modal-title"> Insurance Cards</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <div class="row">
+                      <div class="col-12">
+                        <label class="radio-inline">
+                          <input type="radio" name="insurance_card" value="#ss-card-nhif-form" id="ss-card-nhif"> NHIF
+                        </label>
+                        <label class="radio-inline">
+                          <input type="radio" name="insurance_card" value="#ss-card-other-form" id="ss-card-other"> Other Insurers
+                        </label>
+                        <label class="radio-inline">
+                          <input type="radio" name="insurance_card" value="#ss-card-none-form" id="ss-card-none"> Don't have Insurance
+                        </label>
+                        </div><!-- end of col-md-12 -->
+                     </div><!-- end of row -->
+                     <div class="row" id="ss-card-nhif-form">
+                      <div class="col-12">
+                          {!! Form::open(['url'=>'registration/verify-nhif','class'=>'ss-form-processing']) !!}
+                            <div class="form-group">
+                              {!! Form::label('','Card number') !!}
+                              {!! Form::text('card_number',null,['class'=>'form-control','placeholder'=>'Card number']) !!}
+                            </div>
+                            <button type="submit" class="btn btn-primary">Verify</button>
+                          {!! Form::close() !!}
+                       </div><!-- end of col-md-12 -->
+                     </div><!-- end of row -->
+
+                     <div class="row" id="ss-card-other-form">
+                      <div class="col-12">
+                          {!! Form::open(['url'=>'registration/store-other-card','class'=>'ss-form-processing']) !!}
+                            <div class="form-group">
+                              {!! Form::label('','Insurance company') !!}
+                              {!! Form::text('company',null,['class'=>'form-control','placeholder'=>'Insurance company']) !!}
+                            </div>
+                            <div class="form-group">
+                              {!! Form::label('','Card Number') !!}
+                              {!! Form::text('card_number',null,['class'=>'form-control','placeholder'=>'Card number']) !!}
+                            </div>
+                            <button type="submit" class="btn btn-primary">Save</button>
+                          {!! Form::close() !!}
+                       </div><!-- end of col-md-12 -->
+                     </div><!-- end of row -->
+
+                     <div class="row" id="ss-card-none-form">
+                      <div class="col-12">
+                          {!! Form::open(['url'=>'registration/request-nhif','class'=>'ss-form-processing']) !!}
+                            <button type="submit" class="btn btn-primary">Request NHIF</button>
+                          {!! Form::close() !!}
+                       </div><!-- end of col-md-12 -->
+                     </div><!-- end of row -->
+
+                  </div>
+                  <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                  </div>
+                </div>
+                <!-- /.modal-content -->
+              </div>
+              <!-- /.modal-dialog -->
+            </div>
+            <!-- /.modal -->
           @endif
         <!-- Main row -->
         <div class="row">
