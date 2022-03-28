@@ -211,7 +211,8 @@ class GraduantController extends Controller
                  }
            }
 
-            $url='https://api.tcu.go.tz/applicants/submitEnrolledStudents';
+           // $url='https://api.tcu.go.tz/applicants/submitEnrolledStudents';
+            $url="http://41.59.90.200/applicants/submitEnrolledStudents";
 
                $xml_request = '<?xml version=”1.0” encoding=” UTF-8”?>
                 <Request>
@@ -244,6 +245,8 @@ class GraduantController extends Controller
           $xml_response=simplexml_load_string($this->sendXmlOverPost($url,$xml_request));
           $json = json_encode($xml_response);
           $array = json_decode($json,TRUE);
+
+          return dd($array);
 
         }
 
