@@ -35,7 +35,6 @@ class ApplicationWindowController extends Controller
     public function store(Request $request)
     {
     	$validation = Validator::make($request->all(),[
-            'capacity'=>'required',
             'begin_date'=>'required',
             'end_date'=>'required'
         ]);
@@ -60,7 +59,6 @@ class ApplicationWindowController extends Controller
     public function update(Request $request)
     {
     	$validation = Validator::make($request->all(),[
-            'capacity'=>'required',
             'begin_date'=>'required',
             'end_date'=>'required'
         ]);

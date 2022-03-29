@@ -570,7 +570,8 @@ class ApplicationController extends Controller
            'staff'=>User::find(Auth::user()->id)->staff,
            'awards'=>Award::all(),
            'application_windows'=>ApplicationWindow::all(),
-           'application_window'=>ApplicationWindow::find($request->get('application_window_id'))
+           'application_window'=>ApplicationWindow::find($request->get('application_window_id')),
+           'request'=>$request
         ];
         return view('dashboard.application.run-selection',$data)->withTitle('Run Selection');
     }
