@@ -578,7 +578,7 @@ class ApplicationController extends Controller
      */
     public function runSelection(Request $request)
     {
-        // ini_set('memory_limit', '256M');
+        ini_set('memory_limit', '256M');
 
         $staff = User::find(Auth::user()->id)->staff;
         // Phase I
