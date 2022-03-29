@@ -211,6 +211,8 @@ class ApplicationController extends Controller
 
 
             foreach($applicants as $applicant){
+
+                 if($request->get('applicant_'.$applicant->id) == $applicant->id){
                  //$url='https://api.tcu.go.tz/applicants/submitProgramme';
 
                    $url='http://41.59.90.200/applicants/submitProgramme';
@@ -262,6 +264,7 @@ class ApplicationController extends Controller
             $select->save();
 
             return dd($array);
+              }
             }
 
           }
