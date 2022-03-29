@@ -83,17 +83,20 @@
                     </select>
                   </div>
                   <div class="form-group col-3">
-                    {!! Form::label('','Capacity') !!}
-                    {!! Form::text('capacity',null,$capacity) !!}
-                  </div>
-                  <div class="form-group col-3">
                     {!! Form::label('','Begin date') !!}
                     {!! Form::text('begin_date',null,$begin_date) !!}
                   </div>
                   <div class="form-group col-3">
                     {!! Form::label('','End date') !!}
                     {!! Form::text('end_date',null,$end_date) !!}
-
+                  </div>
+                  <div class="form-group col-3">
+                    {!! Form::label('','Status') !!}
+                    <select name="status" class="form-control" required>
+                      <option value="">Select Status</option>
+                      <option value="ACTIVE">Active</option>
+                      <option value="INACTIVE">Inctive</option>
+                    </select>
                   </div>
                   </div>
                 </div>
@@ -116,7 +119,7 @@
                 <table id="example2" class="table table-bordered table-hover">
                   <thead>
                   <tr>
-                    <th>Capacity</th>
+                    <th>Status</th>
                     <th>Begin Date</th>
                     <th>End Date</th>
                     <th>Actions</th>
@@ -125,7 +128,7 @@
                   <tbody>
                   @foreach($windows as $window)
                   <tr>
-                    <td>{{ $window->capacity }}</td>
+                    <td>{{ $window->status }}</td>
                     <td>{{ $window->begin_date }}</td>
                     <td>{{ $window->end_date }}</td>
                     <td>
@@ -183,10 +186,6 @@
                                         </select>
                                       </div>
                                       <div class="form-group col-3">
-                                        {!! Form::label('','Capacity') !!}
-                                        {!! Form::text('capacity',$window->capacity,$capacity) !!}
-                                      </div>
-                                      <div class="form-group col-3">
                                         {!! Form::label('','Begin date') !!}
                                         {!! Form::text('begin_date',App\Utils\DateMaker::toStandardDate($window->begin_date),$begin_date) !!}
                                       </div>
@@ -197,6 +196,14 @@
                                         {!! Form::input('hidden','study_academic_year_id',$window->study_academic_year_id) !!}
 
                                         {!! Form::input('hidden','application_window_id',$window->id) !!}
+                                      </div>
+                                      <div class="form-group col-3">
+                                        {!! Form::label('','Status') !!}
+                                        <select name="status" class="form-control" required>
+                                          <option value="">Select Status</option>
+                                          <option value="ACTIVE" @if($window->status == 'ACTIVE') selected="selected" @endif>Active</option>
+                                          <option value="INACTIVE" @if($window->status == 'INACTIVE') selected="selected" @endif>Inctive</option>
+                                        </select>
                                       </div>
                                       </div>
                                       <div class="ss-form-actions">

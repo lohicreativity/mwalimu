@@ -10,6 +10,7 @@ use App\Domain\Academic\Models\StudyAcademicYear;
 use App\Domain\Academic\Models\Semester;
 use App\Domain\HumanResources\Models\Staff;
 use App\Domain\Registration\Models\Student;
+use App\Domain\Application\Models\ApplicationWindow;
 use Illuminate\Contracts\Auth\Guard;
 use App\Models\User;
 use Auth;
@@ -26,6 +27,7 @@ class Controller extends BaseController
             $this->user = Auth::user();
             $study_academic_year = StudyAcademicYear::where('status','ACTIVE')->first();
 	    	$semester = Semester::where('status','ACTIVE')->first();
+	    	$application_window = ApplicationWindow::where('status','ACTIVE')->first();
 	    	
 	    	if($this->user){
 	    	  $staff = User::find($this->user->id)->staff;
@@ -46,6 +48,11 @@ class Controller extends BaseController
 	          session(['active_semester_id'=>$semester->id]);
 	        }else{
 	          session(['active_semester_id'=>null]);
+	        }
+	        if($application_window){
+	          session(['active_window_id'=>$application_window->id]);
+	        }else{
+	          session(['active_window_id'=>null]);
 	        }
 
             return $next($request);

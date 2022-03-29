@@ -12,18 +12,18 @@ class ApplicationWindowAction implements ApplicationWindowInterface{
 	public function store(Request $request){
 		$window = new ApplicationWindow;
                 $window->intake_id = $request->get('intake_id');
-                $window->capacity = $request->get('capacity');
                 $window->begin_date = DateMaker::toDBDate($request->get('begin_date'));
                 $window->end_date = DateMaker::toDBDate($request->get('end_date'));
+                $window->status = $request->get('status');
                 $window->save();
 	}
 
 	public function update(Request $request){
 		$window = ApplicationWindow::find($request->get('application_window_id'));
                 $window->intake_id = $request->get('intake_id');
-                $window->capacity = $request->get('capacity');
                 $window->begin_date = DateMaker::toDBDate($request->get('begin_date'));
                 $window->end_date = DateMaker::toDBDate($request->get('end_date'));
+                $window->status = $request->get('status');
                 $window->save();
 	}
 }
