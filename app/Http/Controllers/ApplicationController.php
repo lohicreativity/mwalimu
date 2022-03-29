@@ -579,6 +579,8 @@ class ApplicationController extends Controller
     public function runSelection(Request $request)
     {
         ini_set('memory_limit', '256M');
+
+        $staff = User::find(Auth::user()->id)->staff;
         // Phase I
         $campus_programs = CampusProgram::whereHas('program',function($query) use($request){
              $query->where('award_id',$request->get('award_id'));
@@ -586,9 +588,7 @@ class ApplicationController extends Controller
             $query->where('application_window_id',$request->get('application_window_id'));
         })->with(['entryRequirements'=>function($query) use($request){
             $query->where('application_window_id',$request->get('application_window_id'));
-        }])->get();
-
-        return $campus_programs;
+        }])->where('campus_id',$staff->campus_id)->get();
 
         $award = Award::find($request->get('award_id'));
 

@@ -19,13 +19,16 @@ class EntryRequirementController extends Controller
      */
     public function index(Request $request)
     {
+      $staff = User::find(Auth::user()->id)->staff;
     	$data = [
            'application_windows'=>ApplicationWindow::all(),
            'application_window'=>ApplicationWindow::find($request->get('application_window_id')),
-           'campus_programs'=>CampusProgram::with('program')->get(),
+           'campus_programs'=>CampusProgram::whereHas('selections',function($query) use($request){
+                     $query->where('application_window_id',$request->get('application_window_id'));
+              })->with('program')->where('campus_id',$staff->campus_id)->get(),
            'entry_requirements'=>EntryRequirement::with(['campusProgram.program'])->where('application_window_id',$request->get('application_window_id'))->paginate(20),
            'subjects'=>NectaResult::distinct()->get(['subject_name']),
-           'staff'=>User::find(Auth::user()->id)->staff,
+           'staff'=>$staff,
            'request'=>$request
     	];
     	return view('dashboard.application.entry-requirements',$data)->withTitle('Entry Requirements');
