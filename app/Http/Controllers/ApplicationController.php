@@ -578,7 +578,7 @@ class ApplicationController extends Controller
      */
     public function runSelection(Request $request)
     {
-        ini_set('memory_limit', '256M');
+        ini_set('memory_limit', '512M');
 
         $staff = User::find(Auth::user()->id)->staff;
         // Phase I
@@ -595,8 +595,6 @@ class ApplicationController extends Controller
         $applicants = Applicant::whereHas('selections',function($query) use($request){
             $query->where('application_window_id',$request->get('application_window_id'));
         })->with(['selections','nectaResultDetails.results','nacteResultDetails.results'])->where('program_level_id',$request->get('award_id'))->get();
-
-        return $applicants;
 
 
         $o_level_grades = ['A'=>5,'B+'=>4,'B'=>3,'C'=>2,'D'=>1,'E'=>0.5,'F'=>0];
