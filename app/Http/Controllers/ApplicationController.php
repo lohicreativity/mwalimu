@@ -610,7 +610,7 @@ class ApplicationController extends Controller
            if($exam_year < 2014 || $exam_year > 2015){
              $a_level_grades = ['A'=>5,'B'=>4,'C'=>3,'D'=>2,'E'=>1,'S'=>0.5];
            }else{
-             $a_level_grades = ['A'=>5,'B+'=>4,'B'=>3,'C'=>2,'D'=>1,'E'=>0.5];
+             $a_level_grades = ['A'=>5,'B+'=>4,'B'=>3,'C'=>2,'D'=>1,'E'=>0.5,'S'=>0.5];
            }
            $selected_program[$applicant->id] = false;
            foreach($applicant->selections as $selection){
