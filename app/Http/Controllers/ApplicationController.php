@@ -225,6 +225,8 @@ class ApplicationController extends Controller
                        }
                    }
 
+                   return dd($selected_programs);
+
                    $f6indexno = null;
                    foreach ($applicant->nectaResultDetails as $detail) {
                        if($detail->exam_id == 2){
