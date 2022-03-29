@@ -588,6 +588,8 @@ class ApplicationController extends Controller
             $query->where('application_window_id',$request->get('application_window_id'));
         }])->get();
 
+        return $campus_programs;
+
         $award = Award::find($request->get('award_id'));
 
         $applicants = Applicant::with(['selections','nectaResultDetails.results','nacteResultDetails.results'])->where('program_level_id',$request->get('award_id'))->whereHas('selections',function($query) use($request){
@@ -617,7 +619,6 @@ class ApplicationController extends Controller
                 if($program->id == $selection->campus_program_id){
 
                   if(count($program->entryRequirements) == 0){
-                    return $program;
                     return redirect()->back()->with('error',$program->program->name.' does not have entry requirements');
                   }
 
