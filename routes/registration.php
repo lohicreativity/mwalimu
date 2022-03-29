@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HealthInsuranceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +14,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
-    return view('dashboard');
-})->name('dashboard');
+Route::middleware(['auth:sanctum', 'verified'])->group(function(){
+    
+    Route::post('verify-nhif',[HealthInsuranceController::class,'verifyNHIF']);
+    Route::post('store-other-card',[HealthInsuranceController::class,'storeOtherCard']);
+    Route::post('request-nhif',[HealthInsuranceController::class,'requestNHIF']);
+
+
+});
+
+

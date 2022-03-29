@@ -771,7 +771,7 @@ class ApplicationController extends Controller
                               if($a_level_grades[$result->grade] >= $a_level_grades['E']){
 
                                  if(unserialize($program->entryRequirements[0]->advance_must_subjects) != ''){
-                                    if(unserialize($program->entryRequirements[0]->advance_other_must_subjects) != ''){
+                                    if(unserialize($program->entryRequirements[0]->other_advance_must_subjects) != ''){
                                        if(in_array($result->subject_name, unserialize($program->entryRequirements[0]->advance_must_subjects)) || in_array($result->subject_name, unserialize($program->entryRequirements[0]->other_advance_must_subjects))){
                                          $a_level_principle_pass_count += 1;
                                          $a_level_principle_pass_points += $a_level_grades[$result->grade];
@@ -791,7 +791,7 @@ class ApplicationController extends Controller
                               if($a_level_grades[$result->grade] == $a_level_grades['S']){
 
                                  if(unserialize($program->entryRequirements[0]->advance_must_subjects) != ''){
-                                    if(unserialize($program->entryRequirements[0]->advance_other_must_subjects) != ''){
+                                    if(unserialize($program->entryRequirements[0]->other_advance_must_subjects) != ''){
                                        if(in_array($result->subject_name, unserialize($program->entryRequirements[0]->advance_must_subjects)) || in_array($result->subject_name, unserialize($program->entryRequirements[0]->other_advance_must_subjects))){
                                          $a_level_subsidiary_pass_count += 1;
                                        }
