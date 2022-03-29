@@ -746,6 +746,7 @@ class ApplicationController extends Controller
                        $a_level_principle_pass_points = 0;
                        $a_level_subsidiary_pass_count = 0;
                        $diploma_pass_count = 0;
+                       return $applicant->nectaResultDetails;
                        foreach ($applicant->nectaResultDetails as $detailKey=>$detail) {
                          if($detail->exam_id == 1){
                            foreach ($detail->results as $key => $result) {
@@ -811,7 +812,6 @@ class ApplicationController extends Controller
                            }
                          }
 
-                         return $o_level_pass_count; break;
                          if($o_level_pass_count >= $program->entryRequirements[0]->pass_subjects && $a_level_principle_pass_count >= 2 && $a_level_principle_pass_points >= $program->entryRequirements[0]->principle_pass_points){
                            $select = ApplicantProgramSelection::find($selection->id);
                            $select->status = 'ELIGIBLE';
