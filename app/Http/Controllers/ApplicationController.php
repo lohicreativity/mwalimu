@@ -578,7 +578,7 @@ class ApplicationController extends Controller
      */
     public function runSelection(Request $request)
     {
-        ini_set('memory_limit', '256M');
+        // ini_set('memory_limit', '256M');
 
         $staff = User::find(Auth::user()->id)->staff;
         // Phase I
@@ -865,30 +865,30 @@ class ApplicationController extends Controller
             $query->where('application_window_id',$request->get('application_window_id'))->where('status','ELIGIBLE');
         })->get();
         
-        foreach($choices as $choice){   
-            foreach ($campus_programs as $program) {
-                $count = 0;
-                if(isset($program->entryRequirements[0])){
-                foreach($applicants as $applicant){
+        // foreach($choices as $choice){   
+        //     foreach ($campus_programs as $program) {
+        //         $count = 0;
+        //         if(isset($program->entryRequirements[0])){
+        //         foreach($applicants as $applicant){
                   
-                  foreach($applicant->selections as $selection){
-                     if($selection->order == $choice && $selection->campus_program_id == $program->id){
-                        if($count <= $program->entryRequirements[0]->max_capacity && $selection->status == 'ELIGIBLE' && !$selected_program[$applicant->id]){
-                           $select = ApplicantProgramSelection::find($selection->id);
-                           $select->status = 'APPROVING';
-                           $select->status_changed_at = now();
-                           $select->save();
+        //           foreach($applicant->selections as $selection){
+        //              if($selection->order == $choice && $selection->campus_program_id == $program->id){
+        //                 if($count <= $program->entryRequirements[0]->max_capacity && $selection->status == 'ELIGIBLE' && !$selected_program[$applicant->id]){
+        //                    $select = ApplicantProgramSelection::find($selection->id);
+        //                    $select->status = 'APPROVING';
+        //                    $select->status_changed_at = now();
+        //                    $select->save();
 
-                           $selected_program[$applicant->id] = true;
+        //                    $selected_program[$applicant->id] = true;
 
-                           $count++;
-                        }
-                     }
-                  }
-                }
-              }
-           }
-        }
+        //                    $count++;
+        //                 }
+        //              }
+        //           }
+        //         }
+        //       }
+        //    }
+        // }
 
         return redirect()->back()->with('message','Selection run successfully');
     }
