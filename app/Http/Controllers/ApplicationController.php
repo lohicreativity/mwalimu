@@ -607,12 +607,12 @@ class ApplicationController extends Controller
            $index_number = $applicant->index_number;
            $exam_year = explode('/', $index_number)[2];
           
-           foreach ($applicant->nectaResultDetails as $detail) {
-              if($detail->exam_id == 2){
-                  $index_number = $detail->index_number;
-                  $exam_year = explode('/', $index_number)[2];
-              }
-           }
+           // foreach($applicant->nectaResultDetails as $detail) {
+           //    if($detail->exam_id == 2){
+           //        $index_number = $detail->index_number;
+           //        $exam_year = explode('/', $index_number)[2];
+           //    }
+           // }
 
            if($exam_year < 2014 || $exam_year > 2015){
              $a_level_grades = ['A'=>5,'B'=>4,'C'=>3,'D'=>2,'E'=>1,'S'=>0.5,'F'=>0];
