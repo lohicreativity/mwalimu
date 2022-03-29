@@ -844,7 +844,6 @@ class ApplicationController extends Controller
                          }
                        }
                    }
-                   break;
                 }
               }
            }
