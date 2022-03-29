@@ -783,8 +783,6 @@ class ApplicationController extends Controller
                                     if(!in_array($result->subject_name, unserialize($program->entryRequirements[0]->exclude_subjects))){
                                          $o_level_pass_count += 1;
                                     }
-                                 }else{
-                                    $o_level_pass_count += 1;
                                  }
                               }
                            }
@@ -830,10 +828,9 @@ class ApplicationController extends Controller
                               }
                            }
                          }
-                          
-                         
-                         if($o_level_pass_count >= $program->entryRequirements[0]->pass_subjects && $a_level_principle_pass_count >= 2 && $a_level_principle_pass_points >= $program->entryRequirements[0]->principle_pass_points){
 
+                         if($o_level_pass_count >= $program->entryRequirements[0]->pass_subjects && $a_level_principle_pass_count >= 2 && $a_level_principle_pass_points >= $program->entryRequirements[0]->principle_pass_points){
+                           
                            $select = ApplicantProgramSelection::find($selection->id);
                            $select->status = 'ELIGIBLE';
                            $select->status_changed_at = now();
