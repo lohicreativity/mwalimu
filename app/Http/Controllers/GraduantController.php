@@ -211,6 +211,14 @@ class GraduantController extends Controller
                  }
            }
 
+           if($student->year_of_study == 1){
+              $year_of_study = 'First Year';
+           }elseif($student->year_of_study == 2){
+              $year_of_study = 'Second Year';
+           }elseif($student->year_of_study == 3){
+              $year_of_study = 'Third Year';
+           }
+
            // $url='https://api.tcu.go.tz/applicants/submitEnrolledStudents';
             $url="http://41.59.90.200/applicants/submitEnrolledStudents";
 
@@ -234,7 +242,7 @@ class GraduantController extends Controller
                 <ProgrammeCode>'.$student->campusProgram->regulator_code.'</ProgrammeCode>
                 <RegistrationNumber>'.$student->registration_number.'</RegistrationNumber>
                 <ProgrammeName>'.$student->campusProgram->program->name.'</ProgrammeName>
-                <YearOfStudy>'.$student->year_of_study.'</YearOfStudy >
+                <YearOfStudy>'.$year_of_study.'</YearOfStudy >
                 <StudyMode>'.$student->study_mode.'</StudyMode >
                 <IsYearRepeat>'.$is_year_repeat.'</IsYearRepeat >
                 <EntryMode>'.$student->applicant->entry_mode.'</EntryMode >
