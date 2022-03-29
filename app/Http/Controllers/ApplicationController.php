@@ -829,7 +829,7 @@ class ApplicationController extends Controller
                            }
                          }
                           
-                         return $o_level_pass_count.'-'.$a_level_principle_pass_count.'-'.$applicant->id;
+                         // return $o_level_pass_count.'-'.$a_level_principle_pass_count.'-'.$applicant->id;
                          if($o_level_pass_count >= $program->entryRequirements[0]->pass_subjects && $a_level_principle_pass_count >= 2 && $a_level_principle_pass_points >= $program->entryRequirements[0]->principle_pass_points){
 
                            $select = ApplicantProgramSelection::find($selection->id);
