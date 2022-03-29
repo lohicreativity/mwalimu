@@ -740,7 +740,7 @@ class ApplicationController extends Controller
                    }
 
                    // Certificate
-                   if(str_contains($award->name,'Bachelor')){
+                   if(str_contains($award->name,'Bachelor\'s')){
                        return $award;
                        $o_level_pass_count = 0;
                        $a_level_principle_pass_count = 0;
