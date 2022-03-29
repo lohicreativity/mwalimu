@@ -115,6 +115,11 @@ class ApplicationController extends Controller
             'application_windows'=>ApplicationWindow::all(),
             'awards'=>Award::all(),
             'nta_levels'=>NTALevel::all(),
+            'selected_applicants'=>Applicant::whereHas('intake.applicationWindows',function($query) use($request){
+                 $query->where('id',$request->get('application_window_id'));
+            })->whereHas('selections',function($query) use($request){
+                 $query->where('status','APPROVING');
+            })->with(['nextOfKin','intake','selections.campusProgram.program'])->where('program_level_id',$request->get('program_level_id'))->get(),
             'campus_programs'=>CampusProgram::whereHas('selections',function($query) use($request){
                   $query->where('application_window_id',$request->get('application_window_id'));
             })->with('program')->get(),

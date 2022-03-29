@@ -20,7 +20,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Selected Appicants</h1>
+            <h1 class="m-0">Selected Applicants</h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -81,7 +81,65 @@
                  <h3 class="card-title">{{ __('Selected Applicants') }}</h3><br>
                  <a href="{{ url('application/selected-applicants/download?application_window_id='.$request->get('application_window_id').'&program_level_id='.$request->get('program_level_id').'&campus_program_id='.$request->get('campus_program_id').'&nta_level_id='.$request->get('nta_level_id').'&gender='.$request->get('gender')) }}" class="btn btn-primary">Download List</a>
                  <a href="{{ url('application/submit-selected-applicants?application_window_id='.$request->get('application_window_id').'&program_level_id='.$request->get('program_level_id')) }}" class="btn btn-primary">Submit Selected Students</a>
+                 <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#ss-submit-applicants">Submit Selected Applicants to TCU</a>
                </div>
+
+               <div class="modal fade" id="ss-submit-applicants">
+              <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h4 class="modal-title"> Insurance Cards</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <table class="table table-bordered ss-margin-top">
+                    <thead>
+                        <tr>
+                          <th>Name</th>
+                          <th>Gender</th>
+                          <th>Programme</th>
+                          <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                  {!! Form::open(['url'=>'application/submit-selected-applicants-tcu']) !!}
+                 @foreach($applicants as $applicant)
+                   <tr>
+                      <td>{{ $applicant->first_name }} {{ $applicant->middle_name }} {{ $applicant->surname }}</td>
+                      <td>{{ $applicant->gender }}</td>
+                      <td>@foreach($applicant->selections as $selection)
+                           @if($selection->status == 'APPROVING')
+                           {{ $selection->campusProgram->program->name }}
+                           @endif
+                          @endforeach
+                      </td>
+                      <td>{!! Form::checkbox('applicant_'.$applicant->id,1,true,['class'=>'form-control']) !!}</td>
+                   </tr>
+                 @endforeach
+                   <tr>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td>
+                        <button type="submit" class="btn btn-primary">Submit To TCU</button>
+                      </td>
+                   </tr>
+                   {!! Form::close() !!}
+                   </tbody>
+                  </table>
+
+                  </div>
+                  <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                  </div>
+                </div>
+                <!-- /.modal-content -->
+              </div>
+              <!-- /.modal-dialog -->
+            </div>
+            <!-- /.modal -->
                <!-- /.card-header -->
                <div class="card-body">
                   {!! Form::open(['url'=>'application/selected-applicants','method'=>'GET']) !!}
