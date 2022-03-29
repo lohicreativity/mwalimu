@@ -107,7 +107,7 @@
                   {!! Form::open(['url'=>'application/submit-selected-applicants-tcu']) !!}
                     {!! Form::input('hidden','application_window_id',$request->get('application_window_id')) !!}
                     {!! Form::input('hidden','program_level_id',$request->get('program_level_id')) !!}
-                 @foreach($applicants as $applicant)
+                 @foreach($selected_applicants as $applicant)
                    <tr>
                       <td>{{ $applicant->first_name }} {{ $applicant->middle_name }} {{ $applicant->surname }}</td>
                       <td>{{ $applicant->gender }}</td>
