@@ -594,7 +594,7 @@ class ApplicationController extends Controller
 
         $applicants = Applicant::whereHas('selections',function($query) use($request){
             $query->where('application_window_id',$request->get('application_window_id'));
-        })->with(['selections','nacteResultDetails.results'])->where('program_level_id',$request->get('award_id'))->get();
+        })->with(['selections','nectaResultDetails.results','nacteResultDetails.results'])->where('program_level_id',$request->get('award_id'))->get();
 
         return $applicants;
 
