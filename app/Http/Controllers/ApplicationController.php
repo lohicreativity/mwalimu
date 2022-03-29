@@ -611,10 +611,13 @@ class ApplicationController extends Controller
            $selected_program[$applicant->id] = false;
            foreach($applicant->selections as $selection){
               foreach($campus_programs as $program){
-                if(!isset($program->entryRequirements[0])){
+                
+                if($program->id == $selection->campus_program_id){
+
+                  if(!isset($program->entryRequirements[0])){
                     return redirect()->back()->with('error',$program->program->name.' does not have entry requirements');
-                }
-                if($program->id == $selection->campus_program_id && isset($program->entryRequirements[0])){
+                  }
+
                    // Certificate
                    if(str_contains($award->name,'Certificate')){
                        $o_level_pass_count = 0;
