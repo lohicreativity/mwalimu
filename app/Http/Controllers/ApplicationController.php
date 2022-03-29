@@ -234,7 +234,7 @@ class ApplicationController extends Controller
 
                    if($f6indexno){
 
-                 $xml_request = '<?xml version=”1.0” encoding=” UTF-8”?>
+                 $xml_request = '<?xml version="1.0" encoding="UTF-8"?>
                   <Request>
                   <UsernameToken>
                   <Username>'.config('constants.TCU_USERNAME').'</Username>
@@ -242,7 +242,7 @@ class ApplicationController extends Controller
                   </UsernameToken>
                   <RequestParameters>
                   <f4indexno>'.$applicant->index_number.'</f4indexno >
-                  <f6indexno> '.$f6indexno.' </f6indexno>
+                  <f6indexno>'.$f6indexno.'</f6indexno>
                   <SelectedProgrammes>'.implode(',', $selected_programs).'</SelectedProgrammes>
                   <MobileNumber>'.str_replace('-', '', $applicant->phone).'</MobileNumber>
                   <EmailAddress>'.$applicant->email.'</EmailAddress>
@@ -266,7 +266,7 @@ class ApplicationController extends Controller
             $select->status = 'SELECTED';
             $select->save();
 
-            return dd($xml_request);
+            return dd($array);
               }
             }
 
