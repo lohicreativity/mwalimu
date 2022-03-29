@@ -830,6 +830,7 @@ class ApplicationController extends Controller
                          }
 
                          if($o_level_pass_count >= $program->entryRequirements[0]->pass_subjects && $a_level_principle_pass_count >= 2 && $a_level_principle_pass_points >= $program->entryRequirements[0]->principle_pass_points){
+                           return $selection;
                            $select = ApplicantProgramSelection::find($selection->id);
                            $select->status = 'ELIGIBLE';
                            $select->status_changed_at = now();
