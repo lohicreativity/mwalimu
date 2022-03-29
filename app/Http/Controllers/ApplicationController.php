@@ -613,10 +613,10 @@ class ApplicationController extends Controller
            $selected_program[$applicant->id] = false;
            foreach($applicant->selections as $selection){
               foreach($campus_programs as $program){
-
-                return $program;
                 
                 if($program->id == $selection->campus_program_id){
+
+                  return $program;
 
                   if(count($program->entryRequirements) == 0){
                     return redirect()->back()->with('error',$program->program->name.' does not have entry requirements');
