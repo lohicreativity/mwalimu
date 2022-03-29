@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Domain\Settings\Models\Campus;
 use App\Domain\Registration\Models\Student;
 use App\Domain\Application\Models\EntryRequirement;
+use App\Domain\Application\Models\ApplicantProgramSelection;
 
 class CampusProgram extends Model
 {
@@ -20,6 +21,14 @@ class CampusProgram extends Model
     public function students()
     {
         return $this->hasMany(Student::class,'campus_program_id');
+    }
+
+    /**
+     * Establish one to many relationship with selections
+     */
+    public function selections()
+    {
+        return $this->hasMany(ApplicantProgramSelection::class,'campus_program_id');
     }
 
      /**
