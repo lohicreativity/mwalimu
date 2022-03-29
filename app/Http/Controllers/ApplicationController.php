@@ -781,6 +781,9 @@ class ApplicationController extends Controller
                            }
                          }elseif($detail->exam_id == 2){
                            foreach ($detail->results as $key => $result) {
+                              if($result->grade == 'B+'){
+                                  return $applicant;
+                              }
                               if($a_level_grades[$result->grade] >= $a_level_grades['E']){
 
                                  if(unserialize($program->entryRequirements[0]->advance_must_subjects) != ''){
