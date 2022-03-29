@@ -57,7 +57,8 @@ class EntryRequirementController extends Controller
         $data = [
            'application_windows'=>ApplicationWindow::all(),
            'application_window'=>ApplicationWindow::find($request->get('application_window_id')),
-           'entry_requirements'=>EntryRequirement::with(['campusProgram.program'])->where('application_window_id',$request->get('application_window_id'))->get()
+           'entry_requirements'=>EntryRequirement::with(['campusProgram.program'])->where('application_window_id',$request->get('application_window_id'))->get(),
+           'request'=>$request
         ];
         return view('dashboard.application.entry-requirements-capacity',$data)->withTitle('Entry Capacity');
     }
