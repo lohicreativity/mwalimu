@@ -20,6 +20,7 @@ class CreateApplicationWindowsTable extends Migration
             $table->integer('capacity');
             $table->date('begin_date');
             $table->date('end_date');
+            $table->string('status',10);
             $table->timestamps();
 
             $table->foreign('study_academic_year_id','study_ac_year_app_window')->references('id')->on('study_academic_years')->onUpdate('cascade');

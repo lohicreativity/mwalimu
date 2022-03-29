@@ -37,7 +37,7 @@ class EntryRequirementController extends Controller
                      $query->where('application_window_id',$request->get('application_window_id'));
               })->with('program')->where('campus_id',$staff->campus_id)->get(),
            'degree_campus_programs'=>CampusProgram::whereHas('program.ntaLevel',function($query){
-                    $query->where('name','LIKE','%7%');
+                    $query->where('name','LIKE','%7%')->orWhere('name','LIKE','%8%');
            })->whereHas('selections',function($query) use($request){
                      $query->where('application_window_id',$request->get('application_window_id'));
               })->with('program')->where('campus_id',$staff->campus_id)->get(),
