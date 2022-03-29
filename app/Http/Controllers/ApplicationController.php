@@ -263,7 +263,7 @@ class ApplicationController extends Controller
             $select->status = 'SELECTED';
             $select->save();
 
-            return dd($array);
+            return dd($xml_request);
               }
             }
 
