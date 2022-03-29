@@ -25,7 +25,8 @@ class EntryRequirementController extends Controller
            'campus_programs'=>CampusProgram::with('program')->get(),
            'entry_requirements'=>EntryRequirement::with(['campusProgram.program'])->where('application_window_id',$request->get('application_window_id'))->paginate(20),
            'subjects'=>NectaResult::distinct()->get(['subject_name']),
-           'staff'=>User::find(Auth::user()->id)->staff
+           'staff'=>User::find(Auth::user()->id)->staff,
+           'request'=>$request
     	];
     	return view('dashboard.application.entry-requirements',$data)->withTitle('Entry Requirements');
     }
