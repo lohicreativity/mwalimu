@@ -613,6 +613,8 @@ class ApplicationController extends Controller
            $selected_program[$applicant->id] = false;
            foreach($applicant->selections as $selection){
               foreach($campus_programs as $program){
+
+                return $program;
                 
                 if($program->id == $selection->campus_program_id){
 
@@ -747,7 +749,6 @@ class ApplicationController extends Controller
                        }
                    }
                    
-                   return $award;
                    // Bachelor
                    if(str_contains($award->name,'Bachelor')){
                        $o_level_pass_count = 0;
