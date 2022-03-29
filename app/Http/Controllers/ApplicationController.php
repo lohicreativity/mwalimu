@@ -614,7 +614,7 @@ class ApplicationController extends Controller
                 
                 if($program->id == $selection->campus_program_id){
 
-                  if(!isset($program->entryRequirements[0])){
+                  if(count($program->entryRequirements) == 0){
                     return redirect()->back()->with('error',$program->program->name.' does not have entry requirements');
                   }
 
