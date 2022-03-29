@@ -26,6 +26,21 @@ class EntryRequirementController extends Controller
            'campus_programs'=>CampusProgram::whereHas('selections',function($query) use($request){
                      $query->where('application_window_id',$request->get('application_window_id'));
               })->with('program')->where('campus_id',$staff->campus_id)->get(),
+           'cert_campus_programs'=>CampusProgram::whereHas('program.ntaLevel',function($query){
+                    $query->where('name','LIKE','%4%');
+           })->whereHas('selections',function($query) use($request){
+                     $query->where('application_window_id',$request->get('application_window_id'));
+              })->with('program')->where('campus_id',$staff->campus_id)->get(),
+           'diploma_campus_programs'=>CampusProgram::whereHas('program.ntaLevel',function($query){
+                    $query->where('name','LIKE','%6%');
+           })->whereHas('selections',function($query) use($request){
+                     $query->where('application_window_id',$request->get('application_window_id'));
+              })->with('program')->where('campus_id',$staff->campus_id)->get(),
+           'degree_campus_programs'=>CampusProgram::whereHas('program.ntaLevel',function($query){
+                    $query->where('name','LIKE','%7%');
+           })->whereHas('selections',function($query) use($request){
+                     $query->where('application_window_id',$request->get('application_window_id'));
+              })->with('program')->where('campus_id',$staff->campus_id)->get(),
            'entry_requirements'=>EntryRequirement::with(['campusProgram.program'])->where('application_window_id',$request->get('application_window_id'))->paginate(20),
            'subjects'=>NectaResult::distinct()->get(['subject_name']),
            'staff'=>$staff,

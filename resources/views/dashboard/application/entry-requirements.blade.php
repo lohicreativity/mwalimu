@@ -187,7 +187,7 @@
                     {!! Form::label('','Programme') !!}
                     <select name="campus_program_ids[]" class="form-control ss-select-tags" required multiple="multiple">
                       <option value="">Select Programme</option>
-                      @foreach($campus_programs as $program)
+                      @foreach($cert_campus_programs as $program)
                       <option value="{{ $program->id }}">{{ $program->program->name }}</option>
                       @endforeach
                     </select>
@@ -415,7 +415,7 @@
                     {!! Form::label('','Programme') !!}
                     <select name="campus_program_ids[]" class="form-control ss-select-tags" required multiple="multiple">
                       <option value="">Select Programme</option>
-                      @foreach($campus_programs as $program)
+                      @foreach($diploma_campus_programs as $program)
                       <option value="{{ $program->id }}">{{ $program->program->name }}</option>
                       @endforeach
                     </select>
@@ -667,7 +667,7 @@
                     {!! Form::label('','Programme') !!}
                     <select name="campus_program_ids[]" class="form-control ss-select-tags" required multiple="multiple">
                       <option value="">Select Programme</option>
-                      @foreach($campus_programs as $program)
+                      @foreach($degree_campus_programs as $program)
                       <option value="{{ $program->id }}">{{ $program->program->name }}</option>
                       @endforeach
                     </select>
