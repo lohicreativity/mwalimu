@@ -592,7 +592,6 @@ class ApplicationController extends Controller
             $query->where('application_window_id',$request->get('application_window_id'));
         })->get();
 
-        return $applicants;
 
         $o_level_grades = ['A'=>5,'B+'=>4,'B'=>3,'C'=>2,'D'=>1,'E'=>0.5,'F'=>0];
 
@@ -811,6 +810,8 @@ class ApplicationController extends Controller
                               }
                            }
                          }
+
+                         return $o_level_pass_count;
                          if($o_level_pass_count >= $program->entryRequirements[0]->pass_subjects && $a_level_principle_pass_count >= 2 && $a_level_principle_pass_points >= $program->entryRequirements[0]->principle_pass_points){
                            $select = ApplicantProgramSelection::find($selection->id);
                            $select->status = 'ELIGIBLE';
