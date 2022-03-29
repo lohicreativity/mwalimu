@@ -52,7 +52,7 @@
                      <select name="application_window_id" class="form-control" required>
                         <option value="">Select Application Window</option>
                         @foreach($application_windows as $window)
-                        <option value="{{ $window->id }}">{{ $window->begin_date }} - {{ $window->end_date }} </option>
+                        <option value="{{ $window->id }}" @if($request->get('application_window_id') == $window->id) selected="selected" @endif>{{ $window->begin_date }} - {{ $window->end_date }} </option>
                         @endforeach
                      </select>
                    </div>
