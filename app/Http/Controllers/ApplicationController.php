@@ -578,6 +578,7 @@ class ApplicationController extends Controller
      */
     public function runSelection(Request $request)
     {
+        ini_set('memory_limit', '256M');
         // Phase I
         $campus_programs = CampusProgram::whereHas('program',function($query) use($request){
              $query->where('award_id',$request->get('award_id'));
