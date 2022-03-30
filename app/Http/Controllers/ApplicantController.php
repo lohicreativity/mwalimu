@@ -28,6 +28,7 @@ use App\Domain\Academic\Models\StudyAcademicYear;
 use Illuminate\Support\Facades\Http;
 use App\Models\User;
 use App\Utils\Util;
+use Carbon\Carbon;
 use Validator, Auth;
 
 class ApplicantController extends Controller
@@ -333,6 +334,14 @@ class ApplicantController extends Controller
            }else{
               return redirect()->back()->withInput()->withErrors($validation->messages());
            }
+        }
+
+        if(Carbon::now()->subYears(14)->format('Y-m-d') > Carbon::parse($request->birth_date)->format('Y-m-d')){
+            return redirect()->back()->with('error','Birth date must be before 14 years ago');
+        }
+
+        if(Carbon::now()->format('Y-m-d') < Carbon::parse($request->birth_date)->format('Y-m-d')){
+            return redirect()->back()->with('error','Birth date cannot be the date after today');
         }
 
 
