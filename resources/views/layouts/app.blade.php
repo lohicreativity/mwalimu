@@ -34,7 +34,7 @@
   <link rel="stylesheet" type="text/css" 
      href="{{ asset('css/select2.min.css') }}">
   <!-- Custom style -->
-  <link rel="stylesheet" type="text/css" href="{{ asset('css/style.css') }}">
+  <link rel="stylesheet" type="text/css" href="{{ asset('css/style.css/version='.config('constants.VERSION')) }}">
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 
@@ -47,7 +47,7 @@
 <script src="{{ asset('plugins/jquery-ui/jquery-ui.min.js') }}"></script>
 <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
 <!-- Custom script -->
-<script src="{{ asset('js/script.js') }}"></script>
+<script src="{{ asset('js/script.js?version='.config('constants.VERSION')) }}"></script>
 
 <!-- Bootstrap 4 -->
 <script src="{{ asset('plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>

@@ -13,7 +13,7 @@ return [
 
    'SITE_BASE_URL'=>'https://mnma.ac.tz',
    
-   'VERSION'=>1.0,
+   'VERSION'=>1.1,
 
     'GePG_SERVER' => 'http://154.118.230.202:80/',
     'POST_BILL_PATH' => 'api/bill/qrequest',
