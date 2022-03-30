@@ -136,7 +136,7 @@
                        {!! Form::email('email',$applicant->email,$email) !!}
                     </div>
                     <div class="form-group col-3">
-                       {!! Form::label('','Phone (255XXXXXXXXX)') !!}
+                       {!! Form::label('','Phone') !!}
                        {!! Form::text('phone',$applicant->phone,$phone) !!}
                     </div>
                     <div class="form-group col-3">

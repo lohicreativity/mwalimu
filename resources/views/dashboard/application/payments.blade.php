@@ -82,6 +82,8 @@
                     </tr>
                     @endif
                  </table>
+                 @else
+                  <p>No application fee amount set.</p>
                  @endif
               </div>
             </div>
