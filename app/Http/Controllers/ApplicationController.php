@@ -410,10 +410,18 @@ class ApplicationController extends Controller
                 }
             }
         }else{
-            if($applicant->birth_certificate && $applicant->o_level_certificate){
-                $applicant->documents_complete_status = 1;
-            }else{
-                $applicant->documents_complete_status = 0;
+            if(str_contains($applicant->programLevel->name,'Bachelor')){
+                if($applicant->birth_certificate && $applicant->o_level_certificate && $applicant->diploma_certificate){
+                    $applicant->documents_complete_status = 1;
+                }else{
+                    $applicant->documents_complete_status = 0;
+                }
+            }elseif(str_contains($applicant->programLevel->name,'Diploma') || str_contains($applicant->programLevel->name,'Certificate')){
+                if($applicant->birth_certificate && $applicant->o_level_certificate){
+                    $applicant->documents_complete_status = 1;
+                }else{
+                    $applicant->documents_complete_status = 0;
+                }
             }
         }
 
@@ -442,6 +450,18 @@ class ApplicationController extends Controller
      */
     public function submitApplication(Request $request)
     {
+        $validation = Validator::make($request->all(),[
+            'agreement_check'=>'required',
+        ]);
+
+        if($validation->fails()){
+           if($request->ajax()){
+              return response()->json(array('error_messages'=>$validation->messages()));
+           }else{
+              return redirect()->back()->withInput()->withErrors($validation->messages());
+           }
+        }
+
        $applicant = Applicant::find($request->get('applicant_id'));
        if($applicant->basic_info_complete_status == 0){
           return redirect()->back()->with('error','Basic information section not completed');
