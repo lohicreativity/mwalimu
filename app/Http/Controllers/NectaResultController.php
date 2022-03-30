@@ -20,7 +20,7 @@ class NectaResultController extends Controller
         $applicant  = Applicant::find($request->get('applicant_id'));
         $applicant->first_name = $detail->first_name;
         $applicant->middle_name =  $detail->middle_name;
-        $applicant->surname = $details->last_name;
+        $applicant->surname = $detail->last_name;
         $applicant->save();
 
         return redirect()->back()->with('message','NECTA results confirmed successfully');

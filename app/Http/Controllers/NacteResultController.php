@@ -19,7 +19,7 @@ class NacteResultController extends Controller
         $applicant  = Applicant::find($request->get('applicant_id'));
         $applicant->first_name = $detail->firstname;
         $applicant->middle_name =  $detail->middlename;
-        $applicant->surname = $details->surname;
+        $applicant->surname = $detail->surname;
         $applicant->save();
 
         return redirect()->back()->with('message','NACTE results confirmed successfully');
