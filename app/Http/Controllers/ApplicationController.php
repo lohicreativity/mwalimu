@@ -724,6 +724,8 @@ class ApplicationController extends Controller
                                     if(!in_array($result->subject_name, unserialize($program->entryRequirements[0]->exclude_subjects))){
                                          $o_level_pass_count += 1;
                                     }
+                                 }else{
+                                    $o_level_pass_count += 1;
                                  }
                               }
                            }
