@@ -453,7 +453,7 @@ class ApplicationController extends Controller
         $fee_amount = FeeAmount::with(['feeItem.feeType'])->find($request->get('fee_amount_id'));
 
         $invoice = new Invoice;
-        $invoice->reference_no = 'MNMA-'.str_replace('/', '-', $applicant->index_number).'-'.time();
+        $invoice->reference_no = 'MNMA-'.time();
         if($applicant->country->code == 'TZ'){
            $invoice->amount = $fee_amount->amount_in_tzs;
            $invoice->currency = 'TZS';
