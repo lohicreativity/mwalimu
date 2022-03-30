@@ -102,7 +102,7 @@ class ApplicationWindowController extends Controller
      */
     public function updatePrograms(Request $request)
     {
-        $programs = Program::all();
+        $programs = CampusProgram::all();
         $window = ApplicationWindow::find($request->get('application_window_id'));
         $programIds = [];
         foreach ($programs as $program) {
