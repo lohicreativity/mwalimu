@@ -14,6 +14,8 @@ class ApplicationWindow extends Model
 
     protected $table = 'application_windows';
 
+    public $fillable = ['enrollment_report_download_status'];
+
     /**
      * Establish one to many relationship with study academic years
      */
