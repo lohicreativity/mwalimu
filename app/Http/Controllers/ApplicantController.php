@@ -116,35 +116,36 @@ class ApplicantController extends Controller
                     $applicant->street = $app->street;
                     $applicant->basic_info_complete_status = $app->basic_info_complete_status;
                     $applicant->save();
-               }elseif($app = Applicant::where('user_id',Auth::user()->id)->where('campus_id','!=',$request->get('campus_id'))->first()){
+                }elseif($app = Applicant::where('user_id',Auth::user()->id)->where('campus_id','!=',$request->get('campus_id'))->first()){
                     if($app){
-                    $applicant = new Applicant;
-                    $applicant->user_id = Auth::user()->id;
-                    $applicant->index_number = $app->index_number;
-                    $applicant->entry_mode = $app->entry_mode;
-                    $applicant->program_level_id = $app->program_level_id;
-                    $applicant->intake_id = $app->intake_id;
-                    $applicant->campus_id = $request->get('campus_id');
-                    $applicant->application_window_id = $window->id;
-                    $applicant->first_name = $app->first_name;
-                    $applicant->middle_name = $app->middle_name;
-                    $applicant->surname = $app->surname;
-                    $applicant->email = $app->email;
-                    $applicant->phone = $app->phone;
-                    $applicant->birth_date = $app->birth_date;
-                    $applicant->nationality = $app->nationality;
-                    $applicant->gender = $app->gender;
-                    $applicant->disability_status_id = $app->disability_status_id;
-                    $applicant->address = $app->address;
-                    $applicant->country_id = $app->country_id;
-                    $applicant->region_id = $app->region_id;
-                    $applicant->district_id = $app->district_id;
-                    $applicant->ward_id = $app->ward_id;
-                    $applicant->street = $app->street;
-                    $applicant->basic_info_complete_status = $app->basic_info_complete_status;
-                    $applicant->save();
-               }
+                        $applicant = new Applicant;
+                        $applicant->user_id = Auth::user()->id;
+                        $applicant->index_number = $app->index_number;
+                        $applicant->entry_mode = $app->entry_mode;
+                        $applicant->program_level_id = $app->program_level_id;
+                        $applicant->intake_id = $app->intake_id;
+                        $applicant->campus_id = $request->get('campus_id');
+                        $applicant->application_window_id = $window->id;
+                        $applicant->first_name = $app->first_name;
+                        $applicant->middle_name = $app->middle_name;
+                        $applicant->surname = $app->surname;
+                        $applicant->email = $app->email;
+                        $applicant->phone = $app->phone;
+                        $applicant->birth_date = $app->birth_date;
+                        $applicant->nationality = $app->nationality;
+                        $applicant->gender = $app->gender;
+                        $applicant->disability_status_id = $app->disability_status_id;
+                        $applicant->address = $app->address;
+                        $applicant->country_id = $app->country_id;
+                        $applicant->region_id = $app->region_id;
+                        $applicant->district_id = $app->district_id;
+                        $applicant->ward_id = $app->ward_id;
+                        $applicant->street = $app->street;
+                        $applicant->basic_info_complete_status = $app->basic_info_complete_status;
+                        $applicant->save();
+                    }
             }
+          }
             
             
             session(['applicant_campus_id'=>$request->get('campus_id')]);
