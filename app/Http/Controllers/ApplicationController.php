@@ -374,7 +374,7 @@ class ApplicationController extends Controller
      */
     public function deleteDocument(Request $request)
     {
-        $applicant = Applicant::where('user_id',Auth::user()->id)->where('campus_id',session('applicant_campus_id'))->first();
+        $applicant = Applicant::with('programLevel')->where('user_id',Auth::user()->id)->where('campus_id',session('applicant_campus_id'))->first();
         if($request->get('name') == 'birth_certificate'){
            unlink(public_path().'/uploads/'.$applicant->birth_certificate);
            $applicant->birth_certificate = null;
@@ -396,10 +396,18 @@ class ApplicationController extends Controller
         }
 
         if($applicant->entry_mode == 'DIRECT'){
-            if($applicant->birth_certificate && $applicant->o_level_certificate){
-                $applicant->documents_complete_status = 1;
-            }else{
-                $applicant->documents_complete_status = 0;
+            if(str_contains($applicant->programLevel->name,'Bachelor')){
+                if($applicant->birth_certificate && $applicant->o_level_certificate && $applicant->a_level_certificate){
+                    $applicant->documents_complete_status = 1;
+                }else{
+                    $applicant->documents_complete_status = 0;
+                }
+            }elseif(str_contains($applicant->programLevel->name,'Diploma') || str_contains($applicant->programLevel->name,'Certificate')){
+                if($applicant->birth_certificate && $applicant->o_level_certificate){
+                    $applicant->documents_complete_status = 1;
+                }else{
+                    $applicant->documents_complete_status = 0;
+                }
             }
         }else{
             if($applicant->birth_certificate && $applicant->o_level_certificate){
