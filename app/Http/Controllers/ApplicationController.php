@@ -115,6 +115,7 @@ class ApplicationController extends Controller
          $data = [
             'staff'=>$staff,
             'application_windows'=>ApplicationWindow::where('campus_id',$staff->campus_id)->get(),
+            'application_window'=>ApplicationWindow::find($request->get('application_window_id')),
             'awards'=>Award::all(),
             'nta_levels'=>NTALevel::all(),
             'selected_applicants'=>Applicant::whereHas('intake.applicationWindows',function($query) use($request){
@@ -147,6 +148,8 @@ class ApplicationController extends Controller
                       'Expires'             => '0',
                       'Pragma'              => 'public'
               ];
+         
+         ApplicationWindow::find($request->get('application_window_id'))->update(['enrollment_report_download_status'=>1]);
 
          if($request->get('gender')){
             $list = Applicant::whereHas('intake.applicationWindows',function($query) use($request){

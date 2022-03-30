@@ -22,6 +22,7 @@ class CreateApplicationWindowsTable extends Migration
             $table->date('end_date');
             $table->string('status',10);
             $table->unsignedBigInteger('campus_id');
+            $table->tinyInteger('enrollment_report_download_status')->default(0);
             $table->timestamps();
 
             $table->foreign('study_academic_year_id','study_ac_year_app_window')->references('id')->on('study_academic_years')->onUpdate('cascade');
