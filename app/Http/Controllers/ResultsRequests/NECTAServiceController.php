@@ -61,8 +61,14 @@ class NECTAServiceController extends Controller
                 $res->save();
             }
 
-            $applicant = Applicant::find($request->get('applicant_id'));
-            $applicant->results_complete_status = 1;
+            $applicant = Applicant::with('programLevel')->find($request->get('applicant_id'));
+            if(str_contains($applicant->programLevel->name,'Bachelor') && $applicant->entry_mode == 'DIRECT' && $exam_id == 2){
+                $applicant->results_complete_status = 1;
+            }elseif(str_contains($applicant->programLevel->name,'Diploma') && $applicant->entry_mode == 'DIRECT' && $exam_id == 1){
+                $applicant->results_complete_status = 1;
+            }elseif(str_contains($applicant->programLevel->name,'Certificate') && $applicant->entry_mode == 'DIRECT' && $exam_id == 1){
+                $applicant->results_complete_status = 1;
+            }
             $applicant->save();
 
             $details = NectaResultDetail::with('results')->find($detail->id);

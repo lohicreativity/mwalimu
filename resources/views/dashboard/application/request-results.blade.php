@@ -80,8 +80,7 @@
 
                     {!! Form::input('hidden','results_container','#ss-results-container') !!}
 
-                    {!! Form::input('hidden','results_link','#ss-results-confirmation-link') !!}
-                    <a href="#" onclick="window.location.reload();"><i class="fa fa-refresh" ></i> Refresh</a>                               
+                    {!! Form::input('hidden','results_link','#ss-results-confirmation-link') !!}                             
                     @foreach($o_level_necta_results as $result)
                      <p class="ss-font-xs">Center Name: {{ $result->center_name }} <br>Division: {{ $result->division }} &nbsp; Points: {{ $result->points }} <i class="fa fa-check"></i></p>
                     @endforeach
