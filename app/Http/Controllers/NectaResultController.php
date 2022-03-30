@@ -18,6 +18,9 @@ class NectaResultController extends Controller
     {
         $detail = NectaResultDetail::find($request->get('necta_result_detail_id'));
         $applicant  = Applicant::find($request->get('applicant_id'));
+        if(strtoupper($applicant->first_name) != strtoupper($detail->first_name) || strtoupper($applicant->surname) != strtoupper($detail->last_name)){
+            return redirect()->to('application/nullify-necta-results?detail_id='.$request->get('necta_result_detail_id'));
+        }
         $applicant->first_name = $detail->first_name;
         $applicant->middle_name =  $detail->middle_name;
         $applicant->surname = $detail->last_name;
@@ -35,5 +38,17 @@ class NectaResultController extends Controller
     	// $detail->results->delete();
     	$detail->delete();
 	    return redirect()->back()->with('message','NECTA results declined successfully');
+    }
+
+    /**
+     * Nullify NECTA results
+     */
+    public function nullify(Request $request)
+    {
+        $detail = NectaResultDetail::find($request->get('necta_result_detail_id'));
+        NectaResult::where('necta_result_detail_id',$request->get('necta_result_detail_id'))->delete();
+        // $detail->results->delete();
+        $detail->delete();
+        return redirect()->back()->with('error','NECTA results names do not match your application names');
     }
 }

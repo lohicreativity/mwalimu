@@ -82,6 +82,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
     Route::post('necta-result/confirm',[NectaResultController::class,'confirm']);
     Route::post('nacte-result/confirm',[NacteResultController::class,'confirm']);
 
+    Route::get('nullify-necta-results',[NectaResultController::class,'nullify']);
+
 
     Route::get('application-window-campus-programs', [ApplicationWindowController::class,'showPrograms']);
 	Route::post('application-window-campus-programs/update', [ApplicationWindowController::class,'updatePrograms']);

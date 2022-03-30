@@ -81,7 +81,7 @@
           </div>
         </div>
         <div class="input-group mb-3">
-          <input type="text" name="index_number" class="form-control" value={{ old('index_number') }} placeholder="Form IV Index Number (S1002/0213/2015)" required>
+          <input type="text" name="index_number" class="form-control" value="{{ old('index_number') }}" placeholder="Form IV Index Number (S1002/0213/2015)" required>
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-key"></span>

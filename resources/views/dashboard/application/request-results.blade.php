@@ -154,7 +154,7 @@
             <!-- /.card -->
             @endif
 
-            <div class="modal fade" id="ss-confirm-results">
+            <div class="modal fade" id="ss-confirm-results" data-backdrop="static" data-keyboard="false">
                 <div class="modal-dialog modal-lg">
                   <div class="modal-content">
                     <div class="modal-header">
@@ -195,9 +195,6 @@
                               </div><!-- end of ss-confirmation-container -->
                           </div><!-- end of col-md-12 -->
                        </div><!-- end of row -->
-                    </div>
-                    <div class="modal-footer justify-content-between">
-                      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     </div>
                   </div>
                   <!-- /.modal-content -->
@@ -258,12 +255,12 @@
 
             @endif
 
-            <div class="modal fade" id="ss-confirm-nacte-results">
+            <div class="modal fade" id="ss-confirm-nacte-results" data-backdrop="static" data-keyboard="false">
                 <div class="modal-dialog modal-lg">
                   <div class="modal-content">
                     <div class="modal-header">
                       <h4 class="modal-title"><i class="fa fa-exclamation-sign"></i> Confirmation Alert</h4>
-                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      
                         <span aria-hidden="true">&times;</span>
                       </button>
                     </div>
@@ -295,9 +292,6 @@
                               </div><!-- end of ss-confirmation-container -->
                           </div><!-- end of col-md-12 -->
                        </div><!-- end of row -->
-                    </div>
-                    <div class="modal-footer justify-content-between">
-                      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     </div>
                   </div>
                   <!-- /.modal-content -->
