@@ -30,7 +30,7 @@ class NextOfKinController extends Controller
            }
         }
 
-        (new NextOfKinAction)->update($request);
+        (new NextOfKinAction)->store($request);
 
         return Util::requestResponse($request,'Next of Kin created successfully');
     }
