@@ -191,6 +191,7 @@ class ApplicantController extends Controller
         
         $data = [
            'applicant'=>User::find(Auth::user()->id)->applicants()->where('campus_id',session('applicant_campus_id'))->first(),
+           'campus'=>Campus::find(session('applicant_campus_id')),
            'countries'=>Country::all(),
            'regions'=>Region::all(),
            'districts'=>District::all(),
@@ -228,6 +229,7 @@ class ApplicantController extends Controller
         $applicant = User::find(Auth::user()->id)->applicants()->where('campus_id',session('applicant_campus_id'))->first();
         $data = [
            'applicant'=>$applicant,
+           'campus'=>Campus::find(session('applicant_campus_id')),
            'next_of_kin'=>NextOfKin::find($applicant->next_of_kin_id),
            'countries'=>Country::all(),
            'regions'=>Region::all(),
@@ -249,6 +251,7 @@ class ApplicantController extends Controller
         $invoice = Invoice::where('payable_id',$applicant->id)->where('payable_type','applicant')->first();
         $data = [
            'applicant'=>$applicant,
+           'campus'=>Campus::find(session('applicant_campus_id')),
            'fee_amount'=>FeeAmount::whereHas('feeItem.feeType',function($query){
                   $query->where('name','LIKE','%Application Fee%');
             })->with(['feeItem.feeType'])->where('study_academic_year_id',$study_academic_year->id)->first(),
@@ -267,6 +270,7 @@ class ApplicantController extends Controller
         $applicant = User::find(Auth::user()->id)->applicants()->with('programLevel')->where('campus_id',session('applicant_campus_id'))->first();
         $data = [
            'applicant'=>$applicant,
+           'campus'=>Campus::find(session('applicant_campus_id')),
            'o_level_necta_results'=>NectaResultDetail::with('results')->where('applicant_id',$applicant->id)->where('exam_id','1')->get(),
            'a_level_necta_results'=>NectaResultDetail::with('results')->where('applicant_id',$applicant->id)->where('exam_id','2')->get(),
            'nacte_results'=>NacteResultDetail::with('results')->where('applicant_id',$applicant->id) ->get()
@@ -285,6 +289,7 @@ class ApplicantController extends Controller
            'applicant'=>User::find(Auth::user()->id)->applicants()->with(['selections.campusProgram.program','selections'=>function($query){
                 $query->orderBy('order','asc');
             },'selections.campusProgram.campus'])->where('campus_id',session('applicant_campus_id'))->first(),
+           'campus'=>Campus::find(session('applicant_campus_id')),
            'application_window'=>$window,
            'campus_programs'=>$window? $window->campusPrograms()->with(['program','campus'])->get() : []
         ];
@@ -297,7 +302,8 @@ class ApplicantController extends Controller
     public function uploadDocuments(Request $request)
     {
        $data = [
-          'applicant'=>User::find(Auth::user()->id)->applicants()->where('campus_id',session('applicant_campus_id'))->first()
+          'applicant'=>User::find(Auth::user()->id)->applicants()->where('campus_id',session('applicant_campus_id'))->first(),
+          'campus'=>Campus::find(session('applicant_campus_id')),
        ];
        return view('dashboard.application.upload-documents',$data)->withTitle('Upload Documents');
     }

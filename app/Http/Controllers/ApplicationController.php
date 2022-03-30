@@ -474,6 +474,8 @@ class ApplicationController extends Controller
         $approved_by = 'SP';
         $inst_id = Config::get('constants.SUBSPCODE');
 
+        $email = $payable->email? $payable->email : 'application@mnma.ac.tz';
+
         return $this->requestControlNumber($request,
                                   $invoice->reference_no,
                                   $inst_id,
@@ -484,7 +486,7 @@ class ApplicationController extends Controller
                                   $payable->id,
                                   $payable->first_name.' '.$payable->middle_name.' '.$payable->surname,
                                   $payable->phone,
-                                  $payable->email,
+                                  $email,
                                   $generated_by,
                                   $approved_by,
                                   $fee_type->duration,
