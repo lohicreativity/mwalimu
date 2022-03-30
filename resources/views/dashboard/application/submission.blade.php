@@ -61,7 +61,7 @@
                   <div class="form-group col-12">
                     <div class="custom-control custom-checkbox">
                           <input class="custom-control-input" type="checkbox" id="customCheckbox2" name="agreement_check" value="1" required>
-                          <label for="customCheckbox2" class="custom-control-label">I have read and agreed to the terms of MNMA admission agreement and that the information provided is true.</label>
+                          <label for="customCheckbox2" class="custom-control-label">I have read and agreed to the terms of MNMA admission and that the information I have provided is true.</label>
                         </div>
                   </div>
 
