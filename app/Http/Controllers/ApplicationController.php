@@ -84,19 +84,19 @@ class ApplicationController extends Controller
                  $query->where('id',$request->get('application_window_id'));
             })->whereHas('selections',function($query) use($request){
                  $query->where('status','APPROVING');
-            })->with(['nextOfKin','intake','selections.campusProgram.program'])->where('program_level_id',$request->get('program_level_id'))->where('first_name','LIKE','%'.$request->get('query').'%')->orWhere('middle_name','LIKE','%'.$request->get('query').'%')->orWhere('surname','LIKE','%'.$request->get('query').'%')->where('campus_id',$staff->campus_id)->paginate(20);
+            })->with(['nextOfKin','intake','selections.campusProgram.program'])->where('program_level_id',$request->get('program_level_id'))->where('first_name','LIKE','%'.$request->get('query').'%')->orWhere('middle_name','LIKE','%'.$request->get('query').'%')->orWhere('surname','LIKE','%'.$request->get('query').'%')->paginate(20);
          }elseif($request->get('gender')){
             $applicants = Applicant::whereHas('intake.applicationWindows',function($query) use($request){
                  $query->where('id',$request->get('application_window_id'));
             })->whereHas('selections',function($query) use($request){
                  $query->where('status','APPROVING');
-            })->with(['nextOfKin','intake','selections.campusProgram.program'])->where('program_level_id',$request->get('program_level_id'))->where('gender',$request->get('gender'))->where('campus_id',$staff->campus_id)->paginate(20);
+            })->with(['nextOfKin','intake','selections.campusProgram.program'])->where('program_level_id',$request->get('program_level_id'))->where('gender',$request->get('gender'))->paginate(20);
          }elseif($request->get('campus_program_id')){
             $applicants = Applicant::whereHas('intake.applicationWindows',function($query) use($request){
                  $query->where('id',$request->get('application_window_id'));
             })->whereHas('selections',function($query) use($request){
                  $query->where('status','APPROVING')->where('campus_program_id',$request->get('campus_program_id'));
-            })->with(['nextOfKin','intake','selections.campusProgram.program'])->where('program_level_id',$request->get('program_level_id'))->where('campus_id',$staff->campus_id)->paginate(20);
+            })->with(['nextOfKin','intake','selections.campusProgram.program'])->where('program_level_id',$request->get('program_level_id'))->paginate(20);
          }elseif($request->get('nta_level_id')){
              $applicants = Applicant::whereHas('intake.applicationWindows',function($query) use($request){
                  $query->where('id',$request->get('application_window_id'));
@@ -104,13 +104,13 @@ class ApplicationController extends Controller
                  $query->where('nta_level_id',$request->get('nta_level_id'))->where('status','APPROVING');
             })->whereHas('selections',function($query) use($request){
                  $query->where('status','APPROVING');
-            })->with(['nextOfKin','intake','selections.campusProgram.program'])->where('program_level_id',$request->get('program_level_id'))->where('campus_id',$staff->campus_id)->paginate(20);
+            })->with(['nextOfKin','intake','selections.campusProgram.program'])->where('program_level_id',$request->get('program_level_id'))->paginate(20);
          }else{
             $applicants = Applicant::whereHas('intake.applicationWindows',function($query) use($request){
                  $query->where('id',$request->get('application_window_id'));
             })->whereHas('selections',function($query) use($request){
                  $query->where('status','APPROVING');
-            })->with(['nextOfKin','intake','selections.campusProgram.program'])->where('program_level_id',$request->get('program_level_id'))->where('campus_id',$staff->campus_id)->paginate(20);
+            })->with(['nextOfKin','intake','selections.campusProgram.program'])->where('program_level_id',$request->get('program_level_id'))->paginate(20);
          }
          $data = [
             'staff'=>$staff,
