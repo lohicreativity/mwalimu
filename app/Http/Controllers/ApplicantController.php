@@ -291,7 +291,7 @@ class ApplicantController extends Controller
             },'selections.campusProgram.campus'])->where('campus_id',session('applicant_campus_id'))->first(),
            'campus'=>Campus::find(session('applicant_campus_id')),
            'application_window'=>$window,
-           'campus_programs'=>$window? $window->campusPrograms()->with(['program','campus'])->get() : []
+           'campus_programs'=>$window? $window->campusPrograms()->with(['program','campus'])->where('campus_id',session('applicant_campus_id'))->get() : []
         ];
         return view('dashboard.application.select-programs',$data)->withTitle('Select Programmes');
     }
@@ -314,7 +314,8 @@ class ApplicantController extends Controller
     public function submission(Request $request)
     {
         $data = [
-            'applicant'=>User::find(Auth::user()->id)->applicants()->where('campus_id',session('applicant_campus_id'))->first()
+            'applicant'=>User::find(Auth::user()->id)->applicants()->where('campus_id',session('applicant_campus_id'))->first(),
+            'campus'=>Campus::find(session('applicant_campus_id')),
         ];
         return view('dashboard.application.submission',$data)->withTitle('Submission');
     }
