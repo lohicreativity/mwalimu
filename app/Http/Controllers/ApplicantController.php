@@ -336,7 +336,7 @@ class ApplicantController extends Controller
            }
         }
 
-        if(Carbon::now()->subYears(14)->format('Y-m-d') < Carbon::parse($request->('birth_date'))->format('Y-m-d')){
+        if(Carbon::now()->subYears(14)->format('Y-m-d') < Carbon::parse($request->get('birth_date'))->format('Y-m-d')){
             return redirect()->back()->with('error','Birth date must be before 14 years ago');
         }
 
