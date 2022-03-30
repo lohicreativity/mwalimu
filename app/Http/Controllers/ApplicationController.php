@@ -245,6 +245,7 @@ class ApplicationController extends Controller
                   <f6indexno>'.$f6indexno.'</f6indexno>
                   <SelectedProgrammes>'.implode(',', $selected_programs).'</SelectedProgrammes>
                   <MobileNumber>'.str_replace('-', '', $applicant->phone).'</MobileNumber>
+                  <OtherMobileNumber></OtherMobileNumber>
                   <EmailAddress>'.$applicant->email.'</EmailAddress>
                   <Category>A</Category>
                   <AdmissionStatus>provisional admission</AdmissionStatus>
@@ -252,11 +253,11 @@ class ApplicationController extends Controller
                   <Reason>eligible</Reason>
                   <Nationality >'.$applicant->nationality.'</Nationality>
                   <Impairment>'.$applicant->disabilityStatus->name.'</Impairment>
-                  <DateOfBirth>'.$applicant->birth_date.'</DateOfBirth>';
-                  if($applicant->nin != null){
-                     $xml_request .= '<NationalIdNumber>'.$applicant->nin.'</NationalIdNumber>';
-                  }
-                  $xml_request .= '</RequestParameters>
+                  <DateOfBirth>'.$applicant->birth_date.'</DateOfBirth>
+                  <NationalIdNumber>'.$applicant->nin.'</NationalIdNumber>
+                  <Otherf4indexno></Otherf4indexno>
+                  <Otherf6indexno></Otherf6indexno>
+                  </RequestParameters>
                   </Request>';
             $xml_response=simplexml_load_string($this->sendXmlOverPost($url,$xml_request));
             $json = json_encode($xml_response);
