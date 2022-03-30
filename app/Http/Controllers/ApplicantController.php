@@ -328,7 +328,7 @@ class ApplicantController extends Controller
             'first_name'=>'required',
             'surname'=>'required',
             'birth_date'=>'required',
-            'phone'=>'required|min:12|max:12',
+            'phone'=>'required|min:12|max:12|numeric',
             'address'=>'required',
             'nationality'=>'required',
             'street'=>'required'
