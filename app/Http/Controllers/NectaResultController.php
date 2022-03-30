@@ -45,7 +45,7 @@ class NectaResultController extends Controller
      */
     public function nullify(Request $request)
     {
-        $detail = NectaResultDetail::find($request->get('necta_result_detail_id'));
+        $detail = NectaResultDetail::find($request->get('detail_id'));
         NectaResult::where('necta_result_detail_id',$request->get('necta_result_detail_id'))->delete();
         // $detail->results->delete();
         $detail->delete();
