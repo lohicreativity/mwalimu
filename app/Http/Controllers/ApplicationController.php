@@ -352,6 +352,18 @@ class ApplicationController extends Controller
      */
     public function uploadDocuments(Request $request)
     {
+        $validation = Validator::make($request->all(),[
+            'document'=>'required|mimes:pdf,png,jpeg,jpg'
+        ]);
+
+        if($validation->fails()){
+           if($request->ajax()){
+              return response()->json(array('error_messages'=>$validation->messages()));
+           }else{
+              return redirect()->back()->withInput()->withErrors($validation->messages());
+           }
+        }
+
         (new ApplicantAction)->uploadDocuments($request);
 
         return redirect()->back()->with('message','Document uploaded successfully');
@@ -366,26 +378,38 @@ class ApplicationController extends Controller
         if($request->get('name') == 'birth_certificate'){
            unlink(public_path().'/uploads/'.$applicant->birth_certificate);
            $applicant->birth_certificate = null;
-           $applicant->save();
         }
 
         if($request->get('name') == 'o_level_certificate'){
            unlink(public_path().'/uploads/'.$applicant->o_level_certificate);
            $applicant->o_level_certificate = null;
-           $applicant->save();
         }
 
         if($request->get('name') == 'a_level_certificate'){
            unlink(public_path().'/uploads/'.$applicant->a_level_certificate);
            $applicant->a_level_certificate = null;
-           $applicant->save();
         }
 
         if($request->get('name') == 'diploma_certificate'){
            unlink(public_path().'/uploads/'.$applicant->diploma_certificate);
            $applicant->diploma_certificate = null;
-           $applicant->save();
         }
+
+        if($applicant->entry_mode == 'DIRECT'){
+            if($applicant->birth_certificate && $applicant->o_level_certificate){
+                $applicant->documents_complete_status = 1;
+            }else{
+                $applicant->documents_complete_status = 0;
+            }
+        }else{
+            if($applicant->birth_certificate && $applicant->o_level_certificate){
+                $applicant->documents_complete_status = 1;
+            }else{
+                $applicant->documents_complete_status = 0;
+            }
+        }
+
+        $applicant->save();
 
 
         return redirect()->back()->with('message','File deleted successfully');
