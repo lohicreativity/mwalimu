@@ -106,5 +106,43 @@ class ApplicantAction implements ApplicantInterface{
             }
 
             $applicant->save();
+
+            $other_apps = Applicant::where('user_id',$applicant->user_id)->where('campus_id','!=',$applicant->campus_id)->get();
+            foreach ($other_apps as $appl) {
+                # code...
+                $app = Applicant::find($appl->id);
+
+                if($request->hasFile('document')){
+                // $file_name = SystemLocation::renameFile($destination, $request->file('image')->getClientOriginalName(), $request->file('image')->guessClientExtension());
+                    if($request->get('document_name') == 'birth_certificate'){
+                        $app->birth_certificate = $request->file('document')->getClientOriginalName();
+                    }
+
+                    if($request->get('document_name') == 'o_level_certificate'){
+                        $app->o_level_certificate = $request->file('document')->getClientOriginalName();
+                    }
+                    
+                    if($request->get('document_name') == 'a_level_certificate'){
+                        $app->a_level_certificate = $request->file('document')->getClientOriginalName();
+                    }
+
+                    if($request->get('document_name') == 'diploma_certificate'){
+                        $app->a_level_certificate = $request->file('document')->getClientOriginalName(); 
+                    }
+
+                }
+
+                if($applicant->entry_mode == 'DIRECT'){
+                    if($applicant->birth_certificate && $applicant->o_level_certificate){
+                        $app->documents_complete_status = 1;
+                    }
+                }else{
+                    if($applicant->birth_certificate && $applicant->o_level_certificate){
+                        $app->documents_complete_status = 1;
+                    }
+                }
+
+                $app->save();
+            }
         }
 }
