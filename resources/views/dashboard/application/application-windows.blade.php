@@ -73,7 +73,7 @@
                 <div class="card-body">
                   
                   <div class="row">
-                  <div class="form-group col-3">
+                  <div class="form-group col-2">
                     {!! Form::label('','Intake') !!}
                     <select name="intake_id" class="form-control" required>
                       <option>Select Intake</option>
@@ -90,12 +90,21 @@
                     {!! Form::label('','End date') !!}
                     {!! Form::text('end_date',null,$end_date) !!}
                   </div>
-                  <div class="form-group col-3">
+                  <div class="form-group col-2">
                     {!! Form::label('','Status') !!}
                     <select name="status" class="form-control" required>
                       <option value="">Select Status</option>
                       <option value="ACTIVE">Active</option>
                       <option value="INACTIVE">Inctive</option>
+                    </select>
+                  </div>
+                  <div class="form-group col-2">
+                    {!! Form::label('','Campus') !!}
+                    <select name="status" class="form-control" required>
+                      <option value="">Select Campus</option>
+                      @foreach($campuses as $campus)
+                      <option value="{{ $campus->id }}">{{ $campus->name }}</option>
+                      @endforeach
                     </select>
                   </div>
                   </div>
@@ -119,6 +128,7 @@
                 <table id="example2" class="table table-bordered table-hover">
                   <thead>
                   <tr>
+                    <th>Campus</th>
                     <th>Status</th>
                     <th>Begin Date</th>
                     <th>End Date</th>
@@ -128,6 +138,7 @@
                   <tbody>
                   @foreach($windows as $window)
                   <tr>
+                    <th>{{ $window->campus->name }}</th>
                     <td>{{ $window->status }}</td>
                     <td>{{ $window->begin_date }}</td>
                     <td>{{ $window->end_date }}</td>
@@ -176,7 +187,7 @@
                                 {!! Form::open(['url'=>'application/application-window/update','class'=>'ss-form-processing']) !!}
 
                                     <div class="row">
-                                      <div class="form-group col-3">
+                                      <div class="form-group col-2">
                                         {!! Form::label('','Intake') !!}
                                         <select name="intake_id" class="form-control" required>
                                           <option>Select Intake</option>
@@ -197,12 +208,21 @@
 
                                         {!! Form::input('hidden','application_window_id',$window->id) !!}
                                       </div>
-                                      <div class="form-group col-3">
+                                      <div class="form-group col-2">
                                         {!! Form::label('','Status') !!}
                                         <select name="status" class="form-control" required>
                                           <option value="">Select Status</option>
                                           <option value="ACTIVE" @if($window->status == 'ACTIVE') selected="selected" @endif>Active</option>
                                           <option value="INACTIVE" @if($window->status == 'INACTIVE') selected="selected" @endif>Inctive</option>
+                                        </select>
+                                      </div>
+                                      <div class="form-group col-2">
+                                        {!! Form::label('','Campus') !!}
+                                        <select name="status" class="form-control" required>
+                                          <option value="">Select Campus</option>
+                                          @foreach($campuses as $campus)
+                                          <option value="{{ $campus->id }}" @if($window->campus_id == $campus->id) selected="selected" @endif>{{ $campus->name }}</option>
+                                          @endforeach
                                         </select>
                                       </div>
                                       </div>

@@ -40,7 +40,7 @@
             <i class="fas fa-logout mr-2"></i> Logout
             </a>
           @elseif(Auth::check() && Auth::user()->hasRole('applicant'))
-            <a href="{{ url('applicant/logout') }}" class="dropdown-item">
+            <a href="{{ url('application/logout') }}" class="dropdown-item">
             <i class="fas fa-logout mr-2"></i> Logout
             </a>
           @else

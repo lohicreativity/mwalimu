@@ -21,7 +21,7 @@ class EntryRequirementController extends Controller
     {
       $staff = User::find(Auth::user()->id)->staff;
     	$data = [
-           'application_windows'=>ApplicationWindow::all(),
+           'application_windows'=>ApplicationWindow::where('campus_id',$staff->campus_id)->get(),
            'application_window'=>ApplicationWindow::find($request->get('application_window_id')),
            'campus_programs'=>CampusProgram::whereHas('selections',function($query) use($request){
                      $query->where('application_window_id',$request->get('application_window_id'));
@@ -53,9 +53,10 @@ class EntryRequirementController extends Controller
      * Show capacity
      */
     public function showCapacity(Request $request)
-    {
+    {   
+        $staff = User::find(Auth::user()->id)->staff;
         $data = [
-           'application_windows'=>ApplicationWindow::all(),
+           'application_windows'=>ApplicationWindow::where('campus_id',$staff->campus_id)->get(),
            'application_window'=>ApplicationWindow::find($request->get('application_window_id')),
            'entry_requirements'=>EntryRequirement::with(['campusProgram.program'])->where('application_window_id',$request->get('application_window_id'))->get(),
            'request'=>$request

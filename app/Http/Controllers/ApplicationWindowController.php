@@ -22,8 +22,9 @@ class ApplicationWindowController extends Controller
     public function index(Request $request)
     {
     	$data = [
-           'windows'=>ApplicationWindow::paginate(20),
+           'windows'=>ApplicationWindow::with('campus')->paginate(20),
            'intakes'=>Intake::all(),
+           'campuses'=>Campus::all(),
            'staff'=>User::find(Auth::user()->id)->staff
     	];
     	return view('dashboard.application.application-windows',$data)->withTitle('Application Windows');

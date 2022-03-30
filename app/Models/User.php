@@ -134,8 +134,8 @@ class User extends Authenticatable
     /**
      * Establish one to one relationship with staffs
      */
-    public function applicant()
+    public function applicants()
     {
-        return $this->hasOne(Applicant::class,'user_id');
+        return $this->hasMany(Applicant::class,'user_id');
     }
 }

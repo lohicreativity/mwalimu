@@ -12,6 +12,7 @@ use App\Domain\Settings\Models\Country;
 use App\Domain\Settings\Models\Region;
 use App\Domain\Settings\Models\District;
 use App\Domain\Settings\Models\Ward;
+use App\Domain\Settings\Models\Campus;
 use App\Domain\Settings\Models\DisabilityStatus;
 use App\Domain\Finance\Models\FeeType;
 use App\Domain\Finance\Models\FeeItem;
@@ -48,7 +49,10 @@ class ApplicantController extends Controller
      */
     public function showLogin(Request $request)
     {
-        return view('auth.applicant-login')->withTitle('Student Login');
+        $data = [
+           'campuses'=>Campus::all()
+        ];
+        return view('auth.applicant-login',$data)->withTitle('Student Login');
     }
 
     /**
@@ -58,7 +62,8 @@ class ApplicantController extends Controller
     {
         $validation = Validator::make($request->all(),[
             'index_number'=>'required',
-            'password'=>'required'
+            'password'=>'required',
+            'campus_id'=>'required'
         ]);
 
         if($validation->fails()){
@@ -74,7 +79,48 @@ class ApplicantController extends Controller
             'password'=>$request->get('password')
         ];
 
+        $campus = Campus::find($request->get('campus_id'));
+
+        $window = ApplicationWindow::where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('campus_id',$request->get('campus_id'))->first();
+        if(!$window){
+          return  redirect()->back()->with('error','Application window for '.$campus->name.' is not open.');
+        }
+
         if(Auth::attempt($credentials)){
+            
+            if(!Applicant::where('user_id',Auth::user()->id)->where('campus_id',$request->get('campus_id'))->first()){
+                $app = Applicant::where('user_id',Auth::user()->id)->first();
+                if($app){
+                    $applicant = new Applicant;
+                    $applicant->user_id = Auth::user()->id;
+                    $applicant->index_number = $app->index_number;
+                    $applicant->entry_mode = $app->entry_mode;
+                    $applicant->program_level_id = $app->program_level_id;
+                    $applicant->intake_id = $app->intake_id;
+                    $applicant->campus_id = $request->get('campus_id');
+                    $applicant->application_window_id = $window->id;
+                    $applicant->first_name = $app->first_name;
+                    $applicant->middle_name = $app->middle_name;
+                    $applicant->surname = $app->surname;
+                    $applicant->email = $app->email;
+                    $applicant->phone = $app->phone;
+                    $applicant->birth_date = $app->birth_date;
+                    $applicant->nationality = $app->nationality;
+                    $applicant->gender = $app->gender;
+                    $applicant->disability_status_id = $app->disability_status_id;
+                    $applicant->address = $app->address;
+                    $applicant->country_id = $app->country_id;
+                    $applicant->region_id = $app->region_id;
+                    $applicant->district_id = $app->district_id;
+                    $applicant->ward_id = $app->ward_id;
+                    $applicant->street = $app->street;
+                    $applicant->basic_info_complete_status = $app->basic_info_complete_status;
+                    $applicant->save();
+               }
+            }
+            
+            
+            session(['applicant_campus_id'=>$request->get('campus_id')]);
             return redirect()->to('application/dashboard')->with('message','Logged in successfully');
         }else{
            return redirect()->back()->with('error','Incorrect index number or password');
@@ -87,7 +133,7 @@ class ApplicantController extends Controller
     public function dashboard(Request $request)
     {
         $data = [
-           'applicant'=>User::find(Auth::user()->id)->applicant
+           'applicant'=>User::find(Auth::user()->id)->applicants()->where('campus_id',session('applicant_campus_id'))->first()
         ];
         return view('dashboard.application.dashboard',$data)->withTitle('Dashboard');
     }
@@ -115,7 +161,7 @@ class ApplicantController extends Controller
           $array = json_decode($json,TRUE);
         
         $data = [
-           'applicant'=>User::find(Auth::user()->id)->applicant,
+           'applicant'=>User::find(Auth::user()->id)->applicants()->where('campus_id',session('applicant_campus_id'))->first(),
            'countries'=>Country::all(),
            'regions'=>Region::all(),
            'districts'=>District::all(),
@@ -150,7 +196,7 @@ class ApplicantController extends Controller
      */
     public function editNextOfKin(Request $request)
     {
-        $applicant = User::find(Auth::user()->id)->applicant;
+        $applicant = User::find(Auth::user()->id)->applicants()->where('campus_id',session('applicant_campus_id'))->first();
         $data = [
            'applicant'=>$applicant,
            'next_of_kin'=>NextOfKin::find($applicant->next_of_kin_id),
@@ -170,7 +216,7 @@ class ApplicantController extends Controller
     public function payments(Request $request)
     {
         $study_academic_year = StudyAcademicYear::where('status','ACTIVE')->first();
-        $applicant = User::find(Auth::user()->id)->applicant()->with('country')->first();
+        $applicant = User::find(Auth::user()->id)->applicants()->with('country')->where('campus_id',session('applicant_campus_id'))->first();
         $invoice = Invoice::where('payable_id',$applicant->id)->where('payable_type','applicant')->first();
         $data = [
            'applicant'=>$applicant,
@@ -189,7 +235,7 @@ class ApplicantController extends Controller
      */
     public function requestResults(Request $results)
     {
-        $applicant = User::find(Auth::user()->id)->applicant()->with('programLevel')->first();
+        $applicant = User::find(Auth::user()->id)->applicants()->with('programLevel')->where('campus_id',session('applicant_campus_id'))->first();
         $data = [
            'applicant'=>$applicant,
            'o_level_necta_results'=>NectaResultDetail::with('results')->where('applicant_id',$applicant->id)->where('exam_id','1')->get(),
@@ -205,11 +251,11 @@ class ApplicantController extends Controller
     public function selectPrograms(Request $request)
     {
 
-        $window = ApplicationWindow::where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->first();
+        $window = ApplicationWindow::where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('campus_id',session('applicant_campus_id'))->first();
         $data = [
-           'applicant'=>User::find(Auth::user()->id)->applicant()->with(['selections.campusProgram.program','selections'=>function($query){
+           'applicant'=>User::find(Auth::user()->id)->applicants()->with(['selections.campusProgram.program','selections'=>function($query){
                 $query->orderBy('order','asc');
-            },'selections.campusProgram.campus'])->first(),
+            },'selections.campusProgram.campus'])->where('campus_id',session('applicant_campus_id'))->first(),
            'application_window'=>$window,
            'campus_programs'=>$window? $window->campusPrograms()->with(['program','campus'])->get() : []
         ];
@@ -222,7 +268,7 @@ class ApplicantController extends Controller
     public function uploadDocuments(Request $request)
     {
        $data = [
-          'applicant'=>User::find(Auth::user()->id)->applicant
+          'applicant'=>User::find(Auth::user()->id)->applicants()->where('campus_id',session('applicant_campus_id'))->first()
        ];
        return view('dashboard.application.upload-documents',$data)->withTitle('Upload Documents');
     }
@@ -233,7 +279,7 @@ class ApplicantController extends Controller
     public function submission(Request $request)
     {
         $data = [
-            'applicant'=>User::find(Auth::user()->id)->applicant
+            'applicant'=>User::find(Auth::user()->id)->applicants()->where('campus_id',session('applicant_campus_id'))->first()
         ];
         return view('dashboard.application.submission',$data)->withTitle('Submission');
     }
@@ -289,7 +335,7 @@ class ApplicantController extends Controller
 
         (new ApplicantAction)->update($request);
 
-        return Util::requestResponse($request,'applicant updated successfully');
+        return Util::requestResponse($request,'Applicant updated successfully');
     }
 
     /**

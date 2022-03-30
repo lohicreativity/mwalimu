@@ -19,6 +19,19 @@
       <form action="{{ url('application/authenticate') }}" method="POST">
         @csrf
         <div class="input-group mb-3">
+          <select name="campus_id" class="form-control" required>
+             <option value="">Select Campus</option>
+             @foreach($campuses as $campus)
+             <option value="{{ $campus->id }}">{{ $campus->name }}</option>
+             @endforeach
+          </select>
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-building"></span>
+            </div>
+          </div>
+        </div>
+        <div class="input-group mb-3">
           <input type="text" name="index_number" class="form-control" placeholder="Index number">
           <div class="input-group-append">
             <div class="input-group-text">

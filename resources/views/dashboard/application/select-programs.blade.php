@@ -67,6 +67,10 @@
                        <td>3</td>
                        <td>@if(App\Domain\Application\Models\ApplicantProgramSelection::hasSelectedChoice($applicant->selections,3)) 3rd Choice Selected @else <a href="#" data-toggle="modal" data-target="#ss-third-choice">Select 3rd Choice Programme</a>@endif</td>
                     </tr>
+                    <tr>
+                       <td>4</td>
+                       <td>@if(App\Domain\Application\Models\ApplicantProgramSelection::hasSelectedChoice($applicant->selections,4)) 4th Choice Selected @else <a href="#" data-toggle="modal" data-target="#ss-forth-choice">Select 4th Choice Programme</a>@endif</td>
+                    </tr>
                   </tbody>
                  </table>
               </div>
@@ -222,6 +226,63 @@
                                      {!! Form::input('hidden','campus_program_id',$prog->id) !!}
 
                                      {!! Form::input('hidden','choice',3) !!}
+
+                                     {!! Form::input('hidden','application_window_id',$application_window->id) !!}
+                                <button type="submit" class="btn btn-primary">Select</button>
+                                  {!! Form::close() !!}
+                                @endif
+                              </td>
+                          </tr>
+                          @endforeach
+                       </tbody>
+                     </table>
+                     @endif
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                  </div>
+                  <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+              </div>
+              <!-- /.modal -->
+
+              <div class="modal fade" id="ss-forth-choice">
+                <div class="modal-dialog modal-lg">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h4 class="modal-title">4th Choice Programme</h4>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      @if(count($campus_programs) != 0)
+                     <table class="table table-bordered">
+                       <thead>
+                         <tr>
+                           <th>Programme</th>
+                           <th>Campus</th>
+                           <th>Action</th>
+                         </tr>
+                       </thead>
+                       <tbody>
+                          @foreach($campus_programs as $prog)
+                          <tr>
+                              <td>{{ $prog->program->name }}</td>
+                              <td>{{ $prog->campus->name }}</td>
+                              <td>
+                                @if(App\Domain\Application\Models\ApplicantProgramSelection::hasSelected($applicant->selections,$prog))
+                                 <span>SELECTED</span>
+                                @else
+                                  {!! Form::open(['url'=>'application/program/select','class'=>'ss-form-processing']) !!}
+
+                                     {!! Form::input('hidden','applicant_id',$applicant->id) !!}
+
+                                     {!! Form::input('hidden','campus_program_id',$prog->id) !!}
+
+                                     {!! Form::input('hidden','choice',4) !!}
 
                                      {!! Form::input('hidden','application_window_id',$application_window->id) !!}
                                 <button type="submit" class="btn btn-primary">Select</button>

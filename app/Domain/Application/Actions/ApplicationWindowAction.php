@@ -15,6 +15,7 @@ class ApplicationWindowAction implements ApplicationWindowInterface{
                 $window->begin_date = DateMaker::toDBDate($request->get('begin_date'));
                 $window->end_date = DateMaker::toDBDate($request->get('end_date'));
                 $window->status = $request->get('status');
+                $window->campus_id = $request->get('campus_id');
                 $window->save();
 	}
 
@@ -24,6 +25,7 @@ class ApplicationWindowAction implements ApplicationWindowInterface{
                 $window->begin_date = DateMaker::toDBDate($request->get('begin_date'));
                 $window->end_date = DateMaker::toDBDate($request->get('end_date'));
                 $window->status = $request->get('status');
+                $window->campus_id = $request->get('campus_id');
                 $window->save();
 	}
 }

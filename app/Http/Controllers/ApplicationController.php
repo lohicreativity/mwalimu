@@ -11,6 +11,7 @@ use App\Domain\Academic\Models\Department;
 use App\Domain\Finance\Models\FeeAmount;
 use App\Domain\Finance\Models\Invoice;
 use App\Domain\Settings\Models\NTALevel;
+use App\Domain\Settings\Models\Campus;
 use App\Domain\Application\Models\ApplicationWindow;
 use App\Domain\Application\Models\ApplicantProgramSelection;
 use App\Domain\Application\Actions\ApplicantAction;
@@ -77,24 +78,25 @@ class ApplicationController extends Controller
      */
     public function selectedApplicants(Request $request)
     {
+         $staff = User::find(Auth::user()->id)->staff;
          if($request->get('query')){
             $applicants = Applicant::whereHas('intake.applicationWindows',function($query) use($request){
                  $query->where('id',$request->get('application_window_id'));
             })->whereHas('selections',function($query) use($request){
                  $query->where('status','APPROVING');
-            })->with(['nextOfKin','intake','selections.campusProgram.program'])->where('program_level_id',$request->get('program_level_id'))->where('first_name','LIKE','%'.$request->get('query').'%')->orWhere('middle_name','LIKE','%'.$request->get('query').'%')->orWhere('surname','LIKE','%'.$request->get('query').'%')->paginate(20);
+            })->with(['nextOfKin','intake','selections.campusProgram.program'])->where('program_level_id',$request->get('program_level_id'))->where('first_name','LIKE','%'.$request->get('query').'%')->orWhere('middle_name','LIKE','%'.$request->get('query').'%')->orWhere('surname','LIKE','%'.$request->get('query').'%')->where('campus_id',$staff->campus_id)->paginate(20);
          }elseif($request->get('gender')){
             $applicants = Applicant::whereHas('intake.applicationWindows',function($query) use($request){
                  $query->where('id',$request->get('application_window_id'));
             })->whereHas('selections',function($query) use($request){
                  $query->where('status','APPROVING');
-            })->with(['nextOfKin','intake','selections.campusProgram.program'])->where('program_level_id',$request->get('program_level_id'))->where('gender',$request->get('gender'))->paginate(20);
+            })->with(['nextOfKin','intake','selections.campusProgram.program'])->where('program_level_id',$request->get('program_level_id'))->where('gender',$request->get('gender'))->where('campus_id',$staff->campus_id)->paginate(20);
          }elseif($request->get('campus_program_id')){
             $applicants = Applicant::whereHas('intake.applicationWindows',function($query) use($request){
                  $query->where('id',$request->get('application_window_id'));
             })->whereHas('selections',function($query) use($request){
                  $query->where('status','APPROVING')->where('campus_program_id',$request->get('campus_program_id'));
-            })->with(['nextOfKin','intake','selections.campusProgram.program'])->where('program_level_id',$request->get('program_level_id'))->paginate(20);
+            })->with(['nextOfKin','intake','selections.campusProgram.program'])->where('program_level_id',$request->get('program_level_id'))->where('campus_id',$staff->campus_id)->paginate(20);
          }elseif($request->get('nta_level_id')){
              $applicants = Applicant::whereHas('intake.applicationWindows',function($query) use($request){
                  $query->where('id',$request->get('application_window_id'));
@@ -102,17 +104,17 @@ class ApplicationController extends Controller
                  $query->where('nta_level_id',$request->get('nta_level_id'))->where('status','APPROVING');
             })->whereHas('selections',function($query) use($request){
                  $query->where('status','APPROVING');
-            })->with(['nextOfKin','intake','selections.campusProgram.program'])->where('program_level_id',$request->get('program_level_id'))->paginate(20);
+            })->with(['nextOfKin','intake','selections.campusProgram.program'])->where('program_level_id',$request->get('program_level_id'))->where('campus_id',$staff->campus_id)->paginate(20);
          }else{
             $applicants = Applicant::whereHas('intake.applicationWindows',function($query) use($request){
                  $query->where('id',$request->get('application_window_id'));
             })->whereHas('selections',function($query) use($request){
                  $query->where('status','APPROVING');
-            })->with(['nextOfKin','intake','selections.campusProgram.program'])->where('program_level_id',$request->get('program_level_id'))->paginate(20);
+            })->with(['nextOfKin','intake','selections.campusProgram.program'])->where('program_level_id',$request->get('program_level_id'))->where('campus_id',$staff->campus_id)->paginate(20);
          }
          $data = [
-            'staff'=>User::find(Auth::user()->id)->staff,
-            'application_windows'=>ApplicationWindow::all(),
+            'staff'=>$staff,
+            'application_windows'=>ApplicationWindow::where('campus_id',$staff->campus_id)->get(),
             'awards'=>Award::all(),
             'nta_levels'=>NTALevel::all(),
             'selected_applicants'=>Applicant::whereHas('intake.applicationWindows',function($query) use($request){
@@ -136,7 +138,7 @@ class ApplicationController extends Controller
     public function downloadSelectedApplicants(Request $request)
     {
 
-
+        $staff = User::find(Auth::user()->id)->staff;
         $award = Award::find($request->get('program_level_id'));
         $headers = [
                       'Cache-Control'       => 'must-revalidate, post-check=0, pre-check=0',   
@@ -151,13 +153,13 @@ class ApplicationController extends Controller
                  $query->where('id',$request->get('application_window_id'));
             })->whereHas('selections',function($query) use($request){
                  $query->where('status','APPROVING');
-            })->with(['nextOfKin','intake','selections.campusProgram.program'])->where('program_level_id',$request->get('program_level_id'))->where('gender',$request->get('gender'))->get();
+            })->with(['nextOfKin','intake','selections.campusProgram.program'])->where('program_level_id',$request->get('program_level_id'))->where('gender',$request->get('gender'))->where('campus_id',$staff->campus_id)->get();
          }elseif($request->get('campus_program_id')){
             $list = Applicant::whereHas('intake.applicationWindows',function($query) use($request){
                  $query->where('id',$request->get('application_window_id'));
             })->whereHas('selections',function($query) use($request){
                  $query->where('status','APPROVING')->where('campus_program_id',$request->get('campus_program_id'));
-            })->with(['nextOfKin','intake','selections.campusProgram.program'])->where('program_level_id',$request->get('program_level_id'))->get();
+            })->with(['nextOfKin','intake','selections.campusProgram.program'])->where('program_level_id',$request->get('program_level_id'))->where('campus_id',$staff->campus_id)->get();
          }elseif($request->get('nta_level_id')){
              $list = Applicant::whereHas('intake.applicationWindows',function($query) use($request){
                  $query->where('id',$request->get('application_window_id'));
@@ -165,13 +167,13 @@ class ApplicationController extends Controller
                  $query->where('nta_level_id',$request->get('nta_level_id'))->where('status','APPROVING');
             })->whereHas('selections',function($query) use($request){
                  $query->where('status','APPROVING');
-            })->with(['nextOfKin','intake','selections.campusProgram.program'])->where('program_level_id',$request->get('program_level_id'))->get();
+            })->with(['nextOfKin','intake','selections.campusProgram.program'])->where('program_level_id',$request->get('program_level_id'))->where('campus_id',$staff->campus_id)->get();
          }else{
             $list = Applicant::whereHas('intake.applicationWindows',function($query) use($request){
                  $query->where('id',$request->get('application_window_id'));
             })->whereHas('selections',function($query) use($request){
                  $query->where('status','APPROVING');
-            })->with(['nextOfKin','intake','selections.campusProgram.program'])->where('program_level_id',$request->get('program_level_id'))->get();
+            })->with(['nextOfKin','intake','selections.campusProgram.program'])->where('program_level_id',$request->get('program_level_id'))->where('campus_id',$staff->campus_id)->get();
          }
 
               # add headers for each column in the CSV download
@@ -203,11 +205,12 @@ class ApplicationController extends Controller
      */
     public function submitSelectedApplicants(Request $request)
     {
+        $staff = User::find(Auth::user()->id)->staff;
         $applicants = Applicant::whereHas('intake.applicationWindows',function($query) use($request){
                  $query->where('id',$request->get('application_window_id'));
             })->whereHas('selections',function($query) use($request){
                  $query->where('status','APPROVING');
-            })->with(['nextOfKin','intake','selections.campusProgram.program','nectaResultDetails'])->where('program_level_id',$request->get('program_level_id'))->get();
+            })->with(['nextOfKin','intake','selections.campusProgram.program','nectaResultDetails'])->where('program_level_id',$request->get('program_level_id'))->where('campus_id',$staff->campus_id)->get();
 
 
             foreach($applicants as $applicant){
@@ -303,8 +306,8 @@ class ApplicationController extends Controller
 
         $similar_count = ApplicantProgramSelection::where('applicant_id',$request->get('applicant_id'))->where('campus_program_id',$request->get('campus_program_id'))->count();
         if($similar_count == 0){
-             if($count >= 3){
-                return redirect()->back()->with('error','You cannot select more than 3 programmes');
+             if($count >= 4){
+                return redirect()->back()->with('error','You cannot select more than 4 programmes');
              }else{
                  $selection = new ApplicantProgramSelection;
                  $selection->applicant_id = $request->get('applicant_id');
@@ -356,7 +359,7 @@ class ApplicationController extends Controller
      */
     public function deleteDocument(Request $request)
     {
-        $applicant = Applicant::where('user_id',Auth::user()->id)->first();
+        $applicant = Applicant::where('user_id',Auth::user()->id)->where('campus_id',session('applicant_campus_id'))->first();
         if($request->get('name') == 'birth_certificate'){
            unlink(public_path().'/uploads/'.$applicant->birth_certificate);
            $applicant->birth_certificate = null;
@@ -390,7 +393,7 @@ class ApplicationController extends Controller
      */
     public function downloadSummary(Request $request)
     {
-        $applicant = User::find(Auth::user()->id)->applicant()->with(['nextOfKin.country','nextOfKin.region','nextOfKin.district','nextOfKin.ward','country','region','district','ward','disabilityStatus'])->first();
+        $applicant = User::find(Auth::user()->id)->applicants()->with(['nextOfKin.country','nextOfKin.region','nextOfKin.district','nextOfKin.ward','country','region','district','ward','disabilityStatus'])->where('campus_id',session('applicant_campus_id'))->first();
         $data = [
            'applicant'=>$applicant,
            'selections'=>ApplicantProgramSelection::with(['campusProgram.program'])->where('applicant_id',$applicant->id)->get()
@@ -543,16 +546,14 @@ class ApplicationController extends Controller
            }
         }
 
-        $window = ApplicationWindow::where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->first();
-
-        if(!$window){
-          return  redirect()->back()->with('error','No open application window at the moment');
+        if($usr = User::where('username',$request->get('index_number'))->where('password',Hash::make($request->get('password')))->first()){
+            $user = $usr;
+        }else{
+            $user = new User;
+            $user->username = $request->get('index_number');
+            $user->password = Hash::make($request->get('password'));
+            $user->save();
         }
-
-        $user = new User;
-        $user->username = $request->get('index_number');
-        $user->password = Hash::make($request->get('password'));
-        $user->save();
 
         $role = Role::where('name','applicant')->first();
         $user->roles()->sync([$role->id]);
@@ -566,7 +567,6 @@ class ApplicationController extends Controller
         $applicant->entry_mode = $request->get('entry_mode');
         $applicant->program_level_id = $request->get('program_level_id');
         $applicant->intake_id = $request->get('intake_id');
-        $applicant->application_window_id = $window->id;
         $applicant->save();
         
         return redirect()->to('application/login')->with('message','Applicant registered successfully');
