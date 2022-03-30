@@ -634,11 +634,12 @@ class ApplicationController extends Controller
      * Display run selection page
      */
     public function showRunSelection(Request $request)
-    {
+    { 
+        $staff = User::find(Auth::user()->id)->staff;
         $data = [
-           'staff'=>User::find(Auth::user()->id)->staff,
+           'staff'=>$staff,
            'awards'=>Award::all(),
-           'application_windows'=>ApplicationWindow::all(),
+           'application_windows'=>ApplicationWindow::where('campus_id',$staff->campus_id)->get(),
            'application_window'=>ApplicationWindow::find($request->get('application_window_id')),
            'request'=>$request
         ];
@@ -760,6 +761,8 @@ class ApplicationController extends Controller
                                     if(!in_array($result->subject_name, unserialize($program->entryRequirements[0]->exclude_subjects))){
                                          $o_level_pass_count += 1;
                                     }
+                                 }else{
+                                     $o_level_pass_count += 1;
                                  }
                               }
                            }
