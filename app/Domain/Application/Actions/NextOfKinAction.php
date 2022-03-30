@@ -32,7 +32,7 @@ class NextOfKinAction implements NextOfKinInterface{
                 $applicant->next_of_kin_complete_status = 1;
                 $applicant->save();
 
-                $other_apps = Applicant::where('id',$request->get('applicant_id'))->where('campus_id','!=',$applicant->campus_id)->get();
+                $other_apps = Applicant::where('user_id',$applicant->user_id)->where('campus_id','!=',$applicant->campus_id)->get();
                 foreach ($other_apps as $appl) {
 
                      $app = Applicant::find($appl->id);
@@ -65,7 +65,7 @@ class NextOfKinAction implements NextOfKinInterface{
                 $applicant->next_of_kin_complete_status = 1;
                 $applicant->save();
 
-                $other_apps = Applicant::where('id',$request->get('applicant_id'))->where('campus_id','!=',$applicant->campus_id)->get();
+                $other_apps = Applicant::where('user_id',$applicant->user_id)->where('campus_id','!=',$applicant->campus_id)->get();
                 foreach ($other_apps as $appl) {
 
                      $app = Applicant::find($appl->id);
