@@ -42,29 +42,27 @@ class ApplicantAction implements ApplicantInterface{
         $applicant->basic_info_complete_status = 1;
         $applicant->save();
 
-        $app = $applicant;
-
-        $other_apps = Applicant::where('id',$request->get('applicant_id'))->where('campus_id','!=',$app->campus_id)->get();
-        foreach ($other_apps as $applicant) {
+        $other_apps = Applicant::where('id',$request->get('applicant_id'))->where('campus_id','!=',$applicant->campus_id)->get();
+        foreach ($other_apps as $appl) {
             # code...
-            $applicant = Applicant::find($applicant->id);
-            $applicant->first_name = $app->first_name;
-            $applicant->middle_name = $app->middle_name;
-            $applicant->surname = $app->surname;
-            $applicant->email = $app->email;
-            $applicant->phone = $app->phone;
-            $applicant->birth_date = $app->birth_date;
-            $applicant->nationality = $app->nationality;
-            $applicant->gender = $app->gender;
-            $applicant->disability_status_id = $app->disability_status_id;
-            $applicant->address = $app->address;
-            $applicant->country_id = $app->country_id;
-            $applicant->region_id = $app->region_id;
-            $applicant->district_id = $app->district_id;
-            $applicant->ward_id = $app->ward_id;
-            $applicant->street = $app->street;
-            $applicant->basic_info_complete_status = $app->basic_info_complete_status;
-            $applicant->save();
+            $app = Applicant::find($appl->id);
+            $app->first_name = $applicant->first_name;
+            $app->middle_name = $applicant->middle_name;
+            $app->surname = $applicant->surname;
+            $app->email = $applicant->email;
+            $app->phone = $applicant->phone;
+            $app->birth_date = $applicant->birth_date;
+            $app->nationality = $applicant->nationality;
+            $app->gender = $applicant->gender;
+            $app->disability_status_id = $applicant->disability_status_id;
+            $app->address = $applicant->address;
+            $app->country_id = $applicant->country_id;
+            $app->region_id = $applicant->region_id;
+            $app->district_id = $applicant->district_id;
+            $app->ward_id = $applicant->ward_id;
+            $app->street = $applicant->street;
+            $app->basic_info_complete_status = $applicant->basic_info_complete_status;
+            $app->save();
         }
 	}
 

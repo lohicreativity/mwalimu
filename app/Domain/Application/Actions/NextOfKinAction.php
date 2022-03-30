@@ -31,6 +31,15 @@ class NextOfKinAction implements NextOfKinInterface{
                 $applicant->next_of_kin_id = $next_of_kin->id;
                 $applicant->next_of_kin_complete_status = 1;
                 $applicant->save();
+
+                $other_apps = Applicant::where('id',$request->get('applicant_id'))->where('campus_id','!=',$applicant->campus_id)->get();
+                foreach ($other_apps as $appl) {
+
+                     $app = Applicant::find($appl->id);
+                     $app->next_of_kin_id = $applicant->next_of_kin_id;
+                     $app->next_of_kin_complete_status = $applicant->next_of_kin_complete_status;
+                     $app->save();
+                }
 	}
 
 	public function update(Request $request){
@@ -55,5 +64,14 @@ class NextOfKinAction implements NextOfKinInterface{
                 $applicant->next_of_kin_id = $next_of_kin->id;
                 $applicant->next_of_kin_complete_status = 1;
                 $applicant->save();
+
+                $other_apps = Applicant::where('id',$request->get('applicant_id'))->where('campus_id','!=',$applicant->campus_id)->get();
+                foreach ($other_apps as $appl) {
+
+                     $app = Applicant::find($appl->id);
+                     $app->next_of_kin_id = $applicant->next_of_kin_id;
+                     $app->next_of_kin_complete_status = $applicant->next_of_kin_complete_status;
+                     $app->save();
+                }
 	}
 }
