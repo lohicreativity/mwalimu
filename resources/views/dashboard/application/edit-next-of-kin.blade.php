@@ -95,8 +95,7 @@
 
                   $street = [
                      'placeholder'=>'Street',
-                     'class'=>'form-control',
-                     'required'=>true
+                     'class'=>'form-control'
                   ];
 
                   $birth_date = [
@@ -284,8 +283,7 @@
 
                   $street = [
                      'placeholder'=>'Street',
-                     'class'=>'form-control',
-                     'required'=>true
+                     'class'=>'form-control'
                   ];
 
                   $birth_date = [
