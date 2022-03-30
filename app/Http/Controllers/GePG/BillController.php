@@ -54,7 +54,7 @@ class BillController extends Controller
                     ->add('BillGenDt', date('Y-m-d'.'\T'.'h:i:s'))
                     ->add('BillGenBy', $request->get("generated_by"))
                     ->add('BillApprBy', $request->get("approved_by"))
-                    ->add('PyrCellNum', '255759623399')
+                    ->add('PyrCellNum', $request->get("payer_cell"))
                     ->add('PyrEmail', $request->get("payer_email"))
                     ->add('Ccy', $request->get("currency"))
                     ->add('BillEqvAmt', $EquivAmount)
@@ -75,8 +75,8 @@ class BillController extends Controller
        // print_r ($bill->xml(true));
        // die();
 
-       // return dd($bill->xml(true));
-       // die();
+       return dd($bill->xml(true));
+       die();
 
        //die();
        # Add Bill to Q                    
