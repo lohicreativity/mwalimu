@@ -14,7 +14,7 @@ class NectaResultController extends Controller
     /**
      *  Confirm NECTA results
      */
-    public function confirm(Request $request);
+    public function confirm(Request $request)
     {
         $detail = NectaResultDetail::find($request->get('necta_result_detail_id'));
         $applicant  = Applicant::find($request->get('applicant_id'));
