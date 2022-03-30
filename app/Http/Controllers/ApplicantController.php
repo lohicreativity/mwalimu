@@ -285,13 +285,16 @@ class ApplicantController extends Controller
     {
 
         $window = ApplicationWindow::where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('campus_id',session('applicant_campus_id'))->first();
-        $data = [
-           'applicant'=>User::find(Auth::user()->id)->applicants()->with(['selections.campusProgram.program','selections'=>function($query){
+        $applicant = User::find(Auth::user()->id)->applicants()->with(['selections.campusProgram.program','selections'=>function($query){
                 $query->orderBy('order','asc');
-            },'selections.campusProgram.campus'])->where('campus_id',session('applicant_campus_id'))->first(),
+            },'selections.campusProgram.campus'])->where('campus_id',session('applicant_campus_id'))->first();
+        $data = [
+           'applicant'=>$applicant,
            'campus'=>Campus::find(session('applicant_campus_id')),
            'application_window'=>$window,
-           'campus_programs'=>$window? $window->campusPrograms()->with(['program','campus'])->where('campus_id',session('applicant_campus_id'))->get() : []
+           'campus_programs'=>$window? $window->campusPrograms()->whereHas('program',function($query) use($applicant){
+                   $query->where('award_id',$applicant->program_level_id);
+           })->with(['program','campus'])->where('campus_id',session('applicant_campus_id'))->get() : []
         ];
         return view('dashboard.application.select-programs',$data)->withTitle('Select Programmes');
     }
