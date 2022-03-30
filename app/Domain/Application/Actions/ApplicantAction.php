@@ -24,23 +24,48 @@ class ApplicantAction implements ApplicantInterface{
 
 	public function update(Request $request){
 		$applicant = Applicant::find($request->get('applicant_id'));
-                $applicant->first_name = $request->get('first_name');
-                $applicant->middle_name = $request->get('middle_name');
-                $applicant->surname = $request->get('surname');
-                $applicant->email = $request->get('email');
-                $applicant->phone = $request->get('phone');
-                $applicant->birth_date = DateMaker::toDBDate($request->get('birth_date'));
-                $applicant->nationality = $request->get('nationality');
-                $applicant->gender = $request->get('gender');
-                $applicant->disability_status_id = $request->get('disability_status_id');
-                $applicant->address = $request->get('address');
-                $applicant->country_id = $request->get('country_id');
-                $applicant->region_id = $request->get('region_id');
-                $applicant->district_id = $request->get('district_id');
-                $applicant->ward_id = $request->get('ward_id');
-                $applicant->street = $request->get('street');
-                $applicant->basic_info_complete_status = 1;
-                $applicant->save();
+        $applicant->first_name = $request->get('first_name');
+        $applicant->middle_name = $request->get('middle_name');
+        $applicant->surname = $request->get('surname');
+        $applicant->email = $request->get('email');
+        $applicant->phone = $request->get('phone');
+        $applicant->birth_date = DateMaker::toDBDate($request->get('birth_date'));
+        $applicant->nationality = $request->get('nationality');
+        $applicant->gender = $request->get('gender');
+        $applicant->disability_status_id = $request->get('disability_status_id');
+        $applicant->address = $request->get('address');
+        $applicant->country_id = $request->get('country_id');
+        $applicant->region_id = $request->get('region_id');
+        $applicant->district_id = $request->get('district_id');
+        $applicant->ward_id = $request->get('ward_id');
+        $applicant->street = $request->get('street');
+        $applicant->basic_info_complete_status = 1;
+        $applicant->save();
+
+        $app = $applicant;
+
+        $other_apps = Applicant::where('id',$request->get('applicant_id'))->where('campus_id','!=',$app->campus_id)->get();
+        foreach ($other_apps as $applicant) {
+            # code...
+            $applicant = Applicant::find($applicant->id);
+            $applicant->first_name = $app->first_name;
+            $applicant->middle_name = $app->middle_name;
+            $applicant->surname = $app->surname;
+            $applicant->email = $app->email;
+            $applicant->phone = $app->phone;
+            $applicant->birth_date = $app->birth_date;
+            $applicant->nationality = $app->nationality;
+            $applicant->gender = $app->gender;
+            $applicant->disability_status_id = $app->disability_status_id;
+            $applicant->address = $app->address;
+            $applicant->country_id = $app->country_id;
+            $applicant->region_id = $app->region_id;
+            $applicant->district_id = $app->district_id;
+            $applicant->ward_id = $app->ward_id;
+            $applicant->street = $app->street;
+            $applicant->basic_info_complete_status = $app->basic_info_complete_status;
+            $applicant->save();
+        }
 	}
 
         /**
