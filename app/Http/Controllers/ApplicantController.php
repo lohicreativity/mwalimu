@@ -195,7 +195,7 @@ class ApplicantController extends Controller
            'countries'=>Country::all(),
            'regions'=>Region::all(),
            'districts'=>District::all(),
-           'status_code'=>$array['Response']['ResponseParameters']['StatusCode'],
+           'status_code'=>isset($array['Response'])? $array['Response']['ResponseParameters']['StatusCode'] : null,
            'wards'=>Ward::all(),
            'disabilities'=>DisabilityStatus::all(),
         ];

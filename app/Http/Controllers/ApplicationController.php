@@ -969,4 +969,16 @@ class ApplicationController extends Controller
 
         return redirect()->back()->with('message','Selection run successfully');
     }
+
+    /**
+     * Admit applicant
+     */
+    public function admitApplicant(Request $request, $applicant_id, $selection_id)
+    {
+        $data = [
+           'applicant'=>Applicant::with(['selections','nectaResultDetails.results','nacteResultDetails.results'])->find($applicant_id),
+           'selection'=>ApplicantProgramSelection::with(['campusProgram.program'])->find($selection_id)
+        ];
+        return view('dashboard.application.applicant-admission',$data)->withTitle('Applicant Admission');
+    }
 }
