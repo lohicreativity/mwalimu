@@ -100,4 +100,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
     Route::get('nhif/status',[NHIFController::class,'checkCardStatus']);
 
     Route::get('admit-applicant/{applicant_id}/{selection_id}',[ApplicationController::class,'admitApplicant']);
+    Route::post('register-applicant',[ApplicationController::class,'registerApplicant']);
+    Route::get('applicants-registration',[ApplicationController::class,'applicantsRegistration']);
+    Route::get('applicants-admission',[ApplicationController::class,'applicantsAdmission']);
 });

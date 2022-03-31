@@ -21,6 +21,7 @@ class CreateApplicantProgramSelectionsTable extends Migration
             $table->unsignedBigInteger('application_window_id');
             $table->string('status',20)->nullable();
             $table->timestamp('status_changed_at')->nullable();
+            $table->string('confirmation_status')->nullable();
             $table->timestamps();
 
             $table->foreign('applicant_id')->references('id')->on('applicants')->onUpdate('cascade')->onDelete('cascade');

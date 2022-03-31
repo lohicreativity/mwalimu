@@ -46,7 +46,7 @@
                </div>
                <!-- /.card-header -->
                <div class="card-body">
-                  {!! Form::open(['url'=>'application/selected-applicants','class'=>'ss-form-processing','method'=>'GET']) !!}
+                  {!! Form::open(['url'=>'application/applicants-registration','class'=>'ss-form-processing','method'=>'GET']) !!}
                     <div class="row">
                     <div class="form-group col-6">
                       {!! Form::label('','Application Window') !!}
@@ -78,73 +78,11 @@
 
              <div class="card">
                <div class="card-header">
-                 <h3 class="card-title">{{ __('Selected Applicants') }}</h3><br>
-                 <a href="{{ url('application/selected-applicants/download?application_window_id='.$request->get('application_window_id').'&program_level_id='.$request->get('program_level_id').'&campus_program_id='.$request->get('campus_program_id').'&nta_level_id='.$request->get('nta_level_id').'&gender='.$request->get('gender')) }}" class="btn btn-primary">Download List</a>
-                 <!-- <a href="{{ url('application/submit-selected-applicants?application_window_id='.$request->get('application_window_id').'&program_level_id='.$request->get('program_level_id')) }}" class="btn btn-primary">Submit Selected Students</a> -->
-                 <a href="#" class="btn btn-primary" @if($request->get('program_level_id') == 4 && $application_window->enrollment_report_download_status == 1) data-toggle="modal" data-target="#ss-submit-applicants" @else disabled="disabled" @endif>Submit Selected Applicants to TCU</a>
+                 <h3 class="card-title">Selected Applicants</h3>
                </div>
-
-               <div class="modal fade" id="ss-submit-applicants">
-              <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h4 class="modal-title"> Insurance Cards</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                  <div class="modal-body">
-                    <table class="table table-bordered ss-margin-top">
-                    <thead>
-                        <tr>
-                          <th>Name</th>
-                          <th>Gender</th>
-                          <th>Programme</th>
-                          <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                  {!! Form::open(['url'=>'application/submit-selected-applicants-tcu']) !!}
-                    {!! Form::input('hidden','application_window_id',$request->get('application_window_id')) !!}
-                    {!! Form::input('hidden','program_level_id',$request->get('program_level_id')) !!}
-                 @foreach($selected_applicants as $applicant)
-                   <tr>
-                      <td>{{ $applicant->first_name }} {{ $applicant->middle_name }} {{ $applicant->surname }}</td>
-                      <td>{{ $applicant->gender }}</td>
-                      <td>@foreach($applicant->selections as $selection)
-                           @if($selection->status == 'APPROVING')
-                           {{ $selection->campusProgram->program->name }}
-                           @endif
-                          @endforeach
-                      </td>
-                      <td>{!! Form::checkbox('applicant_'.$applicant->id,$applicant->id,true) !!}</td>
-                   </tr>
-                 @endforeach
-                   <tr>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td>
-                        <button type="submit" class="btn btn-primary">Submit To TCU</button>
-                      </td>
-                   </tr>
-                   {!! Form::close() !!}
-                   </tbody>
-                  </table>
-
-                  </div>
-                  <div class="modal-footer justify-content-between">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                  </div>
-                </div>
-                <!-- /.modal-content -->
-              </div>
-              <!-- /.modal-dialog -->
-            </div>
-            <!-- /.modal -->
                <!-- /.card-header -->
                <div class="card-body">
-                  {!! Form::open(['url'=>'application/selected-applicants','method'=>'GET']) !!}
+                  {!! Form::open(['url'=>'application/applicants-registration','method'=>'GET']) !!}
 
                   {!! Form::input('hidden','application_window_id',$request->get('application_window_id')) !!}
                   {!! Form::input('hidden','program_level_id',$request->get('program_level_id')) !!}
@@ -188,14 +126,14 @@
                       <td>{{ $applicant->first_name }} {{ $applicant->middle_name }} {{ $applicant->surname }}</td>
                       <td>{{ $applicant->gender }}</td>
                       <td>@foreach($applicant->selections as $selection)
-                           @if($selection->status == 'APPROVING')
+                           @if($selection->status == 'SELECTED')
                            {{ $selection->campusProgram->program->name }}
                            @endif
                           @endforeach
                       </td>
                       <td>@foreach($applicant->selections as $selection)
-                           @if($selection->status == 'APPROVING')
-                           <span class="badge badge-warning">{{ $selection->status }}</span>
+                           @if($selection->status == 'SELECTED')
+                           <span class="badge badge-warning">{{ $selection->status }}</span> <a href="{{ url('application/admit-applicant/'.$applicant->id.'/'.$selection->id) }}" class="btn btn-primary">Admit</a>
                            @endif
                           @endforeach
                       </td>

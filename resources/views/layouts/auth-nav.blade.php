@@ -208,12 +208,12 @@
               </p>
             </a>
             <ul class="nav nav-treeview">
-              <!-- <li class="nav-item">
-                <a href="pages/UI/general.html" class="nav-link">
+              <li class="nav-item">
+                <a href="{{ url('application/applicants-admission') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Admitted Students</p>
+                  <p>Admit Students</p>
                 </a>
-              </li> -->
+              </li>
             </ul>
           </li>
           <li class="nav-item">
@@ -225,12 +225,12 @@
               </p>
             </a>
             <ul class="nav nav-treeview">
-              <!-- <li class="nav-item">
-                <a href="{{ url('registration/registered-students') }}" class="nav-link">
+              <li class="nav-item">
+                <a href="{{ url('application/applicants-registration') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Registered Students</p>
+                  <p>Applicants Registration</p>
                 </a>
-              </li> -->
+              </li>
             </ul>
           </li>
           <li class="nav-item">

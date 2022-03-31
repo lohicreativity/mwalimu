@@ -37,6 +37,130 @@
     <section class="content">
       <div class="container-fluid">
         <!-- Small boxes (Stat box) -->
+        <div class="row">
+          <div class="col-4">
+            <!-- Profile Image -->
+            <div class="card card-primary card-outline">
+              <div class="card-body box-profile">
+                <div class="text-center">
+                  <img class="profile-user-img img-fluid img-circle"
+                       src="{{ asset('avatars/'.$applicant->image) }}"
+                       onerror="this.src='{{ asset("img/user-avatar.png") }}'">
+                </div>
+
+                <h3 class="profile-username text-center">{{ $applicant->first_name }} {{ $applicant->middle_name }} {{ $applicant->surname }}</h3>
+
+                <p class="text-muted text-center">{{ $applicant->index_number }}</p>
+
+                <ul class="list-group list-group-unbordered mb-3">
+                  <li class="list-group-item">
+                    <b>Address</b> <a class="float-right">{{ $applicant->address }}</a>
+                  </li>
+                  <li class="list-group-item">
+                    <b>Email</b> <a class="float-right">{{ $applicant->email }}</a>
+                  </li>
+                  <li class="list-group-item">
+                    <b>Phone</b> <a class="float-right">{{ $applicant->phone }}</a>
+                  </li>
+                  <li class="list-group-item">
+                    <b>Date of Birth</b> <a class="float-right">{{ $applicant->birth_date }}</a>
+                  </li>
+                  <li class="list-group-item">
+                    <b>Gender</b> <a class="float-right">{{ $applicant->gender }}</a>
+                  </li>
+                  <li class="list-group-item">
+                    <b>Disability Status</b> <a class="float-right">{{ $applicant->disabilityStatus->name }}</a>
+                  </li>
+                </ul>
+                
+       
+                <!-- <a href="#" class="btn btn-primary btn-block" data-toggle="modal" data-target="#ss-edit-applicant-profile"><b>Edit Profile</b></a> -->
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+          </div>
+          <div class="col-8">
+             <div class="accordion" id="accordionExample">
+                <div class="card">
+                  @foreach($applicant->nectaResultDetails as $key=>$detail)
+                  <div class="card-header" id="headingOne">
+                    <h2 class="mb-0">
+                      <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#ss-detail-{{ $detail->id}}" aria-expanded="true" aria-controls="collapseOne">
+                        {{ $detail->index_number }}
+                      </button>
+                    </h2>
+                  </div>
+
+                  <div id="ss-detail-{{ $detail->id }}" class="collapse @if($key == 0) show @endif" aria-labelledby="headingOne" data-parent="#accordionExample">
+                    <div class="card-body">
+                       <table class="table table-bordered">
+                         <tr><td>Center Name:</td><td>{{ $detail->center_name }}</td></tr>
+                         <tr><td>Center Number:</td><td>{{ $detail->center_number }}</td></tr>
+                         <tr><td>First Name:</td><td>{{ $detail->first_name }}</td></tr>
+                         <tr><td>Middle Name:</td><td>{{ $detail->middle_name }}</td></tr>
+                         <tr><td>Last Name:</td><td>{{ $detail->last_name }}</td></tr>
+                         <tr><td>Sex:</td><td>{{ $detail->sex }}</td></tr>
+                         <tr><td>Index Number:</td><td>{{ $detail->index_number }}</td></tr>
+                         <tr><td>Division:</td><td>{{ $detail->division }}</td></tr>
+                         <tr><td>Points:</td><td>{{ $detail->points }}</td></tr>
+                         @foreach($detail->results as $result)
+                            <tr><td>{{ $result->subject_name }}</td><td>{{ $result->grade}}</td></tr>
+                         @endforeach
+                         </table>
+                    </div>
+                  </div>
+                  @endforeach
+                </div>
+              </div>
+
+              <div class="card">
+                 {!! Form::open(['url'=>'application/register-applicant','class'=>'ss-form-processing']) !!}
+                 <div class="card-body">
+                    <div class="row">
+                       <div class="col-6">
+                          <div class="form-group">
+                            <div class="custom-control custom-checkbox">
+                              <input class="custom-control-input" name="academic_results_check" type="checkbox" id="academic-results-check" value="1">
+                              <label for="academic-results-check" class="custom-control-label">Academic Results</label>
+                            </div>
+                          </div>
+                       </div>
+                       <div class="col-6">
+                          <div class="form-group">
+                            <div class="custom-control custom-checkbox">
+                              <input class="custom-control-input" name="documents_check" type="checkbox" id="documents-check" value="1">
+                              <label for="documents-check" class="custom-control-label">Documents Submitted</label>
+                            </div>
+                          </div>
+                       </div>
+                    </div>
+                    <div class="row">
+                       <div class="col-6">
+                          <div class="form-group">
+                            <div class="custom-control custom-checkbox">
+                              <input class="custom-control-input" name="health_insurance_check" type="checkbox" id="health-insurance-check" value="1">
+                              <label for="health-insurance-check" class="custom-control-label">Health Insurance</label>
+                            </div>
+                          </div>
+                       </div>
+                       <div class="col-6">
+                          <div class="form-group">
+                            <div class="custom-control custom-checkbox">
+                              <input class="custom-control-input" name="fee_payment_check" type="checkbox" id="fee-payment-check" value="1">
+                              <label for="fee-payment-check" class="custom-control-label">Fee Payment</label>
+                            </div>
+                          </div>
+                       </div>
+                    </div>
+                 </div>
+                 <div class="card-footer">
+                   <button type="submit" class="btn btn-primary">Register</button>
+                 </div>
+                 {!! Form::close() !!}
+              </div>
+          </div>
+        </div>
         
       </div><!-- /.container-fluid -->
     </section>
