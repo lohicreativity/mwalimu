@@ -542,7 +542,7 @@ class ApplicationController extends Controller
                                   $fee_type->gfs_code,
                                   $fee_type->payment_option,
                                   $payable->id,
-                                  $payable->first_name.' '.$payable->middle_name.' '.$payable->surname,
+                                  $payable->first_name.' '.$payable->surname,
                                   $payable->phone,
                                   $email,
                                   $generated_by,
