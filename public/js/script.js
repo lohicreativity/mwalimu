@@ -519,7 +519,7 @@ $('#ss-select-countries, .ss-select-countries').on('change',function(e){
       }      
     }).done(function(data, status){
         if(status == 'success'){
-           var element = '';
+           var element = '<option value="">Select Region</option>';
            for(var i=0; i<data.regions.length; i++){
              element += '<option value="'+data.regions[i].id+'">'+data.regions[i].name+'</option>';
            }
@@ -539,7 +539,7 @@ $('#ss-select-regions, .ss-select-regions').on('change',function(e){
       } 
     }).done(function(data, status){
         if(status == 'success'){
-           var element = '';
+           var element = '<option value="">Select District</option>';
            for(var i=0; i<data.districts.length; i++){
              element += '<option value="'+data.districts[i].id+'">'+data.districts[i].name+'</option>';
            }
@@ -559,7 +559,7 @@ $('#ss-select-districts, .ss-select-districts').on('change',function(e){
       } 
     }).done(function(data, status){
         if(status == 'success'){
-           var element = '';
+           var element = '<option value="">Select Ward</option>';
            for(var i=0; i<data.wards.length; i++){
              element += '<option value="'+data.wards[i].id+'">'+data.wards[i].name+'</option>';
            }
