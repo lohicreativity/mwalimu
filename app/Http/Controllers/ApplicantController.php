@@ -335,7 +335,6 @@ class ApplicantController extends Controller
             'phone'=>'required|min:12|max:12',
             'address'=>'required',
             'nationality'=>'required',
-            'street'=>'required'
         ]);
 
         if($validation->fails()){

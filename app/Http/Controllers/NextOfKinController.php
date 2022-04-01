@@ -18,8 +18,7 @@ class NextOfKinController extends Controller
             'first_name'=>'required',
             'surname'=>'required',
             'address'=>'required',
-            'nationality'=>'required',
-            'street'=>'required'
+            'nationality'=>'required'
         ]);
 
         if($validation->fails()){
@@ -44,8 +43,7 @@ class NextOfKinController extends Controller
             'first_name'=>'required',
             'surname'=>'required',
             'address'=>'required',
-            'nationality'=>'required',
-            'street'=>'required'
+            'nationality'=>'required'
         ]);
 
         if($validation->fails()){
