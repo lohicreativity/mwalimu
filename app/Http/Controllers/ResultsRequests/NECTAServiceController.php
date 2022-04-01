@@ -25,8 +25,12 @@ class NECTAServiceController extends Controller
         if($details = NectaResultDetail::with('results')->where('index_number',$index_no)->where('exam_id',$exam_id)->where('applicant_id',$request->get('applicant_id'))->first()){
             return response()->json(['details'=>$details]);
         }else{
+            try{
             $token = $this->getToken(config('constants.NECTA_API_KEY'));
             $response = Http::get('https://api.necta.go.tz/api/public/results/'.$index_no.'/'.$exam_id.'/'.$exam_year.'/'.$token);
+            }catch(\Exception $e){
+                return response()->json(['error'=>'Please refresh your browser and try again']);
+            }
             if(!isset(json_decode($response)->results)){
                 return redirect()->back()->with('error','Invalid Index number or year');
             }

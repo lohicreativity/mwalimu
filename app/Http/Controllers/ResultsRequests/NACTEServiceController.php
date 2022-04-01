@@ -12,11 +12,14 @@ class NACTEServiceController extends Controller
 {
     public function getResults(Request $request,$avn)
     {
-        try{
         if($details = NacteResultDetail::with('results')->where('avn',$avn)->where('applicant_id',$request->get('applicant_id'))->first()){
             return response()->json(['details'=>$details]);
         }else{
+            try{
             $response = Http::get('https://www.nacte.go.tz/nacteapi/index.php/api/results/'.config('constants.NACTE_API_KEY').'/'.$avn);
+            }catch(\Exception $e){
+                return response()->json(['error'=>'Please refresh your browser and try again']);
+            }
             if(!isset(json_decode($response)->params)){
                 return redirect()->back()->with('error','Invalid AVN');
             }
@@ -57,8 +60,5 @@ class NACTEServiceController extends Controller
             $details = NacteResultDetail::with('results')->find($detail->id);
             return response()->json(['details'=>$details]);
         }
-       }catch(\Exception $e){
-          return response()->json(['error'=>'Please refresh your browser and try again']);
-       }
     }
 }
