@@ -666,7 +666,7 @@ class AppealController extends Controller
                                     $fee_amount->feeItem->feeType->gfs_code,
                                     $fee_amount->feeItem->feeType->payment_option,
                                     $student->id,
-                                    $student->first_name.' '.$student->middle_name.' '.$student->surname,
+                                    $student->first_name.' '.$student->surname,
                                     $student->phone,
                                     $student->email,
                                     $generated_by,
