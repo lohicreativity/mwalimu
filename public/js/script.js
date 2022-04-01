@@ -766,6 +766,9 @@ $('.ss-form-processing-necta').submit(function(e){
         url:'/application/fetch-necta-results/'+$(e.target).find('input[name=index_number]').val().replace(/\//g,'-')+'/'+$(e.target).find('input[name=exam_id]').val()+'?applicant_id='+$(e.target).find('input[name=applicant_id]').val(),
         method:'GET',
      }).done(function(data,success){
+         if(data.error){
+             alert(data.error);
+         }else{
          $(e.target).find('button[type=submit]').text(submitText);
          $(e.target).find('button[type=submit]').removeClass('disabled');
 
@@ -791,6 +794,7 @@ $('.ss-form-processing-necta').submit(function(e){
          $($(e.target).find('input[name=display_modal]').val()+' input[name=year]').val($(e.target).find('input[name=year]').val());
          $($(e.target).find('input[name=display_modal]').val()+' input[name=exam_id]').val($(e.target).find('input[name=exam_id]').val());
          $($(e.target).find('input[name=display_modal]').val()+' input[name=necta_result_detail_id]').val(data.details.id);
+         }
      });
 });
 
@@ -822,6 +826,9 @@ $('.ss-form-processing-nacte').submit(function(e){
         url:'/application/fetch-nacte-results/'+$(e.target).find('input[name=avn]').val()+'?applicant_id='+$(e.target).find('input[name=applicant_id]').val(),
         method:'GET',
      }).done(function(data,success){
+         if(data.error){
+            alert(data.error);
+         }else{
          $(e.target).find('button[type=submit]').text(submitText);
          $(e.target).find('button[type=submit]').removeClass('disabled');
 
@@ -848,6 +855,7 @@ $('.ss-form-processing-nacte').submit(function(e){
          $($(e.target).find('input[name=display_modal]').val()).modal('show');
          
          $($(e.target).find('input[name=display_modal]').val()+' input[name=nacte_result_detail_id]').val(data.details.id);
+         }
      });
 });
 
