@@ -209,6 +209,12 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
+                <a href="{{ url('application/upload-attachments') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Upload Attachments</p>
+                </a>
+              </li>
+              <li class="nav-item">
                 <a href="{{ url('application/applicants-admission') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Admit Students</p>

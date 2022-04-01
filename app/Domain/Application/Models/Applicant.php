@@ -83,6 +83,14 @@ class Applicant extends Model
     }
 
     /**
+     * Establish one to one relationship with program levels
+     */
+    public function applicationWindow()
+    {
+        return $this->belongsTo(ApplicationWindow::class,'application_window_id');
+    }
+
+    /**
      * Establish one to many relationship with selections
      */
     public function selections()

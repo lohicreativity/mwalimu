@@ -103,4 +103,10 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
     Route::post('register-applicant',[ApplicationController::class,'registerApplicant']);
     Route::get('applicants-registration',[ApplicationController::class,'applicantsRegistration']);
     Route::get('applicants-admission',[ApplicationController::class,'applicantsAdmission']);
+    Route::get('upload-attachments',[ApplicationController::class, 'uploadAttachments']);
+    Route::post('upload-attachment-file',[ApplicationController::class,'uploadAttachmentFile']);
+    Route::get('download-attachment',[ApplicationController::class,'downloadAttachment']);
+    Route::get('delete-attachment',[ApplicationController::class,'deleteAttachment']);
+
+    Route::get('send-admission-letter',[ApplicationController::class,'sendAdmissionLetter']);
 });

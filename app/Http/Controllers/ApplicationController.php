@@ -13,12 +13,15 @@ use App\Domain\Finance\Models\Invoice;
 use App\Domain\Settings\Models\NTALevel;
 use App\Domain\Settings\Models\Campus;
 use App\Domain\Application\Models\ApplicationWindow;
+use App\Domain\Application\Models\AdmissionAttachment;
 use App\Domain\Application\Models\ApplicantProgramSelection;
 use App\Domain\Application\Actions\ApplicantAction;
 use Illuminate\Support\Facades\Http;
 use App\Models\User;
 use App\Models\Role;
-use Validator, Hash, Config, Auth, PDF;
+use App\Utils\SystemLocation;
+use App\Mail\AdmissionLetterCreated;
+use Validator, Hash, Config, Auth, PDF, Mail;
 
 class ApplicationController extends Controller
 {
@@ -1126,5 +1129,116 @@ class ApplicationController extends Controller
             'request'=>$request
          ];
          return view('dashboard.application.applicants-admission',$data)->withTitle('Applicants Admission');
+    }
+
+    /**
+     * Show upload admission attachment
+     */
+    public function uploadAttachments(Request $request)
+    {
+         $staff = User::find(Auth::user()->id)->staff;
+         $data = [
+            'staff'=>$staff,
+            'attachments'=>AdmissionAttachment::paginate(20),
+            'application_windows'=>ApplicationWindow::where('campus_id',$staff->campus_id)->get(),
+            'application_window'=>ApplicationWindow::find($request->get('application_window_id')),
+            'awards'=>Award::all(),
+            'request'=>$request
+         ];
+         return view('dashboard.application.upload-attachments',$data)->withTitle('Upload Attachments');
+    }
+
+    /**
+     * Upload admission attachments
+     */
+    public function uploadAttachmentFile(Request $request)
+    {
+        $validation = Validator::make($request->all(),[
+            'name'=>'required',
+            'attachment'=>'required|mimes:pdf'
+        ]);
+
+        if($validation->fails()){
+           if($request->ajax()){
+              return response()->json(array('error_messages'=>$validation->messages()));
+           }else{
+              return redirect()->back()->withInput()->withErrors($validation->messages());
+           }
+        }
+
+        if($request->hasFile('attachment')){
+            $destination = SystemLocation::uploadsDirectory();
+            $request->file('attachment')->move($destination, $request->file('attachment')->getClientOriginalName());
+
+
+            $attachment = new AdmissionAttachment;
+            $attachment->name = $request->get('name');
+            $attachment->file_name = $request->file('attachment')->getClientOriginalName();
+            $attachment->save();
+        }
+
+        return redirect()->back()->with('message','Attachment uploaded successfully');
+    }
+
+    /**
+     * Download admission attachment
+     */
+    public function downloadAttachment(Request $request)
+    {
+        $attachment = AdmissionAttachment::find($request->get('id'));
+        return response()->download(public_path().'/uploads/'.$attachment->file_name);
+    }
+
+    /**
+     * Delete admission attachment
+     */
+    public function deleteAttachment(Request $request)
+    {
+        $attachment = AdmissionAttachment::find($request->get('id'));
+        if(file_exists(public_path().'/uploads/'.$attachment->file_name)){
+           unlink(public_path().'/uploads/'.$attachment->file_name);
+        }
+        $attachment->delete();
+        return redirect()->back()->with('message','Attachment deleted successfully');
+    }
+
+    /**
+     * Send admission letter to applicants
+     */
+    public function sendAdmissionLetter(Request $request)
+    {
+        $applicants = Applicant::whereHas('intake.applicationWindows',function($query) use($request){
+             $query->where('id',$request->get('application_window_id'));
+        })->whereHas('selections',function($query) use($request){
+             $query->where('status','SELECTED');
+        })->with(['nextOfKin','intake','selections'=>function($query){
+             $query->where('status','SELECTED');
+        },'selections.campusProgram.program','applicationWindow'])->where('program_level_id',$request->get('program_level_id'))->get();
+
+        foreach($applicants as $applicant){
+           try{
+               $data = [
+                 'applicant'=>$applicant,
+               ];
+               $pdf = PDF::loadView('dashboard.application.reports.admission-letter',$data);
+               
+               $ac_year = date('Y',strtotime($this->applicant->applicationWindow->end_date));
+               $ac_year += 1;
+               $study_academic_year = StudyAcademicYear::whereHas('academicYear',function($query) use($ac_year){
+                      $query->where('year','LIKE','%'.$ac_year.'%');
+                })->first();
+               if(!$study_academic_year){
+                   return redirect()->back()->with('error','Admission study academic year not created');
+               }
+               $user = new User;
+               $user->email = $applicant->email;
+               $user->username = $applicant->first_name.' '.$applicant->surname;
+               Mail::to($user)->send(new AdmissionLetterCreated($applicant,$study_academic_year, $pdf));
+           }catch(\Exception $e){}
+        }
+
+        return $pdf->stream();
+
+         return view('dashboard.application.reports.admission-letter');
     }
 }

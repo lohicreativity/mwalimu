@@ -87,15 +87,14 @@
                   ];
 
                   $phone = [
-                     'placeholder'=>'Phone',
+                     'placeholder'=>'255788010102',
                      'class'=>'form-control',
                      'required'=>true
                   ];
 
                   $street = [
                      'placeholder'=>'Street',
-                     'class'=>'form-control',
-                     'required'=>true
+                     'class'=>'form-control'
                   ];
 
                   $birth_date = [
