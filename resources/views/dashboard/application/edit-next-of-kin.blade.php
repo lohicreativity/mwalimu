@@ -213,7 +213,7 @@
                        </select>
                     </div>
                      <div class="form-group col-6">
-                       {!! Form::label('','Street') !!}
+                       {!! Form::label('','Street (Optional)') !!}
                        {!! Form::text('street',$next_of_kin->street,$street) !!}
                     </div>
                   </div>
@@ -400,7 +400,7 @@
                        </select>
                     </div>
                      <div class="form-group col-6">
-                       {!! Form::label('','Street') !!}
+                       {!! Form::label('','Street (Optional)') !!}
                        {!! Form::text('street',null,$street) !!}
                     </div>
                   </div>

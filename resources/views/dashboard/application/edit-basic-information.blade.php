@@ -221,7 +221,7 @@
                        </select>
                     </div>
                      <div class="form-group col-6">
-                       {!! Form::label('','Street') !!}
+                       {!! Form::label('','Street (Optional)') !!}
                        {!! Form::text('street',$applicant->street,$street) !!}
                     </div>
                   </div>
