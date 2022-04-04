@@ -116,6 +116,17 @@ class ApplicantController extends Controller
                     $applicant->ward_id = $app->ward_id;
                     $applicant->street = $app->street;
                     $applicant->basic_info_complete_status = $app->basic_info_complete_status;
+                    $applicant->next_of_kin_id = $app->next_of_kin_id;
+                    $applicant->next_of_kin_complete_status = $app->next_of_kin_complete_status;
+                    $applicant->birth_certificate = $app->birth_certificate;
+
+                    $applicant->o_level_certificate = $app->o_level_certificate;
+
+                    $applicant->a_level_certificate = $app->a_level_certificate;
+
+                    $applicant->diploma_certificate = $app->diploma_certificate; 
+
+                    $applicant->documents_complete_status = $app->documents_complete_status;
                     $applicant->save();
                 }elseif($app = Applicant::where('user_id',Auth::user()->id)->where('campus_id','!=',$request->get('campus_id'))->first()){
                     if($app){
@@ -143,6 +154,18 @@ class ApplicantController extends Controller
                         $applicant->ward_id = $app->ward_id;
                         $applicant->street = $app->street;
                         $applicant->basic_info_complete_status = $app->basic_info_complete_status;
+                        $applicant->next_of_kin_id = $app->next_of_kin_id;
+                        $applicant->next_of_kin_complete_status = $app->next_of_kin_complete_status;
+
+                        $applicant->birth_certificate = $app->birth_certificate;
+
+                        $applicant->o_level_certificate = $app->o_level_certificate;
+
+                        $applicant->a_level_certificate = $app->a_level_certificate;
+
+                        $applicant->diploma_certificate = $app->diploma_certificate; 
+
+                        $applicant->documents_complete_status = $app->documents_complete_status;
                         $applicant->save();
                     }
             }

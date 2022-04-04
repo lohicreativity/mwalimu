@@ -90,7 +90,7 @@ class ApplicantAction implements ApplicantInterface{
                 }
 
                 if($request->get('document_name') == 'diploma_certificate'){
-                    $applicant->a_level_certificate = $request->file('document')->getClientOriginalName(); 
+                    $applicant->diploma_certificate = $request->file('document')->getClientOriginalName(); 
                 }
 
             }
@@ -147,7 +147,7 @@ class ApplicantAction implements ApplicantInterface{
                     }
 
                     if($request->get('document_name') == 'diploma_certificate'){
-                        $app->a_level_certificate = $request->file('document')->getClientOriginalName(); 
+                        $app->diploma_certificate = $request->file('document')->getClientOriginalName(); 
                     }
 
                 }
