@@ -28,7 +28,7 @@ Route::get('test',function(){
    
    $ac_year = date('Y',strtotime($applicant->applicationWindow->end_date));
    $ac_year += 1;
-   $study_academic_year = StudyAcademicYear::whereHas('academicYear',function($query) use($ac_year){
+   $study_academic_year = App\Domain\Academic\Models\StudyAcademicYear::whereHas('academicYear',function($query) use($ac_year){
           $query->where('year','LIKE','%'.$ac_year.'%');
     })->first();
    if(!$study_academic_year){
