@@ -703,6 +703,7 @@ class ApplicationController extends Controller
              $a_level_grades = ['A'=>5,'B+'=>4,'B'=>3,'C'=>2,'D'=>1,'E'=>0.5,'S'=>0.5,'F'=>0];
            }
            $selected_program[$applicant->id] = false;
+           $rank_subjects = array();
            foreach($applicant->selections as $selection){
               foreach($campus_programs as $program){
                 
@@ -718,6 +719,8 @@ class ApplicationController extends Controller
                        foreach ($applicant->nectaResultDetails as $detailKey=>$detail) {
                          if($detail->exam_id == 1){
                            foreach ($detail->results as $key => $result) {
+                              $applicant->rank_points += $o_level_grades[$result->grade];
+
                               if($o_level_grades[$result->grade] >= $o_level_grades[$program->entryRequirements[0]->pass_grade]){
 
                                  if(unserialize($program->entryRequirements[0]->must_subjects) != ''){
@@ -757,6 +760,9 @@ class ApplicationController extends Controller
                        foreach ($applicant->nectaResultDetails as $detailKey=>$detail) {
                          if($detail->exam_id == 1){
                            foreach ($detail->results as $key => $result) {
+
+                              $applicant->rank_points += $o_level_grades[$result->grade];
+
                               if($o_level_grades[$result->grade] >= $o_level_grades[$program->entryRequirements[0]->pass_grade]){
 
                                  if(unserialize($program->entryRequirements[0]->must_subjects) != ''){
@@ -780,6 +786,9 @@ class ApplicationController extends Controller
                            }
                          }elseif($detail->exam_id == 2){
                            foreach ($detail->results as $key => $result) {
+
+                              $applicant->rank_points += $a_level_grades[$result->grade];
+
                               if($a_level_grades[$result->grade] >= $a_level_grades['E']){
 
                                  if(unserialize($program->entryRequirements[0]->advance_must_subjects) != ''){
@@ -854,6 +863,9 @@ class ApplicationController extends Controller
                        foreach ($applicant->nectaResultDetails as $detailKey=>$detail) {
                          if($detail->exam_id == 1){
                            foreach ($detail->results as $key => $result) {
+
+                              $applicant->rank_points += $o_level_grades[$result->grade];
+
                               if($o_level_grades[$result->grade] >= $o_level_grades[$program->entryRequirements[0]->pass_grade]){
 
                                  if(unserialize($program->entryRequirements[0]->must_subjects) != ''){
@@ -877,6 +889,9 @@ class ApplicationController extends Controller
                            }
                          }elseif($detail->exam_id == 2){
                            foreach ($detail->results as $key => $result) {
+
+                              $applicant->rank_points += $a_level_grades[$result->grade];
+
                               if($a_level_grades[$result->grade] >= $a_level_grades['E']){
 
                                  if(unserialize($program->entryRequirements[0]->advance_must_subjects) != ''){
@@ -944,6 +959,7 @@ class ApplicationController extends Controller
                 }
               }
            }
+           $applicant->save();
         }
 
         // Phase II
@@ -951,10 +967,20 @@ class ApplicationController extends Controller
         $applicants = Applicant::with(['selections','nectaResultDetails.results','nacteResultDetails.results'])->where('program_level_id',$request->get('award_id'))->whereHas('selections',function($query) use($request){
             $query->where('application_window_id',$request->get('application_window_id'))->where('status','ELIGIBLE');
         })->get();
+
+        for($i = 0; $i < count($applicants); $i++){
+            for($j = $i + 1; $j < count($applicants); $j++){
+               if($applicants[$i]->rank_points < $applicants[$j]->rank_points){
+                 $temp = $applicants[$i];
+                 $applicants[$i] = $applicants[$j];
+                 $applicants[$j] = $temp;
+               }
+            }
+        }
         
         foreach($choices as $choice){   
             foreach ($campus_programs as $program) {
-              
+
                 if(isset($program->entryRequirements[0])){
                 foreach($applicants as $applicant){
                   
