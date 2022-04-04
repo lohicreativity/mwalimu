@@ -78,6 +78,10 @@ class ApplicationWindowController extends Controller
            }
         }
 
+        if(ApplicationWindow::where('intake_id',$request->get('intake_id'))->where('campus_id',$request->get('campus_id'))->where('begin_date','<=',$request->get('begin_date'))->where('end_date','>=',$request->get('begin_date'))->first()){
+            return redirect()->back()->with('error','You cannot create more than Application window in the same campus and intake');
+        }
+
         if(strtotime($request->get('begin_date')) > strtotime($request->get('end_date'))){
             return redirect()->back()->with('error','End date cannot be less than begin date');
         }elseif(strtotime($request->get('begin_date')) < strtotime(now()->format('Y-m-d'))){
