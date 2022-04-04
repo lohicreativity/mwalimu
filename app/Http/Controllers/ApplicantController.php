@@ -29,7 +29,7 @@ use Illuminate\Support\Facades\Http;
 use App\Models\User;
 use App\Utils\Util;
 use Carbon\Carbon;
-use Validator, Auth;
+use Validator, Auth, Hash;
 
 class ApplicantController extends Controller
 {
