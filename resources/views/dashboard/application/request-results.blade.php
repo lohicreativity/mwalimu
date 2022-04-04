@@ -82,7 +82,7 @@
 
                     {!! Form::input('hidden','results_link','#ss-results-confirmation-link') !!}                             
                     @foreach($o_level_necta_results as $result)
-                     <p class="ss-font-xs">Center Name: {{ $result->center_name }} <br>Division: {{ $result->division }} &nbsp; Points: {{ $result->points }} <i class="fa fa-check"></i></p>
+                     <p class="ss-font-xs">Center Name: {{ $result->center_name }} <br>Division: {{ $result->division }} &nbsp; Points: @if($result->points) {{ $result->points }} @else N/A @endif <i class="fa fa-check"></i></p>
                     @endforeach
                   </div>
                   </div>
@@ -138,7 +138,7 @@
                     {!! Form::input('hidden','results_link','#ss-results-confirmation-link') !!}
 
                     @foreach($a_level_necta_results as $result)
-                     <p class="ss-font-xs">Center Name: {{ $result->center_name }} <br>Division: {{ $result->division }} &nbsp; Points: {{ $result->points }} <i class="fa fa-check"></i></p>
+                     <p class="ss-font-xs">Center Name: {{ $result->center_name }} <br>Division: {{ $result->division }} &nbsp; Points: @if($result->points) {{ $result->points }} @else N/A @endif <i class="fa fa-check"></i></p>
                     @endforeach
                   </div>
                   </div>

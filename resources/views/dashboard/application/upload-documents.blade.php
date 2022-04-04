@@ -57,6 +57,7 @@
                     {!! Form::label('','Select document') !!}
                     <select name="document_name" class="form-control" required>
                       <option value="">Select Document</option>
+                      <option value="passport">Passport Size Picture</option>
                       <option value="birth_certificate">Birth Certificate</option>
                       <option value="o_level_certificate">O-Level Certificate</option>
                       @if($applicant->entry_mode == 'DIRECT')

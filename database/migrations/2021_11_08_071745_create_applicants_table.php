@@ -46,6 +46,7 @@ class CreateApplicantsTable extends Migration
             $table->string('o_level_certificate')->nullable();
             $table->string('a_level_certificate')->nullable();
             $table->string('diploma_certificate')->nullable();
+            $table->string('passport_picture')->nullable();
             $table->tinyInteger('basic_info_complete_status')->default(0);
             $table->tinyInteger('next_of_kin_complete_status')->default(0);
             $table->tinyInteger('payment_complete_status')->default(0);
@@ -56,6 +57,7 @@ class CreateApplicantsTable extends Migration
             $table->tinyInteger('payment_check')->default(0);
             $table->tinyInteger('insurance_check')->default(0);
             $table->tinyInteger('documents_check')->default(0);
+            $table->integer('rank_points')->nullable();
             $table->timestamps();
             $table->softDeletes();
 
