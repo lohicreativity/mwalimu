@@ -152,15 +152,7 @@ class ApplicantAction implements ApplicantInterface{
 
                 }
 
-                if($applicant->entry_mode == 'DIRECT'){
-                    if($applicant->birth_certificate && $applicant->o_level_certificate){
-                        $app->documents_complete_status = 1;
-                    }
-                }else{
-                    if($applicant->birth_certificate && $applicant->o_level_certificate){
-                        $app->documents_complete_status = 1;
-                    }
-                }
+                $app->documents_complete_status = $applicant->documents_complete_status;
 
                 $app->save();
             }

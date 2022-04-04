@@ -70,7 +70,7 @@ class NextOfKinAction implements NextOfKinInterface{
 
                      $app = Applicant::find($appl->id);
                      $app->next_of_kin_id = $applicant->next_of_kin_id;
-                     $app->next_of_kin_complete_status = $applicant->next_of_kin_complete_status;
+                     $app->next_of_kin_complete_status = 1;
                      $app->save();
                 }
 	}
