@@ -34,7 +34,7 @@ Route::get('test',function(){
    if(!$study_academic_year){
        return redirect()->back()->with('error','Admission study academic year not created');
    }
-   $user = new User;
+   $user = new App\Models\User;
    $user->email = 'amanighachocha@gmail.com'; //$applicant->email;
    $user->username = $applicant->first_name.' '.$applicant->surname;
     Mail::to()->send(new App\Mail\AdminssionLetterCreated($applicant,$study_academic_year,));
