@@ -719,9 +719,10 @@ class ApplicationController extends Controller
                        foreach ($applicant->nectaResultDetails as $detailKey=>$detail) {
                          if($detail->exam_id == 1){
                            foreach ($detail->results as $key => $result) {
-                              $applicant->rank_points += $o_level_grades[$result->grade];
-
+                          
                               if($o_level_grades[$result->grade] >= $o_level_grades[$program->entryRequirements[0]->pass_grade]){
+
+                                $applicant->rank_points += $o_level_grades[$result->grade];
 
                                  if(unserialize($program->entryRequirements[0]->must_subjects) != ''){
                                     if(unserialize($program->entryRequirements[0]->other_must_subjects) != ''){
@@ -761,9 +762,9 @@ class ApplicationController extends Controller
                          if($detail->exam_id == 1){
                            foreach ($detail->results as $key => $result) {
 
-                              $applicant->rank_points += $o_level_grades[$result->grade];
-
                               if($o_level_grades[$result->grade] >= $o_level_grades[$program->entryRequirements[0]->pass_grade]){
+
+                                $applicant->rank_points += $o_level_grades[$result->grade];
 
                                  if(unserialize($program->entryRequirements[0]->must_subjects) != ''){
                                     if(unserialize($program->entryRequirements[0]->other_must_subjects) != ''){
@@ -787,10 +788,9 @@ class ApplicationController extends Controller
                          }elseif($detail->exam_id == 2){
                            foreach ($detail->results as $key => $result) {
 
-                              $applicant->rank_points += $a_level_grades[$result->grade];
-
                               if($a_level_grades[$result->grade] >= $a_level_grades['E']){
 
+                                 $applicant->rank_points += $a_level_grades[$result->grade];
                                  if(unserialize($program->entryRequirements[0]->advance_must_subjects) != ''){
                                     if(unserialize($program->entryRequirements[0]->advance_other_must_subjects) != ''){
                                        if(in_array($result->subject_name, unserialize($program->entryRequirements[0]->advance_must_subjects)) || in_array($result->subject_name, unserialize($program->entryRequirements[0]->other_advance_must_subjects))){
@@ -864,10 +864,9 @@ class ApplicationController extends Controller
                          if($detail->exam_id == 1){
                            foreach ($detail->results as $key => $result) {
 
-                              $applicant->rank_points += $o_level_grades[$result->grade];
-
                               if($o_level_grades[$result->grade] >= $o_level_grades[$program->entryRequirements[0]->pass_grade]){
 
+                                 $applicant->rank_points += $o_level_grades[$result->grade];
                                  if(unserialize($program->entryRequirements[0]->must_subjects) != ''){
                                     if(unserialize($program->entryRequirements[0]->other_must_subjects) != ''){
                                        if(in_array($result->subject_name, unserialize($program->entryRequirements[0]->must_subjects)) || in_array($result->subject_name, unserialize($program->entryRequirements[0]->other_must_subjects))){
@@ -890,10 +889,9 @@ class ApplicationController extends Controller
                          }elseif($detail->exam_id == 2){
                            foreach ($detail->results as $key => $result) {
 
-                              $applicant->rank_points += $a_level_grades[$result->grade];
-
                               if($a_level_grades[$result->grade] >= $a_level_grades['E']){
 
+                                 $applicant->rank_points += $a_level_grades[$result->grade];
                                  if(unserialize($program->entryRequirements[0]->advance_must_subjects) != ''){
                                     if(unserialize($program->entryRequirements[0]->other_advance_must_subjects) != ''){
                                        if(in_array($result->subject_name, unserialize($program->entryRequirements[0]->advance_must_subjects)) || in_array($result->subject_name, unserialize($program->entryRequirements[0]->other_advance_must_subjects))){
