@@ -98,7 +98,7 @@
                     <select name="campus_id" class="form-control" required>
                       <option value="">Select Campus</option>
                       @foreach($campuses as $campus)
-                      <option value="{{ $campus->id }}">{{ $campus->name }}</option>
+                      <option value="{{ $campus->id }}" @if($staff->campus_id == $campus->id) selected="selected" @endif>{{ $campus->name }}</option>
                       @endforeach
                     </select>
                     @else
@@ -134,6 +134,7 @@
                   <thead>
                   <tr>
                     <th>Campus</th>
+                    <th>Intake</th>
                     <th>Status</th>
                     <th>Begin Date</th>
                     <th>End Date</th>
@@ -144,6 +145,7 @@
                   @foreach($windows as $window)
                   <tr>
                     <th>{{ $window->campus->name }}</th>
+                    <th>{{ $window->intake->name }}</th>
                     <td>{{ $window->status }}</td>
                     <td>{{ $window->begin_date }}</td>
                     <td>{{ $window->end_date }}</td>
@@ -155,19 +157,7 @@
                               Edit
                        </a>
                        
-                       @if($window->status == 'ACTIVE')
-                       <a class="btn btn-danger btn-sm" href="{{ url('application/window/'.$window->id.'/deactivate') }}">
-                              <i class="fas fa-ban">
-                              </i>
-                              Deactivate
-                       </a>
-                      @else
-                       <a class="btn btn-info btn-sm" href="{{ url('application/window/'.$window->id.'/activate') }}">
-                              <i class="fas fa-check-circle">
-                              </i>
-                              Activate
-                       </a>
-                      @endif
+                      
 
                        <div class="modal fade" id="ss-edit-window-{{ $window->id }}">
                         <div class="modal-dialog modal-lg">
@@ -300,6 +290,20 @@
                         <!-- /.modal-dialog -->
                       </div>
                       <!-- /.modal -->
+
+                       @if($window->status == 'ACTIVE')
+                       <a class="btn btn-danger btn-sm" href="{{ url('application/window/'.$window->id.'/deactivate') }}">
+                              <i class="fas fa-ban">
+                              </i>
+                              Deactivate
+                       </a>
+                      @else
+                       <a class="btn btn-info btn-sm" href="{{ url('application/window/'.$window->id.'/activate') }}">
+                              <i class="fas fa-check-circle">
+                              </i>
+                              Activate
+                       </a>
+                      @endif
                     </td>
                   </tr>
                   @endforeach

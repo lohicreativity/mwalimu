@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Domain\Academic\Models\StudyAcademicYear;
 use App\Domain\Academic\Models\CampusProgram;
 use App\Domain\Settings\Models\Campus;
+use App\Domain\Settings\Models\Intake;
 
 class ApplicationWindow extends Model
 {
@@ -30,6 +31,14 @@ class ApplicationWindow extends Model
     public function campus()
     {
         return $this->belongsTo(Campus::class,'campus_id');
+    }
+
+    /**
+     * Establish one to many relationship with intakes
+     */
+    public function campus()
+    {
+        return $this->belongsTo(Intake::class,'intake_id');
     }
 
     /**
