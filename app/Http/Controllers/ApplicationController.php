@@ -954,7 +954,7 @@ class ApplicationController extends Controller
         
         foreach($choices as $choice){   
             foreach ($campus_programs as $program) {
-                $count[$program->id] = 0;
+              
                 if(isset($program->entryRequirements[0])){
                 foreach($applicants as $applicant){
                   
