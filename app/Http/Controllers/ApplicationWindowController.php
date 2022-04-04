@@ -12,6 +12,7 @@ use App\Domain\Settings\Models\Campus;
 use App\Domain\Application\Actions\ApplicationWindowAction;
 use App\Models\User;
 use App\Utils\Util;
+use App\Utils\DateMaker;
 use Validator, Auth;
 
 class ApplicationWindowController extends Controller
@@ -48,7 +49,7 @@ class ApplicationWindowController extends Controller
            }
         }
 
-        if(ApplicationWindow::where('intake_id',$request->get('intake_id'))->where('campus_id',$request->get('campus_id'))->where('begin_date','<=',$request->get('begin_date'))->whereYear('end_date','>=',$request->get('begin_date'))->first()){
+        if(ApplicationWindow::where('intake_id',$request->get('intake_id'))->where('campus_id',$request->get('campus_id'))->where('begin_date','<=',DateMaker::toDBDate($request->get('begin_date')))->whereYear('end_date','>=',DateMaker::toDBDate($request->get('begin_date')))->count() != 0){
             return redirect()->back()->with('error','You cannot create more than one Application window in the same campus and intake');
         }
 
@@ -82,7 +83,7 @@ class ApplicationWindowController extends Controller
            }
         }
 
-        if(ApplicationWindow::where('intake_id',$request->get('intake_id'))->where('campus_id',$request->get('campus_id'))->where('begin_date','<=',$request->get('begin_date'))->where('end_date','>=',$request->get('begin_date'))->first()){
+        if(ApplicationWindow::where('intake_id',$request->get('intake_id'))->where('campus_id',$request->get('campus_id'))->where('begin_date','<=',DateMaker::toDBDate($request->get('begin_date')))->where('end_date','>=',DateMaker::toDBDate($request->get('begin_date')))->count() != 0){
             return redirect()->back()->with('error','You cannot create more than one Application window in the same campus and intake');
         }
 
