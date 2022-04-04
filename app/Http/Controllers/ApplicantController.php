@@ -202,7 +202,7 @@ class ApplicantController extends Controller
     public function editBasicInfo(Request $request)
     {
         if(!ApplicationWindow::where('campus_id',session('applicant_campus_id'))->where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->first()){
-             return redirect()->back()->with('error','Application window already closed');
+             return redirect()->to('application/submission')->with('error','Application window already closed');
         }
         $url='http://api.tcu.go.tz/applicants/checkStatus';
         $fullindex=str_replace('-','/',Auth::user()->username);
