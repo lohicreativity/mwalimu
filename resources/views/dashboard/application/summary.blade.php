@@ -205,7 +205,7 @@
         <div class="row">
           <div class="col-md-12">
              <h3>Basic Information</h3>
-             <table class="table table-bordered">
+             <table class="table table-bordered table-condensed">
                <tr>
                  <td>First Name</td>
                  <td>{{ $applicant->first_name }}</td>
@@ -253,7 +253,7 @@
              </table>
 
              <h3>Next of Kin Information</h3>
-             <table class="table table-bordered">
+             <table class="table table-bordered table-condensed">
                <tr>
                  <td>First Name</td>
                  <td>{{ $applicant->nextOfKin->first_name }}</td>
@@ -302,7 +302,7 @@
              </table>
 
              <h3>Programmes Selection</h3>
-             <table class="table table-bordered">
+             <table class="table table-bordered table-condensed">
                <tr>
                  <td>1st Choice</td>
                  @foreach($selections as $selection)
@@ -327,7 +327,49 @@
                    @endif
                  @endforeach
                </tr>
+               <tr>
+                 <td>4th Choice</td>
+                 @foreach($selections as $selection)
+                   @if($selection->order == 4)
+                 <td>{{ $selection->campusProgram->program->name }}</td>
+                   @endif
+                 @endforeach
+               </tr>
               </table>
+
+              @if(count($applicant->nectaResultDetails) != 0)
+              <h3>NECTA Results</h3>
+              <table class="table table-bordered table-condensed">
+                @foreach($applicant->nectaResultDetails as $detail)
+                <tr>
+                  <td>Index Number</td>
+                  <td>Division</td>
+                  <td>Points</td>
+                </tr>
+                <tr>
+                  <td>{{ $detail->index_number }}</td>
+                  <td>{{ $detail->division }}</td>
+                  <td>{{ $detail->points }}</td>
+                </tr>
+                @endforeach
+              </table>
+              @endif
+
+              @if(count($applicant->nacteResultDetails) != 0)
+              <h3>NACTE Results</h3>
+              <table class="table table-bordered table-condensed">
+                @foreach($applicant->nacteResultDetails as $detail)
+                <tr>
+                  <td>AVN</td>
+                  <td>GPA</td>
+                </tr>
+                <tr>
+                  <td>{{ $detail->avn }}</td>
+                  <td>{{ $detail->gpa }}</td>
+                </tr>
+                @endforeach
+              </table>
+              @endif
          </div><!-- end of col-md-12 -->
        </div><!-- end of row -->
       </div><!-- end of container -->
