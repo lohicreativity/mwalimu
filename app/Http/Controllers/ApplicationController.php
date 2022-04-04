@@ -965,7 +965,9 @@ class ApplicationController extends Controller
                 }
               }
            }
-           $applicant->rank_points = $applicant->rank_points / $subject_count;
+           if($subject_count != 0){
+              $applicant->rank_points = $applicant->rank_points / $subject_count;
+           }
            $applicant->save();
         }
 
