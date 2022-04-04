@@ -322,7 +322,7 @@ class ApplicantController extends Controller
     public function selectPrograms(Request $request)
     {
         if(!ApplicationWindow::where('campus_id',session('applicant_campus_id'))->where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->first()){
-             return redirect()->back()->with('error','Application window already closed');
+             return redirect()->to('application/submission')->with('error','Application window already closed');
         }
         $window = ApplicationWindow::where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('campus_id',session('applicant_campus_id'))->first();
         $applicant = User::find(Auth::user()->id)->applicants()->with(['selections.campusProgram.program','selections'=>function($query){
@@ -345,7 +345,7 @@ class ApplicantController extends Controller
     public function uploadDocuments(Request $request)
     {
        if(!ApplicationWindow::where('campus_id',session('applicant_campus_id'))->where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->first()){
-             return redirect()->back()->with('error','Application window already closed');
+             return redirect()->to('application/submission')->with('error','Application window already closed');
         }
        $data = [
           'applicant'=>User::find(Auth::user()->id)->applicants()->where('campus_id',session('applicant_campus_id'))->first(),
@@ -359,6 +359,9 @@ class ApplicantController extends Controller
      */
     public function submission(Request $request)
     {
+        if(!ApplicationWindow::where('campus_id',session('applicant_campus_id'))->where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->first()){
+             return redirect()->to('application/submission')->with('error','Application window already closed');
+        }
         $data = [
             'applicant'=>User::find(Auth::user()->id)->applicants()->where('campus_id',session('applicant_campus_id'))->first(),
             'campus'=>Campus::find(session('applicant_campus_id')),
