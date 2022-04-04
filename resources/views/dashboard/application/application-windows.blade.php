@@ -44,7 +44,7 @@
             <!-- general form elements -->
             <div class="card card-default">
               <div class="card-header">
-                <h3 class="card-title">{{ __('Add Academic Year') }}</h3>
+                <h3 class="card-title">{{ __('Add Admission Window') }}</h3>
               </div>
               <!-- /.card-header -->
               <!-- form start -->
@@ -99,6 +99,7 @@
                     </select>
                   </div>
                   <div class="form-group col-2">
+                    @if(Auth::user()->hasRole('administrator'))
                     {!! Form::label('','Campus') !!}
                     <select name="campus_id" class="form-control" required>
                       <option value="">Select Campus</option>
@@ -106,6 +107,16 @@
                       <option value="{{ $campus->id }}">{{ $campus->name }}</option>
                       @endforeach
                     </select>
+                    @else
+                    {!! Form::label('','Campus') !!}
+                    <select name="campus_id" class="form-control" required>
+                      <option value="">Select Campus</option>
+                      @foreach($campuses as $campus)
+                      <option value="{{ $campus->id }}" @if($staff->campus_id != $campus->id) disabled="disabled" @endif>{{ $campus->name }}</option>
+                      @endforeach
+                    </select>
+                    @endif
+
                   </div>
                   </div>
                 </div>
@@ -143,13 +154,26 @@
                     <td>{{ $window->begin_date }}</td>
                     <td>{{ $window->end_date }}</td>
                     <td>
-                      @can('edit-study-academic-year')
+                      
                       <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-edit-window-{{ $window->id }}">
                               <i class="fas fa-pencil-alt">
                               </i>
                               Edit
                        </a>
-                      @endcan
+                       
+                       @if($window->status == 'ACTIVE')
+                       <a class="btn btn-danger btn-sm" href="{{ url('application/window/'.$window->id.'/deactivate') }}">
+                              <i class="fas fa-ban">
+                              </i>
+                              Deactivate
+                       </a>
+                      @else
+                       <a class="btn btn-info btn-sm" href="{{ url('application/window/'.$window->id.'/activate') }}">
+                              <i class="fas fa-check-circle">
+                              </i>
+                              Activate
+                       </a>
+                      @endif
 
                        <div class="modal fade" id="ss-edit-window-{{ $window->id }}">
                         <div class="modal-dialog modal-lg">
@@ -217,13 +241,23 @@
                                         </select>
                                       </div>
                                       <div class="form-group col-2">
+
                                         {!! Form::label('','Campus') !!}
+                                        @if(Auth::user()->hasRole('administrator'))
                                         <select name="campus_id" class="form-control" required>
                                           <option value="">Select Campus</option>
                                           @foreach($campuses as $campus)
                                           <option value="{{ $campus->id }}" @if($window->campus_id == $campus->id) selected="selected" @endif>{{ $campus->name }}</option>
                                           @endforeach
                                         </select>
+                                        @else
+                                        <select name="campus_id" class="form-control" required>
+                                          <option value="">Select Campus</option>
+                                          @foreach($campuses as $campus)
+                                          <option value="{{ $campus->id }}" @if($window->campus_id == $campus->id) selected="selected" @endif @if($staff->campus_id != $campus->id) disabled="disabled" @endif>{{ $campus->name }}</option>
+                                          @endforeach
+                                        </select>
+                                        @endif
                                       </div>
                                       </div>
                                       <div class="ss-form-actions">

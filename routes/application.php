@@ -93,6 +93,9 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 	Route::get('selected-applicants/download',[ApplicationController::class,'downloadSelectedApplicants']);
 	Route::post('submit-selected-applicants-tcu',[ApplicationController::class,'submitSelectedApplicants']);
 
+	Route::get('window/{id}/activate',[ApplicationWindowController::class,'activate']);
+	Route::get('window/{id}/deactivate',[ApplicationWindowController::class,'deactivate']);
+
 
 	Route::get('run-selection',[ApplicationController::class,'showRunSelection']);
 	Route::post('run-applicants-selection',[ApplicationController::class,'runSelection']);

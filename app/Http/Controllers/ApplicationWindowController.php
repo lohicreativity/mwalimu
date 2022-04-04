@@ -48,6 +48,12 @@ class ApplicationWindowController extends Controller
            }
         }
 
+        if(strtotime($request->get('begin_date')) > strtotime($request->get('end_date'))){
+            return redirect()->back()->with('error','End date cannot be less than begin date');
+        }elseif(strtotime($request->get('begin_date')) < strtotime(now()->format('Y-m-d'))){
+            return redirect()->back()->with('error','Begin date cannot be less than today date');
+        }
+
 
         (new ApplicationWindowAction)->store($request);
 
@@ -70,6 +76,12 @@ class ApplicationWindowController extends Controller
            }else{
               return redirect()->back()->withInput()->withErrors($validation->messages());
            }
+        }
+
+        if(strtotime($request->get('begin_date')) > strtotime($request->get('end_date'))){
+            return redirect()->back()->with('error','End date cannot be less than begin date');
+        }elseif(strtotime($request->get('begin_date')) < strtotime(now()->format('Y-m-d'))){
+            return redirect()->back()->with('error','Begin date cannot be less than today date');
         }
 
 
@@ -117,6 +129,38 @@ class ApplicationWindowController extends Controller
             $window->campusPrograms()->sync($programIds);
 
             return redirect()->back()->with('message','Campus programs assigned successfully');
+        }
+    }
+
+        /**
+     * Activate window
+     */
+    public function activate($id)
+    {
+        try{
+            $window = ApplicationWindow::findOrFail($id);
+            $window->status = 'ACTIVE';
+            $window->save();
+
+            return redirect()->back()->with('message','Application window activated successfully');
+        }catch(Exception $e){
+            return redirect()->back()->with('error','Unable to get the resource specified in this request');
+        }
+    }
+
+    /**
+     * Deactivate window
+     */
+    public function deactivate($id)
+    {
+        try{
+            $window = ApplicationWindow::findOrFail($id);
+            $window->status = 'INACTIVE';
+            $window->save();
+
+            return redirect()->back()->with('message','Application window deactivated successfully');
+        }catch(Exception $e){
+            return redirect()->back()->with('error','Unable to get the resource specified in this request');
         }
     }
 
