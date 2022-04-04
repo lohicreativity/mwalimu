@@ -37,7 +37,7 @@ Route::get('test',function(){
    $user = new App\Models\User;
    $user->email = 'amanighachocha@gmail.com'; //$applicant->email;
    $user->username = $applicant->first_name.' '.$applicant->surname;
-    Mail::to()->send(new App\Mail\AdminssionLetterCreated($applicant,$study_academic_year,));
+    Mail::to($user)->send(new App\Mail\AdminssionLetterCreated($applicant,$study_academic_year,));
 });
 
 Route::view('/', 'auth.login');
