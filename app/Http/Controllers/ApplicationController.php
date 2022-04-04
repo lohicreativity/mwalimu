@@ -7,6 +7,7 @@ use App\Domain\Academic\Models\Award;
 use App\Domain\Settings\Models\Intake;
 use App\Domain\Application\Models\Applicant;
 use App\Domain\Academic\Models\CampusProgram;
+use App\Domain\Academic\Models\StudyAcademicYear;
 use App\Domain\Academic\Models\Department;
 use App\Domain\Finance\Models\FeeAmount;
 use App\Domain\Finance\Models\Invoice;
@@ -279,7 +280,7 @@ class ApplicationController extends Controller
             return dd($array);
               }
 
-              
+
             }
 
           }
@@ -668,6 +669,10 @@ class ApplicationController extends Controller
             $query->where('application_window_id',$request->get('application_window_id'));
         }])->where('campus_id',$staff->campus_id)->get();
 
+        foreach($campus_programs as $program){
+           $count[$program->id] = 0;
+        }
+
         $award = Award::find($request->get('award_id'));
 
         $applicants = Applicant::whereHas('selections',function($query) use($request){
@@ -949,13 +954,13 @@ class ApplicationController extends Controller
         
         foreach($choices as $choice){   
             foreach ($campus_programs as $program) {
-                $count = 0;
+                $count[$program->id] = 0;
                 if(isset($program->entryRequirements[0])){
                 foreach($applicants as $applicant){
                   
                   foreach($applicant->selections as $selection){
                      if($selection->order == $choice && $selection->campus_program_id == $program->id){
-                        if($count <= $program->entryRequirements[0]->max_capacity && $selection->status == 'ELIGIBLE' && !$selected_program[$applicant->id]){
+                        if($count[$program->id] < $program->entryRequirements[0]->max_capacity && $selection->status == 'ELIGIBLE' && !$selected_program[$applicant->id]){
                            $select = ApplicantProgramSelection::find($selection->id);
                            $select->status = 'APPROVING';
                            $select->status_changed_at = now();
@@ -963,7 +968,7 @@ class ApplicationController extends Controller
 
                            $selected_program[$applicant->id] = true;
 
-                           $count++;
+                           $count[$program->id]++;
                         }
                      }
                   }
@@ -1218,13 +1223,8 @@ class ApplicationController extends Controller
         },'selections.campusProgram.program','applicationWindow'])->where('program_level_id',$request->get('program_level_id'))->get();
 
         foreach($applicants as $applicant){
-           try{
-               $data = [
-                 'applicant'=>$applicant,
-               ];
-               $pdf = PDF::loadView('dashboard.application.reports.admission-letter',$data);
-               
-               $ac_year = date('Y',strtotime($this->applicant->applicationWindow->end_date));
+           // try{
+               $ac_year = date('Y',strtotime($applicant->applicationWindow->end_date));
                $ac_year += 1;
                $study_academic_year = StudyAcademicYear::whereHas('academicYear',function($query) use($ac_year){
                       $query->where('year','LIKE','%'.$ac_year.'%');
@@ -1232,12 +1232,19 @@ class ApplicationController extends Controller
                if(!$study_academic_year){
                    return redirect()->back()->with('error','Admission study academic year not created');
                }
+
+               $data = [
+                 'applicant'=>$applicant,
+                 'program_name'=>$applicant->selections[0]->campusProgram->program->name,
+                 'study_year'=>$study_academic_year->academicYear->year
+               ];
+               $pdf = PDF::loadView('dashboard.application.reports.admission-letter',$data);
+               return $pdf->stream();
                $user = new User;
                $user->email = 'amanighachocha@gmail.com'; //$applicant->email;
                $user->username = $applicant->first_name.' '.$applicant->surname;
                Mail::to($user)->send(new AdmissionLetterCreated($applicant,$study_academic_year, $pdf));
-           }catch(\Exception $e){}
+           // }catch(\Exception $e){}
         }
-         return view('dashboard.application.reports.admission-letter');
     }
 }

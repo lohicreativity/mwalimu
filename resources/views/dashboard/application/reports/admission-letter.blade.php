@@ -254,7 +254,7 @@
         
         <div class="row">
            <div class="col-md-12">
-              <h4>RE: ADMISSION INTO BASIC TECHNICIAN CERTIFICATE FOR THE ACADEMIC YEAR 2021/2022</h4>
+              <h4>RE: ADMISSION INTO {{ $program_name }} FOR THE ACADEMIC YEAR {{ $study_year }}</h4>
 
               <p>I am pleased to inform you that you have been selected to join the Academy for one year pursuing ………………………………………………………………………………………………………………………………………… You are required to report at the Academy on Monday 25th October 2021 ready for registration and One Week for Orientation Programme that will commence on Monday 25th October 2021. Please note that all 1st year students are required to attend the Orientation Programme. Classes will commence immediately on 1st November 2021.</p>
 
