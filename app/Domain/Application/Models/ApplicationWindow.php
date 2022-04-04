@@ -36,7 +36,7 @@ class ApplicationWindow extends Model
     /**
      * Establish one to many relationship with intakes
      */
-    public function campus()
+    public function intake()
     {
         return $this->belongsTo(Intake::class,'intake_id');
     }
