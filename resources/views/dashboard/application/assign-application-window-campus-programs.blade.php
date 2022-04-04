@@ -21,12 +21,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>{{ __('Study Academic Years Campus Programs') }}</h1>
+            <h1>{{ __('Offered Programmes') }}</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">{{ __('Study Academic Years Campus Programs') }}</li>
+              <li class="breadcrumb-item active">{{ __('Offered Programmes') }}</li>
             </ol>
           </div>
         </div>
@@ -102,7 +102,7 @@
                         <div class="modal-dialog modal-lg">
                           <div class="modal-content">
                             <div class="modal-header">
-                              <h4 class="modal-title">Assign Study Academic Year Programs</h4>
+                              <h4 class="modal-title">Assign Offered Campus Programmes</h4>
                               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                               </button>
@@ -142,7 +142,7 @@
                                       {!! Form::input('hidden','campus_id',$campus->id) !!}
                                     </div>
                                       <div class="ss-form-actions">
-                                       <button type="submit" class="btn btn-primary">{{ __('Application Window Campus Programs') }}</button>
+                                       <button type="submit" class="btn btn-primary">{{ __('Assign Offered Programmes') }}</button>
                                       </div>
                                 {!! Form::close() !!}
 
