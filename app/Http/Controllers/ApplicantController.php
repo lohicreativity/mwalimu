@@ -195,7 +195,9 @@ class ApplicantController extends Controller
      */
     public function editBasicInfo(Request $request)
     {
-      
+        if(!ApplicationWindow::where('campus_id',session('applicant_campus_id'))->where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->first()){
+             return redirect()->back()->with('error','Application window already closed');
+        }
         $url='http://api.tcu.go.tz/applicants/checkStatus';
         $fullindex=str_replace('-','/',Auth::user()->username);
         $xml_request='<?xml version="1.0" encoding="UTF-8"?> 
@@ -214,6 +216,7 @@ class ApplicantController extends Controller
         
         $data = [
            'applicant'=>User::find(Auth::user()->id)->applicants()->where('campus_id',session('applicant_campus_id'))->first(),
+           'application_window'=>ApplicationWindow::where('campus_id',session('applicant_campus_id'))->where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->first(),
            'campus'=>Campus::find(session('applicant_campus_id')),
            'countries'=>Country::all(),
            'regions'=>Region::all(),
@@ -249,6 +252,9 @@ class ApplicantController extends Controller
      */
     public function editNextOfKin(Request $request)
     {
+        if(!ApplicationWindow::where('campus_id',session('applicant_campus_id'))->where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->first()){
+             return redirect()->to('application/submission')->with('error','Application window already closed');
+        }
         $applicant = User::find(Auth::user()->id)->applicants()->where('campus_id',session('applicant_campus_id'))->first();
         $data = [
            'applicant'=>$applicant,
@@ -290,6 +296,9 @@ class ApplicantController extends Controller
      */
     public function requestResults(Request $results)
     {
+        if(!ApplicationWindow::where('campus_id',session('applicant_campus_id'))->where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->first()){
+             return redirect()->back()->with('error','Application window already closed');
+        }
         $applicant = User::find(Auth::user()->id)->applicants()->with('programLevel')->where('campus_id',session('applicant_campus_id'))->first();
         $data = [
            'applicant'=>$applicant,
@@ -306,7 +315,9 @@ class ApplicantController extends Controller
      */
     public function selectPrograms(Request $request)
     {
-
+        if(!ApplicationWindow::where('campus_id',session('applicant_campus_id'))->where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->first()){
+             return redirect()->back()->with('error','Application window already closed');
+        }
         $window = ApplicationWindow::where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('campus_id',session('applicant_campus_id'))->first();
         $applicant = User::find(Auth::user()->id)->applicants()->with(['selections.campusProgram.program','selections'=>function($query){
                 $query->orderBy('order','asc');
@@ -327,6 +338,9 @@ class ApplicantController extends Controller
      */
     public function uploadDocuments(Request $request)
     {
+       if(!ApplicationWindow::where('campus_id',session('applicant_campus_id'))->where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->first()){
+             return redirect()->back()->with('error','Application window already closed');
+        }
        $data = [
           'applicant'=>User::find(Auth::user()->id)->applicants()->where('campus_id',session('applicant_campus_id'))->first(),
           'campus'=>Campus::find(session('applicant_campus_id')),
