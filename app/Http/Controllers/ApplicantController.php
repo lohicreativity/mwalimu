@@ -303,7 +303,7 @@ class ApplicantController extends Controller
     public function requestResults(Request $results)
     {
         if(!ApplicationWindow::where('campus_id',session('applicant_campus_id'))->where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->first()){
-             return redirect()->back()->with('error','Application window already closed');
+             return redirect()->to('application/submission')->with('error','Application window already closed');
         }
         $applicant = User::find(Auth::user()->id)->applicants()->with('programLevel')->where('campus_id',session('applicant_campus_id'))->first();
         $data = [
