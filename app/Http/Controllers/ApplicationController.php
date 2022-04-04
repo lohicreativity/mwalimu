@@ -704,7 +704,7 @@ class ApplicationController extends Controller
              $a_level_grades = ['A'=>5,'B+'=>4,'B'=>3,'C'=>2,'D'=>1,'E'=>0.5,'S'=>0.5,'F'=>0];
            }
            $selected_program[$applicant->id] = false;
-           $rank_subjects = array();
+           $subject_count = 0;
            foreach($applicant->selections as $selection){
               foreach($campus_programs as $program){
                 
@@ -724,6 +724,7 @@ class ApplicationController extends Controller
                               if($o_level_grades[$result->grade] >= $o_level_grades[$program->entryRequirements[0]->pass_grade]){
 
                                 $applicant->rank_points += $o_level_grades[$result->grade];
+                                $subject_count += 1;
 
                                  if(unserialize($program->entryRequirements[0]->must_subjects) != ''){
                                     if(unserialize($program->entryRequirements[0]->other_must_subjects) != ''){
@@ -766,6 +767,8 @@ class ApplicationController extends Controller
                               if($o_level_grades[$result->grade] >= $o_level_grades[$program->entryRequirements[0]->pass_grade]){
 
                                 $applicant->rank_points += $o_level_grades[$result->grade];
+                                $subject_count += 1;
+
 
                                  if(unserialize($program->entryRequirements[0]->must_subjects) != ''){
                                     if(unserialize($program->entryRequirements[0]->other_must_subjects) != ''){
@@ -792,6 +795,7 @@ class ApplicationController extends Controller
                               if($a_level_grades[$result->grade] >= $a_level_grades['E']){
 
                                  $applicant->rank_points += $a_level_grades[$result->grade];
+                                 $subject_count += 1;
                                  if(unserialize($program->entryRequirements[0]->advance_must_subjects) != ''){
                                     if(unserialize($program->entryRequirements[0]->advance_other_must_subjects) != ''){
                                        if(in_array($result->subject_name, unserialize($program->entryRequirements[0]->advance_must_subjects)) || in_array($result->subject_name, unserialize($program->entryRequirements[0]->other_advance_must_subjects))){
@@ -868,6 +872,8 @@ class ApplicationController extends Controller
                               if($o_level_grades[$result->grade] >= $o_level_grades[$program->entryRequirements[0]->pass_grade]){
 
                                  $applicant->rank_points += $o_level_grades[$result->grade];
+                                 $subject_count += 1;
+
                                  if(unserialize($program->entryRequirements[0]->must_subjects) != ''){
                                     if(unserialize($program->entryRequirements[0]->other_must_subjects) != ''){
                                        if(in_array($result->subject_name, unserialize($program->entryRequirements[0]->must_subjects)) || in_array($result->subject_name, unserialize($program->entryRequirements[0]->other_must_subjects))){
@@ -893,6 +899,7 @@ class ApplicationController extends Controller
                               if($a_level_grades[$result->grade] >= $a_level_grades['E']){
 
                                  $applicant->rank_points += $a_level_grades[$result->grade];
+                                 $subject_count += 1;
                                  if(unserialize($program->entryRequirements[0]->advance_must_subjects) != ''){
                                     if(unserialize($program->entryRequirements[0]->other_advance_must_subjects) != ''){
                                        if(in_array($result->subject_name, unserialize($program->entryRequirements[0]->advance_must_subjects)) || in_array($result->subject_name, unserialize($program->entryRequirements[0]->other_advance_must_subjects))){
@@ -958,6 +965,7 @@ class ApplicationController extends Controller
                 }
               }
            }
+           $applicant->rank_points = $applicant->rank_points / $subject_count;
            $applicant->save();
         }
 
