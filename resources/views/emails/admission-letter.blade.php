@@ -21,7 +21,7 @@
                    <td style="padding: 10px 20px; min-height: 400px; width: 100%; color: #000;">
                      <h3 style="font-size: 20px; text-align: center;">{{ $heading }}</h3>
                      <p style="font-size: 18px;">Hi, {!! $name !!}</p>
-                     <p style="font-size: 18px;">{!! $message !!}</p><br>
+                     <!-- <p style="font-size: 18px;">{!! $message !!}</p><br> -->
                      <!-- <p style="margin-top: 18px; font-size: 18px; font-weight: bold;"><a href="{{ URL::to('users/activate/'.$activation_code) }}" target="_blank" style="padding: 10px; color: #FFF; background-color: #006E8C; border: 1px solid #CCC; text-decoration: none; font-family: arial;">Activate Account</a></p>
                      <p style="font-weight: bold; font-size: 18px; margin-top:30px;">{{ Config::get('constants.SITE_NAME') }} team.</p> -->
                    </td>
