@@ -359,9 +359,6 @@ class ApplicantController extends Controller
      */
     public function submission(Request $request)
     {
-        if(!ApplicationWindow::where('campus_id',session('applicant_campus_id'))->where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->first()){
-             return redirect()->to('application/submission')->with('error','Application window already closed');
-        }
         $data = [
             'applicant'=>User::find(Auth::user()->id)->applicants()->where('campus_id',session('applicant_campus_id'))->first(),
             'campus'=>Campus::find(session('applicant_campus_id')),
