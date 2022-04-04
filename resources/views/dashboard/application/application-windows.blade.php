@@ -44,7 +44,7 @@
             <!-- general form elements -->
             <div class="card card-default">
               <div class="card-header">
-                <h3 class="card-title">{{ __('Add Admission Window') }}</h3>
+                <h3 class="card-title">{{ __('Add Application Window') }}</h3>
               </div>
               <!-- /.card-header -->
               <!-- form start -->
