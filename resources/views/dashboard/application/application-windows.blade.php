@@ -73,7 +73,7 @@
                 <div class="card-body">
                   
                   <div class="row">
-                  <div class="form-group col-2">
+                  <div class="form-group col-3">
                     {!! Form::label('','Intake') !!}
                     <select name="intake_id" class="form-control" required>
                       <option>Select Intake</option>
@@ -89,16 +89,10 @@
                   <div class="form-group col-3">
                     {!! Form::label('','End date') !!}
                     {!! Form::text('end_date',null,$end_date) !!}
+
+                    {!! Form::input('hidden','status','INACTIVE') !!}
                   </div>
-                  <div class="form-group col-2">
-                    {!! Form::label('','Status') !!}
-                    <select name="status" class="form-control" required>
-                      <option value="">Select Status</option>
-                      <option value="ACTIVE">Active</option>
-                      <option value="INACTIVE">Inctive</option>
-                    </select>
-                  </div>
-                  <div class="form-group col-2">
+                  <div class="form-group col-3">
                     @if(Auth::user()->hasRole('administrator'))
                     {!! Form::label('','Campus') !!}
                     <select name="campus_id" class="form-control" required>
@@ -211,7 +205,7 @@
                                 {!! Form::open(['url'=>'application/application-window/update','class'=>'ss-form-processing']) !!}
 
                                     <div class="row">
-                                      <div class="form-group col-2">
+                                      <div class="form-group col-3">
                                         {!! Form::label('','Intake') !!}
                                         <select name="intake_id" class="form-control" required>
                                           <option>Select Intake</option>
@@ -231,16 +225,9 @@
                                         {!! Form::input('hidden','study_academic_year_id',$window->study_academic_year_id) !!}
 
                                         {!! Form::input('hidden','application_window_id',$window->id) !!}
+                                        {!! Form::input('hidden','status',$window->status) !!}
                                       </div>
-                                      <div class="form-group col-2">
-                                        {!! Form::label('','Status') !!}
-                                        <select name="status" class="form-control" required>
-                                          <option value="">Select Status</option>
-                                          <option value="ACTIVE" @if($window->status == 'ACTIVE') selected="selected" @endif>Active</option>
-                                          <option value="INACTIVE" @if($window->status == 'INACTIVE') selected="selected" @endif>Inctive</option>
-                                        </select>
-                                      </div>
-                                      <div class="form-group col-2">
+                                      <div class="form-group col-3">
 
                                         {!! Form::label('','Campus') !!}
                                         @if(Auth::user()->hasRole('administrator'))
