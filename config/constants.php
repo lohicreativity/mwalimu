@@ -12,6 +12,12 @@ return [
    'SITE_URL'=>'https://mnma.ac.tz',
 
    'SITE_BASE_URL'=>'https://mnma.ac.tz',
+
+   'ADMISSION_EMAIL'=>'admission@mnma.ac.tz',
+
+   'PHONE_LINE_ONE'=>'+255 (22) 2152496',
+
+   'ADDRESS'=>'P. O. Box 9193 Dar Es Salaam'
    
    'VERSION'=>1.2,
 

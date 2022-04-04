@@ -38,9 +38,7 @@ class AdmissionLetterCreated extends Mailable
      */
     public function build()
     {
-        // $file_name = 'Admission-Letter.pdf';
         $this->pdf->save(public_path().'/uploads/Admission-Letter-'.$this->applicant->first_name.'-'.$this->applicant->surname.'.pdf');
-        // file_put_contents($file_name, $this->pdf->output());
         $file_name = public_path().'/uploads/Admission-Letter-'.$this->applicant->first_name.'-'.$this->applicant->surname.'.pdf';
         $attachments = AdmissionAttachment::all();
         foreach ($attachments as $attachment) {
@@ -51,7 +49,7 @@ class AdmissionLetterCreated extends Mailable
                     ->with([
                        'heading'=>'Admission Letter',
                        'name'=>$this->applicant->first_name.' '.$this->applicant->surname,
-                       'message'=>'We are pleased to inform you that you have been admitted to Mwalimu Nyerere Memorial Academy for academic year '.$this->study_academic_year->academicYear->year,
+                       'notification_message'=>'We are pleased to inform you that you have been admitted to Mwalimu Nyerere Memorial Academy for academic year '.$this->study_academic_year->academicYear->year,
                        'program_name'=>$this->applicant->selections[0]->campusProgram->program->name,
                        'study_year'=>$this->study_academic_year->academicYear->year
                     ])->attach($file_name);

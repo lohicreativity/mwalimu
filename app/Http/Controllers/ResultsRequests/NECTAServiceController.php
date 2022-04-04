@@ -44,7 +44,7 @@ class NECTAServiceController extends Controller
                 $detail->middle_name = json_decode($response)->particulars->middle_name;
                 $detail->last_name = json_decode($response)->particulars->last_name;
                 $detail->sex = json_decode($response)->particulars->sex;
-                $detail->index_number = json_decode($response)->particulars->index_number;
+                $detail->index_number = str_replace('-','/',$index_number); //json_decode($response)->particulars->index_number;
                 $detail->division = json_decode($response)->results->division->division;
                 $detail->points = json_decode($response)->results->division->points;
                 $detail->exam_id = $exam_id;
