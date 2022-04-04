@@ -100,7 +100,7 @@
                   </div>
                   <div class="form-group col-2">
                     {!! Form::label('','Campus') !!}
-                    <select name="status" class="form-control" required>
+                    <select name="campus_id" class="form-control" required>
                       <option value="">Select Campus</option>
                       @foreach($campuses as $campus)
                       <option value="{{ $campus->id }}">{{ $campus->name }}</option>
@@ -218,7 +218,7 @@
                                       </div>
                                       <div class="form-group col-2">
                                         {!! Form::label('','Campus') !!}
-                                        <select name="status" class="form-control" required>
+                                        <select name="campus_id" class="form-control" required>
                                           <option value="">Select Campus</option>
                                           @foreach($campuses as $campus)
                                           <option value="{{ $campus->id }}" @if($window->campus_id == $campus->id) selected="selected" @endif>{{ $campus->name }}</option>

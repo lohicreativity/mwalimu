@@ -365,7 +365,7 @@
                 </tr>
                 <tr>
                   <td>{{ $detail->avn }}</td>
-                  <td>{{ $detail->gpa }}</td>
+                  <td>{{ $detail->diploma_gpa }}</td>
                 </tr>
                 @endforeach
               </table>
