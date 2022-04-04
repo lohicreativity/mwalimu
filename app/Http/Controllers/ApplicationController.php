@@ -278,6 +278,8 @@ class ApplicationController extends Controller
 
             return dd($array);
               }
+
+              
             }
 
           }
@@ -1216,7 +1218,7 @@ class ApplicationController extends Controller
         },'selections.campusProgram.program','applicationWindow'])->where('program_level_id',$request->get('program_level_id'))->get();
 
         foreach($applicants as $applicant){
-           try{
+           // try{
                $data = [
                  'applicant'=>$applicant,
                ];
@@ -1231,14 +1233,11 @@ class ApplicationController extends Controller
                    return redirect()->back()->with('error','Admission study academic year not created');
                }
                $user = new User;
-               $user->email = $applicant->email;
+               $user->email = 'amanighachocha@gmail.com'; //$applicant->email;
                $user->username = $applicant->first_name.' '.$applicant->surname;
                Mail::to($user)->send(new AdmissionLetterCreated($applicant,$study_academic_year, $pdf));
-           }catch(\Exception $e){}
+           // }catch(\Exception $e){}
         }
-
-        return $pdf->stream();
-
          return view('dashboard.application.reports.admission-letter');
     }
 }

@@ -47,8 +47,8 @@ class AdmissionLetterCreated extends Mailable
                        'heading'=>'Admission Letter',
                        'name'=>$this->applicant->first_name.' '.$this->applicant->surname,
                        'message'=>'We are pleased to inform you that you have been admitted to Mwalimu Nyerere Memorial Academy for academic year '.$this->study_academic_year->academicYear->year,
-                       'program_name'=>$this->applicant->selections[0]->campusProgram->campus_name,
+                       'program_name'=>$this->applicant->selections[0]->campusProgram->program->name,
                        'study_year'=>$this->study_academic_year->academicYear->year
-                    ])->attach($file_name);
+                    ]);
     }
 }

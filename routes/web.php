@@ -20,7 +20,24 @@ use App\Http\Controllers\GePG\GePGResponseController;
 */
 
 Route::get('test',function(){
-    return unserialize('N;');
+	$applicant = App\Domain\Application\Models\Applicant::has('applicationWindow')->with('applicationWindow')->first();
+	$data = [
+     'applicant'=>$applicant,
+   ];
+   $pdf = PDF::loadView('dashboard.application.reports.admission-letter',$data);
+   
+   $ac_year = date('Y',strtotime($applicant->applicationWindow->end_date));
+   $ac_year += 1;
+   $study_academic_year = StudyAcademicYear::whereHas('academicYear',function($query) use($ac_year){
+          $query->where('year','LIKE','%'.$ac_year.'%');
+    })->first();
+   if(!$study_academic_year){
+       return redirect()->back()->with('error','Admission study academic year not created');
+   }
+   $user = new User;
+   $user->email = 'amanighachocha@gmail.com'; //$applicant->email;
+   $user->username = $applicant->first_name.' '.$applicant->surname;
+    Mail::to()->send(new App\Mail\AdminssionLetterCreated($applicant,$study_academic_year,));
 });
 
 Route::view('/', 'auth.login');
