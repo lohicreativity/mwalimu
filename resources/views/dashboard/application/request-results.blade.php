@@ -166,6 +166,10 @@
                       <div class="row">
                         <div class="col-12">
                             <div id="ss-results-container"></div>
+                            </div>
+                          </div>
+                            <div class="row">
+                              <div class="col-6">
                             <div id="ss-confirmation-container">
                                {!! Form::open(['url'=>'application/necta-result/decline','class'=>'ss-form-processing']) !!}
                                
@@ -179,6 +183,9 @@
                                 >Decline Results</button>        
                                </div><!-- end of ss-form-controls -->
                                {!! Form::close() !!}
+
+                             </div>
+                             <div class="col-6">
 
                                {!! Form::open(['url'=>'application/necta-result/confirm','class'=>'ss-form-processing']) !!}
                                
@@ -267,6 +274,10 @@
                       <div class="row">
                         <div class="col-12">
                             <div id="ss-nacte-results-container"></div>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-6">
                             <div id="ss-nacte-confirmation-container">
                                {!! Form::open(['url'=>'application/nacte-result/decline','class'=>'ss-form-processing']) !!}
                                
@@ -278,6 +289,9 @@
                             
                                </div><!-- end of ss-form-controls -->
                                {!! Form::close() !!}
+
+                              </div>
+                              <div class="col-6">
 
                                {!! Form::open(['url'=>'application/nacte-result/confirm','class'=>'ss-form-processing']) !!}
                                
