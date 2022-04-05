@@ -1289,39 +1289,39 @@ class ApplicationController extends Controller
 
                $program_fee = ProgramFee::where('study_academic_year_id',$study_academic_year->id)->where('campus_program_id',$applicant->selections[0]->campusProgram->id)->first();
 
-               $medical_insurance_fee = FeeAmount::where('study_academic_year',$study_academic_year->id)->whereHas('feeItem',function($query){
+               $medical_insurance_fee = FeeAmount::where('study_academic_year_id',$study_academic_year->id)->whereHas('feeItem',function($query){
                    $query->where('name','LIKE','%Medical Insurance%');
                })->first();
 
-               $nacte_quality_assurance_fee = FeeAmount::where('study_academic_year',$study_academic_year->id)->whereHas('feeItem',function($query){
-                   $query->where('name','LIKE','%NACTE Quality Assurance%');
+               $nacte_quality_assurance_fee = FeeAmount::where('study_academic_year_id',$study_academic_year->id)->whereHas('feeItem',function($query){
+                   $query->where('name','LIKE','%NACTE%');
                })->first();
 
-               $practical_training_fee = FeeAmount::where('study_academic_year',$study_academic_year->id)->whereHas('feeItem',function($query){
+               $practical_training_fee = FeeAmount::where('study_academic_year_id',$study_academic_year->id)->whereHas('feeItem',function($query){
                    $query->where('name','LIKE','%Practical Training%');
                })->first();
 
-               $students_union_fee = FeeAmount::where('study_academic_year',$study_academic_year->id)->whereHas('feeItem',function($query){
+               $students_union_fee = FeeAmount::where('study_academic_year_id',$study_academic_year->id)->whereHas('feeItem',function($query){
                    $query->where('name','LIKE','%Students Union%');
                })->first();
 
-               $caution_money_fee = FeeAmount::where('study_academic_year',$study_academic_year->id)->whereHas('feeItem',function($query){
+               $caution_money_fee = FeeAmount::where('study_academic_year_id',$study_academic_year->id)->whereHas('feeItem',function($query){
                    $query->where('name','LIKE','%Caution Money%');
                })->first();
 
-               $medical_examination_fee = FeeAmount::where('study_academic_year',$study_academic_year->id)->whereHas('feeItem',function($query){
+               $medical_examination_fee = FeeAmount::where('study_academic_year_id',$study_academic_year->id)->whereHas('feeItem',function($query){
                    $query->where('name','LIKE','%Medical Examination%');
                })->first();
 
-               $registration_fee = FeeAmount::where('study_academic_year',$study_academic_year->id)->whereHas('feeItem',function($query){
+               $registration_fee = FeeAmount::where('study_academic_year_id',$study_academic_year->id)->whereHas('feeItem',function($query){
                    $query->where('name','LIKE','%Registration%');
                })->first();
 
-               $identity_card_fee = FeeAmount::where('study_academic_year',$study_academic_year->id)->whereHas('feeItem',function($query){
+               $identity_card_fee = FeeAmount::where('study_academic_year_id',$study_academic_year->id)->whereHas('feeItem',function($query){
                    $query->where('name','LIKE','%Identity Card%');
                })->first();
 
-               $late_registration_fee = FeeAmount::where('study_academic_year',$study_academic_year->id)->whereHas('feeItem',function($query){
+               $late_registration_fee = FeeAmount::where('study_academic_year_id',$study_academic_year->id)->whereHas('feeItem',function($query){
                    $query->where('name','LIKE','%Late Registration%');
                })->first();
 
