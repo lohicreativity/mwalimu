@@ -1372,4 +1372,16 @@ class ApplicationController extends Controller
 
         return redirect()->back()->with('message','Password reset successfully');
     }
+
+    /**
+     * Reset applicant's password
+     */
+    public function resetApplicantPasswordDefault(Request $request)
+    {
+        $user = User::find($request->get('user_id'));
+        $user->password = Hash::make('password');
+        $user->save();
+
+        return redirect()->back()->with('message','Password reset successfully');
+    }
 }

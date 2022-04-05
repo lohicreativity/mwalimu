@@ -103,7 +103,7 @@
                        <td>{{ $applicant->address }}</td>
                      </tr>
                      <tr>
-                       <td><a href="#" class="btn btn-primary" data-toggle="modal" data-target="#ss-reset-password">Reset Password</a> </td>
+                       <td><a href="{{ url('application/reset-applicant-password-default?user_id='.$applicant->user_id) }}" class="btn btn-primary">Reset Password</a> </td>
                        <td></td>
                      </tr>
                    </table>
