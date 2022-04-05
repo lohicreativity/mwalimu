@@ -58,7 +58,7 @@ class ApplicationController extends Controller
            $applicants = Applicant::where('application_window_id',$request->get('application_window_id'))->with(['nextOfKin','intake'])->where('gender',$request->get('gender'))->paginate(20);
         }elseif($request->get('nta_level_id') != null){
            $applicants = Applicant::where('application_window_id',$request->get('application_window_id'))->whereHas('selections.campusProgram.program',function($query) use($request){
-                 $query->where('nta_level_id',$request->get('campus_program_id'));
+                 $query->where('nta_level_id',$request->get('nta_level_id'));
             })->with(['nextOfKin','intake'])->paginate(20);
         }elseif($request->get('campus_program_id') != null){
            $applicants = Applicant::where('application_window_id',$request->get('application_window_id'))->whereHas('selections',function($query) use($request){
@@ -68,23 +68,13 @@ class ApplicationController extends Controller
            $applicants = Applicant::where('application_window_id',$request->get('application_window_id'))->with(['nextOfKin','intake'])->paginate(20);
         }
 
-        if($request->get('status') == 'progress' && $request->get('duration') == 'today'){
-           $applicants = Applicant::where('documents_complete_status',0)->where('submission_complete_status',0)->where('application_window_id',$request->get('application_window_id'))->where('campus_id',$application_window->campus_id)->whereDate('created_at','=',now()->format('Y-m-d'))->paginate(20);
-        }elseif($request->get('status') == 'completed' && $request->get('duration') == 'today'){
-           $applicants = Applicant::where('documents_complete_status',1)->where('submission_complete_status',0)->where('application_window_id',$request->get('application_window_id'))->where('campus_id',$application_window->campus_id)->whereDate('created_at','=',now()->format('Y-m-d'))->paginate(20);
-        }elseif($request->get('status') == 'submitted' && $request->get('duration') == 'today'){
-           $applicants = Applicant::where('documents_complete_status',1)->where('submission_complete_status',1)->where('application_window_id',$request->get('application_window_id'))->where('campus_id',$application_window->campus_id)->whereDate('created_at','=',now()->format('Y-m-d'))->paginate(20);
-        }elseif($request->get('status') == 'total' && $request->get('duration') == 'today'){
-            $applicants = Applicant::where('application_window_id',$request->get('application_window_id'))->where('campus_id',$application_window->campus_id)->whereDate('created_at','=',now()->format('Y-m-d'))->paginate(20);
-        }
-
-        if($request->get('status') == 'progress' && $request->get('duration') == 'all'){
+        if($request->get('status') == 'progress'){
            $applicants = Applicant::where('documents_complete_status',0)->where('submission_complete_status',0)->where('application_window_id',$request->get('application_window_id'))->where('campus_id',$application_window->campus_id)->paginate(20);
-        }elseif($request->get('status') == 'completed' && $request->get('duration') == 'all'){
+        }elseif($request->get('status') == 'completed'){
            $applicants = Applicant::where('documents_complete_status',1)->where('submission_complete_status',0)->where('application_window_id',$request->get('application_window_id'))->where('campus_id',$application_window->campus_id)->paginate(20);
-        }elseif($request->get('status') == 'submitted' && $request->get('duration') == 'all'){
+        }elseif($request->get('status') == 'submitted'){
            $applicants = Applicant::where('documents_complete_status',1)->where('submission_complete_status',1)->where('application_window_id',$request->get('application_window_id'))->where('campus_id',$application_window->campus_id)->paginate(20);
-        }elseif($request->get('status') == 'total' && $request->get('duration') == 'all'){
+        }elseif($request->get('status') == 'total'){
             $applicants = Applicant::where('application_window_id',$request->get('application_window_id'))->where('campus_id',$application_window->campus_id)->paginate(20);
         }
 
@@ -1382,6 +1372,6 @@ class ApplicationController extends Controller
         $user->password = Hash::make('password');
         $user->save();
 
-        return redirect()->back()->with('message','Password reset successfully');
+        return redirect()->to('application/application-dashboard')->with('message','Password reset successfully');
     }
 }

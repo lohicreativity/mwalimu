@@ -171,7 +171,7 @@
               <li class="nav-item">
                 <a href="{{ url('application/search-for-applicant') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Applicant Search</p>
+                  <p>Password Reset</p>
                 </a>
               </li>
             </ul>

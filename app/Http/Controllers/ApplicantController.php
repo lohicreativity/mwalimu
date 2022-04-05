@@ -473,7 +473,7 @@ class ApplicantController extends Controller
            $applicants = Applicant::where('application_window_id',$request->get('application_window_id'))->with(['nextOfKin','intake'])->where('gender',$request->get('gender'))->get();
         }elseif($request->get('nta_level_id') != null){
            $applicants = Applicant::where('application_window_id',$request->get('application_window_id'))->whereHas('selections.campusProgram.program',function($query) use($request){
-                 $query->where('nta_level_id',$request->get('campus_program_id'));
+                 $query->where('nta_level_id',$request->get('nta_level_id'));
             })->with(['nextOfKin','intake'])->get();
         }elseif($request->get('campus_program_id') != null){
            $applicants = Applicant::where('application_window_id',$request->get('application_window_id'))->whereHas('selections',function($query) use($request){
@@ -483,23 +483,13 @@ class ApplicantController extends Controller
            $applicants = Applicant::where('application_window_id',$request->get('application_window_id'))->with(['nextOfKin','intake'])->get();
         }
 
-        if($request->get('status') == 'progress' && $request->get('duration') == 'today'){
-           $applicants = Applicant::where('documents_complete_status',0)->where('submission_complete_status',0)->where('application_window_id',$request->get('application_window_id'))->where('campus_id',$application_window->campus_id)->whereDate('created_at','=',now()->format('Y-m-d'))->get();
-        }elseif($request->get('status') == 'completed' && $request->get('duration') == 'today'){
-           $applicants = Applicant::where('documents_complete_status',1)->where('submission_complete_status',0)->where('application_window_id',$request->get('application_window_id'))->where('campus_id',$application_window->campus_id)->whereDate('created_at','=',now()->format('Y-m-d'))->get();
-        }elseif($request->get('status') == 'submitted' && $request->get('duration') == 'today'){
-           $applicants = Applicant::where('documents_complete_status',1)->where('submission_complete_status',1)->where('application_window_id',$request->get('application_window_id'))->where('campus_id',$application_window->campus_id)->whereDate('created_at','=',now()->format('Y-m-d'))->get();
-        }elseif($request->get('status') == 'total' && $request->get('duration') == 'today'){
-            $applicants = Applicant::where('application_window_id',$request->get('application_window_id'))->where('campus_id',$application_window->campus_id)->whereDate('created_at','=',now()->format('Y-m-d'))->get();
-        }
-
-        if($request->get('status') == 'progress' && $request->get('duration') == 'all'){
+        if($request->get('status') == 'progress'){
            $applicants = Applicant::where('documents_complete_status',0)->where('submission_complete_status',0)->where('application_window_id',$request->get('application_window_id'))->where('campus_id',$application_window->campus_id)->get();
-        }elseif($request->get('status') == 'completed' && $request->get('duration') == 'all'){
+        }elseif($request->get('status') == 'completed'){
            $applicants = Applicant::where('documents_complete_status',1)->where('submission_complete_status',0)->where('application_window_id',$request->get('application_window_id'))->where('campus_id',$application_window->campus_id)->get();
-        }elseif($request->get('status') == 'submitted' && $request->get('duration') == 'all'){
+        }elseif($request->get('status') == 'submitted'){
            $applicants = Applicant::where('documents_complete_status',1)->where('submission_complete_status',1)->where('application_window_id',$request->get('application_window_id'))->where('campus_id',$application_window->campus_id)->get();
-        }elseif($request->get('status') == 'total' && $request->get('duration') == 'all'){
+        }elseif($request->get('status') == 'total'){
             $applicants = Applicant::where('application_window_id',$request->get('application_window_id'))->where('campus_id',$application_window->campus_id)->get();
         }
 
