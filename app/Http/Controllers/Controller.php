@@ -27,7 +27,7 @@ class Controller extends BaseController
             $this->user = Auth::user();
             $study_academic_year = StudyAcademicYear::where('status','ACTIVE')->first();
 	    	$semester = Semester::where('status','ACTIVE')->first();
-	    	$application_window = ApplicationWindow::where('status','ACTIVE')->first();
+	    	
 	    	
 	    	if($this->user){
 	    	  $staff = User::find($this->user->id)->staff;
@@ -49,6 +49,7 @@ class Controller extends BaseController
 	        }else{
 	          session(['active_semester_id'=>null]);
 	        }
+	        $application_window = ApplicationWindow::where('status','ACTIVE')->where('campus_id',$staff->campus_id)->first();
 	        if($application_window){
 	          session(['active_window_id'=>$application_window->id]);
 	        }else{

@@ -57,15 +57,6 @@
                         @endforeach
                      </select>
                    </div>
-                   <div class="form-group col-6">
-                    {!! Form::label('','Campus') !!}
-                    <select name="campus_id" class="form-control" required>
-                      <option value="">Select Campus</option>
-                      @foreach($campuses as $campus)
-                      <option value="{{ $campus->id }}" @if($request->get('campus_id') == $campus->id) selected="selected" @endif>{{ $campus->name }}</option>
-                      @endforeach
-                    </select>
-                  </div>
                  </div>
                    <div class="ss-form-actions">
                     <button type="submit" class="btn btn-primary">{{ __('Search') }}</button>
