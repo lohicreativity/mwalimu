@@ -1274,7 +1274,9 @@ class ApplicationController extends Controller
              $query->where('status','SELECTED');
         })->with(['nextOfKin','intake','selections'=>function($query){
              $query->where('status','SELECTED');
-        },'selections.campusProgram.program','applicationWindow'])->where('program_level_id',$request->get('program_level_id'))->get();
+        },'selections.campusProgram.program','applicationWindow','country'])->where('program_level_id',$request->get('program_level_id'))->get();
+
+        return $applicants;
 
         foreach($applicants as $applicant){
            // try{
