@@ -157,6 +157,12 @@
                 </a>
               </li>
               <li class="nav-item">
+                <a href="{{ url('application/application-dashboard?campus_id='.session('staff_campus_id')) }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>{{ __('Application Dashboard') }}</p>
+                </a>
+              </li>
+              <li class="nav-item">
                 <a href="{{ url('application/applicants/list') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Applicants List</p>

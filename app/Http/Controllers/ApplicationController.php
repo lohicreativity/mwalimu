@@ -1282,4 +1282,29 @@ class ApplicationController extends Controller
            // }catch(\Exception $e){}
         }
     }
+
+
+    /**
+     * Show dashboard
+     */
+    public function showDashboard(Request $request)
+    {
+         $staff = User::find(Auth::user()->id)->staff;
+         if(!Auth::user()->hasRole('adminstrator')){
+           $application_window = ApplicationWindow::where('status','ACTIVE')->where('campus_id',$staff->campus_id)->first();
+         }else{
+           $application_window = null;
+         }
+         $data = [
+            'application_windows'=>ApplicationWindow::with(['campus','intake'])->get(),
+            'campuses'=>Campus::all(),
+            'progress_applications'=>$application_window? Applicant::where('documents_complete_status',0)->where('submission_complete_status',0)->where('application_window_id',$application_window->id)->where('campus_id',$staff->campus_id)->count() : Applicant::where('documents_complete_status',0)->where('submission_complete_status',0)->where('application_window_id',$request->get('application_window_id'))->where('campus_id',$request->get('campus_id'))->count(),
+            'completed_applications'=>$application_window? Applicant::where('documents_complete_status',1)->where('submission_complete_status',0)->where('application_window_id',$application_window->id)->where('campus_id',$staff->campus_id)->count() : Applicant::where('documents_complete_status',1)->where('submission_complete_status',0)->where('application_window_id',$request->get('application_window_id'))->where('campus_id',$request->get('campus_id'))->count(),
+            'submitted_applications'=>$application_window? Applicant::where('submission_complete_status',1)->where('application_window_id',$application_window->id)->where('campus_id',$staff->campus_id)->count() : Applicant::where('submission_complete_status',1)->where('application_window_id',$request->get('application_window_id'))->where('campus_id',$request->get('campus_id'))->count(),
+            'total_applications'=>$application_window? Applicant::where('application_window_id',$application_window->id)->where('campus_id',$staff->campus_id)->count() : Applicant::where('application_window_id',$request->get('application_window_id'))->where('campus_id',$request->get('campus_id'))->count(),
+            'staff'=>$staff,
+            'request'=>$request
+         ];
+         return view('dashboard.application.application-dashboard',$data)->withTitle('Application Dashboard');
+    }
 }

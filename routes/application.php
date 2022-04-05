@@ -69,6 +69,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 	Route::post('entry-requirement/update', [EntryRequirementController::class,'update']);
 	Route::get('entry-requirement/{id}/destroy', [EntryRequirementController::class,'destroy']);
 
+	Route::get('application-dashboard',[ApplicationController::class, 'showDashboard']);
+
 
 	Route::get('applicants/list',[ApplicationController::class,'showApplicantsList']);
     Route::get('fetch-necta-results/{index_number}/{exam_id}',[NECTAServiceController::class,'getResults']);
