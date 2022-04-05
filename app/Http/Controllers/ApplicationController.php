@@ -1279,23 +1279,73 @@ class ApplicationController extends Controller
                $ac_year = date('Y',strtotime($applicant->applicationWindow->end_date));
                $ac_year += 1;
                $study_academic_year = StudyAcademicYear::whereHas('academicYear',function($query) use($ac_year){
-                      $query->where('year','LIKE','%'.$ac_year.'%');
+                      $query->where('year','LIKE','%/'.$ac_year.'%');
                 })->first();
                if(!$study_academic_year){
                    return redirect()->back()->with('error','Admission study academic year not created');
                }
 
+               $program_fee = ProgramFee::where('study_academic_year_id',$study_academic_year->id)->where('campus_program_id',$applicant->selections[0]->campusProgram->id)->first();
+
+               $medical_insurance_fee = FeeAmount::where('study_academic_year',$study_academic_year->id)->whereHas('feeItem',function($query){
+                   $query->where('name','LIKE','%Medical Insurance%');
+               })->first();
+
+               $nacte_quality_assurance_fee = FeeAmount::where('study_academic_year',$study_academic_year->id)->whereHas('feeItem',function($query){
+                   $query->where('name','LIKE','%NACTE Quality Assurance%');
+               })->first();
+
+               $practical_training_fee = FeeAmount::where('study_academic_year',$study_academic_year->id)->whereHas('feeItem',function($query){
+                   $query->where('name','LIKE','%Practical Training%');
+               })->first();
+
+               $students_union_fee = FeeAmount::where('study_academic_year',$study_academic_year->id)->whereHas('feeItem',function($query){
+                   $query->where('name','LIKE','%Students Union%');
+               })->first();
+
+               $caution_money_fee = FeeAmount::where('study_academic_year',$study_academic_year->id)->whereHas('feeItem',function($query){
+                   $query->where('name','LIKE','%Caution Money%');
+               })->first();
+
+               $medical_examination_fee = FeeAmount::where('study_academic_year',$study_academic_year->id)->whereHas('feeItem',function($query){
+                   $query->where('name','LIKE','%Medical Examination%');
+               })->first();
+
+               $registration_fee = FeeAmount::where('study_academic_year',$study_academic_year->id)->whereHas('feeItem',function($query){
+                   $query->where('name','LIKE','%Registration%');
+               })->first();
+
+               $identity_card_fee = FeeAmount::where('study_academic_year',$study_academic_year->id)->whereHas('feeItem',function($query){
+                   $query->where('name','LIKE','%Identity Card%');
+               })->first();
+
+               $late_registration_fee = FeeAmount::where('study_academic_year',$study_academic_year->id)->whereHas('feeItem',function($query){
+                   $query->where('name','LIKE','%Late Registration%');
+               })->first();
+
                $data = [
                  'applicant'=>$applicant,
                  'program_name'=>$applicant->selections[0]->campusProgram->program->name,
-                 'study_year'=>$study_academic_year->academicYear->year
+                 'study_year'=>$study_academic_year->academicYear->year,
+                 'program_fee'=>$applicant->country->code == 'TZ'? $program_fee->amount_in_tzs : $program_fee->amount_in_usd,
+                 'currency'=>$applicant->country->code == 'TZ'? 'Tsh' : 'Usd',
+                 'medical_insurance_fee'=>$applicant->country->code == 'TZ'? $medical_insurance_fee->amount_in_tzs : $medical_insurance_fee->amount_in_usd,   
+                 'medical_examination_fee'=>$applicant->country->code == 'TZ'? $medical_examination_fee->amount_in_tzs : $medical_examination_fee->amount_in_usd,    
+                 'registration_fee'=>$applicant->country->code == 'TZ'? $registration_fee->amount_in_tzs : $registration_fee->amount_in_usd,     
+                 'late_registration_fee'=>$applicant->country->code == 'TZ'? $late_registration_fee->amount_in_tzs : $late_registration_fee->amount_in_usd,    
+                 'practical_training_fee'=>$applicant->country->code == 'TZ'? $practical_training_fee->amount_in_tzs : $practical_training_fee->amount_in_usd,
+                 'identity_card_fee'=>$applicant->country->code == 'TZ'? $identity_card_fee->amount_in_tzs : $identity_card_fee->amount_in_usd,
+                 'caution_money_fee'=>$applicant->country->code == 'TZ'? $caution_money_fee->amount_in_tzs : $caution_money_fee->amount_in_usd,
+                 'nacte_quality_assurance_fee'=>$applicant->country->code == 'TZ'? $nacte_quality_assurance_fee->amount_in_tzs : $nacte_quality_assurance_fee->amount_in_usd,
+                 'students_union_fee'=>$applicant->country->code == 'TZ'? $students_union_fee->amount_in_tzs : $students_union_fee->amount_in_usd,
                ];
                $pdf = PDF::loadView('dashboard.application.reports.admission-letter',$data);
-               return $pdf->stream();
-               $user = new User;
-               $user->email = 'amanighachocha@gmail.com'; //$applicant->email;
-               $user->username = $applicant->first_name.' '.$applicant->surname;
-               Mail::to($user)->send(new AdmissionLetterCreated($applicant,$study_academic_year, $pdf));
+               // return $pdf->stream();
+               return view('dashboard.application.reports.admission-letter',$data);
+               // $user = new User;
+               // $user->email = 'amanighachocha@gmail.com'; //$applicant->email;
+               // $user->username = $applicant->first_name.' '.$applicant->surname;
+               // Mail::to($user)->send(new AdmissionLetterCreated($applicant,$study_academic_year, $pdf));
            // }catch(\Exception $e){}
         }
     }

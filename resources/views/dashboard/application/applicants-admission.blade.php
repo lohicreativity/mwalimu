@@ -20,12 +20,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Selected Applicants</h1>
+            <h1 class="m-0">Admit Applicants</h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active"><a href="#">Selected Applicants</a></li>
+              <li class="breadcrumb-item active"><a href="#">Admit Applicants</a></li>
             </ol>
           </div><!-- /.col -->
         </div><!-- /.row -->
@@ -46,7 +46,7 @@
                </div>
                <!-- /.card-header -->
                <div class="card-body">
-                  {!! Form::open(['url'=>'application/applicants-admission','class'=>'ss-form-processing','method'=>'GET']) !!}
+                  {!! Form::open(['url'=>'application/send-admission-letter','class'=>'ss-form-processing']) !!}
                     <div class="row">
                     <div class="form-group col-6">
                       {!! Form::label('','Application Window') !!}
@@ -68,7 +68,7 @@
                   </div>
                  </div>
                    <div class="ss-form-actions">
-                    <button type="submit" class="btn btn-primary">{{ __('Search') }}</button>
+                    <button type="submit" class="btn btn-primary">{{ __('Send Admission Letter') }}</button>
                    </div>
  
                   {!! Form::close() !!}
@@ -76,49 +76,7 @@
              </div>
              <!-- /.card -->
 
-             <div class="card">
-               <div class="card-header">
-                 <h3 class="card-title">Selected Applicants</h3>
-               </div>
-               <!-- /.card-header -->
-               <div class="card-body">
-
-                  <table class="table table-bordered ss-margin-top">
-                    <thead>
-                        <tr>
-                          <th>Name</th>
-                          <th>Gender</th>
-                          <th>Programme</th>
-                          <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                 @foreach($applicants as $applicant)
-                   <tr>
-                      <td>{{ $applicant->first_name }} {{ $applicant->middle_name }} {{ $applicant->surname }}</td>
-                      <td>{{ $applicant->gender }}</td>
-                      <td>@foreach($applicant->selections as $selection)
-                           @if($selection->status == 'SELECTED')
-                           {{ $selection->campusProgram->program->name }}
-                           @endif
-                          @endforeach
-                      </td>
-                      <td>@foreach($applicant->selections as $selection)
-                           @if($selection->status == 'SELECTED')
-                           <span class="badge badge-warning">{{ $selection->status }}</span> <a href="{{ url('application/admit-applicant/'.$applicant->id.'/'.$selection->id) }}" class="btn btn-primary">Admit</a>
-                           @endif
-                          @endforeach
-                      </td>
-                   </tr>
-                 @endforeach
-                   </tbody>
-                  </table>
-
-                  <div class="ss-pagination-links">
-                     {!! $applicants->appends($request->except('page'))->render() !!}
-                  </div>
-               </div>
-            </div>
+            
 
            </div>
           </div>

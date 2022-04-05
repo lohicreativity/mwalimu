@@ -118,5 +118,5 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
     Route::get('download-attachment',[ApplicationController::class,'downloadAttachment']);
     Route::get('delete-attachment',[ApplicationController::class,'deleteAttachment']);
 
-    Route::get('send-admission-letter',[ApplicationController::class,'sendAdmissionLetter']);
+    Route::post('send-admission-letter',[ApplicationController::class,'sendAdmissionLetter']);
 });

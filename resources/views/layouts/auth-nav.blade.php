@@ -254,30 +254,24 @@
               </p>
             </a>
             <ul class="nav nav-treeview">
-              @can('view-fee-types')
               <li class="nav-item">
                 <a href="{{ url('finance/fee-types') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>{{ __('Fee Types') }}</p>
                 </a>
               </li>
-              @endcan
-              @can('view-fee-items')
               <li class="nav-item">
                 <a href="{{ url('finance/fee-items') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>{{ __('Fee Items') }}</p>
                 </a>
               </li>
-              @endcan
-              @can('view-fee-amounts')
               <li class="nav-item">
                 <a href="{{ url('finance/fee-amounts') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>{{ __('Fee Amounts') }}</p>
                 </a>
               </li>
-              @endcan
               <li class="nav-item">
                 <a href="{{ url('finance/program-fees') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
