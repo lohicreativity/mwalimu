@@ -1329,7 +1329,7 @@ class ApplicationController extends Controller
                  'applicant'=>$applicant,
                  'program_name'=>$applicant->selections[0]->campusProgram->program->name,
                  'study_year'=>$study_academic_year->academicYear->year,
-                 'program_fee'=>$applicant->country->code == 'TZ'? $program_fee->amount_in_tzs : $program_fee->amount_in_usd,
+                 'program_fee'=>$applicant->country->code == 'TZ'? 1300000 : 600,
                  'currency'=>$applicant->country->code == 'TZ'? 'Tsh' : 'Usd',
                  'medical_insurance_fee'=>$applicant->country->code == 'TZ'? $medical_insurance_fee->amount_in_tzs : $medical_insurance_fee->amount_in_usd,   
                  'medical_examination_fee'=>$applicant->country->code == 'TZ'? $medical_examination_fee->amount_in_tzs : $medical_examination_fee->amount_in_usd,    
