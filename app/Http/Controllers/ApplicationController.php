@@ -1271,12 +1271,10 @@ class ApplicationController extends Controller
         $applicants = Applicant::whereHas('intake.applicationWindows',function($query) use($request){
              $query->where('id',$request->get('application_window_id'));
         })->whereHas('selections',function($query) use($request){
-             $query->where('status','SELECTED');
+             $query->where('status','APPROVING');
         })->with(['nextOfKin','intake','selections'=>function($query){
-             $query->where('status','SELECTED');
+             $query->where('status','APPROVING');
         },'selections.campusProgram.program','applicationWindow','country'])->where('program_level_id',$request->get('program_level_id'))->get();
-
-        return $applicants;
 
         foreach($applicants as $applicant){
            // try{
