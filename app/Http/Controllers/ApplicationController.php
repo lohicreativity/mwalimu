@@ -1276,6 +1276,8 @@ class ApplicationController extends Controller
              $query->where('status','APPROVING');
         },'selections.campusProgram.program','applicationWindow','country'])->where('program_level_id',$request->get('program_level_id'))->get();
 
+        return $applicants;
+
         foreach($applicants as $applicant){
            // try{
                $ac_year = date('Y',strtotime($applicant->applicationWindow->end_date));
@@ -1287,7 +1289,7 @@ class ApplicationController extends Controller
                    return redirect()->back()->with('error','Admission study academic year not created');
                }
 
-               $program_fee = ProgramFee::where('study_academic_year_id',$study_academic_year->id)->where('campus_program_id',1)->first();
+               $program_fee = ProgramFee::where('study_academic_year_id',$study_academic_year->id)->where('campus_program_id',$applicant->selections[0]->campusProgram->id)->first();
 
                $medical_insurance_fee = FeeAmount::where('study_academic_year_id',$study_academic_year->id)->whereHas('feeItem',function($query){
                    $query->where('name','LIKE','%Medical Insurance%');
