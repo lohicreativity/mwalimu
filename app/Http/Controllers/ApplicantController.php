@@ -82,9 +82,7 @@ class ApplicantController extends Controller
 
         $campus = Campus::find($request->get('campus_id'));
 
-        $applicant = Applicant::whereHas('user',function($query) use ($request){
-              $query->where('username',$request->get('index_number'))->where('password',Hash::make($request->get('password')));
-        })->where('campus_id','0')->first();
+        $applicant = Applicant::where('index_number',$request->get('index_number'))->where('campus_id',0)->first();
         
         if($applicant){
             $window = ApplicationWindow::where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('campus_id',$request->get('campus_id'))->where('status','ACTIVE')->first();

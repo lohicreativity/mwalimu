@@ -640,6 +640,7 @@ class ApplicationController extends Controller
         $applicant->middle_name = $request->get('middle_name');
         $applicant->surname = $request->get('surname');
         $applicant->user_id = $user->id;
+        $applicant->campus_id = 0;
         $applicant->index_number = $request->get('index_number');
         $applicant->entry_mode = $request->get('entry_mode');
         $applicant->program_level_id = $request->get('program_level_id');
