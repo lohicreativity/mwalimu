@@ -70,6 +70,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 	Route::get('entry-requirement/{id}/destroy', [EntryRequirementController::class,'destroy']);
 
 	Route::get('application-dashboard',[ApplicationController::class, 'showDashboard']);
+	Route::get('download-applicants-list',[ApplicantController::class,'downloadApplicantsList']);
 
 
 	Route::get('applicants/list',[ApplicationController::class,'showApplicantsList']);

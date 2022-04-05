@@ -447,4 +447,69 @@ class ApplicantController extends Controller
       $request->session()->regenerateToken();
       return redirect()->to('application/login');
     }
+
+    /**
+     * Download applicants list
+     */
+    public function downloadApplicantsList(Request $request)
+    {
+        $headers = [
+                      'Cache-Control'       => 'must-revalidate, post-check=0, pre-check=0',   
+                      'Content-type'        => 'text/csv',
+                      'Content-Disposition' => 'attachment; filename=Applicants-List.csv',
+                      'Expires'             => '0',
+                      'Pragma'              => 'public'
+              ];
+      if($request->get('department_id') != null){
+           $applicants = Applicant::where('application_window_id',$request->get('application_window_id'))->whereHas('selections.campusProgram.program.departments',function($query) use($request){
+                 $query->where('id',$request->get('department_id'));
+            })->with(['nextOfKin','intake'])->get();
+        }elseif($request->get('duration') == 'today'){
+           $applicants = Applicant::where('application_window_id',$request->get('application_window_id'))->with(['nextOfKin','intake'])->where('created_at','<=',now()->subDays(1))->get();
+        }elseif($request->get('gender') != null){
+           $applicants = Applicant::where('application_window_id',$request->get('application_window_id'))->with(['nextOfKin','intake'])->where('gender',$request->get('gender'))->get();
+        }elseif($request->get('nta_level_id') != null){
+           $applicants = Applicant::where('application_window_id',$request->get('application_window_id'))->whereHas('selections.campusProgram.program',function($query) use($request){
+                 $query->where('nta_level_id',$request->get('campus_program_id'));
+            })->with(['nextOfKin','intake'])->get();
+        }elseif($request->get('campus_program_id') != null){
+           $applicants = Applicant::where('application_window_id',$request->get('application_window_id'))->whereHas('selections',function($query) use($request){
+                 $query->where('campus_program_id',$request->get('campus_program_id'));
+            })->with(['nextOfKin','intake'])->get();
+        }else{
+           $applicants = Applicant::where('application_window_id',$request->get('application_window_id'))->with(['nextOfKin','intake'])->get();
+        }
+
+        if($request->get('status') == 'progress' && $request->get('duration') == 'today'){
+           $applicants = Applicant::where('documents_complete_status',0)->where('submission_complete_status',0)->where('application_window_id',$request->get('application_window_id'))->where('campus_id',$application_window->campus_id)->whereDate('created_at','=',now()->format('Y-m-d'))->get();
+        }elseif($request->get('status') == 'completed' && $request->get('duration') == 'today'){
+           $applicants = Applicant::where('documents_complete_status',1)->where('submission_complete_status',0)->where('application_window_id',$request->get('application_window_id'))->where('campus_id',$application_window->campus_id)->whereDate('created_at','=',now()->format('Y-m-d'))->get();
+        }elseif($request->get('status') == 'submitted' && $request->get('duration') == 'today'){
+           $applicants = Applicant::where('documents_complete_status',1)->where('submission_complete_status',1)->where('application_window_id',$request->get('application_window_id'))->where('campus_id',$application_window->campus_id)->whereDate('created_at','=',now()->format('Y-m-d'))->get();
+        }elseif($request->get('status') == 'total' && $request->get('duration') == 'today'){
+            $applicants = Applicant::where('application_window_id',$request->get('application_window_id'))->where('campus_id',$application_window->campus_id)->whereDate('created_at','=',now()->format('Y-m-d'))->get();
+        }
+
+        if($request->get('status') == 'progress' && $request->get('duration') == 'all'){
+           $applicants = Applicant::where('documents_complete_status',0)->where('submission_complete_status',0)->where('application_window_id',$request->get('application_window_id'))->where('campus_id',$application_window->campus_id)->get();
+        }elseif($request->get('status') == 'completed' && $request->get('duration') == 'all'){
+           $applicants = Applicant::where('documents_complete_status',1)->where('submission_complete_status',0)->where('application_window_id',$request->get('application_window_id'))->where('campus_id',$application_window->campus_id)->get();
+        }elseif($request->get('status') == 'submitted' && $request->get('duration') == 'all'){
+           $applicants = Applicant::where('documents_complete_status',1)->where('submission_complete_status',1)->where('application_window_id',$request->get('application_window_id'))->where('campus_id',$application_window->campus_id)->get();
+        }elseif($request->get('status') == 'total' && $request->get('duration') == 'all'){
+            $applicants = Applicant::where('application_window_id',$request->get('application_window_id'))->where('campus_id',$application_window->campus_id)->get();
+        }
+
+        $callback = function() use ($applicants) 
+              {
+                  $file_handle = fopen('php://output', 'w');
+                  fputcsv($file_handle, ['First Name','Middle Name','Surname','Gender','Index Number','Phone Number']);
+                  foreach ($applicants as $row) { 
+                      fputcsv($file_handle, [$row->first_name,$row->middle_name,$row->surname,$row->gender,$row->index_number,$row->phone]);
+                  }
+                  fclose($file_handle);
+              };
+
+              return response()->stream($callback, 200, $headers);
+    }
 }

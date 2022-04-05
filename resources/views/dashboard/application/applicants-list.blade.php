@@ -69,7 +69,8 @@
             @if($application_window)
              <div class="card">
                <div class="card-header">
-                 <h3 class="card-title">{{ __('Select Application Window') }}</h3>
+                 <h3 class="card-title">{{ __('Select Application Window') }}</h3><br>
+                 <a href="{{ url('application/download-applicants-list?duration='.$request->get('duration').'&status='.$request->get('status').'&department_id='.$request->get('department_id').'&gender='.$request->get('gender').'&nta_level_id='.$request->get('nta_level_id').'&campus_program_id='.$request->get('campus_program_id')) }}" class="btn btn-primary">Download Applicants List</a>
                </div>
                <!-- /.card-header -->
                <div class="card-body">
@@ -134,8 +135,10 @@
                       <td>{{ $applicant->phone }}</td>
                       <td>@if($applicant->submission_complete_status == 1)
                            <span class="badge badge-success">Submitted</span>
+                          @elseif($applicant->documents_complete_status == 1 && $applicant->submission_complete_status == 0)
+                           <span class="badge badge-info">Completed</span>
                           @else
-                           <span class="badge badge-warning">Pending</span>
+                           <span class="badge badge-warning">On Progress</span>
                           @endif
                       </td>
                    </tr>
