@@ -163,12 +163,6 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="{{ url('application/applicants/list') }}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Applicants List</p>
-                </a>
-              </li>
-              <li class="nav-item">
                 <a href="{{ url('application/search-for-applicant') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Password Reset</p>
