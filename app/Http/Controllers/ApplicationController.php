@@ -1332,14 +1332,14 @@ class ApplicationController extends Controller
                  'program_fee'=>$applicant->country->code == 'TZ'? 1300000 : 600,
                  'currency'=>$applicant->country->code == 'TZ'? 'Tsh' : 'Usd',
                  'medical_insurance_fee'=>$applicant->country->code == 'TZ'? 150000 : 80,   
-                 'medical_examination_fee'=>$applicant->country->code == 'TZ'? $medical_examination_fee->amount_in_tzs : $medical_examination_fee->amount_in_usd,    
-                 'registration_fee'=>$applicant->country->code == 'TZ'? $registration_fee->amount_in_tzs : $registration_fee->amount_in_usd,     
-                 'late_registration_fee'=>$applicant->country->code == 'TZ'? $late_registration_fee->amount_in_tzs : $late_registration_fee->amount_in_usd,    
+                 'medical_examination_fee'=>$applicant->country->code == 'TZ'? 150000 : 70,    
+                 'registration_fee'=>$applicant->country->code == 'TZ'? 70000 : 35,     
+                 'late_registration_fee'=>$applicant->country->code == 'TZ'? 5000 : 2,    
                  'practical_training_fee'=>$applicant->country->code == 'TZ'? 80000 : 40,
-                 'identity_card_fee'=>$applicant->country->code == 'TZ'? $identity_card_fee->amount_in_tzs : $identity_card_fee->amount_in_usd,
-                 'caution_money_fee'=>$applicant->country->code == 'TZ'? $caution_money_fee->amount_in_tzs : $caution_money_fee->amount_in_usd,
-                 'nacte_quality_assurance_fee'=>$applicant->country->code == 'TZ'? $nacte_quality_assurance_fee->amount_in_tzs : $nacte_quality_assurance_fee->amount_in_usd,
-                 'students_union_fee'=>$applicant->country->code == 'TZ'? $students_union_fee->amount_in_tzs : $students_union_fee->amount_in_usd,
+                 'identity_card_fee'=>$applicant->country->code == 'TZ'? 160000 : 80,
+                 'caution_money_fee'=>$applicant->country->code == 'TZ'? 90000 : 50,
+                 'nacte_quality_assurance_fee'=>$applicant->country->code == 'TZ'? 100000 : 50,
+                 'students_union_fee'=>$applicant->country->code == 'TZ'? 100000 :50,
                ];
                // $pdf = PDF::loadView('dashboard.application.reports.admission-letter',$data);
                // return $pdf->stream();
