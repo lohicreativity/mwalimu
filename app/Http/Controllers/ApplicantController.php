@@ -460,6 +460,9 @@ class ApplicantController extends Controller
                       'Expires'             => '0',
                       'Pragma'              => 'public'
               ];
+
+      $application_window = ApplicationWindow::find($request->get('application_window_id'));
+      
       if($request->get('department_id') != null){
            $applicants = Applicant::where('application_window_id',$request->get('application_window_id'))->whereHas('selections.campusProgram.program.departments',function($query) use($request){
                  $query->where('id',$request->get('department_id'));
