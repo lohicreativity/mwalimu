@@ -31,6 +31,7 @@ class Controller extends BaseController
 	    	
 	    	if($this->user){
 	    	  $staff = User::find($this->user->id)->staff;
+	    	  $application_window = ApplicationWindow::where('status','ACTIVE')->where('campus_id',$staff->campus_id)->first();
 	    	  if($staff){
 	    	     session(['staff_campus_id'=>$staff->campus_id]);
 	    	  }else{
@@ -49,7 +50,7 @@ class Controller extends BaseController
 	        }else{
 	          session(['active_semester_id'=>null]);
 	        }
-	        $application_window = ApplicationWindow::where('status','ACTIVE')->where('campus_id',$staff->campus_id)->first();
+
 	        if($application_window){
 	          session(['active_window_id'=>$application_window->id]);
 	        }else{

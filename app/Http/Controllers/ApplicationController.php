@@ -77,6 +77,7 @@ class ApplicationController extends Controller
         }elseif($request->get('application') == 'total' && $request->get('duration') == 'today'){
             $applicants = Applicant::where('application_window_id',$request->get('application_window_id'))->where('campus_id',$application_window->campus_id)->whereDate('created_at','=',now()->format('Y-m-d'))->paginate(20);
         }
+
         $data = [
             'staff'=>$staff,
             'application_windows'=>ApplicationWindow::with(['campus','intake'])->get(),
