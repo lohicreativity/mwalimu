@@ -79,7 +79,7 @@ class ApplicationController extends Controller
         }
         $data = [
             'staff'=>$staff,
-            'application_windows'=>ApplicationWindow::all(),
+            'application_windows'=>ApplicationWindow::with(['campus','intake'])->get(),
             'application_window'=>$application_window,
             'nta_levels'=>NTALevel::all(),
             'departments'=>Department::all(),
