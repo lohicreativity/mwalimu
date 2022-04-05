@@ -46,15 +46,6 @@ class ApplicationController extends Controller
     {
         $staff = User::find(Auth::user()->id)->staff;
         $application_window = ApplicationWindow::find($request->get('application_window_id'));
-        if($request->get('application') == 'progress' && $request->get('duration') == 'today'){
-           $applicants = Applicant::where('documents_complete_status',0)->where('submission_complete_status',0)->where('application_window_id',$request->get('application_window_id'))->where('campus_id',$application_window->campus_id)->whereDate('created_at','=',now()->format('Y-m-d'))->paginate(20);
-        }elseif($request->get('application') == 'completed' && $request->get('duration') == 'today'){
-           $applicants = Applicant::where('documents_complete_status',1)->where('submission_complete_status',0)->where('application_window_id',$request->get('application_window_id'))->where('campus_id',$application_window->campus_id)->whereDate('created_at','=',now()->format('Y-m-d'))->paginate(20);
-        }elseif($request->get('application') == 'submitted' && $request->get('duration') == 'today'){
-           $applicants = Applicant::where('documents_complete_status',1)->where('submission_complete_status',1)->where('application_window_id',$request->get('application_window_id'))->where('campus_id',$application_window->campus_id)->whereDate('created_at','=',now()->format('Y-m-d'))->paginate(20);
-        }elseif($request->get('application') == 'total' && $request->get('duration') == 'today'){
-            $applicants = Applicant::where('application_window_id',$request->get('application_window_id'))->where('campus_id',$application_window->campus_id)->whereDate('created_at','=',now()->format('Y-m-d'))->paginate(20);
-        }
 
 
         if($request->get('department_id') != null){
@@ -75,6 +66,16 @@ class ApplicationController extends Controller
             })->with(['nextOfKin','intake'])->paginate(20);
         }else{
            $applicants = Applicant::where('application_window_id',$request->get('application_window_id'))->with(['nextOfKin','intake'])->paginate(20);
+        }
+
+        if($request->get('application') == 'progress' && $request->get('duration') == 'today'){
+           $applicants = Applicant::where('documents_complete_status',0)->where('submission_complete_status',0)->where('application_window_id',$request->get('application_window_id'))->where('campus_id',$application_window->campus_id)->whereDate('created_at','=',now()->format('Y-m-d'))->paginate(20);
+        }elseif($request->get('application') == 'completed' && $request->get('duration') == 'today'){
+           $applicants = Applicant::where('documents_complete_status',1)->where('submission_complete_status',0)->where('application_window_id',$request->get('application_window_id'))->where('campus_id',$application_window->campus_id)->whereDate('created_at','=',now()->format('Y-m-d'))->paginate(20);
+        }elseif($request->get('application') == 'submitted' && $request->get('duration') == 'today'){
+           $applicants = Applicant::where('documents_complete_status',1)->where('submission_complete_status',1)->where('application_window_id',$request->get('application_window_id'))->where('campus_id',$application_window->campus_id)->whereDate('created_at','=',now()->format('Y-m-d'))->paginate(20);
+        }elseif($request->get('application') == 'total' && $request->get('duration') == 'today'){
+            $applicants = Applicant::where('application_window_id',$request->get('application_window_id'))->where('campus_id',$application_window->campus_id)->whereDate('created_at','=',now()->format('Y-m-d'))->paginate(20);
         }
         $data = [
             'staff'=>$staff,
