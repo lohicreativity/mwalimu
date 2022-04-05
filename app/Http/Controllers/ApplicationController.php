@@ -10,6 +10,7 @@ use App\Domain\Academic\Models\CampusProgram;
 use App\Domain\Academic\Models\StudyAcademicYear;
 use App\Domain\Academic\Models\Department;
 use App\Domain\Finance\Models\FeeAmount;
+use App\Domain\Finance\Models\ProgramFee;
 use App\Domain\Finance\Models\Invoice;
 use App\Domain\Settings\Models\NTALevel;
 use App\Domain\Settings\Models\Campus;
@@ -22,6 +23,7 @@ use App\Models\User;
 use App\Models\Role;
 use App\Utils\SystemLocation;
 use App\Mail\AdmissionLetterCreated;
+use NumberToWords\NumberToWords;
 use Validator, Hash, Config, Auth, PDF, Mail;
 
 class ApplicationController extends Controller

@@ -124,7 +124,7 @@
                     </select>
                   </div>
                   <div class="form-group col-4">
-                    {!! Form::label('','When paid?') !!}
+                    {!! Form::label('','Frequency') !!}
                     <select name="when_paid" class="form-control">
                       <option value="">Select When Paid</option>
                       <option value="PAID_ONCE">Once</option>
@@ -293,7 +293,7 @@
                                           </select>
                                         </div>
                                         <div class="form-group col-4">
-                                          {!! Form::label('','When paid?') !!}
+                                          {!! Form::label('','Frequency') !!}
                                           <select name="payer" class="form-control">
                                             <option value="">Select When Paid</option>
                                             <option value="PAID_ONCE">Once</option>

@@ -76,6 +76,14 @@ class FeeAmountController extends Controller
     }
 
     /**
+     * Assign as previous
+     */
+    public function assignAsPrevious(Request $request)
+    {
+         
+    }
+
+    /**
      * Remove the specified amount
      */
     public function destroy(Request $request, $id)
