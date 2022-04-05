@@ -462,7 +462,7 @@ class ApplicantController extends Controller
               ];
 
       $application_window = ApplicationWindow::find($request->get('application_window_id'));
-      
+
       if($request->get('department_id') != null){
            $applicants = Applicant::where('application_window_id',$request->get('application_window_id'))->whereHas('selections.campusProgram.program.departments',function($query) use($request){
                  $query->where('id',$request->get('department_id'));
@@ -502,6 +502,9 @@ class ApplicantController extends Controller
         }elseif($request->get('status') == 'total' && $request->get('duration') == 'all'){
             $applicants = Applicant::where('application_window_id',$request->get('application_window_id'))->where('campus_id',$application_window->campus_id)->get();
         }
+
+
+        return $applicants;
 
         $callback = function() use ($applicants) 
               {
