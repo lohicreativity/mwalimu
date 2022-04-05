@@ -130,7 +130,7 @@
                     <tbody>
                  @foreach($applicants as $applicant)
                    <tr>
-                      <td>{{ $applicant->first_name }} {{ $applicant->middle_name }} {{ $applicant->surname }}</td>
+                      <td><a href="#" data-toggle="modal" data-target="#ss-progress-{{ $applicant->id }}">{{ $applicant->first_name }} {{ $applicant->middle_name }} {{ $applicant->surname }}</a></td>
                       <td>{{ $applicant->gender }}</td>
                       <td>{{ $applicant->phone }}</td>
                       <td>@if($applicant->submission_complete_status == 1)
@@ -145,6 +145,55 @@
                  @endforeach
                    </tbody>
                   </table>
+
+                @foreach($applicants as $applicant)
+                    <div class="modal fade" id="ss-progress-{{ $applicant->id }}">
+                        <div class="modal-dialog">
+                          <div class="modal-content modal-lg">
+                            <div class="modal-header">
+                              <h4 class="modal-title"><i class="fa fa-exclamation-sign"></i> Progress</h4>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+                            <div class="modal-body">
+                               <table class="table table-bordered">
+                                  <tr>
+                                    <td>1. Basic Information</td>
+                                    <td>@if($applicant->basic_info_complete_status == 1) <i class="fa fa-check"></i> @endif</td>
+                                  </tr>
+                                  <tr>
+                                    <td>2. Next of Kin</td>
+                                    <td>@if($applicant->next_of_kin_complete_status == 1) <i class="fa fa-check"></i> @endif</td>
+                                  </tr>
+                                  <tr>
+                                    <td>3. Payments</td>
+                                    <td>@if($applicant->payments_complete_status == 1) <i class="fa fa-check"></i> @endif</td>
+                                  </tr>
+                                  <tr>
+                                    <td>4. Results</td>
+                                    <td>@if($applicant->results_complete_status == 1) <i class="fa fa-check"></i> @endif</td>
+                                  </tr>
+                                  <tr>
+                                    <td>5. Documents</td>
+                                    <td>@if($applicant->documents_complete_status == 1) <i class="fa fa-check"></i> @endif</td>
+                                  </tr>
+                                  <tr>
+                                    <td>6. Submission</td>
+                                    <td>@if($applicant->submission_complete_status == 1) <i class="fa fa-check"></i> @endif</td>
+                                  </tr>
+                               </table>
+                            </div>
+                            <div class="modal-footer justify-content-between">
+                              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
+                          </div>
+                          <!-- /.modal-content -->
+                        </div>
+                        <!-- /.modal-dialog -->
+                      </div>
+                      <!-- /.modal -->
+                    @endforeach
 
                   <div class="ss-pagination-links">
                      {!! $applicants->appends($request->except('page'))->render() !!}
