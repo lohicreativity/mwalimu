@@ -185,7 +185,7 @@
                       </div>
                       <!-- /.modal -->
 
-                       @if($semester->status == 'ACTIVE')
+                      @if($semester->status == 'ACTIVE')
                        @can('deactivate-semester')
                        <a class="btn btn-danger btn-sm" href="{{ url('academic/semester/'.$semester->id.'/deactivate') }}">
                               <i class="fas fa-ban">

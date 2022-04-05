@@ -83,7 +83,7 @@
               <div class="icon">
                 <i class="ion ion-stats-bars"></i>
               </div>
-              <a href="{{ url('application/applicants/list?duration=today&application=progress&application_window_id='.$request->get('application_window_id')) }}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="{{ url('application/applicants/list?duration=today&status=progress&status_window_id='.$request->get('application_window_id')) }}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->
@@ -98,7 +98,7 @@
               <div class="icon">
                 <i class="ion ion-person-add"></i>
               </div>
-              <a href="{{ url('application/applicants/list?duration=today&application=completed&application_window_id='.$request->get('application_window_id')) }}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="{{ url('application/applicants/list?duration=today&status=completed&status_window_id='.$request->get('application_window_id')) }}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->
@@ -113,7 +113,7 @@
               <div class="icon">
                 <i class="ion ion-pie-graph"></i>
               </div>
-              <a href="{{ url('application/applicants/list?duration=today&application=submitted&application_window_id='.$request->get('application_window_id')) }}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="{{ url('application/applicants/list?duration=today&status=submitted&status_window_id='.$request->get('application_window_id')) }}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->
@@ -129,7 +129,7 @@
               <div class="icon">
                 <i class="ion ion-pie-graph"></i>
               </div>
-              <a href="{{ url('application/applicants/list?duration=today&application=total&application_window_id='.$request->get('application_window_id')) }}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="{{ url('application/applicants/list?duration=today&status=total&status_window_id='.$request->get('application_window_id')) }}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->

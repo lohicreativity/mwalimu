@@ -43,7 +43,7 @@ class NextOfKinAction implements NextOfKinInterface{
 	}
 
 	public function update(Request $request){
-		$next_of_kin = NextOfKin::find($request->get('next_of_kin_id'));
+		        $next_of_kin = NextOfKin::find($request->get('next_of_kin_id'));
                 $next_of_kin->first_name = $request->get('first_name');
                 $next_of_kin->middle_name = $request->get('middle_name');
                 $next_of_kin->surname = $request->get('surname');

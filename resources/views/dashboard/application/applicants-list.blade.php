@@ -100,10 +100,16 @@
                       <option value="M">Male</option>
                       <option value="F">Female</option>
                    </select>
+                   <select name="status" class="form-control">
+                      <option value="">Select Status</option>
+                      <option value="progress">On Progress</option>
+                      <option value="completed">Completed</option>
+                      <option value="submitted">Submitted</option>
+                   </select>
                    <select name="duration" class="form-control">
                       <option value="">Select Duration</option>
-                      <option value="TODAY">Today</option>
-                      <option value="">All</option>
+                      <option value="today">Today</option>
+                      <option value="all">All</option>
                    </select>
                    <span class="input-group-btn">
                      <button class="btn btn-default" type="submit"><span class="fa fa-search"></span></button>
