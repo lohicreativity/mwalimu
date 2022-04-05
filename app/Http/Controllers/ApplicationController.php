@@ -1331,7 +1331,7 @@ class ApplicationController extends Controller
                  'study_year'=>$study_academic_year->academicYear->year,
                  'program_fee'=>$applicant->country->code == 'TZ'? 1300000 : 600,
                  'currency'=>$applicant->country->code == 'TZ'? 'Tsh' : 'Usd',
-                 'medical_insurance_fee'=>$applicant->country->code == 'TZ'? $medical_insurance_fee->amount_in_tzs : $medical_insurance_fee->amount_in_usd,   
+                 'medical_insurance_fee'=>$applicant->country->code == 'TZ'? 150000 : 80,   
                  'medical_examination_fee'=>$applicant->country->code == 'TZ'? $medical_examination_fee->amount_in_tzs : $medical_examination_fee->amount_in_usd,    
                  'registration_fee'=>$applicant->country->code == 'TZ'? $registration_fee->amount_in_tzs : $registration_fee->amount_in_usd,     
                  'late_registration_fee'=>$applicant->country->code == 'TZ'? $late_registration_fee->amount_in_tzs : $late_registration_fee->amount_in_usd,    
