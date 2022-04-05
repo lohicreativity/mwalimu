@@ -1299,7 +1299,7 @@ class ApplicationController extends Controller
     public function showDashboard(Request $request)
     {
          $staff = User::find(Auth::user()->id)->staff;
-         if(!Auth::user()->hasRole('adminstrator')){
+         if(!Auth::user()->hasRole('administrator')){
            $application_window = ApplicationWindow::where('status','ACTIVE')->where('campus_id',$staff->campus_id)->first();
          }else{
            $application_window = ApplicationWindow::find($request->get('application_window_id'));
