@@ -503,9 +503,9 @@ class ApplicantController extends Controller
         $callback = function() use ($applicants) 
               {
                   $file_handle = fopen('php://output', 'w');
-                  fputcsv($file_handle, ['First Name','Middle Name','Surname','Gender','Index Number','Phone Number']);
+                  fputcsv($file_handle, ['Index Number','First Name','Middle Name','Surname','Gender','Phone Number']);
                   foreach ($applicants as $row) { 
-                      fputcsv($file_handle, [$row->first_name,$row->middle_name,$row->surname,$row->gender,$row->index_number,$row->phone]);
+                      fputcsv($file_handle, [$row->index_number,$row->first_name,$row->middle_name,$row->surname,$row->gender,$row->phone]);
                   }
                   fclose($file_handle);
               };
