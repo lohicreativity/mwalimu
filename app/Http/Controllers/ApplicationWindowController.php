@@ -148,7 +148,7 @@ class ApplicationWindowController extends Controller
             $window->status = 'ACTIVE';
             $window->save();
 
-            ApplicationWindow::where('campus_id',$window->campus_id)->where('intake_id',$window->intake_id)->where('id','!=',$id)->update(['status','INACTIVE']);
+            ApplicationWindow::where('campus_id',$window->campus_id)->where('intake_id',$window->intake_id)->where('id','!=',$id)->update(['status'=>'INACTIVE']);
 
             return redirect()->back()->with('message','Application window activated successfully');
         }catch(Exception $e){
