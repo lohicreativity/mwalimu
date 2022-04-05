@@ -1276,8 +1276,6 @@ class ApplicationController extends Controller
              $query->where('status','APPROVING');
         },'selections.campusProgram.program','applicationWindow','country'])->where('program_level_id',$request->get('program_level_id'))->get();
 
-        return $applicants;
-
         foreach($applicants as $applicant){
            // try{
                $ac_year = date('Y',strtotime($applicant->applicationWindow->end_date));
