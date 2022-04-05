@@ -37,6 +37,11 @@ class Controller extends BaseController
 	    	  }else{
 	    	  	 session(['staff_campus_id'=>null]);
 	    	  }
+	    	    if($application_window){
+		          session(['active_window_id'=>$application_window->id]);
+		        }else{
+		          session(['active_window_id'=>null]);
+		        }
 	        }else{
 	          session(['staff_campus_id'=>null]);
 	        } 
@@ -51,11 +56,7 @@ class Controller extends BaseController
 	          session(['active_semester_id'=>null]);
 	        }
 
-	        if($application_window){
-	          session(['active_window_id'=>$application_window->id]);
-	        }else{
-	          session(['active_window_id'=>null]);
-	        }
+	        
 
             return $next($request);
         });
