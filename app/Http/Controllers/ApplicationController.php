@@ -1302,7 +1302,7 @@ class ApplicationController extends Controller
                })->first();
 
                $students_union_fee = FeeAmount::where('study_academic_year_id',$study_academic_year->id)->whereHas('feeItem',function($query){
-                   $query->where('name','LIKE','%Students Union%');
+                   $query->where('name','LIKE','%MNMASO%');
                })->first();
 
                $caution_money_fee = FeeAmount::where('study_academic_year_id',$study_academic_year->id)->whereHas('feeItem',function($query){
@@ -1335,7 +1335,7 @@ class ApplicationController extends Controller
                  'medical_examination_fee'=>$applicant->country->code == 'TZ'? $medical_examination_fee->amount_in_tzs : $medical_examination_fee->amount_in_usd,    
                  'registration_fee'=>$applicant->country->code == 'TZ'? $registration_fee->amount_in_tzs : $registration_fee->amount_in_usd,     
                  'late_registration_fee'=>$applicant->country->code == 'TZ'? $late_registration_fee->amount_in_tzs : $late_registration_fee->amount_in_usd,    
-                 'practical_training_fee'=>$applicant->country->code == 'TZ'? $practical_training_fee->amount_in_tzs : $practical_training_fee->amount_in_usd,
+                 'practical_training_fee'=>$applicant->country->code == 'TZ'? 80000 : 40,
                  'identity_card_fee'=>$applicant->country->code == 'TZ'? $identity_card_fee->amount_in_tzs : $identity_card_fee->amount_in_usd,
                  'caution_money_fee'=>$applicant->country->code == 'TZ'? $caution_money_fee->amount_in_tzs : $caution_money_fee->amount_in_usd,
                  'nacte_quality_assurance_fee'=>$applicant->country->code == 'TZ'? $nacte_quality_assurance_fee->amount_in_tzs : $nacte_quality_assurance_fee->amount_in_usd,
