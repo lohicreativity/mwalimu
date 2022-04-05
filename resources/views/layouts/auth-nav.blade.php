@@ -168,6 +168,12 @@
                   <p>Applicants List</p>
                 </a>
               </li>
+              <li class="nav-item">
+                <a href="{{ url('application/search-for-applicant') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Applicant Search</p>
+                </a>
+              </li>
             </ul>
           </li>
           <li class="nav-item">

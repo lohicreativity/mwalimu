@@ -1336,4 +1336,40 @@ class ApplicationController extends Controller
          ];
          return view('dashboard.application.application-dashboard',$data)->withTitle('Application Dashboard');
     }
+
+    /**
+     * Search for applicant
+     */
+    public function searchForApplicant(Request $request)
+    {
+        $data = [
+             'applicant'=>Applicant::where('index_number',$request->get('index_number'))->first()
+        ];
+        return view('dashboard.application.search-applicant',$data)->withTitle('Search For Applicant');
+    }
+
+    /**
+     * Reset applicant's password
+     */
+    public function resetApplicantPassword(Request $request)
+    {
+        $validation = Validator::make($request->all(),[
+            'password'=>'required',
+            'password_confirmation'=>'required|same:password'
+        ]);
+
+        if($validation->fails()){
+           if($request->ajax()){
+              return response()->json(array('error_messages'=>$validation->messages()));
+           }else{
+              return redirect()->back()->withInput()->withErrors($validation->messages());
+           }
+        }
+
+        $user = User::find($request->get('user_id'));
+        $user->password = Hash::make($request->get('password'));
+        $user->save();
+
+        return redirect()->back()->with('message','Password reset successfully');
+    }
 }
