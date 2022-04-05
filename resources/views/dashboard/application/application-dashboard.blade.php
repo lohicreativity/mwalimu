@@ -78,11 +78,12 @@
               <div class="inner">
                 <h3>{{ $today_progress_applications }}</h3>
 
-                <p>Today On Progress Applications</p>
+                <p>Today's On Progress Applications</p>
               </div>
               <div class="icon">
                 <i class="ion ion-stats-bars"></i>
               </div>
+              <a href="{{ url('application/applicants/list?duration=today&application=progress&application_window_id='.$request->get('application_window_id')) }}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->
@@ -92,11 +93,12 @@
               <div class="inner">
                 <h3>{{ $today_completed_applications }}</h3>
 
-                <p>Today Completed Applications</p>
+                <p>Today's Completed Applications</p>
               </div>
               <div class="icon">
                 <i class="ion ion-person-add"></i>
               </div>
+              <a href="{{ url('application/applicants/list?duration=today&application=completed&application_window_id='.$request->get('application_window_id')) }}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->
@@ -106,11 +108,12 @@
               <div class="inner">
                 <h3>{{ $today_submitted_applications }}</h3>
 
-                <p>Today Submitted Applications</p>
+                <p>Today's Submitted Applications</p>
               </div>
               <div class="icon">
                 <i class="ion ion-pie-graph"></i>
               </div>
+              <a href="{{ url('application/applicants/list?duration=today&application=submitted&application_window_id='.$request->get('application_window_id')) }}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->
@@ -121,11 +124,12 @@
               <div class="inner">
                 <h3>{{ $today_total_applications }}</h3>
 
-                <p>Today Total Applications</p>
+                <p>Today's Total Applications</p>
               </div>
               <div class="icon">
                 <i class="ion ion-pie-graph"></i>
               </div>
+              <a href="{{ url('application/applicants/list?duration=today&application=total&application_window_id='.$request->get('application_window_id')) }}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->
