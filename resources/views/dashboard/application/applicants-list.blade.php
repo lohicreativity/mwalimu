@@ -103,6 +103,7 @@
                    <select name="duration" class="form-control">
                       <option value="">Select Duration</option>
                       <option value="TODAY">Today</option>
+                      <option value="">All</option>
                    </select>
                    <span class="input-group-btn">
                      <button class="btn btn-default" type="submit"><span class="fa fa-search"></span></button>
