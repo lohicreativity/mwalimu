@@ -1341,9 +1341,9 @@ class ApplicationController extends Controller
                  'nacte_quality_assurance_fee'=>$applicant->country->code == 'TZ'? 100000 : 50,
                  'students_union_fee'=>$applicant->country->code == 'TZ'? 100000 :50,
                ];
-               // $pdf = PDF::loadView('dashboard.application.reports.admission-letter',$data);
-               // return $pdf->stream();
-               return view('dashboard.application.reports.admission-letter',$data);
+               $pdf = PDF::loadView('dashboard.application.reports.admission-letter',$data);
+               return $pdf->stream();
+               // return view('dashboard.application.reports.admission-letter',$data);
                // $user = new User;
                // $user->email = 'amanighachocha@gmail.com'; //$applicant->email;
                // $user->username = $applicant->first_name.' '.$applicant->surname;
