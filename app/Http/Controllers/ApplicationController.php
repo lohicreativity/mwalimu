@@ -1326,11 +1326,16 @@ class ApplicationController extends Controller
                    $query->where('name','LIKE','%Late Registration%');
                })->first();
 
+               $numberToWords = new NumberToWords();
+               $numberTransformer = $numberToWords->getNumberTransformer('en');
+
                $data = [
                  'applicant'=>$applicant,
                  'program_name'=>$applicant->selections[0]->campusProgram->program->name,
                  'study_year'=>$study_academic_year->academicYear->year,
                  'program_fee'=>$applicant->country->code == 'TZ'? 1300000 : 600,
+                 'program_duration'=>$numberTransformer->toWords($applicant->selections[0]->campusProgram->program->min_duration),
+                 'program_fee_words'=>$numberTransformer->toWords(1300000),
                  'currency'=>$applicant->country->code == 'TZ'? 'Tsh' : 'Usd',
                  'medical_insurance_fee'=>$applicant->country->code == 'TZ'? 150000 : 80,   
                  'medical_examination_fee'=>$applicant->country->code == 'TZ'? 150000 : 70,    
