@@ -1307,7 +1307,7 @@ class ApplicationController extends Controller
                }
 
                $practical_training_fee = FeeAmount::where('study_academic_year_id',$study_academic_year->id)->whereHas('feeItem',function($query){
-                   $query->where('name','LIKE','%Practical Training%');
+                   $query->where('name','LIKE','%Practical%');
                })->first();
 
                if(!$practical_training_fee){
