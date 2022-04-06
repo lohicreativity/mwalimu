@@ -257,7 +257,7 @@
            <div class="col-md-12">
               <h4>RE: ADMISSION INTO {{ strtoupper($program_name) }} FOR THE ACADEMIC YEAR {{ $study_year }}</h4>
 
-              <p>I am pleased to inform you that you have been selected to join the Academy for {{ $program_duration }} year pursuing <strong>{{ $program_name }}</strong> You are required to report at the Academy on {{ Carbon\Carbon::parse($commensement_date)->format('D jS F Y') }} ready for registration and One Week for Orientation Programme that will commence on {{ Carbon\Carbon::parse($commensement_date)->format('D jS F Y') }}. Please note that all 1st year students are required to attend the Orientation Programme. Classes will commence immediately on {{ Carbon\Carbon::parse($commensement_date)->addDays(7)->format('D jS F Y') }}.</p>
+              <p>I am pleased to inform you that you have been selected to join the Academy for {{ $program_duration }} year pursuing <strong>{{ $program_name }}</strong> You are required to report at the Academy on {{ Carbon\Carbon::parse($commensement_date)->format('D jS F Y') }} ready for registration and One Week for Orientation Programme that will commence on {{ Carbon\Carbon::parse($commencement_date)->format('D jS F Y') }}. Please note that all 1st year students are required to attend the Orientation Programme. Classes will commence immediately on {{ Carbon\Carbon::parse($commencement_date)->addDays(7)->format('D jS F Y') }}.</p>
 
               <p>Please observe the following instructions.</p>
               <ol>
@@ -273,7 +273,7 @@
 
 <li>  That you should submit two stamp size photographs to the Admissions Officer.</li>
 
-<li>  Kindly note that candidates who will fail to register within the period of two weeks lasting from {{ Carbon\Carbon::parse($commensement_date)->format('jS F, Y') }} to {{ Carbon\Carbon::parse($commensement_date)->addDays(7)->format('jS F, Y') }} will be required to pay late registration fee of {{ $currency }} {{ number_format($late_registration_fee) }} per day for a maximum of 7 days.</li>
+<li>  Kindly note that candidates who will fail to register within the period of two weeks lasting from {{ Carbon\Carbon::parse($commencement_date)->format('jS F, Y') }} to {{ Carbon\Carbon::parse($commencement_date)->addDays(7)->format('jS F, Y') }} will be required to pay late registration fee of {{ $currency }} {{ number_format($late_registration_fee) }} per day for a maximum of 7 days.</li>
 
 <li>  Failure to register will lead to <strong>automatic cancellation</strong> of your admission; hence you will therefore be required to re-apply.</li>
 
