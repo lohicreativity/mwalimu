@@ -65,7 +65,7 @@
                   </div>
                  </div>
                    <div class="ss-form-actions">
-                    <button type="submit" class="btn btn-primary">{{ __('Send Admission Letter') }}</button>
+                    <button type="submit" class="btn btn-primary">{{ __('Send Admission Package') }}</button>
                    </div>
  
                   {!! Form::close() !!}
