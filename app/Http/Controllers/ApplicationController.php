@@ -1256,6 +1256,7 @@ class ApplicationController extends Controller
      */
     public function sendAdmissionLetter(Request $request)
     {
+        set_time_limit(120);
         $applicants = Applicant::whereHas('intake.applicationWindows',function($query) use($request){
              $query->where('id',$request->get('application_window_id'));
         })->whereHas('selections',function($query) use($request){
@@ -1273,7 +1274,7 @@ class ApplicationController extends Controller
         },'selections.campusProgram.program.award','applicationWindow','country'])->where('program_level_id',$request->get('program_level_id'))->update(['admission_reference_no'=>$request->get('reference_number')]);
 
         foreach($applicants as $applicant){
-           // try{
+           try{
                $ac_year = date('Y',strtotime($applicant->applicationWindow->end_date));
                $ac_year += 1;
                $study_academic_year = StudyAcademicYear::whereHas('academicYear',function($query) use($ac_year){
@@ -1394,7 +1395,7 @@ class ApplicationController extends Controller
 
                $applicant->status = 'ADMITTED';
                $applicant->save();
-           // }catch(\Exception $e){}
+           }catch(\Exception $e){}
         }
     }
 
