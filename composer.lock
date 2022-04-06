@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "99857d126f8d2d0fb90d48f737e1ba76",
+    "content-hash": "a09671aafd76d22efb9daf44d6a71146",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -7381,6 +7381,61 @@
                 "source": "https://github.com/tijsverkoyen/CssToInlineStyles/tree/2.2.3"
             },
             "time": "2020-07-13T06:12:54+00:00"
+        },
+        {
+            "name": "verumconsilium/laravel-browsershot",
+            "version": "v1.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/verumconsilium/laravel-browsershot.git",
+                "reference": "e06d7bfaa78914d83fd08f1d40c29b418b24e490"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/verumconsilium/laravel-browsershot/zipball/e06d7bfaa78914d83fd08f1d40c29b418b24e490",
+                "reference": "e06d7bfaa78914d83fd08f1d40c29b418b24e490",
+                "shasum": ""
+            },
+            "require": {
+                "spatie/browsershot": "^3.19"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^3.6",
+                "phpunit/phpunit": "^7.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "VerumConsilium\\Browsershot\\BrowsershotServiceProvider"
+                    ],
+                    "aliases": {
+                        "PDF": "VerumConsilium\\Browsershot\\Facades\\PDF",
+                        "Screenshot": "VerumConsilium\\Browsershot\\Facades\\Screenshot"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "VerumConsilium\\Browsershot\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Verum Consilium",
+                    "homepage": "https://verumconsilium.com"
+                }
+            ],
+            "description": "Browsershot Laravel wrapper to generate PDF files and Screenshots using Headless Chrome",
+            "support": {
+                "issues": "https://github.com/verumconsilium/laravel-browsershot/issues",
+                "source": "https://github.com/verumconsilium/laravel-browsershot/tree/v1.3.0"
+            },
+            "time": "2020-10-15T19:04:13+00:00"
         },
         {
             "name": "vlucas/phpdotenv",
