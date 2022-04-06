@@ -23,7 +23,8 @@
         "predis/predis": "^1.1",
         "rmccue/requests": "^2.0",
         "servo/fluidxml": "^1.21",
-        "simplesoftwareio/simple-qrcode": "^4.2"
+        "simplesoftwareio/simple-qrcode": "^4.2",
+        "spatie/browsershot": "^3.40"
     },
     "require-dev": {
         "facade/ignition": "^2.5",

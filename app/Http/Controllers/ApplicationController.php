@@ -24,6 +24,7 @@ use App\Models\Role;
 use App\Utils\SystemLocation;
 use App\Mail\AdmissionLetterCreated;
 use NumberToWords\NumberToWords;
+use Spatie\Browsershot\Browsershot;
 use Validator, Hash, Config, Auth, PDF, Mail;
 
 class ApplicationController extends Controller
@@ -1341,8 +1342,8 @@ class ApplicationController extends Controller
                  'nacte_quality_assurance_fee'=>$applicant->country->code == 'TZ'? 100000 : 50,
                  'students_union_fee'=>$applicant->country->code == 'TZ'? 100000 :50,
                ];
-               $pdf = PDF::loadView('dashboard.application.reports.admission-letter',$data);
-               return $pdf->stream();
+               return Browsershot::html('dashboard.application.reports.admission-letter',$data)->bodyHtml();
+               // return $pdf->stream();
                // return view('dashboard.application.reports.admission-letter',$data);
                // $user = new User;
                // $user->email = 'amanighachocha@gmail.com'; //$applicant->email;
