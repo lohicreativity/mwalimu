@@ -239,17 +239,16 @@
 
         
         <div class="row">
-            <div class="col-md-3">
-              <p>{{ now()->format('jS F Y') }}</p>
-            </div>
-            <div class="col-md-5">
-
-            </div>
-            
             <div class="col-md-4">
                <p>Our Ref: {{ strtoupper($reference_number) }}</p>
                <p>.............................................</p>
                <p>.............................................</p>              
+            </div>
+            <div class="col-md-5">
+
+            </div>
+            <div class="col-md-3">
+              <p>{{ now()->format('jS F Y') }}</p>
             </div>
         </div><!-- end of row -->
         
