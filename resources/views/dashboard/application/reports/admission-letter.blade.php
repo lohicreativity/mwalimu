@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-  <title>{{ Config::get('constants.SITE_NAME') }}</title>
+  <title></title>
   <style type="text/css">
       
       body{
