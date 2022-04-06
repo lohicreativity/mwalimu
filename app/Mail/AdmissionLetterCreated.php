@@ -38,7 +38,7 @@ class AdmissionLetterCreated extends Mailable
      */
     public function build()
     {
-        $file_name = base_path('public/uploads'),'Admission-Letter-'.$applicant->first_name.'-'.$applicant->surname.'.pdf';
+        $file_name = base_path('public/uploads').'Admission-Letter-'.$this->applicant->first_name.'-'.$this->applicant->surname.'.pdf';
         $attachments = AdmissionAttachment::all();
         foreach ($attachments as $attachment) {
             $this->attach(public_path().'/uploads/'.$attachment->file_name);
