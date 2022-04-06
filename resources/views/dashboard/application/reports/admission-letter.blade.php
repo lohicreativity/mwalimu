@@ -245,7 +245,7 @@
                <p>.............................................</p>              
             </div>
             <div class="col-md-5">
-
+             &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
             </div>
             <div class="col-md-3">
               <p>{{ now()->format('jS F Y') }}</p>
