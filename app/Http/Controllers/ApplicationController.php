@@ -1397,6 +1397,8 @@ class ApplicationController extends Controller
                $applicant->save();
            }catch(\Exception $e){}
         }
+
+        return redirect()->back()->with('message','Admission package sent successfully');
     }
 
 
