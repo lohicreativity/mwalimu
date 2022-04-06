@@ -1391,6 +1391,9 @@ class ApplicationController extends Controller
                $user->email = 'amanighachocha@gmail.com'; //$applicant->email;
                $user->username = $applicant->first_name.' '.$applicant->surname;
                Mail::to($user)->send(new AdmissionLetterCreated($applicant,$study_academic_year, $pdf));
+
+               $applicant->status = 'ADMITTED';
+               $applicant->save();
            // }catch(\Exception $e){}
         }
     }
