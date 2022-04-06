@@ -222,6 +222,20 @@
               </div>
           </div>
         </div>
+        <div class="row">
+          <div class="col-md-3 ss-center">
+             <img src="{{ public_path('/img/coa-tz.png') }}" alt="Config::get('constants.SITE_NAME') }}" class="ss-logo">
+          </div><!-- end of col-md-3 -->
+          <div class="col-md-6 ss-center">
+             <div class="ss-center">
+               <h4>THE MINISTRY OF EDUCATION, SCIENCE AND TECHNOLOGY</h4>
+               <h4>THE MWALIMU NYERERE MEMORIAL ACADEMY</h4>
+              </div>
+          </div><!-- end of col-md-6 -->
+          <div class="col-md-3 ss-center">
+             <img src="{{ public_path('/dist/img/logo.png') }}" alt="Config::get('constants.SITE_NAME') }}" class="ss-logo">
+          </div><!-- end of col-md-3 -->
+        </div><!-- end of row -->
 
         
         <div class="row">
@@ -267,7 +281,7 @@
 </ol>
 <p>I am looking forward to your registration and a successful period of study at the Academy.</p>
 
-
+<img src="{{ public_path('/img/adm-lt-sign.png') }}" alt="Signature" class="ss-signature">
            </div>
         </div><!-- end of row -->
 
