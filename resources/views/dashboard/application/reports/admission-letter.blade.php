@@ -239,7 +239,7 @@
 
         
         <div class="row">
-            <div class="col-md-3 ss-left">
+            <div class="col-md-3">
                <p>Our Ref: MNMA/ADMN/GEN/45</p>
                <p>.............................................</p>
                <p>.............................................</p>              
@@ -247,7 +247,7 @@
             <div class="col-md-6">
 
             </div>
-            <div class="col-md-3 ss-right">
+            <div class="col-md-3">
               <p>31st August 2021</p>
             </div>
         </div><!-- end of row -->
