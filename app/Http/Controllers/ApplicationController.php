@@ -1270,7 +1270,7 @@ class ApplicationController extends Controller
              $query->where('status','APPROVING');
         })->with(['nextOfKin','intake','selections'=>function($query){
              $query->where('status','APPROVING');
-        },'selections.campusProgram.program','applicationWindow','country'])->where('program_level_id',$request->get('program_level_id'))->update(['admission_reference_no'=>$request->get('reference_number')]);
+        },'selections.campusProgram.program.award','applicationWindow','country'])->where('program_level_id',$request->get('program_level_id'))->update(['admission_reference_no'=>$request->get('reference_number')]);
 
         foreach($applicants as $applicant){
            // try{
@@ -1368,6 +1368,7 @@ class ApplicationController extends Controller
                  'applicant'=>$applicant,
                  'reference_number'=>$applicant->admission_reference_no,
                  'program_name'=>$applicant->selections[0]->campusProgram->program->name,
+                 'program_code_name'=>$applicant->selections[0]->campusProgram->program->award->name,
                  'study_year'=>$study_academic_year->academicYear->year,
                  'commencement_date'=>$study_academic_year->begin_date,
                  'program_fee'=>$applicant->country->code == 'TZ'? $program_fee->amount_in_tzs : $program->amount_in_usd,
@@ -1384,7 +1385,7 @@ class ApplicationController extends Controller
                  'nacte_quality_assurance_fee'=>$applicant->country->code == 'TZ'? $nacte_quality_assurance_fee->amount_in_tzs : $nacte_quality_assurance_fee->amount_in_usd,
                  'students_union_fee'=>$applicant->country->code == 'TZ'? $students_union_fee->amount_in_tzs : $students_union_fee->amount_in_usd,
                ];
-               $pdf = PDF::loadView('dashboard.application.reports.admission-letter',$data)->save(base_path('public/uploads').'Admission-Letter-'.$applicant->first_name.'-'.$applicant->surname.'.pdf');
+               $pdf = PDF::loadView('dashboard.application.reports.admission-letter',$data)->save(base_path('public/uploads').'/Admission-Letter-'.$applicant->first_name.'-'.$applicant->surname.'.pdf');
         // $file_name = public_path().'/uploads/Admission-Letter-'.$this->applicant->first_name.'-'.$this->applicant->surname.'.pdf';
                $user = new User;
                $user->email = 'amanighachocha@gmail.com'; //$applicant->email;
