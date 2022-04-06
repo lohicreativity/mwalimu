@@ -240,15 +240,16 @@
         
         <div class="row">
             <div class="col-md-3">
-               <p>Our Ref: MNMA/ADMN/GEN/45</p>
-               <p>.............................................</p>
-               <p>.............................................</p>              
+              <p>{{ now()->format('j M Y') }}</p>
             </div>
             <div class="col-md-6">
 
             </div>
+            
             <div class="col-md-3">
-              <p>31st August 2021</p>
+               <p>Our Ref: MNMA/ADMN/GEN/45</p>
+               <p>.............................................</p>
+               <p>.............................................</p>              
             </div>
         </div><!-- end of row -->
         
@@ -264,9 +265,9 @@
 
 <li>  That you should present yourself to the Admissions Office for formal registration after paying the required fees. Failure to do so will result in the withdrawal of your admission. Admission can neither be postponed nor deferred to the next academic year. Please note that no student will be allowed to attend classes without paying the required fees and completing the registration process.</li>
 
-<li>  That you should produce your medical check-up form duly filled by a qualified Government Medical Officer to the Admissions Officer.</li>
+<li>  That you should produce your <strong>medical check-up</strong> form duly filled by a qualified Government Medical Officer to the Admissions Officer.</li>
 
-<li>  That you should bring your original certificates plus two copies of each of your certificates and transcripts (the original certificate will be returned to you after verification). Certificates should include birth certificate, Form 4, 6, and/or Diploma.</li>
+<li>  That you should bring your <strong>original certificates</strong> plus two copies of each of your certificates and transcripts (the original certificate will be returned to you after verification). Certificates should include birth certificate, Form 4, 6, and/or Diploma.</li>
 
 <li>  That you will be a full time student and if you are a Government or Public Institution/Organization employee, you will have to produce evidence that your employer has released you and is ready to continue supporting you.</li>
 
@@ -274,7 +275,7 @@
 
 <li>  Kindly note that candidates who will fail to register within the period of two weeks lasting from 25th October, 2021 to 7th November, 2021 will be required to pay late registration fee of {{ $currency }} {{ number_format($late_registration_fee) }} per day for a maximum of 7 days.</li>
 
-<li>  Failure to register will lead to automatic cancellation of your admission; hence you will therefore be required to re-apply.</li>
+<li>  Failure to register will lead to <strong>automatic cancellation</strong> of your admission; hence you will therefore be required to re-apply.</li>
 
 <li>  Accommodation on campus is not guaranteed; hence candidates are not advised to effect payment of the fees of the same in advance. However, when necessary, the office of the Dean of Students shall assist students in securing their off campus accommodation.</li>
 
