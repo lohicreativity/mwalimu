@@ -217,6 +217,10 @@
         header: page-header;
         footer: page-footer;
       }
+      footer{
+          text-align: center;
+          border-top: 2px solid #000;
+      }
   </style>
 </head>
 
