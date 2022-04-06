@@ -1387,6 +1387,7 @@ class ApplicationController extends Controller
                ];
                $pdf = PDF::loadView('dashboard.application.reports.admission-letter',$data)->margins(20,20,20,20)->storeAs(public_path('/uploads'),'Admission-Letter-'.$applicant->first_name.'-'.$applicant->surname.'.pdf');
         // $file_name = public_path().'/uploads/Admission-Letter-'.$this->applicant->first_name.'-'.$this->applicant->surname.'.pdf';
+               return $pdf;
                $user = new User;
                $user->email = 'amanighachocha@gmail.com'; //$applicant->email;
                $user->username = $applicant->first_name.' '.$applicant->surname;
