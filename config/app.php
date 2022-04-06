@@ -168,6 +168,7 @@ return [
         Bschmitt\Amqp\AmqpServiceProvider::class,
         SimpleSoftwareIO\QrCode\QrCodeServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
+        Meneses\LaravelMpdf\LaravelMpdfServiceProvider::class
 
         /*
          * Application Service Providers...
@@ -234,7 +235,7 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
-        'PDF' => Barryvdh\DomPDF\Facade::class,
+        'PDF' => Meneses\LaravelMpdf\Facades\LaravelMpdf::class,
         'Amqp' => Bschmitt\Amqp\Facades\Amqp::class,
         'QrCode' => SimpleSoftwareIO\QrCode\Facades\QrCode::class,
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,

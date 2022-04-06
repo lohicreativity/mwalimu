@@ -24,8 +24,7 @@ use App\Models\Role;
 use App\Utils\SystemLocation;
 use App\Mail\AdmissionLetterCreated;
 use NumberToWords\NumberToWords;
-use VerumConsilium\Browsershot\Facades\PDF;
-use Validator, Hash, Config, Auth, Mail;
+use Validator, Hash, Config, Auth, Mail, PDF;
 
 class ApplicationController extends Controller
 {
@@ -1385,8 +1384,9 @@ class ApplicationController extends Controller
                  'nacte_quality_assurance_fee'=>$applicant->country->code == 'TZ'? $nacte_quality_assurance_fee->amount_in_tzs : $nacte_quality_assurance_fee->amount_in_usd,
                  'students_union_fee'=>$applicant->country->code == 'TZ'? $students_union_fee->amount_in_tzs : $students_union_fee->amount_in_usd,
                ];
-               $pdf = PDF::loadView('dashboard.application.reports.admission-letter',$data)->margins(20,20,20,20)->storeAs(base_path('public/uploads'),'Admission-Letter-'.$applicant->first_name.'-'.$applicant->surname.'.pdf');
+               $pdf = PDF::loadView('dashboard.application.reports.admission-letter',$data); //->margins(20,20,20,20)->storeAs(base_path('public/uploads'),'Admission-Letter-'.$applicant->first_name.'-'.$applicant->surname.'.pdf');
         // $file_name = public_path().'/uploads/Admission-Letter-'.$this->applicant->first_name.'-'.$this->applicant->surname.'.pdf';
+               return $pdf->stream();
                $user = new User;
                $user->email = 'amanighachocha@gmail.com'; //$applicant->email;
                $user->username = $applicant->first_name.' '.$applicant->surname;
