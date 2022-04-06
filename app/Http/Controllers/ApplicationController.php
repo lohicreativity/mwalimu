@@ -24,7 +24,6 @@ use App\Models\Role;
 use App\Utils\SystemLocation;
 use App\Mail\AdmissionLetterCreated;
 use NumberToWords\NumberToWords;
-// use VerumConsilium\Browsershot\Facades\PDF;
 use Validator, Hash, Config, Auth, PDF, Mail;
 
 class ApplicationController extends Controller
