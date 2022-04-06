@@ -25,7 +25,7 @@ use App\Utils\SystemLocation;
 use App\Mail\AdmissionLetterCreated;
 use NumberToWords\NumberToWords;
 use VerumConsilium\Browsershot\Facades\PDF;
-use Validator, Hash, Config, Auth, PDF, Mail;
+use Validator, Hash, Config, Auth, Mail;
 
 class ApplicationController extends Controller
 {
