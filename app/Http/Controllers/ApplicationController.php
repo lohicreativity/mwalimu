@@ -1174,20 +1174,7 @@ class ApplicationController extends Controller
          
          $data = [
             'staff'=>$staff,
-            'application_windows'=>ApplicationWindow::where('campus_id',$staff->campus_id)->get(),
-            'application_window'=>ApplicationWindow::find($request->get('application_window_id')),
-            'awards'=>Award::all(),
-            'nta_levels'=>NTALevel::all(),
-            'selected_applicants'=>Applicant::whereHas('intake.applicationWindows',function($query) use($request){
-                 $query->where('id',$request->get('application_window_id'));
-            })->whereHas('selections',function($query) use($request){
-                 $query->where('status','APPROVING');
-            })->with(['nextOfKin','intake','selections.campusProgram.program'])->where('program_level_id',$request->get('program_level_id'))->get(),
-            'campus_programs'=>CampusProgram::whereHas('selections',function($query) use($request){
-                  $query->where('application_window_id',$request->get('application_window_id'));
-            })->with('program')->get(),
-            'application_window'=>ApplicationWindow::find($request->get('application_window_id')),
-            'applicants'=>$applicants,
+            'application_window'=>ApplicationWindow::where('campus_id',$staff->campus_id)->where('status','ACTIVE')->first(),
             'request'=>$request
          ];
          return view('dashboard.application.applicants-admission',$data)->withTitle('Applicants Admission');
@@ -1277,6 +1264,14 @@ class ApplicationController extends Controller
              $query->where('status','APPROVING');
         },'selections.campusProgram.program','applicationWindow','country'])->where('program_level_id',$request->get('program_level_id'))->get();
 
+        Applicant::whereHas('intake.applicationWindows',function($query) use($request){
+             $query->where('id',$request->get('application_window_id'));
+        })->whereHas('selections',function($query) use($request){
+             $query->where('status','APPROVING');
+        })->with(['nextOfKin','intake','selections'=>function($query){
+             $query->where('status','APPROVING');
+        },'selections.campusProgram.program','applicationWindow','country'])->where('program_level_id',$request->get('program_level_id'))->update(['admission_reference_no'=>$request->get('reference_number')]);
+
         foreach($applicants as $applicant){
            // try{
                $ac_year = date('Y',strtotime($applicant->applicationWindow->end_date));
@@ -1290,71 +1285,112 @@ class ApplicationController extends Controller
 
                $program_fee = ProgramFee::where('study_academic_year_id',$study_academic_year->id)->where('campus_program_id',$applicant->selections[0]->campusProgram->id)->first();
 
+               if(!$program_fee){
+                   return redirect()->back()->with('error','Programme fee not defined for '.$applicant->selections[0]->campusProgram->program->name);
+               }
+
                $medical_insurance_fee = FeeAmount::where('study_academic_year_id',$study_academic_year->id)->whereHas('feeItem',function($query){
                    $query->where('name','LIKE','%Medical Insurance%');
                })->first();
+
+               if(!$medical_insurance_fee){
+                   return redirect()->back()->with('error','Medical insurance fee not defined');
+               }
 
                $nacte_quality_assurance_fee = FeeAmount::where('study_academic_year_id',$study_academic_year->id)->whereHas('feeItem',function($query){
                    $query->where('name','LIKE','%NACTE%');
                })->first();
 
+               if(!$nacte_quality_assurance_fee){
+                   return redirect()->back()->with('error','NACTE fee not defined');
+               }
+
                $practical_training_fee = FeeAmount::where('study_academic_year_id',$study_academic_year->id)->whereHas('feeItem',function($query){
                    $query->where('name','LIKE','%Practical Training%');
                })->first();
+
+               if(!$practical_training_fee){
+                   return redirect()->back()->with('error','Practical training fee not defined');
+               }
 
                $students_union_fee = FeeAmount::where('study_academic_year_id',$study_academic_year->id)->whereHas('feeItem',function($query){
                    $query->where('name','LIKE','%MNMASO%');
                })->first();
 
+               if(!$students_union_fee){
+                   return redirect()->back()->with('error','Students union fee not defined');
+               }
+
                $caution_money_fee = FeeAmount::where('study_academic_year_id',$study_academic_year->id)->whereHas('feeItem',function($query){
                    $query->where('name','LIKE','%Caution Money%');
                })->first();
+
+               if(!$caution_money_fee){
+                   return redirect()->back()->with('error','Caution money fee not defined');
+               }
 
                $medical_examination_fee = FeeAmount::where('study_academic_year_id',$study_academic_year->id)->whereHas('feeItem',function($query){
                    $query->where('name','LIKE','%Medical Examination%');
                })->first();
 
+               if(!$medical_examination_fee){
+                   return redirect()->back()->with('error','Medical examination fee not defined');
+               }
+
                $registration_fee = FeeAmount::where('study_academic_year_id',$study_academic_year->id)->whereHas('feeItem',function($query){
                    $query->where('name','LIKE','%Registration%');
                })->first();
+
+               if(!$registration_fee){
+                   return redirect()->back()->with('error','Registration fee not defined');
+               }
 
                $identity_card_fee = FeeAmount::where('study_academic_year_id',$study_academic_year->id)->whereHas('feeItem',function($query){
                    $query->where('name','LIKE','%Identity Card%');
                })->first();
 
+               if(!$identity_card_fee){
+                   return redirect()->back()->with('error','Identity card fee not defined');
+               }
+
                $late_registration_fee = FeeAmount::where('study_academic_year_id',$study_academic_year->id)->whereHas('feeItem',function($query){
                    $query->where('name','LIKE','%Late Registration%');
                })->first();
+
+               if(!$late_registration_fee){
+                   return redirect()->back()->with('error','Late registration fee not defined');
+               }
 
                $numberToWords = new NumberToWords();
                $numberTransformer = $numberToWords->getNumberTransformer('en');
 
                $data = [
                  'applicant'=>$applicant,
+                 'reference_number'=>$applicant->admission_reference_no,
                  'program_name'=>$applicant->selections[0]->campusProgram->program->name,
                  'study_year'=>$study_academic_year->academicYear->year,
                  'commencement_date'=>$study_academic_year->begin_date,
-                 'program_fee'=>$applicant->country->code == 'TZ'? 1300000 : 600,
+                 'program_fee'=>$applicant->country->code == 'TZ'? $program_fee->amount_in_tzs : $program->amount_in_usd,
                  'program_duration'=>$numberTransformer->toWords($applicant->selections[0]->campusProgram->program->min_duration),
-                 'program_fee_words'=>$numberTransformer->toWords(1300000),
+                 'program_fee_words'=>$applicant->country->code == 'TZ'? $numberTransformer->toWords($program_fee->amount_in_tzs) : $numberTransformer->toWords($program_fee->amount_in_usd),
                  'currency'=>$applicant->country->code == 'TZ'? 'Tsh' : 'Usd',
-                 'medical_insurance_fee'=>$applicant->country->code == 'TZ'? 150000 : 80,   
-                 'medical_examination_fee'=>$applicant->country->code == 'TZ'? 150000 : 70,    
-                 'registration_fee'=>$applicant->country->code == 'TZ'? 70000 : 35,     
-                 'late_registration_fee'=>$applicant->country->code == 'TZ'? 5000 : 2,    
-                 'practical_training_fee'=>$applicant->country->code == 'TZ'? 80000 : 40,
-                 'identity_card_fee'=>$applicant->country->code == 'TZ'? 160000 : 80,
-                 'caution_money_fee'=>$applicant->country->code == 'TZ'? 90000 : 50,
-                 'nacte_quality_assurance_fee'=>$applicant->country->code == 'TZ'? 100000 : 50,
-                 'students_union_fee'=>$applicant->country->code == 'TZ'? 100000 :50,
+                 'medical_insurance_fee'=>$applicant->country->code == 'TZ'? $medical_insurance_fee->amount_in_tzs : $medical_insurance_fee->amount_in_usd,   
+                 'medical_examination_fee'=>$applicant->country->code == 'TZ'? $medical_examination_fee->amount_in_tzs : $medical_examination_fee->amount_in_usd,    
+                 'registration_fee'=>$applicant->country->code == 'TZ'? $registration_fee->amount_in_tzs : $registration_fee->amount_in_usd,     
+                 'late_registration_fee'=>$applicant->country->code == 'TZ'? $late_registration_fee->amount_in_tzs : $late_registration_fee->amount_in_usd,    
+                 'practical_training_fee'=>$applicant->country->code == 'TZ'? $practical_training_fee->amount_in_tzs : $practical_training_fee->amount_in_usd,
+                 'identity_card_fee'=>$applicant->country->code == 'TZ'? $identity_card_fee->amount_in_tzs : $identity_card_fee->amount_in_usd,
+                 'caution_money_fee'=>$applicant->country->code == 'TZ'? $caution_money_fee->amount_in_tzs : $caution_money_fee->amount_in_usd,
+                 'nacte_quality_assurance_fee'=>$applicant->country->code == 'TZ'? $nacte_quality_assurance_fee->amount_in_tzs : $nacte_quality_assurance_fee->amount_in_usd,
+                 'students_union_fee'=>$applicant->country->code == 'TZ'? $students_union_fee->amount_in_tzs : $students_union_fee->amount_in_usd,
                ];
-               return PDF::loadView('dashboard.application.reports.admission-letter',$data)->margins(20,20,20,20)->inline();
+               $pdf = PDF::loadView('dashboard.application.reports.admission-letter',$data)->margins(20,20,20,20);
                // return $pdf->stream();
                // return view('dashboard.application.reports.admission-letter',$data);
-               // $user = new User;
-               // $user->email = 'amanighachocha@gmail.com'; //$applicant->email;
-               // $user->username = $applicant->first_name.' '.$applicant->surname;
-               // Mail::to($user)->send(new AdmissionLetterCreated($applicant,$study_academic_year, $pdf));
+               $user = new User;
+               $user->email = 'amanighachocha@gmail.com'; //$applicant->email;
+               $user->username = $applicant->first_name.' '.$applicant->surname;
+               Mail::to($user)->send(new AdmissionLetterCreated($applicant,$study_academic_year, $pdf));
            // }catch(\Exception $e){}
         }
     }

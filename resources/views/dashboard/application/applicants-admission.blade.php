@@ -49,16 +49,13 @@
                   {!! Form::open(['url'=>'application/send-admission-letter','class'=>'ss-form-processing']) !!}
                     <div class="row">
                     <div class="form-group col-6">
-                      {!! Form::label('','Application Window') !!}
-                     <select name="application_window_id" class="form-control" required>
-                        <option value="">Select Application Window</option>
-                        @foreach($application_windows as $window)
-                        <option value="{{ $window->id }}" @if($request->get('application_window_id') == $window->id) selected="selected" @endif>{{ $window->begin_date }} - {{ $window->end_date }} </option>
-                        @endforeach
-                     </select>
+                      {!! Form::label('','Reference number') !!}
+                      {!! Form::text('reference_number',null,['class'=>'form-control','placeholder'=>'Reference number','required'=>true]) !!}
+
+                      {!! Form::input('hidden','application_window_id',$application_window->id) !!}
                    </div>
                    <div class="form-group col-6">
-                    {!! Form::label('','Programme Level') !!}
+                    {!! Form::label('','Programme level') !!}
                     <select name="program_level_id" class="form-control" required>
                       <option value="">Select Programme Level</option>
                       @foreach($awards as $award)
