@@ -247,7 +247,7 @@
             </div>
             
             <div class="col-md-4">
-               <p>Our Ref: MNMA/ADMN/GEN/45</p>
+               <p>Our Ref: {{ strtoupper($reference_number) }}</p>
                <p>.............................................</p>
                <p>.............................................</p>              
             </div>
