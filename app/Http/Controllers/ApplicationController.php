@@ -24,7 +24,7 @@ use App\Models\Role;
 use App\Utils\SystemLocation;
 use App\Mail\AdmissionLetterCreated;
 use NumberToWords\NumberToWords;
-use Spatie\Browsershot\Browsershot;
+use VerumConsilium\Browsershot\Facades\PDF;
 use Validator, Hash, Config, Auth, PDF, Mail;
 
 class ApplicationController extends Controller
@@ -1342,7 +1342,7 @@ class ApplicationController extends Controller
                  'nacte_quality_assurance_fee'=>$applicant->country->code == 'TZ'? 100000 : 50,
                  'students_union_fee'=>$applicant->country->code == 'TZ'? 100000 :50,
                ];
-               return Browsershot::html('dashboard.application.reports.admission-letter',$data)->bodyHtml();
+               return PDF::loadView('dashboard.application.reports.admission-letter',$data)->inline();
                // return $pdf->stream();
                // return view('dashboard.application.reports.admission-letter',$data);
                // $user = new User;
