@@ -213,7 +213,10 @@
      p, li{
         text-align: justify;
      }
-  
+     @page {
+        header: page-header;
+        footer: page-footer;
+      }
   </style>
 </head>
 
