@@ -1333,6 +1333,7 @@ class ApplicationController extends Controller
                  'applicant'=>$applicant,
                  'program_name'=>$applicant->selections[0]->campusProgram->program->name,
                  'study_year'=>$study_academic_year->academicYear->year,
+                 'commencement_date'=>$study_academic_year->begin_date,
                  'program_fee'=>$applicant->country->code == 'TZ'? 1300000 : 600,
                  'program_duration'=>$numberTransformer->toWords($applicant->selections[0]->campusProgram->program->min_duration),
                  'program_fee_words'=>$numberTransformer->toWords(1300000),
