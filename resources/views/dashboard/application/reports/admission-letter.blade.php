@@ -259,7 +259,7 @@
            <div class="col-md-12">
               <h4>RE: ADMISSION INTO {{ strtoupper($program_code_name) }} FOR THE ACADEMIC YEAR {{ $study_year }}</h4>
 
-              <p>I am pleased to inform you that you have been selected to join the Academy for {{ $program_duration }} year(s) pursuing <strong>{{ $program_name }}</strong>. You are required to report at the Academy on <strong>{{ Carbon\Carbon::parse($commencement_date)->format('D jS F Y') }}</strong> ready for registration and a One-Week for Orientation Programme that will commence on <strong>{{ Carbon\Carbon::parse($commencement_date)->format('D jS F Y') }}</strong>. Please note that all 1<sup>st</sup> year students are required to attend the Orientation Programme. Classes will commence immediately on <strong>{{ Carbon\Carbon::parse($commencement_date)->addDays(7)->format('D jS F Y') }}</strong>.</p>
+              <p>I am pleased to inform you that you have been selected to join the Academy for {{ $program_duration }} year(s) pursuing <strong>{{ $program_name }}</strong>. You are required to report at the Academy on <strong>{{ Carbon\Carbon::parse($commencement_date)->format('l jS F Y') }}</strong> ready for registration and a One-Week for Orientation Programme that will commence on <strong>{{ Carbon\Carbon::parse($commencement_date)->format('l jS F Y') }}</strong>. Please note that all 1<sup>st</sup> year students are required to attend the Orientation Programme. Classes will commence immediately on <strong>{{ Carbon\Carbon::parse($commencement_date)->addDays(7)->format('l jS F Y') }}</strong>.</p>
 
               <p>Please observe the following instructions.</p>
               <ol>
