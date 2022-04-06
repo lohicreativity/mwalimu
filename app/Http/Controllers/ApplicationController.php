@@ -1175,6 +1175,7 @@ class ApplicationController extends Controller
          $data = [
             'staff'=>$staff,
             'application_window'=>ApplicationWindow::where('campus_id',$staff->campus_id)->where('status','ACTIVE')->first(),
+            'awards'=>Award::all(),
             'request'=>$request
          ];
          return view('dashboard.application.applicants-admission',$data)->withTitle('Applicants Admission');
