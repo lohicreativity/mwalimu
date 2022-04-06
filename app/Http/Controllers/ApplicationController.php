@@ -1291,7 +1291,7 @@ class ApplicationController extends Controller
                }
 
                $medical_insurance_fee = FeeAmount::where('study_academic_year_id',$study_academic_year->id)->whereHas('feeItem',function($query){
-                   $query->where('name','LIKE','%Medical Insurance%');
+                   $query->where('name','LIKE','%NHIF%');
                })->first();
 
                if(!$medical_insurance_fee){
