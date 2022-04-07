@@ -1266,9 +1266,9 @@ class ApplicationController extends Controller
      */
     public function sendAdmissionLetter(Request $request)
     {
-        set_time_limit(120);
+        set_time_limit(240);
         ini_set('memory_limit', '1024M');
-        
+
         $applicants = Applicant::whereHas('intake.applicationWindows',function($query) use($request){
              $query->where('id',$request->get('application_window_id'));
         })->whereHas('selections',function($query) use($request){
@@ -1309,10 +1309,17 @@ class ApplicationController extends Controller
                if(!$medical_insurance_fee){
                    return redirect()->back()->with('error','Medical insurance fee not defined');
                }
-
-               $nacte_quality_assurance_fee = FeeAmount::where('study_academic_year_id',$study_academic_year->id)->whereHas('feeItem',function($query){
+               
+               if(str_contains($applicant->selections[0]->campusProgram->program->award->name,'Bachelor')){
+                  $nacte_quality_assurance_fee = FeeAmount::where('study_academic_year_id',$study_academic_year->id)->whereHas('feeItem',function($query){
+                   $query->where('name','LIKE','%TCU%');
+                  })->first();
+               }else{
+                  $nacte_quality_assurance_fee = FeeAmount::where('study_academic_year_id',$study_academic_year->id)->whereHas('feeItem',function($query){
                    $query->where('name','LIKE','%NACTE%');
-               })->first();
+                  })->first();
+               }
+               
 
                if(!$nacte_quality_assurance_fee){
                    return redirect()->back()->with('error','NACTE fee not defined');
@@ -1399,7 +1406,12 @@ class ApplicationController extends Controller
                  'nacte_quality_assurance_fee'=>$applicant->country->code == 'TZ'? $nacte_quality_assurance_fee->amount_in_tzs : $nacte_quality_assurance_fee->amount_in_usd,
                  'students_union_fee'=>$applicant->country->code == 'TZ'? $students_union_fee->amount_in_tzs : $students_union_fee->amount_in_usd,
                ];
-               $pdf = PDF::loadView('dashboard.application.reports.admission-letter',$data)->save(base_path('public/uploads').'/Admission-Letter-'.$applicant->first_name.'-'.$applicant->surname.'.pdf');
+               $pdf = PDF::loadView('dashboard.application.reports.admission-letter',$data,[],[
+                   'margin_top'=>20,
+                   'margin_bottom'=>20,
+                   'margin_left'=>20,
+                   'margin_right'=>20
+               ])->save(base_path('public/uploads').'/Admission-Letter-'.$applicant->first_name.'-'.$applicant->surname.'.pdf');
         // $file_name = public_path().'/uploads/Admission-Letter-'.$this->applicant->first_name.'-'.$this->applicant->surname.'.pdf';
                $user = new User;
                $user->email = 'amanighachocha@gmail.com'; //$applicant->email;
