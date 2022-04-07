@@ -52,7 +52,6 @@ class EntryRequirementAction implements EntryRequirementInterface{
             $reqs = EntryRequirement::where('group_id',$req->group_id)->get();
             foreach($reqs as $rq){
 		$requirement = EntryRequirement::find($rq->id);
-            $requirement->campus_program_id = $request->get('campus_program_id');
             $requirement->application_window_id = $request->get('application_window_id');
             $requirement->equivalent_gpa = $request->get('equivalent_gpa');
             $requirement->equivalent_pass_subjects = $request->get('equivalent_pass_subjects');
