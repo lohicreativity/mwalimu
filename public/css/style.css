@@ -20,7 +20,7 @@
 }
 
 .ss-select-tags{
-   width: 100%;
+   width: 100% !important;
 }
 
 .ss-pagination-links{
