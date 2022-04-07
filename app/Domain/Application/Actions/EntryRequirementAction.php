@@ -5,11 +5,13 @@ namespace App\Domain\Application\Actions;
 use Illuminate\Http\Request;
 use App\Domain\Application\Models\EntryRequirement;
 use App\Domain\Application\Repositories\Interfaces\EntryRequirementInterface;
+use App\Utils\Util;
 
 class EntryRequirementAction implements EntryRequirementInterface{
 	
 	public function store(Request $request){
 		
+        $group_id = Util::randString(100);
         foreach($request->get('campus_program_ids') as $id){
             $requirement = new EntryRequirement;
             $requirement->campus_program_id = $id;
@@ -37,14 +39,19 @@ class EntryRequirementAction implements EntryRequirementInterface{
             $requirement->subsidiary_subjects = serialize($request->get('subsidiary_subjects'));
             $requirement->principle_subjects = serialize($request->get('principle_subjects'));
             $requirement->max_capacity = $request->get('max_capacity');
+            $requirement->group_id = $group_id;
             $requirement->save();
         }
         
 	}
 
 	public function update(Request $request)
-    {
-		$requirement = EntryRequirement::find($request->get('entry_requirement_id'));
+      {
+            $req = EntryRequirement::find($request->get('entry_requirement_id'));
+
+            $reqs = EntryRequirement::where('group_id',$req->group_id);
+            foreach($reqs as $rq){
+		$requirement = EntryRequirement::find($rq->id);
             $requirement->campus_program_id = $request->get('campus_program_id');
             $requirement->application_window_id = $request->get('application_window_id');
             $requirement->equivalent_gpa = $request->get('equivalent_gpa');
@@ -71,5 +78,6 @@ class EntryRequirementAction implements EntryRequirementInterface{
             $requirement->principle_subjects = serialize($request->get('principle_subjects'));
             $requirement->max_capacity = $request->get('max_capacity');
             $requirement->save();
+            }
 	}
 }

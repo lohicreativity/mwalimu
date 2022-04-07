@@ -41,7 +41,7 @@ class EntryRequirementController extends Controller
            })->whereHas('selections',function($query) use($request){
                      $query->where('application_window_id',$request->get('application_window_id'));
               })->with('program')->where('campus_id',$staff->campus_id)->get(),
-           'entry_requirements'=>EntryRequirement::with(['campusProgram.program'])->where('application_window_id',$request->get('application_window_id'))->paginate(20),
+           'entry_requirements'=>EntryRequirement::with(['campusProgram.program.award'])->where('application_window_id',$request->get('application_window_id'))->paginate(20),
            'subjects'=>NectaResult::distinct()->get(['subject_name']),
            'staff'=>$staff,
            'request'=>$request
