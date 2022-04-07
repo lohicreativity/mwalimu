@@ -1170,10 +1170,16 @@ class ApplicationController extends Controller
         })->whereHas('selections',function($query) use($request){
              $query->where('status','SELECTED');
         })->with(['nextOfKin','intake','selections.campusProgram.program'])->where('program_level_id',$request->get('program_level_id'))->paginate(20);
+
+        $application_window = ApplicationWindow::where('campus_id',$staff->campus_id)->where('status','ACTIVE')->first();
+
+        if(!$application_window){
+            return redirect()->back()->with('error','No active application window for your campus');
+        }
          
          $data = [
             'staff'=>$staff,
-            'application_window'=>ApplicationWindow::where('campus_id',$staff->campus_id)->where('status','ACTIVE')->first(),
+            'application_window'=>$application_window,
             'awards'=>Award::all(),
             'request'=>$request
          ];
@@ -1367,6 +1373,7 @@ class ApplicationController extends Controller
 
                $data = [
                  'applicant'=>$applicant,
+                 'applicant_name'=>$applicant->first_name.' '.$applicant->surname,
                  'reference_number'=>$applicant->admission_reference_no,
                  'program_name'=>$applicant->selections[0]->campusProgram->program->name,
                  'program_code_name'=>$applicant->selections[0]->campusProgram->program->award->name,
