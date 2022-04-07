@@ -1267,6 +1267,8 @@ class ApplicationController extends Controller
     public function sendAdmissionLetter(Request $request)
     {
         set_time_limit(120);
+        ini_set('memory_limit', '1024M');
+        
         $applicants = Applicant::whereHas('intake.applicationWindows',function($query) use($request){
              $query->where('id',$request->get('application_window_id'));
         })->whereHas('selections',function($query) use($request){
