@@ -733,6 +733,10 @@ class ApplicationController extends Controller
                     return redirect()->back()->with('error',$program->program->name.' does not have entry requirements');
                   }
 
+                  if($program->entryRequirements[0]->max_capacity == null){
+                    return redirect()->back()->with('error',$program->program->name.' does not have maximum capacity in entry requirements');
+                  }
+
                    // Certificate
                    if(str_contains($award->name,'Certificate')){
                        $o_level_pass_count = 0;
