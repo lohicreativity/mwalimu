@@ -36,6 +36,7 @@ class CreateEntryRequirementsTable extends Migration
             $table->text('subsidiary_subjects')->nullable();
             $table->text('principle_subjects')->nullable();
             $table->integer('max_capacity');
+            $table->string('group_id')->nullable();
             $table->timestamps();
 
             $table->foreign('application_window_id')->references('id')->on('application_windows')->onUpdate('cascade')->onDelete('cascade');

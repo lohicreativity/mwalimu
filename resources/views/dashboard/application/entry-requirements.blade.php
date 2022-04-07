@@ -933,7 +933,7 @@
                                     ];
                                  @endphp
 
-                                   {!! Form::open(['url'=>'application/entry-requirement/store','class'=>'ss-form-processing']) !!}
+                                   {!! Form::open(['url'=>'application/entry-requirement/update','class'=>'ss-form-processing']) !!}
                                    <div class="card-body">
                                      
                                      <div class="row">
@@ -1134,7 +1134,7 @@
                                       ];
                                    @endphp
 
-                                     {!! Form::open(['url'=>'application/entry-requirement/store','class'=>'ss-form-processing']) !!}
+                                     {!! Form::open(['url'=>'application/entry-requirement/update','class'=>'ss-form-processing']) !!}
                                      <div class="card-body">
                                        
                                        <div class="row">
@@ -1376,7 +1376,7 @@
                                         ];
                                      @endphp
 
-                                       {!! Form::open(['url'=>'application/entry-requirement/store','class'=>'ss-form-processing']) !!}
+                                       {!! Form::open(['url'=>'application/entry-requirement/update','class'=>'ss-form-processing']) !!}
                                        <div class="card-body">
                                          
                                          <div class="row">
