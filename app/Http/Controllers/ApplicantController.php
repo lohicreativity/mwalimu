@@ -24,6 +24,7 @@ use App\Domain\Application\Models\NacteResult;
 use App\Domain\Application\Models\NectaResultDetail;
 use App\Domain\Application\Models\NacteResultDetail;
 use App\Domain\Application\Models\ApplicationWindow;
+use App\Domain\Application\Models\HealthInsurance;
 use App\Domain\Academic\Models\StudyAcademicYear;
 use Illuminate\Support\Facades\Http;
 use App\Models\User;
@@ -504,5 +505,93 @@ class ApplicantController extends Controller
               };
 
               return response()->stream($callback, 200, $headers);
+    }
+
+    /**
+     * Update NVA Status
+     */
+    public function updateNVAStatus(Request $request)
+    {
+        $validation = Validator::make($request->all(),[
+            'nva_status'=>'required',
+        ]);
+
+        if($validation->fails()){
+           if($request->ajax()){
+              return response()->json(array('error_messages'=>$validation->messages()));
+           }else{
+              return redirect()->back()->withInput()->withErrors($validation->messages());
+           }
+        }
+         $applicant = Applicant::find($request->get('applicant_id'));
+         $applicant->nva_status = $request->get('nva_status');
+         $applicant->save();
+
+         return redirect()->back()->with('message','NVA status updated successfully');
+    }
+
+    /**
+     * Show other information
+     */
+    public function showOtherInformation(Request $request)
+    {
+        $data = [
+           'applicant'=>User::find(Auth::user()->id)->applicants()->where('campus_id',session('applicant_campus_id'))->first()
+        ];
+        return view('dashboard.application.other-information',$data)->withTitle('Other Information');
+    }
+
+    /**
+     * Update Hostel Status
+     */
+    public function updateHostelStatus(Request $request)
+    {
+        $validation = Validator::make($request->all(),[
+            'hostel_status'=>'required',
+        ]);
+
+        if($validation->fails()){
+           if($request->ajax()){
+              return response()->json(array('error_messages'=>$validation->messages()));
+           }else{
+              return redirect()->back()->withInput()->withErrors($validation->messages());
+           }
+        }
+         $applicant = Applicant::find($request->get('applicant_id'));
+         $applicant->hostel_status = $request->get('nva_status');
+         $applicant->save();
+
+         return redirect()->back()->with('message','Hostel status updated successfully');
+    }
+
+    /**
+     * Update Hostel Status
+     */
+    public function updateInsuranceStatus(Request $request)
+    {
+        $validation = Validator::make($request->all(),[
+            'insurance_status'=>'required',
+        ]);
+
+        if($validation->fails()){
+           if($request->ajax()){
+              return response()->json(array('error_messages'=>$validation->messages()));
+           }else{
+              return redirect()->back()->withInput()->withErrors($validation->messages());
+           }
+        }
+         $applicant = Applicant::find($request->get('applicant_id'));
+         $applicant->insurance_status = $request->get('insurance_status');
+         $applicant->save();
+
+         if($request->get('insurance_status') == 1){
+             $insurance = new HealthInsurance;
+             $insurance->insurance_name = $request->get('insurance_name');
+             $insurance->membership_number = $request->get('card_number');
+             $insurance->applicant_id = $applicant->id;
+             $insurance->save();
+         }
+
+         return redirect()->back()->with('message','Health insurance status updated successfully');
     }
 }

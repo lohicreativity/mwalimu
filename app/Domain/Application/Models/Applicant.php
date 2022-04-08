@@ -108,6 +108,14 @@ class Applicant extends Model
     }
 
     /**
+     * Establish one to many relationship with health insurances
+     */
+    public function insurances()
+    {
+        return $this->hasMany(HealthInsurance::class,'applicant_id');
+    }
+
+    /**
      * Establish one to many relationship with necta result details
      */
     public function nectaResultDetails()

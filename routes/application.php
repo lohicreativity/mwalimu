@@ -119,4 +119,11 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
     Route::get('delete-attachment',[ApplicationController::class,'deleteAttachment']);
 
     Route::post('send-admission-letter',[ApplicationController::class,'sendAdmissionLetter']);
+    Route::post('update-applicant-nva',[ApplicantController::class,'updateNVAStatus']);
+    Route::get('other-information',[ApplicantController::class,'showOtherInformation']);
+    Route::post('update-insurance-status',[ApplicantController::class,'updateInsuranceStatus']);
+    Route::post('update-hostel-status',[ApplicantController::class,'updateHostelStatus']);
+
+    Route::get('hostel-statuses',[ApplicationController::class,'showHostelStatus']);
+    Route::get('insurance-statuses',[ApplicationController::class,'showInsuranceStatus']);
 });

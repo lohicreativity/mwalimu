@@ -1502,4 +1502,34 @@ class ApplicationController extends Controller
 
         return redirect()->to('application/application-dashboard')->with('message','Password reset successfully');
     }
+
+    /**
+     * Show insurance statuses
+     */
+    public function showInsuranceStatus(Request $request)
+    {
+        $staff = User::find(Auth::user()->id)->staff;
+        $data = [
+           'application_windows'=>ApplicationWindow::where('campus_id',$staff->campus_id)->get(),
+           'awards'=>Award::all(),
+           'applicants'=>Applicant::with('insurances')->where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$request->get('program_level_id'))->paginate(50),
+           'request'=>$request
+        ];
+        return view('dashboard.application.insurance-statuses',$data)->withTitle('Applicant Insurance Status');
+    }
+
+    /**
+     * Show hostel statuses
+     */
+    public function showHostelStatus(Request $request)
+    {
+        $staff = User::find(Auth::user()->id)->staff;
+        $data = [
+           'application_windows'=>ApplicationWindow::where('campus_id',$staff->campus_id)->get(),
+           'awards'=>Award::all(),
+           'applicants'=>Applicant::where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$request->get('program_level_id'))->paginate(50),
+           'request'=>$request
+        ];
+        return view('dashboard.application.hostel-statuses',$data)->withTitle('Applicant Insurance Status');
+    }
 }

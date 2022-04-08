@@ -64,6 +64,7 @@
                       <option value="a_level_certificate">A-Level Certificate</option>
                       @elseif($applicant->entry_mode == 'EQUIVALENT')
                       <option value="diploma_certificate">Diploma Certificate</option>
+                      <option value="nva_certificate">NVA Certificate</option>
                       @endif
                     </select>
                     </div>

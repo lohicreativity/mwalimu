@@ -257,6 +257,28 @@
               {!! Form::close() !!}
             </div>
             <!-- /.card -->
+
+            <div class="card card-default">
+              <div class="card-header">
+                <h3 class="card-title">{{ __('Other Qualifications') }}</h3>
+              </div>
+              <!-- /.card-header -->
+              {!! Form::open(['url'=>'application/update-applicant-nva']) !!}
+              <div class="card-body">
+                  {!! Form::input('hidden','applicant_id',$applicant->id) !!}
+
+                  <label class="radio-inline">
+                    <input type="radio" name="nva_status" value="1"> I have NVA
+                  </label>
+                  <label class="radio-inline">
+                    <input type="radio" name="nva_status" value="0"> I don't have NVA
+                  </label>
+              </div>
+              <div class="card-footer">
+              <button type="submit" class="btn btn-primary">{{ __('Save NVA Status') }}</button>
+            </div>
+            {!! Form::close() !!}
+            </div>
             @endif
 
             @endif

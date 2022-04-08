@@ -47,6 +47,12 @@
                   <p>Submit Application @if($applicant->submission_complete_status == 1) <i class="fa fa-check"></i> @endif</p>
                 </a>
               </li>
+              <li class="nav-item">
+                <a href="{{ url('application/other-information') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Other Information</p>
+                </a>
+              </li>
           @elseif(Auth::user()->hasRole('student'))
           <li class="nav-item">
             <a href="#" class="nav-link">
@@ -224,6 +230,18 @@
                 <a href="{{ url('application/applicants-admission') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Admit Students</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ url('application/insurance-statuses') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Insurance Statuses</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ url('application/hostel-statuses') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Hostel Statuses</p>
                 </a>
               </li>
             </ul>

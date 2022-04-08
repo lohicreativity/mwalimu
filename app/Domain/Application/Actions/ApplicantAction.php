@@ -93,6 +93,10 @@ class ApplicantAction implements ApplicantInterface{
                     $applicant->diploma_certificate = $request->file('document')->getClientOriginalName(); 
                 }
 
+                if($request->get('document_name') == 'nva_certificate'){
+                    $applicant->nva_certificate = $request->file('document')->getClientOriginalName(); 
+                }
+
                 if($request->get('document_name') == 'passport'){
                     $applicant->passport_picture = $request->file('document')->getClientOriginalName(); 
                 }
@@ -152,6 +156,14 @@ class ApplicantAction implements ApplicantInterface{
 
                     if($request->get('document_name') == 'diploma_certificate'){
                         $app->diploma_certificate = $request->file('document')->getClientOriginalName(); 
+                    }
+
+                    if($request->get('document_name') == 'nva_certificate'){
+                        $applicant->nva_certificate = $request->file('document')->getClientOriginalName(); 
+                    }
+
+                    if($request->get('document_name') == 'passport'){
+                       $applicant->passport_picture = $request->file('document')->getClientOriginalName(); 
                     }
 
                 }
