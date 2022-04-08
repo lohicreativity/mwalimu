@@ -18,7 +18,7 @@ class CreateHealthInsurancesTable extends Migration
             $table->string('insurance_name');
             $table->string('membership_number');
             $table->string('verification_status',20)->nullable();
-            $table->date('expire_date');
+            $table->date('expire_date')->nullable();
             $table->timestamp('status_verified_at');
             $table->unsignedBigInteger('applicant_id');
             $table->timestamps();

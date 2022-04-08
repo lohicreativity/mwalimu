@@ -102,6 +102,10 @@
                               {!! Form::input('hidden','insurance_status',1) !!}
                               {!! Form::input('hidden','applicant_id',$applicant->id) !!}
                             </div>
+                            <div class="form-group">
+                              {!! Form::label('','Expire date') !!}
+                              {!! Form::text('expire_date',null,['class'=>'form-control ss-datepicker','placeholder'=>'Expire date']) !!}
+                            </div>
                             <button type="submit" class="btn btn-primary">Save</button>
                           {!! Form::close() !!}
                        </div><!-- end of col-md-12 -->
