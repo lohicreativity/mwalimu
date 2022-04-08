@@ -581,6 +581,10 @@ class ApplicantController extends Controller
               return redirect()->back()->withInput()->withErrors($validation->messages());
            }
         }
+
+        if(strtotime($request->get('expire_date')) <= strtotime(now())){
+            return redirect()->back()->with('error','Expire date cannot be less than today\'s date');
+        }
          $applicant = Applicant::find($request->get('applicant_id'));
          $applicant->insurance_status = $request->get('insurance_status');
          $applicant->save();
