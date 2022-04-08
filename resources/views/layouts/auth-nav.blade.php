@@ -47,12 +47,14 @@
                   <p>Submit Application @if($applicant->submission_complete_status == 1) <i class="fa fa-check"></i> @endif</p>
                 </a>
               </li>
+              @if($applicant->status == 'ADMITTED')
               <li class="nav-item">
                 <a href="{{ url('application/other-information') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Other Information</p>
+                  <p>More Information</p>
                 </a>
               </li>
+              @endif
           @elseif(Auth::user()->hasRole('student'))
           <li class="nav-item">
             <a href="#" class="nav-link">

@@ -20,12 +20,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Other Information</h1>
+            <h1 class="m-0">More Information</h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item active"><a href="#">Home</a></li>
-              <li class="breadcrumb-item"><a href="#">Other Information</a></li>
+              <li class="breadcrumb-item"><a href="#">More Information</a></li>
             </ol>
           </div><!-- /.col -->
         </div><!-- /.row -->
@@ -134,7 +134,7 @@
 
             <div class="card card-default">
               <div class="card-header">
-                <h3 class="card-title">{{ __('Hostel Status Verification') }}</h3>
+                <h3 class="card-title">{{ __('Hostel Request') }}</h3>
               </div>
               <!-- /.card-header -->
               {!! Form::open(['url'=>'application/update-hostel-status']) !!}
@@ -142,14 +142,14 @@
                   {!! Form::input('hidden','applicant_id',$applicant->id) !!}
 
                   <label class="radio-inline">
-                    <input type="radio" name="hostel_status" value="1"> I require hostel accomodation
+                    <input type="radio" name="hostel_status" value="1"> I require on campus accomodation
                   </label>
                   <label class="radio-inline">
-                    <input type="radio" name="hostel_status" value="0"> I don't require hostel accomodation
+                    <input type="radio" name="hostel_status" value="0"> I don't require on campus accomodation
                   </label>
               </div>
               <div class="card-footer">
-              <button type="submit" class="btn btn-primary">{{ __('Update Hostel Status') }}</button>
+              <button type="submit" class="btn btn-primary">{{ __('Submit Hostel Request') }}</button>
             </div>
             {!! Form::close() !!}
             </div>
