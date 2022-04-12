@@ -42,6 +42,7 @@ class AdmissionController extends Controller
     	    })->where('payable_id',$applicant->id)->where('payable_type','applicant')->first();
     	}else{
     		$hostel_fee = null;
+    		$hostel_fee_invoice = null;
     	}
 
 
@@ -79,6 +80,7 @@ class AdmissionController extends Controller
     	    })->where('payable_id',$applicant->id)->where('payable_type','applicant')->first();
     	}else{
     		$insurance_fee = null;
+    		$insurance_fee_invoice = null;
     	}
     	$data = [
            'applicant'=>$applicant,
