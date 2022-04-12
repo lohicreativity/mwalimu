@@ -153,12 +153,12 @@ class AdmissionController extends Controller
     			$query->where('name','LIKE','%Hostel%');
     		})->where('study_academic_year_id',$study_academic_year->id)->first();
     		if($applicant->country->code == 'TZ'){
-             $amount = $program_fee->amount_in_tzs;
-             $currency = 'TZS';
-         }else{
-             $amount = $program_fee->amount_in_usd;
-             $currency = 'USD';
-         }
+	             $amount = $program_fee->amount_in_tzs;
+	             $currency = 'TZS';
+	         }else{
+	             $amount = $program_fee->amount_in_usd;
+	             $currency = 'USD';
+	         }
 
         $invoice = new Invoice;
         $invoice->reference_no = 'MNMA-'.time();
@@ -260,14 +260,6 @@ class AdmissionController extends Controller
     	}else{
     		$insurance_fee = null;
     	}
-
-         $fee_amount = FeeAmount::whereHas('feeItem',function($query){
-                   return $query->where('name','LIKE','%Appeal%');
-            })->with(['feeItem.feeType'])->where('study_academic_year_id',$results[0]->moduleAssignment->study_academic_year_id)->first();
-
-         if(!$fee_amount){
-            return redirect()->back()->with('error','No fee amount set for results appeal');
-         }
 
          
 
