@@ -46,13 +46,14 @@
               </div>
               <!-- /.card-header -->
               <div class="card-body">
+                @if($gateway_payment)
+                   <div class="alert alert-success">Payment Completed Successfully.</div>
+                @endif
                 @if($fee_amount)
                  <table class="table table-bordered">
                     <tr>
                        <td>Fee Item</td>
                        <td>Fee Amount</td>
-                       <td>Control Number</td>
-                       <td>Status</td>
                     </tr>
                     <tr>
                        <td>{{ $fee_amount->feeItem->feeType->name }}</td>
@@ -61,17 +62,13 @@
                        @else
                        <td>{{ $fee_amount->amount_in_usd }} USD</td>
                        @endif
-                       <td>
-                       @if($invoice)
-                       {{ $invoice->control_no }} <a href="#" onclick="window.location.reload();"><i class="fa fa-refresh" ></i> Refresh</a>
-                       @endif
-                       </td>
-                       <td>
-                        @if($invoice)
-                           @if($gateway_payment) <span class="badge badge-success">Paid</span> @else <span class="badge badge-warning">Not Paid</span> @endif
-                        @endif
-                       </td>
-                  </tr>
+                    </tr>
+                    @if($invoice)
+                    <tr>
+                      <td>Control Number</td>
+                      <td>{{ $invoice->control_no }} <a href="#" onclick="window.location.reload();"><i class="fa fa-refresh" ></i> Refresh</a></td>
+                    </tr>
+                    @endif
                     @if(!$invoice)
                     <tr>
                       <td>
@@ -83,23 +80,6 @@
                         {!! Form::close() !!}
                       </td>
                     </tr>
-                    @endif
-
-                    @if($applicant->status == 'ADMITTED')
-                       <tr>
-                         <td>Tuition Fee</td>
-                         <td>{{ $tuition_fee_amount }}</td>
-                         <td>
-                          @if($tuition_fee_invoice) 
-                              {{ $tuition_fee_invoice->control_no }}
-                          @endif
-                         </td>
-                         <td>
-                          @if($tuition_fee_invoice) 
-                              @if($tuition_fee_invoice->gatewayPayment) <span class="badge badge-success">Paid</span> @else <span class="badge badge-warning">Not Paid</span> @endif
-                          @endif
-                         </td>
-                       </tr>
                     @endif
                  </table>
                  @else
