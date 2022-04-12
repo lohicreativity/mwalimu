@@ -31,7 +31,7 @@ class AdmissionController extends Controller
     	})->first();
     	$program_fee = ProgramFee::where('study_academic_year_id',$study_academic_year->id)->where('campus_program_id',$applicant->selections[0]->campus_program_id)->first();
     	$program_fee_invoice = Invoice::whereHas('feeType',function($query){
-                   $query->where('name','LIKE','%Programme fee%');
+                   $query->where('name','LIKE','%Tuition%');
     	})->where('payable_id',$applicant->id)->where('payable_type','applicant')->first();
     	if($applicant->hostel_available_status == 1){
     		$hostel_fee = FeeAmount::whereHas('feeItem',function($query){
