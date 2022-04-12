@@ -56,11 +56,11 @@ class AdmissionController extends Controller
     	}
         
         $other_fees_tzs = FeeAmount::whereHas('feeItem',function($query){
-    			$query->where('name','NOT LIKE','%NACTE%')->orWhere('name','NOT LIKE','%TCU%');
-    		})->where('study_academic_year_id',$study_academic_year->id)->where('is_mandatory',1)->sum('amount_in_tzs');
+    			$query->where('is_mandatory',1)->where('name','NOT LIKE','%NACTE%')->where('name','NOT LIKE','%TCU%');
+    		})->where('study_academic_year_id',$study_academic_year->id)->sum('amount_in_tzs');
         $other_fees_usd = FeeAmount::whereHas('feeItem',function($query){
-    			$query->where('name','NOT LIKE','%NACTE%')->orWhere('name','NOT LIKE','%TCU%');
-    		})->where('study_academic_year_id',$study_academic_year->id)->where('is_mandatory',1)->sum('amount_in_usd');
+    			$query->where('is_mandatory',1)->where('name','NOT LIKE','%NACTE%')->where('name','NOT LIKE','%TCU%');
+    		})->where('study_academic_year_id',$study_academic_year->id)->sum('amount_in_usd');
 
         $other_fees_tzs = $other_fees_tzs + $quality_assurance_fee->amount_in_tzs;
         $other_fees_usd = $other_fees_usd + $quality_assurance_fee->amount_in_usd;
@@ -202,11 +202,11 @@ class AdmissionController extends Controller
     	}
         
         $other_fees_tzs = FeeAmount::whereHas('feeItem',function($query){
-    			$query->where('name','NOT LIKE','%NACTE%')->orWhere('name','NOT LIKE','%TCU%');
-    		})->where('study_academic_year_id',$study_academic_year->id)->where('is_mandatory',1)->sum('amount_in_tzs');
+    			$query->where('is_mandatory',1)->where('name','NOT LIKE','%NACTE%')->where('name','NOT LIKE','%TCU%');
+    		})->where('study_academic_year_id',$study_academic_year->id)->sum('amount_in_tzs');
         $other_fees_usd = FeeAmount::whereHas('feeItem',function($query){
-    			$query->where('name','NOT LIKE','%NACTE%')->orWhere('name','NOT LIKE','%TCU%');
-    		})->where('study_academic_year_id',$study_academic_year->id)->where('is_mandatory',1)->sum('amount_in_usd');
+    			$query->where('is_mandatory',1)->where('name','NOT LIKE','%NACTE%')->where('name','NOT LIKE','%TCU%');
+    		})->where('study_academic_year_id',$study_academic_year->id)->sum('amount_in_usd');
 
         $other_fees_tzs = $other_fees_tzs + $quality_assurance_fee->amount_in_tzs;
         $other_fees_usd = $other_fees_usd + $quality_assurance_fee->amount_in_usd;
