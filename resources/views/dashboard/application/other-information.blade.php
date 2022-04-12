@@ -142,10 +142,10 @@
                   {!! Form::input('hidden','applicant_id',$applicant->id) !!}
 
                   <label class="radio-inline">
-                    <input type="radio" name="hostel_status" value="1"> I require on campus accomodation
+                    <input type="radio" name="hostel_status" value="1" @if($applicant->hostel->status === 1) checked="checked" @endif> I require on campus accomodation
                   </label>
                   <label class="radio-inline">
-                    <input type="radio" name="hostel_status" value="0"> I don't require on campus accomodation
+                    <input type="radio" name="hostel_status" value="0" @if($applicant->hostel->status === 0) checked="checked" @endif> I do not require on campus accomodation
                   </label>
               </div>
               <div class="card-footer">
