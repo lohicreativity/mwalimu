@@ -106,6 +106,8 @@ class AdmissionController extends Controller
     	$applicant = User::find(Auth::user()->id)->applicants()->with(['programLevel','country','applicationWindow','selections'=>function($query){
     		  $query->where('status','SELECTED');
     	}])->where('campus_id',session('applicant_campus_id'))->first();
+    	$email = $applicant->email? $applicant->email : 'admission@mnma.ac.tz';
+
     	$ac_year = date('Y',strtotime($applicant->applicationWindow->end_date));
     	$study_academic_year = StudyAcademicYear::whereHas('academicYear',function($query) use($ac_year){
     		   $query->where('year','LIKE','%'.$ac_year.'%');
@@ -133,6 +135,8 @@ class AdmissionController extends Controller
         $approved_by = 'SP';
         $inst_id = config('constants.SUBSPCODE');
 
+
+
         $result = $this->requestControlNumber($request,
                                     $invoice->reference_no,
                                     $inst_id,
@@ -143,7 +147,7 @@ class AdmissionController extends Controller
                                     $applicant->id,
                                     $applicant->first_name.' '.$applicant->surname,
                                     $applicant->phone,
-                                    $applicant->email,
+                                    $email,
                                     $generated_by,
                                     $approved_by,
                                     $program_fee->feeItem->feeType->duration,
@@ -184,7 +188,7 @@ class AdmissionController extends Controller
                                     $applicant->id,
                                     $applicant->first_name.' '.$applicant->surname,
                                     $applicant->phone,
-                                    $applicant->email,
+                                    $email,
                                     $generated_by,
                                     $approved_by,
                                     $hostel_fee->feeItem->feeType->duration,
@@ -246,7 +250,7 @@ class AdmissionController extends Controller
                                     $applicant->id,
                                     $applicant->first_name.' '.$applicant->surname,
                                     $applicant->phone,
-                                    $applicant->email,
+                                    $email,
                                     $generated_by,
                                     $approved_by,
                                     $feeType->duration,
