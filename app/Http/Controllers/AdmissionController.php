@@ -105,12 +105,12 @@ class AdmissionController extends Controller
     {
     	$applicant = User::find(Auth::user()->id)->applicants()->with(['programLevel','country','applicationWindow','selections'=>function($query){
     		  $query->where('status','SELECTED');
-    	},'feeItem.feeType'])->where('campus_id',session('applicant_campus_id'))->first();
+    	}])->where('campus_id',session('applicant_campus_id'))->first();
     	$ac_year = date('Y',strtotime($applicant->applicationWindow->end_date));
     	$study_academic_year = StudyAcademicYear::whereHas('academicYear',function($query){
     		   $query->where('year','LIKE','%'.$ac_year.'%');
     	})->first();
-    	$program_fee = ProgramFee::where('study_academic_year_id',$study_academic_year->id)->where('campus_program_id',$applicant->selections[0]->campus_program_id)->first();
+    	$program_fee = ProgramFee::with('feeItem.feeType')->where('study_academic_year_id',$study_academic_year->id)->where('campus_program_id',$applicant->selections[0]->campus_program_id)->first();
     	if($applicant->country->code == 'TZ'){
              $amount = $program_fee->amount_in_tzs;
              $currency = 'TZS';
