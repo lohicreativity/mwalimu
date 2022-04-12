@@ -4,7 +4,7 @@
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
           @if(Auth::user()->hasRole('applicant'))
-          
+            @if($applicant->status == null)
               <li class="nav-item">
                 <a href="{{ url('application/basic-information') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
@@ -47,11 +47,24 @@
                   <p>Submit Application @if($applicant->submission_complete_status == 1) <i class="fa fa-check"></i> @endif</p>
                 </a>
               </li>
+              @endif
               @if($applicant->status == 'ADMITTED')
               <li class="nav-item">
                 <a href="{{ url('application/other-information') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>More Information</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ url('application/admission-confirmation') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Admission Confirmation</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ url('admission/payments') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Payments</p>
                 </a>
               </li>
               @endif

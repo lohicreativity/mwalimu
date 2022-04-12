@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AdmissionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +14,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
-    return view('dashboard');
-})->name('dashboard');
+Route::middleware(['auth:sanctum', 'verified'])->group(function () {
+    Route::get('payments',[AdmissionController::class,'payments']);
+
+    Route::get('admission-confirmation',[AdmissionController::class,'confirmSelection']);
+
+    Route::post('request-control-number',[AdmissionController::class,'requestPaymentControlNumber']);
+});
