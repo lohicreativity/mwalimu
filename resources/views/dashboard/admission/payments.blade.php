@@ -60,7 +60,17 @@
                        @else
                        <td>{{ $program_fee->amount_in_usd }} USD</td>
                        @endif
+                       <td>@if($program_fee_invoice) {{ $program_fee_invoice->control_no }}@endif</td>
                        <td></td>
+                    </tr>
+                    <tr>
+                       <td>Other Fees</td>
+                       @if($applicant->country->code == 'TZ')
+                       <td>{{ $other_fees_tzs }} TZS</td>
+                       @else
+                       <td>{{ $other_fees_usd }} USD</td>
+                       @endif
+                       <td>@if($other_fee_invoice) {{ $other_fee_invoice->control_no }}@endif</td>
                        <td></td>
                     </tr>
                     @if($insurance_fee)
@@ -71,7 +81,7 @@
                        @else
                        <td>{{ $insurance_fee->amount_in_usd }} USD</td>
                        @endif
-                       <td></td>
+                       <td>@if($insurance_fee_invoice) {{ $insurance_fee_invoice->control_no }}@endif</td>
                        <td></td>
                     </tr>
                     @endif
@@ -83,7 +93,7 @@
                        @else
                        <td>{{ $hostel_fee->amount_in_usd }} USD</td>
                        @endif
-                       <td></td>
+                       <td>@if($hostel_fee_invoice) {{ $hostel_fee_invoice->control_no }}@endif</td>
                        <td></td>
                     </tr>
                     @endif

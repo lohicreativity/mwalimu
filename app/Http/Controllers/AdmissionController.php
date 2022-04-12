@@ -41,6 +41,33 @@ class AdmissionController extends Controller
     	}else{
     		$hostel_fee = null;
     	}
+
+
+    	if(str_contains($applicant->programLevel->name,'Bachelor')){
+    		$quality_assurance_fee = FeeAmount::whereHas('feeItem',function($query){
+    			$query->where('name','LIKE','%TCU%');
+    		})->where('study_academic_year',$study_academic_year->id)->first();
+    	}else{
+    		$quality_assurance_fee = FeeAmount::whereHas('feeItem',function($query){
+    			$query->where('name','LIKE','%NACTE%');
+    		})->where('study_academic_year',$study_academic_year->id)->first();
+    	}
+        
+        $other_fees_tzs = FeeAmount::whereHas('feeItem',function($query){
+    			$query->where('name','NOT LIKE','%NACTE%')->orWhere('name','NOT LIKE','%TCU%');
+    		})->where('study_academic_year',$study_academic_year->id)->where('is_mandatory',1)->sum('amount_in_tzs');
+        $other_fees_usd = FeeAmount::whereHas('feeItem',function($query){
+    			$query->where('name','NOT LIKE','%NACTE%')->orWhere('name','NOT LIKE','%TCU%');
+    		})->where('study_academic_year',$study_academic_year->id)->where('is_mandatory',1)->sum('amount_in_usd');
+
+        $other_fees_tzs = $other_fees_tzs + $quality_assurance_fee->amount_in_tzs;
+        $other_fees_usd = $other_fees_usd + $quality_assurance_fee->amount_in_usd;
+
+        $other_fee_invoice = Invoice::whereHas('feeType',function($query){
+                   $query->where('name','LIKE','%Miscellaneous%');
+    	    })->where('payable_id',$applicant->id)->where('payable_type','applicant')->first();
+
+
     	if($applicant->insurance_available_status == 0){
             $insurance_fee = FeeAmount::whereHas('feeItem',function($query){
     			$query->where('name','LIKE','%NHIF%');
@@ -56,6 +83,12 @@ class AdmissionController extends Controller
            'program_fee'=>$program_fee,
            'hostel_fee'=>$hostel_fee,
            'insurance_fee'=>$insurance_fee,
+           'other_fees_tzs'=>$other_fees_tzs,
+           'other_fees_usd'=>$other_fees_usd,
+           'program_fee_invoice'=>$program_fee_invoice,
+           'hostel_fee_invoice'=>$hostel_fee_invoice,
+           'insurance_fee_invoice'=>$insurance_fee_invoice,
+           'other_fee_invoice'=>$other_fee_invoice,
            'campus'=>Campus::find(session('applicant_campus_id'))
     	];
     	return view('admission.payments',$data)->withTitle('Payments');
@@ -66,7 +99,7 @@ class AdmissionController extends Controller
      */
     public function requestPaymentControlNumber(Request $request)
     {
-    	$applicant = User::find(Auth::user()->id)->applicants()->with(['country','applicationWindow','selections'=>function($query){
+    	$applicant = User::find(Auth::user()->id)->applicants()->with(['programLevel','country','applicationWindow','selections'=>function($query){
     		  $query->where('status','SELECTED');
     	},'feeItem.feeType'])->where('campus_id',session('applicant_campus_id'))->first();
     	$ac_year = date('Y',strtotime($applicant->applicationWindow->end_date));
@@ -103,10 +136,10 @@ class AdmissionController extends Controller
                                     $program_fee->feeItem->feeType->description,
                                     $program_fee->feeItem->feeType->gfs_code,
                                     $program_fee->feeItem->feeType->payment_option,
-                                    $student->id,
-                                    $student->first_name.' '.$student->surname,
-                                    $student->phone,
-                                    $student->email,
+                                    $applicant->id,
+                                    $applicant->first_name.' '.$applicant->surname,
+                                    $applicant->phone,
+                                    $applicant->email,
                                     $generated_by,
                                     $approved_by,
                                     $program_fee->feeItem->feeType->duration,
@@ -144,10 +177,10 @@ class AdmissionController extends Controller
                                     $hostel_fee->feeItem->feeType->description,
                                     $hostel_fee->feeItem->feeType->gfs_code,
                                     $hostel_fee->feeItem->feeType->payment_option,
-                                    $student->id,
-                                    $student->first_name.' '.$student->surname,
-                                    $student->phone,
-                                    $student->email,
+                                    $applicant->id,
+                                    $applicant->first_name.' '.$applicant->surname,
+                                    $applicant->phone,
+                                    $applicant->email,
                                     $generated_by,
                                     $approved_by,
                                     $hostel_fee->feeItem->feeType->duration,
@@ -155,6 +188,66 @@ class AdmissionController extends Controller
     	}else{
     		$hostel_fee = null;
     	}
+
+    	if(str_contains($applicant->programLevel->name,'Bachelor')){
+    		$quality_assurance_fee = FeeAmount::whereHas('feeItem',function($query){
+    			$query->where('name','LIKE','%TCU%');
+    		})->where('study_academic_year',$study_academic_year->id)->first();
+    	}else{
+    		$quality_assurance_fee = FeeAmount::whereHas('feeItem',function($query){
+    			$query->where('name','LIKE','%NACTE%');
+    		})->where('study_academic_year',$study_academic_year->id)->first();
+    	}
+        
+        $other_fees_tzs = FeeAmount::whereHas('feeItem',function($query){
+    			$query->where('name','NOT LIKE','%NACTE%')->orWhere('name','NOT LIKE','%TCU%');
+    		})->where('study_academic_year',$study_academic_year->id)->where('is_mandatory',1)->sum('amount_in_tzs');
+        $other_fees_usd = FeeAmount::whereHas('feeItem',function($query){
+    			$query->where('name','NOT LIKE','%NACTE%')->orWhere('name','NOT LIKE','%TCU%');
+    		})->where('study_academic_year',$study_academic_year->id)->where('is_mandatory',1)->sum('amount_in_usd');
+
+        $other_fees_tzs = $other_fees_tzs + $quality_assurance_fee->amount_in_tzs;
+        $other_fees_usd = $other_fees_usd + $quality_assurance_fee->amount_in_usd;
+        if($applicant->country->code == 'TZ'){
+        	$other_fees = $other_fees_tzs;
+        	$currency = 'TZS';
+        }else{
+        	$other_fees = $other_fees_usd;
+        	$currency = 'USD';
+        }
+
+        $feeType = FeeType::where('name','LIKE','%Miscellaneous%')->first();
+
+        $invoice = new Invoice;
+        $invoice->reference_no = 'MNMA-'.time();
+        $invoice->amount = $other_fees;
+        $invoice->currency = $currency;
+        $invoice->payable_id = $applicant->id;
+        $invoice->payable_type = 'applicant';
+        $invoice->fee_type_id = $feeType->id;
+        $invoice->save();
+
+
+        $generated_by = 'SP';
+        $approved_by = 'SP';
+        $inst_id = config('constants.SUBSPCODE');
+
+        $result = $this->requestControlNumber($request,
+                                    $invoice->reference_no,
+                                    $inst_id,
+                                    $invoice->amount,
+                                    $feeType->description,
+                                    $feeType->gfs_code,
+                                    $feeType->payment_option,
+                                    $applicant->id,
+                                    $applicant->first_name.' '.$applicant->surname,
+                                    $applicant->phone,
+                                    $applicant->email,
+                                    $generated_by,
+                                    $approved_by,
+                                    $feeType->duration,
+                                    $invoice->currency);
+
     	if($applicant->insurance_available_status == 0){
             $insurance_fee = FeeAmount::whereHas('feeItem',function($query){
     			$query->where('name','LIKE','%NHIF%');
