@@ -79,7 +79,8 @@
              @if(count($applicants) != 0)
              <div class="card">
                <div class="card-header">
-                 <h3 class="card-title">{{ __('Applicants with Insurance Status') }}</h3>
+                 <h3 class="card-title">{{ __('Applicants with Insurance Status') }}</h3><br>
+                 <a href="{{ url('application/download-insurance-status?application_window_id='.$request->get('application_window_id').'&program_level_id='.$request->get('program_level_id')) }}" class="btn btn-primary">Download Insurance Status</a>
                </div>
                <!-- /.card-header -->
                <div class="card-body">
@@ -89,6 +90,7 @@
                          <th>Applicant</th>
                          <th>Insurance Name</th>
                          <th>Card Number</th>
+                         <th>Expiry Date</th>
                        </tr>
                      </thead>
                      <tbody>
@@ -97,6 +99,7 @@
                          <td>{{ $applicant->first_name }} {{ $applicant->middle_name }} {{ $applicant->surname }}</td>
                          <td>@if(count($applicant->insurances) != 0) {{ $applicant->insurances[0]->insurance_name }} @endif</td>
                          <td>@if(count($applicant->insurances) != 0) {{ $applicant->insurances[0]->membership_number }} @endif</td>
+                         <td>@if(count($applicant->insurances) != 0) {{ $applicant->insurances[0]->expire_date }} @endif</td>
                        </tr>
                        @endforeach
                      </tbody>

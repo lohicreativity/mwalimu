@@ -126,4 +126,6 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 
     Route::get('hostel-statuses',[ApplicationController::class,'showHostelStatus']);
     Route::get('insurance-statuses',[ApplicationController::class,'showInsuranceStatus']);
+    Route::get('download-insurance-status',[ApplicationController::class,'downloadInsuranceStatus']);
+    Route::get('download-hostel-status',[ApplicationController::class,'downloadHostelStatus']);
 });

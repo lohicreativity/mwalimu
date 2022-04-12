@@ -79,7 +79,8 @@
              @if(count($applicants) != 0)
              <div class="card">
                <div class="card-header">
-                 <h3 class="card-title">{{ __('Applicants with Hostel Status') }}</h3>
+                 <h3 class="card-title">{{ __('Applicants with Hostel Status') }}</h3><br>
+                 <a href="{{ url('application/download-hostel-status?application_window_id='.$request->get('application_window_id').'&program_level_id='.$request->get('program_level_id')) }}" class="btn btn-primary">Download Hostel Status</a>
                </div>
                <!-- /.card-header -->
                <div class="card-body">

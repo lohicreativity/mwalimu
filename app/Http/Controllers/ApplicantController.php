@@ -288,6 +288,9 @@ class ApplicantController extends Controller
            'fee_amount'=>FeeAmount::whereHas('feeItem.feeType',function($query){
                   $query->where('name','LIKE','%Application Fee%');
             })->with(['feeItem.feeType'])->where('study_academic_year_id',$study_academic_year->id)->first(),
+           'hostel_fee_amount'=>FeeAmount::whereHas('feeItem.feeType',function($query){
+                  $query->where('name','LIKE','%Hostel%');
+            })->with(['feeItem.feeType'])->where('study_academic_year_id',$study_academic_year->id)->first(),
            'invoice'=>$invoice,
            'gateway_payment'=>$invoice? GatewayPayment::where('control_no',$invoice->control_no)->first() : null
         ];
@@ -346,7 +349,7 @@ class ApplicantController extends Controller
              return redirect()->to('application/submission')->with('error','Application window already closed');
         }
        $data = [
-          'applicant'=>User::find(Auth::user()->id)->applicants()->where('campus_id',session('applicant_campus_id'))->first(),
+          'applicant'=>User::find(Auth::user()->id)->applicants()->with('programLevel')->where('campus_id',session('applicant_campus_id'))->first(),
           'campus'=>Campus::find(session('applicant_campus_id')),
        ];
        return view('dashboard.application.upload-documents',$data)->withTitle('Upload Documents');

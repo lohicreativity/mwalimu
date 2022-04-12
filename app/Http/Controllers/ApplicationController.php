@@ -1519,6 +1519,34 @@ class ApplicationController extends Controller
     }
 
     /**
+     * Download insurance status
+     */
+    public function downloadInsuranceStatus(Request $request)
+    {
+        $headers = [
+                      'Cache-Control'       => 'must-revalidate, post-check=0, pre-check=0',   
+                      'Content-type'        => 'text/csv',
+                      'Content-Disposition' => 'attachment; filename=Insurance-Status.csv',
+                      'Expires'             => '0',
+                      'Pragma'              => 'public'
+              ];
+
+        $list = Applicant::has('insurances')->with('insurances')->where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$request->get('program_level_id'))->get();
+
+        $callback = function() use ($list) 
+              {
+                  $file_handle = fopen('php://output', 'w');
+                  fputcsv($file_handle,['Index Number','First Name','Middle Name','Surname','Insurance Name','Card Number','Expiry Date']);
+                  foreach ($list as $row) { 
+                      fputcsv($file_handle, [$row->index_number,$row->first_name,$row->middle_name,$row->surname,$row->insurances[0]->insurance_name,$row->insurances[0]->membership_number,$row->insurances[0]->expire_date]);
+                  }
+                  fclose($file_handle);
+              };
+
+              return response()->stream($callback, 200, $headers);
+    }
+
+    /**
      * Show hostel statuses
      */
     public function showHostelStatus(Request $request)
@@ -1531,5 +1559,33 @@ class ApplicationController extends Controller
            'request'=>$request
         ];
         return view('dashboard.application.hostel-statuses',$data)->withTitle('Applicant Insurance Status');
+    }
+
+    /**
+     * Download hostel status
+     */
+    public function downloadHostelStatus(Request $request)
+    {
+        $headers = [
+                      'Cache-Control'       => 'must-revalidate, post-check=0, pre-check=0',   
+                      'Content-type'        => 'text/csv',
+                      'Content-Disposition' => 'attachment; filename=Hostel-Status.csv',
+                      'Expires'             => '0',
+                      'Pragma'              => 'public'
+              ];
+
+        $list = Applicant::where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$request->get('program_level_id'))->get();
+
+        $callback = function() use ($list) 
+              {
+                  $file_handle = fopen('php://output', 'w');
+                  fputcsv($file_handle,['Index Number','First Name','Middle Name','Surname','Status']);
+                  foreach ($list as $row) { 
+                      fputcsv($file_handle, [$row->index_number,$row->first_name,$row->middle_name,$row->surname,$row->hostel_status == 1? 'Yes' : 'No']);
+                  }
+                  fclose($file_handle);
+              };
+
+              return response()->stream($callback, 200, $headers);
     }
 }

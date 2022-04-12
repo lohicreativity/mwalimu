@@ -89,6 +89,22 @@
                   </div>
                 </div>
               </div>
+              @if($applicant->status == 'REJECTED')
+                <div class="card card-default">
+              <div class="card-header">
+                <h3 class="card-title">{{ __('Application Feedback') }}</h3>
+              </div>
+              <!-- /.card-header -->
+              <!-- form start -->
+                <div class="card-body ss-center">
+                  <div class="row">
+                    <div class="col-12">
+                    <h3 class="ss-color-success"><i class="fa fa-check-circle"></i> We are sorry to inform you that you have not been selected for this academic year.</h3>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              @endif
             @endif
           </div>
         </div>

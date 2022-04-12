@@ -235,15 +235,15 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="{{ url('application/insurance-statuses') }}" class="nav-link">
+                <a href="{{ url('application/insurance-statuses?application_window_id='.session('active_window_id')) }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Insurance Statuses</p>
+                  <p>Insurance Status</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="{{ url('application/hostel-statuses') }}" class="nav-link">
+                <a href="{{ url('application/hostel-statuses?application_window_id='.session('active_window_id')) }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Hostel Statuses</p>
+                  <p>Hostel Request</p>
                 </a>
               </li>
             </ul>

@@ -44,7 +44,7 @@
               <div class="card-body box-profile">
                 <div class="text-center">
                   <img class="profile-user-img img-fluid img-circle"
-                       src="{{ asset('avatars/'.$applicant->image) }}"
+                       src="{{ asset('uploads/'.$applicant->passport_picture) }}"
                        onerror="this.src='{{ asset("img/user-avatar.png") }}'">
                 </div>
 
@@ -87,7 +87,11 @@
                   <div class="card-header" id="headingOne">
                     <h2 class="mb-0">
                       <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#ss-detail-{{ $detail->id}}" aria-expanded="true" aria-controls="collapseOne">
-                        {{ $detail->index_number }}
+                        @if($detail->exam_id == 1)
+                          Form IV Results
+                        @else
+                          Form VI Results
+                        @endif
                       </button>
                     </h2>
                   </div>
@@ -95,12 +99,6 @@
                   <div id="ss-detail-{{ $detail->id }}" class="collapse @if($key == 0) show @endif" aria-labelledby="headingOne" data-parent="#accordionExample">
                     <div class="card-body">
                        <table class="table table-bordered">
-                         <tr><td>Center Name:</td><td>{{ $detail->center_name }}</td></tr>
-                         <tr><td>Center Number:</td><td>{{ $detail->center_number }}</td></tr>
-                         <tr><td>First Name:</td><td>{{ $detail->first_name }}</td></tr>
-                         <tr><td>Middle Name:</td><td>{{ $detail->middle_name }}</td></tr>
-                         <tr><td>Last Name:</td><td>{{ $detail->last_name }}</td></tr>
-                         <tr><td>Sex:</td><td>{{ $detail->sex }}</td></tr>
                          <tr><td>Index Number:</td><td>{{ $detail->index_number }}</td></tr>
                          <tr><td>Division:</td><td>{{ $detail->division }}</td></tr>
                          <tr><td>Points:</td><td>{{ $detail->points }}</td></tr>
@@ -129,8 +127,8 @@
                        <div class="col-6">
                           <div class="form-group">
                             <div class="custom-control custom-checkbox">
-                              <input class="custom-control-input" name="documents_check" type="checkbox" id="documents-check" value="1">
-                              <label for="documents-check" class="custom-control-label">Documents Submitted</label>
+                              <input class="custom-control-input" name="details_check" type="checkbox" id="details-check" value="1">
+                              <label for="details-check" class="custom-control-label">Personal Details</label>
                             </div>
                           </div>
                        </div>

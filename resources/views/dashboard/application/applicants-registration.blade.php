@@ -133,7 +133,7 @@
                       </td>
                       <td>@foreach($applicant->selections as $selection)
                            @if($selection->status == 'SELECTED')
-                           <span class="badge badge-warning">{{ $selection->status }}</span> <a href="{{ url('application/admit-applicant/'.$applicant->id.'/'.$selection->id) }}" class="btn btn-primary">Admit</a>
+                           <span class="badge badge-warning">{{ $selection->status }}</span> <a href="{{ url('application/admit-applicant/'.$applicant->id.'/'.$selection->id) }}" class="btn btn-primary">Register</a>
                            @endif
                           @endforeach
                       </td>
