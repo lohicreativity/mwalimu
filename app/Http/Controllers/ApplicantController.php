@@ -562,7 +562,7 @@ class ApplicantController extends Controller
            }
         }
          $applicant = Applicant::find($request->get('applicant_id'));
-         $applicant->hostel_status = $request->get('nva_status');
+         $applicant->hostel_status = $request->get('hostel_status');
          $applicant->save();
 
          return redirect()->back()->with('message','Hostel status updated successfully');
