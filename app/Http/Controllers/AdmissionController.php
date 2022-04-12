@@ -107,7 +107,7 @@ class AdmissionController extends Controller
     		  $query->where('status','SELECTED');
     	}])->where('campus_id',session('applicant_campus_id'))->first();
     	$ac_year = date('Y',strtotime($applicant->applicationWindow->end_date));
-    	$study_academic_year = StudyAcademicYear::whereHas('academicYear',function($query){
+    	$study_academic_year = StudyAcademicYear::whereHas('academicYear',function($query) use($ac_year){
     		   $query->where('year','LIKE','%'.$ac_year.'%');
     	})->first();
     	$program_fee = ProgramFee::with('feeItem.feeType')->where('study_academic_year_id',$study_academic_year->id)->where('campus_program_id',$applicant->selections[0]->campus_program_id)->first();
