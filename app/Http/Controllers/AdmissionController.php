@@ -8,6 +8,7 @@ use App\Domain\Finance\Models\ProgramFee;
 use App\Domain\Finance\Models\FeeAmount;
 use App\Domain\Finance\Models\FeeItem;
 use App\Domain\Finance\Models\FeeType;
+use App\Domain\Settings\Models\Campus;
 use Illuminate\Support\Facades\Http;
 use App\Models\User;
 use Auth;
@@ -54,7 +55,8 @@ class AdmissionController extends Controller
            'applicant'=>$applicant,
            'program_fee'=>$program_fee,
            'hostel_fee'=>$hostel_fee,
-           'insurance_fee'=>$insurance_fee
+           'insurance_fee'=>$insurance_fee,
+           'campus'=>Campus::find(session('applicant_campus_id'))
     	];
     	return view('admission.payments',$data)->withTitle('Payments');
     }
