@@ -95,7 +95,7 @@ class AdmissionController extends Controller
            'other_fee_invoice'=>$other_fee_invoice,
            'campus'=>Campus::find(session('applicant_campus_id'))
     	];
-    	return view('admission.payments',$data)->withTitle('Payments');
+    	return view('dashboard.admission.payments',$data)->withTitle('Payments');
     }
 
         /**
