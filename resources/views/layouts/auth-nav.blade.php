@@ -271,7 +271,7 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="{{ url('application/applicants-registration') }}" class="nav-link">
+                <a href="{{ url('application/applicants-registration?application_window_id='.session('active_window_id')) }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Applicants Registration</p>
                 </a>

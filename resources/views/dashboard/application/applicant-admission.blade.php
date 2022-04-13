@@ -20,12 +20,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Applicant Admission</h1>
+            <h1 class="m-0">Applicant Registration</h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item active"><a href="#">Home</a></li>
-              <li class="breadcrumb-item"><a href="#">Applicant Admission</a></li>
+              <li class="breadcrumb-item"><a href="#">Applicant Registration</a></li>
             </ol>
           </div><!-- /.col -->
         </div><!-- /.row -->
@@ -112,6 +112,144 @@
                 </div>
               </div>
 
+              <div class="accordion" id="accordionExample-2">
+                @if($applicant->birth_certificate)
+                <div class="card">
+                  <div class="card-header" id="ss-birth-certificate">
+                    <h2 class="mb-0">
+                      <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        Birth Certificate
+                      </button>
+                    </h2>
+                  </div>
+
+                  <div id="collapseOne" class="collapse" aria-labelledby="ss-birth-certificate" data-parent="#accordionExample-2">
+                    <div class="card-body">
+                      @if(explode('.',$applicant->birth_certificate)[1] == 'pdf')
+                         <iframe
+                              src="https://drive.google.com/viewerng/viewer?embedded=true&url={{ asset('uploads/'.$applicant->birth_certificate) }}#toolbar=0&scrollbar=0"
+                              frameBorder="0"
+                              scrolling="auto"
+                              height="auto"
+                              width="100%"
+                          ></iframe>
+                      @else
+                         <img src="{{ asset('uploads/'.$applicant->birth_certificate) }}" height="auto" width="100%">
+                      @endif
+                    </div>
+                  </div>
+                </div>
+                @endif
+                @if($applicant->o_level_certificate)
+                <div class="card">
+                  <div class="card-header" id="ss-o-level-certificate">
+                    <h2 class="mb-0">
+                      <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        O-Level Certificate
+                      </button>
+                    </h2>
+                  </div>
+
+                  <div id="collapseOne" class="collapse" aria-labelledby="ss-o-level-certificate" data-parent="#accordionExample-2">
+                    <div class="card-body">
+                      @if(explode('.',$applicant->o_level_certificate)[1] == 'pdf')
+                         <iframe
+                              src="https://drive.google.com/viewerng/viewer?embedded=true&url={{ asset('uploads/'.$applicant->o_level_certificate) }}#toolbar=0&scrollbar=0"
+                              frameBorder="0"
+                              scrolling="auto"
+                              height="auto"
+                              width="100%"
+                          ></iframe>
+                      @else
+                         <img src="{{ asset('uploads/'.$applicant->o_level_certificate) }}" height="auto" width="100%">
+                      @endif
+                    </div>
+                  </div>
+                </div>
+                @endif
+                @if($applicant->a_level_certificate)
+                <div class="card">
+                  <div class="card-header" id="ss-a-level-certificate">
+                    <h2 class="mb-0">
+                      <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        A-Level Certificate
+                      </button>
+                    </h2>
+                  </div>
+
+                  <div id="collapseOne" class="collapse" aria-labelledby="ss-a-level-certificate" data-parent="#accordionExample-2">
+                    <div class="card-body">
+                      @if(explode('.',$applicant->a_level_certificate)[1] == 'pdf')
+                         <iframe
+                              src="https://drive.google.com/viewerng/viewer?embedded=true&url={{ asset('uploads/'.$applicant->a_level_certificate) }}#toolbar=0&scrollbar=0"
+                              frameBorder="0"
+                              scrolling="auto"
+                              height="auto"
+                              width="100%"
+                          ></iframe>
+                      @else
+                         <img src="{{ asset('uploads/'.$applicant->a_level_certificate) }}" height="auto" width="100%">
+                      @endif
+                    </div>
+                  </div>
+                </div>
+                @endif
+                @if($applicant->diploma_certificate)
+                <div class="card">
+                  <div class="card-header" id="ss-diploma-certificate">
+                    <h2 class="mb-0">
+                      <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        Diploma Certificate
+                      </button>
+                    </h2>
+                  </div>
+
+                  <div id="collapseOne" class="collapse" aria-labelledby="ss-diploma-certificate" data-parent="#accordionExample-2">
+                    <div class="card-body">
+                      @if(explode('.',$applicant->diploma_certificate)[1] == 'pdf')
+                         <iframe
+                              src="https://drive.google.com/viewerng/viewer?embedded=true&url={{ asset('uploads/'.$applicant->diploma_certificate) }}#toolbar=0&scrollbar=0"
+                              frameBorder="0"
+                              scrolling="auto"
+                              height="auto"
+                              width="100%"
+                          ></iframe>
+                      @else
+                         <img src="{{ asset('uploads/'.$applicant->diploma_certificate) }}" height="auto" width="100%">
+                      @endif
+                    </div>
+                  </div>
+                </div>
+                @endif
+                @if($applicant->avn_certificate)
+                <div class="card">
+                  <div class="card-header" id="ss-avn-certificate">
+                    <h2 class="mb-0">
+                      <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        AVN Certificate
+                      </button>
+                    </h2>
+                  </div>
+
+                  <div id="collapseOne" class="collapse" aria-labelledby="ss-avn-certificate" data-parent="#accordionExample-2">
+                    <div class="card-body">
+                      @if(explode('.',$applicant->avn_certificate)[1] == 'pdf')
+                         <iframe
+                              src="https://drive.google.com/viewerng/viewer?embedded=true&url={{ asset('uploads/'.$applicant->avn_certificate) }}#toolbar=0&scrollbar=0"
+                              frameBorder="0"
+                              scrolling="auto"
+                              height="auto"
+                              width="100%"
+                          ></iframe>
+                      @else
+                         <img src="{{ asset('uploads/'.$applicant->avn_certificate) }}" height="auto" width="100%">
+                      @endif
+                    </div>
+                  </div>
+                </div>
+                @endif
+              </div><!-- end of accordian -->
+
               <div class="card">
                  {!! Form::open(['url'=>'application/register-applicant','class'=>'ss-form-processing']) !!}
                  <div class="card-body">
@@ -137,16 +275,18 @@
                        <div class="col-6">
                           <div class="form-group">
                             <div class="custom-control custom-checkbox">
-                              <input class="custom-control-input" name="health_insurance_check" type="checkbox" id="health-insurance-check" value="1">
+                              <input class="custom-control-input" name="health_insurance_check" type="checkbox" id="health-insurance-check" value="1" @if($applicant->insurance_check == 1) checked="checked" @endif disabled readonly>
                               <label for="health-insurance-check" class="custom-control-label">Health Insurance</label>
+                              <input type="hidden" name="health_insurance_check" @if($applicant->insurance_check == 1) value="1" @else value="0" @endif>
                             </div>
                           </div>
                        </div>
                        <div class="col-6">
                           <div class="form-group">
                             <div class="custom-control custom-checkbox">
-                              <input class="custom-control-input" name="fee_payment_check" type="checkbox" id="fee-payment-check" value="1">
+                              <input class="custom-control-input" name="fee_payment_check" type="checkbox" id="fee-payment-check" value="1" @if($applicant->tuition_payment_check == 1 && $applicant->other_payment_check == 1) checked="checked" @endif disabled readonly>
                               <label for="fee-payment-check" class="custom-control-label">Fee Payment</label>
+                              <input type="hidden" name="fee_payment_check" @if($applicant->tuition_payment_check == 1 && $applicant->other_payment_check == 1) value="1" @else value="0" @endif>
                             </div>
                           </div>
                        </div>
