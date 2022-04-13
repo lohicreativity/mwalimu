@@ -53,10 +53,11 @@ class CreateApplicantsTable extends Migration
             $table->tinyInteger('results_complete_status')->default(0);
             $table->tinyInteger('programs_complete_status')->default(0);
             $table->tinyInteger('submission_complete_status')->default(0);
-            $table->tinyInteger('results_check')->default(0);
-            $table->tinyInteger('payment_check')->default(0);
-            $table->tinyInteger('insurance_check')->default(0);
-            $table->tinyInteger('documents_check')->default(0);
+            $table->tinyInteger('results_check')->nullable();
+            $table->tinyInteger('tuition_payment_check')->nullable();
+            $table->tinyInteger('other_payment_check')->nullable();
+            $table->tinyInteger('insurance_check')->nullable();
+            $table->tinyInteger('personal_info_check')->nullable();
             $table->integer('rank_points')->nullable();
             $table->timestamps();
             $table->softDeletes();

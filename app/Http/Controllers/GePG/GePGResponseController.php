@@ -116,6 +116,19 @@ class GePGResponseController extends Controller
 			$applicant = Applicant::find($invoice->payable_id);
 			$applicant->payment_complete_status = 1;
 			$applicant->save();
+
+			if(str_contains($invoice->feeType->name,'Tuition Fee')){
+				$percentage = $data['paid_amount']/$invoice->amount;
+				$applicant = Applicant::find($invoice->payable_id);
+			    $applicant->tuition_payment_check = $percentage >= 0.6? 1 : 0;
+			    $applicant->save();
+			}
+
+			if(str_contains($invoice->feeType->name,'Miscellaneous')){
+				$applicant = Applicant::find($invoice->payable_id);
+			    $applicant->other_payment_check = 1;
+			    $applicant->save();
+			}
 		}
 
 		if($invoice->payable_type == 'student'){
