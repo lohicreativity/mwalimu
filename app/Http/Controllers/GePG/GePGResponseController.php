@@ -126,7 +126,7 @@ class GePGResponseController extends Controller
 
 			if(str_contains($invoice->feeType->name,'Miscellaneous')){
 				$applicant = Applicant::find($invoice->payable_id);
-			    $applicant->other_payment_check = 1;
+			    $applicant->other_payment_check = $data['paid_amount'] == $invoice->amount? 1 : 0;
 			    $applicant->save();
 			}
 		}
