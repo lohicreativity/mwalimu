@@ -122,7 +122,7 @@ class AdmissionController extends Controller
          }
 
         $invoice = new Invoice;
-        $invoice->reference_no = 'MNMA-'.time();
+        $invoice->reference_no = 'MNMA-TF-'.time();
         $invoice->amount = $amount;
         $invoice->currency = $currency;
         $invoice->payable_id = $applicant->id;
@@ -165,7 +165,7 @@ class AdmissionController extends Controller
 	         }
 
         $invoice = new Invoice;
-        $invoice->reference_no = 'MNMA-'.time();
+        $invoice->reference_no = 'MNMA-'.$hostel_fee->feeItem->feeType->code.'-'.time();
         $invoice->amount = $amount;
         $invoice->currency = $currency;
         $invoice->payable_id = $applicant->id;
@@ -227,7 +227,7 @@ class AdmissionController extends Controller
         $feeType = FeeType::where('name','LIKE','%Miscellaneous%')->first();
 
         $invoice = new Invoice;
-        $invoice->reference_no = 'MNMA-'.time();
+        $invoice->reference_no = 'MNMA-MSC'.time();
         $invoice->amount = $other_fees;
         $invoice->currency = $currency;
         $invoice->payable_id = $applicant->id;

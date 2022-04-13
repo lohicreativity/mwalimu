@@ -49,7 +49,7 @@ class NHIFController extends Controller
     {
     	$url = 'http://196.13.105.15/omrs/stsidentity';
     	$data = [
-            'grant_type'=>'client_credential',
+            'grant_type'=>'client_credentials',
             'client_id'=>'MNMAS',
             'client_secret'=>'MNMAS',
             'scope'=>'OMRS',
@@ -57,7 +57,7 @@ class NHIFController extends Controller
     	];
 
     	// $res = Http::withHeaders([
-     //          'Content-Type'=>'application/x-www-form-urlencoded'
+        //          'Content-Type'=>'application/x-www-form-urlencoded'
     	// ])->post($url,$data);
 
     	  $ch = curl_init();

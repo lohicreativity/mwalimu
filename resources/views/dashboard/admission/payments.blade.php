@@ -60,7 +60,7 @@
                        @else
                        <td>{{ $program_fee->amount_in_usd }} USD</td>
                        @endif
-                       <td>@if($program_fee_invoice) {{ $program_fee_invoice->control_no }}@endif</td>
+                       <td>@if($program_fee_invoice) {{ $program_fee_invoice->control_no }}@endif <a href="#" onclick="window.location.reload();"><i class="fa fa-refresh" ></i> Refresh</a></td>
                        <td></td>
                     </tr>
                     <tr>
@@ -70,7 +70,7 @@
                        @else
                        <td>{{ $other_fees_usd }} USD</td>
                        @endif
-                       <td>@if($other_fee_invoice) {{ $other_fee_invoice->control_no }}@endif</td>
+                       <td>@if($other_fee_invoice) {{ $other_fee_invoice->control_no }}@endif <a href="#" onclick="window.location.reload();"><i class="fa fa-refresh" ></i> Refresh</a></td>
                        <td></td>
                     </tr>
                     @if($insurance_fee)
@@ -81,7 +81,7 @@
                        @else
                        <td>{{ $insurance_fee->amount_in_usd }} USD</td>
                        @endif
-                       <td>@if($insurance_fee_invoice) {{ $insurance_fee_invoice->control_no }}@endif</td>
+                       <td>@if($insurance_fee_invoice) {{ $insurance_fee_invoice->control_no }}@endif <a href="#" onclick="window.location.reload();"><i class="fa fa-refresh" ></i> Refresh</a></td>
                        <td></td>
                     </tr>
                     @endif
@@ -93,7 +93,7 @@
                        @else
                        <td>{{ $hostel_fee->amount_in_usd }} USD</td>
                        @endif
-                       <td>@if($hostel_fee_invoice) {{ $hostel_fee_invoice->control_no }}@endif</td>
+                       <td>@if($hostel_fee_invoice) {{ $hostel_fee_invoice->control_no }}@endif <a href="#" onclick="window.location.reload();"><i class="fa fa-refresh" ></i> Refresh</a></td>
                        <td></td>
                     </tr>
                     @endif
