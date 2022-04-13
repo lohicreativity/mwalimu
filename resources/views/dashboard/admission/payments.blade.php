@@ -97,6 +97,7 @@
                        <td></td>
                     </tr>
                     @endif
+                    @if(!$program_fee_invoice)
                     <tr>
                       <td>
                         {!! Form::open(['url'=>'admission/request-control-number','class'=>'ss-form-processing']) !!}
@@ -106,6 +107,7 @@
                         {!! Form::close() !!}
                       </td>
                     </tr>
+                    @endif
                  </table>
               </div>
             </div>
