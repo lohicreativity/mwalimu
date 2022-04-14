@@ -9,8 +9,10 @@ use App\Domain\Finance\Models\FeeAmount;
 use App\Domain\Finance\Models\FeeItem;
 use App\Domain\Finance\Models\FeeType;
 use App\Domain\Finance\Models\Invoice;
+use App\Domain\Application\Models\Applicant;
 use App\Domain\Finance\Models\GatewayPayment;
 use App\Domain\Settings\Models\Campus;
+use App\Http\Controllers\NHIFService;
 use Illuminate\Support\Facades\Http;
 use App\Models\User;
 use Auth;
@@ -301,5 +303,17 @@ class AdmissionController extends Controller
             
         return redirect()->back()->with('message','The bill with id '.$billno.' has been queued.', 200);
                         
+        }
+
+        /**
+         * Submit card applications
+         */
+        public function submitCardApplications(Request $request)
+        {
+        	$applicants = Applicant::with(['insurances','selections'=>function($query){
+    		  $query->where('status','SELECTED');
+    	    }])->get();
+    	    $ac_year = StudyAcademicYear::where('status','ACTIVE')->first()->academicYear->year;
+        	return NHIFService::submitCardApplications($ac_year,$applicants);
         }
 }

@@ -20,4 +20,6 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('admission-confirmation',[AdmissionController::class,'confirmSelection']);
 
     Route::post('request-control-number',[AdmissionController::class,'requestPaymentControlNumber']);
+
+    Route::get('submit-card-applications',[AdmissionController::class,'submitCardApplications']);
 });
