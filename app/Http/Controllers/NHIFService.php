@@ -64,7 +64,7 @@ class NHIFService
             'CardApplications'=>$data
         ];
 
-        $url = 'http://196.13.105.15/OMRS/api/v1/Verification/GetStudentsCardStatus?CardNo='.$card_no;
+          $url = 'http://196.13.105.15/OMRS/api/v1/Verification/SubmitCardApplications';
           $token = self::requestToken();
 
           $ch = curl_init();
