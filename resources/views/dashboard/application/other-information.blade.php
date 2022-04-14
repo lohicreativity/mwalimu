@@ -115,6 +115,7 @@
                       <div class="col-12">
                           {!! Form::open(['url'=>'application/update-insurance-status','class'=>'ss-form-processing']) !!}
                             {!! Form::input('hidden','insurance_status',0) !!}
+                            {!! Form::input('hidden','insurance_name',0) !!}
                             {!! Form::input('hidden','applicant_id',$applicant->id) !!}
                             <button type="submit" class="btn btn-primary">Request NHIF</button>
                           {!! Form::close() !!}

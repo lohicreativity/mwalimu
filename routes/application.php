@@ -107,7 +107,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 	Route::get('run-selection',[ApplicationController::class,'showRunSelection']);
 	Route::post('run-applicants-selection',[ApplicationController::class,'runSelection']);
 
-    Route::get('nhif/status',[NHIFController::class,'checkCardStatus']);
+    Route::get('nhif/status',[NHIFController::class,'requestToken']);
 
     Route::get('admit-applicant/{applicant_id}/{selection_id}',[ApplicationController::class,'admitApplicant']);
     Route::post('register-applicant',[ApplicationController::class,'registerApplicant']);

@@ -685,6 +685,8 @@ class ApplicationController extends Controller
         // Phase I
         $campus_programs = CampusProgram::whereHas('program',function($query) use($request){
              $query->where('award_id',$request->get('award_id'));
+        })->whereHas('entryRequirements',function($query) use($request){
+            $query->where('application_window_id',$request->get('application_window_id'));
         })->with(['entryRequirements'=>function($query) use($request){
             $query->where('application_window_id',$request->get('application_window_id'));
         }])->where('campus_id',$staff->campus_id)->get();

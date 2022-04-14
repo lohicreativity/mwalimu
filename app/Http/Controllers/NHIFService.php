@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
-class NHIFController extends Controller
+class NHIFService
 {
     /**
      * Register NHIF member
@@ -45,41 +45,66 @@ class NHIFController extends Controller
     /**
      * Check status
      */
-    public function checkCardStatus(Request $request)
+    public static function checkCardStatus($card_no)
     {
-    	$url = 'http://196.13.105.15/omrs/stsidentity';
-    	$data = [
-            'grant_type'=>'client_credentials',
-            'client_id'=>'MNMAS',
-            'client_secret'=>'MNMAS',
-            'scope'=>'OMRS',
-            'EmployerNo'=>'8002217'
-    	];
-
-    	// $res = Http::withHeaders([
-        //          'Content-Type'=>'application/x-www-form-urlencoded'
-    	// ])->post($url,$data);
+          $url = 'http://196.13.105.15/OMRS/api/v1/Verification/GetStudentsCardStatus?CardNo='.$card_no;
+          $token = self::requestToken();
 
     	  $ch = curl_init();
           curl_setopt($ch, CURLOPT_URL, $url);
           // For xml, change the content-type.
-          curl_setopt ($ch, CURLOPT_HTTPHEADER, Array("Content-Type: application/x-www-form-urlencoded"));
-          curl_setopt($ch, CURLOPT_POST, 1);
-          curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+          curl_setopt ($ch, CURLOPT_HTTPHEADER, Array("Content-Type: application/json",
+            $token));
+          // curl_setopt($ch, CURLOPT_POST, 1);
+          // curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
           curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); // ask for results to be returned
           // Send to remote and return data to caller.
           $result = curl_exec($ch);
           curl_close($ch);
-          return dd(json_decode($result));
-
-    	// return dd($res->getBody());
-
-    	// $url = 'http://196.13.105.15/OMRS/api/v1/Verification/GetStudentsCardStatus?CardNo=101502255519';//.$request->get('card_no');
-    	// $response = Http::withHeaders([
-     //         'Content-Type'=>'application/json',
-     //         'Authorization'=>'Bearer '.config('NHIF_TOKEN')
-    	// ])->get($url);
-
-     //    return dd($response);
+          return json_decode($result);
     }
+
+    /**
+     * Get NHIF token
+     */
+     public static function requestToken()
+     {
+        $url = 'http://196.13.105.15/omrs/stsidentity';
+
+        $curl_handle = curl_init();
+
+               
+        $client = 'MNMAS';   
+
+        curl_setopt_array($curl_handle, array(
+        CURLOPT_URL => $url,
+        CURLOPT_SSLVERSION => 6,
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_ENCODING => "",
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 500,
+        CURLOPT_SSL_VERIFYPEER => false,
+        CURLOPT_CUSTOMREQUEST => "POST",
+        CURLOPT_POSTFIELDS => "client_id=".$client."&client_secret=".$client."&grant_type=client_credentials&scope=OMRS",
+        CURLOPT_HTTPHEADER => array(
+          "Content-Type: application/x-www-form-urlencoded",
+          "cache-control: no-cache"
+        ),
+        ));
+
+        $response = curl_exec($curl_handle);
+        $response = json_decode($response);
+        $StatusCode = curl_getinfo($curl_handle, CURLINFO_HTTP_CODE);
+        $err = curl_error($curl_handle);
+
+        curl_close($curl_handle);
+
+
+        if ($err) {
+           return (object) array('error' => $err);
+        } else {
+           return 'Authorization: '.$response->{'token_type'}.' '.$response->{'access_token'};
+        }
+    }
+
 }

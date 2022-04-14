@@ -26,6 +26,7 @@ use App\Domain\Application\Models\NacteResultDetail;
 use App\Domain\Application\Models\ApplicationWindow;
 use App\Domain\Application\Models\HealthInsurance;
 use App\Domain\Academic\Models\StudyAcademicYear;
+use App\Http\Controllers\NHIFService;
 use Illuminate\Support\Facades\Http;
 use App\Models\User;
 use App\Utils\Util;
@@ -584,15 +585,28 @@ class ApplicantController extends Controller
               return redirect()->back()->withInput()->withErrors($validation->messages());
            }
         }
-
-        if(strtotime($request->get('expire_date')) <= strtotime(now())){
-            return redirect()->back()->with('error','Expire date cannot be less than today\'s date');
-        }
+         
+         if($request->get('insurance_name') != 'NHIF' && $request->get('insurance_name') != 0){
+           if(strtotime($request->get('expire_date')) <= strtotime(now())){
+              return redirect()->back()->with('error','Expire date cannot be less than today\'s date');
+           }
+         }
+         
+         
          $applicant = Applicant::find($request->get('applicant_id'));
-         $applicant->insurance_status = $request->get('insurance_status');
+         if($request->get('insurance_name') == 'NHIF'){
+            $status_code = NHIFService::checkCardStatus($request->get('card_number'))->statusCode;
+            if($status_code == 406){
+                return redirect()->back()->with('error','Invalid card number. Please resubmit the correct card number or request new NHIF card.');
+            }
+            $applicant->insurance_status = $status_code == 406? 0 : 1;
+         }else{
+            $applicant->insurance_status = $request->get('insurance_status');
+         }
          $applicant->save();
 
          if($request->get('insurance_status') == 1){
+
              $insurance = new HealthInsurance;
              $insurance->insurance_name = $request->get('insurance_name');
              $insurance->membership_number = $request->get('card_number');
