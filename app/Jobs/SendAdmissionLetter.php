@@ -27,9 +27,9 @@ class SendAdmissionLetter implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(Request $request)
+    public function __construct($request)
     {
-        $this->request = $request;
+        $this->request = (object) $request;
     }
 
     /**
