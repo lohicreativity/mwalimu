@@ -13,6 +13,7 @@ use App\Domain\Application\Models\Applicant;
 use App\Domain\Finance\Models\FeeAmount;
 use App\Domain\Finance\Models\ProgramFee;
 use NumberToWords\NumberToWords;
+use Illuminate\Http\Request;
 use Mail, PDF;
 
 class SendAdmissionLetter implements ShouldQueue
@@ -41,17 +42,17 @@ class SendAdmissionLetter implements ShouldQueue
         set_time_limit(240);
         ini_set('memory_limit', '1024M');
 
-        $applicants = Applicant::whereHas('intake.applicationWindows',function($query) use($this->request){
+        $applicants = Applicant::whereHas('intake.applicationWindows',function($query) use($this){
              $query->where('id',$this->request->get('application_window_id'));
-        })->whereHas('selections',function($query) use($this->request){
+        })->whereHas('selections',function($query) use($this){
              $query->where('status','APPROVING');
         })->with(['nextOfKin','intake','selections'=>function($query){
              $query->where('status','APPROVING');
         },'selections.campusProgram.program','applicationWindow','country'])->where('program_level_id',$this->request->get('program_level_id'))->get();
 
-        Applicant::whereHas('intake.applicationWindows',function($query) use($this->request){
+        Applicant::whereHas('intake.applicationWindows',function($query) use($this){
              $query->where('id',$this->request->get('application_window_id'));
-        })->whereHas('selections',function($query) use($this->request){
+        })->whereHas('selections',function($query) use($this){
              $query->where('status','APPROVING');
         })->with(['nextOfKin','intake','selections'=>function($query){
              $query->where('status','APPROVING');
