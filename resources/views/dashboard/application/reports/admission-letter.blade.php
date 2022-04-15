@@ -233,7 +233,7 @@
         </div>
         <div class="row">
           <div class="col-md-3 ss-center">
-             <!-- <img src="{{ public_path('/img/coa-tz.png') }}" alt="Config::get('constants.SITE_NAME') }}" class="ss-logo"> -->
+             <img src="{{ public_path('/img/coa-tz.png') }}" alt="Config::get('constants.SITE_NAME') }}" class="ss-logo">
           </div><!-- end of col-md-3 -->
           <div class="col-md-6 ss-center">
              <div class="ss-center">
@@ -242,7 +242,7 @@
               </div>
           </div><!-- end of col-md-6 -->
           <div class="col-md-3 ss-center">
-             <!-- <img src="{{ public_path('/dist/img/logo.png') }}" alt="Config::get('constants.SITE_NAME') }}" class="ss-logo"> -->
+             <img src="{{ public_path('/dist/img/logo.png') }}" alt="Config::get('constants.SITE_NAME') }}" class="ss-logo">
           </div><!-- end of col-md-3 -->
         </div><!-- end of row -->
 
