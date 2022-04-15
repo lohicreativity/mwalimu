@@ -14,6 +14,7 @@ use App\Domain\Finance\Models\FeeAmount;
 use App\Domain\Finance\Models\ProgramFee;
 use NumberToWords\NumberToWords;
 use Illuminate\Http\Request;
+use App\Models\User;
 use Mail, PDF;
 
 class SendAdmissionLetter implements ShouldQueue
@@ -190,7 +191,7 @@ class SendAdmissionLetter implements ShouldQueue
                $user = new User;
                $user->email = 'amanighachocha@gmail.com'; //$applicant->email;
                $user->username = $applicant->first_name.' '.$applicant->surname;
-               Mail::to($user)->send(new AdmissionLetterCreated($applicant,$study_academic_year, $pdf));
+               Mail::to($user)->queue(new AdmissionLetterCreated($applicant,$study_academic_year, $pdf));
 
                $applicant->status = 'ADMITTED';
                $applicant->save();
