@@ -24,7 +24,7 @@ class AdmissionLetterCreated extends Mailable
      *
      * @return void
      */
-    public function __construct(Applicant $applicant, $study_academic_year, $pdf = null)
+    public function __construct(Applicant $applicant, $study_academic_year, $pdf)
     {
         $this->applicant = $applicant;
         $this->study_academic_year = $study_academic_year;
@@ -38,11 +38,11 @@ class AdmissionLetterCreated extends Mailable
      */
     public function build()
     {
-        // $file_name = base_path('public/uploads').'/Admission-Letter-'.$this->applicant->first_name.'-'.$this->applicant->surname.'.pdf';
-        // $attachments = AdmissionAttachment::all();
-        // foreach ($attachments as $attachment) {
-        //     $this->attach(public_path().'/uploads/'.$attachment->file_name);
-        // }    
+        $file_name = base_path('public/uploads'),'Admission-Letter-'.$this->applicant->first_name.'-'.$this->applicant->surname.'.pdf';
+        $attachments = AdmissionAttachment::all();
+        foreach ($attachments as $attachment) {
+            $this->attach(public_path().'/uploads/'.$attachment->file_name);
+        }    
         return $this->view('emails.admission-letter')
                     ->subject('Admission Letter')
                     ->with([
@@ -51,6 +51,6 @@ class AdmissionLetterCreated extends Mailable
                        'notification_message'=>'We are pleased to inform you that you have been admitted to Mwalimu Nyerere Memorial Academy for academic year '.$this->study_academic_year->academicYear->year,
                        'program_name'=>$this->applicant->selections[0]->campusProgram->program->name,
                        'study_year'=>$this->study_academic_year->academicYear->year
-                    ]);
+                    ])->attach($file_name);
     }
 }
