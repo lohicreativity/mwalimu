@@ -14,6 +14,7 @@ use App\Domain\Finance\Models\FeeAmount;
 use App\Domain\Finance\Models\ProgramFee;
 use NumberToWords\NumberToWords;
 use Illuminate\Http\Request;
+use App\Mail\AdmissionLetterCreated;
 use App\Models\User;
 use Mail, PDF;
 
