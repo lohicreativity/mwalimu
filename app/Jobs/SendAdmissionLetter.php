@@ -24,6 +24,8 @@ class SendAdmissionLetter implements ShouldQueue
 
     protected $request;
 
+    public $tries = 5;
+
     /**
      * Create a new job instance.
      *
