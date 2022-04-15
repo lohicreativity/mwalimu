@@ -22,7 +22,7 @@ use Illuminate\Support\Facades\Http;
 use App\Models\User;
 use App\Models\Role;
 use App\Utils\SystemLocation;
-use App\Job\SendAdmissionLetter;
+use App\Jobs\SendAdmissionLetter;
 use App\Mail\AdmissionLetterCreated;
 use NumberToWords\NumberToWords;
 use Validator, Hash, Config, Auth, Mail, PDF;
