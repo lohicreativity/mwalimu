@@ -64,14 +64,14 @@ class SendAdmissionLetter implements ShouldQueue
 
         foreach($applicants as $applicant){
            // try{
-               // $ac_year = date('Y',strtotime($applicant->applicationWindow->end_date));
-               // $ac_year += 1;
-               // $study_academic_year = StudyAcademicYear::whereHas('academicYear',function($query) use($ac_year){
-               //        $query->where('year','LIKE','%'.$ac_year.'%');
-               //  })->first();
-               // if(!$study_academic_year){
-               //     return redirect()->back()->with('error','Admission study academic year not created');
-               // }
+               $ac_year = date('Y',strtotime($applicant->applicationWindow->end_date));
+               $ac_year += 1;
+               $study_academic_year = StudyAcademicYear::whereHas('academicYear',function($query) use($ac_year){
+                      $query->where('year','LIKE','%'.$ac_year.'%');
+                })->first();
+               if(!$study_academic_year){
+                   return redirect()->back()->with('error','Admission study academic year not created');
+               }
 
                // $program_fee = ProgramFee::where('study_academic_year_id',$study_academic_year->id)->where('campus_program_id',4)->first();
 
