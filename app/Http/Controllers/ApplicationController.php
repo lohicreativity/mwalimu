@@ -19,6 +19,7 @@ use App\Domain\Application\Models\AdmissionAttachment;
 use App\Domain\Application\Models\ApplicantProgramSelection;
 use App\Domain\Application\Actions\ApplicantAction;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Bus;
 use App\Models\User;
 use App\Models\Role;
 use App\Utils\SystemLocation;
@@ -1267,7 +1268,7 @@ class ApplicationController extends Controller
      */
     public function sendAdmissionLetter(Request $request)
     {
-        SendAdmissionLetter::dispatch($request->all());
+        Bus::chain(new SendAdmissionLetter($request->all()))->dispatch();
 
         return redirect()->back()->with('message','Admission package sent successfully');
     }
