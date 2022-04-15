@@ -198,5 +198,7 @@ class SendAdmissionLetter implements ShouldQueue
                $applicant->save();
            }catch(\Exception $e){}
         }
+
+        return;
     }
 }
