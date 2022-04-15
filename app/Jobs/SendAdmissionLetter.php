@@ -19,14 +19,16 @@ class SendAdmissionLetter implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    protected $request;
+
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(Request $request)
     {
-        //
+        $this->request = $request;
     }
 
     /**
@@ -39,21 +41,21 @@ class SendAdmissionLetter implements ShouldQueue
         set_time_limit(240);
         ini_set('memory_limit', '1024M');
 
-        $applicants = Applicant::whereHas('intake.applicationWindows',function($query) use($request){
-             $query->where('id',$request->get('application_window_id'));
-        })->whereHas('selections',function($query) use($request){
+        $applicants = Applicant::whereHas('intake.applicationWindows',function($query) use($this->request){
+             $query->where('id',$this->request->get('application_window_id'));
+        })->whereHas('selections',function($query) use($this->request){
              $query->where('status','APPROVING');
         })->with(['nextOfKin','intake','selections'=>function($query){
              $query->where('status','APPROVING');
-        },'selections.campusProgram.program','applicationWindow','country'])->where('program_level_id',$request->get('program_level_id'))->get();
+        },'selections.campusProgram.program','applicationWindow','country'])->where('program_level_id',$this->request->get('program_level_id'))->get();
 
-        Applicant::whereHas('intake.applicationWindows',function($query) use($request){
-             $query->where('id',$request->get('application_window_id'));
-        })->whereHas('selections',function($query) use($request){
+        Applicant::whereHas('intake.applicationWindows',function($query) use($this->request){
+             $query->where('id',$this->request->get('application_window_id'));
+        })->whereHas('selections',function($query) use($this->request){
              $query->where('status','APPROVING');
         })->with(['nextOfKin','intake','selections'=>function($query){
              $query->where('status','APPROVING');
-        },'selections.campusProgram.program.award','applicationWindow','country'])->where('program_level_id',$request->get('program_level_id'))->update(['admission_reference_no'=>$request->get('reference_number')]);
+        },'selections.campusProgram.program.award','applicationWindow','country'])->where('program_level_id',$this->request->get('program_level_id'))->update(['admission_reference_no'=>$this->request->get('reference_number')]);
 
         foreach($applicants as $applicant){
            try{
