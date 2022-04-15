@@ -13,6 +13,7 @@ use App\Domain\Application\Models\Applicant;
 use App\Domain\Finance\Models\FeeAmount;
 use App\Domain\Finance\Models\ProgramFee;
 use NumberToWords\NumberToWords;
+use Illuminate\Http\Request;
 use Mail, PDF;
 
 class SendAdmissionLetter implements ShouldQueue
