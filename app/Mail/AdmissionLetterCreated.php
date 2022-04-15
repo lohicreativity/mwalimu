@@ -24,7 +24,7 @@ class AdmissionLetterCreated extends Mailable
      *
      * @return void
      */
-    public function __construct(Applicant $applicant, $study_academic_year, $pdf)
+    public function __construct(Applicant $applicant, $study_academic_year, $pdf = null)
     {
         $this->applicant = $applicant;
         $this->study_academic_year = $study_academic_year;
