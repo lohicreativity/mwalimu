@@ -11,6 +11,7 @@ use App\Http\Controllers\EntryRequirementController;
 use App\Http\Controllers\NHIFController;
 use App\Http\Controllers\ResultsRequests\NECTAServiceController;
 use App\Http\Controllers\ResultsRequests\NACTEServiceController;
+use App\Http\Controllers\ResultsRequests\OUTServiceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -128,4 +129,5 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
     Route::get('insurance-statuses',[ApplicationController::class,'showInsuranceStatus']);
     Route::get('download-insurance-status',[ApplicationController::class,'downloadInsuranceStatus']);
     Route::get('download-hostel-status',[ApplicationController::class,'downloadHostelStatus']);
+    Route::get('out-results',[OUTServiceController::class,'index']);
 });
