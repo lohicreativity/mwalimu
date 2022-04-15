@@ -1267,7 +1267,7 @@ class ApplicationController extends Controller
      */
     public function sendAdmissionLetter(Request $request)
     {
-        SendAdmissionLetter::dispatch($request->all());
+        SendAdmissionLetter::dispatch($request->all())->delay(now()->addMinutes(10));
 
         return redirect()->back()->with('message','Admission package sent successfully');
     }
