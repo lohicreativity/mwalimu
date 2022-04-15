@@ -1268,7 +1268,7 @@ class ApplicationController extends Controller
      */
     public function sendAdmissionLetter(Request $request)
     {
-        SendAdmissionLetter::dispatch($request->all());
+        Bus::chain([new SendAdmissionLetter($request->all())])->onQueue('queue-send-admission-letters')->dispatch();
 
         return redirect()->back()->with('message','Admission package sent successfully');
     }
