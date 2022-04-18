@@ -32,7 +32,7 @@ class TestJob implements ShouldQueue
     public function handle()
     {
         $users = ['amanighachocha@gmail.com',
-        'amanighachocha@gmail.com','amanighachocha@gmail.com','amanighachocha@gmail.com'
+        'amanighachocha@gmail.com','amanighachocha@gmail.com','amanighachocha@gmail.com',
     'amanighachocha@gmail.com'];
         foreach ($users as $key => $user) {
              Mail::raw('Text to e-mail', function ($message) use($user) {
