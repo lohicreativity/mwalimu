@@ -46,11 +46,11 @@ class AdmissionLetterCreated extends Mailable
         return $this->view('emails.admission-letter')
                     ->subject('Admission Letter')
                     ->with([
-                       'heading'=>'Admission Letter',
-                       'name'=>$this->applicant->first_name.' '.$this->applicant->surname,
-                       'notification_message'=>'We are pleased to inform you that you have been admitted to Mwalimu Nyerere Memorial Academy for academic year '.$this->study_academic_year->academicYear->year,
-                       'program_name'=>$this->applicant->selections[0]->campusProgram->program->name,
-                       'study_year'=>$this->study_academic_year->academicYear->year
+                       // 'heading'=>'Admission Letter',
+                       // 'name'=>$this->applicant->first_name.' '.$this->applicant->surname,
+                       // 'notification_message'=>'We are pleased to inform you that you have been admitted to Mwalimu Nyerere Memorial Academy for academic year '.$this->study_academic_year->academicYear->year,
+                       // 'program_name'=>$this->applicant->selections[0]->campusProgram->program->name,
+                       // 'study_year'=>$this->study_academic_year->academicYear->year
                     ]);
     }
 }
