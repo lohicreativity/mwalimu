@@ -66,12 +66,12 @@ class SendAdmissionLetter implements ShouldQueue
 
         foreach($applicants as $key=>$applicant){
            if($key < 10){
-           // try{
-               $ac_year = date('Y',strtotime($applicant->applicationWindow->end_date));
+           try{
+               $ac_year = 2021;//date('Y',strtotime($applicant->applicationWindow->end_date));
                $ac_year += 1;
                $study_academic_year = StudyAcademicYear::whereHas('academicYear',function($query) use($ac_year){
                       $query->where('year','LIKE','%'.$ac_year.'%');
-                })->first();
+                })->firstOrFail();
                if(!$study_academic_year){
                    return redirect()->back()->with('error','Admission study academic year not created');
                }
@@ -200,7 +200,9 @@ class SendAdmissionLetter implements ShouldQueue
 
                $applicant->status = 'ADMITTED';
                $applicant->save();
-           // }catch(\Exception $e){}
+           }catch(\Exception $e){
+              return $e->getMessage();
+           }
           }
         }
 
