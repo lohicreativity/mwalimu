@@ -56,24 +56,24 @@ class SendAdmissionLetter implements ShouldQueue
              $query->where('status','APPROVING');
         },'selections.campusProgram.program','applicationWindow','country'])->where('program_level_id',$request->program_level_id)->get();
 
-        Applicant::whereHas('intake.applicationWindows',function($query) use($request){
-             $query->where('id',$request->application_window_id);
-        })->whereHas('selections',function($query) use($request){
-             $query->where('status','APPROVING');
-        })->with(['nextOfKin','intake','selections'=>function($query){
-             $query->where('status','APPROVING');
-        },'selections.campusProgram.program.award','applicationWindow','country'])->where('program_level_id',$request->program_level_id)->update(['admission_reference_no'=>$request->reference_number]);
+        // Applicant::whereHas('intake.applicationWindows',function($query) use($request){
+        //      $query->where('id',$request->application_window_id);
+        // })->whereHas('selections',function($query) use($request){
+        //      $query->where('status','APPROVING');
+        // })->with(['nextOfKin','intake','selections'=>function($query){
+        //      $query->where('status','APPROVING');
+        // },'selections.campusProgram.program.award','applicationWindow','country'])->where('program_level_id',$request->program_level_id)->update(['admission_reference_no'=>$request->reference_number]);
 
         foreach($applicants as $applicant){
            try{
-               $ac_year = date('Y',strtotime($applicant->applicationWindow->end_date));
-               $ac_year += 1;
-               $study_academic_year = StudyAcademicYear::whereHas('academicYear',function($query) use($ac_year){
-                      $query->where('year','LIKE','%'.$ac_year.'%');
-                })->first();
-               if(!$study_academic_year){
-                   return redirect()->back()->with('error','Admission study academic year not created');
-               }
+               // $ac_year = date('Y',strtotime($applicant->applicationWindow->end_date));
+               // $ac_year += 1;
+               // $study_academic_year = StudyAcademicYear::whereHas('academicYear',function($query) use($ac_year){
+               //        $query->where('year','LIKE','%'.$ac_year.'%');
+               //  })->first();
+               // if(!$study_academic_year){
+               //     return redirect()->back()->with('error','Admission study academic year not created');
+               // }
 
                // $program_fee = ProgramFee::where('study_academic_year_id',$study_academic_year->id)->where('campus_program_id',4)->first();
 
@@ -195,7 +195,7 @@ class SendAdmissionLetter implements ShouldQueue
                $user = new User;
                $user->email = 'amanighachocha@gmail.com'; //$applicant->email;
                $user->username = $applicant->first_name.' '.$applicant->surname;
-               Mail::to($user)->send(new AdmissionLetterCreated($applicant,$study_academic_year, null));
+               Mail::to($user)->send(new AdmissionLetterCreated($applicant,null, null));
 
                $applicant->status = 'ADMITTED';
                $applicant->save();

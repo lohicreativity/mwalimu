@@ -19,9 +19,9 @@
 
                  <tr height="200" bgcolor="#ffffff" style="padding: 10px 20px;">
                    <td style="padding: 10px 20px; min-height: 400px; width: 100%; color: #000;">
-                     <h3 style="font-size: 20px; text-align: center;">{{ $heading }}</h3>
-                     <p style="font-size: 18px;">Hi, {!! $name !!}</p>
-                     <p style="font-size: 18px;">{!! $notification_message !!}</p><br>
+                     <h3 style="font-size: 20px; text-align: center;"></h3>
+                     <p style="font-size: 18px;">Hi, </p>
+                     <p style="font-size: 18px;"></p><br>
               
                      <p style="font-weight: bold; font-size: 18px; margin-top:30px;">{{ config('constants.SITE_NAME') }}.</p>
                    </td>
