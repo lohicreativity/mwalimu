@@ -27,7 +27,7 @@ class Kernel extends ConsoleKernel
         // $schedule->command('inspire')->hourly();
         $schedule->command('queue:work --timeout=36000')
                  ->timezone('Africa/Dar_es_Salaam')
-                 ->everyFiveMinutes();
+                 ->everyMinute();
     }
 
     /**
