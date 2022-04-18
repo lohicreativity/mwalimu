@@ -64,7 +64,8 @@ class SendAdmissionLetter implements ShouldQueue
         //      $query->where('status','APPROVING');
         // },'selections.campusProgram.program.award','applicationWindow','country'])->where('program_level_id',$request->program_level_id)->update(['admission_reference_no'=>$request->reference_number]);
 
-        foreach($applicants as $applicant){
+        foreach($applicants as $key=>$applicant){
+           if($key < 10){
            try{
                $ac_year = date('Y',strtotime($applicant->applicationWindow->end_date));
                $ac_year += 1;
@@ -200,6 +201,7 @@ class SendAdmissionLetter implements ShouldQueue
                $applicant->status = 'ADMITTED';
                $applicant->save();
            }catch(\Exception $e){}
+          }
         }
 
         return;
