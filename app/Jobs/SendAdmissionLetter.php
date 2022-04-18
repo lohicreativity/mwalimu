@@ -196,7 +196,7 @@ class SendAdmissionLetter implements ShouldQueue
                $user = new User;
                $user->email = 'amanighachocha@gmail.com'; //$applicant->email;
                $user->username = $applicant->first_name.' '.$applicant->surname;
-               Mail::to($user)->send(new AdmissionLetterCreated($applicant,$study_academic_year,null));
+               Mail::to($user)->send(new AdmissionLetterCreated($applicant,null,null));
 
                $applicant->status = 'ADMITTED';
                $applicant->save();
