@@ -185,6 +185,8 @@ class SendAdmissionLetter implements ShouldQueue
                  'nacte_quality_assurance_fee'=>$applicant->country->code == 'TZ'? $nacte_quality_assurance_fee->amount_in_tzs : $nacte_quality_assurance_fee->amount_in_usd,
                  'students_union_fee'=>$applicant->country->code == 'TZ'? $students_union_fee->amount_in_tzs : $students_union_fee->amount_in_usd,
                ];
+
+               return $data;
                $pdf = PDF::loadView('dashboard.application.reports.admission-letter',$data,[],[
                    'margin_top'=>20,
                    'margin_bottom'=>20,

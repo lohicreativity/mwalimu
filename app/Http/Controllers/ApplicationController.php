@@ -1267,8 +1267,7 @@ class ApplicationController extends Controller
      */
     public function sendAdmissionLetter(Request $request)
     {
-        // dispatch(new SendAdmissionLetter($request->all()));
-        dispatch(new \App\Jobs\TestJob);
+        return dispatch(new SendAdmissionLetter($request->all()));
 
         return redirect()->back()->with('message','Admission package sent successfully');
     }
