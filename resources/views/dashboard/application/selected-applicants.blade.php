@@ -219,6 +219,7 @@
                     <thead>
                         <tr>
                           <th>Name</th>
+                          <th>Phone</th>
                           <th>Gender</th>
                           <th>Programme</th>
                           <th>Status</th>
@@ -228,6 +229,7 @@
                  @foreach($applicants as $applicant)
                    <tr>
                       <td>{{ $applicant->first_name }} {{ $applicant->middle_name }} {{ $applicant->surname }}</td>
+                      <td>{{ $applicant->phone }}</td>
                       <td>{{ $applicant->gender }}</td>
                       <td>@foreach($applicant->selections as $selection)
                            @if($selection->status == 'APPROVING')
