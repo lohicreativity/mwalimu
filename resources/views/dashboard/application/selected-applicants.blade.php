@@ -236,7 +236,9 @@
                           @endforeach
                       </td>
                       <td>@foreach($applicant->selections as $selection)
-                           @if($selection->status == 'APPROVING')
+                           @if($selection->status == 'SELECTED')
+                           <span class="badge badge-success">{{ $selection->status }}@if($applicant->multiple_admissions == 1)*@endif</span>
+                           @else
                            <span class="badge badge-warning">{{ $selection->status }}</span>
                            @endif
                           @endforeach
