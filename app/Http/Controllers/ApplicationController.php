@@ -1581,4 +1581,100 @@ class ApplicationController extends Controller
 
         return redirect()->back()->with('message','Applicants retrieved successfully from TCU');
     }
+
+    /**
+     * Show admission confirmation
+     */
+    public function showConfirmAdmission(Request $request)
+    {
+        $data = [
+           'applicant'=>User::find(Auth::user()->id)->applicants()->where('campus_id',session('applicant_campus_id'))->first(),
+           'campus'=>Campus::find(session('applicant_campus_id'))
+        ];
+        return view('dashboard.admission.admission-confirmation',$data)->withTitle('Admission Confirmation');
+    }
+
+    /**
+     * Confirm admission
+     */
+    public function confirmAdmission(Request $request)
+    {
+        $validation = Validator::make($request->all(),[
+            'confirmation_code'=>'required'
+        ]);
+
+        if($validation->fails()){
+           if($request->ajax()){
+              return response()->json(array('error_messages'=>$validation->messages()));
+           }else{
+              return redirect()->back()->withInput()->withErrors($validation->messages());
+           }
+        }
+        $applicant = Applicant::find($request->get('applicant_id'));
+        
+        $url = 'http://41.59.90.200/admission/confirm';
+        $xml_request = '<?xml version=”1.0” encoding=”UTF-8”?>
+                        <Request>
+                        <UsernameToken>
+                        <Username>'.config('constants.TCU_USERNAME').'</Username>
+                        <SessionToken>'.config('constants.TCU_TOKEN').'</SessionToken>
+                        </UsernameToken>
+                        <RequestParameters>
+                        <f4indexno>'.$applicant->index_number.'</f4indexno>
+                        <ConfirmationCode>'.$request->get('confirmation_code').'</ConfirmationCode>
+                        </RequestParameters>
+                        </Request>';
+        $xml_response=simplexml_load_string($this->sendXmlOverPost($url,$xml_request));
+        $json = json_encode($xml_response);
+        $array = json_decode($json,TRUE);
+
+        if($array['Response']['ResponseParameters']['StatusCode'] == 200){
+            $applicant->confirmation_status = 'CONFIRMED';
+            $applicant->save();
+
+            return redirect()->back()->with('message','Admission confirmed successfully');
+        }
+    }
+
+    /**
+     * Confirm admission
+     */
+    public function unconfirmAdmission(Request $request)
+    {
+        $validation = Validator::make($request->all(),[
+            'confirmation_code'=>'required'
+        ]);
+
+        if($validation->fails()){
+           if($request->ajax()){
+              return response()->json(array('error_messages'=>$validation->messages()));
+           }else{
+              return redirect()->back()->withInput()->withErrors($validation->messages());
+           }
+        }
+        $applicant = Applicant::find($request->get('applicant_id'));
+        
+        $url = 'http://41.59.90.200/admission/unconfirm';
+        $xml_request = '<?xml version=”1.0” encoding=”UTF-8”?>
+                        <Request>
+                        <UsernameToken>
+                        <Username>'.config('constants.TCU_USERNAME').'</Username>
+                        <SessionToken>'.config('constants.TCU_TOKEN').'</SessionToken>
+                        </UsernameToken>
+                        <RequestParameters>
+                        <f4indexno>'.$applicant->index_number.'</f4indexno>
+                        <ConfirmationCode>'.$request->get('confirmation_code').'</ConfirmationCode>
+                        </RequestParameters>
+                        </Request>';
+        $xml_response=simplexml_load_string($this->sendXmlOverPost($url,$xml_request));
+        $json = json_encode($xml_response);
+        $array = json_decode($json,TRUE);
+
+        if($array['Response']['ResponseParameters']['StatusCode'] == 200){
+            $applicant->confirmation_status = 'UNCONFIRMED';
+            $applicant->save();
+            
+            return redirect()->back()->with('message','Admission unconfirmed successfully');
+        }
+    }
 }
