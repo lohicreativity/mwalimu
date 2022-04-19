@@ -131,4 +131,6 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
     Route::get('download-hostel-status',[ApplicationController::class,'downloadHostelStatus']);
     Route::get('out-results',[OUTServiceController::class,'index']);
 
+    Route::get('submit-applicants',[ApplicationController::class,'submitApplicants']);
+
 });

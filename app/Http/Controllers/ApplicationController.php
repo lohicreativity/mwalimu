@@ -1434,4 +1434,18 @@ class ApplicationController extends Controller
 
               return response()->stream($callback, 200, $headers);
     }
+
+    /**
+     * Submit Applicants
+     */
+    public function submitApplicants(Request $request)
+    {
+        $data = [
+            'application_window'=>ApplicationWindow::find($request->get('application_window_id')),
+            'program_level'=>Award::find($request->get('program_level_id')),
+            'selected_applicants'=>Applicant::where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$request->get('program_level_id'))->get(),
+            'request'=>$request
+        ];
+        return view('dashboard.application.submit-selected-applicants',$data)->withTitle('Submit Selected Applicants');
+    }
 }
