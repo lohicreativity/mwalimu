@@ -124,7 +124,7 @@ class ApplicationController extends Controller
                  $query->where('id',$request->get('application_window_id'));
             })->whereHas('selections.campusProgram.program',function($query) use($request){
                  $query->where('nta_level_id',$request->get('nta_level_id'))->where('status','APPROVING')->orWhere('status','SELECTED')->orWhere('status','PENDING');
-                 
+
             })->whereHas('selections',function($query) use($request){
                  $query->where('status','APPROVING')->orWhere('status','SELECTED')->orWhere('status','PENDING');
             })->with(['nextOfKin','intake','selections.campusProgram.program'])->where('program_level_id',$request->get('program_level_id'))->paginate(20);
@@ -307,6 +307,7 @@ class ApplicationController extends Controller
                     $log = new ApplicantSubmissionLog;
                     $log->applicant_id = $applicant->id;
                     $log->program_level_id = $request->get('program_level_id');
+                    $log->application_window_id = $request->get('application_window_id');
                     $log->submitted = 1;
                     $log->save();
                   }
@@ -382,6 +383,7 @@ class ApplicationController extends Controller
                     $log = new ApplicantSubmissionLog;
                     $log->applicant_id = $applicant->id;
                     $log->program_level_id = $request->get('program_level_id');
+                    $log->application_window_id = $request->get('application_window_id');
                     $log->submitted = 1;
                     $log->save();
 
@@ -1544,6 +1546,9 @@ class ApplicationController extends Controller
      */
     public function getApplicantsFromTCU(Request $request)
     {
+        if(ApplicantSubmissionLog::where('program_level_id',$request->get('program_level_id'))->where('application_window_id',$request->get('application_window_id'))->count() == 0){
+             return redirect()->back()->with('error','Applicants were not sent to TCU');
+        }
         $url = 'http://41.59.90.200/applicants/getStatus';
         $campus_program = CampusProgram::find($request->get('campus_program_id'));
         $xml_request = '<?xml version="1.0" encoding="UTF-8"?>
