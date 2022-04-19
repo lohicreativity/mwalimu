@@ -282,8 +282,8 @@ class ApplicationController extends Controller
                   <OtherMobileNumber></OtherMobileNumber>
                   <EmailAddress>'.$applicant->email.'</EmailAddress>
                   <Category>A</Category>
-                  <AdmissionStatus>'.$approving_selection? 'provisional admission' : 'not selected'.'</AdmissionStatus>
-                  <ProgrammeAdmitted>'.$approving_selection? $approving_selection->campusProgram->regulator_code : null.'</ProgrammeAdmitted>
+                  <AdmissionStatus>provisional admission</AdmissionStatus>
+                  <ProgrammeAdmitted>'.$approving_selection->campusProgram->regulator_code.'</ProgrammeAdmitted>
                   <Reason>'.$approving_selection? 'eligible' : 'maximum capacity'.'</Reason>
                   <Nationality >'.$applicant->nationality.'</Nationality>
                   <Impairment>'.$applicant->disabilityStatus->name.'</Impairment>
