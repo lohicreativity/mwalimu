@@ -1633,6 +1633,8 @@ class ApplicationController extends Controller
             $applicant->save();
 
             return redirect()->back()->with('message','Admission confirmed successfully');
+        }else{
+            return redirect()->back()->with('error','Unable to unconfirm admission');
         }
     }
 
@@ -1675,6 +1677,8 @@ class ApplicationController extends Controller
             $applicant->save();
             
             return redirect()->back()->with('message','Admission unconfirmed successfully');
+        }else{
+            return redirect()->back()->with('error','Unable to unconfirm admission');
         }
     }
 }
