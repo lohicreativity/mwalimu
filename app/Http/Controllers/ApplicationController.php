@@ -237,8 +237,6 @@ class ApplicationController extends Controller
         $award = Award::find($request->get('program_level_id'));
         $applicants = Applicant::whereHas('intake.applicationWindows',function($query) use($request){
                  $query->where('id',$request->get('application_window_id'));
-            })->whereHas('selections',function($query) use($request){
-                 $query->where('status','APPROVING');
             })->with(['nextOfKin.region','region','district','intake','selections.campusProgram.program','nectaResultDetails'])->where('program_level_id',$request->get('program_level_id'))->where('campus_id',$staff->campus_id)->get();
 
 
@@ -253,6 +251,7 @@ class ApplicationController extends Controller
                    $url='http://41.59.90.200/applicants/submitProgramme';
                    
                    $selected_programs = array();
+                   $approving_selection = null;
                    foreach($applicant->selections as $selection){
                        $selected_programs[] = $selection->campusProgram->regulator_code;
                        if($selection->status == 'APPROVING'){
@@ -283,9 +282,9 @@ class ApplicationController extends Controller
                   <OtherMobileNumber></OtherMobileNumber>
                   <EmailAddress>'.$applicant->email.'</EmailAddress>
                   <Category>A</Category>
-                  <AdmissionStatus>provisional admission</AdmissionStatus>
-                  <ProgrammeAdmitted>'.$approving_selection->campusProgram->regulator_code.'</ProgrammeAdmitted>
-                  <Reason>eligible</Reason>
+                  <AdmissionStatus>'.$approving_selection? 'provisional admission' : 'not selected'.'</AdmissionStatus>
+                  <ProgrammeAdmitted>'.$approving_selection? $approving_selection->campusProgram->regulator_code : null.'</ProgrammeAdmitted>
+                  <Reason>'.$approving_selection? 'eligible' : 'maximum capacity'.'</Reason>
                   <Nationality >'.$applicant->nationality.'</Nationality>
                   <Impairment>'.$applicant->disabilityStatus->name.'</Impairment>
                   <DateOfBirth>'.$applicant->birth_date.'</DateOfBirth>
