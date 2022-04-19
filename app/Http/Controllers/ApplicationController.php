@@ -1568,6 +1568,8 @@ class ApplicationController extends Controller
             }
         }
 
+        ApplicantProgramSelection::where('campus_program_id',$request->get('campus_program_id'))->where('status','APPROVING')->update(['status'=>'PENDING']);
+
         return redirect()->back()->with('message','Applicants retrieved successfully from TCU');
     }
 }
