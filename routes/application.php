@@ -133,4 +133,6 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 
     Route::get('submit-applicants',[ApplicationController::class,'submitApplicants']);
 
+    Route::post('retrieve-applicants-tcu',[ApplicationController::class,'getApplicantsFromTCU']);
+
 });

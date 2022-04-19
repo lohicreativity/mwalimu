@@ -17,6 +17,7 @@ class CreateNactePaymentsTable extends Migration
             $table->id();
             $table->string('reference_no');
             $table->double('amount',16,2);
+            $table->double('balance',16,2);
             $table->unsignedBigInteger('campus_id');
             $table->unsignedBigInteger('study_academic_year_id');
             $table->timestamps();

@@ -59,6 +59,8 @@ class CreateApplicantsTable extends Migration
             $table->tinyInteger('insurance_check')->nullable();
             $table->tinyInteger('personal_info_check')->nullable();
             $table->integer('rank_points')->nullable();
+            $table->tinyInteger('multiple_admissions')->default(0);
+            $table->string('status')->nullable();
             $table->timestamps();
             $table->softDeletes();
 

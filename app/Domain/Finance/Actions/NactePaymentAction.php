@@ -14,6 +14,7 @@ class NactePaymentAction implements NactePaymentInterface{
                 $payment->campus_id = $request->get('campus_id');
                 $payment->reference_no = $request->get('reference_number');
                 $payment->amount = $request->get('amount');
+                $payment->balance = $request->get('amount');
                 $payment->save();
 	}
 

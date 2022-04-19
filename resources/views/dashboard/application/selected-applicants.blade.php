@@ -83,10 +83,50 @@
                  <!-- <a href="{{ url('application/submit-selected-applicants?application_window_id='.$request->get('application_window_id').'&program_level_id='.$request->get('program_level_id')) }}" class="btn btn-primary">Submit Selected Students</a> -->
                  @if($request->get('program_level_id') == 4 && $application_window->enrollment_report_download_status == 1) 
                  <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#ss-submit-applicants">Submit Selected Applicants to TCU</a>
+                 <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#ss-select-program">Retrieve Selected Students (TCU)</a>
                  @elseif(($request->get('program_level_id') == 1 || $request->get('program_level_id') == 2) && $application_window->enrollment_report_download_status == 1)
                  <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#ss-submit-applicants">Submit Selected Applicants to NACTE</a>
                  @endif
                </div>
+
+               <div class="modal fade" id="ss-select-program">
+              <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h4 class="modal-title"> Select Programme</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    {!! Form::open(['url'=>'application/retrieve-applicants-tcu']) !!}
+                    {!! Form::input('hidden','application_window_id',$request->get('application_window_id')) !!}
+                    {!! Form::input('hidden','program_level_id',$request->get('program_level_id')) !!}
+                    
+                    <div class="form-group">
+                    {!! Form::label('','Select programme') !!}
+                    <select name="campus_program_id" class="form-control" required>
+                        <option value="">Select Programme</option>
+                        @foreach($campus_programs as $program)
+                        <option value="{{ $program->id }}">{{ $program->program->name }}</option>
+                        @endforeach
+                    </select>
+                  </div>
+                  
+                    <div class="ss-form-actions">
+                      <button type="submit" class="btn btn-primary">Get Applicants Status (TCU)</button>
+                    </div>
+                    {!! Form::close() !!}
+                  </div>
+                  <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                  </div>
+                </div>
+                <!-- /.modal-content -->
+              </div>
+              <!-- /.modal-dialog -->
+            </div>
+            <!-- /.modal -->
 
                <div class="modal fade" id="ss-submit-applicants">
               <div class="modal-dialog modal-lg">
@@ -128,7 +168,11 @@
                    
                    </tbody>
                   </table>
+                  @if($request->get('program_level_id') == 4)
                   <button type="submit" class="btn btn-primary">Submit To TCU</button>
+                  @else
+                  <button type="submit" class="btn btn-primary">Submit To NACTE</button>
+                  @endif
                   {!! Form::close() !!}
                   </div>
                   <div class="modal-footer justify-content-between">
