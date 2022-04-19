@@ -7,6 +7,7 @@ use App\Http\Controllers\FeeAmountController;
 use App\Http\Controllers\ProgramFeeController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\NactePaymentController;
 
 
 
@@ -48,8 +49,10 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 	Route::get('payments',[PaymentController::class, 'index']);
 	Route::get('payment/{id}/distributions',[PaymentController::class, 'showDistributions']);
 
-    
-
+    Route::get('nacte-payments',[NactePaymentController::class,'index']);
+    Route::post('nacte-payment/store', [NactePaymentController::class,'store']);
+	Route::post('nacte-payment/update', [NactePaymentController::class,'update']);
+	Route::get('nacte-payment/{id}/destroy', [NactePaymentController::class,'destroy']);
 });
 
 
