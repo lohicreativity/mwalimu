@@ -21,6 +21,8 @@ $('document').ready(function(){
     // Fix content height
     fixContentHeight('.ss-fixed-min-height');
 
+    $('#ss-submit-selected-applicants').DataTable();
+
     // Pop signup modal
     // if(localStorage.getItem('signup-modal-set') != '1'){
     //     $('#ss-signup-popup-modal').modal('show');

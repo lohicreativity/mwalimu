@@ -47,7 +47,10 @@
 
                <!-- /.card-header -->
                <div class="card-body">
-                  <table class="table table-bordered ss-margin-top">
+                {!! Form::open(['url'=>'application/submit-selected-applicants-tcu']) !!}
+                    {!! Form::input('hidden','application_window_id',$request->get('application_window_id')) !!}
+                    {!! Form::input('hidden','program_level_id',$request->get('program_level_id')) !!}
+                  <table id="ss-submit-selected-applicants" class="table table-bordered ss-margin-top">
                     <thead>
                         <tr>
                           <th>Name</th>
@@ -57,9 +60,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                  {!! Form::open(['url'=>'application/submit-selected-applicants-tcu']) !!}
-                    {!! Form::input('hidden','application_window_id',$request->get('application_window_id')) !!}
-                    {!! Form::input('hidden','program_level_id',$request->get('program_level_id')) !!}
+                  
                  @foreach($selected_applicants as $applicant)
                    <tr>
                       <td>{{ $applicant->first_name }} {{ $applicant->middle_name }} {{ $applicant->surname }}</td>
@@ -73,17 +74,11 @@
                       <td>{!! Form::checkbox('applicant_'.$applicant->id,$applicant->id,true) !!}</td>
                    </tr>
                  @endforeach
-                   <tr>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td>
-                        <button type="submit" class="btn btn-primary">Submit To TCU</button>
-                      </td>
-                   </tr>
-                   {!! Form::close() !!}
+                   
                    </tbody>
                   </table>
+                    <button type="submit" class="btn btn-primary">Submit To TCU</button>
+                  {!! Form::close() !!}
                </div>
             </div>
 

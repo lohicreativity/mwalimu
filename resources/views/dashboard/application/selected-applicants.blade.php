@@ -83,7 +83,7 @@
                  <!-- <a href="{{ url('application/submit-selected-applicants?application_window_id='.$request->get('application_window_id').'&program_level_id='.$request->get('program_level_id')) }}" class="btn btn-primary">Submit Selected Students</a> -->
                  @if($request->get('program_level_id') == 4 && $application_window->enrollment_report_download_status == 1) 
                  <a href="{{ url('application/submit-applicants?program_level_id='.$request->get('program_level_id').'&application_window_id='.$request->get('application_window_id')) }}" class="btn btn-primary">Submit Selected Applicants to TCU</a>
-                 @elseif($request->get('program_level_id') != 4 && $application_window->enrollment_report_download_status == 1)
+                 @elseif(($request->get('program_level_id') == 1 || $request->get('program_level_id') == 2) && $application_window->enrollment_report_download_status == 1)
                  <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#ss-submit-applicants">Submit Selected Applicants to TCU</a>
                  @endif
                </div>
