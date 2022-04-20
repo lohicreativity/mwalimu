@@ -129,7 +129,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
     Route::get('insurance-statuses',[ApplicationController::class,'showInsuranceStatus']);
     Route::get('download-insurance-status',[ApplicationController::class,'downloadInsuranceStatus']);
     Route::get('download-hostel-status',[ApplicationController::class,'downloadHostelStatus']);
-    Route::get('out-results',[OUTServiceController::class,'index']);
+    Route::get('out-results',[OUTServiceController::class,'getResults']);
 
     Route::get('submit-applicants',[ApplicationController::class,'submitApplicants']);
 
@@ -145,5 +145,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 
     Route::get('internal-transfer',[ApplicationController::class,'showInternalTransfer']);
     Route::post('submit-internal-transfer',[ApplicationController::class,'submitInternalTransfer']);
+
+    Route::get('external-transfer',[ApplicationController::class,'showExternalTransfer']);
+    Route::post('submit-external-transfer',[ApplicationController::class,'submitExternalTransfer']);
 
 });

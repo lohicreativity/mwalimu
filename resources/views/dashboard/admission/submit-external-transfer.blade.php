@@ -21,12 +21,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>{{ __('Internal Transfer') }}</h1>
+            <h1>{{ __('External Transfer') }}</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">{{ __('Internal Transfer') }}</li>
+              <li class="breadcrumb-item active">{{ __('External Transfer') }}</li>
             </ol>
           </div>
         </div>
@@ -73,7 +73,7 @@
             @if($applicant)
               <div class="card">
               <div class="card-header">
-                <h3 class="card-title">Submit Internal Transfer</h3>
+                <h3 class="card-title">Submit External Transfer</h3>
               </div>
               <!-- /.card-header -->
               {!! Form::open(['url'=>'application/submit-internal-transfer','class'=>'ss-form-processing']) !!}
@@ -102,20 +102,13 @@
                     </tr>
                  </table>
                  <div class="form-group ss-margin-top">
-                   {!! Form::label('','Select current programme') !!}
-                   <select name="campus_program_id" class="form-control" required>
-                      <option value="">Select Current Programme</option>
-                      @foreach($campus_programs as $program)
-                      @if($admitted_program->id != $program->id)
-                      <option value="{{ $program->id }}">{{ $program->program->name }}</option>
-                      @endif
-                      @endforeach
-                    </select>
+                   {!! Form::label('','Enter current programme code') !!}
+                   {!! Form::text('program_code',null,['class'=>'form-control','placeholder'=>'Programme code','required'=>true]) !!}
                  </div>  
                  {!! Form::input('hidden','applicant_id',$applicant->id) !!}
               </div>
               <div class="card-footer">
-                  <button type="submit" class="btn btn-primary">{{ __('Submit Internal Transfer') }}</button>
+                  <button type="submit" class="btn btn-primary">{{ __('Submit External Transfer') }}</button>
               </div>
               {!! Form::close() !!}
             </div>

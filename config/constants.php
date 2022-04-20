@@ -50,6 +50,9 @@ return [
     'TCU_USERNAME' => 'MN',
     'TCU_TOKEN' => 'M6RmtwhsWbVTGycZHxPL',
 
+    'OUT_USERNAME' => 'MNY',
+    'OUT_TOKEN' => '25e82587ea1f95fea54f8d2ae75e1c4e',
+
     'NHIF_TOKEN' => 'eyJhbGciOiJSUzI1NiIsImtpZCI6IjIyM3FoYWxtUjZ5VHY1XzRhS29ONHciLCJ0eXAiOiJhdCtqd3QifQ.',
 
     'NACTE_API_KEY' => 'WXbac1b41cfa665a.e1ddf713e28c51d83a9131e4382d9624e737652bd5c6ff8db581c3afc97af0fe.2be03678590fe7eb0863c02d301c61b19a1795ee',

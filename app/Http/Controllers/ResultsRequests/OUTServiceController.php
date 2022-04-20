@@ -14,15 +14,20 @@ class OUTServiceController extends Controller
          $xml_request = '<?xml version="1.0" encoding="UTF-8"?>
                             <Request>
                             <UsernameToken>
-                            <Username>OUT</Username>
-                            <SessionToken>ddfdawttvsexhbsasasqwdvgfhghxdd</SessionToken>
+                            <Username>'.config('constants.OUT_USERNAME').'</Username>
+                            <SessionToken>'.config('constants.OUT_TOKEN').'</SessionToken>
                             </UsernameToken>
                             <RequestParameters>
                             <RegNo> N18-642-0001</ RegNo >
                             </RequestParameters>
                             </Request>';
+        // $xml_response=simplexml_load_string($this->sendXmlOverPost($url,$xml_request));
+        // $json = json_encode($xml_response);
+        // $array = json_decode($json,TRUE);
+
         $result = $this->sendXmlOverPost($url,$xml_request);
-        return $result;
+
+        return dd($result);
 
     }
 
