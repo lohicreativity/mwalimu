@@ -1798,7 +1798,7 @@ class ApplicationController extends Controller
             'applicant'=>$applicant,
             'campus_programs'=>$applicant? CampusProgram::whereHas('program',function($query) use($applicant){
                  $query->where('award_id',$applicant->program_level_id);
-            })->get() : [],
+            })->with('program')->get() : [],
             'staff'=>$staff
         ];
         return view('dashboard.admission.submit-internal-transfer',$data)->withTitle('Internal Transfer');
