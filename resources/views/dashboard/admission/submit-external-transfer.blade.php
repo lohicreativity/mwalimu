@@ -130,12 +130,14 @@
                        </tr>
                      </thead>
                      <tbody>
+                      @foreach($transfers as $transfer)
                        <tr>
                          <td>{{ $transfer->applicant->first_name }} {{ $transfer->applicant->middle_name }} {{ $transfer->applicant->surname }}</td>
                          <td>{{ $transfer->previousProgram->program->name }}</td>
                          <td>{{ $transfer->current_program }}</td>
                          <td>{{ $transfer->created_at }}</td>
                        </tr>
+                       @endforeach
                      </tbody>
                    </table>
 
