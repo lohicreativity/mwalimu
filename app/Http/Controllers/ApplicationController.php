@@ -124,8 +124,7 @@ class ApplicationController extends Controller
              $applicants = Applicant::whereHas('intake.applicationWindows',function($query) use($request){
                  $query->where('id',$request->get('application_window_id'));
             })->whereHas('selections.campusProgram.program',function($query) use($request){
-                 $query->where('nta_level_id',$request->get('nta_level_id'))->where('status','APPROVING')->orWhere('status','SELECTED')->orWhere('status','PENDING');
-
+                 $query->where('nta_level_id',$request->get('nta_level_id'));
             })->whereHas('selections',function($query) use($request){
                  $query->where('status','APPROVING')->orWhere('status','SELECTED')->orWhere('status','PENDING');
             })->with(['nextOfKin','intake','selections.campusProgram.program'])->where('program_level_id',$request->get('program_level_id'))->paginate(20);
@@ -188,7 +187,7 @@ class ApplicationController extends Controller
              $applicants = Applicant::whereHas('intake.applicationWindows',function($query) use($request){
                  $query->where('id',$request->get('application_window_id'));
             })->whereHas('selections.campusProgram.program',function($query) use($request){
-                 $query->where('nta_level_id',$request->get('nta_level_id'))->where('status','SELECTED')->orWhere('status','PENDING');
+                 $query->where('nta_level_id',$request->get('nta_level_id'));
             })->whereHas('selections',function($query) use($request){
                  $query->where('status','SELECTED');
             })->with(['nextOfKin','intake','selections.campusProgram.program'])->where('program_level_id',$request->get('program_level_id'))->where('confirmation_status','!=','CANCELLED')->paginate(20);
@@ -219,6 +218,8 @@ class ApplicationController extends Controller
             'applicants'=>$applicants,
             'request'=>$request
          ];
+
+         return $data['applicants'];
          return view('dashboard.admission.admitted-applicants',$data)->withTitle('Admitted Applicants');
     }
 
