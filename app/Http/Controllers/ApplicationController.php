@@ -170,19 +170,19 @@ class ApplicationController extends Controller
                  $query->where('id',$request->get('application_window_id'));
             })->whereHas('selections',function($query) use($request){
                  $query->where('status','SELECTED');
-            })->with(['nextOfKin','intake','selections.campusProgram.program'])->where('program_level_id',$request->get('program_level_id'))->where('first_name','LIKE','%'.$request->get('query').'%')->orWhere('middle_name','LIKE','%'.$request->get('query').'%')->orWhere('surname','LIKE','%'.$request->get('query').'%')->where('confirmation_status','!=','CANCELLED')->paginate(20);
+            })->with(['intake','selections.campusProgram.program'])->where('program_level_id',$request->get('program_level_id'))->where('first_name','LIKE','%'.$request->get('query').'%')->orWhere('middle_name','LIKE','%'.$request->get('query').'%')->orWhere('surname','LIKE','%'.$request->get('query').'%')->where('confirmation_status','!=','CANCELLED')->paginate(20);
          }elseif($request->get('gender')){
             $applicants = Applicant::whereHas('intake.applicationWindows',function($query) use($request){
                  $query->where('id',$request->get('application_window_id'));
             })->whereHas('selections',function($query) use($request){
                  $query->where('status','SELECTED');
-            })->with(['nextOfKin','intake','selections.campusProgram.program'])->where('program_level_id',$request->get('program_level_id'))->where('gender',$request->get('gender'))->where('confirmation_status','!=','CANCELLED')->paginate(20);
+            })->with(['intake','selections.campusProgram.program'])->where('program_level_id',$request->get('program_level_id'))->where('gender',$request->get('gender'))->where('confirmation_status','!=','CANCELLED')->paginate(20);
          }elseif($request->get('campus_program_id')){
             $applicants = Applicant::whereHas('intake.applicationWindows',function($query) use($request){
                  $query->where('id',$request->get('application_window_id'));
             })->whereHas('selections',function($query) use($request){
                  $query->where('status','SELECTED')->where('campus_program_id',$request->get('campus_program_id'));
-            })->with(['nextOfKin','intake','selections.campusProgram.program'])->where('program_level_id',$request->get('program_level_id'))->where('confirmation_status','!=','CANCELLED')->paginate(20);
+            })->with(['intake','selections.campusProgram.program'])->where('program_level_id',$request->get('program_level_id'))->where('confirmation_status','!=','CANCELLED')->paginate(20);
          }elseif($request->get('nta_level_id')){
              $applicants = Applicant::whereHas('intake.applicationWindows',function($query) use($request){
                  $query->where('id',$request->get('application_window_id'));
@@ -196,7 +196,7 @@ class ApplicationController extends Controller
                  $query->where('id',$request->get('application_window_id'));
             })->whereHas('selections',function($query) use($request){
                  $query->where('status','SELECTED');
-            })->with(['intake','selections.campusProgram.program'])->where('program_level_id',$request->get('program_level_id'))->where('confirmation_status','<>','CANCELLED')->paginate(20);
+            })->with(['intake','selections.campusProgram.program'])->where('program_level_id',$request->get('program_level_id'))->where('confirmation_status','!=','CANCELLED')->paginate(20);
          }
          $data = [
             'staff'=>$staff,
@@ -1856,14 +1856,16 @@ class ApplicationController extends Controller
         $applicant = Applicant::with(['selections'=>function($query){
               $query->where('status','SELECTED');
         },'selections.campusProgram.program'])->where('index_number',$request->get('index_number'))->where('campus_id',$staff->campus_id)->first();
-        if(!$applicant){
-            return redirect()->back()->with('error','Applicant does not belong in this campus');
+        if(!$applicant && $request->get('index_number')){
+            return redirect()->back()->with('error','Applicant does not belong to this campus');
         }
-        if($applicant->multiple_admissions == 1 && $applicant->confirmation_status != 'CONFIRMED'){
-             return redirect()->back()->with('error','The applicant has multiple admissions and has not yet confirmed');
-        }
-        if($applicant->multiple_admissions == 0 && $applicant->confirmation_status == 'CANCELLED'){
-             return redirect()->back()->with('error','The applicant has cancelled the admission');
+        if($applicant){
+            if($applicant->multiple_admissions == 1 && $applicant->confirmation_status != 'CONFIRMED'){
+                 return redirect()->back()->with('error','The applicant has multiple admissions and has not yet confirmed');
+            }
+            if($applicant->multiple_admissions == 0 && $applicant->confirmation_status == 'CANCELLED'){
+                 return redirect()->back()->with('error','The applicant has cancelled the admission');
+            }
         }
         $data = [
             'applicant'=>$applicant,
