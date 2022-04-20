@@ -135,6 +135,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 
     Route::post('retrieve-applicants-tcu',[ApplicationController::class,'getApplicantsFromTCU']);
 
+    Route::post('retrieve-confirmed-applicants-tcu',[ApplicationController::class,'getConfirmedFromTCU']);
+
     Route::get('admission-confirmation',[ApplicationController::class,'showConfirmAdmission']);
 
     Route::post('confirm-admission',[ApplicationController::class,'confirmAdmission']);

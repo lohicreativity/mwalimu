@@ -1646,6 +1646,43 @@ class ApplicationController extends Controller
         return redirect()->back()->with('message','Applicants retrieved successfully from TCU');
     }
 
+
+    /**
+     * Retrieve confirmed applicants from TCU
+     */
+    public function getConfirmedFromTCU(Request $request)
+    {
+        if(ApplicantSubmissionLog::where('program_level_id',$request->get('program_level_id'))->where('application_window_id',$request->get('application_window_id'))->count() == 0){
+             return redirect()->back()->with('error','Applicants were not sent to TCU');
+        }
+        $url = 'http://41.59.90.200/applicants/getConfirmed';
+        $campus_program = CampusProgram::find($request->get('campus_program_id'));
+        $xml_request = '<?xml version="1.0" encoding="UTF-8"?>
+                        <Request>
+                        <UsernameToken>
+                        <Username>'.config('constants.TCU_USERNAME').'</Username>
+                        <SessionToken>'.config('constants.TCU_TOKEN').'</SessionToken>
+                        </UsernameToken>
+                        <RequestParameters>
+                        <ProgrammeCode>'.$campus_program->regulator_code.'</ProgrammeCode>
+                        </RequestParameters>
+                        </Request>
+                        ';
+        $xml_response=simplexml_load_string($this->sendXmlOverPost($url,$xml_request));
+        $json = json_encode($xml_response);
+        $array = json_decode($json,TRUE);
+
+        foreach($array['Response']['ResponseParameters']['Applicant'] as $data){
+            $applicant = Applicant::where('index_number',$data['f4indexno'])->first();
+            if($applicant){
+               $applicant->confirmation_status = $data['ConfirmationStatusCode'] == 233? 'CONFIRMED' : null;
+               $applicant->save();
+            }
+        }
+
+        return redirect()->back()->with('message','Confirmed applicants retrieved successfully from TCU');
+    }
+
     /**
      * Show admission confirmation
      */
