@@ -23,6 +23,8 @@ $('document').ready(function(){
 
     $('#ss-submit-selected-applicants').DataTable();
 
+    $('#ss-transfers').DataTable();
+
     // Pop signup modal
     // if(localStorage.getItem('signup-modal-set') != '1'){
     //     $('#ss-signup-popup-modal').modal('show');
