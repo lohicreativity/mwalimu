@@ -76,7 +76,7 @@
                 <h3 class="card-title">Submit Internal Transfer</h3>
               </div>
               <!-- /.card-header -->
-              {!! Form::open(['url'=>'submit-internal-transfer','class'=>'ss-form-processing']) !!}
+              {!! Form::open(['url'=>'application/submit-internal-transfer','class'=>'ss-form-processing']) !!}
               <div class="card-body">
                  <table class="table table-bordered">
                     <tr>
