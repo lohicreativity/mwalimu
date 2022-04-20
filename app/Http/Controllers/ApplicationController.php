@@ -1882,7 +1882,7 @@ class ApplicationController extends Controller
             'campus_programs'=>$applicant? CampusProgram::whereHas('program',function($query) use($applicant){
                  $query->where('award_id',$applicant->program_level_id)->where('campus_id',$applicant->campus_id);
             })->with('program')->get() : [],
-            'transfers'=>ExternalTransfer::whereHas('applicant',function($query) use($staff){
+            'transfers'=>InternalTransfer::whereHas('applicant',function($query) use($staff){
                   $query->where('campus_id',$staff->campus_id);
             })->with(['applicant','previousProgram.program','currentProgram.program','user.staff'])->paginate(20),
             'staff'=>$staff
