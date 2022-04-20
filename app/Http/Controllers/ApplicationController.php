@@ -159,6 +159,69 @@ class ApplicationController extends Controller
          return view('dashboard.application.selected-applicants',$data)->withTitle('Selected Applicants');
     }
 
+
+    /**
+     * Admitted applicants
+     */
+    public function admittedApplicants(Request $request)
+    {
+         $staff = User::find(Auth::user()->id)->staff;
+         if($request->get('query')){
+            $applicants = Applicant::whereHas('intake.applicationWindows',function($query) use($request){
+                 $query->where('id',$request->get('application_window_id'));
+            })->whereHas('selections',function($query) use($request){
+                 $query->where('status','APPROVING')->orWhere('status','SELECTED')->orWhere('status','PENDING');
+            })->with(['nextOfKin','intake','selections.campusProgram.program'])->where('program_level_id',$request->get('program_level_id'))->where('first_name','LIKE','%'.$request->get('query').'%')->orWhere('middle_name','LIKE','%'.$request->get('query').'%')->orWhere('surname','LIKE','%'.$request->get('query').'%')->where('confirmation_status','!=','CANCELLED')->paginate(20);
+         }elseif($request->get('gender')){
+            $applicants = Applicant::whereHas('intake.applicationWindows',function($query) use($request){
+                 $query->where('id',$request->get('application_window_id'));
+            })->whereHas('selections',function($query) use($request){
+                 $query->where('status','APPROVING')->orWhere('status','SELECTED')->orWhere('status','PENDING');
+            })->with(['nextOfKin','intake','selections.campusProgram.program'])->where('program_level_id',$request->get('program_level_id'))->where('gender',$request->get('gender'))->where('confirmation_status','!=','CANCELLED')->paginate(20);
+         }elseif($request->get('campus_program_id')){
+            $applicants = Applicant::whereHas('intake.applicationWindows',function($query) use($request){
+                 $query->where('id',$request->get('application_window_id'));
+            })->whereHas('selections',function($query) use($request){
+                 $query->where('status','APPROVING')->orWhere('status','SELECTED')->orWhere('status','PENDING')->where('campus_program_id',$request->get('campus_program_id'));
+            })->with(['nextOfKin','intake','selections.campusProgram.program'])->where('program_level_id',$request->get('program_level_id'))->where('confirmation_status','!=','CANCELLED')->paginate(20);
+         }elseif($request->get('nta_level_id')){
+             $applicants = Applicant::whereHas('intake.applicationWindows',function($query) use($request){
+                 $query->where('id',$request->get('application_window_id'));
+            })->whereHas('selections.campusProgram.program',function($query) use($request){
+                 $query->where('nta_level_id',$request->get('nta_level_id'))->where('status','APPROVING')->orWhere('status','SELECTED')->orWhere('status','PENDING');
+            })->whereHas('selections',function($query) use($request){
+                 $query->where('status','APPROVING')->orWhere('status','SELECTED')->orWhere('status','PENDING');
+            })->with(['nextOfKin','intake','selections.campusProgram.program'])->where('program_level_id',$request->get('program_level_id'))->where('confirmation_status','!=','CANCELLED')->paginate(20);
+         }else{
+            $applicants = Applicant::whereHas('intake.applicationWindows',function($query) use($request){
+                 $query->where('id',$request->get('application_window_id'));
+            })->whereHas('selections',function($query) use($request){
+                 $query->where('status','APPROVING')->orWhere('status','SELECTED')->orWhere('status','PENDING');
+            })->with(['nextOfKin','intake','selections.campusProgram.program'])->where('program_level_id',$request->get('program_level_id'))->where('confirmation_status','!=','CANCELLED')->paginate(20);
+         }
+         $data = [
+            'staff'=>$staff,
+            'application_windows'=>ApplicationWindow::where('campus_id',$staff->campus_id)->get(),
+            'application_window'=>ApplicationWindow::find($request->get('application_window_id')),
+            'awards'=>Award::all(),
+            'nta_levels'=>NTALevel::all(),
+            'selected_applicants'=>Applicant::whereHas('intake.applicationWindows',function($query) use($request){
+                 $query->where('id',$request->get('application_window_id'));
+            })->whereHas('selections',function($query) use($request){
+                 $query->where('status','APPROVING');
+            })->with(['nextOfKin','intake','selections.campusProgram.program'])->where('program_level_id',$request->get('program_level_id'))->get(),
+            'campus_programs'=>CampusProgram::whereHas('selections',function($query) use($request){
+                  $query->where('application_window_id',$request->get('application_window_id'))->where('status','APPROVING');
+            })->whereHas('program',function($query) use($request){
+                  $query->where('award_id',$request->get('program_level_id'));
+            })->with('program')->get(),
+            'application_window'=>ApplicationWindow::find($request->get('application_window_id')),
+            'applicants'=>$applicants,
+            'request'=>$request
+         ];
+         return view('dashboard.admission.admitted-applicants',$data)->withTitle('Admitted Applicants');
+    }
+
     /**
      * Download selected applicants list
      */

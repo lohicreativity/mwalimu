@@ -248,6 +248,12 @@
                 </a>
               </li>
               <li class="nav-item">
+                <a href="{{ url('application/admitted-applicants?application_window_id='.session('active_window_id')) }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Admitted Students</p>
+                </a>
+              </li>
+              <li class="nav-item">
                 <a href="{{ url('application/insurance-statuses?application_window_id='.session('active_window_id')) }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Insurance Status</p>
