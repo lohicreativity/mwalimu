@@ -2167,7 +2167,7 @@ class ApplicationController extends Controller
             $select->order = 5;
             $select->status = 'SELECTED';
             $select->save();
-            return redirect()->back()->with('message','Transfer completed successfully');
+            return redirect()->to('application/internal-transfer')->with('message','Transfer completed successfully');
         }else{
             return redirect()->back()->with('error','Unable to complete transfer. '.$array['Response']['ResponseParameters']['StatusDescription']);
         }
