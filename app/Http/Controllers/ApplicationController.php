@@ -2163,6 +2163,7 @@ class ApplicationController extends Controller
             $select = new ApplicantProgramSelection;
             $select->applicant_id = $applicant->id;
             $select->campus_program_id = $transfer_program->id;
+            $select->application_window_id = $applicant->application_window_id;
             $select->order = 5;
             $select->status = 'SELECTED';
             $select->save();
