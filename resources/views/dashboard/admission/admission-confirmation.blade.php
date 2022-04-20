@@ -41,6 +41,7 @@
           <div class="col-12">
             
             <!-- general form elements -->
+            @if($applicant->multiple_admissions == 1)
             @if($applicant->confirmation_status == null)
             <div class="card card-default">
               <div class="card-header">
@@ -117,6 +118,8 @@
                 </div>
               {!! Form::close() !!}
               </div>
+
+              @endif
 
               @if($applicant->multiple_admissions == 0)
               @if($applicant->confirmation_status != 'CANCELLED')
