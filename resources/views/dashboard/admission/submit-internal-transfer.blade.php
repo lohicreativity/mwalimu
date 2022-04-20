@@ -90,10 +90,14 @@
                     <tr>
                        <td>Previous Programme:</td>
                        <td>
+                           @php
+                               $admitted_program_id = null;
+                           @endphp
                            @foreach($applicant->selections as $selection)
                               @if($selection->status == 'SELECTED')
                                @php
                                   $admitted_program = $selection->campusProgram;
+                                  $admitted_program_id = $selection->campusProgram->id;
                                @endphp
                                {{ $selection->campusProgram->program->name }}
                               @endif
@@ -106,7 +110,7 @@
                    <select name="campus_program_id" class="form-control" required>
                       <option value="">Select Current Programme</option>
                       @foreach($campus_programs as $program)
-                      @if($admitted_program->id != $program->id)
+                      @if($admitted_program_id != $program->id)
                       <option value="{{ $program->id }}">{{ $program->program->name }}</option>
                       @endif
                       @endforeach
