@@ -1794,6 +1794,12 @@ class ApplicationController extends Controller
         $applicant = Applicant::with(['selections'=>function($query){
               $query->where('status','SELECTED');
         },'selections.campusProgram.program'])->where('index_number',$request->get('index_number'))->where('campus_id',$staff->campus_id)->first();
+        if(!$applicant){
+            return redirect()->back()->with('error','Applicant does not belong in this campus');
+        }
+        if($applicant->multiple_admissions == 1 && $applicant->confirmation_status != 'CONFIRMED'){
+             return redirect()->back()->with('error','The applicant has multiple admissions and has not yet confirmed');
+        }
         $data = [
             'applicant'=>$applicant,
             'campus_programs'=>$applicant? CampusProgram::whereHas('program',function($query) use($applicant){
