@@ -56,7 +56,7 @@
                    
                   <div class="row">
                   <div class="form-group col-6">
-                    {!! Form::label('','Enter applicant\'s index number') !!}
+                    {!! Form::label('','Enter applicant\'s form four index number') !!}
                     {!! Form::text('index_number',null,$index_number) !!}
                   </div>
                   </div>
