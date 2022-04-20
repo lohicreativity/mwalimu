@@ -16,6 +16,7 @@ use App\Domain\Settings\Models\NTALevel;
 use App\Domain\Settings\Models\Campus;
 use App\Domain\Application\Models\ApplicationWindow;
 use App\Domain\Application\Models\InternalTransfer;
+use App\Domain\Application\Models\ExternalTransfer;
 use App\Domain\Application\Models\AdmissionAttachment;
 use App\Domain\Application\Models\ApplicantSubmissionLog;
 use App\Domain\Application\Models\ApplicantProgramSelection;
@@ -1881,6 +1882,9 @@ class ApplicationController extends Controller
             'campus_programs'=>$applicant? CampusProgram::whereHas('program',function($query) use($applicant){
                  $query->where('award_id',$applicant->program_level_id)->where('campus_id',$applicant->campus_id);
             })->with('program')->get() : [],
+            'transfers'=>ExternalTransfer::whereHas('applicant',function($query) use($staff){
+                  $query->where('campus_id',$staff->campus_id);
+            })->with(['applicant','previousProgram.program','currentProgram.program'])->paginate(20),
             'staff'=>$staff
         ];
         return view('dashboard.admission.submit-internal-transfer',$data)->withTitle('Internal Transfer');
@@ -1906,7 +1910,7 @@ class ApplicationController extends Controller
                  return redirect()->back()->with('error','The applicant has cancelled the admission');
             }
             if($applicant->multiple_admissions == 0 && $applicant->confirmation_status == 'TRANSFERED'){
-                 return redirect()->back()->with('error','The applicant has transfered');
+                 return redirect()->back()->with('error','The applicant has been transfered');
             }
             $admission_status = null;
             foreach($applicant->selections as $selection){
@@ -1920,6 +1924,9 @@ class ApplicationController extends Controller
         }
         $data = [
             'applicant'=>$applicant,
+            'transfers'=>ExternalTransfer::whereHas('applicant',function($query) use($staff){
+                  $query->where('campus_id',$staff->campus_id);
+            })->with(['applicant','previousProgram.program'])->paginate(20),
             'staff'=>$staff
         ];
         return view('dashboard.admission.submit-external-transfer',$data)->withTitle('External Transfer');
@@ -2255,14 +2262,16 @@ class ApplicationController extends Controller
         $json = json_encode($xml_response);
         $array = json_decode($json,TRUE);
 
-        $transfer = new InternalTransfer;
-        $transfer->applicant_id = $applicant->id;
-        $transfer->previous_campus_program_id = $admitted_program->id;
-        $transfer->current_campus_program_id = $transfer_program->id;
-        $transfer->transfered_by_user_id = Auth::user()->id;
-        $transfer->save();
+        
 
         if($array['Response']['ResponseParameters']['StatusCode'] == 200){
+            $transfer = new InternalTransfer;
+            $transfer->applicant_id = $applicant->id;
+            $transfer->previous_campus_program_id = $admitted_program->id;
+            $transfer->current_campus_program_id = $transfer_program->id;
+            $transfer->transfered_by_user_id = Auth::user()->id;
+            $transfer->save();
+
             ApplicantProgramSelection::where('applicant_id',$applicant->id)->where('status','SELECTED')->update(['status'=>'ELIGIBLE']);
 
             $select = new ApplicantProgramSelection;
@@ -2319,8 +2328,17 @@ class ApplicationController extends Controller
         $json = json_encode($xml_response);
         $array = json_decode($json,TRUE);
 
+        
+
 
         if($array['Response']['ResponseParameters']['StatusCode'] == 200){
+            $transfer = new ExternalTransfer;
+            $transfer->applicant_id = $applicant->id;
+            $transfer->previous_campus_program_id = $admitted_program->id;
+            $transfer->current_program = $request->get('program_code');
+            $transfer->transfered_by_user_id = Auth::user()->id;
+            $transfer->save();
+
             $applicant->confirmation_status = 'TRANSFERED';
             $applicant->save();
             return redirect()->to('application/external-transfer')->with('message','Transfer completed successfully');

@@ -6,11 +6,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Domain\Academic\Models\CampusProgram;
 
-class InternalTransfer extends Model
+class ExternalTransfer extends Model
 {
     use HasFactory;
 
-    protected $table = 'internal_transfers';
+    protected $table = 'external_transfers';
 
     /**
      * Establish one to many relationship with applicants
@@ -21,19 +21,11 @@ class InternalTransfer extends Model
     }
 
     /**
-     * Establish one to many relationship with campus programs
+     * Establish one to many relationship with applicants
      */
     public function previousProgram()
     {
     	return $this->belongsTo(CampusProgram::class,'previous_campus_program_id');
-    }
-
-    /**
-     * Establish one to many relationship with campus programs
-     */
-    public function currentProgram()
-    {
-    	return $this->belongsTo(CampusProgram::class,'current_campus_program_id');
     }
 
 }

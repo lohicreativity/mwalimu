@@ -123,6 +123,39 @@
               </div>
               {!! Form::close() !!}
             </div>
+            @else
+            @if(count($transfers) != 0)
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Internal Transfers</h3>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+                   <table class="table table-bordered">
+                     <thead>
+                       <tr>
+                         <th>Applicant</th>
+                         <th>Previous Programme</th>
+                         <th>Current Programme</th>
+                         <th>Date Transfered</th>
+                       </tr>
+                     </thead>
+                     <tbody>
+                       <tr>
+                         <td>{{ $transfer->applicant->first_name }} {{ $transfer->applicant->middle_name }} {{ $transfer->applicant->surname }}</td>
+                         <td>{{ $transfer->previousProgram->program->name }}</td>
+                         <td>{{ $transfer->currentProgram->program->name }}</td>
+                         <td>{{ $transfer->created_at }}</td>
+                       </tr>
+                     </tbody>
+                   </table>
+
+                   <div class="ss-pagination-links">
+                      {!! $transfers->render() !!}
+                   </div> 
+              </div>
+            </div>
+            @endif
             @endif
 
           </div>
