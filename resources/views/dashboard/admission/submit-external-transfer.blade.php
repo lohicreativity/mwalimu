@@ -56,7 +56,7 @@
                    
                   <div class="row">
                   <div class="form-group col-6">
-                    {!! Form::label('','Enter applicant\'s form four index number') !!}
+                    {!! Form::label('','Enter applicant\'s Form IV index number') !!}
                     {!! Form::text('index_number',null,$index_number) !!}
                   </div>
                   </div>
@@ -116,7 +116,7 @@
             @if(count($transfers) != 0)
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">Internal Transfers</h3>
+                <h3 class="card-title">External Transfers</h3>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
@@ -125,8 +125,7 @@
                        <tr>
                          <th>Name</th>
                          <th>Index Number</th>
-                         <th>Previous Programme</th>
-                         <th>Current Programme</th>
+                         <th>Programme</th>
                          <th>Date Transfered</th>
                          <th>Transfered By</th>
                        </tr>
@@ -137,7 +136,6 @@
                          <td>{{ $transfer->applicant->first_name }} {{ $transfer->applicant->middle_name }} {{ $transfer->applicant->surname }}</td>
                          <td>{{ $transfer->applicant->index_number }}</td>
                          <td>{{ $transfer->previousProgram->program->name }}</td>
-                         <td>{{ $transfer->current_program }}</td>
                          <td>{{ $transfer->created_at }}</td>
                          <td>{{ $transfer->user->staff->first_name }} {{ $transfer->user->staff->surname }}</td>
                        </tr>
