@@ -100,7 +100,7 @@
                            @endforeach
                        </td>
                     </tr>
-                 </table>
+                 </table><br>
                  <div class="form-group ss-margin-top">
                    {!! Form::label('','Enter current programme code') !!}
                    {!! Form::text('program_code',null,['class'=>'form-control','placeholder'=>'Programme code','required'=>true]) !!}

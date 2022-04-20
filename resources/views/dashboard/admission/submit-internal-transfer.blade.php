@@ -88,7 +88,7 @@
                        <td>{{ $applicant->index_number }}</td>
                     </tr>
                     <tr>
-                       <td>Previous Programme:</td>
+                       <td>Current Programme:</td>
                        <td>
                            @php
                                $admitted_program_id = null;
@@ -104,11 +104,11 @@
                            @endforeach
                        </td>
                     </tr>
-                 </table>
+                 </table><br>
                  <div class="form-group ss-margin-top">
-                   {!! Form::label('','Select current programme') !!}
+                   {!! Form::label('','Select new programme') !!}
                    <select name="campus_program_id" class="form-control" required>
-                      <option value="">Select Current Programme</option>
+                      <option value="">Select New Programme</option>
                       @foreach($campus_programs as $program)
                       @if($admitted_program_id != $program->id)
                       <option value="{{ $program->id }}">{{ $program->program->name }}</option>
