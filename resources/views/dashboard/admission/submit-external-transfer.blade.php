@@ -52,7 +52,7 @@
                          'required'=>true
                      ];
                  @endphp 
-                 {!! Form::open(['url'=>'application/internal-transfer','class'=>'ss-form-processing','method'=>'GET']) !!}
+                 {!! Form::open(['url'=>'application/external-transfer','class'=>'ss-form-processing','method'=>'GET']) !!}
                    
                   <div class="row">
                   <div class="form-group col-6">
@@ -76,7 +76,7 @@
                 <h3 class="card-title">Submit External Transfer</h3>
               </div>
               <!-- /.card-header -->
-              {!! Form::open(['url'=>'application/submit-internal-transfer','class'=>'ss-form-processing']) !!}
+              {!! Form::open(['url'=>'application/submit-external-transfer','class'=>'ss-form-processing']) !!}
               <div class="card-body">
                  <table class="table table-bordered">
                     <tr>
