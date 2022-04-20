@@ -1866,6 +1866,15 @@ class ApplicationController extends Controller
             if($applicant->multiple_admissions == 0 && $applicant->confirmation_status == 'CANCELLED'){
                  return redirect()->back()->with('error','The applicant has cancelled the admission');
             }
+            $admission_status = null;
+            foreach($applicant->selections as $selection){
+                if($selection->status == 'SELECTED'){
+                    $admission_status = true;
+                }
+            }
+            if(!$admission_status){
+                return redirect()->back()->with('error','Applicant not admitted');
+            }
         }
         $data = [
             'applicant'=>$applicant,
