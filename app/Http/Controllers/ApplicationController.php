@@ -15,6 +15,7 @@ use App\Domain\Finance\Models\Invoice;
 use App\Domain\Settings\Models\NTALevel;
 use App\Domain\Settings\Models\Campus;
 use App\Domain\Application\Models\ApplicationWindow;
+use App\Domain\Application\Models\InternalTransfer;
 use App\Domain\Application\Models\AdmissionAttachment;
 use App\Domain\Application\Models\ApplicantSubmissionLog;
 use App\Domain\Application\Models\ApplicantProgramSelection;
@@ -1809,10 +1810,11 @@ class ApplicationController extends Controller
     {
         $applicant = Applicant::with(['selections.campusProgram','nectaResultDetails'])->find($request->get('applicant_id'));
 
-        $admitted_program = null;
+        $admitted_program_code = null;
         foreach($applicant->selections as $selection){
             if($selection->status == 'SELECTED'){
-                $admitted_program = $selection->campusProgram->regulator_code;
+                $admitted_program = $selection->campusProgram;
+                $admitted_program_code = $selection->campusProgram->regulator_code;
             }
         }
 
@@ -1824,7 +1826,8 @@ class ApplicationController extends Controller
             }
         }
 
-        $transfer_program = CampusProgram::find($request->get('campus_program_id'))->regulator_code;
+        $transfer_program = CampusProgram::find($request->get('campus_program_id'));
+        $transfer_program_code = $transfer_program->regulator_code;
         
         $url = 'http://41.59.90.200/admission/restoreCancelledAdmission';
         $xml_request = '<?xml version="1.0" encoding="UTF-8"?>
@@ -1836,13 +1839,20 @@ class ApplicationController extends Controller
                         <RequestParameters>
                          <f4indexno>'.$applicant->index_number.'</f4indexno>
                          <f6indexno>'.$f6indexno.'</f6indexno>
-                         <CurrentProgrammeCode>'.$transfer_program.'</CurrentProgrammeCode>
-                         <PreviousProgrammeCode>'.$admitted_program.'</PreviousProgrammeCode>
+                         <CurrentProgrammeCode>'.$transfer_program_code.'</CurrentProgrammeCode>
+                         <PreviousProgrammeCode>'.$admitted_program_code.'</PreviousProgrammeCode>
                         </RequestParameters>
                         </Request>';
         $xml_response=simplexml_load_string($this->sendXmlOverPost($url,$xml_request));
         $json = json_encode($xml_response);
         $array = json_decode($json,TRUE);
+
+        $transfer = new InternalTransfer;
+        $transfer->applicant_id = $applicant->id;
+        $transfer->previous_campus_program_id = $admitted_program->id;
+        $transfer->current_campus_program_id = $transfer_program->id;
+        $transfer->transfered_by_user_id = Auth::user()->id;
+        $transfer->save();
 
         if($array['Response']['ResponseParameters']['StatusCode'] == 208){
             return redirect()->back()->with('message','Transfer completed successfully');
