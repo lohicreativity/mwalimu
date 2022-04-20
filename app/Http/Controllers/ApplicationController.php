@@ -1801,6 +1801,8 @@ class ApplicationController extends Controller
             })->with('program')->get() : [],
             'staff'=>$staff
         ];
+
+        return $data['campus_programs'];
         return view('dashboard.admission.submit-internal-transfer',$data)->withTitle('Internal Transfer');
     }
 
