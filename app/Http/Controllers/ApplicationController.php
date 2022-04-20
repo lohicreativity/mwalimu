@@ -1613,7 +1613,7 @@ class ApplicationController extends Controller
         $applicant = Applicant::find($request->get('applicant_id'));
         
         $url = 'http://41.59.90.200/admission/confirm';
-        $xml_request = '<?xml version=”1.0” encoding=”UTF-8”?>
+        $xml_request = '<?xml version="1.0" encoding="UTF-8"?>
                         <Request>
                         <UsernameToken>
                         <Username>'.config('constants.TCU_USERNAME').'</Username>
@@ -1634,7 +1634,7 @@ class ApplicationController extends Controller
 
             return redirect()->back()->with('message','Admission confirmed successfully');
         }else{
-            return redirect()->back()->with('error','Unable to unconfirm admission');
+            return redirect()->back()->with('error','Unable to confirm admission');
         }
     }
 
@@ -1657,7 +1657,7 @@ class ApplicationController extends Controller
         $applicant = Applicant::find($request->get('applicant_id'));
         
         $url = 'http://41.59.90.200/admission/unconfirm';
-        $xml_request = '<?xml version=”1.0” encoding=”UTF-8”?>
+        $xml_request = '<?xml version="1.0" encoding="UTF-8"?>
                         <Request>
                         <UsernameToken>
                         <Username>'.config('constants.TCU_USERNAME').'</Username>
@@ -1679,6 +1679,108 @@ class ApplicationController extends Controller
             return redirect()->back()->with('message','Admission unconfirmed successfully');
         }else{
             return redirect()->back()->with('error','Unable to unconfirm admission');
+        }
+    }
+
+    /**
+     * Request confirmation code
+     */
+    public function requestConfirmationCode(Request $request)
+    {
+        $applicant = Applicant::find($request->get('applicant_id'));
+        
+        $url = 'http://41.59.90.200/admission/requestConfirmationCode';
+        $xml_request = '<?xml version="1.0" encoding="UTF-8"?>
+                        <Request>
+                        <UsernameToken>
+                        <Username>'.config('constants.TCU_USERNAME').'</Username>
+                        <SessionToken>'.config('constants.TCU_TOKEN').'</SessionToken>
+                        </UsernameToken>
+                        <RequestParameters>
+                        <f4indexno>'.$applicant->index_number.'</f4indexno>
+                        <MobileNumber>0'.substr($applicant->phone, 3).'</MobileNumber>
+                        <EmailAddress>'.$applicant->email.'</ EmailAddress >
+                        </RequestParameters>
+                        </Request>';
+        $xml_response=simplexml_load_string($this->sendXmlOverPost($url,$xml_request));
+        $json = json_encode($xml_response);
+        $array = json_decode($json,TRUE);
+
+        if($array['Response']['ResponseParameters']['StatusCode'] == 223){
+
+            return redirect()->back()->with('message','Confirmation code requested successfully');
+        }else{
+            return redirect()->back()->with('error','Unable to request confirmation code. '.$array['Response']['ResponseParameters']['StatusDescription']);
+        }
+    }
+
+    /**
+     * Request confirmation code
+     */
+    public function cancelAdmission(Request $request)
+    {
+        $applicant = Applicant::find($request->get('applicant_id'));
+        
+        $url = 'http://41.59.90.200/admission/reject';
+        $xml_request = '<?xml version="1.0" encoding="UTF-8"?>
+                        <Request>
+                        <UsernameToken>
+                        <Username>'.config('constants.TCU_USERNAME').'</Username>
+                        <SessionToken>'.config('constants.TCU_TOKEN').'</SessionToken>
+                        </UsernameToken>
+                        <RequestParameters>
+                        <f4indexno>'.$applicant->index_number.'</f4indexno>
+                        </RequestParameters>
+                        </Request>';
+        $xml_response=simplexml_load_string($this->sendXmlOverPost($url,$xml_request));
+        $json = json_encode($xml_response);
+        $array = json_decode($json,TRUE);
+
+        if($array['Response']['ResponseParameters']['StatusCode'] == 224){
+            $applicant->confirmation_status = 'CANCELLED';
+            $applicant->save();
+            return redirect()->back()->with('message','Admission rejected successfully');
+        }else{
+            return redirect()->back()->with('error','Unable to reject admission. '.$array['Response']['ResponseParameters']['StatusDescription']);
+        }
+    }
+
+    /**
+     * Request confirmation code
+     */
+    public function restoreCancelledAdmission(Request $request)
+    {
+        $applicant = Applicant::with(['selections.campusProgram'])->find($request->get('applicant_id'));
+
+        $admitted_program = null;
+        foreach($applicant->selections as $selection){
+            if($selection->status == 'SELECTED'){
+                $admitted_program = $selection->campusProgram->regulator_code;
+            }
+        }
+        
+        $url = 'http://41.59.90.200/admission/restoreCancelledAdmission';
+        $xml_request = '<?xml version="1.0" encoding="UTF-8"?>
+                        <Request>
+                        <UsernameToken>
+                        <Username>'.config('constants.TCU_USERNAME').'</Username>
+                        <SessionToken>'.config('constants.TCU_TOKEN').'</SessionToken>
+                        </UsernameToken>
+                        <RequestParameters>
+                        <f4indexno>'.$applicant->index_number.'</f4indexno>
+                        <ProgrammeCode>'.$admitted_program.'</ ProgrammeCode >
+                        </RequestParameters>
+                        </Request>';
+        $xml_response=simplexml_load_string($this->sendXmlOverPost($url,$xml_request));
+        $json = json_encode($xml_response);
+        $array = json_decode($json,TRUE);
+
+        if($array['Response']['ResponseParameters']['StatusCode'] == 200){
+            $applicant->confirmation_status = 'RESTORED';
+            $applicant->save();
+            return redirect()->back()->with('message','Admission restored successfully');
+        }else{
+            return redirect()->back()->with('error','Unable to restore admission. '.$array['Response']['ResponseParameters']['StatusDescription']);
         }
     }
 }

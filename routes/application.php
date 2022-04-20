@@ -139,5 +139,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 
     Route::post('confirm-admission',[ApplicationController::class,'confirmAdmission']);
     Route::post('unconfirm-admission',[ApplicationController::class,'unconfirmAdmission']);
+    Route::post('cancel-admission',[ApplicationController::class,'cancelAdmission']);
+    Route::post('restore-cancelled-admission',[ApplicationController::class,'restoreCancelledAdmission']);
+    Route::post('request-confirmation-code',[ApplicationController::class,'requestConfirmationCode']);
 
 });
