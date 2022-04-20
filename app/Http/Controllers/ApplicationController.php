@@ -1829,7 +1829,7 @@ class ApplicationController extends Controller
         $transfer_program = CampusProgram::find($request->get('campus_program_id'));
         $transfer_program_code = $transfer_program->regulator_code;
         
-        $url = 'http://41.59.90.200/admission/restoreCancelledAdmission';
+        $url = 'http://41.59.90.200/admission/submitInternalTransfers';
         $xml_request = '<?xml version="1.0" encoding="UTF-8"?>
                         <Request>
                         <UsernameToken>
