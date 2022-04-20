@@ -1874,7 +1874,7 @@ class ApplicationController extends Controller
                 }
             }
             if(!$admission_status){
-                return redirect()->back()->with('error','Applicant not admitted');
+                return redirect()->back()->with('error','Applicant has not been admitted');
             }
         }
         $data = [
@@ -1910,7 +1910,7 @@ class ApplicationController extends Controller
                  return redirect()->back()->with('error','The applicant has cancelled the admission');
             }
             if($applicant->multiple_admissions == 0 && $applicant->confirmation_status == 'TRANSFERED'){
-                 return redirect()->back()->with('error','The applicant has been transfered');
+                 return redirect()->back()->with('error','The applicant has already been transfered');
             }
             $admission_status = null;
             foreach($applicant->selections as $selection){
@@ -1919,7 +1919,7 @@ class ApplicationController extends Controller
                 }
             }
             if(!$admission_status){
-                return redirect()->back()->with('error','Applicant not admitted');
+                return redirect()->back()->with('error','Applicant has not been admitted');
             }
         }
         $data = [
