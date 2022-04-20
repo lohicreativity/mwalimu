@@ -88,7 +88,7 @@
                        <td>{{ $applicant->index_number }}</td>
                     </tr>
                     <tr>
-                       <td>Previous Programme:</td>
+                       <td>Current Programme:</td>
                        <td>
                            @foreach($applicant->selections as $selection)
                               @if($selection->status == 'SELECTED')
@@ -102,7 +102,7 @@
                     </tr>
                  </table><br>
                  <div class="form-group ss-margin-top">
-                   {!! Form::label('','Enter current programme code') !!}
+                   {!! Form::label('','Enter new programme code') !!}
                    {!! Form::text('program_code',null,['class'=>'form-control','placeholder'=>'Programme code','required'=>true]) !!}
                  </div>  
                  {!! Form::input('hidden','applicant_id',$applicant->id) !!}
