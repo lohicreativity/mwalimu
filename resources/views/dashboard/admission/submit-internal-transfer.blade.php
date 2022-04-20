@@ -134,19 +134,21 @@
                    <table class="table table-bordered">
                      <thead>
                        <tr>
-                         <th>Applicant</th>
+                         <th>Name</th>
+                         <th>Index Number</th>
                          <th>Previous Programme</th>
-                         <th>Current Programme</th>
                          <th>Date Transfered</th>
+                         <th>Transfered By</th>
                        </tr>
                      </thead>
                      <tbody>
                       @foreach($transfers as $transfer)
                        <tr>
                          <td>{{ $transfer->applicant->first_name }} {{ $transfer->applicant->middle_name }} {{ $transfer->applicant->surname }}</td>
+                         <td>{{ $transfer->applicant->index_number }}</td>
                          <td>{{ $transfer->previousProgram->program->name }}</td>
-                         <td>{{ $transfer->currentProgram->program->name }}</td>
                          <td>{{ $transfer->created_at }}</td>
+                         <td>{{ $transfer->user->staff->first_name }} {{ $transfer->user->staff->surname }}</td>
                        </tr>
                        @endforeach
                      </tbody>

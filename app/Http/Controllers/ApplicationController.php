@@ -1884,7 +1884,7 @@ class ApplicationController extends Controller
             })->with('program')->get() : [],
             'transfers'=>ExternalTransfer::whereHas('applicant',function($query) use($staff){
                   $query->where('campus_id',$staff->campus_id);
-            })->with(['applicant','previousProgram.program','currentProgram.program'])->paginate(20),
+            })->with(['applicant','previousProgram.program','currentProgram.program','user.staff'])->paginate(20),
             'staff'=>$staff
         ];
         return view('dashboard.admission.submit-internal-transfer',$data)->withTitle('Internal Transfer');
@@ -1926,7 +1926,7 @@ class ApplicationController extends Controller
             'applicant'=>$applicant,
             'transfers'=>ExternalTransfer::whereHas('applicant',function($query) use($staff){
                   $query->where('campus_id',$staff->campus_id);
-            })->with(['applicant','previousProgram.program'])->paginate(20),
+            })->with(['applicant','previousProgram.program','user.staff'])->paginate(20),
             'staff'=>$staff
         ];
         return view('dashboard.admission.submit-external-transfer',$data)->withTitle('External Transfer');
