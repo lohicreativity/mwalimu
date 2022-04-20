@@ -1800,6 +1800,9 @@ class ApplicationController extends Controller
         if($applicant->multiple_admissions == 1 && $applicant->confirmation_status != 'CONFIRMED'){
              return redirect()->back()->with('error','The applicant has multiple admissions and has not yet confirmed');
         }
+        if($applicant->multiple_admissions == 0 && $applicant->confirmation_status == 'CANCELLED'){
+             return redirect()->back()->with('error','The applicant has cancelled the admission');
+        }
         $data = [
             'applicant'=>$applicant,
             'campus_programs'=>$applicant? CampusProgram::whereHas('program',function($query) use($applicant){
