@@ -1854,7 +1854,7 @@ class ApplicationController extends Controller
         $transfer->transfered_by_user_id = Auth::user()->id;
         $transfer->save();
 
-        if($array['Response']['ResponseParameters']['StatusCode'] == 208){
+        if($array['Response']['ResponseParameters']['StatusCode'] == 200){
             return redirect()->back()->with('message','Transfer completed successfully');
         }else{
             return redirect()->back()->with('error','Unable to complete transfer. '.$array['Response']['ResponseParameters']['StatusDescription']);
