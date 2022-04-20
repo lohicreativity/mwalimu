@@ -170,33 +170,33 @@ class ApplicationController extends Controller
             $applicants = Applicant::whereHas('intake.applicationWindows',function($query) use($request){
                  $query->where('id',$request->get('application_window_id'));
             })->whereHas('selections',function($query) use($request){
-                 $query->where('status','APPROVING')->orWhere('status','SELECTED')->orWhere('status','PENDING');
+                 $query->where('status','SELECTED');
             })->with(['nextOfKin','intake','selections.campusProgram.program'])->where('program_level_id',$request->get('program_level_id'))->where('first_name','LIKE','%'.$request->get('query').'%')->orWhere('middle_name','LIKE','%'.$request->get('query').'%')->orWhere('surname','LIKE','%'.$request->get('query').'%')->where('confirmation_status','!=','CANCELLED')->paginate(20);
          }elseif($request->get('gender')){
             $applicants = Applicant::whereHas('intake.applicationWindows',function($query) use($request){
                  $query->where('id',$request->get('application_window_id'));
             })->whereHas('selections',function($query) use($request){
-                 $query->where('status','APPROVING')->orWhere('status','SELECTED')->orWhere('status','PENDING');
+                 $query->where('status','SELECTED');
             })->with(['nextOfKin','intake','selections.campusProgram.program'])->where('program_level_id',$request->get('program_level_id'))->where('gender',$request->get('gender'))->where('confirmation_status','!=','CANCELLED')->paginate(20);
          }elseif($request->get('campus_program_id')){
             $applicants = Applicant::whereHas('intake.applicationWindows',function($query) use($request){
                  $query->where('id',$request->get('application_window_id'));
             })->whereHas('selections',function($query) use($request){
-                 $query->where('status','APPROVING')->orWhere('status','SELECTED')->orWhere('status','PENDING')->where('campus_program_id',$request->get('campus_program_id'));
+                 $query->where('status','SELECTED')->where('campus_program_id',$request->get('campus_program_id'));
             })->with(['nextOfKin','intake','selections.campusProgram.program'])->where('program_level_id',$request->get('program_level_id'))->where('confirmation_status','!=','CANCELLED')->paginate(20);
          }elseif($request->get('nta_level_id')){
              $applicants = Applicant::whereHas('intake.applicationWindows',function($query) use($request){
                  $query->where('id',$request->get('application_window_id'));
             })->whereHas('selections.campusProgram.program',function($query) use($request){
-                 $query->where('nta_level_id',$request->get('nta_level_id'))->where('status','APPROVING')->orWhere('status','SELECTED')->orWhere('status','PENDING');
+                 $query->where('nta_level_id',$request->get('nta_level_id'))->where('status','SELECTED')->orWhere('status','PENDING');
             })->whereHas('selections',function($query) use($request){
-                 $query->where('status','APPROVING')->orWhere('status','SELECTED')->orWhere('status','PENDING');
+                 $query->where('status','SELECTED');
             })->with(['nextOfKin','intake','selections.campusProgram.program'])->where('program_level_id',$request->get('program_level_id'))->where('confirmation_status','!=','CANCELLED')->paginate(20);
          }else{
             $applicants = Applicant::whereHas('intake.applicationWindows',function($query) use($request){
                  $query->where('id',$request->get('application_window_id'));
             })->whereHas('selections',function($query) use($request){
-                 $query->where('status','APPROVING')->orWhere('status','SELECTED')->orWhere('status','PENDING');
+                 $query->where('status','SELECTED');
             })->with(['nextOfKin','intake','selections.campusProgram.program'])->where('program_level_id',$request->get('program_level_id'))->where('confirmation_status','!=','CANCELLED')->paginate(20);
          }
          $data = [
