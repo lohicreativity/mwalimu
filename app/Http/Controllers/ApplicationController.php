@@ -2318,6 +2318,8 @@ class ApplicationController extends Controller
 
 
         if($array['Response']['ResponseParameters']['StatusCode'] == 200){
+            $applicant->confirmation_status = 'TRANSFERED';
+            $applicant->save();
             return redirect()->back()->with('message','Transfer completed successfully');
         }else{
             return redirect()->back()->with('error','Unable to complete transfer. '.$array['Response']['ResponseParameters']['StatusDescription']);
