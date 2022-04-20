@@ -1746,7 +1746,7 @@ class ApplicationController extends Controller
     }
 
     /**
-     * Request confirmation code
+     * Restore cancelled admission
      */
     public function restoreCancelledAdmission(Request $request)
     {
@@ -1781,6 +1781,73 @@ class ApplicationController extends Controller
             return redirect()->back()->with('message','Admission restored successfully');
         }else{
             return redirect()->back()->with('error','Unable to restore admission. '.$array['Response']['ResponseParameters']['StatusDescription']);
+        }
+    }
+
+    /**
+     * Show internal transfer
+     */
+    public function showInternalTransfer(Request $request)
+    {
+        $staff = User::find(Auth::user()->id)->staff;
+        $applicant = Applicant::with(['selections'=>function($query){
+              $query->where('status','SELECTED');
+        },'selections.campusProgram.program'])->where('index_number',$request->get('index_number'))->where('campus_id',$staff->campus_id)->first();
+        $data = [
+            'applicant'=>$applicant,
+            'campus_programs'=>$applicant? CampusProgram::whereHas('program',function($query) use($applicant){
+                 $query->where('award_id',$applicant->program_level_id);
+            })->get() : []
+        ];
+        return view('dashboard.admission.submit-internal-transfer',$data)->withTitle('Internal Transfer');
+    }
+
+    /**
+     * Submit iternal transfer
+     */
+    public function submitInternalTransfer(Request $request)
+    {
+        $applicant = Applicant::with(['selections.campusProgram','nectaResultDetails'])->find($request->get('applicant_id'));
+
+        $admitted_program = null;
+        foreach($applicant->selections as $selection){
+            if($selection->status == 'SELECTED'){
+                $admitted_program = $selection->campusProgram->regulator_code;
+            }
+        }
+
+        $f6indexno = null;
+        foreach($applicant->nectaResultDetails as $detail){
+            if($detail->exam_id == 2){
+               $f6indexno = $detail->index_number;
+               break;
+            }
+        }
+
+        $transfer_program = CampusProgram::find($request->get('campus_program_id'))->regulator_code;
+        
+        $url = 'http://41.59.90.200/admission/restoreCancelledAdmission';
+        $xml_request = '<?xml version="1.0" encoding="UTF-8"?>
+                        <Request>
+                        <UsernameToken>
+                        <Username>'.config('constants.TCU_USERNAME').'</Username>
+                        <SessionToken>'.config('constants.TCU_TOKEN').'</SessionToken>
+                        </UsernameToken>
+                        <RequestParameters>
+                         <f4indexno>'.$applicant->index_number.'</f4indexno>
+                         <f6indexno>'.$f6indexno.'</f6indexno>
+                         <CurrentProgrammeCode>'.$transfer_program.'</CurrentProgrammeCode>
+                         <PreviousProgrammeCode>'.$admitted_program.'</PreviousProgrammeCode>
+                        </RequestParameters>
+                        </Request>';
+        $xml_response=simplexml_load_string($this->sendXmlOverPost($url,$xml_request));
+        $json = json_encode($xml_response);
+        $array = json_decode($json,TRUE);
+
+        if($array['Response']['ResponseParameters']['StatusCode'] == 208){
+            return redirect()->back()->with('message','Transfer completed successfully');
+        }else{
+            return redirect()->back()->with('error','Unable to complete transfer. '.$array['Response']['ResponseParameters']['StatusDescription']);
         }
     }
 }

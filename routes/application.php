@@ -143,4 +143,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
     Route::post('restore-cancelled-admission',[ApplicationController::class,'restoreCancelledAdmission']);
     Route::post('request-confirmation-code',[ApplicationController::class,'requestConfirmationCode']);
 
+    Route::get('internal-transfer',[ApplicationController::class,'showInternalTransfer']);
+    Route::get('submit-internal-transfer',[ApplicationController::class,'submitInternalTransfer']);
+
 });
