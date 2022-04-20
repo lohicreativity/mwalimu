@@ -2158,6 +2158,14 @@ class ApplicationController extends Controller
         $transfer->save();
 
         if($array['Response']['ResponseParameters']['StatusCode'] == 200){
+            ApplicantProgramSelection::where('applicant_id',$applicant->id)->where('status','SELECTED')->update(['status','ELIGIBLE']);
+            
+            $select = new ApplicantProgramSelection;
+            $select->applicant_id = $applicant->id;
+            $select->campus_program_id = $transfer_program->id;
+            $select->order = 5;
+            $select->status = 'SELECTED';
+            $select->save();
             return redirect()->back()->with('message','Transfer completed successfully');
         }else{
             return redirect()->back()->with('error','Unable to complete transfer. '.$array['Response']['ResponseParameters']['StatusDescription']);
