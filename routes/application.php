@@ -144,6 +144,6 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
     Route::post('request-confirmation-code',[ApplicationController::class,'requestConfirmationCode']);
 
     Route::get('internal-transfer',[ApplicationController::class,'showInternalTransfer']);
-    Route::get('submit-internal-transfer',[ApplicationController::class,'submitInternalTransfer']);
+    Route::post('submit-internal-transfer',[ApplicationController::class,'submitInternalTransfer']);
 
 });
