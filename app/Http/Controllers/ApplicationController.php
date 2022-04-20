@@ -1905,6 +1905,9 @@ class ApplicationController extends Controller
             if($applicant->multiple_admissions == 0 && $applicant->confirmation_status == 'CANCELLED'){
                  return redirect()->back()->with('error','The applicant has cancelled the admission');
             }
+            if($applicant->multiple_admissions == 0 && $applicant->confirmation_status == 'TRANSFERED'){
+                 return redirect()->back()->with('error','The applicant has transfered');
+            }
             $admission_status = null;
             foreach($applicant->selections as $selection){
                 if($selection->status == 'SELECTED'){
@@ -2320,7 +2323,7 @@ class ApplicationController extends Controller
         if($array['Response']['ResponseParameters']['StatusCode'] == 200){
             $applicant->confirmation_status = 'TRANSFERED';
             $applicant->save();
-            return redirect()->back()->with('message','Transfer completed successfully');
+            return redirect()->to('application/external-transfer')->with('message','Transfer completed successfully');
         }else{
             return redirect()->back()->with('error','Unable to complete transfer. '.$array['Response']['ResponseParameters']['StatusDescription']);
         }
