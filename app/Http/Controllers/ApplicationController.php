@@ -152,6 +152,13 @@ class ApplicationController extends Controller
             })->whereHas('program',function($query) use($request){
                   $query->where('award_id',$request->get('program_level_id'));
             })->with('program')->get(),
+            'confirmed_campus_programs'=>CampusProgram::whereHas('selections',function($query) use($request){
+                  $query->where('application_window_id',$request->get('application_window_id'))->where('status','APPROVING');
+            })->whereHas('selections.applicant',function($query){
+                 $query->where('multiple_admissions',1);
+            })->whereHas('program',function($query) use($request){
+                  $query->where('award_id',$request->get('program_level_id'));
+            })->with('program')->get(),
             'application_window'=>ApplicationWindow::find($request->get('application_window_id')),
             'applicants'=>$applicants,
             'request'=>$request
