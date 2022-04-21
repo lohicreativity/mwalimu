@@ -346,6 +346,8 @@ class ApplicationController extends Controller
 
                    if($f6indexno){
 
+                     if($approving_selection){
+
                  $xml_request = '<?xml version="1.0" encoding="UTF-8"?>
                   <Request>
                   <UsernameToken>
@@ -371,6 +373,33 @@ class ApplicationController extends Controller
                   <Otherf6indexno></Otherf6indexno>
                   </RequestParameters>
                   </Request>';
+                }else{
+                  $xml_request = '<?xml version="1.0" encoding="UTF-8"?>
+                  <Request>
+                  <UsernameToken>
+                  <Username>'.config('constants.TCU_USERNAME').'</Username>
+                  <SessionToken>'.config('constants.TCU_TOKEN').'</SessionToken>
+                  </UsernameToken>
+                  <RequestParameters>
+                  <f4indexno>'.$applicant->index_number.'</f4indexno >
+                  <f6indexno>'.$f6indexno.'</f6indexno>
+                  <SelectedProgrammes>'.implode(',', $selected_programs).'</SelectedProgrammes>
+                  <MobileNumber>'.str_replace('-', '', $applicant->phone).'</MobileNumber>
+                  <OtherMobileNumber></OtherMobileNumber>
+                  <EmailAddress>'.$applicant->email.'</EmailAddress>
+                  <Category>A</Category>
+                  <AdmissionStatus>not selected</AdmissionStatus>
+                  <ProgrammeAdmitted>'.null.'</ProgrammeAdmitted>
+                  <Reason>max capacity</Reason>
+                  <Nationality >'.$applicant->nationality.'</Nationality>
+                  <Impairment>'.$applicant->disabilityStatus->name.'</Impairment>
+                  <DateOfBirth>'.$applicant->birth_date.'</DateOfBirth>
+                  <NationalIdNumber>'.$applicant->nin.'</NationalIdNumber>
+                  <Otherf4indexno></Otherf4indexno>
+                  <Otherf6indexno></Otherf6indexno>
+                  </RequestParameters>
+                  </Request>';
+                }
               $xml_response=simplexml_load_string($this->sendXmlOverPost($url,$xml_request));
               $json = json_encode($xml_response);
               $array = json_decode($json,TRUE);
@@ -380,13 +409,15 @@ class ApplicationController extends Controller
               $select->save();
 
             return dd($array);
-
+                
+                    if($array['Response']['ResponseParameters']['StatusCode'] == 200){
                     $log = new ApplicantSubmissionLog;
                     $log->applicant_id = $applicant->id;
                     $log->program_level_id = $request->get('program_level_id');
                     $log->application_window_id = $request->get('application_window_id');
                     $log->submitted = 1;
                     $log->save();
+                    }
                   }
               }
               
