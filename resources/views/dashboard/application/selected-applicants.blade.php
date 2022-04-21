@@ -187,6 +187,7 @@
                           <th>Name</th>
                           <th>Gender</th>
                           <th>Programme</th>
+                          <th>Status</th>
                           <th>Action</th>
                         </tr>
                     </thead>
@@ -202,7 +203,19 @@
                            @endif
                           @endforeach
                       </td>
-                      <td>{!! Form::checkbox('applicant_'.$applicant->id,$applicant->id,true) !!}</td>
+                      <td>@if(App\Domain\Application\Models\ApplicantSubmissionLog::containsApplicant($submission_logs,$applicant->id))
+                        <span class="badge badge-success">Submitted</span>
+                      @else
+                        <span class="badge badge-warning">Not Submitted</span>
+                      @endif
+                      </td>
+                      <td>
+                        @if(App\Domain\Application\Models\ApplicantSubmissionLog::containsApplicant($submission_logs,$applicant->id))
+                        {!! Form::checkbox('applicant_'.$applicant->id,$applicant->id,null,['disabled'=>'disabled']) !!}
+                        @else
+                        {!! Form::checkbox('applicant_'.$applicant->id,$applicant->id,true) !!}
+                        @endif
+                      </td>
                    </tr>
                  @endforeach
                    

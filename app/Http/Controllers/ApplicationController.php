@@ -161,6 +161,7 @@ class ApplicationController extends Controller
             })->with('program')->get(),
             'application_window'=>ApplicationWindow::find($request->get('application_window_id')),
             'applicants'=>$applicants,
+            'submission_logs'=>ApplicantSubmissionLog::where('program_level_id',$request->get('program_level_id'))->where('application_window_id',$request->get('application_window_id'))->get(),
             'request'=>$request
          ];
          return view('dashboard.application.selected-applicants',$data)->withTitle('Selected Applicants');
