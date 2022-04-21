@@ -404,21 +404,23 @@ class ApplicationController extends Controller
               $json = json_encode($xml_response);
               $array = json_decode($json,TRUE);
 
-              $select = ApplicantProgramSelection::find($approving_selection->id);
-              $select->status = 'SELECTED';
-              $select->save();
+              
 
-            return dd($array);
+            // return dd($array);
                 
-                    if($array['Response']['ResponseParameters']['StatusCode'] == 200){
+                  if($array['Response']['ResponseParameters']['StatusCode'] == 200){
+                    $select = ApplicantProgramSelection::find($approving_selection->id);
+                    $select->status = 'SELECTED';
+                    $select->save();
+                    
                     $log = new ApplicantSubmissionLog;
                     $log->applicant_id = $applicant->id;
                     $log->program_level_id = $request->get('program_level_id');
                     $log->application_window_id = $request->get('application_window_id');
                     $log->submitted = 1;
                     $log->save();
-                    }
                   }
+                }
               }
               
               }elseif(str_contains($award->name,'Diploma') || str_contains($award->name,'Certificate')){
