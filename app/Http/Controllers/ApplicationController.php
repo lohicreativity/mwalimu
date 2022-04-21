@@ -1685,7 +1685,7 @@ class ApplicationController extends Controller
         foreach($array['Response']['ResponseParameters']['Applicant'] as $data){
             $applicant = Applicant::where('index_number',$data['f4indexno'])->first();
             if($applicant){
-               $applicant->confirmation_status = $data['ConfirmationStatusCode'] == 233? 'CONFIRMED' : null;
+               $applicant->admission_confirmation_status = $data['ConfirmationStatusCode'] == 233? 'CONFIRMED' : null;
                $applicant->save();
             }
         }
