@@ -362,7 +362,7 @@ class ApplicationController extends Controller
                   <Category>A</Category>
                   <AdmissionStatus>provisional admission</AdmissionStatus>
                   <ProgrammeAdmitted>'.$approving_selection->campusProgram->regulator_code.'</ProgrammeAdmitted>
-                  <Reason>'.$approving_selection? 'eligible' : 'maximum capacity'.'</Reason>
+                  <Reason>eligible</Reason>
                   <Nationality >'.$applicant->nationality.'</Nationality>
                   <Impairment>'.$applicant->disabilityStatus->name.'</Impairment>
                   <DateOfBirth>'.$applicant->birth_date.'</DateOfBirth>
