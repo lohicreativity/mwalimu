@@ -406,7 +406,7 @@ class ApplicationController extends Controller
 
               
 
-            return dd($array);
+            // return dd($array);
                 
                   if($array['Response']['ResponseParameters']['StatusCode'] == 200){
                     $select = ApplicantProgramSelection::find($approving_selection->id);
