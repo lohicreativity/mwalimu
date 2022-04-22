@@ -423,7 +423,9 @@ class ApplicationController extends Controller
                 }
               }
               
-              }elseif(str_contains($award->name,'Diploma') || str_contains($award->name,'Certificate')){
+              }
+
+              if(str_contains($award->name,'Diploma') || str_contains($award->name,'Certificate')){
                   
                   $payment = NactePayment::latest()->first();
                   $result = Http::get('https://www.nacte.go.tz/nacteapi/index.php/api/payment/'.$payment->reference_no.'/'.config('NACTE_API_SECRET'));
@@ -504,7 +506,7 @@ class ApplicationController extends Controller
 
           }
 
-        return redirect()->back()->with('message','Applicants submitted to TCU successfully');
+        return redirect()->back()->with('message','Applicants submitted successfully');
     }
 
     /**
