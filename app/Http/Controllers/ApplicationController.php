@@ -412,7 +412,7 @@ class ApplicationController extends Controller
                     // $select = ApplicantProgramSelection::find($approving_selection->id);
                     // $select->status = 'SELECTED';
                     // $select->save();
-                    
+
                     $log = new ApplicantSubmissionLog;
                     $log->applicant_id = $applicant->id;
                     $log->program_level_id = $request->get('program_level_id');
@@ -424,10 +424,12 @@ class ApplicationController extends Controller
               }
               
               }elseif(str_contains($award->name,'Diploma') || str_contains($award->name,'Certificate')){
-
-                  $payment = NactePayment::where('balance','!=',0.0)->first();
-                  if(!$payment){
-                      return redirect()->back()->with('error','No NACTE payment balance');
+                  
+                  $payment = NactePayment::latest()->first();
+                  $result = Http::get('https://www.nacte.go.tz/nacteapi/index.php/api/payment/'.$payment->reference_no.'/'.config('NACTE_API_SECRET'));
+                  
+                  if(json_decode($result)['params'][0]['balance']/5000 < count($applicants)){
+                      return redirect()->back()->with('error','No sufficience NACTE payment balance');
                   }
 
                   if(ApplicantSubmissionLog::where('applicant_id',$applicant->id)->where('program_level_id',$request->get('program_level_id'))->count() == 0){
@@ -440,7 +442,7 @@ class ApplicationController extends Controller
                    }
 
                   $params = [
-                       'authorization'=>config('constants.NACTE_API_TOKEN'),
+                       'authorization'=>config('constants.NACTE_API_KEY'),
                        'firstname'=>$applicant->first_name,
                        'secondname'=>$applicant->middle_name,
                        'surname'=>$applicant->surname,
@@ -449,8 +451,8 @@ class ApplicationController extends Controller
                        'impairement'=>$applicant->disabilityStatus->name,
                        'form_four_indexnumber'=>$applicant->index_number,
                        'form_four_year'=>explode('/',$applicant->index_number)[2],
-                       // 'form_six_indexnumber'=>"<form_six_indexnumber>",
-                       // 'form_six_year'=>"<form_six_year>",
+                       'form_six_indexnumber'=>$f6indexno,
+                       'form_six_year'=>explode('/', $f6indexno),
                        // 'NTA4_reg'=>,
                        // "NTA4_grad_year": "<NTA4_grad_year>",
                        // "NTA5_reg": "<NTA5_reg>",
@@ -472,8 +474,6 @@ class ApplicationController extends Controller
                        'intake'=>$applicant->intake->name
                     ];
 
-                    $payment->update(['balance'=>'balance'-5000]);
-
                     $url = 'http://41.93.40.137/nacteapi/index.php/api/upload';
 
                     $data = json_encode(['params'=>$params]);
@@ -488,14 +488,14 @@ class ApplicationController extends Controller
                     // Send to remote and return data to caller.
                     $result = curl_exec($ch);
                     curl_close($ch);
-                    return $result;
+                    return dd($result);
 
-                    $log = new ApplicantSubmissionLog;
-                    $log->applicant_id = $applicant->id;
-                    $log->program_level_id = $request->get('program_level_id');
-                    $log->application_window_id = $request->get('application_window_id');
-                    $log->submitted = 1;
-                    $log->save();
+                    // $log = new ApplicantSubmissionLog;
+                    // $log->applicant_id = $applicant->id;
+                    // $log->program_level_id = $request->get('program_level_id');
+                    // $log->application_window_id = $request->get('application_window_id');
+                    // $log->submitted = 1;
+                    // $log->save();
 
                   }
               }
