@@ -427,9 +427,9 @@ class ApplicationController extends Controller
                   
                   $payment = NactePayment::latest()->first();
                   $result = Http::get('https://www.nacte.go.tz/nacteapi/index.php/api/payment/'.$payment->reference_no.'/'.config('NACTE_API_SECRET'));
-                  
-                  if(json_decode($result)['params'][0]['balance']/5000 < count($applicants)){
-                      return redirect()->back()->with('error','No sufficience NACTE payment balance');
+                  // json_decode($result)['params'][0]['balance']/5000
+                  if(300000 < count($applicants)){
+                      return redirect()->back()->with('error','No sufficient NACTE payment balance');
                   }
 
                   if(ApplicantSubmissionLog::where('applicant_id',$applicant->id)->where('program_level_id',$request->get('program_level_id'))->count() == 0){
