@@ -320,8 +320,8 @@ class ApplicationController extends Controller
 
             foreach($applicants as $applicant){
 
-                 if($request->get('applicant_'.$applicant->id) == $applicant->id){
-                   if(str_contains($award->name,'Bachelor')){
+              if($request->get('applicant_'.$applicant->id) == $applicant->id){
+                if(str_contains($award->name,'Bachelor')){
                  //$url='https://api.tcu.go.tz/applicants/submitProgramme';
                   
                   if(ApplicantSubmissionLog::where('applicant_id',$applicant->id)->where('program_level_id',$request->get('program_level_id'))->count() == 0){
@@ -345,64 +345,62 @@ class ApplicationController extends Controller
                    }
 
                    if($f6indexno){
-
                      if($approving_selection){
-
-                 $xml_request = '<?xml version="1.0" encoding="UTF-8"?>
-                  <Request>
-                  <UsernameToken>
-                  <Username>'.config('constants.TCU_USERNAME').'</Username>
-                  <SessionToken>'.config('constants.TCU_TOKEN').'</SessionToken>
-                  </UsernameToken>
-                  <RequestParameters>
-                  <f4indexno>'.$applicant->index_number.'</f4indexno >
-                  <f6indexno>'.$f6indexno.'</f6indexno>
-                  <SelectedProgrammes>'.implode(',', $selected_programs).'</SelectedProgrammes>
-                  <MobileNumber>'.str_replace('-', '', $applicant->phone).'</MobileNumber>
-                  <OtherMobileNumber></OtherMobileNumber>
-                  <EmailAddress>'.$applicant->email.'</EmailAddress>
-                  <Category>A</Category>
-                  <AdmissionStatus>provisional admission</AdmissionStatus>
-                  <ProgrammeAdmitted>'.$approving_selection->campusProgram->regulator_code.'</ProgrammeAdmitted>
-                  <Reason>eligible</Reason>
-                  <Nationality >'.$applicant->nationality.'</Nationality>
-                  <Impairment>'.$applicant->disabilityStatus->name.'</Impairment>
-                  <DateOfBirth>'.$applicant->birth_date.'</DateOfBirth>
-                  <NationalIdNumber>'.$applicant->nin.'</NationalIdNumber>
-                  <Otherf4indexno></Otherf4indexno>
-                  <Otherf6indexno></Otherf6indexno>
-                  </RequestParameters>
-                  </Request>';
-                }else{
-                  $xml_request = '<?xml version="1.0" encoding="UTF-8"?>
-                  <Request>
-                  <UsernameToken>
-                  <Username>'.config('constants.TCU_USERNAME').'</Username>
-                  <SessionToken>'.config('constants.TCU_TOKEN').'</SessionToken>
-                  </UsernameToken>
-                  <RequestParameters>
-                  <f4indexno>'.$applicant->index_number.'</f4indexno >
-                  <f6indexno>'.$f6indexno.'</f6indexno>
-                  <SelectedProgrammes>'.implode(',', $selected_programs).'</SelectedProgrammes>
-                  <MobileNumber>'.str_replace('-', '', $applicant->phone).'</MobileNumber>
-                  <OtherMobileNumber></OtherMobileNumber>
-                  <EmailAddress>'.$applicant->email.'</EmailAddress>
-                  <Category>A</Category>
-                  <AdmissionStatus>not selected</AdmissionStatus>
-                  <ProgrammeAdmitted>'.null.'</ProgrammeAdmitted>
-                  <Reason>max capacity</Reason>
-                  <Nationality >'.$applicant->nationality.'</Nationality>
-                  <Impairment>'.$applicant->disabilityStatus->name.'</Impairment>
-                  <DateOfBirth>'.$applicant->birth_date.'</DateOfBirth>
-                  <NationalIdNumber>'.$applicant->nin.'</NationalIdNumber>
-                  <Otherf4indexno></Otherf4indexno>
-                  <Otherf6indexno></Otherf6indexno>
-                  </RequestParameters>
-                  </Request>';
-                }
-              $xml_response=simplexml_load_string($this->sendXmlOverPost($url,$xml_request));
-              $json = json_encode($xml_response);
-              $array = json_decode($json,TRUE);
+                        $xml_request = '<?xml version="1.0" encoding="UTF-8"?>
+                        <Request>
+                        <UsernameToken>
+                        <Username>'.config('constants.TCU_USERNAME').'</Username>
+                        <SessionToken>'.config('constants.TCU_TOKEN').'</SessionToken>
+                        </UsernameToken>
+                        <RequestParameters>
+                        <f4indexno>'.$applicant->index_number.'</f4indexno >
+                        <f6indexno>'.$f6indexno.'</f6indexno>
+                        <SelectedProgrammes>'.implode(',', $selected_programs).'</SelectedProgrammes>
+                        <MobileNumber>'.str_replace('-', '', $applicant->phone).'</MobileNumber>
+                        <OtherMobileNumber></OtherMobileNumber>
+                        <EmailAddress>'.$applicant->email.'</EmailAddress>
+                        <Category>A</Category>
+                        <AdmissionStatus>provisional admission</AdmissionStatus>
+                        <ProgrammeAdmitted>'.$approving_selection->campusProgram->regulator_code.'</ProgrammeAdmitted>
+                        <Reason>eligible</Reason>
+                        <Nationality >'.$applicant->nationality.'</Nationality>
+                        <Impairment>'.$applicant->disabilityStatus->name.'</Impairment>
+                        <DateOfBirth>'.$applicant->birth_date.'</DateOfBirth>
+                        <NationalIdNumber>'.$applicant->nin.'</NationalIdNumber>
+                        <Otherf4indexno></Otherf4indexno>
+                        <Otherf6indexno></Otherf6indexno>
+                        </RequestParameters>
+                        </Request>';
+                     }else{
+                        $xml_request = '<?xml version="1.0" encoding="UTF-8"?>
+                        <Request>
+                        <UsernameToken>
+                        <Username>'.config('constants.TCU_USERNAME').'</Username>
+                        <SessionToken>'.config('constants.TCU_TOKEN').'</SessionToken>
+                        </UsernameToken>
+                        <RequestParameters>
+                        <f4indexno>'.$applicant->index_number.'</f4indexno >
+                        <f6indexno>'.$f6indexno.'</f6indexno>
+                        <SelectedProgrammes>'.implode(',', $selected_programs).'</SelectedProgrammes>
+                        <MobileNumber>'.str_replace('-', '', $applicant->phone).'</MobileNumber>
+                        <OtherMobileNumber></OtherMobileNumber>
+                        <EmailAddress>'.$applicant->email.'</EmailAddress>
+                        <Category>A</Category>
+                        <AdmissionStatus>not selected</AdmissionStatus>
+                        <ProgrammeAdmitted>'.null.'</ProgrammeAdmitted>
+                        <Reason>max capacity</Reason>
+                        <Nationality >'.$applicant->nationality.'</Nationality>
+                        <Impairment>'.$applicant->disabilityStatus->name.'</Impairment>
+                        <DateOfBirth>'.$applicant->birth_date.'</DateOfBirth>
+                        <NationalIdNumber>'.$applicant->nin.'</NationalIdNumber>
+                        <Otherf4indexno></Otherf4indexno>
+                        <Otherf6indexno></Otherf6indexno>
+                        </RequestParameters>
+                        </Request>';
+                     }
+                    $xml_response=simplexml_load_string($this->sendXmlOverPost($url,$xml_request));
+                    $json = json_encode($xml_response);
+                    $array = json_decode($json,TRUE);
 
               
 
@@ -423,14 +421,14 @@ class ApplicationController extends Controller
                 }
               }
               
-              }
+              }elseif(str_contains($award->name,'Diploma') || str_contains($award->name,'Certificate')){
 
-              if(str_contains($award->name,'Diploma') || str_contains($award->name,'Certificate')){
+                  return 'Certificate';
                   
                   $payment = NactePayment::latest()->first();
                   $result = Http::get('https://www.nacte.go.tz/nacteapi/index.php/api/payment/'.$payment->reference_no.'/'.config('NACTE_API_SECRET'));
                   // json_decode($result)['params'][0]['balance']/5000
-                  if(300000 < count($applicants)){
+                  if(300000/5000 < count($applicants)){
                       return redirect()->back()->with('error','No sufficient NACTE payment balance');
                   }
 
@@ -491,6 +489,7 @@ class ApplicationController extends Controller
                     $result = curl_exec($ch);
                     curl_close($ch);
                     return dd($result);
+
 
                     // $log = new ApplicantSubmissionLog;
                     // $log->applicant_id = $applicant->id;
