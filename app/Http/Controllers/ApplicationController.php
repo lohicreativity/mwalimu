@@ -452,7 +452,7 @@ class ApplicationController extends Controller
                        'form_four_indexnumber'=>$applicant->index_number,
                        'form_four_year'=>explode('/',$applicant->index_number)[2],
                        'form_six_indexnumber'=>$f6indexno,
-                       'form_six_year'=>explode('/', $f6indexno),
+                       'form_six_year'=>$f6indexno? explode('/', $f6indexno) : null,
                        // 'NTA4_reg'=>,
                        // "NTA4_grad_year": "<NTA4_grad_year>",
                        // "NTA5_reg": "<NTA5_reg>",
