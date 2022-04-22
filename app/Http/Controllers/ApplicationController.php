@@ -312,8 +312,6 @@ class ApplicationController extends Controller
                  $query->where('id',$request->get('application_window_id'));
             })->with(['nextOfKin.region','region','district','intake','selections.campusProgram.program','nectaResultDetails'])->where('program_level_id',$request->get('program_level_id'))->where('campus_id',$staff->campus_id)->get();
 
-        return $applicants;
-
         if(ApplicantProgramSelection::whereHas('applicant',function($query) use($request,$staff){
              $query->where('campus_id',$staff->campus_id)->where('program_level_id',$request->get('program_level_id'));
         })->where('application_window_id',$request->get('application_window_id'))->where('status','APPROVING')->count() == 0){
@@ -424,7 +422,7 @@ class ApplicationController extends Controller
                 }
               }
               
-              }elseif(str_contains($award->name,'Diploma') || str_contains($award->name,'Basic')){
+              elseif(str_contains($award->name,'Diploma') || str_contains($award->name,'Basic')){
                   
           
                   $payment = NactePayment::latest()->first();
@@ -501,6 +499,8 @@ class ApplicationController extends Controller
                     // $log->save();
 
                   }
+
+                }
               }
 
             }
