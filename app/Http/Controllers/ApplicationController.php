@@ -12,6 +12,7 @@ use App\Domain\Academic\Models\Department;
 use App\Domain\Finance\Models\FeeAmount;
 use App\Domain\Finance\Models\ProgramFee;
 use App\Domain\Finance\Models\Invoice;
+use App\Domain\Finance\Models\NactePayment;
 use App\Domain\Settings\Models\NTALevel;
 use App\Domain\Settings\Models\Campus;
 use App\Domain\Application\Models\ApplicationWindow;
