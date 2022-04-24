@@ -306,9 +306,7 @@
                    </tbody>
                   </table>
 
-                  <div class="ss-pagination-links">
-                     {!! $applicants->appends($request->except('page'))->render() !!}
-                  </div>
+                
                </div>
             </div>
 
