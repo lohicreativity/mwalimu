@@ -25,6 +25,8 @@ $('document').ready(function(){
 
     $('#ss-transfers').DataTable();
 
+    $('.ss-paginated-table').DataTable();
+
     // Pop signup modal
     // if(localStorage.getItem('signup-modal-set') != '1'){
     //     $('#ss-signup-popup-modal').modal('show');

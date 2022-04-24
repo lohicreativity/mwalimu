@@ -269,7 +269,7 @@
                   {!! Form::close() !!}
                   <br>
 
-                  <table class="table table-bordered ss-margin-top">
+                  <table class="table table-bordered ss-margin-top ss-paginated-table">
                     <thead>
                         <tr>
                           <th>Name</th>
