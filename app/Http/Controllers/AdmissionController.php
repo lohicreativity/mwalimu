@@ -40,14 +40,14 @@ class AdmissionController extends Controller
         }
     	$program_fee_invoice = Invoice::whereHas('feeType',function($query){
                    $query->where('name','LIKE','%Tuition%');
-    	})->where('payable_id',$applicant->id)->where('payable_type','applicant')->first();
+    	})->with('gatewayPayment')->where('payable_id',$applicant->id)->where('payable_type','applicant')->first();
     	if($applicant->hostel_available_status == 1){
     		$hostel_fee = FeeAmount::whereHas('feeItem',function($query){
     			$query->where('name','LIKE','%Hostel%');
     		})->where('study_academic_year_id',$study_academic_year->id)->first();
     	    $hostel_fee_invoice = Invoice::whereHas('feeType',function($query){
                    $query->where('name','LIKE','%Hostel%');
-    	    })->where('payable_id',$applicant->id)->where('payable_type','applicant')->first();
+    	    })->with('gatewayPayment')->where('payable_id',$applicant->id)->where('payable_type','applicant')->first();
     	}else{
     		$hostel_fee = null;
     		$hostel_fee_invoice = null;
@@ -76,7 +76,7 @@ class AdmissionController extends Controller
 
         $other_fee_invoice = Invoice::whereHas('feeType',function($query){
                    $query->where('name','LIKE','%Miscellaneous%');
-    	    })->where('payable_id',$applicant->id)->where('payable_type','applicant')->first();
+    	    })->with('gatewayPayment')->where('payable_id',$applicant->id)->where('payable_type','applicant')->first();
 
 
     	if($applicant->insurance_available_status == 0){
