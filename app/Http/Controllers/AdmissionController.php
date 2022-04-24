@@ -31,7 +31,13 @@ class AdmissionController extends Controller
     	$study_academic_year = StudyAcademicYear::whereHas('academicYear',function($query) use($ac_year){
     		   $query->where('year','LIKE','%'.$ac_year.'%');
     	})->first();
+        if(!$study_academic_year){
+            return redirect()->back()->with('error','Study academic year has not been created');
+        }
     	$program_fee = ProgramFee::where('study_academic_year_id',$study_academic_year->id)->where('campus_program_id',$applicant->selections[0]->campus_program_id)->first();
+        if(!$program_fee){
+            return redirect()->back()->with('error','Programme fee has not been defined for '.$study_academic_year->academicYear->year);
+        }
     	$program_fee_invoice = Invoice::whereHas('feeType',function($query){
                    $query->where('name','LIKE','%Tuition%');
     	})->where('payable_id',$applicant->id)->where('payable_type','applicant')->first();
