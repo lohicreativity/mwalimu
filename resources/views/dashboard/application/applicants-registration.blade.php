@@ -39,42 +39,6 @@
         <!-- Small boxes (Stat box) -->
         <div class="row">
            <div class="col-12">
- 
-             <div class="card">
-               <div class="card-header">
-                 <h3 class="card-title">{{ __('Select Application Window') }}</h3>
-               </div>
-               <!-- /.card-header -->
-               <div class="card-body">
-                  {!! Form::open(['url'=>'application/applicants-registration','class'=>'ss-form-processing','method'=>'GET']) !!}
-                    <div class="row">
-                    <div class="form-group col-6">
-                      {!! Form::label('','Application Window') !!}
-                     <select name="application_window_id" class="form-control" required>
-                        <option value="">Select Application Window</option>
-                        @foreach($application_windows as $window)
-                        <option value="{{ $window->id }}" @if($request->get('application_window_id') == $window->id) selected="selected" @endif>{{ $window->begin_date }} - {{ $window->end_date }} </option>
-                        @endforeach
-                     </select>
-                   </div>
-                   <div class="form-group col-6">
-                    {!! Form::label('','Programme Level') !!}
-                    <select name="program_level_id" class="form-control" required>
-                      <option value="">Select Programme Level</option>
-                      @foreach($awards as $award)
-                      <option value="{{ $award->id }}" @if($request->get('program_level_id') == $award->id) selected="selected" @endif>{{ $award->name }}</option>
-                      @endforeach
-                    </select>
-                  </div>
-                 </div>
-                   <div class="ss-form-actions">
-                    <button type="submit" class="btn btn-primary">{{ __('Search') }}</button>
-                   </div>
- 
-                  {!! Form::close() !!}
-               </div>
-             </div>
-             <!-- /.card -->
 
              <div class="card">
                <div class="card-header">
@@ -85,32 +49,17 @@
                   {!! Form::open(['url'=>'application/applicants-registration','method'=>'GET']) !!}
 
                   {!! Form::input('hidden','application_window_id',$request->get('application_window_id')) !!}
-                  {!! Form::input('hidden','program_level_id',$request->get('program_level_id')) !!}
                   <div class="input-group">
                    <input type="text" name="query" placeholder="Search for applicant name" class="form-control">
-                   <select name="nta_level_id" class="form-control">
-                      <option value="">Select NTA Level</option>
-                      @foreach($nta_levels as $level)
-                      <option value="{{ $level->id }}">{{ $level->name }}</option>
-                      @endforeach
-                   </select>
-                   <select name="campus_program_id" class="form-control ss-select-tags-">
-                      <option value="">Select Programme</option>
-                      @foreach($campus_programs as $program)
-                      <option value="{{ $program->id }}">{{ $program->program->name }}</option>
-                      @endforeach
-                   </select>
-                   <select name="gender" class="form-control">
-                      <option value="">Select Gender</option>
-                      <option value="M">Male</option>
-                      <option value="F">Female</option>
-                   </select>
+                   <input type="text" name="index_number" placeholder="Search for applicant index number" class="form-control">
                    <span class="input-group-btn">
                      <button class="btn btn-default" type="submit"><span class="fa fa-search"></span></button>
                    </span>
                   </div>
                   {!! Form::close() !!}
-
+                  <br>
+                
+                 @if(count($applicants) != 0)
                   <table class="table table-bordered ss-margin-top">
                     <thead>
                         <tr>
@@ -141,10 +90,7 @@
                  @endforeach
                    </tbody>
                   </table>
-
-                  <div class="ss-pagination-links">
-                     {!! $applicants->appends($request->except('page'))->render() !!}
-                  </div>
+                  @endif
                </div>
             </div>
 
