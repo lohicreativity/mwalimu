@@ -319,9 +319,9 @@ class ApplicationController extends Controller
         }
 
 
-            foreach($applicants as $applicant){
+        foreach($applicants as $applicant){
 
-              if($request->get('applicant_'.$applicant->id) == $applicant->id){
+            if($request->get('applicant_'.$applicant->id) == $applicant->id){
                 if(str_contains($award->name,'Bachelor')){
                  //$url='https://api.tcu.go.tz/applicants/submitProgramme';
                   
@@ -420,9 +420,9 @@ class ApplicationController extends Controller
                     $log->save();
                   }
                 }
-              }elseif(str_contains($award->name,'Diploma') || str_contains($award->name,'Basic')){
+              }
+            }elseif(str_contains($award->name,'Diploma') || str_contains($award->name,'Basic')){
                   
-
                   return $award;
           
                   $payment = NactePayment::latest()->first();
@@ -500,12 +500,11 @@ class ApplicationController extends Controller
 
                   }
 
-                }
               }
 
-            }
+            }  
 
-          }
+        }
 
         return redirect()->back()->with('message','Applicants submitted successfully');
     }
