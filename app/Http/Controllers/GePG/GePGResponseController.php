@@ -118,7 +118,8 @@ class GePGResponseController extends Controller
 			$applicant->save();
 
 			if(str_contains($invoice->feeType->name,'Tuition Fee')){
-				$percentage = $data['paid_amount']/$invoice->amount;
+				$paid_amount = GatewayPayment::where('bill_id',$invoice->reference_no)->sum('paid_amount');
+				$percentage = $paid_amount/$invoice->amount;
 				$applicant = Applicant::find($invoice->payable_id);
 			    $applicant->tuition_payment_check = $percentage >= 0.6? 1 : 0;
 			    $applicant->save();
