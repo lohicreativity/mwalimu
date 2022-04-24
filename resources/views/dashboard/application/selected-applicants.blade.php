@@ -243,7 +243,7 @@
 
                   {!! Form::input('hidden','application_window_id',$request->get('application_window_id')) !!}
                   {!! Form::input('hidden','program_level_id',$request->get('program_level_id')) !!}
-                  <div class="input-group">
+                  <!-- <div class="input-group">
                    <input type="text" name="query" placeholder="Search for applicant name" class="form-control">
                    <select name="nta_level_id" class="form-control">
                       <option value="">Select NTA Level</option>
@@ -265,7 +265,7 @@
                    <span class="input-group-btn">
                      <button class="btn btn-default" type="submit"><span class="fa fa-search"></span></button>
                    </span>
-                  </div>
+                  </div> -->
                   {!! Form::close() !!}
                   <br>
 
