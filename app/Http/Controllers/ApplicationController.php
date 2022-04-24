@@ -423,7 +423,6 @@ class ApplicationController extends Controller
               }
             }elseif(str_contains($award->name,'Diploma') || str_contains($award->name,'Basic')){
                   
-                  return $award;
           
                   $payment = NactePayment::latest()->first();
                   $result = Http::get('https://www.nacte.go.tz/nacteapi/index.php/api/payment/'.$payment->reference_no.'/'.config('NACTE_API_SECRET'));
