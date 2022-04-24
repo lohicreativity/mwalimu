@@ -11,6 +11,7 @@ use App\Domain\Settings\Models\Ward;
 use App\Domain\Settings\Models\Intake;
 use App\Domain\Academic\Models\Award;
 use App\Domain\Settings\Models\DisabilityStatus;
+use App\Domain\Settings\Models\Campus;
 use App\Models\User;
 
 class Applicant extends Model
@@ -25,6 +26,14 @@ class Applicant extends Model
     public function country()
     {
     	return $this->belongsTo(Country::class,'country_id');
+    }
+
+    /**
+     * Establish one to many relationship with campuses
+     */
+    public function campus()
+    {
+        return $this->belongsTo(Campus::class,'campus_id');
     }
 
     /**
