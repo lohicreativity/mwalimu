@@ -267,7 +267,6 @@
                    </span>
                   </div> -->
                   {!! Form::close() !!}
-                  <br>
 
                   <table class="table table-bordered ss-margin-top ss-paginated-table">
                     <thead>
