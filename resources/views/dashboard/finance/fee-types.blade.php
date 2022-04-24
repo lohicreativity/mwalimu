@@ -169,9 +169,9 @@
                     <td>{{ $type->gfs_code }}</td>
                     <td>{{ $type->duration }}</td>
                     <td>
-                      @if($type->payment_option == 0)
+                      @if($type->payment_option == 1)
                         Full Payment
-                      @elseif($type->payment_option == 1)
+                      @elseif($type->payment_option == 2)
                         Partial Payment
                       @else
                         Exact Payment
@@ -276,9 +276,9 @@
                                           {!! Form::label('','Payment option') !!}
                                           <select name="payment_option" class="form-control" required>
                                             <option value="">Select Payment Option</option>
-                                            <option value="0" @if($type->payment_option == 0) selected="selected" @endif>Full Payment</option>
-                                            <option value="1" @if($type->payment_option == 1) selected="selected" @endif>Partial Payment</option>
-                                            <option value="2" @if($type->payment_option == 2) selected="selected" @endif>Exact Payment</option>
+                                            <option value="1" @if($type->payment_option == 0) selected="selected" @endif>Full Payment</option>
+                                            <option value="2" @if($type->payment_option == 1) selected="selected" @endif>Partial Payment</option>
+                                            <option value="3" @if($type->payment_option == 2) selected="selected" @endif>Exact Payment</option>
                                           </select>
                                         </div>
                                       </div>
