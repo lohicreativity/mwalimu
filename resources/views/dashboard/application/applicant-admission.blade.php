@@ -71,6 +71,12 @@
                   <li class="list-group-item">
                     <b>Disability Status</b> <a class="float-right">{{ $applicant->disabilityStatus->name }}</a>
                   </li>
+                  <li class="list-group-item">
+                    <b>Campus</b> <a class="float-right">{{ $applicant->campus->name }}</a>
+                  </li>
+                  <li class="list-group-item">
+                    <b>Programme</b> <a class="float-right">{{ $selection->campusProgram->program->name }}</a>
+                  </li>
                 </ul>
                 
        

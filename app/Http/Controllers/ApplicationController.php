@@ -1249,7 +1249,7 @@ class ApplicationController extends Controller
     public function admitApplicant(Request $request, $applicant_id, $selection_id)
     {
         $data = [
-           'applicant'=>Applicant::with(['selections','nectaResultDetails.results','nacteResultDetails.results','disabilityStatus'])->find($applicant_id),
+           'applicant'=>Applicant::with(['selections','nectaResultDetails.results','nacteResultDetails.results','disabilityStatus','campus'])->find($applicant_id),
            'selection'=>ApplicantProgramSelection::with(['campusProgram.program'])->find($selection_id)
         ];
         return view('dashboard.application.applicant-admission',$data)->withTitle('Applicant Admission');
