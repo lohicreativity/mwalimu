@@ -119,7 +119,7 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="{{ url('student/results/'.session('active_academic_year_id').'/'.$student->year_of_study.'/report/appeal?semester_id='.session('active_semester_id')) }}" class="nav-link">
+                <a href="{{ url('student/results/'.session('active_academic_year_id').'/report/appeal?semester_id='.session('active_semester_id')) }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Appeal Results</p>
                 </a>
