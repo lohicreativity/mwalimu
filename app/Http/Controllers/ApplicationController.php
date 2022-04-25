@@ -1286,7 +1286,7 @@ class ApplicationController extends Controller
 
         $applicant = Applicant::find($request->get('applicant_id'));
         $applicant->results_check = 1;
-        $applicant->payment_check = 1;
+        $applicant->tuition_payment_check = 1;
         $applicant->insurance_check = 1;
         $applicant->personal_info_check = 1;
         $applicant->medical_form_check = 1;
