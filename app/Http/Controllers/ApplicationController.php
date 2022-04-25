@@ -1363,7 +1363,6 @@ class ApplicationController extends Controller
          $ac_year = StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first();
          $application_window = ApplicationWindow::where('campus_id',$staff->campus_id)->whereYear('end_date',explode('/',$ac_year->academicYear->year)[0])->first();
 
-         return $application_window;
          if(!$application_window){
              return redirect()->back()->with('error','No corresponding application window');
          }
