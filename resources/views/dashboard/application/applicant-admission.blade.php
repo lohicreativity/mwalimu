@@ -271,8 +271,8 @@
                        <div class="col-6">
                           <div class="form-group">
                             <div class="custom-control custom-checkbox">
-                              <input class="custom-control-input" name="details_check" type="checkbox" id="details-check" value="1">
-                              <label for="details-check" class="custom-control-label">Personal Details</label>
+                              <input class="custom-control-input" name="personal_info_check" type="checkbox" id="personal-info-check" value="1">
+                              <label for="personal-info-check" class="custom-control-label">Personal Details</label>
                             </div>
                           </div>
                        </div>

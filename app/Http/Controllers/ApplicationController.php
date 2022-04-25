@@ -15,6 +15,8 @@ use App\Domain\Finance\Models\Invoice;
 use App\Domain\Finance\Models\NactePayment;
 use App\Domain\Settings\Models\NTALevel;
 use App\Domain\Settings\Models\Campus;
+use App\Domain\Registration\Models\StudentshipStatus;
+use App\Domain\Registration\Models\Student;
 use App\Domain\Application\Models\ApplicationWindow;
 use App\Domain\Application\Models\InternalTransfer;
 use App\Domain\Application\Models\ExternalTransfer;
@@ -1264,7 +1266,7 @@ class ApplicationController extends Controller
             'academic_results_check'=>'required',
             'fee_payment_check'=>'required',
             'insurance_check'=>'required',
-            'documents_check'=>'required'
+            'personal_info_check'=>'required'
         ]);
 
         if($validation->fails()){
@@ -1276,13 +1278,23 @@ class ApplicationController extends Controller
         }
 
         $applicant = Applicant::find($request->get('applicant_id'));
-        $applicant->academic_results_check = 1;
+        $applicant->results_check = 1;
         $applicant->payment_check = 1;
         $applicant->insurance_check = 1;
-        $applicant->documents_check = 1;
+        $applicant->personal_info_check = 1;
+        $applicant->registered_by_user_id = Auth::user()->id;
         $applicant->save();
 
+        $selection = ApplicantProgramSelection::with('campusProgram.program')->where('applicant_id',$request->get('applicant_id'))->where('status','SELECTED')->first();
+
         $studentship_status = StudentshipStatus::where('status','ACTIVE')->first();
+        $last_student = Student::where('campus_program_id',$selection->campusProgram->id)->max('registration_number');
+        if($last_student){
+           $code = sprintf('%04d',explode('/', $last_student->registration_number)[2] + 1);
+        }else{
+           $code = sprintf('%04d',1);
+        }
+        $year = substr(date('Y'), 2);
 
         if($stud = Student::where('applicant_id',$applicant->id)->first()){
             $student = $stud;
@@ -1300,12 +1312,13 @@ class ApplicationController extends Controller
         $student->birth_date = $applicant->birth_date;
         $student->nationality = $applicant->nationality;
         $student->year_of_study = 1;
-        $student->registration_number = 'MNMA';
+        $student->campus_program_id = $selection->campusProgram->id;
+        $student->registration_number = 'MNMA/'.$selection->campusProgram->program->code.'/'.$code.'/'.$year;
         $student->disability_status_id = $applicant->disability_status_id;
         $student->studentship_status_id = $studentship_status->id;
         $student->save();
 
-        return redirect()->back()->with('message','Applicant registered as student successfully');
+        return redirect()->to('applicants-registration')->with('message','Applicant registered as student successfully');
     }
 
     /**
