@@ -1369,16 +1369,20 @@ class ApplicationController extends Controller
          if($request->get('query')){
             $applicants = Applicant::whereDoesntHave('student')->whereHas('selections',function($query) use($request){
                  $query->where('status','SELECTED');
-            })->with(['nextOfKin','intake','selections.campusProgram.program'])->where('campus_id',$staff->campus_id)->where(function($query) use($request){
+            })->with(['intake','selections.campusProgram.program'])->where('campus_id',$staff->campus_id)->where(function($query) use($request){
                    $query->where('first_name','LIKE','%'.$request->get('query').'%')->orWhere('middle_name','LIKE','%'.$request->get('query').'%')->orWhere('surname','LIKE','%'.$request->get('query').'%');
-                 })->where('application_window_id',$application_window->id)->where('confirmation_status','!=','CANCELLED')->where('confirmation_status','!=','TRANSFERED')->where('admission_confirmation_status','!=','NOT CONFIRMED')->where('status','ADMITTED')->get();
+                 })->where('application_window_id',$application_window->id)->where(function($query){
+                     $query->where('confirmation_status','!=','CANCELLED')->orWhere('confirmation_status','!=','TRANSFERED');
+                   })->where('admission_confirmation_status','!=','NOT CONFIRMED')->where('status','ADMITTED')->get();
               if(count($applicants) == 0){
                   return redirect()->back()->with('error','No applicant with searched name');
               }
          }elseif($request->get('index_number')){
             $applicants = Applicant::whereDoesntHave('student')->whereHas('selections',function($query) use($request){
                  $query->where('status','SELECTED');
-            })->with(['nextOfKin','intake','selections.campusProgram.program'])->where('index_number','LIKE','%'.$request->get('index_number').'%')->where('application_window_id',$application_window->id)->where('confirmation_status','!=','CANCELLED')->where('confirmation_status','!=','TRANSFERED')->where('admission_confirmation_status','!=','NOT CONFIRMED')->where('status','ADMITTED')->where('campus_id',$staff->campus_id)->get();
+            })->with(['intake','selections.campusProgram.program'])->where('index_number','LIKE','%'.$request->get('index_number').'%')->where('application_window_id',$application_window->id)->where(function($query){
+                     $query->where('confirmation_status','!=','CANCELLED')->orWhere('confirmation_status','!=','TRANSFERED');
+                   })->where('admission_confirmation_status','!=','NOT CONFIRMED')->where('status','ADMITTED')->get();
             if(count($applicants) == 0){
                   return redirect()->back()->with('error','No applicant with searched index number');
               }
