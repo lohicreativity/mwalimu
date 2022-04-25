@@ -24,7 +24,7 @@
                      <p style="font-size: 18px;">{!! $notification_message !!}</p>
                      <p style="font-size: 18px;">Username: {{ $username }}</p>
                      <p style="font-size: 18px;">Password: {{ $password }}</p>
-                     <p style="font-size: 18px; font-style: italic;">You must change your credectials on first login.</p><br>
+                     <p style="font-size: 18px; font-style: italic;">Please note, you must change your credectials on first login.</p><br>
               
                      <p style="font-weight: bold; font-size: 18px; margin-top:30px;">{{ config('constants.SITE_NAME') }}.</p>
                    </td>

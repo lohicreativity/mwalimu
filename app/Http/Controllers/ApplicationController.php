@@ -1343,14 +1343,16 @@ class ApplicationController extends Controller
     public function applicantsRegistration(Request $request)
     {
          $staff = User::find(Auth::user()->id)->staff;
+         $ac_year = StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first();
+         $application_window = ApplicationWindow::whereYear('end_at',explode('/',$ac_year->academicYear->year)[0])->first();
          if($request->get('query')){
             $applicants = Applicant::whereHas('selections',function($query) use($request){
                  $query->where('status','SELECTED');
-            })->with(['nextOfKin','intake','selections.campusProgram.program'])->where('first_name','LIKE','%'.$request->get('query').'%')->orWhere('middle_name','LIKE','%'.$request->get('query').'%')->orWhere('surname','LIKE','%'.$request->get('query').'%')->get();
+            })->with(['nextOfKin','intake','selections.campusProgram.program'])->where('first_name','LIKE','%'.$request->get('query').'%')->orWhere('middle_name','LIKE','%'.$request->get('query').'%')->orWhere('surname','LIKE','%'.$request->get('query').'%')->where('application_window_id',$application_window->id)->get();
          }elseif($request->get('index_number')){
             $applicants = Applicant::whereHas('selections',function($query) use($request){
                  $query->where('status','SELECTED');
-            })->with(['nextOfKin','intake','selections.campusProgram.program'])->where('index_number','LIKE','%'.$request->get('index_number').'%')->get();
+            })->with(['nextOfKin','intake','selections.campusProgram.program'])->where('index_number','LIKE','%'.$request->get('index_number').'%')->where('application_window_id',$application_window->id)->get();
          }else{
             $applicants = [];
          }
