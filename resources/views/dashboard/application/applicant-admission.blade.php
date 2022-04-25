@@ -283,7 +283,7 @@
                             <div class="custom-control custom-checkbox">
                               <input class="custom-control-input" name="health_insurance_check" type="checkbox" id="health-insurance-check" value="1" @if($applicant->insurance_check == 1) checked="checked" @endif disabled readonly>
                               <label for="health-insurance-check" class="custom-control-label">Health Insurance</label>
-                              <input type="hidden" name="health_insurance_check" @if($applicant->insurance_check == 1) value="1" @else value="0" @endif>
+                              <input type="hidden" name="insurance_check" @if($applicant->insurance_check == 1) value="1" @else value="0" @endif>
                             </div>
                           </div>
                        </div>
