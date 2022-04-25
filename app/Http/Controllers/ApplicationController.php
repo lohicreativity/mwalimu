@@ -1345,6 +1345,9 @@ class ApplicationController extends Controller
          $staff = User::find(Auth::user()->id)->staff;
          $ac_year = StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first();
          $application_window = ApplicationWindow::whereYear('end_date',explode('/',$ac_year->academicYear->year)[0])->first();
+         if(!$application_window){
+             return redirect()->back()->with('error','No corresponding application window');
+         }
          if($request->get('query')){
             $applicants = Applicant::whereHas('selections',function($query) use($request){
                  $query->where('status','SELECTED');
