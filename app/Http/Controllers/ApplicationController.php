@@ -1287,7 +1287,7 @@ class ApplicationController extends Controller
 
         $selection = ApplicantProgramSelection::with('campusProgram.program')->where('applicant_id',$request->get('applicant_id'))->where('status','SELECTED')->first();
 
-        $studentship_status = StudentshipStatus::where('status','ACTIVE')->first();
+        $studentship_status = StudentshipStatus::where('name','ACTIVE')->first();
         $last_student = Student::where('campus_program_id',$selection->campusProgram->id)->max('registration_number');
         if($last_student){
            $code = sprintf('%04d',explode('/', $last_student->registration_number)[2] + 1);
