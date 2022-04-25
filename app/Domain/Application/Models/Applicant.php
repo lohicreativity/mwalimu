@@ -32,7 +32,7 @@ class Applicant extends Model
     /**
      * Establish one to one relationship with students
      */
-    public function country()
+    public function student()
     {
         return $this->hasOne(Student::class,'applicant_id');
     }
