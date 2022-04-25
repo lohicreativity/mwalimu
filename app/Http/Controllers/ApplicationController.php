@@ -1291,6 +1291,7 @@ class ApplicationController extends Controller
 
         $studentship_status = StudentshipStatus::where('name','ACTIVE')->first();
         $academic_status = AcademicStatus::where('name','PASS')->first();
+        $ac_year = StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first();
         $last_student = Student::where('campus_program_id',$selection->campusProgram->id)->max('registration_number');
         if($last_student){
            $code = sprintf('%04d',explode('/', $last_student->registration_number)[2] + 1);
@@ -1330,7 +1331,7 @@ class ApplicationController extends Controller
         $user->save();
 
         try{
-           Mail::to($user)->send(new StudentAccountCreated($student));
+           Mail::to($user)->send(new StudentAccountCreated($student, $selection->campusProgram->program->name,$ac_year->academicYear->year));
         }
 
         return redirect()->to('application/applicants-registration')->with('message','Student registered successfully');

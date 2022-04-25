@@ -7,20 +7,28 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
+use App\Domain\Registration\Models\Student;
+
 class StudentAccountCreated extends Mailable
 {
     use Queueable, SerializesModels;
 
     protected $student;
 
+    protected $program_name;
+
+    protected $year;
+
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct(Student $student)
+    public function __construct(Student $student, $program_name, $year)
     {
         $this->student = $student;
+        $this->program_name = $program_name;
+        $this->year = $year;
     }
 
     /**
@@ -35,7 +43,7 @@ class StudentAccountCreated extends Mailable
                     ->with([
                         'heading'=>'Successful Registration',
                         'name'=>$this->student->first_name.' '.$this->student->surname,
-                        'notification_message'=>'Your student account has been successfully created. Please change your credentials on first login',
+                        'notification_message'=>'I am pleased to inform you that you have been registered for '.$this->program_name.'. in academic year '.$this->year.'. Your registration number is <strong>'.$this->student->registration_number.'</strong>. Please visit http://41.59.91.194/student/login to log in to your student account. Your credentials are as follows.',
                         'username'=>$this->student->registration_number,
                         'password'=>$this->student->surname
                     ]);
