@@ -31,6 +31,7 @@ use App\Models\Role;
 use App\Utils\SystemLocation;
 use App\Jobs\SendAdmissionLetter;
 use App\Mail\AdmissionLetterCreated;
+use App\Mail\StudentAccountCreated;
 use NumberToWords\NumberToWords;
 use Validator, Hash, Config, Auth, Mail, PDF;
 
@@ -1321,7 +1322,18 @@ class ApplicationController extends Controller
         $student->academic_status_id = $academic_status->id;
         $student->save();
 
-        return redirect()->to('application/applicants-registration')->with('message','Applicant registered as student successfully');
+        $user = User::find($applicant->user_id);
+        $user->username = $student->registration_number;
+        $user->email = $student->email;
+        $user->password = Hash::make($student->surname);
+        $user->must_update_password = 1;
+        $user->save();
+
+        try{
+           Mail::to($user)->send(new StudentAccountCreated($student));
+        }
+
+        return redirect()->to('application/applicants-registration')->with('message','Student registered successfully');
     }
 
     /**

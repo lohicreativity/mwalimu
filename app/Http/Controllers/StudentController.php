@@ -66,7 +66,11 @@ class StudentController extends Controller
             'password'=>$request->get('password')
         ];
         if(Auth::attempt($credentials)){
-        	return redirect()->to('student/dashboard')->with('message','Logged in successfully');
+          if(Auth::user()->must_update_password == 1){
+              return redirect()->to('change-password')->with('message','Logged in successfully');
+          }else{
+              return redirect()->to('student/dashboard')->with('message','Logged in successfully');
+          } 	
         }else{
            return redirect()->back()->with('error','Incorrect registration number or password');
         }
