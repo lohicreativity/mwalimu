@@ -1371,7 +1371,7 @@ class ApplicationController extends Controller
                  $query->where('status','SELECTED');
             })->with(['intake','selections.campusProgram.program'])->where('campus_id',$staff->campus_id)->where(function($query) use($request){
                    $query->where('first_name','LIKE','%'.$request->get('query').'%')->orWhere('middle_name','LIKE','%'.$request->get('query').'%')->orWhere('surname','LIKE','%'.$request->get('query').'%');
-                 })->get();
+                 })->where('application_window_id',$application_window->id)->where('status','ADMITTED')->get();
               if(count($applicants) == 0){
                   return redirect()->back()->with('error','No applicant with searched name');
               }
