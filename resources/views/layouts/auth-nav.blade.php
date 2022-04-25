@@ -48,7 +48,7 @@
                 </a>
               </li>
               @endif
-              @if($applicant->status == 'ADMITTED')
+              @if($applicant->status === 'ADMITTED')
               <li class="nav-item">
                 <a href="{{ url('application/admission-confirmation') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
