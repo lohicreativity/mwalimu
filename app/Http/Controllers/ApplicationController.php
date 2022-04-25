@@ -1270,7 +1270,8 @@ class ApplicationController extends Controller
             'academic_results_check'=>'required',
             'fee_payment_check'=>'required',
             'insurance_check'=>'required',
-            'personal_info_check'=>'required'
+            'personal_info_check'=>'required',
+            'medical_form_check'=>'required'
         ]);
 
         if($validation->fails()){
@@ -1288,6 +1289,7 @@ class ApplicationController extends Controller
         $applicant->payment_check = 1;
         $applicant->insurance_check = 1;
         $applicant->personal_info_check = 1;
+        $applicant->medical_form_check = 1;
         $applicant->registered_by_user_id = Auth::user()->id;
         $applicant->save();
 

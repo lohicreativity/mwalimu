@@ -262,7 +262,7 @@
                  {!! Form::input('hidden','applicant_id',$applicant->id) !!}
                  <div class="card-body">
                     <div class="row">
-                       <div class="col-6">
+                       <div class="col-4">
                           <div class="form-group">
                             <div class="custom-control custom-checkbox">
                               <input class="custom-control-input" name="academic_results_check" type="checkbox" id="academic-results-check" value="1">
@@ -270,11 +270,19 @@
                             </div>
                           </div>
                        </div>
-                       <div class="col-6">
+                       <div class="col-4">
                           <div class="form-group">
                             <div class="custom-control custom-checkbox">
                               <input class="custom-control-input" name="personal_info_check" type="checkbox" id="personal-info-check" value="1">
                               <label for="personal-info-check" class="custom-control-label">Personal Details</label>
+                            </div>
+                          </div>
+                       </div>
+                       <div class="col-4">
+                          <div class="form-group">
+                            <div class="custom-control custom-checkbox">
+                              <input class="custom-control-input" name="medical_form_check" type="checkbox" id="medical-form-check" value="1">
+                              <label for="medical-form-check" class="custom-control-label">Medical Form</label>
                             </div>
                           </div>
                        </div>
@@ -292,9 +300,9 @@
                        <div class="col-6">
                           <div class="form-group">
                             <div class="custom-control custom-checkbox">
-                              <input class="custom-control-input" name="fee_payment_check" type="checkbox" id="fee-payment-check" value="1" @if($applicant->tuition_payment_check == 1 && $applicant->other_payment_check == 1) checked="checked" @endif disabled readonly>
+                              <input class="custom-control-input" name="fee_payment_check" type="checkbox" id="fee-payment-check" value="1" @if($applicant->payment_check == 1 && $applicant->other_payment_check == 1) checked="checked" @endif disabled readonly>
                               <label for="fee-payment-check" class="custom-control-label">Fee Payment</label>
-                              <input type="hidden" name="fee_payment_check" @if($applicant->tuition_payment_check == 1 && $applicant->other_payment_check == 1) value="1" @else value="0" @endif>
+                              <input type="hidden" name="fee_payment_check" @if($applicant->payment_check == 1 && $applicant->other_payment_check == 1) value="1" @else value="0" @endif>
                             </div>
                           </div>
                        </div>
