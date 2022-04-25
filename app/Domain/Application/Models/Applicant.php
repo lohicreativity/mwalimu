@@ -12,6 +12,7 @@ use App\Domain\Settings\Models\Intake;
 use App\Domain\Academic\Models\Award;
 use App\Domain\Settings\Models\DisabilityStatus;
 use App\Domain\Settings\Models\Campus;
+use App\Domain\Registration\Models\Student;
 use App\Models\User;
 
 class Applicant extends Model
@@ -26,6 +27,14 @@ class Applicant extends Model
     public function country()
     {
     	return $this->belongsTo(Country::class,'country_id');
+    }
+
+    /**
+     * Establish one to one relationship with students
+     */
+    public function country()
+    {
+        return $this->hasOne(Student::class,'applicant_id');
     }
 
     /**

@@ -1349,13 +1349,13 @@ class ApplicationController extends Controller
              return redirect()->back()->with('error','No corresponding application window');
          }
          if($request->get('query')){
-            $applicants = Applicant::whereHas('selections',function($query) use($request){
+            $applicants = Applicant::whereDoesntHave('student')->whereHas('selections',function($query) use($request){
                  $query->where('status','SELECTED');
-            })->with(['nextOfKin','intake','selections.campusProgram.program'])->where('first_name','LIKE','%'.$request->get('query').'%')->orWhere('middle_name','LIKE','%'.$request->get('query').'%')->orWhere('surname','LIKE','%'.$request->get('query').'%')->where('application_window_id',$application_window->id)->get();
+            })->with(['nextOfKin','intake','selections.campusProgram.program'])->where('first_name','LIKE','%'.$request->get('query').'%')->orWhere('middle_name','LIKE','%'.$request->get('query').'%')->orWhere('surname','LIKE','%'.$request->get('query').'%')->where('application_window_id',$application_window->id)->where('confirmation_status','!=','CANCELLED')->where('confirmation_status','!=','TRANSFERED')->where('admission_confirmation_status','!=','NOT CONFIRMED')->where('status','ADMITTED')->get();
          }elseif($request->get('index_number')){
-            $applicants = Applicant::whereHas('selections',function($query) use($request){
+            $applicants = Applicant::whereDoesntHave('student')->whereHas('selections',function($query) use($request){
                  $query->where('status','SELECTED');
-            })->with(['nextOfKin','intake','selections.campusProgram.program'])->where('index_number','LIKE','%'.$request->get('index_number').'%')->where('application_window_id',$application_window->id)->get();
+            })->with(['nextOfKin','intake','selections.campusProgram.program'])->where('index_number','LIKE','%'.$request->get('index_number').'%')->where('application_window_id',$application_window->id)->where('confirmation_status','!=','CANCELLED')->where('confirmation_status','!=','TRANSFERED')->where('admission_confirmation_status','!=','NOT CONFIRMED')->where('status','ADMITTED')->get();
          }else{
             $applicants = [];
          }
@@ -1726,7 +1726,7 @@ class ApplicationController extends Controller
         foreach($array['Response']['ResponseParameters']['Applicant'] as $data){
             $applicant = Applicant::where('index_number',$data['f4indexno'])->first();
             if($applicant){
-               $applicant->admission_confirmation_status = $data['ConfirmationStatusCode'] == 233? 'CONFIRMED' : null;
+               $applicant->admission_confirmation_status = $data['ConfirmationStatusCode'] == 233? 'CONFIRMED' : 'NOT CONFIRMED';
                $applicant->save();
             }
         }
