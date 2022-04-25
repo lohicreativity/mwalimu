@@ -258,6 +258,8 @@
 
               <div class="card">
                  {!! Form::open(['url'=>'application/register-applicant','class'=>'ss-form-processing']) !!}
+
+                 {!! Form::input('hidden','applicant_id',$applicant->id) !!}
                  <div class="card-body">
                     <div class="row">
                        <div class="col-6">
