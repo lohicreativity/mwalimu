@@ -16,6 +16,7 @@ use App\Domain\Finance\Models\NactePayment;
 use App\Domain\Settings\Models\NTALevel;
 use App\Domain\Settings\Models\Campus;
 use App\Domain\Registration\Models\StudentshipStatus;
+use App\Domain\Academic\Models\AcademicStatus;
 use App\Domain\Registration\Models\Student;
 use App\Domain\Application\Models\ApplicationWindow;
 use App\Domain\Application\Models\InternalTransfer;
@@ -1288,6 +1289,7 @@ class ApplicationController extends Controller
         $selection = ApplicantProgramSelection::with('campusProgram.program')->where('applicant_id',$request->get('applicant_id'))->where('status','SELECTED')->first();
 
         $studentship_status = StudentshipStatus::where('name','ACTIVE')->first();
+        $academic_status = AcademicStatus::where('name','PASS')->first();
         $last_student = Student::where('campus_program_id',$selection->campusProgram->id)->max('registration_number');
         if($last_student){
            $code = sprintf('%04d',explode('/', $last_student->registration_number)[2] + 1);
@@ -1316,6 +1318,7 @@ class ApplicationController extends Controller
         $student->registration_number = 'MNMA/'.$selection->campusProgram->program->code.'/'.$code.'/'.$year;
         $student->disability_status_id = $applicant->disability_status_id;
         $student->studentship_status_id = $studentship_status->id;
+        $student->academic_status_id = $academic_status->id;
         $student->save();
 
         return redirect()->to('applicants-registration')->with('message','Applicant registered as student successfully');
