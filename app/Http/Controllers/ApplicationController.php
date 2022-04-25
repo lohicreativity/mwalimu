@@ -8,6 +8,7 @@ use App\Domain\Settings\Models\Intake;
 use App\Domain\Application\Models\Applicant;
 use App\Domain\Academic\Models\CampusProgram;
 use App\Domain\Academic\Models\StudyAcademicYear;
+use App\Domain\Academic\Models\Semester;
 use App\Domain\Academic\Models\Department;
 use App\Domain\Finance\Models\FeeAmount;
 use App\Domain\Finance\Models\ProgramFee;
@@ -1279,6 +1280,8 @@ class ApplicationController extends Controller
            }
         }
 
+        $staff = User::find(Auth::user()->id)->staff;
+
         $applicant = Applicant::find($request->get('applicant_id'));
         $applicant->results_check = 1;
         $applicant->payment_check = 1;
@@ -1292,6 +1295,7 @@ class ApplicationController extends Controller
         $studentship_status = StudentshipStatus::where('name','ACTIVE')->first();
         $academic_status = AcademicStatus::where('name','PASS')->first();
         $ac_year = StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first();
+        $semester = Semester::where('status','ACTIVE')->first();
         $last_student = Student::where('campus_program_id',$selection->campusProgram->id)->max('registration_number');
         if($last_student){
            $code = sprintf('%04d',explode('/', $last_student->registration_number)[2] + 1);
@@ -1330,6 +1334,18 @@ class ApplicationController extends Controller
         $user->must_update_password = 1;
         $user->save();
 
+        $role = Role::where('name','student')->first();
+        $user->roles()->sync([$role->id]);
+
+        $registration = new Registration;
+        $registration->study_academic_year_id = $ac_year->id;
+        $registration->semester_id = $semester->id;
+        $registration->student_id = $student->id;
+        $registration->year_of_study = 1;
+        $registration->registered_by_staff_id = $staff->id;
+        $registration->status = 'REGISTERED';
+        $registration->save();
+
         try{
            Mail::to($user)->send(new StudentAccountCreated($student, $selection->campusProgram->program->name,$ac_year->academicYear->year));
         }catch(\Exception $e){}
@@ -1344,7 +1360,7 @@ class ApplicationController extends Controller
     {
          $staff = User::find(Auth::user()->id)->staff;
          $ac_year = StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first();
-         $application_window = ApplicationWindow::whereYear('end_date',explode('/',$ac_year->academicYear->year)[0])->first();
+         $application_window = ApplicationWindow::where('campus_id',$staff->campus_id)->whereYear('end_date',explode('/',$ac_year->academicYear->year)[0])->first();
          if(!$application_window){
              return redirect()->back()->with('error','No corresponding application window');
          }
