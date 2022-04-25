@@ -1332,7 +1332,7 @@ class ApplicationController extends Controller
 
         try{
            Mail::to($user)->send(new StudentAccountCreated($student, $selection->campusProgram->program->name,$ac_year->academicYear->year));
-        }
+        }catch(\Exception $e){}
 
         return redirect()->to('application/applicants-registration')->with('message','Student registered successfully');
     }
