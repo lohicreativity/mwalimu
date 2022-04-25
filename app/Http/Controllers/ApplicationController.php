@@ -1378,7 +1378,7 @@ class ApplicationController extends Controller
                      $query->where('admission_confirmation_status','!==','NOT CONFIRMED')->orWhereNull('admission_confirmation_status');
                    })->where('status','ADMITTED')->get();
               if(count($applicants) == 0){
-                  return redirect()->back()->with('error','No applicant with searched name');
+                  return redirect()->back()->with('error','No applicant with searched name or already registered');
               }
          }elseif($request->get('index_number')){
             $applicants = Applicant::whereDoesntHave('student')->whereHas('selections',function($query) use($request){
@@ -1389,7 +1389,7 @@ class ApplicationController extends Controller
                      $query->where('admission_confirmation_status','!==','NOT CONFIRMED')->orWhereNull('admission_confirmation_status');
                    })->where('status','ADMITTED')->get();
             if(count($applicants) == 0){
-                  return redirect()->back()->with('error','No applicant with searched index number');
+                  return redirect()->back()->with('error','No applicant with searched index number or already registered');
               }
          }else{
             $applicants = [];
