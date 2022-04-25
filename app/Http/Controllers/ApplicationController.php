@@ -1321,7 +1321,7 @@ class ApplicationController extends Controller
         $student->academic_status_id = $academic_status->id;
         $student->save();
 
-        return redirect()->to('applicants-registration')->with('message','Applicant registered as student successfully');
+        return redirect()->to('application/applicants-registration')->with('message','Applicant registered as student successfully');
     }
 
     /**
