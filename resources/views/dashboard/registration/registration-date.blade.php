@@ -99,7 +99,7 @@
 
                     {!! Form::input('hidden','study_academic_year_id',$study_academic_year->id) !!}
                     {!! Form::input('hidden','campus_id',$campus->id) !!}
-                    {!! Form::input('hidden','name','Registration Deadline') !!}
+                    {!! Form::input('hidden','name','Registration Period') !!}
                   </div>
                   </div>
                 
@@ -128,7 +128,7 @@
                     {!! Form::input('hidden','study_academic_year_id',$study_academic_year->id) !!}
                     {!! Form::input('hidden','campus_id',$campus->id) !!}
                     {!! Form::input('hidden','special_date_id',$registration_date->id) !!}
-                    {!! Form::input('hidden','name','Registration Deadline') !!}
+                    {!! Form::input('hidden','name','Registration Period') !!}
                   </div>
                   </div>
                 
