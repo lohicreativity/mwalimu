@@ -487,6 +487,8 @@ class ApplicationController extends Controller
 
                     $data = json_encode(['params'=>$params]);
 
+                    return $data;
+
                     $ch = curl_init();
                     curl_setopt($ch, CURLOPT_URL, $url);
                     // For xml, change the content-type.

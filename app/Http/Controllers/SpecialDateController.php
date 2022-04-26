@@ -38,7 +38,7 @@ class SpecialDateController extends Controller
            'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
            'campus'=>Campus::find($request->get('campus_id')),
            'study_academic_year'=>StudyAcademicYear::find($request->get('study_academic_year_id')),
-           'registration_date'=>SpecialDate::where('name','Registration Deadline')->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('campus_id',$request->get('campus_id'))->first(),
+           'registration_date'=>SpecialDate::where('name','New Registration Period')->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('campus_id',$request->get('campus_id'))->first(),
            'request'=>$request
         ];
         return view('dashboard.registration.registration-date',$data)->withTitle('Registration Deadline');
@@ -215,8 +215,8 @@ class SpecialDateController extends Controller
         $date->save();
 
         $date = new SpecialDate;
-        $date->date = Carbon::parse($request->get('orientation_date'))->addDays(13)->format('Y-m-d');
-        $date->begin_date = DateMaker::toDBDate($request->get('orientation_date'));
+        $date->date = Carbon::parse($request->get('orientation_date'))->addDays(20)->format('Y-m-d');
+        $date->begin_date = Carbon::parse($request->get('orientation_date'))->addDays(6)->format('Y-m-d');;
         $date->name = 'Continueing Registration Deadline';
         $date->campus_id = $request->get('campus_id');
         $date->study_academic_year_id = $request->get('study_academic_year_id');
