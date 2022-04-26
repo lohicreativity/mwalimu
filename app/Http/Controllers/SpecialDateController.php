@@ -40,7 +40,7 @@ class SpecialDateController extends Controller
            'registration_date'=>SpecialDate::where('name','Registration Deadline')->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('campus_id',$request->get('campus_id'))->first(),
            'request'=>$request
         ];
-        return view('dashboard.registration.registration-deadline',$data)->withTitle('Registration Deadline');
+        return view('dashboard.registration.registration-date',$data)->withTitle('Registration Deadline');
   }
 
     /**
