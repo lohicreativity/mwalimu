@@ -365,6 +365,7 @@ class ApplicantController extends Controller
             'applicant'=>User::find(Auth::user()->id)->applicants()->where('campus_id',session('applicant_campus_id'))->first(),
             'campus'=>Campus::find(session('applicant_campus_id')),
         ];
+        return $data;
         return view('dashboard.application.submission',$data)->withTitle('Submission');
     }
 
