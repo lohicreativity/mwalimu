@@ -1319,7 +1319,7 @@ class ApplicationController extends Controller
         $semester = Semester::where('status','ACTIVE')->first();
         $last_student = Student::where('campus_program_id',$selection->campusProgram->id)->max('registration_number');
         if($last_student){
-           $code = sprintf('%04d',explode('/', $last_student->registration_number)[2] + 1);
+           $code = sprintf('%04d',explode('/', $last_student)[2] + 1);
         }else{
            $code = sprintf('%04d',1);
         }
