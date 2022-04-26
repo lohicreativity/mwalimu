@@ -449,71 +449,145 @@ class ApplicationController extends Controller
                        }
                    }
 
-                  $params = [
-                       'firstname'=>$applicant->first_name,
-                       'secondname'=>$applicant->middle_name,
-                       'surname'=>$applicant->surname,
-                       'DOB'=>DateMaker::toStandardDate($applicant->birth_date),
-                       'gender'=>$applicant->gender == 'M'? 'Male' : 'Female',
-                       'impairement'=>$applicant->disabilityStatus->name,
-                       'form_four_indexnumber'=>$applicant->index_number,
-                       'form_four_year'=>explode('/',$applicant->index_number)[2],
-                       'form_six_indexnumber'=>$f6indexno? $f6indexno : '',
-                       'form_six_year'=>$f6indexno? explode('/', $f6indexno) : '',
-                       'NTA4_reg'=>'',
-                       'NTA4_grad_year'=>'',
-                       'NTA5_reg'=>'',
-                       'NTA5_grad_year'=>'',
-                       'email_address'=>$applicant->email,
-                       'mobile_number'=>str_replace('-', '',$applicant->phone),
-                       'address'=>$applicant->address,
-                       'region'=>$applicant->region->name,
-                       'district'=>$applicant->district->name,
-                       'nationality'=>$applicant->nationality,
-                       'next_kin_name'=>$applicant->nextOfKin->first_name.' '.$applicant->nextOfKin->first_name,
-                       'next_kin_phone'=>$applicant->nextOfKin->phone,
-                       'next_kin_address'=>$applicant->nextOfKin->address,
-                       'next_kin_region'=>$applicant->nextOfKin->region->name,
-                       'next_kin_relation'=>$applicant->nextOfKin->relationship,
-                       // 'programme_id'=>'13f781c5dbe25cf387f708eaf40a7a0eae6291e7',//$applicant->selections[0]->campusProgram->regulator_code,
-                       // 'payment_reference_number'=>'APITEST1003',//$payment->reference_no,
-                       // 'application_year'=>date('Y'),
-                       // 'intake'=>$applicant->intake->name
-                    ];
+                  // $params = [
+                  //      'firstname'=>$applicant->first_name,
+                  //      'secondname'=>$applicant->middle_name,
+                  //      'surname'=>$applicant->surname,
+                  //      'DOB'=>DateMaker::toStandardDate($applicant->birth_date),
+                  //      'gender'=>$applicant->gender == 'M'? 'Male' : 'Female',
+                  //      'impairement'=>$applicant->disabilityStatus->name,
+                  //      'form_four_indexnumber'=>$applicant->index_number,
+                  //      'form_four_year'=>explode('/',$applicant->index_number)[2],
+                  //      'form_six_indexnumber'=>$f6indexno? $f6indexno : '',
+                  //      'form_six_year'=>$f6indexno? explode('/', $f6indexno) : '',
+                  //      'NTA4_reg'=>'',
+                  //      'NTA4_grad_year'=>'',
+                  //      'NTA5_reg'=>'',
+                  //      'NTA5_grad_year'=>'',
+                  //      'email_address'=>$applicant->email,
+                  //      'mobile_number'=>str_replace('-', '',$applicant->phone),
+                  //      'address'=>$applicant->address,
+                  //      'region'=>$applicant->region->name,
+                  //      'district'=>$applicant->district->name,
+                  //      'nationality'=>$applicant->nationality,
+                  //      'next_kin_name'=>$applicant->nextOfKin->first_name.' '.$applicant->nextOfKin->first_name,
+                  //      'next_kin_phone'=>$applicant->nextOfKin->phone,
+                  //      'next_kin_address'=>$applicant->nextOfKin->address,
+                  //      'next_kin_region'=>$applicant->nextOfKin->region->name,
+                  //      'next_kin_relation'=>$applicant->nextOfKin->relationship,
+                  //      // 'programme_id'=>'13f781c5dbe25cf387f708eaf40a7a0eae6291e7',//$applicant->selections[0]->campusProgram->regulator_code,
+                  //      // 'payment_reference_number'=>'APITEST1003',//$payment->reference_no,
+                  //      // 'application_year'=>date('Y'),
+                  //      // 'intake'=>$applicant->intake->name
+                  //   ];
 
-                    $data = [
-                      'heading' => [
-                      'authorization' => 'e52ab037dc82d24960d9b9c678b5a6147a1ba6ea',
-                      'intake' => 'SEPT',
-                      'programme_id' => '13f781c5dbe25cf387f708eaf40a7a0eae6291e7',
-                      'application_year' => date('Y'),
-                      'level' => '5',
-                      'payment_reference_number' => 'APITEST1003',
-                      ],
-                      'students'=>[
-                          ['particulars'=>$params]
-                      ]
-                   ];
+                  //   $data = [
+                  //     'heading' => [
+                  //     'authorization' => 'e52ab037dc82d24960d9b9c678b5a6147a1ba6ea',
+                  //     'intake' => 'SEPT',
+                  //     'programme_id' => '13f781c5dbe25cf387f708eaf40a7a0eae6291e7',
+                  //     'application_year' => date('Y'),
+                  //     'level' => '5',
+                  //     'payment_reference_number' => 'APITEST1003',
+                  //     ],
+                  //     'students'=>[
+                  //         ['particulars'=>$params]
+                  //     ]
+                  //  ];
+
+                   //API URL
+                  $url = 'https://www.nacte.go.tz/nacteapi/index.php/api/upload';
+
+
+                  $ch = curl_init($url);
+
+                  $data = array(
+                      'heading' => array(
+                          'authorization' => 'e52ab037dc82d24960d9b9c678b5a6147a1ba6ea',
+                          'intake' => 'SEPTEMBER',
+                          'programme_id' => '13f781c5dbe25cf387f708eaf40a7a0eae6291e7',
+                          'application_year' => '2022',
+                          'level' => '5',
+                          'payment_reference_number' => 'APITEST1003',
+                      ),
+                      'students' => array(
+                          ['particulars' => array(
+                                  'firstname' => $applicant->first_name,
+                                  'secondname' => $applicant->middle_name,
+                                  'surname' => $applicant->surname,
+                                  'DOB' => DateMaker::toStandardDate($applicant->birth_date),
+                                  'gender' => $applicant->gender == 'M'? 'Male' : 'Female',
+                                  'impairement' => $applicant->disabilityStatus->name,
+                                  'form_four_indexnumber' => $applicant->index_number,
+                                  'form_four_year' => explode('/',$applicant->index_number)[2],
+                                  'form_six_indexnumber' => $f6indexno? $f6indexno : '',
+                                  'form_six_year' => $f6indexno? explode('/', $f6indexno) : '',
+                                  'NTA4_reg' => '',
+                                  'NTA4_grad_year' => '',
+                                  'NTA5_reg' => '',
+                                  'NTA5_grad_year' => '',
+                                  'email_address' => $applicant->email,
+                                  'mobile_number' => str_replace('-', '',$applicant->phone),
+                                  'address' => $applicant->address,
+                                  'region' => $applicant->region->name,
+                                  'district' => $applicant->district->name,
+                                  'nationality' => $applicant->nationality,
+                                  'next_kin_name' => $applicant->nextOfKin->first_name.' '.$applicant->nextOfKin->surname,
+                                  'next_kin_address' => $applicant->nextOfKin->address,
+                                  'next_kin_email_address' => '',
+                                  'next_kin_phone' => $applicant->nextOfKin->phone,
+                                  'next_kin_region' => $applicant->nextOfKin->region->name,
+                                  'next_kin_relation' => $applicant->nextOfKin->relationship
+                              
+                              )
+                          ],
+                          
+                      )
+                  );
+
+                      
+
+                  $payload = json_encode(array($data));
+
+
+
+                  //attach encoded JSON string to the POST fields
+                  curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
+
+                  //set the content type to application/json
+                  curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:application/json'));
+
+                  //return response instead of outputting
+                  curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+                  //execute the POST request
+                  $result = curl_exec($ch);
+
+                  //close cURL resource
+                  curl_close($ch);
+
+                  //echo message
+                  echo $result;
 
                     // $url = 'http://41.93.40.137/nacteapi/index.php/api/upload';
 
-                    $url = 'https://www.nacte.go.tz/nacteapi/index.php/api/upload';
+                    // $url = 'https://www.nacte.go.tz/nacteapi/index.php/api/upload';
 
-                    $data = json_encode([$data]);
+                    // $data = json_encode([$data]);
 
-                    // return dd($data);
+                    // // return dd($data);
 
-                    $ch = curl_init();
-                    curl_setopt($ch, CURLOPT_URL, $url);
-                    // For xml, change the content-type.
-                    curl_setopt ($ch, CURLOPT_HTTPHEADER, Array("Content-Type: application/json"));
-                    curl_setopt($ch, CURLOPT_POST, 1);
-                    curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); // ask for results to be returned
-                    // Send to remote and return data to caller.
-                    $result = curl_exec($ch);
-                    curl_close($ch);
-                    return dd($result);
+                    // $ch = curl_init();
+                    // curl_setopt($ch, CURLOPT_URL, $url);
+                    // // For xml, change the content-type.
+                    // curl_setopt ($ch, CURLOPT_HTTPHEADER, Array("Content-Type: application/json"));
+                    // curl_setopt($ch, CURLOPT_POST, 1);
+                    // curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+                    // curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); // ask for results to be returned
+                    // // Send to remote and return data to caller.
+                    // $result = curl_exec($ch);
+                    // curl_close($ch);
+                    // return dd($result);
 
 
                     // $log = new ApplicantSubmissionLog;
