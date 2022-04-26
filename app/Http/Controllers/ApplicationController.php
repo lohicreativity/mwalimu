@@ -36,6 +36,7 @@ use App\Jobs\SendAdmissionLetter;
 use App\Mail\AdmissionLetterCreated;
 use App\Mail\StudentAccountCreated;
 use NumberToWords\NumberToWords;
+use App\Utils\DateMaker;
 use Validator, Hash, Config, Auth, Mail, PDF;
 
 class ApplicationController extends Controller
@@ -452,17 +453,17 @@ class ApplicationController extends Controller
                        'firstname'=>$applicant->first_name,
                        'secondname'=>$applicant->middle_name,
                        'surname'=>$applicant->surname,
-                       'DOB'=>$applicant->birth_date,
+                       'DOB'=>DateMaker::toStandardDate($applicant->birth_date),
                        'gender'=>$applicant->gender == 'M'? 'Male' : 'Female',
                        'impairement'=>$applicant->disabilityStatus->name,
                        'form_four_indexnumber'=>$applicant->index_number,
                        'form_four_year'=>explode('/',$applicant->index_number)[2],
                        'form_six_indexnumber'=>$f6indexno? $f6indexno : '',
                        'form_six_year'=>$f6indexno? explode('/', $f6indexno) : '',
-                       // 'NTA4_reg'=>,
-                       // "NTA4_grad_year": "<NTA4_grad_year>",
-                       // "NTA5_reg": "<NTA5_reg>",
-                       // "NTA5_grad_year": "<NTA5_grad_year>",
+                       'NTA4_reg'=>'',
+                       'NTA4_grad_year'=>'',
+                       'NTA5_reg'=>'',
+                       'NTA5_grad_year'=>'',
                        'email_address'=>$applicant->email,
                        'mobile_number'=>str_replace('-', '',$applicant->phone),
                        'address'=>$applicant->address,
@@ -498,9 +499,9 @@ class ApplicationController extends Controller
 
                     $url = 'https://www.nacte.go.tz/nacteapi/index.php/api/upload';
 
-                    $data = json_encode([$data]);
+                    // $data = json_encode([$data]);
 
-                    return $data;
+                    return dd($data);
 
                     $ch = curl_init();
                     curl_setopt($ch, CURLOPT_URL, $url);
