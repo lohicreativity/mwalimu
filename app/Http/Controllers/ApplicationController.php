@@ -449,7 +449,6 @@ class ApplicationController extends Controller
                    }
 
                   $params = [
-                       'authorization'=>,//config('constants.NACTE_API_KEY'),
                        'firstname'=>$applicant->first_name,
                        'secondname'=>$applicant->middle_name,
                        'surname'=>$applicant->surname,
