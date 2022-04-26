@@ -475,7 +475,7 @@ class ApplicationController extends Controller
                        'next_kin_region'=>$applicant->nextOfKin->region->name,
                        'nationality'=>$applicant->nationality,
                        'programme_id'=>$applicant->selections[0]->campusProgram->regulator_code,
-                       'payment_reference_number'=>$payment->reference_no,
+                       'payment_reference_number'=>'APITEST1003',//$payment->reference_no,
                        'application_year'=>date('Y'),
                        'intake'=>$applicant->intake->name
                     ];
