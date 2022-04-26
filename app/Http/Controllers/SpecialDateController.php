@@ -206,6 +206,22 @@ class SpecialDateController extends Controller
         $date->study_academic_year_id = $request->get('study_academic_year_id');
         $date->save();
 
+        $date = new SpecialDate;
+        $date->date = Carbon::parse($request->get('orientation_date'))->addDays(13)->format('Y-m-d');
+        $date->begin_date = DateMaker::toDBDate($request->get('orientation_date'));
+        $date->name = 'Registration Deadline';
+        $date->campus_id = $request->get('campus_id');
+        $date->study_academic_year_id = $request->get('study_academic_year_id');
+        $date->save();
+
+        $date = new SpecialDate;
+        $date->date = Carbon::parse($request->get('orientation_date'))->addDays(13)->format('Y-m-d');
+        $date->begin_date = DateMaker::toDBDate($request->get('orientation_date'));
+        $date->name = 'Continueing Registration Deadline';
+        $date->campus_id = $request->get('campus_id');
+        $date->study_academic_year_id = $request->get('study_academic_year_id');
+        $date->save();
+
         return redirect()->back()->with('message','Orientation date created successfully');
     }
 
