@@ -2544,7 +2544,6 @@ class ApplicationController extends Controller
                 $student->receiveDate = now();
                 $student->save();
                                 
-              }
             }
           }
         }//end
