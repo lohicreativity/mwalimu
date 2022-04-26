@@ -500,7 +500,7 @@ class ApplicationController extends Controller
 
                     $data = json_encode([$data]);
 
-                    // return $data;
+                    return $data;
 
                     $ch = curl_init();
                     curl_setopt($ch, CURLOPT_URL, $url);
