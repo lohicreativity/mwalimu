@@ -449,7 +449,7 @@ class ApplicationController extends Controller
                    }
 
                   $params = [
-                       'authorization'=>'e52ab037dc82d24960d9b9c678b5a6147a1ba6ea',//config('constants.NACTE_API_KEY'),
+                       'authorization'=>,//config('constants.NACTE_API_KEY'),
                        'firstname'=>$applicant->first_name,
                        'secondname'=>$applicant->middle_name,
                        'surname'=>$applicant->surname,
@@ -469,25 +469,39 @@ class ApplicationController extends Controller
                        'address'=>$applicant->address,
                        'region'=>$applicant->region->name,
                        'district'=>$applicant->district->name,
+                       'nationality'=>$applicant->nationality,
                        'next_kin_name'=>$applicant->nextOfKin->first_name.' '.$applicant->nextOfKin->first_name,
                        'next_kin_phone'=>$applicant->nextOfKin->phone,
                        'next_kin_address'=>$applicant->nextOfKin->address,
-                       'next_kin_relation'=>$applicant->nextOfKin->relationship,
                        'next_kin_region'=>$applicant->nextOfKin->region->name,
-                       'nationality'=>$applicant->nationality,
-                       'programme_id'=>'13f781c5dbe25cf387f708eaf40a7a0eae6291e7',//$applicant->selections[0]->campusProgram->regulator_code,
-                       'payment_reference_number'=>'APITEST1003',//$payment->reference_no,
-                       'application_year'=>date('Y'),
-                       'intake'=>$applicant->intake->name
+                       'next_kin_relation'=>$applicant->nextOfKin->relationship,
+                       // 'programme_id'=>'13f781c5dbe25cf387f708eaf40a7a0eae6291e7',//$applicant->selections[0]->campusProgram->regulator_code,
+                       // 'payment_reference_number'=>'APITEST1003',//$payment->reference_no,
+                       // 'application_year'=>date('Y'),
+                       // 'intake'=>$applicant->intake->name
                     ];
+
+                    $data = [
+                      'heading' => [
+                      'authorization' => 'e52ab037dc82d24960d9b9c678b5a6147a1ba6ea',
+                      'intake' => 'SEPT',
+                      'programme_id' => '13f781c5dbe25cf387f708eaf40a7a0eae6291e7',
+                      'application_year' => date('Y'),
+                      'level' => '5',
+                      'payment_reference_number' => 'APITEST1003',
+                      ],
+                      'students'=>[
+                          ['particulars'=>$params]
+                      ]
+                   ];
 
                     // $url = 'http://41.93.40.137/nacteapi/index.php/api/upload';
 
                     $url = 'https://www.nacte.go.tz/nacteapi/index.php/api/upload';
 
-                    $data = json_encode(['params'=>$params]);
+                    $data = json_encode([$data]);
 
-                    return $data;
+                    // return $data;
 
                     $ch = curl_init();
                     curl_setopt($ch, CURLOPT_URL, $url);
