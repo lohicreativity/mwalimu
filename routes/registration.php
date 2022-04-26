@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HealthInsuranceController;
+use App\Http\Controllers\SpecialDateController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,6 +21,9 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
     Route::post('store-other-card',[HealthInsuranceController::class,'storeOtherCard']);
     Route::post('request-nhif',[HealthInsuranceController::class,'requestNHIF']);
 
+    Route::get('registration-deadline',[SpecialDateController::class,'showRegistrationDeadline']);
+    Route::post('store-registration-deadline',[SpecialDateController::class,'storeRegistrationDeadline']);
+    Route::post('update-registration-deadline',[SpecialDateController::class,'updateRegistrationDeadline']);
 
 });
 

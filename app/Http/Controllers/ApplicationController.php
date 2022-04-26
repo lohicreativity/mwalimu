@@ -21,6 +21,7 @@ use App\Domain\Registration\Models\Registration;
 use App\Domain\Academic\Models\AcademicStatus;
 use App\Domain\Registration\Models\Student;
 use App\Domain\Application\Models\ApplicationWindow;
+use App\Domain\Application\Models\TamisemiStudent;
 use App\Domain\Application\Models\InternalTransfer;
 use App\Domain\Application\Models\ExternalTransfer;
 use App\Domain\Application\Models\AdmissionAttachment;
@@ -483,6 +484,8 @@ class ApplicationController extends Controller
                     $url = 'http://41.93.40.137/nacteapi/index.php/api/upload';
 
                     $data = json_encode(['params'=>$params]);
+
+                    return $data;
 
                     $ch = curl_init();
                     curl_setopt($ch, CURLOPT_URL, $url);
@@ -2468,5 +2471,83 @@ class ApplicationController extends Controller
         }else{
             return redirect()->back()->with('error','Unable to complete transfer. '.$array['Response']['ResponseParameters']['StatusDescription']);
         }
+    }
+
+    /**
+     * Download TAMISEMI applicants
+     */
+    public function downloadTamisemi(Request $request)
+    {
+        $url="https://www.nacte.go.tz/nacteapi/index.php/api/tamisemiconfirmedlist/".$nactecode."-".$applyr."-".$intake."/".$token;
+
+        $arrContextOptions=array(
+            "ssl"=>array(
+              "verify_peer"=> false,
+              "verify_peer_name"=> false,
+            ),
+          );
+          
+          $jsondata = file_get_contents($url,false, stream_context_create($arrContextOptions)); 
+
+          $curl = curl_init($url);
+          curl_setopt($curl, CURLOPT_HEADER, false);
+          curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+          curl_setopt($curl, CURLOPT_HTTPHEADER,array("Content-Type: application/json"));
+          curl_setopt($curl, CURLOPT_POST, true);
+          //curl_setopt($curl, CURLOPT_POSTFIELDS, $jsondata);
+          curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 0); 
+          curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
+          $jsondata= curl_exec($curl);
+            curl_close($curl);
+             $returnedObject = json_decode($jsondata);
+          //echo $returnedObject->params[0]->student_verification_id."-dsdsdsdsds-<br />";
+          // check for parse errors
+          if (json_last_error() == JSON_ERROR_NONE) {
+            if(count($returnedObject->params)>0){
+              for($i=0;$i<count($returnedObject->params);$i++){
+                $parts=explode("/",$returnedObject->params[$i]->username);
+                //create format from returned form four index format 
+                $form4index=$parts[0]."-".$parts[1];
+                $year=$parts[2];
+                if (strpos($returnedObject->params[$i]->username, ',') !== false) {
+                  $form4index=$parts[0]."-".$parts[1]."-".$parts[2];
+                  $year=$parts[3];
+                }
+
+                if($stud = TamisemiStudent::where('f4indexno',$form4index)->first()){
+                   $student = $stud;
+                }else{
+                   $student = new TamisemiStudent;
+                }
+                $student->f4indexno = $form4index;
+                $student->year = $year;
+                $student->fullname = str_replace("'","\'",$returnedObject->params[$i]->fullname);
+                $student->application_year = $returnedObject->params[$i]->application_year;
+                $student->programme_id = $nactecode;
+                $student->programme_name = $returnedObject->params[$i]->programe_name;
+                $student->campus = $returnedObject->params[$i]->institution_name;
+                $student->gender = $returnedObject->params[$i]->sex;
+                $student->date_of_birth = $returnedObject->params[$i]->date_of_birth;
+                $student->phone_number = $returnedObject->params[$i]->phone_number;
+                $student->email = str_replace("'","\'",$returnedObject->params[$i]->email);
+                $student->address = str_replace("'","\'",$returnedObject->params[$i]->address);
+                $student->district = str_replace("'","\'",$returnedObject->params[$i]->district);
+                $student->region = str_replace("'","\'",$returnedObject->params[$i]->region);
+                $student->next_of_kin_fullname = str_replace("'","\'",$returnedObject->params[$i]->Next_of_kin_fullname);
+                $student->next_of_kin_phone_number = $returnedObject->params[$i]->Next_of_kin_phone_number;
+                $student->next_of_kin_email = str_replace("'","\'",$returnedObject->params[$i]->Next_of_kin_phone_email);
+                $student->next_of_kin_address = str_replace("'","\'",$returnedObject->params[$i]->Next_of_kin_address);
+                $student->next_of_kin_region = str_replace("'","\'",$returnedObject->params[$i]->Next_of_kin_region);
+                $student->relationship = $returnedObject->params[$i]->relationship;
+                $student->appacyr = $appacyr;
+                $student->intake = $intake;
+                $student->receiveDate = now();
+                $student->save();
+                                
+              }
+            }
+          }
+        }//end
+
     }
 }

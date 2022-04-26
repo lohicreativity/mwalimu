@@ -27,6 +27,22 @@ class SpecialDateController extends Controller
         return view('dashboard.settings.graduation-date',$data)->withTitle('Graduation Date');
 	}
 
+  /**
+   * Display registration deadline
+   */
+  public function showRegistrationDeadline(Request $request)
+  {
+      $data = [
+           'campuses'=>Campus::all(),
+           'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
+           'campus'=>Campus::find($request->get('campus_id')),
+           'study_academic_year'=>StudyAcademicYear::find($request->get('study_academic_year_id')),
+           'registration_date'=>SpecialDate::where('name','Registration Deadline')->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('campus_id',$request->get('campus_id'))->first(),
+           'request'=>$request
+        ];
+        return view('dashboard.registration.registration-deadline',$data)->withTitle('Registration Deadline');
+  }
+
     /**
      * Store graduation date
      */
@@ -79,5 +95,59 @@ class SpecialDateController extends Controller
         $date->save();
 
         return redirect()->back()->with('message','Graduation date updated successfully');
+    }
+
+    /**
+     * Store registration deadline
+     */
+    public function storeRegistrationDeadline(Request $request)
+    {
+      $validation = Validator::make($request->all(),[
+            'registration_date'=>'required',
+        ]);
+
+        if($validation->fails()){
+           if($request->ajax()){
+              return response()->json(array('error_messages'=>$validation->messages()));
+           }else{
+              return redirect()->back()->withInput()->withErrors($validation->messages());
+           }
+        }
+
+        $date = new SpecialDate;
+        $date->date = DateMaker::toDBDate($request->get('registration_date'));
+        $date->name = $request->get('name');
+        $date->campus_id = $request->get('campus_id');
+        $date->study_academic_year_id = $request->get('study_academic_year_id');
+        $date->save();
+
+        return redirect()->back()->with('message','Registration deadline created successfully');
+    }
+
+     /**
+     * Update registration deadline
+     */
+    public function updateRegistrationDeadline(Request $request)
+    {
+      $validation = Validator::make($request->all(),[
+            'registration_date'=>'required',
+        ]);
+
+        if($validation->fails()){
+           if($request->ajax()){
+              return response()->json(array('error_messages'=>$validation->messages()));
+           }else{
+              return redirect()->back()->withInput()->withErrors($validation->messages());
+           }
+        }
+
+        $date = SpecialDate::find($request->get('special_date_id'));
+        $date->date = DateMaker::toDBDate($request->get('registration_date'));
+        $date->name = $request->get('name');
+        $date->campus_id = $request->get('campus_id');
+        $date->study_academic_year_id = $request->get('study_academic_year_id');
+        $date->save();
+
+        return redirect()->back()->with('message','Registration deadline updated successfully');
     }
 }
