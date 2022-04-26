@@ -52,7 +52,7 @@
                     <select name="study_academic_year_id" class="form-control" required>
                        <option value="">Select Study Academic Year</option>
                        @foreach($study_academic_years as $year)
-                       <option value="{{ $year->id }}" @if($year->status == $request->get('study_academic_year_id')) selected="selected" @endif>{{ $year->academicYear->year }}</option>
+                       <option value="{{ $year->id }}" @if($year->id == $request->get('study_academic_year_id')) selected="selected" @endif>{{ $year->academicYear->year }}</option>
                        @endforeach
                     </select>
                   </div>

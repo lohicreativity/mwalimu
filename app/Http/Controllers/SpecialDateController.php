@@ -7,6 +7,7 @@ use App\Domain\Academic\Models\StudyAcademicYear;
 use App\Domain\Settings\Models\Campus;
 use App\Domain\Settings\Models\SpecialDate;
 use App\Utils\DateMaker;
+use Carbon\Carbon;
 use Validator;
 
 class SpecialDateController extends Controller
@@ -114,8 +115,13 @@ class SpecialDateController extends Controller
            }
         }
 
+        if(strtotime($request->get('registration_date')) < strtotime(now()->format('Y-m-d'))){
+          return redirect()->back()->with('error','Registration deadline cannot be less than today date');
+        }
+
         $date = new SpecialDate;
         $date->date = DateMaker::toDBDate($request->get('registration_date'));
+        $date->begin_date = Carbon::parse($request->get('registration_date'))->format('Y-m-d')->subDays(13);
         $date->name = $request->get('name');
         $date->campus_id = $request->get('campus_id');
         $date->study_academic_year_id = $request->get('study_academic_year_id');
@@ -141,8 +147,13 @@ class SpecialDateController extends Controller
            }
         }
 
+        if(strtotime($request->get('registration_date')) < strtotime(now()->format('Y-m-d'))){
+          return redirect()->back()->with('error','Registration deadline cannot be less than today date');
+        }
+
         $date = SpecialDate::find($request->get('special_date_id'));
         $date->date = DateMaker::toDBDate($request->get('registration_date'));
+        $date->begin_date = Carbon::parse($request->get('registration_date'))->format('Y-m-d')->subDays(13);
         $date->name = $request->get('name');
         $date->campus_id = $request->get('campus_id');
         $date->study_academic_year_id = $request->get('study_academic_year_id');
