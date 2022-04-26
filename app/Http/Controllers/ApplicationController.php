@@ -567,7 +567,7 @@ class ApplicationController extends Controller
                   curl_close($ch);
 
                   //echo message
-                  echo $result;
+                  return $result;
 
                     // $url = 'http://41.93.40.137/nacteapi/index.php/api/upload';
 
