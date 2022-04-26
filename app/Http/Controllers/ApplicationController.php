@@ -499,9 +499,9 @@ class ApplicationController extends Controller
 
                     $url = 'https://www.nacte.go.tz/nacteapi/index.php/api/upload';
 
-                    // $data = json_encode([$data]);
+                    $data = json_encode([$data]);
 
-                    return dd($data);
+                    // return dd($data);
 
                     $ch = curl_init();
                     curl_setopt($ch, CURLOPT_URL, $url);
