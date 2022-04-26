@@ -481,11 +481,11 @@ class ApplicationController extends Controller
                        'intake'=>$applicant->intake->name
                     ];
 
-                    $url = 'http://41.93.40.137/nacteapi/index.php/api/upload';
+                    // $url = 'http://41.93.40.137/nacteapi/index.php/api/upload';
+
+                    $url = 'https://www.nacte.go.tz/nacteapi/index.php/api/upload';
 
                     $data = json_encode(['params'=>$params]);
-
-                    return $data;
 
                     $ch = curl_init();
                     curl_setopt($ch, CURLOPT_URL, $url);
