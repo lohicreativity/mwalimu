@@ -25,6 +25,10 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
     Route::post('store-registration-deadline',[SpecialDateController::class,'storeRegistrationDeadline']);
     Route::post('update-registration-deadline',[SpecialDateController::class,'updateRegistrationDeadline']);
 
+    Route::get('orientation-date',[SpecialDateController::class,'showOrientationDate']);
+    Route::post('store-orientation-date',[SpecialDateController::class,'storeOrientationDate']);
+    Route::post('update-orientation-date',[SpecialDateController::class,'updateOrientationDate']);
+
 });
 
 

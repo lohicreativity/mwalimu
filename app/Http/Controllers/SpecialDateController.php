@@ -44,6 +44,22 @@ class SpecialDateController extends Controller
         return view('dashboard.registration.registration-date',$data)->withTitle('Registration Deadline');
   }
 
+  /**
+   * Display registration deadline
+   */
+  public function showOrientationDate(Request $request)
+  {
+      $data = [
+           'campuses'=>Campus::all(),
+           'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
+           'campus'=>Campus::find($request->get('campus_id')),
+           'study_academic_year'=>StudyAcademicYear::find($request->get('study_academic_year_id')),
+           'orientation_date'=>SpecialDate::where('name','Orientation')->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('campus_id',$request->get('campus_id'))->first(),
+           'request'=>$request
+        ];
+        return view('dashboard.registration.orientation-date',$data)->withTitle('Orientation Date');
+  }
+
     /**
      * Store graduation date
      */
@@ -160,5 +176,67 @@ class SpecialDateController extends Controller
         $date->save();
 
         return redirect()->back()->with('message','Registration deadline updated successfully');
+    }
+
+    /**
+     * Store orientation date
+     */
+    public function storeOrientationDate(Request $request)
+    {
+      $validation = Validator::make($request->all(),[
+            'orientation_date'=>'required',
+        ]);
+
+        if($validation->fails()){
+           if($request->ajax()){
+              return response()->json(array('error_messages'=>$validation->messages()));
+           }else{
+              return redirect()->back()->withInput()->withErrors($validation->messages());
+           }
+        }
+
+        if(strtotime($request->get('orientation_date')) < strtotime(now()->format('Y-m-d'))){
+          return redirect()->back()->with('error','Orientation date cannot be less than today date');
+        }
+
+        $date = new SpecialDate;
+        $date->date = DateMaker::toDBDate($request->get('orientation_date'));
+        $date->name = $request->get('name');
+        $date->campus_id = $request->get('campus_id');
+        $date->study_academic_year_id = $request->get('study_academic_year_id');
+        $date->save();
+
+        return redirect()->back()->with('message','Orientation date created successfully');
+    }
+
+     /**
+     * Update orientation date
+     */
+    public function updateOrientationDate(Request $request)
+    {
+      $validation = Validator::make($request->all(),[
+            'orientation_date'=>'required',
+        ]);
+
+        if($validation->fails()){
+           if($request->ajax()){
+              return response()->json(array('error_messages'=>$validation->messages()));
+           }else{
+              return redirect()->back()->withInput()->withErrors($validation->messages());
+           }
+        }
+
+        if(strtotime($request->get('orientation_date')) < strtotime(now()->format('Y-m-d'))){
+          return redirect()->back()->with('error','Orientation date cannot be less than today date');
+        }
+
+        $date = SpecialDate::find($request->get('special_date_id'));
+        $date->date = DateMaker::toDBDate($request->get('orientation_date'));
+        $date->name = $request->get('name');
+        $date->campus_id = $request->get('campus_id');
+        $date->study_academic_year_id = $request->get('study_academic_year_id');
+        $date->save();
+
+        return redirect()->back()->with('message','Orientation updated successfully');
     }
 }
