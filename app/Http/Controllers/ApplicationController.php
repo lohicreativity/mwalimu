@@ -2572,7 +2572,7 @@ class ApplicationController extends Controller
              $query->where('award_id',$request->get('program_level_id'));
          })->get();
          $intake = ApplicationWindow::find($request->get('application_window_id'))->intake;
-         foreach($campus_programs as $program)
+         foreach($campus_programs as $program){
             $result = Http::get('https://www.nacte.go.tz/nacteapi/index.php/api/verificationresults/'.$program->regulator_code.'-'.date('Y').'-'.$intake->name.'/'.config('constants.NACTE_API_KEY'));
 
             if($result['code'] == 200){
