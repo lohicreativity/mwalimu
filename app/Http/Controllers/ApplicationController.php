@@ -2733,6 +2733,6 @@ class ApplicationController extends Controller
             }
           }
         }//end
-
+        return redirect()->back()->with('message','TAMISEMI applicants retrieved successfully');
     }
 }
