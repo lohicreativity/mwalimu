@@ -646,12 +646,20 @@ class ApplicantController extends Controller
               ]
             ];
 
-            $result = Http::withHeaders([
-                         'Content-Type'=>'application/json',
-                         'Authorization'=>NHIFService::requestToken()
-                      ])->post('http://196.13.105.15/OMRS/api/v1/Verification/SubmitCardApplications',$data);
+            $token = NHIFService::requestToken();
 
-            return $result;
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $url);
+            // For xml, change the content-type.
+            curl_setopt ($ch, CURLOPT_HTTPHEADER, Array("Content-Type: application/json",
+              $token));
+            curl_setopt($ch, CURLOPT_POST, 1);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); // ask for results to be returned
+            // Send to remote and return data to caller.
+            $result = curl_exec($ch);
+            curl_close($ch);
+            return json_decode($result);
          }
 
          return redirect()->back()->with('message','Health insurance status updated successfully');
