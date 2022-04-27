@@ -2706,6 +2706,7 @@ class ApplicationController extends Controller
                 // $region = Region::where('name',$student->region)->first();
                 // $district = District::where('name',$student->district)->first();
                 // $ward = Ward::where('district_id',$district->id)->first();
+                $surname = count(explode(' ', $student->fullname)) == 3? explode(' ', $student->fullname)[2] : explode(' ',$student->fullname)[1];
 
                 if($us = User::where('username',$form4index)->first()){
                     $user = $us;
@@ -2714,8 +2715,11 @@ class ApplicationController extends Controller
                 }
                 $user->username = $form4index;
                 $user->email = 'dennis.lupiana@gmail.com';//$student->email;
-                $user->password = Hash::make('password');
+                $user->password = Hash::make($surname);
                 $user->save();
+
+                $role = Role::where('name','applicant')->first();
+                $user->roles()->sync([$role->id]);
 
                 if($app = Applicant::where('index_number',$form4index)->where('campus_id',$campus_program->campus_id)->where('application_window_id',$application_window->id)->where('is_tamisemi',1)->first()){
                    $applicant = $app;
