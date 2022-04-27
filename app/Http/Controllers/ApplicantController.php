@@ -631,6 +631,7 @@ class ApplicantController extends Controller
              $insurance->applicant_id = $applicant->id;
              $insurance->save();
          }else{
+           $ac_year = StudyAcademicYear::where('status','ACTIVE')->first()->academicYear->year;
            $data = [
               'BatchNo'=>'8002217/'.$ac_year.'/001',
               'Description'=>'Batch submitted on '.date('m d, Y'),
