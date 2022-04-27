@@ -60,7 +60,7 @@
                       <option value="passport">Passport Size Picture</option>
                       <option value="birth_certificate">Birth Certificate</option>
                       <option value="o_level_certificate">O-Level Certificate</option>
-                      @if($applicant->entry_mode == 'DIRECT')
+                      @if($applicant->entry_mode == 'DIRECT' && str_contains($applicant->programLevel->name,'Bachelor'))
                       <option value="a_level_certificate">A-Level Certificate</option>
                       @elseif($applicant->entry_mode == 'EQUIVALENT')
                       <option value="diploma_certificate">Diploma Certificate</option>
