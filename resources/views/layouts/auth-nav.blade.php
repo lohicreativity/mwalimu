@@ -17,6 +17,7 @@
                   <p>Next of Kin @if($applicant->next_of_kin_complete_status == 1) <i class="fa fa-check"></i> @endif</p>
                 </a>
               </li>
+              @if($applicant->is_tamisemi != 1)
               <li class="nav-item">
                 <a href="{{ url('application/payments') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
@@ -35,18 +36,21 @@
                   <p>Select Programmes @if($applicant->programs_complete_status == 1) <i class="fa fa-check"></i> @endif</p>
                 </a>
               </li>
+              @endif
               <li class="nav-item">
                 <a href="{{ url('application/upload-documents') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Upload Documents @if($applicant->documents_complete_status == 1) <i class="fa fa-check"></i> @endif</p>
                 </a>
               </li>
+              @if($applicant->is_tamisemi != 1)
               <li class="nav-item">
                 <a href="{{ url('application/submission') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Submit Application @if($applicant->submission_complete_status == 1) <i class="fa fa-check"></i> @endif</p>
                 </a>
               </li>
+              @endif
               @endif
               @if($applicant->status === 'ADMITTED')
               <li class="nav-item">

@@ -204,8 +204,11 @@ class ApplicantController extends Controller
      */
     public function editBasicInfo(Request $request)
     {
-        if(!ApplicationWindow::where('campus_id',session('applicant_campus_id'))->where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('status','ACTIVE')->first()){
-             return redirect()->to('application/submission')->with('error','Application window already closed');
+        $applicant = User::find(Auth::user()->id)->applicants()->where('campus_id',session('applicant_campus_id'))->first();
+        if($applicant->is_tamisemi != 1){
+            if(!ApplicationWindow::where('campus_id',session('applicant_campus_id'))->where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('status','ACTIVE')->first()){
+                 return redirect()->to('application/submission')->with('error','Application window already closed');
+            }
         }
         $url='http://api.tcu.go.tz/applicants/checkStatus';
         $fullindex=str_replace('-','/',Auth::user()->username);
@@ -224,7 +227,7 @@ class ApplicantController extends Controller
           $array = json_decode($json,TRUE);
         
         $data = [
-           'applicant'=>User::find(Auth::user()->id)->applicants()->where('campus_id',session('applicant_campus_id'))->first(),
+           'applicant'=>$applicant,
            'application_window'=>ApplicationWindow::where('campus_id',session('applicant_campus_id'))->where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->first(),
            'campus'=>Campus::find(session('applicant_campus_id')),
            'countries'=>Country::all(),
@@ -261,10 +264,12 @@ class ApplicantController extends Controller
      */
     public function editNextOfKin(Request $request)
     {
-        if(!ApplicationWindow::where('campus_id',session('applicant_campus_id'))->where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('status','ACTIVE')->first()){
-             return redirect()->to('application/submission')->with('error','Application window already closed');
-        }
         $applicant = User::find(Auth::user()->id)->applicants()->where('campus_id',session('applicant_campus_id'))->first();
+        if($applicant->is_tamisemi != 1){
+            if(!ApplicationWindow::where('campus_id',session('applicant_campus_id'))->where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('status','ACTIVE')->first()){
+                 return redirect()->to('application/submission')->with('error','Application window already closed');
+            }
+        }
         $data = [
            'applicant'=>$applicant,
            'campus'=>Campus::find(session('applicant_campus_id')),
@@ -350,11 +355,14 @@ class ApplicantController extends Controller
      */
     public function uploadDocuments(Request $request)
     {
-       if(!ApplicationWindow::where('campus_id',session('applicant_campus_id'))->where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('status','ACTIVE')->first()){
-             return redirect()->to('application/submission')->with('error','Application window already closed');
-        }
+       $applicant = User::find(Auth::user()->id)->applicants()->with('programLevel')->where('campus_id',session('applicant_campus_id'))->first();
+       if($applicant->is_tamisemi != 1){
+         if(!ApplicationWindow::where('campus_id',session('applicant_campus_id'))->where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('status','ACTIVE')->first()){
+               return redirect()->to('application/submission')->with('error','Application window already closed');
+          }
+       }
        $data = [
-          'applicant'=>User::find(Auth::user()->id)->applicants()->with('programLevel')->where('campus_id',session('applicant_campus_id'))->first(),
+          'applicant'=>$applicant,
           'campus'=>Campus::find(session('applicant_campus_id')),
        ];
        return view('dashboard.application.upload-documents',$data)->withTitle('Upload Documents');
