@@ -649,6 +649,8 @@ class ApplicantController extends Controller
             $url = 'http://196.13.105.15/OMRS/api/v1/Verification/SubmitCardApplications';
             $token = NHIFService::requestToken();
 
+            return $token;
+
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, $url);
             // For xml, change the content-type.
