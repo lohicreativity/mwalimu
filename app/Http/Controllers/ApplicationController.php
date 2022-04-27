@@ -2649,14 +2649,15 @@ class ApplicationController extends Controller
           if (json_last_error() == JSON_ERROR_NONE) {
             if(count($returnedObject->params)>0){
               for($i=0;$i<count($returnedObject->params);$i++){
-                $parts=explode("/",$returnedObject->params[$i]->username);
-                //create format from returned form four index format 
-                $form4index=$parts[0]."-".$parts[1];
-                $year=$parts[2];
-                if (strpos($returnedObject->params[$i]->username, ',') !== false) {
-                  $form4index=$parts[0]."-".$parts[1]."-".$parts[2];
-                  $year=$parts[3];
-                }
+                // $parts=explode("/",$returnedObject->params[$i]->username);
+                // //create format from returned form four index format 
+                // $form4index=$parts[0]."-".$parts[1];
+                // $year=$parts[2];
+                // if (strpos($returnedObject->params[$i]->username, ',') !== false) {
+                //   $form4index=$parts[0]."-".$parts[1]."-".$parts[2];
+                //   $year=$parts[3];
+                // }
+                $form4index = $returnedObject->params[$i]->username;
 
                 if($stud = TamisemiStudent::where('f4indexno',$form4index)->first()){
                    $student = $stud;
