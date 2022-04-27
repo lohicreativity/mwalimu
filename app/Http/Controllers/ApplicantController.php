@@ -652,7 +652,7 @@ class ApplicantController extends Controller
             //return $token;
             $curl_handle = curl_init();
 
-            return json_encode($data);
+          //  return json_encode($data);
  
 
   curl_setopt_array($curl_handle, array(
