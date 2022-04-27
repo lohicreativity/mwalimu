@@ -2743,13 +2743,14 @@ class ApplicationController extends Controller
                 $applicant->is_tamisemi = 1;
                 $applicant->save();
 
-                if($select = ApplicantProgramSelection::where('applicant_id',$applicant->id)->first()){
+                if($select = ApplicantProgramSelection::where('applicant_id',$applicant->id)->where('application_window_id',$application_window->id)->first()){
                     $selection = $select;
                 }else{
                     $selection = new ApplicantProgramSelection;
                 }
                 $selection->campus_program_id = $campus_program->id;
                 $selection->applicant_id = $applicant->id;
+                $selection->application_window_id = $application_window->id;
                 $selection->order = 1;
                 $selection->status = 'SELECTED';
                 $selection->save();
