@@ -2564,10 +2564,42 @@ class ApplicationController extends Controller
     }
 
     /**
+     * Get verified students from NACTE
+     */
+    public function getVerifiedApplicantsNACTE(Request $request)
+    {
+         $campus_programs = CampusProgram::whereHas('program',function($query) use($request){
+             $query->where('award_id',$request->get('program_level_id'));
+         })->get();
+         $intake = ApplicationWindow::find($request->get('application_window_id'))->intake;
+         foreach($campus_programs as $program)
+            $result = Http::get('https://www.nacte.go.tz/nacteapi/index.php/api/verificationresults/'.$program->regulator_code.'-'.date('Y').'-'.$intake->name.'/'.config('constants.NACTE_API_KEY'));
+
+            if($result['code'] == 200){
+                foreach ($result['params'] as $res) {
+                    $applicant = Applicant::where('index_number',$res['username'])->first();
+                    $applicant->multiple_admissions = $res['multiple_selection'] == 'no multiple'? 0 : 1;
+                    $applicant->save();
+
+                    ApplicantProgramSelection::where('applicant_id',$applicant->id)->where('status','APPROVING')->update(['status'=>'SELECTED']);
+                }
+            }
+         }
+
+         return redirect()->back()->with('message','Verified applicants retrieved successfully from NACTE');
+    }
+
+    /**
      * Download TAMISEMI applicants
      */
     public function downloadTamisemi(Request $request)
     {
+        $ac_year = StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first();
+        $applyr = 2020;
+        $appacyr = $ac_year->academicYear->year;
+        $intake = 'SEPTEMBER';
+        $nactecode = 'e52ab037dc82d24960d9b9c678b5a6147a1ba6ea';
+        $token = config('constants.NACTE_API_KEY');
         $url="https://www.nacte.go.tz/nacteapi/index.php/api/tamisemiconfirmedlist/".$nactecode."-".$applyr."-".$intake."/".$token;
 
         $arrContextOptions=array(
@@ -2590,6 +2622,8 @@ class ApplicationController extends Controller
           $jsondata= curl_exec($curl);
             curl_close($curl);
              $returnedObject = json_decode($jsondata);
+
+             return $returnedObject;
           //echo $returnedObject->params[0]->student_verification_id."-dsdsdsdsds-<br />";
           // check for parse errors
           if (json_last_error() == JSON_ERROR_NONE) {

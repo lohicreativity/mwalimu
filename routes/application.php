@@ -151,4 +151,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
     Route::get('external-transfer',[ApplicationController::class,'showExternalTransfer']);
     Route::post('submit-external-transfer',[ApplicationController::class,'submitExternalTransfer']);
     Route::get('admitted-applicants',[ApplicationController::class,'admittedApplicants']);
+
+    Route::get('get-nacte-applicants',[ApplicationController::class,'getVerifiedApplicantsNACTE']);
+
+    Route::get('tamisemi',[ApplicationController::class,'downloadTamisemi']);
 });
