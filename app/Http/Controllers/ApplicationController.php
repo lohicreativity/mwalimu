@@ -2740,7 +2740,19 @@ class ApplicationController extends Controller
                 $applicant->nationality = 'Tanzanian';
                 $applicant->country_id = 1;
                 $applicant->user_id = $user->id;
+                $applicant->is_tamisemi = 1;
                 $applicant->save();
+
+                if($select = ApplicantProgramSelection::where('applicant_id',$applicant->id)->first()){
+                    $selection = $select;
+                }else{
+                    $selection = new ApplicantProgramSelection;
+                }
+                $selection->campus_program_id = $campus_program->id;
+                $selection->applicant_id = $applicant->id;
+                $selection->order = 1;
+                $selection->status = 'SELECTED';
+                $selection->save();
 
                 try{
                     Mail::to($user)->queue(new TamisemiApplicantCreated($student,$applicant,$campus_program->program->name));
