@@ -2732,7 +2732,7 @@ class ApplicationController extends Controller
                 $applicant->phone = '225'.substr($student->phone_number,1);
                 $applicant->email = $student->email;
                 $applicant->address = $student->address;
-                $applicant->gender = substr($student->sex, 0,1);
+                $applicant->gender = substr($student->gender, 0,1);
                 $applicant->campus_id = $campus_program->campus_id;
                 $applicant->program_level_id = $program_level->id;
                 // $applicant->next_of_kin_id = $next_of_kin->id;
