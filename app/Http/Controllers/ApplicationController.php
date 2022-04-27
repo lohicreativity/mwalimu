@@ -2703,7 +2703,7 @@ class ApplicationController extends Controller
                     $user = new User;
                 }
                 $user->username = $form4index;
-                $user->email = $student->email;
+                $user->email = 'amanighachocha@gmail.com';//$student->email;
                 $user->password = Hash::make('password');
                 $user->save();
 
