@@ -630,6 +630,27 @@ class ApplicantController extends Controller
              $insurance->expire_date = DateMaker::toDBDate($request->get('expire_date'));
              $insurance->applicant_id = $applicant->id;
              $insurance->save();
+         }else{
+           $data = [
+              'BatchNo'=>'8002217/'.$ac_year.'/001',
+              'Description'=>'Batch submitted on '.date('m d, Y'),
+              'CardApplications'=>[ 
+                 [  
+                    'CorrelationID'=>$applicant->index_number,
+                    'MobileNo'=>'0'.substr($applicant->phone, 3),
+                    'AcademicYear'=>$ac_year,
+                    'YearOfStudy'=>1,
+                    'Category'=>1
+                 ]
+              ]
+            ];
+
+            $result = Http::witHeaders([
+                         'Content-Type'=>'application/json',
+                         'Authorization'=>NHIFService::requestToken()
+                      ])->post('http://196.13.105.15/OMRS/api/v1/Verification/SubmitCardApplications',json_encode($data));
+
+            return $result;
          }
 
          return redirect()->back()->with('message','Health insurance status updated successfully');
