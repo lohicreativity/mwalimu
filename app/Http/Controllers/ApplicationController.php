@@ -1388,7 +1388,7 @@ class ApplicationController extends Controller
         $reg_date_time = strtotime($reg_date->date);
         $datediff = $now - $reg_date_time;
         if(round($datediff / (60 * 60 * 24)) > 7){
-            return redirect()->back()->with('error','Applicant is not allowed to register');
+            return redirect()->back()->with('error','Applicant cannot register. Registration period is over');
         }
 
         $staff = User::find(Auth::user()->id)->staff;
