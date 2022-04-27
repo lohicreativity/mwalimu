@@ -1475,10 +1475,10 @@ class ApplicationController extends Controller
          }       
 
          if($student->applicant->country->code == 'TZ'){
-             $amount = $fee_amount->amount_in_tzs*$days;
+             $amount = $fee_amount->amount_in_tzs*$days*(-1);
              $currency = 'TZS';
          }else{
-             $amount = $fee_amount->amount_in_usd*$days;
+             $amount = $fee_amount->amount_in_usd*$days*(-1);
              $currency = 'USD';
          }
 
