@@ -1381,6 +1381,14 @@ class ApplicationController extends Controller
            }
         }
 
+        $reg_date = SpecialDate::where('study_academic_year_id',$ac_year->id)->where('name','New Registration Period')->first();
+        $now = time();
+        $reg_date_time = strtotime($reg_date->date);
+        $datediff = $now - $reg_date_time;
+        if(round($datediff / (60 * 60 * 24)) > 7){
+            return redirect()->back()->with('error','Applicant is not allowed to register');
+        }
+
         $staff = User::find(Auth::user()->id)->staff;
 
         $applicant = Applicant::find($request->get('applicant_id'));
@@ -1448,11 +1456,9 @@ class ApplicationController extends Controller
         $registration->save();
 
 
-        $reg_date = SpecialDate::where('study_academic_year_id',$ac_year->id)->where('name','New Registration Period')->first();
-        $now = time();
-        $reg_date_time = strtotime($reg_date->date);
-        $datediff = $now - $reg_date_time;
-        if(round($datediff / (60 * 60 * 24)) > 7){
+        $days = round($datediff / (60 * 60 * 24)) - 7;
+
+        if($days > 0){
             $fee_amount = FeeAmount::whereHas('feeItem',function($query){
                    return $query->where('name','LIKE','%Late Registration%');
             })->with(['feeItem.feeType'])->where('study_academic_year_id',$ac_year->study_academic_year_id)->first();
@@ -1461,9 +1467,7 @@ class ApplicationController extends Controller
 
          if(!$fee_amount){
             return redirect()->back()->with('error','No fee amount set for late registration');
-         }
-
-         $days = round($datediff / (60 * 60 * 24)) - 7;
+         }       
 
          if($student->applicant->country->code == 'TZ'){
              $amount = $fee_amount->amount_in_tzs*$days;
