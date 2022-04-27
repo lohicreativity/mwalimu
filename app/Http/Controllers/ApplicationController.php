@@ -2623,7 +2623,7 @@ class ApplicationController extends Controller
             curl_close($curl);
              $returnedObject = json_decode($jsondata);
 
-             return $returnedObject;
+             // return $returnedObject;
           //echo $returnedObject->params[0]->student_verification_id."-dsdsdsdsds-<br />";
           // check for parse errors
           if (json_last_error() == JSON_ERROR_NONE) {
