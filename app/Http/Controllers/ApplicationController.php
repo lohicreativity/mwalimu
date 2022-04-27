@@ -1516,7 +1516,11 @@ class ApplicationController extends Controller
            Mail::to($user)->send(new StudentAccountCreated($student, $selection->campusProgram->program->name,$ac_year->academicYear->year));
         }catch(\Exception $e){}
         DB::commit();
-        return redirect()->to('application/applicants-registration')->with('message','Student registered successfully');
+        if($days > 0){
+          return redirect()->to('application/applicants-registration')->with('error','Student successfully registered with registration number '.$student->registration_number.', but has a penalty of '.$amount.' '.$currency);
+        }else{
+           return redirect()->to('application/applicants-registration')->with('message','Student registered successfully with registration number '.$student->registration_number);
+        }
     }
 
     /**
