@@ -2728,6 +2728,8 @@ class ApplicationController extends Controller
                 $applicant->application_window_id = $application_window->id;
                 $applicant->payment_complete_status = 1;
                 $applicant->index_number = $form4index;
+                $applicant->entry_mode = 'DIRECT';
+                $applicant->nationality = 'Tanzanian';
                 $applicant->country_id = 1;
                 $applicant->user_id = $user->id;
                 $applicant->save();
