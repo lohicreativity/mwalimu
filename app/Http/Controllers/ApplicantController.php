@@ -646,7 +646,7 @@ class ApplicantController extends Controller
               ]
             ];
 
-            $result = Http::witHeaders([
+            $result = Http::withHeaders([
                          'Content-Type'=>'application/json',
                          'Authorization'=>NHIFService::requestToken()
                       ])->post('http://196.13.105.15/OMRS/api/v1/Verification/SubmitCardApplications',json_encode($data));
