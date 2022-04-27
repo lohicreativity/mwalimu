@@ -659,7 +659,11 @@ class ApplicantController extends Controller
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); // ask for results to be returned
             // Send to remote and return data to caller.
             $result = curl_exec($ch);
+            $err = curl_error($ch);
             curl_close($ch);
+
+
+            return dd($err);
             return dd(json_decode($result));
          }
 
