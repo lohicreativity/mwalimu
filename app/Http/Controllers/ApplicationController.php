@@ -1448,7 +1448,7 @@ class ApplicationController extends Controller
         $registration->save();
 
 
-        $reg_date = SpecialDate::where('study_academic_year_id',$ac_year->id)->where('name','Registration Period')->first();
+        $reg_date = SpecialDate::where('study_academic_year_id',$ac_year->id)->where('name','New Registration Period')->first();
         $now = time();
         $reg_date_time = strtotime($reg_date->date);
         $datediff = $now - $reg_date_time;
