@@ -2743,7 +2743,7 @@ class ApplicationController extends Controller
                 $applicant->save();
 
                 try{
-                    Mail::to($user)->send(new TamisemiApplicantCreated($student,$applicant,$campus_program->program->name));
+                    Mail::to($user)->queue(new TamisemiApplicantCreated($student,$applicant,$campus_program->program->name));
                 }catch(\Exception $e){}
                                 
             }
