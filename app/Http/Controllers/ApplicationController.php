@@ -251,6 +251,9 @@ class ApplicationController extends Controller
     public function downloadSelectedApplicants(Request $request)
     {
 
+        if(!$request->get('program_level_id')){
+            return redirect()->back()->with('error','Please select program level first');
+        }
         $staff = User::find(Auth::user()->id)->staff;
         $award = Award::find($request->get('program_level_id'));
         $headers = [
