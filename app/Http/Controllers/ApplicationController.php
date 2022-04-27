@@ -2727,6 +2727,8 @@ class ApplicationController extends Controller
                 $applicant->next_of_kin_id = $next_of_kin->id;
                 $applicant->application_window_id = $application_window->id;
                 $applicant->payment_complete_status = 1;
+                $applicant->index_number = $form4index;
+                $applicant->country_id = 1;
                 $applicant->user_id = $user->id;
                 $applicant->save();
 
