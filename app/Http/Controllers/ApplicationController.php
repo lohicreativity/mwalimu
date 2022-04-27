@@ -2729,7 +2729,7 @@ class ApplicationController extends Controller
                 $applicant->first_name = explode(' ', $student->fullname)[0];
                 $applicant->middle_name = count(explode(' ', $student->fullname)) == 3? explode(' ',$student->fullname)[1] : null;
                 $applicant->surname = count(explode(' ', $student->fullname)) == 3? explode(' ', $student->fullname)[2] : explode(' ',$student->fullname)[1];
-                $applicant->phone = $student->phone_number;
+                $applicant->phone = '225'.substr($student->phone_number,1);
                 $applicant->email = $student->email;
                 $applicant->address = $student->address;
                 $applicant->gender = substr($student->sex, 0,1);
