@@ -19,6 +19,7 @@ use App\Domain\Settings\Models\Campus;
 use App\Domain\Settings\Models\Region;
 use App\Domain\Settings\Models\District;
 use App\Domain\Settings\Models\Ward;
+use App\Domain\Settings\Models\SpecialDate;
 use App\Domain\Registration\Models\StudentshipStatus;
 use App\Domain\Registration\Models\Registration;
 use App\Domain\Academic\Models\AcademicStatus;
