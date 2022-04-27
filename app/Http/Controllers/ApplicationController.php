@@ -22,6 +22,7 @@ use App\Domain\Academic\Models\AcademicStatus;
 use App\Domain\Registration\Models\Student;
 use App\Domain\Application\Models\ApplicationWindow;
 use App\Domain\Application\Models\TamisemiStudent;
+use App\Domain\Application\Models\NextOfKin;
 use App\Domain\Application\Models\InternalTransfer;
 use App\Domain\Application\Models\ExternalTransfer;
 use App\Domain\Application\Models\AdmissionAttachment;
