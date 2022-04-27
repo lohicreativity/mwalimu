@@ -20,12 +20,11 @@
                  <tr height="200" bgcolor="#ffffff" style="padding: 10px 20px;">
                    <td style="padding: 10px 20px; min-height: 400px; width: 100%; color: #000;">
                      <h3 style="font-size: 20px; text-align: center;">{{ $heading }}</h3>
-                     <p style="font-size: 18px;">Dear, {!! $name !!}</p>
+                     <p style="font-size: 18px;">Dear {!! $name !!},</p>
                      <p style="font-size: 18px;">{!! $notification_message !!}</p>
                      <p style="font-size: 18px;"><strong>Username:</strong> {{ $username }}</p>
                      <p style="font-size: 18px;"><strong>Password:</strong> {{ $password }}</p>
-                     <p style="font-size: 18px; font-style: italic;">Please note, you must change your credectials on first login.</p>
-                     <p style="font-size: 18px;">Wishing you all the best in your academic life at the Academy.</p><br>
+                     <br>
               
                      <p style="font-weight: bold; font-size: 18px; margin-top:30px;">{{ config('constants.SITE_NAME') }}.</p>
                    </td>
