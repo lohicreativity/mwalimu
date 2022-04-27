@@ -2717,7 +2717,7 @@ class ApplicationController extends Controller
                 $user->password = Hash::make('password');
                 $user->save();
 
-                if($app = Applicant::where('index_number',$form4index)->where('campus_id',$campus_program->campus_id)->first()){
+                if($app = Applicant::where('index_number',$form4index)->where('campus_id',$campus_program->campus_id)->where('application_window_id',$application_window->id)->first()){
                    $applicant = $app;
                 }else{
                    $applicant = new Applicant;
@@ -2738,6 +2738,7 @@ class ApplicationController extends Controller
                 $applicant->index_number = $form4index;
                 $applicant->entry_mode = 'DIRECT';
                 $applicant->nationality = 'Tanzanian';
+                $applicant->birth_date = $student->date_of_birth;
                 $applicant->country_id = 1;
                 $applicant->user_id = $user->id;
                 $applicant->is_tamisemi = 1;
