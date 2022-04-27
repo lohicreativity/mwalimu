@@ -2646,7 +2646,7 @@ class ApplicationController extends Controller
                 $student->f4indexno = $form4index;
                 $student->year = $year;
                 $student->fullname = str_replace("'","\'",$returnedObject->params[$i]->fullname);
-                $student->application_year = $returnedObject->params[$i]->application_year;
+                $student->year = $returnedObject->params[$i]->application_year;
                 $student->programme_id = $nactecode;
                 $student->programme_name = $returnedObject->params[$i]->programe_name;
                 $student->campus = $returnedObject->params[$i]->institution_name;
