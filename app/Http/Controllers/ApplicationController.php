@@ -2703,9 +2703,9 @@ class ApplicationController extends Controller
                 // $next_of_kin->relationship = $student->relationship;
                 // $next_of_kin->save();
 
-                $region = Region::where('name',$student->region)->first();
-                $district = District::where('name',$student->district)->first();
-                $ward = Ward::where('district_id',$district->id)->first();
+                // $region = Region::where('name',$student->region)->first();
+                // $district = District::where('name',$student->district)->first();
+                // $ward = Ward::where('district_id',$district->id)->first();
 
                 if($us = User::where('username',$form4index)->first()){
                     $user = $us;
@@ -2713,7 +2713,7 @@ class ApplicationController extends Controller
                     $user = new User;
                 }
                 $user->username = $form4index;
-                $user->email = 'amanighachocha@gmail.com';//$student->email;
+                $user->email = 'dennis.lupiana@gmail.com';//$student->email;
                 $user->password = Hash::make('password');
                 $user->save();
 
@@ -2739,9 +2739,6 @@ class ApplicationController extends Controller
                 $applicant->entry_mode = 'DIRECT';
                 $applicant->nationality = 'Tanzanian';
                 $applicant->country_id = 1;
-                $applicant->region_id = $region->id;
-                $applicant->district_id = $district->id;
-                $applicant->ward_id = $ward->id;
                 $applicant->user_id = $user->id;
                 $applicant->save();
 
