@@ -94,12 +94,12 @@
                    
                 <div class="row">
                   <div class="form-group col-6">
-                    {!! Form::label('','Registration deadline') !!}
+                    {!! Form::label('','New registration deadline') !!}
                     {!! Form::text('registration_date',null,$date) !!}
 
                     {!! Form::input('hidden','study_academic_year_id',$study_academic_year->id) !!}
                     {!! Form::input('hidden','campus_id',$campus->id) !!}
-                    {!! Form::input('hidden','name','Registration Period') !!}
+                    {!! Form::input('hidden','name','New Registration Period') !!}
                   </div>
                   </div>
                 
@@ -122,13 +122,13 @@
                    
                 <div class="row">
                   <div class="form-group col-6">
-                    {!! Form::label('','Registration deadline') !!}
+                    {!! Form::label('','New registration deadline') !!}
                     {!! Form::text('registration_date',App\Utils\DateMaker::toStandardDate($registration_date->date),$date) !!}
 
                     {!! Form::input('hidden','study_academic_year_id',$study_academic_year->id) !!}
                     {!! Form::input('hidden','campus_id',$campus->id) !!}
                     {!! Form::input('hidden','special_date_id',$registration_date->id) !!}
-                    {!! Form::input('hidden','name','Registration Period') !!}
+                    {!! Form::input('hidden','name','New Registration Period') !!}
                   </div>
                   </div>
                 

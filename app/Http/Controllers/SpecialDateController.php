@@ -209,7 +209,7 @@ class SpecialDateController extends Controller
         $date = new SpecialDate;
         $date->date = Carbon::parse($request->get('orientation_date'))->addDays(13)->format('Y-m-d');
         $date->begin_date = DateMaker::toDBDate($request->get('orientation_date'));
-        $date->name = 'Registration Deadline';
+        $date->name = 'New Registration Period';
         $date->campus_id = $request->get('campus_id');
         $date->study_academic_year_id = $request->get('study_academic_year_id');
         $date->save();
@@ -217,7 +217,7 @@ class SpecialDateController extends Controller
         $date = new SpecialDate;
         $date->date = Carbon::parse($request->get('orientation_date'))->addDays(20)->format('Y-m-d');
         $date->begin_date = Carbon::parse($request->get('orientation_date'))->addDays(6)->format('Y-m-d');;
-        $date->name = 'Continueing Registration Deadline';
+        $date->name = 'Continueing Registration Period';
         $date->campus_id = $request->get('campus_id');
         $date->study_academic_year_id = $request->get('study_academic_year_id');
         $date->save();
