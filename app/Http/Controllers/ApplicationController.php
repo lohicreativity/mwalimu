@@ -1446,6 +1446,62 @@ class ApplicationController extends Controller
         $registration->status = 'REGISTERED';
         $registration->save();
 
+
+        $reg_date = SpecialDate::where('study_academic_year_id',$ac_year->id)->where('name','Registration Period')->first();
+        $now = time();
+        $reg_date_time = strtotime($reg_date->date);
+        $datediff = $now - $reg_date_time;
+        if(round($datediff / (60 * 60 * 24)) > 7){
+            $fee_amount = FeeAmount::whereHas('feeItem',function($query){
+                   return $query->where('name','LIKE','%Late Registration%');
+            })->with(['feeItem.feeType'])->where('study_academic_year_id',$ac_year->study_academic_year_id)->first();
+
+            $student = Student::with(['applicant.country'])->find($student->id);
+
+         if(!$fee_amount){
+            return redirect()->back()->with('error','No fee amount set for late registration');
+         }
+
+         $days = round($datediff / (60 * 60 * 24)) - 7;
+
+         if($student->applicant->country->code == 'TZ'){
+             $amount = $fee_amount->amount_in_tzs*$days;
+             $currency = 'TZS';
+         }else{
+             $amount = $fee_amount->amount_in_usd*$days;
+             $currency = 'USD';
+         }
+
+        $invoice = new Invoice;
+        $invoice->reference_no = 'MNMA-LR-'.time();
+        $invoice->amount = $amount;
+        $invoice->currency = $currency;
+        $invoice->payable_id = $student->id;
+        $invoice->payable_type = 'student';
+        $invoice->fee_type_id = $fee_amount->feeItem->feeType->id;
+        $invoice->save();
+
+        $generated_by = 'SP';
+        $approved_by = 'SP';
+        $inst_id = config('constants.SUBSPCODE');
+
+        $result = $this->requestControlNumber($request,
+                                    $invoice->reference_no,
+                                    $inst_id,
+                                    $invoice->amount,
+                                    $fee_amount->feeItem->feeType->description,
+                                    $fee_amount->feeItem->feeType->gfs_code,
+                                    $fee_amount->feeItem->feeType->payment_option,
+                                    $student->id,
+                                    $student->first_name.' '.$student->surname,
+                                    $student->phone,
+                                    $student->email,
+                                    $generated_by,
+                                    $approved_by,
+                                    $fee_amount->feeItem->feeType->duration,
+                                    $invoice->currency);
+        }
+
         try{
            Mail::to($user)->send(new StudentAccountCreated($student, $selection->campusProgram->program->name,$ac_year->academicYear->year));
         }catch(\Exception $e){}
