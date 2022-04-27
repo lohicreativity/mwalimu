@@ -2598,7 +2598,7 @@ class ApplicationController extends Controller
         $applyr = 2020;
         $appacyr = $ac_year->academicYear->year;
         $intake = 'SEPTEMBER';
-        $nactecode = 'e52ab037dc82d24960d9b9c678b5a6147a1ba6ea';
+        $nactecode = 'b5116f0bcd8b3a76b69ff57411f968fd42ade117';
         $token = config('constants.NACTE_API_KEY');
         $url="https://www.nacte.go.tz/nacteapi/index.php/api/tamisemiconfirmedlist/".$nactecode."-".$applyr."-".$intake."/".$token;
 
