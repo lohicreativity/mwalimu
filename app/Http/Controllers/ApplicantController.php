@@ -663,17 +663,22 @@ class ApplicantController extends Controller
             $err = curl_error($ch);
             curl_close($ch);
 
+             $rdata = null;
+
             if($err){
-              return (object) array('error' => $err);
+              $rdata = (object) array('error' => $err);
             }else{
-              return $response;
+               $rdata =  $response;
             }
+
+
+            return $rdata;// $request->all();
 
 
             /*return dd($err);
             return dd(json_decode($result));*/
          }
 
-         return redirect()->back()->with('message','Health insurance status updated successfully');
+        // return redirect()->back()->with('message','Health insurance status updated successfully');
     }
 }
