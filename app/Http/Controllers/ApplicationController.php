@@ -2665,7 +2665,7 @@ class ApplicationController extends Controller
                    $student = new TamisemiStudent;
                 }
                 $student->f4indexno = $form4index;
-                $student->year = $year;
+                $student->year = $applyr;
                 $student->fullname = str_replace("'","\'",$returnedObject->params[$i]->fullname);
                 $student->year = $returnedObject->params[$i]->application_year;
                 $student->programme_id = $nactecode;
