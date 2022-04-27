@@ -1466,7 +1466,7 @@ class ApplicationController extends Controller
         if($days < 0){
             $fee_amount = FeeAmount::whereHas('feeItem',function($query){
                    return $query->where('name','LIKE','%Late Registration%');
-            })->with(['feeItem.feeType'])->where('study_academic_year_id',$ac_year->study_academic_year_id)->first();
+            })->with(['feeItem.feeType'])->where('study_academic_year_id',$ac_year->id)->first();
 
             $student = Student::with(['applicant.country'])->find($student->id);
 
