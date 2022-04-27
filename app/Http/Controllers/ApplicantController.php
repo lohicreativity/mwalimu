@@ -659,12 +659,19 @@ class ApplicantController extends Controller
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); // ask for results to be returned
             // Send to remote and return data to caller.
             $result = curl_exec($ch);
+            $response = json_decode($result);
             $err = curl_error($ch);
             curl_close($ch);
 
+            if($err){
+              return (object) array('error' => $err);
+            }else{
+              return $response;
+            }
 
-            return dd($err);
-            return dd(json_decode($result));
+
+            /*return dd($err);
+            return dd(json_decode($result));*/
          }
 
          return redirect()->back()->with('message','Health insurance status updated successfully');
