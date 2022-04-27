@@ -16,6 +16,9 @@ use App\Domain\Finance\Models\Invoice;
 use App\Domain\Finance\Models\NactePayment;
 use App\Domain\Settings\Models\NTALevel;
 use App\Domain\Settings\Models\Campus;
+use App\Domain\Settings\Models\Region;
+use App\Domain\Settings\Models\District;
+use App\Domain\Settings\Models\Ward;
 use App\Domain\Registration\Models\StudentshipStatus;
 use App\Domain\Registration\Models\Registration;
 use App\Domain\Academic\Models\AcademicStatus;
@@ -2690,15 +2693,19 @@ class ApplicationController extends Controller
                 $student->save();
                 
                 $program_level = Award::where('name','LIKE','%Basic%')->first();
-                $next_of_kin = new NextOfKin;
-                $next_of_kin->first_name = explode(' ', $student->next_of_kin_fullname)[0];
-                $next_of_kin->middle_name = count(explode(' ', $student->next_of_kin_fullname)) == 3? explode(' ',$student->next_of_kin_fullname)[1] : null;
-                $next_of_kin->surname = count(explode(' ', $student->next_of_kin_fullname)) == 3? explode(' ', $student->next_of_kin_fullname)[2] : explode(' ',$student->next_of_kin_fullname)[1];
-                $next_of_kin->address = $student->next_of_kin_address;
-                $next_of_kin->phone = $student->next_of_kin_phone;
-                $next_of_kin->email = $student->Next_of_kin_email;
-                $next_of_kin->relationship = $student->relationship;
-                $next_of_kin->save();
+                // $next_of_kin = new NextOfKin;
+                // $next_of_kin->first_name = explode(' ', $student->next_of_kin_fullname)[0];
+                // $next_of_kin->middle_name = count(explode(' ', $student->next_of_kin_fullname)) == 3? explode(' ',$student->next_of_kin_fullname)[1] : null;
+                // $next_of_kin->surname = count(explode(' ', $student->next_of_kin_fullname)) == 3? explode(' ', $student->next_of_kin_fullname)[2] : explode(' ',$student->next_of_kin_fullname)[1];
+                // $next_of_kin->address = $student->next_of_kin_address;
+                // $next_of_kin->phone = $student->next_of_kin_phone;
+                // $next_of_kin->email = $student->Next_of_kin_email;
+                // $next_of_kin->relationship = $student->relationship;
+                // $next_of_kin->save();
+
+                $region = Region::where('name',$student->region)->first();
+                $district = District::where('name',$student->district)->first();
+                $ward = Ward::where('district_id',$district->id)->first();
 
                 if($us = User::where('username',$form4index)->first()){
                     $user = $us;
@@ -2724,7 +2731,7 @@ class ApplicationController extends Controller
                 $applicant->gender = substr($student->sex, 0,1);
                 $applicant->campus_id = $campus_program->campus_id;
                 $applicant->program_level_id = $program_level->id;
-                $applicant->next_of_kin_id = $next_of_kin->id;
+                // $applicant->next_of_kin_id = $next_of_kin->id;
                 $applicant->application_window_id = $application_window->id;
                 $applicant->payment_complete_status = 1;
                 $applicant->intake_id = $application_window->intake->id;
@@ -2732,6 +2739,9 @@ class ApplicationController extends Controller
                 $applicant->entry_mode = 'DIRECT';
                 $applicant->nationality = 'Tanzanian';
                 $applicant->country_id = 1;
+                $applicant->region_id = $region->id;
+                $applicant->district_id = $district->id;
+                $applicant->ward_id = $ward->id;
                 $applicant->user_id = $user->id;
                 $applicant->save();
 
