@@ -908,8 +908,8 @@ class ApplicationController extends Controller
                         'X-CSRF-TOKEN'=> csrf_token()
                 ])->post($url,$data);
 
-      
-    return redirect()->back()->with('message','The bill with id '.$billno.' has been queued.', 200);
+       return $result;
+    //return redirect()->back()->with('message','The bill with id '.$billno.' has been queued.', 200);
             
     }
 
