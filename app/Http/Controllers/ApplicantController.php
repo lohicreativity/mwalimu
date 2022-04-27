@@ -660,7 +660,7 @@ class ApplicantController extends Controller
             // Send to remote and return data to caller.
             $result = curl_exec($ch);
             curl_close($ch);
-            return json_decode($result);
+            return dd(json_decode($result));
          }
 
          return redirect()->back()->with('message','Health insurance status updated successfully');
