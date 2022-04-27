@@ -43,7 +43,7 @@ use App\Mail\StudentAccountCreated;
 use App\Mail\TamisemiApplicantCreated;
 use NumberToWords\NumberToWords;
 use App\Utils\DateMaker;
-use Validator, Hash, Config, Auth, Mail, PDF;
+use Validator, Hash, Config, Auth, Mail, PDF, DB;
 
 class ApplicationController extends Controller
 {
@@ -1380,7 +1380,8 @@ class ApplicationController extends Controller
               return redirect()->back()->withInput()->withErrors($validation->messages());
            }
         }
-
+        
+        DB::beginTransaction();
         $reg_date = SpecialDate::where('study_academic_year_id',$ac_year->id)->where('name','New Registration Period')->first();
         $now = time();
         $reg_date_time = strtotime($reg_date->date);
@@ -1446,7 +1447,11 @@ class ApplicationController extends Controller
         $role = Role::where('name','student')->first();
         $user->roles()->sync([$role->id]);
 
-        $registration = new Registration;
+        if($reg = Registration::where('student_id',$student->id)->where('study_academic_year_id',$ac_year->id)->where('semester_id',$semester->id)->first()){
+          $registration = $reg;
+        }else{
+          $registration = new Registration;
+        }
         $registration->study_academic_year_id = $ac_year->id;
         $registration->semester_id = $semester->id;
         $registration->student_id = $student->id;
@@ -1506,11 +1511,11 @@ class ApplicationController extends Controller
                                     $fee_amount->feeItem->feeType->duration,
                                     $invoice->currency);
         }
-
+        
         try{
            Mail::to($user)->send(new StudentAccountCreated($student, $selection->campusProgram->program->name,$ac_year->academicYear->year));
         }catch(\Exception $e){}
-
+        DB::commit();
         return redirect()->to('application/applicants-registration')->with('message','Student registered successfully');
     }
 
