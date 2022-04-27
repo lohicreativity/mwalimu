@@ -655,7 +655,7 @@ class ApplicantController extends Controller
             curl_setopt ($ch, CURLOPT_HTTPHEADER, Array("Content-Type: application/json",
               $token));
             curl_setopt($ch, CURLOPT_POST, 1);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); // ask for results to be returned
             // Send to remote and return data to caller.
             $result = curl_exec($ch);
