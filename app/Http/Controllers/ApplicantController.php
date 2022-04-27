@@ -636,13 +636,14 @@ class ApplicantController extends Controller
               'BatchNo'=>'8002217/'.$ac_year.'/001',
               'Description'=>'Batch submitted on '.date('m d, Y'),
               'CardApplications'=>[ 
-                 { 
-                    'CorrelationID'=>$applicant->index_number,
+                 array(
+
+                  'CorrelationID'=>$applicant->index_number,
                     'MobileNo'=>'0'.substr($applicant->phone, 3),
                     'AcademicYear'=>$ac_year,
                     'YearOfStudy'=>1,
                     'Category'=>1
-                 }
+                 )      
               ]
             ];
             
