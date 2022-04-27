@@ -650,8 +650,46 @@ class ApplicantController extends Controller
             $token = NHIFService::requestToken();
 
             //return $token;
+            $curl_handle = curl_init();
 
-            $ch = curl_init();
+            return json_encode($data);
+ 
+
+  curl_setopt_array($curl_handle, array(
+  CURLOPT_URL => $url,
+  CURLOPT_HTTPHEADER => array('Content-Type: application/json',$token),
+  CURLOPT_RETURNTRANSFER => true,
+  CURLOPT_ENCODING => "",
+  CURLOPT_MAXREDIRS => 10,
+  CURLOPT_TIMEOUT => 4200,
+  CURLOPT_FOLLOWLOCATION => false,
+  CURLOPT_SSL_VERIFYPEER => false,
+  CURLOPT_CUSTOMREQUEST => "POST",
+  CURLOPT_POSTFIELDS => json_encode($data)
+));
+
+$response = curl_exec($curl_handle);
+$response = json_decode($response);
+$StatusCode = curl_getinfo($curl_handle, CURLINFO_HTTP_CODE);
+$err = curl_error($curl_handle);
+
+curl_close($curl_handle);
+
+
+   $rdata = null;
+
+   if($err){
+
+     $rdata = (object) array('error' => $err);
+
+   }else{
+
+     $rdata =  (object) array('statusCode' => $StatusCode,'data' => $response);
+   }
+
+   return json_encode($rdata); 
+
+            /*$ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, $url);
             // For xml, change the content-type.
             curl_setopt ($ch, CURLOPT_HTTPHEADER, Array("Content-Type: application/json",
@@ -674,7 +712,7 @@ class ApplicantController extends Controller
             }
 
 
-            return json_encode($rdata);// $request->all();
+            return json_encode($rdata);// $request->all();*/
 
 
             /*return dd($err);
