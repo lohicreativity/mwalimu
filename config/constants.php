@@ -13,6 +13,8 @@ return [
 
    'SITE_BASE_URL'=>'https://mnma.ac.tz',
 
+   'SITE_IP_ADDRESS'=>'http://41.59.91.194',
+
    'ADMISSION_EMAIL'=>'admission@mnma.ac.tz',
 
    'PHONE_LINE_ONE'=>'+255 (22) 2152496',
