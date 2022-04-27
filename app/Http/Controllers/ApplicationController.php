@@ -2659,7 +2659,7 @@ class ApplicationController extends Controller
                 $student->region = str_replace("'","\'",$returnedObject->params[$i]->region);
                 $student->next_of_kin_fullname = str_replace("'","\'",$returnedObject->params[$i]->Next_of_kin_fullname);
                 $student->next_of_kin_phone_number = $returnedObject->params[$i]->Next_of_kin_phone_number;
-                $student->next_of_kin_email = str_replace("'","\'",$returnedObject->params[$i]->Next_of_kin_phone_email);
+                $student->next_of_kin_email = str_replace("'","\'",$returnedObject->params[$i]->Next_of_kin_email);
                 $student->next_of_kin_address = str_replace("'","\'",$returnedObject->params[$i]->Next_of_kin_address);
                 $student->next_of_kin_region = str_replace("'","\'",$returnedObject->params[$i]->Next_of_kin_region);
                 $student->relationship = $returnedObject->params[$i]->relationship;
