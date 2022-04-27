@@ -2651,7 +2651,7 @@ class ApplicationController extends Controller
                 $student->programme_name = $returnedObject->params[$i]->programe_name;
                 $student->campus = $returnedObject->params[$i]->institution_name;
                 $student->gender = $returnedObject->params[$i]->sex;
-                $student->date_of_birth = $returnedObject->params[$i]->date_of_birth;
+                $student->date_of_birth = DateMaker::toDBDate($returnedObject->params[$i]->date_of_birth);
                 $student->phone_number = $returnedObject->params[$i]->phone_number;
                 $student->email = str_replace("'","\'",$returnedObject->params[$i]->email);
                 $student->address = str_replace("'","\'",$returnedObject->params[$i]->address);
