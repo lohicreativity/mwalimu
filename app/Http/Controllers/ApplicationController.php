@@ -35,6 +35,7 @@ use App\Utils\SystemLocation;
 use App\Jobs\SendAdmissionLetter;
 use App\Mail\AdmissionLetterCreated;
 use App\Mail\StudentAccountCreated;
+use App\Mail\TamisemiApplicantCreated;
 use NumberToWords\NumberToWords;
 use App\Utils\DateMaker;
 use Validator, Hash, Config, Auth, Mail, PDF;
@@ -2590,15 +2591,33 @@ class ApplicationController extends Controller
     }
 
     /**
+     * Show Tamisemi applicants
+     */
+    public function tamisemiApplicants(Request $request)
+    {
+        $staff = User::find(Auth::user()->id)->staff;
+        $data = [
+            'application_windows'=>ApplicationWindow::where('campus_id',$staff->campus_id)->get(),
+            'campus_programs'=>CampusProgram::whereHas('program',function($query){
+                 $query->where('name','LIKE','%Basic%');
+            })->where('campus_id',$staff->campus_id)->get(),
+            'request'=>$request
+        ];
+        return view('dashboard.application.tamisemi-applicants',$data)->withTitle('TAMISEMI Applicants');
+    }
+
+    /**
      * Download TAMISEMI applicants
      */
-    public function downloadTamisemi(Request $request)
+    public function downloadTamisemiApplicants(Request $request)
     {
         $ac_year = StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first();
         $applyr = 2020;
+        $application_window = ApplicationWindow::with('intake')->find($request->get('application_window_id'));
+        $campus_program = CampusProgram::with('program')->find($request->get('campus_program_id'));
         $appacyr = $ac_year->academicYear->year;
-        $intake = 'SEPTEMBER';
-        $nactecode = 'b5116f0bcd8b3a76b69ff57411f968fd42ade117';
+        $intake = $application_window->intake->name;
+        $nactecode = $campus_program->regulator_code;
         $token = config('constants.NACTE_API_KEY');
         $url="https://www.nacte.go.tz/nacteapi/index.php/api/tamisemiconfirmedlist/".$nactecode."-".$applyr."-".$intake."/".$token;
 
@@ -2667,6 +2686,49 @@ class ApplicationController extends Controller
                 $student->intake = $intake;
                 $student->receiveDate = now();
                 $student->save();
+                
+                $program_level = Award::where('name','LIKE','%Basic%')->first();
+                $next_of_kin = new NextOfKin;
+                $next_of_kin->first_name = explode(' ', $student->next_of_kin_fullname)[0];
+                $next_of_kin->middle_name = count(explode(' ', $student->next_of_kin_fullname)) == 3? explode(' ',$student->next_of_kin_fullname)[1] : null;
+                $next_of_kin->surname = count(explode(' ', $student->next_of_kin_fullname)) == 3? explode(' ', $student->next_of_kin_fullname)[2] : explode(' ',$student->next_of_kin_fullname)[1];
+                $next_of_kin->address = $student->next_of_kin_address;
+                $next_of_kin->phone = $student->next_of_kin_phone;
+                $next_of_kin->email = $student->Next_of_kin_email;
+                $next_of_kin->save();
+
+                if($us = User::where('username',$form4index)->first()){
+                    $user = $us;
+                }else{
+                    $user = new User;
+                }
+                $user->username = $form4index;
+                $user->email = $student->email;
+                $user->password = Hash::make('password');
+                $user->save();
+
+                if($app = Applicant::where('index_number',$form4index)->where('campus_id',$campus_program->campus_id)->first()){
+                   $applicant = $app;
+                }else{
+                   $applicant = new Applicant;
+                }
+                $applicant->first_name = explode(' ', $student->fullname)[0];
+                $applicant->middle_name = count(explode(' ', $student->fullname)) == 3? explode(' ',$student->fullname)[1] : null;
+                $applicant->surname = count(explode(' ', $student->fullname)) == 3? explode(' ', $student->fullname)[2] : explode(' ',$student->fullname)[1];
+                $applicant->phone = $student->phone_number;
+                $applicant->email = $student->email;
+                $applicant->address = $student->address;
+                $applicant->gender = substr($student->sex, 0,1);
+                $applicant->campus_id = $campus_program->campus_id;
+                $applicant->program_level_id = $program_level->id;
+                $applicant->next_of_kin_id = $next_of_kin->id;
+                $applicant->application_window_id = $application_window->id;
+                $applicant->user_id = $user->id;
+                $applicant->save();
+
+                try{
+                    Mail::to($user)->send(new TamisemiApplicantCreated($student,$applicant,$campus_program->program->name));
+                }catch(\Exception $e){}
                                 
             }
           }

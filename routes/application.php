@@ -154,5 +154,6 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 
     Route::get('get-nacte-applicants',[ApplicationController::class,'getVerifiedApplicantsNACTE']);
 
-    Route::get('tamisemi',[ApplicationController::class,'downloadTamisemi']);
+    Route::get('tamisemi-applicants',[ApplicationController::class,'tamisemiApplicants']);
+    Route::post('get-tamisemi-applicants',[ApplicationController::class,'downloadTamisemiApplicants']);
 });
