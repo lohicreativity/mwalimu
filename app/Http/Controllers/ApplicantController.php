@@ -86,10 +86,14 @@ class ApplicantController extends Controller
         $campus = Campus::find($request->get('campus_id'));
 
         $applicant = Applicant::where('index_number',$request->get('index_number'))->where('campus_id',0)->first();
+
+        $tamisemi_applicant = Applicant::where('index_number',$request->get('index_number'))->where('is_tamisemi',1)->first();
         
         $window = ApplicationWindow::where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('campus_id',$request->get('campus_id'))->where('status','ACTIVE')->first();
-        if(!$window && $applicant){
-          return  redirect()->back()->with('error','Application window for '.$campus->name.' is not open.');
+        if(!$tamisemi_applicant){
+          if(!$window && $applicant){
+            return  redirect()->back()->with('error','Application window for '.$campus->name.' is not open.');
+          }
         }
 
         if(Auth::attempt($credentials)){
