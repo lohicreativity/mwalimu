@@ -2696,6 +2696,7 @@ class ApplicationController extends Controller
                 $next_of_kin->address = $student->next_of_kin_address;
                 $next_of_kin->phone = $student->next_of_kin_phone;
                 $next_of_kin->email = $student->Next_of_kin_email;
+                $next_of_kin->relationship = $student->relationship;
                 $next_of_kin->save();
 
                 if($us = User::where('username',$form4index)->first()){
@@ -2724,6 +2725,7 @@ class ApplicationController extends Controller
                 $applicant->program_level_id = $program_level->id;
                 $applicant->next_of_kin_id = $next_of_kin->id;
                 $applicant->application_window_id = $application_window->id;
+                $applicant->payment_complete_status = 1;
                 $applicant->user_id = $user->id;
                 $applicant->save();
 
