@@ -1393,7 +1393,7 @@ class ApplicationController extends Controller
 
         $staff = User::find(Auth::user()->id)->staff;
 
-        $applicant = Applicant::find($request->get('applicant_id'));
+        $applicant = Applicant::with(['intake','campus'])->find($request->get('applicant_id'));
         $applicant->results_check = 1;
         $applicant->insurance_check = 1;
         $applicant->personal_info_check = 1;
@@ -1414,6 +1414,21 @@ class ApplicationController extends Controller
         }
         $year = substr(date('Y'), 2);
 
+        $prog_code = explode('.', $selection->campusProgram->program->code);
+        if(str_contains($applicant->intake->name,'March')){
+            if(!str_contains($applicant->campus->name,'Kivukoni')){
+               $program_code = $prog_code[0].'Z3.'.$prog_code[1];
+            }else{
+               $program_code = $prog_code[0].'3.'.$prog_code[1];
+            }  
+        }else{
+            if(!str_contains($applicant->campus->name,'Kivukoni')){
+               $program_code = $prog_code[0].'Z.'.$prog_code[1];
+            }else{
+               $program_code = $prog_code[0].'.'.$prog_code[1];
+            }  
+        }
+
         if($stud = Student::where('applicant_id',$applicant->id)->first()){
             $student = $stud;
         }else{
@@ -1431,7 +1446,7 @@ class ApplicationController extends Controller
         $student->nationality = $applicant->nationality;
         $student->year_of_study = 1;
         $student->campus_program_id = $selection->campusProgram->id;
-        $student->registration_number = 'MNMA/'.$selection->campusProgram->program->code.'/'.$code.'/'.$year;
+        $student->registration_number = 'MNMA/'.$program_code.'/'.$code.'/'.$year;
         $student->disability_status_id = $applicant->disability_status_id;
         $student->studentship_status_id = $studentship_status->id;
         $student->academic_status_id = $academic_status->id;
