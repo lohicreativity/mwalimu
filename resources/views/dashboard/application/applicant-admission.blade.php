@@ -87,6 +87,9 @@
             <!-- /.card -->
           </div>
           <div class="col-8">
+             @if($applicant->has_postponed == 1)
+             <div class="alert alert-warning">Applicant has postponed.</div>
+             @endif
              <div class="accordion" id="accordionExample">
                 <div class="card">
                   @foreach($applicant->nectaResultDetails as $key=>$detail)
@@ -249,6 +252,33 @@
                           ></iframe>
                       @else
                          <img src="{{ asset('uploads/'.$applicant->avn_certificate) }}" height="auto" width="100%">
+                      @endif
+                    </div>
+                  </div>
+                </div>
+                @endif
+                @if($applicant->postponement_letter)
+                <div class="card">
+                  <div class="card-header" id="ss-postponement-letter">
+                    <h2 class="mb-0">
+                      <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        Postponement Letter
+                      </button>
+                    </h2>
+                  </div>
+
+                  <div id="collapseOne" class="collapse" aria-labelledby="ss-postponement-letter" data-parent="#accordionExample-2">
+                    <div class="card-body">
+                      @if(explode('.',$applicant->postponement_letter)[1] == 'pdf')
+                         <iframe
+                              src="https://drive.google.com/viewerng/viewer?embedded=true&url={{ asset('uploads/'.$applicant->postponement_letter) }}#toolbar=0&scrollbar=0"
+                              frameBorder="0"
+                              scrolling="auto"
+                              height="auto"
+                              width="100%"
+                          ></iframe>
+                      @else
+                         <img src="{{ asset('uploads/'.$applicant->postponement_letter) }}" height="auto" width="100%">
                       @endif
                     </div>
                   </div>

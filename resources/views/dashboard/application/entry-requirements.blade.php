@@ -71,7 +71,7 @@
                <div class="card-header">
                  <h3 class="card-title">{{ __('Add Entry Requirement') }}</h3><br>
                  @if(count($entry_requirements) == 0)
-                 <a href="{{ url('store-requirements-as-previous?application_window_id='.$application_window->id) }}" class="btn btn-primary">Save as Previous</a>
+                 <a href="{{ url('application/store-requirements-as-previous?application_window_id='.$application_window->id) }}" class="btn btn-primary">Save as Previous</a>
                  @endif
                </div>
                <!-- /.card-header -->

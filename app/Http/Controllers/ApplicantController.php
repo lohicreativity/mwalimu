@@ -30,6 +30,7 @@ use App\Http\Controllers\NHIFService;
 use Illuminate\Support\Facades\Http;
 use App\Models\User;
 use App\Utils\Util;
+use App\Utils\SystemLocation;
 use Carbon\Carbon;
 use App\Utils\DateMaker;
 use Validator, Auth, Hash;
@@ -584,6 +585,37 @@ class ApplicantController extends Controller
          $applicant->save();
 
          return redirect()->back()->with('message','Hostel status updated successfully');
+    }
+
+    /**
+     * Request postponement
+     */
+    public function requestPostponement(Request $request)
+    {
+        $validation = Validator::make($request->all(),[
+            'letter'=>'required|mimes:pdf',
+        ]);
+
+        if($validation->fails()){
+           if($request->ajax()){
+              return response()->json(array('error_messages'=>$validation->messages()));
+           }else{
+              return redirect()->back()->withInput()->withErrors($validation->messages());
+           }
+        }    
+
+        if($request->hasFile('letter')){
+             $destination = SystemLocation::uploadsDirectory();
+             $request->file('letter')->move($destination, $request->file('letter')->getClientOriginalName());
+
+             $applicant = Applicant::find($request->get('applicant_id'));
+             $applicant->postponement_letter = $request->file('letter')->getClientOriginalName();
+             $applicant->has_postponed = 1;
+             $applicant->save();
+        }
+
+        return redirect()->back()->with('message','Postponement letter submitted successfully');
+
     }
 
     /**

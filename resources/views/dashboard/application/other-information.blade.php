@@ -155,6 +155,24 @@
             {!! Form::close() !!}
             </div>
 
+            <div class="card card-default">
+              <div class="card-header">
+                <h3 class="card-title">{{ __('Postponement Request') }}</h3>
+              </div>
+              <!-- /.card-header -->
+              {!! Form::open(['url'=>'application/request-postponement','files'=>true,'class'=>'ss-form-processing']) !!}
+              <div class="card-body">
+                  {!! Form::input('hidden','applicant_id',$applicant->id) !!}
+
+                  {!! Form::label('','Upload postponement letter') !!}
+                  {!! Form::file('letter',['class'=>'form-control','required'=>true]) !!}
+              </div>
+              <div class="card-footer">
+              <button @if($program_fee_invoice) disabled="disabled" @else type="submit" @endif class="btn btn-primary">{{ __('Submit Postponement Request') }}</button>
+            </div>
+            {!! Form::close() !!}
+            </div>
+
           </div>
         </div>
         

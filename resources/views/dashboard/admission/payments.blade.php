@@ -56,10 +56,14 @@
                     </tr>
                     <tr>
                        <td>Programme Fee</td>
+                       @if($applicant->has_postponed == 1)
+                       <td> 100,000 TZS</td>
+                       @else
                        @if($applicant->country->code == 'TZ')
                        <td>{{ $program_fee->amount_in_tzs }} TZS</td>
                        @else
                        <td>{{ $program_fee->amount_in_usd }} USD</td>
+                       @endif
                        @endif
                        <td>@if($program_fee_invoice) {{ $program_fee_invoice->control_no }}@endif <a href="#" onclick="window.location.reload();"><i class="fa fa-refresh" ></i> Refresh</a></td>
                        <td>
@@ -73,6 +77,7 @@
                          @endif
                        </td>
                     </tr>
+                    @if($applicant->has_postponed != 1)
                     <tr>
                        <td>Other Fees</td>
                        @if($applicant->country->code == 'TZ')
@@ -93,6 +98,7 @@
                        </td>
 
                     </tr>
+
                     @if($insurance_fee)
                     <tr>
                        <td>Insurance Fee</td>
@@ -125,6 +131,7 @@
                          @endif
                        </td>
                     </tr>
+                    @endif
                     @endif
                     @if(!$program_fee_invoice)
                     <tr>

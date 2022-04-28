@@ -129,6 +129,11 @@ class AdmissionController extends Controller
              $currency = 'USD';
          }
 
+        if($applicant->has_postponed == 1){
+            $amount = 100000;
+            $currency = 'TZS';
+        }
+
         $invoice = new Invoice;
         $invoice->reference_no = 'MNMA-TF-'.time();
         $invoice->amount = $amount;
@@ -160,7 +165,7 @@ class AdmissionController extends Controller
                                     $approved_by,
                                     $program_fee->feeItem->feeType->duration,
                                     $invoice->currency);
-    	if($applicant->hostel_available_status == 1){
+    	if($applicant->hostel_available_status == 1 && $applicant->has_postponed != 1){
     		$hostel_fee = FeeAmount::whereHas('feeItem',function($query){
     			$query->where('name','LIKE','%Hostel%');
     		})->where('study_academic_year_id',$study_academic_year->id)->first();
@@ -204,7 +209,8 @@ class AdmissionController extends Controller
     	}else{
     		$hostel_fee = null;
     	}
-
+        
+        if($applicant->has_postponed != 1){
     	if(str_contains($applicant->programLevel->name,'Bachelor')){
     		$quality_assurance_fee = FeeAmount::whereHas('feeItem',function($query){
     			$query->where('name','LIKE','%TCU%');
@@ -263,6 +269,7 @@ class AdmissionController extends Controller
                                     $approved_by,
                                     $feeType->duration,
                                     $invoice->currency);
+        }
 
     	if($applicant->insurance_available_status == 0){
             $insurance_fee = FeeAmount::whereHas('feeItem',function($query){

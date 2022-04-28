@@ -63,6 +63,8 @@ class CreateApplicantsTable extends Migration
             $table->string('confirmation_status')->nullable();
             $table->string('adminssion_confirmation_status')->nullable();
             $table->string('status')->nullable();
+            $table->string('postponement_letter')->nullable();
+            $table->tinyInteger('has_postponed')->nullable();
             $table->tinyInteger('is_tamisemi')->nullable();
             $table->unsignedBigInteger('registered_by_user_id')->nullable();
             $table->timestamps();
