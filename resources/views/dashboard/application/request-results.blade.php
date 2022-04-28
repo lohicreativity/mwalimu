@@ -313,6 +313,7 @@
                                {!! Form::close() !!}
 
                               </div>
+                            </div>
                               <div class="col-6">
 
                                {!! Form::open(['url'=>'application/nacte-result/confirm','class'=>'ss-form-processing']) !!}

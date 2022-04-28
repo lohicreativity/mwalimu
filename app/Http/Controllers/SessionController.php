@@ -13,7 +13,11 @@ class SessionController extends Controller
 	 */
 	public function changePassword(Request $request)
 	{
-		return view('auth.change-password')->withTitle('Change Password');
+		$student = User::find(Auth::user()->id)->student;
+		$data = [
+           'student'=>$student
+		];
+		return view('auth.change-password',$data)->withTitle('Change Password');
 	}
 	/**
 	 * Update password 

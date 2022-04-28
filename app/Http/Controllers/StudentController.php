@@ -207,7 +207,8 @@ class StudentController extends Controller
 
     	$data = [
     	   'years_of_studies'=>$years_of_studies,
-           'student'=>$student
+         'results_present_status'=>count($results) != 0? true : false,
+         'student'=>$student
     	];
     	return view('dashboard.student.examination-results',$data)->withTitle('Examination Results');
     }

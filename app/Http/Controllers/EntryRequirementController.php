@@ -112,6 +112,9 @@ class EntryRequirementController extends Controller
     {
         $staff = User::find(Auth::user()->id)->staff;
         $application_window = ApplicationWindow::where('campus_id',$staff->campus_id)->latest()->offset(1)->first();
+        if(!$application_window){
+            return redirect()->back()->with('error','No previous application window');
+        }
         $reqs = EntryRequirement::where('application_window_id',$application_window->id)->get();
         foreach($reqs as $req){
             $requirement = new EntryRequirement;

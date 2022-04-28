@@ -730,6 +730,11 @@ class ApplicationController extends Controller
            $applicant->diploma_certificate = null;
         }
 
+        if($request->get('name') == 'passport_picture'){
+           unlink(public_path().'/uploads/'.$applicant->passport_picture);
+           $applicant->passport_picture = null;
+        }
+
         if($applicant->entry_mode == 'DIRECT'){
             if(str_contains($applicant->programLevel->name,'Bachelor')){
                 if($applicant->birth_certificate && $applicant->o_level_certificate && $applicant->a_level_certificate && $applicant->passport_picture){
@@ -911,8 +916,8 @@ class ApplicationController extends Controller
                         'X-CSRF-TOKEN'=> csrf_token()
                 ])->post($url,$data);
 
-       return $result;
-    //return redirect()->back()->with('message','The bill with id '.$billno.' has been queued.', 200);
+       // return $result;
+    return redirect()->back()->with('message','The bill with id '.$billno.' has been queued.', 200);
             
     }
 

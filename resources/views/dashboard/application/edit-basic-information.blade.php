@@ -50,17 +50,20 @@
                   $first_name = [
                      'placeholder'=>'First name',
                      'class'=>'form-control',
+                     'readonly'=>$applicant->payment_complete_status == 1? true : null,
                      'required'=>true
                   ];
 
                   $middle_name = [
                      'placeholder'=>'Middle name',
-                     'class'=>'form-control'
+                     'class'=>'form-control',
+                     'readonly'=>$applicant->payment_complete_status == 1? true : null,
                   ];
 
                   $surname = [
                      'placeholder'=>'Surname',
                      'class'=>'form-control',
+                     'readonly'=>$applicant->payment_complete_status == 1? true : null,
                      'required'=>true
                   ];
 
@@ -89,6 +92,7 @@
                   $phone = [
                      'placeholder'=>'255788010102',
                      'class'=>'form-control',
+                     'readonly'=>$applicant->payment_complete_status == 1? true : null,
                      'required'=>true
                   ];
 

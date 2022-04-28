@@ -73,7 +73,6 @@
                       <td>{{ $assignment->type }}</td>
                       <td>{{ $assignment->category }}</td>
                       
-                      
                       <td>
                           @if($assignment->category == 'OPTIONAL')
                            @if(!App\Utils\Util::collectionContains($options,$assignment))

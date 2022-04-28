@@ -100,6 +100,12 @@
                        </tr>
                     </thead>
                     <tbody>
+                      @if($applicant->passport_picture)
+                      <tr>
+                        <td>Passport Picture</td>
+                        <td><a href="{{ url('application/delete-document?name=passport_picture') }}" class="btn btn-danger"><i class="fa fa-trash"></i> Delete</a></td>
+                      </tr>
+                      @endif
                       @if($applicant->birth_certificate)
                       <tr>
                         <td>Birth Certificate</td>
