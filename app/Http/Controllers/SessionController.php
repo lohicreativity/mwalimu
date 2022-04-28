@@ -39,6 +39,10 @@ class SessionController extends Controller
 	            $user->password = Hash::make($request->get('password'));
 	            $user->must_update_password = 0;
 	            $user->save();
+	            $request->session()->forget('password_hash_web');
+
+		       // login the user back with his new updated credentials
+		        Auth::guard('web')->login($user);
 	            return redirect()->back()->with('message','Congratulations, new password saved succeefully');
 	        }else{
 	              return redirect()->back()->withInput()->with('error','Your old password is not identified, please provide a correct password!');

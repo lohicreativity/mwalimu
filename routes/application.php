@@ -156,4 +156,6 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 
     Route::get('tamisemi-applicants',[ApplicationController::class,'tamisemiApplicants']);
     Route::post('get-tamisemi-applicants',[ApplicationController::class,'downloadTamisemiApplicants']);
+
+    Route::get('store-requirements-as-previous',[EntryRequirementController::class,'storeAsPrevious']);
 });

@@ -106,6 +106,48 @@ class EntryRequirementController extends Controller
     }
 
     /**
+     * Store as previous
+     */
+    public function storeAsPrevious(Request $request)
+    {
+        $staff = User::find(Auth::user()->id)->staff;
+        $application_window = ApplicationWindow::where('campus_id',$staff->campus_id)->latest()->offset(1)->first();
+        $reqs = EntryRequirement::where('application_window_id',$application_window->id)->get();
+        foreach($reqs as $req){
+            $requirement = new EntryRequirement;
+            $requirement->campus_program_id = $req->campus_program_id;
+            $requirement->application_window_id = $application_window->id;
+            $requirement->equivalent_gpa = $req->equivalent_gpa;
+            $requirement->equivalent_pass_subjects = $req->equivalent_pass_subjects;
+            $requirement->equivalent_average_grade = $req->equivalent_average_grade;
+            $requirement->open_equivalent_gpa = $req->open_equivalent_gpa;
+            $requirement->open_equivalent_pass_subjects = $req->open_equivalent_pass_subjects;
+            $requirement->open_equivalent_average_grade = $req->open_equivalent_average_grade;
+            $requirement->principle_pass_points = $req->principle_pass_points;
+            $requirement->min_principle_pass_points = $req->min_principle_pass_points;
+            $requirement->principle_pass_subjects = $req->principle_pass_subjects;
+            $requirement->subsidiary_pass_subjects = $req->subsidiary_pass_subjects;
+            $requirement->pass_subjects = $req->pass_subjects;
+            $requirement->pass_grade = $req->pass_grade;
+            $requirement->award_level = $req->award_level;
+            $requirement->nta_level = $req->nta_level;
+            $requirement->exclude_subjects = $req->exclude_subjects;
+            $requirement->must_subjects = $req->must_subjects;
+            $requirement->other_must_subjects = $req->other_must_subjects;
+            $requirement->other_advance_must_subjects = $req->other_advance_must_subjects;
+            $requirement->advance_exclude_subjects = $req->advance_exclude_subjects;
+            $requirement->advance_must_subjects = $req->advance_must_subjects;
+            $requirement->subsidiary_subjects = $req->subsidiary_subjects;
+            $requirement->principle_subjects = $req->principle_subjects;
+            $requirement->max_capacity = $req->max_capacity;
+            $requirement->group_id = $req->group_id;
+            $requirement->save();
+        }
+
+        return redirect()->back()->with('message','Entry requirements created successfully');
+    }
+
+    /**
      * Update specified entry requirement
      */
     public function update(Request $request)

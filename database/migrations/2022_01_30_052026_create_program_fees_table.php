@@ -20,15 +20,12 @@ class CreateProgramFeesTable extends Migration
             $table->double('amount_in_usd',16,2);
             $table->unsignedBigInteger('fee_item_id');
             $table->unsignedBigInteger('study_academic_year_id');
-            $table->unsignedBigInteger('semester_id');
-            $table->tinyInteger('is_approved');
             $table->string('status');
             $table->timestamps();
 
             $table->foreign('campus_program_id')->references('id')->on('campus_program')->onUpdate('cascade');
             $table->foreign('fee_item_id')->references('id')->on('fee_items')->onUpdate('cascade');
             $table->foreign('study_academic_year_id')->references('id')->on('study_academic_years')->onUpdate('cascade');
-            $table->foreign('semester_id')->references('id')->on('semesters')->onUpdate('cascade');
         });
     }
 

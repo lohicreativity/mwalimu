@@ -69,8 +69,10 @@
              @if($application_window)
              <div class="card">
                <div class="card-header">
-                 <h3 class="card-title">{{ __('Add Entry Requirement') }}</h3>
-
+                 <h3 class="card-title">{{ __('Add Entry Requirement') }}</h3><br>
+                 @if(count($entry_requirements) == 0)
+                 <a href="{{ url('store-requirements-as-previous?application_window_id='.$application_window->id) }}" class="btn btn-primary">Save as Previous</a>
+                 @endif
                </div>
                <!-- /.card-header -->
                <ul class="nav nav-tabs" id="myList" role="tablist">

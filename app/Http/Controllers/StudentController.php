@@ -110,8 +110,10 @@ class StudentController extends Controller
      */
     public function showPayments(Request $request)
     {
+      $student = User::find(Auth::user()->id)->student;
     	$data = [
-            'student'=>User::find(Auth::user()->id)->student
+            'student'=>$student,
+            'invoices'=>Invoice::where('payable_id',$student->id)->where('payable_type','student')->with(['feeType','gatewayPayment'])->latest()->paginate(20)
     	];
     	return view('dashboard.student.payments',$data)->withTitle('Payments');
     }
