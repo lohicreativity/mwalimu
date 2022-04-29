@@ -38,7 +38,7 @@
       <div class="container-fluid">
         <div class="row">
           <div class="col-12">
-           @can('add-system-module-permission')
+           {{-- @can('add-system-module-permission') --}}
             <!-- general form elements -->
             <div class="card card-default">
               <div class="card-header">
@@ -82,7 +82,7 @@
               {!! Form::close() !!}
             </div>
             <!-- /.card -->
-            @endcan
+            {{-- @endcan --}}
 
             @if(count($permissions) != 0)
             <div class="card">
