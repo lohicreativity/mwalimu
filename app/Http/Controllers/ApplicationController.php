@@ -33,6 +33,8 @@ use App\Domain\Application\Models\AdmissionAttachment;
 use App\Domain\Application\Models\ApplicantSubmissionLog;
 use App\Domain\Application\Models\ApplicantProgramSelection;
 use App\Domain\Application\Actions\ApplicantAction;
+use App\Domain\Application\Models\NectaResultDetail;
+use App\Domain\Application\Models\NectaResult;
 use Illuminate\Support\Facades\Http;
 use App\Models\User;
 use App\Models\Role;
@@ -655,7 +657,7 @@ class ApplicationController extends Controller
                  $selection->save();
 
                  $select_count = ApplicantProgramSelection::where('applicant_id',$request->get('applicant_id'))->count();
-                 if($select_count == 3){
+                 if($select_count == 1){
                     $applicant = Applicant::find($request->get('applicant_id'));
                     $applicant->programs_complete_status = 1;
                     $applicant->save();
@@ -2711,7 +2713,7 @@ class ApplicationController extends Controller
         $ac_year = StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first();
         $applyr = 2020;
         $application_window = ApplicationWindow::with('intake')->find($request->get('application_window_id'));
-        $campus_program = CampusProgram::with('program')->find($request->get('campus_program_id'));
+        $campus_program = CampusProgram::with(['program','entryRequirements'])->find($request->get('campus_program_id'));
         $appacyr = $ac_year->academicYear->year;
         $intake = $application_window->intake->name;
         $nactecode = $campus_program->regulator_code;
@@ -2861,6 +2863,327 @@ class ApplicationController extends Controller
             }
           }
         }//end
+
+        $applicants = Applicant::where('application_window_id',$application_window->id)->where('is_tamisemi',1)->get();
+        foreach($applicants as $applicant){
+            $parts=explode("/",$applicant->index_number);
+            //create format from returned form four index format 
+            $index_no = $parts[0]."-".$parts[1];
+            $exam_year = $parts[2];
+            $exam_id = 1;
+            $response = Http::get('https://api.necta.go.tz/api/public/auth/'.config('constants.NECTA_API_KEY'));
+            $token = json_decode($response)->token;
+            $response = Http::get('https://api.necta.go.tz/api/public/results/'.$index_no.'/'.$exam_id.'/'.$exam_year.'/'.$token);
+            if(!isset(json_decode($response)->results)){
+                return redirect()->back()->with('error','Invalid Index number or year');
+            }
+            if($det = NectaResultDetail::where('index_number',$index_no)->where('exam_id',$exam_id)->where('applicant_id',$applicant->id)->first()){
+                $detail = $det;
+            }else{
+                $detail = new NectaResultDetail;
+                $detail->center_name = json_decode($response)->particulars->center_name;
+                $detail->center_number = json_decode($response)->particulars->center_number;
+                $detail->first_name = json_decode($response)->particulars->first_name;
+                $detail->middle_name = json_decode($response)->particulars->middle_name;
+                $detail->last_name = json_decode($response)->particulars->last_name;
+                $detail->sex = json_decode($response)->particulars->sex;
+                $detail->index_number = str_replace('-','/',$index_no); //json_decode($response)->particulars->index_number;
+                $detail->division = json_decode($response)->results->division->division;
+                $detail->points = json_decode($response)->results->division->points;
+                $detail->exam_id = $exam_id;
+                $detail->applicant_id = $applicant->id;
+                $detail->save();
+            }
+            foreach(json_decode($response)->results->subjects as $subject){
+                if($rs = NectaResult::where('subject_code',$subject->subject_code)->where('necta_result_detail_id',$detail->id)->first()){
+                    $res = $rs;
+                }else{
+                    $res = new NectaResult;
+                }
+                $res->subject_name = $subject->subject_name;
+                $res->subject_code = $subject->subject_code;
+                $res->grade = $subject->grade;
+                $res->applicant_id = $applicant->id;
+                $res->necta_result_detail_id = $detail->id;
+                $res->save();
+            }
+        }
+
+        $applicants = Applicant::with(['selections','nectaResultDetails.results','programLevel'])->where('application_window_id',$application_window->id)->where('is_tamisemi',1)->get();
+        $o_level_grades = ['A'=>5,'B+'=>4,'B'=>3,'C'=>2,'D'=>1,'E'=>0.5,'F'=>0];
+
+        $diploma_grades = ['A'=>5,'B+'=>4,'B'=>3,'C'=>2,'D'=>1,'F'=>0];
+
+        $selected_program = array();
+        
+        foreach($applicants as $applicant){
+           $award = $applicant->programLevel;
+           $index_number = $applicant->index_number;
+           $exam_year = explode('/', $index_number)[2];
+          
+           foreach($applicant->nectaResultDetails as $detail) {
+              if($detail->exam_id == 2){
+                  $index_number = $detail->index_number;
+                  $exam_year = explode('/', $index_number)[2];
+              }
+           }
+
+           if($exam_year < 2014 || $exam_year > 2015){
+             $a_level_grades = ['A'=>5,'B'=>4,'C'=>3,'D'=>2,'E'=>1,'S'=>0.5,'F'=>0];
+           }else{
+             $a_level_grades = ['A'=>5,'B+'=>4,'B'=>3,'C'=>2,'D'=>1,'E'=>0.5,'S'=>0.5,'F'=>0];
+           }
+           $selected_program[$applicant->id] = false;
+           $subject_count = 0;
+           foreach($applicant->selections as $selection){
+                 
+                  $program = $campus_program;
+
+                  if(count($program->entryRequirements) == 0){
+                    return redirect()->back()->with('error',$program->program->name.' does not have entry requirements');
+                  }
+
+                  if($program->entryRequirements[0]->max_capacity == null){
+                    return redirect()->back()->with('error',$program->program->name.' does not have maximum capacity in entry requirements');
+                  }
+
+                   // Certificate
+                   if(str_contains($award->name,'Certificate')){
+                       $o_level_pass_count = 0;
+                       foreach ($applicant->nectaResultDetails as $detailKey=>$detail) {
+                         if($detail->exam_id == 1){
+                           foreach ($detail->results as $key => $result) {
+                          
+                              if($o_level_grades[$result->grade] >= $o_level_grades[$program->entryRequirements[0]->pass_grade]){
+
+                                $applicant->rank_points += $o_level_grades[$result->grade];
+                                $subject_count += 1;
+
+                                 if(unserialize($program->entryRequirements[0]->must_subjects) != ''){
+                                    if(unserialize($program->entryRequirements[0]->other_must_subjects) != ''){
+                                       if(in_array($result->subject_name, unserialize($program->entryRequirements[0]->must_subjects)) || in_array($result->subject_name, unserialize($program->entryRequirements[0]->other_must_subjects))){
+                                         $o_level_pass_count += 1;
+                                       }
+                                    }else{
+                                       if(in_array($result->subject_name, unserialize($program->entryRequirements[0]->must_subjects))){
+                                         $o_level_pass_count += 1;
+                                       }
+                                    }
+                                 }elseif(unserialize($program->entryRequirements[0]->exclude_subjects) != ''){
+                                    if(!in_array($result->subject_name, unserialize($program->entryRequirements[0]->exclude_subjects))){
+                                         $o_level_pass_count += 1;
+                                    }
+                                 }else{
+                                    $o_level_pass_count += 1;
+                                 }
+                              }
+                           }
+                         }
+                         if($o_level_pass_count >= $program->entryRequirements[0]->pass_subjects){
+                           $select = ApplicantProgramSelection::find($selection->id);
+                           $select->status = 'SELECTED';
+                           $select->status_changed_at = now();
+                           $select->save();
+                         }
+                       }
+                   }
+
+                   // Diploma
+                   if(str_contains($award->name,'Diploma')){
+                       $o_level_pass_count = 0;
+                       $a_level_principle_pass_count = 0;
+                       $a_level_subsidiary_pass_count = 0;
+                       foreach ($applicant->nectaResultDetails as $detailKey=>$detail) {
+                         if($detail->exam_id == 1){
+                           foreach ($detail->results as $key => $result) {
+
+                              if($o_level_grades[$result->grade] >= $o_level_grades[$program->entryRequirements[0]->pass_grade]){
+
+                                $applicant->rank_points += $o_level_grades[$result->grade];
+                                $subject_count += 1;
+
+
+                                 if(unserialize($program->entryRequirements[0]->must_subjects) != ''){
+                                    if(unserialize($program->entryRequirements[0]->other_must_subjects) != ''){
+                                       if(in_array($result->subject_name, unserialize($program->entryRequirements[0]->must_subjects)) || in_array($result->subject_name, unserialize($program->entryRequirements[0]->other_must_subjects))){
+                                         $o_level_pass_count += 1;
+                                       }
+                                    }else{
+                                       if(in_array($result->subject_name, unserialize($program->entryRequirements[0]->must_subjects))){
+                                         $o_level_pass_count += 1;
+                                       }
+                                    }
+                                 }elseif(unserialize($program->entryRequirements[0]->exclude_subjects) != ''){
+                                    if(!in_array($result->subject_name, unserialize($program->entryRequirements[0]->exclude_subjects))){
+                                         $o_level_pass_count += 1;
+                                    }
+                                 }else{
+                                     $o_level_pass_count += 1;
+                                 }
+                              }
+                           }
+                         }elseif($detail->exam_id == 2){
+                           foreach ($detail->results as $key => $result) {
+
+                              if($a_level_grades[$result->grade] >= $a_level_grades['E']){
+
+                                 $applicant->rank_points += $a_level_grades[$result->grade];
+                                 $subject_count += 1;
+                                 if(unserialize($program->entryRequirements[0]->advance_must_subjects) != ''){
+                                    if(unserialize($program->entryRequirements[0]->advance_other_must_subjects) != ''){
+                                       if(in_array($result->subject_name, unserialize($program->entryRequirements[0]->advance_must_subjects)) || in_array($result->subject_name, unserialize($program->entryRequirements[0]->other_advance_must_subjects))){
+                                         $a_level_principle_pass_count += 1;
+                                       }
+                                    }else{
+                                       if(in_array($result->subject_name, unserialize($program->entryRequirements[0]->advance_must_subjects))){
+                                         $a_level_principle_pass_count += 1;
+                                       }
+                                    }
+                                 }elseif(unserialize($program->entryRequirements[0]->advance_exclude_subjects) != ''){
+                                    if(!in_array($result->subject_name, unserialize($program->entryRequirements[0]->advance_exclude_subjects))){
+                                         $a_level_principle_pass_count += 1;
+                                    }
+                                 }
+                              }
+                              if($a_level_grades[$result->grade] == $a_level_grades['S']){
+
+                                 if(unserialize($program->entryRequirements[0]->advance_must_subjects) != ''){
+                                    if(unserialize($program->entryRequirements[0]->advance_other_must_subjects) != ''){
+                                       if(in_array($result->subject_name, unserialize($program->entryRequirements[0]->advance_must_subjects)) || in_array($result->subject_name, unserialize($program->entryRequirements[0]->other_advance_must_subjects))){
+                                         $a_level_subsidiary_pass_count += 1;
+                                       }
+                                    }else{
+                                       if(in_array($result->subject_name, unserialize($program->entryRequirements[0]->advance_must_subjects))){
+                                         $a_level_subsidiary_pass_count += 1;
+                                       }
+                                    }
+                                 }elseif(unserialize($program->entryRequirements[0]->advance_exclude_subjects) != ''){
+                                    if(!in_array($result->subject_name, unserialize($program->entryRequirements[0]->advance_exclude_subjects))){
+                                         $a_level_subsidiary_pass_count += 1;
+                                    }
+                                 }
+                              }
+                           }
+                         }
+
+                         if($o_level_pass_count >= $program->entryRequirements[0]->pass_subjects && ($a_level_subsidiary_pass_count >= 1 && $a_level_principle_pass_count >= 1)){
+                           $select = ApplicantProgramSelection::find($selection->id);
+                           $select->status = 'SELECTED';
+                           $select->status_changed_at = now();
+                           $select->save();
+                         }
+
+                         
+                       }
+                       $has_btc = false;
+                       foreach($applicant->nacteResultDetails as $detailKey=>$detail){
+                          if(str_contains($detail->programme,'BASIC TECHNICIAN CERTIFICATE')){
+                              $has_btc = true;
+                          }
+                       }
+
+                       if($o_level_pass_count >= $program->entryRequirements[0]->pass_subjects && $has_btc){
+                           $select = ApplicantProgramSelection::find($selection->id);
+                           $select->status = 'SELECTED';
+                           $select->status_changed_at = now();
+                           $select->save();
+                       }
+                   }
+                   
+                   // Bachelor
+                   if(str_contains($award->name,'Bachelor')){
+                       $o_level_pass_count = 0;
+                       $a_level_principle_pass_count = 0;
+                       $a_level_principle_pass_points = 0;
+                       $a_level_subsidiary_pass_count = 0;
+                       $diploma_pass_count = 0;
+                       
+                       foreach ($applicant->nectaResultDetails as $detailKey=>$detail) {
+                         if($detail->exam_id == 1){
+                           foreach ($detail->results as $key => $result) {
+
+                              if($o_level_grades[$result->grade] >= $o_level_grades[$program->entryRequirements[0]->pass_grade]){
+
+                                 $applicant->rank_points += $o_level_grades[$result->grade];
+                                 $subject_count += 1;
+
+                                 if(unserialize($program->entryRequirements[0]->must_subjects) != ''){
+                                    if(unserialize($program->entryRequirements[0]->other_must_subjects) != ''){
+                                       if(in_array($result->subject_name, unserialize($program->entryRequirements[0]->must_subjects)) || in_array($result->subject_name, unserialize($program->entryRequirements[0]->other_must_subjects))){
+                                         $o_level_pass_count += 1;
+                                       }
+                                    }else{
+                                       if(in_array($result->subject_name, unserialize($program->entryRequirements[0]->must_subjects))){
+                                         $o_level_pass_count += 1;
+                                       }
+                                    }
+                                 }elseif(unserialize($program->entryRequirements[0]->exclude_subjects) != ''){
+                                    if(!in_array($result->subject_name, unserialize($program->entryRequirements[0]->exclude_subjects))){
+                                         $o_level_pass_count += 1;
+                                    }
+                                 }else{
+                                      $o_level_pass_count += 1;
+                                 }
+                              }
+                           }
+                         }elseif($detail->exam_id == 2){
+                           foreach ($detail->results as $key => $result) {
+
+                              if($a_level_grades[$result->grade] >= $a_level_grades['E']){
+
+                                 $applicant->rank_points += $a_level_grades[$result->grade];
+                                 $subject_count += 1;
+                                 if(unserialize($program->entryRequirements[0]->advance_must_subjects) != ''){
+                                    if(unserialize($program->entryRequirements[0]->other_advance_must_subjects) != ''){
+                                       if(in_array($result->subject_name, unserialize($program->entryRequirements[0]->advance_must_subjects)) || in_array($result->subject_name, unserialize($program->entryRequirements[0]->other_advance_must_subjects))){
+                                         $a_level_principle_pass_count += 1;
+                                         $a_level_principle_pass_points += $a_level_grades[$result->grade];
+                                       }
+                                    }else{
+                                       if(in_array($result->subject_name, unserialize($program->entryRequirements[0]->advance_must_subjects))){
+                                         $a_level_principle_pass_count += 1;
+                                         $a_level_principle_pass_points += $a_level_grades[$result->grade];
+                                       }
+                                    }
+                                 }elseif(unserialize($program->entryRequirements[0]->advance_exclude_subjects) != ''){
+                                    if(!in_array($result->subject_name, unserialize($program->entryRequirements[0]->advance_exclude_subjects))){
+                                         $a_level_principle_pass_count += 1;
+                                    }
+                                 }
+                              }
+                              if($a_level_grades[$result->grade] == $a_level_grades['S']){
+
+                                 if(unserialize($program->entryRequirements[0]->advance_must_subjects) != ''){
+                                    if(unserialize($program->entryRequirements[0]->other_advance_must_subjects) != ''){
+                                       if(in_array($result->subject_name, unserialize($program->entryRequirements[0]->advance_must_subjects)) || in_array($result->subject_name, unserialize($program->entryRequirements[0]->other_advance_must_subjects))){
+                                         $a_level_subsidiary_pass_count += 1;
+                                       }
+                                    }else{
+                                       if(in_array($result->subject_name, unserialize($program->entryRequirements[0]->advance_must_subjects))){
+                                         $a_level_subsidiary_pass_count += 1;
+                                       }
+                                    }
+                                 }elseif(unserialize($program->entryRequirements[0]->advance_exclude_subjects) != ''){
+                                    if(!in_array($result->subject_name, unserialize($program->entryRequirements[0]->advance_exclude_subjects))){
+                                         $a_level_subsidiary_pass_count += 1;
+                                    }
+                                 }
+                              }
+                           }
+                         }
+
+                         if($o_level_pass_count >= $program->entryRequirements[0]->pass_subjects && $a_level_principle_pass_count >= 2 && $a_level_principle_pass_points >= $program->entryRequirements[0]->principle_pass_points){
+
+                           $select = ApplicantProgramSelection::find($selection->id);
+                           $select->status = 'SELECTED';
+                           $select->status_changed_at = now();
+                           $select->save();
+                         }
+                       }
+                   }
+                }
+        }
+
         return redirect()->back()->with('message','TAMISEMI applicants retrieved successfully');
     }
 }
