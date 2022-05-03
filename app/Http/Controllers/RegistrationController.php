@@ -145,7 +145,12 @@ class RegistrationController extends Controller
             'study_academic_year'=>StudyAcademicYear::where('status','ACTIVE')->first()
         ];
         if($request->get('registration_number')){
-           $pdf = PDF::loadView('dashboard.registration.reports.id-card',$data);
+           $pdf = PDF::loadView('dashboard.registration.reports.id-card',$data,[],[
+               'margin_top'=>0,
+               'margin_bottom'=>0,
+               'margin_left'=>0,
+               'margin_right'=>0
+           ])->setPaper('a4','landscape');
            return  $pdf->stream();          
            // return "Hello";
         }else{

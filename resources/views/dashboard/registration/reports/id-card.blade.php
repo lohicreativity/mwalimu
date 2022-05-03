@@ -223,7 +223,7 @@
 <body>
    <div id="ss-id-card" class="ss-id-card" style="width: 750px; height: 450px; background-image: url({{ asset('img/mnma-id-bg.png') }}); padding: 20px;">
      <div class="row">
-        <div class="col-3 ss-center" style="text-align: center;">
+        <div class="col-md-3 ss-center" style="text-align: center;">
           <img src="{{ asset('dist/img/logo.png')}}" class="ss-logo" style="width: 100px; text-align: center;">
         </div>
         <div class="col-md-9">
