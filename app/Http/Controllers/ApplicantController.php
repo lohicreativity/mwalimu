@@ -333,17 +333,19 @@ class ApplicantController extends Controller
      */
     public function selectPrograms(Request $request)
     {
-        if(!ApplicationWindow::where('campus_id',session('applicant_campus_id'))->where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('status','ACTIVE')->first()){
-             return redirect()->to('application/submission')->with('error','Application window already closed');
-        }
+        // if(!ApplicationWindow::where('campus_id',session('applicant_campus_id'))->where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('status','ACTIVE')->first()){
+        //      return redirect()->to('application/submission')->with('error','Application window already closed');
+        // }
         $window = ApplicationWindow::where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('campus_id',session('applicant_campus_id'))->first();
+
+        $applicant = User::find(Auth::user()->id)->applicants()->with(['selections.campusProgram.program','selections'=>function($query){
+                $query->orderBy('order','asc');
+            },'selections.campusProgram.campus','nectaResultDetails.results','nacteResultDetails.results','programLevel'])->where('campus_id',session('applicant_campus_id'))->first();
 
         $campus_programs = $window? $window->campusPrograms()->whereHas('program',function($query) use($applicant){
                    $query->where('award_id',$applicant->program_level_id);
            })->with(['program','campus'])->where('campus_id',session('applicant_campus_id'))->get() : [];
-        $applicant = User::find(Auth::user()->id)->applicants()->with(['selections.campusProgram.program','selections'=>function($query){
-                $query->orderBy('order','asc');
-            },'selections.campusProgram.campus','nectaResultDetails.results','nacteResultDetails.results','programLevel'])->where('campus_id',session('applicant_campus_id'))->first();
+        
 
         $award = $applicant->programLevel;
         $programs = [];
@@ -1036,4 +1038,5 @@ curl_close($curl_handle);
 
         // return redirect()->back()->with('message','Health insurance status updated successfully');
     }
+
 }

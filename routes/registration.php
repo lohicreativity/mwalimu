@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HealthInsuranceController;
 use App\Http\Controllers\SpecialDateController;
+use App\Http\Controllers\RegistrationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,6 +30,9 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
     Route::post('store-orientation-date',[SpecialDateController::class,'storeOrientationDate']);
     Route::post('update-orientation-date',[SpecialDateController::class,'updateOrientationDate']);
 
+    Route::get('print-id-card',[RegistrationController::class,'printIDCard']);
+    Route::get('print-id-card-bulk',[RegistrationController::class,'printIDCardBulk']);
+    Route::get('show-id-card-bulk',[RegistrationController::class,'showIDCardBulk']);
 });
 
 

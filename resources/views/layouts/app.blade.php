@@ -36,7 +36,7 @@
   <link rel="stylesheet" type="text/css" 
      href="{{ asset('css/datatables.min.css') }}">
   <!-- Custom style -->
-  <link rel="stylesheet" type="text/css" href="{{ asset('css/style.css/version='.config('constants.VERSION')) }}">
+  <link rel="stylesheet" type="text/css" href="{{ asset('css/style.css?version='.config('constants.VERSION')) }}">
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 

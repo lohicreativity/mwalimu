@@ -5,13 +5,16 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Domain\Academic\Models\SemesterRemark;
 use App\Domain\Academic\Models\AnnualRemark;
+use App\Domain\Academic\Models\Semester;
+use App\Domain\Academic\Models\CampusProgram;
+use App\Domain\Academic\Models\StudyAcademicYear;
 use App\Domain\Finance\Models\ProgramFee;
 use App\Domain\Finance\Models\Invoice;
 use App\Domain\Registration\Models\Student;
 use App\Domain\Registration\Models\Registration;
 use App\Models\User;
 use Illuminate\Support\Facades\Http;
-use Auth;
+use Auth, PDF;
 
 class RegistrationController extends Controller
 {
@@ -130,5 +133,59 @@ class RegistrationController extends Controller
         return redirect()->back()->with('message','The bill with id '.$billno.' has been queued.', 200);
                         
         }
+
+    /**
+     * Print ID card
+     */
+    public function printIDCard(Request $request)
+    {
+        $data = [
+            'student'=>Student::with('campusProgram.program','campusProgram.campus')->where('registration_number',$request->get('registration_number'))->first(),
+            'semester'=>Semester::where('status','ACTIVE')->first(),
+            'study_academic_year'=>StudyAcademicYear::where('status','ACTIVE')->first()
+        ];
+        if($request->get('registration_number')){
+           $pdf = PDF::loadView('dashboard.registration.reports.id-card',$data);
+           return  $pdf->stream();          
+           // return "Hello";
+        }else{
+           return view('dashboard.registration.id-card',$data)->withTitle('ID Card');
+        }
+    }
+
+    /**
+     * Print ID Card Bulk
+     */
+    public function printIDCardBulk(Request $request)
+    {
+        $staff = User::find(Auth::user()->id)->staff;
+        $study_academic_year = StudyAcademicYear::where('status','ACTIVE')->first();
+        $semester = Semester::where('status','ACTIVE')->first();
+        $data = [
+            'campus_programs'=>CampusProgram::with('program')->where('campus_id',$staff->campus_id)->get(),
+            'students'=>Registration::with(['student.campusProgram.campus','student.campusProgram.program'])->whereHas('student',function($query) use($request){
+                    $query->where('campus_program_id',$request->get('campus_program_id'));
+                })->where('study_academic_year_id',$study_academic_year->id)->get()
+        ];
+        return view('dashboard.registration.id-card-bulk',$data)->withTitle('ID Card Bulk');
+    }
+
+    /**
+     * Show ID Card Bulk
+     */
+    public function showIDCardBulk(Request $request)
+    {
+        $staff = User::find(Auth::user()->id)->staff;
+        $study_academic_year = StudyAcademicYear::where('status','ACTIVE')->first();
+        $semester = Semester::where('status','ACTIVE')->first();
+        $data = [
+            'students'=>Registration::with(['student.campusProgram.campus','student.campusProgram.program'])->whereHas('student',function($query) use($request){
+                    // $query->where('campus_program_id',$request->get('campus_program_id'));
+                })->where('study_academic_year_id',$study_academic_year->id)->get(),
+            'semester'=>$semester,
+            'study_academic_year'=>$study_academic_year
+        ];
+        return view('dashboard.registration.print-id-card-bulk',$data)->withTitle('Print ID Card Bulk');
+    }
 
 }

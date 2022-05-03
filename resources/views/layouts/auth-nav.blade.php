@@ -316,6 +316,18 @@
                   <p>Reset Deadline</p>
                 </a>
               </li>
+              <li class="nav-item">
+                <a href="{{ url('registration/print-id-card') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Identity Cards</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ url('registration/print-id-card-bulk') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Identity Cards Bulk</p>
+                </a>
+              </li>
             </ul>
           </li>
           <li class="nav-item">

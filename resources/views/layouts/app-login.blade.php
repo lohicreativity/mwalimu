@@ -29,7 +29,7 @@
   <link rel="stylesheet" type="text/css" 
      href="{{ asset('css/toastr.min.css') }}">
   <!-- Custom style -->
-  <link rel="stylesheet" type="text/css" href="{{ asset('css/style.css') }}">
+  <link rel="stylesheet" type="text/css" href="{{ asset('css/style.css?version='.config('constants.VERSION')) }}">
 </head>
 <body class="hold-transition login-page">
 
