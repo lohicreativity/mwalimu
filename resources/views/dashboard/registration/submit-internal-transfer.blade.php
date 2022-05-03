@@ -57,7 +57,7 @@
                   <div class="row">
                   <div class="form-group col-6">
                     {!! Form::label('','Enter student\'s registration number') !!}
-                    {!! Form::text('registration_number',null,$index_number) !!}
+                    {!! Form::text('registration_number',null,$registration_number) !!}
                   </div>
                   </div>
                   <div class="ss-form-actions">
