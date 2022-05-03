@@ -150,11 +150,10 @@ class RegistrationController extends Controller
                'margin_bottom'=>0,
                'margin_left'=>0,
                'margin_right'=>0,
-               'orientation'=>'L',
+               'orientation'=>'P',
                'display_mode'=>'fullpage'
            ]);
            return  $pdf->stream();          
-           // return "Hello";
         }else{
            return view('dashboard.registration.id-card',$data)->withTitle('ID Card');
         }
