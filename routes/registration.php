@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HealthInsuranceController;
 use App\Http\Controllers\SpecialDateController;
 use App\Http\Controllers\RegistrationController;
+use App\Http\Controllers\ApplicationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,6 +34,14 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
     Route::get('print-id-card',[RegistrationController::class,'printIDCard']);
     Route::get('print-id-card-bulk',[RegistrationController::class,'printIDCardBulk']);
     Route::get('show-id-card-bulk',[RegistrationController::class,'showIDCardBulk']);
+
+    Route::post('crop-student-image',[RegistrationController::class,'cropStudentImage']);
+
+    Route::get('internal-transfer',[ApplicationController::class,'showInternalTransfer']);
+    Route::post('submit-internal-transfer',[ApplicationController::class,'submitInternalTransfer']);
+
+    Route::get('external-transfer',[ApplicationController::class,'showExternalTransfer']);
+    Route::post('submit-external-transfer',[ApplicationController::class,'submitExternalTransfer']);
 });
 
 

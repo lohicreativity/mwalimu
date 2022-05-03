@@ -15,13 +15,13 @@ class CreateInternalTransfersTable extends Migration
     {
         Schema::create('internal_transfers', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('applicant_id');
+            $table->unsignedBigInteger('student_id');
             $table->unsignedBigInteger('previous_campus_program_id');
             $table->unsignedBigInteger('current_campus_program_id');
             $table->unsignedBigInteger('transfered_by_user_id');
             $table->timestamps();
 
-            $table->foreign('applicant_id')->references('id')->on('applicants')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('student_id')->references('id')->on('students')->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('transfered_by_user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
         });
     }

@@ -2170,40 +2170,25 @@ class ApplicationController extends Controller
     public function showInternalTransfer(Request $request)
     {
         $staff = User::find(Auth::user()->id)->staff;
-        $applicant = Applicant::with(['selections'=>function($query){
+        $student = Student::whereHas('applicant',function($query) use($staff){
+                     $query->where('campus_id',$staff->campus_id);
+        })->with(['applicant.selections'=>function($query){
               $query->where('status','SELECTED');
-        },'selections.campusProgram.program'])->where('index_number',$request->get('index_number'))->where('campus_id',$staff->campus_id)->first();
-        if(!$applicant && $request->get('index_number')){
-            return redirect()->back()->with('error','Applicant does not belong to this campus');
-        }
-        if($applicant){
-            if($applicant->multiple_admissions == 1 && $applicant->confirmation_status != 'CONFIRMED'){
-                 return redirect()->back()->with('error','The applicant has multiple admissions and has not yet confirmed');
-            }
-            if($applicant->multiple_admissions == 0 && $applicant->confirmation_status == 'CANCELLED'){
-                 return redirect()->back()->with('error','The applicant has cancelled the admission');
-            }
-            $admission_status = null;
-            foreach($applicant->selections as $selection){
-                if($selection->status == 'SELECTED'){
-                    $admission_status = true;
-                }
-            }
-            if(!$admission_status){
-                return redirect()->back()->with('error','Applicant has not been admitted');
-            }
+        },'selections.campusProgram.program'])->where('registration_number',$request->get('registration_number'))->first();
+        if(!$student && $request->get('registration_number')){
+            return redirect()->back()->with('error','Student does not belong to this campus');
         }
         $data = [
-            'applicant'=>$applicant,
-            'campus_programs'=>$applicant? CampusProgram::whereHas('program',function($query) use($applicant){
-                 $query->where('award_id',$applicant->program_level_id)->where('campus_id',$applicant->campus_id);
+            'student'=>$student,
+            'campus_programs'=>$student? CampusProgram::whereHas('program',function($query) use($student){
+                 $query->where('award_id',$student->applicant->program_level_id)->where('campus_id',$student->applicant->campus_id);
             })->with('program')->get() : [],
-            'transfers'=>InternalTransfer::whereHas('applicant',function($query) use($staff){
+            'transfers'=>InternalTransfer::whereHas('student.applicant',function($query) use($staff){
                   $query->where('campus_id',$staff->campus_id);
-            })->with(['applicant','previousProgram.program','currentProgram.program','user.staff'])->paginate(20),
+            })->with(['student.applicant','previousProgram.program','currentProgram.program','user.staff'])->paginate(20),
             'staff'=>$staff
         ];
-        return view('dashboard.admission.submit-internal-transfer',$data)->withTitle('Internal Transfer');
+        return view('dashboard.registration.submit-internal-transfer',$data)->withTitle('Internal Transfer');
     }
 
     /**
@@ -2212,40 +2197,42 @@ class ApplicationController extends Controller
     public function showExternalTransfer(Request $request)
     {
         $staff = User::find(Auth::user()->id)->staff;
-        $applicant = Applicant::with(['selections'=>function($query){
+        $student = Student::whereHas('applicant',function($query) use($staff){
+                     $query->where('campus_id',$staff->campus_id);
+        })->with(['applicant.selections'=>function($query){
               $query->where('status','SELECTED');
-        },'selections.campusProgram.program'])->where('index_number',$request->get('index_number'))->where('campus_id',$staff->campus_id)->first();
-        if(!$applicant && $request->get('index_number')){
-            return redirect()->back()->with('error','Applicant does not belong to this campus');
+        },'selections.campusProgram.program'])->where('registration_number',$request->get('registration_number'))->first();
+        if(!$student && $request->get('registration_number')){
+            return redirect()->back()->with('error','Student does not belong to this campus');
         }
-        if($applicant){
-            if($applicant->multiple_admissions == 1 && $applicant->confirmation_status != 'CONFIRMED'){
-                 return redirect()->back()->with('error','The applicant has multiple admissions and has not yet confirmed');
-            }
-            if($applicant->multiple_admissions == 0 && $applicant->confirmation_status == 'CANCELLED'){
-                 return redirect()->back()->with('error','The applicant has cancelled the admission');
-            }
-            if($applicant->multiple_admissions == 0 && $applicant->confirmation_status == 'TRANSFERED'){
-                 return redirect()->back()->with('error','The applicant has already been transfered');
-            }
-            $admission_status = null;
-            foreach($applicant->selections as $selection){
-                if($selection->status == 'SELECTED'){
-                    $admission_status = true;
-                }
-            }
-            if(!$admission_status){
-                return redirect()->back()->with('error','Applicant has not been admitted');
-            }
-        }
+        // if($applicant){
+        //     if($applicant->multiple_admissions == 1 && $applicant->confirmation_status != 'CONFIRMED'){
+        //          return redirect()->back()->with('error','The applicant has multiple admissions and has not yet confirmed');
+        //     }
+        //     if($applicant->multiple_admissions == 0 && $applicant->confirmation_status == 'CANCELLED'){
+        //          return redirect()->back()->with('error','The applicant has cancelled the admission');
+        //     }
+        //     if($applicant->multiple_admissions == 0 && $applicant->confirmation_status == 'TRANSFERED'){
+        //          return redirect()->back()->with('error','The applicant has already been transfered');
+        //     }
+        //     $admission_status = null;
+        //     foreach($applicant->selections as $selection){
+        //         if($selection->status == 'SELECTED'){
+        //             $admission_status = true;
+        //         }
+        //     }
+        //     if(!$admission_status){
+        //         return redirect()->back()->with('error','Applicant has not been admitted');
+        //     }
+        // }
         $data = [
-            'applicant'=>$applicant,
-            'transfers'=>ExternalTransfer::whereHas('applicant',function($query) use($staff){
+            'student'=>$student,
+            'transfers'=>ExternalTransfer::whereHas('student.applicant',function($query) use($staff){
                   $query->where('campus_id',$staff->campus_id);
-            })->with(['applicant','previousProgram.program','user.staff'])->paginate(20),
+            })->with(['student.applicant','previousProgram.program','user.staff'])->paginate(20),
             'staff'=>$staff
         ];
-        return view('dashboard.admission.submit-external-transfer',$data)->withTitle('External Transfer');
+        return view('dashboard.registration.submit-external-transfer',$data)->withTitle('External Transfer');
     }
 
     /**
@@ -2253,9 +2240,10 @@ class ApplicationController extends Controller
      */
     public function submitInternalTransfer(Request $request)
     {
-        $applicant = Applicant::with(['selections.campusProgram','nectaResultDetails.results','nacteResultDetails.results','programLevel'])->find($request->get('applicant_id'));
+        $student = Student::with(['applicant.selections.campusProgram','nectaResultDetails.results','nacteResultDetails.results','programLevel'])->find($request->get('applicant_id'));
 
-        $award = $applicant->programLevel;
+        $award = $student->applicant->programLevel;
+        $applicant = $student->applicant;
 
         $transfer_program = CampusProgram::with(['entryRequirements'=>function($query) use($applicant){
              $query->where('application_window_id',$applicant->application_window_id);
@@ -2568,7 +2556,7 @@ class ApplicationController extends Controller
                         <SessionToken>'.config('constants.TCU_TOKEN').'</SessionToken>
                         </UsernameToken>
                         <RequestParameters>
-                         <f4indexno>'.$applicant->index_number.'</f4indexno>
+                         <f4indexno>'.$student->applicant->index_number.'</f4indexno>
                          <f6indexno>'.$f6indexno.'</f6indexno>
                          <CurrentProgrammeCode>'.$transfer_program_code.'</CurrentProgrammeCode>
                          <PreviousProgrammeCode>'.$admitted_program_code.'</PreviousProgrammeCode>
@@ -2582,7 +2570,7 @@ class ApplicationController extends Controller
 
         if($array['Response']['ResponseParameters']['StatusCode'] == 200){
             $transfer = new InternalTransfer;
-            $transfer->applicant_id = $applicant->id;
+            $transfer->student_id = $student->id;
             $transfer->previous_campus_program_id = $admitted_program->id;
             $transfer->current_campus_program_id = $transfer_program->id;
             $transfer->transfered_by_user_id = Auth::user()->id;
@@ -2591,13 +2579,13 @@ class ApplicationController extends Controller
             ApplicantProgramSelection::where('applicant_id',$applicant->id)->where('status','SELECTED')->update(['status'=>'ELIGIBLE']);
 
             $select = new ApplicantProgramSelection;
-            $select->applicant_id = $applicant->id;
+            $select->student_id = $student->id;
             $select->campus_program_id = $transfer_program->id;
             $select->application_window_id = $applicant->application_window_id;
             $select->order = 5;
             $select->status = 'SELECTED';
             $select->save();
-            return redirect()->to('application/internal-transfer')->with('message','Transfer completed successfully');
+            return redirect()->to('registration/internal-transfer')->with('message','Transfer completed successfully');
         }else{
             return redirect()->back()->with('error','Unable to complete transfer. '.$array['Response']['ResponseParameters']['StatusDescription']);
         }
@@ -2608,10 +2596,12 @@ class ApplicationController extends Controller
      */
     public function submitExternalTransfer(Request $request)
     {
-        $applicant = Applicant::with(['selections.campusProgram','nectaResultDetails'])->find($request->get('applicant_id'));
+        $student = Student::with(['applicant.selections.campusProgram','applicant.nectaResultDetails'])->find($request->get('student_id'));
+
+        $applicant = $student->applicant;
 
         $admitted_program_code = null;
-        foreach($applicant->selections as $selection){
+        foreach($student->applicant->selections as $selection){
             if($selection->status == 'SELECTED'){
                 $admitted_program = $selection->campusProgram;
                 $admitted_program_code = $selection->campusProgram->regulator_code;
@@ -2619,7 +2609,7 @@ class ApplicationController extends Controller
         }
 
         $f6indexno = null;
-        foreach($applicant->nectaResultDetails as $detail){
+        foreach($student->applicant->nectaResultDetails as $detail){
             if($detail->exam_id == 2){
                $f6indexno = $detail->index_number;
                break;
@@ -2634,7 +2624,7 @@ class ApplicationController extends Controller
                         <SessionToken>'.config('constants.TCU_TOKEN').'</SessionToken>
                         </UsernameToken>
                         <RequestParameters>
-                         <f4indexno>'.$applicant->index_number.'</f4indexno>
+                         <f4indexno>'.$student->applicant->index_number.'</f4indexno>
                          <f6indexno>'.$f6indexno.'</f6indexno>
                          <CurrentProgrammeCode>'.$request->get('program_code').'</CurrentProgrammeCode>
                          <PreviousProgrammeCode>'.$admitted_program_code.'</PreviousProgrammeCode>
@@ -2649,7 +2639,7 @@ class ApplicationController extends Controller
 
         if($array['Response']['ResponseParameters']['StatusCode'] == 200){
             $transfer = new ExternalTransfer;
-            $transfer->applicant_id = $applicant->id;
+            $transfer->student_id = $student->id;
             $transfer->previous_campus_program_id = $admitted_program->id;
             $transfer->current_program = $request->get('program_code');
             $transfer->transfered_by_user_id = Auth::user()->id;
@@ -2657,7 +2647,7 @@ class ApplicationController extends Controller
 
             $applicant->confirmation_status = 'TRANSFERED';
             $applicant->save();
-            return redirect()->to('application/external-transfer')->with('message','Transfer completed successfully');
+            return redirect()->to('registration/external-transfer')->with('message','Transfer completed successfully');
         }else{
             return redirect()->back()->with('error','Unable to complete transfer. '.$array['Response']['ResponseParameters']['StatusDescription']);
         }

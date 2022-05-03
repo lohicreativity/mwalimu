@@ -10,7 +10,7 @@
         "carlos-meneses/laravel-mpdf": "^2.1",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.4",
-        "intervention/image": "^2.5",
+        "intervention/image": "^2.7",
         "kwn/number-to-words": "^1.13",
         "laravel/framework": "^8.65",
         "laravel/jetstream": "^2.4",

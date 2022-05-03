@@ -14,6 +14,7 @@ use App\Domain\Registration\Models\Student;
 use App\Domain\Registration\Models\Registration;
 use App\Models\User;
 use Illuminate\Support\Facades\Http;
+use Intervention\Image\ImageManagerStatic as Image;
 use Auth, PDF;
 
 class RegistrationController extends Controller
@@ -144,19 +145,77 @@ class RegistrationController extends Controller
             'semester'=>Semester::where('status','ACTIVE')->first(),
             'study_academic_year'=>StudyAcademicYear::where('status','ACTIVE')->first()
         ];
-        if($request->get('registration_number')){
-           $pdf = PDF::loadView('dashboard.registration.reports.id-card',$data,[],[
+        return view('dashboard.registration.id-card',$data)->withTitle('ID Card');
+    }
+
+
+    /**
+     * Show ID Card
+     */
+    public function showIDCard(Request $request)
+    {
+        $data = [
+            'student'=>Student::with('campusProgram.program','campusProgram.campus')->where('registration_number',$request->get('registration_number'))->first(),
+            'semester'=>Semester::where('status','ACTIVE')->first(),
+            'study_academic_year'=>StudyAcademicYear::where('status','ACTIVE')->first()
+        ];
+         $pdf = PDF::loadView('dashboard.registration.reports.id-card',$data,[],[
                'margin_top'=>0,
                'margin_bottom'=>0,
                'margin_left'=>0,
                'margin_right'=>0,
                'orientation'=>'P',
                'display_mode'=>'fullpage'
-           ]);
-           return  $pdf->stream();          
-        }else{
-           return view('dashboard.registration.id-card',$data)->withTitle('ID Card');
-        }
+        ]);
+        return  $pdf->stream(); 
+    }
+
+    /**
+     * Crop student image
+     */
+    public function cropStudentImage(Request $request)
+    {
+          $y1=$request->get('top');
+          $x1=$request->get('left');
+          $w=$request->get('right');
+          $h=$request->get('bottom');
+          $image=public_path().'/img/user-avatar.png';
+
+          $type = explode('.', $image)[1];
+
+          list( $width,$height ) = getimagesize( $image );
+          $newwidth = 600;
+          $newheight = 400;
+
+          switch($type){
+            case 'bmp': $img = imagecreatefromwbmp($image); break;
+            case 'gif': $img = imagecreatefromgif($image); break;
+            case 'jpg': $img = imagecreatefromjpeg($image); break;
+            case 'png': $img = imagecreatefrompng($image); break;
+            default : return "Unsupported picture type!";
+          }
+
+          $thumb = imagecreatetruecolor( $newwidth, $newheight );
+          $source = $img; //imagecreatefromjpeg($image);
+
+          imagecopyresized($thumb, $source, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);
+          imagejpeg($thumb,$image,100); 
+
+
+          $im = $img; //imagecreatefromjpeg($image);
+          $dest = imagecreatetruecolor($w,$h);
+            
+          imagecopyresampled($dest,$im,0,0,$x1,$y1,$w,$h,$w,$h);
+
+          switch($type){
+            case 'bmp': imagewbmp($dest,$image); break;
+            case 'gif': imagegif($dest,$image); break;
+            case 'jpg': imagejpeg($dest,$image); break;
+            case 'png': imagepng($dest,$image); break;
+          }
+          //imagejpeg($dest,$image, 100);
+
+          return redirect()->back()->with('message','Image cropped successfully');
     }
 
     /**

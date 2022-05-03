@@ -281,18 +281,6 @@
                   <p>Hostel Request</p>
                 </a>
               </li>
-              <li class="nav-item">
-                <a href="{{ url('application/internal-transfer') }}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Internal Transfer</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="{{ url('application/external-transfer') }}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>External Transfer</p>
-                </a>
-              </li>
             </ul>
           </li>
           <li class="nav-item">
@@ -308,6 +296,18 @@
                 <a href="{{ url('application/applicants-registration?application_window_id='.session('active_window_id')) }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Applicants Registration</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ url('registration/internal-transfer') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Internal Transfer</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ url('registration/external-transfer') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>External Transfer</p>
                 </a>
               </li>
               <li class="nav-item">

@@ -1332,3 +1332,17 @@ $('.w3-animate-zoom').click(function(e){
           pause = false;
       });
 /** End of fade animation script **/
+
+$(function() {
+  $( "#crop_div" ).draggable({ containment: "parent" });
+});
+
+function crop()
+{
+  var posi = document.getElementById('crop_div');
+  document.getElementById("top").value=posi.offsetTop;
+  document.getElementById("left").value=posi.offsetLeft;
+  document.getElementById("right").value=posi.offsetWidth;
+  document.getElementById("bottom").value=posi.offsetHeight;
+  return true;
+}

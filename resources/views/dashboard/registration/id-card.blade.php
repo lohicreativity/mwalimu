@@ -77,36 +77,39 @@
               </div>
               <!-- /.card-header -->
               <div class="card-body">
-                   <div id="ss-id-card" class="ss-id-card" style="width: 750px; height: 450px; background-image: url({{ asset('img/mnma-id-bg.png') }}); padding: 20px;">
-                     <div class="row">
-                        <div class="col-3 ss-center" style="text-align: center;">
-                          <img src="{{ asset('dist/img/logo.png')}}" class="ss-logo" style="width: 100px; text-align: center;">
-                        </div>
-                        <div class="col-9">
-                           <h1>THE MWALIMU NYERERE MEMORIAL ACADEMY</h1>
-                        </div>
-                     </div>
-                     <div class="row">
-                        <div class="col-3" style="text-align: center;">
-                          <img src="{{ asset('img/user-avatar.png')}}" class="ss-logo" style="text-align: center; width: 150px;">
-                          @if($semester->name == 'Semester 1')
-                          <h3>Semester One</h3>
-                          @else
-                          <h3>Semester Two</h3>
-                          @endif
-                        </div>
-                        <div class="col-9">
-                           <h3 style="margin-top: 20px;">REGNO: {{ $student->registration_number }}</h3>
-                           <h3>NAME: {{ $student->first_name }} {{ $student->middle_name }} {{ $student->surname }}</h3>
-                           <h3>MOBILE: {{ $student->phone }}</h3>
-                           <h3>VALID TO: {{ $study_academic_year->end_date }}</h3>
-                        </div>
-                     </div>
-                     <div class="row">
-                     <div class="col-8"></div>
-                     <div class="col-4"><h3>{{ $student->campusProgram->campus->name }}</h3></div>
-                     </div>
-                   </div>
+                   <table class="table table-bordered">
+                     <tr>
+                         <td>
+                           <div id="crop_wrapper">
+                              <img src="{{ asset('img/user-avatar.png') }}">
+                              <div id="crop_div">
+                              </div>
+                            </div>
+                         </td>
+                         <td>
+                           <form method="post" action="{{ url('registration/crop-student-image') }}" onsubmit="return crop();">
+                              @csrf
+                              <input type="hidden" value="" id="top" name="top">
+                              <input type="hidden" value="" id="left" name="left">
+                              <input type="hidden" value="" id="right" name="right">
+                              <input type="hidden" value="" id="bottom" name="bottom">
+                              <input type="submit" name="crop_image" value="Crop Image">
+                            </form>
+                         </td>
+                     </tr>
+                     <tr>
+                         <td>First name:</td>
+                         <td>{{ $student->first_name }}</td>
+                     </tr>
+                     <tr>
+                         <td>Middle name:</td>
+                         <td>{{ $student->middle_name }}</td>
+                     </tr>
+                     <tr>
+                         <td>Surname:</td>
+                         <td>{{ $student->surname }}</td>
+                     </tr>
+                   </table>
               </div>
             </div>
             @endif
@@ -122,16 +125,6 @@
   </div>
   <!-- /.content-wrapper -->
   @include('layouts.footer')
-
-  <script type="text/javascript">
-    document.getElementById('ss-id-card').onclick = function(e){
-        // document.getElementById('ss-id-card').print();
-        w = window.open();
-        w.document.write(document.getElementById('ss-id-card').innerHTML);
-        w.print();
-        w.close();
-    }
-  </script>
 
   <!-- Control Sidebar -->
   <aside class="control-sidebar control-sidebar-dark">

@@ -5,6 +5,7 @@ namespace App\Domain\Application\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Domain\Academic\Models\CampusProgram;
+use App\Domain\Registration\Models\Student;
 use App\Models\User;
 
 class ExternalTransfer extends Model
@@ -14,11 +15,11 @@ class ExternalTransfer extends Model
     protected $table = 'external_transfers';
 
     /**
-     * Establish one to many relationship with applicants
+     * Establish one to many relationship with students
      */
-    public function applicant()
+    public function student()
     {
-    	return $this->belongsTo(Applicant::class,'applicant_id');
+    	return $this->belongsTo(Student::class,'student_id');
     }
 
     /**
