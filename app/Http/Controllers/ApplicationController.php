@@ -2240,7 +2240,7 @@ class ApplicationController extends Controller
      */
     public function submitInternalTransfer(Request $request)
     {
-        $student = Student::with(['applicant.selections.campusProgram','nectaResultDetails.results','nacteResultDetails.results','programLevel'])->find($request->get('applicant_id'));
+        $student = Student::with(['applicant.selections.campusProgram','nectaResultDetails.results','applicant.nacteResultDetails.results','applicant.programLevel'])->find($request->get('student_id'));
 
         $award = $student->applicant->programLevel;
         $applicant = $student->applicant;
