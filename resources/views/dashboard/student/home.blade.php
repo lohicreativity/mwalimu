@@ -40,7 +40,7 @@
             @if($student->account_number == null)
               <div class="alert alert-warning">Please provide Bank information.</div>
             @endif
-            @if($loan_allocation->notification_sent)
+            @if($loan_allocation->notification_sent == 1 && $loan_allocation->has_signed != 1)
               <div class="alert alert-warning">Please visit loans office for signing your loan payment.</div>
             @endif
           @endif
