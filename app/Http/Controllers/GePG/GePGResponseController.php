@@ -8,8 +8,10 @@ use App\Domain\Application\Models\Applicant;
 use App\Domain\Academic\Models\Appeal;
 use App\Domain\Academic\Models\PerfomanceReportRequest;
 use App\Domain\Academic\Models\TranscriptRequest;
+use App\Domain\Academic\Models\StudyAcademicYear;
 use App\Domain\Finance\Models\Invoice;
 use App\Domain\Finance\Models\GatewayPayment;
+use App\Domain\Finance\Models\LoanAllocation;
 use App\Domain\Finance\Models\PaymentReconciliation;
 
 class GePGResponseController extends Controller
@@ -120,8 +122,25 @@ class GePGResponseController extends Controller
 			if(str_contains($invoice->feeType->name,'Tuition Fee')){
 				$paid_amount = GatewayPayment::where('bill_id',$invoice->reference_no)->sum('paid_amount');
 				$percentage = $paid_amount/$invoice->amount;
-				$applicant = Applicant::find($invoice->payable_id);
-			    $applicant->tuition_payment_check = $percentage >= 0.6? 1 : 0;
+				$applicant = Applicant::with('applicationWindow')->find($invoice->payable_id);
+
+				$ac_year = date('Y',strtotime($applicant->applicationWindow->end_date));
+		    	$study_academic_year = StudyAcademicYear::whereHas('academicYear',function($query) use($ac_year){
+		    		   $query->where('year','LIKE','%'.$ac_year.'/%');
+		    	})->first();
+
+		    	if($study_academic_year){
+		    		$loan_allocation = LoanAllocation::where('index_number',$applicant->index_number)->where('study_academic_year_id',$study_academic_year->id)->first();
+		    	}else{
+		    		$loan_allocation = null;
+		    	}			
+
+                if($loan_allocation){
+                   $percentage = ($paid_amount+$loan_allocation->tuition_fee)/$invoice->amount;
+                   $applicant->tuition_payment_check = $percentage >= 0.6? 1 : 0;
+                }else{
+			       $applicant->tuition_payment_check = $percentage >= 0.6? 1 : 0;
+			    }
 			    $applicant->save();
 			}
 
