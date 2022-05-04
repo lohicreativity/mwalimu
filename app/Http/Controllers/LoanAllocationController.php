@@ -131,10 +131,14 @@ class LoanAllocationController extends Controller
     	$loans = LoanAllocation::with('student')->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',$request->get('year_of_study'))->get();
     	foreach($loans as $loan){
     		try{
+    			$ln = LoanAllocation::find($loan->id);
+    			$ln->notification_sent = 1;
+    			$ln->save();
+    			
     			$user = new User;
     			$user->username = $loan->name;
     			$user->email = $loan->student->email;
-                Mail::to($user)->send(new LoanAllocationCreated($user));
+                Mail::to($user)->queue(new LoanAllocationCreated($user));
     		}catch(\Exception $e){}
     	}
     	return redirect()->back()->with('message','Notification sent successfully');
