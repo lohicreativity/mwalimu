@@ -64,6 +64,10 @@ class AdmissionController extends Controller
     			$query->where('name','LIKE','%NACTE%');
     		})->where('study_academic_year_id',$study_academic_year->id)->first();
     	}
+
+        if(!$quality_assurance_fee){
+            return redirect()->back()->with('error','Quality assurance fee has not been defined for '.$study_academic_year->academicYear->year);
+        }
         
         $other_fees_tzs = FeeAmount::whereHas('feeItem',function($query){
     			$query->where('is_mandatory',1)->where('name','NOT LIKE','%NACTE%')->where('name','NOT LIKE','%TCU%');
