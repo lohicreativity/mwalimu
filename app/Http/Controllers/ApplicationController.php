@@ -1397,7 +1397,7 @@ class ApplicationController extends Controller
         $reg_date = SpecialDate::where('study_academic_year_id',$ac_year->id)->where('name','New Registration Period')->first();
         $now = time();
         $reg_date_time = strtotime($reg_date->date);
-        $datediff = $now - $reg_date_time;
+        $datediff = $reg_date_time - $now;
         if(round($datediff / (60 * 60 * 24)) > 7){
             return redirect()->back()->with('error','Applicant cannot register. Registration period is over');
         }
