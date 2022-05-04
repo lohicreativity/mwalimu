@@ -52,7 +52,7 @@
                      <tr>
                        <th>Year of Study</th>
                        <th>Tuition Fee</th>
-                       <th>Books and Stationaries</th>
+                       <th>Books and Stationeries</th>
                        <th>Meals and Accomodation</th>
                        <th>Field Training</th>
                        <th>Research</th>
@@ -64,10 +64,10 @@
                       <tr>
                         <td>{{ $loan->year_of_study }}</td>
                         <td>{{ $loan->tuition_fee }}</td>
-                        <td>{{ $loan->books_and_stationaries }}</td>
+                        <td>{{ $loan->books_and_stationeries }}</td>
                         <td>{{ $loan->meals_and_accomodation }}</td>
                         <td>{{ $loan->field_training }}</td>
-                        <td>{{ $loan->reserch }}</td>
+                        <td>{{ $loan->research }}</td>
                         <td>{{ number_format($loan->loan_amount,2) }}</td>
                       </tr>
                      @endforeach
