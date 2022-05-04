@@ -7,7 +7,7 @@ use App\Domain\Academic\Models\StudyAcademicYear;
 use App\Domain\Registration\Models\Registration;
 use App\Domain\Academic\Models\Semester;
 use App\Domain\Finance\Models\LoanAllocation;
-use App\Domain\Registration\Models\Applicant;
+use App\Domain\Application\Models\Applicant;
 use App\Utils\SystemLocation;
 use App\Models\User;
 use App\Mail\LoanAllocationCreated;
