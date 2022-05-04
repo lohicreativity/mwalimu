@@ -279,18 +279,18 @@
 
 <li>That you should present yourself to the Admissions Office for formal registration after paying the required fees. Failure to do so will result in the withdrawal of your admission. Admission can neither be postponed nor deferred to the next academic year. Please note that no student will be allowed to attend classes without paying the required fees and completing the registration process.</li>
 
-<li>  That you should bring your <strong>original certificates</strong> plus two copies of each of your certificates and transcripts (the original certificate will be returned to you after verification). Certificates should include birth certificate, Form 4, 6, and/or Diploma.</li>
+<li>  That you should bring your <strong>original certificates</strong> plus two certified copies of each of your certificates and transcripts (the original certificate will be returned to you after verification). Certificates should include birth certificate, Form 4, 6, and/or Diploma.</li>
 
 <li>  That you should produce your <strong>medical check-up</strong> form duly filled by a qualified Government Medical Officer to the Admissions Officer.</li>
 
-<li>  That you should submit two stamp size photographs to the Admissions Officer.</li>
+<li>  That you should submit two recent stamp size photographs with blue background to the Admissions Officer.</li>
 
-<li>  That you will be a full time student. If you are a Government or Public Institution/Organization employee, you will have to produce evidence that your employer has released you and is ready to continue supporting you.</li>
+<li>  That you will be a full time student. If you are a Government or Public Institution/Organisation employee, you will have to produce evidence that your employer has released you and is ready to continue supporting you.</li>
 
 
 <li>  Kindly note that candidates who will fail to register within the period of two weeks lasting from <strong>{{ Carbon\Carbon::parse($commencement_date)->format('jS F, Y') }}</strong> to <strong>{{ Carbon\Carbon::parse($commencement_date)->addDays(14)->format('jS F, Y') }}</strong> will be required to pay late registration fee of <strong>{{ $currency }} {{ number_format($late_registration_fee) }}/=</strong> per day for a maximum of 7 days. Failure to register within this period will lead to <strong>automatic cancellation</strong> of your admission; hence you will therefore be required to re-apply.</li>
 
-<li>The Academy is a state owned higher learning institution and therefore all payments shall be paid using control numbers. Control numbers for all the payments can be requested and obtained from your system account <strong>six weeks</strong> before commencement of the academic year i.e. <strong>{{ Carbon\Carbon::parse($commencement_date)->format('jS F, Y') }}</strong>. </li>
+<li>The Academy is a government higher learning institution and therefore all payments shall be paid using control numbers. Control numbers for all the payments can be requested and obtained from your system account <strong>six weeks</strong> before commencement of the academic year i.e. <strong>{{ Carbon\Carbon::parse($commencement_date)->format('jS F, Y') }}</strong>. </li>
 
 </ol>
 <p>I am looking forward to your registration and a successful period of study at the Academy.</p>

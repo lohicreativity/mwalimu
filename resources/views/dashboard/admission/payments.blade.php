@@ -67,14 +67,31 @@
                        @endif
                        <td>@if($program_fee_invoice) {{ $program_fee_invoice->control_no }}@endif <a href="#" onclick="window.location.reload();"><i class="fa fa-refresh" ></i> Refresh</a></td>
                        <td>
+                         @if($loan_allocation)
+                         @if(isset($program_fee_invoice->gatewayPayment))
+                            {{ $program_fee_invoice->gatewayPayment->paid_amount+$loan_allocation->tuition_fee }} TZS
+                         @else
+                            {{ $loan_allocation->tuition_fee }} TZS
+                         @endif
+                         @else
                          @if(isset($program_fee_invoice->gatewayPayment))
                             {{ $program_fee_invoice->gatewayPayment->paid_amount }} TZS
                          @endif
+                         @endif
                        </td>
                        <td>
+                         @if($loan_allocation)
+                         @if(isset($program_fee_invoice->gatewayPayment))
+                            {{ $program_fee->amount_in_tzs-$program_fee_invoice->gatewayPayment->paid_amount+$loan_allocation->tuition_fee }} TZS
+                         @else
+                            {{ $program_fee->amount_in_tzs - $loan_allocation->tuition_fee }} TZS
+                         @endif
+                         @else
                          @if(isset($program_fee_invoice->gatewayPayment))
                             {{ $program_fee_invoice->gatewayPayment->bill_amount-$program_fee_invoice->gatewayPayment->paid_amount }} TZS
                          @endif
+                         @endif
+                         
                        </td>
                     </tr>
                     @if($applicant->has_postponed != 1)
