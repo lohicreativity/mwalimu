@@ -107,7 +107,7 @@ class LoanAllocationController extends Controller
     			$ac_year = StudyAcademicYear::where('status','ACTIVE')->first();
                 $semester = Semester::where('status','ACTIVE')->first();
 
-    			if($reg = Registration::where('student_id',$student->id)->where('study_academic_year_id',$ac_year->id)->where('semester_id',$semester->id)->first()){
+    			if($reg = Registration::where('student_id',$loan->student->id)->where('study_academic_year_id',$ac_year->id)->where('semester_id',$semester->id)->first()){
                     $registration = $reg;
 	            }else{
 	              $registration = new Registration;
