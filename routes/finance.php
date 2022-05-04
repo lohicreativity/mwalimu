@@ -8,6 +8,7 @@ use App\Http\Controllers\ProgramFeeController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\NactePaymentController;
+use App\Http\Controllers\LoanAllocationController;
 
 
 
@@ -53,6 +54,10 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
     Route::post('nacte-payment/store', [NactePaymentController::class,'store']);
 	Route::post('nacte-payment/update', [NactePaymentController::class,'update']);
 	Route::get('nacte-payment/{id}/destroy', [NactePaymentController::class,'destroy']);
+
+	Route::get('loan-allocations',[LoanAllocationController::class,'index']);
+	Route::post('upload-loan-allocation',[LoanAllocationController::class,'uploadAllocations']);
+	Route::get('loan-beneficiaries',[LoanAllocationController::class,'showLoanBeneficiaries']);
 });
 
 

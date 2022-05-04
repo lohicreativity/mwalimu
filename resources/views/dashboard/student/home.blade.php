@@ -36,6 +36,9 @@
     <section class="content">
       <div class="container-fluid">
         <!-- Small boxes (Stat box) -->
+          @if($loan_allocation && $student->account_number == null)
+          <div class="alert alert-warning">Please provide Bank information.</div>
+          @endif
           @if(!$registration)
           <div class="card">
               <div class="card-header">

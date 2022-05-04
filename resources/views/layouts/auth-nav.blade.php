@@ -146,6 +146,12 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
+                <a href="{{ url('student/bank-information') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Bank Information</p>
+                </a>
+              </li>
+              <li class="nav-item">
                 <a href="{{ url('student/payments') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>My Payments</p>
@@ -373,6 +379,18 @@
                 <a href="{{ url('finance/nacte-payments') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>{{ __('NACTE Payments') }}</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ url('finance/loan-allocations?study_academic_year_id='.session('active_academic_year_id')) }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>{{ __('Loan Allocations') }}</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ url('finance/loan-beneficiaries?study_academic_year_id='.session('active_academic_year_id')) }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>{{ __('Loan Beneficiaries') }}</p>
                 </a>
               </li>
             </ul>

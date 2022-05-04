@@ -17,6 +17,7 @@ use App\Domain\Academic\Models\ResultPublication;
 use App\Domain\Registration\Models\Registration;
 use App\Domain\Finance\Models\FeeType;
 use App\Domain\Finance\Models\Invoice;
+use App\Domain\Finance\Models\LoanAllocation;
 use App\Models\User;
 use Auth, Validator;
 
@@ -27,9 +28,10 @@ class StudentController extends Controller
 	 */
 	public function index()
 	{
-    $student = User::find(Auth::user()->id)->student;
+    $student = User::find(Auth::user()->id)->student()->with('applicant')->first();
 		$data = [
             'student'=>$student,
+            'loan_allocation'=>LoanAllocation::where('index_number',$student->applicant->index_number)->where('loan_amount','!=',0.00)->where('study_academic_year_id',session('active_academic_year_id'))->first(),
             'registration'=>Registration::where('student_id',$student->id)->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->where('status','REGISTERED')->first()
 		];
 		return view('dashboard.student.home',$data)->withTitle('Dashboard');
@@ -370,6 +372,43 @@ class StudentController extends Controller
            'invoices'=>Invoice::where('payable_id',$student->id)->where('payable_type','student')->with(['feeType','gatewayPayment'])->latest()->paginate(20)
         ];
         return view('dashboard.student.request-control-number',$data)->withTItle('Request Control Number');
+    }
+
+    /**
+     * Show bank information
+     */
+    public function showBankInfo(Request $request)
+    {
+        $data = [
+            'student'=>User::find(Auth::user()->id)->student
+        ];
+        return view('dashboard.student.bank-information',$data)->withTitle('Bank Information');
+    }
+
+    /**
+     * Update bank information
+     */
+    public function updateBankInfo(Request $request)
+    {
+        $validation = Validator::make($request->all(),[
+            'bank_name'=>'required',
+            'account_number'=>'required'
+        ]);
+
+        if($validation->fails()){
+           if($request->ajax()){
+              return response()->json(array('error_messages'=>$validation->messages()));
+           }else{
+              return redirect()->back()->withInput()->withErrors($validation->messages());
+           }
+        }
+
+        $student = Student::find($request->get('student_id'));
+        $student->bank_name = $request->get('bank_name');
+        $student->account_number = $request->get('account_number');
+        $student->save();
+
+        return redirect()->back()->with('message','Bank information updated successfully');
     }
 
     /**

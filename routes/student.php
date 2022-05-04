@@ -59,4 +59,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
     Route::get('registration',[StudentController::class,'showRegistration']);
     Route::get('registration/create',[RegistrationController::class,'create']);
 
+    Route::get('bank-information',[StudentController::class,'showBankInfo']);
+    Route::post('update-bank-info',[StudentController::class,'updateBankInfo']);
+
 });
