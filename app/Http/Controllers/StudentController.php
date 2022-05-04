@@ -379,8 +379,15 @@ class StudentController extends Controller
      */
     public function showBankInfo(Request $request)
     {
+        $student = User::find(Auth::user()->id)->student()->with('applicant')->first();
+        $loan_allocation = LoanAllocation::where('index_number',$student->applicant->index_number)->first();
+        if($loan_allocation){
+           if($loan_allocation->has_signed == 1){
+              return redirect()->back()->with('error','Bank account details cannot be changed because it has already been used for payment');
+           }
+        }
         $data = [
-            'student'=>User::find(Auth::user()->id)->student
+            'student'=>$student
         ];
         return view('dashboard.student.bank-information',$data)->withTitle('Bank Information');
     }
@@ -409,6 +416,19 @@ class StudentController extends Controller
         $student->save();
 
         return redirect()->back()->with('message','Bank information updated successfully');
+    }
+
+    /**
+     * Show loan allocations
+     */
+    public function showLoanAllocations(Request $request)
+    {
+        $student = User::find(Auth::user()->id)->student;
+        $data = [
+           'student'=>$student,
+           'loan_allocations'=>LoanAllocation::where('registration_number',$student->registration_number)->paginate(20)
+        ];
+        return view('dashboard.student.loan-allocations',$data)->withTitle('Loan Allocations');
     }
 
     /**

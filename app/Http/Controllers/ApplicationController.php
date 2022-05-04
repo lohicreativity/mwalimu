@@ -35,6 +35,7 @@ use App\Domain\Application\Models\ApplicantProgramSelection;
 use App\Domain\Application\Actions\ApplicantAction;
 use App\Domain\Application\Models\NectaResultDetail;
 use App\Domain\Application\Models\NectaResult;
+use App\Domain\Finance\Models\LoanAllocation;
 use Illuminate\Support\Facades\Http;
 use App\Models\User;
 use App\Models\Role;
@@ -1471,19 +1472,41 @@ class ApplicationController extends Controller
 
         $role = Role::where('name','student')->first();
         $user->roles()->sync([$role->id]);
+        
+        $loan_allocation = LoanAllocation::where('index_number',$applicant->index_number)->where('study_academic_year_id',$ac_year->id)->first();
 
-        if($reg = Registration::where('student_id',$student->id)->where('study_academic_year_id',$ac_year->id)->where('semester_id',$semester->id)->first()){
-          $registration = $reg;
+        if($loan_allocation){
+            if($loan_allocation->has_signed == 1){
+                 if($reg = Registration::where('student_id',$student->id)->where('study_academic_year_id',$ac_year->id)->where('semester_id',$semester->id)->first()){
+                    $registration = $reg;
+                  }else{
+                    $registration = new Registration;
+                  }
+                  $registration->study_academic_year_id = $ac_year->id;
+                  $registration->semester_id = $semester->id;
+                  $registration->student_id = $student->id;
+                  $registration->year_of_study = 1;
+                  $registration->registered_by_staff_id = $staff->id;
+                  $registration->status = 'REGISTERED';
+                  $registration->save();
+                  }
+              $loan_allocation->registration_number = $student->registration_number;
+              $loan_allocation->student_id = $student->id;
+              $loan_allocation->save();
         }else{
-          $registration = new Registration;
+            if($reg = Registration::where('student_id',$student->id)->where('study_academic_year_id',$ac_year->id)->where('semester_id',$semester->id)->first()){
+              $registration = $reg;
+            }else{
+              $registration = new Registration;
+            }
+            $registration->study_academic_year_id = $ac_year->id;
+            $registration->semester_id = $semester->id;
+            $registration->student_id = $student->id;
+            $registration->year_of_study = 1;
+            $registration->registered_by_staff_id = $staff->id;
+            $registration->status = 'REGISTERED';
+            $registration->save();
         }
-        $registration->study_academic_year_id = $ac_year->id;
-        $registration->semester_id = $semester->id;
-        $registration->student_id = $student->id;
-        $registration->year_of_study = 1;
-        $registration->registered_by_staff_id = $staff->id;
-        $registration->status = 'REGISTERED';
-        $registration->save();
 
 
         $days = round($datediff / (60 * 60 * 24)) - 7;

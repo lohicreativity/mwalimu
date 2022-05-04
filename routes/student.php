@@ -62,4 +62,6 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
     Route::get('bank-information',[StudentController::class,'showBankInfo']);
     Route::post('update-bank-info',[StudentController::class,'updateBankInfo']);
 
+    Route::get('loan-allocations',[StudentController::class,'showLoanAllocations']);
+
 });

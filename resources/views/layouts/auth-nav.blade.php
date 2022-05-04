@@ -146,12 +146,6 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="{{ url('student/bank-information') }}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Bank Information</p>
-                </a>
-              </li>
-              <li class="nav-item">
                 <a href="{{ url('student/payments') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>My Payments</p>
@@ -161,6 +155,35 @@
                 <a href="{{ url('student/request-control-number') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Request Control Number</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-coins"></i>
+              <p>
+                {{ __('Loans') }}
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{ url('student/bank-information') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Bank Details</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ url('student/loan-allocations') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Loan Allocations</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ url('student/loan-payments') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Loan Payments</p>
                 </a>
               </li>
             </ul>
@@ -384,13 +407,19 @@
               <li class="nav-item">
                 <a href="{{ url('finance/loan-allocations?study_academic_year_id='.session('active_academic_year_id')) }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>{{ __('Loan Allocations') }}</p>
+                  <p>{{ __('Upload Loan Allocations') }}</p>
                 </a>
               </li>
               <li class="nav-item">
                 <a href="{{ url('finance/loan-beneficiaries?study_academic_year_id='.session('active_academic_year_id')) }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>{{ __('Loan Beneficiaries') }}</p>
+                  <p>{{ __('Loan Allocations') }}</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ url('finance/loan-bank-details?study_academic_year_id='.session('active_academic_year_id')) }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>{{ __('Loan Payments') }}</p>
                 </a>
               </li>
             </ul>

@@ -29,6 +29,7 @@ class CreateLoanAllocationsTable extends Migration
             $table->double('loan_amount',16,2);
             $table->double('loan_difference',16,2)->default(0.00);
             $table->unsignedBigInteger('student_id')->nullable();
+            $table->tinyInteger('has_signed')->nullable();
             $table->unsignedBigInteger('uploaded_by_user_id');
             $table->timestamp('uploaded_at');
             $table->timestamps();

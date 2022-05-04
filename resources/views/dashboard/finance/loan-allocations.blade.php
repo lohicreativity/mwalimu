@@ -80,23 +80,24 @@
             @if(count($beneficiaries) != 0)
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">List of Loan Beneficiaries</h3>
+                <h3 class="card-title">List of Loan Beneficiaries</h3><br>
+                <a href="{{ url('finance/notify-loan-students?study_academic_year_id='.$request->get('study_academic_year_id').'&year_of_study='.$request->get('year_of_study')) }}" class="btn btn-primary">Notify Loan Beneficiaries</a>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
-                  
-                <table class="table table-bordered">
+                {!! Form::open(['url'=>'finance/loan-allocation-update-signatures','class'=>'ss-form-processing']) !!}
+                  {!! Form::input('hidden','study_academic_year_id',$request->get('study_academic_year_id')) !!}
+                  {!! Form::input('hidden','year_of_study',$request->get('year_of_study')) !!}
+                <table class="table table-bordered ss-paginated-table">
                    <thead>
                      <tr>
                        <th>Index Number</th>
                        <th>Name</th>
                        <th>Gender</th>
-                       <th>Tuition Fee</th>
-                       <th>Books and Stationaries</th>
-                       <th>Meals and Accomodation</th>
-                       <th>Field Training</th>
-                       <th>Research</th>
                        <th>Total Amount (TZS)</th>
+                       <th>Bank Name</th>
+                       <th>Account Number</th>
+                       <th>Signature</th>
                      </tr>
                    </thead>
                    <tbody>
@@ -105,16 +106,24 @@
                         <td>{{ $stud->index_number }}</td>
                         <td>{{ $stud->name }}</td>
                         <td>{{ $stud->sex }}</td>
-                        <td>{{ $stud->tuition_fee }}</td>
-                        <td>{{ $stud->books_and_stationaries }}</td>
-                        <td>{{ $stud->meals_and_accomodation }}</td>
-                        <td>{{ $stud->field_training }}</td>
-                        <td>{{ $stud->reserch }}</td>
                         <td>{{ number_format($stud->loan_amount,2) }}</td>
+                        <td>@if(isset($stud->student)) {{ $stud->student->bank_name }} @endif</td>
+                        <td>@if(isset($stud->student)) {{ $stud->student->account_number }} @endif</td>
+                        <td>
+                          @if(App\Utils\Util::collectionContains($beneficiaries,$stud->id))
+                            {{ Form::checkbox('allocation_'.$stud->id,$stud->id,true) }}
+                          @else
+                            {{ Form::checkbox('allocation_'.$stud->id,$stud->id) }}
+                          @endif
+                        </td>
                       </tr>
                      @endforeach
+                      <tr>
+                        <td colspan="7"><button type="submit" class="btn btn-primary">Update Signatures</button></td>
+                      </tr>
                    </tbody>
                 </table>
+                {!! Form::close() !!}
               </div>
             </div>
             @endif
