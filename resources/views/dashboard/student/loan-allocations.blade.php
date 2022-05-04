@@ -60,7 +60,7 @@
                      </tr>
                    </thead>
                    <tbody>
-                     @foreach($loan_allocations as $load)
+                     @foreach($loan_allocations as $loan)
                       <tr>
                         <td>{{ $loan->year_of_study }}</td>
                         <td>{{ $loan->tuition_fee }}</td>
@@ -68,7 +68,7 @@
                         <td>{{ $loan->meals_and_accomodation }}</td>
                         <td>{{ $loan->field_training }}</td>
                         <td>{{ $loan->reserch }}</td>
-                        <td>{{ number_format($stud->loan_amount,2) }}</td>
+                        <td>{{ number_format($loan->loan_amount,2) }}</td>
                       </tr>
                      @endforeach
                    </tbody>
