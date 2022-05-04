@@ -51,7 +51,7 @@
                        <td>Fee Item</td>
                        <td>Fee Amount</td>
                        <td>Control Number</td>
-                       <td>Invoice Amount</td>
+                       <td>Amount To Be Paid</td>
                        <td>Amount Paid</td>
                        <td>Balance</td>
                     </tr>
@@ -70,11 +70,7 @@
                        <td>@if($program_fee_invoice) {{ $program_fee_invoice->amount }} {{ $program_fee_invoice->currency }} @endif</td>
                        <td>
                          @if($loan_allocation)
-                         @if(isset($program_fee_invoice->gatewayPayment))
-                            {{ $program_fee_invoice->gatewayPayment->paid_amount+$loan_allocation->tuition_fee }} TZS
-                         @else
-                            {{ $loan_allocation->tuition_fee }} TZS
-                         @endif
+                         
                          @else
                          @if(isset($program_fee_invoice->gatewayPayment))
                             {{ $program_fee_invoice->gatewayPayment->paid_amount }} TZS
@@ -83,11 +79,7 @@
                        </td>
                        <td>
                          @if($loan_allocation)
-                         @if(isset($program_fee_invoice->gatewayPayment))
-                            {{ $program_fee->amount_in_tzs-$program_fee_invoice->gatewayPayment->paid_amount+$loan_allocation->tuition_fee }} TZS
-                         @else
-                            {{ $program_fee->amount_in_tzs - $loan_allocation->tuition_fee }} TZS
-                         @endif
+                         
                          @else
                          @if(isset($program_fee_invoice->gatewayPayment))
                             {{ $program_fee_invoice->gatewayPayment->bill_amount-$program_fee_invoice->gatewayPayment->paid_amount }} TZS
@@ -105,6 +97,7 @@
                        <td>{{ $other_fees_usd }} USD</td>
                        @endif
                        <td>@if($other_fee_invoice) {{ $other_fee_invoice->control_no }}@endif <a href="#" onclick="window.location.reload();"><i class="fa fa-refresh" ></i> Refresh</a></td>
+                       <td>@if($other_fee_invoice) {{ $other_fee_invoice->amount }} {{ $other_fee_invoice->currency }} @endif</td>
                        <td>
                          @if(isset($other_fee_invoice->gatewayPayment))
                             {{ $other_fee_invoice->gatewayPayment->paid_amount }} TZS
