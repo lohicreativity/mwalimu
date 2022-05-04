@@ -1405,10 +1405,10 @@ class ApplicationController extends Controller
         $staff = User::find(Auth::user()->id)->staff;
 
         $applicant = Applicant::with(['intake','campus'])->find($request->get('applicant_id'));
-        $applicant->results_check = 1;
-        $applicant->insurance_check = 1;
-        $applicant->personal_info_check = 1;
-        $applicant->medical_form_check = 1;
+        $applicant->results_check = $request->get('results_check')? 1 : 0;
+        $applicant->insurance_check = $request->get('insurance_check')? 1 : 0;
+        $applicant->personal_info_check = $request->get('personal_info_check')? 1 : 0;
+        $applicant->medical_form_check = $request->get('medical_form_check')? 1 : 0;
         $applicant->registered_by_user_id = Auth::user()->id;
         $applicant->save();
 
