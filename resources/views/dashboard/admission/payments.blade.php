@@ -67,7 +67,7 @@
                        @endif
                        @endif
                        <td>@if($program_fee_invoice) {{ $program_fee_invoice->control_no }}@endif <a href="#" onclick="window.location.reload();"><i class="fa fa-refresh" ></i> Refresh</a></td>
-                       <td>@if($program_fee_invoice) {{ $program_fee_invoice->amount }}@endif</td>
+                       <td>@if($program_fee_invoice) {{ $program_fee_invoice->amount }} {{ $program_fee_invoice->currency }} @endif</td>
                        <td>
                          @if($loan_allocation)
                          @if(isset($program_fee_invoice->gatewayPayment))
