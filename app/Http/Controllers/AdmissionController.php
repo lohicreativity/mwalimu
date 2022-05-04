@@ -30,7 +30,7 @@ class AdmissionController extends Controller
     	}])->where('campus_id',session('applicant_campus_id'))->first();
     	$ac_year = date('Y',strtotime($applicant->applicationWindow->end_date));
     	$study_academic_year = StudyAcademicYear::whereHas('academicYear',function($query) use($ac_year){
-    		   $query->where('year','LIKE','%'.$ac_year.'%');
+    		   $query->where('year','LIKE','%'.$ac_year.'/%');
     	})->first();
         if(!$study_academic_year){
             return redirect()->back()->with('error','Study academic year has not been created');
