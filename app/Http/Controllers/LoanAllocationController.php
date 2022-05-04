@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Domain\Academic\Models\StudyAcademicYear;
+use App\Domain\Registration\Models\Registration;
 use App\Domain\Academic\Models\Semester;
 use App\Domain\Finance\Models\LoanAllocation;
 use App\Utils\SystemLocation;
@@ -134,7 +135,7 @@ class LoanAllocationController extends Controller
     			$ln = LoanAllocation::find($loan->id);
     			$ln->notification_sent = 1;
     			$ln->save();
-    			
+
     			$user = new User;
     			$user->username = $loan->name;
     			$user->email = $loan->student->email;
