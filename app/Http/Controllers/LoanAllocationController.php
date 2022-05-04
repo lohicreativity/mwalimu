@@ -137,5 +137,6 @@ class LoanAllocationController extends Controller
                 Mail::to($user)->send(new LoanAllocationCreated($user));
     		}catch(\Exception $e){}
     	}
+    	return redirect()->back()->with('message','Notification sent successfully');
     }
 }
