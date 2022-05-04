@@ -83,6 +83,8 @@ class AdmissionController extends Controller
                    $query->where('name','LIKE','%Miscellaneous%');
     	    })->with('gatewayPayment')->where('payable_id',$applicant->id)->where('payable_type','applicant')->first();
 
+        $loan_allocation = LoanAllocation::where('index_number',$applicant->index_number)->where('year_of_study',1)->where('study_academic_year_id',$study_academic_year->id)->first();
+
 
     	if($applicant->insurance_available_status == 0){
             $insurance_fee = FeeAmount::whereHas('feeItem',function($query){
@@ -106,6 +108,7 @@ class AdmissionController extends Controller
            'hostel_fee_invoice'=>$hostel_fee_invoice,
            'insurance_fee_invoice'=>$insurance_fee_invoice,
            'other_fee_invoice'=>$other_fee_invoice,
+           'loan_allocation'=>$loan_allocation,
            'campus'=>Campus::find(session('applicant_campus_id'))
     	];
     	return view('dashboard.admission.payments',$data)->withTitle('Payments');
@@ -162,8 +165,10 @@ class AdmissionController extends Controller
             $amount = 100000;
             $currency = 'TZS';
         }
+
+        return $amount;
         
-        if($amount != 0){
+        if($amount != 0.00){
         $invoice = new Invoice;
         $invoice->reference_no = 'MNMA-TF-'.time();
         $invoice->amount = $amount;
@@ -195,7 +200,9 @@ class AdmissionController extends Controller
                                     $approved_by,
                                     $program_fee->feeItem->feeType->duration,
                                     $invoice->currency);
-        }elseif($amount_loan/$amount_without_loan >= 0.6){
+        }
+
+        if($amount_loan/$amount_without_loan >= 0.6){
             $applicant->tuition_payment_check = 1;
             $applicant->save();
         }
