@@ -100,7 +100,7 @@
                      </tr>
                    </thead>
                    <tbody>
-                     @foreach($benefieciaries as $stud)
+                     @foreach($beneficiaries as $stud)
                       <tr>
                         <td>{{ $stud->index_number }}</td>
                         <td>{{ $stud->name }}</td>
