@@ -50,6 +50,7 @@
                 <table class="table table-bordered">
                    <thead>
                      <tr>
+                       <th>Study Academic Year</th>
                        <th>Year of Study</th>
                        <th>Tuition Fee</th>
                        <th>Books and Stationeries</th>
@@ -62,6 +63,7 @@
                    <tbody>
                      @foreach($loan_allocations as $loan)
                       <tr>
+                        <td>{{ $loan->studyAcademicYear->academicYear->year }}</td>
                         <td>{{ $loan->year_of_study }}</td>
                         <td>{{ $loan->tuition_fee }}</td>
                         <td>{{ $loan->books_and_stationeries }}</td>

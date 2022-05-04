@@ -426,7 +426,7 @@ class StudentController extends Controller
         $student = User::find(Auth::user()->id)->student;
         $data = [
            'student'=>$student,
-           'loan_allocations'=>LoanAllocation::where('registration_number',$student->registration_number)->paginate(20)
+           'loan_allocations'=>LoanAllocation::with(['studyAcademicYear.academicYear'])->where('registration_number',$student->registration_number)->paginate(20)
         ];
         return view('dashboard.student.loan-allocations',$data)->withTitle('Loan Allocations');
     }
