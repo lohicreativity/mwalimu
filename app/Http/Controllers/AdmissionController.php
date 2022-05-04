@@ -165,8 +165,6 @@ class AdmissionController extends Controller
             $amount = 100000;
             $currency = 'TZS';
         }
-
-        return $amount;
         
         if($amount != 0.00){
         $invoice = new Invoice;
