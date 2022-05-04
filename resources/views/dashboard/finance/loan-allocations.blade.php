@@ -93,7 +93,7 @@
                      <tr>
                        <th>Index Number</th>
                        <th>Name</th>
-                       <th>Gender</th>
+                       <th>Sex</th>
                        <th>Total Amount (TZS)</th>
                        <th>Bank Name</th>
                        <th>Account Number</th>

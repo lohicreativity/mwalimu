@@ -90,7 +90,7 @@
                      <tr>
                        <th>Index Number</th>
                        <th>Name</th>
-                       <th>Gender</th>
+                       <th>Sex</th>
                        <th>Tuition Fee</th>
                        <th>Books and Stationaries</th>
                        <th>Meals and Accomodation</th>
