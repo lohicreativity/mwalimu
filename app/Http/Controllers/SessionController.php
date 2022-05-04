@@ -13,7 +13,7 @@ class SessionController extends Controller
 	 */
 	public function changePassword(Request $request)
 	{
-		$student = User::find(Auth::user()->id)->student;
+		$student = User::find(Auth::user()->id)->student()->with('applicant')->first();
 		$data = [
            'student'=>$student
 		];
@@ -47,7 +47,7 @@ class SessionController extends Controller
 
 		       // login the user back with his new updated credentials
 		        Auth::guard('web')->login($user);
-	            return redirect()->back()->with('message','Congratulations, new password saved succeefully');
+	            return redirect()->to('dashboard')->with('message','Congratulations, new password saved succeefully');
 	        }else{
 	              return redirect()->back()->withInput()->with('error','Your old password is not identified, please provide a correct password!');
 	        }

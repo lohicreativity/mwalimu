@@ -1455,6 +1455,7 @@ class ApplicationController extends Controller
         $student->email = $applicant->email;
         $student->birth_date = $applicant->birth_date;
         $student->nationality = $applicant->nationality;
+        $student->registration_year = date('Y');
         $student->year_of_study = 1;
         $student->campus_program_id = $selection->campusProgram->id;
         $student->registration_number = 'MNMA/'.$program_code.'/'.$code.'/'.$year;
@@ -1466,7 +1467,8 @@ class ApplicationController extends Controller
         $user = User::find($applicant->user_id);
         $user->username = $student->registration_number;
         $user->email = $student->email;
-        $user->password = Hash::make($student->surname);
+        $password = strtoupper(Util::randString(8));
+        $user->password = Hash::make($password);
         $user->must_update_password = 1;
         $user->save();
 
@@ -1494,18 +1496,20 @@ class ApplicationController extends Controller
               $loan_allocation->student_id = $student->id;
               $loan_allocation->save();
         }else{
-            if($reg = Registration::where('student_id',$student->id)->where('study_academic_year_id',$ac_year->id)->where('semester_id',$semester->id)->first()){
-              $registration = $reg;
-            }else{
-              $registration = new Registration;
+            if($applicant->insurance_check == 1){
+                if($reg = Registration::where('student_id',$student->id)->where('study_academic_year_id',$ac_year->id)->where('semester_id',$semester->id)->first()){
+                  $registration = $reg;
+                }else{
+                  $registration = new Registration;
+                }
+                $registration->study_academic_year_id = $ac_year->id;
+                $registration->semester_id = $semester->id;
+                $registration->student_id = $student->id;
+                $registration->year_of_study = 1;
+                $registration->registered_by_staff_id = $staff->id;
+                $registration->status = 'REGISTERED';
+                $registration->save();
             }
-            $registration->study_academic_year_id = $ac_year->id;
-            $registration->semester_id = $semester->id;
-            $registration->student_id = $student->id;
-            $registration->year_of_study = 1;
-            $registration->registered_by_staff_id = $staff->id;
-            $registration->status = 'REGISTERED';
-            $registration->save();
         }
 
 
@@ -1561,7 +1565,7 @@ class ApplicationController extends Controller
         }
         
         try{
-           Mail::to($user)->send(new StudentAccountCreated($student, $selection->campusProgram->program->name,$ac_year->academicYear->year));
+           Mail::to($user)->send(new StudentAccountCreated($student, $selection->campusProgram->program->name,$ac_year->academicYear->year, $password));
         }catch(\Exception $e){}
         DB::commit();
         if($days < 0){

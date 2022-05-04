@@ -19,16 +19,19 @@ class StudentAccountCreated extends Mailable
 
     protected $year;
 
+    protected $password;
+
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct(Student $student, $program_name, $year)
+    public function __construct(Student $student, $program_name, $year, $password)
     {
         $this->student = $student;
         $this->program_name = $program_name;
         $this->year = $year;
+        $this->password = $password;
     }
 
     /**
@@ -43,9 +46,9 @@ class StudentAccountCreated extends Mailable
                     ->with([
                         'heading'=>'Successful Registration',
                         'name'=>$this->student->first_name.' '.$this->student->surname,
-                        'notification_message'=>'I am pleased to inform you that you have been registered for '.$this->program_name.' in academic year '.$this->year.'. Your registration number is <strong>'.$this->student->registration_number.'</strong>. Please visit http://41.59.91.194/student/login to log in to your student account. Your credentials are as follows.',
+                        'notification_message'=>'I am pleased to inform you that you have been registered for '.$this->program_name.' in academic year '.$this->year.'. Your registration number is <strong>'.$this->student->registration_number.'</strong>. Please visit http://41.59.91.194/student/login to log in to your student account. Your credentials are as follows;',
                         'username'=>$this->student->registration_number,
-                        'password'=>$this->student->surname
+                        'password'=>$this->password
                     ]);
     }
 }

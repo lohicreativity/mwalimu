@@ -46,6 +46,11 @@
                 <h3 class="card-title">{{ __('Change Password') }}</h3>
               </div>
               <div class="card-body">
+                 @if(isset($student))
+                    @if($student->applicant->insurance_check != 1)
+                     <div class="alert alert-warning">Please pay insurance charges to proceed with registration.</div>
+                    @endif
+                 @endif
                  @php
                     $old_password = array(
                         'placeholder'=>'Old password',
