@@ -1398,7 +1398,7 @@ class ApplicationController extends Controller
         $now = time();
         $reg_date_time = strtotime($reg_date->date);
         $datediff = $reg_date_time - $now;
-        if(round($datediff / (60 * 60 * 24)) > 7){
+        if(round($datediff / (60 * 60 * 24)) < 7){
             return redirect()->back()->with('error','Applicant cannot register. Registration period is over');
         }
 
