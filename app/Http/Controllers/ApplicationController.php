@@ -1379,7 +1379,7 @@ class ApplicationController extends Controller
         $validation = Validator::make($request->all(),[
             'academic_results_check'=>'required',
             'fee_payment_check'=>'required',
-            'insurance_check'=>'required',
+            // 'insurance_check'=>'required',
             'personal_info_check'=>'required',
             'medical_form_check'=>'required'
         ]);
