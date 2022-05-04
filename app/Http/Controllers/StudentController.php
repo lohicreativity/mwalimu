@@ -381,13 +381,14 @@ class StudentController extends Controller
     {
         $student = User::find(Auth::user()->id)->student()->with('applicant')->first();
         $loan_allocation = LoanAllocation::where('index_number',$student->applicant->index_number)->first();
-        if($loan_allocation){
-           if($loan_allocation->has_signed == 1){
-              return redirect()->back()->with('error','Bank account details cannot be changed because it has already been used for payment');
-           }
-        }
+        // if($loan_allocation){
+        //    if($loan_allocation->has_signed == 1){
+        //       return redirect()->back()->with('error','Bank account details cannot be changed because it has already been used for payment');
+        //    }
+        // }
         $data = [
-            'student'=>$student
+            'student'=>$student,
+            'loan_allocation'=>$loan_allocation
         ];
         return view('dashboard.student.bank-information',$data)->withTitle('Bank Information');
     }

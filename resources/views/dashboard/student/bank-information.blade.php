@@ -45,6 +45,40 @@
               </div>
               <!-- /.card-header -->
               <div class="card-body">
+                @if($loan_allocation)
+                  @if($loan_allocation->has_signed == 1)
+                    <div class="alert alert-warning">Bank account details cannot be changed because it has already been used for payment.</div>
+                    @php
+                    $bank_name = [
+                       'class'=>'form-control',
+                       'placeholder'=>'Bank name',
+                       'readonly'=>true,
+                       'required'=>true
+                    ];
+
+                    $account_number = [
+                       'class'=>'form-control',
+                       'placeholder'=>'Account number',
+                       'readonly'=>true,
+                       'required'=>true
+                    ];
+                   @endphp
+                  @else
+                    @php
+                    $bank_name = [
+                       'class'=>'form-control',
+                       'placeholder'=>'Bank name',
+                       'required'=>true
+                    ];
+
+                    $account_number = [
+                       'class'=>'form-control',
+                       'placeholder'=>'Account number',
+                       'required'=>true
+                    ];
+                  @endphp
+                 @endif
+                @else
                  @php
                     $bank_name = [
                        'class'=>'form-control',
@@ -57,7 +91,8 @@
                        'placeholder'=>'Account number',
                        'required'=>true
                     ];
-                 @endphp
+                  @endphp
+                 @endif
                  {!! Form::open(['url'=>'student/update-bank-info','class'=>'ss-form-processing']) !!}
 
                  {!! Form::input('hidden','student_id',$student->id) !!}
