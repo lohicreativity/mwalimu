@@ -106,10 +106,10 @@
                         <td>{{ $stud->name }}</td>
                         <td>{{ $stud->sex }}</td>
                         <td>{{ $stud->tuition_fee }}</td>
-                        <td>{{ $stud->books_and_stationaries }}</td>
+                        <td>{{ $stud->books_and_stationeries }}</td>
                         <td>{{ $stud->meals_and_accomodation }}</td>
                         <td>{{ $stud->field_training }}</td>
-                        <td>{{ $stud->reserch }}</td>
+                        <td>{{ $stud->research }}</td>
                         <td>{{ number_format($stud->loan_amount,2) }}</td>
                       </tr>
                      @endforeach
