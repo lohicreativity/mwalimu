@@ -97,7 +97,7 @@
                        <th>Total Amount (TZS)</th>
                        <th>Bank Name</th>
                        <th>Account Number</th>
-                       <th>Signature</th>
+                       <th>Has Signed?</th>
                      </tr>
                    </thead>
                    <tbody>
@@ -110,7 +110,7 @@
                         <td>@if(isset($stud->student)) {{ $stud->student->bank_name }} @endif</td>
                         <td>@if(isset($stud->student)) {{ $stud->student->account_number }} @endif</td>
                         <td>
-                          @if(App\Utils\Util::collectionContains($beneficiaries,$stud->id))
+                          @if($stud->has_signed == 1)
                             {{ Form::checkbox('allocation_'.$stud->id,$stud->id,true) }}
                           @else
                             {{ Form::checkbox('allocation_'.$stud->id,$stud->id) }}
