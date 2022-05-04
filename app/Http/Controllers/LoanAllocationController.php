@@ -7,6 +7,7 @@ use App\Domain\Academic\Models\StudyAcademicYear;
 use App\Domain\Registration\Models\Registration;
 use App\Domain\Academic\Models\Semester;
 use App\Domain\Finance\Models\LoanAllocation;
+use App\Domain\Registration\Models\Applicant;
 use App\Utils\SystemLocation;
 use App\Models\User;
 use App\Mail\LoanAllocationCreated;
@@ -104,21 +105,24 @@ class LoanAllocationController extends Controller
     			$ln->has_signed = 1;
     			$ln->save();
 
+    			$applicant = Applicant::find($loan->student->applicant_id);
+
     			$ac_year = StudyAcademicYear::where('status','ACTIVE')->first();
                 $semester = Semester::where('status','ACTIVE')->first();
-
-    			if($reg = Registration::where('student_id',$loan->student->id)->where('study_academic_year_id',$ac_year->id)->where('semester_id',$semester->id)->first()){
-                    $registration = $reg;
-	            }else{
-	              $registration = new Registration;
-	            }
-	            $registration->study_academic_year_id = $ac_year->id;
-	            $registration->semester_id = $semester->id;
-	            $registration->student_id = $loan->student->id;
-	            $registration->year_of_study = 1;
-	            $registration->registered_by_staff_id = $staff->id;
-	            $registration->status = 'REGISTERED';
-	            $registration->save();
+                if($applicant->insurance_check == 1){
+	    			if($reg = Registration::where('student_id',$loan->student->id)->where('study_academic_year_id',$ac_year->id)->where('semester_id',$semester->id)->first()){
+	                    $registration = $reg;
+		            }else{
+		              $registration = new Registration;
+		            }
+		            $registration->study_academic_year_id = $ac_year->id;
+		            $registration->semester_id = $semester->id;
+		            $registration->student_id = $loan->student->id;
+		            $registration->year_of_study = 1;
+		            $registration->registered_by_staff_id = $staff->id;
+		            $registration->status = 'REGISTERED';
+		            $registration->save();
+		        }
     		}
     	}
     	return redirect()->back()->with('message','Signatures updated successfully');
