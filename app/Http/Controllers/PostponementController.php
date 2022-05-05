@@ -83,6 +83,55 @@ class PostponementController extends Controller
     }
 
     /**
+     * Accept the specified postponement
+     */
+    public function accept(Request $request, $id)
+    {
+        try{
+            $postponement = Postponement::findOrFail($id);
+            $postponement->status = 'POSTPONED';
+            $postponement->save();
+
+            return redirect()->back()->with('message','Postponement accepted successfully');
+        }catch(Exception $e){
+            return redirect()->back()->with('error','Unable to get the resource specified in this request');
+        }
+    }
+
+    /**
+     * Decline the specified postponement
+     */
+    public function decline(Request $request, $id)
+    {
+        try{
+            $postponement = Postponement::findOrFail($id);
+            $postponement->status = 'DECLINED';
+            $postponement->save();
+
+            return redirect()->back()->with('message','Postponement declined successfully');
+        }catch(Exception $e){
+            return redirect()->back()->with('error','Unable to get the resource specified in this request');
+        }
+    }
+
+    /**
+     * Recommend the specified postponement
+     */
+    public function recommend(Request $request)
+    {
+        try{
+            $postponement = Postponement::findOrFail($id);
+            $postponement->recommendation = $request->get('recommendation');
+            $postponement->recommended_by_user_id = Auth::user()->id;
+            $postponement->save();
+
+            return redirect()->back()->with('message','Postponement recommended successfully');
+        }catch(Exception $e){
+            return redirect()->back()->with('error','Unable to get the resource specified in this request');
+        }
+    }
+
+    /**
      * Remove the specified postponement
      */
     public function destroy(Request $request, $id)

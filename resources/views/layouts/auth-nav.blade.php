@@ -105,6 +105,12 @@
                   <p>My Registration</p>
                 </a>
               </li>
+              <li class="nav-item">
+                <a href="{{ url('student/postponements') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Postponements</p>
+                </a>
+              </li>
             </ul>
           </li>
           <li class="nav-item">
@@ -357,6 +363,12 @@
                   <p>Identity Cards Bulk</p>
                 </a>
               </li>
+              <li class="nav-item">
+                <a href="{{ url('academic/postponements?study_academic_year_id='.session('active_academic_year_id')) }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>{{ __('Postponements') }}</p>
+                </a>
+              </li>
             </ul>
           </li>
           <li class="nav-item">
@@ -510,12 +522,6 @@
                 <a href="{{ url('academic/results?study_academic_year_id='.session('active_academic_year_id').'&campus_id='.session('staff_campus_id')) }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>{{ __('Best Students') }}</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="{{ url('academic/postponements?study_academic_year_id='.session('active_academic_year_id')) }}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>{{ __('Postponements') }}</p>
                 </a>
               </li>
               <li class="nav-item">

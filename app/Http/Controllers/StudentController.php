@@ -14,6 +14,7 @@ use App\Domain\Academic\Models\ExaminationResult;
 use App\Domain\Academic\Models\ModuleAssignment;
 use App\Domain\Registration\Models\Student;
 use App\Domain\Academic\Models\ResultPublication;
+use App\Domain\Academic\Models\Postponement;
 use App\Domain\Registration\Models\Registration;
 use App\Domain\Finance\Models\FeeType;
 use App\Domain\Finance\Models\Invoice;
@@ -381,11 +382,6 @@ class StudentController extends Controller
     {
         $student = User::find(Auth::user()->id)->student()->with('applicant')->first();
         $loan_allocation = LoanAllocation::where('index_number',$student->applicant->index_number)->first();
-        // if($loan_allocation){
-        //    if($loan_allocation->has_signed == 1){
-        //       return redirect()->back()->with('error','Bank account details cannot be changed because it has already been used for payment');
-        //    }
-        // }
         $data = [
             'student'=>$student,
             'loan_allocation'=>$loan_allocation
@@ -430,6 +426,22 @@ class StudentController extends Controller
            'loan_allocations'=>LoanAllocation::with(['studyAcademicYear.academicYear'])->where('registration_number',$student->registration_number)->paginate(20)
         ];
         return view('dashboard.student.loan-allocations',$data)->withTitle('Loan Allocations');
+    }
+
+    /**
+     * Show postponements
+     */
+    public function requestPostponement(Request $request)
+    {
+        $student = User::find(Auth::user()->id)->student;
+        $data = [
+           'study_academic_year'=>StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first(),
+           'semester'=>Semester::where('status','ACTIVE')->first(),
+           'student'=>$student,
+           'postponements'=>Postponement::where('student_id',$student->id)->paginate(20)
+        ];
+        return view('dashboard.student.postponements',$data)->withTitle('Postponements');
+
     }
 
     /**

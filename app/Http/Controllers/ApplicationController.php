@@ -1620,7 +1620,6 @@ class ApplicationController extends Controller
               'Description'=>'Batch submitted on '.date('m d, Y'),
               'CardApplications'=>[ 
                  array(
-
                   'CorrelationID'=>$applicant->index_number,
                     'MobileNo'=>'0'.substr($applicant->phone, 3),
                     'AcademicYear'=>$ac_year->academicYear->year,

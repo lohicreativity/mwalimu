@@ -201,6 +201,9 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 	Route::post('postponement/store', [PostponementController::class,'store']);
 	Route::post('postponement/update', [PostponementController::class,'update']);
 	Route::get('postponement/{id}/destroy', [PostponementController::class,'destroy']);
+	Route::post('postponement/{id}/recommend', [PostponementController::class,'recommend']);
+	Route::get('postponement/{id}/accept', [PostponementController::class,'accept']);
+	Route::get('postponement/{id}/decline', [PostponementController::class,'decline']);
 
 
 	Route::post('examination-irregularity/store', [ExaminationIrregularityController::class,'store']);
