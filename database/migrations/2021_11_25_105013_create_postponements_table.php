@@ -24,6 +24,7 @@ class CreatePostponementsTable extends Migration
             $table->text('recommendation')->nullable();
             $table->unsignedBigInteger('recommended_by_user_id')->nullable();
             $table->string('status',20)->default('PENDING');
+            $table->tinyInteger('is_renewal')->nullable();
             $table->timestamps();
 
             $table->foreign('student_id')->references('id')->on('students')->onUpdate('cascade');
