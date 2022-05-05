@@ -106,7 +106,9 @@
                     <td>@if($post->semester) {{ $post->semester->name }} @endif</td>
                     <td>{{ $post->category }}</td>
                     <td>{{ $post->status }}</td>
-                    <td><a href="{{ url('postponement-letter/'.$post->id.'/download') }}">Postponement Letter</a></td>
+                    <td><a href="{{ url('postponement-letter/'.$post->id.'/download') }}">Postponement Letter</a><br>
+
+                      <a href="{{ url('supporting-document/'.$post->id.'/download') }}">Supporting Document</a></td>
                     <td>
 
                       <a class="btn btn-danger btn-sm" href="#" @if($post->status == 'POSTPONED' || $post->status == 'RESUMED' || $post->status == 'DECLINED') disabled="disabled" @else data-toggle="modal" data-target="#ss-delete-post-{{ $post->id }}" @endif>

@@ -67,5 +67,6 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
     Route::get('postponements',[StudentController::class,'requestPostponement']);
 
     Route::get('postponement-letter/{id}/download',[StudentController::class,'downloadLetter']);
+    Route::get('supporting-document/{id}/download',[StudentController::class,'downloadSupportingDocument']);
 
 });

@@ -124,7 +124,29 @@ class PostponementController extends Controller
     {
         try{
             $postponement = Postponement::findOrFail($id);
-            return response()->download(public_path().'/uploads/'.$postponement->letter);
+            if(file_exists(public_path().'/uploads/'.$postponement->letter)){
+               return response()->download(public_path().'/uploads/'.$postponement->letter);
+            }else{
+                return redirect()->back()->with('error','Unable to get the resource specified in this request');
+            }
+        }catch(Exception $e){
+            return redirect()->back()->with('error','Unable to get the resource specified in this request');
+        }
+    }
+    
+
+    /**
+     * Download letter
+     */
+    public function downloadSupportingDocument(Request $request, $id)
+    {
+        try{
+            $postponement = Postponement::findOrFail($id);
+            if(file_exists(public_path().'/uploads/'.$postponement->supporting_document)){
+               return response()->download(public_path().'/uploads/'.$postponement->supporting_document);
+            }else{
+                return redirect()->back()->with('error','Unable to get the resource specified in this request');
+            }
         }catch(Exception $e){
             return redirect()->back()->with('error','Unable to get the resource specified in this request');
         }
