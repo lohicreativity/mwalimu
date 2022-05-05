@@ -7,6 +7,7 @@ use App\Http\Controllers\AppealController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\RegistrationController;
 use App\Http\Controllers\TranscriptRequestController;
+use App\Http\Controllers\PostponementController;
 use App\Http\Controllers\PerformanceReportRequestController;
 
 /*
@@ -66,7 +67,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 
     Route::get('postponements',[StudentController::class,'requestPostponement']);
 
-    Route::get('postponement-letter/{id}/download',[StudentController::class,'downloadLetter']);
-    Route::get('supporting-document/{id}/download',[StudentController::class,'downloadSupportingDocument']);
+    Route::get('postponement-letter/{id}/download',[PostponementController::class,'downloadLetter']);
+    Route::get('supporting-document/{id}/download',[PostponementController::class,'downloadSupportingDocument']);
 
 });
