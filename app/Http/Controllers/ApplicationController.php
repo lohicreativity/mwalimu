@@ -37,6 +37,7 @@ use App\Domain\Application\Models\NectaResultDetail;
 use App\Domain\Application\Models\NectaResult;
 use App\Domain\Finance\Models\LoanAllocation;
 use Illuminate\Support\Facades\Http;
+use App\Http\Controllers\NHIFService;
 use App\Models\User;
 use App\Models\Role;
 use App\Utils\SystemLocation;
@@ -1630,7 +1631,7 @@ class ApplicationController extends Controller
              ];
             
             $url = 'http://196.13.105.15/OMRS/api/v1/Verification/SubmitCardApplications';
-            $token = NHIFService::requestToken();
+            // $token = NHIFService::requestToken();
 
             //return $token;
             $curl_handle = curl_init();
