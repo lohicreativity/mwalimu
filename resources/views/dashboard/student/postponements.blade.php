@@ -55,7 +55,9 @@
                      {!! Form::label('','Category') !!}
                      <select name="category" class="form-control" required>
                        <option>Select Category</option>
+                       @if(!str_contains($semester->name,'2'))
                        <option value="YEAR">Year</option>
+                       @endif
                        <option value="SEMESTER">Semester</option>
                      </select>
 
