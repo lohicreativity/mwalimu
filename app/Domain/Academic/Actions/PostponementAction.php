@@ -22,6 +22,12 @@ class PostponementAction implements PostponementInterface{
 
                       $postponement->letter = $request->file('postponement_letter')->getClientOriginalName();
                 }
+                if($request->hasFile('supporting_document')){
+                      $destination = SystemLocation::uploadsDirectory();
+                      $request->file('supporting_document')->move($destination, $request->file('supporting_document')->getClientOriginalName());
+
+                      $postponement->supporting_document = $request->file('supporting_document')->getClientOriginalName();
+                }
                 $postponement->save();
 	}
 
@@ -37,6 +43,12 @@ class PostponementAction implements PostponementInterface{
                       $request->file('postponement_letter')->move($destination, $request->file('postponement_letter')->getClientOriginalName());
 
                       $postponement->letter = $request->file('postponement_letter')->getClientOriginalName();
+                }
+                if($request->hasFile('supporting_document')){
+                      $destination = SystemLocation::uploadsDirectory();
+                      $request->file('supporting_document')->move($destination, $request->file('supporting_document')->getClientOriginalName());
+
+                      $postponement->supporting_document = $request->file('supporting_document')->getClientOriginalName();
                 }
                 $postponement->save();
 	}

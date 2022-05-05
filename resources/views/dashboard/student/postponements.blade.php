@@ -66,6 +66,12 @@
                      {!! Form::file('postponement_letter',['class'=>'form-control','required'=>true]) !!}
                   </div>
                 </div>
+                <div class="row">
+                  <div class="form-group col-6">
+                     {!! Form::label('','Upload supporting document') !!}
+                     {!! Form::file('supporting_document',['class'=>'form-control','required'=>true]) !!}
+                  </div>
+                </div>
                 </div>
                 <div class="card-footer">
                   <button type="submit" class="btn btn-primary">{{ __('Request Postponement') }}</button>

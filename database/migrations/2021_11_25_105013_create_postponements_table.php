@@ -20,6 +20,7 @@ class CreatePostponementsTable extends Migration
             $table->unsignedBigInteger('semester_id')->default(0);
             $table->string('category'); // SEMESTER or YEAR
             $table->string('letter');
+            $table->string('supporting_document');
             $table->text('recommendation')->nullable();
             $table->unsignedBigInteger('recommended_by_user_id')->nullable();
             $table->string('status',20)->default('PENDING');

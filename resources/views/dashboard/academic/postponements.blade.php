@@ -120,6 +120,15 @@
                                       width="100%"
                                   ></iframe>
                                @endif
+                               @if($post->supporting_document)
+                                  <iframe
+                                      src="https://drive.google.com/viewerng/viewer?embedded=true&url={{ asset('uploads/'.$post->supporting_document) }}#toolbar=0&scrollbar=0"
+                                      frameBorder="0"
+                                      scrolling="auto"
+                                      height="auto"
+                                      width="100%"
+                                  ></iframe>
+                               @endif
                                {!! Form::open(['url'=>'academic/postponement/recommend','class'=>'ss-form-processing']) !!}
 
                                <div class="row">
