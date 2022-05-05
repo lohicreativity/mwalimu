@@ -21,11 +21,12 @@ class PostponementController extends Controller
     public function index(Request $request)
     {
     	$data = [
-    	   'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
+    	     'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
            'student'=>$request->has('registration_number')? Student::where('registration_number',$request->get('registration_number'))->first() : null,
-           'postponements'=>Postponement::with(['student','StudyAcademicYear.academicYear','semester'])->paginate(20),
+           'postponements'=>Postponement::with(['student','StudyAcademicYear.academicYear','semester'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->paginate(20),
            'semesters'=>Semester::all(),
-           'staff'=>User::find(Auth::user()->id)->staff
+           'staff'=>User::find(Auth::user()->id)->staff,
+           'request'=>$request
     	];
     	return view('dashboard.academic.postponements',$data)->withTitle('Postponements');
     }
@@ -110,6 +111,19 @@ class PostponementController extends Controller
             $postponement->save();
 
             return redirect()->back()->with('message','Postponement declined successfully');
+        }catch(Exception $e){
+            return redirect()->back()->with('error','Unable to get the resource specified in this request');
+        }
+    }
+
+    /**
+     * Download letter
+     */
+    public function downloadLetter(Request $request, $id)
+    {
+        try{
+            $postponement = Postponement::findOrFail($id);
+            return response()->download(public_path().'/uploads/'.$postponement->letter);
         }catch(Exception $e){
             return redirect()->back()->with('error','Unable to get the resource specified in this request');
         }

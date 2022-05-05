@@ -38,6 +38,33 @@
       <div class="container-fluid">
         <div class="row">
           <div class="col-12">
+             <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Select Academic Year</h3>
+              </div>
+              <!-- /.card-header -->
+            </div>
+
+            <div class="card">
+                 <div class="card-body">
+                 {!! Form::open(['url'=>'academic/postponements','class'=>'ss-form-processing','method'=>'GET']) !!}
+                   
+                   <div class="form-group">
+                    <select name="study_academic_year_id" class="form-control" required>
+                       <option value="">Select Study Academic Year</option>
+                       @foreach($study_academic_years as $year)
+                       <option value="{{ $year->id }}" @if($year->id == $request->get('study_academic_year_id') selected="selected" @endif>{{ $year->academicYear->year }}</option>
+                       @endforeach
+                    </select>
+                  </div>
+                  <div class="ss-form-actions">
+                   <button type="submit" class="btn btn-primary">{{ __('Search') }}</button>
+                  </div>
+
+                 {!! Form::close() !!}
+              </div>
+            </div>
+            <!-- /.card -->
 
             @if(count($postponements) != 0)
             <div class="card">
