@@ -28,6 +28,10 @@ class PostponementAction implements PostponementInterface{
 
                       $postponement->supporting_document = $request->file('supporting_document')->getClientOriginalName();
                 }
+                if(Postponement::where('student_id',$request->get('student_id'))->where('status','!=','RESUMED')->count() != 0){
+                     $postponement->is_renewal = 1;
+                 }
+
                 $postponement->save();
 	}
 
