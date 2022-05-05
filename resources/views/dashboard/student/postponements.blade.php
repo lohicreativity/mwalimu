@@ -73,7 +73,6 @@
               {!! Form::close() !!}
             </div>
             <!-- /.card -->
-            @endif
 
             @if(count($postponements) != 0)
             <div class="card">
