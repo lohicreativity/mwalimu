@@ -64,4 +64,6 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 
     Route::get('loan-allocations',[StudentController::class,'showLoanAllocations']);
 
+    Route::get('postponements',[StudentController::class,'requestPostponement']);
+
 });
