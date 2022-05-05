@@ -1565,6 +1565,100 @@ class ApplicationController extends Controller
                                     $invoice->currency);
         }
         
+        if($applicant->insurance_status == 0){
+             $data = [
+                  'FormFourIndexNo'=>str_replace('/', '-', $applicant->index_number),
+                  'FirstName'=> $applicant->first_name,
+                  'MiddleName'=> $applicant->middle_name,
+                  'Surname'=> $applicant->last_name,
+                  'AdmissionNo'=> $student->registration_number,
+                  'CollageFaculty'=> $applicant->campus->name,
+                  'MobileNo'=> '0'.substr($applicant->phone,3),
+                  'ProgrammeOfStudy'=> $selection->campusProgram->program->name,
+                  'CourseDuration'=> $selection->campusProgram->program->min_duration,
+                  'MaritalStatus'=> "Single",
+                  'DateJoiningEmployer'=> date('Y-m-d'),
+                  'DateOfBirth'=> $applicant->birth_date,
+                  'NationalID'=> $applicant->nin? $applicant->nin : '',
+                  'Gender'=> $applicant->gender == 'M'? 'Male' : 'Female'
+              ];
+                  
+              $url = 'http://196.13.105.15/OMRS/api/v1/Verification/StudentRegistration';
+              $token = NHIFService::requestToken();
+
+                  //return $token;
+              $curl_handle = curl_init();
+
+                //  return json_encode($data);
+       
+
+              curl_setopt_array($curl_handle, array(
+              CURLOPT_URL => $url,
+              CURLOPT_HTTPHEADER => array('Content-Type: application/json',$token),
+              CURLOPT_RETURNTRANSFER => true,
+              CURLOPT_ENCODING => "",
+              CURLOPT_MAXREDIRS => 10,
+              CURLOPT_TIMEOUT => 4200,
+              CURLOPT_FOLLOWLOCATION => false,
+              CURLOPT_SSL_VERIFYPEER => false,
+              CURLOPT_CUSTOMREQUEST => "POST",
+              CURLOPT_POSTFIELDS => json_encode($data)
+              ));
+
+              $response = curl_exec($curl_handle);
+              $response = json_decode($response);
+              $StatusCode = curl_getinfo($curl_handle, CURLINFO_HTTP_CODE);
+              $err = curl_error($curl_handle);
+
+              curl_close($curl_handle);
+
+              return $response;
+
+              $data = [
+              'BatchNo'=>'8002217/'.$ac_year.'/001',
+              'Description'=>'Batch submitted on '.date('m d, Y'),
+              'CardApplications'=>[ 
+                 array(
+
+                  'CorrelationID'=>$applicant->index_number,
+                    'MobileNo'=>'0'.substr($applicant->phone, 3),
+                    'AcademicYear'=>$ac_year->academicYear->year,
+                    'YearOfStudy'=>1,
+                    'Category'=>1
+                 )      
+               ]
+             ];
+            
+            $url = 'http://196.13.105.15/OMRS/api/v1/Verification/SubmitCardApplications';
+            $token = NHIFService::requestToken();
+
+            //return $token;
+            $curl_handle = curl_init();
+
+                      //  return json_encode($data);
+             
+
+              curl_setopt_array($curl_handle, array(
+              CURLOPT_URL => $url,
+              CURLOPT_HTTPHEADER => array('Content-Type: application/json',$token),
+              CURLOPT_RETURNTRANSFER => true,
+              CURLOPT_ENCODING => "",
+              CURLOPT_MAXREDIRS => 10,
+              CURLOPT_TIMEOUT => 4200,
+              CURLOPT_FOLLOWLOCATION => false,
+              CURLOPT_SSL_VERIFYPEER => false,
+              CURLOPT_CUSTOMREQUEST => "POST",
+              CURLOPT_POSTFIELDS => json_encode($data)
+            ));
+
+            $response = curl_exec($curl_handle);
+            $response = json_decode($response);
+            $StatusCode = curl_getinfo($curl_handle, CURLINFO_HTTP_CODE);
+            $err = curl_error($curl_handle);
+
+            curl_close($curl_handle);
+            }
+        
         try{
            Mail::to($user)->send(new StudentAccountCreated($student, $selection->campusProgram->program->name,$ac_year->academicYear->year, $password));
         }catch(\Exception $e){}
