@@ -39,7 +39,8 @@ class PostponementController extends Controller
             'study_academic_year_id'=>'required',
             'student_id'=>'required',
             'category'=>'required',
-            'semester_id'=>'required'
+            'semester_id'=>'required',
+            'postponement_letter'=>'required|mimes:pdf'
         ]);
 
         if($validation->fails()){

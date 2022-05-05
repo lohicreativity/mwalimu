@@ -5,7 +5,7 @@ namespace App\Domain\Academic\Actions;
 use Illuminate\Http\Request;
 use App\Domain\Academic\Models\Postponement;
 use App\Domain\Academic\Repositories\Interfaces\PostponementInterface;
-use App\Util\SystemLocation;
+use App\Utils\SystemLocation;
 
 class PostponementAction implements PostponementInterface{
 	
