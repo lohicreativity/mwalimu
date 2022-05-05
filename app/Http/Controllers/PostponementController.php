@@ -42,7 +42,7 @@ class PostponementController extends Controller
             'category'=>'required',
             'semester_id'=>'required',
             'postponement_letter'=>'required|mimes:pdf',
-            'supporting_document'=>'required|mimes:pdf'
+            'supporting_document'=>'mimes:pdf'
         ]);
 
         if($validation->fails()){

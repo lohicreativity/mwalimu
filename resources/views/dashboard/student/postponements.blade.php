@@ -68,7 +68,7 @@
                 </div>
                 <div class="row">
                   <div class="form-group col-6">
-                     {!! Form::label('','Upload supporting document') !!}
+                     {!! Form::label('','Upload supporting document (Optional)') !!}
                      {!! Form::file('supporting_document',['class'=>'form-control','required'=>true]) !!}
                   </div>
                 </div>
