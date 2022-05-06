@@ -111,12 +111,12 @@
                        </a>
                        @else
 
-                      <a class="btn btn-success btn-sm" href="#" @if($post->status != 'PENDING') disabled="disabled" @else data-toggle="modal" data-target="ss-accept-post-{{ $post->id }}" @endif>
+                      <a class="btn btn-success btn-sm" href="#" @if($post->status != 'PENDING') disabled="disabled" @else data-toggle="modal" data-target="#ss-accept-post-{{ $post->id }}" @endif>
                               <i class="fas fa-check">
                               </i>
                               Accept
                        </a>
-                       <a class="btn btn-danger btn-sm" href="{{ url('academic/postponement/'.$post->id.'/decline') }}" @if($post->status != 'PENDING') disabled="disabled" @else data-toggle="modal" data-target="ss-decline-post-{{ $post->id }}" @endif>
+                       <a class="btn btn-danger btn-sm" href="" @if($post->status != 'PENDING') disabled="disabled" @else data-toggle="modal" data-target="#ss-decline-post-{{ $post->id }}" @endif>
                               <i class="fas fa-check">
                               </i>
                               Decline
