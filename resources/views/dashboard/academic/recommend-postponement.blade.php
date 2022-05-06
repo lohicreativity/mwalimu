@@ -69,7 +69,7 @@
                     <b>Gender</b> <a class="float-right">{{ $postponement->student->gender }}</a>
                   </li>
                   <li class="list-group-item">
-                    <b>Programme</b> <a class="float-right">{{ $selection->campusProgram->program->name }}</a>
+                    <b>Programme</b> <a class="float-right">{{ $postponement->student->campusProgram->program->name }}</a>
                   </li>
                 </ul>
                 
