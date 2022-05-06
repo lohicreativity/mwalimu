@@ -223,6 +223,12 @@ class PostponementController extends Controller
             $postponement->status = 'RESUMED';
             $postponement->save();
 
+            $status = StudentshipStatus::where('name','POSTPONED')->first();
+
+            $student = Student::find($postponement->student_id);
+            $student->studentship_status_id = $status->id;
+            $student->save();
+
             return redirect()->back()->with('message','Postponement resumed successfully');
         }catch(Exception $e){
             return redirect()->back()->with('error','Unable to get the resource specified in this request');
