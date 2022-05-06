@@ -191,16 +191,18 @@
                     </td>
                     @if(!Auth::user()->hasRole('hod'))
                       <td>
+                        @if($post->status == 'PENDING')
                         {!! Form::checkbox('post_'.$post->id,$post->id,true) !!}
+                        @endif
                       </td>
                     @endif
                   </tr>
                   @if(!Auth::user()->hasRole('hod'))
                    <tr>
                      <td colspan="9">
-                      @if($post->status == 'PENDING')
+                      
                       <button type="submit" class="btn btn-primary" name="accept">Accept Postponements</button> <button type="submit" class="btn btn-primary" name="decline">Decline Postponements</button>
-                      @endif
+                      
                     </td>
                    </tr>
                   @endif
