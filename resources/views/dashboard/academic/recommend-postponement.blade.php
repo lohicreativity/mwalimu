@@ -149,7 +149,7 @@
                    <div class="row">
                     <div class="form-group col-12">
                       {!! Form::label('','Recommendation') !!}
-                      {!! Form::textarea('recommendation',null,['class'=>'form-control','placeholder'=>'Recommendation','rows'=>3,'required'=>true]) !!}
+                      {!! Form::textarea('recommendation',$postponement->recommendation,['class'=>'form-control','placeholder'=>'Recommendation','rows'=>3,'required'=>true]) !!}
 
                       {!! Form::input('hidden','postponement_id',$postponement->id) !!}
                     </div>

@@ -24,7 +24,7 @@ class PostponementController extends Controller
     	$data = [
     	     'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
            'student'=>$request->has('registration_number')? Student::where('registration_number',$request->get('registration_number'))->first() : null,
-           'postponements'=>Postponement::with(['student','StudyAcademicYear.academicYear','semester'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->paginate(20),
+           'postponements'=>Postponement::with(['student','StudyAcademicYear.academicYear','semester'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->get(),
            'semesters'=>Semester::all(),
            'staff'=>User::find(Auth::user()->id)->staff,
            'request'=>$request
@@ -196,7 +196,7 @@ class PostponementController extends Controller
             $postponement->recommended_by_user_id = Auth::user()->id;
             $postponement->save();
 
-            return redirect()->back()->with('message','Postponement recommended successfully');
+            return redirect()->to('academic/postponements')->with('message','Postponement recommended successfully');
     }
 
     /**

@@ -71,7 +71,7 @@
               <!-- /.card-header -->
               <div class="card-body">
                  
-                <table id="example2" class="table table-bordered table-hover">
+                <table id="example2" class="table table-bordered table-hover ss-paginated-table">
                   <thead>
                   <tr>
                     <th>Student</th>
@@ -98,43 +98,8 @@
                       <a class="btn btn-info btn-sm" href="{{ url('academic/postponement/'.$post->id.'/recommend') }}">
                               <i class="fas fa-eye-open">
                               </i>
-                              Recommend
+                              @if($post->recommendation) Edit Recommendation @else Recommend @endif
                        </a>
-                       <div class="modal fade" id="ss-edit-post-{{ $post->id }}">
-                        <div class="modal-dialog modal-lg">
-                          <div class="modal-content">
-                            <div class="modal-header">
-                              <h4 class="modal-title"><i class="fa fa-exclamation-sign"></i> Recommend Postponement</h4>
-                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                              </button>
-                            </div>
-                            <div class="modal-body">
-                              
-                               {!! Form::open(['url'=>'academic/postponement/recommend','class'=>'ss-form-processing']) !!}
-
-                               <div class="row">
-                                <div class="form-group col-12">
-                                  {!! Form::label('','Recommendation') !!}
-                                  {!! Form::textarea('recommendation',null,['class'=>'form-control','placeholder'=>'Recommendation','rows'=>3,'required'=>true]) !!}
-
-                                  {!! Form::input('hidden','postponement_id',$post->id) !!}
-                                </div>
-                             </div>
-                               <div class="ss-form-actions">
-                               <button type="submit" class="btn btn-primary">{{ __('Save Recommendation') }}</button>
-                              </div>
-                               {!! Form::close() !!}
-                            </div>
-                            <div class="modal-footer justify-content-between">
-                              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                            </div>
-                          </div>
-                          <!-- /.modal-content -->
-                        </div>
-                        <!-- /.modal-dialog -->
-                      </div>
-                      <!-- /.modal -->
 
                       <a class="btn btn-success btn-sm" href="{{ url('academic/postponement/'.$post->id.'/accept') }}">
                               <i class="fas fa-check">
