@@ -180,7 +180,7 @@ class PostponementController extends Controller
               'recommendation'=>'required',
               'recommended'=>'required'
             ],[
-              'recommended'=>'Recommendation option must be selected'
+              'recommended.required'=>'Recommendation option must be selected'
             ]);
 
             if($validation->fails()){
