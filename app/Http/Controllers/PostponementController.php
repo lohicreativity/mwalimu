@@ -126,6 +126,17 @@ class PostponementController extends Controller
     }
 
     /**
+     * Show recommendation for specified postponement
+     */
+    public function showRecommend(Request $request, $id)
+    {
+        $data = [
+           'postponement'=>Postponement::with('student.campusProgram.program')->find($id)
+        ];
+        return view('dashboard.academic.recommend-postponement',$data)->withTitle('Recommendation');
+    }
+
+    /**
      * Download letter
      */
     public function downloadLetter(Request $request, $id)
@@ -168,6 +179,7 @@ class PostponementController extends Controller
         try{
             $postponement = Postponement::findOrFail($id);
             $postponement->recommendation = $request->get('recommendation');
+            $postponement->recommended = $request->get('recommended');
             $postponement->recommended_by_user_id = Auth::user()->id;
             $postponement->save();
 

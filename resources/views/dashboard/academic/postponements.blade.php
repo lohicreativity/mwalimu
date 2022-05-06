@@ -95,7 +95,7 @@
                     <td>{{ $post->status }}</td>
                     <td>@if($post->is_renewal == 1) Yes @else No @endif</td>
                     <td>
-                      <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-edit-post-{{ $post->id }}">
+                      <a class="btn btn-info btn-sm" href="{{ url('academic/postponement/'.$post->id.'/recommend') }}">
                               <i class="fas fa-eye-open">
                               </i>
                               Recommend
@@ -110,30 +110,13 @@
                               </button>
                             </div>
                             <div class="modal-body">
-                               @if($post->letter)
-                                  <iframe
-                                      src="https://drive.google.com/viewerng/viewer?embedded=true&url={{ asset('uploads/'.$post->letter) }}#toolbar=0&scrollbar=0"
-                                      frameBorder="0"
-                                      scrolling="auto"
-                                      height="auto"
-                                      width="100%"
-                                  ></iframe>
-                               @endif
-                               @if($post->supporting_document)
-                                  <iframe
-                                      src="https://drive.google.com/viewerng/viewer?embedded=true&url={{ asset('uploads/'.$post->supporting_document) }}#toolbar=0&scrollbar=0"
-                                      frameBorder="0"
-                                      scrolling="auto"
-                                      height="auto"
-                                      width="100%"
-                                  ></iframe>
-                               @endif
+                              
                                {!! Form::open(['url'=>'academic/postponement/recommend','class'=>'ss-form-processing']) !!}
 
                                <div class="row">
                                 <div class="form-group col-12">
                                   {!! Form::label('','Recommendation') !!}
-                                  {!! Form::textarea('recommendation',null,['class'=>'form-control','placeholder'=>'Recommendation','required'=>true]) !!}
+                                  {!! Form::textarea('recommendation',null,['class'=>'form-control','placeholder'=>'Recommendation','rows'=>3,'required'=>true]) !!}
 
                                   {!! Form::input('hidden','postponement_id',$post->id) !!}
                                 </div>
