@@ -80,9 +80,10 @@
             </div>
             <!-- /.card -->
           </div>
-          <div class="col-8">
+          <div class="col-8">       
 
-                <div class="accordion" id="accordionExample">
+              <div class="accordion" id="accordionExample">
+                @if($postponement->letter)
                 <div class="card">
                   <div class="card-header" id="ss-letter">
                     <h2 class="mb-0">
@@ -92,7 +93,7 @@
                     </h2>
                   </div>
 
-                  <div id="collapseOne" class="collapse show" aria-labelledby="ss-letter" data-parent="#accordionExample">
+                  <div id="collapseOne" class="collapse" aria-labelledby="ss-letter" data-parent="#accordionExample-2">
                     <div class="card-body">
                        <iframe
                       src="https://drive.google.com/viewerng/viewer?embedded=true&url={{ asset('uploads/'.$postponement->letter) }}#toolbar=0&scrollbar=0"
@@ -104,6 +105,7 @@
                     </div>
                   </div>
                 </div>
+                @endif
                 @if($postponement->supporting_document)
                 <div class="card">
                   <div class="card-header" id="ss-supporting-document">
@@ -127,7 +129,7 @@
                   </div>
                 </div>
                 @endif
-              </div>
+              </div><!-- end of accordian -->
 
 
               <div class="card">
