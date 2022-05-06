@@ -41,7 +41,7 @@ class PostponementController extends Controller
             return redirect()->back()->with('error','You have already requested for postponement for this academic year');
         }
 
-        if(Registration::where('student_id',$request->get('student'))->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('semester_id',$request->get('semester_id'))->count() == 0){
+        if(Registration::where('student_id',$request->get('student_id'))->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('semester_id',$request->get('semester_id'))->count() == 0){
             return redirect()->back()->with('error','You cannot postpone because you have not been registered yet for this semester');
         }
     	$validation = Validator::make($request->all(),[
