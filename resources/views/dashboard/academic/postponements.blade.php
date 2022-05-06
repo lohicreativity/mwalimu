@@ -85,7 +85,9 @@
                     <th>Category</th>
                     <th>Status</th>
                     <th>Is Renewal</th>
+                    @if(!Auth::user()->hasRole('hod'))
                     <th>Recommendation</th>
+                    @endif
                     <th>Actions</th>
                     @if(!Auth::user()->hasRole('hod'))
                     <th>Accept</th>
@@ -101,10 +103,12 @@
                     <td>{{ $post->category }}</td>
                     <td>{{ $post->status }}</td>
                     <td>@if($post->is_renewal == 1) Yes @else No @endif</td>
+                    @if(!Auth::user()->hasRole('hod'))
                     <td>@if($post->recommended == 1) <a href="{{ url('academic/postponement/'.$post->id.'/recommend') }}">Recommended</a> @else <a href="{{ url('academic/postponement/'.$post->id.'/recommend') }}">Not Recommended</a> @endif</td>
+                    @endif
                     <td>
                       @if(Auth::user()->hasRole('hod'))
-                      <a class="btn btn-info btn-sm" href="{{ url('academic/postponement/'.$post->id.'/recommend') }}">
+                      <a class="btn btn-info btn-sm" @if($post->status == 'PENDING') href="{{ url('academic/postponement/'.$post->id.'/recommend') }}" @else href="#" disabled="disabled" @endif>
                               <i class="fas fa-eye-open">
                               </i>
                               @if($post->recommendation) Edit Recommendation @else Recommend @endif
