@@ -84,7 +84,6 @@
                     <th>Semester</th>
                     <th>Category</th>
                     <th>Status</th>
-                    <th>Is Renewal</th>
                     <th>Date Submitted</th>
                     @if(!Auth::user()->hasRole('hod'))
                     <th>Recommendation</th>
@@ -103,8 +102,7 @@
                     <td>@if($post->semester) {{ $post->semester->name }} @endif</td>
                     <td>{{ $post->category }}</td>
                     <td>{{ $post->status }}</td>
-                    <td>@if($post->is_renewal == 1) Yes @else No @endif</td>
-                    <td>{{ Carbon\Carbon::parse($post->created_at)->format('Y-m-d') }}</td>
+                    <td>{{ Carbon\Carbon::parse($post->created_at)->format('Y-m-d') }} @if($post->is_renewal == 1) * @endif</td>
                     @if(!Auth::user()->hasRole('hod'))
                     <td>@if($post->recommended == 1) <a href="{{ url('academic/postponement/'.$post->id.'/recommend') }}">Recommended</a> @else <a href="{{ url('academic/postponement/'.$post->id.'/recommend') }}">Not Recommended</a> @endif</td>
                     @endif
