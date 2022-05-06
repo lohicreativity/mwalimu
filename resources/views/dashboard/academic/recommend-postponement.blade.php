@@ -108,13 +108,13 @@
                 <div class="card">
                   <div class="card-header" id="ss-supporting-document">
                     <h2 class="mb-0">
-                      <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                      <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
                         Supporting Document
                       </button>
                     </h2>
                   </div>
 
-                  <div id="collapseTwo" class="collapse" aria-labelledby="ss-supporting-document" data-parent="#accordionExample-2">
+                  <div id="collapseOne" class="collapse" aria-labelledby="ss-supporting-document" data-parent="#accordionExample-2">
                     <div class="card-body">
                        <iframe
                       src="https://drive.google.com/viewerng/viewer?embedded=true&url={{ asset('uploads/'.$postponement->supporting_document) }}#toolbar=0&scrollbar=0"
