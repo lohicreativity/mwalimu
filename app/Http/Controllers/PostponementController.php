@@ -179,6 +179,8 @@ class PostponementController extends Controller
             $validation = Validator::make($request->all(),[
               'recommendation'=>'required',
               'recommended'=>'required'
+            ],[
+              'recommended'=>'Recommendation option must be selected'
             ]);
 
             if($validation->fails()){
