@@ -93,7 +93,7 @@
                     </h2>
                   </div>
 
-                  <div id="collapseOne" class="collapse" aria-labelledby="ss-letter" data-parent="#accordionExample-2">
+                  <div id="collapseOne" class="collapse show" aria-labelledby="ss-letter" data-parent="#accordionExample">
                     <div class="card-body">
                        <iframe
                       src="https://drive.google.com/viewerng/viewer?embedded=true&url={{ asset('uploads/'.$postponement->letter) }}#toolbar=0&scrollbar=0"
@@ -116,7 +116,7 @@
                     </h2>
                   </div>
 
-                  <div id="collapseOne" class="collapse" aria-labelledby="ss-supporting-document" data-parent="#accordionExample-2">
+                  <div id="collapseOne" class="collapse" aria-labelledby="ss-supporting-document" data-parent="#accordionExample">
                     <div class="card-body">
                        <iframe
                       src="https://drive.google.com/viewerng/viewer?embedded=true&url={{ asset('uploads/'.$postponement->supporting_document) }}#toolbar=0&scrollbar=0"
