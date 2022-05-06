@@ -112,12 +112,13 @@
 
                       <a href="{{ url('student/supporting-document/'.$post->id.'/download') }}">Supporting Document</a></td>
                     <td>
-
-                      <a class="btn btn-danger btn-sm" href="#" @if($post->status == 'POSTPONED' || $post->status == 'RESUMED' || $post->status == 'DECLINED') disabled="disabled" @else data-toggle="modal" data-target="#ss-delete-post-{{ $post->id }}" @endif>
+                      @if($post->status == 'PENDING')
+                      <a class="btn btn-danger btn-sm" href="#" data-toggle="modal" data-target="#ss-delete-post-{{ $post->id }}">
                               <i class="fas fa-trash">
                               </i>
                               Cancel
                        </a>
+                       @endif
 
                        <div class="modal fade" id="ss-delete-post-{{ $post->id }}">
                         <div class="modal-dialog modal-lg">
