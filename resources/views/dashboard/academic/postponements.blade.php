@@ -103,7 +103,7 @@
                     <td>@if($post->is_renewal == 1) Yes @else No @endif</td>
                     <td>@if($post->recommended == 1) <a href="{{ url('academic/postponement/'.$post->id.'/recommend') }}">Recommended</a> @else <a href="{{ url('academic/postponement/'.$post->id.'/recommend') }}">Not Recommended</a> @endif</td>
                     <td>
-                      @if(!Auth::user()->hasRole('hod'))
+                      @if(Auth::user()->hasRole('hod'))
                       <a class="btn btn-info btn-sm" href="{{ url('academic/postponement/'.$post->id.'/recommend') }}">
                               <i class="fas fa-eye-open">
                               </i>
