@@ -101,21 +101,15 @@
                     <td>{{ $post->category }}</td>
                     <td>{{ $post->status }}</td>
                     <td>@if($post->is_renewal == 1) Yes @else No @endif</td>
-                    <td>@if($post->recommended == 1) Recommended @else Not Recommended @endif</td>
+                    <td>@if($post->recommended == 1) <a href="{{ url('academic/postponement/'.$post->id.'/recommend') }}">Recommended</a> @else <a href="{{ url('academic/postponement/'.$post->id.'/recommend') }}">Not Recommended</a> @endif</td>
                     <td>
-                      @if(Auth::user()->hasRole('hod'))
+                      @if(!Auth::user()->hasRole('hod'))
                       <a class="btn btn-info btn-sm" href="{{ url('academic/postponement/'.$post->id.'/recommend') }}">
                               <i class="fas fa-eye-open">
                               </i>
                               @if($post->recommendation) Edit Recommendation @else Recommend @endif
                        </a>
                        @else
-
-                      <a class="btn btn-info btn-sm" href="{{ url('academic/postponement/'.$post->id.'/recommend') }}">
-                              <i class="fas fa-eye-open">
-                              </i>
-                              View Recommendation
-                       </a>
 
                       <a class="btn btn-success btn-sm" href="{{ url('academic/postponement/'.$post->id.'/accept') }}">
                               <i class="fas fa-check">
@@ -137,7 +131,7 @@
                   </tr>
                   @if(!Auth::user()->hasRole('hod'))
                    <tr>
-                     <td colspan="9"><button type="submit" class="btn btn-primary">Accept Postponements</button></td>
+                     <td colspan="9"><button type="submit" class="btn btn-primary" name="accept">Accept Postponements</button> <button type="submit" class="btn btn-primary" name="decline">Decline Postponements</button></td>
                    </tr>
                   @endif
                   @endforeach
