@@ -70,6 +70,10 @@
               </div>
               <!-- /.card-header -->
               <div class="card-body">
+
+                {!! Form::open(['url'=>'academic/accept-postponements','class'=>'ss-form-processing']) !!}
+
+                {!! Form::input('hidden','study_academic_year_id',$study_academic_year->id) !!}
                  
                 <table id="example2" class="table table-bordered table-hover ss-paginated-table">
                   <thead>
@@ -82,6 +86,9 @@
                     <th>Is Renewal</th>
                     <th>Recommendation</th>
                     <th>Actions</th>
+                    @if(!Auth::user()->hasRole('hod'))
+                    <th>Accept</th>
+                    @endif
                   </tr>
                   </thead>
                   <tbody>
@@ -121,11 +128,22 @@
                        </a>
                        @endif
                     </td>
+                    @if(!Auth::user()->hasRole('hod'))
+                      <td>
+                        {!! Form::checkbox('post_'.$post->id,$post->id,true) !!}
+                      </td>
+                    @endif
                   </tr>
+                  @if(!Auth::user()->hasRole('hod'))
+                   <tr>
+                     <td colspan="9"><button type="submit">Accept Postponements</button></td>
+                   </tr>
+                  @endif
                   @endforeach
                   
                   </tbody>
                 </table>
+                {!! Form::close() !!}
               </div>
               <!-- /.card-body -->
             </div>

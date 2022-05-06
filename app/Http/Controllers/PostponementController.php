@@ -117,6 +117,24 @@ class PostponementController extends Controller
     }
 
     /**
+     * Accept in bulk
+     */
+    public function acceptPostponements(Request $request)
+    {
+         $postponements = Postponement::where('study_academic_year_id',$request->get('study_academic_year_id'))->get();
+
+         foreach($postponements as $post){
+            if($request->get('post_'.$post->id) == $post->id){
+                $ps = Postponement::find($post->id);
+                $ps->status = 'POSTPONED';
+                $ps->save();
+            }
+         }
+
+         return redirect()->back()->with('message','Postponements accepted successfully');
+    }
+
+    /**
      * Decline the specified postponement
      */
     public function decline(Request $request, $id)
