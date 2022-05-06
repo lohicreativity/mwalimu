@@ -43,9 +43,6 @@
                 <h3 class="card-title">Select Academic Year</h3>
               </div>
               <!-- /.card-header -->
-            </div>
-
-            <div class="card">
                  <div class="card-body">
                  {!! Form::open(['url'=>'academic/postponements','class'=>'ss-form-processing','method'=>'GET']) !!}
                    
