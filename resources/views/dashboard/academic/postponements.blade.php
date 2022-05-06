@@ -73,7 +73,7 @@
 
                 {!! Form::open(['url'=>'academic/accept-postponements','class'=>'ss-form-processing']) !!}
 
-                {!! Form::input('hidden','study_academic_year_id',$study_academic_year->id) !!}
+                {!! Form::input('hidden','study_academic_year_id',$request->get('study_academic_year_id')) !!}
                  
                 <table id="example2" class="table table-bordered table-hover ss-paginated-table">
                   <thead>
@@ -136,7 +136,7 @@
                   </tr>
                   @if(!Auth::user()->hasRole('hod'))
                    <tr>
-                     <td colspan="9"><button type="submit">Accept Postponements</button></td>
+                     <td colspan="9"><button type="submit" class="btn btn-primary">Accept Postponements</button></td>
                    </tr>
                   @endif
                   @endforeach
