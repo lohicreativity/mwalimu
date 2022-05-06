@@ -8,6 +8,7 @@ use App\Domain\Registration\Models\Registration;
 use App\Domain\Academic\Models\StudyAcademicYear;
 use App\Domain\Academic\Models\Semester;
 use App\Domain\Registration\Models\Student;
+use App\Domain\Registration\Models\StudentshipStatus;
 use App\Domain\Academic\Actions\PostponementAction;
 use App\Models\User;
 use App\Utils\Util;
@@ -102,6 +103,12 @@ class PostponementController extends Controller
             $postponement = Postponement::findOrFail($id);
             $postponement->status = 'POSTPONED';
             $postponement->save();
+
+            $status = StudentshipStatus::where('name','POSTPONED')->first();
+
+            $student = Student::find($postponement->student_id);
+            $student->studentship_status_id = $status->id;
+            $student->save();
 
             return redirect()->back()->with('message','Postponement accepted successfully');
         }catch(Exception $e){

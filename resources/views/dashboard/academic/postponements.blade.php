@@ -81,6 +81,7 @@
                     <th>Category</th>
                     <th>Status</th>
                     <th>Is Renewal</th>
+                    <th>Recommendation</th>
                     <th>Actions</th>
                   </tr>
                   </thead>
@@ -94,6 +95,7 @@
                     <td>{{ $post->category }}</td>
                     <td>{{ $post->status }}</td>
                     <td>@if($post->is_renewal == 1) Yes @else No @endif</td>
+                    <td>@if($post->recommended == 1) Recommended @else Not Recommended @endif</td>
                     <td>
                       <a class="btn btn-info btn-sm" href="{{ url('academic/postponement/'.$post->id.'/recommend') }}">
                               <i class="fas fa-eye-open">

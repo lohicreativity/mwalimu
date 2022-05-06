@@ -142,8 +142,10 @@ class StreamController extends Controller
             $remaining_streams = Stream::where('stream_component_id',$component->id)->get();
             
             foreach ($remaining_streams as $key => $stream) {
-            	Registration::whereHas('student',function($query) use($stream){
-                $query->where('campus_program_id',$stream->campus_program_id);
+            	Registration::whereHas('student.studentshipStatus',function($query){
+                    $query->where('name','ACTIVE');
+                })->whereHas('student',function($query) use($stream){
+                    $query->where('campus_program_id',$stream->campus_program_id);
 		        })->where('year_of_study',$component->year_of_study)->where('study_academic_year_id',$component->study_academic_year_id)->take($stream->number_of_students)->update(['stream_id'=>$stream->id]);
 		    }
                      
