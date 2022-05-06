@@ -108,11 +108,13 @@
                     @endif
                     <td>
                       @if(Auth::user()->hasRole('hod'))
-                      <a class="btn btn-info btn-sm" @if($post->status == 'PENDING') href="{{ url('academic/postponement/'.$post->id.'/recommend') }}" @else href="#" disabled="disabled" @endif>
+                      @if($post->status == 'PENDING')
+                      <a class="btn btn-info btn-sm" href="{{ url('academic/postponement/'.$post->id.'/recommend') }}">
                               <i class="fas fa-eye-open">
                               </i>
                               @if($post->recommendation) Edit Recommendation @else Recommend @endif
                        </a>
+                       @endif
                        @else
                        
                       @if($post->status == 'PENDING')
