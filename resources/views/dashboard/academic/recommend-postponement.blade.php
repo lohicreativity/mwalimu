@@ -92,7 +92,7 @@
                     </h2>
                   </div>
 
-                  <div id="ss-letter" class="collapse @if($key == 0) show @endif" aria-labelledby="ss-letter" data-parent="#accordionExample">
+                  <div id="ss-letter" class="collapse show" aria-labelledby="ss-letter" data-parent="#accordionExample">
                     <div class="card-body">
                        <iframe
                       src="https://drive.google.com/viewerng/viewer?embedded=true&url={{ asset('uploads/'.$postponement->letter) }}#toolbar=0&scrollbar=0"
