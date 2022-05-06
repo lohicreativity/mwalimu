@@ -38,91 +38,94 @@
       <div class="container-fluid">
         <div class="row">
           <div class="col-12">
-             
-            <div class="card">
+             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">Request Postponement - {{ $study_academic_year->academicYear->year }} - {{ $semester->name }}</h3>
+                <h3 class="card-title">Select Academic Year</h3>
               </div>
               <!-- /.card-header -->
-                 {!! Form::open(['url'=>'academic/postponement/store','class'=>'ss-form-processing','files'=>true]) !!}
-              <div class="card-body">
+                 <div class="card-body">
+                 {!! Form::open(['url'=>'academic/postponements','class'=>'ss-form-processing','method'=>'GET']) !!}
+                   
+                   <div class="form-group">
+                    <select name="study_academic_year_id" class="form-control" required>
+                       <option value="">Select Study Academic Year</option>
+                       @foreach($study_academic_years as $year)
+                       <option value="{{ $year->id }}" @if($year->id == $request->get('study_academic_year_id')) selected="selected" @endif>{{ $year->academicYear->year }}</option>
+                       @endforeach
+                    </select>
+                  </div>
+                  <div class="ss-form-actions">
+                   <button type="submit" class="btn btn-primary">{{ __('Search') }}</button>
+                  </div>
 
-                 {!! Form::input('hidden','status','PENDING') !!}
-                 {!! Form::input('hidden','semester_id',$semester->id) !!}
-                 {!! Form::input('hidden','study_academic_year_id',$study_academic_year->id) !!}
-                 <div class="row">
-                  <div class="form-group col-6">
-                     {!! Form::label('','Category') !!}
-                     <select name="category" class="form-control" required>
-                       <option>Select Category</option>
-                       @if(!str_contains($semester->name,'2'))
-                       <option value="YEAR">Year</option>
-                       @endif
-                       <option value="SEMESTER">Semester</option>
-                     </select>
-
-                     {!! Form::input('hidden','student_id',$student->id) !!}
-                  </div>
-                  <div class="form-group col-6">
-                     {!! Form::label('','Upload postponement letter') !!}
-                     {!! Form::file('postponement_letter',['class'=>'form-control','required'=>true]) !!}
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="form-group col-6">
-                     {!! Form::label('','Upload supporting document (Optional)') !!}
-                     {!! Form::file('supporting_document',['class'=>'form-control']) !!}
-                  </div>
-                </div>
-                </div>
-                <div class="card-footer">
-                  <button type="submit" class="btn btn-primary">{{ __('Request Postponement') }}</button>
-                </div>
-              {!! Form::close() !!}
+                 {!! Form::close() !!}
+              </div>
             </div>
             <!-- /.card -->
 
             @if(count($postponements) != 0)
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">List of Postponements</h3>
+                <h3 class="card-title">List of Postponement Resumptions</h3>
               </div>
               <!-- /.card-header -->
+              {!! Form::open(['url'=>'academic/accept-postponements','class'=>'ss-form-processing']) !!}
+
+                {!! Form::input('hidden','study_academic_year_id',$request->get('study_academic_year_id')) !!}
               <div class="card-body">
+
+                
                  
-                <table id="example2" class="table table-bordered table-hover">
+                <table id="example2" class="table table-bordered table-hover ss-paginated-table">
                   <thead>
                   <tr>
-                    <th>Study Academic Year</th>
+                    <th>Student</th>
+                    <th>Reg Number</th>
                     <th>Semester</th>
                     <th>Category</th>
                     <th>Status</th>
-                    <th>Download Letter</th>
+                    <th>Date Resumed</th>
+                    @if(!Auth::user()->hasRole('hod'))
+                    <th>Recommendation</th>
+                    @endif
                     <th>Actions</th>
+                    @if(!Auth::user()->hasRole('hod'))
+                    <th>Accept</th>
+                    @endif
                   </tr>
                   </thead>
                   <tbody>
                   @foreach($postponements as $post)
                   <tr>
-                    <td>{{ $post->studyAcademicYear->academicYear->year }}</td>
+                    <td>{{ $post->student->first_name }} {{ $post->student->middle_name }} {{ $post->student->surname }}</td>
+                    <td>{{ $post->student->registration_number }}</td>
                     <td>@if($post->semester) {{ $post->semester->name }} @endif</td>
                     <td>{{ $post->category }}</td>
                     <td>{{ $post->status }}</td>
-                    <td><a href="{{ url('student/postponement-letter/'.$post->id.'/download') }}">Postponement Letter</a><br>
-
-                      <a href="{{ url('student/supporting-document/'.$post->id.'/download') }}">Supporting Document</a></td>
+                    <td>{{ Carbon\Carbon::parse($post->resumed_at)->format('Y-m-d') }} @if($post->is_renewal == 1) * @endif</td>
+                    @if(!Auth::user()->hasRole('hod'))
+                    <td>@if($post->resume_recommended == 1) <a href="{{ url('academic/postponement/'.$post->id.'/resume/recommend') }}">Recommended</a> @else <a href="{{ url('academic/postponement/'.$post->id.'/resume/recommend') }}">Not Recommended</a> @endif</td>
+                    @endif
                     <td>
+                      @if(Auth::user()->hasRole('hod'))
                       @if($post->status == 'PENDING')
-                      <a class="btn btn-danger btn-sm" href="#" data-toggle="modal" data-target="#ss-delete-post-{{ $post->id }}">
-                              <i class="fas fa-trash">
+                      <a class="btn btn-info btn-sm" href="{{ url('academic/postponement/'.$post->id.'/resume/recommend') }}">
+                              <i class="fas fa-eye-open">
                               </i>
-                              Cancel
+                              @if($post->recommendation) Edit Recommendation @else Recommend @endif
                        </a>
-                      @endif
-                      
-                      <a href="{{ url('student/postponement/'.$post->id.'/resume') }}" class="btn btn-primary">Resume</a>
+                       @endif
+                       @else
+                       
+                      @if($post->status == 'POSTPONED')
+                      <a class="btn btn-success btn-sm" href="#" data-toggle="modal" data-target="#ss-accept-post-{{ $post->id }}">
+                              <i class="fas fa-check">
+                              </i>
+                              Resume
+                       </a>
+                       @endif
 
-                       <div class="modal fade" id="ss-delete-post-{{ $post->id }}">
+                       <div class="modal fade" id="ss-accept-post-{{ $post->id }}">
                         <div class="modal-dialog modal-lg">
                           <div class="modal-content">
                             <div class="modal-header">
@@ -135,10 +138,10 @@
                               <div class="row">
                                 <div class="col-12">
                                     <div id="ss-confirmation-container">
-                                       <p id="ss-confirmation-text">Are you sure you want to cancel this postponement?</p>
+                                       <p id="ss-confirmation-text">Are you sure you want to resume this postponement?</p>
                                        <div class="ss-form-controls">
                                          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                                         <a href="{{ url('academic/postponement/'.$post->id.'/destroy') }}" class="btn btn-danger">Delete</a>
+                                         <a href="{{ url('academic/postponement/'.$post->id.'/resume') }}" class="btn btn-success">Resume</a>
                                          </div><!-- end of ss-form-controls -->
                                       </div><!-- end of ss-confirmation-container -->
                                   </div><!-- end of col-md-12 -->
@@ -153,14 +156,35 @@
                         <!-- /.modal-dialog -->
                       </div>
                       <!-- /.modal -->
+
+                      
+                       @endif
                     </td>
+                    @if(!Auth::user()->hasRole('hod'))
+                      <td>
+                        @if($post->status == 'PENDING')
+                        {!! Form::checkbox('post_'.$post->id,$post->id,true) !!}
+                        @endif
+                      </td>
+                    @endif
                   </tr>
+                  @if(!Auth::user()->hasRole('hod'))
+                   <tr>
+                     <td colspan="9">
+                      
+                      <button type="submit" class="btn btn-primary" name="accept">Accept Resumption</button> <button type="submit" class="btn btn-primary" name="decline">Decline Resumption</button>
+                      
+                    </td>
+                   </tr>
+                  @endif
                   @endforeach
                   
                   </tbody>
                 </table>
+                
               </div>
               <!-- /.card-body -->
+              {!! Form::close() !!}
             </div>
             <!-- /.card -->
             @else

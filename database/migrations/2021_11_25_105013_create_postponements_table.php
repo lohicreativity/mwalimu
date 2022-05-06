@@ -22,6 +22,10 @@ class CreatePostponementsTable extends Migration
             $table->string('letter');
             $table->string('supporting_document');
             $table->text('recommendation')->nullable();
+            $table->tinyInteger('recommended')->nullable();
+            $table->string('resumption_letter')->nullable();
+            $table->text('resumption_recommendation')->nullable();
+            $table->tinyInteger('resume_recommended')->tinyInteger();
             $table->unsignedBigInteger('recommended_by_user_id')->nullable();
             $table->string('status',20)->default('PENDING');
             $table->tinyInteger('is_renewal')->nullable();
