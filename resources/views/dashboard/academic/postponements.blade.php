@@ -76,7 +76,6 @@
                   <tr>
                     <th>Student</th>
                     <th>Reg Number</th>
-                    <th>Study Academic Year</th>
                     <th>Semester</th>
                     <th>Category</th>
                     <th>Status</th>
@@ -90,7 +89,6 @@
                   <tr>
                     <td>{{ $post->student->first_name }} {{ $post->student->middle_name }} {{ $post->student->surname }}</td>
                     <td>{{ $post->student->registration_number }}</td>
-                    <td>{{ $post->studyAcademicYear->academicYear->year }}</td>
                     <td>@if($post->semester) {{ $post->semester->name }} @endif</td>
                     <td>{{ $post->category }}</td>
                     <td>{{ $post->status }}</td>
