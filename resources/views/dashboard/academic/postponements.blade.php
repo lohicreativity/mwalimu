@@ -110,17 +110,19 @@
                               @if($post->recommendation) Edit Recommendation @else Recommend @endif
                        </a>
                        @else
-
-                      <a class="btn btn-success btn-sm" href="#" @if($post->status != 'PENDING') disabled="disabled" @else data-toggle="modal" data-target="#ss-accept-post-{{ $post->id }}" @endif>
+                       
+                      @if($post->status == 'PENDING')
+                      <a class="btn btn-success btn-sm" href="#" data-toggle="modal" data-target="#ss-accept-post-{{ $post->id }}">
                               <i class="fas fa-check">
                               </i>
                               Accept
                        </a>
-                       <a class="btn btn-danger btn-sm" href="" @if($post->status != 'PENDING') disabled="disabled" @else data-toggle="modal" data-target="#ss-decline-post-{{ $post->id }}" @endif>
+                       <a class="btn btn-danger btn-sm" href="#" data-toggle="modal" data-target="#ss-decline-post-{{ $post->id }}">
                               <i class="fas fa-check">
                               </i>
                               Decline
                        </a>
+                       @endif
 
                        <div class="modal fade" id="ss-accept-post-{{ $post->id }}">
                         <div class="modal-dialog modal-lg">
@@ -195,7 +197,11 @@
                   </tr>
                   @if(!Auth::user()->hasRole('hod'))
                    <tr>
-                     <td colspan="9"><button type="submit" class="btn btn-primary" name="accept">Accept Postponements</button> <button type="submit" class="btn btn-primary" name="decline">Decline Postponements</button></td>
+                     <td colspan="9">
+                      @if($post->status == 'PENDING')
+                      <button type="submit" class="btn btn-primary" name="accept">Accept Postponements</button> <button type="submit" class="btn btn-primary" name="decline">Decline Postponements</button>
+                      @endif
+                    </td>
                    </tr>
                   @endif
                   @endforeach
