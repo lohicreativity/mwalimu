@@ -69,11 +69,12 @@
                 <h3 class="card-title">List of Postponements</h3>
               </div>
               <!-- /.card-header -->
-              <div class="card-body">
-
-                {!! Form::open(['url'=>'academic/accept-postponements','class'=>'ss-form-processing']) !!}
+              {!! Form::open(['url'=>'academic/accept-postponements','class'=>'ss-form-processing']) !!}
 
                 {!! Form::input('hidden','study_academic_year_id',$request->get('study_academic_year_id')) !!}
+              <div class="card-body">
+
+                
                  
                 <table id="example2" class="table table-bordered table-hover ss-paginated-table">
                   <thead>
@@ -143,9 +144,10 @@
                   
                   </tbody>
                 </table>
-                {!! Form::close() !!}
+                
               </div>
               <!-- /.card-body -->
+              {!! Form::close() !!}
             </div>
             <!-- /.card -->
             @else
