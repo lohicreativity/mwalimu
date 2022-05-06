@@ -81,28 +81,57 @@
             <!-- /.card -->
           </div>
           <div class="col-8">
-            <div class="card">
-               <div class="card-body">
-              @if($postponement->letter)
-                  <iframe
+
+                <div class="accordion" id="accordionExample">
+                <div class="card">
+                  <div class="card-header" id="ss-letter">
+                    <h2 class="mb-0">
+                      <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#ss-letter" aria-expanded="true" aria-controls="collapseOne">
+                        Postponement Letter
+                      </button>
+                    </h2>
+                  </div>
+
+                  <div id="ss-letter" class="collapse @if($key == 0) show @endif" aria-labelledby="ss-letter" data-parent="#accordionExample">
+                    <div class="card-body">
+                       <iframe
                       src="https://drive.google.com/viewerng/viewer?embedded=true&url={{ asset('uploads/'.$postponement->letter) }}#toolbar=0&scrollbar=0"
                       frameBorder="0"
                       scrolling="auto"
                       height="auto"
                       width="100%"
                   ></iframe>
-               @endif
-               @if($postponement->supporting_document)
-                  <iframe
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="accordion" id="accordionExample-2">
+                @if($postponement->supporting_document)
+                <div class="card">
+                  <div class="card-header" id="ss-supporting-document">
+                    <h2 class="mb-0">
+                      <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        Supporting Document
+                      </button>
+                    </h2>
+                  </div>
+
+                  <div id="collapseOne" class="collapse" aria-labelledby="ss-supporting-document" data-parent="#accordionExample-2">
+                    <div class="card-body">
+                       <iframe
                       src="https://drive.google.com/viewerng/viewer?embedded=true&url={{ asset('uploads/'.$postponement->supporting_document) }}#toolbar=0&scrollbar=0"
                       frameBorder="0"
                       scrolling="auto"
                       height="auto"
                       width="100%"
                   ></iframe>
-               @endif
+                    </div>
+                  </div>
                 </div>
+                @endif
               </div>
+
 
               <div class="card">
                  {!! Form::open(['url'=>'academic/postponement/recommend','class'=>'ss-form-processing']) !!}
