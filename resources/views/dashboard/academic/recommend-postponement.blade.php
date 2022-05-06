@@ -83,18 +83,18 @@
           <div class="col-8">
             <div class="card">
                <div class="card-body">
-              @if($post->letter)
+              @if($postponement->letter)
                   <iframe
-                      src="https://drive.google.com/viewerng/viewer?embedded=true&url={{ asset('uploads/'.$post->letter) }}#toolbar=0&scrollbar=0"
+                      src="https://drive.google.com/viewerng/viewer?embedded=true&url={{ asset('uploads/'.$postponement->letter) }}#toolbar=0&scrollbar=0"
                       frameBorder="0"
                       scrolling="auto"
                       height="auto"
                       width="100%"
                   ></iframe>
                @endif
-               @if($post->supporting_document)
+               @if($postponement->supporting_document)
                   <iframe
-                      src="https://drive.google.com/viewerng/viewer?embedded=true&url={{ asset('uploads/'.$post->supporting_document) }}#toolbar=0&scrollbar=0"
+                      src="https://drive.google.com/viewerng/viewer?embedded=true&url={{ asset('uploads/'.$postponement->supporting_document) }}#toolbar=0&scrollbar=0"
                       frameBorder="0"
                       scrolling="auto"
                       height="auto"
