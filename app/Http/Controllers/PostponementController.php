@@ -126,7 +126,7 @@ class PostponementController extends Controller
          foreach($postponements as $post){
             if($request->get('post_'.$post->id) == $post->id){
                 $ps = Postponement::find($post->id);
-                $ps->status = $request->get('accept') 'POSTPONED' : 'DECLINED';
+                $ps->status = $request->get('accept')? 'POSTPONED' : 'DECLINED';
                 $ps->save();
             }
          }
