@@ -123,11 +123,18 @@ class PostponementController extends Controller
     {
          $postponements = Postponement::where('study_academic_year_id',$request->get('study_academic_year_id'))->get();
 
+         $status = StudentshipStatus::where('name','POSTPONED')->first();
+
          foreach($postponements as $post){
             if($request->get('post_'.$post->id) == $post->id){
                 $ps = Postponement::find($post->id);
                 $ps->status = $request->get('accept')? 'POSTPONED' : 'DECLINED';
                 $ps->save();
+                if($request->get('accept')){
+                  $student = Student::find($post->student_id);
+                  $student->studentship_status_id = $status->id;
+                  $student->save();
+                }
             }
          }
 
