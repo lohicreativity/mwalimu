@@ -176,17 +176,25 @@ class PostponementController extends Controller
      */
     public function recommend(Request $request)
     {
-        try{
-            $postponement = Postponement::findOrFail($id);
+            $validation = Validator::make($request->all(),[
+              'recommendation'=>'required',
+              'recommended'=>'required'
+            ]);
+
+            if($validation->fails()){
+               if($request->ajax()){
+                  return response()->json(array('error_messages'=>$validation->messages()));
+               }else{
+                  return redirect()->back()->withInput()->withErrors($validation->messages());
+               }
+            }
+            $postponement = Postponement::find($request->get('postponement_id'));
             $postponement->recommendation = $request->get('recommendation');
             $postponement->recommended = $request->get('recommended');
             $postponement->recommended_by_user_id = Auth::user()->id;
             $postponement->save();
 
             return redirect()->back()->with('message','Postponement recommended successfully');
-        }catch(Exception $e){
-            return redirect()->back()->with('error','Unable to get the resource specified in this request');
-        }
     }
 
     /**
