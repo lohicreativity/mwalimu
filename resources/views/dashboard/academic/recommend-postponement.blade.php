@@ -123,7 +123,7 @@
                       {!! Form::label('','Recommendation') !!}
                       {!! Form::textarea('recommendation',null,['class'=>'form-control','placeholder'=>'Recommendation','rows'=>3,'required'=>true]) !!}
 
-                      {!! Form::input('hidden','postponement_id',$post->id) !!}
+                      {!! Form::input('hidden','postponement_id',$postponement->id) !!}
                     </div>
                  </div>
                  </div>
