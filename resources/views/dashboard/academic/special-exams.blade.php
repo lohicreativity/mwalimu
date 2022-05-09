@@ -113,7 +113,7 @@
                     <td>{{ $exam->status }}</td>
                     <td>{{ Carbon\Carbon::parse($exam->created_at)->format('Y-m-d') }} @if($exam->is_renewal == 1) * @endif</td>
                     @if(!Auth::user()->hasRole('hod'))
-                    <td>@if($exam->recommended == 1) <a href="{{ url('academic/special-exam/'.$exam->id.'/recommend') }}">Recommended</a> @else <a href="{{ url('academic/special-exam/'.$exam->id.'/recommend') }}">Not Recommended</a> @endif</td>
+                    <td>@if($exam->recommended == 1) <a href="{{ url('academic/special-exam/'.$exam->id.'/recommend') }}">Recommended</a> @elseif($exam->recommended === 0) <a href="{{ url('academic/special-exam/'.$exam->id.'/recommend') }}">Not Recommended</a> @endif</td>
                     @endif
                     <td>
                       @if(Auth::user()->hasRole('hod'))

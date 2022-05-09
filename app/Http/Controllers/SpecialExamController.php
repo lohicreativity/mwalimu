@@ -27,7 +27,7 @@ class SpecialExamController extends Controller
            'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
            'exams'=>$request->get('query')? SpecialExamRequest::whereHas('student',function($query) use($request){
                  $query->where('first_name','LIKE','%'.$request->get('query').'%')->orWhere('middle_name','LIKE','%'.$request->get('query').'%')->orWhere('surname','LIKE','%'.$request->get('query').'%')->orWhere('registration_number','LIKE','%'.$request->get('query').'%');
-           })->with(['student','semester','studyAcademicYear.academicYear','exams.moduleAssignment.module'])->paginate(20) : SpecialExamRequest::fwith(['student','semester','studyAcademicYear.academicYear','exams.moduleAssignment.module'])->paginate(20),
+           })->with(['student','semester','studyAcademicYear.academicYear','exams.moduleAssignment.module'])->paginate(20) : SpecialExamRequest::with(['student','semester','studyAcademicYear.academicYear','exams.moduleAssignment.module'])->paginate(20),
            'semesters'=>Semester::all(),
            'staff'=>User::find(Auth::user()->id)->staff,
            'request'=>$request
