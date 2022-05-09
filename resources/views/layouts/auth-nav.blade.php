@@ -387,12 +387,6 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="{{ url('student/special-exams?study_academic_year_id='.session('active_academic_year_id')) }}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>{{ __('Special Exams') }}</p>
-                </a>
-              </li>
-              <li class="nav-item">
                 <a href="{{ url('academic/postponement/resumptions?study_academic_year_id='.session('active_academic_year_id')) }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>{{ __('Resumptions') }}</p>
@@ -544,6 +538,12 @@
                 <a href="{{ url('academic/results/student-mark-editing') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>{{ __('Marks Editing') }}</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ url('student/special-exams?study_academic_year_id='.session('active_academic_year_id')) }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>{{ __('Special Exams') }}</p>
                 </a>
               </li>
               <li class="nav-item">
