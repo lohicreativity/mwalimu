@@ -69,9 +69,7 @@
                 <h3 class="card-title">List of Postponements</h3>
               </div>
               <!-- /.card-header -->
-              {!! Form::open(['url'=>'academic/accept-postponements','class'=>'ss-form-processing']) !!}
-
-                
+                 
               <div class="card-body">
                 {!! Form::open(['url'=>'academic/postponements','method'=>'GET']) !!}
                 {!! Form::input('hidden','study_academic_year_id',$request->get('study_academic_year_id')) !!}
@@ -82,6 +80,8 @@
                  </span>
                 </div>
                 {!! Form::close() !!}
+
+                {!! Form::open(['url'=>'academic/accept-postponements','class'=>'ss-form-processing']) !!}
 
                 {!! Form::input('hidden','study_academic_year_id',$request->get('study_academic_year_id')) !!}
                  
