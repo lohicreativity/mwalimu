@@ -83,7 +83,7 @@
           <div class="col-8">       
 
               <div class="accordion" id="accordionExample">
-                @if($postponement->letter)
+                @if($postponement->postponement_letter)
                 <div class="card">
                   <div class="card-header" id="ss-letter">
                     <h2 class="mb-0">
@@ -96,7 +96,7 @@
                   <div id="collapseOne" class="collapse show" aria-labelledby="ss-letter" data-parent="#accordionExample">
                     <div class="card-body">
                        <iframe
-                      src="https://drive.google.com/viewerng/viewer?embedded=true&url={{ asset('uploads/'.$postponement->letter) }}#toolbar=0&scrollbar=0"
+                      src="https://drive.google.com/viewerng/viewer?embedded=true&url={{ asset('uploads/'.$postponement->postponement_letter) }}#toolbar=0&scrollbar=0"
                       frameBorder="0"
                       scrolling="auto"
                       height="400"
@@ -136,6 +136,8 @@
               <div class="card">
                  {!! Form::open(['url'=>'academic/special-exam/recommend','class'=>'ss-form-processing']) !!}
                  <div class="card-body">
+                   @foreach($postponement->exams as $ex){{ $ex->moduleAssignment->module->name }} - {{ $ex->moduleAssignment->module->code }}<br>
+                   @endforeach
                    <div class="row">
                      <div class="col-12">
                         <label class="radio-inline">
