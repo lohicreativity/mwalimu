@@ -167,6 +167,10 @@
               @else
               <div class="card">
                  <div class="card-body">
+                    @foreach($postponement->exams as $ex){{ $ex->moduleAssignment->module->name }} - {{ $ex->moduleAssignment->module->code }}<br>
+                    @endforeach
+                    <br>
+
                     <p>{{ $postponement->recommendation }}</p>
                  </div>
               </div>
