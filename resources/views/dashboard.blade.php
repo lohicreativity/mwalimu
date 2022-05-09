@@ -36,6 +36,9 @@
     <section class="content">
       <div class="container-fluid">
         <!-- Small boxes (Stat box) -->
+        @if($postponements_count != 0 || $special_exams_count != 0)
+        <div class="alert alert-warning">You have pending postponement requests</div>
+        @endif
         
       </div><!-- /.container-fluid -->
     </section>
