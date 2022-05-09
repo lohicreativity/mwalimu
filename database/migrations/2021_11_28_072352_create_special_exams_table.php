@@ -20,6 +20,8 @@ class CreateSpecialExamsTable extends Migration
             $table->unsignedBigInteger('semester_id');
             $table->unsignedBigInteger('module_assignment_id');
             $table->string('type',20)->default('FINAL');
+            $table->string('postponement_letter')->nullable();
+            $table->string('supporting_document')->nullable();
             $table->string('status',20)->default('PENDING');
             $table->timestamps();
 

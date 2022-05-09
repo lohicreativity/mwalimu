@@ -8,6 +8,7 @@ use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\RegistrationController;
 use App\Http\Controllers\TranscriptRequestController;
 use App\Http\Controllers\PostponementController;
+use App\Http\Controllers\SpecialExamController;
 use App\Http\Controllers\PerformanceReportRequestController;
 
 /*
@@ -71,5 +72,9 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
     Route::get('supporting-document/{id}/download',[PostponementController::class,'downloadSupportingDocument']);
     Route::get('postponement/{id}/resume',[PostponementController::class,'showResume']);
     Route::post('postponement/resume',[PostponementController::class,'submitResume']);
+
+
+    Route::get('postponement/exam',[SpecialExamController::class,'showPostponement']);
+    Route::post('special-exam/store',[SpecialExamController::class,'storePostponement']);
 
 });

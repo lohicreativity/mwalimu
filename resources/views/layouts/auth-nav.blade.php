@@ -115,6 +115,29 @@
           </li>
           <li class="nav-item">
             <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-random"></i>
+              <p>
+                {{ __('Postponements') }}
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{ url('student/postponements') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Semester/Annual</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ url('student/postponement/exam') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Exams</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link">
               <i class="nav-icon fas fa-file-pdf"></i>
               <p>
                 {{ __('Results') }}
@@ -505,12 +528,6 @@
                 </a>
               </li>
               @endcan 
-              <li class="nav-item">
-                <a href="{{ url('academic/special-exams') }}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>{{ __('Special Exams') }}</p>
-                </a>
-              </li> 
               <li class="nav-item">
                 <a href="{{ url('academic/results/appeals?study_academic_year_id='.session('active_academic_year_id').'&campus_id='.session('staff_campus_id')) }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>

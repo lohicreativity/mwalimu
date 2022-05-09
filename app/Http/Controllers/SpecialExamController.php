@@ -32,6 +32,23 @@ class SpecialExamController extends Controller
     }
 
     /**
+     * Show postponement form
+     */
+    public function showPostponement(Request $request)
+    {
+        $student = User::find(Auth::user()->id)->student;
+        $data =  [
+           'module_assignments'=>ModuleAssignment::whereHas('programModuleAssignment',function($query) use($student){
+               $query->where('semester_id',session('active_semester_id'))->where('campus_program_id',$student->campus_program_id);
+           })->with(['module','programModuleAssignment'])->where('study_academic_year_id',session('active_academic_year_id'))->get(),
+           'special_exams'=>SpecialExam::with(['moduleAssignment.programModuleAssignment','moduleAssignment.module'])->where('student_id',$student->id)->paginate(20),
+           'student'=>$student,
+           'request'=>$request
+        ];
+        return view('dashboard.student.special-exams',$data)->withTitle('Exam Postponement');
+    }
+
+    /**
      * Store exam into database
      */
     public function store(Request $request)
@@ -57,6 +74,100 @@ class SpecialExamController extends Controller
 
         return Util::requestResponse($request,'Special exam created successfully');
     }
+
+    /**
+     * Store exam into database
+     */
+    public function storePostponement(Request $request)
+    {
+        $validation = Validator::make($request->all(),[
+            'type'=>'required',
+        ]);
+
+        if($validation->fails()){
+           if($request->ajax()){
+              return response()->json(array('error_messages'=>$validation->messages()));
+           }else{
+              return redirect()->back()->withInput()->withErrors($validation->messages());
+           }
+        }
+
+        $student = Student::find($request->get('student_id'));
+
+        $module_assignments = ModuleAssignment::whereHas('programModuleAssignment',function($query) use($student){
+               $query->where('semester_id',session('active_semester_id'))->where('campus_program_id',$student->campus_program_id);
+           })->with(['module','programModuleAssignment'])->where('study_academic_year_id',session('active_academic_year_id'))->get();
+
+        if($request->hasFile('postponement_letter')){
+              $destination = SystemLocation::uploadsDirectory();
+              $request->file('postponement_letter')->move($destination, $request->file('postponement_letter')->getClientOriginalName());
+
+              
+        }
+        if($request->hasFile('supporting_document')){
+              $destination = SystemLocation::uploadsDirectory();
+              $request->file('supporting_document')->move($destination, $request->file('supporting_document')->getClientOriginalName());
+        }
+
+        foreach($module_assignments as $assign){
+            if($request->get('mod_assign_'.$assign->id) == $assign->id){
+                if(SpecialExam::where('student_id',$request->get('student_id'))->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->where('type',$request->get('type'))->count() == 0){
+                        $exam = new SpecialExam;
+                        $exam->student_id = $request->get('student_id');
+                        $exam->study_academic_year_id = session('active_academic_year_id');
+                        $exam->module_assignment_id = $request->get('mod_assign_'.$assign->id);
+                        $exam->semester_id = session('semester_id');
+                        $exam->type = $request->get('type');
+                        if($request->hasFile('supporting_document')){
+                        $exam->postponemet_letter = $request->file('postponement_letter')->getClientOriginalName();
+                        }
+                        if($request->hasFile('supporting_document')){
+                        $exam->supporting_document = $request->file('supporting_document')->getClientOriginalName();
+                        }
+                        $exam->save();
+                }
+            }
+        }
+
+        return Util::requestResponse($request,'Exam postponement created successfully');
+    }
+
+
+    /**
+     * Download letter
+     */
+    public function downloadLetter(Request $request, $id)
+    {
+        try{
+            $exam = Postponement::findOrFail($id);
+            if(file_exists(public_path().'/uploads/'.$exam->postponement_letter)){
+               return response()->download(public_path().'/uploads/'.$exam->postponement_letter);
+            }else{
+                return redirect()->back()->with('error','Unable to get the resource specified in this request');
+            }
+        }catch(Exception $e){
+            return redirect()->back()->with('error','Unable to get the resource specified in this request');
+        }
+    }
+    
+
+    /**
+     * Download letter
+     */
+    public function downloadSupportingDocument(Request $request, $id)
+    {
+        try{
+            $exam = SpecialExam::findOrFail($id);
+            if(file_exists(public_path().'/uploads/'.$exam->supporting_document)){
+               return response()->download(public_path().'/uploads/'.$exam->supporting_document);
+            }else{
+                return redirect()->back()->with('error','Unable to get the resource specified in this request');
+            }
+        }catch(Exception $e){
+            return redirect()->back()->with('error','Unable to get the resource specified in this request');
+        }
+    }
+
 
     /**
      * Update specified exam
