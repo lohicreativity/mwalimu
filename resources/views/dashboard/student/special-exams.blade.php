@@ -72,10 +72,12 @@
                 <div class="row">
                    @foreach($module_assignments as $assign)
                    <div class="col-3">
+                     <div class="checkbox">
                        <label>
                           {!! Form::checkbox('mod_assign_'.$assign->id,$assign->id,null,['class'=>'form-control']) !!}
                           {{ $assign->module->name }}
                        </label>
+                     </div>
                    </div>
                    @endforeach
                 </div>
