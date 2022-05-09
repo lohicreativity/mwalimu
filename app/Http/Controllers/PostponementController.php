@@ -55,7 +55,7 @@ class PostponementController extends Controller
       if(Postponement::where('student_id',$request->get('student_id'))->where('status','PENDING')->count() != 0){
             return redirect()->back()->with('error','You have pending postponement');
         }
-      if(Postponement::where('student_id',$request->get('student_id'))->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('status','!=','RESUMED')->count() != 0){
+      if(Postponement::where('student_id',$request->get('student_id'))->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('semester_id',$request->get('semester_id'))->where('status','!=','RESUMED')->count() != 0){
             return redirect()->back()->with('error','You have already requested for postponement for this academic year');
         }
 
