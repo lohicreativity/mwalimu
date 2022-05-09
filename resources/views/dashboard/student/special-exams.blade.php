@@ -121,9 +121,9 @@
                     <td>{{ $exam->moduleAssignment->module->name }} - {{ $exam->moduleAssignment->module->code }}</td>
                     <td>{{ $exam->type }}</td>
                     <td>{{ $exam->status }}</td>
-                    <td><a href="{{ url('student/special-exam/postponement-letter/'.$post->id.'/download') }}">Postponement Letter</a><br>
+                    <td><a href="{{ url('student/special-exam/postponement-letter/'.$exam->id.'/download') }}">Postponement Letter</a><br>
 
-                      <a href="{{ url('student/special-exam/supporting-document/'.$post->id.'/download') }}">Supporting Document</a>
+                      <a href="{{ url('student/special-exam/supporting-document/'.$exam->id.'/download') }}">Supporting Document</a>
                     </td>
                     <td>
 

@@ -76,5 +76,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 
     Route::get('postponement/exam',[SpecialExamController::class,'showPostponement']);
     Route::post('special-exam/store',[SpecialExamController::class,'storePostponement']);
+    Route::get('special-exam/supporting-document/{exam_id}/download',[SpecialExamController::class,'downloadSupportingDocument']);
+    Route::get('special-exam/postponement-letter/{exam_id}/download',[SpecialExamController::class,'downloadLetter']);
 
 });
