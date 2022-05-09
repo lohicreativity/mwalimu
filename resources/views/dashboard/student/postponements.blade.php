@@ -89,6 +89,17 @@
               </div>
               <!-- /.card-header -->
               <div class="card-body">
+                @php
+                  $is_renewal = false;
+                @endphp
+                @foreach($postponements as $post)
+                  @if($post->is_renewal == 1)
+                    @php
+                      $is_renewal = true;
+                      break;
+                    @endphp
+                  @endif
+                @endforeach
                  
                 <table id="example2" class="table table-bordered table-hover">
                   <thead>
@@ -120,7 +131,9 @@
                        </a>
                       @endif
                       
-                      @if($post->status == 'POSTPONED')
+                      @if($post->status == 'POSTPONED' && $is_renewal)
+                      <a href="{{ url('student/postponement/'.$post->id.'/resume') }}" class="btn btn-primary">Resume</a>
+                      @elseif($post->status == 'POSTPONED' && !$is_renewal)
                       <a href="{{ url('student/postponement/'.$post->id.'/resume') }}" class="btn btn-primary">Resume</a>
                       @endif
 

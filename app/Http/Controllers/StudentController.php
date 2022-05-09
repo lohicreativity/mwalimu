@@ -438,7 +438,7 @@ class StudentController extends Controller
            'study_academic_year'=>StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first(),
            'semester'=>Semester::where('status','ACTIVE')->first(),
            'student'=>$student,
-           'postponements'=>Postponement::where('student_id',$student->id)->paginate(20)
+           'postponements'=>Postponement::where('student_id',$student->id)->latest()->paginate(20)
         ];
         return view('dashboard.student.postponements',$data)->withTitle('Postponements');
 
