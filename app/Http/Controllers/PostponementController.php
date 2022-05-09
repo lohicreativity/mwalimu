@@ -119,6 +119,7 @@ class PostponementController extends Controller
         try{
             $postponement = Postponement::findOrFail($id);
             $postponement->status = 'POSTPONED';
+            $postponement->postponed_by_user_id = Auth::user()->id;
             $postponement->save();
 
             $status = StudentshipStatus::where('name','POSTPONED')->first();
@@ -146,6 +147,7 @@ class PostponementController extends Controller
             if($request->get('post_'.$post->id) == $post->id){
                 $ps = Postponement::find($post->id);
                 $ps->status = $request->get('accept')? 'POSTPONED' : 'DECLINED';
+                $ps->postponed_by_user_id = $request->get('accept')? Auth::user()->id : null;
                 $ps->save();
                 if($request->get('accept')){
                   $student = Student::find($post->student_id);
@@ -221,9 +223,10 @@ class PostponementController extends Controller
         try{
             $postponement = Postponement::findOrFail($id);
             $postponement->status = 'RESUMED';
+            $postponement->resumed_by_user_id = Auth::user()->id;
             $postponement->save();
 
-            $status = StudentshipStatus::where('name','POSTPONED')->first();
+            $status = StudentshipStatus::where('name','ACTIVE')->first();
 
             $student = Student::find($postponement->student_id);
             $student->studentship_status_id = $status->id;
