@@ -24,7 +24,9 @@ class PostponementController extends Controller
     {
     	$data = [
     	     'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
-           'postponements'=>Postponement::with(['student','StudyAcademicYear.academicYear','semester'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->get(),
+           'postponements'=>$request->get('query')? Postponement::whereHas('student',function($query){
+                 $query->where('first_name','LIKE','%'.$request->get('query').'%')->orWhere('middle_name','LIKE','%'.$request->get('query').'%')->orWhere('surname','LIKE','%'.$request->get('query').'%');
+           })->with(['student','StudyAcademicYear.academicYear','semester'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->get() : Postponement::with(['student','StudyAcademicYear.academicYear','semester'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->whereNotNull('postponed_by_user_id')->get(),
            'semesters'=>Semester::all(),
            'staff'=>User::find(Auth::user()->id)->staff,
            'request'=>$request
@@ -118,6 +120,9 @@ class PostponementController extends Controller
     {
         try{
             $postponement = Postponement::findOrFail($id);
+            if(!$postponement->recommended_by_user_id){
+                return redirect()->back()->with('error','Postponement cannot be accepted because it has not been recommended');
+            }
             $postponement->status = 'POSTPONED';
             $postponement->postponed_by_user_id = Auth::user()->id;
             $postponement->save();

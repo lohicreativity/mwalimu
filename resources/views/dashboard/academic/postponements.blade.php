@@ -71,12 +71,20 @@
               <!-- /.card-header -->
               {!! Form::open(['url'=>'academic/accept-postponements','class'=>'ss-form-processing']) !!}
 
-                {!! Form::input('hidden','study_academic_year_id',$request->get('study_academic_year_id')) !!}
-              <div class="card-body">
-
                 
+              <div class="card-body">
+                {!! Form::open(['url'=>'academic/postponements','method'=>'GET']) !!}
+                <div class="input-group ss-stretch">
+                 <input type="text" name="query" class="form-control" placeholder="Search for module name or code">
+                 <span class="input-group-btn">
+                   <button class="btn btn-default" type="submit"><span class="fa fa-search"></span></button>
+                 </span>
+                </div>
+                {!! Form::close() !!}
+
+                {!! Form::input('hidden','study_academic_year_id',$request->get('study_academic_year_id')) !!}
                  
-                <table id="example2" class="table table-bordered table-hover ss-paginated-table">
+                <table id="example2" class="table table-bordered table-hover ss-margin-top">
                   <thead>
                   <tr>
                     <th>Student</th>
@@ -203,6 +211,8 @@
                       </td>
                     @endif
                   </tr>
+                  @endforeach
+                  
                   @if(!Auth::user()->hasRole('hod'))
                    <tr>
                      <td colspan="9">
@@ -212,14 +222,14 @@
                     </td>
                    </tr>
                   @endif
-                  @endforeach
+                  
                   
                   </tbody>
                 </table>
-                
+                {!! Form::close() !!}
               </div>
               <!-- /.card-body -->
-              {!! Form::close() !!}
+              
             </div>
             <!-- /.card -->
             @else
