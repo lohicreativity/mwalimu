@@ -120,7 +120,9 @@
                        </a>
                       @endif
                       
+                      @if($post->status == 'POSTPONED')
                       <a href="{{ url('student/postponement/'.$post->id.'/resume') }}" class="btn btn-primary">Resume</a>
+                      @endif
 
                        <div class="modal fade" id="ss-delete-post-{{ $post->id }}">
                         <div class="modal-dialog modal-lg">
