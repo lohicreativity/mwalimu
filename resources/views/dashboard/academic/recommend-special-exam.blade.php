@@ -167,7 +167,7 @@
               @else
               <div class="card">
                  <div class="card-body">
-                    <h4>Posponed Modules</h4>
+                    <h4>Postponed Modules</h4>
                     @foreach($postponement->exams as $ex){{ $ex->moduleAssignment->module->name }} - {{ $ex->moduleAssignment->module->code }}<br>
                     @endforeach
                     <br>

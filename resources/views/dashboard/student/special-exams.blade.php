@@ -129,12 +129,14 @@
                       @endif
                     </td>
                     <td>
-
+                    
+                    @if($exam->status == 'PENDING')
                       <a class="btn btn-danger btn-sm" href="#" data-toggle="modal" data-target="#ss-delete-irregularity-{{ $exam->id }}">
                               <i class="fas fa-trash">
                               </i>
                               Delete
                        </a>
+                    @endif
 
                        <div class="modal fade" id="ss-delete-irregularity-{{ $exam->id }}">
                         <div class="modal-dialog modal-lg">
