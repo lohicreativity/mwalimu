@@ -36,8 +36,10 @@
     <section class="content">
       <div class="container-fluid">
         <!-- Small boxes (Stat box) -->
+        @if(Auth::user()->hasRole('hod') || Auth::user()->hasRole('arc'))
         @if($postponements_count != 0 || $special_exams_count != 0)
         <div class="alert alert-warning">You have pending postponement requests</div>
+        @endif
         @endif
         
       </div><!-- /.container-fluid -->
