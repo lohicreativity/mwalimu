@@ -74,6 +74,7 @@
                 
               <div class="card-body">
                 {!! Form::open(['url'=>'academic/postponements','method'=>'GET']) !!}
+                {!! Form::input('hidden','study_academic_year_id',$request->get('study_academic_year_id')) !!}
                 <div class="input-group ss-stretch">
                  <input type="text" name="query" class="form-control" placeholder="Search for student name or registration number">
                  <span class="input-group-btn">
