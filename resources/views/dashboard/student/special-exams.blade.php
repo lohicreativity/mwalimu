@@ -74,7 +74,7 @@
                    <div class="col-3">
                      <div class="checkbox">
                        <label>
-                          {!! Form::checkbox('mod_assign_'.$assign->id,$assign->id,null,['class'=>'form-control']) !!}
+                          {!! Form::checkbox('mod_assign_'.$assign->id,$assign->id) !!}
                           {{ $assign->module->name }}
                        </label>
                      </div>
