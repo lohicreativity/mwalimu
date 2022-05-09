@@ -125,7 +125,7 @@ class SpecialExamController extends Controller
                         $exam->student_id = $request->get('student_id');
                         $exam->study_academic_year_id = session('active_academic_year_id');
                         $exam->module_assignment_id = $request->get('mod_assign_'.$assign->id);
-                        $exam->semester_id = session('semester_id');
+                        $exam->semester_id = session('active_semester_id');
                         $exam->type = $request->get('type');
                         if($request->hasFile('supporting_document')){
                         $exam->postponemet_letter = $request->file('postponement_letter')->getClientOriginalName();
