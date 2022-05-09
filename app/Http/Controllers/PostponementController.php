@@ -24,7 +24,7 @@ class PostponementController extends Controller
     {
     	$data = [
     	     'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
-           'postponements'=>$request->get('query')? Postponement::whereHas('student',function($query){
+           'postponements'=>$request->get('query')? Postponement::whereHas('student',function($query) use($request){
                  $query->where('first_name','LIKE','%'.$request->get('query').'%')->orWhere('middle_name','LIKE','%'.$request->get('query').'%')->orWhere('surname','LIKE','%'.$request->get('query').'%')->orWhere('registration_number','LIKE','%'.$request->get('query').'%');
            })->with(['student','StudyAcademicYear.academicYear','semester'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->get() : Postponement::with(['student','StudyAcademicYear.academicYear','semester'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->whereNull('postponed_by_user_id')->get(),
            'semesters'=>Semester::all(),
