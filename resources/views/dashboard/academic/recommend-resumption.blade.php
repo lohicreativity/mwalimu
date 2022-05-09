@@ -116,10 +116,10 @@
                    <div class="row">
                      <div class="col-12">
                         <label class="radio-inline">
-                          <input type="radio" name="recommended" id="inlineRadio1" value="1" @if($postponement->recommended == 1) checked="checked" @endif> Recommended
+                          <input type="radio" name="recommended" id="inlineRadio1" value="1" @if($postponement->recommended === 1) checked="checked" @endif> Recommended
                         </label>
                         <label class="radio-inline">
-                          <input type="radio" name="recommended" id="inlineRadio2" value="0" @if($postponement->recommended == 0) checked="checked" @endif> Not Recommended
+                          <input type="radio" name="recommended" id="inlineRadio2" value="0" @if($postponement->recommended === 0) checked="checked" @endif> Not Recommended
                         </label>
 
                      </div>
