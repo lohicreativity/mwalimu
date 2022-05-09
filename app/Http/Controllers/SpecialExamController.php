@@ -27,7 +27,8 @@ class SpecialExamController extends Controller
            'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
            'exams'=>SpecialExamRequest::with(['student','semester','studyAcademicYear.academicYear','exams.moduleAssignment.module'])->paginate(20),
            'semesters'=>Semester::all(),
-           'staff'=>User::find(Auth::user()->id)->staff
+           'staff'=>User::find(Auth::user()->id)->staff,
+           'request'=>$request
     	];
     	return view('dashboard.academic.special-exams',$data)->withTitle('Special Exams');
     }
