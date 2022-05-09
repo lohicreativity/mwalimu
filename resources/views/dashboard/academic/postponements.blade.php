@@ -215,13 +215,15 @@
                   @endforeach
 
                   @if(!Auth::user()->hasRole('hod'))
-                   <tr>
-                     <td colspan="9">
-                      
-                      <input type="submit" class="btn btn-primary" name="action" value="Accept Selected"> <input type="submit" class="btn btn-primary" name="action" value="Decline Selected">
-                      
-                    </td>
-                   </tr>
+                    @if(!$request->get('query'))
+                     <tr>
+                       <td colspan="9">
+                        
+                        <input type="submit" class="btn btn-primary" name="action" value="Accept Selected"> <input type="submit" class="btn btn-primary" name="action" value="Decline Selected">
+                        
+                      </td>
+                     </tr>
+                    @endif
                   @endif
                   
                   
