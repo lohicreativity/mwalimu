@@ -168,16 +168,17 @@
                       </td>
                     @endif
                   </tr>
+                  @endforeach
+                  
                   @if(!Auth::user()->hasRole('hod'))
                    <tr>
                      <td colspan="9">
                       
-                      <button type="submit" class="btn btn-primary" name="accept">Accept Resumption</button> <button type="submit" class="btn btn-primary" name="decline">Decline Resumption</button>
+                      <input type="submit" class="btn btn-primary" name="action" value="Accept"> <button type="submit" class="btn btn-primary" name="action" value="Decline">
                       
                     </td>
                    </tr>
                   @endif
-                  @endforeach
                   
                   </tbody>
                 </table>

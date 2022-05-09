@@ -212,12 +212,12 @@
                     @endif
                   </tr>
                   @endforeach
-                  
+
                   @if(!Auth::user()->hasRole('hod'))
                    <tr>
                      <td colspan="9">
                       
-                      <button type="submit" class="btn btn-primary" name="accept">Accept Postponements</button> <button type="submit" class="btn btn-primary" name="decline">Decline Postponements</button>
+                      <input type="submit" class="btn btn-primary" name="action" value="Accept"> <button type="submit" class="btn btn-primary" name="action" value="Decline">
                       
                     </td>
                    </tr>
