@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Domain\Academic\Models\SpecialExam;
 use App\Domain\Academic\Models\StudyAcademicYear;
 use App\Domain\Academic\Models\ModuleAssignment;
+use App\Domain\Academic\Models\ResultPublication;
 use App\Domain\Academic\Models\Semester;
 use App\Domain\Registration\Models\Student;
 use App\Domain\Academic\Actions\SpecialExamAction;
@@ -37,7 +38,14 @@ class SpecialExamController extends Controller
     public function showPostponement(Request $request)
     {
         $student = User::find(Auth::user()->id)->student;
+        $second_semester_publish_status = false;
+         if(ResultPublication::whereHas('semester',function($query){
+             $query->where('name','LIKE','%2%');
+         })->where('study_academic_year_id',session('active_academic_year_id'))->where('status','PUBLISHED')->count() != 0){
+            $second_semester_publish_status = true;
+         }
         $data =  [
+           'second_semester_publish_status'=>$second_semester_publish_status,
            'module_assignments'=>ModuleAssignment::whereHas('programModuleAssignment',function($query) use($student){
                $query->where('semester_id',session('active_semester_id'))->where('campus_program_id',$student->campus_program_id);
            })->with(['module','programModuleAssignment'])->where('study_academic_year_id',session('active_academic_year_id'))->get(),

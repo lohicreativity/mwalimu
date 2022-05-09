@@ -1613,7 +1613,7 @@ class ApplicationController extends Controller
 
               curl_close($curl_handle);
 
-              return dd($response);
+              return dd($err);
 
               $data = [
               'BatchNo'=>'8002217/'.$ac_year.'/001',

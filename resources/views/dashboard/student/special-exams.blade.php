@@ -52,8 +52,12 @@
                      {!! Form::label('','Type') !!}
                      <select name="type" class="form-control" required>
                        <option value="">Select Type</option>
+                       @if(!$second_semester_publish_status)
                        <option value="FINAL">Final</option>
+                       @endif
+                       @if($second_semester_publish_status)
                        <option value="SUPP">Supplementary</option>
+                       @endif
                      </select>
 
                      {!! Form::input('hidden','student_id',$student->id) !!}
