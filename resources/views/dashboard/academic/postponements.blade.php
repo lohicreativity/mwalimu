@@ -217,7 +217,7 @@
                    <tr>
                      <td colspan="9">
                       
-                      <input type="submit" class="btn btn-primary" name="action" value="Accept"> <button type="submit" class="btn btn-primary" name="action" value="Decline">
+                      <input type="submit" class="btn btn-primary" name="action" value="Accept"> <input type="submit" class="btn btn-primary" name="action" value="Decline">
                       
                     </td>
                    </tr>
