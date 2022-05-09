@@ -21,12 +21,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>{{ __('Special Exams') }}</h1>
+            <h1>{{ __('Exams Postponement') }}</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">{{ __('Special Exams') }}</li>
+              <li class="breadcrumb-item active">{{ __('Exams Postponement') }}</li>
             </ol>
           </div>
         </div>
@@ -122,8 +122,9 @@
                     <td>{{ $exam->type }}</td>
                     <td>{{ $exam->status }}</td>
                     <td><a href="{{ url('student/special-exam/postponement-letter/'.$exam->id.'/download') }}">Postponement Letter</a><br>
-
+                      @if($exam->supporting_document)
                       <a href="{{ url('student/special-exam/supporting-document/'.$exam->id.'/download') }}">Supporting Document</a>
+                      @endif
                     </td>
                     <td>
 

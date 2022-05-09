@@ -105,12 +105,6 @@
                   <p>My Registration</p>
                 </a>
               </li>
-              <li class="nav-item">
-                <a href="{{ url('student/postponements') }}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Postponements</p>
-                </a>
-              </li>
             </ul>
           </li>
           <li class="nav-item">
