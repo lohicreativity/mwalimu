@@ -259,11 +259,11 @@ class SpecialExamController extends Controller
          $exams = SpecialExamRequest::where('study_academic_year_id',$request->get('study_academic_year_id'))->get();
 
          foreach($exams as $exam){
-            if($request->get('exam_'.$exam->id) == $exam->id){
-                $req = SpecialExamRequest::find($post->id);
-                if(!$req->recommended_by_user_id){
+            if(!$exam->recommended_by_user_id){
                 return redirect()->back()->with('error','Special exam cannot be accepted because it has not been recommended');
                 }
+            if($request->get('exam_'.$exam->id) == $exam->id){
+                $req = SpecialExamRequest::find($exam->id);
                 $req->status = $request->get('action') == 'Accept Selected'? 'POSTPONED' : 'DECLINED';
                 $req->approved_by_user_id = Auth::user()->id;
                 $req->save();
