@@ -23,6 +23,7 @@ class CreateSpecialExamsTable extends Migration
             $table->string('postponement_letter')->nullable();
             $table->string('supporting_document')->nullable();
             $table->string('status',20)->default('PENDING');
+            $table->unsignedBigInteger('special_exam_request_id');
             $table->timestamps();
 
             $table->foreign('student_id')->references('id')->on('students')->onUpdate('cascade');

@@ -93,7 +93,7 @@
             </div>
             <!-- /.card -->
 
-            @if(count($special_exams) != 0)
+            @if(count($special_exam_requests) != 0)
             <div class="card">
               <div class="card-header">
                 <h3 class="card-title">List of Special Exams</h3>
@@ -114,11 +114,13 @@
                   </tr>
                   </thead>
                   <tbody>
-                  @foreach($special_exams as $exam)
+                  @foreach($special_exam_requests as $exam)
                   <tr>
                     <td>{{ $exam->studyAcademicYear->academicYear->year }}</td>
                     <td>{{ $exam->semester->name }}</td>
-                    <td>{{ $exam->moduleAssignment->module->name }} - {{ $exam->moduleAssignment->module->code }}</td>
+                    <td>@foreach($exam->exams as $ex){{ $ex->moduleAssignment->module->name }} - {{ $ex->moduleAssignment->module->code }}
+                        @endforeach
+                    </td>
                     <td>{{ $exam->type }}</td>
                     <td>{{ $exam->status }}</td>
                     <td><a href="{{ url('student/special-exam/postponement-letter/'.$exam->id.'/download') }}">Postponement Letter</a><br>
@@ -172,7 +174,7 @@
                   </tbody>
                 </table>
                 <div class="ss-pagination-links">
-                    {!! $special_exams->render() !!}
+                    {!! $special_exam_requests->render() !!}
                 </div>
               </div>
               <!-- /.card-body -->

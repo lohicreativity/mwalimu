@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Domain\Academic\Models\SpecialExam;
+use App\Domain\Academic\Models\SpecialExamRequest;
 use App\Domain\Academic\Models\StudyAcademicYear;
 use App\Domain\Academic\Models\ModuleAssignment;
 use App\Domain\Academic\Models\ResultPublication;
@@ -50,7 +51,7 @@ class SpecialExamController extends Controller
            'module_assignments'=>ModuleAssignment::whereHas('programModuleAssignment',function($query) use($student){
                $query->where('semester_id',session('active_semester_id'))->where('campus_program_id',$student->campus_program_id);
            })->with(['module','programModuleAssignment'])->where('study_academic_year_id',session('active_academic_year_id'))->get(),
-           'special_exams'=>SpecialExam::with(['moduleAssignment.programModuleAssignment','moduleAssignment.module'])->where('student_id',$student->id)->paginate(20),
+           'special_exam_requests'=>SpecialExamRequest::with(['exams.moduleAssignment.programModuleAssignment','exams.moduleAssignment.module'])->where('student_id',$student->id)->paginate(20),
            'student'=>$student,
            'request'=>$request
         ];
@@ -103,20 +104,33 @@ class SpecialExamController extends Controller
 
         $student = Student::find($request->get('student_id'));
 
+        if($r = SpecialExamRequest::where('student_id',$request->get('student_id'))->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->where('type',$request->get('type'))->first()){
+            $req = $r;
+        }else{
+            $req = new SpecialExamRequest;
+            $req->semester_id = session('active_semester_id');
+            $req->study_academic_year_id = session('active_academic_year_id');
+            $req->student_id = $request->get('student_id');
+            $req->type = $request->get('type');
+            if($request->hasFile('postponement_letter')){
+              $destination = SystemLocation::uploadsDirectory();
+              $request->file('postponement_letter')->move($destination, $request->file('postponement_letter')->getClientOriginalName());
+                  $req->postponement_letter = $request->file('postponement_letter')->getClientOriginalName()
+              
+            }
+            if($request->hasFile('supporting_document')){
+                  $destination = SystemLocation::uploadsDirectory();
+                  $request->file('supporting_document')->move($destination, $request->file('supporting_document')->getClientOriginalName());
+                  $req->supporting_document = $request->file('supporting_document')->getClientOriginalName()
+            }
+            $req->save();
+        }
+
         $module_assignments = ModuleAssignment::whereHas('programModuleAssignment',function($query) use($student){
                $query->where('semester_id',session('active_semester_id'))->where('campus_program_id',$student->campus_program_id);
            })->with(['module','programModuleAssignment'])->where('study_academic_year_id',session('active_academic_year_id'))->get();
 
-        if($request->hasFile('postponement_letter')){
-              $destination = SystemLocation::uploadsDirectory();
-              $request->file('postponement_letter')->move($destination, $request->file('postponement_letter')->getClientOriginalName());
-
-              
-        }
-        if($request->hasFile('supporting_document')){
-              $destination = SystemLocation::uploadsDirectory();
-              $request->file('supporting_document')->move($destination, $request->file('supporting_document')->getClientOriginalName());
-        }
+        
 
         foreach($module_assignments as $assign){
             if($request->get('mod_assign_'.$assign->id) == $assign->id){
@@ -127,12 +141,7 @@ class SpecialExamController extends Controller
                         $exam->module_assignment_id = $request->get('mod_assign_'.$assign->id);
                         $exam->semester_id = session('active_semester_id');
                         $exam->type = $request->get('type');
-                        if($request->hasFile('supporting_document')){
-                        $exam->postponemet_letter = $request->file('postponement_letter')->getClientOriginalName();
-                        }
-                        if($request->hasFile('supporting_document')){
-                        $exam->supporting_document = $request->file('supporting_document')->getClientOriginalName();
-                        }
+                        $exam->special_exam_request_id = $req->id;
                         $exam->save();
                 }
             }
@@ -148,7 +157,7 @@ class SpecialExamController extends Controller
     public function downloadLetter(Request $request, $id)
     {
         try{
-            $exam = Postponement::findOrFail($id);
+            $exam = SpecialExamRequest::findOrFail($id);
             if(file_exists(public_path().'/uploads/'.$exam->postponement_letter)){
                return response()->download(public_path().'/uploads/'.$exam->postponement_letter);
             }else{
@@ -166,7 +175,7 @@ class SpecialExamController extends Controller
     public function downloadSupportingDocument(Request $request, $id)
     {
         try{
-            $exam = SpecialExam::findOrFail($id);
+            $exam = SpecialExamRequest::findOrFail($id);
             if(file_exists(public_path().'/uploads/'.$exam->supporting_document)){
                return response()->download(public_path().'/uploads/'.$exam->supporting_document);
             }else{
@@ -228,6 +237,22 @@ class SpecialExamController extends Controller
             $exam->save();
 
             return redirect()->back()->with('message','Special exam disapprove successfully');
+        }catch(Exception $e){
+            return redirect()->back()->with('error','Unable to get the resource specified in this request');
+        }
+    }
+
+    /**
+     * Remove the specified exam
+     */
+    public function destroyRequest(Request $request, $id)
+    {
+        try{
+            $exam = SpecialExamRequest::findOrFail($id);
+            SpecialExam::where('special_exam_request_id',$id)->delete();
+            $exam->delete();
+
+            return redirect()->back()->with('message','Exams postponement deleted successfully');
         }catch(Exception $e){
             return redirect()->back()->with('error','Unable to get the resource specified in this request');
         }
