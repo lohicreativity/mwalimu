@@ -238,8 +238,11 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 	Route::post('special-exam/store', [SpecialExamController::class,'store']);
 	Route::post('special-exam/update', [SpecialExamController::class,'update']);
 	Route::get('special-exam/{id}/destroy', [SpecialExamController::class,'destroyRequest']);
-	Route::get('special-exam/{id}/approve', [SpecialExamController::class,'approve']);
-	Route::get('special-exam/{id}/disapprove', [SpecialExamController::class,'disapprove']);
+	Route::get('special-exam/{id}/accept', [SpecialExamController::class,'accept']);
+	Route::get('special-exam/{id}/decline', [SpecialExamController::class,'decline']);
+	Route::post('special-exam/recommend', [SpecialExamController::class,'recommend']);
+	Route::get('special-exam/{id}/recommend', [SpecialExamController::class,'showRecommend']);
+	Route::post('accept-special-exams',[SpecialExamController::class,'acceptSpecialExams']);
 
 
 	Route::get('results', [ExaminationResultController::class,'showProcess']);

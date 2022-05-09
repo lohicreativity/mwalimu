@@ -118,7 +118,7 @@
                   <tr>
                     <td>{{ $exam->studyAcademicYear->academicYear->year }}</td>
                     <td>{{ $exam->semester->name }}</td>
-                    <td>@foreach($exam->exams as $ex){{ $ex->moduleAssignment->module->name }} - {{ $ex->moduleAssignment->module->code }}
+                    <td>@foreach($exam->exams as $ex){{ $ex->moduleAssignment->module->name }} - {{ $ex->moduleAssignment->module->code }},
                         @endforeach
                     </td>
                     <td>{{ $exam->type }}</td>

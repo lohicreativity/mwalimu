@@ -21,13 +21,11 @@ class SpecialExamController extends Controller
      /**
      * Display a list of exams
      */
-    public function index(Request $request, $mod_assign_id)
+    public function index(Request $request)
     {
     	$data = [
            'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
-           'exams'=>SpecialExam::with(['student','semester','studyAcademicYear.academicYear','moduleAssignment.module'])->paginate(20),
-           'module_assignment'=>ModuleAssignment::with(['module','programModuleAssignment'])->findOrFail($mod_assign_id),
-           'student'=>$request->has('registration_number')? Student::where('registration_number',$request->get('registration_number'))->first() : null,
+           'exams'=>SpecialExamRequest::with(['student','semester','studyAcademicYear.academicYear','exams.moduleAssignment.module'])->paginate(20),
            'semesters'=>Semester::all(),
            'staff'=>User::find(Auth::user()->id)->staff
     	];
@@ -211,13 +209,73 @@ class SpecialExamController extends Controller
     }
 
     /**
+     * Show recommendation for specified postponement
+     */
+    public function showRecommend(Request $request, $id)
+    {
+        $data = [
+           'postponement'=>SpecialExamRequest::with(['student.campusProgram.program'])->find($id)
+        ];
+        return view('dashboard.academic.recommend-special-exam',$data)->withTitle('Recommendation');
+    }
+
+    /**
+     * Recommend the specified postponement
+     */
+    public function recommend(Request $request)
+    {
+            $validation = Validator::make($request->all(),[
+              'recommendation'=>'required',
+              'recommended'=>'required'
+            ],[
+              'recommended.required'=>'Recommendation option must be selected'
+            ]);
+
+            if($validation->fails()){
+               if($request->ajax()){
+                  return response()->json(array('error_messages'=>$validation->messages()));
+               }else{
+                  return redirect()->back()->withInput()->withErrors($validation->messages());
+               }
+            }
+            $exam = SpecialExamRequest::find($request->get('special_exam_request_id'));
+            $exam->recommendation = $request->get('recommendation');
+            $exam->recommended = $request->get('recommended');
+            $exam->recommended_by_user_id = Auth::user()->id;
+            $exam->save();
+
+            return redirect()->to('academic/special-exams?study_academic_year_id='.session('active_academic_year_id'))->with('message','Special exam recommended successfully');
+    }
+
+    /**
+     * Accept in bulk
+     */
+    public function acceptSpecialExams(Request $request)
+    {
+         $exams = SpecialExamRequest::where('study_academic_year_id',$request->get('study_academic_year_id'))->get();
+
+         foreach($exams as $exam){
+            if($request->get('exam_'.$exam->id) == $exam->id){
+                $req = SpecialExamRequest::find($post->id);
+                $req->status = $request->get('action') == 'Accept Selected'? 'POSTPONED' : 'DECLINED';
+                $req->approved_by_user_id = Auth::user()->id;
+                $req->save();
+            }
+         }
+
+         return redirect()->back()->with('message','Special exams accepted successfully');
+    }
+
+
+    /**
      * Approve the specified exam
      */
-    public function approve($id)
+    public function accept($id)
     {
         try{
-            $exam = SpecialExam::findOrFail($id);
+            $exam = SpecialExamRequest::findOrFail($id);
             $exam->status = 'APPROVED';
+            $exam->approved_by_user_id = Auth::user()->id;
             $exam->save();
 
             return redirect()->back()->with('message','Special exam approve successfully');
@@ -229,11 +287,12 @@ class SpecialExamController extends Controller
     /**
      * Disapprove the specified exam
      */
-    public function disapprove($id)
+    public function decline($id)
     {
         try{
-            $exam = SpecialExam::findOrFail($id);
-            $exam->status = 'DISAPPROVED';
+            $exam = SpecialExamRequest::findOrFail($id);
+            $exam->status = 'DECLINED';
+            $exam->approved_by_user_id = Auth::user()->id;
             $exam->save();
 
             return redirect()->back()->with('message','Special exam disapprove successfully');
