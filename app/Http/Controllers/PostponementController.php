@@ -35,7 +35,7 @@ class PostponementController extends Controller
     /**
      * Display a list of postponements
      */
-    public function index(Request $request)
+    public function resumptions(Request $request)
     {
       $data = [
            'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
