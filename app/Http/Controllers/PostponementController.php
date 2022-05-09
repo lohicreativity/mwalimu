@@ -172,6 +172,9 @@ class PostponementController extends Controller
     {
         try{
             $postponement = Postponement::findOrFail($id);
+            if(!$postponement->recommended_by_user_id){
+                return redirect()->back()->with('error','Postponement cannot be declined because it has not been recommended');
+            }
             $postponement->status = 'DECLINED';
             $postponement->save();
 
