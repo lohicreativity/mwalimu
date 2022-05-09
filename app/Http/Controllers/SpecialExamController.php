@@ -111,6 +111,7 @@ class SpecialExamController extends Controller
             $req->study_academic_year_id = session('active_academic_year_id');
             $req->student_id = $request->get('student_id');
             $req->type = $request->get('type');
+            $req->status = 'PENDING';
             if($request->hasFile('postponement_letter')){
               $destination = SystemLocation::uploadsDirectory();
               $request->file('postponement_letter')->move($destination, $request->file('postponement_letter')->getClientOriginalName());
