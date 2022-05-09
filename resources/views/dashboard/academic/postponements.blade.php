@@ -63,7 +63,7 @@
             </div>
             <!-- /.card -->
 
-            @if(count($postponements) != 0)
+ 
             <div class="card">
               <div class="card-header">
                 <h3 class="card-title">List of Postponements</h3>
@@ -75,7 +75,7 @@
               <div class="card-body">
                 {!! Form::open(['url'=>'academic/postponements','method'=>'GET']) !!}
                 <div class="input-group ss-stretch">
-                 <input type="text" name="query" class="form-control" placeholder="Search for module name or code">
+                 <input type="text" name="query" class="form-control" placeholder="Search for student name or registration number">
                  <span class="input-group-btn">
                    <button class="btn btn-default" type="submit"><span class="fa fa-search"></span></button>
                  </span>
@@ -98,7 +98,7 @@
                     @endif
                     <th>Actions</th>
                     @if(!Auth::user()->hasRole('hod'))
-                    <th>Accept</th>
+                    <th>Select</th>
                     @endif
                   </tr>
                   </thead>
@@ -217,7 +217,7 @@
                    <tr>
                      <td colspan="9">
                       
-                      <input type="submit" class="btn btn-primary" name="action" value="Accept"> <input type="submit" class="btn btn-primary" name="action" value="Decline">
+                      <input type="submit" class="btn btn-primary" name="action" value="Accept Selected"> <input type="submit" class="btn btn-primary" name="action" value="Decline Selected">
                       
                     </td>
                    </tr>
@@ -232,17 +232,6 @@
               
             </div>
             <!-- /.card -->
-            @else
-            <div class="card">
-              <div class="card-header">
-                <h3 class="card-title">{{ __('No Postponement Created') }}</h3>
-              </div>
-              <!-- /.card-header -->
-              <div class="card-body">
-              </div>
-            </div>
-            <!-- /.card -->
-            @endif
 
           </div>
           <!-- /.col -->
