@@ -120,7 +120,7 @@ class SpecialExamController extends Controller
 
         foreach($module_assignments as $assign){
             if($request->get('mod_assign_'.$assign->id) == $assign->id){
-                if(SpecialExam::where('student_id',$request->get('student_id'))->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->where('type',$request->get('type'))->count() == 0){
+                if(SpecialExam::where('student_id',$request->get('student_id'))->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->where('type',$request->get('type'))->where('module_assignment_id',$assign->id)->count() == 0){
                         $exam = new SpecialExam;
                         $exam->student_id = $request->get('student_id');
                         $exam->study_academic_year_id = session('active_academic_year_id');

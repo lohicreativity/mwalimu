@@ -170,6 +170,9 @@
                   
                   </tbody>
                 </table>
+                <div class="ss-pagination-links">
+                    {!! $special_exams->render() !!}
+                </div>
               </div>
               <!-- /.card-body -->
             </div>
