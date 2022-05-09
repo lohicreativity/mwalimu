@@ -151,6 +151,9 @@ class PostponementController extends Controller
          foreach($postponements as $post){
             if($request->get('post_'.$post->id) == $post->id){
                 $ps = Postponement::find($post->id);
+                if(!$ps->recommended_by_user_id){
+                return redirect()->back()->with('error','Special exam cannot be accepted because it has not been recommended');
+                }
                 $ps->status = $request->get('action') == 'Accept Selected'? 'POSTPONED' : 'DECLINED';
                 $ps->postponed_by_user_id = Auth::user()->id;
                 $ps->save();
