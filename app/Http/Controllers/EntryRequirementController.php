@@ -7,6 +7,7 @@ use App\Domain\Academic\Models\CampusProgram;
 use App\Domain\Application\Models\ApplicationWindow;
 use App\Domain\Application\Models\ApplicantProgramSelection;
 use App\Domain\Application\Models\NectaResult;
+use App\Domain\Application\Models\NacteResult;
 use App\Domain\Application\Models\EntryRequirement;
 use App\Domain\Application\Actions\EntryRequirementAction;
 use App\Models\User;
@@ -45,6 +46,7 @@ class EntryRequirementController extends Controller
               })->with('program')->where('campus_id',$staff->campus_id)->get(),
            'entry_requirements'=>EntryRequirement::with(['campusProgram.program.award'])->where('application_window_id',$request->get('application_window_id'))->latest()->paginate(20),
            'subjects'=>NectaResult::distinct()->get(['subject_name']),
+           'equivalent_subjects'=>NacteResult::distinct()->get('subject'),
            'staff'=>$staff,
            'selection_run'=>$approving_status == 0? false : true,
            'request'=>$request

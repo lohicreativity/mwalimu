@@ -20,7 +20,7 @@ class EntryRequirementAction implements EntryRequirementInterface{
             $requirement->campus_program_id = $id;
             $requirement->application_window_id = $request->get('application_window_id');
             $requirement->equivalent_gpa = $request->get('equivalent_gpa');
-            $requirement->equivalent_pass_subjects = $request->get('equivalent_pass_subjects');
+            $requirement->equivalent_pass_subjects = serialize($request->get('equivalent_pass_subjects'));
             $requirement->equivalent_average_grade = $request->get('equivalent_average_grade');
             $requirement->open_equivalent_gpa = $request->get('open_equivalent_gpa');
             $requirement->open_equivalent_pass_subjects = $request->get('open_equivalent_pass_subjects');
