@@ -57,7 +57,7 @@ class ProgramFee extends Model
             $query->whereYear('end_date',explode('/', $year)[0]);
         })->whereHas('selections',function($query) use($campus_program_id){
             $query->where('campus_program_id',$campus_program_id);
-        })->where('tuition_fee_payment_check',1)->count() != 0){
+        })->where('tuition_payment_check',1)->count() != 0){
             $status = true;
         }
         return $status;
