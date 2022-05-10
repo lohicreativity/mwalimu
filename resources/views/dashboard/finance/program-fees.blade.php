@@ -50,12 +50,21 @@
                    <div class="row">
                   <div class="form-group col-6">
                     {!! Form::label('','Select campus') !!}
+                    @if(Auth::user()->hasRole('admission-officer'))
+                    <select name="campus_id" class="form-control" required>
+                       <option value="">Select Campus</option>
+                       @foreach($campuses as $cp)
+                       <option value="{{ $cp->id }}" @if($staff->campus_id == $cp->id) selected="selected" @else disabled="disabled" @endif>{{ $cp->name }}</option>
+                       @endforeach
+                    </select>
+                    @else
                     <select name="campus_id" class="form-control" required>
                        <option value="">Select Campus</option>
                        @foreach($campuses as $cp)
                        <option value="{{ $cp->id }}" @if($request->get('campus_id') == $cp->id) selected="selected" @endif>{{ $cp->name }}</option>
                        @endforeach
                     </select>
+                    @endif
                   </div>
                   </div>
                   <div class="ss-form-actions">
