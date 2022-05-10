@@ -40,6 +40,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 	Route::post('fee-amount/store', [FeeAmountController::class,'store']);
 	Route::post('fee-amount/update', [FeeAmountController::class,'update']);
 	Route::get('fee-amount/{id}/destroy', [FeeAmountController::class,'destroy']);
+	Route::get('fee-amount/assign-as-previous',[FeeAmountController::class,'assignAsPrevious']);
 
 	Route::get('program-fees', [ProgramFeeController::class,'index'])->name('fee-items');
 	Route::post('program-fee/store', [ProgramFeeController::class,'store']);

@@ -90,7 +90,7 @@
                   
                 </div>
                 <div class="row">
-                  <div class="form-group col-3">
+                  <div class="form-group col-4">
                     {!! Form::label('','Study academic year') !!}
                     <select name="study_academic_year_id" class="form-control">
                       <option value="">Select Study Academic Year</option>
@@ -99,7 +99,7 @@
                       @endforeach
                     </select>
                   </div>
-                  <div class="form-group col-2">
+                  <div class="form-group col-4">
                     {!! Form::label('','Year of study') !!}
                     <select name="year_of_study" class="form-control">
                       <option value="1">1</option>
@@ -107,35 +107,12 @@
                       <option value="3">3</option>
                     </select>
                   </div>
-                  <div class="form-group col-2">
-                    {!! Form::label('','Semester') !!}
-                    <select name="semester_id" class="form-control">
-                      <option value="">Select Semester</option>
-                      @foreach($semesters as $semester)
-                        <option value="{{ $semester->id }}">{{ $semester->name }}</option>
-                      @endforeach
-                    </select>
-                  </div>
-                  <div class="form-group col-2">
-                    {!! Form::label('','Is Approved') !!}
-                    <select name="is_approved" class="form-control">
-                      <option value="1">Yes</option>
-                      <option value="0">No</option>
-                    </select>
-                  </div>
-                  <div class="form-group col-3">
-                    {!! Form::label('','Usage') !!}
-                    <select name="category" class="form-control">
-                      <option value="In Use">In Use</option>
-                      <option value="Not In Use">Not In Use</option>
-                    </select>
-                  </div>
                 </div>
               </div>
                 <!-- /.card-body -->
 
                 <div class="card-footer">
-                  <button amount="submit" class="btn btn-primary">{{ __('Add Fee Amount') }}</button>
+                  <button amount="submit" class="btn btn-primary">{{ __('Add Programme Fee') }}</button>
                 </div>
               {!! Form::close() !!}
             </div>
@@ -153,8 +130,6 @@
                   <tr>
                     <th>Programme</th>
                     <th>Amount in TZS</th>
-                    <th>Amount in USD</th>
-                    <th>Approved</th>
                     <th>Status</th>
                     <th>Academic Year</th>
                     <th>Actions</th>
@@ -166,7 +141,6 @@
                     <td>{{ $fee->campusProgram->program->name }}</td>
                     <td>{{ number_format($fee->amount_in_tzs,2) }}</td>
                     <td>{{ number_format($fee->amount_in_usd,2) }}</td>
-                    <td>@if($fee->is_approved == 1) Yes @else No @endif</td>
                     <td>{{ $fee->status }}</td>
                     <td>{{ $fee->studyAcademicYear->academicYear->year }}</td>
                     <td>
@@ -232,7 +206,7 @@
                                       </div>
                                     </div>
                                     <div class="row">
-                                        <div class="form-group col-3">
+                                        <div class="form-group col-4">
                                         {!! Form::label('','Study academic year') !!}
                                         <select name="study_academic_year_id" class="form-control">
                                           <option value="">Select Study Academic Year</option>
@@ -241,7 +215,7 @@
                                           @endforeach
                                         </select>
                                       </div>
-                                      <div class="form-group col-2">
+                                      <div class="form-group col-4">
                                         {!! Form::label('','Year of study') !!}
                                         <select name="year_of_study" class="form-control">
                                           <option value="1" @if($fee->year_of_study == 1) selected="selected" @endif>1</option>
@@ -249,29 +223,6 @@
                                           <option value="3" @if($fee->year_of_study == 3) selected="selected" @endif>3</option>
                                         </select>
                                       </div>
-                                        <div class="form-group col-2">
-                                          {!! Form::label('','Semester') !!}
-                                          <select name="semester_id" class="form-control">
-                                            <option value="">Select Semester</option>
-                                            @foreach($semesters as $semester)
-                                              <option value="{{ $semester->id }}" @if($semester->id == $fee->semester_id) selected="selected" @endif>{{ $semester->name }}</option>
-                                            @endforeach
-                                          </select>
-                                        </div>
-                                        <div class="form-group col-2">
-                                          {!! Form::label('','Is Approved') !!}
-                                          <select name="is_approved" class="form-control">
-                                            <option value="1" @if($fee->is_approved == 1) selected="selected" @endif>Yes</option>
-                                            <option value="0" @if($fee->is_approved == 0) selected="selected" @endif>No</option>
-                                          </select>
-                                        </div>
-                                        <div class="form-group col-3">
-                                          {!! Form::label('','Usage') !!}
-                                          <select name="category" class="form-control">
-                                            <option value="In Use" @if($fee->category == 'In Use') selected="selected" @endif>In Use</option>
-                                            <option value="Not In Use" @if($fee->category == 'Not In Use') selected="selected" @endif>Not In Use</option>
-                                          </select>
-                                        </div>
                                       </div>
                                       <div class="ss-form-actions">
                                        <button amount="submit" class="btn btn-primary">{{ __('Save Changes') }}</button>

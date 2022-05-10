@@ -80,7 +80,21 @@ class FeeAmountController extends Controller
      */
     public function assignAsPrevious(Request $request)
     {
-         
+         $previous_ac_year = StudyAcademicYear::latest()->offset(2)->first();
+         $study_academic_year = StudyAcademicYear::where('status','ACTIVE')->first();
+         if(!$previous_ac_year){
+              return redirect()->back()->with('error','No previous academic year');
+         }
+         $amounts = FeeAmount::where('study_academic_year_id',$previous_ac_year->id)->get();
+         foreach($amounts as $amt){
+             $amount = new FeeAmount;
+             $amount->amount_in_tzs = $amt->amount_in_tzs;
+             $amount->amount_in_usd = $amt->amount_in_usd;
+             $amount->fee_item_id = $amt->fee_item_id;
+             $amount->study_academic_year_id = $study_academic_year->id;
+             $amount->save();
+         }
+         return redirect()->back()->with('message','Fee amounts assigned as previous successfully');
     }
 
     /**

@@ -101,7 +101,8 @@
             @if(count($amounts) != 0)
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">{{ __('List of Fee Amounts') }}</h3>
+                <h3 class="card-title">{{ __('List of Fee Amounts') }}</h3><br>
+                <a href="{{ url('finance/fee-amount/assign-as-previous') }}" class="btn btn-primary">Assign As Previous</a>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
