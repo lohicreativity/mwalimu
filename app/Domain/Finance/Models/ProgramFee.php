@@ -65,7 +65,7 @@ class ProgramFee extends Model
         }else{
             if(Student::whereHas('registrations',function($query) use($study_ac_yr_id){
                   $query->where('study_academic_year_id',$study_ac_yr_id);
-            })->where('campus_program_id',$campus_program_id)->count() != 0){
+            })->where('campus_program_id',$campus_program_id)->where('year_of_study',$yr_of_study)->count() != 0){
                 $status = true;
             }
         }
