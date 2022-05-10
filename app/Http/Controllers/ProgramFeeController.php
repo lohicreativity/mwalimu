@@ -96,7 +96,7 @@ class ProgramFeeController extends Controller
      */
     public function storeAsPrevious(Request $request)
     {
-         $previous_ac_yr = StudyAcademicYear::latest()->offset(1)->first();
+         $previous_ac_yr = StudyAcademicYear::latest()->offset(2)->first();
          if(!$previous_ac_yr){
              return redirect()->back()->with('error','No previous academic year');
          }
