@@ -178,7 +178,6 @@
                     <th>Programme</th>
                     <th>Amount in TZS</th>
                     <th>Amount in USD</th>
-                    <th>Status</th>
                     <th>Academic Year</th>
                     <th>Actions</th>
                   </tr>
@@ -189,7 +188,6 @@
                     <td>{{ $fee->campusProgram->program->name }}</td>
                     <td>{{ number_format($fee->amount_in_tzs,2) }}</td>
                     <td>{{ number_format($fee->amount_in_usd,2) }}</td>
-                    <td>{{ $fee->status }}</td>
                     <td>{{ $fee->studyAcademicYear->academicYear->year }}</td>
                     <td>
                       <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-edit-amount-{{ $fee->id }}">
@@ -325,11 +323,11 @@
                         <!-- /.modal-dialog -->
                       </div>
                       <!-- /.modal -->
-                      <a class="btn btn-info btn-sm" href="{{ url('finance/program-fee/'.$fee->id.'/structure') }}">
+                      <!-- <a class="btn btn-info btn-sm" href="{{ url('finance/program-fee/'.$fee->id.'/structure') }}">
                               <i class="fas fa-list-alt">
                               </i>
                               Fee Structure
-                       </a>
+                       </a> -->
                     </td>
                   </tr>
                   @endforeach
