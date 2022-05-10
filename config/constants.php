@@ -19,6 +19,8 @@ return [
 
    'PHONE_LINE_ONE'=>'+255 (22) 2152496',
 
+   'PHONE_LINE_TWO'=>'+255 (22) 2820041',
+
    'ADDRESS'=>'P. O. Box 9193 Dar Es Salaam',
    
    'VERSION'=>1.5,

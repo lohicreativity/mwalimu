@@ -86,7 +86,8 @@
 
                   $email = [
                      'placeholder'=>'Email',
-                     'class'=>'form-control'
+                     'class'=>'form-control',
+                     'required'=>true
                   ];
 
                   $phone = [
@@ -135,7 +136,7 @@
                   </div>
                   <div class="row">
                     <div class="form-group col-6">
-                       {!! Form::label('','Email (Optional)') !!}
+                       {!! Form::label('','Email') !!}
                        {!! Form::email('email',$applicant->email,$email) !!}
                     </div>
                     <div class="form-group col-3">
@@ -144,7 +145,32 @@
                     </div>
                     <div class="form-group col-3">
                        {!! Form::label('','Birth date') !!}
-                       {!! Form::text('birth_date',App\Utils\DateMaker::toStandardDate($applicant->birth_date),$birth_date) !!}
+                      <div class="row">
+                       <div class="col-4">
+                         <select name="date" class="form-control" required>
+                           <option value="">Date</option>
+                           @for($i = 1; $i <= 31; $i++)
+                           <option value="{{ $i }}" @if(Carbon\Carbon::parse($applicant->birth_date)->format('d') == $i) selected="selected" @endif>{{ $i }}</option>
+                           @endfor
+                         </select>
+                       </div>
+                       <div class="col-4">
+                         <select name="month" class="form-control" required>
+                           <option value="">Month</option>
+                           @for($i = 1; $i <= 12; $i++)
+                           <option value="{{ $i }}" @if(Carbon\Carbon::parse($applicant->birth_date)->format('m') == $i) selected="selected" @endif>{{ $i }}</option>
+                           @endfor
+                         </select>
+                       </div>
+                       <div class="col-4">
+                         <select name="year" class="form-control" required>
+                           <option value="">Year</option>
+                           @for($i = 2010; $i >= 1960; $i--)
+                           <option value="{{ $i }}" @if(Carbon\Carbon::parse($applicant->birth_date)->format('Y') == $i) selected="selected" @endif>{{ $i }}</option>
+                           @endfor
+                         </select>
+                       </div>
+                     </div>
                     </div>
                   </div>
                    <div class="row">

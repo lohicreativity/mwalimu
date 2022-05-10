@@ -79,6 +79,7 @@
                   <thead>
                   <tr>
                     <th>Year</th>
+                    <th>Intake</th>
                     <th>Programs</th>
                     <th>Assign</th>
                   </tr>
@@ -87,6 +88,7 @@
                   @foreach($application_windows as $window)
                   <tr>
                     <td>{{ $window->begin_date }} - {{ $window->end_date }}</td>
+                    <td>{{ $window->intake->name }}</td>
                     <td>@foreach($window->campusPrograms as $prog)
                           <p class="ss-font-xs ss-no-margin">{{ $prog->program->name }}</p>
                         @endforeach

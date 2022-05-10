@@ -142,8 +142,8 @@
                    'class'=>'form-control'
                 ];
 
-                $award_level = [
-                   'placeholder'=>'Award Level',
+                $nva_level = [
+                   'placeholder'=>'NVA Level',
                    'class'=>'form-control'
                 ];
 
@@ -236,6 +236,10 @@
                     {!! Form::text('pass_subjects',null,$pass_subjects) !!}
                   </div>
                   <div class="form-group col-3">
+                    {!! Form::label('','No. of Minimum Pass Subjects') !!}
+                    {!! Form::text('min_pass_subjects',null,$min_pass_subjects) !!}
+                  </div>
+                  <div class="form-group col-3">
                     {!! Form::label('','Pass Grade') !!}
                     <select name="pass_grade" class="form-control">
                        <option value="">Select Pass Grade</option>
@@ -247,6 +251,8 @@
                        <option value="F">F</option>
                     </select>
                   </div>
+                 </div>
+                 <div class="row">
                   <div class="form-group col-3">
                     {!! Form::label('','Exclude Subjects') !!}
                     <select name="exclude_subjects[]" class="form-control ss-select-tags" multiple="multiple">
@@ -255,8 +261,6 @@
                        @endforeach
                     </select>
                   </div>
-                 </div>
-                 <div class="row">
                   <div class="form-group col-3">
                     {!! Form::label('','Must Subjects') !!}
                     <select name="must_subjects[]" class="form-control ss-select-tags" multiple="multiple">
@@ -272,6 +276,10 @@
                        <option value="{{ $sub->subject_name }}">{{ $sub->subject_name }}</option>
                        @endforeach
                     </select>
+                  </div>
+                  <div class="form-group col-3">
+                    {!! Form::label('','NVA level') !!}
+                    {!! Form::text('award_level',null,$nva_level) !!}
                   </div>
                  </div>
 

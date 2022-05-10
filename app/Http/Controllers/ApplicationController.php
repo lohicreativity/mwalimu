@@ -660,7 +660,7 @@ class ApplicationController extends Controller
                  $selection->save();
 
                  $select_count = ApplicantProgramSelection::where('applicant_id',$request->get('applicant_id'))->count();
-                 if($select_count == 1){
+                 if($select_count == 1 && $request->get('choice') == 1){
                     $applicant = Applicant::find($request->get('applicant_id'));
                     $applicant->programs_complete_status = 1;
                     $applicant->save();

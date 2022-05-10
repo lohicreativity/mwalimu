@@ -673,7 +673,9 @@ class ApplicantController extends Controller
     	$validation = Validator::make($request->all(),[
             'first_name'=>'required',
             'surname'=>'required',
-            'birth_date'=>'required',
+            'date'=>'required',
+            'month'=>'required',
+            'year'=>'required',
             'phone'=>'required|min:12|max:12',
             'address'=>'required',
             'nationality'=>'required',
@@ -698,7 +700,7 @@ class ApplicantController extends Controller
 
         (new ApplicantAction)->update($request);
 
-        return Util::requestResponse($request,'Applicant updated successfully');
+        return redirect()->to('applicant/next-of-kin')->with('message','Applicant updated successfully');
     }
 
     /**
@@ -948,6 +950,23 @@ class ApplicantController extends Controller
              $insurance->save();
          }else{
            $ac_year = StudyAcademicYear::where('status','ACTIVE')->first()->academicYear->year;
+           $data = [
+        'FormFourIndexNo'=>str_replace('/', '-', $applicant->index_number),
+        'FirstName'=> $applicant->first_name,
+        'MiddleName'=> $applicant->middle_name,
+        'Surname'=> $applicant->last_name,
+        'AdmissionNo'=> "1502424523560",
+        'CollageFaculty'=> "COET",
+        'MobileNo'=> "0766762626",
+        'ProgrammeOfStudy'=> "Computer Engineering",
+        'CourseDuration'=> 4,
+        'MaritalStatus'=> "Single",
+        'DateJoiningEmployer'=> "2019-05-24",
+        'DateOfBirth'=> "1998-06-14",
+        'NationalID'=> "19930620141292100",
+        'Gender'=> "Male"
+
+           ];
            $data = [
               'BatchNo'=>'8002217/'.$ac_year.'/001',
               'Description'=>'Batch submitted on '.date('m d, Y'),

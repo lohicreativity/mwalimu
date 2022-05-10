@@ -177,7 +177,7 @@
                        <select name="country_id" class="form-control" required id="ss-select-countries" data-target="#ss-select-regions" data-token="{{ session()->token() }}" data-source-url="{{ url('api/v1/get-regions') }}">
                          <option value="">Select Country</option>
                          @foreach($countries as $country)
-                         <option value="{{ $country->id }}" @if($next_of_kin->country_id == $country->id) selected="selected" @endif @if($country->code != 'TZ') disabled="disabled" @endif>{{ $country->name }}</option>
+                         <option value="{{ $country->id }}" @if($next_of_kin->country_id == $country->id) selected="selected" @endif>{{ $country->name }}</option>
                          @endforeach
                        </select>
                     </div>

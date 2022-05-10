@@ -29,7 +29,7 @@ class ApplicantAction implements ApplicantInterface{
         $applicant->surname = $request->get('surname');
         $applicant->email = $request->get('email');
         $applicant->phone = $request->get('phone');
-        $applicant->birth_date = DateMaker::toDBDate($request->get('birth_date'));
+        $applicant->birth_date = $request->get('year').'-'.$request->get('month').'-'.$request->get('date');
         $applicant->nationality = $request->get('nationality');
         $applicant->gender = $request->get('gender');
         $applicant->disability_status_id = $request->get('disability_status_id');

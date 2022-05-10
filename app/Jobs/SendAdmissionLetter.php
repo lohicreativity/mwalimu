@@ -54,7 +54,7 @@ class SendAdmissionLetter implements ShouldQueue
              $query->where('status','APPROVING');
         })->with(['nextOfKin','intake','selections'=>function($query){
              $query->where('status','APPROVING');
-        },'selections.campusProgram.program','applicationWindow','country'])->where('program_level_id',$request->program_level_id)->get();
+        },'selections.campusProgram.program','applicationWindow','country','selections.campusProgram.campus'])->where('program_level_id',$request->program_level_id)->get();
 
         // Applicant::whereHas('intake.applicationWindows',function($query) use($request){
         //      $query->where('id',$request->application_window_id);
@@ -165,6 +165,7 @@ class SendAdmissionLetter implements ShouldQueue
 
                $data = [
                  'applicant'=>$applicant,
+                 'campus_name'=>$applicant->selections[0]->campusProgram->campus->name,
                  'applicant_name'=>$applicant->first_name.' '.$applicant->surname,
                  'reference_number'=>$applicant->admission_reference_no,
                  'program_name'=>$applicant->selections[0]->campusProgram->program->name,

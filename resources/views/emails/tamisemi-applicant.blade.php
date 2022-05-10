@@ -24,6 +24,7 @@
                      <p style="font-size: 18px;">{!! $notification_message !!}</p>
                      <p style="font-size: 18px;"><strong>Username:</strong> {{ $username }}</p>
                      <p style="font-size: 18px;"><strong>Password:</strong> {{ $password }}</p>
+                     <p style="font-size: 18px;">For more information, please call {{ config('constants.PHONE_LINE_TWO') }}</p>
                      <br>
               
                      <p style="font-weight: bold; font-size: 18px; margin-top:30px;">{{ config('constants.SITE_NAME') }}.</p>

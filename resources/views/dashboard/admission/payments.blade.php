@@ -60,7 +60,7 @@
                        @if($applicant->has_postponed == 1)
                        <td> 100,000 TZS</td>
                        @else
-                       @if($applicant->country->code == 'TZ')
+                       @if(str_contains($applicant->nationality,'Tanzania'))
                        <td>{{ $program_fee->amount_in_tzs }} TZS</td>
                        @else
                        <td>{{ $program_fee->amount_in_usd }} USD</td>
@@ -91,7 +91,7 @@
                     @if($applicant->has_postponed != 1)
                     <tr>
                        <td>Other Fees</td>
-                       @if($applicant->country->code == 'TZ')
+                       @if(str_contains($applicant->nationality,'Tanzania'))
                        <td>{{ $other_fees_tzs }} TZS</td>
                        @else
                        <td>{{ $other_fees_usd }} USD</td>
@@ -114,7 +114,7 @@
                     @if($insurance_fee)
                     <tr>
                        <td>Insurance Fee</td>
-                       @if($applicant->country->code == 'TZ')
+                       @if(str_contains($applicant->nationality,'Tanzania'))
                        <td>{{ $insurance_fee->amount_in_tzs }} TZS</td>
                        @else
                        <td>{{ $insurance_fee->amount_in_usd }} USD</td>
@@ -126,7 +126,7 @@
                     @if($hostel_fee)
                     <tr>
                        <td>Hostel Fee</td>
-                       @if($applicant->country->code == 'TZ')
+                       @if(str_contains($applicant->nationality,'Tanzania'))
                        <td>{{ $hostel_fee->amount_in_tzs }} TZS</td>
                        @else
                        <td>{{ $hostel_fee->amount_in_usd }} USD</td>

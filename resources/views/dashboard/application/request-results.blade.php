@@ -80,7 +80,10 @@
 
                     {!! Form::input('hidden','results_container','#ss-results-container') !!}
 
-                    {!! Form::input('hidden','results_link','#ss-results-confirmation-link') !!}                             
+                    {!! Form::input('hidden','results_link','#ss-results-confirmation-link') !!}
+                    @if(count($o_level_necta_results) != 0) 
+                    <p class="ss-color-danger ss-italic">If you have more than one index number use the same box to request results</p>  
+                    @endif                          
                     @foreach($o_level_necta_results as $result)
                      <p class="ss-font-xs">Center Name: {{ $result->center_name }} <br>Division: {{ $result->division }} &nbsp; Points: @if($result->points) {{ $result->points }} @else N/A @endif <i class="fa fa-check"></i></p>
                     @endforeach
@@ -136,6 +139,9 @@
                     {!! Form::input('hidden','results_container','#ss-results-container') !!}
 
                     {!! Form::input('hidden','results_link','#ss-results-confirmation-link') !!}
+                    @if(count($a_level_necta_results) != 0) 
+                    <p class="ss-color-danger ss-italic">If you have more than one index number use the same box to request results</p>  
+                    @endif  
 
                     @foreach($a_level_necta_results as $result)
                      <p class="ss-font-xs">Center Name: {{ $result->center_name }} <br>Division: {{ $result->division }} &nbsp; Points: @if($result->points) {{ $result->points }} @else N/A @endif <i class="fa fa-check"></i></p>
