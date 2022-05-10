@@ -1485,7 +1485,11 @@
                                           </div>
                                           <div class="form-group col-3">
                                             {!! Form::label('','Equivalent Pass Subjects') !!}
-                                            {!! Form::text('equivalent_pass_subjects',$requirement->equivalent_pass_subjects,$equivalent_pass_subjects) !!}
+                                            <select name="equivalent_pass_subjects[]" class="form-control ss-select-tags" multiple="multiple">
+                                               @foreach($equivalent_subjects as $sub)
+                                               <option value="{{ $sub->subject }}">{{ $sub->subject }}</option>
+                                               @endforeach
+                                            </select>
                                           </div>
                                           <div class="form-group col-3">
                                             {!! Form::label('','Equivalent Average Grade') !!}
