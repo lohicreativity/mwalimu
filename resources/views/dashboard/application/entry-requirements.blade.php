@@ -114,6 +114,11 @@
                    'readonly'=>true
                 ];
 
+                $min_pass_subjects = [
+                   'placeholder'=>'Min Pass Subjects',
+                   'class'=>'form-control'
+                ];
+
                 $open_equivalent_average_grade = [
                    'placeholder'=>'Open Equivalent Average Grade',
                    'class'=>'form-control',
