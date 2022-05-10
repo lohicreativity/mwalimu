@@ -27,4 +27,12 @@ class FeeItem extends Model
     	return $this->hasMany(FeeAmount::class,'fee_item_id');
     }
 
+    /**
+     * Get name attribute
+     */
+    public function getNameAttribute($value)
+    {
+        return strtoupper($value);
+    }
+
 }

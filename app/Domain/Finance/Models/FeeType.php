@@ -19,4 +19,12 @@ class FeeType extends Model
         return $this->hasMany(FeeItem::class,'fee_type_id');
     }
 
+    /**
+     * Get name attribute
+     */
+    public function getNameAttribute($value)
+    {
+        return strtoupper($value);
+    }
+
 }
