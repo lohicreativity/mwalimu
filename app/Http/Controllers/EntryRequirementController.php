@@ -46,7 +46,7 @@ class EntryRequirementController extends Controller
            'entry_requirements'=>EntryRequirement::with(['campusProgram.program.award'])->where('application_window_id',$request->get('application_window_id'))->latest()->paginate(20),
            'subjects'=>NectaResult::distinct()->get(['subject_name']),
            'staff'=>$staff,
-           'selection_run'=>$approving_status == 0? false : true;
+           'selection_run'=>$approving_status == 0? false : true,
            'request'=>$request
     	];
     	return view('dashboard.application.entry-requirements',$data)->withTitle('Entry Requirements');
