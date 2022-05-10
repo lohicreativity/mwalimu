@@ -121,7 +121,7 @@ class EntryRequirementController extends Controller
             return redirect()->back()->with('error','No previous application window');
         }
         $reqs = EntryRequirement::where('application_window_id',$application_window->id)->get();
-        return $reqs;
+
         foreach($reqs as $req){
             $requirement = new EntryRequirement;
             $requirement->campus_program_id = $req->campus_program_id;
