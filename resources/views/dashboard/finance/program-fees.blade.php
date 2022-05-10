@@ -39,6 +39,35 @@
         <div class="row">
           <div class="col-12">
             <!-- general form elements -->
+            <div class="card">
+              <div class="card-header">
+                 <h3 class="card-title">Select Campus</h3>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+                 {!! Form::open(['url'=>'finance/program-fees','class'=>'ss-form-processing','method'=>'GET']) !!}
+                   
+                   <div class="row">
+                  <div class="form-group col-6">
+                    {!! Form::label('','Select campus') !!}
+                    <select name="campus_id" class="form-control" required>
+                       <option value="">Select Campus</option>
+                       @foreach($campuses as $cp)
+                       @if($cp->id == $staff->campus_id)
+                       <option value="{{ $cp->id }}" @if($request->get('campus_id') == $cp->id) selected="selected" @endif>{{ $cp->name }}</option>
+                       @endif
+                       @endforeach
+                    </select>
+                  </div>
+                  </div>
+                  <div class="ss-form-actions">
+                   <button type="submit" class="btn btn-primary">{{ __('Search') }}</button>
+                  </div>
+
+                 {!! Form::close() !!}
+              </div>
+            </div>
+            <!-- /.card -->
             <div class="card card-default">
               <div class="card-header">
                 <h3 class="card-title">{{ __('Add amount') }}</h3>
@@ -83,7 +112,7 @@
                     <select name="fee_item_id" class="form-control">
                       <option value="">Select Fee Item</option>
                       @foreach($fee_items as $item)
-                        <option value="{{ $item->id }}">{{ $item->name }}</option>
+                        <option value="{{ $item->id }}" @if(str_contains($item->name,'Tuition')) selected="selected" @else disabled="disabled" @endif>{{ $item->name }}</option>
                       @endforeach
                     </select>
                   </div>
@@ -95,7 +124,9 @@
                     <select name="study_academic_year_id" class="form-control">
                       <option value="">Select Study Academic Year</option>
                       @foreach($study_academic_years as $year)
+                        @if($ac_year->id == $year->id)
                         <option value="{{ $year->id }}">{{ $year->academicYear->year }}</option>
+                        @endif
                       @endforeach
                     </select>
                   </div>
@@ -121,15 +152,25 @@
             @if(count($fees) != 0)
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">{{ __('List of Fee Amounts') }}</h3>
+                <h3 class="card-title">{{ __('List of Programme Fees') }}</h3>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
-                <table id="example2" class="table table-bordered table-hover">
+                {!! Form::open(['url'=>'finance/program-fees','method'=>'GET']) !!}
+                <div class="input-group ss-stretch">
+                 <input type="text" name="query" class="form-control" placeholder="Search for academic year">
+                 <span class="input-group-btn">
+                   <button class="btn btn-default" type="submit"><span class="fa fa-search"></span></button>
+                 </span>
+                </div>
+                {!! Form::close() !!}
+
+                <table id="example2" class="table table-bordered table-hover ss-margin-top">
                   <thead>
                   <tr>
                     <th>Programme</th>
                     <th>Amount in TZS</th>
+                    <th>Amount in USD</th>
                     <th>Status</th>
                     <th>Academic Year</th>
                     <th>Actions</th>
@@ -200,7 +241,7 @@
                                         <select name="fee_item_id" class="form-control">
                                           <option value="">Select Fee Item</option>
                                           @foreach($fee_items as $item)
-                                            <option value="{{ $item->id }}" @if($fee->fee_item_id == $item->id) selected="selected" @endif>{{ $item->name }}</option>
+                                            <option value="{{ $item->id }}" @if($fee->fee_item_id == $item->id) selected="selected" @else disabled="disabled" @endif>{{ $item->name }}</option>
                                           @endforeach
                                         </select>
                                       </div>

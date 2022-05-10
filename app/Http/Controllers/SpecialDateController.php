@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Domain\Academic\Models\StudyAcademicYear;
+use App\Domain\Academic\Models\AcademicYear;
 use App\Domain\Settings\Models\Campus;
 use App\Domain\Settings\Models\SpecialDate;
 use App\Utils\DateMaker;
@@ -221,6 +222,16 @@ class SpecialDateController extends Controller
         $date->campus_id = $request->get('campus_id');
         $date->study_academic_year_id = $request->get('study_academic_year_id');
         $date->save();
+
+        $ac_year = new AcademicYear;
+        $ac_year->year = date('Y',strtotime($request->get('orientation_date'))).'/'.date('Y',strtotime($request->get('orientation_date')))+1;
+        $ac_year->save();
+
+        $year = new StudyAcademicYear;
+        $year->academic_year_id = $ac_year->id;
+        $year->begin_date = $request->get('orientation_date');
+        $year->end_date = Carbon::parse($request->get('orientation_date'))->addMonths(12)->format('Y-m-d');
+        $year->save();
 
         return redirect()->back()->with('message','Orientation date created successfully');
     }
