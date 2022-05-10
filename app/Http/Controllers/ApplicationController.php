@@ -2866,10 +2866,14 @@ class ApplicationController extends Controller
             curl_close($curl);
              $returnedObject = json_decode($jsondata);
 
+             if(!isset($returnedObject->params)){
+                return redirect()->back()->with('error','No students to retrieve from TAMISEMI for selected programme');
+             }
+
              // return $returnedObject;
           //echo $returnedObject->params[0]->student_verification_id."-dsdsdsdsds-<br />";
-          // check for parse errors
-          if (json_last_error() == JSON_ERROR_NONE) {
+          // check for parse errors json_last_error() == JSON_ERROR_NONE
+          if (isset($returnedObject->params)) {
             if(count($returnedObject->params)>0){
               for($i=0;$i<count($returnedObject->params);$i++){
                 // $parts=explode("/",$returnedObject->params[$i]->username);
