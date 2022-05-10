@@ -190,7 +190,8 @@
                     <td>{{ number_format($fee->amount_in_usd,2) }}</td>
                     <td>{{ $fee->studyAcademicYear->academicYear->year }}</td>
                     <td>
-                      <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-edit-amount-{{ $fee->id }}">
+
+                      <a class="btn btn-info btn-sm" href="#" @if(App\Domain\Finance\Models\ProgramFee::isUsed($fee->campusProgram->id,$fee->studyAcademicYear->academicYear->year)) disabled="disabled" @else data-toggle="modal" data-target="#ss-edit-amount-{{ $fee->id }}" @endif>
                               <i class="fas fa-pencil-alt">
                               </i>
                               Edit
@@ -286,7 +287,7 @@
                       </div>
                       <!-- /.modal -->
 
-                      <a class="btn btn-danger btn-sm" href="#" data-toggle="modal" data-target="#ss-delete-amount-{{ $fee->id }}">
+                      <a class="btn btn-danger btn-sm" href="#" @if(App\Domain\Finance\Models\ProgramFee::isUsed($fee->campusProgram->id,$fee->studyAcademicYear->academicYear->year)) disabled="disabled" @else data-toggle="modal" data-target="#ss-delete-amount-{{ $fee->id }}" @endif>
                               <i class="fas fa-trash">
                               </i>
                               Delete
