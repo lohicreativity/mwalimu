@@ -42,7 +42,7 @@ class ProgramFeeController extends Controller
            })->with('campusProgram.program')->latest()->paginate(20),
            'campus_programs'=>CampusProgram::with('program')->where('campus_id',$request->get('campus_id'))->get(),
            'fee_items'=>FeeItem::all(),
-           '$ac_year'=>$study_ac_yr,
+           'ac_year'=>$study_ac_yr,
            'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
            'semesters'=>Semester::all(),
            'campuses'=>Campus::all(),
