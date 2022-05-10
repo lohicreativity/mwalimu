@@ -231,6 +231,7 @@ class SpecialDateController extends Controller
         $year->academic_year_id = $ac_year->id;
         $year->begin_date = Carbon::parse($request->get('orientation_date'))->format('Y-m-d');
         $year->end_date = Carbon::parse($request->get('orientation_date'))->addMonths(12)->format('Y-m-d');
+        $year->status = 'INACTIVE';
         $year->save();
 
         return redirect()->back()->with('message','Orientation date created successfully');
