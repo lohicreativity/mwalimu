@@ -24,7 +24,7 @@ class ProgramFeeController extends Controller
     public function index(Request $request)
     {
       $staff = User::find(Auth::user()->id)->staff;
-      $application_window = ApplicationWindow::where('campus_id',$request->get('campus_id'))->where('status','ACTIVE')->first();
+      $application_window = ApplicationWindow::where('campus_id',$staff->campus_id)->where('status','ACTIVE')->first();
       if(!$application_window){
           return redirect()->back()->with('error','No active application window');
       }
