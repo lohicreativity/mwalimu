@@ -110,7 +110,7 @@ class ProgramFeeController extends Controller
         }
 
 
-        if(ProgramFee::isUsed($request->get('campus_program_id'),$request->get('year'))){
+        if(ProgramFee::isUsed($request->get('campus_program_id'),$request->get('year'),$request->get('year_of_study'))){
              return redirect()->back()->with('error','Programme fee cannot be updated because it has already been used');
         }
 
@@ -126,8 +126,8 @@ class ProgramFeeController extends Controller
     public function destroy(Request $request, $id)
     {
         try{
-            if(ProgramFee::isUsed($request->get('campus_program_id'),$request->get('year'))){
-             return redirect()->back()->with('error','Programme fee cannot be deleted because it has already been used');
+            if(ProgramFee::isUsed($request->get('campus_program_id'),$request->get('year'),$request->get('year_of_study'))){
+               return redirect()->back()->with('error','Programme fee cannot be deleted because it has already been used');
             }
             $fee = ProgramFee::findOrFail($id);
             $fee->delete();

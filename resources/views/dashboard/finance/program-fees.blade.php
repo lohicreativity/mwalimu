@@ -312,7 +312,7 @@
                                        <p id="ss-confirmation-text">Are you sure you want to delete this fee amount from the list?</p>
                                        <div class="ss-form-controls">
                                          <button amount="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                                         <a href="{{ url('finance/program-fee/'.$fee->id.'/destroy?campus_program_id='.$fee->campusProgram->id.'&year='.$fee->studyAcademicYear->academicYear->year) }}" class="btn btn-danger">Delete</a>
+                                         <a href="{{ url('finance/program-fee/'.$fee->id.'/destroy?campus_program_id='.$fee->campusProgram->id.'&year='.$fee->studyAcademicYear->academicYear->year.'&year_of_study='.$fee->year_of_study) }}" class="btn btn-danger">Delete</a>
                                          </div><!-- end of ss-form-controls -->
                                       </div><!-- end of ss-confirmation-container -->
                                   </div><!-- end of col-md-12 -->

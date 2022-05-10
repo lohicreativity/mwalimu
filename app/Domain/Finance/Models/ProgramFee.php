@@ -8,6 +8,7 @@ use App\Domain\Academic\Models\StudyAcademicYear;
 use App\Domain\Academic\Models\Semester;
 use App\Domain\Academic\Models\CampusProgram;
 use App\Domain\Application\Models\Applicant;
+use App\Domain\Registration\Models\Student;
 
 class ProgramFee extends Model
 {
@@ -50,15 +51,23 @@ class ProgramFee extends Model
     /**
      * Check if is used
      */
-    public static function isUsed($campus_program_id, $year)
+    public static function isUsed($campus_program_id, $year, $yr_of_study = null)
     {
         $status = false;
-        if(Applicant::whereHas('applicationWindow',function($query) use($year){
-            $query->whereYear('end_date',explode('/', $year)[0]);
-        })->whereHas('selections',function($query) use($campus_program_id){
-            $query->where('campus_program_id',$campus_program_id);
-        })->where('tuition_payment_check',1)->count() != 0){
-            $status = true;
+        if($yr_of_study == 1){
+            if(Applicant::whereHas('applicationWindow',function($query) use($year){
+                $query->whereYear('end_date',explode('/', $year)[0]);
+            })->whereHas('selections',function($query) use($campus_program_id){
+                $query->where('campus_program_id',$campus_program_id);
+            })->where('tuition_payment_check',1)->count() != 0){
+                $status = true;
+            }
+        }else{
+            if(Student::whereHas('registrations.studyAcademicYear.academicYear',function($query) use($year){
+                  $query->where('year','LIKE','%'.$year.'%');
+            })->where('campus_program_id',$campus_program_id)->count() != 0){
+                $status = true;
+            }
         }
         return $status;
     }
