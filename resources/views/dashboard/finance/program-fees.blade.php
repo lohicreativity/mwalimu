@@ -191,7 +191,7 @@
                     <td>{{ $fee->studyAcademicYear->academicYear->year }}</td>
                     <td>
 
-                      <a class="btn btn-info btn-sm" href="#" @if(App\Domain\Finance\Models\ProgramFee::isUsed($fee->campusProgram->id,$fee->studyAcademicYear->academicYear->year)) disabled="disabled" @else data-toggle="modal" data-target="#ss-edit-amount-{{ $fee->id }}" @endif>
+                      <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-edit-amount-{{ $fee->id }}">
                               <i class="fas fa-pencil-alt">
                               </i>
                               Edit
@@ -237,6 +237,7 @@
                                         {!! Form::text('amount_in_tzs',$fee->amount_in_tzs,$fee_in_tzs) !!}
 
                                         {!! Form::input('hidden','program_fee_id',$fee->id) !!}
+                                        {!! Form::input('hidden','year',$fee->studyAcademicYear->academicYear->year) !!}
                                       </div>
                                       <div class="form-group col-3">
                                         {!! Form::label('','Amount in USD') !!}
@@ -287,7 +288,7 @@
                       </div>
                       <!-- /.modal -->
 
-                      <a class="btn btn-danger btn-sm" href="#" @if(App\Domain\Finance\Models\ProgramFee::isUsed($fee->campusProgram->id,$fee->studyAcademicYear->academicYear->year)) disabled="disabled" @else data-toggle="modal" data-target="#ss-delete-amount-{{ $fee->id }}" @endif>
+                      <a class="btn btn-danger btn-sm" href="#" data-toggle="modal" data-target="#ss-delete-amount-{{ $fee->id }}">
                               <i class="fas fa-trash">
                               </i>
                               Delete
@@ -309,7 +310,7 @@
                                        <p id="ss-confirmation-text">Are you sure you want to delete this fee amount from the list?</p>
                                        <div class="ss-form-controls">
                                          <button amount="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                                         <a href="{{ url('finance/program-fee/'.$fee->id.'/destroy') }}" class="btn btn-danger">Delete</a>
+                                         <a href="{{ url('finance/program-fee/'.$fee->id.'/destroy?campus_program_id='.$fee->campusProgram->id.'&year='.$fee->studyAcademicYear->academicYear->year) }}" class="btn btn-danger">Delete</a>
                                          </div><!-- end of ss-form-controls -->
                                       </div><!-- end of ss-confirmation-container -->
                                   </div><!-- end of col-md-12 -->
