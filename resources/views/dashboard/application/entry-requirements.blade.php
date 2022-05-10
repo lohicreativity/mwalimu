@@ -861,19 +861,14 @@
                  {!! Form::open(['url'=>'application/entry-requirements','method'=>'GET']) !!}
                  {!! Form::input('hidden','application_window_id',$request->get('application_window_id')) !!}
                 <div class="input-group ss-stretch">
-                 <select name="campus_program_id" class="form-control">
-                   <option value="">Select Programme</option>
-                   @foreach($campus_programs as $program)
-                   <option value="{{ $program->id }}">{{ $program->program->name }}</option>
-                   @endforeach
-                 </select>
+                 <input type="text" name="query" class="form-control" placeholder="Search for programme name">
                  <span class="input-group-btn">
                    <button class="btn btn-default" type="submit"><span class="fa fa-search"></span></button>
                  </span>
                 </div>
                 {!! Form::close() !!}
 
-                  <table id="example2" class="table table-bordered table-hover">
+                  <table id="example2" class="table table-bordered table-hover ss-margin-top">
                   <thead>
                   <tr>
                     <th>Programme</th>
