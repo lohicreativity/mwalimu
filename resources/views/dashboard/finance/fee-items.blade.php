@@ -138,11 +138,11 @@
                         @endif
                     </td>
                     <td>
-                      <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-edit-item-{{ $item->id }}">
+                      <!-- <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-edit-item-{{ $item->id }}">
                               <i class="fas fa-pencil-alt">
                               </i>
                               Edit
-                       </a>
+                       </a> -->
 
                        <div class="modal fade" id="ss-edit-item-{{ $item->id }}">
                         <div class="modal-dialog modal-lg">

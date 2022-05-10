@@ -2826,6 +2826,19 @@ class ApplicationController extends Controller
         $applyr = 2020;
         $application_window = ApplicationWindow::with('intake')->find($request->get('application_window_id'));
         $campus_program = CampusProgram::with(['program','entryRequirements'])->find($request->get('campus_program_id'));
+        $program = $campus_program;
+
+        if(count($program->entryRequirements) == 0){
+            return redirect()->back()->with('error',$program->program->name.' does not have entry requirements');
+        }
+
+        if($program->entryRequirements[0]->max_capacity == null){
+            return redirect()->back()->with('error',$program->program->name.' does not have maximum capacity in entry requirements');
+        }
+        $has_must_subjects = false;
+        if(unserialize($campus_program->entryRequirements[0]->must_subjects) != null){
+           $has_must_subjects = true;
+        }
         $appacyr = $ac_year->academicYear->year;
         $intake = $application_window->intake->name;
         $nactecode = $campus_program->regulator_code;
@@ -2975,7 +2988,8 @@ class ApplicationController extends Controller
             }
           }
         }//end
-
+        
+        if($has_must_subjects){
         $applicants = Applicant::where('application_window_id',$application_window->id)->where('is_tamisemi',1)->get();
         foreach($applicants as $applicant){
             $parts=explode("/",$applicant->index_number);
@@ -3020,6 +3034,8 @@ class ApplicationController extends Controller
                 $res->save();
             }
         }
+
+
 
         $applicants = Applicant::with(['selections','nectaResultDetails.results','programLevel'])->where('application_window_id',$application_window->id)->where('is_tamisemi',1)->get();
         $o_level_grades = ['A'=>5,'B+'=>4,'B'=>3,'C'=>2,'D'=>1,'E'=>0.5,'F'=>0];
@@ -3294,6 +3310,7 @@ class ApplicationController extends Controller
                        }
                    }
                 }
+            }
         }
 
         return redirect()->back()->with('message','TAMISEMI applicants retrieved successfully');

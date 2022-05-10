@@ -44,11 +44,11 @@ class FeeItemController extends Controller
            }
         }
 
-        // if(FeeItem::where('fee_type_id',$request->get('fee_type_id'))->count() != 0){
-        //     return redirect()->back()->with('error','Fee item with this fee type already exists');
-        // }
+        if(FeeItem::where('fee_type_id',$request->get('fee_type_id'))->count() != 0){
+            return redirect()->back()->with('error','Fee item with this fee type already exists');
+        }
 
-        if(FeeItem::where('fee_type_id',$request->get('fee_type_id'))->where('name',$request->get('name'))->count() != 0){
+        if(FeeItem::where('name',$request->get('name'))->count() != 0){
             return redirect()->back()->with('error','Fee item with this name already exists');
         }
 
@@ -77,6 +77,9 @@ class FeeItemController extends Controller
            }
         }
 
+        // if(FeeItem::where('name',$request->get('name'))->count() != 0){
+        //     return redirect()->back()->with('error','Fee item with this name already exists');
+        // }
 
         (new FeeItemAction)->update($request);
 
