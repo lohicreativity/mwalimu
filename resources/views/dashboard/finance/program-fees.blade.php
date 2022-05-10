@@ -77,7 +77,8 @@
             <!-- /.card -->
             <div class="card card-default">
               <div class="card-header">
-                <h3 class="card-title">{{ __('Add amount') }}</h3>
+                <h3 class="card-title">{{ __('Add amount') }}</h3><br>
+                <a href="{{ url('finance/program-fee/store-as-previous') }}" class="btn btn-primary">Assign As Previous</a>
               </div>
               <!-- /.card-header -->
               <!-- form start -->

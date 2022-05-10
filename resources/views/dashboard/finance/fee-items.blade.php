@@ -70,21 +70,21 @@
                     {!! Form::text('description',null,$description) !!}
                   </div>
                   <div class="form-group col-4">
+                    {!! Form::label('','Is mandatory (Registration)') !!}
+                    <select name="is_mandatory" class="form-control">
+                      <option value="1">Yes</option>
+                      <option value="0">No</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="form-group col-4">
                     {!! Form::label('','Payment order') !!}
                     <select name="payment_order" class="form-control" required>
                       <option value="">Select Payment Order</option>
                       @for($i = 1; $i <= 10; $i++)
                         <option value="{{ $i }}">{{ $i }}</option>
                       @endfor
-                    </select>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="form-group col-4">
-                    {!! Form::label('','Is mandatory') !!}
-                    <select name="is_mandatory" class="form-control">
-                      <option value="1">Yes</option>
-                      <option value="0">No</option>
                     </select>
                   </div>
                   <div class="form-group col-4">
@@ -181,21 +181,21 @@
                                         {!! Form::text('description',$item->description,$description) !!}
                                       </div>
                                       <div class="form-group col-4">
+                                        {!! Form::label('','Is mandatory (Registration)') !!}
+                                        <select name="is_mandatory" class="form-control">
+                                          <option value="1" @if($item->is_mandatory == 1) selected="selected" @endif>Yes</option>
+                                          <option value="0" @if($item->is_mandatory == 0) selected="selected" @endif>No</option>
+                                        </select>
+                                      </div>
+                                    </div>
+                                    <div class="row">
+                                      <div class="form-group col-4">
                                         {!! Form::label('','Payment order') !!}
                                         <select name="payment_order" class="form-control" required>
                                           <option value="">Select Payment Order</option>
                                           @for($i = 1; $i <= 10; $i++)
                                             <option value="{{ $i }}" @if($i == $item->payment_order) selected="selected" @endif>{{ $i }}</option>
                                           @endfor
-                                        </select>
-                                      </div>
-                                    </div>
-                                    <div class="row">
-                                      <div class="form-group col-4">
-                                        {!! Form::label('','Is mandatory') !!}
-                                        <select name="is_mandatory" class="form-control">
-                                          <option value="1" @if($item->is_mandatory == 1) selected="selected" @endif>Yes</option>
-                                          <option value="0" @if($item->is_mandatory == 0) selected="selected" @endif>No</option>
                                         </select>
                                       </div>
                                       <div class="form-group col-4">

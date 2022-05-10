@@ -47,6 +47,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 	Route::post('program-fee/update', [ProgramFeeController::class,'update']);
 	Route::get('program-fee/{id}/structure', [ProgramFeeController::class,'feeStructure']);
 	Route::get('program-fee/{id}/destroy', [ProgramFeeController::class,'destroy']);
+	Route::get('program-fee/store-as-previous',[ProgramFeeController::class,'storeAsPrevious']);
 
 	Route::get('payments',[PaymentController::class, 'index']);
 	Route::get('payment/{id}/distributions',[PaymentController::class, 'showDistributions']);

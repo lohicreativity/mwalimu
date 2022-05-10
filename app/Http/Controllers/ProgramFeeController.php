@@ -92,6 +92,30 @@ class ProgramFeeController extends Controller
     }
 
     /**
+     * Store as previous
+     */
+    public function storeAsPrevious(Request $request)
+    {
+         $previous_ac_yr = StudyAcademicYear::latest()->offset(1)->first();
+         if(!$previous_ac_yr){
+             return redirect()->back()->with('error','No previous academic year');
+         }
+         $study_academic_year = StudyAcademicYear::where('status','ACTIVE')->first();
+         $prog_fees = ProgramFee::where('study_academic_year_id',$previous_ac_yr->id)->get();
+         foreach($prog_fees as $fee){
+            $pf = new ProgramFee;
+            $pf->study_academic_year_id = $study_academic_year->id;
+            $pf->year_of_study = $fee->year_of_study;
+            $pf->amount_in_tzs = $fee->amount_in_tzs;
+            $pf->amount_in_usd = $fee->amount_in_usd;
+            $pf->fee_item_id = $fee->fee_item_id;
+            $pf->campus_program_id = $fee->campus_program_id;
+            $pf->save();
+         }
+         return redirect()->back()->with('message','Programme fees stored as previously successfully');
+    }
+
+    /**
      * Update specified program fee
      */
     public function update(Request $request)
