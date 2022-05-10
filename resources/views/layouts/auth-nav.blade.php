@@ -234,12 +234,6 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="{{ url('application/application-dashboard?campus_id='.session('staff_campus_id').'&application_window_id='.session('active_window_id')) }}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>{{ __('Application Dashboard') }}</p>
-                </a>
-              </li>
-              <li class="nav-item">
                 <a href="{{ url('application/entry-requirements?application_window_id='.session('active_window_id')) }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Entry Requirements</p>
@@ -251,6 +245,13 @@
                   <p>Program Max Capacity</p>
                 </a>
               </li>
+              <li class="nav-item">
+                <a href="{{ url('application/application-dashboard?campus_id='.session('staff_campus_id').'&application_window_id='.session('active_window_id')) }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>{{ __('Application Dashboard') }}</p>
+                </a>
+              </li>
+
               <li class="nav-item">
                 <a href="{{ url('application/search-for-applicant') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
