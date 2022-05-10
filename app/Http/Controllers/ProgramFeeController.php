@@ -102,7 +102,6 @@ class ProgramFeeController extends Controller
          }
          $study_academic_year = StudyAcademicYear::where('status','ACTIVE')->first();
          $prog_fees = ProgramFee::where('study_academic_year_id',$previous_ac_yr->id)->get();
-         return $prog_fees;
          foreach($prog_fees as $fee){
             $pf = new ProgramFee;
             $pf->study_academic_year_id = $study_academic_year->id;
