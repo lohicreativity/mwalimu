@@ -81,7 +81,10 @@ class FeeTypeController extends Controller
     public function destroy(Request $request, $id)
     {
         try{
-            $type = FeeType::findOrFail($id);
+            $type = FeeType::with('feeItems')->findOrFail($id);
+            if(count($item->feeItems) != 0){
+                return redirect()->back()->with('error','Fee type has items and cannot be deleted');
+            }
             $type->delete();
             return redirect()->back()->with('message','Fee type deleted successfully');
         }catch(Exception $e){

@@ -214,13 +214,13 @@
                             <div class="modal-body">
                                 @php
                                       $name = [
-                                         'placeholder'=>'Name',
+                                         'placeholder'=>'Name eg. Application Fee',
                                          'class'=>'form-control',
                                          'required'=>true
                                       ];
 
                                       $code = [
-                                         'placeholder'=>'Code',
+                                         'placeholder'=>'Code eg. AF',
                                          'class'=>'form-control',
                                          'required'=>true
                                       ];
@@ -261,7 +261,7 @@
                                           {!! Form::text('description',$type->description,$description) !!}
                                         </div>
                                         <div class="form-group col-4">
-                                          {!! Form::label('','Duration') !!}
+                                          {!! Form::label('','Payment Duration') !!}
                                           <select name="duration" class="form-control">
                                             <option value="">Select Duration</option>
                                             @for($i = 10; $i <= 360; $i++)
