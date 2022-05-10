@@ -45,7 +45,7 @@ class EntryRequirementAction implements EntryRequirementInterface{
             $requirement->group_id = $group_id;
             $requirement->save();
         }
-        
+        return Util::requestResponse($request,'Entry requirement created successfully');
 	}
 
 	public function update(Request $request)
