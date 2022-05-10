@@ -51,7 +51,7 @@ class ProgramFee extends Model
     /**
      * Check if is used
      */
-    public static function isUsed($campus_program_id, $year, $yr_of_study = null)
+    public static function isUsed($campus_program_id, $year, $yr_of_study = null, $study_ac_yr_id = null)
     {
         $status = false;
         if($yr_of_study == 1){
@@ -63,8 +63,8 @@ class ProgramFee extends Model
                 $status = true;
             }
         }else{
-            if(Student::whereHas('registrations.studyAcademicYear.academicYear',function($query) use($year){
-                  $query->where('year','LIKE','%'.$year.'%');
+            if(Student::whereHas('registrations',function($query) use($study_ac_yr_id){
+                  $query->where('study_academic_year_id',$study_ac_yr_id);
             })->where('campus_program_id',$campus_program_id)->count() != 0){
                 $status = true;
             }
