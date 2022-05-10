@@ -229,7 +229,7 @@ class SpecialDateController extends Controller
 
         $year = new StudyAcademicYear;
         $year->academic_year_id = $ac_year->id;
-        $year->begin_date = $request->get('orientation_date');
+        $year->begin_date = Carbon::parse($request->get('orientation_date'))->format('Y-m-d');
         $year->end_date = Carbon::parse($request->get('orientation_date'))->addMonths(12)->format('Y-m-d');
         $year->save();
 
