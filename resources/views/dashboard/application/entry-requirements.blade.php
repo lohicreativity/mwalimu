@@ -69,10 +69,8 @@
              @if($application_window)
              <div class="card">
                <div class="card-header">
-                 <h3 class="card-title">{{ __('Add Entry Requirement') }}</h3><br>
-                 @if(count($entry_requirements) == 0)
-                 <a href="{{ url('application/store-requirements-as-previous?application_window_id='.$application_window->id) }}" class="btn btn-primary">Save as Previous</a>
-                 @endif
+                 <h3 class="card-title">{{ __('Add Entry Requirement') }}</h3>
+                
                </div>
                <!-- /.card-header -->
                <ul class="nav nav-tabs" id="myList" role="tablist">
@@ -297,6 +295,9 @@
              
                <div class="card-footer">
                   <button type="submit" class="btn btn-primary">{{ __('Add Entry Requirement') }}</button>
+                   @if(count($entry_requirements) == 0)
+                 <a href="{{ url('application/store-requirements-as-previous?application_window_id='.$application_window->id) }}" class="btn btn-primary">Save as Previous</a>
+                 @endif
                 </div>
               {!! Form::close() !!}
             </div><!-- /tabpane -->
@@ -558,6 +559,9 @@
              
                <div class="card-footer">
                   <button type="submit" class="btn btn-primary">{{ __('Add Entry Requirement') }}</button>
+                   @if(count($entry_requirements) == 0)
+                 <a href="{{ url('application/store-requirements-as-previous?application_window_id='.$application_window->id) }}" class="btn btn-primary">Save as Previous</a>
+                 @endif
                 </div>
               {!! Form::close() !!}
             </div><!-- /tabpane -->
@@ -838,6 +842,9 @@
              
                <div class="card-footer">
                   <button type="submit" class="btn btn-primary">{{ __('Add Entry Requirement') }}</button>
+                   @if(count($entry_requirements) == 0)
+                 <a href="{{ url('application/store-requirements-as-previous?application_window_id='.$application_window->id) }}" class="btn btn-primary">Save as Previous</a>
+                 @endif
                 </div>
               {!! Form::close() !!}
             </div><!-- /tabpane -->
