@@ -24,7 +24,15 @@ class FeeType extends Model
      */
     public function getNameAttribute($value)
     {
-        return strtoupper($value);
+        return ucwords($value);
+    }
+
+    /**
+     * Set name attribute
+     */
+    public function setNameAttribute($value)
+    {
+        $this->attributes['name'] = ucwords($value);
     }
 
 }
