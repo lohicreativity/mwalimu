@@ -16,7 +16,6 @@ class ProgramFeeAction implements ProgramFeeInterface{
                 $fee->fee_item_id = $request->get('fee_item_id');
                 $fee->year_of_study = $request->get('year_of_study');
                 $fee->study_academic_year_id = $request->get('study_academic_year_id');
-                $fee->status = $request->get('category');
                 $fee->save();
 	}
 
@@ -28,7 +27,6 @@ class ProgramFeeAction implements ProgramFeeInterface{
                 $fee->fee_item_id = $request->get('fee_item_id');
                 $fee->year_of_study = $request->get('year_of_study');
                 $fee->study_academic_year_id = $request->get('study_academic_year_id');
-                $fee->status = $request->get('category');
                 $fee->save();
 	}
 }
