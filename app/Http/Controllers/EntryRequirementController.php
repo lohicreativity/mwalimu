@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Domain\Academic\Models\CampusProgram;
 use App\Domain\Application\Models\ApplicationWindow;
+use App\Domain\Application\Models\ApplicantProgramSelection;
 use App\Domain\Application\Models\NectaResult;
 use App\Domain\Application\Models\EntryRequirement;
 use App\Domain\Application\Actions\EntryRequirementAction;
@@ -20,6 +21,7 @@ class EntryRequirementController extends Controller
     public function index(Request $request)
     {
       $staff = User::find(Auth::user()->id)->staff;
+      $approving_status = ApplicantProgramSelection::where('application_window_id',$request->get('application_window_id'))->where('status','APPROVING')->count();
     	$data = [
            'application_windows'=>ApplicationWindow::where('campus_id',$staff->campus_id)->get(),
            'application_window'=>ApplicationWindow::find($request->get('application_window_id')),
@@ -41,9 +43,10 @@ class EntryRequirementController extends Controller
            })->whereHas('selections',function($query) use($request){
                      $query->where('application_window_id',$request->get('application_window_id'));
               })->with('program')->where('campus_id',$staff->campus_id)->get(),
-           'entry_requirements'=>EntryRequirement::with(['campusProgram.program.award'])->where('application_window_id',$request->get('application_window_id'))->paginate(20),
+           'entry_requirements'=>EntryRequirement::with(['campusProgram.program.award'])->where('application_window_id',$request->get('application_window_id'))->latest()->paginate(20),
            'subjects'=>NectaResult::distinct()->get(['subject_name']),
            'staff'=>$staff,
+           'selection_run'=>$approving_status == 0? false : true;
            'request'=>$request
     	];
     	return view('dashboard.application.entry-requirements',$data)->withTitle('Entry Requirements');
@@ -100,7 +103,7 @@ class EntryRequirementController extends Controller
         }
 
 
-        (new EntryRequirementAction)->store($request);
+        return (new EntryRequirementAction)->store($request);
 
         return Util::requestResponse($request,'Entry requirement created successfully');
     }

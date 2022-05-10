@@ -13,6 +13,9 @@ class EntryRequirementAction implements EntryRequirementInterface{
 		
         $group_id = Util::randString(100);
         foreach($request->get('campus_program_ids') as $id){
+            if(EntryRequirement::where('campus_program_id',$id))->where('application_window_id',$request->get('application_window_id'))->count() != 0){
+                 return redirect()->back()->with('error','Entry requirement already exists');
+            }
             $requirement = new EntryRequirement;
             $requirement->campus_program_id = $id;
             $requirement->application_window_id = $request->get('application_window_id');

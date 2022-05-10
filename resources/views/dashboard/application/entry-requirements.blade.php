@@ -459,6 +459,13 @@
                     {!! Form::text('pass_subjects',null,$pass_subjects) !!}
                   </div>
                   <div class="form-group col-3">
+                    {!! Form::label('','No. of Minimum Pass Subjects') !!}
+                    {!! Form::text('min_pass_subjects',null,$min_pass_subjects) !!}
+                  </div>
+                  
+                 </div>
+                 <div class="row">
+                  <div class="form-group col-3">
                     {!! Form::label('','Pass Grade') !!}
                     <select name="pass_grade" class="form-control">
                        <option value="">Select Pass Grade</option>
@@ -470,8 +477,6 @@
                        <option value="F">F</option>
                     </select>
                   </div>
-                 </div>
-                 <div class="row">
                   <div class="form-group col-3">
                     {!! Form::label('','NTA Level') !!}
                     <select name="nta_level" class="form-control">
@@ -501,7 +506,10 @@
                        @endforeach
                     </select>
                   </div>
-                  <div class="form-group col-3">
+                  
+                 </div>
+                 <div class="row">
+                   <div class="form-group col-3">
                     {!! Form::label('','Other Must Subjects') !!}
                     <select name="other_must_subjects[]" class="form-control ss-select-tags" multiple="multiple">
                        @foreach($subjects as $sub)
@@ -509,8 +517,6 @@
                        @endforeach
                     </select>
                   </div>
-                 </div>
-                 <div class="row">
                    <div class="form-group col-3">
                     {!! Form::label('','Advance Exclude Subjects') !!}
                     <select name="advance_exclude_subjects[]" class="form-control ss-select-tags" multiple="multiple">
@@ -534,6 +540,17 @@
                        @foreach($subjects as $sub)
                        <option value="{{ $sub->subject_name }}">{{ $sub->subject_name }}</option>
                        @endforeach
+                    </select>
+                  </div>
+                </div>
+                <div class="row">
+                   <div class="form-group col-3">
+                    {!! Form::label('','NVA level') !!}
+                    <select name="award_level" class="form-control">
+                      <option value="">Select NVA Level</option>
+                      <option value="I">I</option>
+                      <option value="II">II</option>
+                      <option value="III">III</option>
                     </select>
                   </div>
                 </div>
@@ -1228,6 +1245,13 @@
                                           {!! Form::text('pass_subjects',null,$pass_subjects) !!}
                                         </div>
                                         <div class="form-group col-3">
+                                          {!! Form::label('','No. of Minimum Pass Subjects') !!}
+                                          {!! Form::text('min_pass_subjects',null,$min_pass_subjects) !!}
+                                        </div>
+                                        
+                                       </div>
+                                       <div class="row">
+                                        <div class="form-group col-3">
                                           {!! Form::label('','Pass Grade') !!}
                                           <select name="pass_grade" class="form-control">
                                              <option value="">Select Pass Grade</option>
@@ -1239,8 +1263,6 @@
                                              <option value="F">F</option>
                                           </select>
                                         </div>
-                                       </div>
-                                       <div class="row">
                                         <div class="form-group col-3">
                                           {!! Form::label('','NTA Level') !!}
                                           <select name="nta_level" class="form-control">
@@ -1270,7 +1292,10 @@
                                              @endforeach
                                           </select>
                                         </div>
-                                        <div class="form-group col-3">
+                                       
+                                       </div>
+                                       <div class="row">
+                                          <div class="form-group col-3">
                                           {!! Form::label('','Other Must Subjects') !!}
                                           <select name="other_must_subjects[]" class="form-control ss-select-tags" multiple="multiple">
                                              @foreach($subjects as $sub)
@@ -1278,8 +1303,6 @@
                                              @endforeach
                                           </select>
                                         </div>
-                                       </div>
-                                       <div class="row">
                                          <div class="form-group col-3">
                                           {!! Form::label('','Advance Exclude Subjects') !!}
                                           <select name="advance_exclude_subjects[]" class="form-control ss-select-tags" multiple="multiple">
@@ -1303,6 +1326,17 @@
                                              @foreach($subjects as $sub)
                                              <option value="{{ $sub->subject_name }}">{{ $sub->subject_name }}</option>
                                              @endforeach
+                                          </select>
+                                        </div>
+                                      </div>
+                                      <div class="row">
+                                        <div class="form-group col-3">
+                                          {!! Form::label('','NVA level') !!}
+                                          <select name="award_level" class="form-control">
+                                            <option value="">Select NVA Level</option>
+                                            <option value="I">I</option>
+                                            <option value="II">II</option>
+                                            <option value="III">III</option>
                                           </select>
                                         </div>
                                       </div>
@@ -1592,7 +1626,7 @@
                       </div>
                       <!-- /.modal -->
 
-                      <a class="btn btn-danger btn-sm" href="#" data-toggle="modal" data-target="#ss-delete-requirement-{{ $requirement->id }}">
+                      <a class="btn btn-danger btn-sm" href="#" @if($selection_run) disabled="disabled" @else data-toggle="modal" data-target="#ss-delete-requirement-{{ $requirement->id }}" @endif>
                               <i class="fas fa-trash">
                               </i>
                               Delete
