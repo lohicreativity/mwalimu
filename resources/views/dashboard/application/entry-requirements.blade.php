@@ -1339,6 +1339,15 @@
                                             <option value="III">III</option>
                                           </select>
                                         </div>
+                                         <div class="form-group col-3">
+                                            {!! Form::label('','NVA level') !!}
+                                            <select name="award_level" class="form-control">
+                                              <option value="">Select NVA Level</option>
+                                              <option value="I">I</option>
+                                              <option value="II">II</option>
+                                              <option value="III">III</option>
+                                            </select>
+                                          </div>
                                       </div>
                                    </div>
                                    
@@ -1606,6 +1615,15 @@
                                                @endforeach
                                             </select>
                                           </div>
+                                           <div class="form-group col-3">
+                                              {!! Form::label('','NVA level') !!}
+                                              <select name="award_level" class="form-control">
+                                                <option value="">Select NVA Level</option>
+                                                <option value="I">I</option>
+                                                <option value="II">II</option>
+                                                <option value="III">III</option>
+                                              </select>
+                                            </div>
                                         </div>
                                      </div>
                                      
