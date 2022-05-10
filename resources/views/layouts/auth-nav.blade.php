@@ -240,6 +240,18 @@
                 </a>
               </li>
               <li class="nav-item">
+                <a href="{{ url('application/entry-requirements?application_window_id='.session('active_window_id')) }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Entry Requirements</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ url('application/entry-requirements-capacity?application_window_id='.session('active_window_id')) }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Program Max Capacity</p>
+                </a>
+              </li>
+              <li class="nav-item">
                 <a href="{{ url('application/search-for-applicant') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Password Reset</p>
@@ -256,18 +268,6 @@
               </p>
             </a>
             <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="{{ url('application/entry-requirements?application_window_id='.session('active_window_id')) }}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Entry Requirements</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="{{ url('application/entry-requirements-capacity?application_window_id='.session('active_window_id')) }}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Program Max Capacity</p>
-                </a>
-              </li>
               <li class="nav-item">
                 <a href="{{ url('application/run-selection?application_window_id='.session('active_window_id')) }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
