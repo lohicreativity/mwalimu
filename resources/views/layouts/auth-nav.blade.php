@@ -422,7 +422,7 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="{{ url('finance/program-fees') }}" class="nav-link">
+                <a href="{{ url('finance/program-fees?campus_id='.session('staff_campus_id')) }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>{{ __('Programme Fees') }}</p>
                 </a>
