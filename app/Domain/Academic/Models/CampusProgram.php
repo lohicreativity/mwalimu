@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Domain\Settings\Models\Campus;
 use App\Domain\Registration\Models\Student;
 use App\Domain\Application\Models\EntryRequirement;
+use App\Domain\Application\Models\ApplicationWindow;
 use App\Domain\Application\Models\ApplicantProgramSelection;
 
 class CampusProgram extends Model
@@ -101,6 +102,14 @@ class CampusProgram extends Model
     public function getRegulatorCodeAttribute($value)
     {
         return strtoupper($value);
+    }
+
+    /**
+     * Estalish many to many relationship with programs
+     */
+    public function applicationWindows()
+    {
+        return $this->belongsToMany(ApplicationWindow::class,'application_window_campus_program','campus_program_id','application_window_id');
     }
 
 }
