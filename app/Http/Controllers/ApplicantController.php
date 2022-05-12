@@ -235,7 +235,7 @@ class ApplicantController extends Controller
           $array = json_decode($json,TRUE);
          
         if(isset($array['Response'])){
-          $applicant->is_tcu_verified = $array['Response']['ResponseParameters']['StatusCode'] == 202? $array['Response']['ResponseParameters']['StatusCode'] : null;
+          $applicant->is_tcu_verified = $array['Response']['ResponseParameters']['StatusCode'] == 2022? 1 : null;
           $applicant->save();
         }
         
