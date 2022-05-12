@@ -66,7 +66,7 @@
                     @if($invoice)
                     <tr>
                       <td>Control Number</td>
-                      <td>{{ $invoice->control_no }} <a href="#" id="ss-reload-control-number" data-token="{{ session()->token() }}" data-applicant-id="{{ $applicant->id }}" data-invoice-id="{{ $invoice->id }}"><i class="fa fa-refresh" ></i> Refresh</a></td>
+                      <td>{{ $invoice->control_no }} @if($invoice->control_no == null)<a href="#" id="ss-reload-control-number" data-token="{{ session()->token() }}" data-applicant-id="{{ $applicant->id }}" data-invoice-id="{{ $invoice->id }}"><i class="fa fa-refresh" ></i> Refresh</a> @endif</td>
                     </tr>
                     @endif
                     @if(!$invoice)
