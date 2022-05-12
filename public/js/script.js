@@ -1346,6 +1346,7 @@ $('#ss-reload-control-number').on('click',function(e){
           }
         }).done(function(data,success){
             window.location.reload();
+            localStorage.removeItem('reload_counter');
         });
     }else{
        window.location.reload();
