@@ -12,6 +12,7 @@ use App\Domain\Settings\Models\Intake;
 use App\Domain\Academic\Models\Award;
 use App\Domain\Settings\Models\DisabilityStatus;
 use App\Domain\Settings\Models\Campus;
+use App\Domain\Finance\Models\Invoice;
 use App\Domain\Registration\Models\Student;
 use App\Models\User;
 
@@ -147,5 +148,18 @@ class Applicant extends Model
     public function nacteResultDetails()
     {
         return $this->hasMany(NacteResultDetail::class,'applicant_id');
+    }
+
+    /**
+     * Check if applicant has requested control number
+     */
+    public static function hasRequestedControlNumber(Applicant $applicant)
+    {
+        $status = false;
+        $invoice = Invoice::where('payable_id',$applicant->id)->where('payable_type','applicant')->latest()->first();
+        if($invoice){
+            $status = true;
+        }
+        return $status;
     }
 }

@@ -198,7 +198,7 @@
                        <select name="nationality" class="form-control" required>
                          <option value="">Select Nationality</option>
                          @foreach($countries as $country)
-                         <option value="{{ $country->name }}" @if($applicant->nationality == $country->name) selected="selected" @endif>{{ $country->name }}</option>
+                         <option value="{{ $country->name }}" @if($applicant->nationality == $country->name) selected="selected" @endif @if(App\Domain\Application\Models\Applicant::hasRequestedControlNumber($applicant) && $applicant->nationality != $country->name) disabled="disabled" @endif>{{ $country->name }}</option>
                          @endforeach
                        </select>
                     </div>
