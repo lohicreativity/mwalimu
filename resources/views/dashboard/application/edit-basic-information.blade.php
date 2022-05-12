@@ -113,7 +113,7 @@
                 <div class="card-body">
                 @if($status_code != 202)
                 <div class="alert alert-warning">
-                   You cannot proceed with this application because you have prior admission with another institution.
+                   You cannot proceed with this application because it seems you have admission with another institution. Please contact TCU for clarification.
                 </div>
                 @endif
                 <fieldset>

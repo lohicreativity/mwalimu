@@ -233,6 +233,11 @@ class ApplicantController extends Controller
           $xml_response=simplexml_load_string($this->sendXmlOverPost($url,$xml_request));
           $json = json_encode($xml_response);
           $array = json_decode($json,TRUE);
+         
+        if(isset($array['Response'])){
+          $applicant->is_tcu_verified = $array['Response']['ResponseParameters']['StatusCode'] == 202? $array['Response']['ResponseParameters']['StatusCode'] : null;
+          $applicant->save();
+        }
         
         $data = [
            'applicant'=>$applicant,

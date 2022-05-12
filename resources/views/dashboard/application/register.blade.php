@@ -27,7 +27,7 @@
           </div>
         </div>
         <div class="input-group mb-3">
-          <input type="text" name="middle_name" class="form-control" value="{{ old('middle_name') }}" placeholder="Middle name">
+          <input type="text" name="middle_name" class="form-control" value="{{ old('middle_name') }}" placeholder="Middle name (Optional)">
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-user"></span>

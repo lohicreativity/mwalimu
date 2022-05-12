@@ -9,6 +9,7 @@ use App\Domain\Application\Models\ApplicationWindow;
 use App\Domain\Academic\Models\CampusProgram;
 use App\Domain\Academic\Models\Program;
 use App\Domain\Settings\Models\Campus;
+use App\Domain\Finance\Models\FeeAmount;
 use App\Domain\Application\Actions\ApplicationWindowAction;
 use App\Models\User;
 use App\Utils\Util;
@@ -150,9 +151,19 @@ class ApplicationWindowController extends Controller
     public function activate($id)
     {
         try{
-            $window = ApplicationWindow::findOrFail($id);
+            $window = ApplicationWindow::with('campusPrograms')->findOrFail($id);
             if($window->campus_id != session('staff_campus_id')){
                 return redirect()->back()->with('error','You cannot activate this application window because it does not belong to your campus');
+            }
+            if(count($window->campusPrograms) == 0){
+                return redirect()->back()->with('error','You cannot activate this application window because no offered programmes have been set');
+            }
+            $study_academic_year = StudyAcademicYear::where('status','ACTIVE')->first();
+            $amount = FeeAmount::whereHas('feeItem.feeType',function($query){
+                  $query->where('name','LIKE','%Application Fee%');
+            })->with(['feeItem.feeType'])->where('study_academic_year_id',$study_academic_year->id)->first();
+            if(!$amount){
+                return redirect()->back()->with('error','You cannot activate this application window because application fee has not been set');
             }
             $window->status = 'ACTIVE';
             $window->save();
