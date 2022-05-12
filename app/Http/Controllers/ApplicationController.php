@@ -697,7 +697,7 @@ class ApplicationController extends Controller
         try{
           $selection = ApplicantProgramSelection::findOrFail($id);
           if($selection->order == 1){
-              Applicant::where('id',$selection->applicant_id)->update(['results_complete_status'=>0]);
+              Applicant::where('id',$selection->applicant_id)->update(['programs_complete_status'=>0]);
           }
           $selection->delete();
           return redirect()->back()->with('message','Selection reset successfully');
