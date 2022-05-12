@@ -963,7 +963,8 @@ class ApplicationController extends Controller
               return redirect()->back()->withInput()->withErrors($validation->messages());
            }
         }
-
+        
+        DB::beginTransaction();
         if($usr = User::where('username',$request->get('index_number'))->where('password',Hash::make($request->get('password')))->first()){
             $user = $usr;
         }else{
@@ -985,8 +986,9 @@ class ApplicationController extends Controller
         $applicant->index_number = $request->get('index_number');
         $applicant->entry_mode = $request->get('entry_mode');
         $applicant->program_level_id = $request->get('program_level_id');
-        $applicant->intake_id = $request->get('intake_id');
+        // $applicant->intake_id = $request->get('intake_id');
         $applicant->save();
+        DB::commit();
         
         return redirect()->to('application/login')->with('message','Applicant registered successfully');
 
