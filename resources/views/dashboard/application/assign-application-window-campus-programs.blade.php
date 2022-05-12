@@ -50,8 +50,8 @@
                    <div class="form-group col-6">
                      <select name="application_window_id" class="form-control" required>
                         <option value="">Select Application Window</option>
-                        @foreach($application_windows as $win)
-                        <option value="{{ $win->id }}" @if($request->get('application_window_id') == $win->id) selected="selected" @endif>{{ $win->begin_date }} - {{ $win->end_date }} </option>
+                        @foreach($application_windows as $k=>$win)
+                        <option value="{{ $win->id }}" @if($k == 0) selected="selected" @endif>{{ $win->begin_date }} - {{ $win->end_date }} - {{ $win->campus->name }} - {{ $win->campus->name }}</option>
                         @endforeach
                      </select>
                    </div>

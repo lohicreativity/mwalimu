@@ -107,7 +107,7 @@ class ApplicationWindowController extends Controller
     public function showPrograms(Request $request)
     {
         $data = [
-           'application_windows'=>ApplicationWindow::with(['intake'])->where('campus_id',$request->get('campus_id'))->latest()->get(),
+           'application_windows'=>ApplicationWindow::with(['intake','campus'])->latest()->get(),
            'window'=>$request->get('query')? ApplicationWindow::with(['intake','campusPrograms.program'=>function($query) use($request){
                   $query->where('name','LIKE','%'.$request->get('query').'%');
            }])->where('campus_id',$request->get('campus_id'))->find($request->get('application_window_id')) : ApplicationWindow::with(['intake','campusPrograms'])->where('campus_id',$request->get('campus_id'))->find($request->get('application_window_id')),
