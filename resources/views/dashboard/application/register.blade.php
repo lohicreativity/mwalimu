@@ -46,7 +46,9 @@
           <select name="program_level_id" class="form-control" required>
              <option value="">Select Program Level</option>
              @foreach($awards as $award)
+             @if(str_contains($award->name,'Basic') || str_contains($award->name,'Ordinary') || str_contains($award->name,'Bachelor') || str_contains($award->name,'Masters'))
              <option value="{{ $award->id }}" @if(old('program_level_id') == $award->id) selected="selected" @endif>{{ $award->name }}</option>
+             @endif
              @endforeach
           </select>
           <div class="input-group-append">
@@ -57,26 +59,13 @@
         </div>
         <div class="input-group mb-3">
           <select name="entry_mode" class="form-control" required>
-             <option value="">Select Entry Mode</option>
-             <option value="DIRECT" @if(old('entry_mode') == 'DIRECT') selected="selected" @endif>Direct Entry</option>
-             <option value="EQUIVALENT" @if(old('entry_mode') == 'EQUIVALENT') selected="selected" @endif>Equivalent Entry</option>
+             <option value="">Select Highest Qualification</option>
+             <option value="DIRECT" @if(old('entry_mode') == 'DIRECT') selected="selected" @endif>Form IV or VI (Direct)</option>
+             <option value="EQUIVALENT" @if(old('entry_mode') == 'EQUIVALENT') selected="selected" @endif>Certificate or Diploma (Equivalent)</option>
           </select>
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-briefcase"></span>
-            </div>
-          </div>
-        </div>
-        <div class="input-group mb-3">
-          <select name="intake_id" class="form-control" required>
-             <option value="">Select Intake</option>
-             @foreach($intakes as $intake)
-             <option value="{{ $intake->id }}" @if(old('intake_id') == $intake->id) selected="selected" @endif>{{ $intake->name }}</option>
-             @endforeach
-          </select>
-          <div class="input-group-append">
-            <div class="input-group-text">
-              <span class="fas fa-clock"></span>
             </div>
           </div>
         </div>

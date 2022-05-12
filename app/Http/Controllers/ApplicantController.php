@@ -110,6 +110,7 @@ class ApplicantController extends Controller
                     $applicant->intake_id = $app->intake_id;
                     $applicant->campus_id = $request->get('campus_id');
                     $applicant->application_window_id = $window->id;
+                    $applicant->intake_id = $window->intake_id;
                     $applicant->first_name = $app->first_name;
                     $applicant->middle_name = $app->middle_name;
                     $applicant->surname = $app->surname;
@@ -148,6 +149,7 @@ class ApplicantController extends Controller
                         $applicant->intake_id = $app->intake_id;
                         $applicant->campus_id = $request->get('campus_id');
                         $applicant->application_window_id = $window->id;
+                        $applicant->intake_id = $window->intake_id;
                         $applicant->first_name = $app->first_name;
                         $applicant->middle_name = $app->middle_name;
                         $applicant->surname = $app->surname;
