@@ -1342,11 +1342,12 @@ $('#ss-reload-control-number').on('click',function(e){
              _token:$(e.target).data('token'),
              applicant_id:$(e.target).data('applicant-id')
           }
-        }).done(data,success){
+        }).done(function(data,success){
             window.location.reload();
-        }
+        });
+    }else{
+       window.location.reload();
     }
-    window.location.reload();
 
 });
 
