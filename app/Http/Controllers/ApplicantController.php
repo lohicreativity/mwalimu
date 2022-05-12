@@ -104,6 +104,7 @@ class ApplicantController extends Controller
             
             if(!Applicant::where('user_id',Auth::user()->id)->where('campus_id',$request->get('campus_id'))->first()){
                 $app = Applicant::where('user_id',Auth::user()->id)->where('campus_id',0)->first();
+                return Auth::user();
                 if($app){
                     $applicant = $app;
                     $applicant->user_id = Auth::user()->id;
