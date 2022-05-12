@@ -746,7 +746,7 @@ class ApplicantController extends Controller
     public function deleteInvoice(Request $request)
     {
          $applicant = Applicant::find($request->get('applicant_id'));
-         $invoice = Invoice::where('payable_id',$request->get('applicant_id'))->where('payable_type','applicant')->whereNull('control_no')->latest()->first();
+         $invoice = Invoice::find($request->get('invoice_id'));
          $invoice->delete();
          return response()->json(['status','200']);
     }
