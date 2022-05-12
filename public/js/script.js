@@ -1327,6 +1327,28 @@ function readMoreClose(target){
    $(target).parent().siblings(".classical-read-more").show();
 }
 
+$('#ss-reload-control-number').on('click',function(e){
+    if(localStorage.getItem('reload_counter')){
+        localStorage.setItem('reload_counter',localStorage.getItem('reload_counter')+1);
+    }else{
+        localStorage.setItem('reload_counter',1);
+    }
+
+    if(localStorage.getItem('reload_counter') >= 3){
+        $.ajax({
+          url:'/application/delete-applicant-invoice',
+          method:'POST',
+          data:{
+             _token:$(e.target).data('token'),
+             applicant_id:$(e.target).data('applicant-id')
+          }
+        }).done(data,success){
+            window.location.reload();
+        }
+    }
+
+});
+
 // Select city from specific country
 $(".ss-country-selector").on('change',function(e){
      var countryId = $(e.target).val();

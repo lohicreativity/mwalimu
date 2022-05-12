@@ -160,4 +160,6 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 
     Route::post('request-postponement',[ApplicantController::class,'requestPostponement']);
     Route::get('download-postponement-letter',[ApplicantController::class,'downloadPosponementLetter']);
+
+    Route::post('delete-applicant-invoice',[ApplicantController::class,'deleteInvoice']);
 });
