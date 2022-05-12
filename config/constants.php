@@ -23,7 +23,7 @@ return [
 
    'ADDRESS'=>'P. O. Box 9193 Dar Es Salaam',
    
-   'VERSION'=>1.3,
+   'VERSION'=>1.4,
 
     'GePG_SERVER' => 'http://154.118.230.202:80/',
     'POST_BILL_PATH' => 'api/bill/qrequest',
