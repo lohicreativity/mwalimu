@@ -235,7 +235,7 @@ class ApplicantController extends Controller
           $array = json_decode($json,TRUE);
          
         if(isset($array['Response'])){
-          $applicant->is_tcu_verified = $array['Response']['ResponseParameters']['StatusCode'] == 2022? 1 : null;
+          $applicant->is_tcu_verified = $array['Response']['ResponseParameters']['StatusCode'] == 202? 1 : 0;
           $applicant->save();
         }
         
@@ -712,7 +712,7 @@ class ApplicantController extends Controller
 
         (new ApplicantAction)->update($request);
 
-        return redirect()->to('applicant/next-of-kin')->with('message','Applicant updated successfully');
+        return redirect()->to('application/next-of-kin')->with('message','Applicant updated successfully');
     }
 
     /**
