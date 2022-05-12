@@ -575,6 +575,7 @@ class ApplicantController extends Controller
                               }
                            }
                          }elseif($detail->exam_id == 2){
+                           return $detail->results;
                            foreach ($detail->results as $key => $result) {
 
                               if($a_level_grades[$result->grade] >= $a_level_grades['E']){
