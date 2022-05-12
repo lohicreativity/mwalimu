@@ -91,11 +91,11 @@ class ApplicantController extends Controller
         $tamisemi_applicant = Applicant::where('index_number',$request->get('index_number'))->where('is_tamisemi',1)->first();
         
         $window = ApplicationWindow::where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('campus_id',$request->get('campus_id'))->where('status','ACTIVE')->first();
-        // if(!$tamisemi_applicant){
+        if(!$tamisemi_applicant){
           if(!$window && $applicant){
             return  redirect()->back()->with('error','Application window for '.$campus->name.' is not open.');
           }
-        // }
+        }
 
         if(Auth::attempt($credentials)){
 
@@ -142,6 +142,8 @@ class ApplicantController extends Controller
 
                     $applicant->documents_complete_status = $app->documents_complete_status;
                     $applicant->save();
+
+                    return $applicant;
                 }elseif($app = Applicant::where('user_id',Auth::user()->id)->where('campus_id','!=',$request->get('campus_id'))->first()){
                     if($app){
                         $applicant = new Applicant;
