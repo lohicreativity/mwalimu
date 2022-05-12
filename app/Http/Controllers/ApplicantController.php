@@ -211,6 +211,8 @@ class ApplicantController extends Controller
     public function editBasicInfo(Request $request)
     {
         $applicant = User::find(Auth::user()->id)->applicants()->where('campus_id',session('applicant_campus_id'))->first();
+
+        return session('applicant_campus_id');
         if($applicant->is_tamisemi != 1){
             if(!ApplicationWindow::where('campus_id',session('applicant_campus_id'))->where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('status','ACTIVE')->first()){
                  return redirect()->to('application/submission')->with('error','Application window already closed');
