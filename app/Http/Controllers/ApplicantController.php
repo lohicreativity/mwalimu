@@ -103,7 +103,7 @@ class ApplicantController extends Controller
             session(['applicant_campus_id'=>$request->get('campus_id')]);
             
             if(!Applicant::where('user_id',Auth::user()->id)->where('campus_id',$request->get('campus_id'))->first()){
-                $app = Applicant::where('user_id',Auth::user()->id)->where('campus_id',0)->first();
+                $app = Applicant::where('user_id',Auth::user()->id)->where('campus_id','0')->first();
                 return $app;
                 if($app){
                     $applicant = $app;
