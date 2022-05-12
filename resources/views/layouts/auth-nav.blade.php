@@ -222,7 +222,7 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="{{ url('application/application-windows') }}" class="nav-link">
+                <a href="{{ url('application/application-windows?campus_id='.session('staff_campus_id')) }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Application Windows</p>
                 </a>

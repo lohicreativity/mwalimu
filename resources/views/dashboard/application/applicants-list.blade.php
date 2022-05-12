@@ -74,7 +74,7 @@
                </div>
                <!-- /.card-header -->
                <div class="card-body">
-                  {!! Form::open(['url'=>'application/applicants/list','method'=>'GET']) !!}
+                  {{-- {!! Form::open(['url'=>'application/applicants/list','method'=>'GET']) !!}
 
                   {!! Form::input('hidden','application_window_id',$application_window->id) !!}
                   <div class="input-group">
@@ -116,9 +116,9 @@
                      <button class="btn btn-default" type="submit"><span class="fa fa-search"></span></button>
                    </span>
                   </div>
-                  {!! Form::close() !!}
+                  {!! Form::close() !!} --}}
 
-                  <table class="table table-bordered ss-margin-top">
+                  <table class="table table-bordered ss-margin-top ss-paginated-table">
                     <thead>
                         <tr>
                           <th>Name</th>

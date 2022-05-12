@@ -46,8 +46,15 @@
               <!-- /.card-header -->
               <div class="card-body">
                  {!! Form::open(['url'=>'application/application-window-campus-programs','class'=>'ss-form-processing','method'=>'GET']) !!}
-                   
-                   <div class="form-group">
+                   <div class="form-group col-12">
+                     <select name="application_window_id" class="form-control" required>
+                        <option value="">Select Application Window</option>
+                        @foreach($application_windows as $win)
+                        <option value="{{ $win->id }}" @if($request->get('application_window_id') == $win->id) selected="selected" @endif>{{ $win->begin_date }} - {{ $win->end_date }} </option>
+                        @endforeach
+                     </select>
+                   </div>
+                   <div class="form-group col-6">
                     <select name="campus_id" class="form-control" required>
                        <option value="">Select Campus</option>
                        @foreach($campuses as $camp)
@@ -68,14 +75,22 @@
 
 
 
-            @if(count($application_windows) != 0 && $campus)
+            @if(count($window) != 0 && $campus)
             <div class="card">
               <div class="card-header">
                 <h3 class="card-title">{{ __('Application Windows') }} - {{ $campus->name }}</h3>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
-                <table id="example2" class="table table-bordered table-hover">
+                {!! Form::open(['url'=>'application/application-window-campus-programs','method'=>'GET']) !!}
+                <div class="input-group ss-stretch">
+                 <input type="text" name="query" class="form-control" placeholder="Search for module name or code">
+                 <span class="input-group-btn">
+                   <button class="btn btn-default" type="submit"><span class="fa fa-search"></span></button>
+                 </span>
+                </div>
+                {!! Form::close() !!}
+                <table id="example2" class="table table-bordered table-hover ss-margin-top">
                   <thead>
                   <tr>
                     <th>Year</th>
@@ -85,7 +100,6 @@
                   </tr>
                   </thead>
                   <tbody>
-                  @foreach($application_windows as $window)
                   <tr>
                     <td>{{ $window->begin_date }} - {{ $window->end_date }}</td>
                     <td>{{ $window->intake->name }}</td>
@@ -160,7 +174,6 @@
                       <!-- /.modal -->
                     </td>
                   </tr>
-                  @endforeach
                   
                   </tbody>
                 </table>

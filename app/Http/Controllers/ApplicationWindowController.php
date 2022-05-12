@@ -26,7 +26,8 @@ class ApplicationWindowController extends Controller
            'windows'=>ApplicationWindow::with(['campus','intake'])->paginate(20),
            'intakes'=>Intake::all(),
            'campuses'=>Campus::all(),
-           'staff'=>User::find(Auth::user()->id)->staff
+           'staff'=>User::find(Auth::user()->id)->staff,
+           'request'=>$request
     	];
     	return view('dashboard.application.application-windows',$data)->withTitle('Application Windows');
     }
@@ -83,6 +84,10 @@ class ApplicationWindowController extends Controller
            }
         }
 
+        if($window->campus_id != session('staff_campus_id')){
+                return redirect()->back()->with('error','You cannot update this application window because it does not belong to your campus');
+            }
+
         if(strtotime($request->get('begin_date')) > strtotime($request->get('end_date'))){
             return redirect()->back()->with('error','End date cannot be less than begin date');
         }elseif(strtotime($request->get('begin_date')) < strtotime(now()->format('Y-m-d'))){
@@ -100,13 +105,11 @@ class ApplicationWindowController extends Controller
      */
     public function showPrograms(Request $request)
     {
-        $campusPrograms = CampusProgram::where('campus_id',$request->get('campus_id'))->get();
-        $campusProgramIds = [];
-        foreach($campusPrograms as $prog){
-            $campusProgramIds[] = $prog->id;
-        }
         $data = [
-           'application_windows'=>ApplicationWindow::with('intake')->where('campus_id',$request->get('campus_id'))->latest()->get(),
+           'application_windows'=>ApplicationWindow::with(['intake'])->where('campus_id',$request->get('campus_id'))->latest()->get(),
+           'window'=>$request->get('query')? ApplicationWindow::with(['intake','campusPrograms.program'=>function($query) use($request){
+                  $query->where('name','LIKE','%'.$request->get('query').'%');
+           }])->where('campus_id',$request->get('campus_id'))->find($request->get('application_window_id')) : ApplicationWindow::with(['intake','campusPrograms'])->where('campus_id',$request->get('campus_id'))->find($request->get('application_window_id')),
            'campuses'=>Campus::all(),
            'campusPrograms'=>CampusProgram::with('program')->where('campus_id',$request->get('campus_id'))->get(),
            'campus'=>$request->has('campus_id')? Campus::find($request->get('campus_id')) : null,
@@ -145,6 +148,9 @@ class ApplicationWindowController extends Controller
     {
         try{
             $window = ApplicationWindow::findOrFail($id);
+            if($window->campus_id != session('staff_campus_id')){
+                return redirect()->back()->with('error','You cannot activate this application window because it does not belong to your campus');
+            }
             $window->status = 'ACTIVE';
             $window->save();
 
@@ -163,6 +169,9 @@ class ApplicationWindowController extends Controller
     {
         try{
             $window = ApplicationWindow::findOrFail($id);
+            if($window->campus_id != session('staff_campus_id')){
+                return redirect()->back()->with('error','You cannot deactivate this application window because it does not belong to your campus');
+            }
             $window->status = 'INACTIVE';
             $window->save();
 
@@ -178,7 +187,13 @@ class ApplicationWindowController extends Controller
     public function destroy(Request $request, $id)
     {
         try{
-            $window = ApplicationWindow::findOrFail($id);
+            $window = ApplicationWindow::with('campusPrograms')->findOrFail($id);
+            if($window->campus_id != session('staff_campus_id')){
+                return redirect()->back()->with('error','You cannot delete this application window because it does not belong to your campus');
+            }
+            if(count($window->campusPrograms) != 0){
+                return redirect()->back()->with('error','You cannot delete this application window because it has already been used');
+            }
             $window->delete();
             return redirect()->back()->with('message','Application window deleted successfully');
         }catch(Exception $e){
