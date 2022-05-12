@@ -355,7 +355,9 @@ class ApplicantController extends Controller
 
         $applicant = User::find(Auth::user()->id)->applicants()->with(['selections.campusProgram.program','selections'=>function($query){
                 $query->orderBy('order','asc');
-            },'selections.campusProgram.campus','nectaResultDetails.results','nacteResultDetails.results','programLevel'])->where('campus_id',session('applicant_campus_id'))->first();
+            },'selections.campusProgram.campus','nectaResultDetails.results','nacteResultDetails.results','programLevel','ApplicationWindow'])->where('campus_id',session('applicant_campus_id'))->first();
+
+        $window = $applicant->applicationWindow;
 
         $campus_programs = $window? $window->campusPrograms()->whereHas('program',function($query) use($applicant){
                    $query->where('award_id',$applicant->program_level_id);
