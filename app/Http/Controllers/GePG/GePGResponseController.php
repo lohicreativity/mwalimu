@@ -37,7 +37,7 @@ class GePGResponseController extends Controller
 		$status = $data['status'];
 		$message = $data['message'];
 		$bill_id = $data['data']['bill_id'];
-		$control_no = $data['data']['control_no'];
+		$control_no = $data['status'] == 1? $data['data']['control_no'] : null;
 
 		// $bill_id = 'MNMA-1643902233';
 		// $control_no = 'MNMA-1643902233';
