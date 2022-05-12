@@ -218,25 +218,28 @@ class ApplicantController extends Controller
                  return redirect()->to('application/submission')->with('error','Application window already closed');
             }
         }
-        $url='http://api.tcu.go.tz/applicants/checkStatus';
-        $fullindex=str_replace('-','/',Auth::user()->username);
-        $xml_request='<?xml version="1.0" encoding="UTF-8"?> 
-              <Request>
-                <UsernameToken> 
-                   <Username>'.config('constants.TCU_USERNAME').'</Username>
-                  <SessionToken>'.config('constants.TCU_TOKEN').'</SessionToken>
-                </UsernameToken>
-                <RequestParameters>
-                  <f4indexno>'.$fullindex.'</f4indexno>
-                </RequestParameters>
-              </Request>';
-          $xml_response=simplexml_load_string($this->sendXmlOverPost($url,$xml_request));
-          $json = json_encode($xml_response);
-          $array = json_decode($json,TRUE);
-         
-        if(isset($array['Response'])){
-          $applicant->is_tcu_verified = $array['Response']['ResponseParameters']['StatusCode'] == 202? 1 : 0;
-          $applicant->save();
+
+        if(!$applicant->is_tcu_verified){
+            $url='http://api.tcu.go.tz/applicants/checkStatus';
+            $fullindex=str_replace('-','/',Auth::user()->username);
+            $xml_request='<?xml version="1.0" encoding="UTF-8"?> 
+                  <Request>
+                    <UsernameToken> 
+                       <Username>'.config('constants.TCU_USERNAME').'</Username>
+                      <SessionToken>'.config('constants.TCU_TOKEN').'</SessionToken>
+                    </UsernameToken>
+                    <RequestParameters>
+                      <f4indexno>'.$fullindex.'</f4indexno>
+                    </RequestParameters>
+                  </Request>';
+              $xml_response=simplexml_load_string($this->sendXmlOverPost($url,$xml_request));
+              $json = json_encode($xml_response);
+              $array = json_decode($json,TRUE);
+             
+            if(isset($array['Response'])){
+              $applicant->is_tcu_verified = $array['Response']['ResponseParameters']['StatusCode'] == 202? 1 : 0;
+              $applicant->save();
+            }
         }
         
         $data = [
