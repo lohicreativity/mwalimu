@@ -44,9 +44,9 @@ class EntryRequirementController extends Controller
            })->whereHas('selections',function($query) use($request){
                      $query->where('application_window_id',$request->get('application_window_id'));
               })->with('program')->where('campus_id',$staff->campus_id)->get(),
-           'entry_requirements'=>$request->get('query')? EntryRequirement::with(['campusProgram.program.award'])->where('application_window_id',$request->get('application_window_id'))->whereHas('campusProgram',function($query) use($request){
+           'entry_requirements'=>$request->get('query')? EntryRequirement::whereHas('campusProgram.program',function($query) use($request){
                     $query->where('name',$request->get('query'));
-              })->latest()->paginate(20) : EntryRequirement::with(['campusProgram.program.award'])->where('application_window_id',$request->get('application_window_id'))->latest()->paginate(20),
+              })->with(['campusProgram.program.award'])->where('application_window_id',$request->get('application_window_id'))->latest()->paginate(20) : EntryRequirement::with(['campusProgram.program.award'])->where('application_window_id',$request->get('application_window_id'))->latest()->paginate(20),
            'subjects'=>NectaResult::distinct()->get(['subject_name']),
            'equivalent_subjects'=>NacteResult::distinct()->get('subject'),
            'staff'=>$staff,
