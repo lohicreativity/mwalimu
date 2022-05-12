@@ -808,7 +808,7 @@ class ApplicationController extends Controller
            'applicant'=>$applicant,
            'selections'=>ApplicantProgramSelection::with(['campusProgram.program'])->where('applicant_id',$applicant->id)->get()
         ];
-        $pdf = PDF::loadView('dashboard.application.summary', $data)->setPaper('a4','portrait');
+        $pdf = PDF::loadView('dashboard.application.summary', $data);
         return $pdf->stream();
     }
 
