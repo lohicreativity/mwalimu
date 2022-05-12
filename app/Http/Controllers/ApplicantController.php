@@ -99,6 +99,7 @@ class ApplicantController extends Controller
 
         if(Auth::attempt($credentials)){
 
+
             session(['applicant_campus_id'=>$request->get('campus_id')]);
             
             if(!Applicant::where('user_id',Auth::user()->id)->where('campus_id',$request->get('campus_id'))->first()){
