@@ -201,7 +201,7 @@
                                         <select name="intake_id" class="form-control" required>
                                           <option>Select Intake</option>
                                           @foreach($intakes as $intake)
-                                          <option value="{{ $intake->id }}" @if($window->intake_id == $intake->id) selected="selected" @endif>{{ $intake->name }}</option>
+                                          <option value="{{ $intake->id }}" @if($window->intake_id == $intake->id) selected="selected" @else disabled="disabled" @endif>{{ $intake->name }}</option>
                                           @endforeach
                                         </select>
                                       </div>
@@ -225,7 +225,7 @@
                                         <select name="campus_id" class="form-control" required>
                                           <option value="">Select Campus</option>
                                           @foreach($campuses as $campus)
-                                          <option value="{{ $campus->id }}" @if($window->campus_id == $campus->id) selected="selected" @endif>{{ $campus->name }}</option>
+                                          <option value="{{ $campus->id }}" @if($window->campus_id == $campus->id) selected="selected" @else disabled="disabled" @endif>{{ $campus->name }}</option>
                                           @endforeach
                                         </select>
                                         @else
