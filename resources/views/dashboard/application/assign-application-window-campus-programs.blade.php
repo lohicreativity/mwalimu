@@ -46,6 +46,7 @@
               <!-- /.card-header -->
               <div class="card-body">
                  {!! Form::open(['url'=>'application/application-window-campus-programs','class'=>'ss-form-processing','method'=>'GET']) !!}
+                 <div class="row">
                    <div class="form-group col-6">
                      <select name="application_window_id" class="form-control" required>
                         <option value="">Select Application Window</option>
@@ -61,7 +62,7 @@
                        <option value="{{ $camp->id }}" @if($staff->campus_id == $camp->id) selected="selected" @endif>{{ $camp->name }}</option>
                        @endforeach
                     </select>
-                     
+                    </div>
                   </div>
                   <div class="ss-form-actions">
                    <button type="submit" class="btn btn-primary">{{ __('Search') }}</button>

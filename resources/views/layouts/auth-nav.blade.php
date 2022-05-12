@@ -228,7 +228,7 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="{{ url('application/application-window-campus-programs?campus_id='.session('staff_campus_id')) }}" class="nav-link">
+                <a href="{{ url('application/application-window-campus-programs?campus_id='.session('staff_campus_id').'&application_window_id='.session('active_window_id')) }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>{{ __('Offered Programmes') }}</p>
                 </a>
