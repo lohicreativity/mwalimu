@@ -328,12 +328,16 @@
                        </tr>
                     </thead>
                     <tbody>
-                    @foreach($applicant->selections as $selection)
+                    @foreach($applicant->selections as $key=>$selection)
                     <tr>
                        <td>{{ $selection->order }}</td>
                        <td>{{ $selection->campusProgram->program->name }}</td>
                        <td>{{ $selection->campusProgram->campus->name }}</td>
-                       <td><a href="{{ url('application/reset-program-selection/'.$selection->id) }}" class="ss-italic ss-color-danger">Reset Selection</a></td>
+                       <td>
+                         @if($key == count($applicant->selections)-1)
+                        <a href="{{ url('application/reset-program-selection/'.$selection->id) }}" class="ss-italic ss-color-danger">Reset Selection</a>
+                         @endif
+                      </td>
                     </tr>
                     @endforeach
                   </tbody>
