@@ -150,7 +150,7 @@
                          <select name="date" class="form-control" required>
                            <option value="">Date</option>
                            @for($i = 1; $i <= 31; $i++)
-                           <option value="{{ $i }}" @if(Carbon\Carbon::parse($applicant->birth_date)->format('d') == $i) selected="selected" @endif>{{ $i }}</option>
+                           <option value="{{ $i }}" @if(Carbon\Carbon::parse($applicant->birth_date)->format('d') == $i && $applicant->birth_date !== null) selected="selected" @endif>{{ $i }}</option>
                            @endfor
                          </select>
                        </div>
@@ -158,7 +158,7 @@
                          <select name="month" class="form-control" required>
                            <option value="">Month</option>
                            @for($i = 1; $i <= 12; $i++)
-                           <option value="{{ $i }}" @if(Carbon\Carbon::parse($applicant->birth_date)->format('m') == $i) selected="selected" @endif>{{ $i }}</option>
+                           <option value="{{ $i }}" @if(Carbon\Carbon::parse($applicant->birth_date)->format('m') == $i && $applicant->birth_date !== null) selected="selected" @endif>{{ $i }}</option>
                            @endfor
                          </select>
                        </div>
@@ -166,7 +166,7 @@
                          <select name="year" class="form-control" required>
                            <option value="">Year</option>
                            @for($i = 2010; $i >= 1960; $i--)
-                           <option value="{{ $i }}" @if(Carbon\Carbon::parse($applicant->birth_date)->format('Y') == $i) selected="selected" @endif>{{ $i }}</option>
+                           <option value="{{ $i }}" @if(Carbon\Carbon::parse($applicant->birth_date)->format('Y') == $i && $applicant->birth_date !== null) selected="selected" @endif>{{ $i }}</option>
                            @endfor
                          </select>
                        </div>
