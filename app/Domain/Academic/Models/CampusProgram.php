@@ -103,17 +103,4 @@ class CampusProgram extends Model
         return strtoupper($value);
     }
 
-
-
-    /**
-     * @param Builder $builder
-     * @param string $relation - The relation to join
-     */
-    public function scopeJoinRelation($query, string $relation) {
-        $join_query = self::RelationToJoin($relation, $relation);
-        $query->join($join_query->table . ' AS ' . $relation, function(JoinClause $builder) use($join_query) {
-            return $builder->mergeWheres($join_query->wheres, $join_query->bindings);
-        });
-        return $query;
-    }
 }

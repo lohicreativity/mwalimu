@@ -139,7 +139,7 @@
                                 <tbody>
                                     @foreach($campusPrograms as $program)
                                     <tr>
-                                      <td>{{ $program->program_name }}</td>
+                                      <td>{{ $program->program->name }}</td>
                                       <td>
                                         @if(App\Utils\Util::collectionContains($window->campusPrograms,$program))
                                          
