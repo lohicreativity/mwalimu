@@ -701,12 +701,12 @@ class ApplicantController extends Controller
            }
         }
 
-        if(Carbon::now()->subYears(14)->format('Y-m-d') < Carbon::parse($request->get('birth_date'))->format('Y-m-d')){
-            return redirect()->back()->with('error','Birth date must be before 14 years ago');
+        if(Carbon::now()->subYears(14)->format('Y-m-d') < Carbon::parse($request->get('date').'-'.$request->get('month').'-'.$request->get('year'))->format('Y-m-d')){
+            return redirect()->back()->withInput()->with('error','Birth date must be before 14 years ago');
         }
 
-        if(Carbon::now()->format('Y-m-d') < Carbon::parse($request->birth_date)->format('Y-m-d')){
-            return redirect()->back()->with('error','Birth date cannot be the date after today');
+        if(Carbon::now()->format('Y-m-d') < Carbon::parse($request->get('date').'-'.$request->get('month').'-'.$request->get('year'))->format('Y-m-d')){
+            return redirect()->back()->withInput()->with('error','Birth date cannot be the date after today');
         }
 
 
