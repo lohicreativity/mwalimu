@@ -61,4 +61,15 @@ class NACTEServiceController extends Controller
             return response()->json(['details'=>$details]);
         }
     }
+
+    public function getResultsAdmin(Request $request,$avn)
+    {
+            try{
+            $response = Http::get('https://www.nacte.go.tz/nacteapi/index.php/api/results/'.config('constants.NACTE_API_KEY').'/'.$avn);
+            }catch(\Exception $e){
+                return response()->json(['error'=>'Please refresh your browser and try again']);
+            }
+            return response()->json(['response'=>$response]);
+        }
+    }
 }

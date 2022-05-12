@@ -276,13 +276,13 @@ class ApplicationController extends Controller
                  $query->where('id',$request->get('application_window_id'));
             })->whereHas('selections',function($query) use($request){
                  $query->where('status','APPROVING');
-            })->with(['nextOfKin','intake','selections.campusProgram.program'])->where('program_level_id',$request->get('program_level_id'))->where('gender',$request->get('gender'))->where('campus_id',$staff->campus_id)->get();
+            })->with(['nextOfKin','intake','selections.campusProgram.program','nectaResultDetails.results','nacteResultDetails.results'])->where('program_level_id',$request->get('program_level_id'))->where('gender',$request->get('gender'))->where('campus_id',$staff->campus_id)->get();
          }elseif($request->get('campus_program_id')){
             $list = Applicant::whereHas('intake.applicationWindows',function($query) use($request){
                  $query->where('id',$request->get('application_window_id'));
             })->whereHas('selections',function($query) use($request){
                  $query->where('status','APPROVING')->where('campus_program_id',$request->get('campus_program_id'));
-            })->with(['nextOfKin','intake','selections.campusProgram.program'])->where('program_level_id',$request->get('program_level_id'))->where('campus_id',$staff->campus_id)->get();
+            })->with(['nextOfKin','intake','selections.campusProgram.program','nectaResultDetails.results','nacteResultDetails.results'])->where('program_level_id',$request->get('program_level_id'))->where('campus_id',$staff->campus_id)->get();
          }elseif($request->get('nta_level_id')){
              $list = Applicant::whereHas('intake.applicationWindows',function($query) use($request){
                  $query->where('id',$request->get('application_window_id'));
@@ -290,13 +290,13 @@ class ApplicationController extends Controller
                  $query->where('nta_level_id',$request->get('nta_level_id'))->where('status','APPROVING');
             })->whereHas('selections',function($query) use($request){
                  $query->where('status','APPROVING');
-            })->with(['nextOfKin','intake','selections.campusProgram.program'])->where('program_level_id',$request->get('program_level_id'))->where('campus_id',$staff->campus_id)->get();
+            })->with(['nextOfKin','intake','selections.campusProgram.program','nectaResultDetails.results','nacteResultDetails.results'])->where('program_level_id',$request->get('program_level_id'))->where('campus_id',$staff->campus_id)->get();
          }else{
             $list = Applicant::whereHas('intake.applicationWindows',function($query) use($request){
                  $query->where('id',$request->get('application_window_id'));
             })->whereHas('selections',function($query) use($request){
                  $query->where('status','APPROVING');
-            })->with(['nextOfKin','intake','selections.campusProgram.program'])->where('program_level_id',$request->get('program_level_id'))->where('campus_id',$staff->campus_id)->get();
+            })->with(['nextOfKin','intake','selections.campusProgram.program','nectaResultDetails.results','nacteResultDetails.results'])->where('program_level_id',$request->get('program_level_id'))->where('campus_id',$staff->campus_id)->get();
          }
 
               # add headers for each column in the CSV download
@@ -305,7 +305,7 @@ class ApplicationController extends Controller
              $callback = function() use ($list) 
               {
                   $file_handle = fopen('php://output', 'w');
-                  fputcsv($file_handle,['First Name','Middle Name','Surname','Gender','Programme','Status']);
+                  fputcsv($file_handle,['First Name','Middle Name','Surname','Gender','Programme','Status','O-Level Results','A-Level Results']);
                   foreach ($list as $applicant) { 
 
                       foreach ($applicant->selections as $select) {
@@ -313,8 +313,24 @@ class ApplicationController extends Controller
                             $selection = $select;
                          }
                       }
+                      $o_level_results = [];
+                      foreach($applicant->nectaResultDetails as $detail){
+                          if($detail->exam_id = 1){
+                              foreach($detail->results as $result){
+                                 $o_level_results[] = $result->suject_name.'-'.$result->grade;
+                              }
+                          }
+                      }
+                      $a_level_results = [];
+                      foreach($applicant->nectaResultDetails as $detail){
+                          if($detail->exam_id = 2){
+                              foreach($detail->results as $result){
+                                 $o_level_results[] = $result->suject_name.'-'.$result->grade;
+                              }
+                          }
+                      }
 
-                      fputcsv($file_handle, [$applicant->first_name,$applicant->middle_name,$applicant->surname,$applicant->gender,$selection->campusProgram->program->name, $selection->status
+                      fputcsv($file_handle, [$applicant->first_name,$applicant->middle_name,$applicant->surname,$applicant->gender,$selection->campusProgram->program->name, $selection->status,implode(',', $o_level_results),implode(',',$a_level_results)
                         ]);
                   }
                   fclose($file_handle);
@@ -3318,5 +3334,14 @@ class ApplicationController extends Controller
         }
 
         return redirect()->back()->with('message','TAMISEMI applicants retrieved successfully');
+    }
+
+
+    /**
+     * Fetch results from NECTA
+     */
+    public function getNectaResults(Request $request)
+    {
+        return view('dashboard.application.admin-request-results')->withTitle('Fetch Results');
     }
 }

@@ -299,6 +299,12 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
+                <a href="{{ url('application/admin-fetch-results') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Fetch Results</p>
+                </a>
+              </li>
+              <li class="nav-item">
                 <a href="{{ url('application/upload-attachments') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Upload Attachments</p>
