@@ -111,7 +111,9 @@ class ApplicationWindowController extends Controller
                   $query->where('name','LIKE','%'.$request->get('query').'%');
            }])->where('campus_id',$request->get('campus_id'))->find($request->get('application_window_id')) : ApplicationWindow::with(['intake','campusPrograms'])->where('campus_id',$request->get('campus_id'))->find($request->get('application_window_id')),
            'campuses'=>Campus::all(),
-           'campusPrograms'=>CampusProgram::with('program')->where('campus_id',$request->get('campus_id'))->get(),
+           'campusPrograms'=>CampusProgram::with(['program'=>function($query){
+                $query->orderBy('name','ASC');
+           }])->where('campus_id',$request->get('campus_id'))->get(),
            'campus'=>$request->has('campus_id')? Campus::find($request->get('campus_id')) : null,
            'staff'=>User::find(Auth::user()->id)->staff,
            'request'=>$request

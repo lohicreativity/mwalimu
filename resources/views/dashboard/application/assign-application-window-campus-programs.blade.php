@@ -85,6 +85,7 @@
               <div class="card-body">
                 {!! Form::open(['url'=>'application/application-window-campus-programs','method'=>'GET']) !!}
                 {!! Form::input('hidden','application_window_id',$request->get('application_window_id')) !!}
+                {!! Form::input('hidden','campus_id',$request->get('campus_id')) !!}
                 <div class="input-group ss-stretch">
                  <input type="text" name="query" class="form-control" placeholder="Search for module name or code">
                  <span class="input-group-btn">
