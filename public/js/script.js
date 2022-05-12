@@ -1328,7 +1328,7 @@ function readMoreClose(target){
 }
 
 $('#ss-reload-control-number').on('click',function(e){
-    console.log(localStorage.getItem('reload_counter'));
+    // console.log(localStorage.getItem('reload_counter'));
     if(localStorage.getItem('reload_counter')){
         localStorage.setItem('reload_counter',parseInt(localStorage.getItem('reload_counter'))+1);
     }else{

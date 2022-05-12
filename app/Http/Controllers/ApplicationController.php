@@ -870,7 +870,7 @@ class ApplicationController extends Controller
 
         $invoice = new Invoice;
         $invoice->reference_no = 'MNMA-'.time();
-        if($applicant->country->code == 'TZ'){
+        if(str_contains($applicant->nationality,'Tanzania')){
            $invoice->amount = $fee_amount->amount_in_tzs;
            $invoice->currency = 'TZS';
         }else{
@@ -1546,7 +1546,7 @@ class ApplicationController extends Controller
             return redirect()->back()->with('error','No fee amount set for late registration');
          }       
 
-         if($student->applicant->country->code == 'TZ'){
+         if(str_contains($student->applicant->nationality,'Tanzania')){
              $amount = $fee_amount->amount_in_tzs*$days*(-1);
              $currency = 'TZS';
          }else{
