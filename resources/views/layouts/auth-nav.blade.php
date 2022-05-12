@@ -37,12 +37,14 @@
                 </a>
               </li>
               @endif
+              @if($applicant->entry_mode != 'DIRECT')
               <li class="nav-item">
                 <a @if($applicant->is_tcu_verified != 1) disabled="disabled" @else href="{{ url('application/upload-documents') }}" @endif class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Upload Documents @if($applicant->documents_complete_status == 1) <i class="fa fa-check"></i> @endif</p>
                 </a>
               </li>
+              @endif
               @if($applicant->is_tamisemi != 1)
               <li class="nav-item">
                 <a @if($applicant->is_tcu_verified != 1) disabled="disabled" @else href="{{ url('application/submission') }}" @endif class="nav-link">

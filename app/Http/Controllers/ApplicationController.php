@@ -679,6 +679,9 @@ class ApplicationController extends Controller
                  if($request->get('choice') == 1){
                     $applicant = Applicant::find($request->get('applicant_id'));
                     $applicant->programs_complete_status = 1;
+                    if($applicant->entry_mode == 'DIRECT'){
+                        $applicant->documents_complete_status = 1;
+                    }
                     $applicant->save();
                  }
 
