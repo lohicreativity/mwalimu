@@ -104,6 +104,7 @@ class ApplicantController extends Controller
             
             if(!Applicant::where('user_id',Auth::user()->id)->where('campus_id',$request->get('campus_id'))->first()){
                 $app = Applicant::where('user_id',Auth::user()->id)->where('campus_id',0)->first();
+                return $app;
                 if($app){
                     $applicant = $app;
                     $applicant->user_id = Auth::user()->id;
@@ -143,7 +144,6 @@ class ApplicantController extends Controller
                     $applicant->documents_complete_status = $app->documents_complete_status;
                     $applicant->save();
 
-                    return $applicant;
                 }elseif($app = Applicant::where('user_id',Auth::user()->id)->where('campus_id','!=',$request->get('campus_id'))->first()){
                     if($app){
                         $applicant = new Applicant;
