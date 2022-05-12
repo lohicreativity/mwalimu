@@ -86,7 +86,7 @@ class ApplicationWindowController extends Controller
 
         if($request->get('campus_id') != session('staff_campus_id')){
                 return redirect()->back()->with('error','You cannot update this application window because it does not belong to your campus');
-            }
+        }
 
         if(strtotime($request->get('begin_date')) > strtotime($request->get('end_date'))){
             return redirect()->back()->with('error','End date cannot be less than begin date');
@@ -113,7 +113,8 @@ class ApplicationWindowController extends Controller
            'campuses'=>Campus::all(),
            'campusPrograms'=>CampusProgram::with('program')->where('campus_id',$request->get('campus_id'))->get(),
            'campus'=>$request->has('campus_id')? Campus::find($request->get('campus_id')) : null,
-           'staff'=>User::find(Auth::user()->id)->staff
+           'staff'=>User::find(Auth::user()->id)->staff,
+           'request'=>$request
         ];
         return view('dashboard.application.assign-application-window-campus-programs',$data)->withTitle('Application Window Campus Programs');
     }
