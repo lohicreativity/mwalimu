@@ -84,7 +84,7 @@ class ApplicationWindowController extends Controller
            }
         }
 
-        if($window->campus_id != session('staff_campus_id')){
+        if($request->get('campus_id') != session('staff_campus_id')){
                 return redirect()->back()->with('error','You cannot update this application window because it does not belong to your campus');
             }
 
