@@ -57,7 +57,7 @@
                     </tr>
                     <tr>
                        <td>{{ $fee_amount->feeItem->feeType->name }}</td>
-                       @if($applicant->country->code == 'TZ')
+                       @if(str_contains($applicant->nationality,'Tanzania'))
                        <td>{{ $fee_amount->amount_in_tzs }} TZS</td>
                        @else
                        <td>{{ $fee_amount->amount_in_usd }} USD</td>
