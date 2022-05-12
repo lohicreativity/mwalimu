@@ -195,7 +195,12 @@
                   <div class="row">
                     <div class="form-group col-6">
                        {!! Form::label('','Nationality') !!}
-                       {!! Form::text('nationality',$applicant->nationality,$nationality) !!}
+                       <select name="nationality" class="form-control" required>
+                         <option value="">Select Nationality</option>
+                         @foreach($countries as $country)
+                         <option value="{{ $country->name }}" @if($applicant->nationality == $country->name) selected="selected" @endif>{{ $country->name }}</option>
+                         @endforeach
+                       </select>
                     </div>
                     <div class="form-group col-6">
                        {!! Form::label('','National Identification Number (Optional)') !!}
