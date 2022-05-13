@@ -251,7 +251,7 @@
      <div class="col-md-5"><h3 style="float: right;">{{ $student->campusProgram->campus->name }}</h3></div>
      </div>
    </div>
-   <page-break-before>
+   <pagebreak page-break-before>
      <div id="ss-id-card" class="ss-id-card" style="width: 750px; height: 450px; background-color: #FFF; padding: 20px;">
        <div class="row">
           <div class="col-12">
