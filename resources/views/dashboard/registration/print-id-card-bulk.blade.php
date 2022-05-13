@@ -50,6 +50,31 @@
                      <div class="col-4"><h3>{{ $student->student->campusProgram->campus->name }}</h3></div>
                      </div>
                    </div>
+                   <pagebreak>
+                   <div id="ss-id-card" class="ss-id-card" style="width: 750px; height: 450px; background-color: #FFF; padding: 20px;">
+                     <div class="row">
+                        <div class="col-12">
+                           <h1>CAUTION</h1>
+                        </div>
+                     </div>
+                     <div class="row">
+                        <div class="col-9" style="text-align: left;">
+                          <p>This identity card is the property of</p>
+                          <h3>THE MWALIMU NYERERE MEMORIAL ACADEMY</h3>
+                          <p>1. Use of this card is subject to the card holder agreement</p>
+                          <p>2. Card should be returned at the beginning of each semester</p>
+                          
+                        </div>
+                        <div class="col-3">
+                           
+                        </div>
+                     </div>
+                     <div class="row">
+                     <div class="col-8"></div>
+                     <div class="col-4"><h3>{{ $student->student->campusProgram->campus->name }}</h3></div>
+                     </div>
+                   </div>
+                   <pagebreak>
           </div>
           @endforeach
           <!-- /.col -->
