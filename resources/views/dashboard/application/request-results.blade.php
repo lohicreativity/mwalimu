@@ -99,10 +99,10 @@
             </div>
             <!-- /.card -->
             
-            @if($applicant->entry_mode == 'DIRECT' && !str_contains($applicant->programLevel->name,'Certificate'))
+            @if(!str_contains($applicant->programLevel->name,'Certificate'))
             <div class="card card-default">
               <div class="card-header">
-                <h3 class="card-title">{{ __('Add A-Level NECTA Results') }}</h3>
+                <h3 class="card-title">{{ __('Add A-Level NECTA Results (If Applicable)') }}</h3>
               </div>
               <!-- /.card-header -->
               <!-- form start -->

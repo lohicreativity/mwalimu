@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use App\Domain\Application\Models\NacteResultDetail;
 use App\Domain\Application\Models\NacteResult;
+use App\Domain\Application\Models\Applicant;
 
 class NACTEServiceController extends Controller
 {
@@ -57,6 +58,12 @@ class NACTEServiceController extends Controller
              $res->save();
         }
 
+        $applicant = Applicant::with('programLevel')->find($request->get('applicant_id'));
+        if(str_contains($applicant->programLevel->name,'Bachelor') && $applicant->entry_mode == 'EQUIVALENT' ){
+                $applicant->results_complete_status = 1;
+            }
+        $applicant->save();
+
             $details = NacteResultDetail::with('results')->find($detail->id);
             return response()->json(['details'=>$details]);
         }
@@ -64,12 +71,11 @@ class NACTEServiceController extends Controller
 
     public function getResultsAdmin(Request $request,$avn)
     {
-            try{
-            $response = Http::get('https://www.nacte.go.tz/nacteapi/index.php/api/results/'.config('constants.NACTE_API_KEY').'/'.$avn);
-            }catch(\Exception $e){
-                return response()->json(['error'=>'Please refresh your browser and try again']);
-            }
-            return response()->json(['response'=>$response]);
+        try{
+        $response = Http::get('https://www.nacte.go.tz/nacteapi/index.php/api/results/'.config('constants.NACTE_API_KEY').'/'.$avn);
+        }catch(\Exception $e){
+            return response()->json(['error'=>'Please refresh your browser and try again']);
         }
+        return response()->json(['response'=>$response]);
     }
 }
