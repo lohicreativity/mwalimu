@@ -247,7 +247,14 @@
                     {!! Form::input('hidden','results_container','#ss-nacte-results-container') !!}
 
                     {!! Form::input('hidden','results_link','#ss-nacte-results-confirmation-link') !!}
-
+                    @php
+                       $gpa_less = false;
+                       foreach($nacte_results as $res){
+                          if($res->diploma_gpa < 3){
+                           $gpa_less = true;
+                        }
+                       }
+                    @endphp
                     @foreach($nacte_results as $result)
                      <p class="ss-font-xs">Institution: {{ $result->institution }} <br>Programme: {{ $result->programme }} <br> GPA: {{ $result->diploma_gpa }} <i class="fa fa-check"></i></p>
                     @endforeach
@@ -263,28 +270,37 @@
               {!! Form::close() !!}
             </div>
             <!-- /.card -->
-
+             
+            @if($gpa_less)
             <div class="card card-default">
               <div class="card-header">
-                <h3 class="card-title">{{ __('Other Qualifications') }}</h3>
+                <h3 class="card-title">{{ __('OUT Results') }}</h3>
               </div>
               <!-- /.card-header -->
-              {!! Form::open(['url'=>'application/update-applicant-nva']) !!}
+              @php
+                  $out_reg_number = [
+                     'placeholder'=>'19NA1030963ME',
+                     'class'=>'form-control',
+                     'required'=>true
+                  ];
+              @endphp
+              {!! Form::open(['url'=>'application/get-out-results']) !!}
               <div class="card-body">
                   {!! Form::input('hidden','applicant_id',$applicant->id) !!}
 
-                  <label class="radio-inline">
-                    <input type="radio" name="nva_status" value="1"> I have NVA
-                  </label>
-                  <label class="radio-inline">
-                    <input type="radio" name="nva_status" value="0"> I don't have NVA
-                  </label>
+                  <div class="row">
+                  <div class="form-group col-4">
+                    {!! Form::label('','OUT Reg mumber') !!}
+                    {!! Form::text('out_reg_number',null,$out_reg_number) !!}
+                  </div>
+                 </div>
               </div>
               <div class="card-footer">
-              <button type="submit" class="btn btn-primary">{{ __('Save NVA Status') }}</button>
+             <button type="submit" class="btn btn-primary">{{ __('Add OUT Results') }}</button>
             </div>
             {!! Form::close() !!}
             </div>
+            @endif
             @endif
 
             @endif
