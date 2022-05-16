@@ -205,7 +205,7 @@
                     {!! Form::label('','Equivalent Majors') !!}
                     <select name="equivalent_majors[]" class="form-control ss-select-tags" multiple="multiple" required>
                        @foreach($diploma_programs as $prog)
-                       <option value="{{ substr($prog->name,21) }}">{{ substr($prog->name,21) }}</option>
+                       <option value="{{ substr($prog->name,20) }}">{{ substr($prog->name,20) }}</option>
                        @endforeach
                     </select>
                   </div>
@@ -418,7 +418,7 @@
                     {!! Form::label('','Equivalent Majors') !!}
                     <select name="equivalent_majors[]" class="form-control ss-select-tags" multiple="multiple" required>
                        @foreach($diploma_programs as $prog)
-                       <option value="{{ substr($prog->name,21) }}">{{ substr($prog->name,21) }}</option>
+                       <option value="{{ substr($prog->name,20) }}">{{ substr($prog->name,20) }}</option>
                        @endforeach
                     </select>
                   </div>
@@ -673,7 +673,7 @@
                     {!! Form::label('','Equivalent Majors') !!}
                     <select name="equivalent_majors[]" class="form-control ss-select-tags" multiple="multiple" required>
                        @foreach($diploma_programs as $prog)
-                       <option value="{{ substr($prog->name,21) }}">{{ substr($prog->name,21) }}</option>
+                       <option value="{{ substr($prog->name,20) }}">{{ substr($prog->name,20) }}</option>
                        @endforeach
                     </select>
                   </div>
@@ -1009,8 +1009,8 @@
                                         {!! Form::label('','Equivalent Majors') !!}
                                         <select name="equivalent_majors[]" class="form-control ss-select-tags" multiple="multiple" required>
                                            @foreach($diploma_programs as $prog)
-                                           <option value="{{ substr($prog->name,21) }}">{{ substr($prog->name,21) }}</option>
-                                           @endforeach
+                                               <option value="{{ substr($prog->name,20) }}">{{ substr($prog->name,20) }}</option>
+                                               @endforeach
                                         </select>
                                       </div>
                                       <div class="form-group col-3">
@@ -1219,8 +1219,8 @@
                                           {!! Form::label('','Equivalent Majors') !!}
                                           <select name="equivalent_majors[]" class="form-control ss-select-tags" multiple="multiple" required>
                                              @foreach($diploma_programs as $prog)
-                                             <option value="{{ substr($prog->name,21) }}">{{ substr($prog->name,21) }}</option>
-                                             @endforeach
+                                               <option value="{{ substr($prog->name,20) }}">{{ substr($prog->name,20) }}</option>
+                                               @endforeach
                                           </select>
                                         </div>
                                         <div class="form-group col-3">
@@ -1482,7 +1482,7 @@
                                             {!! Form::label('','Equivalent Majors') !!}
                                             <select name="equivalent_majors[]" class="form-control ss-select-tags" multiple="multiple">
                                                @foreach($diploma_programs as $prog)
-                                               <option value="{{ substr($prog->name,21) }}">{{ substr($prog->name,21) }}</option>
+                                               <option value="{{ substr($prog->name,20) }}">{{ substr($prog->name,20) }}</option>
                                                @endforeach
                                             </select>
                                           </div>
