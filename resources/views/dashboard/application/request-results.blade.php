@@ -50,7 +50,7 @@
               <!-- form start -->
               @php
                   $index_number = [
-                     'placeholder'=>'S1000/0231/2015',
+                     'placeholder'=>'S0000/0000/2015',
                      'class'=>'form-control',
                      'required'=>true
                   ];
@@ -109,7 +109,7 @@
               <!-- form start -->
               @php
                   $index_number = [
-                     'placeholder'=>'S1000/0231/2015',
+                     'placeholder'=>'S0000/0000/2015',
                      'class'=>'form-control',
                      'required'=>true
                   ];
@@ -228,7 +228,7 @@
               <!-- form start -->
               @php
                   $avn = [
-                     'placeholder'=>'19NA1030963ME',
+                     'placeholder'=>'19NA0000003ME',
                      'class'=>'form-control',
                      'required'=>true
                   ];
@@ -282,7 +282,7 @@
               <!-- /.card-header -->
               @php
                   $out_reg_number = [
-                     'placeholder'=>'N18-642-3079',
+                     'placeholder'=>'N18-642-0000',
                      'class'=>'form-control',
                      'required'=>true
                   ];

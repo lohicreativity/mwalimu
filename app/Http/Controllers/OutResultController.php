@@ -20,9 +20,6 @@ class OutResultController extends Controller
         if(strtoupper($applicant->index_number) != strtoupper($detail->index_number)){
             return redirect()->to('application/nullify-out-results?detail_id='.$request->get('out_result_detail_id'));
         }
-        $applicant->first_name = $detail->firstname;
-        $applicant->middle_name =  $detail->middlename;
-        $applicant->surname = $detail->surname;
         $applicant->results_complete_status = 1;
         $applicant->save();
 
