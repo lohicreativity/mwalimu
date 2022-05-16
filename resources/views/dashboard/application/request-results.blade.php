@@ -286,14 +286,14 @@
                      'required'=>true
                   ];
               @endphp
-              {!! Form::open(['url'=>'application/get-out-results']) !!}
+              {!! Form::open(['url'=>'application/get-out-results','class'=>'ss-form-processing-out']) !!}
               <div class="card-body">
                   {!! Form::input('hidden','applicant_id',$applicant->id) !!}
 
                   <div class="row">
                   <div class="form-group col-4">
                     {!! Form::label('','OUT Reg mumber') !!}
-                    {!! Form::text('out_reg_number',null,$out_reg_number) !!}
+                    {!! Form::text('reg_no',null,$out_reg_number) !!}
 
                     {!! Form::input('hidden','applicant_id',$applicant->id) !!}
 
