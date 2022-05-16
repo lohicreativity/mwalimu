@@ -203,7 +203,7 @@
                   </div>
                   <div class="form-group col-3">
                     {!! Form::label('','Equivalent Majors') !!}
-                    <select name="equivalent_majors[]" class="form-control ss-select-tags" multiple="multiple" required>
+                    <select name="equivalent_majors[]" class="form-control ss-select-tags" multiple="multiple" required disabled="disabled">
                        @foreach($diploma_programs as $prog)
                        <option value="{{ substr($prog->name,20) }}">{{ substr($prog->name,20) }}</option>
                        @endforeach
@@ -670,14 +670,6 @@
                     {!! Form::label('','Open Equivalent GPA') !!}
                     {!! Form::text('open_equivalent_gpa',null,$open_equivalent_gpa) !!}
                    </div>
-                   <div class="form-group col-3">
-                    {!! Form::label('','Open Equivalent Majors') !!}
-                    {!! Form::text('open_equivalent_majors',null,$open_equivalent_majors) !!}
-                  </div>
-                  <div class="form-group col-3">
-                    {!! Form::label('','Open Equivalent Average Grade') !!}
-                    {!! Form::text('open_equivalent_average_grade',null,$equivalent_average_grade) !!}
-                  </div>
                   <div class="form-group col-3">
                     {!! Form::label('','Principle Pass Points') !!}
                     {!! Form::text('principle_pass_points',null,$principle_pass_points) !!}
@@ -980,7 +972,7 @@
                                       </div>
                                       <div class="form-group col-3">
                                         {!! Form::label('','Equivalent Majors') !!}
-                                        <select name="equivalent_majors[]" class="form-control ss-select-tags" multiple="multiple" required>
+                                        <select name="equivalent_majors[]" class="form-control ss-select-tags" multiple="multiple" required disabled="disabled">
                                            @foreach($diploma_programs as $prog)
                                                <option value="{{ substr($prog->name,20) }}">{{ substr($prog->name,20) }}</option>
                                                @endforeach
@@ -1454,14 +1446,7 @@
                                             {!! Form::label('','Open Equivalent GPA') !!}
                                             {!! Form::text('open_equivalent_gpa',$requirement->open_equivalent_gpa,$open_equivalent_gpa) !!}
                                            </div>
-                                           <div class="form-group col-3">
-                                            {!! Form::label('','Open Equivalent Majors') !!}
-                                            {!! Form::text('open_equivalent_majors',$requirement->open_equivalent_majors,$open_equivalent_majors) !!}
-                                          </div>
-                                          <div class="form-group col-3">
-                                            {!! Form::label('','Open Equivalent Average Grade') !!}
-                                            {!! Form::text('open_equivalent_average_grade',$requirement->open_equivalent_average_grade,$equivalent_average_grade) !!}
-                                          </div>
+                                          
                                           <div class="form-group col-3">
                                             {!! Form::label('','Principle Pass Points') !!}
                                             {!! Form::text('principle_pass_points',$requirement->principle_pass_points,$principle_pass_points) !!}
