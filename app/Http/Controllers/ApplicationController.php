@@ -1419,6 +1419,8 @@ class ApplicationController extends Controller
         }
         
         DB::beginTransaction();
+        $staff = User::find(Auth::user()->id)->staff;
+        
         $ac_year = StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first();
         $reg_date = SpecialDate::where('study_academic_year_id',$ac_year->id)->where('name','New Registration Period')->where('campus_id',$staff->campus_id)->first();
         if(!$reg_date){
@@ -1431,7 +1433,7 @@ class ApplicationController extends Controller
             return redirect()->back()->with('error','Applicant cannot register. Registration period is over');
         }
 
-        $staff = User::find(Auth::user()->id)->staff;
+        
 
         $applicant = Applicant::with(['intake','campus'])->find($request->get('applicant_id'));
         $applicant->results_check = $request->get('results_check')? 1 : 0;
