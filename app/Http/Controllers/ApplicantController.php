@@ -340,7 +340,8 @@ class ApplicantController extends Controller
            'campus'=>Campus::find(session('applicant_campus_id')),
            'o_level_necta_results'=>NectaResultDetail::with('results')->where('applicant_id',$applicant->id)->where('exam_id','1')->get(),
            'a_level_necta_results'=>NectaResultDetail::with('results')->where('applicant_id',$applicant->id)->where('exam_id','2')->get(),
-           'nacte_results'=>NacteResultDetail::with('results')->where('applicant_id',$applicant->id) ->get()
+           'nacte_results'=>NacteResultDetail::with('results')->where('applicant_id',$applicant->id) ->get(),
+           'out_results'=>OutResultDetail::with('results')->where('applicant_id',$applicant->id) ->get()
         ];
         return view('dashboard.application.request-results',$data)->withTitle('Request Results');
     }

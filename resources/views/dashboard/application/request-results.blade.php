@@ -303,6 +303,11 @@
                     {!! Form::input('hidden','results_container','#ss-out-results-container') !!}
 
                   </div>
+                  <div class="col-8">
+                    @foreach($out_results as $result)
+                     <p class="ss-font-xs">Reg No: {{ $result->reg_no }} <br>GPA: {{ $result->gpa }} <i class="fa fa-check"></i></p>
+                    @endforeach
+                  </div>
                  </div>
               </div>
               <div class="card-footer">
