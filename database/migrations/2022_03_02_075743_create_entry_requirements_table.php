@@ -18,7 +18,7 @@ class CreateEntryRequirementsTable extends Migration
             $table->unsignedBigInteger('application_window_id');
             $table->unsignedBigInteger('campus_program_id');
             $table->decimal('equivalent_gpa')->nullable();
-            $table->integer('equivalent_pass_subjects')->nullable();
+            $table->integer('equivalent_majors')->nullable();
             $table->integer('equivalent_average_grade')->nullable();
             $table->decimal('open_equivalent_gpa')->nullable();
             $table->integer('open_equivalent_pass_subjects')->nullable();

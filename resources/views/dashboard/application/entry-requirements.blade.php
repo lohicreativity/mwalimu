@@ -88,8 +88,8 @@
                    'readonly'=>true
                 ];
 
-                $equivalent_pass_subjects = [
-                   'placeholder'=>'Equivalent Pass Subjects',
+                $equivalent_majors = [
+                   'placeholder'=>'Equivalent Majors',
                    'class'=>'form-control',
                    'readonly'=>true
                 ];
@@ -106,8 +106,8 @@
                    'readonly'=>true
                 ];
 
-                $open_equivalent_pass_subjects = [
-                   'placeholder'=>'Open Equivalent Pass Subjects',
+                $open_equivalent_majors = [
+                   'placeholder'=>'Open Equivalent Majors',
                    'class'=>'form-control',
                    'readonly'=>true
                 ];
@@ -202,8 +202,12 @@
                     {!! Form::text('equivalent_gpa',null,$equivalent_gpa) !!}
                   </div>
                   <div class="form-group col-3">
-                    {!! Form::label('','Equivalent Pass Subjects') !!}
-                    {!! Form::text('equivalent_pass_subjects',null,$equivalent_pass_subjects) !!}
+                    {!! Form::label('','Equivalent Majors') !!}
+                    <select name="equivalent_majors[]" class="form-control ss-select-tags" multiple="multiple" required>
+                       @foreach($equivalent_subjects as $sub)
+                       <option value="{{ $sub->subject }}">{{ $sub->subject }}</option>
+                       @endforeach
+                    </select>
                   </div>
                   <div class="form-group col-3">
                     {!! Form::label('','Equivalent Average Grade') !!}
@@ -217,8 +221,8 @@
                     {!! Form::text('open_equivalent_gpa',null,$open_equivalent_gpa) !!}
                    </div>
                    <div class="form-group col-3">
-                    {!! Form::label('','Open Equivalent Pass Subjects') !!}
-                    {!! Form::text('open_equivalent_pass_subjects',null,$open_equivalent_pass_subjects) !!}
+                    {!! Form::label('','Open Equivalent Majors') !!}
+                    {!! Form::text('open_equivalent_majors',null,$open_equivalent_majors) !!}
                   </div>
                   <div class="form-group col-3">
                     {!! Form::label('','Open Equivalent Average Grade') !!}
@@ -309,8 +313,8 @@
                    'readonly'=>true
                 ];
 
-                $equivalent_pass_subjects = [
-                   'placeholder'=>'Equivalent Pass Subjects',
+                $equivalent_majors = [
+                   'placeholder'=>'Equivalent Majors',
                    'class'=>'form-control',
                    'readonly'=>true
                 ];
@@ -327,8 +331,8 @@
                    'readonly'=>true
                 ];
 
-                $open_equivalent_pass_subjects = [
-                   'placeholder'=>'Open Equivalent Pass Subjects',
+                $open_equivalent_majors = [
+                   'placeholder'=>'Open Equivalent Majors',
                    'class'=>'form-control',
                    'readonly'=>true
                 ];
@@ -419,8 +423,12 @@
                     {!! Form::text('equivalent_gpa',null,$equivalent_gpa) !!}
                   </div>
                   <div class="form-group col-3">
-                    {!! Form::label('','Equivalent Pass Subjects') !!}
-                    {!! Form::text('equivalent_pass_subjects',null,$equivalent_pass_subjects) !!}
+                    {!! Form::label('','Equivalent Majors') !!}
+                    <select name="equivalent_majors[]" class="form-control ss-select-tags" multiple="multiple" required>
+                       @foreach($equivalent_subjects as $sub)
+                       <option value="{{ $sub->subject }}">{{ $sub->subject }}</option>
+                       @endforeach
+                    </select>
                   </div>
                   <div class="form-group col-3">
                     {!! Form::label('','Equivalent Average Grade') !!}
@@ -434,8 +442,8 @@
                     {!! Form::text('open_equivalent_gpa',null,$open_equivalent_gpa) !!}
                    </div>
                    <div class="form-group col-3">
-                    {!! Form::label('','Open Equivalent Pass Subjects') !!}
-                    {!! Form::text('open_equivalent_pass_subjects',null,$open_equivalent_pass_subjects) !!}
+                    {!! Form::label('','Open Equivalent Majors') !!}
+                    {!! Form::text('open_equivalent_majors',null,$open_equivalent_majors) !!}
                   </div>
                   <div class="form-group col-3">
                     {!! Form::label('','Open Equivalent Average Grade') !!}
@@ -572,8 +580,8 @@
                    'class'=>'form-control'
                 ];
 
-                $equivalent_pass_subjects = [
-                   'placeholder'=>'Equivalent Pass Subjects',
+                $equivalent_majors = [
+                   'placeholder'=>'Equivalent Majors',
                    'class'=>'form-control'
                 ];
 
@@ -587,8 +595,8 @@
                    'class'=>'form-control'
                 ];
 
-                $open_equivalent_pass_subjects = [
-                   'placeholder'=>'Open Equivalent Pass Subjects',
+                $open_equivalent_majors = [
+                   'placeholder'=>'Open Equivalent Majors',
                    'class'=>'form-control'
                 ];
 
@@ -681,8 +689,8 @@
                     {!! Form::text('equivalent_gpa',null,$equivalent_gpa) !!}
                   </div>
                   <div class="form-group col-3">
-                    {!! Form::label('','Equivalent Pass Subjects') !!}
-                    <select name="equivalent_pass_subjects[]" class="form-control ss-select-tags" multiple="multiple">
+                    {!! Form::label('','Equivalent Majors') !!}
+                    <select name="equivalent_majors[]" class="form-control ss-select-tags" multiple="multiple" required>
                        @foreach($equivalent_subjects as $sub)
                        <option value="{{ $sub->subject }}">{{ $sub->subject }}</option>
                        @endforeach
@@ -700,8 +708,8 @@
                     {!! Form::text('open_equivalent_gpa',null,$open_equivalent_gpa) !!}
                    </div>
                    <div class="form-group col-3">
-                    {!! Form::label('','Open Equivalent Pass Subjects') !!}
-                    {!! Form::text('open_equivalent_pass_subjects',null,$open_equivalent_pass_subjects) !!}
+                    {!! Form::label('','Open Equivalent Majors') !!}
+                    {!! Form::text('open_equivalent_majors',null,$open_equivalent_majors) !!}
                   </div>
                   <div class="form-group col-3">
                     {!! Form::label('','Open Equivalent Average Grade') !!}
@@ -909,8 +917,8 @@
                                        'readonly'=>true
                                     ];
 
-                                    $equivalent_pass_subjects = [
-                                       'placeholder'=>'Equivalent Pass Subjects',
+                                    $equivalent_majors = [
+                                       'placeholder'=>'Equivalent Majors',
                                        'class'=>'form-control',
                                        'readonly'=>true
                                     ];
@@ -927,8 +935,8 @@
                                        'readonly'=>true
                                     ];
 
-                                    $open_equivalent_pass_subjects = [
-                                       'placeholder'=>'Open Equivalent Pass Subjects',
+                                    $open_equivalent_majors = [
+                                       'placeholder'=>'Open Equivalent Majors',
                                        'class'=>'form-control',
                                        'readonly'=>true
                                     ];
@@ -1018,8 +1026,12 @@
                                         {!! Form::text('equivalent_gpa',$requirement->equivalent_gpa,$equivalent_gpa) !!}
                                       </div>
                                       <div class="form-group col-3">
-                                        {!! Form::label('','Equivalent Pass Subjects') !!}
-                                        {!! Form::text('equivalent_pass_subjects',$requirement->equivalent_pass_subjects,$equivalent_pass_subjects) !!}
+                                        {!! Form::label('','Equivalent Majors') !!}
+                                        <select name="equivalent_majors[]" class="form-control ss-select-tags" multiple="multiple" required>
+                                           @foreach($equivalent_subjects as $sub)
+                                           <option value="{{ $sub->subject }}">{{ $sub->subject }}</option>
+                                           @endforeach
+                                        </select>
                                       </div>
                                       <div class="form-group col-3">
                                         {!! Form::label('','Equivalent Average Grade') !!}
@@ -1034,8 +1046,8 @@
                                         {!! Form::text('open_equivalent_gpa',$requirement->open_equivalent_gpa,$open_equivalent_gpa) !!}
                                        </div>
                                        <div class="form-group col-3">
-                                        {!! Form::label('','Open Equivalent Pass Subjects') !!}
-                                        {!! Form::text('open_equivalent_pass_subjects',$requirement->open_equivalent_pass_subjects,$open_equivalent_pass_subjects) !!}
+                                        {!! Form::label('','Open Equivalent Majors') !!}
+                                        {!! Form::text('open_equivalent_majors',$requirement->open_equivalent_majors,$open_equivalent_majors) !!}
                                       </div>
                                       <div class="form-group col-3">
                                         {!! Form::label('','Open Equivalent Average Grade') !!}
@@ -1123,8 +1135,8 @@
                                          'readonly'=>true
                                       ];
 
-                                      $equivalent_pass_subjects = [
-                                         'placeholder'=>'Equivalent Pass Subjects',
+                                      $equivalent_majors = [
+                                         'placeholder'=>'Equivalent Majors',
                                          'class'=>'form-control',
                                          'readonly'=>true
                                       ];
@@ -1141,8 +1153,8 @@
                                          'readonly'=>true
                                       ];
 
-                                      $open_equivalent_pass_subjects = [
-                                         'placeholder'=>'Open Equivalent Pass Subjects',
+                                      $open_equivalent_majors = [
+                                         'placeholder'=>'Open Equivalent Majors',
                                          'class'=>'form-control',
                                          'readonly'=>true
                                       ];
@@ -1233,8 +1245,12 @@
                                           {!! Form::text('equivalent_gpa',$requirement->equivalent_gpa,$equivalent_gpa) !!}
                                         </div>
                                         <div class="form-group col-3">
-                                          {!! Form::label('','Equivalent Pass Subjects') !!}
-                                          {!! Form::text('equivalent_pass_subjects',$requirement->equivalent_pass_subjects,$equivalent_pass_subjects) !!}
+                                          {!! Form::label('','Equivalent Majors') !!}
+                                          <select name="equivalent_majors[]" class="form-control ss-select-tags" multiple="multiple" required>
+                                             @foreach($equivalent_subjects as $sub)
+                                             <option value="{{ $sub->subject }}">{{ $sub->subject }}</option>
+                                             @endforeach
+                                          </select>
                                         </div>
                                         <div class="form-group col-3">
                                           {!! Form::label('','Equivalent Average Grade') !!}
@@ -1249,8 +1265,8 @@
                                           {!! Form::text('open_equivalent_gpa',$requirement->open_equivalent_gpa,$open_equivalent_gpa) !!}
                                          </div>
                                          <div class="form-group col-3">
-                                          {!! Form::label('','Open Equivalent Pass Subjects') !!}
-                                          {!! Form::text('open_equivalent_pass_subjects',$requirement->open_equivalent_pass_subjects,$open_equivalent_pass_subjects) !!}
+                                          {!! Form::label('','Open Equivalent Majors') !!}
+                                          {!! Form::text('open_equivalent_majors',$requirement->open_equivalent_majors,$open_equivalent_majors) !!}
                                         </div>
                                         <div class="form-group col-3">
                                           {!! Form::label('','Open Equivalent Average Grade') !!}
@@ -1392,8 +1408,8 @@
                                            'class'=>'form-control'
                                         ];
 
-                                        $equivalent_pass_subjects = [
-                                           'placeholder'=>'Equivalent Pass Subjects',
+                                        $equivalent_majors = [
+                                           'placeholder'=>'Equivalent Majors',
                                            'class'=>'form-control'
                                         ];
 
@@ -1407,8 +1423,8 @@
                                            'class'=>'form-control'
                                         ];
 
-                                        $open_equivalent_pass_subjects = [
-                                           'placeholder'=>'Open Equivalent Pass Subjects',
+                                        $open_equivalent_majors = [
+                                           'placeholder'=>'Open Equivalent Majors',
                                            'class'=>'form-control'
                                         ];
 
@@ -1501,8 +1517,8 @@
                                             {!! Form::text('equivalent_gpa',$requirement->equivalent_gpa,$equivalent_gpa) !!}
                                           </div>
                                           <div class="form-group col-3">
-                                            {!! Form::label('','Equivalent Pass Subjects') !!}
-                                            <select name="equivalent_pass_subjects[]" class="form-control ss-select-tags" multiple="multiple">
+                                            {!! Form::label('','Equivalent Majors') !!}
+                                            <select name="equivalent_majors[]" class="form-control ss-select-tags" multiple="multiple">
                                                @foreach($equivalent_subjects as $sub)
                                                <option value="{{ $sub->subject }}">{{ $sub->subject }}</option>
                                                @endforeach
@@ -1521,8 +1537,8 @@
                                             {!! Form::text('open_equivalent_gpa',$requirement->open_equivalent_gpa,$open_equivalent_gpa) !!}
                                            </div>
                                            <div class="form-group col-3">
-                                            {!! Form::label('','Open Equivalent Pass Subjects') !!}
-                                            {!! Form::text('open_equivalent_pass_subjects',$requirement->open_equivalent_pass_subjects,$open_equivalent_pass_subjects) !!}
+                                            {!! Form::label('','Open Equivalent Majors') !!}
+                                            {!! Form::text('open_equivalent_majors',$requirement->open_equivalent_majors,$open_equivalent_majors) !!}
                                           </div>
                                           <div class="form-group col-3">
                                             {!! Form::label('','Open Equivalent Average Grade') !!}
