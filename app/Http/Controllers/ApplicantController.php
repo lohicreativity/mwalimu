@@ -22,6 +22,8 @@ use App\Domain\Finance\Models\GatewayPayment;
 use App\Domain\Application\Models\NectaResult;
 use App\Domain\Application\Models\NacteResult;
 use App\Domain\Application\Models\NectaResultDetail;
+use App\Domain\Application\Models\OutResult;
+use App\Domain\Application\Models\OutResultDetail;
 use App\Domain\Application\Models\NacteResultDetail;
 use App\Domain\Application\Models\ApplicationWindow;
 use App\Domain\Application\Models\HealthInsurance;
@@ -355,7 +357,7 @@ class ApplicantController extends Controller
 
         $applicant = User::find(Auth::user()->id)->applicants()->with(['selections.campusProgram.program','selections'=>function($query){
                 $query->orderBy('order','asc');
-            },'selections.campusProgram.campus','nectaResultDetails.results','nacteResultDetails.results','programLevel','applicationWindow'])->where('campus_id',session('applicant_campus_id'))->first();
+            },'selections.campusProgram.campus','nectaResultDetails.results','nacteResultDetails.results','outResultDetails.results','programLevel','applicationWindow'])->where('campus_id',session('applicant_campus_id'))->first();
 
         $window = $applicant->applicationWindow;
 
@@ -370,6 +372,8 @@ class ApplicantController extends Controller
         $o_level_grades = ['A'=>5,'B+'=>4,'B'=>3,'C'=>2,'D'=>1,'E'=>0.5,'F'=>0];
 
         $diploma_grades = ['A'=>5,'B+'=>4,'B'=>3,'C'=>2,'D'=>1,'F'=>0];
+
+        $out_grades = ['A'=>5,'B+'=>4,'B'=>3,'C'=>2,'D'=>1,'F'=>0];
 
         $selected_program = array();
         
@@ -568,8 +572,6 @@ class ApplicantController extends Controller
                                  $has_btc = true;
                              }
                            }
-                       }else{
-                           $has_btc = true;
                        }
                            
 
@@ -705,13 +707,28 @@ class ApplicantController extends Controller
                                  $has_major = true;
                              }
                            }
-                       }else{
-                           $has_major = true;
                        }
                         if($o_level_pass_count >= $program->entryRequirements[0]->pass_subjects && $has_major && $detail->diploma_gpa >= $program->entryRequirements[0]->equivalent_gpa){
                             
                            $programs[] = $program;
                         }
+
+                        $exclude_out_subjects_codes = ['OFC 017','OFP 018','OFP 020'];
+                        $out_pass_subjects_count = 0;
+                        
+                        foreach($applicant->outResultDetails as $detail){
+                            foreach($detail->results as $key => $result){
+                                if(!in_array($result->code, $exclude_out_subjects_codes)){
+                                   if($out_grades[$result->grade] >= $out_grades['C']){
+                                      $out_pass_subjects_count += 1;
+                                   }
+                                }
+                            }
+                            if($out_pass_subjects_count >= 3 && $detail->gpa >= 3){
+                                $programs[] = $program;
+                            }
+                        }
+
                 }
            // if($subject_count != 0){
            //    $applicant->rank_points = $applicant->rank_points / $subject_count;

@@ -151,6 +151,14 @@ class Applicant extends Model
     }
 
     /**
+     * Establish one to many relationship with out result details
+     */
+    public function outResultDetails()
+    {
+        return $this->hasMany(OutResultDetail::class,'applicant_id');
+    }
+
+    /**
      * Check if applicant has requested control number
      */
     public static function hasRequestedControlNumber(Applicant $applicant)
