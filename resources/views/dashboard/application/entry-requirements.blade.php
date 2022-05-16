@@ -205,7 +205,7 @@
                     {!! Form::label('','Equivalent Majors') !!}
                     <select name="equivalent_majors[]" class="form-control ss-select-tags" multiple="multiple" required>
                        @foreach($diploma_programs as $prog)
-                       <option value="{{ explode(' ',$prog->name)[count(explode(' ',$prog->name))-1] }}">{{ explode(' ',$prog->name)[count(explode(' ',$prog->name))-1] }}</option>
+                       <option value="{{ substr($prog->name,21) }}">{{ substr($prog->name,21) }}</option>
                        @endforeach
                     </select>
                   </div>
@@ -418,7 +418,7 @@
                     {!! Form::label('','Equivalent Majors') !!}
                     <select name="equivalent_majors[]" class="form-control ss-select-tags" multiple="multiple" required>
                        @foreach($diploma_programs as $prog)
-                       <option value="{{ explode(' ',$prog->name)[count(explode(' ',$prog->name))-1] }}">{{ explode(' ',$prog->name)[count(explode(' ',$prog->name))-1] }}</option>
+                       <option value="{{ substr($prog->name,21) }}">{{ substr($prog->name,21) }}</option>
                        @endforeach
                     </select>
                   </div>
@@ -673,7 +673,7 @@
                     {!! Form::label('','Equivalent Majors') !!}
                     <select name="equivalent_majors[]" class="form-control ss-select-tags" multiple="multiple" required>
                        @foreach($diploma_programs as $prog)
-                       <option value="{{ explode(' ',$prog->name)[count(explode(' ',$prog->name))-1] }}">{{ explode(' ',$prog->name)[count(explode(' ',$prog->name))-1] }}</option>
+                       <option value="{{ substr($prog->name,21) }}">{{ substr($prog->name,21) }}</option>
                        @endforeach
                     </select>
                   </div>
@@ -1009,7 +1009,7 @@
                                         {!! Form::label('','Equivalent Majors') !!}
                                         <select name="equivalent_majors[]" class="form-control ss-select-tags" multiple="multiple" required>
                                            @foreach($diploma_programs as $prog)
-                                           <option value="{{ explode(' ',$prog->name)[count(explode(' ',$prog->name))-1] }}">{{ explode(' ',$prog->name)[count(explode(' ',$prog->name))-1] }}</option>
+                                           <option value="{{ substr($prog->name,21) }}">{{ substr($prog->name,21) }}</option>
                                            @endforeach
                                         </select>
                                       </div>
@@ -1219,7 +1219,7 @@
                                           {!! Form::label('','Equivalent Majors') !!}
                                           <select name="equivalent_majors[]" class="form-control ss-select-tags" multiple="multiple" required>
                                              @foreach($diploma_programs as $prog)
-                                             <option value="{{ explode(' ',$prog->name)[count(explode(' ',$prog->name))-1] }}">{{ explode(' ',$prog->name)[count(explode(' ',$prog->name))-1] }}</option>
+                                             <option value="{{ substr($prog->name,21) }}">{{ substr($prog->name,21) }}</option>
                                              @endforeach
                                           </select>
                                         </div>
@@ -1482,7 +1482,7 @@
                                             {!! Form::label('','Equivalent Majors') !!}
                                             <select name="equivalent_majors[]" class="form-control ss-select-tags" multiple="multiple">
                                                @foreach($diploma_programs as $prog)
-                                               <option value="{{ explode(' ',$prog->name)[count(explode(' ',$prog->name))-1] }}">{{ explode(' ',$prog->name)[count(explode(' ',$prog->name))-1] }}</option>
+                                               <option value="{{ substr($prog->name,21) }}">{{ substr($prog->name,21) }}</option>
                                                @endforeach
                                             </select>
                                           </div>
