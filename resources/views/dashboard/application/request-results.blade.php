@@ -102,7 +102,8 @@
             @if(!str_contains($applicant->programLevel->name,'Certificate'))
             <div class="card card-default">
               <div class="card-header">
-                <h3 class="card-title">{{ __('Add A-Level NECTA Results (If Applicable)') }}</h3>
+                <h3 class="card-title">
+                  @if($applicant->entry_mode == 'EQUIVALENT') {{ __('Add A-Level NECTA Results (If Applicable)') }} @else {{ __('Add A-Level NECTA Results') }} @endif</h3>
               </div>
               <!-- /.card-header -->
               <!-- form start -->
@@ -221,7 +222,7 @@
 
               <div class="card card-default">
               <div class="card-header">
-                <h3 class="card-title">{{ __('Add NACTE Results') }}</h3>
+                <h3 class="card-title">@if($applicant->entry_mode == 'EQUIVALENT') {{ __('Add NACTE Results (If Applicable)') }} @else {{ __('Add NACTE Results') }} @endif </h3>
               </div>
               <!-- /.card-header -->
               <!-- form start -->
@@ -276,7 +277,7 @@
             @if($gpa_less)
             <div class="card card-default">
               <div class="card-header">
-                <h3 class="card-title">{{ __('OUT Results') }}</h3>
+                <h3 class="card-title">{{ __('Foundation Programmes (OUT) Results') }}</h3>
               </div>
               <!-- /.card-header -->
               @php
