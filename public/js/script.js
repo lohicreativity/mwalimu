@@ -866,6 +866,64 @@ $('.ss-form-processing-nacte').submit(function(e){
 });
 
 // Display form processing necta
+$('.ss-form-processing-out').submit(function(e){
+     e.preventDefault();
+     var resultsContainer = $(e.target).data('results-container');
+     var submitText = $(e.target).find('button[type=submit]').text();
+     var id = $(e.target).attr('id');
+     $(e.target).find('button[type=submit]').text('Processing...');
+     $(e.target).find('button[type=submit]').addClass('disabled');
+
+     var percentComplete = 100;
+     var element = '';
+      element += '<p class="ss-bold">Please wait...</p>';
+      element += '<div class="progress progress-striped active">';
+      element += '<div class="progress-bar progress-bar-warning role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="'+percentComplete+'" style="width: 100%"><span class="sr-only"></span></div>';
+      element += '</div>';
+     if(resultsContainer != null){
+         $(resultsContainer).html(element).slideDown();
+     }
+     if(id == null){
+         $(e.target).find('.ss-ajax-messages').html(element).slideDown();
+     }else{
+         $(e.target).find('#'+id+' .ss-ajax-messages').html(element).slideDown();
+     }
+
+     $.ajax({
+        url:'/application/fetch-out-results/'+$(e.target).find('input[name=reg_no]').val()+'?applicant_id='+$(e.target).find('input[name=applicant_id]').val(),
+        method:'GET',
+     }).done(function(data,success){
+         if(data.error){
+            alert(data.error);
+         }else{
+         $(e.target).find('button[type=submit]').text(submitText);
+         $(e.target).find('button[type=submit]').removeClass('disabled');
+
+         var element = '<table class="table table-bordered">';
+         element += '<tr><td>Reg No:</td><td>'+data.details.reg_no+'</td></tr>';
+         element += '<tr><td>Index No:</td><td>'+data.details.index_number+'</td></tr>'
+         element += '<tr><td>First Name:</td><td>'+data.details.first_name+'</td></tr>';
+         element += '<tr><td>Middle Name:</td><td>'+data.details.middle_name+'</td></tr>';
+         element += '<tr><td>Surname:</td><td>'+data.details.surname+'</td></tr>';
+         element += '<tr><td>Gender:</td><td>'+data.details.gender+'</td></tr>';
+         element += '<tr><td>Birth Date:</td><td>'+data.details.birth_date+'</td></tr>';
+         element += '<tr><td>Academic Year:</td><td>'+data.details.academic_year+'</td></tr>';
+         element += '<tr><td>GPA:</td><td>'+data.details.gpa+'</td></tr>';
+         element += '<tr><td>Classification:</td><td>'+data.details.classification+'</td></tr>';
+         for(var i=0; i<data.details.results.length; i++){
+            element += '<tr><td>'+data.details.results[i].subject_name+'</td><td>'+data.details.results[i].grade+'</td></tr>'
+         }
+         element += '</table>';
+
+         $($(e.target).find('input[name=results_container]').val()).html(element);
+         $($(e.target).find('input[name=display_modal]').val()).modal('show');
+         
+         $($(e.target).find('input[name=display_modal]').val()+' input[name=out_result_detail_id]').val(data.details.id);
+         }
+     });
+});
+
+// Display form processing necta
 $('.ss-form-processing-necta-admin').submit(function(e){
      e.preventDefault();
      var resultsContainer = $(e.target).data('results-container');

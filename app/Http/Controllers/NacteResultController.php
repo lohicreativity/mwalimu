@@ -15,7 +15,7 @@ class NacteResultController extends Controller
      */
     public function confirm(Request $request)
     {
-        $detail = NectaResultDetail::find($request->get('nacte_result_detail_id'));
+        $detail = NacteResultDetail::find($request->get('nacte_result_detail_id'));
         $applicant  = Applicant::find($request->get('applicant_id'));
         if(strtoupper($applicant->first_name) != strtoupper($detail->firstname) || strtoupper($applicant->surname) != strtoupper($detail->surname)){
             return redirect()->to('application/nullify-nacte-results?detail_id='.$request->get('nacte_result_detail_id'));
@@ -43,7 +43,7 @@ class NacteResultController extends Controller
     /**
      * Delete NACTE results
      */
-    public function destroy(Request $request)
+    public function nullify(Request $request)
     {
         $detail = NacteResultDetail::find($request->get('detail_id'));
         NacteResult::where('nacte_result_detail_id',$request->get('nacte_result_detail_id'))->delete();

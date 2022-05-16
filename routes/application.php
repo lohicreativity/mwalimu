@@ -7,6 +7,7 @@ use App\Http\Controllers\NextOfKinController;
 use App\Http\Controllers\ApplicationWindowController;
 use App\Http\Controllers\NectaResultController;
 use App\Http\Controllers\NacteResultController;
+use App\Http\Controllers\OutResultController;
 use App\Http\Controllers\EntryRequirementController;
 use App\Http\Controllers\NHIFController;
 use App\Http\Controllers\ResultsRequests\NECTAServiceController;
@@ -86,15 +87,19 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
     Route::get('admin-fetch-results',[ApplicationController::class,'getNectaResults']);
     Route::post('get-necta-results',[ApplicantController::class,'getNectaResults']);
     Route::post('get-nacte-results',[ApplicantController::class,'getNacteResults']);
+    Route::get('fetch-out-results/{reg_no}',[OUTServiceController::class,'getResults']);
 
     Route::post('necta-result/decline',[NectaResultController::class,'destroy']);
     Route::post('nacte-result/decline',[NacteResultController::class,'destroy']);
+    Route::post('out-result/decline',[OutResultController::class,'destroy']);
 
     Route::post('necta-result/confirm',[NectaResultController::class,'confirm']);
     Route::post('nacte-result/confirm',[NacteResultController::class,'confirm']);
+    Route::post('out-result/confirm',[OutResultController::class,'confirm']);
 
     Route::get('nullify-necta-results',[NectaResultController::class,'nullify']);
     Route::get('nullify-nacte-results',[NacteResultController::class,'nullify']);
+    Route::get('nullify-out-results',[OutResultController::class,'nullify']);
 
 
     Route::get('application-window-campus-programs', [ApplicationWindowController::class,'showPrograms']);

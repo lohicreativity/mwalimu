@@ -174,9 +174,10 @@
                             <div id="ss-results-container"></div>
                             </div>
                           </div>
+                          <div id="ss-confirmation-container">
                             <div class="row">
                               <div class="col-6">
-                            <div id="ss-confirmation-container">
+                            
                                {!! Form::open(['url'=>'application/necta-result/decline','class'=>'ss-form-processing']) !!}
                                
                                {!! Form::input('hidden','index_number',null) !!}
@@ -204,9 +205,10 @@
                                  <button class="btn btn-primary" type="submit">Confirm Results</button>
                                </div><!-- end of ss-form-controls -->
                                {!! Form::close() !!}
-                              </div><!-- end of ss-confirmation-container -->
+                              
                           </div><!-- end of col-md-12 -->
                        </div><!-- end of row -->
+                       </div><!-- end of ss-confirmation-container -->
                     </div>
                   </div>
                   <!-- /.modal-content -->
@@ -292,6 +294,13 @@
                   <div class="form-group col-4">
                     {!! Form::label('','OUT Reg mumber') !!}
                     {!! Form::text('out_reg_number',null,$out_reg_number) !!}
+
+                    {!! Form::input('hidden','applicant_id',$applicant->id) !!}
+
+                    {!! Form::input('hidden','display_modal','#ss-confirm-out-results') !!}
+
+                    {!! Form::input('hidden','results_container','#ss-out-results-container') !!}
+
                   </div>
                  </div>
               </div>
@@ -320,9 +329,9 @@
                             <div id="ss-nacte-results-container"></div>
                           </div>
                         </div>
+                        <div id="ss-nacte-confirmation-container">
                         <div class="row">
                           <div class="col-6">
-                            <div id="ss-nacte-confirmation-container">
                                {!! Form::open(['url'=>'application/nacte-result/decline','class'=>'ss-form-processing']) !!}
                                
                                {!! Form::input('hidden','avn',null) !!}
@@ -347,9 +356,64 @@
                                  <button class="btn btn-primary" type="submit">Confirm Results</button>
                                </div><!-- end of ss-form-controls -->
                                {!! Form::close() !!}
-                              </div><!-- end of ss-confirmation-container -->
+                              
                           </div><!-- end of col-md-12 -->
                        </div><!-- end of row -->
+                       </div><!-- end of ss-confirmation-container -->
+                    </div>
+                  </div>
+                  <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+              </div>
+              <!-- /.modal -->
+
+              <div class="modal fade" id="ss-confirm-out-results" data-backdrop="static" data-keyboard="false">
+                <div class="modal-dialog modal-lg">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h4 class="modal-title"><i class="fa fa-exclamation-sign"></i> Confirmation Alert</h4>
+                      
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <div class="row">
+                        <div class="col-12">
+                            <div id="ss-out-results-container"></div>
+                          </div>
+                        </div>
+                        <div id="ss-out-confirmation-container">
+                        <div class="row">
+                          <div class="col-6">
+                            
+                               {!! Form::open(['url'=>'application/out-result/decline','class'=>'ss-form-processing']) !!}
+                               
+                               {!! Form::input('hidden','reg_no',null) !!}
+                               {!! Form::input('hidden','applicant_id',$applicant->id) !!}
+                               {!! Form::input('hidden','out_result_detail_id',null) !!}
+                               <div class="ss-form-controls">
+                                 <button class="btn btn-danger" id="ss-result-confirmation-link" type="submit">Decline Results</button>
+                            
+                               </div><!-- end of ss-form-controls -->
+                               {!! Form::close() !!}
+
+                              </div>
+                            </div>
+                              <div class="col-6">
+
+                               {!! Form::open(['url'=>'application/out-result/confirm','class'=>'ss-form-processing']) !!}
+                               
+                               {!! Form::input('hidden','reg_no',null) !!}
+                               {!! Form::input('hidden','applicant_id',$applicant->id) !!}
+                               {!! Form::input('hidden','out_result_detail_id',null) !!}
+                               <div class="ss-form-controls">
+                                 <button class="btn btn-primary" type="submit">Confirm Results</button>
+                               </div><!-- end of ss-form-controls -->
+                               {!! Form::close() !!}
+                          </div><!-- end of col-md-12 -->
+                       </div><!-- end of row -->
+                       </div><!-- end of ss-confirmation-container -->
                     </div>
                   </div>
                   <!-- /.modal-content -->
