@@ -282,7 +282,7 @@
               <!-- /.card-header -->
               @php
                   $out_reg_number = [
-                     'placeholder'=>'19NA1030963ME',
+                     'placeholder'=>'N18-642-3079',
                      'class'=>'form-control',
                      'required'=>true
                   ];
