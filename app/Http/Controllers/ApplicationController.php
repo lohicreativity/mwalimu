@@ -1546,7 +1546,7 @@ class ApplicationController extends Controller
 
         $days = round($datediff / (60 * 60 * 24)) - 7;
 
-        if($days < 0){
+        if(round($datediff / (60 * 60 * 24)) < 0 && round($datediff / (60 * 60 * 24)) > -7){
             $fee_amount = FeeAmount::whereHas('feeItem',function($query){
                    return $query->where('name','LIKE','%Late Registration%');
             })->with(['feeItem.feeType'])->where('study_academic_year_id',$ac_year->id)->first();
