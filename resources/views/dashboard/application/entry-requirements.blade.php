@@ -214,8 +214,7 @@
                     {!! Form::text('equivalent_average_grade',null,$equivalent_average_grade) !!}
                   </div>
                   {!! Form::input('hidden','application_window_id',$application_window->id) !!}
-                 </div>
-                 <div class="row">
+                 
                    <div class="form-group col-3">
                     {!! Form::label('','Open Equivalent GPA') !!}
                     {!! Form::text('open_equivalent_gpa',null,$open_equivalent_gpa) !!}
@@ -232,8 +231,7 @@
                     {!! Form::label('','Principle Pass Points') !!}
                     {!! Form::text('principle_pass_points',null,$principle_pass_points) !!}
                   </div>
-                 </div>
-                 <div class="row">
+                 
                    <div class="form-group col-3">
                     {!! Form::label('','Principle Pass Subjects') !!}
                     {!! Form::text('principle_pass_subjects',null,$principle_pass_subjects) !!}
@@ -254,8 +252,7 @@
                        <option value="F">F</option>
                     </select>
                   </div>
-                 </div>
-                 <div class="row">
+                 
                   <div class="form-group col-3">
                     {!! Form::label('','Exclude Subjects') !!}
                     <select name="exclude_subjects[]" class="form-control ss-select-tags" multiple="multiple">
@@ -423,8 +420,7 @@
                     {!! Form::text('equivalent_average_grade',null,$equivalent_average_grade) !!}
                   </div>
                   {!! Form::input('hidden','application_window_id',$application_window->id) !!}
-                 </div>
-                 <div class="row">
+                 
                    <div class="form-group col-3">
                     {!! Form::label('','Open Equivalent GPA') !!}
                     {!! Form::text('open_equivalent_gpa',null,$open_equivalent_gpa) !!}
@@ -441,8 +437,7 @@
                     {!! Form::label('','Principle Pass Points') !!}
                     {!! Form::text('principle_pass_points',null,$principle_pass_points) !!}
                   </div>
-                 </div>
-                 <div class="row">
+                 
                    <div class="form-group col-3">
                     {!! Form::label('','No. of Principle Pass Subjects') !!}
                     {!! Form::text('principle_pass_subjects',null,$principle_pass_subjects) !!}
@@ -456,8 +451,6 @@
                     {!! Form::text('pass_subjects',null,$pass_subjects) !!}
                   </div>
                   
-                 </div>
-                 <div class="row">
                   <div class="form-group col-3">
                     {!! Form::label('','Pass Grade') !!}
                     <select name="pass_grade" class="form-control">
@@ -500,8 +493,6 @@
                     </select>
                   </div>
                   
-                 </div>
-                 <div class="row">
                    <div class="form-group col-3">
                     {!! Form::label('','Other Must Subjects') !!}
                     <select name="other_must_subjects[]" class="form-control ss-select-tags" multiple="multiple">
@@ -674,8 +665,7 @@
                     {!! Form::text('equivalent_average_grade',null,$equivalent_average_grade) !!}
                   </div>
                   {!! Form::input('hidden','application_window_id',$application_window->id) !!}
-                 </div>
-                 <div class="row">
+                 
                    <div class="form-group col-3">
                     {!! Form::label('','Open Equivalent GPA') !!}
                     {!! Form::text('open_equivalent_gpa',null,$open_equivalent_gpa) !!}
@@ -692,8 +682,7 @@
                     {!! Form::label('','Principle Pass Points') !!}
                     {!! Form::text('principle_pass_points',null,$principle_pass_points) !!}
                   </div>
-                 </div>
-                 <div class="row">
+               
                    <div class="form-group col-3">
                     {!! Form::label('','Minimum Principle Pass Points') !!}
                     {!! Form::text('min_principle_pass_points',null,$min_principle_pass_points) !!}
@@ -706,8 +695,7 @@
                     {!! Form::label('','No. of Pass Subjects') !!}
                     {!! Form::text('pass_subjects',null,$pass_subjects) !!}
                   </div>
-                 </div>
-                 <div class="row">
+                 
                    <div class="form-group col-3">
                     {!! Form::label('','Pass Grade') !!}
                     <select name="pass_grade" class="form-control">
@@ -749,8 +737,7 @@
                        @endforeach
                     </select>
                   </div>
-                 </div>
-                 <div class="row">
+                 
                   
                   <div class="form-group col-3">
                     {!! Form::label('','Other Must Subjects') !!}
@@ -785,8 +772,7 @@
                        @endforeach
                     </select>
                   </div>
-                 </div>
-                 <div class="row">
+                
                   
                   <div class="form-group col-3">
                     {!! Form::label('','Advance Must Subjects') !!}
@@ -1006,8 +992,7 @@
                                       </div>
                                       {!! Form::input('hidden','application_window_id',$application_window->id) !!}
                                       {!! Form::input('hidden','entry_requirement_id',$requirement->id) !!}
-                                     </div>
-                                     <div class="row">
+                                     
                                        <div class="form-group col-3">
                                         {!! Form::label('','Open Equivalent GPA') !!}
                                         {!! Form::text('open_equivalent_gpa',$requirement->open_equivalent_gpa,$open_equivalent_gpa) !!}
@@ -1024,8 +1009,7 @@
                                         {!! Form::label('','Principle Pass Points') !!}
                                         {!! Form::text('principle_pass_points',$requirement->principle_pass_points,$principle_pass_points) !!}
                                       </div>
-                                     </div>
-                                     <div class="row">
+                                     
                                        <div class="form-group col-3">
                                         {!! Form::label('','Principle Pass Subjects') !!}
                                         {!! Form::text('principle_pass_subjects',$requirement->principle_pass_subjects,$principle_pass_subjects) !!}
@@ -1047,8 +1031,7 @@
                                         </select>
                                       </div>
                                       
-                                     </div>
-                                     <div class="row">
+                                    
                                       <div class="form-group col-3">
                                         {!! Form::label('','Exclude Subjects') !!}
                                         <select name="exclude_subjects[]" class="form-control ss-select-tags" multiple="multiple">
@@ -1212,8 +1195,7 @@
                                         </div>
                                         {!! Form::input('hidden','application_window_id',$application_window->id) !!}
                                         {!! Form::input('hidden','entry_requirement_id',$requirement->id) !!}
-                                       </div>
-                                       <div class="row">
+                                       
                                          <div class="form-group col-3">
                                           {!! Form::label('','Open Equivalent GPA') !!}
                                           {!! Form::text('open_equivalent_gpa',$requirement->open_equivalent_gpa,$open_equivalent_gpa) !!}
@@ -1230,8 +1212,7 @@
                                           {!! Form::label('','Principle Pass Points') !!}
                                           {!! Form::text('principle_pass_points',$requirement->principle_pass_points,$principle_pass_points) !!}
                                         </div>
-                                       </div>
-                                       <div class="row">
+                                       
                                          <div class="form-group col-3">
                                           {!! Form::label('','No. of Principle Pass Subjects') !!}
                                           {!! Form::text('principle_pass_subjects',$requirement->principle_pass_subjects,$principle_pass_subjects) !!}
@@ -1245,8 +1226,7 @@
                                           {!! Form::text('pass_subjects',null,$pass_subjects) !!}
                                         </div>
                                         
-                                       </div>
-                                       <div class="row">
+                                       
                                         <div class="form-group col-3">
                                           {!! Form::label('','Pass Grade') !!}
                                           <select name="pass_grade" class="form-control">
@@ -1289,8 +1269,7 @@
                                           </select>
                                         </div>
                                        
-                                       </div>
-                                       <div class="row">
+                                       
                                           <div class="form-group col-3">
                                           {!! Form::label('','Other Must Subjects') !!}
                                           <select name="other_must_subjects[]" class="form-control ss-select-tags" multiple="multiple">
@@ -1324,8 +1303,7 @@
                                              @endforeach
                                           </select>
                                         </div>
-                                      </div>
-                                      <div class="row">
+                                   
                                         <div class="form-group col-3">
                                           {!! Form::label('','NVA level') !!}
                                           <select name="award_level" class="form-control">
@@ -1471,8 +1449,7 @@
                                           </div>
                                           {!! Form::input('hidden','application_window_id',$application_window->id) !!}
                                           {!! Form::input('hidden','entry_requirement_id',$requirement->id) !!}
-                                         </div>
-                                         <div class="row">
+                                         
                                            <div class="form-group col-3">
                                             {!! Form::label('','Open Equivalent GPA') !!}
                                             {!! Form::text('open_equivalent_gpa',$requirement->open_equivalent_gpa,$open_equivalent_gpa) !!}
@@ -1489,8 +1466,7 @@
                                             {!! Form::label('','Principle Pass Points') !!}
                                             {!! Form::text('principle_pass_points',$requirement->principle_pass_points,$principle_pass_points) !!}
                                           </div>
-                                         </div>
-                                         <div class="row">
+                                     
                                            <div class="form-group col-3">
                                             {!! Form::label('','Minimum Principle Pass Points') !!}
                                             {!! Form::text('min_principle_pass_points',$requirement->min_principle_pass_points,$min_principle_pass_points) !!}
@@ -1504,8 +1480,7 @@
                                             {!! Form::text('pass_subjects',$requirement->pass_subjects,$pass_subjects) !!}
                                           </div>
                                           
-                                         </div>
-                                         <div class="row">
+                                       
                                            <div class="form-group col-3">
                                             {!! Form::label('','Pass Grade') !!}
                                             <select name="pass_grade" class="form-control">
@@ -1547,8 +1522,7 @@
                                                @endforeach
                                             </select>
                                           </div>
-                                         </div>
-                                         <div class="row">
+                                         
                                           
                                           <div class="form-group col-3">
                                             {!! Form::label('','Other Must Subjects') !!}
@@ -1583,8 +1557,7 @@
                                                @endforeach
                                             </select>
                                           </div>
-                                         </div>
-                                         <div class="row">
+                                         
                                           
                                           <div class="form-group col-3">
                                             {!! Form::label('','Advance Must Subjects') !!}
