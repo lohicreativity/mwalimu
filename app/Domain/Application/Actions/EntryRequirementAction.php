@@ -20,11 +20,12 @@ class EntryRequirementAction implements EntryRequirementInterface{
             $requirement->campus_program_id = $id;
             $requirement->application_window_id = $request->get('application_window_id');
             $requirement->equivalent_gpa = $request->get('equivalent_gpa');
-            $requirement->equivalent_pass_subjects = serialize($request->get('equivalent_pass_subjects'));
+            $requirement->equivalent_majors = serialize($request->get('equivalent_majors'));
             $requirement->equivalent_average_grade = $request->get('equivalent_average_grade');
             $requirement->open_equivalent_gpa = $request->get('open_equivalent_gpa');
             $requirement->open_equivalent_pass_subjects = $request->get('open_equivalent_pass_subjects');
             $requirement->open_equivalent_average_grade = $request->get('open_equivalent_average_grade');
+            $requirement->open_exclude_subjects = serialize($request->('open_exclude_subjects'));
             $requirement->principle_pass_points = $request->get('principle_pass_points');
             $requirement->min_principle_pass_points = $request->get('min_principle_pass_points');
             $requirement->principle_pass_subjects = $request->get('principle_pass_subjects');
@@ -62,6 +63,7 @@ class EntryRequirementAction implements EntryRequirementInterface{
             $requirement->open_equivalent_gpa = $request->get('open_equivalent_gpa');
             $requirement->open_equivalent_pass_subjects = $request->get('open_equivalent_pass_subjects');
             $requirement->open_equivalent_average_grade = $request->get('open_equivalent_average_grade');
+            $requirement->open_exclude_subjects = serialize($request->('open_exclude_subjects'));
             $requirement->principle_pass_points = $request->get('principle_pass_points');
             $requirement->min_principle_pass_points = $request->get('min_principle_pass_points');
             $requirement->principle_pass_subjects = $request->get('principle_pass_subjects');

@@ -713,7 +713,7 @@ class ApplicantController extends Controller
                            $programs[] = $program;
                         }
 
-                        $exclude_out_subjects_codes = ['OFC 017','OFP 018','OFP 020'];
+                        $exclude_out_subjects_codes = unserialize($program->entryRequirements[0]->open_exclude_subjects); //['OFC 017','OFP 018','OFP 020'];
                         $out_pass_subjects_count = 0;
                         
                         foreach($applicant->outResultDetails as $detail){
