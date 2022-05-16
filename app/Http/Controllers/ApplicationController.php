@@ -1420,7 +1420,7 @@ class ApplicationController extends Controller
         
         DB::beginTransaction();
         $staff = User::find(Auth::user()->id)->staff;
-        
+
         $ac_year = StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first();
         $reg_date = SpecialDate::where('study_academic_year_id',$ac_year->id)->where('name','New Registration Period')->where('campus_id',$staff->campus_id)->first();
         if(!$reg_date){
@@ -1429,7 +1429,7 @@ class ApplicationController extends Controller
         $now = time();
         $reg_date_time = strtotime($reg_date->date);
         $datediff = $reg_date_time - $now;
-        if(round($datediff / (60 * 60 * 24)) < 7){
+        if(round($datediff / (60 * 60 * 24)) < 0 && round($datediff / (60 * 60 * 24)) < -7){
             return redirect()->back()->with('error','Applicant cannot register. Registration period is over');
         }
 
