@@ -11,7 +11,7 @@ use App\Domain\Application\Models\Applicant;
 
 class OUTServiceController extends Controller
 {
-    public function getResults(Request $request, $reg_no = 'N18-642-3079')
+    public function getResults(Request $request, $reg_no)
     {
         /** $url = 'http://196.216.247.11/index.php/results/student';
          $xml_request = '<?xml version="1.0" encoding="UTF-8"?>
@@ -48,11 +48,11 @@ class OUTServiceController extends Controller
         
         $datars = "<Request>
                    <UsernameToken>
-                      <Username>".$key."</Username>
-                      <SessionToken>".$token."</SessionToken>
+                      <Username>".config('constants.OUT_USERNAME')."</Username>
+                      <SessionToken>".config('constants.OUT_TOKEN')."</SessionToken>
                    </UsernameToken>
                    <RequestParameters>
-                       <RegNo>".$index_no."</RegNo>
+                       <RegNo>".$reg_no."</RegNo>
                    </RequestParameters>
                    </Request>";
             $data_string = $datars;
