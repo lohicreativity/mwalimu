@@ -676,7 +676,7 @@
                   </div>
                
                    <div class="form-group col-3">
-                    {!! Form::label('','Minimum Principle Pass Points') !!}
+                    {!! Form::label('','Subsidiary Pass Points') !!}
                     {!! Form::text('min_principle_pass_points',null,$min_principle_pass_points) !!}
                   </div>
                    <div class="form-group col-3">
@@ -734,22 +734,6 @@
                   <div class="form-group col-3">
                     {!! Form::label('','Other Must Subjects') !!}
                     <select name="other_must_subjects[]" class="form-control ss-select-tags" multiple="multiple">
-                       @foreach($subjects as $sub)
-                       <option value="{{ $sub->subject_name }}">{{ $sub->subject_name }}</option>
-                       @endforeach
-                    </select>
-                  </div>
-                  <div class="form-group col-3">
-                    {!! Form::label('','Subsidiary Subjects') !!}
-                    <select name="subsidiary_subjects[]" class="form-control ss-select-tags" multiple="multiple">
-                       @foreach($subjects as $sub)
-                       <option value="{{ $sub->subject_name }}">{{ $sub->subject_name }}</option>
-                       @endforeach
-                    </select>
-                  </div>
-                  <div class="form-group col-3">
-                    {!! Form::label('','Principle Subjects') !!}
-                    <select name="principle_subjects[]" class="form-control ss-select-tags" multiple="multiple">
                        @foreach($subjects as $sub)
                        <option value="{{ $sub->subject_name }}">{{ $sub->subject_name }}</option>
                        @endforeach
@@ -1453,7 +1437,7 @@
                                           </div>
                                      
                                            <div class="form-group col-3">
-                                            {!! Form::label('','Minimum Principle Pass Points') !!}
+                                            {!! Form::label('','Subsidiary Pass Points') !!}
                                             {!! Form::text('min_principle_pass_points',$requirement->min_principle_pass_points,$min_principle_pass_points) !!}
                                           </div>
                                            <div class="form-group col-3">
@@ -1512,22 +1496,6 @@
                                           <div class="form-group col-3">
                                             {!! Form::label('','Other Must Subjects') !!}
                                             <select name="other_must_subjects[]" class="form-control ss-select-tags" multiple="multiple">
-                                               @foreach($subjects as $sub)
-                                               <option value="{{ $sub->subject_name }}">{{ $sub->subject_name }}</option>
-                                               @endforeach
-                                            </select>
-                                          </div>
-                                          <div class="form-group col-3">
-                                            {!! Form::label('','Subsidiary Subjects') !!}
-                                            <select name="subsidiary_subjects[]" class="form-control ss-select-tags" multiple="multiple">
-                                               @foreach($subjects as $sub)
-                                               <option value="{{ $sub->subject_name }}">{{ $sub->subject_name }}</option>
-                                               @endforeach
-                                            </select>
-                                          </div>
-                                          <div class="form-group col-3">
-                                            {!! Form::label('','Principle Subjects') !!}
-                                            <select name="principle_subjects[]" class="form-control ss-select-tags" multiple="multiple">
                                                @foreach($subjects as $sub)
                                                <option value="{{ $sub->subject_name }}">{{ $sub->subject_name }}</option>
                                                @endforeach
