@@ -48,8 +48,8 @@ class OUTServiceController extends Controller
         
         $datars = "<Request>
                    <UsernameToken>
-                      <Username>".config('constants.OUT_USERNAME')."</Username>
-                      <SessionToken>".config('constants.OUT_TOKEN')."</SessionToken>
+                      <Username>".$key."</Username>
+                      <SessionToken>".$token."</SessionToken>
                    </UsernameToken>
                    <RequestParameters>
                        <RegNo>".$reg_no."</RegNo>
