@@ -106,12 +106,6 @@ class OUTServiceController extends Controller
                 $res->out_result_detail_id = $detail->id;
                 $res->save();
             }
-
-            $applicant = Applicant::with('programLevel')->find($request->get('applicant_id'));
-            if(str_contains($applicant->programLevel->name,'Bachelor') && $applicant->entry_mode == 'EQUIVALENT'){
-                $applicant->results_complete_status = 1;
-            }
-            $applicant->save();
             
             $details = OutResultDetail::with('results')->find($detail->id);
             return response()->json(['details'=>$details]);

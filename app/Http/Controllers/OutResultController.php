@@ -23,6 +23,7 @@ class OutResultController extends Controller
         $applicant->first_name = $detail->firstname;
         $applicant->middle_name =  $detail->middlename;
         $applicant->surname = $detail->surname;
+        $applicant->results_complete_status = 1;
         $applicant->save();
 
         return redirect()->back()->with('message','OUT results confirmed successfully');
