@@ -400,7 +400,6 @@
                                {!! Form::close() !!}
 
                               </div>
-                            </div>
                               <div class="col-6">
 
                                {!! Form::open(['url'=>'application/out-result/confirm','class'=>'ss-form-processing']) !!}

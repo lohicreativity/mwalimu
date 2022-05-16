@@ -17,7 +17,7 @@ class OutResultController extends Controller
     {
         $detail = OutResultDetail::find($request->get('out_result_detail_id'));
         $applicant  = Applicant::find($request->get('applicant_id'));
-        if(strtoupper($applicant->first_name) != strtoupper($detail->firstname) || strtoupper($applicant->surname) != strtoupper($detail->surname)){
+        if(strtoupper($applicant->index_number) != strtoupper($detail->index_number)){
             return redirect()->to('application/nullify-out-results?detail_id='.$request->get('out_result_detail_id'));
         }
         $applicant->first_name = $detail->firstname;
@@ -49,7 +49,7 @@ class OutResultController extends Controller
         OutResult::where('out_result_detail_id',$request->get('out_result_detail_id'))->delete();
         // $detail->results->delete();
         $detail->delete();
-        return redirect()->back()->with('message','Out results names do not match your application names');
+        return redirect()->back()->with('error','OUT results index number does not match your Form IV index number');
     }
 
 }
