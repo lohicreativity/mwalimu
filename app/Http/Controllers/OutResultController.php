@@ -25,7 +25,7 @@ class OutResultController extends Controller
         $applicant->surname = $detail->surname;
         $applicant->save();
 
-        return redirect()->back()->with('message','Out results confirmed successfully');
+        return redirect()->back()->with('message','OUT results confirmed successfully');
     }
 
     /**
@@ -37,7 +37,7 @@ class OutResultController extends Controller
     	OutResult::where('out_result_detail_id',$request->get('out_result_detail_id'))->delete();
     	// $detail->results->delete();
     	$detail->delete();
-	    return redirect()->back()->with('message','Out results declined successfully');
+	    return redirect()->back()->with('message','OUT results declined successfully');
     }
 
     /**

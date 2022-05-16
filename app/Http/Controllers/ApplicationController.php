@@ -1420,7 +1420,10 @@ class ApplicationController extends Controller
         
         DB::beginTransaction();
         $ac_year = StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first();
-        $reg_date = SpecialDate::where('study_academic_year_id',$ac_year->id)->where('name','New Registration Period')->first();
+        $reg_date = SpecialDate::where('study_academic_year_id',$ac_year->id)->where('name','New Registration Period')->where('campus_id',$staff->campus_id)->first();
+        if(!$reg_date){
+            return redirect()->back()->with('error','Registration period has not been set');
+        }
         $now = time();
         $reg_date_time = strtotime($reg_date->date);
         $datediff = $reg_date_time - $now;
