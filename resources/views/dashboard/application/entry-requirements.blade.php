@@ -204,8 +204,8 @@
                   <div class="form-group col-3">
                     {!! Form::label('','Equivalent Majors') !!}
                     <select name="equivalent_majors[]" class="form-control ss-select-tags" multiple="multiple" required>
-                       @foreach($equivalent_subjects as $sub)
-                       <option value="{{ $sub->subject }}">{{ $sub->subject }}</option>
+                       @foreach($diploma_programs as $prog)
+                       <option value="{{ explode(' ',$prog->name)[count(explode(' ',$prog->name))-1] }}">{{ explode(' ',$prog->name)[count(explode(' ',$prog->name))-1] }}</option>
                        @endforeach
                     </select>
                   </div>
@@ -435,8 +435,8 @@
                   <div class="form-group col-3">
                     {!! Form::label('','Equivalent Majors') !!}
                     <select name="equivalent_majors[]" class="form-control ss-select-tags" multiple="multiple" required>
-                       @foreach($equivalent_subjects as $sub)
-                       <option value="{{ $sub->subject }}">{{ $sub->subject }}</option>
+                       @foreach($diploma_programs as $prog)
+                       <option value="{{ explode(' ',$prog->name)[count(explode(' ',$prog->name))-1] }}">{{ explode(' ',$prog->name)[count(explode(' ',$prog->name))-1] }}</option>
                        @endforeach
                     </select>
                   </div>
@@ -709,8 +709,8 @@
                   <div class="form-group col-3">
                     {!! Form::label('','Equivalent Majors') !!}
                     <select name="equivalent_majors[]" class="form-control ss-select-tags" multiple="multiple" required>
-                       @foreach($equivalent_subjects as $sub)
-                       <option value="{{ $sub->subject }}">{{ $sub->subject }}</option>
+                       @foreach($diploma_programs as $prog)
+                       <option value="{{ explode(' ',$prog->name)[count(explode(' ',$prog->name))-1] }}">{{ explode(' ',$prog->name)[count(explode(' ',$prog->name))-1] }}</option>
                        @endforeach
                     </select>
                   </div>
@@ -1054,8 +1054,8 @@
                                       <div class="form-group col-3">
                                         {!! Form::label('','Equivalent Majors') !!}
                                         <select name="equivalent_majors[]" class="form-control ss-select-tags" multiple="multiple" required>
-                                           @foreach($equivalent_subjects as $sub)
-                                           <option value="{{ $sub->subject }}">{{ $sub->subject }}</option>
+                                           @foreach($diploma_programs as $prog)
+                                           <option value="{{ explode(' ',$prog->name)[count(explode(' ',$prog->name))-1] }}">{{ explode(' ',$prog->name)[count(explode(' ',$prog->name))-1] }}</option>
                                            @endforeach
                                         </select>
                                       </div>
@@ -1283,8 +1283,8 @@
                                         <div class="form-group col-3">
                                           {!! Form::label('','Equivalent Majors') !!}
                                           <select name="equivalent_majors[]" class="form-control ss-select-tags" multiple="multiple" required>
-                                             @foreach($equivalent_subjects as $sub)
-                                             <option value="{{ $sub->subject }}">{{ $sub->subject }}</option>
+                                             @foreach($diploma_programs as $prog)
+                                             <option value="{{ explode(' ',$prog->name)[count(explode(' ',$prog->name))-1] }}">{{ explode(' ',$prog->name)[count(explode(' ',$prog->name))-1] }}</option>
                                              @endforeach
                                           </select>
                                         </div>
@@ -1563,8 +1563,8 @@
                                           <div class="form-group col-3">
                                             {!! Form::label('','Equivalent Majors') !!}
                                             <select name="equivalent_majors[]" class="form-control ss-select-tags" multiple="multiple">
-                                               @foreach($equivalent_subjects as $sub)
-                                               <option value="{{ $sub->subject }}">{{ $sub->subject }}</option>
+                                               @foreach($diploma_programs as $prog)
+                                               <option value="{{ explode(' ',$prog->name)[count(explode(' ',$prog->name))-1] }}">{{ explode(' ',$prog->name)[count(explode(' ',$prog->name))-1] }}</option>
                                                @endforeach
                                             </select>
                                           </div>
