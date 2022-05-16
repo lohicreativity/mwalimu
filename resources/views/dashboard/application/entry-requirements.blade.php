@@ -284,26 +284,8 @@
                        @endforeach
                     </select>
                   </div>
-                  <div class="form-group col-3">
-                    {!! Form::label('','NVA level') !!}
-                    <select name="award_level" class="form-control">
-                      <option value="">Select NVA Level</option>
-                      <option value="I">I</option>
-                      <option value="II">II</option>
-                      <option value="III">III</option>
-                    </select>
-                  </div>
                  </div>
-                 <div class="row">
-                   <div class="form-group col-3">
-                    {!! Form::label('','Open Exclude Subjects') !!}
-                    <select name="open_exclude_subjects[]" class="form-control ss-select-tags" multiple="multiple">
-                       <option value="OFC 017">OFC 017</option>
-                       <option value="OFP 018">OFP 018</option>
-                       <option value="OFP 020">OFP 020</option>
-                    </select>
-                  </div>
-                 </div>
+                
 
              </div>
              
@@ -559,25 +541,6 @@
                        @foreach($subjects as $sub)
                        <option value="{{ $sub->subject_name }}">{{ $sub->subject_name }}</option>
                        @endforeach
-                    </select>
-                  </div>
-                </div>
-                <div class="row">
-                   <div class="form-group col-3">
-                    {!! Form::label('','NVA level') !!}
-                    <select name="award_level" class="form-control">
-                      <option value="">Select NVA Level</option>
-                      <option value="I">I</option>
-                      <option value="II">II</option>
-                      <option value="III">III</option>
-                    </select>
-                  </div>
-                  <div class="form-group col-3">
-                    {!! Form::label('','Open Exclude Subjects') !!}
-                    <select name="open_exclude_subjects[]" class="form-control ss-select-tags" multiple="multiple">
-                       <option value="OFC 017">OFC 017</option>
-                       <option value="OFP 018">OFP 018</option>
-                       <option value="OFP 020">OFP 020</option>
                     </select>
                   </div>
                 </div>
@@ -855,15 +818,6 @@
                     </select>
                   </div>
                   <div class="form-group col-3">
-                    {!! Form::label('','NVA level') !!}
-                    <select name="award_level" class="form-control">
-                      <option value="">Select NVA Level</option>
-                      <option value="I">I</option>
-                      <option value="II">II</option>
-                      <option value="III">III</option>
-                    </select>
-                  </div>
-                  <div class="form-group col-3">
                     {!! Form::label('','Open Exclude Subjects') !!}
                     <select name="open_exclude_subjects[]" class="form-control ss-select-tags" multiple="multiple">
                        <option value="OFC 017">OFC 017</option>
@@ -1136,25 +1090,6 @@
                                            @endforeach
                                         </select>
                                       </div>
-                                      <div class="form-group col-3">
-                                          {!! Form::label('','NVA level') !!}
-                                          <select name="award_level" class="form-control">
-                                            <option value="">Select NVA Level</option>
-                                            <option value="I">I</option>
-                                            <option value="II">II</option>
-                                            <option value="III">III</option>
-                                          </select>
-                                        </div>
-                                     </div>
-                                     <div class="row">
-                                        <div class="form-group col-3">
-                                          {!! Form::label('','Open Exclude Subjects') !!}
-                                          <select name="open_exclude_subjects[]" class="form-control ss-select-tags" multiple="multiple">
-                                             <option value="OFC 017">OFC 017</option>
-                                             <option value="OFP 018">OFP 018</option>
-                                             <option value="OFP 020">OFP 020</option>
-                                          </select>
-                                        </div>
                                      </div>
 
                                  </div>
@@ -1421,23 +1356,6 @@
                                             <option value="III">III</option>
                                           </select>
                                         </div>
-                                         <div class="form-group col-3">
-                                            {!! Form::label('','NVA level') !!}
-                                            <select name="award_level" class="form-control">
-                                              <option value="">Select NVA Level</option>
-                                              <option value="I">I</option>
-                                              <option value="II">II</option>
-                                              <option value="III">III</option>
-                                            </select>
-                                          </div>
-                                          <div class="form-group col-3">
-                                            {!! Form::label('','Open Exclude Subjects') !!}
-                                            <select name="open_exclude_subjects[]" class="form-control ss-select-tags" multiple="multiple">
-                                               <option value="OFC 017">OFC 017</option>
-                                               <option value="OFP 018">OFP 018</option>
-                                               <option value="OFP 020">OFP 020</option>
-                                            </select>
-                                          </div>
                                       </div>
                                    </div>
                                    
@@ -1709,15 +1627,6 @@
                                                @endforeach
                                             </select>
                                           </div>
-                                           <div class="form-group col-3">
-                                              {!! Form::label('','NVA level') !!}
-                                              <select name="award_level" class="form-control">
-                                                <option value="">Select NVA Level</option>
-                                                <option value="I">I</option>
-                                                <option value="II">II</option>
-                                                <option value="III">III</option>
-                                              </select>
-                                            </div>
                                             <div class="form-group col-3">
                                               {!! Form::label('','Open Exclude Subjects') !!}
                                               <select name="open_exclude_subjects[]" class="form-control ss-select-tags" multiple="multiple">

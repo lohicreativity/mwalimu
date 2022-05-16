@@ -51,7 +51,7 @@ class EntryRequirementController extends Controller
            'subjects'=>NectaResult::distinct()->get(['subject_name']),
            'equivalent_subjects'=>NacteResult::distinct()->get('subject'),
            'staff'=>$staff,
-           'diploma_programs'=>Program::whereHas('campusProgram',function($query) use($staff){
+           'diploma_programs'=>Program::whereHas('campusPrograms',function($query) use($staff){
                 $query->where('campus_id',$staff->campus_id);
               })->where('name','LIKE','%Diploma%')->get(),
            'selection_run'=>$approving_status == 0? false : true,
