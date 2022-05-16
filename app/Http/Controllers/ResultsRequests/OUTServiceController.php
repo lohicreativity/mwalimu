@@ -102,7 +102,7 @@ class OUTServiceController extends Controller
                 }
                 $res->subject_name = $subject->SubjectName;
                 $res->subject_code = $subject->Code;
-                $res->grade = $subject->grade;
+                $res->grade = $subject->Grade;
                 $res->out_result_detail_id = $detail->id;
                 $res->save();
             }
