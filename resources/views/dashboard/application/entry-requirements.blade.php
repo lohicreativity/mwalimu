@@ -243,10 +243,6 @@
                     {!! Form::text('pass_subjects',null,$pass_subjects) !!}
                   </div>
                   <div class="form-group col-3">
-                    {!! Form::label('','No. of Minimum Pass Subjects') !!}
-                    {!! Form::text('min_pass_subjects',null,$min_pass_subjects) !!}
-                  </div>
-                  <div class="form-group col-3">
                     {!! Form::label('','Pass Grade') !!}
                     <select name="pass_grade" class="form-control">
                        <option value="">Select Pass Grade</option>
@@ -458,10 +454,6 @@
                    <div class="form-group col-3">
                     {!! Form::label('','No. of Pass Subjects') !!}
                     {!! Form::text('pass_subjects',null,$pass_subjects) !!}
-                  </div>
-                  <div class="form-group col-3">
-                    {!! Form::label('','No. of Minimum Pass Subjects') !!}
-                    {!! Form::text('min_pass_subjects',null,$min_pass_subjects) !!}
                   </div>
                   
                  </div>
@@ -714,11 +706,6 @@
                     {!! Form::label('','No. of Pass Subjects') !!}
                     {!! Form::text('pass_subjects',null,$pass_subjects) !!}
                   </div>
-                  <div class="form-group col-3">
-                    {!! Form::label('','No. of Minimum Pass Subjects') !!}
-                    {!! Form::text('min_pass_subjects',null,$min_pass_subjects) !!}
-                  </div>
-                  
                  </div>
                  <div class="row">
                    <div class="form-group col-3">
@@ -1048,10 +1035,6 @@
                                         {!! Form::text('pass_subjects',$requirement->pass_subjects,$pass_subjects) !!}
                                       </div>
                                       <div class="form-group col-3">
-                                        {!! Form::label('','No. of Minimum Pass Subjects') !!}
-                                        {!! Form::text('min_pass_subjects',null,$min_pass_subjects) !!}
-                                      </div>
-                                      <div class="form-group col-3">
                                         {!! Form::label('','Pass Grade') !!}
                                         <select name="pass_grade" class="form-control">
                                            <option value="">Select Pass Grade</option>
@@ -1260,10 +1243,6 @@
                                          <div class="form-group col-3">
                                           {!! Form::label('','No. of Pass Subjects') !!}
                                           {!! Form::text('pass_subjects',null,$pass_subjects) !!}
-                                        </div>
-                                        <div class="form-group col-3">
-                                          {!! Form::label('','No. of Minimum Pass Subjects') !!}
-                                          {!! Form::text('min_pass_subjects',null,$min_pass_subjects) !!}
                                         </div>
                                         
                                        </div>
@@ -1523,10 +1502,6 @@
                                            <div class="form-group col-3">
                                             {!! Form::label('','No. of Pass Subjects') !!}
                                             {!! Form::text('pass_subjects',$requirement->pass_subjects,$pass_subjects) !!}
-                                          </div>
-                                          <div class="form-group col-3">
-                                            {!! Form::label('','No. of Minimum Pass Subjects') !!}
-                                            {!! Form::text('min_pass_subjects',null,$min_pass_subjects) !!}
                                           </div>
                                           
                                          </div>
