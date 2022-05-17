@@ -263,20 +263,20 @@
           </div>
        </div>
        <div class="row">
-          <div class="col-7" style="text-align: left;">
+          <div class="col-md-7">
             <p>This identity card is the property of</p>
             <h3>THE MWALIMU NYERERE MEMORIAL ACADEMY</h3>
             <p>1. Use of this card is subject to the card holder agreement</p>
             <p>2. Card should be returned at the beginning of each semester</p>
             
           </div>
-          <div class="col-5">
+          <div class="col-md-5">
              {!! QrCode::size(100)->generate($student->registration_number.'-mnma.ac.tz'); !!}
           </div>
        </div>
        <div class="row">
        <div class="col-8"></div>
-       <div class="col-4"><h3></h3></div>
+       <div class="col-4"></div>
        </div>
      </div>
      </div>

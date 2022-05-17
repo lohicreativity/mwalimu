@@ -711,10 +711,12 @@ class ApplicantController extends Controller
                              }
                            }
                        }else{
-                          foreach($applicant->nacteResultDetails as $detail){
-                              foreach($detail->results as $result){
-                                  if(in_array($result->subject,unserialize($program->entryRequirements[0]->equivalent_must_subjects))){
-                                      $equivalent_must_subjects_count += 1;
+                          if(unserialize($program->entryRequirements[0]->equivalent_must_subjects) != ''){
+                              foreach($applicant->nacteResultDetails as $detail){
+                                  foreach($detail->results as $result){
+                                      if(in_array($result->subject,unserialize($program->entryRequirements[0]->equivalent_must_subjects))){
+                                          $equivalent_must_subjects_count += 1;
+                                      }
                                   }
                               }
                           }
@@ -723,10 +725,12 @@ class ApplicantController extends Controller
                             
                            $programs[] = $program;
                         }
-
-                        if($o_level_pass_count >= $program->entryRequirements[0]->pass_subjects && $equivalent_must_subjects_count >= count(unserialize($program->entryRequirements[0]->equivalent_must_subjects)) && $detail->diploma_gpa >= $program->entryRequirements[0]->equivalent_gpa){
-                            
-                           $programs[] = $program;
+                       
+                        if(unserialize($program->entryRequirements[0]->equivalent_must_subjects) != ''){
+                            if($o_level_pass_count >= $program->entryRequirements[0]->pass_subjects && $equivalent_must_subjects_count >= count(unserialize($program->entryRequirements[0]->equivalent_must_subjects)) && $detail->diploma_gpa >= $program->entryRequirements[0]->equivalent_gpa){
+                                
+                               $programs[] = $program;
+                            }
                         }
 
                         $exclude_out_subjects_codes = unserialize($program->entryRequirements[0]->open_exclude_subjects); //['OFC 017','OFP 018','OFP 020'];
