@@ -703,6 +703,7 @@ class ApplicantController extends Controller
 
                        $has_major = false;
                        $equivalent_must_subjects_count = 0;
+                       $nacte_gpa = null;
 
                        if(unserialize($program->entryRequirements[0]->equivalent_majors) != ''){
                            foreach(unserialize($program->entryRequirements[0]->equivalent_majors) as $sub){
@@ -718,6 +719,7 @@ class ApplicantController extends Controller
                                           $equivalent_must_subjects_count += 1;
                                       }
                                   }
+                                  $nacte_gpa = $detail->diploma_gpa;
                               }
                           }
                        }
@@ -749,6 +751,9 @@ class ApplicantController extends Controller
                             if($out_pass_subjects_count >= 3 && $detail->gpa >= 3 && $a_level_subsidiary_pass_count >= 1 && $a_level_principle_pass_count >= 1){
                                 $programs[] = $program;
                             }
+                        }
+                        if($out_pass_subjects_count >= 3 && $nacte_gpa >= 2){
+                                $programs[] = $program;
                         }
 
                 }
