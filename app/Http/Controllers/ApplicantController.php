@@ -734,7 +734,7 @@ class ApplicantController extends Controller
                                $programs[] = $program;
                             }
                         }
-                        return dd(unserialize($program->entryRequirements[0]->equivalent_must_subjects));
+                        return dd($equivalent_must_subjects_count);
 
                         $exclude_out_subjects_codes = unserialize($program->entryRequirements[0]->open_exclude_subjects); //['OFC 017','OFP 018','OFP 020'];
                         $out_pass_subjects_count = 0;
