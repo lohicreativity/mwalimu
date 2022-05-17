@@ -214,6 +214,15 @@
                     {!! Form::text('equivalent_average_grade',null,$equivalent_average_grade) !!}
                   </div>
                   {!! Form::input('hidden','application_window_id',$application_window->id) !!}
+                  <div class="form-group col-3">
+                    {!! Form::label('','Open Exclude Subjects') !!}
+                    <select name="equivalent_must_subjects[]" class="form-control ss-select-tags" multiple="multiple">
+                       <option value="ENGLISH">English</option>
+                       <option value="KISWAHILI">Kiswahili</option>
+                       <option value="GEOGRAPHY">Geography</option>
+                       <option value="HISTORY">History</option>
+                    </select>
+                  </div>
                  
                    <div class="form-group col-3">
                     {!! Form::label('','Open Equivalent GPA') !!}
@@ -420,6 +429,15 @@
                     {!! Form::text('equivalent_average_grade',null,$equivalent_average_grade) !!}
                   </div>
                   {!! Form::input('hidden','application_window_id',$application_window->id) !!}
+                  <div class="form-group col-3">
+                    {!! Form::label('','Open Exclude Subjects') !!}
+                    <select name="equivalent_must_subjects[]" class="form-control ss-select-tags" multiple="multiple">
+                       <option value="ENGLISH">English</option>
+                       <option value="KISWAHILI">Kiswahili</option>
+                       <option value="GEOGRAPHY">Geography</option>
+                       <option value="HISTORY">History</option>
+                    </select>
+                  </div>
                  
                    <div class="form-group col-3">
                     {!! Form::label('','Open Equivalent GPA') !!}
@@ -665,6 +683,15 @@
                     {!! Form::text('equivalent_average_grade',null,$equivalent_average_grade) !!}
                   </div>
                   {!! Form::input('hidden','application_window_id',$application_window->id) !!}
+                  <div class="form-group col-3">
+                    {!! Form::label('','Open Exclude Subjects') !!}
+                    <select name="equivalent_must_subjects[]" class="form-control ss-select-tags" multiple="multiple">
+                       <option value="ENGLISH">English</option>
+                       <option value="KISWAHILI">Kiswahili</option>
+                       <option value="GEOGRAPHY">Geography</option>
+                       <option value="HISTORY">History</option>
+                    </select>
+                  </div>
                  
                    <div class="form-group col-3">
                     {!! Form::label('','Open Equivalent GPA') !!}
@@ -968,6 +995,15 @@
                                       </div>
                                       {!! Form::input('hidden','application_window_id',$application_window->id) !!}
                                       {!! Form::input('hidden','entry_requirement_id',$requirement->id) !!}
+                                      <div class="form-group col-3">
+                                        {!! Form::label('','Open Exclude Subjects') !!}
+                                        <select name="equivalent_must_subjects[]" class="form-control ss-select-tags" multiple="multiple">
+                                           <option value="ENGLISH">English</option>
+                                           <option value="KISWAHILI">Kiswahili</option>
+                                           <option value="GEOGRAPHY">Geography</option>
+                                           <option value="HISTORY">History</option>
+                                        </select>
+                                      </div>
                                      
                                        <div class="form-group col-3">
                                         {!! Form::label('','Open Equivalent GPA') !!}
@@ -1171,6 +1207,15 @@
                                         </div>
                                         {!! Form::input('hidden','application_window_id',$application_window->id) !!}
                                         {!! Form::input('hidden','entry_requirement_id',$requirement->id) !!}
+                                        <div class="form-group col-3">
+                                            {!! Form::label('','Open Exclude Subjects') !!}
+                                            <select name="equivalent_must_subjects[]" class="form-control ss-select-tags" multiple="multiple">
+                                               <option value="ENGLISH">English</option>
+                                               <option value="KISWAHILI">Kiswahili</option>
+                                               <option value="GEOGRAPHY">Geography</option>
+                                               <option value="HISTORY">History</option>
+                                            </select>
+                                          </div>
                                        
                                          <div class="form-group col-3">
                                           {!! Form::label('','Open Equivalent GPA') !!}
@@ -1425,6 +1470,15 @@
                                           </div>
                                           {!! Form::input('hidden','application_window_id',$application_window->id) !!}
                                           {!! Form::input('hidden','entry_requirement_id',$requirement->id) !!}
+                                          <div class="form-group col-3">
+                                            {!! Form::label('','Open Exclude Subjects') !!}
+                                            <select name="equivalent_must_subjects[]" class="form-control ss-select-tags" multiple="multiple">
+                                               <option value="ENGLISH">English</option>
+                                               <option value="KISWAHILI">Kiswahili</option>
+                                               <option value="GEOGRAPHY">Geography</option>
+                                               <option value="HISTORY">History</option>
+                                            </select>
+                                          </div>
                                          
                                            <div class="form-group col-3">
                                             {!! Form::label('','Open Equivalent GPA') !!}

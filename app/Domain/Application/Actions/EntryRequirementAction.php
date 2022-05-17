@@ -22,6 +22,7 @@ class EntryRequirementAction implements EntryRequirementInterface{
             $requirement->equivalent_gpa = $request->get('equivalent_gpa');
             $requirement->equivalent_majors = serialize($request->get('equivalent_majors'));
             $requirement->equivalent_average_grade = $request->get('equivalent_average_grade');
+            $requirement->equivalent_must_subjects = serialize($request->get('equivalent_must_subjects'));
             $requirement->open_equivalent_gpa = $request->get('open_equivalent_gpa');
             $requirement->open_equivalent_pass_subjects = $request->get('open_equivalent_pass_subjects');
             $requirement->open_equivalent_average_grade = $request->get('open_equivalent_average_grade');
@@ -60,6 +61,7 @@ class EntryRequirementAction implements EntryRequirementInterface{
             $requirement->equivalent_gpa = $request->get('equivalent_gpa');
             $requirement->equivalent_majors = $request->get('equivalent_majors');
             $requirement->equivalent_average_grade = $request->get('equivalent_average_grade');
+            $requirement->equivalent_must_subjects = serialize($request->get('equivalent_must_subjects'));
             $requirement->open_equivalent_gpa = $request->get('open_equivalent_gpa');
             $requirement->open_equivalent_pass_subjects = $request->get('open_equivalent_pass_subjects');
             $requirement->open_equivalent_average_grade = $request->get('open_equivalent_average_grade');
