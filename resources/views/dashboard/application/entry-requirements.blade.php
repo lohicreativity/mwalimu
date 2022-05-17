@@ -214,15 +214,6 @@
                     {!! Form::text('equivalent_average_grade',null,$equivalent_average_grade) !!}
                   </div>
                   {!! Form::input('hidden','application_window_id',$application_window->id) !!}
-                  <div class="form-group col-3">
-                    {!! Form::label('','Open Exclude Subjects') !!}
-                    <select name="equivalent_must_subjects[]" class="form-control ss-select-tags" multiple="multiple">
-                       <option value="ENGLISH">English</option>
-                       <option value="KISWAHILI">Kiswahili</option>
-                       <option value="GEOGRAPHY">Geography</option>
-                       <option value="HISTORY">History</option>
-                    </select>
-                  </div>
                  
                    <div class="form-group col-3">
                     {!! Form::label('','Open Equivalent GPA') !!}
@@ -429,15 +420,6 @@
                     {!! Form::text('equivalent_average_grade',null,$equivalent_average_grade) !!}
                   </div>
                   {!! Form::input('hidden','application_window_id',$application_window->id) !!}
-                  <div class="form-group col-3">
-                    {!! Form::label('','Open Exclude Subjects') !!}
-                    <select name="equivalent_must_subjects[]" class="form-control ss-select-tags" multiple="multiple">
-                       <option value="ENGLISH">English</option>
-                       <option value="KISWAHILI">Kiswahili</option>
-                       <option value="GEOGRAPHY">Geography</option>
-                       <option value="HISTORY">History</option>
-                    </select>
-                  </div>
                  
                    <div class="form-group col-3">
                     {!! Form::label('','Open Equivalent GPA') !!}
@@ -684,7 +666,7 @@
                   </div>
                   {!! Form::input('hidden','application_window_id',$application_window->id) !!}
                   <div class="form-group col-3">
-                    {!! Form::label('','Open Exclude Subjects') !!}
+                    {!! Form::label('','Equivalent Must Subjects') !!}
                     <select name="equivalent_must_subjects[]" class="form-control ss-select-tags" multiple="multiple">
                        <option value="ENGLISH">English</option>
                        <option value="KISWAHILI">Kiswahili</option>
@@ -697,6 +679,15 @@
                     {!! Form::label('','Open Equivalent GPA') !!}
                     {!! Form::text('open_equivalent_gpa',null,$open_equivalent_gpa) !!}
                    </div>
+
+                   <div class="form-group col-3">
+                    {!! Form::label('','Open Exclude Subjects') !!}
+                    <select name="open_exclude_subjects[]" class="form-control ss-select-tags" multiple="multiple">
+                       <option value="OFC 017">Communication Skills</option>
+                       <option value="OFP 018">Development Studies</option>
+                       <option value="OFP 020">Introduction to ICT</option>
+                    </select>
+                  </div>
                   <div class="form-group col-3">
                     {!! Form::label('','Principle Pass Points') !!}
                     {!! Form::text('principle_pass_points',null,$principle_pass_points) !!}
@@ -793,14 +784,7 @@
                        @endforeach
                     </select>
                   </div>
-                  <div class="form-group col-3">
-                    {!! Form::label('','Open Exclude Subjects') !!}
-                    <select name="open_exclude_subjects[]" class="form-control ss-select-tags" multiple="multiple">
-                       <option value="OFC 017">Communication Skills</option>
-                       <option value="OFP 018">Development Studies</option>
-                       <option value="OFP 020">Introduction to ICT</option>
-                    </select>
-                  </div>
+                  
                 </div>
              </div>
              
@@ -995,15 +979,6 @@
                                       </div>
                                       {!! Form::input('hidden','application_window_id',$application_window->id) !!}
                                       {!! Form::input('hidden','entry_requirement_id',$requirement->id) !!}
-                                      <div class="form-group col-3">
-                                        {!! Form::label('','Open Exclude Subjects') !!}
-                                        <select name="equivalent_must_subjects[]" class="form-control ss-select-tags" multiple="multiple">
-                                           <option value="ENGLISH">English</option>
-                                           <option value="KISWAHILI">Kiswahili</option>
-                                           <option value="GEOGRAPHY">Geography</option>
-                                           <option value="HISTORY">History</option>
-                                        </select>
-                                      </div>
                                      
                                        <div class="form-group col-3">
                                         {!! Form::label('','Open Equivalent GPA') !!}
@@ -1207,15 +1182,6 @@
                                         </div>
                                         {!! Form::input('hidden','application_window_id',$application_window->id) !!}
                                         {!! Form::input('hidden','entry_requirement_id',$requirement->id) !!}
-                                        <div class="form-group col-3">
-                                            {!! Form::label('','Open Exclude Subjects') !!}
-                                            <select name="equivalent_must_subjects[]" class="form-control ss-select-tags" multiple="multiple">
-                                               <option value="ENGLISH">English</option>
-                                               <option value="KISWAHILI">Kiswahili</option>
-                                               <option value="GEOGRAPHY">Geography</option>
-                                               <option value="HISTORY">History</option>
-                                            </select>
-                                          </div>
                                        
                                          <div class="form-group col-3">
                                           {!! Form::label('','Open Equivalent GPA') !!}
@@ -1471,7 +1437,7 @@
                                           {!! Form::input('hidden','application_window_id',$application_window->id) !!}
                                           {!! Form::input('hidden','entry_requirement_id',$requirement->id) !!}
                                           <div class="form-group col-3">
-                                            {!! Form::label('','Open Exclude Subjects') !!}
+                                            {!! Form::label('','Equivalent Must Subjects') !!}
                                             <select name="equivalent_must_subjects[]" class="form-control ss-select-tags" multiple="multiple">
                                                <option value="ENGLISH">English</option>
                                                <option value="KISWAHILI">Kiswahili</option>
@@ -1484,7 +1450,14 @@
                                             {!! Form::label('','Open Equivalent GPA') !!}
                                             {!! Form::text('open_equivalent_gpa',$requirement->open_equivalent_gpa,$open_equivalent_gpa) !!}
                                            </div>
-                                          
+                                           <div class="form-group col-3">
+                                              {!! Form::label('','Open Exclude Subjects') !!}
+                                              <select name="open_exclude_subjects[]" class="form-control ss-select-tags" multiple="multiple">
+                                                 <option value="OFC 017">Communication Skills</option>
+                                                 <option value="OFP 018">Development Studies</option>
+                                                 <option value="OFP 020">Introduction to ICT</option>
+                                              </select>
+                                            </div>
                                           <div class="form-group col-3">
                                             {!! Form::label('','Principle Pass Points') !!}
                                             {!! Form::text('principle_pass_points',$requirement->principle_pass_points,$principle_pass_points) !!}
@@ -1582,14 +1555,7 @@
                                                @endforeach
                                             </select>
                                           </div>
-                                            <div class="form-group col-3">
-                                              {!! Form::label('','Open Exclude Subjects') !!}
-                                              <select name="open_exclude_subjects[]" class="form-control ss-select-tags" multiple="multiple">
-                                                 <option value="OFC 017">Communication Skills</option>
-                                                 <option value="OFP 018">Development Studies</option>
-                                                 <option value="OFP 020">Introduction to ICT</option>
-                                              </select>
-                                            </div>
+                                            
                                         </div>
                                      </div>
                                      
