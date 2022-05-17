@@ -211,7 +211,15 @@
                   </div>
                   <div class="form-group col-3">
                     {!! Form::label('','Equivalent Average Grade') !!}
-                    {!! Form::text('equivalent_average_grade',null,$equivalent_average_grade) !!}
+                    <select name="equivalent_average_grade" class="form-control">
+                       <option value="">Select Pass Grade</option>
+                       <option value="A">A</option>
+                       <option value="B">B</option>
+                       <option value="C">C</option>
+                       <option value="D">D</option>
+                       <option value="E">E</option>
+                       <option value="F">F</option>
+                    </select>
                   </div>
                   {!! Form::input('hidden','application_window_id',$application_window->id) !!}
                  
@@ -417,7 +425,15 @@
                   </div>
                   <div class="form-group col-3">
                     {!! Form::label('','Equivalent Average Grade') !!}
-                    {!! Form::text('equivalent_average_grade',null,$equivalent_average_grade) !!}
+                    <select name="equivalent_average_grade" class="form-control">
+                       <option value="">Select Pass Grade</option>
+                       <option value="A">A</option>
+                       <option value="B">B</option>
+                       <option value="C">C</option>
+                       <option value="D">D</option>
+                       <option value="E">E</option>
+                       <option value="F">F</option>
+                    </select>
                   </div>
                   {!! Form::input('hidden','application_window_id',$application_window->id) !!}
                  
@@ -662,7 +678,15 @@
                   </div>
                   <div class="form-group col-3">
                     {!! Form::label('','Equivalent Average Grade') !!}
-                    {!! Form::text('equivalent_average_grade',null,$equivalent_average_grade) !!}
+                    <select name="equivalent_average_grade" class="form-control">
+                       <option value="">Select Pass Grade</option>
+                       <option value="A">A</option>
+                       <option value="B">B</option>
+                       <option value="C">C</option>
+                       <option value="D">D</option>
+                       <option value="E">E</option>
+                       <option value="F">F</option>
+                    </select>
                   </div>
                   {!! Form::input('hidden','application_window_id',$application_window->id) !!}
                   <div class="form-group col-3">
@@ -975,7 +999,15 @@
                                       </div>
                                       <div class="form-group col-3">
                                         {!! Form::label('','Equivalent Average Grade') !!}
-                                        {!! Form::text('equivalent_average_grade',$requirement->equivalent_average_grade,$equivalent_average_grade) !!}
+                                        <select name="equivalent_average_grade" class="form-control">
+                                           <option value="">Select Pass Grade</option>
+                                           <option value="A">A</option>
+                                           <option value="B">B</option>
+                                           <option value="C">C</option>
+                                           <option value="D">D</option>
+                                           <option value="E">E</option>
+                                           <option value="F">F</option>
+                                        </select>
                                       </div>
                                       {!! Form::input('hidden','application_window_id',$application_window->id) !!}
                                       {!! Form::input('hidden','entry_requirement_id',$requirement->id) !!}
@@ -1178,7 +1210,15 @@
                                         </div>
                                         <div class="form-group col-3">
                                           {!! Form::label('','Equivalent Average Grade') !!}
-                                          {!! Form::text('equivalent_average_grade',$requirement->equivalent_average_grade,$equivalent_average_grade) !!}
+                                          <select name="equivalent_average_grade" class="form-control">
+                                             <option value="">Select Pass Grade</option>
+                                             <option value="A">A</option>
+                                             <option value="B">B</option>
+                                             <option value="C">C</option>
+                                             <option value="D">D</option>
+                                             <option value="E">E</option>
+                                             <option value="F">F</option>
+                                          </select>
                                         </div>
                                         {!! Form::input('hidden','application_window_id',$application_window->id) !!}
                                         {!! Form::input('hidden','entry_requirement_id',$requirement->id) !!}
@@ -1432,7 +1472,15 @@
                                           </div>
                                           <div class="form-group col-3">
                                             {!! Form::label('','Equivalent Average Grade') !!}
-                                            {!! Form::text('equivalent_average_grade',$requirement->equivalent_average_grade,$equivalent_average_grade) !!}
+                                            <select name="equivalent_average_grade" class="form-control">
+                                               <option value="">Select Pass Grade</option>
+                                               <option value="A">A</option>
+                                               <option value="B">B</option>
+                                               <option value="C">C</option>
+                                               <option value="D">D</option>
+                                               <option value="E">E</option>
+                                               <option value="F">F</option>
+                                            </select>
                                           </div>
                                           {!! Form::input('hidden','application_window_id',$application_window->id) !!}
                                           {!! Form::input('hidden','entry_requirement_id',$requirement->id) !!}
