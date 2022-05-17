@@ -221,7 +221,9 @@
   </style>
 </head>
 <body>
-   <div id="ss-id-card" class="ss-id-card" style="width: 750px; height: 450px; background-image: url({{ asset('img/mnma-id-bg.png') }}); padding: 20px;">
+   <div id="ss-id-card" class="ss-id-card" style="width: 750px; height: 400px; padding: 20px; position: relative;">
+     <img src="{{ asset('img/mnma-id-bg.png') }}" style="position: absolute; z-index: 500; width: 600px; height: 350px;">
+     <div class="container" style="position: relative; z-index: 1000;">
      <div class="row">
         <div class="col-md-3 ss-center" style="text-align: center;">
           <img src="{{ asset('dist/img/logo.png')}}" class="ss-logo" style="width: 100px; text-align: center;">
@@ -234,7 +236,7 @@
         <div class="col-md-3" style="text-align: center;">
           <img src="{{ asset('img/user-avatar.png')}}" class="ss-logo" style="text-align: center; width: 150px;">
           @if($semester->name == 'Semester 1')
-          <h3>Semester One</h3>
+          <h3 style="text-shadow: 0px 0px 5px blue; font-weight: bold;">Semester One</h3>
           @else
           <h3>Semester Two</h3>
           @endif
@@ -248,26 +250,28 @@
      </div>
      <div class="row">
      <div class="col-md-7"></div>
-     <div class="col-md-5"><h3 style="float: right;">{{ $student->campusProgram->campus->name }}</h3></div>
+     <div class="col-md-5" style="text-align: right;"><h3 style="float: right; text-shadow: 0px 0px 5px brown; font-weight: bold; color: red">{{ $student->campusProgram->campus->name }}</h3></div>
      </div>
+   </div>
    </div>
    <pagebreak page-break-before>
      <div id="ss-id-card" class="ss-id-card" style="width: 750px; height: 450px; background-color: #FFF; padding: 20px;">
+       <div class="container">
        <div class="row">
           <div class="col-12">
              <h1>CAUTION</h1>
           </div>
        </div>
        <div class="row">
-          <div class="col-9" style="text-align: left;">
+          <div class="col-7" style="text-align: left;">
             <p>This identity card is the property of</p>
             <h3>THE MWALIMU NYERERE MEMORIAL ACADEMY</h3>
             <p>1. Use of this card is subject to the card holder agreement</p>
             <p>2. Card should be returned at the beginning of each semester</p>
             
           </div>
-          <div class="col-3">
-             
+          <div class="col-5">
+             {!! QrCode::size(100)->generate($student->registration_number.'-mnma.ac.tz'); !!}
           </div>
        </div>
        <div class="row">
@@ -275,6 +279,13 @@
        <div class="col-4"><h3></h3></div>
        </div>
      </div>
+     </div>
      <pagebreak>
+
+    <script type="text/javascript">
+       document.getElementById('ss-id-card').addEventListener('click',function(e){
+             window.print();
+       });
+    </script>
 </body>
 </html>
