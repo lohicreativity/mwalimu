@@ -694,8 +694,8 @@
                   </div>
                
                    <div class="form-group col-3">
-                    {!! Form::label('','Subsidiary Pass Points') !!}
-                    {!! Form::text('min_principle_pass_points',null,$min_principle_pass_points) !!}
+                    {!! Form::label('','No. of Subsidiary Pass Subjects') !!}
+                    {!! Form::text('subsidiary_pass_subjects',null,$min_principle_pass_points) !!}
                   </div>
                    <div class="form-group col-3">
                     {!! Form::label('','No. of Principle Pass Subjects') !!}
@@ -1464,9 +1464,9 @@
                                           </div>
                                      
                                            <div class="form-group col-3">
-                                            {!! Form::label('','Subsidiary Pass Points') !!}
-                                            {!! Form::text('min_principle_pass_points',$requirement->min_principle_pass_points,$min_principle_pass_points) !!}
-                                          </div>
+                                              {!! Form::label('','No. of Subsidiary Pass Subjects') !!}
+                                              {!! Form::text('subsidiary_pass_subjects',null,$min_principle_pass_points) !!}
+                                            </div>
                                            <div class="form-group col-3">
                                             {!! Form::label('','No. of Principle Pass Subjects') !!}
                                             {!! Form::text('principle_pass_subjects',$requirement->principle_pass_subjects,$principle_pass_subjects) !!}

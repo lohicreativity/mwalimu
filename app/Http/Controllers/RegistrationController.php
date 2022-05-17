@@ -166,7 +166,7 @@ class RegistrationController extends Controller
                'margin_right'=>0,
                'orientation'=>'P',
                'display_mode'=>'fullpage',
-               'format'=>[500,400]
+               // 'format'=>[500,400]
         ]);
         return  $pdf->stream(); 
     }
