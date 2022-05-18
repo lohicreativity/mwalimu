@@ -1064,7 +1064,7 @@
                                         {!! Form::label('','Exclude Subjects') !!}
                                         <select name="exclude_subjects[]" class="form-control ss-select-tags" multiple="multiple">
                                            @foreach($subjects as $sub)
-                                           <option value="{{ $sub->subject_name }}">{{ $sub->subject_name }}</option>
+                                           <option value="{{ $sub->subject_name }}" @if(unserialize($requirement->exclude_subjects) != '') @if(in_array($sub->subject_name,unserialize($requirement->exclude_subjects))) selected="selected" @endif @endif>{{ $sub->subject_name }}</option>
                                            @endforeach
                                         </select>
                                       </div>
@@ -1072,7 +1072,7 @@
                                         {!! Form::label('','Must Subjects') !!}
                                         <select name="must_subjects[]" class="form-control ss-select-tags" multiple="multiple">
                                            @foreach($subjects as $sub)
-                                           <option value="{{ $sub->subject_name }}">{{ $sub->subject_name }}</option>
+                                           <option value="{{ $sub->subject_name }}" @if(unserialize($requirement->must_subjects) != '') @if(in_array($sub->subject_name,unserialize($requirement->must_subjects))) selected="selected" @endif @endif>{{ $sub->subject_name }}</option>
                                            @endforeach
                                         </select>
                                       </div>
@@ -1080,7 +1080,7 @@
                                         {!! Form::label('','Other Must Subjects') !!}
                                         <select name="other_must_subjects[]" class="form-control ss-select-tags" multiple="multiple">
                                            @foreach($subjects as $sub)
-                                           <option value="{{ $sub->subject_name }}">{{ $sub->subject_name }}</option>
+                                           <option value="{{ $sub->subject_name }}" @if(unserialize($requirement->other_must_subjects) != '') @if(in_array($sub->subject_name,unserialize($requirement->other_must_subjects))) selected="selected" @endif @endif>{{ $sub->subject_name }}</option>
                                            @endforeach
                                         </select>
                                       </div>
@@ -1292,7 +1292,7 @@
                                           {!! Form::label('','Exclude Subjects') !!}
                                           <select name="exclude_subjects[]" class="form-control ss-select-tags" multiple="multiple">
                                              @foreach($subjects as $sub)
-                                             <option value="{{ $sub->subject_name }}">{{ $sub->subject_name }}</option>
+                                             <option value="{{ $sub->subject_name }}" @if(unserialize($requirement->exclude_subjects) != '') @if(in_array($sub->subject_name,unserialize($requirement->exclude_subjects))) selected="selected" @endif @endif>{{ $sub->subject_name }}</option>
                                              @endforeach
                                           </select>
                                         </div>
@@ -1300,7 +1300,7 @@
                                           {!! Form::label('','Must Subjects') !!}
                                           <select name="must_subjects[]" class="form-control ss-select-tags" multiple="multiple">
                                              @foreach($subjects as $sub)
-                                             <option value="{{ $sub->subject_name }}">{{ $sub->subject_name }}</option>
+                                             <option value="{{ $sub->subject_name }}" @if(unserialize($requirement->must_subjects) != '') @if(in_array($sub->subject_name,unserialize($requirement->must_subjects))) selected="selected" @endif @endif>{{ $sub->subject_name }}</option>
                                              @endforeach
                                           </select>
                                         </div>
@@ -1310,7 +1310,7 @@
                                           {!! Form::label('','Other Must Subjects') !!}
                                           <select name="other_must_subjects[]" class="form-control ss-select-tags" multiple="multiple">
                                              @foreach($subjects as $sub)
-                                             <option value="{{ $sub->subject_name }}">{{ $sub->subject_name }}</option>
+                                             <option value="{{ $sub->subject_name }}" @if(unserialize($requirement->other_must_subjects) != '') @if(in_array($sub->subject_name,unserialize($requirement->other_must_subjects))) selected="selected" @endif @endif>{{ $sub->subject_name }}</option>
                                              @endforeach
                                           </select>
                                         </div>
@@ -1318,7 +1318,7 @@
                                           {!! Form::label('','Advance Exclude Subjects') !!}
                                           <select name="advance_exclude_subjects[]" class="form-control ss-select-tags" multiple="multiple">
                                              @foreach($subjects as $sub)
-                                             <option value="{{ $sub->subject_name }}">{{ $sub->subject_name }}</option>
+                                             <option value="{{ $sub->subject_name }}" @if(unserialize($requirement->advance_exclude_subjects) != '') @if(in_array($sub->subject_name,unserialize($requirement->advance_exclude_subjects))) selected="selected" @endif @endif>{{ $sub->subject_name }}</option>
                                              @endforeach
                                           </select>
                                         </div>
@@ -1326,7 +1326,7 @@
                                           {!! Form::label('','Advance Must Subjects') !!}
                                           <select name="advance_must_subjects[]" class="form-control ss-select-tags" multiple="multiple">
                                              @foreach($subjects as $sub)
-                                             <option value="{{ $sub->subject_name }}">{{ $sub->subject_name }}</option>
+                                             <option value="{{ $sub->subject_name }}" @if(unserialize($requirement->advance_must_subjects) != '') @if(in_array($sub->subject_name,unserialize($requirement->advance_must_subjects))) selected="selected" @endif @endif>{{ $sub->subject_name }}</option>
                                              @endforeach
                                           </select>
                                         </div>
@@ -1335,7 +1335,7 @@
                                           {!! Form::label('','Other Advance Must Subjects') !!}
                                           <select name="other_advance_must_subjects[]" class="form-control ss-select-tags" multiple="multiple">
                                              @foreach($subjects as $sub)
-                                             <option value="{{ $sub->subject_name }}">{{ $sub->subject_name }}</option>
+                                             <option value="{{ $sub->subject_name }}" @if(unserialize($requirement->other_advance_must_subjects) != '') @if(in_array($sub->subject_name,$subjects)) selected="selected" @endif @endif>{{ $sub->subject_name }}</option>
                                              @endforeach
                                           </select>
                                         </div>
@@ -1537,7 +1537,7 @@
                                             {!! Form::label('','Subsidiary Subjects') !!}
                                             <select name="subsidiary_subjects[]" class="form-control ss-select-tags" multiple="multiple">
                                                @foreach($subjects as $sub)
-                                               <option value="{{ $sub->subject_name }}">{{ $sub->subject_name }}</option>
+                                               <option value="{{ $sub->subject_name }}" @if(unserialize($requirement->subsidiary_subjects) != '') @if(in_array($sub->subject_name,unserialize($requirement->subsidiary_subjects))) selected="selected" @endif @endif>{{ $sub->subject_name }}</option>
                                                @endforeach
                                             </select>
                                           </div>
@@ -1546,32 +1546,32 @@
                                             {!! Form::label('','Pass Grade') !!}
                                             <select name="pass_grade" class="form-control">
                                                <option value="">Select Pass Grade</option>
-                                               <option value="A">A</option>
-                                               <option value="B">B</option>
-                                               <option value="C">C</option>
-                                               <option value="D">D</option>
-                                               <option value="E">E</option>
-                                               <option value="F">F</option>
+                                               <option value="A" @if($requirement->pass_grade == 'A') selected="selected" @endif>A</option>
+                                               <option value="B" @if($requirement->pass_grade == 'B') selected="selected" @endif>B</option>
+                                               <option value="C" @if($requirement->pass_grade == 'C') selected="selected" @endif>C</option>
+                                               <option value="D" @if($requirement->pass_grade == 'D') selected="selected" @endif>D</option>
+                                               <option value="E" @if($requirement->pass_grade == 'E') selected="selected" @endif>E</option>
+                                               <option value="F" @if($requirement->pass_grade == 'F') selected="selected" @endif>F</option>
                                             </select>
                                           </div>
                                           <div class="form-group col-3">
                                              {!! Form::label('','NTA Level') !!}
                                             <select name="nta_level" class="form-control">
                                                <option value="">Select NTA Level</option>
-                                               <option value="4">4</option>
-                                               <option value="5">5</option>
-                                               <option value="6">6</option>
-                                               <option value="7">7</option>
-                                               <option value="8">8</option>
-                                               <option value="9">9</option>
-                                               <option value="10">10</option>
+                                               <option value="4" @if($requirement->nta_level == 4) selected="selected" @endif>4</option>
+                                               <option value="5" @if($requirement->nta_level == 5) selected="selected" @endif>5</option>
+                                               <option value="6" @if($requirement->nta_level == 6) selected="selected" @endif>6</option>
+                                               <option value="7" @if($requirement->nta_level == 7) selected="selected" @endif>7</option>
+                                               <option value="8" @if($requirement->nta_level == 8) selected="selected" @endif>8</option>
+                                               <option value="9" @if($requirement->nta_level == 9) selected="selected" @endif>9</option>
+                                               <option value="10" @if($requirement->nta_level == 10) selected="selected" @endif>10</option>
                                             </select>
                                           </div>
                                           <div class="form-group col-3">
                                             {!! Form::label('','Exclude Subjects') !!}
                                             <select name="exclude_subjects[]" class="form-control ss-select-tags" multiple="multiple">
                                                @foreach($subjects as $sub)
-                                               <option value="{{ $sub->subject_name }}">{{ $sub->subject_name }}</option>
+                                               <option value="{{ $sub->subject_name }}" @if(unserialize($requirement->exclude_subjects) != '') @if(in_array($sub->subject_name,unserialize($requirement->exclude_subjects))) selected="selected" @endif @endif>{{ $sub->subject_name }}</option>
                                                @endforeach
                                             </select>
                                           </div>
@@ -1579,7 +1579,7 @@
                                             {!! Form::label('','Must Subjects') !!}
                                             <select name="must_subjects[]" class="form-control ss-select-tags" multiple="multiple">
                                                @foreach($subjects as $sub)
-                                               <option value="{{ $sub->subject_name }}">{{ $sub->subject_name }}</option>
+                                               <option value="{{ $sub->subject_name }}" @if(unserialize($requirement->must_subjects) != '') @if(in_array($sub->subject_name,unserialize($requirement->must_subjects))) selected="selected" @endif @endif>{{ $sub->subject_name }}</option>
                                                @endforeach
                                             </select>
                                           </div>
@@ -1589,7 +1589,7 @@
                                             {!! Form::label('','Other Must Subjects') !!}
                                             <select name="other_must_subjects[]" class="form-control ss-select-tags" multiple="multiple">
                                                @foreach($subjects as $sub)
-                                               <option value="{{ $sub->subject_name }}">{{ $sub->subject_name }}</option>
+                                               <option value="{{ $sub->subject_name }}" @if(unserialize($requirement->other_must_subjects) != '') @if(in_array($sub->subject_name,unserialize($requirement->other_must_subjects))) selected="selected" @endif @endif>{{ $sub->subject_name }}</option>
                                                @endforeach
                                             </select>
                                           </div>
@@ -1598,7 +1598,7 @@
                                             {!! Form::label('','Advance Exclude Subjects') !!}
                                             <select name="advance_exclude_subjects[]" class="form-control ss-select-tags" multiple="multiple">
                                                @foreach($subjects as $sub)
-                                               <option value="{{ $sub->subject_name }}">{{ $sub->subject_name }}</option>
+                                               <option value="{{ $sub->subject_name }}" @if(unserialize($requirement->advance_exclude_subjects) != '') @if(in_array($sub->subject_name,unserialize($requirement->advance_exclude_subjects))) selected="selected" @endif @endif>{{ $sub->subject_name }}</option>
                                                @endforeach
                                             </select>
                                           </div>
@@ -1608,7 +1608,7 @@
                                             {!! Form::label('','Advance Must Subjects') !!}
                                             <select name="advance_must_subjects[]" class="form-control ss-select-tags" multiple="multiple">
                                                @foreach($subjects as $sub)
-                                               <option value="{{ $sub->subject_name }}">{{ $sub->subject_name }}</option>
+                                               <option value="{{ $sub->subject_name }}" @if(unserialize($requirement->advance_must_subjects) != '') @if(in_array($sub->subject_name,unserialize($requirement->advance_must_subjects))) selected="selected" @endif @endif>{{ $sub->subject_name }}</option>
                                                @endforeach
                                             </select>
                                           </div>
@@ -1616,7 +1616,7 @@
                                             {!! Form::label('','Other Advance Must Subjects') !!}
                                             <select name="other_advance_must_subjects[]" class="form-control ss-select-tags" multiple="multiple">
                                                @foreach($subjects as $sub)
-                                               <option value="{{ $sub->subject_name }}">{{ $sub->subject_name }}</option>
+                                               <option value="{{ $sub->subject_name }}" @if(unserialize($requirement->other_advance_must_subjects) != '') @if(in_array($sub->subject_name,unserialize($requirement->other_advance_must_subjects))) selected="selected" @endif @endif>{{ $sub->subject_name }}</option>
                                                @endforeach
                                             </select>
                                           </div>
