@@ -724,8 +724,6 @@ class ApplicantController extends Controller
                           }
                        }
                         if($o_level_pass_count >= $program->entryRequirements[0]->pass_subjects && $has_major && $detail->diploma_gpa >= $program->entryRequirements[0]->equivalent_gpa){
-
-                           return $program;
                             
                            $programs[] = $program;
                         }
@@ -748,12 +746,12 @@ class ApplicantController extends Controller
                                       $out_pass_subjects_count += 1;
                                    }
                                 }
-
-
                             }
                             if($out_pass_subjects_count >= 3 && $detail->gpa >= 3 && $a_level_subsidiary_pass_count >= 1 && $a_level_principle_pass_count >= 1){
                                 $programs[] = $program;
                             }
+
+                            return $out_pass_subjects_count.'-'.$detail->gpa;
                             if(unserialize($program->entryRequirements[0]->equivalent_must_subjects) != ''){
                                 if($out_pass_subjects_count >= 3 && $detail->gpa >= 3 && $equivalent_must_subjects_count >= count(unserialize($program->entryRequirements[0]->equivalent_must_subjects)) && $nacte_gpa >= 2){
                                         $programs[] = $program;
