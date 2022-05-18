@@ -226,7 +226,7 @@
      <div class="container" style="position: relative; z-index: 1000;">
      <div class="row">
         <div class="col-md-3 ss-center" style="text-align: center;">
-          <img src="{{ asset('dist/img/logo.png')}}" class="ss-logo" style="width: 60px; text-align: center;">
+          <img src="{{ asset('dist/img/logo.png')}}" class="ss-logo" style="width: 80px; text-align: center;">
         </div>
         <div class="col-md-9">
            <h3 style="margin-top: 0px;">THE MWALIMU NYERERE MEMORIAL ACADEMY</h3>
@@ -234,13 +234,13 @@
      </div>
      <div class="row">
         <div class="col-md-3" style="text-align: center;">
-          <img src="{{ asset('img/user-avatar.png')}}" class="ss-logo" style="text-align: center; width: 150px;">
+          <img src="{{ asset('uploads/'.$student->image)}}" class="ss-logo" style="text-align: center; width: 150px;" onerror="this.src='{{ asset("img/user-avatar.png") }}'">
         </div>
         <div class="col-md-9">
-           <h5 style="margin: 0px 0px 0px 20px;">REGNO: {{ $student->registration_number }}</h5>
-           <h5 style="margin: 0px 0px 0px 20px;">NAME: {{ $student->first_name }} {{ $student->middle_name }} {{ $student->surname }}</h5>
-           <h5 style="margin: 0px 0px 0px 20px;">MOBILE: {{ $student->phone }}</h5>
-           <h5 style="margin: 0px 0px 0px 20px;">VALID TO: {{ $study_academic_year->end_date }}</h5>
+           <h5 style="margin: 0px 0px 0px 20px;">REGNO: <span style="font-style: italic;">{{ $student->registration_number }}</span></h5>
+           <h5 style="margin: 0px 0px 0px 20px;">NAME: <span style="font-style: italic;">{{ $student->first_name }} {{ $student->middle_name }} {{ $student->surname }}</span></h5>
+           <h5 style="margin: 0px 0px 0px 20px;">MOBILE: <span style="font-style: italic;">{{ $student->phone }}</i></h5>
+           <h5 style="margin: 0px 0px 0px 20px;">VALID TO: <span style="font-style: italic;">{{ $study_academic_year->end_date }}</span></h5>
            <h5 style="margin: 20px 0px 0px 20px;">SIGNATURE:
            <img src="{{ asset('img/signature.png') }}" style="width: 100px; height: auto;"></h5>
         </div>
