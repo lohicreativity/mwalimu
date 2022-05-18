@@ -719,13 +719,14 @@ class ApplicantController extends Controller
                           if(unserialize($program->entryRequirements[0]->equivalent_must_subjects) != ''){
                               foreach($applicant->nacteResultDetails as $detail){
                                   foreach($detail->results as $result){
-                                      if(in_array($result->subject,unserialize($program->entryRequirements[0]->equivalent_must_subjects))){
-                                          $equivalent_must_subjects_count += 1;
+                                      foreach(unserialize($program->entryRequirements[0]->equivalent_must_subjects) as $sub){
+                                          if(str_contains($result->subject,$sub)){
+                                              $equivalent_must_subjects_count += 1;
+                                          }
                                       }
                                   }
                                   $nacte_gpa = $detail->diploma_gpa;
                               }
-                              return $equivalent_must_subjects_count;
                           }
                        }
 
