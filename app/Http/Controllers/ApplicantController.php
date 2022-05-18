@@ -534,26 +534,10 @@ class ApplicantController extends Controller
                               }
                               if($a_level_grades[$result->grade] >= $a_level_grades[$diploma_subsidiary_pass_grade]){
 
-                                 if(unserialize($program->entryRequirements[0]->advance_must_subjects) != ''){
-                                    if(unserialize($program->entryRequirements[0]->advance_other_must_subjects) != ''){
-                                       if(in_array($result->subject_name, unserialize($program->entryRequirements[0]->advance_must_subjects))){
+                                 if(unserialize($program->entryRequirements[0]->subsidiary_subjects) != ''){
+                                       if(in_array($result->subject_name, unserialize($program->entryRequirements[0]->subsidiary_subjects))){
                                          $a_level_subsidiary_pass_count += 1;
                                        }
-                                       if(in_array($result->subject_name, unserialize($program->entryRequirements[0]->other_advance_must_subjects)) && !$other_advance_subsidiary_ready){
-                                         $a_level_subsidiary_pass_count += 1;
-                                         $other_advance_subsidiary_ready = true;
-                                       }
-                                    }else{
-                                       if(in_array($result->subject_name, unserialize($program->entryRequirements[0]->advance_must_subjects))){
-                                         $a_level_subsidiary_pass_count += 1;
-                                       }
-                                    }
-                                 }elseif(unserialize($program->entryRequirements[0]->advance_exclude_subjects) != ''){
-                                    if(!in_array($result->subject_name, unserialize($program->entryRequirements[0]->advance_exclude_subjects))){
-                                         $a_level_subsidiary_pass_count += 1;
-                                    }
-                                 }else{
-                                    $a_level_subsidiary_pass_count += 1;
                                  }
                               }
                            }
@@ -663,25 +647,10 @@ class ApplicantController extends Controller
                               }
                               if($a_level_grades[$result->grade] >= $a_level_grades[$subsidiary_pass_grade]){
 
-                                 if(unserialize($program->entryRequirements[0]->advance_must_subjects) != ''){
-                                    if(unserialize($program->entryRequirements[0]->other_advance_must_subjects) != ''){
-                                       if(in_array($result->subject_name, unserialize($program->entryRequirements[0]->advance_must_subjects))){
+                                 if(unserialize($program->entryRequirements[0]->subsidiary_subjects) != ''){
+                                       if(in_array($result->subject_name, unserialize($program->entryRequirements[0]->subsidiary_subjects))){
                                          $a_level_subsidiary_pass_count += 1;
                                        }
-
-                                       if(in_array($result->subject_name, unserialize($program->entryRequirements[0]->other_advance_must_subjects)) && !$other_advance_subsidiary_ready){
-                                         $a_level_subsidiary_pass_count += 1;
-                                         $other_advance_subsidiary_ready = true;
-                                       }
-                                    }else{
-                                       if(in_array($result->subject_name, unserialize($program->entryRequirements[0]->advance_must_subjects))){
-                                         $a_level_subsidiary_pass_count += 1;
-                                       }
-                                    }
-                                 }elseif(unserialize($program->entryRequirements[0]->advance_exclude_subjects) != ''){
-                                    if(!in_array($result->subject_name, unserialize($program->entryRequirements[0]->advance_exclude_subjects))){
-                                         $a_level_subsidiary_pass_count += 1;
-                                    }
                                  }
                               }
                            }
