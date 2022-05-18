@@ -241,6 +241,8 @@
            <h5 style="margin: 0px 0px 0px 20px;">NAME: {{ $student->first_name }} {{ $student->middle_name }} {{ $student->surname }}</h5>
            <h5 style="margin: 0px 0px 0px 20px;">MOBILE: {{ $student->phone }}</h5>
            <h5 style="margin: 0px 0px 0px 20px;">VALID TO: {{ $study_academic_year->end_date }}</h5>
+           <h5 style="margin: 20px 0px 0px 20px;">SIGNATURE:
+           <img src="{{ asset('img/signature.png') }}" style="width: 100px; height: auto;"></h5>
         </div>
      </div>
      <div class="row">
