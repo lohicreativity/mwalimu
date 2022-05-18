@@ -229,7 +229,7 @@
           <img src="{{ asset('dist/img/logo.png')}}" class="ss-logo" style="width: 60px; text-align: center;">
         </div>
         <div class="col-md-9">
-           <h3>THE MWALIMU NYERERE MEMORIAL ACADEMY</h3>
+           <h3 style="margin-top: 0px;">THE MWALIMU NYERERE MEMORIAL ACADEMY</h3>
         </div>
      </div>
      <div class="row">
@@ -237,19 +237,19 @@
           <img src="{{ asset('img/user-avatar.png')}}" class="ss-logo" style="text-align: center; width: 150px;">
         </div>
         <div class="col-md-9">
-           <h5 style="margin: 0px;">REGNO: {{ $student->registration_number }}</h5>
-           <h5 style="margin: 0px;">NAME: {{ $student->first_name }} {{ $student->middle_name }} {{ $student->surname }}</h5>
-           <h5 style="margin: 0px;">MOBILE: {{ $student->phone }}</h5>
-           <h5 style="margin: 0px;">VALID TO: {{ $study_academic_year->end_date }}</h5>
+           <h5 style="margin: 0px 0px 0px 20px;">REGNO: {{ $student->registration_number }}</h5>
+           <h5 style="margin: 0px 0px 0px 20px;">NAME: {{ $student->first_name }} {{ $student->middle_name }} {{ $student->surname }}</h5>
+           <h5 style="margin: 0px 0px 0px 20px;">MOBILE: {{ $student->phone }}</h5>
+           <h5 style="margin: 0px 0px 0px 20px;">VALID TO: {{ $study_academic_year->end_date }}</h5>
         </div>
      </div>
      <div class="row">
      <div class="col-md-6"> @if($semester->name == 'Semester 1')
-          <h5 style="text-shadow: 0px 0px 5px blue; font-weight: bold; margin: 0px">Semester One</h5>
+          <h5 style="text-shadow: 0px 0px 5px blue; font-weight: bold; margin: 20px 0px 0px 0px;">Semester One</h5>
           @else
-          <h5 style="text-shadow: 0px 0px 5px blue; font-weight: bold; margin: 0px;">Semester Two</h5>
+          <h5 style="text-shadow: 0px 0px 5px blue; font-weight: bold; margin: 20px 0px 0px 0px;">Semester Two</h5>
           @endif</div>
-     <div class="col-md-6" style="text-align: right;"><h5 style="float: right; text-shadow: 0px 0px 5px brown; font-weight: bold; color: red; margin: 0px;">{{ $student->campusProgram->campus->name }}</h5></div>
+     <div class="col-md-6" style="text-align: right;"><h5 style="float: right; text-shadow: 0px 0px 5px brown; font-weight: bold; color: red; margin: 20px 0px 0px 0px;">{{ $student->campusProgram->campus->name }}</h5></div>
      </div>
    </div>
    </div>
@@ -270,7 +270,7 @@
             
           </div>
           <div class="col-md-5">
-             {{ QrCode::size(80)->generate($student->registration_number.'-mnma.ac.tz'); }}
+             {!! QrCode::format('png')->size(80)->generate($student->registration_number.'-mnma.ac.tz'); !!}
           </div>
        </div>
      </div>
