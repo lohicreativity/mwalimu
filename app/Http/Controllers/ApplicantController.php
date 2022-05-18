@@ -713,6 +713,7 @@ class ApplicantController extends Controller
                                    $has_major = true;
                                }
                              }
+                             $nacte_gpa = $detail->diploma_gpa;
                            }
                        }else{
                           if(unserialize($program->entryRequirements[0]->equivalent_must_subjects) != ''){
