@@ -714,7 +714,6 @@ class ApplicantController extends Controller
                                }
                              }
                            }
-                           return dd($has_major);
                        }else{
                           if(unserialize($program->entryRequirements[0]->equivalent_must_subjects) != ''){
                               foreach($applicant->nacteResultDetails as $detail){
