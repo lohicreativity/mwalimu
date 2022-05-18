@@ -730,19 +730,19 @@ class ApplicantController extends Controller
                               }
                           }
                        }
-                        // if(unserialize($program->entryRequirements[0]->equivalent_majors) != ''){
-                        //     if($o_level_pass_count >= $program->entryRequirements[0]->pass_subjects && $has_major && $nacte_gpa >= $program->entryRequirements[0]->equivalent_gpa){
+                        if(unserialize($program->entryRequirements[0]->equivalent_majors) != ''){
+                            if($o_level_pass_count >= $program->entryRequirements[0]->pass_subjects && $has_major && $nacte_gpa >= $program->entryRequirements[0]->equivalent_gpa){
                                 
-                        //        $programs[] = $program;
-                        //     }
-                        // }
+                               $programs[] = $program;
+                            }
+                        }
                        
-                        // if(unserialize($program->entryRequirements[0]->equivalent_must_subjects) != ''){
-                        //     if($o_level_pass_count >= $program->entryRequirements[0]->pass_subjects && $equivalent_must_subjects_count >= count(unserialize($program->entryRequirements[0]->equivalent_must_subjects)) && $nacte_gpa >= $program->entryRequirements[0]->equivalent_gpa){
+                        if(unserialize($program->entryRequirements[0]->equivalent_must_subjects) != ''){
+                            if($o_level_pass_count >= $program->entryRequirements[0]->pass_subjects && $equivalent_must_subjects_count >= count(unserialize($program->entryRequirements[0]->equivalent_must_subjects)) && $nacte_gpa >= $program->entryRequirements[0]->equivalent_gpa){
                                 
-                        //        $programs[] = $program;
-                        //     }
-                        // }
+                               $programs[] = $program;
+                            }
+                        }
 
 
                         $exclude_out_subjects_codes = unserialize($program->entryRequirements[0]->open_exclude_subjects); //['OFC 017','OFP 018','OFP 020'];
@@ -759,15 +759,15 @@ class ApplicantController extends Controller
                             $out_gpa = $detail->gpa;
                             
                         }
-                        // if($out_pass_subjects_count >= 3 && $out_gpa >= 3 && $a_level_subsidiary_pass_count >= 1 && $a_level_principle_pass_count >= 1){
-                        //         $programs[] = $program;
-                        // }
+                        if($out_pass_subjects_count >= 3 && $out_gpa >= 3 && $a_level_subsidiary_pass_count >= 1 && $a_level_principle_pass_count >= 1){
+                                $programs[] = $program;
+                        }
                             
-                        // if(unserialize($program->entryRequirements[0]->equivalent_must_subjects) != ''){
-                        //     if($out_pass_subjects_count >= 3 && $out_gpa >= 3 && $equivalent_must_subjects_count >= count(unserialize($program->entryRequirements[0]->equivalent_must_subjects)) && $nacte_gpa >= 2){
-                        //             $programs[] = $program;
-                        //     }
-                        // }
+                        if(unserialize($program->entryRequirements[0]->equivalent_must_subjects) != ''){
+                            if($out_pass_subjects_count >= 3 && $out_gpa >= 3 && $equivalent_must_subjects_count >= count(unserialize($program->entryRequirements[0]->equivalent_must_subjects)) && $nacte_gpa >= 2){
+                                    $programs[] = $program;
+                            }
+                        }
                         if(unserialize($program->entryRequirements[0]->equivalent_majors) != ''){
                             if($out_pass_subjects_count >= 3 && $out_gpa >= 3 && $has_major && $nacte_gpa >= 2){
                                     $programs[] = $program;
