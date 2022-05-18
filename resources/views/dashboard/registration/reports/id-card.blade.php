@@ -254,7 +254,7 @@
    </div>
    </div>
    <pagebreak>
-     <div id="ss-id-card" class="ss-id-card" style="width: 750px; height: 400px; background-color: #FFF; padding: 20px;">
+     <div id="ss-id-card-back" class="ss-id-card" style="width: 750px; height: 400px; background-color: #FFF; padding: 20px;">
        <div class="container">
        <div class="row">
           <div class="col-md-12">
@@ -263,10 +263,10 @@
        </div>
        <div class="row">
           <div class="col-md-7">
-            <p style="margin: 0px; font-size: 12px;">This identity card is the property of</p>
-            <h5 style="margin: 0px;">THE MWALIMU NYERERE MEMORIAL ACADEMY</h5>
-            <p style="margin: 0px; font-size: 12px;">1. Use of this card is subject to the card holder agreement</p>
-            <p style="margin: 0px; font-size: 12px;">2. Card should be returned at the beginning of each semester</p>
+            <p style="margin: 0px 0px 0px 20px; font-size: 12px;">This identity card is the property of</p>
+            <h5 style="margin: 0px 0px 10px 20px;">THE MWALIMU NYERERE MEMORIAL ACADEMY</h5>
+            <p style="margin: 0px 0px 0px 20px; font-size: 12px;">1. Use of this card is subject to the card holder agreement</p>
+            <p style="margin: 0px 0px 0px 20px; font-size: 12px;">2. Card should be returned at the beginning of each semester</p>
             
           </div>
           <div class="col-md-5">
