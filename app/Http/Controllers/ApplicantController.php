@@ -736,7 +736,8 @@ class ApplicantController extends Controller
                             if($out_pass_subjects_count >= 3 && $out_gpa >= 3 && $equivalent_must_subjects_count >= count(unserialize($program->entryRequirements[0]->equivalent_must_subjects)) && $nacte_gpa >= 2){
                                     $programs[] = $program;
                             }
-                        }else(unserialize($program->entryRequirements[0]->equivalent_majors) != ''){
+                        }
+                        if(unserialize($program->entryRequirements[0]->equivalent_majors) != ''){
                             if($out_pass_subjects_count >= 3 && $out_gpa >= 3 && $has_major && $nacte_gpa >= 2){
                                     $programs[] = $program;
                             }
