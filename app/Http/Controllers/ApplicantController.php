@@ -734,7 +734,7 @@ class ApplicantController extends Controller
                                $programs[] = $program;
                             }
                         }
-                        
+
 
                         $exclude_out_subjects_codes = unserialize($program->entryRequirements[0]->open_exclude_subjects); //['OFC 017','OFP 018','OFP 020'];
                         $out_pass_subjects_count = 0;
@@ -753,9 +753,11 @@ class ApplicantController extends Controller
                                 $programs[] = $program;
                             }
                         }
-                        // if($out_pass_subjects_count >= 3 && $nacte_gpa >= 2){
-                        //         $programs[] = $program;
-                        // }
+                        if(unserialize($program->entryRequirements[0]->equivalent_must_subjects) != ''){
+                            if($out_pass_subjects_count >= 3 && $equivalent_must_subjects_count >= count(unserialize($program->entryRequirements[0]->equivalent_must_subjects)) && $nacte_gpa >= 2){
+                                    $programs[] = $program;
+                            }
+                        }
 
                 }
            // if($subject_count != 0){
