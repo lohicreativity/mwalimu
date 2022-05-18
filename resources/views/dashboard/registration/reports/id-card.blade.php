@@ -234,7 +234,7 @@
      </div>
      <div class="row">
         <div class="col-md-3" style="text-align: center;">
-          <img src="{{ asset('img/user-avatar.png')}}" class="ss-logo" style="text-align: center; width: 150px;">
+          <img src="{{ asset('img/sample-img.jpg')}}" class="ss-logo" style="text-align: center; width: 150px;">
         </div>
         <div class="col-md-9">
            <h5 style="margin: 0px 0px 0px 20px;">REGNO: <span style="font-style: italic;">{{ $student->registration_number }}</span></h5>
