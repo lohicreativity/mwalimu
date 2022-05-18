@@ -759,15 +759,15 @@ class ApplicantController extends Controller
                             $out_gpa = $detail->gpa;
                             
                         }
-                        if($out_pass_subjects_count >= 3 && $out_gpa >= 3 && $a_level_subsidiary_pass_count >= 1 && $a_level_principle_pass_count >= 1){
-                                $programs[] = $program;
-                            }
+                        // if($out_pass_subjects_count >= 3 && $out_gpa >= 3 && $a_level_subsidiary_pass_count >= 1 && $a_level_principle_pass_count >= 1){
+                        //         $programs[] = $program;
+                        // }
                             
-                            if(unserialize($program->entryRequirements[0]->equivalent_must_subjects) != ''){
-                                if($out_pass_subjects_count >= 3 && $out_gpa >= 3 && $equivalent_must_subjects_count >= count(unserialize($program->entryRequirements[0]->equivalent_must_subjects)) && $nacte_gpa >= 2){
-                                        $programs[] = $program;
-                                }
+                        if(unserialize($program->entryRequirements[0]->equivalent_must_subjects) != ''){
+                            if($out_pass_subjects_count >= 3 && $out_gpa >= 3 && $equivalent_must_subjects_count >= count(unserialize($program->entryRequirements[0]->equivalent_must_subjects)) && $nacte_gpa >= 2){
+                                    $programs[] = $program;
                             }
+                        }
 
                 }
            // if($subject_count != 0){
