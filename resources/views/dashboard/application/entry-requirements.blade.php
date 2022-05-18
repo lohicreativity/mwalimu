@@ -1213,7 +1213,7 @@
                                           {!! Form::label('','Equivalent Majors') !!}
                                           <select name="equivalent_majors[]" class="form-control ss-select-tags" multiple="multiple" required>
                                              @foreach($diploma_programs as $prog)
-                                               <option value="{{ substr($prog->name,20) }}">{{ substr($prog->name,20) }}</option>
+                                               <option value="{{ substr($prog->name,20) }}" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array(substr($prog->name,20),unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>{{ substr($prog->name,20) }}</option>
                                                @endforeach
                                           </select>
                                         </div>
@@ -1475,7 +1475,7 @@
                                             {!! Form::label('','Equivalent Majors') !!}
                                             <select name="equivalent_majors[]" class="form-control ss-select-tags" multiple="multiple">
                                                @foreach($diploma_programs as $prog)
-                                               <option value="{{ substr($prog->name,20) }}">{{ substr($prog->name,20) }}</option>
+                                               <option value="{{ substr($prog->name,20) }}" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array(substr($prog->name,20),unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>{{ substr($prog->name,20) }}</option>
                                                @endforeach
                                             </select>
                                           </div>
@@ -1496,10 +1496,10 @@
                                           <div class="form-group col-3">
                                             {!! Form::label('','Equivalent Must Subjects') !!}
                                             <select name="equivalent_must_subjects[]" class="form-control ss-select-tags" multiple="multiple">
-                                               <option value="ENGLISH">English</option>
-                                               <option value="KISWAHILI">Kiswahili</option>
-                                               <option value="GEOGRAPHY">Geography</option>
-                                               <option value="HISTORY">History</option>
+                                               <option value="ENGLISH" @if(unserialize($requirement->equivalent_must_subjects) != '') @if(in_array('ENGLISH',unserialize($requirement->equivalent_must_subjects))) selected="selected" @endif @endif>English</option>
+                                               <option value="KISWAHILI" @if(unserialize($requirement->equivalent_must_subjects) != '') @if(in_array('KISWAHILI',unserialize($requirement->equivalent_must_subjects))) selected="selected" @endif @endif>Kiswahili</option>
+                                               <option value="GEOGRAPHY" @if(unserialize($requirement->equivalent_must_subjects) != '') @if(in_array('GEOGRAPHY',unserialize($requirement->equivalent_must_subjects))) selected="selected" @endif @endif>Geography</option>
+                                               <option value="HISTORY" @if(unserialize($requirement->equivalent_must_subjects) != '') @if(in_array('HISTORY',unserialize($requirement->equivalent_must_subjects))) selected="selected" @endif @endif>History</option>
                                             </select>
                                           </div>
                                          
@@ -1510,9 +1510,9 @@
                                            <div class="form-group col-3">
                                               {!! Form::label('','Open Exclude Subjects') !!}
                                               <select name="open_exclude_subjects[]" class="form-control ss-select-tags" multiple="multiple">
-                                                 <option value="OFC 017">Communication Skills</option>
-                                                 <option value="OFP 018">Development Studies</option>
-                                                 <option value="OFP 020">Introduction to ICT</option>
+                                                 <option value="OFC 017" @if(unserialize($requirement->open_exclude_subjects) != '') @if(in_array('OFP 018',unserialize($requirement->open_exclude_subjects))) selected="selected" @endif @endif>Communication Skills</option>
+                                                 <option value="OFC 017" @if(unserialize($requirement->open_exclude_subjects) != '') @if(in_array('OFP 018',unserialize($requirement->open_exclude_subjects))) selected="selected" @endif @endif>Development Studies</option>
+                                                 <option value="OFP 020" @if(unserialize($requirement->open_exclude_subjects) != '') @if(in_array('OFP 020',unserialize($requirement->open_exclude_subjects))) selected="selected" @endif @endif>Introduction to ICT</option>
                                               </select>
                                             </div>
                                           <div class="form-group col-3">
