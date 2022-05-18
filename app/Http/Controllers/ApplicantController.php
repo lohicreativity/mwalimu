@@ -706,9 +706,11 @@ class ApplicantController extends Controller
                        $nacte_gpa = null;
 
                        if(unserialize($program->entryRequirements[0]->equivalent_majors) != ''){
-                           foreach(unserialize($program->entryRequirements[0]->equivalent_majors) as $sub){
-                             if(str_contains($program->program->name,$sub)){
-                                 $has_major = true;
+                           foreach($applicant->nacteResultDetails as $detail){
+                             foreach(unserialize($program->entryRequirements[0]->equivalent_majors) as $sub){
+                               if(str_contains($detail->programme,$sub)){
+                                   $has_major = true;
+                               }
                              }
                            }
                        }else{
