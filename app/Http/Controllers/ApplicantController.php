@@ -726,7 +726,7 @@ class ApplicantController extends Controller
                           }
                        }
 
-                       return $has_major;
+                       return dd($has_major);
                         if($o_level_pass_count >= $program->entryRequirements[0]->pass_subjects && $has_major && $nacte_gpa >= $program->entryRequirements[0]->equivalent_gpa){
                             
                            $programs[] = $program;
