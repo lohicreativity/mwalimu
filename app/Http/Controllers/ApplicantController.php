@@ -571,7 +571,7 @@ class ApplicantController extends Controller
 
                        if(unserialize($program->entryRequirements[0]->equivalent_majors) != ''){
                            foreach(unserialize($program->entryRequirements[0]->equivalent_majors) as $sub){
-                             if(str_contains($program->name,$sub)){
+                             if(str_contains($program->program->name,$sub)){
                                  $has_btc = true;
                              }
                            }
