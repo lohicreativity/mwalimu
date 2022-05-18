@@ -704,6 +704,7 @@ class ApplicantController extends Controller
                        $has_major = false;
                        $equivalent_must_subjects_count = 0;
                        $nacte_gpa = null;
+                       $out_gpa = null;
 
                        if(unserialize($program->entryRequirements[0]->equivalent_majors) != ''){
                            foreach($applicant->nacteResultDetails as $detail){
@@ -747,25 +748,26 @@ class ApplicantController extends Controller
                         $exclude_out_subjects_codes = unserialize($program->entryRequirements[0]->open_exclude_subjects); //['OFC 017','OFP 018','OFP 020'];
                         $out_pass_subjects_count = 0;
                         
-                        foreach($applicant->outResultDetails as $detail){
-                            foreach($detail->results as $key => $result){
-                                if(!in_array($result->code, $exclude_out_subjects_codes)){
-                                   if($out_grades[$result->grade] >= $out_grades['C']){
-                                      $out_pass_subjects_count += 1;
-                                   }
-                                }
-                            }
-                            if($out_pass_subjects_count >= 3 && $detail->gpa >= 3 && $a_level_subsidiary_pass_count >= 1 && $a_level_principle_pass_count >= 1){
-                                $programs[] = $program;
-                            }
+                        // foreach($applicant->outResultDetails as $detail){
+                        //     foreach($detail->results as $key => $result){
+                        //         if(!in_array($result->code, $exclude_out_subjects_codes)){
+                        //            if($out_grades[$result->grade] >= $out_grades['C']){
+                        //               $out_pass_subjects_count += 1;
+                        //            }
+                        //         }
+                        //     }
+                        //     $out_gpa = $detail->gpa;
                             
-                            if(unserialize($program->entryRequirements[0]->equivalent_must_subjects) != ''){
-                                if($out_pass_subjects_count >= 3 && $detail->gpa >= 3 && $equivalent_must_subjects_count >= count(unserialize($program->entryRequirements[0]->equivalent_must_subjects)) && $nacte_gpa >= 2){
-                                        $programs[] = $program;
-                                }
-                            }
-                        }
-
+                        // }
+                        // if($out_pass_subjects_count >= 3 && $out_gpa >= 3 && $a_level_subsidiary_pass_count >= 1 && $a_level_principle_pass_count >= 1){
+                        //         $programs[] = $program;
+                        //     }
+                            
+                            // if(unserialize($program->entryRequirements[0]->equivalent_must_subjects) != ''){
+                            //     if($out_pass_subjects_count >= 3 && $out_gpa >= 3 && $equivalent_must_subjects_count >= count(unserialize($program->entryRequirements[0]->equivalent_must_subjects)) && $nacte_gpa >= 2){
+                            //             $programs[] = $program;
+                            //     }
+                            // }
 
                 }
            // if($subject_count != 0){
