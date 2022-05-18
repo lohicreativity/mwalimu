@@ -159,17 +159,18 @@ class RegistrationController extends Controller
             'semester'=>Semester::where('status','ACTIVE')->first(),
             'study_academic_year'=>StudyAcademicYear::where('status','ACTIVE')->first()
         ];
-        //  $pdf = PDF::loadView('dashboard.registration.reports.id-card',$data,[],[
-        //        'margin_top'=>0,
-        //        'margin_bottom'=>0,
-        //        'margin_left'=>0,
-        //        'margin_right'=>0,
-        //        'orientation'=>'P',
-        //        'display_mode'=>'fullpage',
-        //        // 'format'=>[500,400]
-        // ]);
-        // return  $pdf->stream(); 
-         return view('dashboard.registration.reports.id-card',$data);
+         $pdf = PDF::loadView('dashboard.registration.reports.id-card',$data,[],[
+               'format'=>'A6'
+               'margin_top'=>0,
+               'margin_bottom'=>0,
+               'margin_left'=>0,
+               'margin_right'=>0,
+               'orientation'=>'L',
+               'display_mode'=>'fullpage',
+               // 'format'=>[500,400]
+        ]);
+        return  $pdf->stream(); 
+         // return view('dashboard.registration.reports.id-card',$data);
     }
 
     /**
