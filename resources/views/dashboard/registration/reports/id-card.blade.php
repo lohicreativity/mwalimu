@@ -258,33 +258,28 @@
        <div class="container">
        <div class="row">
           <div class="col-12">
-             <h1>CAUTION</h1>
+             <h3>CAUTION</h1>
           </div>
        </div>
        <div class="row">
           <div class="col-md-7">
-            <p>This identity card is the property of</p>
-            <h3>THE MWALIMU NYERERE MEMORIAL ACADEMY</h3>
-            <p>1. Use of this card is subject to the card holder agreement</p>
-            <p>2. Card should be returned at the beginning of each semester</p>
+            <p style="margin: 0px; font-size: 12px;">This identity card is the property of</p>
+            <h5>THE MWALIMU NYERERE MEMORIAL ACADEMY</h5>
+            <p style="margin: 0px; font-size: 12px;">1. Use of this card is subject to the card holder agreement</p>
+            <p style="margin: 0px; font-size: 12px;">2. Card should be returned at the beginning of each semester</p>
             
           </div>
           <div class="col-md-5">
-             {!! QrCode::size(100)->generate($student->registration_number.'-mnma.ac.tz'); !!}
+             {!! QrCode::size(80)->generate($student->registration_number.'-mnma.ac.tz'); !!}
           </div>
        </div>
-       <div class="row">
-       <div class="col-8"></div>
-       <div class="col-4"></div>
-       </div>
      </div>
      </div>
-     <pagebreak>
 
-    <script type="text/javascript">
+    <!-- <script type="text/javascript">
        document.getElementById('ss-id-card').addEventListener('click',function(e){
              window.print();
        });
-    </script>
+    </script> -->
 </body>
 </html>
