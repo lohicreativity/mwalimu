@@ -532,7 +532,7 @@ class ApplicantController extends Controller
                                     $a_level_principle_pass_count += 1;
                                  }
                               }
-                              if($a_level_grades[$result->grade] == $a_level_grades[$diploma_subsidiary_pass_grade]){
+                              if($a_level_grades[$result->grade] >= $a_level_grades[$diploma_subsidiary_pass_grade]){
 
                                  if(unserialize($program->entryRequirements[0]->advance_must_subjects) != ''){
                                     if(unserialize($program->entryRequirements[0]->advance_other_must_subjects) != ''){
@@ -661,7 +661,7 @@ class ApplicantController extends Controller
                                      $a_level_principle_pass_points += $a_level_grades[$result->grade];
                                  }
                               }
-                              if($a_level_grades[$result->grade] == $a_level_grades[$subsidiary_pass_grade]){
+                              if($a_level_grades[$result->grade] >= $a_level_grades[$subsidiary_pass_grade]){
 
                                  if(unserialize($program->entryRequirements[0]->advance_must_subjects) != ''){
                                     if(unserialize($program->entryRequirements[0]->other_advance_must_subjects) != ''){
