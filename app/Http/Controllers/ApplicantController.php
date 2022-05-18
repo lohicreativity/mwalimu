@@ -708,12 +708,13 @@ class ApplicantController extends Controller
                        if(unserialize($program->entryRequirements[0]->equivalent_majors) != ''){
                            foreach($applicant->nacteResultDetails as $detail){
                              foreach(unserialize($program->entryRequirements[0]->equivalent_majors) as $sub){
-                               return $sub;
+
                                if(str_contains($detail->programme,$sub)){
                                    $has_major = true;
                                }
                              }
                            }
+                           return dd($has_major);
                        }else{
                           if(unserialize($program->entryRequirements[0]->equivalent_must_subjects) != ''){
                               foreach($applicant->nacteResultDetails as $detail){
@@ -727,7 +728,7 @@ class ApplicantController extends Controller
                           }
                        }
 
-                       return dd($has_major);
+                     
                         if($o_level_pass_count >= $program->entryRequirements[0]->pass_subjects && $has_major && $nacte_gpa >= $program->entryRequirements[0]->equivalent_gpa){
                             
                            $programs[] = $program;
