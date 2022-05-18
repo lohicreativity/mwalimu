@@ -258,7 +258,7 @@
        <div class="container">
        <div class="row">
           <div class="col-md-12">
-             <h3 style="margin: 0px;">CAUTION</h1>
+             <h3 style="margin: 0px 0px 0px 20px;">CAUTION</h1>
           </div>
        </div>
        <div class="row">
@@ -270,7 +270,7 @@
             
           </div>
           <div class="col-md-4">
-             {!! QrCode::size(80)->generate($student->registration_number) !!}
+             <img src="data:image/png;base64, {!! base64_encode(QrCode::format('png')->size(80)->generate($student->registration_number)) !!} ">
           </div>
        </div>
      </div>
