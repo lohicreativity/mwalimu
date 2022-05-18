@@ -257,14 +257,14 @@
      <div id="ss-id-card" class="ss-id-card" style="width: 750px; height: 400px; background-color: #FFF; padding: 20px;">
        <div class="container">
        <div class="row">
-          <div class="col-12">
-             <h3>CAUTION</h1>
+          <div class="col-md-12">
+             <h3 style="margin: 0px;">CAUTION</h1>
           </div>
        </div>
        <div class="row">
           <div class="col-md-7">
             <p style="margin: 0px; font-size: 12px;">This identity card is the property of</p>
-            <h5>THE MWALIMU NYERERE MEMORIAL ACADEMY</h5>
+            <h5 style="margin: 0px;">THE MWALIMU NYERERE MEMORIAL ACADEMY</h5>
             <p style="margin: 0px; font-size: 12px;">1. Use of this card is subject to the card holder agreement</p>
             <p style="margin: 0px; font-size: 12px;">2. Card should be returned at the beginning of each semester</p>
             
