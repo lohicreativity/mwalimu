@@ -236,21 +236,21 @@
         <div class="col-md-3" style="text-align: center;">
           <img src="{{ asset('img/user-avatar.png')}}" class="ss-logo" style="text-align: center; width: 150px;">
           @if($semester->name == 'Semester 1')
-          <h3 style="text-shadow: 0px 0px 5px blue; font-weight: bold;">Semester One</h3>
+          <h5 style="text-shadow: 0px 0px 5px blue; font-weight: bold;">Semester One</h5>
           @else
-          <h3>Semester Two</h3>
+          <h5 style="text-shadow: 0px 0px 5px blue; font-weight: bold;">Semester Two</h5>
           @endif
         </div>
         <div class="col-md-9">
-           <h4 style="margin-top: 20px;">REGNO: {{ $student->registration_number }}</h4>
-           <h4>NAME: {{ $student->first_name }} {{ $student->middle_name }} {{ $student->surname }}</h4>
-           <h4>MOBILE: {{ $student->phone }}</h4>
-           <h4>VALID TO: {{ $study_academic_year->end_date }}</h4>
+           <h5 style="margin: 0px;">REGNO: {{ $student->registration_number }}</h5>
+           <h5 style="margin: 0px;">NAME: {{ $student->first_name }} {{ $student->middle_name }} {{ $student->surname }}</h5>
+           <h5 style="margin: 0px;">MOBILE: {{ $student->phone }}</h5>
+           <h5 style="margin: 0px;">VALID TO: {{ $study_academic_year->end_date }}</h5>
         </div>
      </div>
      <div class="row">
      <div class="col-md-7"></div>
-     <div class="col-md-5" style="text-align: right;"><h3 style="float: right; text-shadow: 0px 0px 5px brown; font-weight: bold; color: red">{{ $student->campusProgram->campus->name }}</h3></div>
+     <div class="col-md-5" style="text-align: right;"><h5 style="float: right; text-shadow: 0px 0px 5px brown; font-weight: bold; color: red">{{ $student->campusProgram->campus->name }}</h5></div>
      </div>
    </div>
    </div>
