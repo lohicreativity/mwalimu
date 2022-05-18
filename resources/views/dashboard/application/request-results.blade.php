@@ -274,7 +274,7 @@
             </div>
             <!-- /.card -->
              
-            @if($gpa_less)
+            @if($gpa_less || count($a_level_necta_results) != 0)
             <div class="card card-default">
               <div class="card-header">
                 <h3 class="card-title">{{ __('Foundation Programmes (OUT) Results') }}</h3>
