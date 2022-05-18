@@ -240,8 +240,8 @@
            <h5 style="margin: 0px 0px 0px 20px;">REGNO: <span style="font-style: italic;">{{ $student->registration_number }}</span></h5>
            <h5 style="margin: 0px 0px 0px 20px;">NAME: <span style="font-style: italic;">{{ $student->first_name }} {{ $student->middle_name }} {{ $student->surname }}</span></h5>
            <h5 style="margin: 0px 0px 0px 20px;">MOBILE: <span style="font-style: italic;">{{ $student->phone }}</i></h5>
-           <h5 style="margin: 0px 0px 0px 20px;">VALID TO: <span style="font-style: italic;">{{ $study_academic_year->end_date }}</span></h5>
-           <h5 style="margin: 20px 0px 0px 20px;">SIGNATURE:
+           <h5 style="margin: 0px 0px 0px 20px;">VALID TO: <span style="font-style: italic;">{{ App\Utils\DateMaker::toStandardDate($study_academic_year->end_date) }}</span></h5>
+           <h5 style="margin: 0px 0px 0px 20px;">SIGNATURE:
            <img src="{{ asset('img/signature.png') }}" style="width: 100px; height: auto;"></h5>
         </div>
      </div>
