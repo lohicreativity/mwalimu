@@ -235,11 +235,6 @@
      <div class="row">
         <div class="col-md-3" style="text-align: center;">
           <img src="{{ asset('img/user-avatar.png')}}" class="ss-logo" style="text-align: center; width: 150px;">
-          @if($semester->name == 'Semester 1')
-          <h5 style="text-shadow: 0px 0px 5px blue; font-weight: bold;">Semester One</h5>
-          @else
-          <h5 style="text-shadow: 0px 0px 5px blue; font-weight: bold;">Semester Two</h5>
-          @endif
         </div>
         <div class="col-md-9">
            <h5 style="margin: 0px;">REGNO: {{ $student->registration_number }}</h5>
@@ -249,8 +244,12 @@
         </div>
      </div>
      <div class="row">
-     <div class="col-md-7"></div>
-     <div class="col-md-5" style="text-align: right;"><h5 style="float: right; text-shadow: 0px 0px 5px brown; font-weight: bold; color: red">{{ $student->campusProgram->campus->name }}</h5></div>
+     <div class="col-md-6"> @if($semester->name == 'Semester 1')
+          <h5 style="text-shadow: 0px 0px 5px blue; font-weight: bold; margin: 0px">Semester One</h5>
+          @else
+          <h5 style="text-shadow: 0px 0px 5px blue; font-weight: bold; margin: 0px;">Semester Two</h5>
+          @endif</div>
+     <div class="col-md-6" style="text-align: right;"><h5 style="float: right; text-shadow: 0px 0px 5px brown; font-weight: bold; color: red; margin: 0px;">{{ $student->campusProgram->campus->name }}</h5></div>
      </div>
    </div>
    </div>
