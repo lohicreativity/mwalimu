@@ -725,6 +725,7 @@ class ApplicantController extends Controller
                                   }
                                   $nacte_gpa = $detail->diploma_gpa;
                               }
+                              return $equivalent_must_subjects_count;
                           }
                        }
 
