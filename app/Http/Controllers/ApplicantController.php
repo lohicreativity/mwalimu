@@ -367,6 +367,8 @@ class ApplicantController extends Controller
            })->with(['program','campus','entryRequirements'=>function($query) use($window){
                 $query->where('application_window_id',$window->id);
            }])->where('campus_id',session('applicant_campus_id'))->get() : [];
+
+           return $campus_programs;
         
 
         $award = $applicant->programLevel;
@@ -752,12 +754,13 @@ class ApplicantController extends Controller
                             if($out_pass_subjects_count >= 3 && $detail->gpa >= 3 && $a_level_subsidiary_pass_count >= 1 && $a_level_principle_pass_count >= 1){
                                 $programs[] = $program;
                             }
-                        }
-                        if(unserialize($program->entryRequirements[0]->equivalent_must_subjects) != ''){
-                            if($out_pass_subjects_count >= 3 && $equivalent_must_subjects_count >= count(unserialize($program->entryRequirements[0]->equivalent_must_subjects)) && $nacte_gpa >= 2){
-                                    $programs[] = $program;
+                            if(unserialize($program->entryRequirements[0]->equivalent_must_subjects) != ''){
+                                if($out_pass_subjects_count >= 3 && $detail->gpa >= 3 && $equivalent_must_subjects_count >= count(unserialize($program->entryRequirements[0]->equivalent_must_subjects)) && $nacte_gpa >= 2){
+                                        $programs[] = $program;
+                                }
                             }
                         }
+
 
                 }
            // if($subject_count != 0){
