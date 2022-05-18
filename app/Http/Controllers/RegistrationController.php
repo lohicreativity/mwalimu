@@ -160,7 +160,7 @@ class RegistrationController extends Controller
             'study_academic_year'=>StudyAcademicYear::where('status','ACTIVE')->first()
         ];
          $pdf = PDF::loadView('dashboard.registration.reports.id-card',$data,[],[
-               'format'=>'A6',
+               'format'=>'A7',
                'margin_top'=>0,
                'margin_bottom'=>0,
                'margin_left'=>0,
