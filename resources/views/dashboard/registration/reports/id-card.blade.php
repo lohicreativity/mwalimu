@@ -270,7 +270,7 @@
             
           </div>
           <div class="col-md-5">
-             {!! QrCode::size(80)->generate($student->registration_number.'-mnma.ac.tz'); !!}
+             {{ QrCode::size(80)->generate($student->registration_number.'-mnma.ac.tz'); }}
           </div>
        </div>
      </div>
