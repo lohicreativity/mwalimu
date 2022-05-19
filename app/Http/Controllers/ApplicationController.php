@@ -845,9 +845,9 @@ class ApplicationController extends Controller
        if($applicant->programs_complete_status == 0){
           return redirect()->back()->with('error','Programmes selection section not completed');
        }
-       if($applicant->documents_complete_status == 0){
-          return redirect()->back()->with('error','Upload documents section not completed');
-       }
+       // if($applicant->documents_complete_status == 0){
+       //    return redirect()->back()->with('error','Upload documents section not completed');
+       // }
        $applicant->submission_complete_status = 1;
        $applicant->save();
        return redirect()->back()->with('message','Application Submitted Successfully');
