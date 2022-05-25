@@ -26,13 +26,19 @@ class NECTAServiceController extends Controller
             return response()->json(['details'=>$details]);
         }else{
             try{
-            $token = $this->getToken(config('constants.NECTA_API_KEY'));
-            $response = Http::get('https://api.necta.go.tz/api/public/results/'.$index_no.'/'.$exam_id.'/'.$exam_year.'/'.$token);
+            // $token = $this->getToken(config('constants.NECTA_API_KEY'));
+            // $response = Http::get('https://api.necta.go.tz/api/public/results/'.$index_no.'/'.$exam_id.'/'.$exam_year.'/'.$token);
+            $response = Http::post('https://api.necta.go.tz/api/results/individual',[
+                'api_key'=>config('constants.NECTA_API_KEY'),
+                'exam_year'=>$exam_year,
+                'index_number'=>$index_no,
+                'exam_id'=>$exam_id
+            ]);
             }catch(\Exception $e){
                 return response()->json(['error'=>'Please refresh your browser and try again']);
             }
-            if(!isset(json_decode($response)->results)){
-                return redirect()->back()->with('error','Invalid Index number or year');
+            if(json_decode($response)->status->code == 0){
+                return response()->json(['error'=>'Authentication failed']);
             }
             if($det = NectaResultDetail::where('index_number',$index_no)->where('exam_id',$exam_id)->where('applicant_id',$request->get('applicant_id'))->first()){
                 $detail = $det;

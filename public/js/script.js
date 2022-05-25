@@ -775,6 +775,7 @@ $('.ss-form-processing-necta').submit(function(e){
          if(data.error){
              alert(data.error);
          }else{
+          console.log(data);
          $(e.target).find('button[type=submit]').text(submitText);
          $(e.target).find('button[type=submit]').removeClass('disabled');
 
