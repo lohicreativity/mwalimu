@@ -221,7 +221,7 @@ class ApplicantController extends Controller
             }
         }
 
-        if(!$applicant->is_tcu_verified){
+        if($applicant->is_tcu_verified === null){
             $url='http://api.tcu.go.tz/applicants/checkStatus';
             $fullindex=str_replace('-','/',Auth::user()->username);
             $xml_request='<?xml version="1.0" encoding="UTF-8"?> 
