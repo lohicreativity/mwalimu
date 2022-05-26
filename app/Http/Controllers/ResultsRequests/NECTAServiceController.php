@@ -91,11 +91,17 @@ class NECTAServiceController extends Controller
         $index_no = explode('-',$index_number)[0].'-'.explode('-',$index_number)[1];
         $exam_year = explode('-',$index_number)[2];
         try{
-        $token = $this->getToken(config('constants.NECTA_API_KEY'));
-        $response = Http::get('https://api.necta.go.tz/api/public/results/'.$index_no.'/'.$exam_id.'/'.$exam_year.'/'.$token);
+        // $token = $this->getToken(config('constants.NECTA_API_KEY'));
+        // $response = Http::get('https://api.necta.go.tz/api/public/results/'.$index_no.'/'.$exam_id.'/'.$exam_year.'/'.$token);
+            $response = Http::post('https://api.necta.go.tz/api/results/individual',[
+                'api_key'=>config('constants.NECTA_API_KEY'),
+                'exam_year'=>$exam_year,
+                'index_number'=>$index_no,
+                'exam_id'=>$exam_id
+            ]);
         }catch(\Exception $e){
             return response()->json(['error'=>'Please refresh your browser and try again']);
         }
-        return response()->json(['response'=>$response]);
+        return response()->json(['response'=>json_decode($response)]);
     }
 }

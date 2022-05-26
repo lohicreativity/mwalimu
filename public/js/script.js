@@ -961,17 +961,17 @@ $('.ss-form-processing-necta-admin').submit(function(e){
          $(e.target).find('button[type=submit]').removeClass('disabled');
 
          var element = '<table class="table table-bordered">';
-         element += '<tr><td>Center Name:</td><td>'+data.details.center_name+'</td></tr>';
-         element += '<tr><td>Center Number:</td><td>'+data.details.center_number+'</td></tr>';
-         element += '<tr><td>First Name:</td><td>'+data.details.first_name+'</td></tr>';
-         element += '<tr><td>Middle Name:</td><td>'+data.details.middle_name+'</td></tr>';
-         element += '<tr><td>Last Name:</td><td>'+data.details.last_name+'</td></tr>';
-         element += '<tr><td>Sex:</td><td>'+data.details.sex+'</td></tr>';
-         element += '<tr><td>Index Number:</td><td>'+data.details.index_number+'</td></tr>'
-         element += '<tr><td>Division:</td><td>'+data.details.division+'</td></tr>';
-         element += '<tr><td>Points:</td><td>'+data.details.points+'</td></tr>';
-         for(var i=0; i<data.details.results.length; i++){
-            element += '<tr><td>'+data.details.results[i].subject_name+'</td><td>'+data.details.results[i].grade+'</td></tr>'
+         element += '<tr><td>Center Name:</td><td>'+data.response.particulars.center_name+'</td></tr>';
+         element += '<tr><td>Center Number:</td><td>'+data.response.particulars.center_number+'</td></tr>';
+         element += '<tr><td>First Name:</td><td>'+data.response.particulars.first_name+'</td></tr>';
+         element += '<tr><td>Middle Name:</td><td>'+data.response.particulars.middle_name+'</td></tr>';
+         element += '<tr><td>Last Name:</td><td>'+data.response.particulars.last_name+'</td></tr>';
+         element += '<tr><td>Sex:</td><td>'+data.response.particulars.sex+'</td></tr>';
+         element += '<tr><td>Index Number:</td><td>'+data.response.particulars.index_number+'</td></tr>'
+         element += '<tr><td>Division:</td><td>'+data.response.particulars.division+'</td></tr>';
+         element += '<tr><td>Points:</td><td>'+data.response.particulars.points+'</td></tr>';
+         for(var i=0; i<data.response.subjects.length; i++){
+            element += '<tr><td>'+data.response.subjects[i].subject_name+'</td><td>'+data.response.subjects[i].grade+'</td></tr>'
          }
          element += '</table>';
 
@@ -1011,7 +1011,7 @@ $('.ss-form-processing-nacte-admin').submit(function(e){
      }
 
      $.ajax({
-        url:'/application/fetch-nacte-results/'+$(e.target).find('input[name=avn]').val()+'?applicant_id='+$(e.target).find('input[name=applicant_id]').val(),
+        url:'/application/fetch-nacte-results-admin/'+$(e.target).find('input[name=avn]').val()+'?applicant_id='+$(e.target).find('input[name=applicant_id]').val(),
         method:'GET',
      }).done(function(data,success){
          if(data.error){
@@ -1020,22 +1020,24 @@ $('.ss-form-processing-nacte-admin').submit(function(e){
          $(e.target).find('button[type=submit]').text(submitText);
          $(e.target).find('button[type=submit]').removeClass('disabled');
 
+         console.log(data);
+
          var element = '<table class="table table-bordered">';
-         element += '<tr><td>Institution:</td><td>'+data.details.institution+'</td></tr>';
-         element += '<tr><td>Programme:</td><td>'+data.details.programme+'</td></tr>'
-         element += '<tr><td>First Name:</td><td>'+data.details.firstname+'</td></tr>';
-         element += '<tr><td>Middle Name:</td><td>'+data.details.middlename+'</td></tr>';
-         element += '<tr><td>Surname:</td><td>'+data.details.surname+'</td></tr>';
-         element += '<tr><td>Gender:</td><td>'+data.details.gender+'</td></tr>';
-         element += '<tr><td>Birth Date:</td><td>'+data.details.date_birth+'</td></tr>';
-         element += '<tr><td>AVN:</td><td>'+data.details.avn+'</td></tr>';
-         element += '<tr><td>Graduation Year:</td><td>'+data.details.diploma_graduation_year+'</td></tr>';
-         element += '<tr><td>Username:</td><td>'+data.details.username+'</td></tr>';
-         element += '<tr><td>Diploma Code:</td><td>'+data.details.diploma_code+'</td></tr>';
-         element += '<tr><td>Registration Number:</td><td>'+data.details.registration_number+'</td></tr>';
-         element += '<tr><td>Diploma GPA:</td><td>'+data.details.diploma_gpa+'</td></tr>';
-         for(var i=0; i<data.details.results.length; i++){
-            element += '<tr><td>'+data.details.results[i].subject+'</td><td>'+data.details.results[i].grade+'</td></tr>'
+         element += '<tr><td>Institution:</td><td>'+data.response.params[0].institution+'</td></tr>';
+         element += '<tr><td>Programme:</td><td>'+data.response.params[0].programme+'</td></tr>'
+         element += '<tr><td>First Name:</td><td>'+data.response.params[0].firstname+'</td></tr>';
+         element += '<tr><td>Middle Name:</td><td>'+data.response.params[0].middlename+'</td></tr>';
+         element += '<tr><td>Surname:</td><td>'+data.response.params[0].surname+'</td></tr>';
+         element += '<tr><td>Gender:</td><td>'+data.response.params[0].gender+'</td></tr>';
+         element += '<tr><td>Birth Date:</td><td>'+data.response.params[0].date_birth+'</td></tr>';
+         element += '<tr><td>AVN:</td><td>'+data.response.params[0].avn+'</td></tr>';
+         element += '<tr><td>Graduation Year:</td><td>'+data.response.params[0].diploma_graduation_year+'</td></tr>';
+         element += '<tr><td>Username:</td><td>'+data.response.params[0].username+'</td></tr>';
+         element += '<tr><td>Diploma Code:</td><td>'+data.response.params[0].diploma_code+'</td></tr>';
+         element += '<tr><td>Registration Number:</td><td>'+data.response.params[0].registration_number+'</td></tr>';
+         element += '<tr><td>Diploma GPA:</td><td>'+data.response.params[0].diploma_gpa+'</td></tr>';
+         for(var i=0; i<data.response.params[0].diploma_results.length; i++){
+            element += '<tr><td>'+data.response.params[0].diploma_results[i].subject+'</td><td>'+data.response.params[0].diploma_results[i].grade+'</td></tr>'
          }
          element += '</table>';
 

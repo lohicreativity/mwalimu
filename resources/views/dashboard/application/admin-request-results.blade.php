@@ -41,7 +41,7 @@
             <!-- general form elements -->
             <div class="card card-default">
               <div class="card-header">
-                <h3 class="card-title">{{ __('Add O-Level NECTA Results') }}</h3>
+                <h3 class="card-title">{{ __('Get O-Level NECTA Results') }}</h3>
               </div>
               <!-- /.card-header -->
               <!-- form start -->
@@ -83,7 +83,7 @@
                 <!-- /.card-body -->
 
                 <div class="card-footer">
-                  <button type="submit" class="btn btn-primary">{{ __('Add O-Level NECTA Results') }}</button>
+                  <button type="submit" class="btn btn-primary">{{ __('Get O-Level NECTA Results') }}</button>
                 </div>
               {!! Form::close() !!}
             </div>
@@ -91,7 +91,7 @@
             
             <div class="card card-default">
               <div class="card-header">
-                <h3 class="card-title">{{ __('Add A-Level NECTA Results') }}</h3>
+                <h3 class="card-title">{{ __('Get A-Level NECTA Results') }}</h3>
               </div>
               <!-- /.card-header -->
               <!-- form start -->
@@ -133,7 +133,7 @@
                 <!-- /.card-body -->
 
                 <div class="card-footer">
-                  <button type="submit" class="btn btn-primary">{{ __('Add A-Level NECTA Results') }}</button>
+                  <button type="submit" class="btn btn-primary">{{ __('Get A-Level NECTA Results') }}</button>
                 </div>
               {!! Form::close() !!}
             </div>
@@ -175,7 +175,7 @@
 
               <div class="card card-default">
               <div class="card-header">
-                <h3 class="card-title">{{ __('Add NACTE Results') }}</h3>
+                <h3 class="card-title">{{ __('Get NACTE Results') }}</h3>
               </div>
               <!-- /.card-header -->
               <!-- form start -->
@@ -209,7 +209,7 @@
                 <!-- /.card-body -->
 
                 <div class="card-footer">
-                  <button type="submit" class="btn btn-primary">{{ __('Add NACTE Results') }}</button>
+                  <button type="submit" class="btn btn-primary">{{ __('Get NACTE Results') }}</button>
                 </div>
               {!! Form::close() !!}
             </div>
@@ -230,34 +230,6 @@
                             <div id="ss-nacte-results-container"></div>
                           </div>
                         </div>
-                        <div class="row">
-                          <div class="col-6">
-                            <div id="ss-nacte-confirmation-container">
-                               {!! Form::open(['url'=>'application/nacte-result/decline','class'=>'ss-form-processing']) !!}
-                               
-                               {!! Form::input('hidden','avn',null) !!}
-                               {!! Form::input('hidden','nacte_result_detail_id',null) !!}
-                               <div class="ss-form-controls">
-                                 <button class="btn btn-danger" id="ss-result-confirmation-link" type="submit">Decline Results</button>
-                            
-                               </div><!-- end of ss-form-controls -->
-                               {!! Form::close() !!}
-
-                              </div>
-                            </div>
-                              <div class="col-6">
-
-                               {!! Form::open(['url'=>'application/nacte-result/confirm','class'=>'ss-form-processing']) !!}
-                               
-                               {!! Form::input('hidden','avn',null) !!}
-                               {!! Form::input('hidden','nacte_result_detail_id',null) !!}
-                               <div class="ss-form-controls">
-                                 <button class="btn btn-primary" type="submit">Confirm Results</button>
-                               </div><!-- end of ss-form-controls -->
-                               {!! Form::close() !!}
-                              </div><!-- end of ss-confirmation-container -->
-                          </div><!-- end of col-md-12 -->
-                       </div><!-- end of row -->
                     </div>
                   </div>
                   <!-- /.modal-content -->

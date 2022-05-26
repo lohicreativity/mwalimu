@@ -76,6 +76,6 @@ class NACTEServiceController extends Controller
         }catch(\Exception $e){
             return response()->json(['error'=>'Please refresh your browser and try again']);
         }
-        return response()->json(['response'=>$response]);
+        return response()->json(['response'=>json_decode($response)]);
     }
 }

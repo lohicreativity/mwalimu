@@ -19,7 +19,7 @@
               </li>
               @if($applicant->is_tamisemi != 1)
               <li class="nav-item">
-                <a @if($applicant->is_tcu_verified != 1) disabled="disabled" @else href="{{ url('application/payments') }}" @endif class="nav-link">
+                <a @if($applicant->is_tcu_verified != 1 || $applicant->basic_info_complete_status != 1) disabled="disabled" @else href="{{ url('application/payments') }}" @endif class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Payments @if($applicant->payment_complete_status == 1) <i class="fa fa-check"></i> @endif</p>
                 </a>
