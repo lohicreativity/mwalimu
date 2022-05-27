@@ -41,7 +41,7 @@
             <!-- general form elements -->
             <div class="card card-default">
               <div class="card-header">
-                <h3 class="card-title">{{ __('Add amount') }}</h3>
+                <h3 class="card-title">{{ __('Add Amount') }}</h3>
               </div>
               <!-- /.card-header -->
               <!-- form start -->
@@ -83,7 +83,7 @@
                     <select name="study_academic_year_id" class="form-control">
                       <option value="">Select Study Academic Year</option>
                       @foreach($study_academic_years as $year)
-                        <option value="{{ $year->id }}">{{ $year->academicYear->year }}</option>
+                        <option value="{{ $year->id }}" @if($year->status == 'ACTIVE') selected="selected" @endif>{{ $year->academicYear->year }}</option>
                       @endforeach
                     </select>
                   </div>
