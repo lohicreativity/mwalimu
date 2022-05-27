@@ -4,6 +4,8 @@ namespace App\Domain\Application\Actions;
 
 use Illuminate\Http\Request;
 use App\Domain\Application\Models\ApplicationWindow;
+use App\Domain\Academic\Models\AcademicYear;
+use App\Domain\Academic\Models\StudyAcademicYear;
 use App\Domain\Application\Repositories\Interfaces\ApplicationWindowInterface;
 use App\Utils\DateMaker;
 
@@ -17,6 +19,22 @@ class ApplicationWindowAction implements ApplicationWindowInterface{
                 $window->status = $request->get('status');
                 $window->campus_id = $request->get('campus_id');
                 $window->save();
+
+                if(!AcademicYear::where('year',date('Y',strtotime($request->get('begin_date'))).'/'.date('Y',strtotime($request->get('begin_date')))+1)->first()){
+
+                        $ac_year = new AcademicYear;
+                        $ac_year->year = date('Y',strtotime($request->get('begin_date'))).'/'.date('Y',strtotime($request->get('begin_date')))+1;
+                        $ac_year->save();
+
+                        if(!StudyAcademicYear::where('academic_year_id',$ac_year->id)->first()){
+                                $year = new StudyAcademicYear;
+                                $year->academic_year_id = $ac_year->id;
+                                $year->begin_date = Carbon::parse($request->get('begin_date'))->format('Y-m-d');
+                                $year->end_date = Carbon::parse($request->get('begin_date'))->addMonths(12)->format('Y-m-d');
+                                $year->status = 'INACTIVE';
+                                $year->save();
+                        }
+                }
 	}
 
 	public function update(Request $request){
