@@ -47,7 +47,7 @@
               <div class="card-body">
                  {!! Form::open(['url'=>'application/application-window-campus-programs','class'=>'ss-form-processing','method'=>'GET']) !!}
                  <div class="row">
-                   <div class="form-group col-6">
+                   <div class="form-group col-12">
                      <select name="application_window_id" class="form-control" required>
                         <option value="">Select Application Window</option>
                         @foreach($application_windows as $k=>$win)
@@ -64,7 +64,6 @@
               </div>
             </div>
             <!-- /.card -->
-
 
 
 

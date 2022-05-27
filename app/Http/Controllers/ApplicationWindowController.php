@@ -119,9 +119,9 @@ class ApplicationWindowController extends Controller
            'application_windows'=>ApplicationWindow::with(['intake','campus'])->latest()->get(),
            'window'=>$window,
            'campuses'=>Campus::all(),
-           'campusPrograms'=>CampusProgram::with(['program'=>function($query){
+           'campusPrograms'=>$window? CampusProgram::with(['program'=>function($query){
                 $query->orderBy('name','ASC');
-           }])->where('campus_id',$window->campus_id)->get(),
+           }])->where('campus_id',$window->campus_id)->get() : null,
            'campus'=>$window? Campus::find($window->campus_id) : null,
            'staff'=>User::find(Auth::user()->id)->staff,
            'request'=>$request
