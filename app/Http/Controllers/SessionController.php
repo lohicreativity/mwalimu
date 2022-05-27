@@ -47,7 +47,13 @@ class SessionController extends Controller
 
 		       // login the user back with his new updated credentials
 		        Auth::guard('web')->login($user);
-	            return redirect()->to('dashboard')->with('message','Congratulations, new password saved succeefully');
+		        if(Auth::user()->hasRole('applicant')){
+                   return redirect()->to('application/dashboard')->with('message','Congratulations, new password saved succeefully');
+		        }elseif(Auth::user()->hasRole('student')){
+                   return redirect()->to('student/dashboard')->with('message','Congratulations, new password saved succeefully');
+		        }else{
+	               return redirect()->to('dashboard')->with('message','Congratulations, new password saved succeefully');
+	            }
 	        }else{
 	              return redirect()->back()->withInput()->with('error','Your old password is not identified, please provide a correct password!');
 	        }
