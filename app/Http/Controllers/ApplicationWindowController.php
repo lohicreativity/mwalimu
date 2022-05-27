@@ -166,7 +166,7 @@ class ApplicationWindowController extends Controller
             if(count($window->campusPrograms) == 0){
                 return redirect()->back()->with('error','You cannot activate this application window because no offered programmes have been set');
             }
-            $study_academic_year = StudyAcademicYear::whereHas('academicYear',function($query){
+            $study_academic_year = StudyAcademicYear::whereHas('academicYear',function($query) use($window){
                    $query->where('year','LIKE','%'.Carbon::parse($window->begin_date)->format('Y').'/%');
             })->first();
 
