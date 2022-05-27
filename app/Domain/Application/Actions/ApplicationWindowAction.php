@@ -8,6 +8,7 @@ use App\Domain\Academic\Models\AcademicYear;
 use App\Domain\Academic\Models\StudyAcademicYear;
 use App\Domain\Application\Repositories\Interfaces\ApplicationWindowInterface;
 use App\Utils\DateMaker;
+use Carbon\Carbon;
 
 class ApplicationWindowAction implements ApplicationWindowInterface{
 	
