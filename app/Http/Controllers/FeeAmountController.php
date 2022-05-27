@@ -21,7 +21,7 @@ class FeeAmountController extends Controller
     	$data = [
            'amounts'=>FeeAmount::with('feeItem')->paginate(20),
            'fee_items'=>FeeItem::all(),
-           'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
+           'study_academic_years'=>StudyAcademicYear::with('academicYear')->latest()->get(),
            'staff'=>User::find(Auth::user()->id)->staff
     	];
     	return view('dashboard.finance.fee-amounts',$data)->withTitle('Fee Amounts');
