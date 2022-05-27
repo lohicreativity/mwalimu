@@ -9,10 +9,12 @@ use App\Domain\Academic\Models\StudyAcademicYear;
 use App\Domain\Application\Repositories\Interfaces\ApplicationWindowInterface;
 use App\Utils\DateMaker;
 use Carbon\Carbon;
+use DB;
 
 class ApplicationWindowAction implements ApplicationWindowInterface{
 	
 	public function store(Request $request){
+                DB::beginTransaction();
 		$window = new ApplicationWindow;
                 $window->intake_id = $request->get('intake_id');
                 $window->begin_date = DateMaker::toDBDate($request->get('begin_date'));
@@ -36,6 +38,7 @@ class ApplicationWindowAction implements ApplicationWindowInterface{
                                 $year->save();
                         }
                 }
+                DB::commit();
 	}
 
 	public function update(Request $request){

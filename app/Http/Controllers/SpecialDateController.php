@@ -223,11 +223,14 @@ class SpecialDateController extends Controller
         $date->study_academic_year_id = $request->get('study_academic_year_id');
         $date->save();
 
-        $ac_year = new AcademicYear;
-        $ac_year->year = date('Y',strtotime($request->get('orientation_date'))).'/'.date('Y',strtotime($request->get('orientation_date')))+1;
-        $ac_year->save();
+        // $ac_year = new AcademicYear;
+        // $ac_year->year = date('Y',strtotime($request->get('orientation_date'))).'/'.date('Y',strtotime($request->get('orientation_date')))+1;
+        // $ac_year->save();
 
-        $year = new StudyAcademicYear;
+        // $year = new StudyAcademicYear;
+        $year = StudyAcademicYear::whereHas('academicYear',function($query){
+            $query->where('year',date('Y',strtotime($request->get('orientation_date'))).'/'.date('Y',strtotime($request->get('orientation_date')))+1);
+        })->first();
         $year->academic_year_id = $ac_year->id;
         $year->begin_date = Carbon::parse($request->get('orientation_date'))->format('Y-m-d');
         $year->end_date = Carbon::parse($request->get('orientation_date'))->addMonths(12)->format('Y-m-d');
