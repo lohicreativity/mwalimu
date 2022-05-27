@@ -4,6 +4,7 @@
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
           @if(Auth::user()->hasRole('applicant'))
+           @if(isset($applicant))
             @if($applicant->status == null)
               <li class="nav-item">
                 <a href="{{ url('application/basic-information') }}" class="nav-link">
@@ -73,6 +74,7 @@
                 </a>
               </li>
               @endif
+            @endif
           @elseif(Auth::user()->hasRole('student'))
           <li class="nav-item">
             <a href="#" class="nav-link">
