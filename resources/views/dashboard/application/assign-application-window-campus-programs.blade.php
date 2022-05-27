@@ -89,7 +89,7 @@
                   <tr>
                     <th>Year</th>
                     <th>Intake</th>
-                    <th>Programs</th>
+                    <th>Programmes</th>
                     <th>Assign</th>
                   </tr>
                   </thead>
