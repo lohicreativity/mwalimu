@@ -41,7 +41,7 @@
           
 
             
-            
+            @can('add-application-window')
             <!-- general form elements -->
             <div class="card card-default">
               <div class="card-header">
@@ -116,6 +116,7 @@
                   </div>
                 </div>
                 <!-- /.card-body -->
+                @endcan
 
                 <div class="card-footer">
                   <button type="submit" class="btn btn-primary">{{ __('Add Application Window') }}</button>
@@ -151,12 +152,13 @@
                     <td>{{ $window->begin_date }}</td>
                     <td>{{ $window->end_date }}</td>
                     <td>
-                      
+                      @can('edit-application-window')
                       <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-edit-window-{{ $window->id }}">
                               <i class="fas fa-pencil-alt">
                               </i>
                               Edit
                        </a>
+                       @endcan
                        
                       
 
@@ -254,12 +256,14 @@
                         <!-- /.modal-dialog -->
                       </div>
                       <!-- /.modal -->
-
+                      
+                      @can('delete-application-window')
                       <a class="btn btn-danger btn-sm" href="#" data-toggle="modal" data-target="#ss-delete-window-{{ $window->id }}">
                               <i class="fas fa-trash">
                               </i>
                               Delete
                        </a>
+                       @endcan
 
                        <div class="modal fade" id="ss-delete-window-{{ $window->id }}">
                         <div class="modal-dialog modal-lg">
@@ -292,7 +296,8 @@
                         <!-- /.modal-dialog -->
                       </div>
                       <!-- /.modal -->
-
+                      
+                      @can('activate-application-window')
                        @if($window->status == 'ACTIVE')
                        <a class="btn btn-danger btn-sm" href="{{ url('application/window/'.$window->id.'/deactivate') }}">
                               <i class="fas fa-ban">
@@ -306,6 +311,7 @@
                               Activate
                        </a>
                       @endif
+                      @endcan
                     </td>
                   </tr>
                   @endforeach

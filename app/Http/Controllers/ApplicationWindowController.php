@@ -108,16 +108,21 @@ class ApplicationWindowController extends Controller
      */
     public function showPrograms(Request $request)
     {
+        if($request->get('query')){
+           $window = ApplicationWindow::with(['intake','campusPrograms.program'=>function($query) use($request){
+                  $query->where('name','LIKE','%'.$request->get('query').'%');
+           }])->find($request->get('application_window_id'));
+        }else{
+           $window = ApplicationWindow::with(['intake','campusPrograms'])->find($request->get('application_window_id'));
+        }
         $data = [
            'application_windows'=>ApplicationWindow::with(['intake','campus'])->latest()->get(),
-           'window'=>$request->get('query')? ApplicationWindow::with(['intake','campusPrograms.program'=>function($query) use($request){
-                  $query->where('name','LIKE','%'.$request->get('query').'%');
-           }])->where('campus_id',$request->get('campus_id'))->find($request->get('application_window_id')) : ApplicationWindow::with(['intake','campusPrograms'])->where('campus_id',$request->get('campus_id'))->find($request->get('application_window_id')),
+           'window'=>$window,
            'campuses'=>Campus::all(),
            'campusPrograms'=>CampusProgram::with(['program'=>function($query){
                 $query->orderBy('name','ASC');
-           }])->where('campus_id',$request->get('campus_id'))->get(),
-           'campus'=>$request->has('campus_id')? Campus::find($request->get('campus_id')) : null,
+           }])->where('campus_id',$window->campus_id)->get(),
+           'campus'=>$window? Campus::find($window->campus_id) : null,
            'staff'=>User::find(Auth::user()->id)->staff,
            'request'=>$request
         ];

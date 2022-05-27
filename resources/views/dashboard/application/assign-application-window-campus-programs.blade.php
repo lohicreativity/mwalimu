@@ -55,14 +55,6 @@
                         @endforeach
                      </select>
                    </div>
-                   <div class="form-group col-6">
-                    <select name="campus_id" class="form-control" required>
-                       <option value="">Select Campus</option>
-                       @foreach($campuses as $camp)
-                       <option value="{{ $camp->id }}" @if($staff->campus_id == $camp->id) selected="selected" @else disabled="disabled" @endif>{{ $camp->name }}</option>
-                       @endforeach
-                    </select>
-                    </div>
                   </div>
                   <div class="ss-form-actions">
                    <button type="submit" class="btn btn-primary">{{ __('Search') }}</button>
@@ -187,7 +179,7 @@
             @else
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">{{ __('No Application Windows Created') }}</h3>
+                <h3 class="card-title">{{ __('No Application Window Selected') }}</h3>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
