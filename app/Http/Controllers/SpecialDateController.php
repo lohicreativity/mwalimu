@@ -226,6 +226,7 @@ class SpecialDateController extends Controller
         // $ac_year = new AcademicYear;
         // $ac_year->year = date('Y',strtotime($request->get('orientation_date'))).'/'.date('Y',strtotime($request->get('orientation_date')))+1;
         // $ac_year->save();
+        $ac_year = AcademicYear::where('year',date('Y',strtotime($request->get('orientation_date'))).'/'.date('Y',strtotime($request->get('orientation_date')))+1)->first();
 
         // $year = new StudyAcademicYear;
         $year = StudyAcademicYear::whereHas('academicYear',function($query) use($request){
