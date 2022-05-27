@@ -41,7 +41,7 @@
 
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">{{ __('Select Campus') }}</h3>
+                <h3 class="card-title">{{ __('Select Application Window') }}</h3>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
@@ -70,7 +70,7 @@
             @if($window && $campus)
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">{{ __('Application Windows') }} - {{ $campus->name }}</h3>
+                <h3 class="card-title">{{ __('Offered Programmes') }} - {{ $campus->name }}</h3>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
@@ -178,7 +178,7 @@
             @else
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">{{ __('No Application Window Selected') }}</h3>
+                <h3 class="card-title">{{ __('No Offered Programmes Selected') }}</h3>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
