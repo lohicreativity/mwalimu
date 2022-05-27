@@ -18,6 +18,11 @@ class NectaResultController extends Controller
     {
         $detail = NectaResultDetail::find($request->get('necta_result_detail_id'));
         $applicant  = Applicant::find($request->get('applicant_id'));
+        $non_details = NectaResultDetail::where('id','!=',$request->get('necta_result_detail_id'))->where('first_name','!=',$detail->first_name)->where('last_name','!=',$detail->last_name)->get();
+        
+        if(count($non_details) != 0){
+            return redirect()->to('application/nullify-necta-results?detail_id='.$request->get('necta_result_detail_id'));
+        }
         if($detail->exam_id == 2){
             if(strtoupper($applicant->first_name) != strtoupper($detail->first_name) || strtoupper($applicant->surname) != strtoupper($detail->last_name)){
                 return redirect()->to('application/nullify-necta-results?detail_id='.$request->get('necta_result_detail_id'));
