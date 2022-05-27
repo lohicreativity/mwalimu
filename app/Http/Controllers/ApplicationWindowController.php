@@ -91,9 +91,11 @@ class ApplicationWindowController extends Controller
 
         if(strtotime($request->get('begin_date')) > strtotime($request->get('end_date'))){
             return redirect()->back()->with('error','End date cannot be less than begin date');
-        }elseif(strtotime($request->get('begin_date')) < strtotime(now()->format('Y-m-d'))){
-            return redirect()->back()->with('error','Begin date cannot be less than today\'s date');
         }
+
+        // elseif(strtotime($request->get('begin_date')) < strtotime(now()->format('Y-m-d'))){
+        //     return redirect()->back()->with('error','Begin date cannot be less than today\'s date');
+        // }
 
 
         (new ApplicationWindowAction)->update($request);

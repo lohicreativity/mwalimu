@@ -8,7 +8,7 @@
   <!-- /.login-logo -->
   <div class="card">
     <div class="card-body login-card-body">
-      <p class="login-box-msg">Staffs Login</p>
+      <p class="login-box-msg">Staff Login</p>
 
         @if(session('status'))
             <div class="mb-4 font-medium text-sm text-green-600">

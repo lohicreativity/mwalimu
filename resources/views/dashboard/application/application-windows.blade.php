@@ -79,7 +79,7 @@
                     <select name="intake_id" class="form-control" required>
                       <option>Select Intake</option>
                       @foreach($intakes as $intake)
-                      <option value="{{ $intake->id }}">{{ $intake->name }}</option>
+                      <option value="{{ $intake->id }}" @if($intake->name == 'September') selected="selected" @endif>{{ $intake->name }}</option>
                       @endforeach
                     </select>
                   </div>
@@ -176,6 +176,7 @@
                                        'placeholder'=>'Begin date',
                                        'class'=>'form-control ss-datepicker',
                                        'autocomplete'=>'off',
+                                       'readonly'=>true,
                                        'required'=>true
                                     ];
 
