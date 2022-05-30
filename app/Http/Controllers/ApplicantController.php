@@ -94,7 +94,7 @@ class ApplicantController extends Controller
         
         $window = ApplicationWindow::where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('campus_id',$request->get('campus_id'))->where('status','ACTIVE')->first();
         if(!$tamisemi_applicant){
-          if(!$window && $applicant){
+          if(!$window){
             return  redirect()->back()->with('error','Application window for '.$campus->name.' is not open.');
           }
         }
@@ -307,8 +307,11 @@ class ApplicantController extends Controller
      */
     public function payments(Request $request)
     {
-        $study_academic_year = StudyAcademicYear::where('status','ACTIVE')->first();
-        $applicant = User::find(Auth::user()->id)->applicants()->with('country')->where('campus_id',session('applicant_campus_id'))->first();
+        $applicant = User::find(Auth::user()->id)->applicants()->with(['country','applicationWindow'])->where('campus_id',session('applicant_campus_id'))->first();
+        $study_academic_year = StudyAcademicYear::whereHas('academicYear',function($query) use ($applicant){
+               $query->where('year','LIKE','%'.date('Y',strtotime($applicant->applicationWindow->begin_date)).'/%');
+        })->first();
+        
         $invoice = Invoice::where('payable_id',$applicant->id)->where('payable_type','applicant')->first();
         $data = [
            'applicant'=>$applicant,
@@ -408,13 +411,13 @@ class ApplicantController extends Controller
               foreach($campus_programs as $program){
                 
 
-                  // if(count($program->entryRequirements) == 0){
-                  //   return redirect()->back()->with('error',$program->program->name.' does not have entry requirements');
-                  // }
+                  if(count($program->entryRequirements) == 0){
+                    return redirect()->back()->with('error',$program->program->name.' does not have entry requirements');
+                  }
 
-                  // if($program->entryRequirements[0]->max_capacity == null){
-                  //   return redirect()->back()->with('error',$program->program->name.' does not have maximum capacity in entry requirements');
-                  // }
+                  if($program->entryRequirements[0]->max_capacity == null){
+                    return redirect()->back()->with('error',$program->program->name.' does not have maximum capacity in entry requirements');
+                  }
 
                    // Certificate
                    if(str_contains($award->name,'Certificate')){

@@ -32,7 +32,6 @@ class CreateApplicantsTable extends Migration
             $table->string('nin')->nullable();
             $table->unsignedBigInteger('campus_id');
             $table->unsignedBigInteger('application_window_id');
-            $table->string('marital_status',20)->default('SINGLE');
             $table->string('index_number')->unique();
             $table->string('entry_mode');
             $table->mediumInteger('admission_year');

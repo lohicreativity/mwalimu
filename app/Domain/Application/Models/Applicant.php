@@ -164,7 +164,10 @@ class Applicant extends Model
     public static function hasRequestedControlNumber(Applicant $applicant)
     {
         $status = false;
-        $invoice = Invoice::where('payable_id',$applicant->id)->where('payable_type','applicant')->latest()->first();
+        // $invoice = Invoice::where('payable_id',$applicant->id)->where('payable_type','applicant')->latest()->first();
+        $invoice = Invoice::whereHas('payable',function($query) use($applicant){
+                   $query->where('user_id',$applicant->user_id);
+        })->latest()->first();
         if($invoice){
             $status = true;
         }

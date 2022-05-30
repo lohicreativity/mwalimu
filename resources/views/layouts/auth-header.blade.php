@@ -8,6 +8,8 @@
       <li class="nav-item d-none d-sm-inline-block">
         @if(Auth::check() && Auth::user()->hasRole('student'))
         <a href="{{ url('student/dashboard') }}" class="nav-link">Home</a>
+        @elseif(Auth::check() && Auth::user()->hasRole('applicant'))
+        <a href="{{ url('application/dashboard') }}" class="nav-link">Home</a>
         @else
         <a href="{{ url('dashboard') }}" class="nav-link">Home</a>
         @endif

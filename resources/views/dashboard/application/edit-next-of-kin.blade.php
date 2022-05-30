@@ -148,7 +148,12 @@
                     </div>
                     <div class="form-group col-4">
                        {!! Form::label('','Nationality') !!}
-                       {!! Form::text('nationality',$next_of_kin->nationality,$nationality) !!}
+                       <select name="nationality" class="form-control" required>
+                         <option value="">Select Nationality</option>
+                         @foreach($countries as $country)
+                         <option value="{{ $country->name }}" @if($next_of_kin->nationality == $country->name) selected="selected" @endif>{{ $country->name }}</option>
+                         @endforeach
+                       </select>
                     </div>
                     <div class="form-group col-4">
                        {!! Form::label('','Relationship') !!}
@@ -267,7 +272,8 @@
 
                   $address = [
                      'placeholder'=>'P. O. Box 3918 Dar Es Salaam',
-                     'class'=>'form-control'
+                     'class'=>'form-control',
+                     'required'=>true
                   ];
 
                   $email = [
@@ -335,7 +341,12 @@
                     </div>
                     <div class="form-group col-4">
                        {!! Form::label('','Nationality') !!}
-                       {!! Form::text('nationality',null,$nationality) !!}
+                       <select name="nationality" class="form-control" required>
+                         <option value="">Select Nationality</option>
+                         @foreach($countries as $country)
+                         <option value="{{ $country->name }}">{{ $country->name }}</option>
+                         @endforeach
+                       </select>
                     </div>
                     <div class="form-group col-4">
                        {!! Form::label('','Relationship') !!}
