@@ -328,7 +328,7 @@ class BillController extends Controller
 			'payment_type' => 'required|in:1,2,3',
 			'payerid' => 'required', 
 			'payer_name' => 'required',
-			'payer_cell' => 'required|digits:12', 
+			'payer_cell' => 'required', 
 			'payer_email' => 'required|email',
 			'days_expires_after' => 'required|numeric', 
 			'generated_by' => 'required', 
