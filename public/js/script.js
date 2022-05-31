@@ -265,11 +265,11 @@ function take_snapshot() {
      Webcam.reset();
  }
 
-function saveSnap(){
+function saveSnap(student_id){
    // Get base64 value from <img id='imageprev'> source
    var base64image = document.getElementById("ss-camera-prev").src;
 
-   Webcam.upload( base64image,'/application/upload-camera-img', function(code, text) {
+   Webcam.upload( base64image,'/application/upload-camera-img?student_id='+student_id, function(code, text) {
         console.log('Save successfully');
        console.log(text);
    });

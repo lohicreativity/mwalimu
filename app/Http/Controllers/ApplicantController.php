@@ -19,6 +19,7 @@ use App\Domain\Finance\Models\FeeItem;
 use App\Domain\Finance\Models\FeeAmount;
 use App\Domain\Finance\Models\Invoice;
 use App\Domain\Finance\Models\GatewayPayment;
+use App\Domain\Registration\Models\Student;
 use App\Domain\Application\Models\NectaResult;
 use App\Domain\Application\Models\NacteResult;
 use App\Domain\Application\Models\NectaResultDetail;
@@ -1200,6 +1201,10 @@ curl_close($curl_handle);
     public function uploadCameraImage(Request $request)
     {
         $filename = 'pic_'.date('YmdHis') . '.jpeg';
+
+        $student = Student::find($request->get('student_id'));
+        $student->image = $filename;
+        $student->save();
 
         $url = '';
         if( move_uploaded_file($_FILES['webcam']['tmp_name'],public_path().'/uploads/'.$filename) ){

@@ -82,7 +82,7 @@
                      <tr>
                          <td>
                            <div id="crop_wrapper">
-                              <img src="{{ asset('img/user-avatar.png') }}">
+                              <img src="{{ asset('uploads/'.$student->image) }}" onerror="this.src='{{ asset("img/user-avatar.png") }}'">
                               <div id="crop_div">
                               </div>
                             </div>
@@ -103,7 +103,7 @@
                          <div id="ss-my-camera"></div>
                          <input type=button value="Configure" onClick="configure()">
                          <input type=button value="Take Snapshot" onClick="take_snapshot()">
-                         <input type=button value="Save Snapshot" onClick="saveSnap()">
+                         <input type=button value="Save Snapshot" onClick="saveSnap({{$student->id}})">
                        </td>
                        <td>
                          <div id="ss-camera-results"></div>
