@@ -177,9 +177,8 @@
                                  @php
                                     $begin_date = [
                                        'placeholder'=>'Begin date',
-                                       'class'=>'form-control',
+                                       'class'=>'form-control ss-datepicker',
                                        'autocomplete'=>'off',
-                                       'readonly'=>true,
                                        'required'=>true
                                     ];
 

@@ -28,4 +28,17 @@ class EntryRequirement extends Model
     	return $this->belongsTo(CampusProgram::class,'campus_program_id');
     }
 
+    /**
+     * Has previous
+     */
+    public static function hasPrevious(ApplicationWindow $window)
+    {
+        $status = false;
+        $win = ApplicationWindow::where('campus_id',$window->campus_id)->latest()->offset(1)->first();
+        if($win){
+            $status = true;
+        }
+        return $status;
+    }
+
 }

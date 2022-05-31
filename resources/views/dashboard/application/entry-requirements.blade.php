@@ -292,7 +292,7 @@
              
                <div class="card-footer">
                   <button type="submit" class="btn btn-primary">{{ __('Add Entry Requirement') }}</button>
-                   @if(count($entry_requirements) == 0)
+                   @if(App\Domain\Application\Models\EntryRequirement::hasPrevious($application_window))
                  <a href="{{ url('application/store-requirements-as-previous?application_window_id='.$application_window->id) }}" class="btn btn-primary">Save as Previous</a>
                  @endif
                 </div>
@@ -547,7 +547,7 @@
              
                <div class="card-footer">
                   <button type="submit" class="btn btn-primary">{{ __('Add Entry Requirement') }}</button>
-                   @if(count($entry_requirements) == 0)
+                   @if(App\Domain\Application\Models\EntryRequirement::hasPrevious($application_window))
                  <a href="{{ url('application/store-requirements-as-previous?application_window_id='.$application_window->id) }}" class="btn btn-primary">Save as Previous</a>
                  @endif
                 </div>
@@ -823,7 +823,7 @@
              
                <div class="card-footer">
                   <button type="submit" class="btn btn-primary">{{ __('Add Entry Requirement') }}</button>
-                   @if(count($entry_requirements) == 0)
+                   @if(App\Domain\Application\Models\EntryRequirement::hasPrevious($application_window))
                  <a href="{{ url('application/store-requirements-as-previous?application_window_id='.$application_window->id) }}" class="btn btn-primary">Save as Previous</a>
                  @endif
                 </div>

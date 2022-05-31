@@ -849,6 +849,7 @@ class ApplicationController extends Controller
        //    return redirect()->back()->with('error','Upload documents section not completed');
        // }
        $applicant->submission_complete_status = 1;
+       $applicant->submitted_at = now();
        $applicant->save();
        return redirect()->back()->with('message','Application Submitted Successfully');
     }
@@ -1574,13 +1575,13 @@ class ApplicationController extends Controller
          $data = [
             'application_windows'=>ApplicationWindow::with(['campus','intake'])->get(),
             'campuses'=>Campus::all(),
-            'progress_applications'=>Applicant::where('documents_complete_status',0)->where('submission_complete_status',0)->where('application_window_id',$application_window->id)->where('campus_id',$application_window->campus_id)->count(),
-            'completed_applications'=>Applicant::where('documents_complete_status',1)->where('submission_complete_status',0)->where('application_window_id',$application_window->id)->where('campus_id',$application_window->campus_id)->count(),
+            'progress_applications'=>Applicant::where('results_complete_status',0)->where('submission_complete_status',0)->where('application_window_id',$application_window->id)->where('campus_id',$application_window->campus_id)->count(),
+            'completed_applications'=>Applicant::where('results_complete_status',1)->where('submission_complete_status',0)->where('application_window_id',$application_window->id)->where('campus_id',$application_window->campus_id)->count(),
             'submitted_applications'=>Applicant::where('submission_complete_status',1)->where('application_window_id',$application_window->id)->where('campus_id',$application_window->campus_id)->count(),
             'total_applications'=>Applicant::where('application_window_id',$application_window->id)->where('campus_id',$application_window->campus_id)->count(),
-            'today_progress_applications'=>Applicant::where('documents_complete_status',0)->where('submission_complete_status',0)->where('application_window_id',$application_window->id)->where('campus_id',$application_window->campus_id)->whereDate('created_at','=',now()->format('Y-m-d'))->count(),
-            'today_completed_applications'=>Applicant::where('documents_complete_status',1)->where('submission_complete_status',0)->where('application_window_id',$application_window->id)->where('campus_id',$application_window->campus_id)->whereDate('created_at','=',now()->format('Y-m-d'))->count(),
-            'today_submitted_applications'=>Applicant::where('submission_complete_status',1)->where('application_window_id',$application_window->id)->where('campus_id',$application_window->campus_id)->whereDate('created_at','=',now()->format('Y-m-d'))->count(),
+            'today_progress_applications'=>Applicant::where('results_complete_status',0)->where('submission_complete_status',0)->where('application_window_id',$application_window->id)->where('campus_id',$application_window->campus_id)->whereDate('created_at','=',now()->format('Y-m-d'))->count(),
+            'today_completed_applications'=>Applicant::where('results_complete_status',1)->where('submission_complete_status',0)->where('application_window_id',$application_window->id)->where('campus_id',$application_window->campus_id)->whereDate('created_at','=',now()->format('Y-m-d'))->count(),
+            'today_submitted_applications'=>Applicant::where('submission_complete_status',1)->where('application_window_id',$application_window->id)->where('campus_id',$application_window->campus_id)->whereDate('submitted_at','=',now()->format('Y-m-d'))->count(),
             'today_total_applications'=>Applicant::where('application_window_id',$application_window->id)->where('campus_id',$application_window->campus_id)->whereDate('created_at','=',now()->format('Y-m-d'))->count(),
             'staff'=>$staff,
             'request'=>$request

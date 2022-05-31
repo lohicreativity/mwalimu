@@ -116,6 +116,13 @@ class ApplicationWindowController extends Controller
         }else{
            $window = ApplicationWindow::with(['intake','campusPrograms'])->find($request->get('application_window_id'));
         }
+        $staff = User::find(Auth::user()->id)->staff;
+        if(Auth::user()->hasRole('admission-officer')){
+            if($window->campus_id != $staff->campus_id){
+                return redirect()->back()->with('error','You cannot access offered programmes because you do not belong to this campus');
+            }
+        }
+
         $data = [
            'application_windows'=>ApplicationWindow::with(['intake','campus'])->latest()->get(),
            'window'=>$window,
@@ -124,7 +131,7 @@ class ApplicationWindowController extends Controller
                 $query->orderBy('name','ASC');
            }])->where('campus_id',$window->campus_id)->get() : null,
            'campus'=>$window? Campus::find($window->campus_id) : null,
-           'staff'=>User::find(Auth::user()->id)->staff,
+           'staff'=>$staff,
            'request'=>$request
         ];
         return view('dashboard.application.assign-application-window-campus-programs',$data)->withTitle('Application Window Campus Programs');
@@ -160,6 +167,12 @@ class ApplicationWindowController extends Controller
     {
         try{
             $window = ApplicationWindow::with('campusPrograms')->findOrFail($id);
+            $campus_programs_count = CampusProgram::whereHas('entryRequirements',function($query) use($window){
+                $query->where('application_window_id',$window->id);
+            })->count();
+            if($campus_programs_count < count($window->campusPrograms)){
+                return redirect()->back()->with('error','You cannot activate this application window because some offered programmes are missing entry requirements');
+            }
             if($window->campus_id != session('staff_campus_id')){
                 return redirect()->back()->with('error','You cannot activate this application window because it does not belong to your campus');
             }

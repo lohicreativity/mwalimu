@@ -84,6 +84,9 @@
                  </span>
                 </div>
                 {!! Form::close() !!} --}}
+                @php
+                  $count = 0;
+                @endphp
                 <table id="example2" class="table table-bordered table-hover ss-margin-top ss-paginated-table">
                   <thead>
                   <tr>
@@ -96,14 +99,13 @@
                   <tbody>
                   @foreach($window->campusPrograms as $key=>$prog)
                   <tr>
-                    <td>@if($key == 0) {{ $window->begin_date }} - {{ $window->end_date }} @endif</td>
-                    <td>@if($key == 0) {{ $window->intake->name }} @endif</td>
+                    <td>{{ $window->begin_date }} - {{ $window->end_date }}</td>
+                    <td>{{ $window->intake->name }}</td>
                     <td>
-                          <p class="ss-font-xs ss-no-margin">{{ $prog->program->name }}</p>
-                        
+                        <p class="ss-font-xs ss-no-margin">{{ $prog->program->name }}</p>
                     </td>
                     <td>
-                      @if($key == 0)
+                      @if($count == 0)
                       <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-edit-academic-window-{{ $window->id }}">
                               <i class="fas fa-plus">
                               </i>
@@ -169,6 +171,10 @@
                       </div>
                       <!-- /.modal -->
                       @endif
+
+                      @php
+                        $count++;
+                      @endphp
                     </td>
                   </tr>
                   @endforeach
