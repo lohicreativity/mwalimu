@@ -48,12 +48,23 @@
                  {!! Form::open(['url'=>'application/application-window-campus-programs','class'=>'ss-form-processing','method'=>'GET']) !!}
                  <div class="row">
                    <div class="form-group col-12">
+                     @if(Auth::user()->hasRole('administrator'))
                      <select name="application_window_id" class="form-control" required>
                         <option value="">Select Application Window</option>
                         @foreach($application_windows as $k=>$win)
                         <option value="{{ $win->id }}" @if($k == 0) selected="selected" @endif>{{ $win->begin_date }} - {{ $win->end_date }} - {{ $win->campus->name }} - {{ $win->intake->name }}</option>
                         @endforeach
                      </select>
+                     @else
+                     <select name="application_window_id" class="form-control" required>
+                        <option value="">Select Application Window</option>
+                        @foreach($application_windows as $k=>$win)
+                          @if($staff->campus_id == $win->campus_id)
+                        <option value="{{ $win->id }}" @if($k == 0) selected="selected" @endif>{{ $win->begin_date }} - {{ $win->end_date }} - {{ $win->campus->name }} - {{ $win->intake->name }}</option>
+                          @endif
+                        @endforeach
+                     </select>
+                     @endif
                    </div>
                   </div>
                   <div class="ss-form-actions">
