@@ -116,7 +116,7 @@
                   </div>
                 </div>
                 <!-- /.card-body -->
-                @endcan
+                
 
                 <div class="card-footer">
                   <button type="submit" class="btn btn-primary">{{ __('Add Application Window') }}</button>
@@ -124,6 +124,7 @@
               {!! Form::close() !!}
             </div>
             <!-- /.card -->
+            @endcan
 
             @if(count($windows) != 0)
             <div class="card">
