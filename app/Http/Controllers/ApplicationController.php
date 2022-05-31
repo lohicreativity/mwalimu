@@ -295,7 +295,7 @@ class ApplicationController extends Controller
             $list = Applicant::whereHas('intake.applicationWindows',function($query) use($request){
                  $query->where('id',$request->get('application_window_id'));
             })->whereHas('selections',function($query) use($request){
-                 $query->where('status','APPROVING')->orWhere('status','SELECTED')->orWhere('status','PENDING');
+                 $query->where('status','APPROVING')->orWhere('status','SELECTED');
             })->with(['nextOfKin','intake','selections.campusProgram.program','nectaResultDetails.results','nacteResultDetails.results'])->where('program_level_id',$request->get('program_level_id'))->where('campus_id',$staff->campus_id)->get();
          }
 
@@ -343,7 +343,7 @@ class ApplicationController extends Controller
                   foreach ($list as $applicant) { 
 
                       foreach ($applicant->selections as $select) {
-                         if($select->status == 'APPROVING'){
+                         if($select->status == 'APPROVING' || $select->status == 'SELECTED'){
                             $selection = $select;
                          }
                       }
