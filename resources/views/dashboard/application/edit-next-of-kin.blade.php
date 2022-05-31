@@ -151,7 +151,7 @@
                        <select name="nationality" class="form-control" required>
                          <option value="">Select Nationality</option>
                          @foreach($countries as $country)
-                         <option value="{{ $country->name }}" @if($next_of_kin->nationality == $country->name) selected="selected" @endif>{{ $country->name }}</option>
+                         <option value="{{ $country->nationality }}" @if($next_of_kin->nationality == $country->name) selected="selected" @endif>{{ $country->nationality }}</option>
                          @endforeach
                        </select>
                     </div>
@@ -344,7 +344,7 @@
                        <select name="nationality" class="form-control" required>
                          <option value="">Select Nationality</option>
                          @foreach($countries as $country)
-                         <option value="{{ $country->name }}">{{ $country->name }}</option>
+                         <option value="{{ $country->nationality }}">{{ $country->nationality }}</option>
                          @endforeach
                        </select>
                     </div>

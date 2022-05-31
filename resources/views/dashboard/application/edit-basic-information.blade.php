@@ -198,7 +198,7 @@
                        <select name="nationality" class="form-control" required>
                          <option value="">Select Nationality</option>
                          @foreach($countries as $country)
-                         <option value="{{ $country->name }}" @if($applicant->nationality == $country->name) selected="selected" @endif @if(App\Domain\Application\Models\Applicant::hasRequestedControlNumber($applicant) || $applicant->payment_complete_status == 1) disabled="disabled" @endif>{{ $country->name }}</option>
+                         <option value="{{ $country->nationality }}" @if($applicant->nationality == $country->nationality) selected="selected" @endif @if(App\Domain\Application\Models\Applicant::hasRequestedControlNumber($applicant) || $applicant->payment_complete_status == 1) disabled="disabled" @endif>{{ $country->nationality }}</option>
                          @endforeach
                        </select>
                     </div>
@@ -267,7 +267,7 @@
                 <!-- /.card-body -->
 
                 <div class="card-footer">
-                  <button @if($status_code != 202) disabled="disabled" @else type="submit" @endif class="btn btn-primary">{{ __('Save') }}</button>
+                  <button @if($applicant->is_tcu_verified != 1) disabled="disabled" @else type="submit" @endif class="btn btn-primary">{{ __('Save') }}</button>
                 </div>
               {!! Form::close() !!}
             </div>
