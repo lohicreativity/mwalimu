@@ -781,12 +781,14 @@
               </p>
             </a>
             <ul class="nav nav-treeview">
+              @can('view-currencies')
               <li class="nav-item">
                 <a href="{{ url('settings/currencies') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Currencies</p>
                 </a>
               </li>
+              @endcan
               @can('view-campuses')
               <li class="nav-item">
                 <a href="{{ url('settings/campuses') }}" class="nav-link">
