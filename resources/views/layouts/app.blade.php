@@ -48,8 +48,6 @@
 <!-- jQuery UI 1.11.4 -->
 <script src="{{ asset('plugins/jquery-ui/jquery-ui.min.js') }}"></script>
 <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
-<!-- Custom script -->
-<script src="{{ asset('js/script.js?version='.config('constants.VERSION')) }}"></script>
 
 <!-- Bootstrap 4 -->
 <script src="{{ asset('plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
@@ -84,6 +82,9 @@
 <script src="{{ asset('js/foundation-datepicker.min.js') }}"></script>
 <script src="{{ asset('js/datatables.min.js') }}"></script>
 <script src="{{ asset('js/select2.min.js') }}"></script>
+<script src="{{ asset('js/webcam.min.js') }}"></script>
+<!-- Custom script -->
+<script src="{{ asset('js/script.js?version='.config('constants.VERSION')) }}"></script>
 <script>
   @if(session()->has('message'))
   toastr.options =

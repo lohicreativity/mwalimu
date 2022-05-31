@@ -168,3 +168,9 @@
    position: absolute;
    top: 0px;
 }
+
+#ss-my-camera{
+    width: 320px;
+    height: 240px;
+    border: 1px solid black;
+}

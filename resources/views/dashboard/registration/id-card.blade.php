@@ -99,6 +99,17 @@
                          </td>
                      </tr>
                      <tr>
+                       <td>
+                         <div id="ss-my-camera"></div>
+                         <input type=button value="Configure" onClick="configure()">
+                         <input type=button value="Take Snapshot" onClick="take_snapshot()">
+                         <input type=button value="Save Snapshot" onClick="saveSnap()">
+                       </td>
+                       <td>
+                         <div id="ss-camera-results"></div>
+                       </td>
+                     </tr>
+                     <tr>
                          <td>First name:</td>
                          <td>{{ $student->first_name }}</td>
                      </tr>
