@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\GePG;
 
 use App\Http\Controllers\Controller;
+use App\Domain\Settings\Models\Currency;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use function \FluidXml\fluidxml;
@@ -324,10 +325,10 @@ class BillController extends Controller
 			'amount' => 'required', 
 			'desc' => 'required',
 			'gfs_code' => 'required|numeric', 
-			'payment_type' => 'required|in:0,1,2,3',
+			'payment_type' => 'required|in:1,2,3',
 			'payerid' => 'required', 
 			'payer_name' => 'required',
-			'payer_cell' => 'required', 
+			'payer_cell' => 'required|digits:12', 
 			'payer_email' => 'required|email',
 			'days_expires_after' => 'required|numeric', 
 			'generated_by' => 'required', 
@@ -345,16 +346,18 @@ class BillController extends Controller
           $EquivAmount=NULL;
           $currency=$request->get("currency");
 
+          $currency_factor = Currency::where('code',$currency)->first()->factor;
+
           if($currency=="TZS"){
                $EquivAmount=$request->get("amount");
           }elseif($currency=="USD"){
-            $factor=2307.94;
+            $factor=$currency_factor;
                 $EquivAmount=$factor* doubleval($request->get("amount"));
           }elseif($currency=="POUND" || $currency=="GBP"){
-             $factor=2846.61;
+             $factor=$currency_factor;
                  $EquivAmount=$factor* doubleval($request->get("amount"));
           }elseif($currency=="EURO"){
-             $factor=2601.97;
+             $factor=$currency_factor;
                $EquivAmount=$factor*doubleval($request->get("amount"));
 	  }else{
                $EquivAmount=$request->get("amount");

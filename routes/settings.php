@@ -10,6 +10,7 @@ use App\Http\Controllers\DistrictController;
 use App\Http\Controllers\WardController;
 use App\Http\Controllers\CampusController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\CurrencyController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\SystemModuleController;
 use App\Http\Controllers\SpecialDateController;
@@ -31,6 +32,11 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 	Route::post('nta-level/store', [NTALevelController::class,'store']);
 	Route::post('nta-level/update', [NTALevelController::class,'update']);
 	Route::get('nta-level/{id}/destroy', [NTALevelController::class,'destroy']);
+
+	Route::get('currencies', [CurrencyController::class,'index'])->name('currencies');
+	Route::post('currency/store', [CurrencyController::class,'store']);
+	Route::post('currency/update', [CurrencyController::class,'update']);
+	Route::get('currency/{id}/destroy', [CurrencyController::class,'destroy']);
 
 
 	Route::get('levels', [LevelController::class,'index'])->name('levels');
