@@ -275,7 +275,7 @@ class ApplicationController extends Controller
             $list = Applicant::whereHas('intake.applicationWindows',function($query) use($request){
                  $query->where('id',$request->get('application_window_id'));
             })->whereHas('selections',function($query) use($request){
-                 $query->where('status','APPROVING');
+                 $query->where('status','APPROVING')->orWhere('status','SELECTED')->orWhere('status','PENDING');
             })->with(['nextOfKin','intake','selections.campusProgram.program','nectaResultDetails.results','nacteResultDetails.results'])->where('program_level_id',$request->get('program_level_id'))->where('gender',$request->get('gender'))->where('campus_id',$staff->campus_id)->get();
          }elseif($request->get('campus_program_id')){
             $list = Applicant::whereHas('intake.applicationWindows',function($query) use($request){
@@ -289,13 +289,13 @@ class ApplicationController extends Controller
             })->whereHas('selections.campusProgram.program',function($query) use($request){
                  $query->where('nta_level_id',$request->get('nta_level_id'))->where('status','APPROVING');
             })->whereHas('selections',function($query) use($request){
-                 $query->where('status','APPROVING');
+                 $query->where('status','APPROVING')->orWhere('status','SELECTED')->orWhere('status','PENDING');
             })->with(['nextOfKin','intake','selections.campusProgram.program','nectaResultDetails.results','nacteResultDetails.results'])->where('program_level_id',$request->get('program_level_id'))->where('campus_id',$staff->campus_id)->get();
          }else{
             $list = Applicant::whereHas('intake.applicationWindows',function($query) use($request){
                  $query->where('id',$request->get('application_window_id'));
             })->whereHas('selections',function($query) use($request){
-                 $query->where('status','APPROVING');
+                 $query->where('status','APPROVING')->orWhere('status','SELECTED')->orWhere('status','PENDING');
             })->with(['nextOfKin','intake','selections.campusProgram.program','nectaResultDetails.results','nacteResultDetails.results'])->where('program_level_id',$request->get('program_level_id'))->where('campus_id',$staff->campus_id)->get();
          }
 
