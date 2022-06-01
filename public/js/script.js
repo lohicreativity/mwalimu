@@ -156,6 +156,37 @@ $('#your-parent .collapse').on('show.bs.collapse', function (e) {
         });
      });
 
+      var signaturePad = new SignaturePad(document.getElementById('signature-pad'));
+
+       $('#click').click(function(){
+        var data = signaturePad.toDataURL('image/png');
+        $('#output').val(data);
+
+        // $.ajax({
+        //    url: '/application/upload-signature',
+        //    method: 'POST',
+        //    data:{
+        //       image:data,
+        //       student_id:$('#ss-student-id').val()
+        //    }
+        // }).done(function(data){
+           
+        // });
+
+        $("#sign_prev").show();
+        $("#sign_prev").attr("src",data);
+        // Open image in the browser
+        //window.open(data);
+       });
+
+      GetSigImageB64(SigImageCallback); 
+      function SigImageCallback( str ) {  
+        // document.FORM1.sigImageData.value = str; 
+        $('#output').val(str);
+        $("#sign_prev").show();
+        $("#sign_prev").attr("src",str);
+      } 
+
     //  var input = document.querySelector("#ss-phone");
     //  window.intlTelInput(input,{
     //   hiddenInput: "full_phone",
@@ -273,6 +304,7 @@ function saveSnap(student_id){
         console.log('Save successfully');
        console.log(text);
    });
+   window.location.reload();
 
 }
 

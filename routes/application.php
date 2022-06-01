@@ -169,4 +169,5 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
     Route::post('delete-applicant-invoice',[ApplicantController::class,'deleteInvoice']);
 
     Route::post('upload-camera-img',[ApplicantController::class,'uploadCameraImage']);
+    Route::post('upload-signature',[ApplicantController::class, 'uploadSignature']);
 });

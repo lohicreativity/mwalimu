@@ -1215,4 +1215,12 @@ curl_close($curl_handle);
         return $url;
     }
 
+    /**
+     * Upload signature
+     */
+    public function uploadSignature(Request $request)
+    {
+        
+    }
+
 }

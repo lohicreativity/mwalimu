@@ -94,6 +94,7 @@
                               <input type="hidden" value="" id="left" name="left">
                               <input type="hidden" value="" id="right" name="right">
                               <input type="hidden" value="" id="bottom" name="bottom">
+                              <input type="hidden" value="{{$student->image}}" name="image">
                               <input type="submit" name="crop_image" value="Crop Image">
                             </form>
                          </td>
@@ -107,6 +108,36 @@
                        </td>
                        <td>
                          <div id="ss-camera-results"></div>
+                       </td>
+                     </tr>
+                     <tr>
+                       <td>
+                         <div id="signature" style=''>
+                           <canvas id="signature-pad" class="signature-pad" width="300px" height="200px"></canvas>
+                          </div><br/>
+                          <input type='button' id='click' value='preview'><br/>
+                          <textarea id='output'></textarea><br/>
+                       </td>
+                       <td>
+                         <img src='' id='sign_prev' style='display: none;' />
+                       </td>
+                     </tr>
+                     <tr>
+                       <td>
+                         <table border=1 cellpadding="0" height="150" width="306">
+                            <tr>
+                              <td height="1" width="368"> <OBJECT classid=clsid:69A40DA3-4D42-11D0-86B0-0000C025864A height=50
+                                      id=SigPlus1 name=SigPlus1
+                                      style="HEIGHT: 170px; LEFT: 0px; TOP: 0px; WIDTH: 283px" width=183
+                                      VIEWASTEXT>
+                            <PARAM NAME="_Version" VALUE="131095">
+                            <PARAM NAME="_ExtentX" VALUE="4842">
+                            <PARAM NAME="_ExtentY" VALUE="1323">
+                            <PARAM NAME="_StockProps" VALUE="0">
+                                      </OBJECT>
+                                </td>
+                            </tr>
+                         </table>
                        </td>
                      </tr>
                      <tr>

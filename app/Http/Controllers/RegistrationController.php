@@ -184,38 +184,39 @@ class RegistrationController extends Controller
           $x1=$request->get('left');
           $w=$request->get('right');
           $h=$request->get('bottom');
-          $image=public_path().'/img/user-avatar.png';
+
+          $image=public_path().'/uploads/'.$request->get('image');
 
           $type = explode('.', $image)[1];
 
           list( $width,$height ) = getimagesize( $image );
-          $newwidth = 600;
-          $newheight = 400;
+          $newwidth = 200;
+          $newheight = 240;
 
           switch($type){
             case 'bmp': $img = imagecreatefromwbmp($image); break;
             case 'gif': $img = imagecreatefromgif($image); break;
-            case 'jpg': $img = imagecreatefromjpeg($image); break;
+            case 'jpeg': $img = imagecreatefromjpeg($image); break;
             case 'png': $img = imagecreatefrompng($image); break;
             default : return "Unsupported picture type!";
           }
 
-          $thumb = imagecreatetruecolor( $newwidth, $newheight );
-          $source = $img; //imagecreatefromjpeg($image);
+          // $thumb = imagecreatetruecolor( $newwidth, $newheight );
+          // $source = $img; //imagecreatefromjpeg($image);
 
-          imagecopyresized($thumb, $source, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);
-          imagejpeg($thumb,$image,100); 
+          // imagecopyresized($thumb, $source, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);
+          // imagejpeg($thumb,$image,100); 
 
 
           $im = $img; //imagecreatefromjpeg($image);
           $dest = imagecreatetruecolor($w,$h);
             
-          imagecopyresampled($dest,$im,0,0,$x1,$y1,$w,$h,$w,$h);
+          imagecopyresampled($dest,$im,0,0,$x1,$y1,$w,$h,$width,$height);
 
           switch($type){
             case 'bmp': imagewbmp($dest,$image); break;
             case 'gif': imagegif($dest,$image); break;
-            case 'jpg': imagejpeg($dest,$image); break;
+            case 'jpeg': imagejpeg($dest,$image); break;
             case 'png': imagepng($dest,$image); break;
           }
           //imagejpeg($dest,$image, 100);
@@ -259,12 +260,12 @@ class RegistrationController extends Controller
         // return view('dashboard.registration.print-id-card-bulk',$data)->withTitle('Print ID Card Bulk');
         $pdf = PDF::loadView('dashboard.registration.print-id-card-bulk',$data,[],[
                'format'=>'A7',
-               // 'mode' => 'utf-8',
-               // 'allow_charset_conversion' => true,
-               // 'margin_top'=>0,
-               // 'margin_bottom'=>0,
-               // 'margin_left'=>0,
-               // 'margin_right'=>0,
+               'mode' => 'utf-8',
+               'allow_charset_conversion' => true,
+               'margin_top'=>0,
+               'margin_bottom'=>0,
+               'margin_left'=>0,
+               'margin_right'=>0,
                'orientation'=>'L',
                'display_mode'=>'fullpage',
                // 'format'=>[500,400]

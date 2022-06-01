@@ -35,6 +35,7 @@
      href="{{ asset('css/select2.min.css') }}">
   <link rel="stylesheet" type="text/css" 
      href="{{ asset('css/datatables.min.css') }}">
+  <link href="https://unpkg.com/cropperjs/dist/cropper.css" rel="stylesheet"/>
   <!-- Custom style -->
   <link rel="stylesheet" type="text/css" href="{{ asset('css/style.css?version='.config('constants.VERSION')) }}">
 </head>
@@ -83,6 +84,10 @@
 <script src="{{ asset('js/datatables.min.js') }}"></script>
 <script src="{{ asset('js/select2.min.js') }}"></script>
 <script src="{{ asset('js/webcam.min.js') }}"></script>
+<script src="{{ asset('js/signature_pad.umd.js') }}"></script>
+<script src="{{ asset('js/SigWebTablet.js') }}"></script>
+<script src="https://unpkg.com/dropzone"></script>
+<script src="https://unpkg.com/cropperjs"></script>
 <!-- Custom script -->
 <script src="{{ asset('js/script.js?version='.config('constants.VERSION')) }}"></script>
 <script>
