@@ -138,6 +138,48 @@
                                 </td>
                             </tr>
                          </table>
+
+                         <script LANGUAGE="Javascript">
+<!--
+                          function SetSig() {
+                             if(document.SigForm.txtValue.value==""){
+                                alert("Please enter your first name to continue");
+                                return false;
+                             }
+                             else
+                             {
+                                if(SigPlus1.NumberOfTabletPoints==0){
+                                   alert("Please sign to continue");
+                                   return false;
+                                }
+                                else{
+                                SigPlus1.TabletState=0;
+                                SigPlus1.AutoKeyStart();
+                                SigPlus1.AutoKeyData=document.SigForm.txtValue.value;
+                                SigPlus1.AutoKeyData=document.SigForm.Disclaimer.value;
+                                SigPlus1.AutoKeyFinish();
+                                SigPlus1.EncryptionMode=1;
+                                SigPlus1.SigCompressionMode=2;
+                                document.SigForm.SigData.value=SigPlus1.SigString;
+                                document.SigForm.submit();
+                                }
+                             }
+                          }
+
+                          function OnClear() {
+                             SigPlus1.ClearTablet();
+                          }
+
+                          function OnCancel() {
+                             SigPlus1.TabletState = 0;
+                          }
+
+                          function OnSign() {
+                          SigPlus1.TabletState = 1;
+                          }
+
+                          //-->
+                          </script> 
                        </td>
                      </tr>
                      <tr>

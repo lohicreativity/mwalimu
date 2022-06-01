@@ -117,7 +117,7 @@ class ApplicationWindowController extends Controller
            $window = ApplicationWindow::with(['intake','campusPrograms'])->find($request->get('application_window_id'));
         }
         $staff = User::find(Auth::user()->id)->staff;
-        if(Auth::user()->hasRole('admission-officer') && $window){
+        if(Auth::user()->hasRole('admission-officer')){
             if($window->campus_id != $staff->campus_id){
                 return redirect()->back()->with('error','You cannot access offered programmes because you do not belong to this campus');
             }
