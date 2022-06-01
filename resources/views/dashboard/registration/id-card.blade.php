@@ -124,62 +124,64 @@
                      </tr>
                      <tr>
                        <td>
-                         <table border=1 cellpadding="0" height="150" width="306">
-                            <tr>
-                              <td height="1" width="368"> <OBJECT classid=clsid:69A40DA3-4D42-11D0-86B0-0000C025864A height=50
-                                      id=SigPlus1 name=SigPlus1
-                                      style="HEIGHT: 170px; LEFT: 0px; TOP: 0px; WIDTH: 283px" width=183
-                                      VIEWASTEXT>
-                            <PARAM NAME="_Version" VALUE="131095">
-                            <PARAM NAME="_ExtentX" VALUE="4842">
-                            <PARAM NAME="_ExtentY" VALUE="1323">
-                            <PARAM NAME="_StockProps" VALUE="0">
-                                      </OBJECT>
-                                </td>
-                            </tr>
-                         </table>
+                         <table border=1 cellpadding="0">
+                           <tr><td>   
+                             <OBJECT classid=clsid:69A40DA3-4D42-11D0-86B0-0000C025864A height=75
+                                    id=SigPlus1 name=SigPlus1
+                                    style="HEIGHT: 180px; WIDTH: 320px; LEFT: 0px; TOP: 0px; 
+                                    VIEWASTEXT>
+                          <PARAM NAME="_Version" VALUE="131095">
+                          <PARAM NAME="_ExtentX" VALUE="4842">
+                          <PARAM NAME="_ExtentY" VALUE="1323">
+                          <PARAM NAME="_StockProps" VALUE="0">
+                                    </OBJECT>
+                           </td></tr>
+                        </table>
+                        
 
-                         <script LANGUAGE="Javascript">
+                        <FORM id=FORM1 method=get name=FORM1>
+
+                        <p>
+                        <INPUT id=SignBtn name=SignBtn type=button value=Sign onclick=OnSign()>&nbsp;&nbsp;&nbsp;&nbsp;
+
+                        <INPUT id=button1 name=ClearBtn type=button value=Clear onclick=OnClear()>&nbsp;&nbsp;&nbsp;&nbsp
+
+                        <INPUT id=button2 name=Cancel type=button value=Cancel onclick=OnCancel()>&nbsp;&nbsp;&nbsp;&nbsp;
+
+                        <INPUT id=submit1 name=Save type=submit value=Save onclick=OnSave()>&nbsp;&nbsp;&nbsp;&nbsp;
+                        </p>
+
+                        </FORM>
+
+                        <SCRIPT LANGUAGE=Javascript>
 <!--
-                          function SetSig() {
-                             if(document.SigForm.txtValue.value==""){
-                                alert("Please enter your first name to continue");
-                                return false;
-                             }
-                             else
-                             {
-                                if(SigPlus1.NumberOfTabletPoints==0){
-                                   alert("Please sign to continue");
-                                   return false;
-                                }
-                                else{
-                                SigPlus1.TabletState=0;
-                                SigPlus1.AutoKeyStart();
-                                SigPlus1.AutoKeyData=document.SigForm.txtValue.value;
-                                SigPlus1.AutoKeyData=document.SigForm.Disclaimer.value;
-                                SigPlus1.AutoKeyFinish();
-                                SigPlus1.EncryptionMode=1;
-                                SigPlus1.SigCompressionMode=2;
-                                document.SigForm.SigData.value=SigPlus1.SigString;
-                                document.SigForm.submit();
-                                }
-                             }
-                          }
 
                           function OnClear() {
-                             SigPlus1.ClearTablet();
+                             SigPlus1.ClearTablet(); //Clears the signature, in case of error or mistake
                           }
 
                           function OnCancel() {
-                             SigPlus1.TabletState = 0;
+                             SigPlus1.TabletState = 0; //Turns tablet off
                           }
 
                           function OnSign() {
-                          SigPlus1.TabletState = 1;
+                          SigPlus1.TabletState = 1; //Turns tablet on
+                          }
+
+
+
+                          function OnSave() {
+
+                          SigPlus1.TabletState = 0; //Turns tablet off
+                          SigPlus1.SigCompressionMode = 1; //Compresses the signature at a 2.5 to 1 ratio, making it smaller...to display the signature again later, you WILL HAVE TO set the SigCompressionMode of the new SigPlus object = 1, also
+
+                          alert("The signature you have taken is the following data: " + SigPlus1.SigString);
+                          //The signature is now taken, and you may access it using the SigString property of SigPlus. This SigString is the actual signature, in ASCII format. You may pass this string value like you would any other String. To display the signature again, you simply pass this String back to the SigString property of SigPlus (BE SURE TO SET SigCompressionMode=1 PRIOR TO REASSIGNING THE SigString)
+
                           }
 
                           //-->
-                          </script> 
+                          </SCRIPT>
                        </td>
                      </tr>
                      <tr>

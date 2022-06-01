@@ -22,7 +22,7 @@ class NECTAServiceController extends Controller
         $index_no = explode('-',$index_number)[0].'-'.explode('-',$index_number)[1];
         $exam_year = explode('-',$index_number)[2];
 
-        if($details = NectaResultDetail::with('results')->where('index_number',$index_no)->where('exam_id',$exam_id)->where('applicant_id',$request->get('applicant_id'))->first()){
+        if($details = NectaResultDetail::with('results')->where('index_number',str_replace('-','/',$index_number))->where('exam_id',$exam_id)->where('applicant_id',$request->get('applicant_id'))->first()){
             return response()->json(['details'=>$details]);
         }else{
             try{
