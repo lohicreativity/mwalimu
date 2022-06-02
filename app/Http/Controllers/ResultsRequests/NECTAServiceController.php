@@ -38,7 +38,7 @@ class NECTAServiceController extends Controller
                 return response()->json(['error'=>'Please refresh your browser and try again']);
             }
             if(json_decode($response)->status->code == 0){
-                return response()->json(['error'=>'Authentication failed']);
+                return response()->json(['error'=>'Results not found']);
             }
             if($det = NectaResultDetail::where('index_number',$index_no)->where('exam_id',$exam_id)->where('applicant_id',$request->get('applicant_id'))->first()){
                 $detail = $det;

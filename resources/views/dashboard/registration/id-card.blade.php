@@ -129,35 +129,58 @@
                        <td>
                          <table border=1 cellpadding="0">
                            <tr><td>   
-                             <OBJECT classid=clsid:69A40DA3-4D42-11D0-86B0-0000C025864A height=75
-                                    id=SigPlus1 name=SigPlus1
-                                    style="HEIGHT: 180px; WIDTH: 320px; LEFT: 0px; TOP: 0px; 
-                                    VIEWASTEXT>
-                          <PARAM NAME="_Version" VALUE="131095">
-                          <PARAM NAME="_ExtentX" VALUE="4842">
-                          <PARAM NAME="_ExtentY" VALUE="1323">
-                          <PARAM NAME="_StockProps" VALUE="0">
-                                    </OBJECT>
+                             <object classid="clsid:69A40DA3-4D42-11D0-86B0-0000C025864A" height="75"
+                                    id="SigPlus1" name="SigPlus1"
+                                    style="height: 180px; width: 320px; left: 0px; top: 0px;" 
+                                    viewastext>
+                          <param name="_Version" value="131095">
+                          <param name="_ExtentX" value="4842">
+                          <param name="_ExtentY" value="1323">
+                          <param name="_StockProps" value="0">
+                                    </object>
                            </td></tr>
                         </table>
                         
 
-                        <FORM id=FORM1 method=get name=FORM1>
+                        <form id="SigForm" method="get" name="SigForm">
 
                         <p>
-                        <INPUT id=SignBtn name=SignBtn type=button value=Sign onclick=OnSign()>&nbsp;&nbsp;&nbsp;&nbsp;
+                        <input id="SignBtn" name="SignBtn" type="button" value="Sign" onclick="SetSig()">&nbsp;&nbsp;&nbsp;&nbsp;
 
-                        <INPUT id=button1 name=ClearBtn type=button value=Clear onclick=OnClear()>&nbsp;&nbsp;&nbsp;&nbsp
+                        <input id="button1" name="ClearBtn" type="button" value="Clear" onclick="OnClear()">&nbsp;&nbsp;&nbsp;&nbsp;
 
-                        <INPUT id=button2 name=Cancel type=button value=Cancel onclick=OnCancel()>&nbsp;&nbsp;&nbsp;&nbsp;
+                        <input id="button2" name="Cancel" type="button" value="Cancel" onclick="OnCancel()">&nbsp;&nbsp;&nbsp;&nbsp;
 
-                        <INPUT id=submit1 name=Save type=submit value=Save onclick=OnSave()>&nbsp;&nbsp;&nbsp;&nbsp;
+                        <input id="submit1" name="Save" type="submit" value="Save" onclick="OnSave()">&nbsp;&nbsp;&nbsp;&nbsp;
                         </p>
 
                         </FORM>
 
                         <SCRIPT LANGUAGE=Javascript>
-<!--
+<!--                      function SetSig() {
+                             if(document.SigForm.txtValue.value==""){
+                                alert("Please enter your first name to continue");
+                                return false;
+                             }
+                             else
+                             {
+                                if(SigPlus1.NumberOfTabletPoints==0){
+                                   alert("Please sign to continue");
+                                   return false;
+                                }
+                                else{
+                                SigPlus1.TabletState=0;
+                                SigPlus1.AutoKeyStart();
+                                SigPlus1.AutoKeyData=document.SigForm.txtValue.value;
+                                SigPlus1.AutoKeyData=document.SigForm.Disclaimer.value;
+                                SigPlus1.AutoKeyFinish();
+                                SigPlus1.EncryptionMode=1;
+                                SigPlus1.SigCompressionMode=2;
+                                document.SigForm.SigData.value=SigPlus1.SigString;
+                                document.SigForm.submit();
+                                }
+                             }
+                          }
 
                           function OnClear() {
                              SigPlus1.ClearTablet(); //Clears the signature, in case of error or mistake

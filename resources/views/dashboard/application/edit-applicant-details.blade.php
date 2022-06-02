@@ -77,6 +77,36 @@
               </div>
               <!-- /.card-header -->
               <div class="card-body">
+                   <table class="table table-bordered table-condensed">
+                     <tr>
+                       <td>First name: </td>
+                       <td>{{ $applicant->first_name }}</td>
+                     </tr>
+                     <tr>
+                       <td>Middle name: </td>
+                       <td>{{ $applicant->middle_name }}</td>
+                     </tr>
+                     <tr>
+                       <td>Surname: </td>
+                       <td>{{ $applicant->surname }}</td>
+                     </tr>
+                     <tr>
+                       <td>Gender: </td>
+                       <td>{{ $applicant->gender }}</td>
+                     </tr>
+                     <tr>
+                       <td>Phone: </td>
+                       <td>{{ $applicant->phone }}</td>
+                     </tr>
+                     <tr>
+                       <td>Address: </td>
+                       <td>{{ $applicant->address }}</td>
+                     </tr>
+                     <tr>
+                       <td><a href="{{ url('application/reset-applicant-password-default?user_id='.$applicant->user_id) }}" class="btn btn-primary">Reset Password</a> </td>
+                       <td></td>
+                     </tr>
+                   </table>
                    @php
                       $email = [
                          'placeholder'=>'Email',
@@ -105,6 +135,7 @@
                   </div>
                   <div class="row">
                      <div class="form-group col-6">
+                      {!! Form::label('','Programme level') !!}
                       <select name="program_level_id" class="form-control" required>
                          <option value="">Select Program Level</option>
                          @foreach($awards as $award)
@@ -115,6 +146,7 @@
                       </select>
                     </div>
                     <div class="form-group col-6">
+                      {!! Form::label('','Entry mode') !!}
                       <select name="entry_mode" class="form-control" required>
                          <option value="">Select Highest Qualification</option>
                          <option value="DIRECT" @if($applicant->entry_mode == 'DIRECT') selected="selected" @endif>Form IV or VI (Direct)</option>
