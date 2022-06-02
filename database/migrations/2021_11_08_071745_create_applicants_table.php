@@ -41,6 +41,7 @@ class CreateApplicantsTable extends Migration
             $table->unsignedBigInteger('next_of_kin_id');
             $table->unsignedBigInteger('user_id');
             $table->tinyInteger('eligibility')->nullable();
+            $table->string('nacte_reg_no')->nullable();
             $table->string('birth_certificate')->nullable();
             $table->string('o_level_certificate')->nullable();
             $table->string('a_level_certificate')->nullable();

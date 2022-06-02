@@ -170,4 +170,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 
     Route::post('upload-camera-img',[ApplicantController::class,'uploadCameraImage']);
     Route::post('upload-signature',[ApplicantController::class, 'uploadSignature']);
+
+    Route::get('edit-applicant-details',[ApplicantController::class,'editApplicantDetails']);
+    Route::post('update-applicant-details',[ApplicantController::class,'updateApplicantDetails']);
+    Route::post('update-nacte-reg-no',[ApplicantController::class,'updateNacteRegNumber']);
 });

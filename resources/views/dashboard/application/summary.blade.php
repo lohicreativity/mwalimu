@@ -203,6 +203,11 @@
 
       <div class="container">
         <div class="row">
+           <div class="col-md-3">
+             <img src="{{ asset('dist/img/logo.png') }}" alt="Config::get('constants.SITE_NAME') }}" width="100">
+           </div>
+        </div>
+        <div class="row">
           <div class="col-md-12">
              <h3>Basic Information</h3>
              <table class="table table-bordered table-condensed">

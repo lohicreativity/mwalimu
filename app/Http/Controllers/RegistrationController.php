@@ -186,11 +186,12 @@ class RegistrationController extends Controller
           $h=$request->get('bottom');
 
           $image=public_path().'/uploads/'.$request->get('image');
+          $image1 = public_path().'/avatars/'.$request->get('image');
 
           $type = explode('.', $image)[1];
 
           list( $width,$height ) = getimagesize( $image );
-          $newwidth = 200;
+          $newwidth = 320;
           $newheight = 240;
 
           switch($type){
@@ -201,23 +202,36 @@ class RegistrationController extends Controller
             default : return "Unsupported picture type!";
           }
 
-          // $thumb = imagecreatetruecolor( $newwidth, $newheight );
-          // $source = $img; //imagecreatefromjpeg($image);
+          $thumb = imagecreatetruecolor( $newwidth, $newheight );
+          $source = $img; //imagecreatefromjpeg($image);
 
-          // imagecopyresized($thumb, $source, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);
+          imagecopyresized($thumb, $source, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);
           // imagejpeg($thumb,$image,100); 
+          switch($type){
+            case 'bmp': imagewbmp($thumb,$image); break;
+            case 'gif': imagegif($thumb,$image); break;
+            case 'jpeg': imagejpeg($thumb,$image,100); break;
+            case 'png': imagepng($thumb,$image); break;
+          }
 
+          switch($type){
+            case 'bmp': $img = imagecreatefromwbmp($image); break;
+            case 'gif': $img = imagecreatefromgif($image); break;
+            case 'jpeg': $img = imagecreatefromjpeg($image); break;
+            case 'png': $img = imagecreatefrompng($image); break;
+            default : return "Unsupported picture type!";
+          }
 
           $im = $img; //imagecreatefromjpeg($image);
           $dest = imagecreatetruecolor($w,$h);
             
-          imagecopyresampled($dest,$im,0,0,$x1,$y1,$w,$h,$width,$height);
+          imagecopyresampled($dest,$im,0,0,$x1,$y1,$w,$h,$w,$h);
 
           switch($type){
-            case 'bmp': imagewbmp($dest,$image); break;
-            case 'gif': imagegif($dest,$image); break;
-            case 'jpeg': imagejpeg($dest,$image); break;
-            case 'png': imagepng($dest,$image); break;
+            case 'bmp': imagewbmp($dest,$image1); break;
+            case 'gif': imagegif($dest,$image1); break;
+            case 'jpeg': imagejpeg($dest,$image1,100); break;
+            case 'png': imagepng($dest,$image1); break;
           }
           //imagejpeg($dest,$image, 100);
 

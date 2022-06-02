@@ -274,7 +274,7 @@
             </div>
             <!-- /.card -->
              
-            @if($gpa_less || count($a_level_necta_results) != 0)
+            @if(str_contains($applicant->programLevel->name,'Degree') && ( $gpa_less || count($a_level_necta_results) != 0))
             <div class="card card-default">
               <div class="card-header">
                 <h3 class="card-title">{{ __('Foundation Programmes (OUT) Results') }}</h3>
@@ -312,6 +312,38 @@
               </div>
               <div class="card-footer">
              <button type="submit" class="btn btn-primary">{{ __('Add OUT Results') }}</button>
+            </div>
+            {!! Form::close() !!}
+            </div>
+            @endif
+
+            @if(str_contains($applicant->programLevel->name,'Diploma'))
+            <div class="card card-default">
+              <div class="card-header">
+                <h3 class="card-title">{{ __('NACTE Registration Number') }}</h3>
+              </div>
+              <!-- /.card-header -->
+              @php
+                  $nacte_reg_number = [
+                     'placeholder'=>'N18-642-0000',
+                     'class'=>'form-control',
+                     'required'=>true
+                  ];
+              @endphp
+              {!! Form::open(['url'=>'application/update-nacte-reg-no','class'=>'ss-form-processing']) !!}
+              <div class="card-body">
+                  {!! Form::input('hidden','applicant_id',$applicant->id) !!}
+
+                  <div class="row">
+                  <div class="form-group col-4">
+                    {!! Form::label('','NACTE Reg mumber') !!}
+                    {!! Form::text('nacte_reg_no',null,$nacte_reg_number) !!}
+
+                  </div>
+                 </div>
+              </div>
+              <div class="card-footer">
+             <button type="submit" class="btn btn-primary">{{ __('Add NACTE Registration Number') }}</button>
             </div>
             {!! Form::close() !!}
             </div>

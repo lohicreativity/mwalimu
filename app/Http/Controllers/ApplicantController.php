@@ -29,6 +29,7 @@ use App\Domain\Application\Models\NacteResultDetail;
 use App\Domain\Application\Models\ApplicationWindow;
 use App\Domain\Application\Models\HealthInsurance;
 use App\Domain\Academic\Models\StudyAcademicYear;
+use App\Domain\Academic\Models\Award;
 use App\Http\Controllers\NHIFService;
 use Illuminate\Support\Facades\Http;
 use App\Models\User;
@@ -355,9 +356,9 @@ class ApplicantController extends Controller
      */
     public function selectPrograms(Request $request)
     {
-        // if(!ApplicationWindow::where('campus_id',session('applicant_campus_id'))->where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('status','ACTIVE')->first()){
-        //      return redirect()->to('application/submission')->with('error','Application window already closed');
-        // }
+        if(!ApplicationWindow::where('campus_id',session('applicant_campus_id'))->where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('status','ACTIVE')->first()){
+             return redirect()->to('application/submission')->with('error','Application window already closed');
+        }
         // $window = ApplicationWindow::where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('campus_id',session('applicant_campus_id'))->first();
 
         $applicant = User::find(Auth::user()->id)->applicants()->with(['selections.campusProgram.program','selections'=>function($query){
@@ -416,9 +417,9 @@ class ApplicantController extends Controller
                     return redirect()->back()->with('error',$program->program->name.' does not have entry requirements');
                   }
 
-                  if($program->entryRequirements[0]->max_capacity == null){
-                    return redirect()->back()->with('error',$program->program->name.' does not have maximum capacity in entry requirements');
-                  }
+                  // if($program->entryRequirements[0]->max_capacity == null){
+                  //   return redirect()->back()->with('error',$program->program->name.' does not have maximum capacity in entry requirements');
+                  // }
 
                    // Certificate
                    if(str_contains($award->name,'Certificate')){
@@ -1221,6 +1222,71 @@ curl_close($curl_handle);
     public function uploadSignature(Request $request)
     {
         
+    }
+
+    /**
+     * Edit applicant details
+     */
+    public function editApplicantDetails(Request $request)
+    {
+        $staff = User::find(Auth::user()->id)->staff;
+        $data = [
+            'applicant'=>$request->get('index_number')? Applicant::where('index_number',$request->get('index_number'))->where('campus_id',$staff->campus_id)->first() : null,
+            'awards'=>Award::all(),
+        ];
+        return view('dashboard.application.edit-applicant-details',$data)->withTitle('Edit Applicant Details');
+    }
+
+    /**
+     * Update applicant details
+     */
+    public function updateApplicantDetails(Request $request)
+    {
+        $validation = Validator::make($request->all(),[
+            'phone'=>'required|min:12|max:12',
+            'email'=>'required|email'
+        ]);
+
+        if($validation->fails()){
+           if($request->ajax()){
+              return response()->json(array('error_messages'=>$validation->messages()));
+           }else{
+              return redirect()->back()->withInput()->withErrors($validation->messages());
+           }
+        }
+
+        $applicant = Applicant::find($request->get('applicant_id'));
+        $applicant->phone = $request->get('phone');
+        $applicant->email = $request->get('email');
+        $applicant->entry_mode = $request->get('entry_mode');
+        $applicant->program_level_id = $request->get('program_level_id');
+        $applicant->save();
+
+        return redirect()->back()->with('message','Applicant details updated successfully');
+    }
+
+    /**
+     * Update NACTE registration number
+     */
+    public function updateNacteRegNumber(Request $request)
+    {
+        $validation = Validator::make($request->all(),[
+            'nacte_reg_no'=>'required',
+        ]);
+
+        if($validation->fails()){
+           if($request->ajax()){
+              return response()->json(array('error_messages'=>$validation->messages()));
+           }else{
+              return redirect()->back()->withInput()->withErrors($validation->messages());
+           }
+        }
+
+        $applicant = Applicant::find($request->get('applicant_id'));
+        $applicant->nacte_reg_no = $request->get('nacte_reg_no');
+        $applicant->save();
+
+        return redirect()->back()->with('message','NACTE registration number updated successfully');
     }
 
 }

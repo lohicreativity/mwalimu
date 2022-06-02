@@ -258,7 +258,12 @@
                   <p>{{ __('Application Dashboard') }}</p>
                 </a>
               </li>
-
+              <li class="nav-item">
+                <a href="{{ url('application/edit-applicant-details') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Edit Applicant Details</p>
+                </a>
+              </li>
               <li class="nav-item">
                 <a href="{{ url('application/search-for-applicant') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>

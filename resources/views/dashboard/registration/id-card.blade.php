@@ -95,16 +95,19 @@
                               <input type="hidden" value="" id="right" name="right">
                               <input type="hidden" value="" id="bottom" name="bottom">
                               <input type="hidden" value="{{$student->image}}" name="image">
-                              <input type="submit" name="crop_image" value="Crop Image">
+                              <input type="submit" name="crop_image" value="Crop Image" class="btn btn-primary">
                             </form>
+                            <div id="crop_result"  class="ss-margin-top">
+                              <img src="{{ asset('avatars/'.$student->image) }}" onerror="this.src='{{ asset("img/user-avatar.png") }}'">
+                            </div>
                          </td>
                      </tr>
                      <tr>
                        <td>
-                         <div id="ss-my-camera"></div>
-                         <input type=button value="Configure" onClick="configure()">
-                         <input type=button value="Take Snapshot" onClick="take_snapshot()">
-                         <input type=button value="Save Snapshot" onClick="saveSnap({{$student->id}})">
+                         <div id="ss-my-camera" class="ss-margin-bottom"></div>
+                         <input type=button value="Configure" onClick="configure()" class="btn btn-primary">
+                         <input type=button value="Take Snapshot" onClick="take_snapshot()" class="btn btn-primary">
+                         <input type=button value="Save Snapshot" onClick="saveSnap({{$student->id}})" class="btn btn-primary">
                        </td>
                        <td>
                          <div id="ss-camera-results"></div>

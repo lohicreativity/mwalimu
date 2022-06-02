@@ -85,7 +85,7 @@
               </div>
               <!-- /.card-header -->
               <div class="card-body">
-                {{-- {!! Form::open(['url'=>'application/application-window-campus-programs','method'=>'GET']) !!}
+              {{--  {!! Form::open(['url'=>'application/application-window-campus-programs','method'=>'GET']) !!}
                 {!! Form::input('hidden','application_window_id',$request->get('application_window_id')) !!}
                 {!! Form::input('hidden','campus_id',$request->get('campus_id')) !!}
                 <div class="input-group ss-stretch">
@@ -95,10 +95,7 @@
                  </span>
                 </div>
                 {!! Form::close() !!} --}}
-                @php
-                  $count = 0;
-                @endphp
-                <table id="example2" class="table table-bordered table-hover ss-margin-top ss-paginated-table">
+                <table id="example2" class="table table-bordered table-hover ss-margin-top">
                   <thead>
                   <tr>
                     <th>Year</th>
@@ -108,15 +105,17 @@
                   </tr>
                   </thead>
                   <tbody>
-                  @foreach($window->campusPrograms as $key=>$prog)
+                  
                   <tr>
                     <td>{{ $window->begin_date }} - {{ $window->end_date }}</td>
                     <td>{{ $window->intake->name }}</td>
                     <td>
+                        @foreach($window->campusPrograms as $key=>$prog)
                         <p class="ss-font-xs ss-no-margin">{{ $prog->program->name }}</p>
+                        @endforeach
                     </td>
                     <td>
-                      @if($count == 0)
+                    
                       <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-edit-academic-window-{{ $window->id }}">
                               <i class="fas fa-plus">
                               </i>
@@ -181,14 +180,10 @@
                         <!-- /.modal-dialog -->
                       </div>
                       <!-- /.modal -->
-                      @endif
+                      
 
-                      @php
-                        $count++;
-                      @endphp
                     </td>
                   </tr>
-                  @endforeach
                   </tbody>
                 </table>
               </div>
