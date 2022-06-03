@@ -212,6 +212,9 @@
         text-align: justify;
         margin-bottom: 10px;
      }
+     @page {
+     margin: 0px;
+    }
   </style>
 </head>
 <body>
