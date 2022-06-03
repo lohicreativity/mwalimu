@@ -271,6 +271,8 @@ class RegistrationController extends Controller
             'semester'=>$semester,
             'study_academic_year'=>$study_academic_year
         ];
+
+        return $data['students'];
         return view('dashboard.registration.print-id-card-bulk',$data)->withTitle('Print ID Card Bulk');
         // $pdf = PDF::loadView('dashboard.registration.print-id-card-bulk',$data,[],[
         //        'format'=>'A7',
