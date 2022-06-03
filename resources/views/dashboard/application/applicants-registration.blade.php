@@ -47,8 +47,6 @@
                <!-- /.card-header -->
                <div class="card-body">
                   {!! Form::open(['url'=>'application/applicants-registration','method'=>'GET']) !!}
-
-                  {!! Form::input('hidden','application_window_id',$request->get('application_window_id')) !!}
                   <div class="input-group">
                    <input type="text" name="query" placeholder="Search for applicant name" class="form-control">
                    <input type="text" name="index_number" placeholder="Search for applicant index number" class="form-control">

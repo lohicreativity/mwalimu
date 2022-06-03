@@ -1223,6 +1223,7 @@ curl_close($curl_handle);
     {
         $upload_dir = public_path().'/signatures/';
         $file_name = 'sign_'.date('YmdHis').'.png';
+        $output_file_name = 'sign_trans_'.date('YmdHis').'.png';
         $img = $request->get('sign_image');
         $img = str_replace('data:image/png;base64,', '', $img);
         $img = str_replace(' ', '+', $img);
@@ -1230,8 +1231,13 @@ curl_close($curl_handle);
         $file = $upload_dir.$file_name;
         $success = file_put_contents($file, $data);
 
+        $img = imagecreatefrompng($file); //or whatever loading function you need
+        $white = imagecolorallocate($img, 255, 255, 255);
+        imagecolortransparent($img, $white);
+        imagepng($img, $upload_dir.$output_file_name);
+
         $student = Student::find($request->get('student_id'));
-        $student->signature = $file_name;
+        $student->signature = $output_file_name;
         $student->save();
         return response()->json(['message','Signature uploaded successfully','status'=>'success']);
     }

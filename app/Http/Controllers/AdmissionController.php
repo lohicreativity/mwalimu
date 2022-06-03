@@ -133,7 +133,7 @@ class AdmissionController extends Controller
 
         $loan_allocation = LoanAllocation::where('index_number',$applicant->index_number)->where('year_of_study',1)->where('study_academic_year_id',$study_academic_year->id)->first();
         if($loan_allocation){
-             if($applicant->country->code == 'TZ'){
+             if(str_contains($applicant->nationality,'Tanzania')){
                  $amount = $program_fee->amount_in_tzs - $loan_allocation->tuition_fee;
                  $amount_loan = $loan_allocation->tuition_fee;
                  $currency = 'TZS';
@@ -143,7 +143,7 @@ class AdmissionController extends Controller
                  $currency = 'USD';
              }
         }else{
-             if($applicant->country->code == 'TZ'){
+             if(str_contains($applicant->nationality,'Tanzania')){
                  $amount = $program_fee->amount_in_tzs;
                  $amount_loan = 0.00;
                  $currency = 'TZS';
@@ -154,7 +154,7 @@ class AdmissionController extends Controller
              }
         }
 
-             if($applicant->country->code == 'TZ'){
+             if(str_contains($applicant->nationality,'Tanzania')){
                  $amount_without_loan = $program_fee->amount_in_tzs;
              }else{
                  $amount_without_loan = $program_fee->amount_in_usd;
@@ -208,7 +208,7 @@ class AdmissionController extends Controller
     		$hostel_fee = FeeAmount::whereHas('feeItem',function($query){
     			$query->where('name','LIKE','%Hostel%');
     		})->where('study_academic_year_id',$study_academic_year->id)->first();
-    		if($applicant->country->code == 'TZ'){
+    		if(str_contains($applicant->nationality,'Tanzania')){
 	             $amount = $program_fee->amount_in_tzs;
 	             $currency = 'TZS';
 	         }else{
@@ -269,7 +269,7 @@ class AdmissionController extends Controller
 
         $other_fees_tzs = $other_fees_tzs + $quality_assurance_fee->amount_in_tzs;
         $other_fees_usd = $other_fees_usd + $quality_assurance_fee->amount_in_usd;
-        if($applicant->country->code == 'TZ'){
+        if(str_contains($applicant->nationality,'Tanzania')){
         	$other_fees = $other_fees_tzs;
         	$currency = 'TZS';
         }else{

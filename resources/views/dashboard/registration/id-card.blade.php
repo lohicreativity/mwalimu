@@ -260,7 +260,9 @@
                           function onSign()
                           {
                             if(IsSigWebInstalled()){
-                              var ctx = document.getElementById('cnv').getContext('2d');
+                              var canvas = document.getElementById('cnv');
+                              var ctx = canvas.getContext('2d');
+                              ctx.clearRect(0, 0, canvas.width, canvas.height);
                               SetDisplayXSize( 500 );
                               SetDisplayYSize( 100 );
                               SetTabletState(0, tmr);
@@ -309,7 +311,14 @@
                               SetImagePenWidth(5);
                               GetSigImageB64(SigImageCallback);
 
+                              // var ctx = document.getElementById('cnv').getContext('2d');
+                              // ctx.clearRect(0, 0, ctx.width, ctx.height);
+
                               var canvas = document.getElementById("cnv");
+                              var ctx = canvas.getContext('2d');
+                              // ctx.clearRect(0, 0, canvas.width, canvas.height);
+                              document.getElementById('cnv').style.backgroundColor = "transparent";
+                              document.getElementById('cnv').style.opacity = "1";
                               var dataURL = canvas.toDataURL("image/png");
                               document.getElementById('sign_data').value = dataURL;
 
