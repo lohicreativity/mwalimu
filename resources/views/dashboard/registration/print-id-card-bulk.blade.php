@@ -212,12 +212,6 @@
         text-align: justify;
         margin-bottom: 10px;
      }
-     @page {
-        header: page-header;
-        footer: page-footer;
-        text-align: center;
-        border-top: 2px solid #000;
-      }
   </style>
 </head>
 <body>
@@ -281,10 +275,5 @@
      <pagebreak>
     @endforeach
 
-    <!-- <script type="text/javascript">
-       document.getElementById('ss-id-card').addEventListener('click',function(e){
-             window.print();
-       });
-    </script> -->
 </body>
 </html>
