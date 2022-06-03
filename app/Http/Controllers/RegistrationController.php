@@ -266,7 +266,7 @@ class RegistrationController extends Controller
         $semester = Semester::where('status','ACTIVE')->first();
         $data = [
             'students'=>Registration::with(['student.campusProgram.campus','student.campusProgram.program'])->whereHas('student',function($query) use($request){
-                    // $query->where('campus_program_id',$request->get('campus_program_id'));
+                    $query->where('campus_program_id',$request->get('campus_program_id'));
                 })->where('study_academic_year_id',$study_academic_year->id)->get(),
             'semester'=>$semester,
             'study_academic_year'=>$study_academic_year
