@@ -29,7 +29,7 @@ Route::get('test',function(){
 	// return $response;
 
 	// return $result;
-	return phpinfo();
+	// return phpinfo();
 });
 
 Route::view('/', 'auth.login');
