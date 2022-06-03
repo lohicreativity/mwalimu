@@ -1222,7 +1222,7 @@ curl_close($curl_handle);
     public function uploadSignature(Request $request)
     {
         $upload_dir = public_path().'/signatures/';
-        $file_name = 'sign_'.mktime().'.png';
+        $file_name = 'sign_'.date('YmdHis').'.png';
         $img = $request->get('sign_image');
         $img = str_replace('data:image/png;base64,', '', $img);
         $img = str_replace(' ', '+', $img);
