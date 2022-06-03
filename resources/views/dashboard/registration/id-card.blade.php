@@ -133,10 +133,10 @@
 
                       <form action="https://www.sigplusweb.com/sigwebtablet_demo.html#" name="FORM1">
                         <p>
-                          <input id="SignBtn" name="SignBtn" type="button" value="Sign" onclick="javascript:onSign()">&nbsp;&nbsp;&nbsp;&nbsp;
-                          <input id="button1" name="ClearBtn" type="button" value="Clear" onclick="javascript:onClear()">&nbsp;&nbsp;&nbsp;&nbsp;
+                          <input id="SignBtn" name="SignBtn" type="button" value="Sign" onclick="javascript:onSign()" class="btn btn-primary">&nbsp;&nbsp;&nbsp;&nbsp;
+                          <input id="button1" name="ClearBtn" type="button" value="Clear" onclick="javascript:onClear()" class="btn btn-primary">&nbsp;&nbsp;&nbsp;&nbsp;
 
-                          <input id="button2" name="DoneBtn" type="button" value="Done" onclick="javascript:onDone()">&nbsp;&nbsp;&nbsp;&nbsp;
+                          <input id="button2" name="DoneBtn" type="button" value="Done" onclick="javascript:onDone()" class="btn btn-primary">&nbsp;&nbsp;&nbsp;&nbsp;
 
                           <input type="HIDDEN" name="bioSigData">
                             <input type="HIDDEN" name="sigImgData">
