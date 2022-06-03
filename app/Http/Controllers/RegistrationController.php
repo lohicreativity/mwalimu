@@ -275,7 +275,6 @@ class RegistrationController extends Controller
         $pdf = PDF::loadView('dashboard.registration.print-id-card-bulk',$data,[],[
                'format'=>'A7',
                'mode' => 'utf-8',
-               'allow_charset_conversion' => true,
                'margin_top'=>0,
                'margin_bottom'=>0,
                'margin_left'=>0,
