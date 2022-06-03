@@ -283,8 +283,7 @@ class RegistrationController extends Controller
                'display_mode'=>'fullpage',
                // 'format'=>[500,400]
         ]);
-        $pdf->header('Content-Type','application/pdf');
-        return  $pdf->stream(); 
+        return  $pdf->stream('document.pdf'); 
     }
 
 }
