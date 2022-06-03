@@ -7,6 +7,7 @@ use App\Http\Controllers\GePG\BillController;
 use App\Http\Controllers\GePG\ConsumerController;
 use App\Http\Controllers\GePG\GePGController;
 use App\Http\Controllers\GePG\GePGResponseController;
+use Illuminate\Support\Facades\Http;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,8 +24,12 @@ Route::get('test',function(){
 	// $payment = App\Domain\Finance\Models\NactePayment::latest()->first();
 	// $result = Illuminate\Support\Facades\Http::get('https://www.nacte.go.tz/nacteapi/index.php/api/payment/'.$payment->reference_no.'/JKb6229cfce105c6.0fb7aaa46fe8bc757813ab7f5391c58d90f891e4c86badb055b90896b8206d33.4160cea2b30cf96a8977d2de8141a655213b737d');
 
+	// $response = Http::get('https://www.nacte.go.tz/nacteapi/index.php/api/particulars/NS1198.0038.2009-4/'.config('constants.NACTE_API_KEY'));
+
+	// return $response;
+
 	// return $result;
-	return unserialize('N;');
+	return phpinfo();
 });
 
 Route::view('/', 'auth.login');

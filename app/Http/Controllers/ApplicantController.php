@@ -1300,6 +1300,10 @@ curl_close($curl_handle);
            }
         }
 
+        $response = Http::get('https://www.nacte.go.tz/nacteapi/index.php/api/particulars/'.str_replace('/', '.', $request->get('nacte_reg_no')).'-4/'.config('constants.NACTE_API_KEY'));
+        if(json_decode($response)->code != 200){
+            return redirect()->back()->with('error','Invalid NACTE Registration number');
+        }
         $applicant = Applicant::find($request->get('applicant_id'));
         $applicant->nacte_reg_no = $request->get('nacte_reg_no');
         $applicant->save();
