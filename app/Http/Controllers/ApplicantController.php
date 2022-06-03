@@ -1221,7 +1221,19 @@ curl_close($curl_handle);
      */
     public function uploadSignature(Request $request)
     {
-        
+        $upload_dir = public_path(). '/signatures/';
+        $filename = 'sign_'.mktime().'png';
+        $img = $request->get('sign_image');
+        $img = str_replace('data:image/png;base64,', '', $img);
+        $img = str_replace(' ', '+', $img);
+        $data = base64_decode($img);
+        $file = $upload_dir.$filename;
+        $success = file_put_contents($file, $data);
+
+        $student = Student::find($request->get('student_id'));
+        $student->signature = $filename;
+        $student->save();
+        return response()->json(['message','Signature uploaded successfully','status'=>'success']);
     }
 
     /**

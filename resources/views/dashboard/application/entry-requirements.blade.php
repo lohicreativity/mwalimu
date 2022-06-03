@@ -222,15 +222,7 @@
                     </select>
                   </div>
                   {!! Form::input('hidden','application_window_id',$application_window->id) !!}
-                   <div class="form-group col-3">
-                    {!! Form::label('','Equivalent Must Subjects') !!}
-                    <select name="equivalent_must_subjects[]" class="form-control ss-select-tags" multiple="multiple">
-                       <option value="ENGLISH">English</option>
-                       <option value="KISWAHILI">Kiswahili</option>
-                       <option value="GEOGRAPHY">Geography</option>
-                       <option value="HISTORY">History</option>
-                    </select>
-                  </div>
+                   
                    <div class="form-group col-3">
                     {!! Form::label('','Open Equivalent GPA') !!}
                     {!! Form::text('open_equivalent_gpa',null,$open_equivalent_gpa) !!}
@@ -444,7 +436,15 @@
                     </select>
                   </div>
                   {!! Form::input('hidden','application_window_id',$application_window->id) !!}
-                 
+                 <div class="form-group col-3">
+                    {!! Form::label('','Equivalent Must Subjects') !!}
+                    <select name="equivalent_must_subjects[]" class="form-control ss-select-tags" multiple="multiple">
+                       <option value="ENGLISH">English</option>
+                       <option value="KISWAHILI">Kiswahili</option>
+                       <option value="GEOGRAPHY">Geography</option>
+                       <option value="HISTORY">History</option>
+                    </select>
+                  </div>
                    <div class="form-group col-3">
                     {!! Form::label('','Open Equivalent GPA') !!}
                     {!! Form::text('open_equivalent_gpa',null,$open_equivalent_gpa) !!}

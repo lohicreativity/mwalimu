@@ -20,6 +20,7 @@ class VerifyCsrfToken extends Middleware
         'response/gepg/receipt',
         'response/gepg/reconcile',
         'bills/reconcile',
-        'application/upload-camera-img'
+        'application/upload-camera-img',
+        'application/upload-signature'
     ];
 }

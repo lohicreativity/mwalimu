@@ -2,6 +2,8 @@
 
 @section('content')
 
+
+
 <div class="wrapper">
 
   <!-- Preloader -->
@@ -115,99 +117,248 @@
                      </tr>
                      <tr>
                        <td>
-                         <div id="signature" style=''>
-                           <canvas id="signature-pad" class="signature-pad" width="300px" height="200px"></canvas>
-                          </div><br/>
-                          <input type='button' id='click' value='preview'><br/>
-                          <textarea id='output'></textarea><br/>
-                       </td>
-                       <td>
-                         <img src='' id='sign_prev' style='display: none;' />
-                       </td>
-                     </tr>
-                     <tr>
-                       <td>
-                         <table border=1 cellpadding="0">
-                           <tr><td>   
-                             <object classid="clsid:69A40DA3-4D42-11D0-86B0-0000C025864A" height="75"
-                                    id="SigPlus1" name="SigPlus1"
-                                    style="height: 180px; width: 320px; left: 0px; top: 0px;" 
-                                    viewastext>
-                          <param name="_Version" value="131095">
-                          <param name="_ExtentX" value="4842">
-                          <param name="_ExtentY" value="1323">
-                          <param name="_StockProps" value="0">
-                                    </object>
-                           </td></tr>
-                        </table>
-                        
+                         <table border="1" cellpadding="0" width="500">
+                      <tbody><tr>
+                        <td height="100" width="500">
+                          <canvas id="cnv" name="cnv" width="500" height="100"></canvas>
+                        </td>
+                      </tr>
+                    </tbody></table>
 
-                        <form id="SigForm" method="get" name="SigForm">
 
+                    <br>
+                      <canvas name="SigImg" id="SigImg" width="500" height="100"></canvas>
+                      <p id="sigWebVrsnNote" style="font-family: Arial;">SigWeb 1.7.0 installed</p>
+
+
+                      <form action="https://www.sigplusweb.com/sigwebtablet_demo.html#" name="FORM1">
                         <p>
-                        <input id="SignBtn" name="SignBtn" type="button" value="Sign" onclick="SetSig()">&nbsp;&nbsp;&nbsp;&nbsp;
+                          <input id="SignBtn" name="SignBtn" type="button" value="Sign" onclick="javascript:onSign()">&nbsp;&nbsp;&nbsp;&nbsp;
+                          <input id="button1" name="ClearBtn" type="button" value="Clear" onclick="javascript:onClear()">&nbsp;&nbsp;&nbsp;&nbsp;
 
-                        <input id="button1" name="ClearBtn" type="button" value="Clear" onclick="OnClear()">&nbsp;&nbsp;&nbsp;&nbsp;
+                          <input id="button2" name="DoneBtn" type="button" value="Done" onclick="javascript:onDone()">&nbsp;&nbsp;&nbsp;&nbsp;
 
-                        <input id="button2" name="Cancel" type="button" value="Cancel" onclick="OnCancel()">&nbsp;&nbsp;&nbsp;&nbsp;
+                          <input type="HIDDEN" name="bioSigData">
+                            <input type="HIDDEN" name="sigImgData">
+                              <br>
+                                <br>
+                                  <input name="sigStringData" type="hidden">
+                                  <input name="sigImageData" type="hidden">
+                                  <input name="sign_data" type="hidden" id="sign_data">
+                                </p>
+                              </form>
 
-                        <input id="submit1" name="Save" type="submit" value="Save" onclick="OnSave()">&nbsp;&nbsp;&nbsp;&nbsp;
-                        </p>
+                              <br><br>
+                        <p id="SigWebVersion"></p>
+                        <p id="SigWebTabletJSVersion"></p>
+                        <p id="CertificateExpirationDate"></p>
 
-                        </FORM>
+                        <script type="text/javascript">
+                          var tmr;
 
-                        <SCRIPT LANGUAGE=Javascript>
-<!--                      function SetSig() {
-                             if(document.SigForm.txtValue.value==""){
-                                alert("Please enter your first name to continue");
-                                return false;
-                             }
-                             else
-                             {
-                                if(SigPlus1.NumberOfTabletPoints==0){
-                                   alert("Please sign to continue");
-                                   return false;
+                          var resetIsSupported = false;
+                          var SigWeb_1_6_4_0_IsInstalled = false; //SigWeb 1.6.4.0 and above add the Reset() and GetSigWebVersion functions
+                          var SigWeb_1_7_0_0_IsInstalled = false; //SigWeb 1.7.0.0 and above add the GetDaysUntilCertificateExpires() function
+
+                          window.onload = function(){
+                            if(IsSigWebInstalled()){
+                              var sigWebVer = "";
+                              try{
+                                sigWebVer = GetSigWebVersion();
+                              } catch(err){console.log("Unable to get SigWeb Version: "+err.message)}
+                              
+                              if(sigWebVer != ""){        
+                                try {
+                                  SigWeb_1_7_0_0_IsInstalled = isSigWeb_1_7_0_0_Installed(sigWebVer);
+                                } catch( err ){console.log(err.message)};
+                                //if SigWeb 1.7.0.0 is installed, then enable corresponding functionality
+                                if(SigWeb_1_7_0_0_IsInstalled){
+                                   
+                                  resetIsSupported = true;
+                                  try{
+                                    var daysUntilCertExpires = GetDaysUntilCertificateExpires();
+                                    document.getElementById("daysUntilExpElement").innerHTML = "SigWeb Certificate expires in " + daysUntilCertExpires + " days.";
+                                  } catch( err ){console.log(err.message)};
+                                  var note = document.getElementById("sigWebVrsnNote");
+                                  note.innerHTML = "SigWeb 1.7.0 installed";
+                                } else {
+                                  try{
+                                    SigWeb_1_6_4_0_IsInstalled = isSigWeb_1_6_4_0_Installed(sigWebVer);
+                                    //if SigWeb 1.6.4.0 is installed, then enable corresponding functionality           
+                                  } catch( err ){console.log(err.message)};
+                                  if(SigWeb_1_6_4_0_IsInstalled){
+                                    resetIsSupported = true;
+                                    var sigweb_link = document.createElement("a");
+                                    sigweb_link.href = "https://www.topazsystems.com/software/sigweb.exe";
+                                    sigweb_link.innerHTML = "https://www.topazsystems.com/software/sigweb.exe";
+
+                                    var note = document.getElementById("sigWebVrsnNote");
+                                    note.innerHTML = "SigWeb 1.6.4 is installed. Install the newer version of SigWeb from the following link: ";
+                                    note.appendChild(sigweb_link);
+                                  } else{
+                                    var sigweb_link = document.createElement("a");
+                                    sigweb_link.href = "https://www.topazsystems.com/software/sigweb.exe";
+                                    sigweb_link.innerHTML = "https://www.topazsystems.com/software/sigweb.exe";
+
+                                    var note = document.getElementById("sigWebVrsnNote");
+                                    note.innerHTML = "A newer version of SigWeb is available. Please uninstall the currently installed version of SigWeb and then install the new version of SigWeb from the following link: ";
+                                    note.appendChild(sigweb_link);
+                                  } 
+                                } 
+                              } else{
+                                //Older version of SigWeb installed that does not support retrieving the version of SigWeb (Version 1.6.0.2 and older)
+                                var sigweb_link = document.createElement("a");
+                                sigweb_link.href = "https://www.topazsystems.com/software/sigweb.exe";
+                                sigweb_link.innerHTML = "https://www.topazsystems.com/software/sigweb.exe";
+
+                                var note = document.getElementById("sigWebVrsnNote");
+                                note.innerHTML = "A newer version of SigWeb is available. Please uninstall the currently installed version of SigWeb and then install the new version of SigWeb from the following link: ";
+                                note.appendChild(sigweb_link);
+                              }
+                            }
+                            else{
+                              alert("Unable to communicate with SigWeb. Please confirm that SigWeb is installed and running on this PC.");
+                            }
+                            }
+                          
+                          function isSigWeb_1_6_4_0_Installed(sigWebVer){
+                            var minSigWebVersionResetSupport = "1.6.4.0";
+
+                            if(isOlderSigWebVersionInstalled(minSigWebVersionResetSupport, sigWebVer)){
+                              console.log("SigWeb version 1.6.4.0 or higher not installed.");
+                              return false;
+                            }
+                            return true;
+                          }
+                          
+                          function isSigWeb_1_7_0_0_Installed(sigWebVer) {
+                          var minSigWebVersionGetDaysUntilCertificateExpiresSupport = "1.7.0.0";
+                          
+                          if(isOlderSigWebVersionInstalled(minSigWebVersionGetDaysUntilCertificateExpiresSupport, sigWebVer)){
+                              console.log("SigWeb version 1.7.0.0 or higher not installed.");
+                              return false;
+                            }
+                            return true;
+                          }
+
+                          function isOlderSigWebVersionInstalled(cmprVer, sigWebVer){    
+                              return isOlderVersion(cmprVer, sigWebVer);
+                          }
+
+                          function isOlderVersion (oldVer, newVer) {
+                            const oldParts = oldVer.split('.')
+                            const newParts = newVer.split('.')
+                            for (var i = 0; i < newParts.length; i++) {
+                              const a = parseInt(newParts[i]) || 0
+                              const b = parseInt(oldParts[i]) || 0
+                              if (a < b) return true
+                              if (a > b) return false
+                            }
+                            return false;
+                          }
+
+                          function onSign()
+                          {
+                            if(IsSigWebInstalled()){
+                              var ctx = document.getElementById('cnv').getContext('2d');
+                              SetDisplayXSize( 500 );
+                              SetDisplayYSize( 100 );
+                              SetTabletState(0, tmr);
+                              SetJustifyMode(0);
+                              ClearTablet();
+                              if(tmr == null)
+                              {
+                                tmr = SetTabletState(1, ctx, 50);
+                              }
+                              else
+                              {
+                                SetTabletState(0, tmr);
+                                tmr = null;
+                                tmr = SetTabletState(1, ctx, 50);
+                              }
+                            } else{
+                              alert("Unable to communicate with SigWeb. Please confirm that SigWeb is installed and running on this PC.");
+                            }
+                          }
+
+                          function onClear()
+                          {
+                            ClearTablet();
+                          }
+
+                          function onDone()
+                          {
+                            if(NumberOfTabletPoints() == 0)
+                            {
+                              alert("Please sign before continuing");
+                            }
+                            else
+                            {
+                              SetTabletState(0, tmr);
+                              //RETURN TOPAZ-FORMAT SIGSTRING
+                              SetSigCompressionMode(1);
+                              document.FORM1.bioSigData.value=GetSigString();
+                              document.FORM1.sigStringData.value = GetSigString();
+                              // document.getElementById('sign_prev').src = GetSigString();
+                              //this returns the signature in Topaz's own format, with biometric information
+
+
+                              //RETURN BMP BYTE ARRAY CONVERTED TO BASE64 STRING
+                              SetImageXSize(500);
+                              SetImageYSize(100);
+                              SetImagePenWidth(5);
+                              GetSigImageB64(SigImageCallback);
+
+                              var canvas = document.getElementById("cnv");
+                              var dataURL = canvas.toDataURL("image/png");
+                              document.getElementById('sign_data').value = dataURL;
+
+                              var xhttp = new XMLHttpRequest();
+                              xhttp.onreadystatechange = function() {
+                                if (this.readyState == 4 && this.status == 200) {
+                                  // document.getElementById("demo").innerHTML = this.responseText;
+                                  // alert(this.responseText);
+                                  window.location.reload();
                                 }
-                                else{
-                                SigPlus1.TabletState=0;
-                                SigPlus1.AutoKeyStart();
-                                SigPlus1.AutoKeyData=document.SigForm.txtValue.value;
-                                SigPlus1.AutoKeyData=document.SigForm.Disclaimer.value;
-                                SigPlus1.AutoKeyFinish();
-                                SigPlus1.EncryptionMode=1;
-                                SigPlus1.SigCompressionMode=2;
-                                document.SigForm.SigData.value=SigPlus1.SigString;
-                                document.SigForm.submit();
-                                }
-                             }
+                              };
+                              xhttp.open("POST", "/application/upload-signature", true);
+                              xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                              xhttp.send('sign_image='+dataURL+'&student_id={{ $student->id }}');
+                            }
                           }
 
-                          function OnClear() {
-                             SigPlus1.ClearTablet(); //Clears the signature, in case of error or mistake
+                          function SigImageCallback( str )
+                          {
+                            document.FORM1.sigImageData.value = str;
                           }
 
-                          function OnCancel() {
-                             SigPlus1.TabletState = 0; //Turns tablet off
+                          function endDemo()
+                          {
+                            ClearTablet();
+                            SetTabletState(0, tmr);
                           }
 
-                          function OnSign() {
-                          SigPlus1.TabletState = 1; //Turns tablet on
+                          function close(){
+                            if(resetIsSupported){
+                              Reset();
+                            } else{
+                              endDemo();
+                            }
                           }
 
-
-
-                          function OnSave() {
-
-                          SigPlus1.TabletState = 0; //Turns tablet off
-                          SigPlus1.SigCompressionMode = 1; //Compresses the signature at a 2.5 to 1 ratio, making it smaller...to display the signature again later, you WILL HAVE TO set the SigCompressionMode of the new SigPlus object = 1, also
-
-                          alert("The signature you have taken is the following data: " + SigPlus1.SigString);
-                          //The signature is now taken, and you may access it using the SigString property of SigPlus. This SigString is the actual signature, in ASCII format. You may pass this string value like you would any other String. To display the signature again, you simply pass this String back to the SigString property of SigPlus (BE SURE TO SET SigCompressionMode=1 PRIOR TO REASSIGNING THE SigString)
-
-                          }
-
-                          //-->
-                          </SCRIPT>
+                          //Perform the following actions on
+                          //  1. Browser Closure
+                          //  2. Tab Closure
+                          //  3. Tab Refresh
+                          window.onbeforeunload = function(evt){
+                            close();
+                            clearInterval(tmr);
+                            evt.preventDefault(); //For Firefox, needed for browser closure
+                          };
+                        </script>
+                       </td>
+                       <td>
+                           <img src="{{ asset('signatures/'.$student->signature) }}" id="sign_prev">
                        </td>
                      </tr>
                      <tr>

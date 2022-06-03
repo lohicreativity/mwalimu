@@ -179,14 +179,6 @@ $('#your-parent .collapse').on('show.bs.collapse', function (e) {
         //window.open(data);
        });
 
-      GetSigImageB64(SigImageCallback); 
-      function SigImageCallback( str ) {  
-        // document.FORM1.sigImageData.value = str; 
-        $('#output').val(str);
-        $("#sign_prev").show();
-        $("#sign_prev").attr("src",str);
-      } 
-
     //  var input = document.querySelector("#ss-phone");
     //  window.intlTelInput(input,{
     //   hiddenInput: "full_phone",
