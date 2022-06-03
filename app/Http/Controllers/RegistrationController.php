@@ -271,19 +271,19 @@ class RegistrationController extends Controller
             'semester'=>$semester,
             'study_academic_year'=>$study_academic_year
         ];
-        // return view('dashboard.registration.print-id-card-bulk',$data)->withTitle('Print ID Card Bulk');
-        $pdf = PDF::loadView('dashboard.registration.print-id-card-bulk',$data,[],[
-               'format'=>'A7',
-               'mode' => 'utf-8',
-               'margin_top'=>0,
-               'margin_bottom'=>0,
-               'margin_left'=>0,
-               'margin_right'=>0,
-               'orientation'=>'L',
-               'display_mode'=>'fullpage',
-               // 'format'=>[500,400]
-        ]);
-        return  $pdf->stream('document.pdf'); 
+        return view('dashboard.registration.print-id-card-bulk',$data)->withTitle('Print ID Card Bulk');
+        // $pdf = PDF::loadView('dashboard.registration.print-id-card-bulk',$data,[],[
+        //        'format'=>'A7',
+        //        'mode' => 'utf-8',
+        //        'margin_top'=>0,
+        //        'margin_bottom'=>0,
+        //        'margin_left'=>0,
+        //        'margin_right'=>0,
+        //        'orientation'=>'L',
+        //        'display_mode'=>'fullpage',
+        //        // 'format'=>[500,400]
+        // ]);
+        // return  $pdf->stream('document.pdf'); 
     }
 
 }
