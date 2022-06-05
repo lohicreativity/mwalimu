@@ -219,7 +219,7 @@
 </head>
 <body>
    @foreach($students as $student)
-   <div class="ss-id-card" style="width: 750px; height: 400px; padding: 20px; position: relative; background-image: url({{ asset('img/mnma-id-bg.png') }});">
+   <div class="ss-id-card" style="width: 100%; height: 400px; padding: 20px; position: relative; background-image: url({{ asset('img/mnma-id-bg.png') }});">
   
      <div class="container" style="position: relative; z-index: 1000;">
      <div class="row">
@@ -254,7 +254,7 @@
    </div>
    </div>
    <pagebreak>
-     <div class="ss-id-card" style="width: 750px; height: 400px; background-color: #FFF; padding: 20px;">
+     <div class="ss-id-card" style="width: 100%; height: 400px; background-color: #FFF; padding: 20px;">
        <div class="container">
        <div class="row">
           <div class="col-md-12">
