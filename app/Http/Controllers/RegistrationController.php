@@ -275,7 +275,7 @@ class RegistrationController extends Controller
         if(count($data['students']) == 0){
             return redirect()->back()->with('error','No students registered for this programme');
         }
-        $pdf = DomPDF::loadView('dashboard.registration.print-id-card-bulk',$data);
+        $pdf = DomPDF::loadView('dashboard.registration.print-id-card-bulk',$data)->setPaper('a7','landscape');
         return  $pdf->stream(); 
     }
 
