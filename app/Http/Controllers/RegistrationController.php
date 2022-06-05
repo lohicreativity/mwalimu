@@ -15,7 +15,7 @@ use App\Domain\Registration\Models\Registration;
 use App\Models\User;
 use Illuminate\Support\Facades\Http;
 use Intervention\Image\ImageManagerStatic as Image;
-use Auth, PDF;
+use Auth, PDF, DomPDF;
 
 class RegistrationController extends Controller
 {
@@ -275,19 +275,7 @@ class RegistrationController extends Controller
         if(count($data['students']) == 0){
             return redirect()->back()->with('error','No students registered for this programme');
         }
-        $pdf = PDF::loadView('dashboard.registration.print-id-card-bulk',$data,[],[
-               'format'=>'A7',
-               'mode' => 'utf-8',
-               'margin_top'=>0,
-               'margin_bottom'=>0,
-               'margin_left'=>0,
-               'margin_right'=>0,
-               'margin_header'=>0,
-               'margin_footer'=>0,
-               'orientation'=>'L',
-               'display_mode'=>'fullpage',
-               // 'format'=>[500,400]
-        ]);
+        $pdf = DomPDF::loadView('dashboard.registration.print-id-card-bulk',$data);
         return  $pdf->stream(); 
     }
 
