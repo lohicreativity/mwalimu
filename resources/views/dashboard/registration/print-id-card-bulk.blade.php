@@ -225,7 +225,7 @@
      <div class="row">
         <div class="col-md-3 ss-center" style="text-align: center;">
           <img src="{{ asset('dist/img/logo.png')}}" class="ss-logo" style="width: 80px; text-align: center;">
-          <img src="{{ asset('avatars/'.$student->image)}}" class="ss-logo" style="text-align: center; width: 150px;">
+          <img src="{{ asset('img/user-avatar.png')}}" class="ss-logo" style="text-align: center; width: 150px;">
         </div>
         <div class="col-md-9">
            <h3 style="margin-top: 0px;">THE MWALIMU NYERERE MEMORIAL ACADEMY</h3>
@@ -234,7 +234,7 @@
            <h5 style="margin: 0px 0px 0px 20px;">MOBILE: <span style="font-style: italic;">{{ $student->student->phone }}</i></h5>
            <h5 style="margin: 0px 0px 0px 20px;">VALID TO: <span style="font-style: italic;">{{ App\Utils\DateMaker::toStandardDate($study_academic_year->end_date) }}</span></h5>
            <h5>SIGNATURE:
-           <img src="{{ asset('signatures/'.$student->signature) }}" style="width: 100px; height: auto; margin-top: 20px;"></h5>
+           <img src="{{ asset('img/signatures.png') }}" style="width: 100px; height: auto; margin-top: 20px;"></h5>
         </div>
      </div>
      <div class="row">
