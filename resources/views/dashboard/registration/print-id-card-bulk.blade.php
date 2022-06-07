@@ -225,6 +225,7 @@
      <div class="row">
         <div class="col-md-3 ss-center" style="text-align: center;">
           <img src="{{ asset('dist/img/logo.png')}}" class="ss-logo" style="width: 80px; text-align: center;">
+          <img src="{{ asset('avatars/'.$student->image)}}" class="ss-logo" style="text-align: center; width: 150px;">
         </div>
         <div class="col-md-9">
            <h3 style="margin-top: 0px;">THE MWALIMU NYERERE MEMORIAL ACADEMY</h3>
@@ -234,14 +235,6 @@
            <h5 style="margin: 0px 0px 0px 20px;">VALID TO: <span style="font-style: italic;">{{ App\Utils\DateMaker::toStandardDate($study_academic_year->end_date) }}</span></h5>
            <h5 style="margin: 0px 0px 0px 20px;">SIGNATURE:
            <img src="{{ asset('signatures/'.$student->signature) }}" style="width: 100px; height: auto; margin-top: 20px;"></h5>
-        </div>
-     </div>
-     <div class="row">
-        <div class="col-md-3" style="text-align: center;">
-          <img src="{{ asset('avatars/'.$student->image)}}" class="ss-logo" style="text-align: center; width: 150px;">
-        </div>
-        <div class="col-md-9">
-           
         </div>
      </div>
      <div class="row">
@@ -260,20 +253,21 @@
        <div class="row">
           <div class="col-md-12">
              <h3 style="margin: 0px 0px 0px 10px;">CAUTION</h1>
+            <div class="row">
+            <div class="col-md-8">
+              <p style="margin: 0px 0px 0px 10px; font-size: 12px;">This identity card is the property of</p>
+              <h5 style="margin: 0px 0px 10px 10px;">THE MWALIMU NYERERE MEMORIAL ACADEMY</h5>
+              <p style="margin: 0px 0px 0px 10px; font-size: 12px;">1. Use of this card is subject to the card holder agreement</p>
+              <p style="margin: 0px 0px 0px 10px; font-size: 12px;">2. Card should be returned at the beginning of each semester</p>
+              
+            </div>
+            <div class="col-md-4">
+               <img src="data:image/png;base64, {!! base64_encode(QrCode::format('png')->size(80)->generate($student->student->registration_number)) !!} " style="margin-left: 20px;">
+            </div>
+         </div>
           </div>
        </div>
-       <div class="row">
-          <div class="col-md-8">
-            <p style="margin: 0px 0px 0px 10px; font-size: 12px;">This identity card is the property of</p>
-            <h5 style="margin: 0px 0px 10px 10px;">THE MWALIMU NYERERE MEMORIAL ACADEMY</h5>
-            <p style="margin: 0px 0px 0px 10px; font-size: 12px;">1. Use of this card is subject to the card holder agreement</p>
-            <p style="margin: 0px 0px 0px 10px; font-size: 12px;">2. Card should be returned at the beginning of each semester</p>
-            
-          </div>
-          <div class="col-md-4">
-             <img src="data:image/png;base64, {!! base64_encode(QrCode::format('png')->size(80)->generate($student->student->registration_number)) !!} " style="margin-left: 20px;">
-          </div>
-       </div>
+       
      </div>
      </div>
      <pagebreak>
