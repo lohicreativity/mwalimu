@@ -240,7 +240,7 @@
            <h5 style="margin: 0px 0px 0px 20px;">VALID TO: <span style="font-style: italic;">{{ App\Utils\DateMaker::toStandardDate($study_academic_year->end_date) }}</span></h5>
            <h5 style="margin: 0px 0px 0px 20px;">SIGNATURE:
            <img src="{{ asset('img/signature.png') }}" style="width: 100px; height: auto; margin-top: 20px;"></h5>
-           <h5 style="float: right; text-shadow: 0px 0px 5px brown; font-weight: bold; color: red;">{{ $student->student->campusProgram->campus->name }}</h5>
+           <h5 style="text-shadow: 0px 0px 5px brown; font-weight: bold; color: red;">{{ $student->student->campusProgram->campus->name }}</h5>
         </div>
      </div>
    </div>
