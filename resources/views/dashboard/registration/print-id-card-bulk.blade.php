@@ -233,7 +233,7 @@
            <h5 style="margin: 0px 0px 0px 20px;">NAME: <span style="font-style: italic;">{{ $student->student->first_name }} {{ $student->student->middle_name }} {{ $student->student->surname }}</span></h5>
            <h5 style="margin: 0px 0px 0px 20px;">MOBILE: <span style="font-style: italic;">{{ $student->student->phone }}</i></h5>
            <h5 style="margin: 0px 0px 0px 20px;">VALID TO: <span style="font-style: italic;">{{ App\Utils\DateMaker::toStandardDate($study_academic_year->end_date) }}</span></h5>
-           <h5 style="margin: 0px 0px 0px 20px;">SIGNATURE:
+           <h5>SIGNATURE:
            <img src="{{ asset('signatures/'.$student->signature) }}" style="width: 100px; height: auto; margin-top: 20px;"></h5>
         </div>
      </div>
@@ -243,7 +243,7 @@
           @else
           <h5 style="text-shadow: 0px 0px 5px blue; font-weight: bold; margin: 20px 0px 0px 0px;">Semester Two</h5>
           @endif</div>
-     <div class="col-md-6" style="text-align: right;"><h5 style="float: right; text-shadow: 0px 0px 5px brown; font-weight: bold; color: red; margin: 20px 0px 0px 0px;">{{ $student->student->campusProgram->campus->name }}</h5></div>
+     <div class="col-md-6" style="text-align: right;"><h5 style="float: right; text-shadow: 0px 0px 5px brown; font-weight: bold; color: red;">{{ $student->student->campusProgram->campus->name }}</h5></div>
      </div>
    </div>
    </div>
@@ -262,7 +262,7 @@
               
             </div>
             <div class="col-md-4">
-               <img src="data:image/png;base64, {!! base64_encode(QrCode::format('png')->size(80)->generate($student->student->registration_number)) !!} " style="margin-left: 20px;">
+               <img src="data:image/png;base64, {!! base64_encode(QrCode::format('png')->size(60)->generate($student->student->registration_number)) !!} " style="margin-left: 20px;">
             </div>
          </div>
           </div>
