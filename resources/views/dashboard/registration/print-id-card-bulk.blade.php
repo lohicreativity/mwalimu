@@ -232,10 +232,10 @@
      </div>
      <div class="row">
         <div class="col-md-3" style="text-align: center;">
-          <img src="{{ asset('avatars/'.$student->image)}}" class="ss-logo" style="text-align: center; width: 150px;">
+          <img src="{{ asset('img/user-avatar.png')}}" class="ss-logo" style="text-align: center; width: 150px;">
         </div>
         <div class="col-md-9">
-           <h4 style="margin: 0px 0px 0px 20px;">REGNO: <span style="font-style: italic;">{{ $student->student->registration_number }}</span></h4>
+           <h5 style="margin: 0px 0px 0px 20px;">REGNO: <span style="font-style: italic;">{{ $student->student->registration_number }}</span></h5>
            <h5 style="margin: 0px 0px 0px 20px;">NAME: <span style="font-style: italic;">{{ $student->student->first_name }} {{ $student->student->middle_name }} {{ $student->student->surname }}</span></h5>
            <h5 style="margin: 0px 0px 0px 20px;">MOBILE: <span style="font-style: italic;">{{ $student->student->phone }}</i></h5>
            <h5 style="margin: 0px 0px 0px 20px;">VALID TO: <span style="font-style: italic;">{{ App\Utils\DateMaker::toStandardDate($study_academic_year->end_date) }}</span></h5>
