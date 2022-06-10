@@ -1340,7 +1340,7 @@ class ApplicationController extends Controller
                   'FormFourIndexNo'=>str_replace('/', '-', $applicant->index_number),
                   'FirstName'=> $applicant->first_name,
                   'MiddleName'=> $applicant->middle_name,
-                  'Surname'=> $applicant->last_name,
+                  'Surname'=> $applicant->surname,
                   'AdmissionNo'=> $student->registration_number,
                   'CollageFaculty'=> $applicant->campus->name,
                   'MobileNo'=> '0'.substr($applicant->phone,3),
@@ -1382,7 +1382,7 @@ class ApplicationController extends Controller
 
               curl_close($curl_handle);
 
-              return dd($data);
+              return json_encode($data);
 
               $data = [
               'BatchNo'=>'8002217/'.$ac_year.'/001',
