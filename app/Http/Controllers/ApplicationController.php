@@ -1382,7 +1382,7 @@ class ApplicationController extends Controller
 
               curl_close($curl_handle);
 
-              return json_encode($response);
+              // return json_encode($response);
 
               $data = [
               'BatchNo'=>'8002217/'.$ac_year.'/001',
@@ -1393,7 +1393,7 @@ class ApplicationController extends Controller
                     'MobileNo'=>'0'.substr($applicant->phone, 3),
                     'AcademicYear'=>$ac_year->academicYear->year,
                     'YearOfStudy'=>1,
-                    'Category'=>1
+                    'Category'=>json_encode($response)->statusCode == 500? 2 : 1
                  )      
                ]
              ];
@@ -1427,9 +1427,11 @@ class ApplicationController extends Controller
 
             curl_close($curl_handle);
             }
+
+            return dd($response);
         
         try{
-           Mail::to($user)->send(new StudentAccountCreated($student, $selection->campusProgram->program->name,$ac_year->academicYear->year, $password));
+          // Mail::to($user)->send(new StudentAccountCreated($student, $selection->campusProgram->program->name,$ac_year->academicYear->year, $password));
         }catch(\Exception $e){}
         DB::commit();
         if($days < 0){
