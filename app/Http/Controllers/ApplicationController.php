@@ -1336,6 +1336,10 @@ class ApplicationController extends Controller
         }
         
         if($applicant->insurance_status == 0){
+             $path = public_path().'/img/user-avatar.png';
+             $type = pathinfo($path, PATHINFO_EXTENSION);
+             $data = file_get_contents($path);
+             $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
              $data = [
                   'FormFourIndexNo'=>'S0119-0025-2022',//str_replace('/', '-', $applicant->index_number),
                   'FirstName'=> 'AMANI',//$applicant->first_name,
@@ -1351,7 +1355,7 @@ class ApplicationController extends Controller
                   'DateOfBirth'=> '1993-04-21',
                   'NationalID'=> $applicant->nin? $applicant->nin : '',
                   'Gender'=> $applicant->gender == 'M'? 'Male' : 'Female',
-                  'PhotoImage'=>base64_encode(public_path().'/img/user-avatar.png')
+                  'PhotoImage'=>$base64
               ];
                   
               $url = 'http://196.13.105.15/OMRS/api/v1/Verification/StudentRegistration';
