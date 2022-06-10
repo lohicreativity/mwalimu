@@ -1341,10 +1341,10 @@ class ApplicationController extends Controller
              $data = file_get_contents($path);
              $base64 = base64_encode($data); //'data:image/' . $type . ';base64,' . base64_encode($data);
              $data = [
-                  'FormFourIndexNo'=>'S0119-0025-2022',//str_replace('/', '-', $applicant->index_number),
-                  'FirstName'=> 'AMANI',//$applicant->first_name,
+                  'FormFourIndexNo'=>'S0119-0035-2022',//str_replace('/', '-', $applicant->index_number),
+                  'FirstName'=> 'AMOS',//$applicant->first_name,
                   'MiddleName'=> $applicant->middle_name,
-                  'Surname'=> 'SANGAWE',
+                  'Surname'=> 'MATINDE',
                   'AdmissionNo'=> 'MNMA0234/ZN003/3450',//$student->registration_number,
                   'CollageFaculty'=> $applicant->campus->name,
                   'MobileNo'=> '0'.substr($applicant->phone,3),
@@ -1352,7 +1352,7 @@ class ApplicationController extends Controller
                   'CourseDuration'=> $selection->campusProgram->program->min_duration,
                   'MaritalStatus'=> "Single",
                   'DateJoiningEmployer'=> date('Y-m-d'),
-                  'DateOfBirth'=> '1993-04-21',
+                  'DateOfBirth'=> '1994-04-21',
                   'NationalID'=> $applicant->nin? $applicant->nin : '',
                   'Gender'=> $applicant->gender == 'M'? 'Male' : 'Female',
                   'PhotoImage'=>$base64
