@@ -1341,10 +1341,10 @@ class ApplicationController extends Controller
              $data = file_get_contents($path);
              $base64 = base64_encode($data); //'data:image/' . $type . ';base64,' . base64_encode($data);
              $data = [
-                  'FormFourIndexNo'=>'S0119-0027-2022',//str_replace('/', '-', $applicant->index_number),
-                  'FirstName'=> 'LAMECK',//$applicant->first_name,
+                  'FormFourIndexNo'=>'S0119-0037-2022',//str_replace('/', '-', $applicant->index_number),
+                  'FirstName'=> 'FRED',//$applicant->first_name,
                   'MiddleName'=> $applicant->middle_name,
-                  'Surname'=> 'MATIKO',
+                  'Surname'=> 'MATIKU',
                   'AdmissionNo'=> 'MNMA0234/ZN003/3250',//$student->registration_number,
                   'CollageFaculty'=> $applicant->campus->name,
                   'MobileNo'=> '0'.substr($applicant->phone,3),
@@ -1352,7 +1352,7 @@ class ApplicationController extends Controller
                   'CourseDuration'=> $selection->campusProgram->program->min_duration,
                   'MaritalStatus'=> "Single",
                   'DateJoiningEmployer'=> date('Y-m-d'),
-                  'DateOfBirth'=> '1995-04-21',
+                  'DateOfBirth'=> '1995-04-20',
                   'NationalID'=> $applicant->nin? $applicant->nin : '',
                   'Gender'=> $applicant->gender == 'M'? 'Male' : 'Female',
                   'PhotoImage'=>$base64
@@ -1392,7 +1392,7 @@ class ApplicationController extends Controller
               'Description'=>'Batch submitted on '.date('m d, Y'),
               'CardApplications'=>[ 
                  array(
-                  'CorrelationID'=>$applicant->index_number,
+                  'CorrelationID'=>'S0119-0037-2022',//$applicant->index_number,
                     'MobileNo'=>'0'.substr($applicant->phone, 3),
                     'AcademicYear'=>$ac_year->academicYear->year,
                     'YearOfStudy'=>1,
