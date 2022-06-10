@@ -1396,7 +1396,8 @@ class ApplicationController extends Controller
                     'MobileNo'=>'0'.substr($applicant->phone, 3),
                     'AcademicYear'=>$ac_year->academicYear->year,
                     'YearOfStudy'=>1,
-                    'Category'=>$response->statusCode == 500? 2 : 1
+                    'CardNo'=>null,
+                    'Category'=>$response->statusCode == 200? 1 : 2
                  )      
                ]
              ];
