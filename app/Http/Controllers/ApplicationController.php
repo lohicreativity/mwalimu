@@ -1345,7 +1345,7 @@ class ApplicationController extends Controller
                   'FirstName'=> 'FRED',//$applicant->first_name,
                   'MiddleName'=> $applicant->middle_name,
                   'Surname'=> 'MATIKU',
-                  'AdmissionNo'=> 'MNMA0234/ZN003/3250',//$student->registration_number,
+                  'AdmissionNo'=> 'MNMA0234/ZN003/3255',//$student->registration_number,
                   'CollageFaculty'=> $applicant->campus->name,
                   'MobileNo'=> '0'.substr($applicant->phone,3),
                   'ProgrammeOfStudy'=> $selection->campusProgram->program->name,
