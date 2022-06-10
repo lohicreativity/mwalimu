@@ -1337,7 +1337,7 @@ class ApplicationController extends Controller
         
         if($applicant->insurance_status == 0){
              $data = [
-                  'FormFourIndexNo'=>'S1198-0025-2022',//str_replace('/', '-', $applicant->index_number),
+                  'FormFourIndexNo'=>'S0119-0025-2022',//str_replace('/', '-', $applicant->index_number),
                   'FirstName'=> $applicant->first_name,
                   'MiddleName'=> $applicant->middle_name,
                   'Surname'=> $applicant->surname,
