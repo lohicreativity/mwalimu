@@ -1372,7 +1372,7 @@ class ApplicationController extends Controller
               CURLOPT_FOLLOWLOCATION => false,
               CURLOPT_SSL_VERIFYPEER => false,
               CURLOPT_CUSTOMREQUEST => "POST",
-              CURLOPT_POSTFIELDS => json_encode($data)
+              CURLOPT_POSTFIELDS => json_encode([$data])
               ));
 
               $response = curl_exec($curl_handle);
