@@ -1382,7 +1382,7 @@ class ApplicationController extends Controller
 
               curl_close($curl_handle);
 
-              return json_encode($data);
+              return json_encode($response);
 
               $data = [
               'BatchNo'=>'8002217/'.$ac_year.'/001',
