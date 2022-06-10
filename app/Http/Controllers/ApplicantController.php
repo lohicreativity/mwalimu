@@ -310,6 +310,11 @@ class ApplicantController extends Controller
     public function payments(Request $request)
     {
         $applicant = User::find(Auth::user()->id)->applicants()->with(['country','applicationWindow'])->where('campus_id',session('applicant_campus_id'))->first();
+        if($applicant->is_tamisemi != 1){
+            if(!ApplicationWindow::where('campus_id',session('applicant_campus_id'))->where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('status','ACTIVE')->first()){
+                 return redirect()->to('application/submission')->with('error','Application window already closed');
+            }
+        }
         $study_academic_year = StudyAcademicYear::whereHas('academicYear',function($query) use ($applicant){
                $query->where('year','LIKE','%'.date('Y',strtotime($applicant->applicationWindow->begin_date)).'/%');
         })->first();
@@ -1301,7 +1306,7 @@ curl_close($curl_handle);
         }
 
         $response = Http::get('https://www.nacte.go.tz/nacteapi/index.php/api/particulars/'.str_replace('/', '.', $request->get('nacte_reg_no')).'-4/'.config('constants.NACTE_API_KEY'));
-        
+
         if(json_decode($response)->code != 200){
             return redirect()->back()->with('error','Invalid NACTE Registration number');
         }

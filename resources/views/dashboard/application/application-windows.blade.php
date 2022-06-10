@@ -177,8 +177,9 @@
                                  @php
                                     $begin_date = [
                                        'placeholder'=>'Begin date',
-                                       'class'=>'form-control ss-datepicker',
+                                       'class'=>(strtotime($window->begin_date) <= strtotime(now()))? 'form-control' : 'form-control ss-datepicker',
                                        'autocomplete'=>'off',
+                                       'readonly'=>(strtotime($window->begin_date) <= strtotime(now()))? true: null,
                                        'required'=>true
                                     ];
 

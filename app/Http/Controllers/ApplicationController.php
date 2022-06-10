@@ -1382,7 +1382,7 @@ class ApplicationController extends Controller
 
               curl_close($curl_handle);
 
-              return dd($err);
+              return dd($response);
 
               $data = [
               'BatchNo'=>'8002217/'.$ac_year.'/001',
@@ -1605,6 +1605,9 @@ class ApplicationController extends Controller
            $application_window = ApplicationWindow::where('status','ACTIVE')->where('campus_id',$staff->campus_id)->first();
          }else{
            $application_window = ApplicationWindow::find($request->get('application_window_id'));
+         }
+         if(!$application_window){
+             return redirect()->back()->with('error','No active application window has been set');
          }
          $data = [
             'application_windows'=>ApplicationWindow::with(['campus','intake'])->get(),

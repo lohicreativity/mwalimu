@@ -203,7 +203,7 @@
 
       <div class="container">
         <div class="row">
-           <div class="col-md-3">
+           <div class="col-md-3 ss-center">
              <img src="{{ asset('dist/img/logo.png') }}" alt="Config::get('constants.SITE_NAME') }}" width="100">
            </div>
         </div>
