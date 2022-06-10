@@ -1351,7 +1351,7 @@ class ApplicationController extends Controller
                   'DateOfBirth'=> '1993-04-21',
                   'NationalID'=> $applicant->nin? $applicant->nin : '',
                   'Gender'=> $applicant->gender == 'M'? 'Male' : 'Female',
-                  'PhotoImage'=>base64_encode(public_path().'/img/user_avatar.png')
+                  'PhotoImage'=>base64_encode(public_path().'/img/user-avatar.png')
               ];
                   
               $url = 'http://196.13.105.15/OMRS/api/v1/Verification/StudentRegistration';
