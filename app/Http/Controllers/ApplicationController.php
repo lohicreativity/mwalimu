@@ -1387,8 +1387,6 @@ class ApplicationController extends Controller
 
               curl_close($curl_handle);
 
-              return $response;
-
               $data = [
               'BatchNo'=>'8002217/'.$ac_year.'/001',
               'Description'=>'Batch submitted on '.date('m d, Y'),
