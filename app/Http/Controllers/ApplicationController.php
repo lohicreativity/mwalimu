@@ -1339,7 +1339,7 @@ class ApplicationController extends Controller
              $path = public_path().'/img/user-avatar.png';
              $type = pathinfo($path, PATHINFO_EXTENSION);
              $data = file_get_contents($path);
-             $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
+             $base64 = base64_encode($data); //'data:image/' . $type . ';base64,' . base64_encode($data);
              $data = [
                   'FormFourIndexNo'=>'S0119-0025-2022',//str_replace('/', '-', $applicant->index_number),
                   'FirstName'=> 'AMANI',//$applicant->first_name,
