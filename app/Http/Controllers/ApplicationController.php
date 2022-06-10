@@ -1397,7 +1397,7 @@ class ApplicationController extends Controller
                     'AcademicYear'=>$ac_year->academicYear->year,
                     'YearOfStudy'=>1,
                     'CardNo'=>null,
-                    'Category'=>$response->statusCode == 200? 1 : 2
+                    'Category'=>1//$response->statusCode == 200? 1 : 2
                  )      
                ]
              ];
