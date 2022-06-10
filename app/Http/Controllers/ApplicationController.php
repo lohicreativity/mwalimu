@@ -1382,7 +1382,7 @@ class ApplicationController extends Controller
 
               curl_close($curl_handle);
 
-              return $response;
+              return json_decode($response);
 
               $data = [
               'BatchNo'=>'8002217/'.$ac_year.'/001',
@@ -1393,7 +1393,7 @@ class ApplicationController extends Controller
                     'MobileNo'=>'0'.substr($applicant->phone, 3),
                     'AcademicYear'=>$ac_year->academicYear->year,
                     'YearOfStudy'=>1,
-                    'Category'=>json_encode($response)->statusCode == 500? 2 : 1
+                    'Category'=>json_decode($response)->statusCode == 500? 2 : 1
                  )      
                ]
              ];
