@@ -1338,9 +1338,9 @@ class ApplicationController extends Controller
         if($applicant->insurance_status == 0){
              $data = [
                   'FormFourIndexNo'=>'S0119-0025-2022',//str_replace('/', '-', $applicant->index_number),
-                  'FirstName'=> $applicant->first_name,
+                  'FirstName'=> 'AMANI',//$applicant->first_name,
                   'MiddleName'=> $applicant->middle_name,
-                  'Surname'=> $applicant->surname,
+                  'Surname'=> 'SANGAWE',
                   'AdmissionNo'=> 'MNMA0234/ZN003/3450',//$student->registration_number,
                   'CollageFaculty'=> $applicant->campus->name,
                   'MobileNo'=> '0'.substr($applicant->phone,3),
@@ -1348,7 +1348,7 @@ class ApplicationController extends Controller
                   'CourseDuration'=> $selection->campusProgram->program->min_duration,
                   'MaritalStatus'=> "Single",
                   'DateJoiningEmployer'=> date('Y-m-d'),
-                  'DateOfBirth'=> $applicant->birth_date,
+                  'DateOfBirth'=> '1993-04-21',
                   'NationalID'=> $applicant->nin? $applicant->nin : '',
                   'Gender'=> $applicant->gender == 'M'? 'Male' : 'Female'
               ];
@@ -1359,7 +1359,7 @@ class ApplicationController extends Controller
                   //return $token;
               $curl_handle = curl_init();
 
-                 return json_encode($data);
+                 // return json_encode($data);
        
 
               curl_setopt_array($curl_handle, array(
