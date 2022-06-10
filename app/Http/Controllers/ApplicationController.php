@@ -1341,18 +1341,18 @@ class ApplicationController extends Controller
              $data = file_get_contents($path);
              $base64 = base64_encode($data); //'data:image/' . $type . ';base64,' . base64_encode($data);
              $data = [
-                  'FormFourIndexNo'=>'S0119-0035-2022',//str_replace('/', '-', $applicant->index_number),
-                  'FirstName'=> 'AMOS',//$applicant->first_name,
+                  'FormFourIndexNo'=>'S0119-0027-2022',//str_replace('/', '-', $applicant->index_number),
+                  'FirstName'=> 'LAMECK',//$applicant->first_name,
                   'MiddleName'=> $applicant->middle_name,
-                  'Surname'=> 'MATINDE',
-                  'AdmissionNo'=> 'MNMA0234/ZN003/3450',//$student->registration_number,
+                  'Surname'=> 'MATIKO',
+                  'AdmissionNo'=> 'MNMA0234/ZN003/3250',//$student->registration_number,
                   'CollageFaculty'=> $applicant->campus->name,
                   'MobileNo'=> '0'.substr($applicant->phone,3),
                   'ProgrammeOfStudy'=> $selection->campusProgram->program->name,
                   'CourseDuration'=> $selection->campusProgram->program->min_duration,
                   'MaritalStatus'=> "Single",
                   'DateJoiningEmployer'=> date('Y-m-d'),
-                  'DateOfBirth'=> '1994-04-21',
+                  'DateOfBirth'=> '1995-04-21',
                   'NationalID'=> $applicant->nin? $applicant->nin : '',
                   'Gender'=> $applicant->gender == 'M'? 'Male' : 'Female',
                   'PhotoImage'=>$base64
