@@ -205,6 +205,8 @@
         <div class="row">
            <div class="col-md-3 ss-center">
              <img src="{{ asset('dist/img/logo.png') }}" alt="Config::get('constants.SITE_NAME') }}" width="100">
+             <h3 class="ss-bold">APPLICATION PREVIEW FORM</h3>
+             <h3 class="ss-bold">{{ strtoupper($applicant->intake->name) }} INTAKE - {{ date('Y',strtotime($applicant->applicationWindow->begin_date)) }}</h3>
            </div>
         </div>
         <div class="row">
@@ -308,6 +310,7 @@
 
              <h3>Programmes Selection</h3>
              <table class="table table-bordered table-condensed">
+              @if(App\Domain\Application\Models\ApplicantProgramSelection::hasSelectedChoice($applicant->selections,1))
                <tr>
                  <td>1st Choice</td>
                  @foreach($selections as $selection)
@@ -316,6 +319,8 @@
                    @endif
                  @endforeach
                </tr>
+              @endif
+              @if(App\Domain\Application\Models\ApplicantProgramSelection::hasSelectedChoice($applicant->selections,2))
                <tr>
                  <td>2nd Choice</td>
                  @foreach($selections as $selection)
@@ -324,6 +329,8 @@
                    @endif
                  @endforeach
                </tr>
+               @endif
+               @if(App\Domain\Application\Models\ApplicantProgramSelection::hasSelectedChoice($applicant->selections,3))
                <tr>
                  <td>3rd Choice</td>
                  @foreach($selections as $selection)
@@ -332,6 +339,8 @@
                    @endif
                  @endforeach
                </tr>
+               @endif
+               @if(App\Domain\Application\Models\ApplicantProgramSelection::hasSelectedChoice($applicant->selections,4))
                <tr>
                  <td>4th Choice</td>
                  @foreach($selections as $selection)
@@ -340,10 +349,11 @@
                    @endif
                  @endforeach
                </tr>
+               @endif
               </table>
 
               @if(count($applicant->nectaResultDetails) != 0)
-              <h3>NECTA Results</h3>
+              <h3>Results</h3>
               <table class="table table-bordered table-condensed">
                 @foreach($applicant->nectaResultDetails as $detail)
                 <tr>

@@ -14,7 +14,7 @@ class NACTEServiceController extends Controller
     public function getResults(Request $request,$avn)
     {
         if($details = NacteResultDetail::with('results')->where('avn',$avn)->where('applicant_id',$request->get('applicant_id'))->first()){
-            return response()->json(['details'=>$details]);
+            return response()->json(['details'=>$details,'exists'=>1]);
         }else{
             try{
             $response = Http::get('https://www.nacte.go.tz/nacteapi/index.php/api/results/'.config('constants.NACTE_API_KEY').'/'.$avn);
@@ -65,7 +65,7 @@ class NACTEServiceController extends Controller
         $applicant->save();
 
             $details = NacteResultDetail::with('results')->find($detail->id);
-            return response()->json(['details'=>$details]);
+            return response()->json(['details'=>$details,'exists'=>0]);
         }
     }
 

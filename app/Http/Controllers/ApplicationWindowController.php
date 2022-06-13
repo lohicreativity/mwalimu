@@ -116,6 +116,9 @@ class ApplicationWindowController extends Controller
         }else{
            $window = ApplicationWindow::with(['intake','campusPrograms'])->find($request->get('application_window_id'));
         }
+        if(!$window){
+            return redirect()->back()->with('error','No application window specified');
+        }
         $staff = User::find(Auth::user()->id)->staff;
         if(Auth::user()->hasRole('admission-officer')){
             if($window->campus_id != $staff->campus_id){

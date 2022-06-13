@@ -31,7 +31,7 @@ class OUTServiceController extends Controller
         $result = $this->sendXmlOverPost($url,$xml_request); */
 
         if($details = OutResultDetail::with('results')->where('reg_no',$reg_no)->where('applicant_id',$request->get('applicant_id'))->first()){
-            return response()->json(['details'=>$details]);
+            return response()->json(['details'=>$details,'exists'=>1]);
         }else{
 
         $index_no='N18-642-3079';
@@ -108,7 +108,7 @@ class OUTServiceController extends Controller
             }
             
             $details = OutResultDetail::with('results')->find($detail->id);
-            return response()->json(['details'=>$details]);
+            return response()->json(['details'=>$details,'exists'=>0]);
         }
     }
 

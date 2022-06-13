@@ -734,7 +734,7 @@ class ApplicationController extends Controller
         try{
           $selection = ApplicantProgramSelection::findOrFail($id);
           if($selection->order == 1){
-              Applicant::where('id',$selection->applicant_id)->update(['programs_complete_status'=>0]);
+              Applicant::where('id',$selection->applicant_id)->update(['programs_complete_status'=>0,'submission_complete_status'=>0]);
           }
           $selection->delete();
           return redirect()->back()->with('message','Selection reset successfully');
@@ -837,7 +837,7 @@ class ApplicationController extends Controller
      */
     public function downloadSummary(Request $request)
     {
-        $applicant = User::find(Auth::user()->id)->applicants()->with(['nextOfKin.country','nextOfKin.region','nextOfKin.district','nextOfKin.ward','country','region','district','ward','disabilityStatus','nectaResultDetails.results','nacteResultDetails.results'])->where('campus_id',session('applicant_campus_id'))->first();
+        $applicant = User::find(Auth::user()->id)->applicants()->with(['nextOfKin.country','nextOfKin.region','nextOfKin.district','nextOfKin.ward','country','region','district','ward','disabilityStatus','nectaResultDetails.results','nacteResultDetails.results','selections','applicationWindow','intake'])->where('campus_id',session('applicant_campus_id'))->first();
         $data = [
            'applicant'=>$applicant,
            'selections'=>ApplicantProgramSelection::with(['campusProgram.program'])->where('applicant_id',$applicant->id)->get()
@@ -1388,7 +1388,7 @@ class ApplicationController extends Controller
               curl_close($curl_handle);
 
               $data = [
-              'BatchNo'=>'8002217/'.$ac_year.'/001',
+              'BatchNo'=>'8002217/'.$ac_year->academicYear->year.'/001',
               'Description'=>'Batch submitted on '.date('m d, Y'),
               'CardApplications'=>[ 
                  array(
