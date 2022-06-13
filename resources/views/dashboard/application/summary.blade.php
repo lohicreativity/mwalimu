@@ -203,8 +203,8 @@
 
       <div class="container">
         <div class="row">
-           <div class="col-md-3 ss-center">
-             <img src="{{ asset('dist/img/logo.png') }}" alt="Config::get('constants.SITE_NAME') }}" width="100">
+           <div class="col-md-12 ss-center">
+             <img src="{{ asset('dist/img/logo.png') }}" alt="Config::get('constants.SITE_NAME') }}" width="100px">
              <h3 class="ss-bold">APPLICATION PREVIEW FORM</h3>
              <h3 class="ss-bold">{{ strtoupper($applicant->intake->name) }} INTAKE - {{ date('Y',strtotime($applicant->applicationWindow->begin_date)) }}</h3>
            </div>
