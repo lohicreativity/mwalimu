@@ -357,7 +357,7 @@
               <table class="table table-bordered table-condensed">
                 @foreach($applicant->nectaResultDetails as $detail)
                 <tr>
-                  <td>Index Number</td>
+                  <td>Index Number - @if($detail->exam_id == 1) 0-Level @elseif($detail->exam_id == 2) A-Level @endif </td>
                   <td>Division</td>
                   <td>Points</td>
                 </tr>
