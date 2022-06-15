@@ -123,7 +123,7 @@
                         <tr>
                           <th>Name</th>
                           <th>Gender</th>
-                          <th>Phone</th>
+                          <th>@if($applicant->submission_complete_status == 1) Programmes @else Phone @endif</th>
                           <th>Submission Status</th>
                         </tr>
                     </thead>
@@ -132,10 +132,17 @@
                    <tr>
                       <td><a href="#" data-toggle="modal" data-target="#ss-progress-{{ $applicant->id }}">{{ $applicant->first_name }} {{ $applicant->middle_name }} {{ $applicant->surname }}</a></td>
                       <td>{{ $applicant->gender }}</td>
-                      <td>{{ $applicant->phone }}</td>
+                      <td>@if($applicant->submission_complete_status == 1)
+                            @foreach($applicant->selections as $selection)
+                            <p class="ss-font-xs">{{ $selection->campusProgram->program->name }}</p>
+                            @endforeach
+                          @else
+                            {{ $applicant->phone }}
+                          @endif
+                      </td>
                       <td>@if($applicant->submission_complete_status == 1)
                            <span class="badge badge-success">Submitted</span>
-                          @elseif($applicant->documents_complete_status == 1 && $applicant->submission_complete_status == 0)
+                          @elseif($applicant->programs_complete_status == 1 && $applicant->submission_complete_status == 0)
                            <span class="badge badge-info">Completed</span>
                           @else
                            <span class="badge badge-warning">On Progress</span>
@@ -175,12 +182,8 @@
                                     <td>@if($applicant->results_complete_status == 1) <i class="fa fa-check"></i> @endif</td>
                                   </tr>
                                   <tr>
-                                    <td>5. Documents</td>
-                                    <td>@if($applicant->documents_complete_status == 1) <i class="fa fa-check"></i> @endif</td>
-                                  </tr>
-                                  <tr>
-                                    <td>6. Submission</td>
-                                    <td>@if($applicant->submission_complete_status == 1) <i class="fa fa-check"></i> @endif</td>
+                                    <td>5. Programmes Selection</td>
+                                    <td>@if($applicant->programs_complete_status == 1) <i class="fa fa-check"></i> @endif</td>
                                   </tr>
                                </table>
                             </div>

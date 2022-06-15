@@ -425,7 +425,7 @@
                   </div>
                   <div class="form-group col-3">
                     {!! Form::label('','Equivalent Average Grade') !!}
-                    <select name="equivalent_average_grade" class="form-control">
+                    <select name="equivalent_average_grade" class="form-control" disabled="disabled">
                        <option value="">Select Pass Grade</option>
                        <option value="A">A</option>
                        <option value="B">B</option>

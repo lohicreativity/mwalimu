@@ -80,33 +80,37 @@ class OUTServiceController extends Controller
             if($det = OutResultDetail::where('index_number',$index_no)->where('applicant_id',$request->get('applicant_id'))->first()){
                 $detail = $det;
             }else{
-                $detail = new OutResultDetail;
-                $detail->index_number = $xml->ResponseParameters->Indexno;
-                $detail->reg_no = $xml->ResponseParameters->RegNo;
-                $detail->first_name = $xml->ResponseParameters->FirstName;
-                $detail->middle_name = $xml->ResponseParameters->MidName;
-                $detail->surname = $xml->ResponseParameters->Surname;
-                $detail->gender = $xml->ResponseParameters->Gender;
-                $detail->birth_date = $xml->ResponseParameters->BirthDate;
-                $detail->academic_year = $xml->ResponseParameters->AcademicYear;
-                $detail->gpa = $xml->ResponseParameters->GPA;
-                $detail->classification = $xml->ResponseParameters->Classification;
-                $detail->applicant_id = $request->get('applicant_id');
-                $detail->save();
-            }
-            foreach($xml->ResponseParameters->Results->Subject as $subject){
-                if($rs = OutResult::where('subject_code',$subject->Code)->where('out_result_detail_id',$detail->id)->first()){
-                    $res = $rs;
-                }else{
-                    $res = new OutResult;
+                $app = Applicant::find($request->get('applicant_id'));
+                $applicants = Applicant::where('user_id',$app->user_id)->get();
+                foreach ($applicants as $appl) {
+                        $detail = new OutResultDetail;
+                        $detail->index_number = $xml->ResponseParameters->Indexno;
+                        $detail->reg_no = $xml->ResponseParameters->RegNo;
+                        $detail->first_name = $xml->ResponseParameters->FirstName;
+                        $detail->middle_name = $xml->ResponseParameters->MidName;
+                        $detail->surname = $xml->ResponseParameters->Surname;
+                        $detail->gender = $xml->ResponseParameters->Gender;
+                        $detail->birth_date = $xml->ResponseParameters->BirthDate;
+                        $detail->academic_year = $xml->ResponseParameters->AcademicYear;
+                        $detail->gpa = $xml->ResponseParameters->GPA;
+                        $detail->classification = $xml->ResponseParameters->Classification;
+                        $detail->applicant_id = $request->get('applicant_id');
+                        $detail->save();
+                    
+                    foreach($xml->ResponseParameters->Results->Subject as $subject){
+                        if($rs = OutResult::where('subject_code',$subject->Code)->where('out_result_detail_id',$detail->id)->first()){
+                            $res = $rs;
+                        }else{
+                            $res = new OutResult;
+                        }
+                        $res->subject_name = $subject->SubjectName;
+                        $res->subject_code = $subject->Code;
+                        $res->grade = $subject->Grade;
+                        $res->out_result_detail_id = $detail->id;
+                        $res->save();
+                    }
                 }
-                $res->subject_name = $subject->SubjectName;
-                $res->subject_code = $subject->Code;
-                $res->grade = $subject->Grade;
-                $res->out_result_detail_id = $detail->id;
-                $res->save();
             }
-            
             $details = OutResultDetail::with('results')->find($detail->id);
             return response()->json(['details'=>$details,'exists'=>0]);
         }

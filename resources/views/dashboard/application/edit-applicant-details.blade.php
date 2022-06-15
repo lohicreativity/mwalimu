@@ -102,10 +102,6 @@
                        <td>Address: </td>
                        <td>{{ $applicant->address }}</td>
                      </tr>
-                     <tr>
-                       <td><a href="{{ url('application/reset-applicant-password-default?user_id='.$applicant->user_id) }}" class="btn btn-primary">Reset Password</a> </td>
-                       <td></td>
-                     </tr>
                    </table>
                    @php
                       $email = [
@@ -117,7 +113,8 @@
                       $phone = [
                          'placeholder'=>'255788010102',
                          'class'=>'form-control',
-                         'required'=>true
+                         'required'=>true,
+                         'readonly'=>App\Domain\Application\Models\Applicant::hasRequestedControlNumber($applicant)? true : null
                       ];
                    @endphp
 
@@ -157,6 +154,8 @@
                   {!! Form::input('hidden','applicant_id',$applicant->id) !!}
                   <div class="ss-form-actions">
                    <button type="submit" class="btn btn-primary">{{ __('Save Changes') }}</button>
+
+                   <a href="{{ url('application/reset-applicant-password-default?user_id='.$applicant->user_id) }}" class="btn btn-primary">Reset Password</a>
                   </div>
 
                    {!! Form::close() !!}

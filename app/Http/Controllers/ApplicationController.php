@@ -75,33 +75,33 @@ class ApplicationController extends Controller
 
 
         if($request->get('department_id') != null){
-           $applicants = Applicant::where('application_window_id',$request->get('application_window_id'))->whereHas('selections.campusProgram.program.departments',function($query) use($request){
+           $applicants = Applicant::with(['selections.campusProgram.program'])->where('application_window_id',$request->get('application_window_id'))->whereHas('selections.campusProgram.program.departments',function($query) use($request){
                  $query->where('id',$request->get('department_id'));
             })->with(['nextOfKin','intake'])->paginate(20);
         }elseif($request->get('duration') == 'today'){
-           $applicants = Applicant::where('application_window_id',$request->get('application_window_id'))->with(['nextOfKin','intake'])->where('created_at','<=',now()->subDays(1))->paginate(20);
+           $applicants = Applicant::with(['selections.campusProgram.program'])->where('application_window_id',$request->get('application_window_id'))->with(['nextOfKin','intake'])->where('created_at','<=',now()->subDays(1))->paginate(20);
         }elseif($request->get('gender') != null){
-           $applicants = Applicant::where('application_window_id',$request->get('application_window_id'))->with(['nextOfKin','intake'])->where('gender',$request->get('gender'))->paginate(20);
+           $applicants = Applicant::with(['selections.campusProgram.program'])->where('application_window_id',$request->get('application_window_id'))->with(['nextOfKin','intake'])->where('gender',$request->get('gender'))->paginate(20);
         }elseif($request->get('nta_level_id') != null){
-           $applicants = Applicant::where('application_window_id',$request->get('application_window_id'))->whereHas('selections.campusProgram.program',function($query) use($request){
+           $applicants = Applicant::with(['selections.campusProgram.program'])->where('application_window_id',$request->get('application_window_id'))->whereHas('selections.campusProgram.program',function($query) use($request){
                  $query->where('nta_level_id',$request->get('nta_level_id'));
             })->with(['nextOfKin','intake'])->paginate(20);
         }elseif($request->get('campus_program_id') != null){
-           $applicants = Applicant::where('application_window_id',$request->get('application_window_id'))->whereHas('selections',function($query) use($request){
+           $applicants = Applicant::with(['selections.campusProgram.program'])->where('application_window_id',$request->get('application_window_id'))->whereHas('selections',function($query) use($request){
                  $query->where('campus_program_id',$request->get('campus_program_id'));
             })->with(['nextOfKin','intake'])->paginate(20);
         }else{
-           $applicants = Applicant::where('application_window_id',$request->get('application_window_id'))->with(['nextOfKin','intake'])->paginate(20);
+           $applicants = Applicant::with(['selections.campusProgram.program'])->where('application_window_id',$request->get('application_window_id'))->with(['nextOfKin','intake'])->paginate(20);
         }
 
         if($request->get('status') == 'progress'){
-           $applicants = Applicant::where('documents_complete_status',0)->where('submission_complete_status',0)->where('application_window_id',$request->get('application_window_id'))->where('campus_id',$application_window->campus_id)->paginate(20);
+           $applicants = Applicant::with(['selections.campusProgram.program'])->where('programs_complete_status',0)->where('submission_complete_status',0)->where('application_window_id',$request->get('application_window_id'))->where('campus_id',$application_window->campus_id)->paginate(20);
         }elseif($request->get('status') == 'completed'){
-           $applicants = Applicant::where('documents_complete_status',1)->where('submission_complete_status',0)->where('application_window_id',$request->get('application_window_id'))->where('campus_id',$application_window->campus_id)->paginate(20);
+           $applicants = Applicant::with(['selections.campusProgram.program'])->where('programs_complete_status',1)->where('submission_complete_status',0)->where('application_window_id',$request->get('application_window_id'))->where('campus_id',$application_window->campus_id)->paginate(20);
         }elseif($request->get('status') == 'submitted'){
-           $applicants = Applicant::where('documents_complete_status',1)->where('submission_complete_status',1)->where('application_window_id',$request->get('application_window_id'))->where('campus_id',$application_window->campus_id)->paginate(20);
+           $applicants = Applicant::with(['selections.campusProgram.program'])->where('programs_complete_status',1)->where('submission_complete_status',1)->where('application_window_id',$request->get('application_window_id'))->where('campus_id',$application_window->campus_id)->paginate(20);
         }elseif($request->get('status') == 'total'){
-            $applicants = Applicant::where('application_window_id',$request->get('application_window_id'))->where('campus_id',$application_window->campus_id)->paginate(20);
+            $applicants = Applicant::with(['selections.campusProgram.program'])->where('application_window_id',$request->get('application_window_id'))->where('campus_id',$application_window->campus_id)->paginate(20);
         }
 
         $data = [

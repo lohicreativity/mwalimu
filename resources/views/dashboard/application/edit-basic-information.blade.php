@@ -165,7 +165,7 @@
                        <div class="col-4">
                          <select name="year" class="form-control" required>
                            <option value="">Year</option>
-                           @for($i = 2010; $i >= 1960; $i--)
+                           @for($i = 2008; $i >= 1960; $i--)
                            <option value="{{ $i }}" @if(Carbon\Carbon::parse($applicant->birth_date)->format('Y') == $i && $applicant->birth_date !== null) selected="selected" @endif>{{ $i }}</option>
                            @endfor
                          </select>

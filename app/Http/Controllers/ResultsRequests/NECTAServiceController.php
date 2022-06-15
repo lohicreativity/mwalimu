@@ -43,32 +43,37 @@ class NECTAServiceController extends Controller
             if($det = NectaResultDetail::where('index_number',$index_no)->where('exam_id',$exam_id)->where('applicant_id',$request->get('applicant_id'))->first()){
                 $detail = $det;
             }else{
-                $detail = new NectaResultDetail;
-                $detail->center_name = json_decode($response)->particulars->center_name;
-                $detail->center_number = json_decode($response)->particulars->center_number;
-                $detail->first_name = json_decode($response)->particulars->first_name;
-                $detail->middle_name = json_decode($response)->particulars->middle_name;
-                $detail->last_name = json_decode($response)->particulars->last_name;
-                $detail->sex = json_decode($response)->particulars->sex;
-                $detail->index_number = str_replace('-','/',$index_number); //json_decode($response)->particulars->index_number;
-                $detail->division = json_decode($response)->results->division;
-                $detail->points = json_decode($response)->results->points;
-                $detail->exam_id = $exam_id;
-                $detail->applicant_id = $request->get('applicant_id');
-                $detail->save();
-            }
-            foreach(json_decode($response)->subjects as $subject){
-                if($rs = NectaResult::where('subject_code',$subject->subject_code)->where('necta_result_detail_id',$detail->id)->first()){
-                    $res = $rs;
-                }else{
-                    $res = new NectaResult;
+                $app = Applicant::find($request->get('applicant_id'));
+                $applicants = Applicant::where('user_id',$app->user_id)->get();
+                foreach ($applicants as $appl) {
+                    $detail = new NectaResultDetail;
+                    $detail->center_name = json_decode($response)->particulars->center_name;
+                    $detail->center_number = json_decode($response)->particulars->center_number;
+                    $detail->first_name = json_decode($response)->particulars->first_name;
+                    $detail->middle_name = json_decode($response)->particulars->middle_name;
+                    $detail->last_name = json_decode($response)->particulars->last_name;
+                    $detail->sex = json_decode($response)->particulars->sex;
+                    $detail->index_number = str_replace('-','/',$index_number); //json_decode($response)->particulars->index_number;
+                    $detail->division = json_decode($response)->results->division;
+                    $detail->points = json_decode($response)->results->points;
+                    $detail->exam_id = $exam_id;
+                    $detail->applicant_id = $appl->id;
+                    $detail->save();
+                
+                    foreach(json_decode($response)->subjects as $subject){
+                        if($rs = NectaResult::where('subject_code',$subject->subject_code)->where('necta_result_detail_id',$detail->id)->first()){
+                            $res = $rs;
+                        }else{
+                            $res = new NectaResult;
+                        }
+                        $res->subject_name = $subject->subject_name;
+                        $res->subject_code = $subject->subject_code;
+                        $res->grade = $subject->grade;
+                        $res->applicant_id = $request->get('applicant_id');
+                        $res->necta_result_detail_id = $detail->id;
+                        $res->save();
+                    }
                 }
-                $res->subject_name = $subject->subject_name;
-                $res->subject_code = $subject->subject_code;
-                $res->grade = $subject->grade;
-                $res->applicant_id = $request->get('applicant_id');
-                $res->necta_result_detail_id = $detail->id;
-                $res->save();
             }
 
             $applicant = Applicant::with('programLevel')->find($request->get('applicant_id'));
