@@ -220,6 +220,8 @@
 
               @if($applicant->entry_mode == 'EQUIVALENT')
 
+              @if(str_contains($applicant->programLevel->name,'Degree'))
+
               <div class="card card-default">
               <div class="card-header">
                 <h3 class="card-title">@if($applicant->entry_mode == 'EQUIVALENT') {{ __('Add NACTE Results (If Applicable)') }} @else {{ __('Add NACTE Results') }} @endif </h3>
@@ -273,6 +275,7 @@
               {!! Form::close() !!}
             </div>
             <!-- /.card -->
+            @endif
              
             @if(str_contains($applicant->programLevel->name,'Degree') && ( $gpa_less || count($a_level_necta_results) != 0))
             <div class="card card-default">
