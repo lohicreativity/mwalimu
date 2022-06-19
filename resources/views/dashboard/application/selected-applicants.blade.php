@@ -294,9 +294,9 @@
                       <td>@foreach($applicant->selections as $selection)
                           @if($selection->status == 'SELECTED' || $selection->status == 'APPROVING' || $selection->status == 'PENDING')
                            @if($selection->status == 'SELECTED')
-                           <span class="badge badge-success">{{ $selection->status }} @if($applicant->multiple_admissions == 1)*@endif</span>
+                           <span class="badge badge-success">@if($selection->status == 'APPROVING') PRE-SELECTED @else {{ $selection->status }} @endif @if($applicant->multiple_admissions == 1)*@endif</span>
                            @else
-                           <span class="badge badge-warning">{{ $selection->status }}</span>
+                           <span class="badge badge-warning">@if($selection->status == 'APPROVING') PRE-SELECTED @else {{ $selection->status }} @endif</span>
                            @endif
                           @endif
                           @endforeach
