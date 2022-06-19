@@ -1313,8 +1313,9 @@
                                         <div class="form-group col-3">
                                           {!! Form::label('','Equivalent Majors') !!}
                                           <select name="equivalent_majors[]" class="form-control ss-select-tags" multiple="multiple" required>
+                                             {{--
                                              @foreach($diploma_programs as $prog)
-                                               {{--
+
                                                <option value="{{ substr($prog->name,20) }}" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array(substr($prog->name,20),unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>{{ substr($prog->name,20) }}</option>
                                                @endforeach
 
