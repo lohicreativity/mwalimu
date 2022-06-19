@@ -448,7 +448,7 @@
                        <option value="Economics">Economics</option>
                        <option value="Procurement">Procurement</option>
                        <option value="Human Resource">Human Resource</option>
-                       <option value="Records Management">Management</option>
+                       <option value="Records Management">Records Management</option>
                        <option value="Archives">Archives</option>
                        <option value="Information Management">Information Management</option>
                        <option value="Library">Library</option>
@@ -763,7 +763,7 @@
                        <option value="Economics">Economics</option>
                        <option value="Procurement">Procurement</option>
                        <option value="Human Resource">Human Resource</option>
-                       <option value="Records Management">Management</option>
+                       <option value="Records Management">Records Management</option>
                        <option value="Archives">Archives</option>
                        <option value="Information Management">Information Management</option>
                        <option value="Library">Library</option>
@@ -1343,7 +1343,7 @@
                                                <option value="Economics">Economics</option>
                                                <option value="Procurement">Procurement</option>
                                                <option value="Human Resource">Human Resource</option>
-                                               <option value="Records Management">Management</option>
+                                               <option value="Records Management">Records Management</option>
                                                <option value="Archives">Archives</option>
                                                <option value="Information Management">Information Management</option>
                                                <option value="Library">Library</option>
@@ -1646,7 +1646,7 @@
                                                <option value="Economics">Economics</option>
                                                <option value="Procurement">Procurement</option>
                                                <option value="Human Resource">Human Resource</option>
-                                               <option value="Records Management">Management</option>
+                                               <option value="Records Management">Records Management</option>
                                                <option value="Archives">Archives</option>
                                                <option value="Information Management">Information Management</option>
                                                <option value="Library">Library</option>
