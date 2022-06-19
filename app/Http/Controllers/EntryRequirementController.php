@@ -112,13 +112,13 @@ class EntryRequirementController extends Controller
 
         if($request->get('level') == 'certificate'){
              if($request->get('must_subjects') == null && $request->get('exclude_subjects') == null){
-                return redirect()->back()->with('Must subjects or exclude subjects must be specified');
+                return redirect()->back()->with('error','Must subjects or exclude subjects must be specified');
              }
         }
 
         if($request->get('level') == 'diploma' || $request->get('level') == 'degree'){
              if($request->get('advance_must_subjects') == null && $request->get('advance_exclude_subjects') == null){
-                return redirect()->back()->with('Advance must subjects or advance exclude subjects must be specified');
+                return redirect()->back()->with('error','Advance must subjects or advance exclude subjects must be specified');
              }
         }
 
