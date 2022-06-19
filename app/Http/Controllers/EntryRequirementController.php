@@ -110,6 +110,12 @@ class EntryRequirementController extends Controller
            }
         }
 
+        if($request->get('level') == 'certificate'){
+             if($request->get('must_subjects') == null && $request->get('exclude_subjects')){
+                return redirect()->back()->with('Must subjects or exclude subjects must be specified');
+             }
+        }
+
 
         return (new EntryRequirementAction)->store($request);
 

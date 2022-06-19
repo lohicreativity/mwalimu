@@ -222,6 +222,7 @@
                     </select>
                   </div>
                   {!! Form::input('hidden','application_window_id',$application_window->id) !!}
+                  {!! Form::input('hidden','level','certificate') !!}
                    
                    <div class="form-group col-3">
                     {!! Form::label('','Open Equivalent GPA') !!}
@@ -436,6 +437,7 @@
                     </select>
                   </div>
                   {!! Form::input('hidden','application_window_id',$application_window->id) !!}
+                  {!! Form::input('hidden','level','diploma') !!}
                  <div class="form-group col-3">
                     {!! Form::label('','Equivalent Must Subjects') !!}
                     <select name="equivalent_must_subjects[]" class="form-control ss-select-tags" multiple="multiple">
@@ -697,6 +699,7 @@
                     </select>
                   </div>
                   {!! Form::input('hidden','application_window_id',$application_window->id) !!}
+                  {!! Form::input('hidden','level','degree') !!}
                   <div class="form-group col-3">
                     {!! Form::label('','Equivalent Must Subjects') !!}
                     <select name="equivalent_must_subjects[]" class="form-control ss-select-tags" multiple="multiple">
