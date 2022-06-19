@@ -148,6 +148,7 @@ class EntryRequirementController extends Controller
             $requirement->equivalent_must_subjects = $req->equivalent_must_subjects;
             $requirement->equivalent_average_grade = $req->equivalent_average_grade;
             $requirement->open_equivalent_gpa = $req->open_equivalent_gpa;
+            $requirement->min_equivalent_gpa = $req->min_equivalent_gpa;
             $requirement->open_equivalent_pass_subjects = $req->open_equivalent_pass_subjects;
             $requirement->open_equivalent_average_grade = $req->open_equivalent_average_grade;
             $requirement->principle_pass_points = $req->principle_pass_points;

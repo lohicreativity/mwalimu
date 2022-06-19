@@ -603,6 +603,12 @@
                    'required'=>true
                 ];
 
+                $min_equivalent_gpa = [
+                   'placeholder'=>'Min Equivalent GPA',
+                   'class'=>'form-control',
+                   'required'=>true
+                ];
+
                 $open_equivalent_gpa = [
                    'placeholder'=>'Open Equivalent GPA',
                    'class'=>'form-control',
@@ -711,6 +717,10 @@
                     {!! Form::text('equivalent_gpa',null,$equivalent_gpa) !!}
                   </div>
                   <div class="form-group col-3">
+                    {!! Form::label('','Min Equivalent GPA') !!}
+                    {!! Form::text('min_equivalent_gpa',null,$min_equivalent_gpa) !!}
+                  </div>
+                  <div class="form-group col-3">
                     {!! Form::label('','Equivalent Majors') !!}
                     <select name="equivalent_majors[]" class="form-control ss-select-tags" multiple="multiple" required>
                        @foreach($diploma_programs as $prog)
@@ -738,7 +748,7 @@
                   </div>
                   <div class="form-group col-3">
                     {!! Form::label('','Equivalent Average Grade') !!}
-                    <select name="equivalent_average_grade" class="form-control">
+                    <select name="equivalent_average_grade" class="form-control" required>
                        <option value="">Select Pass Grade</option>
                        <option value="A">A</option>
                        <option value="B">B</option>
@@ -854,7 +864,7 @@
                   
                   <div class="form-group col-3">
                     {!! Form::label('','Advance Exclude Subjects') !!}
-                    <select name="advance_exclude_subjects[]" class="form-control ss-select-tags" multiple="multiple" required>
+                    <select name="advance_exclude_subjects[]" class="form-control ss-select-tags" multiple="multiple">
                        @foreach($subjects as $sub)
                        <option value="{{ $sub->subject_name }}">{{ $sub->subject_name }}</option>
                        @endforeach
