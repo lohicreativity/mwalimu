@@ -111,13 +111,13 @@ class EntryRequirementController extends Controller
         }
 
         if($request->get('level') == 'certificate'){
-             if(count($request->get('must_subjects')) == 0 && count($request->get('exclude_subjects')) == 0){
+             if($request->get('must_subjects') == null && $request->get('exclude_subjects') == null){
                 return redirect()->back()->with('Must subjects or exclude subjects must be specified');
              }
         }
 
         if($request->get('level') == 'diploma' || $request->get('level') == 'degree'){
-             if(count($request->get('advance_must_subjects')) == 0 && count($request->get('advance_exclude_subjects')) == 0){
+             if($request->get('advance_must_subjects') == null && $request->get('advance_exclude_subjects') == null){
                 return redirect()->back()->with('Advance must subjects or advance exclude subjects must be specified');
              }
         }
