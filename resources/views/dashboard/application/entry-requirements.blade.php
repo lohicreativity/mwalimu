@@ -1658,12 +1658,12 @@
                                             {!! Form::label('','Equivalent Average Grade') !!}
                                             <select name="equivalent_average_grade" class="form-control">
                                                <option value="">Select Pass Grade</option>
-                                               <option value="A">A</option>
-                                               <option value="B">B</option>
-                                               <option value="C">C</option>
-                                               <option value="D">D</option>
-                                               <option value="E">E</option>
-                                               <option value="F">F</option>
+                                               <option value="A" @if($requirement->equivalent_average_grade == 'A') selected="selected" @endif>A</option>
+                                               <option value="B" @if($requirement->equivalent_average_grade == 'B') selected="selected" @endif>B</option>
+                                               <option value="C" @if($requirement->equivalent_average_grade == 'C') selected="selected" @endif>C</option>
+                                               <option value="D" @if($requirement->equivalent_average_grade == 'D') selected="selected" @endif>D</option>
+                                               <option value="E" @if($requirement->equivalent_average_grade == 'E') selected="selected" @endif>E</option>
+                                               <option value="F" @if($requirement->equivalent_average_grade == 'F') selected="selected" @endif>F</option>
                                             </select>
                                           </div>
                                           {!! Form::input('hidden','application_window_id',$application_window->id) !!}
