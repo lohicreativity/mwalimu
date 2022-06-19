@@ -1314,7 +1314,7 @@
                                         </div>
                                         <div class="form-group col-3">
                                           {!! Form::label('','Equivalent Majors') !!}
-                                          <select name="equivalent_majors[]" class="form-control ss-select-tags" multiple="multiple" required>
+                                          <select name="equivalent_majors[]" class="form-control ss-select-tags" multiple="multiple">
                                              {{--
                                              @foreach($diploma_programs as $prog)
 
