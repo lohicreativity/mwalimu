@@ -348,10 +348,10 @@ class ApplicantController extends Controller
         $data = [
            'applicant'=>$applicant,
            'campus'=>Campus::find(session('applicant_campus_id')),
-           'o_level_necta_results'=>NectaResultDetail::with('results')->where('applicant_id',$applicant->id)->where('exam_id','1')->get(),
-           'a_level_necta_results'=>NectaResultDetail::with('results')->where('applicant_id',$applicant->id)->where('exam_id','2')->get(),
-           'nacte_results'=>NacteResultDetail::with('results')->where('applicant_id',$applicant->id) ->get(),
-           'out_results'=>OutResultDetail::with('results')->where('applicant_id',$applicant->id) ->get()
+           'o_level_necta_results'=>NectaResultDetail::with('results')->where('applicant_id',$applicant->id)->where('exam_id','1')->where('verified',1)->get(),
+           'a_level_necta_results'=>NectaResultDetail::with('results')->where('applicant_id',$applicant->id)->where('exam_id','2')->where('verified',1)->get(),
+           'nacte_results'=>NacteResultDetail::with('results')->where('applicant_id',$applicant->id)->where('verified',1)->get(),
+           'out_results'=>OutResultDetail::with('results')->where('applicant_id',$applicant->id)->where('verified',1)->get()
         ];
         return view('dashboard.application.request-results',$data)->withTitle('Request Results');
     }

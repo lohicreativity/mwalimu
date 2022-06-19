@@ -17,6 +17,8 @@ class NectaResultController extends Controller
     public function confirm(Request $request)
     {
         $detail = NectaResultDetail::find($request->get('necta_result_detail_id'));
+        $detail->verified = 1;
+        $detail->save();
         $applicant  = Applicant::find($request->get('applicant_id'));
         $non_details = NectaResultDetail::where('id','!=',$request->get('necta_result_detail_id'))->where('first_name','!=',$detail->first_name)->where('last_name','!=',$detail->last_name)->get();
 
