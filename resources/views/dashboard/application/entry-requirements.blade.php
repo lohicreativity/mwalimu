@@ -1111,7 +1111,7 @@
                                       </div>
                                       <div class="form-group col-3">
                                         {!! Form::label('','Equivalent Average Grade') !!}
-                                        <select name="equivalent_average_grade" class="form-control">
+                                        <select name="equivalent_average_grade" class="form-control" disabled="disabled">
                                            <option value="">Select Pass Grade</option>
                                            <option value="A">A</option>
                                            <option value="B">B</option>
@@ -1325,43 +1325,43 @@
                                                <option value="{{ substr($prog->name,20) }}">{{ substr($prog->name,20) }}</option>
                                                @endforeach
                                                --}}
-                                               <option value="Marketing">Marketing</option>
-                                               <option value="Financial Administration">Financial Administration</option>
-                                               <option value="Accountancy">Accountancy</option>
-                                               <option value="Finance">Finance</option>
-                                               <option value="Nursing">Nursing</option>
-                                               <option value="Clinical Science">Clinical Science</option>
-                                               <option value="Police Science">Police Science</option>
-                                               <option value="International Relations">International Relations</option>
-                                               <option value="Diplomacy">Diplomacy</option>
-                                               <option value="Counselling">Counselling</option>
-                                               <option value="Psychology">Psychology</option>
-                                               <option value="Law">Law</option>
-                                               <option value="Secretarial Studies">Secretarial Studies</option>
-                                               <option value="Office Management">Office Management</option>
-                                               <option value="Public Administration">Public Administration</option>
-                                               <option value="Journalism">Journalism</option>
-                                               <option value="Education">Education</option>
-                                               <option value="Economics">Economics</option>
-                                               <option value="Procurement">Procurement</option>
-                                               <option value="Human Resource">Human Resource</option>
-                                               <option value="Records Management">Records Management</option>
-                                               <option value="Archives">Archives</option>
-                                               <option value="Information Management">Information Management</option>
-                                               <option value="Library">Library</option>
-                                               <option value="Gender">Gender</option>
-                                               <option value="Social Studies">Social Studies</option>
-                                               <option value="Business Adminstration">Business Adminstration</option>
-                                               <option value="Community Development">Community Development</option>
-                                               <option value="Information Communication Technology">Information Communication Technology</option>
-                                               <option value="Information Technology">Information Technology</option>
-                                               <option value="Computer Science">Computer Science</option>
-                                               <option value="Social Work">Social Work</option>
+                                               <option value="Marketing" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Marketing',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Marketing</option>
+                                               <option value="Financial Administration" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Financial Administration',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Financial Administration</option>
+                                               <option value="Accountancy" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Accountancy',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Accountancy</option>
+                                               <option value="Finance" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Finance',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Finance</option>
+                                               <option value="Nursing" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Nursing',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Nursing</option>
+                                               <option value="Clinical Science" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Clinical Science',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Clinical Science</option>
+                                               <option value="Police Science" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Police Science',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Police Science</option>
+                                               <option value="International Relations" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('International Relations',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>International Relations</option>
+                                               <option value="Diplomacy" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Diplomacy',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Diplomacy</option>
+                                               <option value="Counselling" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Counselling',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Counselling</option>
+                                               <option value="Psychology" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Psychology',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Psychology</option>
+                                               <option value="Law" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Law',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Law</option>
+                                               <option value="Secretarial Studies" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Secretarial Studies',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Secretarial Studies</option>
+                                               <option value="Office Management" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Office Management',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Office Management</option>
+                                               <option value="Public Administration" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Public Administration',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Public Administration</option>
+                                               <option value="Journalism" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Journalism',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Journalism</option>
+                                               <option value="Education" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Education',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Education</option>
+                                               <option value="Economics" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Economics',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Economics</option>
+                                               <option value="Procurement" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Procurement',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Procurement</option>
+                                               <option value="Human Resource" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Human Resource',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Human Resource</option>
+                                               <option value="Records Management" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Records Management',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Records Management</option>
+                                               <option value="Archives" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Archives',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Archives</option>
+                                               <option value="Information Management" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Information Management',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Information Management</option>
+                                               <option value="Library" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Library',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Library</option>
+                                               <option value="Gender" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Gender',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Gender</option>
+                                               <option value="Social Studies" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Social Studies',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Social Studies</option>
+                                               <option value="Business Adminstration" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Business Administration',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Business Adminstration</option>
+                                               <option value="Community Development" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Community Development',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Community Development</option>
+                                               <option value="Information Communication Technology" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Information Communication Technology',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Information Communication Technology</option>
+                                               <option value="Information Technology" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Information Technology',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Information Technology</option>
+                                               <option value="Computer Science" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Computer Science',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Computer Science</option>
+                                               <option value="Social Work" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Social Work',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Social Work</option>
                                           </select>
                                         </div>
                                         <div class="form-group col-3">
                                           {!! Form::label('','Equivalent Average Grade') !!}
-                                          <select name="equivalent_average_grade" class="form-control">
+                                          <select name="equivalent_average_grade" class="form-control" disabled="disabled">
                                              <option value="">Select Pass Grade</option>
                                              <option value="A">A</option>
                                              <option value="B">B</option>
@@ -1397,11 +1397,11 @@
                                          </div>
                                          <div class="form-group col-3">
                                           {!! Form::label('','No. of Subsidiary Pass Subjects') !!}
-                                          {!! Form::text('subsidiary_pass_subjects',null,$subsidiary_pass_subjects) !!}
+                                          {!! Form::text('subsidiary_pass_subjects',$requirement->subsidiary_pass_subjects,$subsidiary_pass_subjects) !!}
                                          </div>
                                          <div class="form-group col-3">
                                           {!! Form::label('','No. of Pass Subjects') !!}
-                                          {!! Form::text('pass_subjects',null,$pass_subjects) !!}
+                                          {!! Form::text('pass_subjects',$requirement->pass_subjects,$pass_subjects) !!}
                                         </div>
                                         
                                        
@@ -1482,15 +1482,6 @@
                                           </select>
                                         </div>
                                    
-                                        <div class="form-group col-3">
-                                          {!! Form::label('','NVA level') !!}
-                                          <select name="award_level" class="form-control">
-                                            <option value="">Select NVA Level</option>
-                                            <option value="I">I</option>
-                                            <option value="II">II</option>
-                                            <option value="III">III</option>
-                                          </select>
-                                        </div>
                                       </div>
                                    </div>
                                    
@@ -1629,38 +1620,38 @@
                                                <option value="{{ substr($prog->name,20) }}">{{ substr($prog->name,20) }}</option>
                                                @endforeach
                                                --}}
-                                               <option value="Marketing">Marketing</option>
-                                               <option value="Financial Administration">Financial Administration</option>
-                                               <option value="Accountancy">Accountancy</option>
-                                               <option value="Finance">Finance</option>
-                                               <option value="Nursing">Nursing</option>
-                                               <option value="Clinical Science">Clinical Science</option>
-                                               <option value="Police Science">Police Science</option>
-                                               <option value="International Relations">International Relations</option>
-                                               <option value="Diplomacy">Diplomacy</option>
-                                               <option value="Counselling">Counselling</option>
-                                               <option value="Psychology">Psychology</option>
-                                               <option value="Law">Law</option>
-                                               <option value="Secretarial Studies">Secretarial Studies</option>
-                                               <option value="Office Management">Office Management</option>
-                                               <option value="Public Administration">Public Administration</option>
-                                               <option value="Journalism">Journalism</option>
-                                               <option value="Education">Education</option>
-                                               <option value="Economics">Economics</option>
-                                               <option value="Procurement">Procurement</option>
-                                               <option value="Human Resource">Human Resource</option>
-                                               <option value="Records Management">Records Management</option>
-                                               <option value="Archives">Archives</option>
-                                               <option value="Information Management">Information Management</option>
-                                               <option value="Library">Library</option>
-                                               <option value="Gender">Gender</option>
-                                               <option value="Social Studies">Social Studies</option>
-                                               <option value="Business Adminstration">Business Adminstration</option>
-                                               <option value="Community Development">Community Development</option>
-                                               <option value="Information Communication Technology">Information Communication Technology</option>
-                                               <option value="Information Technology">Information Technology</option>
-                                               <option value="Computer Science">Computer Science</option>
-                                               <option value="Social Work">Social Work</option>
+                                               <option value="Marketing" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Marketing',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Marketing</option>
+                                               <option value="Financial Administration" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Financial Administration',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Financial Administration</option>
+                                               <option value="Accountancy" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Accountancy',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Accountancy</option>
+                                               <option value="Finance" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Finance',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Finance</option>
+                                               <option value="Nursing" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Nursing',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Nursing</option>
+                                               <option value="Clinical Science" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Clinical Science',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Clinical Science</option>
+                                               <option value="Police Science" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Police Science',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Police Science</option>
+                                               <option value="International Relations" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('International Relations',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>International Relations</option>
+                                               <option value="Diplomacy" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Diplomacy',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Diplomacy</option>
+                                               <option value="Counselling" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Counselling',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Counselling</option>
+                                               <option value="Psychology" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Psychology',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Psychology</option>
+                                               <option value="Law" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Law',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Law</option>
+                                               <option value="Secretarial Studies" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Secretarial Studies',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Secretarial Studies</option>
+                                               <option value="Office Management" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Office Management',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Office Management</option>
+                                               <option value="Public Administration" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Public Administration',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Public Administration</option>
+                                               <option value="Journalism" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Journalism',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Journalism</option>
+                                               <option value="Education" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Education',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Education</option>
+                                               <option value="Economics" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Economics',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Economics</option>
+                                               <option value="Procurement" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Procurement',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Procurement</option>
+                                               <option value="Human Resource" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Human Resource',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Human Resource</option>
+                                               <option value="Records Management" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Records Management',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Records Management</option>
+                                               <option value="Archives" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Archives',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Archives</option>
+                                               <option value="Information Management" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Information Management',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Information Management</option>
+                                               <option value="Library" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Library',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Library</option>
+                                               <option value="Gender" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Gender',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Gender</option>
+                                               <option value="Social Studies" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Social Studies',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Social Studies</option>
+                                               <option value="Business Adminstration" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Business Administration',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Business Adminstration</option>
+                                               <option value="Community Development" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Community Development',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Community Development</option>
+                                               <option value="Information Communication Technology" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Information Communication Technology',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Information Communication Technology</option>
+                                               <option value="Information Technology" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Information Technology',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Information Technology</option>
+                                               <option value="Computer Science" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Computer Science',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Computer Science</option>
+                                               <option value="Social Work" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Social Work',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Social Work</option>
                                             </select>
                                           </div>
                                           <div class="form-group col-3">
