@@ -175,6 +175,7 @@ class EntryRequirementController extends Controller
             $requirement->max_capacity = $req->max_capacity;
             $requirement->level = $requirement->level;
             $requirement->group_id = $req->group_id;
+            $requirement->level = $req->level;
             $requirement->save();
         }
 

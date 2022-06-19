@@ -16,6 +16,8 @@ class NacteResultController extends Controller
     public function confirm(Request $request)
     {
         $detail = NacteResultDetail::find($request->get('nacte_result_detail_id'));
+        $detail->verified = 1;
+        $detail->save();
         $applicant  = Applicant::find($request->get('applicant_id'));
         if(strtoupper($applicant->first_name) != strtoupper($detail->firstname) || strtoupper($applicant->surname) != strtoupper($detail->surname)){
             return redirect()->to('application/nullify-nacte-results?detail_id='.$request->get('nacte_result_detail_id'));

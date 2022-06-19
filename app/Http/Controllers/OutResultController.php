@@ -16,6 +16,8 @@ class OutResultController extends Controller
     public function confirm(Request $request)
     {
         $detail = OutResultDetail::find($request->get('out_result_detail_id'));
+        $detail->verified = 1;
+        $detail->save();
         $applicant  = Applicant::find($request->get('applicant_id'));
         if(strtoupper($applicant->index_number) != strtoupper($detail->index_number)){
             return redirect()->to('application/nullify-out-results?detail_id='.$request->get('out_result_detail_id'));

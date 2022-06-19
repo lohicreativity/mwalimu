@@ -368,6 +368,12 @@ class ApplicantController extends Controller
 
         $applicant = User::find(Auth::user()->id)->applicants()->with(['selections.campusProgram.program','selections'=>function($query){
                 $query->orderBy('order','asc');
+            },'nectaResultDetails'=>function($query){
+                 $query->where('verified',1);
+            },'nacteResultDetails'=>function($query){
+                 $query->where('verified',1);
+            },'outResultDetails'=>function($query){
+                 $query->where('verified',1);
             },'selections.campusProgram.campus','nectaResultDetails.results','nacteResultDetails.results','outResultDetails.results','programLevel','applicationWindow'])->where('campus_id',session('applicant_campus_id'))->first();
 
         $window = $applicant->applicationWindow;
