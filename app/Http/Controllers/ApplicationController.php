@@ -1097,6 +1097,11 @@ class ApplicationController extends Controller
             }
         }
         
+        $selected_program = [];
+        foreach ($applicants as $applicant) {
+          $selected_program[$applicant->id] = false;
+        }
+        
         foreach($choices as $choice){   
             foreach ($campus_programs as $program) {
 
