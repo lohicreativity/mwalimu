@@ -44,6 +44,7 @@ class EntryRequirementAction implements EntryRequirementInterface{
             $requirement->subsidiary_subjects = serialize($request->get('subsidiary_subjects'));
             $requirement->principle_subjects = serialize($request->get('principle_subjects'));
             $requirement->max_capacity = $request->get('max_capacity');
+            $requirement->level = $request->get('level');
             $requirement->group_id = $group_id;
             $requirement->save();
         }

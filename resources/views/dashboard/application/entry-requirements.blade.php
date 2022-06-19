@@ -443,6 +443,7 @@
                        <option value="PUBLIC ADMINISTRATION">PUBLIC ADMINISTRATION</option>
                        <option value="ECONOMICS">JOURNALISM</option>
                        <option value="OFFICE MANAGEMENT">OFFICE MANAGEMENT</option>
+                       <option value="EDUCATION">EDUCATION</option>
                     </select>
                   </div>
                   <div class="form-group col-3">
