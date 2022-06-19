@@ -430,7 +430,7 @@
                        --}}
                        <option value="Marketing">Marketing</option>
                        <option value="Financial Administration">Financial Administration</option>
-                       <option value="Local Government Accountacy">Local Government Accountacy</option>
+                       <option value="Accountancy">Accountancy</option>
                        <option value="Finance">Finance</option>
                        <option value="Nursing">Nursing</option>
                        <option value="Clinical Science">Clinical Science</option>
@@ -745,7 +745,7 @@
                        --}}
                        <option value="Marketing">Marketing</option>
                        <option value="Financial Administration">Financial Administration</option>
-                       <option value="Local Government Accountacy">Local Government Accountacy</option>
+                       <option value="Accountancy">Accountancy</option>
                        <option value="Finance">Finance</option>
                        <option value="Nursing">Nursing</option>
                        <option value="Clinical Science">Clinical Science</option>
@@ -1325,7 +1325,7 @@
                                                --}}
                                                <option value="Marketing">Marketing</option>
                                                <option value="Financial Administration">Financial Administration</option>
-                                               <option value="Local Government Accountacy">Local Government Accountacy</option>
+                                               <option value="Accountancy">Accountancy</option>
                                                <option value="Finance">Finance</option>
                                                <option value="Nursing">Nursing</option>
                                                <option value="Clinical Science">Clinical Science</option>
@@ -1628,7 +1628,7 @@
                                                --}}
                                                <option value="Marketing">Marketing</option>
                                                <option value="Financial Administration">Financial Administration</option>
-                                               <option value="Local Government Accountacy">Local Government Accountacy</option>
+                                               <option value="Accountancy">Accountancy</option>
                                                <option value="Finance">Finance</option>
                                                <option value="Nursing">Nursing</option>
                                                <option value="Clinical Science">Clinical Science</option>
