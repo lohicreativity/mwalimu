@@ -594,57 +594,67 @@
 
                 $equivalent_majors = [
                    'placeholder'=>'Equivalent Majors',
-                   'class'=>'form-control'
+                   'class'=>'form-control',
                 ];
 
                 $equivalent_average_grade = [
                    'placeholder'=>'Equivalent Average Grade',
-                   'class'=>'form-control'
+                   'class'=>'form-control',
+                   'required'=>true
                 ];
 
                 $open_equivalent_gpa = [
                    'placeholder'=>'Open Equivalent GPA',
-                   'class'=>'form-control'
+                   'class'=>'form-control',
+                   'required'=>true
                 ];
 
                 $open_equivalent_majors = [
                    'placeholder'=>'Open Equivalent Majors',
-                   'class'=>'form-control'
+                   'class'=>'form-control',
+                   'required'=>true
                 ];
 
                 $open_equivalent_average_grade = [
                    'placeholder'=>'Open Equivalent Average Grade',
-                   'class'=>'form-control'
+                   'class'=>'form-control',
+                   'required'=>true
                 ];
 
                 $principle_pass_points = [
                    'placeholder'=>'Principle Pass Points',
-                   'class'=>'form-control'
+                   'class'=>'form-control',
+                   'required'=>true
                 ];
 
                 $min_principle_pass_points = [
                    'placeholder'=>'Min Principle Pass Points',
-                   'class'=>'form-control'
+                   'class'=>'form-control',
+                   'required'=>true
                 ];
 
                 $principle_pass_subjects = [
                    'placeholder'=>'Principle Pass Subjects',
-                   'class'=>'form-control'
+                   'class'=>'form-control',
+                   'required'=>true
                 ];
 
                 $pass_subjects = [
                    'placeholder'=>'Pass Subjects',
-                   'class'=>'form-control'
+                   'class'=>'form-control',
+                   'required'=>true
                 ];
 
                 $min_pass_subjects = [
                    'placeholder'=>'Min Pass Subjects',
-                   'class'=>'form-control'
+                   'class'=>'form-control',
+                   'required'=>true
                 ];
 
                 $pass_grade = [
                    'placeholder'=>'Pass Grade',
-                   'class'=>'form-control'
+                   'class'=>'form-control',
+                   'required'=>true
                 ];
 
                 $award_level = [
@@ -757,7 +767,7 @@
 
                    <div class="form-group col-3">
                     {!! Form::label('','Open Exclude Subjects') !!}
-                    <select name="open_exclude_subjects[]" class="form-control ss-select-tags" multiple="multiple">
+                    <select name="open_exclude_subjects[]" class="form-control ss-select-tags" multiple="multiple" required>
                        <option value="OFC 017">Communication Skills</option>
                        <option value="OFP 018">Development Studies</option>
                        <option value="OFP 020">Introduction to ICT</option>
@@ -783,7 +793,7 @@
 
                   <div class="form-group col-3">
                     {!! Form::label('','Subsidiary Subjects') !!}
-                    <select name="subsidiary_subjects[]" class="form-control ss-select-tags" multiple="multiple">
+                    <select name="subsidiary_subjects[]" class="form-control ss-select-tags" multiple="multiple" required>
                        @foreach($subjects as $sub)
                        <option value="{{ $sub->subject_name }}">{{ $sub->subject_name }}</option>
                        @endforeach
@@ -792,7 +802,7 @@
                  
                    <div class="form-group col-3">
                     {!! Form::label('','Pass Grade') !!}
-                    <select name="pass_grade" class="form-control">
+                    <select name="pass_grade" class="form-control" required>
                        <option value="">Select Pass Grade</option>
                        <option value="A">A</option>
                        <option value="B">B</option>
@@ -804,7 +814,7 @@
                   </div>
                   <div class="form-group col-3">
                      {!! Form::label('','NTA Level') !!}
-                    <select name="nta_level" class="form-control">
+                    <select name="nta_level" class="form-control" required>
                        <option value="">Select NTA Level</option>
                        <option value="4">4</option>
                        <option value="5">5</option>
@@ -844,7 +854,7 @@
                   
                   <div class="form-group col-3">
                     {!! Form::label('','Advance Exclude Subjects') !!}
-                    <select name="advance_exclude_subjects[]" class="form-control ss-select-tags" multiple="multiple">
+                    <select name="advance_exclude_subjects[]" class="form-control ss-select-tags" multiple="multiple" required>
                        @foreach($subjects as $sub)
                        <option value="{{ $sub->subject_name }}">{{ $sub->subject_name }}</option>
                        @endforeach
