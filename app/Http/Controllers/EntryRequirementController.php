@@ -116,6 +116,12 @@ class EntryRequirementController extends Controller
              }
         }
 
+        if($request->get('level') == 'diploma' || $request->get('level') == 'degree'){
+             if($request->get('advance_must_subjects') == null && $request->get('advance_exclude_subjects')){
+                return redirect()->back()->with('Advance must subjects or advance exclude subjects must be specified');
+             }
+        }
+
 
         return (new EntryRequirementAction)->store($request);
 
@@ -132,14 +138,14 @@ class EntryRequirementController extends Controller
         if(!$prev_window){
             return redirect()->back()->with('error','No previous application window');
         }
-        $reqs = EntryRequirement::where('application_window_id',$prev_window->id)->get();
+        $reqs = EntryRequirement::where('application_window_id',$prev_window->id)->where('level',$request->get('level'))->get();
         $application_window = ApplicationWindow::where('campus_id',$staff->campus_id)->where('status','ACTIVE')->first();
         foreach($reqs as $req){
             $requirement = new EntryRequirement;
             $requirement->campus_program_id = $req->campus_program_id;
             $requirement->application_window_id = $application_window->id;
             $requirement->equivalent_gpa = $req->equivalent_gpa;
-            $requirement->equivalent_pass_subjects = $req->equivalent_pass_subjects;
+            $requirement->equivalent_must_subjects = $req->equivalent_must_subjects;
             $requirement->equivalent_average_grade = $req->equivalent_average_grade;
             $requirement->open_equivalent_gpa = $req->open_equivalent_gpa;
             $requirement->open_equivalent_pass_subjects = $req->open_equivalent_pass_subjects;
@@ -161,6 +167,7 @@ class EntryRequirementController extends Controller
             $requirement->subsidiary_subjects = $req->subsidiary_subjects;
             $requirement->principle_subjects = $req->principle_subjects;
             $requirement->max_capacity = $req->max_capacity;
+            $requirement->level = $requirement->level;
             $requirement->group_id = $req->group_id;
             $requirement->save();
         }

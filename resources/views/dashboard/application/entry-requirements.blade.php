@@ -294,7 +294,7 @@
                <div class="card-footer">
                   <button type="submit" class="btn btn-primary">{{ __('Add Entry Requirement') }}</button>
                    @if(App\Domain\Application\Models\EntryRequirement::hasPrevious($application_window))
-                 <a href="{{ url('application/store-requirements-as-previous?application_window_id='.$application_window->id) }}" class="btn btn-primary">Save as Previous</a>
+                 <a href="{{ url('application/store-requirements-as-previous?application_window_id='.$application_window->id.'&level=certificate') }}" class="btn btn-primary">Save as Previous</a>
                  @endif
                 </div>
               {!! Form::close() !!}
@@ -345,22 +345,26 @@
 
                 $principle_pass_subjects = [
                    'placeholder'=>'Principle Pass Subjects',
-                   'class'=>'form-control'
+                   'class'=>'form-control',
+                   'required'=>true
                 ];
 
                 $subsidiary_pass_subjects = [
                    'placeholder'=>'Subsidiary Pass Subjects',
-                   'class'=>'form-control'
+                   'class'=>'form-control',
+                   'required'=>true
                 ];
 
                 $pass_subjects = [
                    'placeholder'=>'Pass Subjects',
-                   'class'=>'form-control'
+                   'class'=>'form-control',
+                   'required'=>true
                 ];
 
                 $pass_grade = [
                    'placeholder'=>'Pass Grade',
-                   'class'=>'form-control'
+                   'class'=>'form-control',
+                   'required'=>true
                 ];
 
                 $award_level = [
@@ -418,10 +422,27 @@
                   </div>
                   <div class="form-group col-3">
                     {!! Form::label('','Equivalent Majors') !!}
-                    <select name="equivalent_majors[]" class="form-control ss-select-tags" multiple="multiple" required>
+                    <select name="equivalent_majors[]" class="form-control ss-select-tags" multiple="multiple">
                        @foreach($diploma_programs as $prog)
                        <option value="{{ substr($prog->name,20) }}">{{ substr($prog->name,20) }}</option>
                        @endforeach
+                       <option value="MARKETING">MARKETING</option>
+                       <option value="FINANCIAL ADMINISTRATION">FINANCIAL ADMINISTRATION</option>
+                       <option value="LOCAL GOVERNMENT ACCOUNTANCY">LOCAL GOVERNMENT ACCOUNTANCY</option>
+                       <option value="FINCANCE">FINANCE</option>
+                       <option value="NURSING">NURSING</option>
+                       <option value="CLINICAL SCIENCE">CLINICAL SCIENCE</option>
+                       <option value="POLICE SCIENCE">POLICE SCIENCE</option>
+                       <option value="INTERNATIONAL RELATIONS">INTERNATIONAL RELATIONS</option>
+                       <option value="DIPLOMACY">DIPLOMACY</option>
+                       <option value="COUNSELLING">COUNSELLING</option>
+                       <option value="PSYCHOLOGY">PSYCHOLOGY</option>
+                       <option value="LAW">LAW</option>
+                       <option value="SECRETARIAL STUDIES">SECRETARIAL STUDIES</option>
+                       <option value="ECONOMICS">OFFICE MANAGEMENT</option>
+                       <option value="PUBLIC ADMINISTRATION">PUBLIC ADMINISTRATION</option>
+                       <option value="ECONOMICS">JOURNALISM</option>
+                       <option value="OFFICE MANAGEMENT">OFFICE MANAGEMENT</option>
                     </select>
                   </div>
                   <div class="form-group col-3">
@@ -440,7 +461,7 @@
                   {!! Form::input('hidden','level','diploma') !!}
                  <div class="form-group col-3">
                     {!! Form::label('','Equivalent Must Subjects') !!}
-                    <select name="equivalent_must_subjects[]" class="form-control ss-select-tags" multiple="multiple">
+                    <select name="equivalent_must_subjects[]" class="form-control ss-select-tags" multiple="multiple" disabled="disabled">
                        <option value="ENGLISH">English</option>
                        <option value="KISWAHILI">Kiswahili</option>
                        <option value="GEOGRAPHY">Geography</option>
@@ -491,7 +512,7 @@
                   </div>
                   <div class="form-group col-3">
                     {!! Form::label('','NTA Level') !!}
-                    <select name="nta_level" class="form-control">
+                    <select name="nta_level" class="form-control" required>
                        <option value="">Select NTA Level</option>
                        <option value="4">4</option>
                        <option value="5">5</option>
@@ -558,7 +579,7 @@
                <div class="card-footer">
                   <button type="submit" class="btn btn-primary">{{ __('Add Entry Requirement') }}</button>
                    @if(App\Domain\Application\Models\EntryRequirement::hasPrevious($application_window))
-                 <a href="{{ url('application/store-requirements-as-previous?application_window_id='.$application_window->id) }}" class="btn btn-primary">Save as Previous</a>
+                 <a href="{{ url('application/store-requirements-as-previous?application_window_id='.$application_window->id.'&level=diploma') }}" class="btn btn-primary">Save as Previous</a>
                  @endif
                 </div>
               {!! Form::close() !!}
@@ -684,6 +705,24 @@
                        @foreach($diploma_programs as $prog)
                        <option value="{{ substr($prog->name,20) }}">{{ substr($prog->name,20) }}</option>
                        @endforeach
+                       <option value="MARKETING">MARKETING</option>
+                       <option value="FINANCIAL ADMINISTRATION">FINANCIAL ADMINISTRATION</option>
+                       <option value="LOCAL GOVERNMENT ACCOUNTANCY">LOCAL GOVERNMENT ACCOUNTANCY</option>
+                       <option value="FINCANCE">FINANCE</option>
+                       <option value="NURSING">NURSING</option>
+                       <option value="CLINICAL SCIENCE">CLINICAL SCIENCE</option>
+                       <option value="POLICE SCIENCE">POLICE SCIENCE</option>
+                       <option value="INTERNATIONAL RELATIONS">INTERNATIONAL RELATIONS</option>
+                       <option value="DIPLOMACY">DIPLOMACY</option>
+                       <option value="COUNSELLING">COUNSELLING</option>
+                       <option value="PSYCHOLOGY">PSYCHOLOGY</option>
+                       <option value="LAW">LAW</option>
+                       <option value="SECRETARIAL STUDIES">SECRETARIAL STUDIES</option>
+                       <option value="ECONOMICS">OFFICE MANAGEMENT</option>
+                       <option value="PUBLIC ADMINISTRATION">PUBLIC ADMINISTRATION</option>
+                       <option value="ECONOMICS">JOURNALISM</option>
+                       <option value="OFFICE MANAGEMENT">OFFICE MANAGEMENT</option>
+                       <option value="EDUCATION">EDUCATION</option>
                     </select>
                   </div>
                   <div class="form-group col-3">
@@ -835,7 +874,7 @@
                <div class="card-footer">
                   <button type="submit" class="btn btn-primary">{{ __('Add Entry Requirement') }}</button>
                    @if(App\Domain\Application\Models\EntryRequirement::hasPrevious($application_window))
-                 <a href="{{ url('application/store-requirements-as-previous?application_window_id='.$application_window->id) }}" class="btn btn-primary">Save as Previous</a>
+                 <a href="{{ url('application/store-requirements-as-previous?application_window_id='.$application_window->id.'&level=degree') }}" class="btn btn-primary">Save as Previous</a>
                  @endif
                 </div>
               {!! Form::close() !!}
