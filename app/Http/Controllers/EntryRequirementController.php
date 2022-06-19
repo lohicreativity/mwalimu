@@ -32,9 +32,7 @@ class EntryRequirementController extends Controller
     	$data = [
            'application_windows'=>ApplicationWindow::where('campus_id',$staff->campus_id)->get(),
            'application_window'=>ApplicationWindow::find($request->get('application_window_id')),
-           'campus_programs'=>CampusProgram::whereHas('selections',function($query) use($request){
-                     $query->where('application_window_id',$request->get('application_window_id'));
-              })->with('program')->where('campus_id',$staff->campus_id)->get(),
+           'campus_programs'=>CampusProgram::with('program')->where('campus_id',$staff->campus_id)->get(),
            'cert_campus_programs'=>CampusProgram::whereHas('program.ntaLevel',function($query){
                     $query->where('name','LIKE','%4%');
            })->whereHas('applicationWindows',function($query) use($request){
