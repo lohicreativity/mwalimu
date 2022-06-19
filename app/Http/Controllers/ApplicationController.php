@@ -124,25 +124,25 @@ class ApplicationController extends Controller
     {
          $staff = User::find(Auth::user()->id)->staff;
          if($request->get('query')){
-            $applicants = Applicant::whereHas('intake.applicationWindows',function($query) use($request){
+            $applicants = Applicant::whereHas('applicationWindow',function($query) use($request){
                  $query->where('id',$request->get('application_window_id'));
             })->whereHas('selections',function($query) use($request){
                  $query->where('status','APPROVING')->orWhere('status','SELECTED')->orWhere('status','PENDING');
             })->with(['nextOfKin','intake','selections.campusProgram.program'])->where('program_level_id',$request->get('program_level_id'))->where('first_name','LIKE','%'.$request->get('query').'%')->orWhere('middle_name','LIKE','%'.$request->get('query').'%')->orWhere('surname','LIKE','%'.$request->get('query').'%')->where('campus_id',$staff->campus_id)->get();
          }elseif($request->get('gender')){
-            $applicants = Applicant::whereHas('intake.applicationWindows',function($query) use($request){
+            $applicants = Applicant::whereHas('applicationWindow',function($query) use($request){
                  $query->where('id',$request->get('application_window_id'));
             })->whereHas('selections',function($query) use($request){
                  $query->where('status','APPROVING')->orWhere('status','SELECTED')->orWhere('status','PENDING');
             })->with(['nextOfKin','intake','selections.campusProgram.program'])->where('program_level_id',$request->get('program_level_id'))->where('gender',$request->get('gender'))->where('campus_id',$staff->campus_id)->get();
          }elseif($request->get('campus_program_id')){
-            $applicants = Applicant::whereHas('intake.applicationWindows',function($query) use($request){
+            $applicants = Applicant::whereHas('applicationWindow',function($query) use($request){
                  $query->where('id',$request->get('application_window_id'));
             })->whereHas('selections',function($query) use($request){
                  $query->where('status','APPROVING')->orWhere('status','SELECTED')->orWhere('status','PENDING')->where('campus_program_id',$request->get('campus_program_id'));
             })->with(['nextOfKin','intake','selections.campusProgram.program'])->where('program_level_id',$request->get('program_level_id'))->where('campus_id',$staff->campus_id)->get();
          }elseif($request->get('nta_level_id')){
-             $applicants = Applicant::whereHas('intake.applicationWindows',function($query) use($request){
+             $applicants = Applicant::whereHas('applicationWindow',function($query) use($request){
                  $query->where('id',$request->get('application_window_id'));
             })->whereHas('selections.campusProgram.program',function($query) use($request){
                  $query->where('nta_level_id',$request->get('nta_level_id'));
@@ -150,14 +150,13 @@ class ApplicationController extends Controller
                  $query->where('status','APPROVING')->orWhere('status','SELECTED')->orWhere('status','PENDING');
             })->with(['nextOfKin','intake','selections.campusProgram.program'])->where('program_level_id',$request->get('program_level_id'))->where('campus_id',$staff->campus_id)->get();
          }else{
-            $applicants = Applicant::whereHas('intake.applicationWindows',function($query) use($request){
+            $applicants = Applicant::whereHas('applicationWindow',function($query) use($request){
                  $query->where('id',$request->get('application_window_id'));
             })->whereHas('selections',function($query) use($request){
                  $query->where('status','APPROVING')->orWhere('status','SELECTED')->orWhere('status','PENDING');
             })->with(['nextOfKin','intake','selections.campusProgram.program'])->where('program_level_id',$request->get('program_level_id'))->where('campus_id',$staff->campus_id)->get();
          }
 
-         return $applicants;
          $data = [
             'staff'=>$staff,
             'application_windows'=>ApplicationWindow::where('campus_id',$staff->campus_id)->get(),
