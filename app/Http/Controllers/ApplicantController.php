@@ -565,9 +565,11 @@ class ApplicantController extends Controller
 
                        if(unserialize($program->entryRequirements[0]->equivalent_majors) != ''){
                            foreach(unserialize($program->entryRequirements[0]->equivalent_majors) as $sub){
-                             if(str_contains($program->program->name,$sub)){
-                                 $has_btc = true;
-                             }
+                                foreach($applicant->nacteResultDetails as $det){
+                                   if(str_contains($det->programme,$sub) && str_contains($det->programme,'Basic')){
+                                     $has_btc = true;
+                                   }
+                                }
                            }
                        }
                            
@@ -738,16 +740,16 @@ class ApplicantController extends Controller
                             $out_gpa = $detail->gpa;
                             
                         }
-                        if($out_pass_subjects_count >= 3 && $out_gpa >= 3 && $a_level_subsidiary_pass_count >= 1 && $a_level_principle_pass_count >= 1){
+                        if($out_pass_subjects_count >= 3 && $out_gpa >= $program->entryRequirements[0]->open_equivalent_gpa && $a_level_subsidiary_pass_count >= 1 && $a_level_principle_pass_count >= 1){
                                 $programs[] = $program;
                         }
                             
                         if(unserialize($program->entryRequirements[0]->equivalent_must_subjects) != ''){
-                            if($out_pass_subjects_count >= 3 && $out_gpa >= 3 && $equivalent_must_subjects_count >= count(unserialize($program->entryRequirements[0]->equivalent_must_subjects)) && $nacte_gpa >= 2){
+                            if($out_pass_subjects_count >= 3 && $out_gpa >= $program->entryRequirements[0]->open_equivalent_gpa && $equivalent_must_subjects_count >= count(unserialize($program->entryRequirements[0]->equivalent_must_subjects)) && $nacte_gpa >= $program->entryRequirements[0]->min_equivalent_gpa){
                                     $programs[] = $program;
                             }
                         }elseif(unserialize($program->entryRequirements[0]->equivalent_majors) != ''){
-                            if($out_pass_subjects_count >= 3 && $out_gpa >= 3 && $has_major && $nacte_gpa >= 2){
+                            if($out_pass_subjects_count >= 3 && $out_gpa >= $program->entryRequirements[0]->open_equivalent_gpa && $has_major && $nacte_gpa >= $program->entryRequirements[0]->min_equivalent_gpa){
                                     $programs[] = $program;
                             }
                         }

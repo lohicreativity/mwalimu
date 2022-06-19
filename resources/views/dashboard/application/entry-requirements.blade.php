@@ -423,9 +423,11 @@
                   <div class="form-group col-3">
                     {!! Form::label('','Equivalent Majors') !!}
                     <select name="equivalent_majors[]" class="form-control ss-select-tags" multiple="multiple">
+                       {{--
                        @foreach($diploma_programs as $prog)
                        <option value="{{ substr($prog->name,20) }}">{{ substr($prog->name,20) }}</option>
                        @endforeach
+                       --}}
                        <option value="Marketing">Marketing</option>
                        <option value="Financial Administration">Financial Administration</option>
                        <option value="Local Government Accountacy">Local Government Accountacy</option>
@@ -443,6 +445,20 @@
                        <option value="Public Administration">Public Administration</option>
                        <option value="Journalism">Journalism</option>
                        <option value="Education">Education</option>
+                       <option value="Economics">Economics</option>
+                       <option value="Procurement">Procurement</option>
+                       <option value="Human Resource">Human Resource</option>
+                       <option value="Records Management">Management</option>
+                       <option value="Archives">Archives</option>
+                       <option value="Information Management">Information Management</option>
+                       <option value="Library">Library</option>
+                       <option value="Gender">Gender</option>
+                       <option value="Social Studies">Social Studies</option>
+                       <option value="Business Adminstration">Business Adminstration</option>
+                       <option value="Community Development">Community Development</option>
+                       <option value="Information Communication Technology">Information Communication Technology</option>
+                       <option value="Information Technology">Information Technology</option>
+                       <option value="Computer Science">Computer Science</option>
                     </select>
                   </div>
                   <div class="form-group col-3">
@@ -722,9 +738,11 @@
                   <div class="form-group col-3">
                     {!! Form::label('','Equivalent Majors') !!}
                     <select name="equivalent_majors[]" class="form-control ss-select-tags" multiple="multiple" required>
+                       {{--
                        @foreach($diploma_programs as $prog)
                        <option value="{{ substr($prog->name,20) }}">{{ substr($prog->name,20) }}</option>
                        @endforeach
+                       --}}
                        <option value="Marketing">Marketing</option>
                        <option value="Financial Administration">Financial Administration</option>
                        <option value="Local Government Accountacy">Local Government Accountacy</option>
@@ -742,6 +760,20 @@
                        <option value="Public Administration">Public Administration</option>
                        <option value="Journalism">Journalism</option>
                        <option value="Education">Education</option>
+                       <option value="Economics">Economics</option>
+                       <option value="Procurement">Procurement</option>
+                       <option value="Human Resource">Human Resource</option>
+                       <option value="Records Management">Management</option>
+                       <option value="Archives">Archives</option>
+                       <option value="Information Management">Information Management</option>
+                       <option value="Library">Library</option>
+                       <option value="Gender">Gender</option>
+                       <option value="Social Studies">Social Studies</option>
+                       <option value="Business Adminstration">Business Adminstration</option>
+                       <option value="Community Development">Community Development</option>
+                       <option value="Information Communication Technology">Information Communication Technology</option>
+                       <option value="Information Technology">Information Technology</option>
+                       <option value="Computer Science">Computer Science</option>
                     </select>
                   </div>
                   <div class="form-group col-3">
@@ -1282,8 +1314,45 @@
                                           {!! Form::label('','Equivalent Majors') !!}
                                           <select name="equivalent_majors[]" class="form-control ss-select-tags" multiple="multiple" required>
                                              @foreach($diploma_programs as $prog)
+                                               {{--
                                                <option value="{{ substr($prog->name,20) }}" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array(substr($prog->name,20),unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>{{ substr($prog->name,20) }}</option>
                                                @endforeach
+
+                                               @foreach($diploma_programs as $prog)
+                                               <option value="{{ substr($prog->name,20) }}">{{ substr($prog->name,20) }}</option>
+                                               @endforeach
+                                               --}}
+                                               <option value="Marketing">Marketing</option>
+                                               <option value="Financial Administration">Financial Administration</option>
+                                               <option value="Local Government Accountacy">Local Government Accountacy</option>
+                                               <option value="Finance">Finance</option>
+                                               <option value="Nursing">Nursing</option>
+                                               <option value="Clinical Science">Clinical Science</option>
+                                               <option value="Police Science">Police Science</option>
+                                               <option value="International Relations">International Relations</option>
+                                               <option value="Diplomacy">Diplomacy</option>
+                                               <option value="Counselling">Counselling</option>
+                                               <option value="Psychology">Psychology</option>
+                                               <option value="Law">Law</option>
+                                               <option value="Secretarial Studies">Secretarial Studies</option>
+                                               <option value="Office Management">Office Management</option>
+                                               <option value="Public Administration">Public Administration</option>
+                                               <option value="Journalism">Journalism</option>
+                                               <option value="Education">Education</option>
+                                               <option value="Economics">Economics</option>
+                                               <option value="Procurement">Procurement</option>
+                                               <option value="Human Resource">Human Resource</option>
+                                               <option value="Records Management">Management</option>
+                                               <option value="Archives">Archives</option>
+                                               <option value="Information Management">Information Management</option>
+                                               <option value="Library">Library</option>
+                                               <option value="Gender">Gender</option>
+                                               <option value="Social Studies">Social Studies</option>
+                                               <option value="Business Adminstration">Business Adminstration</option>
+                                               <option value="Community Development">Community Development</option>
+                                               <option value="Information Communication Technology">Information Communication Technology</option>
+                                               <option value="Information Technology">Information Technology</option>
+                                               <option value="Computer Science">Computer Science</option>
                                           </select>
                                         </div>
                                         <div class="form-group col-3">
@@ -1547,9 +1616,46 @@
                                           <div class="form-group col-3">
                                             {!! Form::label('','Equivalent Majors') !!}
                                             <select name="equivalent_majors[]" class="form-control ss-select-tags" multiple="multiple">
+                                               {{--
                                                @foreach($diploma_programs as $prog)
                                                <option value="{{ substr($prog->name,20) }}" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array(substr($prog->name,20),unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>{{ substr($prog->name,20) }}</option>
                                                @endforeach
+
+                                               @foreach($diploma_programs as $prog)
+                                               <option value="{{ substr($prog->name,20) }}">{{ substr($prog->name,20) }}</option>
+                                               @endforeach
+                                               --}}
+                                               <option value="Marketing">Marketing</option>
+                                               <option value="Financial Administration">Financial Administration</option>
+                                               <option value="Local Government Accountacy">Local Government Accountacy</option>
+                                               <option value="Finance">Finance</option>
+                                               <option value="Nursing">Nursing</option>
+                                               <option value="Clinical Science">Clinical Science</option>
+                                               <option value="Police Science">Police Science</option>
+                                               <option value="International Relations">International Relations</option>
+                                               <option value="Diplomacy">Diplomacy</option>
+                                               <option value="Counselling">Counselling</option>
+                                               <option value="Psychology">Psychology</option>
+                                               <option value="Law">Law</option>
+                                               <option value="Secretarial Studies">Secretarial Studies</option>
+                                               <option value="Office Management">Office Management</option>
+                                               <option value="Public Administration">Public Administration</option>
+                                               <option value="Journalism">Journalism</option>
+                                               <option value="Education">Education</option>
+                                               <option value="Economics">Economics</option>
+                                               <option value="Procurement">Procurement</option>
+                                               <option value="Human Resource">Human Resource</option>
+                                               <option value="Records Management">Management</option>
+                                               <option value="Archives">Archives</option>
+                                               <option value="Information Management">Information Management</option>
+                                               <option value="Library">Library</option>
+                                               <option value="Gender">Gender</option>
+                                               <option value="Social Studies">Social Studies</option>
+                                               <option value="Business Adminstration">Business Adminstration</option>
+                                               <option value="Community Development">Community Development</option>
+                                               <option value="Information Communication Technology">Information Communication Technology</option>
+                                               <option value="Information Technology">Information Technology</option>
+                                               <option value="Computer Science">Computer Science</option>
                                             </select>
                                           </div>
                                           <div class="form-group col-3">
