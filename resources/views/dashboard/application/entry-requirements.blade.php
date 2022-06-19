@@ -426,24 +426,23 @@
                        @foreach($diploma_programs as $prog)
                        <option value="{{ substr($prog->name,20) }}">{{ substr($prog->name,20) }}</option>
                        @endforeach
-                       <option value="MARKETING">MARKETING</option>
-                       <option value="FINANCIAL ADMINISTRATION">FINANCIAL ADMINISTRATION</option>
-                       <option value="LOCAL GOVERNMENT ACCOUNTANCY">LOCAL GOVERNMENT ACCOUNTANCY</option>
-                       <option value="FINCANCE">FINANCE</option>
-                       <option value="NURSING">NURSING</option>
-                       <option value="CLINICAL SCIENCE">CLINICAL SCIENCE</option>
-                       <option value="POLICE SCIENCE">POLICE SCIENCE</option>
-                       <option value="INTERNATIONAL RELATIONS">INTERNATIONAL RELATIONS</option>
-                       <option value="DIPLOMACY">DIPLOMACY</option>
-                       <option value="COUNSELLING">COUNSELLING</option>
-                       <option value="PSYCHOLOGY">PSYCHOLOGY</option>
-                       <option value="LAW">LAW</option>
-                       <option value="SECRETARIAL STUDIES">SECRETARIAL STUDIES</option>
-                       <option value="ECONOMICS">OFFICE MANAGEMENT</option>
-                       <option value="PUBLIC ADMINISTRATION">PUBLIC ADMINISTRATION</option>
-                       <option value="ECONOMICS">JOURNALISM</option>
-                       <option value="OFFICE MANAGEMENT">OFFICE MANAGEMENT</option>
-                       <option value="EDUCATION">EDUCATION</option>
+                       <option value="Marketing">Marketing</option>
+                       <option value="Financial Administration">Financial Administration</option>
+                       <option value="Local Government Accountacy">Local Government Accountacy</option>
+                       <option value="Finance">Finance</option>
+                       <option value="Nursing">Nursing</option>
+                       <option value="Clinical Science">Clinical Science</option>
+                       <option value="Police Science">Police Science</option>
+                       <option value="International Relations">International Relations</option>
+                       <option value="Diplomacy">Diplomacy</option>
+                       <option value="Counselling">Counselling</option>
+                       <option value="Psychology">Psychology</option>
+                       <option value="Law">Law</option>
+                       <option value="Secretarial Studies">Secretarial Studies</option>
+                       <option value="Office Management">Office Management</option>
+                       <option value="Public Administration">Public Administration</option>
+                       <option value="Journalism">Journalism</option>
+                       <option value="Education">Education</option>
                     </select>
                   </div>
                   <div class="form-group col-3">
@@ -501,7 +500,7 @@
                   
                   <div class="form-group col-3">
                     {!! Form::label('','Pass Grade') !!}
-                    <select name="pass_grade" class="form-control">
+                    <select name="pass_grade" class="form-control" required>
                        <option value="">Select Pass Grade</option>
                        <option value="A">A</option>
                        <option value="B">B</option>
@@ -726,24 +725,23 @@
                        @foreach($diploma_programs as $prog)
                        <option value="{{ substr($prog->name,20) }}">{{ substr($prog->name,20) }}</option>
                        @endforeach
-                       <option value="MARKETING">MARKETING</option>
-                       <option value="FINANCIAL ADMINISTRATION">FINANCIAL ADMINISTRATION</option>
-                       <option value="LOCAL GOVERNMENT ACCOUNTANCY">LOCAL GOVERNMENT ACCOUNTANCY</option>
-                       <option value="FINCANCE">FINANCE</option>
-                       <option value="NURSING">NURSING</option>
-                       <option value="CLINICAL SCIENCE">CLINICAL SCIENCE</option>
-                       <option value="POLICE SCIENCE">POLICE SCIENCE</option>
-                       <option value="INTERNATIONAL RELATIONS">INTERNATIONAL RELATIONS</option>
-                       <option value="DIPLOMACY">DIPLOMACY</option>
-                       <option value="COUNSELLING">COUNSELLING</option>
-                       <option value="PSYCHOLOGY">PSYCHOLOGY</option>
-                       <option value="LAW">LAW</option>
-                       <option value="SECRETARIAL STUDIES">SECRETARIAL STUDIES</option>
-                       <option value="ECONOMICS">OFFICE MANAGEMENT</option>
-                       <option value="PUBLIC ADMINISTRATION">PUBLIC ADMINISTRATION</option>
-                       <option value="ECONOMICS">JOURNALISM</option>
-                       <option value="OFFICE MANAGEMENT">OFFICE MANAGEMENT</option>
-                       <option value="EDUCATION">EDUCATION</option>
+                       <option value="Marketing">Marketing</option>
+                       <option value="Financial Administration">Financial Administration</option>
+                       <option value="Local Government Accountacy">Local Government Accountacy</option>
+                       <option value="Finance">Finance</option>
+                       <option value="Nursing">Nursing</option>
+                       <option value="Clinical Science">Clinical Science</option>
+                       <option value="Police Science">Police Science</option>
+                       <option value="International Relations">International Relations</option>
+                       <option value="Diplomacy">Diplomacy</option>
+                       <option value="Counselling">Counselling</option>
+                       <option value="Psychology">Psychology</option>
+                       <option value="Law">Law</option>
+                       <option value="Secretarial Studies">Secretarial Studies</option>
+                       <option value="Office Management">Office Management</option>
+                       <option value="Public Administration">Public Administration</option>
+                       <option value="Journalism">Journalism</option>
+                       <option value="Education">Education</option>
                     </select>
                   </div>
                   <div class="form-group col-3">
@@ -1541,6 +1539,10 @@
                                           <div class="form-group col-3">
                                             {!! Form::label('','Equivalent GPA') !!}
                                             {!! Form::text('equivalent_gpa',$requirement->equivalent_gpa,$equivalent_gpa) !!}
+                                          </div>
+                                          <div class="form-group col-3">
+                                            {!! Form::label('','Min Equivalent GPA') !!}
+                                            {!! Form::text('min_equivalent_gpa',$requirement->min_equivalent_gpa,$min_equivalent_gpa) !!}
                                           </div>
                                           <div class="form-group col-3">
                                             {!! Form::label('','Equivalent Majors') !!}
