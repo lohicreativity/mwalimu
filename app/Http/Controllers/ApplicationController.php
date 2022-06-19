@@ -1067,7 +1067,7 @@ class ApplicationController extends Controller
         // Phase I
         $campus_programs = CampusProgram::whereHas('program',function($query) use($request){
              $query->where('award_id',$request->get('award_id'));
-        })->with(['entryRequirements'=>function($query) use($request){
+        })->with(['program','entryRequirements'=>function($query) use($request){
             $query->where('application_window_id',$request->get('application_window_id'));
         }])->where('campus_id',$staff->campus_id)->get();
 
@@ -1099,6 +1099,10 @@ class ApplicationController extends Controller
         
         foreach($choices as $choice){   
             foreach ($campus_programs as $program) {
+
+                if($program->entryRequirements[0]->max_capacity == null){
+                     return redirect()->back()->with('error',$program->program->name.' does not have maximum capacity in entry requirements');
+                }
 
                 if(isset($program->entryRequirements[0])){
                 foreach($applicants as $applicant){
