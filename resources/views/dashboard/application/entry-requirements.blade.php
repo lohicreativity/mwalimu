@@ -459,6 +459,7 @@
                        <option value="Information Communication Technology">Information Communication Technology</option>
                        <option value="Information Technology">Information Technology</option>
                        <option value="Computer Science">Computer Science</option>
+                       <option value="Social Work">Social Work</option>
                     </select>
                   </div>
                   <div class="form-group col-3">
@@ -774,6 +775,7 @@
                        <option value="Information Communication Technology">Information Communication Technology</option>
                        <option value="Information Technology">Information Technology</option>
                        <option value="Computer Science">Computer Science</option>
+                       <option value="Social Work">Social Work</option>
                     </select>
                   </div>
                   <div class="form-group col-3">
@@ -1354,6 +1356,7 @@
                                                <option value="Information Communication Technology">Information Communication Technology</option>
                                                <option value="Information Technology">Information Technology</option>
                                                <option value="Computer Science">Computer Science</option>
+                                               <option value="Social Work">Social Work</option>
                                           </select>
                                         </div>
                                         <div class="form-group col-3">
@@ -1657,6 +1660,7 @@
                                                <option value="Information Communication Technology">Information Communication Technology</option>
                                                <option value="Information Technology">Information Technology</option>
                                                <option value="Computer Science">Computer Science</option>
+                                               <option value="Social Work">Social Work</option>
                                             </select>
                                           </div>
                                           <div class="form-group col-3">
