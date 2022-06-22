@@ -514,6 +514,15 @@
                     {!! Form::label('','No. of Pass Subjects') !!}
                     {!! Form::text('pass_subjects',null,$pass_subjects) !!}
                   </div>
+
+                  <div class="form-group col-3">
+                    {!! Form::label('','Subsidiary Subjects') !!}
+                    <select name="subsidiary_subjects[]" class="form-control ss-select-tags" multiple="multiple" required>
+                       @foreach($subjects as $sub)
+                       <option value="{{ $sub->subject_name }}">{{ $sub->subject_name }}</option>
+                       @endforeach
+                    </select>
+                  </div>
                   
                   <div class="form-group col-3">
                     {!! Form::label('','Pass Grade') !!}
@@ -1403,6 +1412,15 @@
                                           {!! Form::label('','No. of Pass Subjects') !!}
                                           {!! Form::text('pass_subjects',$requirement->pass_subjects,$pass_subjects) !!}
                                         </div>
+
+                                        <div class="form-group col-3">
+                                            {!! Form::label('','Subsidiary Subjects') !!}
+                                            <select name="subsidiary_subjects[]" class="form-control ss-select-tags" multiple="multiple">
+                                               @foreach($subjects as $sub)
+                                               <option value="{{ $sub->subject_name }}" @if(unserialize($requirement->subsidiary_subjects) != '') @if(in_array($sub->subject_name,unserialize($requirement->subsidiary_subjects))) selected="selected" @endif @endif>{{ $sub->subject_name }}</option>
+                                               @endforeach
+                                            </select>
+                                          </div>
                                         
                                        
                                         <div class="form-group col-3">
