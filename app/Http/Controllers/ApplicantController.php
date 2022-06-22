@@ -517,6 +517,7 @@ class ApplicantController extends Controller
                            }
 
                          }elseif($detail->exam_id === 2){
+                          return $a_level_subsidiary_pass_count.' - '.$a_level_principle_pass_count.' - '.$o_level_pass_count;
                            $other_advance_must_subject_ready = false;
                            $other_advance_subsidiary_ready = false;
                            foreach ($detail->results as $key => $result) {
@@ -559,13 +560,13 @@ class ApplicantController extends Controller
                               }
                            }
                          }
+                         
+                         if($o_level_pass_count >= $program->entryRequirements[0]->pass_subjects && ($a_level_subsidiary_pass_count >= 1 && $a_level_principle_pass_count >= 1)){
+                           $programs[] = $program;
+                         }
 
                          
                        }
-
-                       if($o_level_pass_count >= $program->entryRequirements[0]->pass_subjects && ($a_level_subsidiary_pass_count >= 1 && $a_level_principle_pass_count >= 1)){
-                           $programs[] = $program;
-                         }
 
                        $has_btc = false;
                       
