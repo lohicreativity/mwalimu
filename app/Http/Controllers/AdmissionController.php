@@ -130,6 +130,10 @@ class AdmissionController extends Controller
     	})->first();
     	$program_fee = ProgramFee::with('feeItem.feeType')->where('study_academic_year_id',$study_academic_year->id)->where('campus_program_id',$applicant->selections[0]->campus_program_id)->first();
 
+        if(!$program_fee){
+            return redirect()->back()->with('error','Programme fee has not been set');
+        }
+
 
         $loan_allocation = LoanAllocation::where('index_number',$applicant->index_number)->where('year_of_study',1)->where('study_academic_year_id',$study_academic_year->id)->first();
         if($loan_allocation){
