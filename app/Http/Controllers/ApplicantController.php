@@ -383,8 +383,6 @@ class ApplicantController extends Controller
            })->with(['program','campus','entryRequirements'=>function($query) use($window){
                 $query->where('application_window_id',$window->id);
            }])->where('campus_id',session('applicant_campus_id'))->get() : [];
-
-        return $campus_programs;
         
 
         $award = $applicant->programLevel;
@@ -561,7 +559,7 @@ class ApplicantController extends Controller
                               }
                            }
                          }
-                         
+                         return $o_level_pass_count;
                          if($o_level_pass_count >= $program->entryRequirements[0]->pass_subjects && ($a_level_subsidiary_pass_count >= 1 && $a_level_principle_pass_count >= 1)){
                            $programs[] = $program;
                          }
