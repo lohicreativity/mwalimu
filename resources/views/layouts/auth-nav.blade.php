@@ -282,6 +282,12 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
+                <a href="{{ url('application/tamisemi-applicants?application_window_id='.session('active_window_id')) }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>TAMISEMI Applicants</p>
+                </a>
+              </li>
+              <li class="nav-item">
                 <a href="{{ url('application/run-selection?application_window_id='.session('active_window_id')) }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Run Selection</p>
@@ -291,12 +297,6 @@
                 <a href="{{ url('application/selected-applicants?application_window_id='.session('active_window_id')) }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Selected Applicants</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="{{ url('application/tamisemi-applicants?application_window_id='.session('active_window_id')) }}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>TAMISEMI Applicants</p>
                 </a>
               </li>
                <li class="nav-item">

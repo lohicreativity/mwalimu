@@ -92,7 +92,7 @@
                     {!! Form::text('description',null,$description) !!}
                   </div>
                   <div class="form-group col-4">
-                    {!! Form::label('','Duration') !!}
+                    {!! Form::label('','Payment duration') !!}
                     <select name="duration" class="form-control" required>
                       <option value="">Select Duration</option>
                       @for($i = 10; $i <= 360; $i++)

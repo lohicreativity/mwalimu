@@ -1683,6 +1683,10 @@ class ApplicationController extends Controller
      */
     public function resetApplicantPasswordDefault(Request $request)
     {
+        $applicant = Applicant::find($request->get('applicant_id'));
+        if(!ApplicationWindow::where('campus_id',$applicant->campus_id)->where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('status','ACTIVE')->first()){
+               return redirect()->back()->with('error','You cannot reset applicant\'s password because application window is already closed');
+        }
         $user = User::find($request->get('user_id'));
         $user->password = Hash::make('password');
         $user->save();

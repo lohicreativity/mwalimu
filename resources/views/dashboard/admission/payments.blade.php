@@ -48,12 +48,12 @@
               <div class="card-body">
                  <table class="table table-bordered">
                     <tr>
-                       <td>Fee Item</td>
-                       <td>Fee Amount</td>
-                       <td>Control Number</td>
-                       <td>Amount To Be Paid</td>
-                       <td>Amount Paid</td>
-                       <td>Balance</td>
+                       <th>Fee Item</th>
+                       <th>Fee Amount</th>
+                       <th>Control Number</th>
+                       <th>Amount To Be Paid</th>
+                       <th>Amount Paid</th>
+                       <th>Balance</th>
                     </tr>
                     <tr>
                        <td>Programme Fee</td>
@@ -67,13 +67,13 @@
                        @endif
                        @endif
                        <td>@if($program_fee_invoice) {{ $program_fee_invoice->control_no }}@endif <a href="#" onclick="window.location.reload();"><i class="fa fa-refresh" ></i> Refresh</a></td>
-                       <td>@if($program_fee_invoice) {{ $program_fee_invoice->amount }} {{ $program_fee_invoice->currency }} @endif</td>
+                       <td>@if($program_fee_invoice) {{ number_format($program_fee_invoice->amount,2) }} {{ $program_fee_invoice->currency }} @endif</td>
                        <td>
                          @if($loan_allocation)
                          
                          @else
                          @if(isset($program_fee_invoice->gatewayPayment))
-                            {{ $program_fee_invoice->gatewayPayment->paid_amount }} TZS
+                            {{ number_format($program_fee_invoice->gatewayPayment->paid_amount,2) }} TZS
                          @endif
                          @endif
                        </td>
@@ -82,7 +82,7 @@
                          
                          @else
                          @if(isset($program_fee_invoice->gatewayPayment))
-                            {{ $program_fee_invoice->gatewayPayment->bill_amount-$program_fee_invoice->gatewayPayment->paid_amount }} TZS
+                            {{ number_format($program_fee_invoice->gatewayPayment->bill_amount-$program_fee_invoice->gatewayPayment->paid_amount,2) }} TZS
                          @endif
                          @endif
                          
@@ -97,15 +97,15 @@
                        <td>{{ $other_fees_usd }} USD</td>
                        @endif
                        <td>@if($other_fee_invoice) {{ $other_fee_invoice->control_no }}@endif <a href="#" onclick="window.location.reload();"><i class="fa fa-refresh" ></i> Refresh</a></td>
-                       <td>@if($other_fee_invoice) {{ $other_fee_invoice->amount }} {{ $other_fee_invoice->currency }} @endif</td>
+                       <td>@if($other_fee_invoice) {{ number_format($other_fee_invoice->amount,2) }} {{ $other_fee_invoice->currency }} @endif</td>
                        <td>
                          @if(isset($other_fee_invoice->gatewayPayment))
-                            {{ $other_fee_invoice->gatewayPayment->paid_amount }} TZS
+                            {{ number_format($other_fee_invoice->gatewayPayment->paid_amount,2) }} TZS
                          @endif
                        </td>
                        <td>
                          @if(isset($other_fee_invoice->gatewayPayment))
-                            {{ $other_fee_invoice->gatewayPayment->bill_amount-$other_fee_invoice->gatewayPayment->paid_amount }} TZS
+                            {{ number_format($other_fee_invoice->gatewayPayment->bill_amount-$other_fee_invoice->gatewayPayment->paid_amount,2) }} TZS
                          @endif
                        </td>
 
@@ -134,12 +134,12 @@
                        <td>@if($hostel_fee_invoice) {{ $hostel_fee_invoice->control_no }}@endif <a href="#" onclick="window.location.reload();"><i class="fa fa-refresh" ></i> Refresh</a></td>
                        <td>
                          @if(isset($hostel_fee_invoice->gatewayPayment))
-                            {{ $hostel_fee_invoice->gatewayPayment->paid_amount }} TZS
+                            {{ number_format($hostel_fee_invoice->gatewayPayment->paid_amount,2) }} TZS
                          @endif
                        </td>
                        <td>
                          @if(isset($hostel_fee_invoice->gatewayPayment))
-                            {{ $hostel_fee_invoice->gatewayPayment->bill_amount-$hostel_fee_invoice->gatewayPayment->paid_amount }} TZS
+                            {{ number_format($hostel_fee_invoice->gatewayPayment->bill_amount-$hostel_fee_invoice->gatewayPayment->paid_amount,2) }} TZS
                          @endif
                        </td>
                     </tr>

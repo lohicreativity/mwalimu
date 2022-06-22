@@ -71,7 +71,7 @@
                     <button type="submit" class="btn btn-primary">{{ __('Search') }}</button>
                    </div>
  
-                  {!! Form::close() !!}
+                  {!! Form::close() !!} 
                </div>
              </div>
              <!-- /.card -->
@@ -86,6 +86,7 @@
                
                <!-- /.card-header -->
                <div class="card-body">
+                  {{--
                   {!! Form::open(['url'=>'application/admitted-applicants','method'=>'GET']) !!}
 
                   {!! Form::input('hidden','application_window_id',$request->get('application_window_id')) !!}
@@ -113,10 +114,10 @@
                      <button class="btn btn-default" type="submit"><span class="fa fa-search"></span></button>
                    </span>
                   </div>
-                  {!! Form::close() !!}
+                  {!! Form::close() !!} --}}
                   <br>
 
-                  <table class="table table-bordered ss-margin-top">
+                  <table class="table table-bordered ss-margin-top ss-pagination-table">
                     <thead>
                         <tr>
                           <th>Name</th>

@@ -525,7 +525,7 @@ class ApplicantController extends Controller
                                  // $applicant->rank_points += $a_level_grades[$result->grade];
                                  $subject_count += 1;
                                  if(unserialize($program->entryRequirements[0]->advance_must_subjects) != ''){
-                                    if(unserialize($program->entryRequirements[0]->advance_other_must_subjects) != ''){
+                                    if(unserialize($program->entryRequirements[0]->other_advance_must_subjects) != ''){
                                        if(in_array($result->subject_name, unserialize($program->entryRequirements[0]->advance_must_subjects))){
                                          $a_level_principle_pass_count += 1;
                                        }
@@ -1286,7 +1286,12 @@ curl_close($curl_handle);
            }
         }
 
+        
+
         $applicant = Applicant::find($request->get('applicant_id'));
+        if(!ApplicationWindow::where('campus_id',$applicant->campus_id)->where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('status','ACTIVE')->first()){
+               return redirect()->back()->with('error','Application window already closed');
+        }
         $applicant->phone = $request->get('phone');
         $applicant->email = $request->get('email');
         $applicant->entry_mode = $request->get('entry_mode');
