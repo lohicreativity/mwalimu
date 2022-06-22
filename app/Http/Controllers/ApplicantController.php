@@ -433,47 +433,47 @@ class ApplicantController extends Controller
                   // }
 
                    // Certificate
-                   if(str_contains($award->name,'Certificate')){
-                       $o_level_pass_count = 0;
-                       foreach ($applicant->nectaResultDetails as $detailKey=>$detail) {
-                         if($detail->exam_id == 1){
-                           $other_must_subject_ready = false;
-                           foreach ($detail->results as $key => $result) {
+                   // if(str_contains($award->name,'Certificate')){
+                   //     $o_level_pass_count = 0;
+                   //     foreach ($applicant->nectaResultDetails as $detailKey=>$detail) {
+                   //       if($detail->exam_id == 1){
+                   //         $other_must_subject_ready = false;
+                   //         foreach ($detail->results as $key => $result) {
                               
-                              if($o_level_grades[$result->grade] >= $o_level_grades[$program->entryRequirements[0]->pass_grade]){
+                   //            if($o_level_grades[$result->grade] >= $o_level_grades[$program->entryRequirements[0]->pass_grade]){
 
-                                // $applicant->rank_points += $o_level_grades[$result->grade];
-                                $subject_count += 1;
+                   //              // $applicant->rank_points += $o_level_grades[$result->grade];
+                   //              $subject_count += 1;
 
-                                 if(unserialize($program->entryRequirements[0]->must_subjects) != ''){
-                                    if(unserialize($program->entryRequirements[0]->other_must_subjects) != ''){
-                                       if(in_array($result->subject_name, unserialize($program->entryRequirements[0]->must_subjects))){
-                                         $o_level_pass_count += 1;
-                                       }
-                                       if(in_array($result->subject_name, unserialize($program->entryRequirements[0]->other_must_subjects)) && !$other_must_subject_ready){
-                                         $o_level_pass_count += 1;
-                                         $other_must_subject_ready = true;
-                                       }
-                                    }else{
-                                       if(in_array($result->subject_name, unserialize($program->entryRequirements[0]->must_subjects))){
-                                         $o_level_pass_count += 1;
-                                       }
-                                    }
-                                 }elseif(unserialize($program->entryRequirements[0]->exclude_subjects) != ''){
-                                    if(!in_array($result->subject_name, unserialize($program->entryRequirements[0]->exclude_subjects))){
-                                         $o_level_pass_count += 1;
-                                    }
-                                 }else{
-                                    $o_level_pass_count += 1;
-                                 }
-                              }
-                           }
-                         }
-                         if($o_level_pass_count >= $program->entryRequirements[0]->pass_subjects){
-                           $programs[] = $program;
-                         }
-                       }
-                   }
+                   //               if(unserialize($program->entryRequirements[0]->must_subjects) != ''){
+                   //                  if(unserialize($program->entryRequirements[0]->other_must_subjects) != ''){
+                   //                     if(in_array($result->subject_name, unserialize($program->entryRequirements[0]->must_subjects))){
+                   //                       $o_level_pass_count += 1;
+                   //                     }
+                   //                     if(in_array($result->subject_name, unserialize($program->entryRequirements[0]->other_must_subjects)) && !$other_must_subject_ready){
+                   //                       $o_level_pass_count += 1;
+                   //                       $other_must_subject_ready = true;
+                   //                     }
+                   //                  }else{
+                   //                     if(in_array($result->subject_name, unserialize($program->entryRequirements[0]->must_subjects))){
+                   //                       $o_level_pass_count += 1;
+                   //                     }
+                   //                  }
+                   //               }elseif(unserialize($program->entryRequirements[0]->exclude_subjects) != ''){
+                   //                  if(!in_array($result->subject_name, unserialize($program->entryRequirements[0]->exclude_subjects))){
+                   //                       $o_level_pass_count += 1;
+                   //                  }
+                   //               }else{
+                   //                  $o_level_pass_count += 1;
+                   //               }
+                   //            }
+                   //         }
+                   //       }
+                   //       if($o_level_pass_count >= $program->entryRequirements[0]->pass_subjects){
+                   //         $programs[] = $program;
+                   //       }
+                   //     }
+                   // }
 
                    // Diploma
                    if(str_contains($award->name,'Diploma')){
