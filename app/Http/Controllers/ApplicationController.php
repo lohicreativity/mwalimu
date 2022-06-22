@@ -1066,7 +1066,9 @@ class ApplicationController extends Controller
              return redirect()->back()->with('error','Application window not closed yet');
         }
         // Phase I
-        $campus_programs = CampusProgram::whereHas('program',function($query) use($request){
+        $campus_programs = CampusProgram::whereHas('applicationWindows',function($query) use($request){
+             $query->where('id',$request->get('application_window_id'));
+        })->whereHas('program',function($query) use($request){
              $query->where('award_id',$request->get('award_id'));
         })->with(['program','entryRequirements'=>function($query) use($request){
             $query->where('application_window_id',$request->get('application_window_id'));
@@ -1105,6 +1107,10 @@ class ApplicationController extends Controller
         
         foreach($choices as $choice){   
             foreach ($campus_programs as $program) {
+
+                if(count($program->entryRequirements) == 0){
+                    return redirect()->back()->with('error',$program->program->name.' does not have entry requirements');
+                }
 
                 if($program->entryRequirements[0]->max_capacity == null){
                      return redirect()->back()->with('error',$program->program->name.' does not have maximum capacity in entry requirements');
