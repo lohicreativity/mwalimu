@@ -1128,6 +1128,8 @@ class ApplicationController extends Controller
                                $select->status_changed_at = now();
                                $select->save();
 
+                               Applicant::where('id',$applicant->id)->update(['status'=>'SELECTED']);
+
                                $selected_program[$applicant->id] = true;
 
                                $count[$program->id]++;

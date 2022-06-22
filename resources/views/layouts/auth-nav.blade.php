@@ -47,7 +47,14 @@
               </li>
               @endif
               @endif
-
+              @if($applicant->status === 'SELECTED')
+              <li class="nav-item">
+                <a href="{{ url('application/admission-confirmation') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Selection Confirmation</p>
+                </a>
+              </li>
+              @endif
               @if($applicant->status === 'ADMITTED')
               <li class="nav-item">
                 <a href="{{ url('application/upload-documents') }}" class="nav-link">
@@ -55,12 +62,7 @@
                   <p>Upload Documents @if($applicant->documents_complete_status == 1) <i class="fa fa-check"></i> @endif</p>
                 </a>
               </li>
-              <li class="nav-item">
-                <a href="{{ url('application/admission-confirmation') }}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Selection Confirmation</p>
-                </a>
-              </li>
+              
               <li class="nav-item">
                 <a href="{{ url('application/other-information') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
