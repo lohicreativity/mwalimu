@@ -376,8 +376,6 @@ class ApplicantController extends Controller
                  $query->where('verified',1);
             },'selections.campusProgram.campus','nectaResultDetails.results','nacteResultDetails.results','outResultDetails.results','programLevel','applicationWindow'])->where('campus_id',session('applicant_campus_id'))->first();
 
-        return $applicant;
-
         $window = $applicant->applicationWindow;
 
         $campus_programs = $window? $window->campusPrograms()->whereHas('program',function($query) use($applicant){
@@ -517,6 +515,7 @@ class ApplicantController extends Controller
                                  }
                               }
                            }
+                           return $o_level_pass_count;
                          }elseif($detail->exam_id == 2){
                            $other_advance_must_subject_ready = false;
                            $other_advance_subsidiary_ready = false;
@@ -560,7 +559,7 @@ class ApplicantController extends Controller
                               }
                            }
                          }
-                         return $a_level_subsidiary_pass_count.' - '.$a_level_principle_pass_count.' - '.$o_level_pass_count;
+                         
                          if($o_level_pass_count >= $program->entryRequirements[0]->pass_subjects && ($a_level_subsidiary_pass_count >= 1 && $a_level_principle_pass_count >= 1)){
                            $programs[] = $program;
                          }
