@@ -80,7 +80,9 @@
                     <select name="award_id" class="form-control" required>
                       <option value="">Select Programme Level</option>
                       @foreach($awards as $award)
-                      <option value="{{ $award->id }}">{{ $award->name }}</option>
+                      @if(str_contains($award->name,'Basic') || str_contains($award->name,'Ordinary') || str_contains($award->name,'Bachelor') || str_contains($award->name,'Masters'))
+                       <option value="{{ $award->id }}">{{ $award->name }}</option>
+                       @endif
                       @endforeach
                     </select>
                   </div>
