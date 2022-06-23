@@ -795,8 +795,10 @@ class ApplicantController extends Controller
                                 }
                             }
                             $out_gpa = $detail->gpa;
-                            
+                      
                         }
+
+                        return $out_pass_subjects_count.' - '.$a_level_out_subsidiary_pass_count.' - '.$a_level_out_principle_pass_count.' - '.$out_gpa;
                         if($out_pass_subjects_count >= 3 && $out_gpa >= $program->entryRequirements[0]->open_equivalent_gpa && $a_level_out_subsidiary_pass_count >= 1 && $a_level_out_principle_pass_count >= 1){
                                 $programs[] = $program;
                         }
