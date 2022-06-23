@@ -89,7 +89,7 @@
                   </div>
                 </div>
               </div>
-              @if($applicant->status == 'REJECTED')
+              @if($applicant->status == 'REJECTED' || $selected_status == false)
                 <div class="card card-default">
               <div class="card-header">
                 <h3 class="card-title">{{ __('Application Feedback') }}</h3>

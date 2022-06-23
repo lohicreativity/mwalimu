@@ -93,7 +93,7 @@ class ApplicantController extends Controller
         $applicant = Applicant::where('index_number',$request->get('index_number'))->where('campus_id',0)->first();
 
         $appl = Applicant::where('index_number',$request->get('index_number'))->where('campus_id',$request->get('campus_id'))->where(function($query){
-             $query->where('status','SELECTED')->orWhere('status','ADMITTED');
+             $query->where('status','SELECTED')->orWhere('status','ADMITTED')->orWhere('status',null);
         })->first();
 
         $tamisemi_applicant = Applicant::where('index_number',$request->get('index_number'))->where('is_tamisemi',1)->first();
@@ -801,9 +801,15 @@ class ApplicantController extends Controller
      */
     public function submission(Request $request)
     {
+        $applicant = User::find(Auth::user()->id)->applicants()->where('campus_id',session('applicant_campus_id'))->first();
+        $selection_status = true;
+        if(!ApplicationWindow::where('campus_id',session('applicant_campus_id'))->where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('status','ACTIVE')->first()){
+           $selection_status = $applicant->status == null? false : true;
+        }
         $data = [
-            'applicant'=>User::find(Auth::user()->id)->applicants()->where('campus_id',session('applicant_campus_id'))->first(),
+            'applicant'=>$applicant,
             'campus'=>Campus::find(session('applicant_campus_id')),
+            'selected_status'=>$selection_status
         ];
         return view('dashboard.application.submission',$data)->withTitle('Submission');
     }
