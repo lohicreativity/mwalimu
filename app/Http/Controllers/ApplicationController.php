@@ -1174,6 +1174,12 @@ class ApplicationController extends Controller
         if(ApplicationWindow::where('campus_id',$staff->campus_id)->where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('status','ACTIVE')->first()){
              return redirect()->back()->with('error','Application window not closed yet');
         }
+
+        if(ApplicantProgramSelection::whereHas('applicant',function($query) use($request){
+            $query->where('application_window_id',$request->get('application_window_id'));
+        })->where('status','APPROVING')->count() == 0){
+            return redirect()->back()->with('You cannot run selection by programme before running by NTA level');
+        }
         // Phase I
         $campus_programs = CampusProgram::whereHas('applicationWindows',function($query) use($request){
              $query->where('id',$request->get('application_window_id'));
