@@ -811,7 +811,6 @@ class ApplicantController extends Controller
                                     $programs[] = $program;
                             }
                         }
-                    return $nacte_gpa.' - '.$program->entryRequirements[0]->min_equivalent_gpa;
                 }
            // if($subject_count != 0){
            //    $applicant->rank_points = $applicant->rank_points / $subject_count;
