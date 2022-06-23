@@ -1052,12 +1052,28 @@ class ApplicationController extends Controller
         return view('dashboard.application.run-selection',$data)->withTitle('Run Selection');
     }
 
+     /**
+     * Display run selection by program page
+     */
+    public function showRunSelectionByProgram(Request $request)
+    { 
+        $staff = User::find(Auth::user()->id)->staff;
+        $data = [
+           'staff'=>$staff,
+           'programs'=>CampusProgram::with('program')->where('campus_id',$staff->campus_id)->get(),
+           'application_windows'=>ApplicationWindow::where('campus_id',$staff->campus_id)->get(),
+           'application_window'=>ApplicationWindow::find($request->get('application_window_id')),
+           'request'=>$request
+        ];
+        return view('dashboard.application.run-selection-by-program',$data)->withTitle('Run Selection By Programme');
+    }
+
     /**
      * Run application selection
      */
     public function runSelection(Request $request)
     {
-        ini_set('memory_limit', '1024M');
+        ini_set('memory_limit', '-1');
         set_time_limit(120);
 
         $staff = User::find(Auth::user()->id)->staff;
@@ -1073,6 +1089,99 @@ class ApplicationController extends Controller
         })->with(['program','entryRequirements'=>function($query) use($request){
             $query->where('application_window_id',$request->get('application_window_id'));
         }])->where('campus_id',$staff->campus_id)->get();
+
+        foreach($campus_programs as $program){
+           $count[$program->id] = 0;
+        }
+
+        $award = Award::find($request->get('award_id'));
+
+        $applicants = Applicant::whereHas('selections',function($query) use($request){
+            $query->where('application_window_id',$request->get('application_window_id'));
+        })->with(['selections','nectaResultDetails.results','nacteResultDetails.results'])->where('program_level_id',$request->get('award_id'))->whereNull('is_tamisemi')->get();
+
+        // Phase II
+        $choices = array(1,2,3,4);
+        $applicants = Applicant::with(['selections','nectaResultDetails.results','nacteResultDetails.results'])->where('program_level_id',$request->get('award_id'))->whereHas('selections',function($query) use($request){
+            $query->where('application_window_id',$request->get('application_window_id'));
+        })->get();
+
+        for($i = 0; $i < count($applicants); $i++){
+            for($j = $i + 1; $j < count($applicants); $j++){
+               if($applicants[$i]->rank_points < $applicants[$j]->rank_points){
+                 $temp = $applicants[$i];
+                 $applicants[$i] = $applicants[$j];
+                 $applicants[$j] = $temp;
+               }
+            }
+        }
+        
+        $selected_program = [];
+        foreach ($applicants as $applicant) {
+          $selected_program[$applicant->id] = false;
+        }
+        
+        foreach($choices as $choice){   
+            foreach ($campus_programs as $program) {
+
+                if(count($program->entryRequirements) == 0){
+                    return redirect()->back()->with('error',$program->program->name.' does not have entry requirements');
+                }
+
+                if($program->entryRequirements[0]->max_capacity == null){
+                     return redirect()->back()->with('error',$program->program->name.' does not have maximum capacity in entry requirements');
+                }
+
+                if(isset($program->entryRequirements[0])){
+                foreach($applicants as $applicant){
+                  
+                  foreach($applicant->selections as $selection){
+                     if($selection->order == $choice && $selection->campus_program_id == $program->id){
+                        if($count[$program->id] < $program->entryRequirements[0]->max_capacity && $selection->status == 'ELIGIBLE' && !$selected_program[$applicant->id]){
+                           if(ApplicantProgramSelection::where('applicant_id',$applicant->id)->where('status','APPROVING')->count() == 0){
+                               $select = ApplicantProgramSelection::find($selection->id);
+                               $select->status = 'APPROVING';
+                               $select->status_changed_at = now();
+                               $select->save();
+
+                               Applicant::where('id',$applicant->id)->update(['status'=>'SELECTED']);
+
+                               $selected_program[$applicant->id] = true;
+
+                               $count[$program->id]++;
+                           }
+                        }
+                     }
+                  }
+                }
+              }
+           }
+        }
+
+        return redirect()->back()->with('message','Selection run successfully');
+    }
+
+    /**
+     * Run application selection
+     */
+    public function runSelectionByProgram(Request $request)
+    {
+        ini_set('memory_limit', '-1');
+        set_time_limit(120);
+
+        $staff = User::find(Auth::user()->id)->staff;
+
+        if(ApplicationWindow::where('campus_id',$staff->campus_id)->where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('status','ACTIVE')->first()){
+             return redirect()->back()->with('error','Application window not closed yet');
+        }
+        // Phase I
+        $campus_programs = CampusProgram::whereHas('applicationWindows',function($query) use($request){
+             $query->where('id',$request->get('application_window_id'));
+        })->whereHas('program',function($query) use($request){
+             $query->where('award_id',$request->get('award_id'));
+        })->with(['program','entryRequirements'=>function($query) use($request){
+            $query->where('application_window_id',$request->get('application_window_id'));
+        }])->where('id',$request->get('campus_program_id'))->get();
 
         foreach($campus_programs as $program){
            $count[$program->id] = 0;

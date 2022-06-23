@@ -80,17 +80,15 @@
                  <h3 class="card-title">{{ __('Run Application Selection') }}</h3>
                </div>
                <!-- /.card-header -->
-               {!! Form::open(['url'=>'application/run-applicants-selection','class'=>'ss-form-processing']) !!}
+               {!! Form::open(['url'=>'application/run-applicants-selection-program','class'=>'ss-form-processing']) !!}
                <div class="card-body">
                 
                   <div class="form-group col-6">
-                    {!! Form::label('','Award') !!}
-                    <select name="award_id" class="form-control" required>
-                      <option value="">Select Programme Level</option>
-                      @foreach($awards as $award)
-                      @if(str_contains($award->name,'Basic') || str_contains($award->name,'Ordinary') || str_contains($award->name,'Bachelor') || str_contains($award->name,'Masters'))
-                       <option value="{{ $award->id }}">{{ $award->name }}</option>
-                       @endif
+                    {!! Form::label('','Programme') !!}
+                    <select name="campus_program_id" class="form-control" required>
+                      <option value="">Select Programme</option>
+                      @foreach($programs as $program)
+                       <option value="{{ $program->id }}">{{ $program->program->name }}</option>
                       @endforeach
                     </select>
                   </div>
