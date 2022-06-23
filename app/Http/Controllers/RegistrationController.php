@@ -140,7 +140,7 @@ class RegistrationController extends Controller
      */
     public function printIDCard(Request $request)
     {   
-        $student = Student::with('applicant','campusProgram.program','campusProgram.campus')->where('registration_number',$request->get('registration_number'))->first(),
+        $student = Student::with('applicant','campusProgram.program','campusProgram.campus')->where('registration_number',$request->get('registration_number'))->first();
             'semester'=>Semester::where('status','ACTIVE')->first();
         $ac_year = StudyAcademicYear::where('status','ACTIVE')->first();
           if($student){
