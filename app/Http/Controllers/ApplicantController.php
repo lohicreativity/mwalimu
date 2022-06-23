@@ -754,21 +754,20 @@ class ApplicantController extends Controller
                              }
                              $nacte_gpa = $detail->diploma_gpa;
                            }
-                       }else{
-                          if(unserialize($program->entryRequirements[0]->equivalent_must_subjects) != ''){
-                              foreach($applicant->nacteResultDetails as $detail){
-                                  foreach($detail->results as $result){
-                                      foreach(unserialize($program->entryRequirements[0]->equivalent_must_subjects) as $sub){
-                                          if(str_contains($result->subject,$sub)){
-                                              $equivalent_must_subjects_count += 1;
-                                          }
-                                      }
-                                  }
-                                  $nacte_gpa = $detail->diploma_gpa;
-                              }
-                              return $equivalent_must_subjects_count;
-                          }
                        }
+                        if(unserialize($program->entryRequirements[0]->equivalent_must_subjects) != ''){
+                            foreach($applicant->nacteResultDetails as $detail){
+                                foreach($detail->results as $result){
+                                    foreach(unserialize($program->entryRequirements[0]->equivalent_must_subjects) as $sub){
+                                        if(str_contains($result->subject,$sub)){
+                                            $equivalent_must_subjects_count += 1;
+                                        }
+                                    }
+                                }
+                                $nacte_gpa = $detail->diploma_gpa;
+                            }
+                            return $equivalent_must_subjects_count;
+                        }
                         if(unserialize($program->entryRequirements[0]->equivalent_majors) != ''){
                             if($o_level_pass_count >= $program->entryRequirements[0]->pass_subjects && $has_major && $nacte_gpa >= $program->entryRequirements[0]->equivalent_gpa){
                                 
