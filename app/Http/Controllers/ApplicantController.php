@@ -92,11 +92,15 @@ class ApplicantController extends Controller
 
         $applicant = Applicant::where('index_number',$request->get('index_number'))->where('campus_id',0)->first();
 
+        $appl = Applicant::where('index_number',$request->get('index_number'))->where('campus_id',$request->get('campus_id'))->where(function($query){
+             $query->where('status','SELECTED')->orWhere('status','ADMITTED');
+        })->first();
+
         $tamisemi_applicant = Applicant::where('index_number',$request->get('index_number'))->where('is_tamisemi',1)->first();
         
         $window = ApplicationWindow::where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('campus_id',$request->get('campus_id'))->where('status','ACTIVE')->first();
         if(!$tamisemi_applicant){
-          if(!$window && $applicant->status === null){
+          if(!$window && !$appl){
             return  redirect()->back()->with('error','Application window for '.$campus->name.' is not open.');
           }
         }
