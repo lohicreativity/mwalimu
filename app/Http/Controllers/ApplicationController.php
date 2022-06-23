@@ -1060,7 +1060,9 @@ class ApplicationController extends Controller
         $staff = User::find(Auth::user()->id)->staff;
         $data = [
            'staff'=>$staff,
-           'programs'=>CampusProgram::with('program')->where('campus_id',$staff->campus_id)->get(),
+           'programs'=>CampusProgram::whereHas('selections.applicant',function($query) use($request){
+                $query->where('application_window_id',$request->get('application_window_id'));
+           })->with('program')->where('campus_id',$staff->campus_id)->get(),
            'application_windows'=>ApplicationWindow::where('campus_id',$staff->campus_id)->get(),
            'application_window'=>ApplicationWindow::find($request->get('application_window_id')),
            'request'=>$request
@@ -1170,13 +1172,14 @@ class ApplicationController extends Controller
         set_time_limit(120);
 
         $staff = User::find(Auth::user()->id)->staff;
+        $prog = CampusProgram::with('program')->find($request->get('campus_program_id'));
 
         if(ApplicationWindow::where('campus_id',$staff->campus_id)->where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('status','ACTIVE')->first()){
              return redirect()->back()->with('error','Application window not closed yet');
         }
-
-        if(ApplicantProgramSelection::whereHas('applicant',function($query) use($request){
-            $query->where('application_window_id',$request->get('application_window_id'));
+        
+        if(ApplicantProgramSelection::whereHas('applicant',function($query) use($request,$prog){
+            $query->where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$prog->program->award_id);
         })->where('status','APPROVING')->count() == 0){
             return redirect()->back()->with('error','You cannot run selection by programme before running by NTA level');
         }
