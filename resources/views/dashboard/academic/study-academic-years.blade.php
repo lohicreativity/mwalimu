@@ -109,6 +109,7 @@
                     <th>Begin Date</th>
                     <th>End Date</th>
                     <th>Status</th>
+                    <th>Insurance Status</th>
                     <th>Actions</th>
                   </tr>
                   </thead>
@@ -266,13 +267,13 @@
                        <a class="btn btn-danger btn-sm" href="{{ url('academic/study-academic-year/'.$year->id.'/disable-nhif') }}">
                               <i class="fas fa-ban">
                               </i>
-                              Disable NHIF
+                              Disable Insurance
                        </a>
                       @else
                        <a class="btn btn-info btn-sm" href="{{ url('academic/study-academic-year/'.$year->id.'/enable-nhif') }}">
                               <i class="fas fa-check-circle">
                               </i>
-                              Enable NHIF
+                              Enable Insurance
                        </a>
                       @endif
                     </td>
