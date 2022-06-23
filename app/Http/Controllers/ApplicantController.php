@@ -766,7 +766,6 @@ class ApplicantController extends Controller
                                 }
                                 $nacte_gpa = $detail->diploma_gpa;
                             }
-                            return $equivalent_must_subjects_count;
                         }
                         if(unserialize($program->entryRequirements[0]->equivalent_majors) != ''){
                             if($o_level_pass_count >= $program->entryRequirements[0]->pass_subjects && $has_major && $nacte_gpa >= $program->entryRequirements[0]->equivalent_gpa){
