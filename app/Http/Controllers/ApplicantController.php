@@ -744,6 +744,8 @@ class ApplicantController extends Controller
                        $nacte_gpa = null;
                        $out_gpa = null;
 
+                       return dd(unserialize($program->entryRequirements[0]->equivalent_majors));
+
                        if(unserialize($program->entryRequirements[0]->equivalent_majors) != ''){
                            foreach($applicant->nacteResultDetails as $detail){
                              foreach(unserialize($program->entryRequirements[0]->equivalent_majors) as $sub){
