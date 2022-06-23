@@ -755,8 +755,6 @@ class ApplicantController extends Controller
                              $nacte_gpa = $detail->diploma_gpa;
                            }
                        }
-
-                       return $has_major;
                         if(unserialize($program->entryRequirements[0]->equivalent_must_subjects) != ''){
                             foreach($applicant->nacteResultDetails as $detail){
                                 foreach($detail->results as $result){
