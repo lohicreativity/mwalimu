@@ -182,7 +182,7 @@ class StudyAcademicYearController extends Controller
     {
         try{
             $academic_year = StudyAcademicYear::findOrFail($id);
-            if($academicYear->status == 'ACTIVE'){
+            if($academic_year->status == 'ACTIVE'){
                 return redirect()->back()->with('error','You cannot enable insurance status because academic year is already active');
             }
             $academic_year->nhif_enabled = 1;
@@ -201,7 +201,7 @@ class StudyAcademicYearController extends Controller
     {
         try{
             $academic_year = StudyAcademicYear::findOrFail($id);
-            if($academicYear->status == 'ACTIVE'){
+            if($academic_year->status == 'ACTIVE'){
                 return redirect()->back()->with('error','You cannot disable insurance status because academic year is already active');
             }
             $academic_year->nhif_enabled = 0;
