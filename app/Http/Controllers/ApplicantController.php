@@ -772,9 +772,7 @@ class ApplicantController extends Controller
                                 
                                $programs[] = $program;
                             }
-                        }
-                       
-                        if(unserialize($program->entryRequirements[0]->equivalent_must_subjects) != ''){
+                        }elseif(unserialize($program->entryRequirements[0]->equivalent_must_subjects) != ''){
                             if($o_level_pass_count >= $program->entryRequirements[0]->pass_subjects && $equivalent_must_subjects_count >= count(unserialize($program->entryRequirements[0]->equivalent_must_subjects)) && $nacte_gpa >= $program->entryRequirements[0]->equivalent_gpa){
                                 
                                $programs[] = $program;
