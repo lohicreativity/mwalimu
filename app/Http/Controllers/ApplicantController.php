@@ -766,6 +766,7 @@ class ApplicantController extends Controller
                                   }
                                   $nacte_gpa = $detail->diploma_gpa;
                               }
+                              return $equivalent_must_subjects_count;
                           }
                        }
                         if(unserialize($program->entryRequirements[0]->equivalent_majors) != ''){
@@ -798,7 +799,7 @@ class ApplicantController extends Controller
                       
                         }
 
-                        return $out_pass_subjects_count.' - '.$a_level_out_subsidiary_pass_count.' - '.$a_level_out_principle_pass_count.' - '.$out_gpa;
+
                         if($out_pass_subjects_count >= 3 && $out_gpa >= $program->entryRequirements[0]->open_equivalent_gpa && $a_level_out_subsidiary_pass_count >= 1 && $a_level_out_principle_pass_count >= 1){
                                 $programs[] = $program;
                         }
