@@ -141,7 +141,7 @@ class RegistrationController extends Controller
     public function printIDCard(Request $request)
     {   
         $student = Student::with('applicant','campusProgram.program','campusProgram.campus')->where('registration_number',$request->get('registration_number'))->first();
-            'semester'=>Semester::where('status','ACTIVE')->first();
+            
         $ac_year = StudyAcademicYear::where('status','ACTIVE')->first();
           if($student){
               if($student->applicant->insurance_status == 0 && $ac_year->nhif_enabled == 1){
@@ -151,6 +151,7 @@ class RegistrationController extends Controller
         
         $data = [
             'student'=>$student,
+            'semester'=>Semester::where('status','ACTIVE')->first(),
             'study_academic_year'=>$ac_year
         ];
         return view('dashboard.registration.id-card',$data)->withTitle('ID Card');
