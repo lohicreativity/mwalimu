@@ -34,9 +34,11 @@ class OutResultController extends Controller
     public function destroy(Request $request)
     {
     	$detail = OutResultDetail::find($request->get('out_result_detail_id'));
+        if($detail->verified != 1){
     	OutResult::where('out_result_detail_id',$request->get('out_result_detail_id'))->delete();
     	// $detail->results->delete();
     	$detail->delete();
+        }
 	    return redirect()->back()->with('message','OUT results declined successfully');
     }
 

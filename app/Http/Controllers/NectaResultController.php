@@ -44,9 +44,11 @@ class NectaResultController extends Controller
     public function destroy(Request $request)
     {
     	$detail = NectaResultDetail::find($request->get('necta_result_detail_id'));
-    	NectaResult::where('necta_result_detail_id',$request->get('necta_result_detail_id'))->delete();
-    	// $detail->results->delete();
-    	$detail->delete();
+        if($detail->verified != 1){
+        	NectaResult::where('necta_result_detail_id',$request->get('necta_result_detail_id'))->delete();
+        	// $detail->results->delete();
+        	$detail->delete();
+        }
 	    return redirect()->back()->with('message','NECTA results declined successfully');
     }
 
