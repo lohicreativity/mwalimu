@@ -245,7 +245,19 @@
                         <!-- /.modal-dialog -->
                       </div>
                       <!-- /.modal -->
-
+                      @if($year->nhif_enabled == 1)
+                       <a class="btn btn-danger btn-sm" href="{{ url('academic/study-academic-year/'.$year->id.'/disable-nhif') }}">
+                              <i class="fas fa-ban">
+                              </i>
+                              Disable Insurance
+                       </a>
+                      @else
+                       <a class="btn btn-info btn-sm" href="{{ url('academic/study-academic-year/'.$year->id.'/enable-nhif') }}">
+                              <i class="fas fa-check-circle">
+                              </i>
+                              Enable Insurance
+                       </a>
+                      @endif
                       @if($year->status == 'ACTIVE')
                       @can('deactivate-study-academic-year')
                        <a class="btn btn-danger btn-sm" href="{{ url('academic/study-academic-year/'.$year->id.'/deactivate') }}">
@@ -263,19 +275,7 @@
                        </a>
                        @endcan
                       @endif
-                      @if($year->status == 1)
-                       <a class="btn btn-danger btn-sm" href="{{ url('academic/study-academic-year/'.$year->id.'/disable-nhif') }}">
-                              <i class="fas fa-ban">
-                              </i>
-                              Disable Insurance
-                       </a>
-                      @else
-                       <a class="btn btn-info btn-sm" href="{{ url('academic/study-academic-year/'.$year->id.'/enable-nhif') }}">
-                              <i class="fas fa-check-circle">
-                              </i>
-                              Enable Insurance
-                       </a>
-                      @endif
+                      
                     </td>
                   </tr>
                   @endforeach
