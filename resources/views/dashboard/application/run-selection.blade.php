@@ -43,7 +43,7 @@
             <div class="card">
               <div class="card-header">
                  <ul class="nav nav-tabs">
-                  <li class="nav-item"><a class="nav-link" href="{{ url('application/run-selection?application_window_id='.session('active_window_id')) }}">{{ __('Run Selection By NTA Level') }}</a></li>
+                  <li class="nav-item"><a class="nav-link active" href="{{ url('application/run-selection?application_window_id='.session('active_window_id')) }}">{{ __('Run Selection By NTA Level') }}</a></li>
                   <li class="nav-item"><a class="nav-link" href="{{ url('application/run-selection-program?application_window_id='.session('active_window_id')) }}">{{ __('Run Selection By Programme') }}</a></li>
                 </ul>
               </div>
