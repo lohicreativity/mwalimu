@@ -176,6 +176,38 @@ class StudyAcademicYearController extends Controller
     }
 
     /**
+     * Enable NHIF
+     */
+    public function enableNhif($id)
+    {
+        try{
+            $academic_year = StudyAcademicYear::findOrFail($id);
+            $academic_year->nhif_enabled = 1;
+            $academic_year->save();
+
+            return redirect()->back()->with('message','NHIF enabled successfully');
+        }catch(Exception $e){
+            return redirect()->back()->with('error','Unable to get the resource specified in this request');
+        }
+    }
+
+    /**
+     * Disable NHIF
+     */
+    public function disableNhif($id)
+    {
+        try{
+            $academic_year = StudyAcademicYear::findOrFail($id);
+            $academic_year->nhif_enabled = 0;
+            $academic_year->save();
+
+            return redirect()->back()->with('message','NHIF disabled successfully');
+        }catch(Exception $e){
+            return redirect()->back()->with('error','Unable to get the resource specified in this request');
+        }
+    }
+
+    /**
      * Remove the specified study academic year
      */
     public function destroy(Request $request, $id)

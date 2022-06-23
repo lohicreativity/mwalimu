@@ -19,6 +19,7 @@ class CreateStudyAcademicYearsTable extends Migration
             $table->date('begin_date');
             $table->date('end_date');
             $table->string('status',10)->default('ACTIVE');
+            $table->tinyInteger('nhif_enabled')->nullable();
             $table->timestamps();
             $table->softDeletes();
 

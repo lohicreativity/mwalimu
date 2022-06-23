@@ -1471,6 +1471,7 @@ class ApplicationController extends Controller
                                     $invoice->currency);
         }
         
+        if($ac_year->nhif_enabled == 1){
         if($applicant->insurance_status == 0){
              $path = public_path().'/img/user-avatar.png';
              $type = pathinfo($path, PATHINFO_EXTENSION);
@@ -1567,11 +1568,10 @@ class ApplicationController extends Controller
 
             curl_close($curl_handle);
             }
-
-            return dd($response);
+            }
         
         try{
-          // Mail::to($user)->send(new StudentAccountCreated($student, $selection->campusProgram->program->name,$ac_year->academicYear->year, $password));
+           Mail::to($user)->send(new StudentAccountCreated($student, $selection->campusProgram->program->name,$ac_year->academicYear->year, $password));
         }catch(\Exception $e){}
         DB::commit();
         if($days < 0){

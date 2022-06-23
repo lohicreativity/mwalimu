@@ -159,6 +159,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 	Route::post('study-academic-year/update', [StudyAcademicYearController::class,'update']);
 	Route::get('study-academic-year/{id}/activate', [StudyAcademicYearController::class,'activate']);
 	Route::get('study-academic-year/{id}/deactivate', [StudyAcademicYearController::class,'deactivate']);
+	Route::get('study-academic-year/{id}/enable-nhif', [StudyAcademicYearController::class,'enableNhif']);
+	Route::get('study-academic-year/{id}/disable-nhif', [StudyAcademicYearController::class,'disableNhif']);
 	Route::get('study-academic-year/{id}/destroy', [StudyAcademicYearController::class,'destroy']);
 
 

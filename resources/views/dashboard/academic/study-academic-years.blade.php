@@ -124,6 +124,12 @@
                         <span class="ss-color-danger">{{ $year->status }}</span>
                         @endif
                     </td>
+                    <td>@if($year->nhif_enabled == 1) 
+                        <span>ENABLED</span>
+                        @else
+                        <span class="ss-color-danger">DISABLED</span>
+                        @endif
+                    </td>
                     <td>
                       @can('edit-study-academic-year')
                       <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-edit-year-{{ $year->id }}">
@@ -255,6 +261,19 @@
                               Activate
                        </a>
                        @endcan
+                      @endif
+                      @if($year->status == 1)
+                       <a class="btn btn-danger btn-sm" href="{{ url('academic/study-academic-year/'.$year->id.'/disable-nhif') }}">
+                              <i class="fas fa-ban">
+                              </i>
+                              Disable NHIF
+                       </a>
+                      @else
+                       <a class="btn btn-info btn-sm" href="{{ url('academic/study-academic-year/'.$year->id.'/enable-nhif') }}">
+                              <i class="fas fa-check-circle">
+                              </i>
+                              Enable NHIF
+                       </a>
                       @endif
                     </td>
                   </tr>
