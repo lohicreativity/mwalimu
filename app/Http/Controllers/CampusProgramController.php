@@ -39,7 +39,7 @@ class CampusProgramController extends Controller
 	           'campus_programs'=>CampusProgram::with('program')->where('campus_id',$id)->paginate(20),
 	           'campus'=>Campus::findOrFail($id),
 	           'programs'=>Program::all(),
-             'filtered_programs'=>Program::whereNotIn('id',$programIds)->get(),
+             'filtered_programs'=>Program::get(),
                'staff'=>$staff
 	    	];
 	    	return view('dashboard.academic.campus-programs',$data)->withTitle('Campus Programs');
