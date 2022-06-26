@@ -123,7 +123,7 @@
                         <tr>
                           <th>Name</th>
                           <th>Gender</th>
-                          <th>Phone</th>
+                          <th>Programmes</th>
                           <th>Submission Status</th>
                         </tr>
                     </thead>
