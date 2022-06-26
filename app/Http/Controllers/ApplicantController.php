@@ -30,6 +30,7 @@ use App\Domain\Application\Models\ApplicationWindow;
 use App\Domain\Application\Models\HealthInsurance;
 use App\Domain\Academic\Models\StudyAcademicYear;
 use App\Domain\Academic\Models\Award;
+use App\Domain\Settings\Models\Currency;
 use App\Http\Controllers\NHIFService;
 use Illuminate\Support\Facades\Http;
 use App\Models\User;
@@ -336,6 +337,7 @@ class ApplicantController extends Controller
                   $query->where('name','LIKE','%Hostel%');
             })->with(['feeItem.feeType'])->where('study_academic_year_id',$study_academic_year->id)->first(),
            'invoice'=>$invoice,
+           'usd_currency'=>Currency::where('code','USD')->first(),
            'gateway_payment'=>$invoice? GatewayPayment::where('control_no',$invoice->control_no)->first() : null
         ];
 

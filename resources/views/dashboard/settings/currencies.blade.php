@@ -77,7 +77,7 @@
                     {!! Form::text('code',null,$code) !!}
                   </div>
                   <div class="form-group col-4">
-                    {!! Form::label('','Name') !!}
+                    {!! Form::label('','Factor') !!}
                     {!! Form::text('factor',null,$factor) !!}
                   </div>
                  </div>
@@ -164,7 +164,7 @@
                                       {!! Form::text('code',$currency->code,$code) !!}
                                     </div>
                                     <div class="form-group col-4">
-                                      {!! Form::label('','Name') !!}
+                                      {!! Form::label('','Factor') !!}
                                       {!! Form::text('factor',$currency->factor,$factor) !!}
                                     </div>
                                    </div>

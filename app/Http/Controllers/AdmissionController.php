@@ -13,6 +13,7 @@ use App\Domain\Finance\Models\LoanAllocation;
 use App\Domain\Application\Models\Applicant;
 use App\Domain\Finance\Models\GatewayPayment;
 use App\Domain\Settings\Models\Campus;
+use App\Domain\Settings\Models\Currency;
 use App\Http\Controllers\NHIFService;
 use Illuminate\Support\Facades\Http;
 use App\Models\User;
@@ -109,6 +110,7 @@ class AdmissionController extends Controller
            'insurance_fee_invoice'=>$insurance_fee_invoice,
            'other_fee_invoice'=>$other_fee_invoice,
            'loan_allocation'=>$loan_allocation,
+           'usd_currency'=>Currency::where('code','USD')->first(),
            'campus'=>Campus::find(session('applicant_campus_id'))
     	];
     	return view('dashboard.admission.payments',$data)->withTitle('Payments');
@@ -128,6 +130,7 @@ class AdmissionController extends Controller
     	$study_academic_year = StudyAcademicYear::whereHas('academicYear',function($query) use($ac_year){
     		   $query->where('year','LIKE','%'.$ac_year.'/%');
     	})->first();
+        $usd_currency = Currency::where('code','USD')->first();
     	$program_fee = ProgramFee::with('feeItem.feeType')->where('study_academic_year_id',$study_academic_year->id)->where('campus_program_id',$applicant->selections[0]->campus_program_id)->first();
 
         if(!$program_fee){
@@ -142,9 +145,9 @@ class AdmissionController extends Controller
                  $amount_loan = $loan_allocation->tuition_fee;
                  $currency = 'TZS';
              }else{
-                 $amount = $program_fee->amount_in_usd - $loan_allocation->tuition_fee/2400;
+                 $amount = ($program_fee->amount_in_usd - $loan_allocation->tuition_fee/$usd_currency->factor) * $usd_currency->factor;
                  $amount_loan = $loan_allocation->tuition_fee;
-                 $currency = 'USD';
+                 $currency = 'TZS'; //'USD';
              }
         }else{
              if(str_contains($applicant->nationality,'Tanzania')){
@@ -152,9 +155,9 @@ class AdmissionController extends Controller
                  $amount_loan = 0.00;
                  $currency = 'TZS';
              }else{
-                 $amount = $program_fee->amount_in_usd;
+                 $amount = $program_fee->amount_in_usd*$usd_currency->factor;
                  $amount_loan = 0.00;
-                 $currency = 'USD';
+                 $currency = 'TZS'; //'USD';
              }
         }
 
@@ -216,8 +219,8 @@ class AdmissionController extends Controller
 	             $amount = $program_fee->amount_in_tzs;
 	             $currency = 'TZS';
 	         }else{
-	             $amount = $program_fee->amount_in_usd;
-	             $currency = 'USD';
+	             $amount = $program_fee->amount_in_usd*$usd_currency->factor;
+	             $currency = 'TZS'; //'USD';
 	         }
 
         $invoice = new Invoice;
@@ -277,8 +280,8 @@ class AdmissionController extends Controller
         	$other_fees = $other_fees_tzs;
         	$currency = 'TZS';
         }else{
-        	$other_fees = $other_fees_usd;
-        	$currency = 'USD';
+        	$other_fees = $other_fees_usd*$usd_currency->factor;
+        	$currency = 'TZS';//'USD';
         }
 
         $feeType = FeeType::where('name','LIKE','%Miscellaneous%')->first();

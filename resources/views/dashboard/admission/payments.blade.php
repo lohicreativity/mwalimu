@@ -63,7 +63,7 @@
                        @if(str_contains($applicant->nationality,'Tanzania'))
                        <td>{{ $program_fee->amount_in_tzs }} TZS</td>
                        @else
-                       <td>{{ $program_fee->amount_in_usd }} USD</td>
+                       <td>{{ $program_fee->amount_in_usd*$usd_currency->factor }} TZS</td>
                        @endif
                        @endif
                        <td>@if($program_fee_invoice) {{ $program_fee_invoice->control_no }} @else <a href="#" onclick="window.location.reload();"><i class="fa fa-refresh" ></i> Refresh</a> @endif</td>
@@ -117,7 +117,7 @@
                        @if(str_contains($applicant->nationality,'Tanzania'))
                        <td>{{ $insurance_fee->amount_in_tzs }} TZS</td>
                        @else
-                       <td>{{ $insurance_fee->amount_in_usd }} USD</td>
+                       <td>{{ $insurance_fee->amount_in_usd*$usd_currency->factor }} TZS</td>
                        @endif
                        <td>@if($insurance_fee_invoice) {{ $insurance_fee_invoice->control_no }}@lse <a href="#" onclick="window.location.reload();"><i class="fa fa-refresh" ></i> Refresh</a> @endif</td>
                        <td></td>
@@ -129,7 +129,7 @@
                        @if(str_contains($applicant->nationality,'Tanzania'))
                        <td>{{ $hostel_fee->amount_in_tzs }} TZS</td>
                        @else
-                       <td>{{ $hostel_fee->amount_in_usd }} USD</td>
+                       <td>{{ $hostel_fee->amount_in_usd*$usd_currency->factor }} TZS</td>
                        @endif
                        <td>@if($hostel_fee_invoice) {{ $hostel_fee_invoice->control_no }}@else <a href="#" onclick="window.location.reload();"><i class="fa fa-refresh" ></i> Refresh</a>@endif</td>
                        <td>

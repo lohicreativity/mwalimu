@@ -60,7 +60,7 @@
                        @if(str_contains($applicant->nationality,'Tanzania'))
                        <td>{{ $fee_amount->amount_in_tzs }} TZS</td>
                        @else
-                       <td>{{ $fee_amount->amount_in_usd }} USD</td>
+                       <td>{{ $fee_amount->amount_in_usd*$usd_currency->factor }} TZS</td>
                        @endif
                     </tr>
                     @if($invoice)

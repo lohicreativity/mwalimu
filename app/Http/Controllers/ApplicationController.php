@@ -36,6 +36,7 @@ use App\Domain\Application\Actions\ApplicantAction;
 use App\Domain\Application\Models\NectaResultDetail;
 use App\Domain\Application\Models\NectaResult;
 use App\Domain\Finance\Models\LoanAllocation;
+use App\Domain\Settings\Models\Currency;
 use Illuminate\Support\Facades\Http;
 use App\Http\Controllers\NHIFService;
 use App\Models\User;
@@ -909,6 +910,7 @@ class ApplicationController extends Controller
 
         $applicant = Applicant::with('country')->find($request->get('applicant_id'));
         $fee_amount = FeeAmount::with(['feeItem.feeType'])->find($request->get('fee_amount_id'));
+        $usd_currency = Currency::where('code','USD')->first();
 
         $invoice = new Invoice;
         $invoice->reference_no = 'MNMA-'.time();
@@ -916,8 +918,8 @@ class ApplicationController extends Controller
            $invoice->amount = $fee_amount->amount_in_tzs;
            $invoice->currency = 'TZS';
         }else{
-           $invoice->amount = $fee_amount->amount_in_usd;
-           $invoice->currency = 'USD';
+           $invoice->amount = $fee_amount->amount_in_usd*$usd_currency->factor;
+           $invoice->currency = 'TZS';//'USD';
         }
         $invoice->payable_id = $applicant->id;
         $invoice->payable_type = 'applicant';
