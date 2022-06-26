@@ -170,7 +170,7 @@
                     <th>Duration</th>
                     <th>Payment Option</th>
                     <th>Payer Category</th>
-                    <th>When Paid</th>
+                    <th>Frequency</th>
                     <th>Actions</th>
                   </tr>
                   </thead>
