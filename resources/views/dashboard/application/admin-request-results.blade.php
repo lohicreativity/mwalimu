@@ -139,11 +139,11 @@
             </div>
             <!-- /.card -->
 
-            <div class="modal fade" id="ss-confirm-results" data-backdrop="static" data-keyboard="false">
+            <div class="modal fade" id="ss-confirm-results">
                 <div class="modal-dialog modal-lg">
                   <div class="modal-content">
                     <div class="modal-header">
-                      <h4 class="modal-title"><i class="fa fa-exclamation-sign"></i> Confirmation Alert</h4>
+                      <h4 class="modal-title">NECTA Results</h4>
                       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                       </button>
@@ -215,11 +215,11 @@
             </div>
             <!-- /.card -->
 
-            <div class="modal fade" id="ss-confirm-nacte-results" data-backdrop="static" data-keyboard="false">
+            <div class="modal fade" id="ss-confirm-nacte-results">
                 <div class="modal-dialog modal-lg">
                   <div class="modal-content">
                     <div class="modal-header">
-                      <h4 class="modal-title"><i class="fa fa-exclamation-sign"></i> Confirmation Alert</h4>
+                      <h4 class="modal-title">NACTE Results</h4>
                       
                         <span aria-hidden="true">&times;</span>
                       </button>

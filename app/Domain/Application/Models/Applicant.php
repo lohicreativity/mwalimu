@@ -177,7 +177,7 @@ class Applicant extends Model
     /** 
      * Check if applicant has confirmed results
      */
-    public function hasConfirmedResults(Applicant $applicant)
+    public static function hasConfirmedResults(Applicant $applicant)
     {
         $status = false;
         $result_count = NectaResultDetail::where('applicant_id',$applicant->id)->where('verified',1)->count();
