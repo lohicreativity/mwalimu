@@ -865,7 +865,7 @@ class ApplicationController extends Controller
            }
         }
 
-       $applicant = Applicant::find($request->get('applicant_id'));
+       $applicant = Applicant::with(['programLevel'])->find($request->get('applicant_id'));
        if($applicant->basic_info_complete_status == 0){
           return redirect()->back()->with('error','Basic information section not completed');
        }
@@ -877,6 +877,11 @@ class ApplicationController extends Controller
        }
        if($applicant->results_complete_status == 0){
           return redirect()->back()->with('error','Results section not completed');
+       }
+       if($applicant->avn_no_results == 1 || $applicant->teacher_certificate_status == 1){
+          if($applicant->documents_complete_status == 0){
+             return redirect()->back()->with('error','Documents section not completed');
+          }
        }
        if($applicant->programs_complete_status == 0){
           return redirect()->back()->with('error','Programmes selection section not completed');
