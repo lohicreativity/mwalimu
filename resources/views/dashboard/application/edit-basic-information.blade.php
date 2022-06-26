@@ -50,20 +50,20 @@
                   $first_name = [
                      'placeholder'=>'First name',
                      'class'=>'form-control',
-                     'readonly'=>App\Domain\Application\Models\Applicant::hasRequestedControlNumber($applicant)? true : null,
+                     'readonly'=>App\Domain\Application\Models\Applicant::hasConfirmedResults($applicant)? true : null,
                      'required'=>true
                   ];
 
                   $middle_name = [
                      'placeholder'=>'Middle name',
                      'class'=>'form-control',
-                     'readonly'=>App\Domain\Application\Models\Applicant::hasRequestedControlNumber($applicant)? true : null,
+                     'readonly'=>App\Domain\Application\Models\Applicant::hasConfirmedResults($applicant)? true : null,
                   ];
 
                   $surname = [
                      'placeholder'=>'Surname',
                      'class'=>'form-control',
-                     'readonly'=>App\Domain\Application\Models\Applicant::hasRequestedControlNumber($applicant)? true : null,
+                     'readonly'=>App\Domain\Application\Models\Applicant::hasConfirmedResults($applicant)? true : null,
                      'required'=>true
                   ];
 

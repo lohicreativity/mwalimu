@@ -173,4 +173,17 @@ class Applicant extends Model
         }
         return $status;
     }
+
+    /** 
+     * Check if applicant has confirmed results
+     */
+    public function hasConfirmedResults(Applicant $applicant)
+    {
+        $status = false;
+        $result_count = NectaResultDetail::where('applicant_id',$applicant->id)->where('verified',1)->count();
+        if($result_count != 0){
+            $status = true;
+        }
+        return $status;
+    }
 }
