@@ -320,6 +320,28 @@
             </div>
             @endif
 
+            <div class="card card-default">
+              <div class="card-header">
+                <h3 class="card-title">{{ __('NACTE Registration Number') }}</h3>
+              </div>
+              <!-- /.card-header -->
+              {!! Form::open(['url'=>'application/update-teacher-certificate-status','class'=>'ss-form-processing']) !!}
+              <div class="card-body">
+                  {!! Form::input('hidden','applicant_id',$applicant->id) !!}
+                  {!! Form::label('','Do you have Teacher\'s certificate?') !!}
+                  <label class="radio-inline">
+                    <input type="radio" name="teacher_certificate_status" id="inlineRadio1" value="1"> Yes, I have Teacher's certificate
+                  </label>
+                  <label class="radio-inline">
+                    <input type="radio" name="teacher_certificate_status" id="inlineRadio2" value="0"> No, I do not have Teacher's certificate
+                  </label>
+              </div>
+              <div class="card-footer">
+             <button type="submit" class="btn btn-primary">{{ __('Update Teacher\'s Certificate Status') }}</button>
+            </div>
+            {!! Form::close() !!}
+            </div>
+
             @if(str_contains($applicant->programLevel->name,'Diploma'))
             <div class="card card-default">
               <div class="card-header">

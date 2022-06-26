@@ -3248,4 +3248,28 @@ class ApplicationController extends Controller
     {
         return view('dashboard.application.admin-request-results')->withTitle('Fetch Results');
     }
+
+    /**
+     * Update teacher's certificate status
+     */
+    public function updateTeacherCertificateStatus(Request $request)
+    {
+        $validation = Validator::make($request->all(),[
+            'teacher_certificate_status'=>'required',
+        ]);
+
+        if($validation->fails()){
+           if($request->ajax()){
+              return response()->json(array('error_messages'=>$validation->messages()));
+           }else{
+              return redirect()->back()->withInput()->withErrors($validation->messages());
+           }
+        }
+
+        $applicant = Applicant::find($request->get('applicant_id'));
+        $applicant->teacher_certificate_status = $request->get('teacher_certificate_status');
+        $applicant->save();
+
+        return redirect()->back()->with('message','Teacher certificate status updated successfully');
+    }
 }

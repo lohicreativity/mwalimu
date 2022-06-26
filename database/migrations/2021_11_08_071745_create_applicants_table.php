@@ -64,6 +64,9 @@ class CreateApplicantsTable extends Migration
             $table->string('confirmation_status')->nullable();
             $table->string('adminssion_confirmation_status')->nullable();
             $table->string('status')->nullable();
+            $table->tinyInteger('avn_no_results')->nullable();
+            $table->tinyInteger('teacher_certificate_status')->nullable();
+            $table->string('teacher_diploma_certificate')->nullable();
             $table->string('postponement_letter')->nullable();
             $table->tinyInteger('has_postponed')->nullable();
             $table->tinyInteger('is_tamisemi')->nullable();

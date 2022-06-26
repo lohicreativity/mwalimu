@@ -93,10 +93,10 @@
                        </tr>
                     </thead>
                     <tbody>
-                      @if($applicant->teacher_diploma_certificate)
+                      @if($applicant->diploma_certificate)
                       <tr>
                         <td>Teacher Diploma Certificate</td>
-                        <td><a href="{{ url('application/delete-document?name=teacher_diploma_certificate') }}" class="btn btn-danger"><i class="fa fa-trash"></i> Delete</a></td>
+                        <td><a href="{{ url('application/delete-document?name=diploma_certificate') }}" class="btn btn-danger"><i class="fa fa-trash"></i> Delete</a></td>
                       </tr>
                       @endif
                     </tbody>

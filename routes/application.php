@@ -177,4 +177,6 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
     Route::get('edit-applicant-details',[ApplicantController::class,'editApplicantDetails']);
     Route::post('update-applicant-details',[ApplicantController::class,'updateApplicantDetails']);
     Route::post('update-nacte-reg-no',[ApplicantController::class,'updateNacteRegNumber']);
+
+    Route::post('update-teacher-certificate-status',[ApplicationContoller::class,'updateTeacherCertificateStatus']);
 });
