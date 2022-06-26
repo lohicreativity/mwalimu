@@ -776,7 +776,7 @@ class ApplicantController extends Controller
                                $programs[] = $program;
                             }
                         }elseif(unserialize($program->entryRequirements[0]->equivalent_must_subjects) != ''){
-                            if($o_level_pass_count >= $program->entryRequirements[0]->pass_subjects && $equivalent_must_subjects_count >= count(unserialize($program->entryRequirements[0]->equivalent_must_subjects)) && $nacte_gpa >= $program->entryRequirements[0]->equivalent_gpa){
+                            if(($o_level_pass_count >= $program->entryRequirements[0]->pass_subjects && $equivalent_must_subjects_count >= count(unserialize($program->entryRequirements[0]->equivalent_must_subjects)) && $nacte_gpa >= $program->entryRequirements[0]->equivalent_gpa)  || ($o_level_pass_count >= $program->entryRequirements[0]->pass_subjects && $applicant->avn_no_results === 1 && $nacte_gpa >= $program->entryRequirements[0]->equivalent_gpa)){
                                 
                                $programs[] = $program;
                             }
@@ -799,18 +799,22 @@ class ApplicantController extends Controller
                         }
 
 
-                        if($out_pass_subjects_count >= 3 && $out_gpa >= $program->entryRequirements[0]->open_equivalent_gpa && $a_level_out_subsidiary_pass_count >= 1 && $a_level_out_principle_pass_count >= 1){
+                        if($o_level_pass_count >= $program->entryRequirements[0]->pass_subjects && $out_pass_subjects_count >= 3 && $out_gpa >= $program->entryRequirements[0]->open_equivalent_gpa && $a_level_out_subsidiary_pass_count >= 1 && $a_level_out_principle_pass_count >= 1){
                                 $programs[] = $program;
                         }
                             
                         if(unserialize($program->entryRequirements[0]->equivalent_must_subjects) != ''){
-                            if($out_pass_subjects_count >= 3 && $out_gpa >= $program->entryRequirements[0]->open_equivalent_gpa && $equivalent_must_subjects_count >= count(unserialize($program->entryRequirements[0]->equivalent_must_subjects)) && $nacte_gpa >= $program->entryRequirements[0]->min_equivalent_gpa){
+                            if(($o_level_pass_count >= $program->entryRequirements[0]->pass_subjects && $out_pass_subjects_count >= 3 && $out_gpa >= $program->entryRequirements[0]->open_equivalent_gpa && $equivalent_must_subjects_count >= count(unserialize($program->entryRequirements[0]->equivalent_must_subjects)) && $nacte_gpa >= $program->entryRequirements[0]->min_equivalent_gpa) || ($o_level_pass_count >= $program->entryRequirements[0]->pass_subjects && $applicant->avn_no_results === 1 && $out_pass_subjects_count >= 3 && $out_gpa >= $program->entryRequirements[0]->open_equivalent_gpa){
                                     $programs[] = $program;
                             }
                         }elseif(unserialize($program->entryRequirements[0]->equivalent_majors) != ''){
                             if($out_pass_subjects_count >= 3 && $out_gpa >= $program->entryRequirements[0]->open_equivalent_gpa && $has_major && $nacte_gpa >= $program->entryRequirements[0]->min_equivalent_gpa){
                                     $programs[] = $program;
                             }
+                        }
+
+                        if($o_level_pass_count >= $program->entryRequirements[0]->pass_subjects && $out_pass_subjects_count >= 3 && $out_gpa >= $program->entryRequirements[0]->open_equivalent_gpa && $applicant->teacher_diploma_certificate !== null){
+                              $programs[] = $prohram;
                         }
                 }
            // if($subject_count != 0){
@@ -843,6 +847,24 @@ class ApplicantController extends Controller
           'campus'=>Campus::find(session('applicant_campus_id')),
        ];
        return view('dashboard.application.upload-documents',$data)->withTitle('Upload Documents');
+    }
+
+    /**
+     * Upload Avn documents
+     */
+    public function uploadAvnDocuments(Request $request)
+    {
+       $applicant = User::find(Auth::user()->id)->applicants()->with('programLevel')->where('campus_id',session('applicant_campus_id'))->first();
+       if($applicant->is_tamisemi != 1){
+         if(!ApplicationWindow::where('campus_id',session('applicant_campus_id'))->where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('status','ACTIVE')->first()){
+               return redirect()->to('application/submission')->with('error','Application window already closed');
+          }
+       }
+       $data = [
+          'applicant'=>$applicant,
+          'campus'=>Campus::find(session('applicant_campus_id')),
+       ];
+       return view('dashboard.application.upload-avn-documents',$data)->withTitle('Upload AVN Documents');
     }
 
     /**

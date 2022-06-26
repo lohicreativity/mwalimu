@@ -22,9 +22,13 @@ class NacteResultController extends Controller
         if(strtoupper($applicant->first_name) != strtoupper($detail->firstname) || strtoupper($applicant->surname) != strtoupper($detail->surname)){
             return redirect()->to('application/nullify-nacte-results?detail_id='.$request->get('nacte_result_detail_id'));
         }
+        $results_count = NacteResult::where('nacte_result_detail_id',$request->get('nacte_result_detail_id'))->count();
         $applicant->first_name = $detail->firstname;
         $applicant->middle_name =  $detail->middlename;
         $applicant->surname = $detail->surname;
+        if($applicant->entry_mode == 'EQUIVALENT'){
+           $applicant->avn_no_results = $results_count == 0? 1 : 0;
+        }
         $applicant->save();
 
         return redirect()->back()->with('message','NACTE results confirmed successfully');
