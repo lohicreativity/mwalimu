@@ -277,7 +277,7 @@
             <!-- /.card -->
             @endif
              
-            @if(str_contains($applicant->programLevel->name,'Degree') && ( $gpa_less || count($a_level_necta_results) != 0))
+            @if(str_contains($applicant->programLevel->name,'Degree') && (( $gpa_less || count($a_level_necta_results) != 0) || ($applicant->teacher_certificate_status === 1)))
             <div class="card card-default">
               <div class="card-header">
                 <h3 class="card-title">{{ __('Foundation Programmes (OUT) Results') }}</h3>
@@ -328,13 +328,13 @@
               {!! Form::open(['url'=>'application/update-teacher-certificate-status','class'=>'ss-form-processing']) !!}
               <div class="card-body">
                   {!! Form::input('hidden','applicant_id',$applicant->id) !!}
-                  {!! Form::label('','Do you have Teacher\'s certificate?') !!}<br>
-                  
+                  {!! Form::label('','Do you have Diploma in Teacher Education') !!}<br>
+
                   <label class="radio-inline">
-                    <input type="radio" name="teacher_certificate_status" id="inlineRadio1" value="1"> Yes, I have Teacher's certificate
+                    <input type="radio" name="teacher_certificate_status" id="inlineRadio1" value="1" @if($applicant->teacher_certificate_status === 1) checked="checked" @endif> Yes, I have Diploma in Teacher Education
                   </label>
                   <label class="radio-inline">
-                    <input type="radio" name="teacher_certificate_status" id="inlineRadio2" value="0"> No, I do not have Teacher's certificate
+                    <input type="radio" name="teacher_certificate_status" id="inlineRadio2" value="0" @if($applicant->teacher_certificate_status === 0) checked="checked" @endif> No, I do not have Diploma in Teacher Education
                   </label>
               </div>
               <div class="card-footer">
