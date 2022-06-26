@@ -829,10 +829,10 @@ class ModuleAssignmentController extends Controller
               $csvFile = $destination.$csvFileName;
               $file_handle = fopen($csvFile, 'r');
               while (!feof($file_handle)) {
-                  $line_of_text[] = fgetcsv($file_handle, 0, ',');
+                  $line_of_text_1[] = fgetcsv($file_handle, 0, ',');
               }
               fclose($file_handle);
-              foreach($line_of_text as $line){
+              foreach($line_of_text_1 as $line){
                  $stud = Student::where('registration_number',trim($line[0]))->first();
                  if($stud && !empty($line[1])){
                     $uploaded_students[] = $stud;
