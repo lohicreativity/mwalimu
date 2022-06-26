@@ -946,7 +946,7 @@ class ModuleAssignmentController extends Controller
               }
 
               if(!$validationStatus){
-                 return redirect()->back()->with('error','Result file contains invalid data. Please check registration number '.implode(',', $invalidEntries));
+                 return redirect()->back()->with('error','Invalid data. Please check registration number '.implode(',', $invalidEntries));
               }
               
               DB::beginTransaction();
