@@ -835,7 +835,7 @@ class ModuleAssignmentController extends Controller
               $invalid_students_entries = [];
               foreach($line_of_text_1 as $line){
                  $stud = Student::where('registration_number',trim($line[0]))->first();
-                 if($stud && !empty($line[1])){
+                 if($stud){
                     $uploaded_students[] = $stud;
                  }else{
                     $invalid_students_entries[] = $line[0];
@@ -942,7 +942,7 @@ class ModuleAssignmentController extends Controller
               fclose($file_handle);
               $invalidEntries = [];
               foreach($line_of_text as $line){
-                   if(floatval(trim($line[1])) < 0 || floatval(trim($line[1])) > 100){
+                   if((floatval(trim($line[1])) < 0 || floatval(trim($line[1])) > 100 || !is_numeric(trim($line[1]))) && !empty($line[1])){
                      $validationStatus = false;
                      $invalidEntries[] = trim($line[0]);
                    }
