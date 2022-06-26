@@ -56,7 +56,7 @@
                     <div class="form-group col-4">
                     {!! Form::label('','Select document') !!}
                     <select name="document_name" class="form-control" required>
-                      @elseif($applicant->entry_mode == 'EQUIVALENT')
+                      @if($applicant->entry_mode == 'EQUIVALENT')
                       <option value="teacher_diploma_certificate">Teacher Diploma Certificate</option>
                       @endif
                     </select>
