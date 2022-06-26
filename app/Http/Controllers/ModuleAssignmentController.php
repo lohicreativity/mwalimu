@@ -939,14 +939,14 @@ class ModuleAssignmentController extends Controller
               fclose($file_handle);
               $invalidEntries = [];
               foreach($line_of_text as $line){
-                   if(floatval(trim($line[1])) < 0 || floatval(trim($line[1])) > 100){
+                   if(floatval(trim($line[1])) < 0 || floatval(trim($line[1])) > 100 || !is_numeric(trim($line[1]))){
                      $validationStatus = false;
                      $invalidEntries[] = trim($line[0]);
                    }
               }
 
               if(!$validationStatus){
-                 return redirect()->back()->with('error','Invalid data. Please check registration number '.implode(',', $invalidEntries));
+                 return redirect()->back()->with('error','Invalid data. Please check registration number '.implode(', ', $invalidEntries));
               }
               
               DB::beginTransaction();
