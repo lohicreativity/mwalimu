@@ -813,8 +813,8 @@ class ApplicantController extends Controller
                             }
                         }
 
-                        if($o_level_pass_count >= $program->entryRequirements[0]->pass_subjects && $out_pass_subjects_count >= 3 && $out_gpa >= $program->entryRequirements[0]->open_equivalent_gpa && $applicant->teacher_diploma_certificate !== null){
-                              $programs[] = $prohram;
+                        if($o_level_pass_count >= $program->entryRequirements[0]->pass_subjects && $out_pass_subjects_count >= 3 && $out_gpa >= $program->entryRequirements[0]->open_equivalent_gpa && $applicant->teacher_certificate_status === 1){
+                              $programs[] = $program;
                         }
                 }
            // if($subject_count != 0){
