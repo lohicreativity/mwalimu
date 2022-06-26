@@ -15,6 +15,7 @@ class FeeTypeAction implements FeeTypeInterface{
                 $type->gfs_code = $request->get('gfs_code');
                 $type->payment_option = $request->get('payment_option');
                 $type->duration = $request->get('duration');
+                $type->gl_code = $request->get('gl_code');
                 $type->description = $request->get('description');
                 $type->is_external = $request->get('payer') == 'EXTERNAL' || $request->get('payer') == 'BOTH'? 1 : 0;
                 $type->is_internal = $request->get('payer') == 'INTERNAL' || $request->get('payer') == 'BOTH'? 1 : 0;
@@ -30,6 +31,7 @@ class FeeTypeAction implements FeeTypeInterface{
                 $type->gfs_code = $request->get('gfs_code');
                 $type->payment_option = $request->get('payment_option');
                 $type->duration = $request->get('duration');
+                $type->gl_code = $request->get('gl_code');
                 $type->description = $request->get('description');
                 $type->is_external = $request->get('payer') == 'EXTERNAL' || $request->get('payer') == 'BOTH'? 1 : 0;
                 $type->is_internal = $request->get('payer') == 'INTERNAL' || $request->get('payer') == 'BOTH'? 1 : 0;

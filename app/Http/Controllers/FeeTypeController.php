@@ -20,7 +20,7 @@ class FeeTypeController extends Controller
            'types'=>FeeType::paginate(20),
            'staff'=>User::find(Auth::user()->id)->staff
     	];
-    	return view('dashboard.finance.fee-types',$data)->withTitle('types');
+    	return view('dashboard.finance.fee-types',$data)->withTitle('Fee Types');
     }
 
     /**

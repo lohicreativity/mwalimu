@@ -41,7 +41,7 @@
             <!-- general form elements -->
             <div class="card card-default">
               <div class="card-header">
-                <h3 class="card-title">{{ __('Add type') }}</h3>
+                <h3 class="card-title">{{ __('Add Type') }}</h3>
               </div>
               <!-- /.card-header -->
               <!-- form start -->
@@ -64,6 +64,12 @@
                      'required'=>true
                   ];
 
+                  $gl_code = [
+                     'placeholder'=>'GL code',
+                     'class'=>'form-control',
+                     'required'=>true
+                  ];
+
                   $description = [
                      'placeholder'=>'Description',
                      'class'=>'form-control',
@@ -78,18 +84,23 @@
                     {!! Form::text('name',null,$name) !!}
                   </div>
                   <div class="form-group col-4">
-                    {!! Form::label('','Code') !!}
-                    {!! Form::text('code',null,$code) !!}
+                    {!! Form::label('','Description') !!}
+                    {!! Form::text('description',null,$description) !!}
                   </div>
                   <div class="form-group col-4">
-                    {!! Form::label('','GFS code') !!}
-                    {!! Form::text('gfs_code',null,$gfs_code) !!}
+                    {!! Form::label('','Code') !!}
+                    {!! Form::text('code',null,$code) !!}
+                    
                   </div>
                 </div>
                 <div class="row">
                   <div class="form-group col-4">
-                    {!! Form::label('','Description') !!}
-                    {!! Form::text('description',null,$description) !!}
+                    {!! Form::label('','GFS code') !!}
+                    {!! Form::text('gfs_code',null,$gfs_code) !!}
+                  </div>
+                  <div class="form-group col-4">
+                    {!! Form::label('','GL code') !!}
+                    {!! Form::text('gl_code',null,$gl_code) !!}
                   </div>
                   <div class="form-group col-4">
                     {!! Form::label('','Payment duration') !!}
@@ -103,6 +114,8 @@
                       @endfor
                     </select>
                   </div>
+                </div>
+                <div class="row">
                   <div class="form-group col-4">
                     {!! Form::label('','Payment option') !!}
                     <select name="payment_option" class="form-control" required>
@@ -112,8 +125,6 @@
                       <option value="2">Exact Payment</option>
                     </select>
                   </div>
-                </div>
-                <div class="row">
                   <div class="form-group col-4">
                     {!! Form::label('','Payer category') !!}
                     <select name="payer" class="form-control">
@@ -124,9 +135,9 @@
                     </select>
                   </div>
                   <div class="form-group col-4">
-                    {!! Form::label('','Frequency') !!}
+                    {!! Form::label('','Payment frequency') !!}
                     <select name="when_paid" class="form-control">
-                      <option value="">Select When Paid</option>
+                      <option value="">Select Payment Frequency</option>
                       <option value="PAID_ONCE">Once</option>
                       <option value="PAID_ONCE_PER_SEMESTER">Once Per Semester</option>
                       <option value="PAID_MULTIPLE_TIMES">Multiple Times</option>
@@ -155,6 +166,7 @@
                   <tr>
                     <th>Name</th>
                     <th>GFS Code</th>
+                    <th>GL Code</th>
                     <th>Duration</th>
                     <th>Payment Option</th>
                     <th>Payer Category</th>
@@ -167,6 +179,7 @@
                   <tr>
                     <td>{{ $type->name }}</td>
                     <td>{{ $type->gfs_code }}</td>
+                    <td>{{ $type->gl_code }}</td>
                     <td>{{ $type->duration }}</td>
                     <td>
                       @if($type->payment_option == 1)
@@ -231,6 +244,12 @@
                                          'required'=>true
                                       ];
 
+                                      $gl_code = [
+                                         'placeholder'=>'GL code',
+                                         'class'=>'form-control',
+                                         'required'=>true
+                                      ];
+
                                       $description = [
                                          'placeholder'=>'Description',
                                          'class'=>'form-control',
@@ -247,18 +266,22 @@
                                           {!! Form::input('hidden','fee_type_id',$type->id) !!}
                                         </div>
                                         <div class="form-group col-4">
-                                          {!! Form::label('','Code') !!}
-                                          {!! Form::text('code',$type->code,$code) !!}
+                                          {!! Form::label('','Description') !!}
+                                          {!! Form::text('description',$type->description,$description) !!}
                                         </div>
                                         <div class="form-group col-4">
-                                          {!! Form::label('','GFS code') !!}
-                                          {!! Form::text('gfs_code',$type->gfs_code,$gfs_code) !!}
+                                          {!! Form::label('','Code') !!}
+                                          {!! Form::text('code',$type->code,$code) !!}
                                         </div>
                                       </div>
                                       <div class="row">
                                         <div class="form-group col-4">
-                                          {!! Form::label('','Description') !!}
-                                          {!! Form::text('description',$type->description,$description) !!}
+                                          {!! Form::label('','GFS code') !!}
+                                          {!! Form::text('gfs_code',$type->gfs_code,$gfs_code) !!}
+                                        </div>
+                                        <div class="form-group col-4">
+                                          {!! Form::label('','GL code') !!}
+                                          {!! Form::text('gl_code',$type->gl_code,$gl_code) !!}
                                         </div>
                                         <div class="form-group col-4">
                                           {!! Form::label('','Payment Duration') !!}
@@ -272,6 +295,8 @@
                                             @endfor
                                           </select>
                                         </div>
+                                      </div>
+                                      <div class="row">
                                         <div class="form-group col-4">
                                           {!! Form::label('','Payment option') !!}
                                           <select name="payment_option" class="form-control" required>
@@ -281,8 +306,6 @@
                                             <option value="3" @if($type->payment_option == 3) selected="selected" @endif>Exact Payment</option>
                                           </select>
                                         </div>
-                                      </div>
-                                      <div class="row">
                                         <div class="form-group col-4">
                                           {!! Form::label('','Payer category') !!}
                                           <select name="when_paid" class="form-control">
@@ -293,9 +316,9 @@
                                           </select>
                                         </div>
                                         <div class="form-group col-4">
-                                          {!! Form::label('','Frequency') !!}
+                                          {!! Form::label('','Payment frequency') !!}
                                           <select name="payer" class="form-control">
-                                            <option value="">Select When Paid</option>
+                                            <option value="">Select Payment Frequency</option>
                                             <option value="PAID_ONCE">Once</option>
                                             <option value="PAID_ONCE_PER_SEMESTER">Once Per Semester</option>
                                             <option value="PAID_MULTIPLE_TIMES">Multiple Times</option>

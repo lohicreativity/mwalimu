@@ -18,6 +18,7 @@ class CreateFeeTypesTable extends Migration
             $table->string('name');
             $table->string('code');
             $table->string('gfs_code');
+            $table->string('gl_code');
             $table->string('payment_option');
             $table->mediumInteger('duration');
             $table->string('description');
