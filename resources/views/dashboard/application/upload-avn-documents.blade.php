@@ -57,7 +57,12 @@
                     {!! Form::label('','Select document') !!}
                     <select name="document_name" class="form-control" required>
                       @if($applicant->entry_mode == 'EQUIVALENT')
+                      @if($applicant->avn_no_results === 1)
                       <option value="diploma_certificate">Diploma Certificate</option>
+                      @endif
+                      @if($applicant->teacher_certificate_status === 1)
+                      <option value="diploma_certificate">Diploma Certificate</option>
+                      @endif
                       @endif
                     </select>
                     </div>
@@ -95,8 +100,15 @@
                     <tbody>
                       @if($applicant->diploma_certificate)
                       <tr>
-                        <td>Teacher Diploma Certificate</td>
+                        <td>Diploma Certificate</td>
                         <td><a href="{{ url('application/delete-document?name=diploma_certificate') }}" class="btn btn-danger"><i class="fa fa-trash"></i> Delete</a></td>
+                      </tr>
+                      @endif
+
+                      @if($applicant->teacher_diploma_certificate)
+                      <tr>
+                        <td>Teacher Diploma Certificate</td>
+                        <td><a href="{{ url('application/delete-document?name=teacher_diploma_certificate') }}" class="btn btn-danger"><i class="fa fa-trash"></i> Delete</a></td>
                       </tr>
                       @endif
                     </tbody>
