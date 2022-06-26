@@ -322,13 +322,14 @@
 
             <div class="card card-default">
               <div class="card-header">
-                <h3 class="card-title">{{ __('NACTE Registration Number') }}</h3>
+                <h3 class="card-title">{{ __('Teacher Diploma Certificate') }}</h3>
               </div>
               <!-- /.card-header -->
               {!! Form::open(['url'=>'application/update-teacher-certificate-status','class'=>'ss-form-processing']) !!}
               <div class="card-body">
                   {!! Form::input('hidden','applicant_id',$applicant->id) !!}
-                  {!! Form::label('','Do you have Teacher\'s certificate?') !!}
+                  {!! Form::label('','Do you have Teacher\'s certificate?') !!}<br>
+                  
                   <label class="radio-inline">
                     <input type="radio" name="teacher_certificate_status" id="inlineRadio1" value="1"> Yes, I have Teacher's certificate
                   </label>
