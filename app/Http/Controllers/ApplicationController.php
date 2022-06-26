@@ -1779,9 +1779,13 @@ class ApplicationController extends Controller
      * Search for applicant
      */
     public function searchForApplicant(Request $request)
-    {
+    {   
+        $applicant = Applicant::where('index_number',$request->get('index_number'))->first();
+        if($request->get('index_number') && !$applicant){
+            return redirect()->back()->with('error','Student does not exists');
+        }
         $data = [
-             'applicant'=>Applicant::where('index_number',$request->get('index_number'))->first()
+             'applicant'=>$applicant
         ];
         return view('dashboard.application.search-applicant',$data)->withTitle('Search For Applicant');
     }
@@ -1817,9 +1821,9 @@ class ApplicationController extends Controller
     public function resetApplicantPasswordDefault(Request $request)
     {
         $applicant = Applicant::find($request->get('applicant_id'));
-        if(!ApplicationWindow::where('campus_id',$applicant->campus_id)->where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('status','ACTIVE')->first()){
-               return redirect()->back()->with('error','You cannot reset applicant\'s password because application window is already closed');
-        }
+        // if(!ApplicationWindow::where('campus_id',$applicant->campus_id)->where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('status','ACTIVE')->first()){
+        //        return redirect()->back()->with('error','You cannot reset applicant\'s password because application window is already closed');
+        // }
         $user = User::find($request->get('user_id'));
         $user->password = Hash::make('password');
         $user->save();

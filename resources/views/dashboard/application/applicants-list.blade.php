@@ -123,7 +123,7 @@
                         <tr>
                           <th>Name</th>
                           <th>Gender</th>
-                          <th>@if($applicant->submission_complete_status == 1) Programmes @else Phone @endif</th>
+                          <th>Phone</th>
                           <th>Submission Status</th>
                         </tr>
                     </thead>
