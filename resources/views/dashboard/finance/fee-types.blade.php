@@ -169,7 +169,6 @@
                     <th>GL Code</th>
                     <th>Duration</th>
                     <th>Payment Option</th>
-                    <th>Payer Category</th>
                     <th>Frequency</th>
                     <th>Actions</th>
                   </tr>
@@ -188,15 +187,6 @@
                         Partial Payment
                       @else
                         Exact Payment
-                      @endif
-                    </td>
-                    <td>
-                      @if($type->is_internal == 1 && $type->is_external == 1)
-                        Internal and External
-                      @elseif($type->is_internal == 1 && $type->is_external == 0)
-                        Internal
-                      @else
-                        External
                       @endif
                     </td>
                     <td>
