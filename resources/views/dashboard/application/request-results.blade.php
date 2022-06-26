@@ -322,7 +322,7 @@
 
             <div class="card card-default">
               <div class="card-header">
-                <h3 class="card-title">{{ __('Teacher Diploma Certificate') }}</h3>
+                <h3 class="card-title">{{ __('Diploma in Teacher Education') }}</h3>
               </div>
               <!-- /.card-header -->
               {!! Form::open(['url'=>'application/update-teacher-certificate-status','class'=>'ss-form-processing']) !!}
@@ -338,7 +338,7 @@
                   </label>
               </div>
               <div class="card-footer">
-             <button type="submit" class="btn btn-primary">{{ __('Update Teacher\'s Certificate Status') }}</button>
+             <button type="submit" class="btn btn-primary">{{ __('Update Status') }}</button>
             </div>
             {!! Form::close() !!}
             </div>
