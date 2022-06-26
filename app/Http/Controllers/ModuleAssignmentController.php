@@ -832,10 +832,13 @@ class ModuleAssignmentController extends Controller
                   $line_of_text_1[] = fgetcsv($file_handle, 0, ',');
               }
               fclose($file_handle);
+              $invalid_students_entries = [];
               foreach($line_of_text_1 as $line){
                  $stud = Student::where('registration_number',trim($line[0]))->first();
                  if($stud && !empty($line[1])){
                     $uploaded_students[] = $stud;
+                 }else{
+                    $invalid_students_entries[] = $line[0];
                  }
               }
 
@@ -947,6 +950,10 @@ class ModuleAssignmentController extends Controller
 
               if(!$validationStatus){
                  return redirect()->back()->with('error','Invalid data. Please check registration number '.implode(', ', $invalidEntries));
+              }
+
+              if(count($invalid_students_entries) != 0){
+                 return redirect()->back()->with('error','Invalid registration number. Please check registration number '.implode(', ', $invalid_students_entries));
               }
               
               DB::beginTransaction();
