@@ -37,7 +37,7 @@
                   <p>Select Programmes @if($applicant->programs_complete_status == 1) <i class="fa fa-check"></i> @endif</p>
                 </a>
               </li>
-              @if($applicant->avn_no_results === 1)
+              @if($applicant->avn_no_results === 1 || $applicant->teacher_certificate_status === 1)
               <li class="nav-item">
                 <a href="{{ url('application/upload-avn-documents') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
