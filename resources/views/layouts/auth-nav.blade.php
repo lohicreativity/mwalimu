@@ -41,7 +41,7 @@
               <li class="nav-item">
                 <a href="{{ url('application/upload-avn-documents') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Upload Documents @if($applicant->teacher_diploma_certificate !== null || $applicant->teacher_certificate_status == 1) <i class="fa fa-check"></i> @endif</p>
+                  <p>Upload Documents @if($applicant->avn_no_results === 1 || $applicant->teacher_certificate_status === 1) <i class="fa fa-check"></i> @endif</p>
                 </a>
               </li>
               @endif
