@@ -1474,6 +1474,21 @@ $('#ss-reload-control-number').on('click',function(e){
 
 });
 
+$('#ss-reset-control-number').on('click',function(e){
+    $.ajax({
+      url:'/application/delete-applicant-invoice',
+      method:'POST',
+      data:{
+         _token:$(e.target).data('token'),
+         applicant_id:$(e.target).data('applicant-id'),
+         invoice_id:$(e.target).data('invoice-id')
+      }
+    }).done(function(data,success){
+        window.location.reload();
+    });
+
+});
+
 // Select city from specific country
 $(".ss-country-selector").on('change',function(e){
      var countryId = $(e.target).val();
