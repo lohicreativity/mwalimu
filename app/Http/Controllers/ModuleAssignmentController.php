@@ -834,7 +834,7 @@ class ModuleAssignmentController extends Controller
               fclose($file_handle);
               foreach($line_of_text as $line){
                  $stud = Student::where('registration_number',trim($line[0]))->first();
-                 if($stud){
+                 if($stud && !empty($line[1])){
                     $uploaded_students[] = $stud;
                  }
               }
@@ -937,14 +937,16 @@ class ModuleAssignmentController extends Controller
                   $line_of_text[] = fgetcsv($file_handle, 0, ',');
               }
               fclose($file_handle);
+              $invalidEntries = [];
               foreach($line_of_text as $line){
                    if(floatval(trim($line[1])) < 0 || floatval(trim($line[1])) > 100){
                      $validationStatus = false;
+                     $invalidEntries[] = trim($line[0]);
                    }
               }
 
               if(!$validationStatus){
-                 return redirect()->back()->with('error','Result file contains invalid data');
+                 return redirect()->back()->with('error','Result file contains invalid data. Check registration number '.implode(',', $invalidEntries));
               }
               
               DB::beginTransaction();
@@ -973,7 +975,7 @@ class ModuleAssignmentController extends Controller
                       $query->where('name','ACTIVE');
                 })->where('registration_number',trim($line[0]))->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id)->first();
 
-                if($student){
+                if($student && !empty($line[1])){
                   if($request->get('assessment_plan_id') == 'FINAL_EXAM'){
                       $special_exam = SpecialExam::where('student_id',$student->id)->where('module_assignment_id',$module_assignment->id)->where('type','FINAL')->where('status','APPROVED')->first();
 
