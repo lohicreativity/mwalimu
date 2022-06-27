@@ -49,6 +49,7 @@ use App\Mail\StudentAccountCreated;
 use App\Mail\TamisemiApplicantCreated;
 use NumberToWords\NumberToWords;
 use App\Utils\DateMaker;
+use App\Services\ACPACService;
 use Validator, Hash, Config, Auth, Mail, PDF, DB;
 
 class ApplicationController extends Controller
@@ -920,10 +921,10 @@ class ApplicationController extends Controller
         $invoice = new Invoice;
         $invoice->reference_no = 'MNMA-'.time();
         if(str_contains($applicant->nationality,'Tanzania')){
-           $invoice->amount = $fee_amount->amount_in_tzs;
+           $invoice->amount = round($fee_amount->amount_in_tzs);
            $invoice->currency = 'TZS';
         }else{
-           $invoice->amount = $fee_amount->amount_in_usd*$usd_currency->factor;
+           $invoice->amount = round($fee_amount->amount_in_usd*$usd_currency->factor);
            $invoice->currency = 'TZS';//'USD';
         }
         $invoice->payable_id = $applicant->id;
@@ -1580,9 +1581,63 @@ class ApplicationController extends Controller
                 curl_close($curl_handle);
                 }
             }
-        
+
+        $tuition_invoice = Invoice::whereHas('feeType',function($query){
+               $query->where('name','LIKE','%Tuition%');
+        })->with(['gatewayPayment','feeType'])->where('payable_type','applicant')->where('payable_id',$applicant->id)->first();
+
+        $misc_invoice = Invoice::whereHas('feeType',function($query){
+               $query->where('name','LIKE','%Miscellaneous%');
+        })->with(['gatewayPayment','feeType'])->where('payable_type','applicant')->where('payable_id',$applicant->id)->first();
+
+        $acpac = new ACPACService;
+        $stud_name = $student->surname.', '.$student->first_name.' '.$student->middle_name;
+        $stud_reg = substr($student->registration_number, 5);
+        $stud_reg = str_replace('/', '', $stud_reg);
+        $parts = explode('.', $stud_reg);
+        if($parts[0] == 'BTC'){
+            $stud_reg = 'BT'.$parts[1];
+        }else{
+            $stud_reg = $parts[0].$parts[1];
+        }
+        $next_of_kin = $applicant->nextOfKin->surname.', '.$applicant->nextOfKin->first_name.' '.$applicant->nextOfKin->middle_name;
+        $gparts = explode('.', $program_code);
+        if($parts[0] == 'BTC'){
+            $stud_group = 'BT'.$parts[1];
+        }else{
+            $stud_group = $parts[0].$parts[1];
+        }
+        // $acpac->query("INSERT INTO receipts (BANK,BANKNAME,RCPNUMBER,RCPDATE,RCPDESC,IDCUST,NAMECUST,INVOICE,AMTAPPLIED,IMPORTED,IMPDATE) VALUES ('B','CRDB','REC02','10','TF','MNMA002','TEST','INV002','100.0','B','10')");
+        $acpac->query("INSERT INTO customers (IDCUST,IDGRP,NAMECUST,TEXTSTRE1,TEXTSTRE2,TEXTSTRE3,TEXTSTRE4,NAMECITY,CODESTTE,CODEPSTL,CODECTRY,NAMECTAC,TEXTPHON1,TEXTPHON2,CODETERR,IDACCTSET,CODECURN,EMAIL1,EMAIL2) VALUES ('".$stud_reg."','".$stud_group."','".$stud_name."','".$applicant->address."','".$applicant->district->name."','".$applicant->ward->name."','".$applicant->street."','".$applicant->region->name."','".$applicant->region->name."','".$applicant->address."','".$applicant->country->name."','".$next_of_kin."','".$applicant->phone."','".$applicant->nextOfKin->phone."','".$program_code."','STD','TSH','".$applicant->email."','".$applicant->nextOfKin->email."')");
+
+        $acpac->query("INSERT INTO invoices (INVNUMBER,INVDATE,INVDESC,IDCUST,NAMECUST,LINENO,REVACT,REVDESC,REVREF,REVAMT,IMPORTED,IMPDATE) VALUES ('".$tuition_invoice->reference_no."','".date('Ymd',strtotime($tuition_invoice->created_at))."','".$tuition_invoice->feeType->description."','".$stud_reg."','".$stud_name."','1','".$tuition_invoice->feeType->gl_code."','".$tuition_invoice->feeType->name."','".$tuition_invoice->feeType->description."','".$tuition_invoice->amount."','0','".date('Ymd',strtotime(now()))."')");
+
+        $acpac->query("INSERT INTO invoices (INVNUMBER,INVDATE,INVDESC,IDCUST,NAMECUST,LINENO,REVACT,REVDESC,REVREF,REVAMT,IMPORTED,IMPDATE) VALUES ('".$misc_invoice->reference_no."','".date('Ymd',strtotime($misc_invoice->created_at))."','".$misc_invoice->feeType->description."','".$stud_reg."','".$stud_name."','1','".$misc_invoice->feeType->gl_code."','".$misc_invoice->feeType->name."','".$misc_invoice->feeType->description."','".$misc_invoice->amount."','0','".date('Ymd',strtotime(now()))."')");
+
+        if($tuition_invoice->gatewayPayment->psp_name == 'National Microfinance Bank'){
+            $bank_code = 619;
+            $bank_name = 'NMB';
+        }else{
+            $bank_code = 615;
+            $bank_name = 'CRDB';
+        }
+
+        $acpac->query("INSERT INTO receipts (BANK,BANKNAME,RCPNUMBER,RCPDATE,RCPDESC,IDCUST,NAMECUST,INVOICE,AMTAPPLIED,IMPORTED,IMPDATE) VALUES ('".$bank_code."','".$bank_name."','".substr($tuition_invoice->gatewayPayment->transaction_id,5)."','".date('Ymd',strtotime($tuition_invoice->gatewayPayment->datetime))."','".$tuition_invoice->feeType->description."','".$stud_reg."','".$stud_name."','".$tuition_invoice->reference_no."','".$tuition_invoice->gatewayPayment->paid_amount."','0','".date('Ymd',strtotime(now()))."')");
+
+        if($misc_invoice->gatewayPayment->psp_name == 'National Microfinance Bank'){
+            $bank_code = 619;
+            $bank_name = 'NMB';
+        }else{
+            $bank_code = 615;
+            $bank_name = 'CRDB';
+        }
+
+        $acpac->query("INSERT INTO receipts (BANK,BANKNAME,RCPNUMBER,RCPDATE,RCPDESC,IDCUST,NAMECUST,INVOICE,AMTAPPLIED,IMPORTED,IMPDATE) VALUES ('".$bank_code."','".$bank_name."','".substr($misc_invoice->gatewayPayment->transaction_id,5)."','".date('Ymd',strtotime($misc_invoice->gatewayPayment->datetime))."','".$misc_invoice->feeType->description."','".$stud_reg."','".$stud_name."','".$misc_invoice->reference_no."','".$misc_invoice->gatewayPayment->paid_amount."','0','".date('Ymd',strtotime(now()))."')");
+
+        $acpac->close();
+
         try{
-           Mail::to($user)->send(new StudentAccountCreated($student, $selection->campusProgram->program->name,$ac_year->academicYear->year, $password));
+           //Mail::to($user)->send(new StudentAccountCreated($student, $selection->campusProgram->program->name,$ac_year->academicYear->year, $password));
         }catch(\Exception $e){}
         DB::commit();
         if($days < 0){

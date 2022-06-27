@@ -142,29 +142,29 @@ class AdmissionController extends Controller
         if($loan_allocation){
              if(str_contains($applicant->nationality,'Tanzania')){
                  $amount = $program_fee->amount_in_tzs - $loan_allocation->tuition_fee;
-                 $amount_loan = $loan_allocation->tuition_fee;
+                 $amount_loan = round($loan_allocation->tuition_fee);
                  $currency = 'TZS';
              }else{
-                 $amount = ($program_fee->amount_in_usd - $loan_allocation->tuition_fee/$usd_currency->factor) * $usd_currency->factor;
-                 $amount_loan = $loan_allocation->tuition_fee;
+                 $amount = round(($program_fee->amount_in_usd - $loan_allocation->tuition_fee/$usd_currency->factor) * $usd_currency->factor);
+                 $amount_loan = round($loan_allocation->tuition_fee);
                  $currency = 'TZS'; //'USD';
              }
         }else{
              if(str_contains($applicant->nationality,'Tanzania')){
-                 $amount = $program_fee->amount_in_tzs;
+                 $amount = round($program_fee->amount_in_tzs);
                  $amount_loan = 0.00;
                  $currency = 'TZS';
              }else{
-                 $amount = $program_fee->amount_in_usd*$usd_currency->factor;
+                 $amount = round($program_fee->amount_in_usd*$usd_currency->factor);
                  $amount_loan = 0.00;
                  $currency = 'TZS'; //'USD';
              }
         }
 
              if(str_contains($applicant->nationality,'Tanzania')){
-                 $amount_without_loan = $program_fee->amount_in_tzs;
+                 $amount_without_loan = round($program_fee->amount_in_tzs);
              }else{
-                 $amount_without_loan = $program_fee->amount_in_usd;
+                 $amount_without_loan = round($program_fee->amount_in_usd*$usd_currency->factor);
              }
     	
 
@@ -216,10 +216,10 @@ class AdmissionController extends Controller
     			$query->where('name','LIKE','%Hostel%');
     		})->where('study_academic_year_id',$study_academic_year->id)->first();
     		if(str_contains($applicant->nationality,'Tanzania')){
-	             $amount = $program_fee->amount_in_tzs;
+	             $amount = round($program_fee->amount_in_tzs);
 	             $currency = 'TZS';
 	         }else{
-	             $amount = $program_fee->amount_in_usd*$usd_currency->factor;
+	             $amount = round($program_fee->amount_in_usd*$usd_currency->factor);
 	             $currency = 'TZS'; //'USD';
 	         }
 
@@ -277,10 +277,10 @@ class AdmissionController extends Controller
         $other_fees_tzs = $other_fees_tzs + $quality_assurance_fee->amount_in_tzs;
         $other_fees_usd = $other_fees_usd + $quality_assurance_fee->amount_in_usd;
         if(str_contains($applicant->nationality,'Tanzania')){
-        	$other_fees = $other_fees_tzs;
+        	$other_fees = round($other_fees_tzs);
         	$currency = 'TZS';
         }else{
-        	$other_fees = $other_fees_usd*$usd_currency->factor;
+        	$other_fees = round($other_fees_usd*$usd_currency->factor);
         	$currency = 'TZS';//'USD';
         }
 

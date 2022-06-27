@@ -61,19 +61,19 @@
                        <td> 100,000 TZS</td>
                        @else
                        @if(str_contains($applicant->nationality,'Tanzania'))
-                       <td>{{ $program_fee->amount_in_tzs }} TZS</td>
+                       <td>{{ number_format($program_fee->amount_in_tzs,0) }} TZS</td>
                        @else
-                       <td>{{ $program_fee->amount_in_usd*$usd_currency->factor }} TZS</td>
+                       <td>{{ number_format($program_fee->amount_in_usd*$usd_currency->factor,0) }} TZS</td>
                        @endif
                        @endif
                        <td>@if($program_fee_invoice) {{ $program_fee_invoice->control_no }} @else <a href="#" onclick="window.location.reload();"><i class="fa fa-refresh" ></i> Refresh</a> @endif</td>
-                       <td>@if($program_fee_invoice) {{ number_format($program_fee_invoice->amount,2) }} {{ $program_fee_invoice->currency }} @endif</td>
+                       <td>@if($program_fee_invoice) {{ number_format($program_fee_invoice->amount,0) }} {{ $program_fee_invoice->currency }} @endif</td>
                        <td>
                          @if($loan_allocation)
                          
                          @else
                          @if(isset($program_fee_invoice->gatewayPayment))
-                            {{ number_format($program_fee_invoice->gatewayPayment->paid_amount,2) }} TZS
+                            {{ number_format($program_fee_invoice->gatewayPayment->paid_amount,0) }} TZS
                          @endif
                          @endif
                        </td>
@@ -82,7 +82,7 @@
                          
                          @else
                          @if(isset($program_fee_invoice->gatewayPayment))
-                            {{ number_format($program_fee_invoice->gatewayPayment->bill_amount-$program_fee_invoice->gatewayPayment->paid_amount,2) }} TZS
+                            {{ number_format($program_fee_invoice->gatewayPayment->bill_amount-$program_fee_invoice->gatewayPayment->paid_amount,0) }} TZS
                          @endif
                          @endif
                          
@@ -97,15 +97,15 @@
                        <td>{{ $other_fees_usd }} USD</td>
                        @endif
                        <td>@if($other_fee_invoice) {{ $other_fee_invoice->control_no }}@else <a href="#" onclick="window.location.reload();"><i class="fa fa-refresh" ></i> Refresh</a> @endif</td>
-                       <td>@if($other_fee_invoice) {{ number_format($other_fee_invoice->amount,2) }} {{ $other_fee_invoice->currency }} @endif</td>
+                       <td>@if($other_fee_invoice) {{ number_format($other_fee_invoice->amount,0) }} {{ $other_fee_invoice->currency }} @endif</td>
                        <td>
                          @if(isset($other_fee_invoice->gatewayPayment))
-                            {{ number_format($other_fee_invoice->gatewayPayment->paid_amount,2) }} TZS
+                            {{ number_format($other_fee_invoice->gatewayPayment->paid_amount,0) }} TZS
                          @endif
                        </td>
                        <td>
                          @if(isset($other_fee_invoice->gatewayPayment))
-                            {{ number_format($other_fee_invoice->gatewayPayment->bill_amount-$other_fee_invoice->gatewayPayment->paid_amount,2) }} TZS
+                            {{ number_format($other_fee_invoice->gatewayPayment->bill_amount-$other_fee_invoice->gatewayPayment->paid_amount,0) }} TZS
                          @endif
                        </td>
 
@@ -115,9 +115,9 @@
                     <tr>
                        <td>Insurance Fee</td>
                        @if(str_contains($applicant->nationality,'Tanzania'))
-                       <td>{{ $insurance_fee->amount_in_tzs }} TZS</td>
+                       <td>{{ number_format($insurance_fee->amount_in_tzs,0) }} TZS</td>
                        @else
-                       <td>{{ $insurance_fee->amount_in_usd*$usd_currency->factor }} TZS</td>
+                       <td>{{ number_format($insurance_fee->amount_in_usd*$usd_currency->factor,0) }} TZS</td>
                        @endif
                        <td>@if($insurance_fee_invoice) {{ $insurance_fee_invoice->control_no }}@lse <a href="#" onclick="window.location.reload();"><i class="fa fa-refresh" ></i> Refresh</a> @endif</td>
                        <td></td>
@@ -127,19 +127,19 @@
                     <tr>
                        <td>Hostel Fee</td>
                        @if(str_contains($applicant->nationality,'Tanzania'))
-                       <td>{{ $hostel_fee->amount_in_tzs }} TZS</td>
+                       <td>{{ number_format($hostel_fee->amount_in_tzs,0) }} TZS</td>
                        @else
-                       <td>{{ $hostel_fee->amount_in_usd*$usd_currency->factor }} TZS</td>
+                       <td>{{ number_format($hostel_fee->amount_in_usd*$usd_currency->factor,0) }} TZS</td>
                        @endif
                        <td>@if($hostel_fee_invoice) {{ $hostel_fee_invoice->control_no }}@else <a href="#" onclick="window.location.reload();"><i class="fa fa-refresh" ></i> Refresh</a>@endif</td>
                        <td>
                          @if(isset($hostel_fee_invoice->gatewayPayment))
-                            {{ number_format($hostel_fee_invoice->gatewayPayment->paid_amount,2) }} TZS
+                            {{ number_format($hostel_fee_invoice->gatewayPayment->paid_amount,0) }} TZS
                          @endif
                        </td>
                        <td>
                          @if(isset($hostel_fee_invoice->gatewayPayment))
-                            {{ number_format($hostel_fee_invoice->gatewayPayment->bill_amount-$hostel_fee_invoice->gatewayPayment->paid_amount,2) }} TZS
+                            {{ number_format($hostel_fee_invoice->gatewayPayment->bill_amount-$hostel_fee_invoice->gatewayPayment->paid_amount,0) }} TZS
                          @endif
                        </td>
                     </tr>
