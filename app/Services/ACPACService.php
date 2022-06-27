@@ -21,7 +21,7 @@ class ACPACService{
 	{
         $this->connection = sqlsrv_connect ($this->serverName,$this->connectionOptions);
         if(!$this->connection){
-        	die(sqlsrv_errors());
+        	die(print_r(sqlsrv_errors(),true));
         }
 	}
 
@@ -31,7 +31,7 @@ class ACPACService{
 		   $results = sqlsrv_query($this->connection,$sql);
 		   return $results;
 		}catch(\Exception $e){
-			die(sqlsrv_errors());
+			die(print_r(sqlsrv_errors(),true));
 		}
 	}
 
