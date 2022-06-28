@@ -927,8 +927,13 @@ class ApplicantController extends Controller
 
 
         (new ApplicantAction)->update($request);
-
-        return redirect()->to('application/next-of-kin')->with('message','Applicant updated successfully');
+         
+        $applicant = Applicant::find($request->get('applicant_id'));
+        if($applicant->status == 'ADMITTED'){
+           return redirect()->back()->with('message','Applicant updated successfully');
+        }else{
+           return redirect()->to('application/next-of-kin')->with('message','Applicant updated successfully');
+        }
     }
 
     /**
