@@ -1088,6 +1088,11 @@ class ApplicationController extends Controller
 
         $staff = User::find(Auth::user()->id)->staff;
 
+        $closed_window = ApplicationWindow::where('campus_id',$staff->campus_id)->where('status','INACTIVE')->latest()->first();
+        if($closed_window){
+            return redirect()->back()->with('error','Application window is not active');
+        }
+
         if(ApplicationWindow::where('campus_id',$staff->campus_id)->where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('status','ACTIVE')->first()){
              return redirect()->back()->with('error','Application window not closed yet');
         }
@@ -1184,6 +1189,12 @@ class ApplicationController extends Controller
         set_time_limit(120);
 
         $staff = User::find(Auth::user()->id)->staff;
+
+        $closed_window = ApplicationWindow::where('campus_id',$staff->campus_id)->where('status','INACTIVE')->latest()->first();
+        if($closed_window){
+            return redirect()->back()->with('error','Application window is not active');
+        }
+        
         $prog = CampusProgram::with('program')->find($request->get('campus_program_id'));
 
         if(ApplicationWindow::where('campus_id',$staff->campus_id)->where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('status','ACTIVE')->first()){
