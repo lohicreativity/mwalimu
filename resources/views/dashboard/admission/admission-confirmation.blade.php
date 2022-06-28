@@ -123,6 +123,8 @@
 
               @if($applicant->multiple_admissions == 0)
               @if($applicant->confirmation_status != 'CANCELLED')
+              <h3 class="ss-color-success"><i class="fa fa-check-circle"></i> Congratulations! You have been successfully selected.</h3>
+              {{--
               <div class="card card-default">
               <div class="card-header">
                 <h3 class="card-title">{{ __('Cancel Admission') }}</h3>
@@ -139,7 +141,7 @@
                   <button @if($applicant->multiple_admissions === 0) disabled="disabled" @else type="submit" @endif class="btn btn-primary">{{ __('Cancel Admission') }}</button>
                 </div>
               {!! Form::close() !!}
-              </div>
+              </div> --}}
               @elseif($applicant->confirmation_status == 'CANCELLED')
               <div class="card card-default">
               <div class="card-header">
