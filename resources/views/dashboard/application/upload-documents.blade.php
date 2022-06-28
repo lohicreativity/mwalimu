@@ -63,7 +63,9 @@
                       @if($applicant->entry_mode == 'DIRECT' && str_contains($applicant->programLevel->name,'Bachelor'))
                       <option value="a_level_certificate">A-Level Certificate</option>
                       @elseif($applicant->entry_mode == 'EQUIVALENT')
+                      @if($applicant->diploma_certificate == null)
                       <option value="diploma_certificate">Diploma Certificate</option>
+                      @endif
                       @endif
                     </select>
                     </div>
