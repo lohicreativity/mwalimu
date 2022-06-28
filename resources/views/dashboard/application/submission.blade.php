@@ -101,7 +101,7 @@
                 <div class="card-body ss-center">
                   <div class="row">
                     <div class="col-12">
-                    <h3 class="ss-color-success"><i class="fa fa-check-circle"></i> We are sorry to inform you that you have not been selected for this academic year.</h3>
+                    <h3 class="ss-color-danger"><i class="fa fa-check-circle"></i> We are sorry to inform you that you have not been selected for this academic year.</h3>
                     </div>
                   </div>
                 </div>

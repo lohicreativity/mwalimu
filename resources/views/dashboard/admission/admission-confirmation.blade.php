@@ -136,7 +136,7 @@
                  {!! Form::input('hidden','applicant_id',$applicant->id) !!}
                 </div>
                 <div class="card-footer">
-                  <button type="submit" class="btn btn-primary">{{ __('Cancel Admission') }}</button>
+                  <button @if($applicant->multiple_admissions === 0) disabled="disabled" @else type="submit" @endif class="btn btn-primary">{{ __('Cancel Admission') }}</button>
                 </div>
               {!! Form::close() !!}
               </div>
