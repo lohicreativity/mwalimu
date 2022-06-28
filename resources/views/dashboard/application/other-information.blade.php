@@ -102,10 +102,32 @@
                               {!! Form::input('hidden','insurance_status',1) !!}
                               {!! Form::input('hidden','applicant_id',$applicant->id) !!}
                             </div>
-                            <div class="form-group">
-                              {!! Form::label('','Expire date') !!}
-                              {!! Form::text('expire_date',null,['class'=>'form-control ss-datepicker','placeholder'=>'Expire date']) !!}
-                            </div>
+                            <div class="row">
+                       <div class="col-4">
+                         <select name="expire_date" class="form-control" required>
+                           <option value="">Expire Date</option>
+                           @for($i = 1; $i <= 31; $i++)
+                           <option value="{{ $i }}">{{ $i }}</option>
+                           @endfor
+                         </select>
+                       </div>
+                       <div class="col-4">
+                         <select name="expire_month" class="form-control" required>
+                           <option value="">Month</option>
+                           @for($i = 1; $i <= 12; $i++)
+                           <option value="{{ $i }}">{{ $i }}</option>
+                           @endfor
+                         </select>
+                       </div>
+                       <div class="col-4">
+                         <select name="expire_year" class="form-control" required>
+                           <option value="">Year</option>
+                           @for($i = 2008; $i >= 1960; $i--)
+                           <option value="{{ $i }}">{{ $i }}</option>
+                           @endfor
+                         </select>
+                       </div>
+                     </div>
                             <button type="submit" class="btn btn-primary">Save</button>
                           {!! Form::close() !!}
                        </div><!-- end of col-md-12 -->

@@ -1189,7 +1189,7 @@ class ApplicantController extends Controller
              $insurance = new HealthInsurance;
              $insurance->insurance_name = $request->get('insurance_name');
              $insurance->membership_number = $request->get('card_number');
-             $insurance->expire_date = DateMaker::toDBDate($request->get('expire_date'));
+             $insurance->expire_date = $request->get('expire_year').'-'.$request->get('expire_month').'-'.$request->get('expire_date');;
              $insurance->applicant_id = $applicant->id;
              $insurance->save();
          }
