@@ -231,7 +231,7 @@ class ApplicantController extends Controller
                  if($applicant->status == null){
                      return redirect()->to('application/submission')->with('error','Application window already closed');
                  }
-                 if($applicant->multiple_admissions === 0){
+                 if($applicant->multiple_admissions !== null){
                     return redirect()->to('application/admission-confirmation')->with('error','Application window already closed');
                  }
             }
@@ -844,11 +844,11 @@ class ApplicantController extends Controller
     public function uploadDocuments(Request $request)
     {
        $applicant = User::find(Auth::user()->id)->applicants()->with('programLevel')->where('campus_id',session('applicant_campus_id'))->first();
-       if($applicant->is_tamisemi != 1){
-         if(!ApplicationWindow::where('campus_id',session('applicant_campus_id'))->where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('status','ACTIVE')->first()){
-               return redirect()->to('application/submission')->with('error','Application window already closed');
-          }
-       }
+       // if($applicant->is_tamisemi != 1){
+       //   if(!ApplicationWindow::where('campus_id',session('applicant_campus_id'))->where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('status','ACTIVE')->first()){
+       //         return redirect()->to('application/submission')->with('error','Application window already closed');
+       //    }
+       // }
        $data = [
           'applicant'=>$applicant,
           'campus'=>Campus::find(session('applicant_campus_id')),
