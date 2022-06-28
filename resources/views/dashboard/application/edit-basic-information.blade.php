@@ -193,7 +193,7 @@
                        {!! Form::label('','Birth date') !!}
                       <div class="row">
                        <div class="col-4">
-                         <select name="date" class="form-control" required @if($applicant->status == 'ADMITTED') disabled="disabled" @endif>
+                         <select name="date" class="form-control" required>
                            <option value="">Date</option>
                            @for($i = 1; $i <= 31; $i++)
                            <option value="{{ $i }}" @if(Carbon\Carbon::parse($applicant->birth_date)->format('d') == $i && $applicant->birth_date !== null) selected="selected" @else @if($applicant->status == 'ADMITTED') disabled="disabled" @endif @endif>{{ $i }}</option>
@@ -209,7 +209,7 @@
                          </select>
                        </div>
                        <div class="col-4">
-                         <select name="year" class="form-control" required @if($applicant->status == 'ADMITTED') disabled="disabled" @endif>
+                         <select name="year" class="form-control" required>
                            <option value="">Year</option>
                            @for($i = 2008; $i >= 1960; $i--)
                            <option value="{{ $i }}" @if(Carbon\Carbon::parse($applicant->birth_date)->format('Y') == $i && $applicant->birth_date !== null) selected="selected" @else @if($applicant->status == 'ADMITTED') disabled="disabled" @endif @endif>{{ $i }}</option>
@@ -222,7 +222,7 @@
                    <div class="row">
                     <div class="form-group col-6">
                        {!! Form::label('','Gender') !!}
-                       <select name="gender" class="form-control" required @if($applicant->status == 'ADMITTED') disabled="disabled" @endif>
+                       <select name="gender" class="form-control" required>
                          <option value="">Select Gender</option>
                          <option value="M" @if($applicant->gender == 'M') selected="selected" @else @if($applicant->status == 'ADMITTED') disabled="disabled" @endif @endif>Male</option>
                          <option value="F" @if($applicant->gender == 'F') selected="selected" @else @if($applicant->status == 'ADMITTED') disabled="disabled" @endif @endif>Female</option>
