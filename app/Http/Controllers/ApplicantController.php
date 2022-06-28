@@ -101,8 +101,11 @@ class ApplicantController extends Controller
         
         $window = ApplicationWindow::where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('campus_id',$request->get('campus_id'))->where('status','ACTIVE')->latest()->first();
         $closed_window = ApplicationWindow::where('campus_id',$request->get('campus_id'))->where('status','INACTIVE')->latest()->first();
+        if($closed_window){
+            return redirect()->back()->with('error','Application window is not active');
+        }
         if(!$tamisemi_applicant){
-          if(!$window && !$appl && $closed_window){
+          if(!$window && !$appl){
             return  redirect()->back()->with('error','Application window for '.$campus->name.' is not open.');
           }
         }
