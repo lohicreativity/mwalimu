@@ -1166,7 +1166,7 @@ class ApplicantController extends Controller
         }
          
          if($request->get('insurance_name') != 'NHIF' && $request->get('insurance_name') != 0){
-           if(strtotime($request->get('expire_date')) <= strtotime(now())){
+           if(strtotime($request->get('expire_year').'-'.$request->get('expire_month').'-'.$request->get('expire_date')) <= strtotime(now())){
               return redirect()->back()->with('error','Expire date cannot be less than today\'s date');
            }
          }
