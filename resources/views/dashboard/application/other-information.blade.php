@@ -93,11 +93,11 @@
                           {!! Form::open(['url'=>'application/update-insurance-status','class'=>'ss-form-processing']) !!}
                             <div class="form-group">
                               {!! Form::label('','Insurance name') !!}
-                              {!! Form::text('insurance_name',null,['class'=>'form-control','placeholder'=>'Insurance name']) !!}
+                              {!! Form::text('insurance_name',null,['class'=>'form-control','placeholder'=>'Insurance name','required'=>true]) !!}
                             </div>
                             <div class="form-group">
                               {!! Form::label('','Card number') !!}
-                              {!! Form::text('card_number',null,['class'=>'form-control','placeholder'=>'Card number']) !!}
+                              {!! Form::text('card_number',null,['class'=>'form-control','placeholder'=>'Card number','required'=>true]) !!}
 
                               {!! Form::input('hidden','insurance_status',1) !!}
                               {!! Form::input('hidden','applicant_id',$applicant->id) !!}
