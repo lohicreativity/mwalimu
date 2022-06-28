@@ -130,6 +130,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
     Route::post('upload-attachment-file',[ApplicationController::class,'uploadAttachmentFile']);
     Route::get('download-attachment',[ApplicationController::class,'downloadAttachment']);
     Route::get('delete-attachment',[ApplicationController::class,'deleteAttachment']);
+    Route::get('admission-package',[ApplicationController::class,'admissionPackage']);
+    Route::get('download-admission-letter',[ApplicationController::class,'downloadAdmissionLetter']);
 
     Route::post('send-admission-letter',[ApplicationController::class,'sendAdmissionLetter']);
     Route::post('update-applicant-nva',[ApplicantController::class,'updateNVAStatus']);

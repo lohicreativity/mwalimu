@@ -1739,6 +1739,33 @@ class ApplicationController extends Controller
     }
 
     /**
+     * Show admission attachments
+     */
+    public function admissionPackage(Request $request)
+    {    
+         $applicant = User::find(Auth::user()->id)->applicants()->where('campus_id',session('applicant_campus_id'))->first();
+         $data = [
+            'attachments'=>AdmissionAttachment::paginate(20),
+            'applicant'=>$applicant,
+            'request'=>$request
+         ];
+         return view('dashboard.application.admission-package',$data)->withTitle('Admission Package');
+    }
+
+    /**
+     * Download admission letter
+     */
+    public function downloadAdmissionLetter(Request $request)
+    {   
+        $applicant = User::find(Auth::user()->id)->applicants()->where('campus_id',session('applicant_campus_id'))->first();
+        try{
+           return response()->download(public_path().'/uploads/Admission-Letter-'.$applicant->first_name.'-'.$applicant->surname.'.pdf');
+        }catch(\Exception $e){
+            return redirect()->back()->with('error','Document could not be found');
+        }
+    }
+
+    /**
      * Upload admission attachments
      */
     public function uploadAttachmentFile(Request $request)

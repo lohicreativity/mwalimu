@@ -65,6 +65,12 @@
               @endif
               @if($applicant->status === 'ADMITTED')
               <li class="nav-item">
+                <a href="{{ url('application/admission-package') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Admission Package</p>
+                </a>
+              </li>
+              <li class="nav-item">
                 <a href="{{ url('application/upload-documents') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Upload Documents @if($applicant->documents_complete_status == 1) <i class="fa fa-check"></i> @endif</p>
