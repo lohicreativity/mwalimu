@@ -84,17 +84,18 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="{{ url('admission/payments') }}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Payments</p>
-                </a>
-              </li>
-               <li class="nav-item">
                 <a href="{{ url('application/postponement') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Postponement</p>
                 </a>
               </li>
+              <li class="nav-item">
+                <a href="{{ url('admission/payments') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Payments</p>
+                </a>
+              </li>
+               
               @endif
             @endif
           @elseif(Auth::user()->hasRole('student'))
