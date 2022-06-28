@@ -123,7 +123,15 @@
 
               @if($applicant->multiple_admissions == 0)
               @if($applicant->confirmation_status != 'CANCELLED')
-              <h3 class="ss-color-success"><i class="fa fa-check-circle"></i> Congratulations! You have been successfully selected.</h3>
+              <div class="card card-default">
+              <div class="card-header">
+                <h3 class="card-title">{{ __('Cancel Admission') }}</h3>
+              </div>
+              <div class="card-body">
+              <h3 class="ss-color-success"><i class="fa fa-check-circle"></i> 
+              Congratulations! You have been successfully selected.</h3>
+              </div>
+              </div>
               {{--
               <div class="card card-default">
               <div class="card-header">
