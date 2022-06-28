@@ -76,7 +76,7 @@ class ApplicantAction implements ApplicantInterface{
             if($request->hasFile('document')){
                 $destination = SystemLocation::uploadsDirectory();
                 $request->file('document')->move($destination, $request->file('document')->getClientOriginalName());
-                $file_name = SystemLocation::renameFile($destination, $request->file('image')->getClientOriginalName(), $request->file('document')->guessClientExtension());
+                $file_name = SystemLocation::renameFile($destination, $request->file('document')->getClientOriginalName(), $request->file('document')->guessClientExtension());
                 if($request->get('document_name') == 'birth_certificate'){
                     $applicant->birth_certificate = $file_name; //$request->file('document')->getClientOriginalName();
                 }

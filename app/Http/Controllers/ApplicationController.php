@@ -774,29 +774,33 @@ class ApplicationController extends Controller
     public function deleteDocument(Request $request)
     {
         $applicant = Applicant::with('programLevel')->where('user_id',Auth::user()->id)->where('campus_id',session('applicant_campus_id'))->first();
-        if($request->get('name') == 'birth_certificate'){
-           unlink(public_path().'/uploads/'.$applicant->birth_certificate);
-           $applicant->birth_certificate = null;
-        }
+        try{
+            if($request->get('name') == 'birth_certificate'){
+               unlink(public_path().'/uploads/'.$applicant->birth_certificate);
+               $applicant->birth_certificate = null;
+            }
 
-        if($request->get('name') == 'o_level_certificate'){
-           unlink(public_path().'/uploads/'.$applicant->o_level_certificate);
-           $applicant->o_level_certificate = null;
-        }
+            if($request->get('name') == 'o_level_certificate'){
+               unlink(public_path().'/uploads/'.$applicant->o_level_certificate);
+               $applicant->o_level_certificate = null;
+            }
 
-        if($request->get('name') == 'a_level_certificate'){
-           unlink(public_path().'/uploads/'.$applicant->a_level_certificate);
-           $applicant->a_level_certificate = null;
-        }
+            if($request->get('name') == 'a_level_certificate'){
+               unlink(public_path().'/uploads/'.$applicant->a_level_certificate);
+               $applicant->a_level_certificate = null;
+            }
 
-        if($request->get('name') == 'diploma_certificate'){
-           unlink(public_path().'/uploads/'.$applicant->diploma_certificate);
-           $applicant->diploma_certificate = null;
-        }
+            if($request->get('name') == 'diploma_certificate'){
+               unlink(public_path().'/uploads/'.$applicant->diploma_certificate);
+               $applicant->diploma_certificate = null;
+            }
 
-        if($request->get('name') == 'passport_picture'){
-           unlink(public_path().'/uploads/'.$applicant->passport_picture);
-           $applicant->passport_picture = null;
+            if($request->get('name') == 'passport_picture'){
+               unlink(public_path().'/uploads/'.$applicant->passport_picture);
+               $applicant->passport_picture = null;
+            }
+        }catch(\Exception $e){
+            return redirect()->back()->with('error','Document could not be found');
         }
 
         if($applicant->entry_mode == 'DIRECT'){
@@ -1194,7 +1198,7 @@ class ApplicationController extends Controller
         if($closed_window){
             return redirect()->back()->with('error','Application window is not active');
         }
-        
+
         $prog = CampusProgram::with('program')->find($request->get('campus_program_id'));
 
         if(ApplicationWindow::where('campus_id',$staff->campus_id)->where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('status','ACTIVE')->first()){
@@ -1813,8 +1817,12 @@ class ApplicationController extends Controller
      */
     public function downloadAttachment(Request $request)
     {
-        $attachment = AdmissionAttachment::find($request->get('id'));
-        return response()->download(public_path().'/uploads/'.$attachment->file_name);
+        try{
+           $attachment = AdmissionAttachment::find($request->get('id'));
+           return response()->download(public_path().'/uploads/'.$attachment->file_name);
+        }catch(\Exception $e){
+            return redirect()->back()->with('error','Document could not be found');
+        }
     }
 
     /**
