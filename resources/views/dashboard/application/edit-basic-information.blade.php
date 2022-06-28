@@ -91,18 +91,56 @@
                   ];
                   
                   if($applicant->status == 'ADMITTED'){
-                  $phone = [
-                     'placeholder'=>'255788010102',
-                     'class'=>'form-control',
-                     'required'=>true
-                  ];
+                      $first_name = [
+                         'placeholder'=>'First name',
+                         'class'=>'form-control',
+                         'readonly'=>true,
+                         'required'=>true
+                      ];
+
+                      $middle_name = [
+                         'placeholder'=>'Middle name',
+                         'class'=>'form-control',
+                         'readonly'=>true,
+                      ];
+
+                      $surname = [
+                         'placeholder'=>'Surname',
+                         'class'=>'form-control',
+                         'readonly'=>true,
+                         'required'=>true
+                      ];
+                      $phone = [
+                         'placeholder'=>'255788010102',
+                         'class'=>'form-control',
+                         'required'=>true
+                      ];
                   }else{
-                  $phone = [
-                     'placeholder'=>'255788010102',
-                     'class'=>'form-control',
-                     'readonly'=>App\Domain\Application\Models\Applicant::hasRequestedControlNumber($applicant)? true : null,
-                     'required'=>true
-                  ];
+                      $first_name = [
+                         'placeholder'=>'First name',
+                         'class'=>'form-control',
+                         'readonly'=>App\Domain\Application\Models\Applicant::hasConfirmedResults($applicant)? true : null,
+                         'required'=>true
+                      ];
+
+                      $middle_name = [
+                         'placeholder'=>'Middle name',
+                         'class'=>'form-control',
+                         'readonly'=>App\Domain\Application\Models\Applicant::hasConfirmedResults($applicant)? true : null,
+                      ];
+
+                      $surname = [
+                         'placeholder'=>'Surname',
+                         'class'=>'form-control',
+                         'readonly'=>App\Domain\Application\Models\Applicant::hasConfirmedResults($applicant)? true : null,
+                         'required'=>true
+                      ];
+                      $phone = [
+                         'placeholder'=>'255788010102',
+                         'class'=>'form-control',
+                         'readonly'=>App\Domain\Application\Models\Applicant::hasRequestedControlNumber($applicant)? true : null,
+                         'required'=>true
+                      ];
                   }
 
                   $street = [
