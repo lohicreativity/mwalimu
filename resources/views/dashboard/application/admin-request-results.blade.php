@@ -215,19 +215,80 @@
             </div>
             <!-- /.card -->
 
+            <div class="card card-default">
+              <div class="card-header">
+                <h3 class="card-title">{{ __('Foundation Programmes (OUT) Results') }}</h3>
+              </div>
+              <!-- /.card-header -->
+              @php
+                  $out_reg_number = [
+                     'placeholder'=>'N18-642-0000',
+                     'class'=>'form-control',
+                     'required'=>true
+                  ];
+              @endphp
+              {!! Form::open(['url'=>'application/get-out-results','class'=>'ss-form-processing-out-admin']) !!}
+              <div class="card-body">
+
+                  <div class="row">
+                  <div class="form-group col-4">
+                    {!! Form::label('','OUT Reg mumber') !!}
+                    {!! Form::text('reg_no',null,$out_reg_number) !!}
+
+                    {!! Form::input('hidden','display_modal','#ss-confirm-out-results') !!}
+
+                    {!! Form::input('hidden','results_container','#ss-out-results-container') !!}
+
+                  </div>
+                  <div class="col-8">
+
+                  </div>
+                 </div>
+              </div>
+              <div class="card-footer">
+             <button type="submit" class="btn btn-primary">{{ __('Get OUT Results') }}</button>
+            </div>
+            {!! Form::close() !!}
+            </div>
+
             <div class="modal fade" id="ss-confirm-nacte-results">
                 <div class="modal-dialog modal-lg">
                   <div class="modal-content">
                     <div class="modal-header">
                       <h4 class="modal-title">NACTE Results</h4>
                       
+                       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+
+                    </div>
+                    <div class="modal-body">
+                      <div class="row">
+                        <div class="col-12">
+                            <div id="ss-nacte-results-container"></div>
+                          </div>
+                        </div>
+                    </div>
+                  </div>
+                  <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+              </div>
+              <!-- /.modal -->
+
+              <div class="modal fade" id="ss-confirm-out-results">
+                <div class="modal-dialog modal-lg">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h4 class="modal-title"><i class="fa fa-exclamation-sign"></i> OUT Results</h4>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                       </button>
                     </div>
                     <div class="modal-body">
                       <div class="row">
                         <div class="col-12">
-                            <div id="ss-nacte-results-container"></div>
+                            <div id="ss-out-results-container"></div>
                           </div>
                         </div>
                     </div>

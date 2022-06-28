@@ -13,22 +13,6 @@ class OUTServiceController extends Controller
 {
     public function getResults(Request $request, $reg_no)
     {
-        /** $url = 'http://196.216.247.11/index.php/results/student';
-         $xml_request = '<?xml version="1.0" encoding="UTF-8"?>
-                            <Request>
-                            <UsernameToken>
-                            <Username>'.config('constants.OUT_USERNAME').'</Username>
-                            <SessionToken>'.config('constants.OUT_TOKEN').'</SessionToken>
-                            </UsernameToken>
-                            <RequestParameters>
-                            <RegNo> N18-642-0001</ RegNo >
-                            </RequestParameters>
-                            </Request>';
-        // $xml_response=simplexml_load_string($this->sendXmlOverPost($url,$xml_request));
-        // $json = json_encode($xml_response);
-        // $array = json_decode($json,TRUE);
-
-        $result = $this->sendXmlOverPost($url,$xml_request); */
 
         if($details = OutResultDetail::with('results')->where('reg_no',$reg_no)->where('applicant_id',$request->get('applicant_id'))->first()){
             return response()->json(['details'=>$details,'exists'=>1]);
@@ -132,5 +116,54 @@ class OUTServiceController extends Controller
           $result = curl_exec($ch);
           curl_close($ch);
           return $result;
+    }
+
+    public function getResultsAdmin(Request $request,$reg_no)
+    {
+        try{
+            $index_no='N18-642-3079';
+            $index_no='N18-642-1486';
+            $index_no='N18-642-0666'; //sample regno
+            $index_no='N19-642-0590'; //sample regno
+            $index_no='N19-642-1666'; //sample regno
+            $index_no='N20-642-2243'; //sample regno
+            //$key='SSASAUM';
+            //$token='ee59f56dfdc562e77b0385fbc6298f6bfff';
+            $key='ISW';
+            $token='9f4e71f3fe7c708a1b3322b00ef9aef2';
+            
+            
+            $datars = "<Request>
+                   <UsernameToken>
+                      <Username>".$key."</Username>
+                      <SessionToken>".$token."</SessionToken>
+                   </UsernameToken>
+                   <RequestParameters>
+                       <RegNo>".$reg_no."</RegNo>
+                   </RequestParameters>
+                   </Request>";
+            $data_string = $datars;
+
+            $ch = curl_init('http://196.216.247.11/index.php/results/student');
+
+            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            $headers = ['Content-Type: application/xml','OUT-Com: default.sp.in'];
+
+            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+            $result = curl_exec($ch);
+            curl_close($ch);
+            //echo $result;
+
+            $xml            =       simplexml_load_string($result, NULL, LIBXML_NOEMPTYTAG);
+            //$xml = $xml->saveXML();
+            $mytoken        =       $xml->Response->ResponseParameters;
+            $mytoken        =       $xml->ResponseParameters->Results->Subject;
+            $obasic                 =       '';
+        }catch(\Exception $e){
+            return response()->json(['error'=>'Please refresh your browser and try again']);
+        }
+        return response()->json(['response'=>$xml->Response->ResponseParameters]);
     }
 }
