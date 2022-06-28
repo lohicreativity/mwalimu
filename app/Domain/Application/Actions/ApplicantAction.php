@@ -76,46 +76,46 @@ class ApplicantAction implements ApplicantInterface{
             if($request->hasFile('document')){
                 $destination = SystemLocation::uploadsDirectory();
                 $request->file('document')->move($destination, $request->file('document')->getClientOriginalName());
-                // $file_name = SystemLocation::renameFile($destination, $request->file('image')->getClientOriginalName(), $request->file('image')->guessClientExtension());
+                $file_name = SystemLocation::renameFile($destination, $request->file('image')->getClientOriginalName(), $request->file('document')->guessClientExtension());
                 if($request->get('document_name') == 'birth_certificate'){
-                    $applicant->birth_certificate = $request->file('document')->getClientOriginalName();
+                    $applicant->birth_certificate = $file_name; //$request->file('document')->getClientOriginalName();
                 }
 
                 if($request->get('document_name') == 'o_level_certificate'){
-                    $applicant->o_level_certificate = $request->file('document')->getClientOriginalName();
+                    $applicant->o_level_certificate = $file_name; //$request->file('document')->getClientOriginalName();
                 }
                 
                 if($request->get('document_name') == 'a_level_certificate'){
-                    $applicant->a_level_certificate = $request->file('document')->getClientOriginalName();
+                    $applicant->a_level_certificate = $file_name; //$request->file('document')->getClientOriginalName();
                 }
 
                 if($request->get('document_name') == 'diploma_certificate'){
-                    $applicant->diploma_certificate = $request->file('document')->getClientOriginalName(); 
+                    $applicant->diploma_certificate = $file_name; //$request->file('document')->getClientOriginalName(); 
                 }
 
                 if($request->get('document_name') == 'nva_certificate'){
-                    $applicant->nva_certificate = $request->file('document')->getClientOriginalName(); 
+                    $applicant->nva_certificate = $file_name; //$request->file('document')->getClientOriginalName(); 
                 }
 
                 if($request->get('document_name') == 'passport'){
-                    $applicant->passport_picture = $request->file('document')->getClientOriginalName(); 
+                    $applicant->passport_picture = $file_name; //$request->file('document')->getClientOriginalName(); 
                 }
 
                 if($request->get('document_name') == 'teacher_diploma_certificate'){
-                    $applicant->teacher_diploma_certificate = $request->file('document')->getClientOriginalName(); 
+                    $applicant->teacher_diploma_certificate = $file_name; //$request->file('document')->getClientOriginalName(); 
                 }
 
             }
 
             if($applicant->entry_mode == 'DIRECT'){
             if(str_contains($applicant->programLevel->name,'Bachelor')){
-                if($applicant->birth_certificate && $applicant->o_level_certificate && $applicant->a_level_certificate && $applicant->passport_picture){
+                if($applicant->birth_certificate && $applicant->o_level_certificate && $applicant->a_level_certificate){
                     $applicant->documents_complete_status = 1;
                 }else{
                     $applicant->documents_complete_status = 0;
                 }
             }elseif(str_contains($applicant->programLevel->name,'Diploma') || str_contains($applicant->programLevel->name,'Certificate')){
-                if($applicant->birth_certificate && $applicant->o_level_certificate && $applicant->passport_picture){
+                if($applicant->birth_certificate && $applicant->o_level_certificate){
                     $applicant->documents_complete_status = 1;
                 }else{
                     $applicant->documents_complete_status = 0;
@@ -123,7 +123,7 @@ class ApplicantAction implements ApplicantInterface{
             }
         }else{
             if(str_contains($applicant->programLevel->name,'Bachelor')){
-                if($applicant->birth_certificate && $applicant->o_level_certificate && $applicant->diploma_certificate && $applicant->passport_picture){
+                if($applicant->birth_certificate && $applicant->o_level_certificate && $applicant->diploma_certificate){
                     $applicant->documents_complete_status = 1;
                 }else{
                     $applicant->documents_complete_status = 0;
@@ -147,31 +147,31 @@ class ApplicantAction implements ApplicantInterface{
                 if($request->hasFile('document')){
                 // $file_name = SystemLocation::renameFile($destination, $request->file('image')->getClientOriginalName(), $request->file('image')->guessClientExtension());
                     if($request->get('document_name') == 'birth_certificate'){
-                        $app->birth_certificate = $request->file('document')->getClientOriginalName();
+                        $app->birth_certificate = $file_name; //$request->file('document')->getClientOriginalName();
                     }
 
                     if($request->get('document_name') == 'o_level_certificate'){
-                        $app->o_level_certificate = $request->file('document')->getClientOriginalName();
+                        $app->o_level_certificate = $file_name; //$request->file('document')->getClientOriginalName();
                     }
                     
                     if($request->get('document_name') == 'a_level_certificate'){
-                        $app->a_level_certificate = $request->file('document')->getClientOriginalName();
+                        $app->a_level_certificate = $file_name; //$request->file('document')->getClientOriginalName();
                     }
 
                     if($request->get('document_name') == 'diploma_certificate'){
-                        $app->diploma_certificate = $request->file('document')->getClientOriginalName(); 
+                        $app->diploma_certificate = $file_name; //$request->file('document')->getClientOriginalName(); 
                     }
 
                     if($request->get('document_name') == 'nva_certificate'){
-                        $app->nva_certificate = $request->file('document')->getClientOriginalName(); 
+                        $app->nva_certificate = $file_name; //$request->file('document')->getClientOriginalName(); 
                     }
 
                     if($request->get('document_name') == 'passport'){
-                       $app->passport_picture = $request->file('document')->getClientOriginalName(); 
+                       $app->passport_picture = $file_name; //$request->file('document')->getClientOriginalName(); 
                     }
 
                     if($request->get('document_name') == 'teacher_diploma_certificate'){
-                       $app->teacher_diploma_certificate = $request->file('document')->getClientOriginalName(); 
+                       $app->teacher_diploma_certificate = $file_name; //$request->file('document')->getClientOriginalName(); 
                     }
 
                 }
