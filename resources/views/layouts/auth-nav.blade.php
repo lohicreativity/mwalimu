@@ -89,6 +89,12 @@
                   <p>Payments</p>
                 </a>
               </li>
+               <li class="nav-item">
+                <a href="{{ url('application/postponement') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Postponement</p>
+                </a>
+              </li>
               @endif
             @endif
           @elseif(Auth::user()->hasRole('student'))

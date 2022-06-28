@@ -1118,6 +1118,17 @@ class ApplicantController extends Controller
     }
 
     /**
+     * Postponement request
+     */
+    public function showPostponementRequest(Request $request)
+    {
+         $data = [
+            'applicant'=>User::find(Auth::user()->id)->applicants()->where('campus_id',session('applicant_campus_id'))->first()
+         ];
+         return view('dashboard.application.other-info-postponement',$data)->withTitle('Postponement Request');
+    }
+
+    /**
      * Request postponement
      */
     public function requestPostponement(Request $request)

@@ -168,7 +168,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
     Route::post('get-tamisemi-applicants',[ApplicationController::class,'downloadTamisemiApplicants']);
 
     Route::get('store-requirements-as-previous',[EntryRequirementController::class,'storeAsPrevious']);
-
+ 
+    Route::get('posponement',[ApplicantController::class,'showPostponementRequest']);
     Route::post('request-postponement',[ApplicantController::class,'requestPostponement']);
     Route::get('download-postponement-letter',[ApplicantController::class,'downloadPosponementLetter']);
 
