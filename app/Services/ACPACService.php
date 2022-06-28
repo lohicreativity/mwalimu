@@ -8,7 +8,8 @@ class ACPACService{
     private $connectionOptions = [
 		"Database"=>"ARMSIntegration",
 		"Uid"=>"arms",
-		"PWD"=>"mnma2o22"
+		"PWD"=>"mnma2o22",
+		'TrustServerCertificate'=>'yes'
 	];
 	private $connection;
 
