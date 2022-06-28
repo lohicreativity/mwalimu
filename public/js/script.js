@@ -984,7 +984,7 @@ $('.ss-form-processing-out').submit(function(e){
 });
 
 // Display form processing necta admin
-$('.ss-form-processing-out0admin').submit(function(e){
+$('.ss-form-processing-out-admin').submit(function(e){
      e.preventDefault();
      var resultsContainer = $(e.target).data('results-container');
      var submitText = $(e.target).find('button[type=submit]').text();

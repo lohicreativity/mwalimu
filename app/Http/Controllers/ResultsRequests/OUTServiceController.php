@@ -161,9 +161,10 @@ class OUTServiceController extends Controller
             $mytoken        =       $xml->Response->ResponseParameters;
             $mytoken        =       $xml->ResponseParameters->Results->Subject;
             $obasic                 =       '';
+            return response()->json(['response'=>$xml->ResponseParameters]);
         }catch(\Exception $e){
             return response()->json(['error'=>'Please refresh your browser and try again']);
         }
-        return response()->json(['response'=>$xml->Response->ResponseParameters]);
+        
     }
 }
