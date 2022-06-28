@@ -56,14 +56,14 @@ class SystemLocation {
 		if($new_name){
             $new_path = $old_path.str_replace('/', '',$new_name).'.'.$ext;
 		}else{
-			$new_path = $old_path.sha1(date('Y_m_d',strtotime(now())).$name);
+			$new_path = $old_path.sha1(date('Y_m_d H:m:s',strtotime(now())).$name);
 		}
 		if(File::exists($path)){
            rename($path,$new_path);
            if($new_name){
               return str_replace('/', '',$new_name).'.'.$ext;
            }else{
-           	  return sha1(date('Y_m_d',strtotime(now())).$name);
+           	  return sha1(date('Y_m_d H:m:s',strtotime(now())).$name);
            }
 		}else{
 		   return $name;

@@ -72,11 +72,12 @@ class ApplicantAction implements ApplicantInterface{
         public function uploadDocuments(Request $request)
         {
             $applicant = Applicant::with('programLevel')->find($request->get('applicant_id'));
+            $name = $applicant->first_name.'_'.$applicant->middle_name.'_'.$applicant->surname.'_'.time();
 
             if($request->hasFile('document')){
                 $destination = SystemLocation::uploadsDirectory();
                 $request->file('document')->move($destination, $request->file('document')->getClientOriginalName());
-                $file_name = SystemLocation::renameFile($destination, $request->file('document')->getClientOriginalName(), $request->file('document')->guessClientExtension());
+                $file_name = SystemLocation::renameFile($destination, $request->file('document')->getClientOriginalName(), $request->file('document')->guessClientExtension(),$name);
                 if($request->get('document_name') == 'birth_certificate'){
                     $applicant->birth_certificate = $file_name; //$request->file('document')->getClientOriginalName();
                 }
