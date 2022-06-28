@@ -72,6 +72,7 @@
               {!! Form::close() !!}
               </div>
               @else
+              @if($applicant->status !== null)
               <div class="card card-default">
               <div class="card-header">
                 <h3 class="card-title">{{ __('Application Submission') }}</h3>
@@ -89,6 +90,7 @@
                   </div>
                 </div>
               </div>
+              @endif
               @if($applicant->status == 'REJECTED' || $selected_status == false)
                 <div class="card card-default">
               <div class="card-header">
