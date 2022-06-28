@@ -897,7 +897,7 @@ class ApplicantController extends Controller
      */
     public function updateBasicInfo(Request $request)
     {
-    	$validation = Validator::make($request->all(),[
+         $validation = Validator::make($request->all(),[
             'first_name'=>'required',
             'surname'=>'required',
             'date'=>'required',
@@ -907,6 +907,7 @@ class ApplicantController extends Controller
             'address'=>'required',
             'nationality'=>'required',
         ]);
+    	
 
         if($validation->fails()){
            if($request->ajax()){
