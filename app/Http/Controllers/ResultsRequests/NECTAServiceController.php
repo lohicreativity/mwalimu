@@ -104,6 +104,9 @@ class NECTAServiceController extends Controller
                 'index_number'=>$index_no,
                 'exam_id'=>$exam_id
             ]);
+            if(json_decode($response)->status->code == 0){
+                return response()->json(['error'=>'Results not found']);
+            }
         }catch(\Exception $e){
             return response()->json(['error'=>'Please refresh your browser and try again']);
         }
