@@ -26,6 +26,7 @@ class Controller extends BaseController
     	$this->middleware(function ($request, $next) {
             $this->user = Auth::user();
             $study_academic_year = StudyAcademicYear::where('status','ACTIVE')->first();
+            $latest_academic_year = StudyAcademicYear::latest()->first();
 	    	$semester = Semester::where('status','ACTIVE')->first();
 	    	
 	    	
@@ -51,6 +52,11 @@ class Controller extends BaseController
 	    	  session(['active_academic_year_id'=>$study_academic_year->id]);
 	        }else{
 	          session(['active_academic_year_id'=>null]);
+	        }
+	        if($latest_academic_year){
+	    	  session(['latest_academic_year_id'=>$latest_academic_year->id]);
+	        }else{
+	          session(['latest_academic_year_id'=>null]);
 	        }
 	        if($semester){
 	          session(['active_semester_id'=>$semester->id]);

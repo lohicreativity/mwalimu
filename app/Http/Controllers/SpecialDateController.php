@@ -20,7 +20,7 @@ class SpecialDateController extends Controller
 	{
         $data = [
            'campuses'=>Campus::all(),
-           'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
+           'study_academic_years'=>StudyAcademicYear::with('academicYear')->latest()->get(),
            'campus'=>Campus::find($request->get('campus_id')),
            'study_academic_year'=>StudyAcademicYear::find($request->get('study_academic_year_id')),
            'graduation_date'=>SpecialDate::where('name','Graduation')->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('campus_id',$request->get('campus_id'))->first(),
@@ -36,7 +36,7 @@ class SpecialDateController extends Controller
   {
       $data = [
            'campuses'=>Campus::all(),
-           'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
+           'study_academic_years'=>StudyAcademicYear::with('academicYear')->latest()->get(),
            'campus'=>Campus::find($request->get('campus_id')),
            'study_academic_year'=>StudyAcademicYear::find($request->get('study_academic_year_id')),
            'registration_date'=>SpecialDate::where('name','New Registration Period')->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('campus_id',$request->get('campus_id'))->first(),
@@ -52,7 +52,7 @@ class SpecialDateController extends Controller
   {
       $data = [
            'campuses'=>Campus::all(),
-           'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
+           'study_academic_years'=>StudyAcademicYear::with('academicYear')->latest()->get(),
            'campus'=>Campus::find($request->get('campus_id')),
            'study_academic_year'=>StudyAcademicYear::find($request->get('study_academic_year_id')),
            'orientation_date'=>SpecialDate::where('name','Orientation')->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('campus_id',$request->get('campus_id'))->first(),

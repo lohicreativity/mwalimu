@@ -346,7 +346,7 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="{{ url('registration/orientation-date?study_academic_year_id='.session('active_academic_year_id').'&campus_id='.session('staff_campus_id')) }}" class="nav-link">
+                <a href="{{ url('registration/orientation-date?study_academic_year_id='.session('latest_academic_year_id').'&campus_id='.session('staff_campus_id')) }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Orientation Date</p>
                 </a>
@@ -354,13 +354,13 @@
               <li class="nav-item">
                 <a href="{{ url('application/applicants-admission') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Admit Students</p>
+                  <p>Admit Applicants</p>
                 </a>
               </li>
               <li class="nav-item">
                 <a href="{{ url('application/admitted-applicants?application_window_id='.session('active_window_id')) }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Admitted Students</p>
+                  <p>Admitted Applicants</p>
                 </a>
               </li>
               <li class="nav-item">
