@@ -1953,6 +1953,12 @@ class ApplicationController extends Controller
                if(!$late_registration_fee){
                    return redirect()->back()->with('error','Late registration fee not defined');
                }
+
+               $orientation_date = SpecialDate::where('name','Orientation')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$applicant->campus_id)->first();
+
+               if(!$orientation_date){
+                   return redirect()->back()->with('error','Orientation date not defined');
+               }
         }
 
         dispatch(new SendAdmissionLetter($request->all()));
