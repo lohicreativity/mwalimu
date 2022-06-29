@@ -66,7 +66,7 @@
                        <td>{{ number_format($program_fee->amount_in_usd*$usd_currency->factor,0) }} TZS</td>
                        @endif
                        @endif
-                       <td>@if($program_fee_invoice) {{ $program_fee_invoice->control_no }} <a href="#" onclick="window.location.reload();"><i class="fa fa-refresh" ></i> Refresh</a> @else  @endif</td>
+                       <td>@if($program_fee_invoice) {{ $program_fee_invoice->control_no }} @if(!$program_fee_invoice->control_no)<a href="#" onclick="window.location.reload();"><i class="fa fa-refresh" ></i> Refresh</a>@endif  @endif</td>
                        <td>@if($program_fee_invoice) {{ number_format($program_fee_invoice->amount,0) }} {{ $program_fee_invoice->currency }} @endif</td>
                        <td>
                          @if($loan_allocation)
@@ -96,7 +96,7 @@
                        @else
                        <td>{{ $other_fees_usd }} USD</td>
                        @endif
-                       <td>@if($other_fee_invoice) {{ $other_fee_invoice->control_no }} <a href="#" onclick="window.location.reload();"><i class="fa fa-refresh" ></i> Refresh</a> @else  @endif</td>
+                       <td>@if($other_fee_invoice) {{ $other_fee_invoice->control_no }} @if(!$other_fee_invoice->control_no)<a href="#" onclick="window.location.reload();"><i class="fa fa-refresh" ></i> Refresh</a>@endif  @endif</td>
                        <td>@if($other_fee_invoice) {{ number_format($other_fee_invoice->amount,0) }} {{ $other_fee_invoice->currency }} @endif</td>
                        <td>
                          @if(isset($other_fee_invoice->gatewayPayment))
@@ -119,7 +119,7 @@
                        @else
                        <td>{{ number_format($insurance_fee->amount_in_usd*$usd_currency->factor,0) }} TZS</td>
                        @endif
-                       <td>@if($insurance_fee_invoice) {{ $insurance_fee_invoice->control_no }} <a href="#" onclick="window.location.reload();"><i class="fa fa-refresh" ></i> Refresh</a> @else  @endif</td>
+                       <td>@if($insurance_fee_invoice) {{ $insurance_fee_invoice->control_no }} @if(!$insurance_fee_invoice->control_no)<a href="#" onclick="window.location.reload();"><i class="fa fa-refresh" ></i> Refresh</a>@endif  @endif</td>
                        <td></td>
                     </tr>
                     @endif
@@ -131,7 +131,7 @@
                        @else
                        <td>{{ number_format($hostel_fee->amount_in_usd*$usd_currency->factor,0) }} TZS</td>
                        @endif
-                       <td>@if($hostel_fee_invoice) {{ $hostel_fee_invoice->control_no }} <a href="#" onclick="window.location.reload();"><i class="fa fa-refresh" ></i> Refresh</a> @else  Refresh</a>@endif</td>
+                       <td>@if($hostel_fee_invoice) {{ $hostel_fee_invoice->control_no }} @if(!$hostel_fee_invoice->control_no)<a href="#" onclick="window.location.reload();"><i class="fa fa-refresh" ></i> Refresh</a>@endif @endif</td>
                        <td>
                          @if(isset($hostel_fee_invoice->gatewayPayment))
                             {{ number_format($hostel_fee_invoice->gatewayPayment->paid_amount,0) }} TZS
