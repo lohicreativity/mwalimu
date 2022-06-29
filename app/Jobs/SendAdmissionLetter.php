@@ -51,9 +51,9 @@ class SendAdmissionLetter implements ShouldQueue
         $applicants = Applicant::whereHas('intake.applicationWindows',function($query) use($request){
              $query->where('id',$request->application_window_id);
         })->whereHas('selections',function($query) use($request){
-             $query->where('status','APPROVING');
+             $query->where('status','SELECTED');
         })->with(['nextOfKin','intake','selections'=>function($query){
-             $query->where('status','APPROVING');
+             $query->where('status','SELECTED');
         },'selections.campusProgram.program','applicationWindow','country','selections.campusProgram.campus'])->where('program_level_id',$request->program_level_id)->get();
 
         // Applicant::whereHas('intake.applicationWindows',function($query) use($request){
@@ -66,7 +66,7 @@ class SendAdmissionLetter implements ShouldQueue
 
         foreach($applicants as $key=>$applicant){
            try{
-               $ac_year = 2021;//date('Y',strtotime($applicant->applicationWindow->end_date));
+               $ac_year = date('Y',strtotime($applicant->applicationWindow->end_date));
                $ac_year += 1;
                $study_academic_year = StudyAcademicYear::whereHas('academicYear',function($query) use($ac_year){
                       $query->where('year','LIKE','%'.$ac_year.'%');
@@ -200,6 +200,7 @@ class SendAdmissionLetter implements ShouldQueue
 
                $applicant->status = 'ADMITTED';
                $applicant->save();
+               return redirect()->back()->with('message','Admission package sent successfully');
            }catch(\Exception $e){
               return $e->getMessage();
            }
