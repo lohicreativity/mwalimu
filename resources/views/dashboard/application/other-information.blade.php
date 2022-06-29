@@ -251,8 +251,9 @@
                   @elseif($applicant->hostel_available_status === 0)
                    <span class="badge badge-warning">UNAVAILABLE</span>
                   @else
-                   <span class="badge badge-success">PENDING</span>
+                   <span class="badge badge-warning">PENDING</span>
                   @endif
+                  <br>
                   {!! Form::input('hidden','applicant_id',$applicant->id) !!}
 
                   <label class="radio-inline">
