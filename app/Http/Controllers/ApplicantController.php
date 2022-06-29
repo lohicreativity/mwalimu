@@ -1083,7 +1083,7 @@ class ApplicantController extends Controller
      */
     public function showOtherInformation(Request $request)
     {
-        $applicant = User::find(Auth::user()->id)->applicants()->where('campus_id',session('applicant_campus_id'))->first();
+        $applicant = User::find(Auth::user()->id)->applicants()->with(['insurances'])->where('campus_id',session('applicant_campus_id'))->first();
         $program_fee_invoice = Invoice::whereHas('feeType',function($query){
                    $query->where('name','LIKE','%Tuition%');
         })->with('gatewayPayment')->where('payable_id',$applicant->id)->where('payable_type','applicant')->first();
@@ -1188,6 +1188,14 @@ class ApplicantController extends Controller
             $status_code = NHIFService::checkCardStatus($request->get('card_number'))->statusCode;
             if($status_code == 406){
                 return redirect()->back()->with('error','Invalid card number. Please resubmit the correct card number or request new NHIF card.');
+            }else{
+               $insurance = new HealthInsurance;
+               $insurance->insurance_name = 'NHIF';
+               $insurance->membership_number = $request->get('card_number');
+               $insurance->expire_date = null;
+               $insurance->applicant_id = $applicant->id;
+               $insurance->status = 'VERIFIED';
+               $insurance->save();
             }
             $applicant->insurance_status = $status_code == 406? 0 : 1;
          }else{
@@ -1200,12 +1208,39 @@ class ApplicantController extends Controller
              $insurance = new HealthInsurance;
              $insurance->insurance_name = $request->get('insurance_name');
              $insurance->membership_number = $request->get('card_number');
-             $insurance->expire_date = $request->get('expire_year').'-'.$request->get('expire_month').'-'.$request->get('expire_date');;
+             $insurance->expire_date = $request->get('expire_year').'-'.$request->get('expire_month').'-'.$request->get('expire_date');
              $insurance->applicant_id = $applicant->id;
              $insurance->save();
          }
 
         return redirect()->back()->with('message','Health insurance status updated successfully');
+    }
+
+    /**
+     * Update health insurance
+     */
+    public function updateInsurance(Request $request)
+    {
+        $validation = Validator::make($request->all(),[
+            'insurance_name'=>'required',
+        ]);
+
+        if($validation->fails()){
+           if($request->ajax()){
+              return response()->json(array('error_messages'=>$validation->messages()));
+           }else{
+              return redirect()->back()->withInput()->withErrors($validation->messages());
+           }
+        }
+
+         $insurance = HealthInsurance::find('insurance_id');
+         $insurance->insurance_name = $request->get('insurance_name');
+         $insurance->membership_number = $request->get('card_number');
+         $insurance->expire_date = $request->get('expire_year').'-'.$request->get('expire_month').'-'.$request->get('expire_date');;
+         $insurance->applicant_id = $applicant->id;
+         $insurance->save();
+
+         return redirect()->back()->with('message','Health insurance status updated successfully');
     }
 
     /**
