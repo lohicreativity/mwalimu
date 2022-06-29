@@ -1233,7 +1233,7 @@ class ApplicantController extends Controller
            }
         }
 
-         $insurance = HealthInsurance::find('insurance_id');
+         $insurance = HealthInsurance::find($request->get('insurance_id'));
          $insurance->insurance_name = $request->get('insurance_name');
          $insurance->membership_number = $request->get('card_number');
          $insurance->expire_date = $request->get('expire_year').'-'.$request->get('expire_month').'-'.$request->get('expire_date');;
