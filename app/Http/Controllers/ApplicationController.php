@@ -1843,9 +1843,9 @@ class ApplicationController extends Controller
      */
     public function sendAdmissionLetter(Request $request)
     {
-        return dispatch(new SendAdmissionLetter($request->all()));
+        dispatch(new SendAdmissionLetter($request->all()));
 
-        //return redirect()->back()->with('message','Admission package sent successfully');
+        return redirect()->back()->with('message','Admission package sent successfully');
     }
 
 
