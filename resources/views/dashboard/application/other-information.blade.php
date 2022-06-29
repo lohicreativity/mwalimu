@@ -243,6 +243,9 @@
                 <h3 class="card-title">{{ __('Hostel Request') }}</h3>
               </div>
               <!-- /.card-header -->
+              @if($applicant->hostel_available_status === 1)
+               <span class="label label-success">AVAILABLE</span>
+              @endif
               {!! Form::open(['url'=>'application/update-hostel-status']) !!}
               <div class="card-body">
                   {!! Form::input('hidden','applicant_id',$applicant->id) !!}
