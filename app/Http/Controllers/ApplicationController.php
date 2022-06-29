@@ -1846,7 +1846,7 @@ class ApplicationController extends Controller
         $job = new SendAdmissionLetter($request->all());
         dispatch($job);
 
-        // return $job->getResponse();
+        return dd($job->getResponse());
 
         return redirect()->back()->with($job->getResponse()['status'],$job->getResponse()['message']);
     }
