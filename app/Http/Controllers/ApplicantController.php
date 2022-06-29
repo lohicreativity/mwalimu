@@ -1122,8 +1122,13 @@ class ApplicantController extends Controller
      */
     public function showPostponementRequest(Request $request)
     {
+         $applicant = User::find(Auth::user()->id)->applicants()->where('campus_id',session('applicant_campus_id'))->first();
+         $program_fee_invoice = Invoice::whereHas('feeType',function($query){
+                   $query->where('name','LIKE','%Tuition%');
+         })->with('gatewayPayment')->where('payable_id',$applicant->id)->where('payable_type','applicant')->first();
          $data = [
-            'applicant'=>User::find(Auth::user()->id)->applicants()->where('campus_id',session('applicant_campus_id'))->first()
+           'applicant'=>$applicant,
+           'program_fee_invoice'=>$program_fee_invoice
          ];
          return view('dashboard.application.other-info-postponement',$data)->withTitle('Postponement Request');
     }
