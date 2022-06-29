@@ -1844,7 +1844,7 @@ class ApplicationController extends Controller
     public function sendAdmissionLetter(Request $request)
     {   
         $job = new SendAdmissionLetter($request->all());
-        $this->dispatch($job);
+        $data = $this->dispatch($job);
 
         return dd($job->getResponse());
 
