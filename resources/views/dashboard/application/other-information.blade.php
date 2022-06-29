@@ -245,6 +245,10 @@
               <!-- /.card-header -->
               @if($applicant->hostel_available_status === 1)
                <span class="label label-success">AVAILABLE</span>
+              @elseif()
+               <span class="label label-warning">UNAVAILABLE</span>
+              @else
+               <span class="label label-success">PENDING</span>
               @endif
               {!! Form::open(['url'=>'application/update-hostel-status']) !!}
               <div class="card-body">
