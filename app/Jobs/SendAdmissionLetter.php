@@ -12,6 +12,7 @@ use App\Domain\Academic\Models\StudyAcademicYear;
 use App\Domain\Application\Models\Applicant;
 use App\Domain\Finance\Models\FeeAmount;
 use App\Domain\Finance\Models\ProgramFee;
+use App\Domain\Settings\Models\SpecialDate;
 use NumberToWords\NumberToWords;
 use Illuminate\Http\Request;
 use App\Mail\AdmissionLetterCreated;
