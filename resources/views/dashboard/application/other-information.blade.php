@@ -58,6 +58,10 @@
                     </button>
                   </div>
                   <div class="modal-body">
+                    
+                     
+                    
+                    @if(count($applicant->insurances) == 0)
                     <div class="row">
                       <div class="col-12">
                         <label class="radio-inline">
@@ -67,13 +71,11 @@
                           <input type="radio" name="insurance_card" value="#ss-card-other-form" id="ss-card-other"> Other Insurers
                         </label>
                         <label class="radio-inline">
-                          <input type="radio" name="insurance_card" value="#ss-card-none-form" id="ss-card-none"> Don't have Insurance
+                          <input type="radio" name="insurance_card" value="#ss-card-none-form" id="ss-card-none" @if($applicant->insurance_status === 0) checked="checked" @endif> Don't have Insurance
                         </label>
                         </div><!-- end of col-md-12 -->
                      </div><!-- end of row -->
-                     
-                    
-                    @if(count($applicant->insurances) == 0)
+
                      <div class="row" id="ss-card-nhif-form">
                       <div class="col-12">
                           {!! Form::open(['url'=>'application/update-insurance-status','class'=>'ss-form-processing']) !!}
@@ -136,6 +138,20 @@
                        </div><!-- end of col-md-12 -->
                      </div><!-- end of row -->
                      @else
+
+                     <div class="row">
+                      <div class="col-12">
+                        <label class="radio-inline">
+                          <input type="radio" name="insurance_card" value="#ss-card-nhif-form" id="ss-card-nhif" @if($applicant->insurances[0]->insurance_name == 'NHIF') checked="checked" @endif> NHIF
+                        </label>
+                        <label class="radio-inline">
+                          <input type="radio" name="insurance_card" value="#ss-card-other-form" id="ss-card-other" @if($applicant->insurances[0]->insurance_name != 'NHIF') checked="checked" @endif> Other Insurers
+                        </label>
+                        <label class="radio-inline">
+                          <input type="radio" name="insurance_card" value="#ss-card-none-form" id="ss-card-none" @if($applicant->insurance_status === 0) checked="checked" @endif> Don't have Insurance
+                        </label>
+                        </div><!-- end of col-md-12 -->
+                     </div><!-- end of row -->
 
                       <div class="row" id="ss-card-nhif-form">
                       <div class="col-12">
@@ -253,7 +269,7 @@
                   @else
                    <span class="badge badge-warning">PENDING</span>
                   @endif
-                  <br>
+                  <br><br><br>
                   {!! Form::input('hidden','applicant_id',$applicant->id) !!}
 
                   <label class="radio-inline">
