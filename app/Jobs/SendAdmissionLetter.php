@@ -76,7 +76,7 @@ class SendAdmissionLetter implements ShouldQueue
                if(!$study_academic_year){
                    $this->response = ['message'=>'Admission study academic year not created','status'=>'error']; //redirect()->back()->with('error','Admission study academic year not created');
                }
-               
+
                $program_fee = ProgramFee::where('study_academic_year_id',$study_academic_year->id)->where('campus_program_id',$applicant->selections[0]->campusProgram->id)->first();
 
                if(!$program_fee){
@@ -162,12 +162,19 @@ class SendAdmissionLetter implements ShouldQueue
                    $this->response = ['message'=>'Late registration fee not defined','status'=>'error']; //redirect()->back()->with('error','Late registration fee not defined');
                }
 
+               $orientation_date = SpecialDate::where('name','Orientation')->where('study_academic_year_id',$study_academic_year->id)->where('campus_id',$applicant->campus_id)->first();
+
+               if(!$orientation_date){
+                   return redirect()->back()->with('error','Orientation date not defined');
+               }
+
                $numberToWords = new NumberToWords();
                $numberTransformer = $numberToWords->getNumberTransformer('en');
 
                $data = [
                  'applicant'=>$applicant,
                  'campus_name'=>$applicant->selections[0]->campusProgram->campus->name,
+                 'orientation_date'=>$orientation_date,
                  'applicant_name'=>$applicant->first_name.' '.$applicant->surname,
                  'reference_number'=>$applicant->admission_reference_no,
                  'program_name'=>$applicant->selections[0]->campusProgram->program->name,
