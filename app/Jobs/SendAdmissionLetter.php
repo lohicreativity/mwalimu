@@ -71,7 +71,7 @@ class SendAdmissionLetter implements ShouldQueue
                $ac_year = date('Y',strtotime($applicant->applicationWindow->end_date));
                $ac_year += 1;
                $study_academic_year = StudyAcademicYear::whereHas('academicYear',function($query) use($ac_year){
-                      $query->where('year','LIKE','%'.$ac_year.'/%');
+                      $query->where('year','LIKE','%/'.$ac_year.'%');
                 })->with('academicYear')->first();
                if(!$study_academic_year){
                    $this->response = ['message'=>'Admission study academic year not created','status'=>'error']; //redirect()->back()->with('error','Admission study academic year not created');
