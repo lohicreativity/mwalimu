@@ -286,6 +286,10 @@ class AdmissionController extends Controller
 
         $feeType = FeeType::where('name','LIKE','%Miscellaneous%')->first();
 
+        if(!$feeType){
+            return redirect()->back()->with('error','Miscellaneous fee type has not been set');
+        }
+
         $invoice = new Invoice;
         $invoice->reference_no = 'MNMA-MSC'.time();
         $invoice->amount = $other_fees;
