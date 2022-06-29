@@ -51,13 +51,11 @@ class SendAdmissionLetter implements ShouldQueue
 
         $request = $this->request;
 
-        $applicants = Applicant::whereHas('intake.applicationWindows',function($query) use($request){
-             $query->where('id',$request->application_window_id);
-        })->whereHas('selections',function($query) use($request){
+        $applicants = Applicant::whereHas('selections',function($query) use($request){
              $query->where('status','SELECTED');
         })->with(['nextOfKin','intake','selections'=>function($query){
              $query->where('status','SELECTED');
-        },'selections.campusProgram.program','applicationWindow','country','selections.campusProgram.campus'])->where('program_level_id',$request->program_level_id)->get();
+        },'selections.campusProgram.program','applicationWindow','country','selections.campusProgram.campus'])->where('program_level_id',$request->get('program_level_id'))->where('status','SELECTED')->where('application_window_id',$request->get('application_window_id'))->get();
 
         // Applicant::whereHas('intake.applicationWindows',function($query) use($request){
         //      $query->where('id',$request->application_window_id);
