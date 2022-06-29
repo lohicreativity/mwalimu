@@ -1842,10 +1842,13 @@ class ApplicationController extends Controller
      * Send admission letter to applicants
      */
     public function sendAdmissionLetter(Request $request)
-    {
-        dispatch(new SendAdmissionLetter($request->all()));
+    {   
+        $job = new SendAdmissionLetter($request->all());
+        dispatch($job);
 
-        return redirect()->back()->with('message','Admission package sent successfully');
+        return $job->getResponse();
+
+        // return redirect()->back()->with('message','Admission package sent successfully');
     }
 
 
