@@ -74,13 +74,13 @@ class SendAdmissionLetter implements ShouldQueue
                       $query->where('year','LIKE','%'.$ac_year.'%');
                 })->with('academicYear')->first();
                if(!$study_academic_year){
-                   $this->response = redirect()->back()->with('error','Admission study academic year not created');
+                   $this->response = ['message'=>'Admission study academic year not created','status'=>'error']; //redirect()->back()->with('error','Admission study academic year not created');
                }
 
                $program_fee = ProgramFee::where('study_academic_year_id',$study_academic_year->id)->where('campus_program_id',4)->first();
 
                if(!$program_fee){
-                   $this->response = redirect()->back()->with('error','Programme fee not defined for '.$applicant->selections[0]->campusProgram->program->name);
+                   $this->response = ['message'=>'Programme fee not defined for '.$applicant->selections[0]->campusProgram->program->name,'status'=>'error']; //redirect()->back()->with('error','Programme fee not defined for '.$applicant->selections[0]->campusProgram->program->name);
                }
 
                $medical_insurance_fee = FeeAmount::where('study_academic_year_id',$study_academic_year->id)->whereHas('feeItem',function($query){
@@ -88,7 +88,7 @@ class SendAdmissionLetter implements ShouldQueue
                })->first();
 
                if(!$medical_insurance_fee){
-                   $this->response = redirect()->back()->with('error','Medical insurance fee not defined');
+                   $this->response = ['message'=>'Medical insurance fee not defined','status'=>'error']; //redirect()->back()->with('error','Medical insurance fee not defined');
                }
                
                if(str_contains($applicant->selections[0]->campusProgram->program->award->name,'Bachelor')){
@@ -103,7 +103,7 @@ class SendAdmissionLetter implements ShouldQueue
                
 
                if(!$nacte_quality_assurance_fee){
-                   $this->response = redirect()->back()->with('error','NACTE fee not defined');
+                   $this->response = ['message'=>'NACTE fee not defined','status'=>'error']; //redirect()->back()->with('error','NACTE fee not defined');
                }
 
                $practical_training_fee = FeeAmount::where('study_academic_year_id',$study_academic_year->id)->whereHas('feeItem',function($query){
@@ -111,7 +111,7 @@ class SendAdmissionLetter implements ShouldQueue
                })->first();
 
                if(!$practical_training_fee){
-                   $this->response = redirect()->back()->with('error','Practical training fee not defined');
+                   $this->response = ['message'=>'Practical training fee not defined','status'=>'error']; //redirect()->back()->with('error','Practical training fee not defined');
                }
 
                $students_union_fee = FeeAmount::where('study_academic_year_id',$study_academic_year->id)->whereHas('feeItem',function($query){
@@ -119,7 +119,7 @@ class SendAdmissionLetter implements ShouldQueue
                })->first();
 
                if(!$students_union_fee){
-                   $this->response = redirect()->back()->with('error','Students union fee not defined');
+                   $this->response = ['message'=>'Students union fee not defined','status'=>'error']; //redirect()->back()->with('error','Students union fee not defined');
                }
 
                $caution_money_fee = FeeAmount::where('study_academic_year_id',$study_academic_year->id)->whereHas('feeItem',function($query){
@@ -127,7 +127,7 @@ class SendAdmissionLetter implements ShouldQueue
                })->first();
 
                if(!$caution_money_fee){
-                   $this->response = redirect()->back()->with('error','Caution money fee not defined');
+                   $this->response = ['message'=>'Caution money fee not defined','status'=>'error']; //redirect()->back()->with('error','Caution money fee not defined');
                }
 
                $medical_examination_fee = FeeAmount::where('study_academic_year_id',$study_academic_year->id)->whereHas('feeItem',function($query){
@@ -135,7 +135,7 @@ class SendAdmissionLetter implements ShouldQueue
                })->first();
 
                if(!$medical_examination_fee){
-                   $this->response = redirect()->back()->with('error','Medical examination fee not defined');
+                   $this->response = ['message'=>'Medical examination fee not defined','status'=>'error']; //redirect()->back()->with('error','Medical examination fee not defined');
                }
 
                $registration_fee = FeeAmount::where('study_academic_year_id',$study_academic_year->id)->whereHas('feeItem',function($query){
@@ -143,7 +143,7 @@ class SendAdmissionLetter implements ShouldQueue
                })->first();
 
                if(!$registration_fee){
-                   $this->response = redirect()->back()->with('error','Registration fee not defined');
+                   $this->response = ['message'=>'Registration fee not defined','status'=>'error']; //redirect()->back()->with('error','Registration fee not defined');
                }
 
                $identity_card_fee = FeeAmount::where('study_academic_year_id',$study_academic_year->id)->whereHas('feeItem',function($query){
@@ -151,7 +151,7 @@ class SendAdmissionLetter implements ShouldQueue
                })->first();
 
                if(!$identity_card_fee){
-                   $this->response = redirect()->back()->with('error','Identity card fee not defined');
+                   $this->response = ['message'=>'Identity card fee not defined','status'=>'error']; //redirect()->back()->with('error','Identity card fee not defined');
                }
 
                $late_registration_fee = FeeAmount::where('study_academic_year_id',$study_academic_year->id)->whereHas('feeItem',function($query){
@@ -159,7 +159,7 @@ class SendAdmissionLetter implements ShouldQueue
                })->first();
 
                if(!$late_registration_fee){
-                   $this->response = redirect()->back()->with('error','Late registration fee not defined');
+                   $this->response = ['message'=>'Late registration fee not defined','status'=>'error']; //redirect()->back()->with('error','Late registration fee not defined');
                }
 
                $numberToWords = new NumberToWords();
@@ -202,9 +202,9 @@ class SendAdmissionLetter implements ShouldQueue
 
                $applicant->status = 'ADMITTED';
                $applicant->save();
-               $this->response = redirect()->back()->with('message','Admission package sent successfully');
+               $this->response = ['message'=>'Admission package sent successfully','status'=>'message']; //redirect()->back()->with('message','Admission package sent successfully');
            }catch(\Exception $e){
-              $this->response = $e->getMessage();
+              $this->response = ['message'=>$e->getMessage(),'status'=>'error'];
            }
         }
 
