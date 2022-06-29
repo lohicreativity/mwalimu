@@ -245,7 +245,7 @@
               <!-- /.card-header -->
               @if($applicant->hostel_available_status === 1)
                <span class="label label-success">AVAILABLE</span>
-              @elseif()
+              @elseif($applicant->hostel_available_status === 0)
                <span class="label label-warning">UNAVAILABLE</span>
               @else
                <span class="label label-success">PENDING</span>
