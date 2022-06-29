@@ -80,7 +80,7 @@
               <li class="nav-item">
                 <a href="{{ url('application/other-information') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>More Information</p>
+                  <p>More Information @if($applicant->insurance_status !== null && $applicant->hostel_status !== null) <i class="fa fa-check"></i> @endif</p>
                 </a>
               </li>
               <li class="nav-item">
