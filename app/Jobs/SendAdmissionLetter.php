@@ -76,8 +76,8 @@ class SendAdmissionLetter implements ShouldQueue
                if(!$study_academic_year){
                    $this->response = ['message'=>'Admission study academic year not created','status'=>'error']; //redirect()->back()->with('error','Admission study academic year not created');
                }
-
-               $program_fee = ProgramFee::where('study_academic_year_id',$study_academic_year->id)->where('campus_program_id',4)->first();
+               
+               $program_fee = ProgramFee::where('study_academic_year_id',$study_academic_year->id)->where('campus_program_id',$applicant->selections[0]->campusProgram->id)->first();
 
                if(!$program_fee){
                    $this->response = ['message'=>'Programme fee not defined for '.$applicant->selections[0]->campusProgram->program->name,'status'=>'error']; //redirect()->back()->with('error','Programme fee not defined for '.$applicant->selections[0]->campusProgram->program->name);
