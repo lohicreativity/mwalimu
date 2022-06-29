@@ -140,7 +140,7 @@
                       <div class="row" id="ss-card-nhif-form">
                       <div class="col-12">
                           @if($applicant->insurances[0]->status == 'VERIFIED')
-                           <span class="label label-success">VERIFIED</span>
+                           <span class="badge badge-success">VERIFIED</span>
                           @endif
                           {!! Form::open(['url'=>'application/update-insurance-status','class'=>'ss-form-processing']) !!}
                             <div class="form-group">
@@ -169,7 +169,7 @@
                       <div class="row" id="ss-card-other-form">
                       <div class="col-12">
                           @if($applicant->insurances[0]->status == 'VERIFIED')
-                           <span class="label label-success">VERIFIED</span>
+                           <span class="badge badge-success">VERIFIED</span>
                           @endif
                           {!! Form::open(['url'=>'application/update-insurance','class'=>'ss-form-processing']) !!}
                             <div class="form-group">
@@ -243,15 +243,16 @@
                 <h3 class="card-title">{{ __('Hostel Request') }}</h3>
               </div>
               <!-- /.card-header -->
-              @if($applicant->hostel_available_status === 1)
-               <span class="label label-success">AVAILABLE</span>
-              @elseif($applicant->hostel_available_status === 0)
-               <span class="label label-warning">UNAVAILABLE</span>
-              @else
-               <span class="label label-success">PENDING</span>
-              @endif
+              
               {!! Form::open(['url'=>'application/update-hostel-status']) !!}
               <div class="card-body">
+                  @if($applicant->hostel_available_status === 1)
+                   <span class="badge-success">AVAILABLE</span>
+                  @elseif($applicant->hostel_available_status === 0)
+                   <span class="badge badge-warning">UNAVAILABLE</span>
+                  @else
+                   <span class="badge badge-success">PENDING</span>
+                  @endif
                   {!! Form::input('hidden','applicant_id',$applicant->id) !!}
 
                   <label class="radio-inline">
