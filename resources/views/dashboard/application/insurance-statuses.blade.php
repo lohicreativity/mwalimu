@@ -108,7 +108,7 @@
                          <td>@if(count($applicant->insurances) != 0) {{ $applicant->insurances[0]->status }} @endif</td>
                          <td>
                              @if(count($applicant->insurances) != 0) 
-                                 @if($applicant->insurances[0]->status == 'VERIFIED')
+                                 @if($applicant->insurances[0]->verification_status == 'VERIFIED')
                                     {!! Form::checkbox('applicant_'.$applicant->id,$applicant->id,true) !!}
                                  @else
                                     {!! Form::checkbox('applicant_'.$applicant->id,$applicant->id) !!}

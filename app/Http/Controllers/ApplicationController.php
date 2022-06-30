@@ -2082,7 +2082,7 @@ class ApplicationController extends Controller
         foreach($applicants as $applicant){
             if($request->get('applicant_'.$applicant->id) == $applicant->id){
                 $insurance = HealthInsurance::where('applicant_id',$applicant->id)->first();
-                $insurance->status = 'VERIFIED';
+                $insurance->verification_status = 'VERIFIED';
                 $insurance->save();
             }
         }
