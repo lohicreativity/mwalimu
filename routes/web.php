@@ -8,7 +8,7 @@ use App\Http\Controllers\GePG\ConsumerController;
 use App\Http\Controllers\GePG\GePGController;
 use App\Http\Controllers\GePG\GePGResponseController;
 use Illuminate\Support\Facades\Http;
-
+use App\Services\ACPACService;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -29,7 +29,9 @@ Route::get('test',function(){
 	// return $response;
 
 	// return $result;
-	return phpinfo();
+	$acpac = new ACPACService;
+	$results = $acpac->query('SELECT * FROM Invoices ORDER BY IMPDATE DESC LIMIT 5');
+    return dd($results);
 });
 
 Route::view('/', 'auth.login');
