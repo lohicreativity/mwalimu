@@ -2088,6 +2088,32 @@ class ApplicationController extends Controller
                 $insurance = HealthInsurance::where('applicant_id',$applicant->id)->first();
                 $insurance->verification_status = 'VERIFIED';
                 $insurance->save();
+            }else{
+                $insurance = HealthInsurance::where('applicant_id',$applicant->id)->first();
+                $insurance->verification_status = 'UNVERIFIED';
+                $insurance->save();
+            }
+        }
+
+        return redirect()->back()->with('message','Insurance status updated successfully');
+    }
+
+    /**
+     * Update insurance status
+     */
+    public function updateHostelStatus(Request $request)
+    {
+        $applicants = Applicant::where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$request->get('program_level_id'))->where('hostel_status',1)->get();
+
+        foreach($applicants as $applicant){
+            if($request->get('applicant_'.$applicant->id) == $applicant->id){
+                $app = Applicant::find($applicant->id);
+                $app->hostel_available_status = 1;
+                $app->save();
+            }else{
+                $app = Applicant::find($applicant->id);
+                $app->hostel_available_status = 0;
+                $app->save();
             }
         }
 
@@ -2133,7 +2159,13 @@ class ApplicationController extends Controller
         $data = [
            'application_windows'=>ApplicationWindow::where('campus_id',$staff->campus_id)->get(),
            'awards'=>Award::all(),
-           'applicants'=>Applicant::where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$request->get('program_level_id'))->paginate(50),
+           'applicants'=>$request->get('query')? Applicant::with(['selections'=>function($query){
+               $query->where('status','SELECTED');
+           },'selections.campusProgram.program'])->where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$request->get('program_level_id'))->where('hostel_status',1)->where(function($query) use($request){
+                  $query->where('first_name','LIKE','%'.$request->get('query').'%')->orWhere('middle_name','LIKE','%'.$request->get('query').'%')->orWhere('surname','LIKE','%'.$request->get('query').'%');
+            })->get() : Applicant::with(['selections'=>function($query){
+               $query->where('status','SELECTED');
+           },'selections.campusProgram.program'])->where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$request->get('program_level_id'))->where('hostel_status',1)->get(),
            'request'=>$request
         ];
         return view('dashboard.application.hostel-statuses',$data)->withTitle('Applicant Insurance Status');
@@ -2152,14 +2184,16 @@ class ApplicationController extends Controller
                       'Pragma'              => 'public'
               ];
 
-        $list = Applicant::where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$request->get('program_level_id'))->get();
+        $list = Applicant::with(['selections'=>function($query){
+               $query->where('status','SELECTED');
+           },'selections.campusProgram.program'])->where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$request->get('program_level_id'))->where('hostel_status',1)->get();
 
         $callback = function() use ($list) 
               {
                   $file_handle = fopen('php://output', 'w');
-                  fputcsv($file_handle,['Index Number','First Name','Middle Name','Surname','Status']);
+                  fputcsv($file_handle,['Index Number','First Name','Middle Name','Surname','Gender','Programme','Status']);
                   foreach ($list as $row) { 
-                      fputcsv($file_handle, [$row->index_number,$row->first_name,$row->middle_name,$row->surname,$row->hostel_status == 1? 'Yes' : 'No']);
+                      fputcsv($file_handle, [$row->index_number,$row->first_name,$row->middle_name,$row->surname,$row->gender == 'M'? 'Male' : 'Female', $row->selections[0]->campusProgram->program->name,$row->hostel_status == 1? 'Yes' : 'No']);
                   }
                   fclose($file_handle);
               };

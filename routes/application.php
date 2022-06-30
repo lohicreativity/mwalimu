@@ -140,6 +140,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
     Route::post('update-insurance-status-admin',[ApplicationController::class,'updateInsuranceStatus']);
     Route::post('update-insurance',[ApplicantController::class,'updateInsurance']);
     Route::post('update-hostel-status',[ApplicantController::class,'updateHostelStatus']);
+    Route::post('update-hostel-status-admin',[ApplicationController::class,'updateHostelStatus']);
 
     Route::get('hostel-statuses',[ApplicationController::class,'showHostelStatus']);
     Route::get('insurance-statuses',[ApplicationController::class,'showInsuranceStatus']);

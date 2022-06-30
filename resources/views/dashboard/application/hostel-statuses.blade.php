@@ -62,7 +62,9 @@
                     <select name="program_level_id" class="form-control" required>
                       <option value="">Select Programme Level</option>
                       @foreach($awards as $award)
+                      @if(str_contains($award->name,'Basic') || str_contains($award->name,'Ordinary') || str_contains($award->name,'Bachelor') || str_contains($award->name,'Masters'))
                       <option value="{{ $award->id }}" @if($request->get('program_level_id') == $award->id) selected="selected" @endif>{{ $award->name }}</option>
+                      @endif
                       @endforeach
                     </select>
                   </div>
@@ -84,6 +86,19 @@
                </div>
                <!-- /.card-header -->
                <div class="card-body">
+                   {!! Form::open(['url'=>'application/insurance-statuses','method'=>'GET']) !!}
+                    {!! Form::input('hidden','application_window_id',$request->get('application_window_id')) !!}
+                     {!! Form::input('hidden','program_level_id',$request->get('program_level_id')) !!}
+                <div class="input-group ss-stretch">
+                 <input type="text" name="query" class="form-control" placeholder="Search for applicant name">
+                 <span class="input-group-btn">
+                   <button class="btn btn-default" type="submit"><span class="fa fa-search"></span></button>
+                 </span>
+                </div>
+                {!! Form::close() !!}
+                   {!! Form::open(['url'=>'application/update-hostel-status-admin','class'=>'ss-form-processing']) !!}
+                     {!! Form::input('hidden','application_window_id',$request->get('application_window_id')) !!}
+                     {!! Form::input('hidden','program_level_id',$request->get('program_level_id')) !!}
                    <table class="table table-bordered table-condensed">
                      <thead>
                        <tr>
@@ -96,14 +111,36 @@
                        <tr>
                          <td>{{ $applicant->first_name }} {{ $applicant->middle_name }} {{ $applicant->surname }}</td>
                          <td>@if($applicant->hostel_status == 1) Yes @else No @endif</td>
+                         <td>
+                             @if($applicant->gender == 'M')
+                                Male
+                             @else
+                                Female
+                             @endif
+                         </td>
+                         <td>{{ $applicant->selections[0]->campusProgram->program->name }}</td>
+                         <td>
+                             @if($applicant->hostel_available_status === 1)
+                                AVAILABLE
+                             @elseif($applicant->hostel_available_status === 0)
+                                NOT AVAILABLE
+                             @endif
+                         </td>
+                         <td>
+                             @if($applicant->hostel_available_status == 1)
+                                {!! Form::checkbox('applicant_'.$applicant->id,$applicant->id,true) !!}
+                             @else
+                                {!! Form::checkbox('applicant_'.$applicant->id,$applicant->id) !!}
+                             @endif
+                         </td>
                        </tr>
                        @endforeach
+                       <tr>
+                         <td colspan="6"><button type="submit" class="btn btn-primary">Save</button></td>
+                       </tr>
                      </tbody>
                    </table>
-
-                   <div class="ss-pagination-links">
-                      {!! $applicants->render() !!}
-                   </div>
+                   {!! Form::close() !!}
                </div>
             </div>
             @endif
