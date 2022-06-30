@@ -85,6 +85,8 @@
                <!-- /.card-header -->
                <div class="card-body">
                    {!! Form::open(['url'=>'application/update-insurance-status-admin','class'=>'ss-form-processing']) !!}
+                     {!! Form::input('hidden','application_window_id',$request->get('application_window_id')) !!}
+                     {!! Form::input('hidden','program_level_id',$request->get('program_level_id')) !!}
                    <table class="table table-bordered table-condensed ss-paginated-table">
                      <thead>
                        <tr>
