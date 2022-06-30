@@ -1364,8 +1364,10 @@ class ApplicationController extends Controller
         if(str_contains($applicant->intake->name,'March')){
             if(!str_contains($applicant->campus->name,'Kivukoni')){
                $program_code = $prog_code[0].'Z3.'.$prog_code[1];
+               $stud_group =  $applicant->program_level_id.'Z'.$selection->campusProgram->id.$year;
             }else{
                $program_code = $prog_code[0].'3.'.$prog_code[1];
+               $stud_group =  $applicant->program_level_id.$selection->campusProgram->id.$year;
             }  
         }else{
             if(!str_contains($applicant->campus->name,'Kivukoni')){
@@ -1618,17 +1620,14 @@ class ApplicationController extends Controller
         }
         $next_of_kin = $applicant->nextOfKin->surname.', '.$applicant->nextOfKin->first_name.' '.$applicant->nextOfKin->middle_name;
         $gparts = explode('.', $program_code);
-        if($parts[0] == 'BTC'){
-            $stud_group = 'BT'.$parts[1];
-        }else{
-            $stud_group = $parts[0].$parts[1];
-        }
+       
         // $acpac->query("INSERT INTO receipts (BANK,BANKNAME,RCPNUMBER,RCPDATE,RCPDESC,IDCUST,NAMECUST,INVOICE,AMTAPPLIED,IMPORTED,IMPDATE) VALUES ('B','CRDB','REC02','10','TF','MNMA002','TEST','INV002','100.0','B','10')");
 
-        $sql = "INSERT INTO customers (IDCUST,IDGRP,NAMECUST,TEXTSTRE1,TEXTSTRE2,TEXTSTRE3,TEXTSTRE4,NAMECITY,CODESTTE,CODEPSTL,CODECTRY,NAMECTAC,TEXTPHON1,TEXTPHON2,CODETERR,IDACCTSET,CODECURN,EMAIL1,EMAIL2) VALUES ('".$stud_reg."','".$stud_group."','".$stud_name."','".$applicant->address."','".$applicant->district->name."','".$applicant->ward->name."','".$applicant->street."','".$applicant->region->name."','".$applicant->region->name."','".$applicant->address."','".$applicant->country->name."','".$next_of_kin."','".$applicant->phone."','".$applicant->nextOfKin->phone."','".$program_code."','STD','TSH','".$applicant->email."','".$applicant->nextOfKin->email."')";
-        return $sql;
+        
         $acpac->query("INSERT INTO customers (IDCUST,IDGRP,NAMECUST,TEXTSTRE1,TEXTSTRE2,TEXTSTRE3,TEXTSTRE4,NAMECITY,CODESTTE,CODEPSTL,CODECTRY,NAMECTAC,TEXTPHON1,TEXTPHON2,CODETERR,IDACCTSET,CODECURN,EMAIL1,EMAIL2) VALUES ('".$stud_reg."','".$stud_group."','".$stud_name."','".$applicant->address."','".$applicant->district->name."','".$applicant->ward->name."','".$applicant->street."','".$applicant->region->name."','".$applicant->region->name."','".$applicant->address."','".$applicant->country->name."','".$next_of_kin."','".$applicant->phone."','".$applicant->nextOfKin->phone."','".$program_code."','STD','TSH','".$applicant->email."','".$applicant->nextOfKin->email."')");
-
+          
+        $sql = "INSERT INTO invoices (INVNUMBER,INVDATE,INVDESC,IDCUST,NAMECUST,LINENO,REVACT,REVDESC,REVREF,REVAMT,IMPORTED,IMPDATE) VALUES ('".$tuition_invoice->reference_no."','".date('Ymd',strtotime($tuition_invoice->created_at))."','".$tuition_invoice->feeType->description."','".$stud_reg."','".$stud_name."','1','".$tuition_invoice->feeType->gl_code."','".$tuition_invoice->feeType->name."','".$tuition_invoice->feeType->description."','".$tuition_invoice->amount."','0','".date('Ymd',strtotime(now()))."')";
+        return $sql;
         $acpac->query("INSERT INTO invoices (INVNUMBER,INVDATE,INVDESC,IDCUST,NAMECUST,LINENO,REVACT,REVDESC,REVREF,REVAMT,IMPORTED,IMPDATE) VALUES ('".$tuition_invoice->reference_no."','".date('Ymd',strtotime($tuition_invoice->created_at))."','".$tuition_invoice->feeType->description."','".$stud_reg."','".$stud_name."','1','".$tuition_invoice->feeType->gl_code."','".$tuition_invoice->feeType->name."','".$tuition_invoice->feeType->description."','".$tuition_invoice->amount."','0','".date('Ymd',strtotime(now()))."')");
 
         $acpac->query("INSERT INTO invoices (INVNUMBER,INVDATE,INVDESC,IDCUST,NAMECUST,LINENO,REVACT,REVDESC,REVREF,REVAMT,IMPORTED,IMPDATE) VALUES ('".$misc_invoice->reference_no."','".date('Ymd',strtotime($misc_invoice->created_at))."','".$misc_invoice->feeType->description."','".$stud_reg."','".$stud_name."','1','".$misc_invoice->feeType->gl_code."','".$misc_invoice->feeType->name."','".$misc_invoice->feeType->description."','".$misc_invoice->amount."','0','".date('Ymd',strtotime(now()))."')");
