@@ -62,7 +62,9 @@
                     <select name="program_level_id" class="form-control" required>
                       <option value="">Select Programme Level</option>
                       @foreach($awards as $award)
+                      @if(str_contains($award->name,'Basic') || str_contains($award->name,'Ordinary') || str_contains($award->name,'Bachelor') || str_contains($award->name,'Masters'))
                       <option value="{{ $award->id }}" @if($request->get('program_level_id') == $award->id) selected="selected" @endif>{{ $award->name }}</option>
+                      @endif
                       @endforeach
                     </select>
                   </div>
@@ -117,7 +119,7 @@
                   {!! Form::close() !!} --}}
                   <br>
 
-                  <table class="table table-bordered ss-margin-top ss-pagination-table">
+                  <table class="table table-bordered ss-margin-top ss-paginated-table">
                     <thead>
                         <tr>
                           <th>Name</th>
