@@ -37,6 +37,7 @@ use App\Domain\Application\Models\NectaResultDetail;
 use App\Domain\Application\Models\NectaResult;
 use App\Domain\Finance\Models\LoanAllocation;
 use App\Domain\Settings\Models\Currency;
+use App\Domain\Application\Models\HealthInsurance;
 use Illuminate\Support\Facades\Http;
 use App\Http\Controllers\NHIFService;
 use App\Models\User;
