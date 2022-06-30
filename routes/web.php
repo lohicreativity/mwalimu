@@ -30,7 +30,7 @@ Route::get('test',function(){
 
 	// return $result;
 	$acpac = new ACPACService;
-	$results = $acpac->query('SELECT * FROM invoices ORDER BY IMPDATE DESC LIMIT 5');
+	$results = $acpac->query('SELECT * FROM receipts');
     return dd($results);
 });
 
