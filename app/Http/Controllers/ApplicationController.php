@@ -1647,7 +1647,10 @@ class ApplicationController extends Controller
             $bank_code = 615;
             $bank_name = 'CRDB';
         }
+        
+        $sql = "INSERT INTO receipts (BANK,BANKNAME,RCPNUMBER,RCPDATE,RCPDESC,IDCUST,NAMECUST,INVOICE,AMTAPPLIED,IMPORTED,IMPDATE) VALUES ('".$bank_code."','".$bank_name."','".substr($misc_invoice->gatewayPayment->transaction_id,5)."','".date('Ymd',strtotime($misc_invoice->gatewayPayment->datetime))."','".$misc_invoice->feeType->description."','".$stud_reg."','".$stud_name."','".$misc_invoice->reference_no."','".$misc_invoice->gatewayPayment->paid_amount."','0','".date('Ymd',strtotime(now()))."')";
 
+        return $sql;
         $acpac->query("INSERT INTO receipts (BANK,BANKNAME,RCPNUMBER,RCPDATE,RCPDESC,IDCUST,NAMECUST,INVOICE,AMTAPPLIED,IMPORTED,IMPDATE) VALUES ('".$bank_code."','".$bank_name."','".substr($misc_invoice->gatewayPayment->transaction_id,5)."','".date('Ymd',strtotime($misc_invoice->gatewayPayment->datetime))."','".$misc_invoice->feeType->description."','".$stud_reg."','".$stud_name."','".$misc_invoice->reference_no."','".$misc_invoice->gatewayPayment->paid_amount."','0','".date('Ymd',strtotime(now()))."')");
 
         $acpac->close();
