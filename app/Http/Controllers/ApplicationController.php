@@ -2061,10 +2061,32 @@ class ApplicationController extends Controller
         $data = [
            'application_windows'=>ApplicationWindow::where('campus_id',$staff->campus_id)->get(),
            'awards'=>Award::all(),
-           'applicants'=>Applicant::with('insurances')->where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$request->get('program_level_id'))->whereNotNull('insurance_status')->paginate(50),
+           'applicants'=>Applicant::whereHas('insurances',function($query){
+            $query->where('insurance_name','!=','NHIF');
+            })->with('insurances')->where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$request->get('program_level_id'))->whereNotNull('insurance_status')->get(),
            'request'=>$request
         ];
         return view('dashboard.application.insurance-statuses',$data)->withTitle('Applicant Insurance Status');
+    }
+
+    /**
+     * Update insurance status
+     */
+    public function updateInsuranceStatus(Request $request)
+    {
+        $applicants = Applicant::whereHas('insurances',function($query){
+            $query->where('insurance_name','!=','NHIF');
+        })->with('insurances')->where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$request->get('program_level_id'))->whereNotNull('insurance_status')->get();
+
+        foreach($applicants as $applicant){
+            if($request->get('applicant_'.$applicant->id) == $applicant->id){
+                $insurance = HealthInsurance::where('applicant_id',$applicant->id)->first();
+                $insurance->status = 'VERIFIED';
+                $insurance->save();
+            }
+        }
+
+        return redirect()->back()->with('message','Insurance status updated successfully');
     }
 
     /**
@@ -2080,7 +2102,9 @@ class ApplicationController extends Controller
                       'Pragma'              => 'public'
               ];
 
-        $list = Applicant::has('insurances')->with('insurances')->where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$request->get('program_level_id'))->get();
+        $list = Applicant::whereHas('insurances',function($query){
+            $query->where('insurance_name','!=','NHIF');
+        })->with('insurances')->where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$request->get('program_level_id'))->whereNotNull('insurance_status')->get();
 
         $callback = function() use ($list) 
               {

@@ -137,6 +137,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
     Route::post('update-applicant-nva',[ApplicantController::class,'updateNVAStatus']);
     Route::get('other-information',[ApplicantController::class,'showOtherInformation']);
     Route::post('update-insurance-status',[ApplicantController::class,'updateInsuranceStatus']);
+    Route::post('update-insurance-status-admin',[ApplicationController::class,'updateInsuranceStatus']);
     Route::post('update-insurance',[ApplicantController::class,'updateInsurance']);
     Route::post('update-hostel-status',[ApplicantController::class,'updateHostelStatus']);
 

@@ -84,13 +84,16 @@
                </div>
                <!-- /.card-header -->
                <div class="card-body">
-                   <table class="table table-bordered table-condensed">
+                   {!! Form::open(['url'=>'application/update-insurance-status-admin','class'=>'ss-form-processing']) !!}
+                   <table class="table table-bordered table-condensed ss-paginated-table">
                      <thead>
                        <tr>
                          <th>Applicant</th>
                          <th>Insurance Name</th>
                          <th>Card Number</th>
                          <th>Expiry Date</th>
+                         <th>Status</th>
+                         <th>Action</th>
                        </tr>
                      </thead>
                      <tbody>
@@ -100,14 +103,24 @@
                          <td>@if(count($applicant->insurances) != 0) {{ $applicant->insurances[0]->insurance_name }} @endif</td>
                          <td>@if(count($applicant->insurances) != 0) {{ $applicant->insurances[0]->membership_number }} @endif</td>
                          <td>@if(count($applicant->insurances) != 0) {{ $applicant->insurances[0]->expire_date }} @endif</td>
+                         <td>@if(count($applicant->insurances) != 0) {{ $applicant->insurances[0]->status }} @endif</td>
+                         <td>
+                             @if(count($applicant->insurances) != 0) 
+                                 @if($applicant->insurances[0]->status == 'VERIFIED')
+                                    {!! Form::checkbox('applicant_'.$applicant->id,$applicant->id,true) !!}
+                                 @else
+                                    {!! Form::checkbox('applicant_'.$applicant->id,$applicant->id) !!}
+                                 @endif
+                             @endif
+                         </td>
                        </tr>
                        @endforeach
+                       <tr>
+                         <td colspan="6"><button type="submit" class="btn btn-primary">Save</button></td>
+                       </tr>
                      </tbody>
                    </table>
-
-                   <div class="ss-pagination-links">
-                      {!! $applicants->render() !!}
-                   </div>
+                   {!! Form::close() !!}
                </div>
             </div>
             @endif
