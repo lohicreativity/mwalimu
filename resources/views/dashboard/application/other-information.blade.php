@@ -155,7 +155,7 @@
 
                       <div class="row" id="ss-card-nhif-form">
                       <div class="col-12">
-                          @if($applicant->insurances[0]->verification_status == 'VERIFIED')
+                          @if($applicant->insurances[0]->verification_status == 'VERIFIED' && $applicant->insurances[0]->insurance_name == 'NHIF')
                            <span class="badge badge-success">VERIFIED</span>
                           @endif
                           {!! Form::open(['url'=>'application/update-insurance-status','class'=>'ss-form-processing']) !!}
