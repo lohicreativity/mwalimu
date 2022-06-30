@@ -104,6 +104,10 @@
                        <tr>
                          <th>Applicant</th>
                          <th>Requires Hostel</th>
+                         <th>Gender</th>
+                         <th>Programme</th>
+                         <th>Status</th>
+                         <th>Verification</th>
                        </tr>
                      </thead>
                      <tbody>
