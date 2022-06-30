@@ -151,7 +151,9 @@
 
                 <div class="card-footer">
                   <button amount="submit" class="btn btn-primary">{{ __('Add Programme Fee') }}</button>
+                  @if(count($fees) != 0)
                   <a href="{{ url('finance/program-fee/store-as-previous') }}" class="btn btn-primary">Assign As Previous</a>
+                  @endif
                 </div>
               {!! Form::close() !!}
             </div>
