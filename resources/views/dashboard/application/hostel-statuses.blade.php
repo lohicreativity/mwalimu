@@ -20,12 +20,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Run Selection</h1>
+            <h1 class="m-0">Hostel Status</h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active"><a href="#">Run Selection</a></li>
+              <li class="breadcrumb-item active"><a href="#">Hostel Status</a></li>
             </ol>
           </div><!-- /.col -->
         </div><!-- /.row -->
@@ -103,7 +103,6 @@
                      <thead>
                        <tr>
                          <th>Applicant</th>
-                         <th>Requires Hostel</th>
                          <th>Gender</th>
                          <th>Programme</th>
                          <th>Status</th>
@@ -115,13 +114,6 @@
                        <tr>
                          <td>{{ $applicant->first_name }} {{ $applicant->middle_name }} {{ $applicant->surname }}</td>
                          <td>@if($applicant->hostel_status == 1) Yes @else No @endif</td>
-                         <td>
-                             @if($applicant->gender == 'M')
-                                Male
-                             @else
-                                Female
-                             @endif
-                         </td>
                          <td>{{ $applicant->selections[0]->campusProgram->program->name }}</td>
                          <td>
                              @if($applicant->hostel_available_status === 1)

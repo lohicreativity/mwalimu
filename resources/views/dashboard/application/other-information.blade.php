@@ -44,7 +44,7 @@
                 <h3 class="card-title">Health Insurance Verification</h3>
               </div>
               <div class="card-footer">
-                 <a href="#" @if($program_fee_invoice) disabled="disabled" @else data-toggle="modal" data-target="#ss-insurance-card" @endif class="btn btn-primary">Verify Health Insurance</a>
+                 <a href="#" data-toggle="modal" data-target="#ss-insurance-card" class="btn btn-primary">Verify Health Insurance</a>
               </div>
             </div>
 
