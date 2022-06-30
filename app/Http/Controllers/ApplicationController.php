@@ -2159,11 +2159,15 @@ class ApplicationController extends Controller
         $data = [
            'application_windows'=>ApplicationWindow::where('campus_id',$staff->campus_id)->get(),
            'awards'=>Award::all(),
-           'applicants'=>$request->get('query')? Applicant::with(['selections'=>function($query){
+           'applicants'=>$request->get('query')? Applicant::whereHas('selections',function($query){
+               $query->where('status','SELECTED');
+           })->with(['selections'=>function($query){
                $query->where('status','SELECTED');
            },'selections.campusProgram.program'])->where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$request->get('program_level_id'))->where('hostel_status',1)->where(function($query) use($request){
                   $query->where('first_name','LIKE','%'.$request->get('query').'%')->orWhere('middle_name','LIKE','%'.$request->get('query').'%')->orWhere('surname','LIKE','%'.$request->get('query').'%');
-            })->get() : Applicant::with(['selections'=>function($query){
+            })->get() : Applicant::whereHas('selections',function($query){
+               $query->where('status','SELECTED');
+           })->with(['selections'=>function($query){
                $query->where('status','SELECTED');
            },'selections.campusProgram.program'])->where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$request->get('program_level_id'))->where('hostel_status',1)->get(),
            'request'=>$request
@@ -2184,7 +2188,9 @@ class ApplicationController extends Controller
                       'Pragma'              => 'public'
               ];
 
-        $list = Applicant::with(['selections'=>function($query){
+        $list = Applicant::whereHas('selections',function($query){
+               $query->where('status','SELECTED');
+           })->with(['selections'=>function($query){
                $query->where('status','SELECTED');
            },'selections.campusProgram.program'])->where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$request->get('program_level_id'))->where('hostel_status',1)->get();
 
