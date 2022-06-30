@@ -1372,8 +1372,10 @@ class ApplicationController extends Controller
         }else{
             if(!str_contains($applicant->campus->name,'Kivukoni')){
                $program_code = $prog_code[0].'Z.'.$prog_code[1];
+               $stud_group =  $applicant->program_level_id.'Z'.$selection->campusProgram->id.$year;
             }else{
                $program_code = $prog_code[0].'.'.$prog_code[1];
+               $stud_group =  $applicant->program_level_id.$selection->campusProgram->id.$year;
             }  
         }
 
