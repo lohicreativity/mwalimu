@@ -95,7 +95,7 @@
                          <th>Card Number</th>
                          <th>Expiry Date</th>
                          <th>Status</th>
-                         <th>Action</th>
+                         <th>Verification</th>
                        </tr>
                      </thead>
                      <tbody>
