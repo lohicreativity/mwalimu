@@ -2061,7 +2061,7 @@ class ApplicationController extends Controller
         $data = [
            'application_windows'=>ApplicationWindow::where('campus_id',$staff->campus_id)->get(),
            'awards'=>Award::all(),
-           'applicants'=>Applicant::with('insurances')->where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$request->get('program_level_id'))->paginate(50),
+           'applicants'=>Applicant::with('insurances')->where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$request->get('program_level_id'))->whereNotNull('insurance_status')->paginate(50),
            'request'=>$request
         ];
         return view('dashboard.application.insurance-statuses',$data)->withTitle('Applicant Insurance Status');
