@@ -84,6 +84,16 @@
                </div>
                <!-- /.card-header -->
                <div class="card-body">
+               {!! Form::open(['url'=>'application/insurance-statuses','method'=>'GET']) !!}
+                    {!! Form::input('hidden','application_window_id',$request->get('application_window_id')) !!}
+                     {!! Form::input('hidden','program_level_id',$request->get('program_level_id')) !!}
+                <div class="input-group ss-stretch">
+                 <input type="text" name="query" class="form-control" placeholder="Search for applicant name">
+                 <span class="input-group-btn">
+                   <button class="btn btn-default" type="submit"><span class="fa fa-search"></span></button>
+                 </span>
+                </div>
+                {!! Form::close() !!}
                    {!! Form::open(['url'=>'application/update-insurance-status-admin','class'=>'ss-form-processing']) !!}
                      {!! Form::input('hidden','application_window_id',$request->get('application_window_id')) !!}
                      {!! Form::input('hidden','program_level_id',$request->get('program_level_id')) !!}
@@ -105,7 +115,7 @@
                          <td>@if(count($applicant->insurances) != 0) {{ $applicant->insurances[0]->insurance_name }} @endif</td>
                          <td>@if(count($applicant->insurances) != 0) {{ $applicant->insurances[0]->membership_number }} @endif</td>
                          <td>@if(count($applicant->insurances) != 0) {{ $applicant->insurances[0]->expire_date }} @endif</td>
-                         <td>@if(count($applicant->insurances) != 0) {{ $applicant->insurances[0]->status }} @endif</td>
+                         <td>@if(count($applicant->insurances) != 0) {{ $applicant->insurances[0]->verification_status }} @endif</td>
                          <td>
                              @if(count($applicant->insurances) != 0) 
                                  @if($applicant->insurances[0]->verification_status == 'VERIFIED')

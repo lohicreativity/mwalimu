@@ -2062,7 +2062,11 @@ class ApplicationController extends Controller
         $data = [
            'application_windows'=>ApplicationWindow::where('campus_id',$staff->campus_id)->get(),
            'awards'=>Award::all(),
-           'applicants'=>Applicant::whereHas('insurances',function($query){
+           'applicants'=>$request->get('query')? Applicant::whereHas('insurances',function($query){
+            $query->where('insurance_name','!=','NHIF');
+            })->with('insurances')->where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$request->get('program_level_id'))->whereNotNull('insurance_status')->where(function($query) use($request){
+                  $query->where('first_name','LIKE','%'.$request->get('query').'%')->orWhere('middle_name','LIKE','%'.$request->get('query').'%')->orWhere('surname','LIKE','%'.$request->get('query').'%');
+            })->get() : Applicant::whereHas('insurances',function($query){
             $query->where('insurance_name','!=','NHIF');
             })->with('insurances')->where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$request->get('program_level_id'))->whereNotNull('insurance_status')->get(),
            'request'=>$request
