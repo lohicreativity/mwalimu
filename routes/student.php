@@ -51,7 +51,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 
 	Route::get('request-transcript',[TranscriptRequestController::class, 'store']);
 
-	Route::post('get-control-number',[InvoiceController::class,'requestPaymentControlNumber']);
+	Route::post('get-control-number',[StudentController::class,'requestPaymentControlNumber']);
     
     Route::get('results/{ac_year_id}/{yr_of_study}/report/appeal',[AppealController::class,'showAcademicYearResults']);
 
