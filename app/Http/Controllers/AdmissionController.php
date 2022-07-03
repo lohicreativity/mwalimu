@@ -98,6 +98,11 @@ class AdmissionController extends Controller
     		$insurance_fee = null;
     		$insurance_fee_invoice = null;
     	}
+
+        if($study_academic_year->nhif_enabled === 0){
+            $insurance_fee = null;
+            $insurance_fee_invoice = null;
+        }
     	$data = [
            'applicant'=>$applicant,
            'program_fee'=>$program_fee,
