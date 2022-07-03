@@ -60,21 +60,22 @@ class RegistrationController extends Controller
                    $query->where('name','LIKE','%Tuition%');
         })->where('payable_id',$student->id)->where('payable_type','student')->where('applicable_type','academic_year')->where('applicable_id',session('active_academic_year_id'))->first();
 
+        if(!$tuition_fee_invoice){
+            return redirect()->back()->with('error','You have not requested for tuition fee control number');
+        }
+
         $misc_fee_invoice = Invoice::whereHas('feeType',function($query){
                    $query->where('name','LIKE','%Miscellaneous%');
         })->where('payable_id',$student->id)->where('payable_type','student')->where('applicable_type','academic_year')->where('applicable_id',session('active_academic_year_id'))->first();
+
+        if(!$misc_fee_invoice){
+            return redirect()->back()->with('error','You have not requested for other fees control number');
+        }
 
         $tuition_fee_paid = GatewayPayment::where('control_no',$tuition_fee_invoice->control_no)->sum('paid_amount');
 
         $misc_fee_paid = GatewayPayment::where('control_no',$misc_fee_invoice->control_no)->sum('paid_amount');
 
-        if(!$tuition_fee_invoice){
-            return redirect()->back()->with('error','You have not requested for tuition fee control number');
-        }
-
-        if(!$misc_fee_invoice){
-            return redirect()->back()->with('error','You have not requested for other fees control number');
-        }
 
         if($tuition_fee_paid < (0.6*$tuition_fee_invoice->amount)){
             return redirect()->back()->with('error','You cannot continue with registration because you have not paid sufficient tuition fee');
