@@ -13,6 +13,7 @@ use App\Domain\Finance\Models\Invoice;
 use App\Domain\Finance\Models\GatewayPayment;
 use App\Domain\Registration\Models\Student;
 use App\Domain\Registration\Models\Registration;
+use App\Domain\Settings\Models\Currency;
 use App\Models\User;
 use Illuminate\Support\Facades\Http;
 use Intervention\Image\ImageManagerStatic as Image;
