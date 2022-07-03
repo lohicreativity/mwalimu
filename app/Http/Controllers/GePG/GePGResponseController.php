@@ -153,6 +153,19 @@ class GePGResponseController extends Controller
 			    $applicant->other_payment_check = $data['paid_amount'] == $invoice->amount? 1 : 0;
 			    $applicant->save();
 			}
+
+			$inv = Invoice::with(['gatewayPayment','feeType'])->find($invoice->id);
+
+
+		        if($inv->gatewayPayment->psp_name == 'National Microfinance Bank'){
+		            $bank_code = 619;
+		            $bank_name = 'NMB';
+		        }else{
+		            $bank_code = 615;
+		            $bank_name = 'CRDB';
+		        }
+
+		        $acpac->query("INSERT INTO receipts (BANK,BANKNAME,RCPNUMBER,RCPDATE,RCPDESC,IDCUST,NAMECUST,INVOICE,AMTAPPLIED,IMPORTED,IMPDATE) VALUES ('".$bank_code."','".$bank_name."','".substr($inv->gatewayPayment->transaction_id,5)."','".date('Ymd',strtotime($inv->gatewayPayment->datetime))."','".$inv->feeType->description."','".$stud_reg."','".$stud_name."','".$inv->gatewayPayment->control_no."','".$inv->gatewayPayment->paid_amount."','0','".date('Ymd',strtotime(now()))."')");
 		}
 
 		if($invoice->payable_type == 'student'){
@@ -179,23 +192,42 @@ class GePGResponseController extends Controller
 	        }else{
 	            $stud_reg = $parts[0].$parts[1];
 	        }
+
+	        if($student->registration_year >= 2022){
+                $inv = Invoice::with(['gatewayPayment','feeType'])->find($invoice->id);
+
+
+				$acpac = new ACPACService;
+				$acpac->query("INSERT INTO invoices (INVNUMBER,INVDATE,INVDESC,IDCUST,NAMECUST,[LINENO],REVACT,REVDESC,REVREF,REVAMT,IMPORTED,IMPDATE) VALUES ('".$inv->gatewayPayment->control_no."','".date('Y',strtotime($inv->created_at))."','".$inv->feeType->description."','".$stud_reg."','".$stud_name."','1','".$inv->feeType->gl_code."','".$inv->feeType->name."','".$inv->feeType->description."','".$inv->amount."','0','".date('Y',strtotime(now()))."')");
+
+		        if($inv->gatewayPayment->psp_name == 'National Microfinance Bank'){
+		            $bank_code = 619;
+		            $bank_name = 'NMB';
+		        }else{
+		            $bank_code = 615;
+		            $bank_name = 'CRDB';
+		        }
+
+		        $acpac->query("INSERT INTO receipts (BANK,BANKNAME,RCPNUMBER,RCPDATE,RCPDESC,IDCUST,NAMECUST,INVOICE,AMTAPPLIED,IMPORTED,IMPDATE) VALUES ('".$bank_code."','".$bank_name."','".substr($inv->gatewayPayment->transaction_id,5)."','".date('Ymd',strtotime($inv->gatewayPayment->datetime))."','".$inv->feeType->description."','".$stud_reg."','".$stud_name."','".$inv->gatewayPayment->control_no."','".$inv->gatewayPayment->paid_amount."','0','".date('Ymd',strtotime(now()))."')");
+
+	        }else{
+               $inv = Invoice::with(['gatewayPayment','feeType'])->find($invoice->id);
+
+		        if($inv->gatewayPayment->psp_name == 'National Microfinance Bank'){
+		            $bank_code = 619;
+		            $bank_name = 'NMB';
+		        }else{
+		            $bank_code = 615;
+		            $bank_name = 'CRDB';
+		        }
+
+		        $stud_reg = 'NULL';
+
+		        $acpac->query("INSERT INTO receipts (BANK,BANKNAME,RCPNUMBER,RCPDATE,RCPDESC,IDCUST,NAMECUST,INVOICE,AMTAPPLIED,IMPORTED,IMPDATE) VALUES ('".$bank_code."','".$bank_name."','".substr($inv->gatewayPayment->transaction_id,5)."','".date('Ymd',strtotime($inv->gatewayPayment->datetime))."','".$inv->feeType->description."','".$stud_reg."','".$stud_name."','".$inv->gatewayPayment->control_no."','".$inv->gatewayPayment->paid_amount."','0','".date('Ymd',strtotime(now()))."')");
+	        }
 		}
 
-		$inv = Invoice::with(['gatewayPayment','feeType'])->find($invoice->id);
-
-
-		$acpac = new ACPACService;
-		$acpac->query("INSERT INTO invoices (INVNUMBER,INVDATE,INVDESC,IDCUST,NAMECUST,[LINENO],REVACT,REVDESC,REVREF,REVAMT,IMPORTED,IMPDATE) VALUES ('".$inv->gatewayPayment->control_no."','".date('Y',strtotime($inv->created_at))."','".$inv->feeType->description."','".$stud_reg."','".$stud_name."','1','".$inv->feeType->gl_code."','".$inv->feeType->name."','".$inv->feeType->description."','".$inv->amount."','0','".date('Y',strtotime(now()))."')");
-
-        if($inv->gatewayPayment->psp_name == 'National Microfinance Bank'){
-            $bank_code = 619;
-            $bank_name = 'NMB';
-        }else{
-            $bank_code = 615;
-            $bank_name = 'CRDB';
-        }
-
-        $acpac->query("INSERT INTO receipts (BANK,BANKNAME,RCPNUMBER,RCPDATE,RCPDESC,IDCUST,NAMECUST,INVOICE,AMTAPPLIED,IMPORTED,IMPDATE) VALUES ('".$bank_code."','".$bank_name."','".substr($inv->gatewayPayment->transaction_id,5)."','".date('Ymd',strtotime($inv->gatewayPayment->datetime))."','".$inv->feeType->description."','".$stud_reg."','".$stud_name."','".$inv->gatewayPayment->control_no."','".$inv->gatewayPayment->paid_amount."','0','".date('Ymd',strtotime(now()))."')");
+		
     }
 
     /**
