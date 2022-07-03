@@ -134,8 +134,8 @@
                        @endif
                        <td>@if($hostel_fee_invoice) {{ $hostel_fee_invoice->control_no }} @if(!$hostel_fee_invoice->control_no)<a href="#" onclick="window.location.reload();"><i class="fa fa-refresh" ></i> Refresh</a>@endif @endif</td>
                        <td>
-                         @if(isset($hostel_fee_invoice->gatewayPayment))
-                            {{ number_format($hostel_fee_invoice->gatewayPayment->paid_amount,0) }} TZS
+                         @if($hostel_fee_invoice)
+                            {{ number_format($hostel_fee_invoice->amount,0) }} TZS
                          @endif
                        </td>
                        <td>
