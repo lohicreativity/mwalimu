@@ -119,6 +119,7 @@ class GePGResponseController extends Controller
 		// $invoice->save();
 
 		$invoice = Invoice::with('feeType')->find(31014);
+		$acpac = new ACPACService;
 		if($invoice->payable_type == 'applicant'){
 			$applicant = Applicant::find($invoice->payable_id);
 			$applicant->payment_complete_status = 1;
@@ -204,8 +205,6 @@ class GePGResponseController extends Controller
 	        if($student->registration_year >= 2022){
                 $inv = Invoice::with(['gatewayPayment','feeType'])->find($invoice->id);
 
-
-				$acpac = new ACPACService;
 				$acpac->query("INSERT INTO invoices (INVNUMBER,INVDATE,INVDESC,IDCUST,NAMECUST,[LINENO],REVACT,REVDESC,REVREF,REVAMT,IMPORTED,IMPDATE) VALUES ('".$inv->gatewayPayment->control_no."','".date('Y',strtotime($inv->created_at))."','".$inv->feeType->description."','".$stud_reg."','".$stud_name."','1','".$inv->feeType->gl_code."','".$inv->feeType->name."','".$inv->feeType->description."','".$inv->amount."','0','".date('Y',strtotime(now()))."')");
 
 		        if($inv->gatewayPayment->psp_name == 'National Microfinance Bank'){
