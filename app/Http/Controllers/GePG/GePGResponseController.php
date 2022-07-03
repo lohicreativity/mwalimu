@@ -14,6 +14,7 @@ use App\Domain\Finance\Models\GatewayPayment;
 use App\Domain\Finance\Models\LoanAllocation;
 use App\Domain\Finance\Models\PaymentReconciliation;
 use App\Domain\Registration\Models\Student;
+use Illuminate\Support\Facades\Log;
 use App\Services\ACPACService;
 
 class GePGResponseController extends Controller
@@ -167,6 +168,10 @@ class GePGResponseController extends Controller
 		        }
 
 		        $acpac->query("INSERT INTO receipts (BANK,BANKNAME,RCPNUMBER,RCPDATE,RCPDESC,IDCUST,NAMECUST,INVOICE,AMTAPPLIED,IMPORTED,IMPDATE) VALUES ('".$bank_code."','".$bank_name."','".substr($inv->gatewayPayment->transaction_id,5)."','".date('Ymd',strtotime($inv->gatewayPayment->datetime))."','".$inv->feeType->description."','".$stud_reg."','".$stud_name."','".$inv->gatewayPayment->control_no."','".$inv->gatewayPayment->paid_amount."','0','".date('Ymd',strtotime(now()))."')");
+
+		        Log::info("INSERT INTO receipts (BANK,BANKNAME,RCPNUMBER,RCPDATE,RCPDESC,IDCUST,NAMECUST,INVOICE,AMTAPPLIED,IMPORTED,IMPDATE) VALUES ('".$bank_code."','".$bank_name."','".substr($inv->gatewayPayment->transaction_id,5)."','".date('Ymd',strtotime($inv->gatewayPayment->datetime))."','".$inv->feeType->description."','".$stud_reg."','".$stud_name."','".$inv->gatewayPayment->control_no."','".$inv->gatewayPayment->paid_amount."','0','".date('Ymd',strtotime(now()))."')");
+
+
 		}
 
 		if($invoice->payable_type == 'student'){
@@ -211,6 +216,8 @@ class GePGResponseController extends Controller
 
 		        $acpac->query("INSERT INTO receipts (BANK,BANKNAME,RCPNUMBER,RCPDATE,RCPDESC,IDCUST,NAMECUST,INVOICE,AMTAPPLIED,IMPORTED,IMPDATE) VALUES ('".$bank_code."','".$bank_name."','".substr($inv->gatewayPayment->transaction_id,5)."','".date('Ymd',strtotime($inv->gatewayPayment->datetime))."','".$inv->feeType->description."','".$stud_reg."','".$stud_name."','".$inv->gatewayPayment->control_no."','".$inv->gatewayPayment->paid_amount."','0','".date('Ymd',strtotime(now()))."')");
 
+		        Log::info("INSERT INTO receipts (BANK,BANKNAME,RCPNUMBER,RCPDATE,RCPDESC,IDCUST,NAMECUST,INVOICE,AMTAPPLIED,IMPORTED,IMPDATE) VALUES ('".$bank_code."','".$bank_name."','".substr($inv->gatewayPayment->transaction_id,5)."','".date('Ymd',strtotime($inv->gatewayPayment->datetime))."','".$inv->feeType->description."','".$stud_reg."','".$stud_name."','".$inv->gatewayPayment->control_no."','".$inv->gatewayPayment->paid_amount."','0','".date('Ymd',strtotime(now()))."')");
+
 	        }else{
                $inv = Invoice::with(['gatewayPayment','feeType'])->find($invoice->id);
 
@@ -225,6 +232,8 @@ class GePGResponseController extends Controller
 		        $stud_reg = 'NULL';
 
 		        $acpac->query("INSERT INTO receipts (BANK,BANKNAME,RCPNUMBER,RCPDATE,RCPDESC,IDCUST,NAMECUST,INVOICE,AMTAPPLIED,IMPORTED,IMPDATE) VALUES ('".$bank_code."','".$bank_name."','".substr($inv->gatewayPayment->transaction_id,5)."','".date('Ymd',strtotime($inv->gatewayPayment->datetime))."','".$inv->feeType->description."','".$stud_reg."','".$stud_name."','".$inv->gatewayPayment->control_no."','".$inv->gatewayPayment->paid_amount."','0','".date('Ymd',strtotime(now()))."')");
+
+		       Log::info("INSERT INTO receipts (BANK,BANKNAME,RCPNUMBER,RCPDATE,RCPDESC,IDCUST,NAMECUST,INVOICE,AMTAPPLIED,IMPORTED,IMPDATE) VALUES ('".$bank_code."','".$bank_name."','".substr($inv->gatewayPayment->transaction_id,5)."','".date('Ymd',strtotime($inv->gatewayPayment->datetime))."','".$inv->feeType->description."','".$stud_reg."','".$stud_name."','".$inv->gatewayPayment->control_no."','".$inv->gatewayPayment->paid_amount."','0','".date('Ymd',strtotime(now()))."')");
 	        }
 		}
 
