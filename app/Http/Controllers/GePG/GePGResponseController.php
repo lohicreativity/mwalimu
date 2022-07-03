@@ -13,6 +13,7 @@ use App\Domain\Finance\Models\Invoice;
 use App\Domain\Finance\Models\GatewayPayment;
 use App\Domain\Finance\Models\LoanAllocation;
 use App\Domain\Finance\Models\PaymentReconciliation;
+use App\Services\ACPACService;
 
 class GePGResponseController extends Controller
 {
@@ -119,6 +120,9 @@ class GePGResponseController extends Controller
 			$applicant->payment_complete_status = 1;
 			$applicant->save();
 
+			$stud_name = $applicant->surname.', '.$applicant->first_name.' '.$applicant->middle_name;
+			$stud_reg = 'NULL';
+
 			if(str_contains($invoice->feeType->name,'Tuition Fee')){
 				$paid_amount = GatewayPayment::where('bill_id',$invoice->reference_no)->sum('paid_amount');
 				$percentage = $paid_amount/$invoice->amount;
@@ -163,7 +167,35 @@ class GePGResponseController extends Controller
 			if(str_contains($invoice->feeType->name,'Transcript')){
 				 TranscriptRequest::where('student_id',$invoice->payable_id)->update(['payment_status'=>'PAID']);
 			}
+
+			$student = Student::find($invoice->payable_id);
+
+			$stud_name = $student->surname.', '.$student->first_name.' '.$student->middle_name;
+	        $stud_reg = substr($student->registration_number, 5);
+	        $stud_reg = str_replace('/', '', $stud_reg);
+	        $parts = explode('.', $stud_reg);
+	        if($parts[0] == 'BTC'){
+	            $stud_reg = 'BT'.$parts[1];
+	        }else{
+	            $stud_reg = $parts[0].$parts[1];
+	        }
 		}
+
+		$inv = Invoice::with(['gatewayPayment','feeType'])->find($invoice->id);
+
+
+		$acpac = new ACPACService;
+		$acpac->query("INSERT INTO invoices (INVNUMBER,INVDATE,INVDESC,IDCUST,NAMECUST,[LINENO],REVACT,REVDESC,REVREF,REVAMT,IMPORTED,IMPDATE) VALUES ('".$inv->gatewayPayment->control_no."','".date('Y',strtotime($inv->created_at))."','".$inv->feeType->description."','".$stud_reg."','".$stud_name."','1','".$inv->feeType->gl_code."','".$inv->feeType->name."','".$inv->feeType->description."','".$inv->amount."','0','".date('Y',strtotime(now()))."')");
+
+        if($inv->gatewayPayment->psp_name == 'National Microfinance Bank'){
+            $bank_code = 619;
+            $bank_name = 'NMB';
+        }else{
+            $bank_code = 615;
+            $bank_name = 'CRDB';
+        }
+
+        $acpac->query("INSERT INTO receipts (BANK,BANKNAME,RCPNUMBER,RCPDATE,RCPDESC,IDCUST,NAMECUST,INVOICE,AMTAPPLIED,IMPORTED,IMPDATE) VALUES ('".$bank_code."','".$bank_name."','".substr($inv->gatewayPayment->transaction_id,5)."','".date('Ymd',strtotime($inv->gatewayPayment->datetime))."','".$inv->feeType->description."','".$stud_reg."','".$stud_name."','".$inv->gatewayPayment->control_no."','".$inv->gatewayPayment->paid_amount."','0','".date('Ymd',strtotime(now()))."')");
     }
 
     /**

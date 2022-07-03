@@ -87,6 +87,7 @@
                     <th>SN</th>
                     <th>Student</th>
                     <th>Reg. No.</th>
+                    <th>Sex</th>
                     <th>Programme</th>
                     <th>Campus</th>
                     <th>NTA Level</th>
@@ -99,6 +100,7 @@
                       <td>{{ ($key+1) }}</td>
                       <td>{{ $graduant->student->first_name }} {{ $graduant->student->middle_name }} {{ $graduant->student->surname }}</td>
                       <td>{{ $graduant->student->registration_number }}</td>
+                      <td>{{ $graduant->student->gender }}</td>
                       <td>{{ $graduant->student->campusProgram->program->name }}</td>
                       <td>{{ $graduant->student->campusProgram->campus->name }}</td>
                       <td>{{ $graduant->student->campusProgram->program->ntaLevel->name }}</td>

@@ -81,6 +81,8 @@
                   <tr>
                     <th>SN</th>
                     <th>Student</th>
+                    <th>Reg. No.</th>
+                    <th>Programme</th>
                     <th>Reason</th>
                   </tr>
                   </thead>
@@ -89,6 +91,8 @@
                     <tr>
                       <td>{{ ($key+1) }}</td>
                       <td>{{ $graduant->student->first_name }} {{ $graduant->student->middle_name }} {{ $graduant->student->surname }}</td>
+                      <td>{{ $graduant->student->registration_number }}</td>
+                      <td>{{ $graduant->student->campusProgram->program->name }}</td>
                       <td><a href="{{ url('academic/results/show-student-report?registration_number='.$graduant->student->registration_number) }}">{{ $graduant->reason }}</a></td>
                     </tr>
                     @endforeach                  
