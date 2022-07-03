@@ -90,7 +90,7 @@
                     <th>Sex</th>
                     <th>Programme</th>
                     <th>Campus</th>
-                    <th>NTA Level</th>
+                    <th>Status</th>
                     <th>GPA</th>
                   </tr>
                   </thead>
@@ -103,7 +103,7 @@
                       <td>{{ $graduant->student->gender }}</td>
                       <td>{{ $graduant->student->campusProgram->program->name }}</td>
                       <td>{{ $graduant->student->campusProgram->campus->name }}</td>
-                      <td>{{ $graduant->student->campusProgram->program->ntaLevel->name }}</td>
+                      <td>{{ $graduant->status }}</td>
                       <td>{{ bcdiv($graduant->student->overallRemark->gpa,1,1) }}</td>
                     </tr>
                     @endforeach                  

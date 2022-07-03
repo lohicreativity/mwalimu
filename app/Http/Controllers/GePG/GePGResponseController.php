@@ -13,6 +13,7 @@ use App\Domain\Finance\Models\Invoice;
 use App\Domain\Finance\Models\GatewayPayment;
 use App\Domain\Finance\Models\LoanAllocation;
 use App\Domain\Finance\Models\PaymentReconciliation;
+use App\Domain\Registration\Models\Student;
 use App\Services\ACPACService;
 
 class GePGResponseController extends Controller
