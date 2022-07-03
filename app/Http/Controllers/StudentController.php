@@ -18,6 +18,8 @@ use App\Domain\Academic\Models\Postponement;
 use App\Domain\Registration\Models\Registration;
 use App\Domain\Finance\Models\FeeType;
 use App\Domain\Finance\Models\Invoice;
+use App\Domain\Finance\Models\ProgramFee;
+use App\Domain\Finance\Models\GatewatPayment;
 use App\Domain\Finance\Models\LoanAllocation;
 use App\Domain\Settings\Models\Currency;
 use Illuminate\Support\Facades\Http;
