@@ -24,7 +24,7 @@ use App\Domain\Finance\Models\LoanAllocation;
 use App\Domain\Settings\Models\Currency;
 use Illuminate\Support\Facades\Http;
 use App\Models\User;
-use Auth, Validator;
+use Auth, Validator, DB;
 
 class StudentController extends Controller
 {
@@ -386,7 +386,7 @@ class StudentController extends Controller
     {
         $student = Student::with('applicant')->find($request->get('student_id'));
         $email = $student->email? $student->email : 'admission@mnma.ac.tz';
-
+        DB::beginTransaction();
         $study_academic_year = StudyAcademicYear::find(session('active_academic_year_id'));
         $usd_currency = Currency::where('code','USD')->first();
 
@@ -461,9 +461,9 @@ class StudentController extends Controller
                                               $program_fee->feeItem->feeType->description,
                                               $program_fee->feeItem->feeType->gfs_code,
                                               $program_fee->feeItem->feeType->payment_option,
-                                              $applicant->id,
-                                              $applicant->first_name.' '.$applicant->surname,
-                                              $applicant->phone,
+                                              $student->id,
+                                              $student->first_name.' '.$student->surname,
+                                              $student->phone,
                                               $email,
                                               $generated_by,
                                               $approved_by,
@@ -528,9 +528,9 @@ class StudentController extends Controller
                                             $feeType->description,
                                             $feeType->gfs_code,
                                             $feeType->payment_option,
-                                            $applicant->id,
-                                            $applicant->first_name.' '.$applicant->surname,
-                                            $applicant->phone,
+                                            $student->id,
+                                            $student->first_name.' '.$student->surname,
+                                            $student->phone,
                                             $email,
                                             $generated_by,
                                             $approved_by,
@@ -582,9 +582,9 @@ class StudentController extends Controller
                                             $feeType->description,
                                             $feeType->gfs_code,
                                             $feeType->payment_option,
-                                            $applicant->id,
-                                            $applicant->first_name.' '.$applicant->surname,
-                                            $applicant->phone,
+                                            $student->id,
+                                            $student->first_name.' '.$student->surname,
+                                            $student->phone,
                                             $email,
                                             $generated_by,
                                             $approved_by,
@@ -593,6 +593,7 @@ class StudentController extends Controller
 
             } 
         }
+        DB::commit();
 
         return redirect()->back()->with('message','Control numbers requested successfully');
     }
