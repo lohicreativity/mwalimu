@@ -1625,34 +1625,40 @@ class ApplicationController extends Controller
        
         // $acpac->query("INSERT INTO receipts (BANK,BANKNAME,RCPNUMBER,RCPDATE,RCPDESC,IDCUST,NAMECUST,INVOICE,AMTAPPLIED,IMPORTED,IMPDATE) VALUES ('B','CRDB','REC02','10','TF','MNMA002','TEST','INV002','100.0','B','10')");
         $next_of_kin_email = $applicant->nextOfKin->email? $applicant->nextOfKin->email : 'UNKNOWN';
-
-        return "INSERT INTO customer (IDCUST,IDGRP,NAMECUST,TEXTSTRE1,TEXTSTRE2,TEXTSTRE3,TEXTSTRE4,NAMECITY,CODESTTE,CODEPSTL,CODECTRY,NAMECTAC,TEXTPHON1,TEXTPHON2,CODETERR,IDACCTSET,IDAUTOCASH,IDBILLCYCL,IDSVCCHRG,IDDLNQ,CODECURN,EMAIL1,EMAIL2) VALUES ('".$stud_reg."','".$stud_group."','".$stud_name."','".$applicant->address."','".$applicant->district->name."','".$applicant->ward->name."','".$applicant->street."','".$applicant->region->name."','".$applicant->region->name."','".$applicant->address."','".$applicant->country->name."','".$next_of_kin."','".$applicant->phone."','".$applicant->nextOfKin->phone."','".$program_code."','STD','NIL','NIL','NIL','NIL','TSH','".$applicant->email."','".$next_of_kin_email."')";
         
         $acpac->query("INSERT INTO customer (IDCUST,IDGRP,NAMECUST,TEXTSTRE1,TEXTSTRE2,TEXTSTRE3,TEXTSTRE4,NAMECITY,CODESTTE,CODEPSTL,CODECTRY,NAMECTAC,TEXTPHON1,TEXTPHON2,CODETERR,IDACCTSET,IDAUTOCASH,IDBILLCYCL,IDSVCCHRG,IDDLNQ,CODECURN,EMAIL1,EMAIL2) VALUES ('".$stud_reg."','".$stud_group."','".$stud_name."','".$applicant->address."','".$applicant->district->name."','".$applicant->ward->name."','".$applicant->street."','".$applicant->region->name."','".$applicant->region->name."','".$applicant->address."','".$applicant->country->name."','".$next_of_kin."','".$applicant->phone."','".$applicant->nextOfKin->phone."','".$program_code."','STD','NIL','NIL','NIL','NIL','TSH','".$applicant->email."','".$next_of_kin_email."')");
           
-        $acpac->query("INSERT INTO invoices (INVNUMBER,INVDATE,INVDESC,IDCUST,NAMECUST,LINENO,REVACT,REVDESC,REVREF,REVAMT,IMPORTED,IMPDATE) VALUES ('".$tuition_invoice->gatewayPayment->control_no."','".date('Y',strtotime($tuition_invoice->created_at))."','".$tuition_invoice->feeType->description."','".$stud_reg."','".$stud_name."','1','".$tuition_invoice->feeType->gl_code."','".$tuition_invoice->feeType->name."','".$tuition_invoice->feeType->description."','".$tuition_invoice->amount."','0','".date('Y',strtotime(now()))."')");
+        $acpac->query("INSERT INTO invoices (INVNUMBER,INVDATE,INVDESC,IDCUST,NAMECUST,[LINENO],REVACT,REVDESC,REVREF,REVAMT,IMPORTED,IMPDATE) VALUES ('".$tuition_invoice->gatewayPayment->control_no."','".date('Y',strtotime($tuition_invoice->created_at))."','".$tuition_invoice->feeType->description."','".$stud_reg."','".$stud_name."','1','".$tuition_invoice->feeType->gl_code."','".$tuition_invoice->feeType->name."','".$tuition_invoice->feeType->description."','".$tuition_invoice->amount."','0','".date('Y',strtotime(now()))."')");
         
-        $acpac->query("INSERT INTO invoices (INVNUMBER,INVDATE,INVDESC,IDCUST,NAMECUST,LINENO,REVACT,REVDESC,REVREF,REVAMT,IMPORTED,IMPDATE) VALUES ('".$misc_invoice->gatewayPayment->control_no."','".date('Y',strtotime($misc_invoice->created_at))."','".$misc_invoice->feeType->description."','".$stud_reg."','".$stud_name."','1','".$misc_invoice->feeType->gl_code."','".$misc_invoice->feeType->name."','".$misc_invoice->feeType->description."','".$misc_invoice->amount."','0','".date('Y',strtotime(now()))."')");
+        $acpac->query("INSERT INTO invoices (INVNUMBER,INVDATE,INVDESC,IDCUST,NAMECUST,[LINENO],REVACT,REVDESC,REVREF,REVAMT,IMPORTED,IMPDATE) VALUES ('".$misc_invoice->gatewayPayment->control_no."','".date('Y',strtotime($misc_invoice->created_at))."','".$misc_invoice->feeType->description."','".$stud_reg."','".$stud_name."','1','".$misc_invoice->feeType->gl_code."','".$misc_invoice->feeType->name."','".$misc_invoice->feeType->description."','".$misc_invoice->amount."','0','".date('Y',strtotime(now()))."')");
 
-        if($tuition_invoice->gatewayPayment->psp_name == 'National Microfinance Bank'){
-            $bank_code = 619;
-            $bank_name = 'NMB';
-        }else{
-            $bank_code = 615;
-            $bank_name = 'CRDB';
+        $tuition_receipts = GatewayPayment::where('control_no',$tuition_invoice->control_no)->get();
+
+        foreach($tuition_receipts as $receipt){
+            if($receipt->psp_name == 'National Microfinance Bank'){
+                $bank_code = 619;
+                $bank_name = 'NMB';
+            }else{
+                $bank_code = 615;
+                $bank_name = 'CRDB';
+            }
+
+            $acpac->query("INSERT INTO receipts (BANK,BANKNAME,RCPNUMBER,RCPDATE,RCPDESC,IDCUST,NAMECUST,INVOICE,AMTAPPLIED,IMPORTED,IMPDATE) VALUES ('".$bank_code."','".$bank_name."','".substr($receipt->transaction_id,5)."','".date('Ymd',strtotime($receipt->datetime))."','".$tuition_invoice->feeType->description."','".$stud_reg."','".$stud_name."','".$receipt->control_no."','".$receipt->paid_amount."','0','".date('Ymd',strtotime(now()))."')");
         }
 
-        $acpac->query("INSERT INTO receipts (BANK,BANKNAME,RCPNUMBER,RCPDATE,RCPDESC,IDCUST,NAMECUST,INVOICE,AMTAPPLIED,IMPORTED,IMPDATE) VALUES ('".$bank_code."','".$bank_name."','".substr($tuition_invoice->gatewayPayment->transaction_id,5)."','".date('Ymd',strtotime($tuition_invoice->gatewayPayment->datetime))."','".$tuition_invoice->feeType->description."','".$stud_reg."','".$stud_name."','".$tuition_invoice->gatewayPayment->control_no."','".$tuition_invoice->gatewayPayment->paid_amount."','0','".date('Ymd',strtotime(now()))."')");
-
-        if($misc_invoice->gatewayPayment->psp_name == 'National Microfinance Bank'){
-            $bank_code = 619;
-            $bank_name = 'NMB';
-        }else{
-            $bank_code = 615;
-            $bank_name = 'CRDB';
-        }
+        $misc_receipts = GatewayPayment::where('control_no',$misc_invoice->control_no)->get();
         
-        $acpac->query("INSERT INTO receipts (BANK,BANKNAME,RCPNUMBER,RCPDATE,RCPDESC,IDCUST,NAMECUST,INVOICE,AMTAPPLIED,IMPORTED,IMPDATE) VALUES ('".$bank_code."','".$bank_name."','".substr($misc_invoice->gatewayPayment->transaction_id,5)."','".date('Ymd',strtotime($misc_invoice->gatewayPayment->datetime))."','".$misc_invoice->feeType->description."','".$stud_reg."','".$stud_name."','".$misc_invoice->gatewayPayment->control_no."','".$misc_invoice->gatewayPayment->paid_amount."','0','".date('Ymd',strtotime(now()))."')");
+        foreach ($misc_receipts as $receipt) {
+            if($receipt->psp_name == 'National Microfinance Bank'){
+                $bank_code = 619;
+                $bank_name = 'NMB';
+            }else{
+                $bank_code = 615;
+                $bank_name = 'CRDB';
+            }
+            
+            $acpac->query("INSERT INTO receipts (BANK,BANKNAME,RCPNUMBER,RCPDATE,RCPDESC,IDCUST,NAMECUST,INVOICE,AMTAPPLIED,IMPORTED,IMPDATE) VALUES ('".$bank_code."','".$bank_name."','".substr($receipt->transaction_id,5)."','".date('Ymd',strtotime($receipt->datetime))."','".$misc_invoice->feeType->description."','".$stud_reg."','".$stud_name."','".$receipt->control_no."','".$receipt->paid_amount."','0','".date('Ymd',strtotime(now()))."')");
+        }
 
         $acpac->close();
 

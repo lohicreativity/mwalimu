@@ -41,8 +41,6 @@ Route::get('test',function(){
     }
 });
 
-Route::get('rec',[GePGResponseController::class,'getReceipt']);
-
 Route::view('/', 'auth.login');
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', [HomeController::class,'dashboard'])->name('dashboard');

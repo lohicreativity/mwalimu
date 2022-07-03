@@ -121,11 +121,27 @@ class GePGResponseController extends Controller
 		$acpac = new ACPACService;
 		if($invoice->payable_type == 'applicant'){
 			$applicant = Applicant::find($invoice->payable_id);
-			$applicant->payment_complete_status = 1;
-			$applicant->save();
-
 			$stud_name = $applicant->surname.', '.$applicant->first_name.' '.$applicant->middle_name;
 			$stud_reg = 'NULL';
+			if(str_contains($invoice->feeType->name,'Application Fee')){
+			   $applicant->payment_complete_status = 1;
+			   $applicant->save();
+
+			   $inv = Invoice::with(['gatewayPayment','feeType'])->find($invoice->id);
+
+
+		        if($inv->gatewayPayment->psp_name == 'National Microfinance Bank'){
+		            $bank_code = 619;
+		            $bank_name = 'NMB';
+		        }else{
+		            $bank_code = 615;
+		            $bank_name = 'CRDB';
+		        }
+
+		        $acpac->query("INSERT INTO receipts (BANK,BANKNAME,RCPNUMBER,RCPDATE,RCPDESC,IDCUST,NAMECUST,INVOICE,AMTAPPLIED,IMPORTED,IMPDATE) VALUES ('".$bank_code."','".$bank_name."','".substr($inv->gatewayPayment->transaction_id,5)."','".date('Ymd',strtotime($inv->gatewayPayment->datetime))."','".$inv->feeType->description."','".$stud_reg."','".$stud_name."','".$inv->gatewayPayment->control_no."','".$inv->gatewayPayment->paid_amount."','0','".date('Ymd',strtotime(now()))."')");
+		    }
+
+			
 
 			if(str_contains($invoice->feeType->name,'Tuition Fee')){
 				$paid_amount = GatewayPayment::where('bill_id',$invoice->reference_no)->sum('paid_amount');
@@ -157,21 +173,6 @@ class GePGResponseController extends Controller
 			    $applicant->other_payment_check = $data['paid_amount'] == $invoice->amount? 1 : 0;
 			    $applicant->save();
 			}
-
-			$inv = Invoice::with(['gatewayPayment','feeType'])->find($invoice->id);
-
-
-		        if($inv->gatewayPayment->psp_name == 'National Microfinance Bank'){
-		            $bank_code = 619;
-		            $bank_name = 'NMB';
-		        }else{
-		            $bank_code = 615;
-		            $bank_name = 'CRDB';
-		        }
-
-		        $acpac->query("INSERT INTO receipts (BANK,BANKNAME,RCPNUMBER,RCPDATE,RCPDESC,IDCUST,NAMECUST,INVOICE,AMTAPPLIED,IMPORTED,IMPDATE) VALUES ('".$bank_code."','".$bank_name."','".substr($inv->gatewayPayment->transaction_id,5)."','".date('Ymd',strtotime($inv->gatewayPayment->datetime))."','".$inv->feeType->description."','".$stud_reg."','".$stud_name."','".$inv->gatewayPayment->control_no."','".$inv->gatewayPayment->paid_amount."','0','".date('Ymd',strtotime(now()))."')");
-
-		        Log::info("INSERT INTO receipts (BANK,BANKNAME,RCPNUMBER,RCPDATE,RCPDESC,IDCUST,NAMECUST,INVOICE,AMTAPPLIED,IMPORTED,IMPDATE) VALUES ('".$bank_code."','".$bank_name."','".substr($inv->gatewayPayment->transaction_id,5)."','".date('Ymd',strtotime($inv->gatewayPayment->datetime))."','".$inv->feeType->description."','".$stud_reg."','".$stud_name."','".$inv->gatewayPayment->control_no."','".$inv->gatewayPayment->paid_amount."','0','".date('Ymd',strtotime(now()))."')");
 
 
 		}
@@ -215,8 +216,6 @@ class GePGResponseController extends Controller
 		        }
 
 		        $acpac->query("INSERT INTO receipts (BANK,BANKNAME,RCPNUMBER,RCPDATE,RCPDESC,IDCUST,NAMECUST,INVOICE,AMTAPPLIED,IMPORTED,IMPDATE) VALUES ('".$bank_code."','".$bank_name."','".substr($inv->gatewayPayment->transaction_id,5)."','".date('Ymd',strtotime($inv->gatewayPayment->datetime))."','".$inv->feeType->description."','".$stud_reg."','".$stud_name."','".$inv->gatewayPayment->control_no."','".$inv->gatewayPayment->paid_amount."','0','".date('Ymd',strtotime(now()))."')");
-
-		        Log::info("INSERT INTO receipts (BANK,BANKNAME,RCPNUMBER,RCPDATE,RCPDESC,IDCUST,NAMECUST,INVOICE,AMTAPPLIED,IMPORTED,IMPDATE) VALUES ('".$bank_code."','".$bank_name."','".substr($inv->gatewayPayment->transaction_id,5)."','".date('Ymd',strtotime($inv->gatewayPayment->datetime))."','".$inv->feeType->description."','".$stud_reg."','".$stud_name."','".$inv->gatewayPayment->control_no."','".$inv->gatewayPayment->paid_amount."','0','".date('Ymd',strtotime(now()))."')");
 
 	        }else{
                $inv = Invoice::with(['gatewayPayment','feeType'])->find($invoice->id);
