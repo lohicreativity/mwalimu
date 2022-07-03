@@ -59,66 +59,65 @@ class GePGResponseController extends Controller
      */
     public function getReceipt(Request $request)
     {
-  //   	$arrContextOptions=array(
-		//       "ssl"=>array(
-		//             "verify_peer"=>false,
-		//             "verify_peer_name"=>false,
-		//         ),
-		//     );  
-  //   	//$jsondata = file_get_contents('php://input');
-		// //$data = json_decode($jsondata, true);
-		// $jsondata =file_get_contents('php://input', false, stream_context_create($arrContextOptions));
+    	$arrContextOptions=array(
+		      "ssl"=>array(
+		            "verify_peer"=>false,
+		            "verify_peer_name"=>false,
+		        ),
+		    );  
+    	//$jsondata = file_get_contents('php://input');
+		//$data = json_decode($jsondata, true);
+		$jsondata =file_get_contents('php://input', false, stream_context_create($arrContextOptions));
 
-		// $data = json_decode($jsondata, true);
+		$data = json_decode($jsondata, true);
 
-		//  //get response details
-		// $transaction_id = $data['transaction_id'];
-		// $sp_code = $data['sp_code'];
-		// $pay_refId= $data['pay_ref_id'];
-		// $bill_id = $data['bill_id'];
-		// $control_no = $data['control_no'];
-		// $bill_amount = $data['bill_amount'];
-		// $paid_amount = $data['paid_amount'];
-		// $bill_payOpt = $data['pay_option'];
-		// $ccy = $data['currency'];
-		// $datetime = $data['datetime'];
-		// $payment_channel = $data['payment_channel'];
-		// $cell_number = $data['cell_number'];
-		// $payer_email = !is_array($data['payer_email'])? $data['payer_email'] : null;
-		// $payer_name = $data['payer_name'];
-		// $psp_receipt_no = $data['psp_receipt_no'];
-		// $psp_name = $data['psp_name'];
-  //       $ctry_AccNum = $data['credited_acc_num'];
-
-
+		 //get response details
+		$transaction_id = $data['transaction_id'];
+		$sp_code = $data['sp_code'];
+		$pay_refId= $data['pay_ref_id'];
+		$bill_id = $data['bill_id'];
+		$control_no = $data['control_no'];
+		$bill_amount = $data['bill_amount'];
+		$paid_amount = $data['paid_amount'];
+		$bill_payOpt = $data['pay_option'];
+		$ccy = $data['currency'];
+		$datetime = $data['datetime'];
+		$payment_channel = $data['payment_channel'];
+		$cell_number = $data['cell_number'];
+		$payer_email = !is_array($data['payer_email'])? $data['payer_email'] : null;
+		$payer_name = $data['payer_name'];
+		$psp_receipt_no = $data['psp_receipt_no'];
+		$psp_name = $data['psp_name'];
+        $ctry_AccNum = $data['credited_acc_num'];
 
 
-		// $gatepay = new GatewayPayment;
-		// $gatepay->transaction_id = $transaction_id;
-		// // $gatepay->sp_code = $sp_code;
-		// $gatepay->pay_refId = $pay_refId;
-		// $gatepay->bill_id = $bill_id;
-		// $gatepay->control_no = $control_no;
-		// $gatepay->bill_amount = $bill_amount;
-		// $gatepay->paid_amount = $paid_amount;
-		// $gatepay->bill_payOpt = $bill_payOpt;
-		// $gatepay->ccy = $ccy;
-		// $gatepay->datetime = $datetime;
-		// $gatepay->payment_channel = $payment_channel;
-		// $gatepay->cell_number = $cell_number;
-		// $gatepay->payer_email = $payer_email;
-		// $gatepay->payer_name = $payer_name;
-		// $gatepay->psp_receipt_no = $psp_receipt_no;
-		// $gatepay->ctry_AccNum = $ctry_AccNum;
-		// $gatepay->psp_name = $psp_name;
-		// $gatepay->save();
 
 
-		// $invoice = Invoice::with('feeType')->where('control_no',$control_no)->first();
-		// $invoice->gateway_payment_id = $gatepay->id;
-		// $invoice->save();
+		$gatepay = new GatewayPayment;
+		$gatepay->transaction_id = $transaction_id;
+		// $gatepay->sp_code = $sp_code;
+		$gatepay->pay_refId = $pay_refId;
+		$gatepay->bill_id = $bill_id;
+		$gatepay->control_no = $control_no;
+		$gatepay->bill_amount = $bill_amount;
+		$gatepay->paid_amount = $paid_amount;
+		$gatepay->bill_payOpt = $bill_payOpt;
+		$gatepay->ccy = $ccy;
+		$gatepay->datetime = $datetime;
+		$gatepay->payment_channel = $payment_channel;
+		$gatepay->cell_number = $cell_number;
+		$gatepay->payer_email = $payer_email;
+		$gatepay->payer_name = $payer_name;
+		$gatepay->psp_receipt_no = $psp_receipt_no;
+		$gatepay->ctry_AccNum = $ctry_AccNum;
+		$gatepay->psp_name = $psp_name;
+		$gatepay->save();
 
-		$invoice = Invoice::with('feeType')->find(31014);
+
+		$invoice = Invoice::with('feeType')->where('control_no',$control_no)->first();
+		$invoice->gateway_payment_id = $gatepay->id;
+		$invoice->save();
+
 		$acpac = new ACPACService;
 		if($invoice->payable_type == 'applicant'){
 			$applicant = Applicant::find($invoice->payable_id);
