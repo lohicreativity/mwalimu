@@ -40,7 +40,7 @@
         <!-- Main row -->
         <div class="row">
           <!-- Left col -->
-          <div class="col-6">
+          <div class="col-12">
             <div class="card">
               <div class="card-header">
                 <h3 class="card-title">Request Control Number</h3>
