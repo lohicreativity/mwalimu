@@ -48,6 +48,10 @@
                    <div class="alert alert-warning">
                      <h4>You are not registered yet for this semester.</h4>
                    </div>
+                 @else
+                   <div class="alert alert-success">
+                     <h4>You are already registered yet for this semester.</h4>
+                   </div>
                  @endif
               </div>
               @if(!$registration)

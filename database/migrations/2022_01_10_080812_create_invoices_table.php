@@ -23,8 +23,8 @@ class CreateInvoicesTable extends Migration
             $table->string('currency',5)->default('TZS');
             $table->unsignedBigInteger('payable_id');
             $table->string('payable_type',30);
-            $table->unsignedBigInteger('usable_id');
-            $table->string('usable_type',30);
+            $table->unsignedBigInteger('applicable_id');
+            $table->string('applicable_type',30);
             $table->unsignedBigInteger('fee_type_id');
             $table->unsignedBigInteger('gateway_payment_id')->nullable();
             $table->timestamps();

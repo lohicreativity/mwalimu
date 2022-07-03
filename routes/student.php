@@ -47,7 +47,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 
 	Route::get('results/appeal',[AppealController::class,'appealResults']);
 
-	Route::get('request-control-number',[StudentController::class,'requestControlNumber']);
+	Route::get('request-control-number',[StudentController::class,'showRequestControlNumber']);
 
 	Route::get('request-transcript',[TranscriptRequestController::class, 'store']);
 
