@@ -13,6 +13,7 @@ use App\Domain\Academic\Models\Department;
 use App\Domain\Finance\Models\FeeAmount;
 use App\Domain\Finance\Models\ProgramFee;
 use App\Domain\Finance\Models\Invoice;
+use App\Domain\Finance\Models\GatewayPayment;
 use App\Domain\Finance\Models\NactePayment;
 use App\Domain\Settings\Models\NTALevel;
 use App\Domain\Settings\Models\Campus;
@@ -1610,6 +1611,8 @@ class ApplicationController extends Controller
                $query->where('name','LIKE','%Miscellaneous%');
         })->with(['gatewayPayment','feeType'])->where('payable_type','applicant')->where('payable_id',$applicant->id)->first();
 
+        $usd_currency = Currency::where('code','USD')->first();
+
         $acpac = new ACPACService;
         $stud_name = $student->surname.', '.$student->first_name.' '.$student->middle_name;
         $stud_reg = substr($student->registration_number, 5);
@@ -1629,8 +1632,36 @@ class ApplicationController extends Controller
         $acpac->query("INSERT INTO customer (IDCUST,IDGRP,NAMECUST,TEXTSTRE1,TEXTSTRE2,TEXTSTRE3,TEXTSTRE4,NAMECITY,CODESTTE,CODEPSTL,CODECTRY,NAMECTAC,TEXTPHON1,TEXTPHON2,CODETERR,IDACCTSET,IDAUTOCASH,IDBILLCYCL,IDSVCCHRG,IDDLNQ,CODECURN,EMAIL1,EMAIL2) VALUES ('".$stud_reg."','".$stud_group."','".$stud_name."','".$applicant->address."','".$applicant->district->name."','".$applicant->ward->name."','".$applicant->street."','".$applicant->region->name."','".$applicant->region->name."','".$applicant->address."','".$applicant->country->name."','".$next_of_kin."','".$applicant->phone."','".$applicant->nextOfKin->phone."','".$program_code."','STD','NIL','NIL','NIL','NIL','TSH','".$applicant->email."','".$next_of_kin_email."')");
           
         $acpac->query("INSERT INTO invoices (INVNUMBER,INVDATE,INVDESC,IDCUST,NAMECUST,[LINENO],REVACT,REVDESC,REVREF,REVAMT,IMPORTED,IMPDATE) VALUES ('".$tuition_invoice->gatewayPayment->control_no."','".date('Y',strtotime($tuition_invoice->created_at))."','".$tuition_invoice->feeType->description."','".$stud_reg."','".$stud_name."','1','".$tuition_invoice->feeType->gl_code."','".$tuition_invoice->feeType->name."','".$tuition_invoice->feeType->description."','".$tuition_invoice->amount."','0','".date('Y',strtotime(now()))."')");
+
+        if(str_contains($applicant->programLevel->name,'Bachelor')){
+            $quality_assurance_fee = FeeAmount::whereHas('feeItem',function($query){
+                $query->where('name','LIKE','%TCU%');
+            })->where('study_academic_year_id',$ac_year->id)->with(['feeItem.feeType'])->first();
+        }else{
+            $quality_assurance_fee = FeeAmount::whereHas('feeItem',function($query){
+                $query->where('name','LIKE','%NACTE%');
+            })->where('study_academic_year_id',$ac_year->id)->with(['feeItem.feeType'])->first();
+        }
+
+        $other_fees = FeeAmount::whereHas('feeItem',function($query){
+                $query->where('is_mandatory',1)->where('name','NOT LIKE','%NACTE%')->where('name','NOT LIKE','%TCU%');
+            })->with(['feeItem.feeType'])->where('study_academic_year_id',$ac_year->id)->get();
+
+        if(str_contains($applicant->nationality,'Tanzania')){
+            $acpac->query("INSERT INTO invoices (INVNUMBER,INVDATE,INVDESC,IDCUST,NAMECUST,[LINENO],REVACT,REVDESC,REVREF,REVAMT,IMPORTED,IMPDATE) VALUES ('".$misc_invoice->gatewayPayment->control_no."','".date('Y',strtotime($misc_invoice->created_at))."','".$quality_assurance_fee->feeItem->feeType->description."','".$stud_reg."','".$stud_name."','1','".$quality_assurance_fee->feeItem->feeType->gl_code."','".$quality_assurance_fee->feeItem->feeType->name."','".$quality_assurance_fee->feeItem->feeType->description."','".$quality_assurance_fee->amount_in_tzs."','0','".date('Y',strtotime(now()))."')");
+
+            foreach ($other_fees as $fee) {
+                $acpac->query("INSERT INTO invoices (INVNUMBER,INVDATE,INVDESC,IDCUST,NAMECUST,[LINENO],REVACT,REVDESC,REVREF,REVAMT,IMPORTED,IMPDATE) VALUES ('".$misc_invoice->gatewayPayment->control_no."','".date('Y',strtotime($misc_invoice->created_at))."','".$fee->feeItem->feeType->description."','".$stud_reg."','".$stud_name."','1','".$fee->feeItem->feeType->gl_code."','".$fee->feeItem->feeType->name."','".$fee->feeItem->feeType->description."','".$fee->amount_in_tzs."','0','".date('Y',strtotime(now()))."')");
+            }
+        }else{
+            $acpac->query("INSERT INTO invoices (INVNUMBER,INVDATE,INVDESC,IDCUST,NAMECUST,[LINENO],REVACT,REVDESC,REVREF,REVAMT,IMPORTED,IMPDATE) VALUES ('".$misc_invoice->gatewayPayment->control_no."','".date('Y',strtotime($misc_invoice->created_at))."','".$quality_assurance_fee->feeItem->feeType->description."','".$stud_reg."','".$stud_name."','1','".$quality_assurance_fee->feeItem->feeType->gl_code."','".$quality_assurance_fee->feeItem->feeType->name."','".$quality_assurance_fee->feeItem->feeType->description."','".($fee->amount_in_usd*$usd_currency->factor)."','0','".date('Y',strtotime(now()))."')");
+
+            foreach ($other_fees as $fee) {
+                $acpac->query("INSERT INTO invoices (INVNUMBER,INVDATE,INVDESC,IDCUST,NAMECUST,[LINENO],REVACT,REVDESC,REVREF,REVAMT,IMPORTED,IMPDATE) VALUES ('".$misc_invoice->gatewayPayment->control_no."','".date('Y',strtotime($misc_invoice->created_at))."','".$fee->feeItem->feeType->description."','".$stud_reg."','".$stud_name."','1','".$fee->feeItem->feeType->gl_code."','".$fee->feeItem->feeType->name."','".$fee->feeItem->feeType->description."','".($fee->amount_in_usd*$usd_currency->factor)."','0','".date('Y',strtotime(now()))."')");
+            }
+        }
         
-        $acpac->query("INSERT INTO invoices (INVNUMBER,INVDATE,INVDESC,IDCUST,NAMECUST,[LINENO],REVACT,REVDESC,REVREF,REVAMT,IMPORTED,IMPDATE) VALUES ('".$misc_invoice->gatewayPayment->control_no."','".date('Y',strtotime($misc_invoice->created_at))."','".$misc_invoice->feeType->description."','".$stud_reg."','".$stud_name."','1','".$misc_invoice->feeType->gl_code."','".$misc_invoice->feeType->name."','".$misc_invoice->feeType->description."','".$misc_invoice->amount."','0','".date('Y',strtotime(now()))."')");
+        
 
         $tuition_receipts = GatewayPayment::where('control_no',$tuition_invoice->control_no)->get();
 
