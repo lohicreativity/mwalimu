@@ -17,6 +17,7 @@ use App\Domain\Academic\Models\ResultPublication;
 use App\Domain\Academic\Models\Postponement;
 use App\Domain\Registration\Models\Registration;
 use App\Domain\Finance\Models\FeeType;
+use App\Domain\Finance\Models\FeeAmount;
 use App\Domain\Finance\Models\Invoice;
 use App\Domain\Finance\Models\ProgramFee;
 use App\Domain\Finance\Models\GatewatPayment;
