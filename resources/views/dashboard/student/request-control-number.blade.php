@@ -41,51 +41,22 @@
         <div class="row">
           <!-- Left col -->
           <div class="col-6">
-            <div class="card ss-hidden" style="display: none;">
+            <div class="card">
               <div class="card-header">
-                <h3 class="card-title">Select number of subjects</h3>
+                <h3 class="card-title">Request Control Number</h3>
               </div>
               <!-- /.card-header -->
               {!! Form::open(['url'=>'student/get-control-number','class'=>'ss-form-processing']) !!}
-                @php
-                   $amount = [
-                      'placeholder'=>'Amount',
-                      'class'=>'form-control',
-                      'readonly'=>true,
-                      'required'=>true,
-                      'id'=>'ss-amount'
-                   ];
-                @endphp
               <div class="card-body">
-                 <div class="form-group">
-                   {!! Form::label('','Fee type') !!}
-                   <select name="fee_type_id" class="form-control" data-token="{{ session()->token() }}" data-source-url="{{ url('api/v1/get-fee-type') }}" data-target="#ss-amount" id="ss-select-fee-type">
-                      <option value="">Select Fee Type</option>
-                      @foreach($fee_types as $type)
-                      <option value="{{ $type->id }}">{{ $type->name }}</option>
-                      @endforeach
-                   </select>
-                 </div>
-                 {!! Form::input('hidden','payable_type','student') !!}
-                 {!! Form::input('hidden','payable_id',$student->id) !!}
+                 <label class="radio-inline">
+                          <input type="radio" name="fee_type" value="TUITION" id="ss-card-other"> Tuition Fee
+                        </label>
+                        <label class="radio-inline">
+                          <input type="radio" name="fee_type" value="LOST ID" id="ss-card-none"> Lost Identity Card
+                        </label>
 
-                 <div class="form-group">
-                   {!! Form::label('','Select number of subjects') !!}
-                   <select name="number_of_modules" class="form-control" id="ss-subjects-number">
-                       <option value="1">1</option>
-                       <option value="2">2</option>
-                       <option value="3">3</option>
-                       <option value="4">4</option>
-                       <option value="5">5</option>
-                       <option value="6">6</option>
-                       <option value="7">7</option>
-                       <option value="8">8</option>
-                   </select>
-                 </div>
-                 <div class="form-group">
-                   {!! Form::label('','Amount') !!}
-                   {!! Form::text('amount',null,$amount) !!}
-                 </div>
+                 {!! Form::input('hidden','student_id',$student->id) !!}
+
                </div>
                  <div class="card-footer">
                   <button type="submit" class="btn btn-primary">{{ __('Request Control Number') }}</button>

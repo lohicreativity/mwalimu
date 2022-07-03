@@ -19,6 +19,7 @@ use App\Domain\Registration\Models\Registration;
 use App\Domain\Finance\Models\FeeType;
 use App\Domain\Finance\Models\Invoice;
 use App\Domain\Finance\Models\LoanAllocation;
+use Illuminate\Support\Facades\Http;
 use App\Models\User;
 use Auth, Validator;
 
@@ -362,9 +363,9 @@ class StudentController extends Controller
     }
 
     /**
-     * Results appeal
+     * Request control number
      */
-    public function requestControlNumber(Request $request)
+    public function showRequestControlNumber(Request $request)
     {
         $student = User::find(Auth::user()->id)->student;
         $data = [
@@ -373,6 +374,257 @@ class StudentController extends Controller
            'invoices'=>Invoice::where('payable_id',$student->id)->where('payable_type','student')->with(['feeType','gatewayPayment'])->latest()->paginate(20)
         ];
         return view('dashboard.student.request-control-number',$data)->withTItle('Request Control Number');
+    }
+
+    /**
+     * Request control number 
+     */
+    public function requestControlNumber(Request $request)
+    {
+        $student = Student::with('applicant')->find($request->get('student_id'));
+        $email = $student->email? $student->email : 'admission@mnma.ac.tz';
+
+        $study_academic_year = StudyAcademicYear::find(session('active_academic_year_id'));
+        $usd_currency = Currency::where('code','USD')->first();
+
+        if($request->get('fee_type') == 'TUITION'){
+            $existing_tuition_invoice = Invoice::whereHas('feeType',function($query){
+                $query->where('name','LIKE','%Tuition%');
+            })->where('applicable_type','academic_year')->where('applicable_id',$study_academic_year->id)->first();
+            
+            if($existing_tuition_invoice){
+                return redirect()->back()->with('error','You have already requested for tuition fee control number for this academic year');
+            }
+
+            $program_fee = ProgramFee::with('feeItem.feeType')->where('study_academic_year_id',$study_academic_year->id)->where('campus_program_id',$student->campus_program_id)->first();
+
+            if(!$program_fee){
+                return redirect()->back()->with('error','Programme fee has not been set');
+            }
+
+            $loan_allocation = LoanAllocation::where('index_number',$student->applicant->index_number)->where('year_of_study',1)->where('study_academic_year_id',$study_academic_year->id)->first();
+            if($loan_allocation){
+                 if(str_contains($student->applicant->nationality,'Tanzania')){
+                     $amount = $program_fee->amount_in_tzs - $loan_allocation->tuition_fee;
+                     $amount_loan = round($loan_allocation->tuition_fee);
+                     $currency = 'TZS';
+                 }else{
+                     $amount = round(($program_fee->amount_in_usd - $loan_allocation->tuition_fee/$usd_currency->factor) * $usd_currency->factor);
+                     $amount_loan = round($loan_allocation->tuition_fee);
+                     $currency = 'TZS'; //'USD';
+                 }
+            }else{
+                 if(str_contains($student->applicant->nationality,'Tanzania')){
+                     $amount = round($program_fee->amount_in_tzs);
+                     $amount_loan = 0.00;
+                     $currency = 'TZS';
+                 }else{
+                     $amount = round($program_fee->amount_in_usd*$usd_currency->factor);
+                     $amount_loan = 0.00;
+                     $currency = 'TZS'; //'USD';
+                 }
+            }
+
+                 if(str_contains($student->applicant->nationality,'Tanzania')){
+                     $amount_without_loan = round($program_fee->amount_in_tzs);
+                 }else{
+                     $amount_without_loan = round($program_fee->amount_in_usd*$usd_currency->factor);
+                 }
+          
+            
+            if($amount != 0.00){
+                  $invoice = new Invoice;
+                  $invoice->reference_no = 'MNMA-TF-'.time();
+                  $invoice->amount = $amount;
+                  $invoice->currency = $currency;
+                  $invoice->payable_id = $student->id;
+                  $invoice->payable_type = 'student';
+                  $invoice->applicable_id = $study_academic_year->id;
+                  $invoice->applicable_type = 'academic_year';
+                  $invoice->fee_type_id = $program_fee->feeItem->feeType->id;
+                  $invoice->save();
+
+
+                  $generated_by = 'SP';
+                  $approved_by = 'SP';
+                  $inst_id = config('constants.SUBSPCODE');
+
+
+
+                  $result = $this->requestControlNumber($request,
+                                              $invoice->reference_no,
+                                              $inst_id,
+                                              $invoice->amount,
+                                              $program_fee->feeItem->feeType->description,
+                                              $program_fee->feeItem->feeType->gfs_code,
+                                              $program_fee->feeItem->feeType->payment_option,
+                                              $applicant->id,
+                                              $applicant->first_name.' '.$applicant->surname,
+                                              $applicant->phone,
+                                              $email,
+                                              $generated_by,
+                                              $approved_by,
+                                              $program_fee->feeItem->feeType->duration,
+                                              $invoice->currency);
+            }
+            
+            if(str_contains($student->applicant->programLevel->name,'Bachelor')){
+               $quality_assurance_fee = FeeAmount::whereHas('feeItem',function($query){
+                  $query->where('name','LIKE','%TCU%');
+               })->where('study_academic_year_id',$study_academic_year->id)->first();
+            }else{
+               $quality_assurance_fee = FeeAmount::whereHas('feeItem',function($query){
+                  $query->where('name','LIKE','%NACTE%');
+               })->where('study_academic_year_id',$study_academic_year->id)->first();
+            }
+            
+            $other_fees_tzs = FeeAmount::whereHas('feeItem',function($query){
+              $query->where('is_mandatory',1)->where('name','NOT LIKE','%NACTE%')->where('name','NOT LIKE','%TCU%');
+            })->where('study_academic_year_id',$study_academic_year->id)->sum('amount_in_tzs');
+            $other_fees_usd = FeeAmount::whereHas('feeItem',function($query){
+              $query->where('is_mandatory',1)->where('name','NOT LIKE','%NACTE%')->where('name','NOT LIKE','%TCU%');
+            })->where('study_academic_year_id',$study_academic_year->id)->sum('amount_in_usd');
+
+            $other_fees_tzs = $other_fees_tzs + $quality_assurance_fee->amount_in_tzs;
+            $other_fees_usd = $other_fees_usd + $quality_assurance_fee->amount_in_usd;
+            if(str_contains($student->applicant->nationality,'Tanzania')){
+              $other_fees = round($other_fees_tzs);
+              $currency = 'TZS';
+            }else{
+              $other_fees = round($other_fees_usd*$usd_currency->factor);
+              $currency = 'TZS';//'USD';
+            }
+
+            $feeType = FeeType::where('name','LIKE','%Miscellaneous%')->first();
+
+            if(!$feeType){
+                return redirect()->back()->with('error','Miscellaneous fee type has not been set');
+            }
+            
+            if($other_fees != 0.00){
+                $invoice = new Invoice;
+                $invoice->reference_no = 'MNMA-MSC'.time();
+                $invoice->amount = $other_fees;
+                $invoice->currency = $currency;
+                $invoice->payable_id = $student->id;
+                $invoice->payable_type = 'student';
+                $invoice->fee_type_id = $feeType->id;
+                $invoice->applicable_id = $study_academic_year->id;
+                $invoice->applicable_type = 'academic_year';
+                $invoice->save();
+
+
+                $generated_by = 'SP';
+                $approved_by = 'SP';
+                $inst_id = config('constants.SUBSPCODE');
+
+                $result = $this->requestControlNumber($request,
+                                            $invoice->reference_no,
+                                            $inst_id,
+                                            $invoice->amount,
+                                            $feeType->description,
+                                            $feeType->gfs_code,
+                                            $feeType->payment_option,
+                                            $applicant->id,
+                                            $applicant->first_name.' '.$applicant->surname,
+                                            $applicant->phone,
+                                            $email,
+                                            $generated_by,
+                                            $approved_by,
+                                            $feeType->duration,
+                                            $invoice->currency);
+
+            } 
+        }elseif($request->get('fee_type') == 'LOST ID'){
+            $identity_card_fee = FeeAmount::whereHas('feeItem',function($query){
+                  $query->where('name','LIKE','%Identity Card%');
+               })->where('study_academic_year_id',$study_academic_year->id)->first();
+
+
+            if(str_contains($student->applicant->nationality,'Tanzania')){
+              $amount = round($identity_card_fee->amount_in_tzs);
+              $currency = 'TZS';
+            }else{
+              $amount = round($identity_card_fee->amount_in_usd*$usd_currency->factor);
+              $currency = 'TZS';//'USD';
+            }
+
+            $feeType = FeeType::where('name','LIKE','%Identity Card%')->first();
+
+            if(!$feeType){
+                return redirect()->back()->with('error','Identity card fee type has not been set');
+            }
+
+            if($amount != 0.00){
+                $invoice = new Invoice;
+                $invoice->reference_no = 'MNMA-ID'.time();
+                $invoice->amount = $amount;
+                $invoice->currency = $currency;
+                $invoice->payable_id = $student->id;
+                $invoice->payable_type = 'student';
+                $invoice->fee_type_id = $feeType->id;
+                $invoice->applicable_id = $study_academic_year->id;
+                $invoice->applicable_type = 'academic_year';
+                $invoice->save();
+
+
+                $generated_by = 'SP';
+                $approved_by = 'SP';
+                $inst_id = config('constants.SUBSPCODE');
+
+                $result = $this->requestControlNumber($request,
+                                            $invoice->reference_no,
+                                            $inst_id,
+                                            $invoice->amount,
+                                            $feeType->description,
+                                            $feeType->gfs_code,
+                                            $feeType->payment_option,
+                                            $applicant->id,
+                                            $applicant->first_name.' '.$applicant->surname,
+                                            $applicant->phone,
+                                            $email,
+                                            $generated_by,
+                                            $approved_by,
+                                            $feeType->duration,
+                                            $invoice->currency);
+
+            } 
+        }
+
+        return redirect()->back()->with('message','Control numbers requested successfully');
+    }
+
+    /**
+     * Request control number
+     */
+    public function requestControlNumber(Request $request,$billno,$inst_id,$amount,$description,$gfs_code,$payment_option,$payerid,$payer_name,$payer_cell,$payer_email,$generated_by,$approved_by,$days,$currency){
+      $data = array(
+        'payment_ref'=>$billno,
+        'sub_sp_code'=>$inst_id,
+        'amount'=> $amount,
+        'desc'=> $description,
+        'gfs_code'=> $gfs_code,
+        'payment_type'=> $payment_option,
+        'payerid'=> $payerid,
+        'payer_name'=> $payer_name,
+        'payer_cell'=> $payer_cell,
+        'payer_email'=> $payer_email,
+        'days_expires_after'=> $days,
+        'generated_by'=>$generated_by,
+        'approved_by'=>$approved_by,
+        'currency'=>$currency
+      );
+
+      //$txt=print_r($data, true);
+      //$myfile = file_put_contents('/var/public_html/ifm/logs/req_bill.txt', $txt.PHP_EOL , FILE_APPEND | LOCK_EX);
+            $url = url('bills/post_bill');
+      $result = Http::withHeaders([
+                        'X-CSRF-TOKEN'=> csrf_token()
+                ])->post($url,$data);
+
+      
+    return redirect()->back()->with('message','The bill with id '.$billno.' has been queued.', 200);
+            
     }
 
     /**
