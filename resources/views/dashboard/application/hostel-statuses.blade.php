@@ -105,6 +105,7 @@
                          <th>Applicant</th>
                          <th>Gender</th>
                          <th>Programme</th>
+                         <th>Location</th>
                          <th>Status</th>
                          <th>Verification</th>
                        </tr>
@@ -115,6 +116,17 @@
                          <td>{{ $applicant->first_name }} {{ $applicant->middle_name }} {{ $applicant->surname }}</td>
                          <td>@if($applicant->hostel_status == 1) Yes @else No @endif</td>
                          <td>{{ $applicant->selections[0]->campusProgram->program->name }}</td>
+                         <td>
+                             @if($applicant->hostel_status === 1)
+                                On Campus
+                             @elseif($applicant->hostel_status === 2)
+                                Off Campus
+                             @elseif($applicant->hostel_status == 3)
+                                Any
+                             @else
+                                None
+                             @endif
+                         </td>
                          <td>
                              @if($applicant->hostel_available_status === 1)
                                 AVAILABLE

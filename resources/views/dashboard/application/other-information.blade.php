@@ -276,6 +276,12 @@
                     <input type="radio" name="hostel_status" value="1" @if($applicant->hostel_status === 1) checked="checked" @endif> I require on campus accomodation
                   </label>
                   <label class="radio-inline">
+                    <input type="radio" name="hostel_status" value="2" @if($applicant->hostel_status === 1) checked="checked" @endif> I require off-campus accomodation
+                  </label>
+                  <label class="radio-inline">
+                    <input type="radio" name="hostel_status" value="3" @if($applicant->hostel_status === 1) checked="checked" @endif> I require on campus or off-campus accomodation
+                  </label>
+                  <label class="radio-inline">
                     <input type="radio" name="hostel_status" value="0" @if($applicant->hostel_status === 0) checked="checked" @endif> I do not require on campus accomodation
                   </label>
               </div>
