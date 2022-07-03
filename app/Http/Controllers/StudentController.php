@@ -379,7 +379,7 @@ class StudentController extends Controller
     /**
      * Request control number 
      */
-    public function requestControlNumber(Request $request)
+    public function requestPaymentControlNumber(Request $request)
     {
         $student = Student::with('applicant')->find($request->get('student_id'));
         $email = $student->email? $student->email : 'admission@mnma.ac.tz';
@@ -391,7 +391,7 @@ class StudentController extends Controller
             $existing_tuition_invoice = Invoice::whereHas('feeType',function($query){
                 $query->where('name','LIKE','%Tuition%');
             })->where('applicable_type','academic_year')->where('applicable_id',$study_academic_year->id)->first();
-            
+
             if($existing_tuition_invoice){
                 return redirect()->back()->with('error','You have already requested for tuition fee control number for this academic year');
             }
