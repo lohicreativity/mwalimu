@@ -10,6 +10,7 @@ use App\Domain\Academic\Models\CampusProgram;
 use App\Domain\Academic\Models\ResultPublication;
 use App\Domain\Academic\Models\Appeal;
 use App\Domain\Academic\Models\Clearance;
+use App\Domain\Academic\Models\Award;
 use App\Domain\Settings\Models\NTALevel;
 use App\Domain\Registration\Models\Student;
 use App\Domain\Registration\Models\StudentshipStatus;
@@ -120,7 +121,10 @@ class GraduantController extends Controller
     	$data = [
            'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
            'study_academic_year'=>$request->has('study_academic_year_id')? StudyAcademicYear::with('academicYear')->find($request->get('study_academic_year_id')) : null,
-           'graduants'=>Graduant::with(['student.campusProgram.program.ntaLevel','student.campusProgram.campus','student.overallRemark'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('status','GRADUATING')->paginate(50),
+           'graduants'=>Graduant::whereHas('student.campusProgram.program',function($query) use($request){
+               $query->where('award_id',$request->get('program_level_id'));
+           })->with(['student.campusProgram.program.ntaLevel','student.campusProgram.campus','student.overallRemark'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('status','GRADUATING')->paginate(50),
+           'awards'=>Award::all(),
            'request'=>$request
     	];
     	return view('dashboard.academic.graduants-list',$data)->withTitle('Graduants List');
@@ -134,7 +138,10 @@ class GraduantController extends Controller
     	$data = [
            'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
            'study_academic_year'=>$request->has('study_academic_year_id')? StudyAcademicYear::with('academicYear')->find($request->get('study_academic_year_id')) : null,
-           'non_graduants'=>Graduant::with(['student.campusProgram.program'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('status','EXCLUDED')->paginate(50),
+           'non_graduants'=>Graduant::whereHas('student.campusProgram.program',function($query) use($request){
+               $query->where('award_id',$request->get('program_level_id'));
+           })->with(['student.campusProgram.program'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('status','EXCLUDED')->paginate(50),
+           'awards'=>Award::all(),
            'request'=>$request
     	];
     	return view('dashboard.academic.non-graduants-list',$data)->withTitle('Non Graduants List');

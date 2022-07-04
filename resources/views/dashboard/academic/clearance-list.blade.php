@@ -83,7 +83,7 @@
                  </span>
                 </div>
                 {!! Form::close() !!}
-                 <table class="table table-bordered ss-margin-top">
+                 <table class="table table-bordered ss-margin-top ss-paginated-table">
                    <thead>
                     <tr>
                       <th>Student</th>

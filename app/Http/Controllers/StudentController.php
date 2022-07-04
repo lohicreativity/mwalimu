@@ -394,7 +394,7 @@ class StudentController extends Controller
         if($request->get('fee_type') == 'TUITION'){
             $existing_tuition_invoice = Invoice::whereHas('feeType',function($query){
                 $query->where('name','LIKE','%Tuition%');
-            })->where('applicable_type','academic_year')->where('applicable_id',$study_academic_year->id)->first();
+            })->where('applicable_type','academic_year')->where('applicable_id',$study_academic_year->id)->where('payable_id',$student->id)->where('payable_type','student')->first();
 
             if($existing_tuition_invoice){
                 return redirect()->back()->with('error','You have already requested for tuition fee control number for this academic year');
