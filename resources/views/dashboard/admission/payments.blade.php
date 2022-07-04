@@ -57,30 +57,19 @@
                     </tr>
                     <tr>
                        <td>Programme Fee</td>
-                       @if($applicant->has_postponed == 1)
-                       <td> 100,000 TZS</td>
-                       @else
-                       @if(str_contains($applicant->nationality,'Tanzania'))
-                       <td>{{ number_format($program_fee->amount_in_tzs,0) }} TZS</td>
-                       @else
-                       <td>{{ number_format($program_fee->amount_in_usd*$usd_currency->factor,0) }} TZS</td>
-                       @endif
+                       <td>@if($program_fee_invoice) {{ number_format($program_fee_invoice->amount,0) }} {{ $program_fee_invoice->currency }}</td>
                        @endif
                        <td>@if($program_fee_invoice) {{ $program_fee_invoice->control_no }} @if(!$program_fee_invoice->control_no)<a href="#" onclick="window.location.reload();"><i class="fa fa-refresh" ></i> Refresh</a>@endif  @endif</td>
                        <td>@if($program_fee_invoice) {{ number_format($program_fee_invoice->amount,0) }} {{ $program_fee_invoice->currency }} @endif</td>
                        <td>
-                         @if($loan_allocation)
-                         
-                         @else
+                         @if(!$loan_allocation)
                          @if(isset($program_fee_invoice->gatewayPayment))
                             {{ number_format($program_fee_invoice->gatewayPayment->paid_amount,0) }} TZS
                          @endif
                          @endif
                        </td>
                        <td>
-                         @if($loan_allocation)
-                         
-                         @else
+                         @if(!$loan_allocation)
                          @if(isset($program_fee_invoice->gatewayPayment))
                             {{ number_format($program_fee_invoice->gatewayPayment->bill_amount-$program_fee_invoice->gatewayPayment->paid_amount,0) }} TZS
                          @endif
@@ -91,11 +80,7 @@
                     @if($applicant->has_postponed != 1)
                     <tr>
                        <td>Other Fees</td>
-                       @if(str_contains($applicant->nationality,'Tanzania'))
-                       <td>{{ $other_fees_tzs }} TZS</td>
-                       @else
-                       <td>{{ $other_fees_usd }} USD</td>
-                       @endif
+                       <td>{{ number_format($other_fee_invoice->amount,0) }} {{ $other_fee_invoice->currency }} </td>
                        <td>@if($other_fee_invoice) {{ $other_fee_invoice->control_no }} @if(!$other_fee_invoice->control_no)<a href="#" onclick="window.location.reload();"><i class="fa fa-refresh" ></i> Refresh</a>@endif  @endif</td>
                        <td>@if($other_fee_invoice) {{ number_format($other_fee_invoice->amount,0) }} {{ $other_fee_invoice->currency }} @endif</td>
                        <td>
@@ -127,11 +112,7 @@
                     @if($hostel_fee)
                     <tr>
                        <td>Hostel Fee</td>
-                       @if(str_contains($applicant->nationality,'Tanzania'))
-                       <td>{{ number_format($hostel_fee->amount_in_tzs,0) }} TZS</td>
-                       @else
-                       <td>{{ number_format($hostel_fee->amount_in_usd*$usd_currency->factor,0) }} TZS</td>
-                       @endif
+                       <td>@if($hostel_fee_invoice) {{ number_format($hostel_fee_invoice->amount,0) }} {{ $hostel_fee_invoice->currency }} @endif</td>
                        <td>@if($hostel_fee_invoice) {{ $hostel_fee_invoice->control_no }} @if(!$hostel_fee_invoice->control_no)<a href="#" onclick="window.location.reload();"><i class="fa fa-refresh" ></i> Refresh</a>@endif @endif</td>
                        <td>
                          @if($hostel_fee_invoice)

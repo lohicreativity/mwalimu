@@ -90,7 +90,7 @@
                   @foreach($invoices as $invoice)
                   <tr>
                       <td>{{ $invoice->feeType->name }}</td>
-                      <td>{{ $invoice->amount }}</td>
+                      <td>{{ number_format($invoice->amount,0) }} TZS</td>
                       <td>{{ $invoice->currency }}</td>
                       <td>{{ $invoice->control_no }}</td>
                       <td>
