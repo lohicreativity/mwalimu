@@ -85,6 +85,7 @@
                       <th>Currency</th>
                       <th>Control Number</th>
                       <th>Status</th>
+                      <th>Date</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -102,6 +103,7 @@
                          <span class="badge badge-warning">Unpaid</span>
                         @endif
                       </td>
+                      <td>{{ date('Y-m-d',strtotime($invoice->created_at)) }}</td>
                   </tr>
                   @endforeach
                   </tbody>

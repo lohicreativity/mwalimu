@@ -46,12 +46,13 @@
               </div>
               <!-- /.card-header -->
               <div class="card-body">
-                 <table class="table table-bordered">
+                 <table class="table table-bordered ss-paginated-table">
                     <tr>
                        <td>Fee Type</td>
                        <td>Fee Amount</td>
                        <td>Paid Amount</td>
                        <td>Balance</td>
+                       <td>Date</td>
                     </tr>
                     @foreach($receipts as $receipt)
                     <tr>
@@ -63,12 +64,11 @@
                        <td>
                           {{ number_format($receipt->bill_amount-$receipt->paid_amount,2) }} {{ $receipt->ccy }}
                        </td>
+                       <td>{{ date('Y-m-d',strtotime($receipt->created_at))}}</td>
                     </tr>
                     @endforeach
                  </table>
-                 <div class="ss-pagination-links">
-                   {!! $receipts->render() !!}
-                 </div>
+                
               </div>
             </div>
             <!-- / .card -->
