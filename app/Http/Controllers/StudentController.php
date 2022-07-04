@@ -121,7 +121,7 @@ class StudentController extends Controller
       $student = User::find(Auth::user()->id)->student;
     	$data = [
             'student'=>$student,
-            'receipts'=>DB::table('gateway_payments')->join('invoices','gateway_payments.control_no','=','invoices.control_no')->join('fee_types','invoices.fee_type_id','=','fee_types.id')->join('study_academic_years','invoices.study_academic_year_id','=','study_academic_years.id')->join('academic_years','study_academic_years.academic_year_id','=','academic_years.id')->select(DB::raw('gateway_payments.*, fee_types.name as fee_name, academic_years.year as academic_year'))->where('invoices.payable_id',$student->id)->where('invoices.payable_type','student')->latest()->get()
+            'receipts'=>DB::table('gateway_payments')->join('invoices','gateway_payments.control_no','=','invoices.control_no')->join('fee_types','invoices.fee_type_id','=','fee_types.id')->join('study_academic_years','invoices.applicable_id','=','study_academic_years.id')->join('academic_years','study_academic_years.academic_year_id','=','academic_years.id')->select(DB::raw('gateway_payments.*, fee_types.name as fee_name, academic_years.year as academic_year'))->where('invoices.payable_id',$student->id)->where('invoices.payable_type','student')->where('invoices.applicable_type','academic_year')->latest()->get()
     	];
     	return view('dashboard.student.payments',$data)->withTitle('Payments');
     }

@@ -81,8 +81,8 @@
                     <tr>
                       <th>Academic Year</th>
                       <th>Fee Item</th>
-                      <th>Amount</th>
-                      <th>Amount to be paid</th>
+                      <th>Actual Amount</th>
+                      <th>Amount to be Paid</th>
                       <th>Control Number</th>
                       <th>Status</th>    
                     </tr>
