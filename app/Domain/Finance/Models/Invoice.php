@@ -5,6 +5,7 @@ namespace App\Domain\Finance\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Domain\Academic\Models\Appeal;
+use App\Domain\Academic\Models\StudyAcademicYear;
 
 class Invoice extends Model
 {
@@ -34,6 +35,14 @@ class Invoice extends Model
     public function feeType()
     {
     	return $this->belongsTo(FeeType::class,'fee_type_id');
+    }
+
+    /**
+     * Establish one to many relationship with study academic year
+     */
+    public function studyAcademicYear()
+    {
+        return $this->belongsTo(StudyAcademicYear::class,'study_academic_year_id');
     }
 
     /**
