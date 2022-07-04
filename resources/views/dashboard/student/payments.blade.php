@@ -50,11 +50,11 @@
                     <thead>
                     <tr>
                        <th>Academic Year</th>
+                       <th>Date</th>
                        <th>Fee Type</th>
                        <th>Fee Amount</th>
                        <th>Paid Amount</th>
                        <th>Balance</th>
-                       <th>Date</th>
                     </tr>
                   </thead>
                   <tbody>
