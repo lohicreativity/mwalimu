@@ -47,28 +47,32 @@
               <!-- /.card-header -->
               <div class="card-body">
                  <table class="table table-bordered ss-paginated-table">
+                    <thead>
                     <tr>
-                       <td>Fee Type</td>
-                       <td>Academic Year</td>
-                       <td>Fee Amount</td>
-                       <td>Paid Amount</td>
-                       <td>Balance</td>
-                       <td>Date</td>
+                       <th>Academic Year</th>
+                       <th>Fee Type</th>
+                       <th>Fee Amount</th>
+                       <th>Paid Amount</th>
+                       <th>Balance</th>
+                       <th>Date</th>
                     </tr>
+                  </thead>
+                  <tbody>
                     @foreach($receipts as $receipt)
                     <tr>
-                       <td>{{ $receipt->fee_name }}</td>
                        <td>{{ $receipt->academic_year }}</td>
+                       <td>{{ date('Y-m-d',strtotime($receipt->created_at))}}</td>
+                       <td>{{ $receipt->fee_name }}</td> 
                        <td>{{ number_format($receipt->bill_amount,2) }} {{ $receipt->ccy }}</td>
-                      <td>
+                       <td>
                           {{ number_format($receipt->paid_amount,2) }} {{ $receipt->ccy }}
                        </td>
                        <td>
                           {{ number_format($receipt->bill_amount-$receipt->paid_amount,2) }} {{ $receipt->ccy }}
                        </td>
-                       <td>{{ date('Y-m-d',strtotime($receipt->created_at))}}</td>
                     </tr>
                     @endforeach
+                  </tbody>
                  </table>
                 
               </div>

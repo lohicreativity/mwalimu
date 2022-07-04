@@ -76,7 +76,7 @@
               <h3 class="card-title">List of Control Numbers</h3>
             </div>
             <div class="card-body">
-               <table class="table table-bordered">
+               <table class="table table-bordered ss-paginated-table">
                   <thead>
                     <tr>
                       <th>Academic Year</th>
