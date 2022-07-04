@@ -121,7 +121,7 @@ class StudentController extends Controller
       $student = User::find(Auth::user()->id)->student;
     	$data = [
             'student'=>$student,
-            'receipts'=>DB::table('gateway_payments')->join('invoices','gateway_payments.control_no','=','invoices.control_no')->join('fee_types','invoices.fee_type_id','=','fee_types.id')->select('gateway_payments.*, fee_types.name as fee_name')->where('invoices.payable_id',$student->id)->where('invoices.payable_type','student')->latest()->paginate(20)
+            'receipts'=>DB::table('gateway_payments')->join('invoices','gateway_payments.control_no','=','invoices.control_no')->join('fee_types','invoices.fee_type_id','=','fee_types.id')->select(DB::raw('gateway_payments.*, fee_types.name as fee_name'))->where('invoices.payable_id',$student->id)->where('invoices.payable_type','student')->latest()->paginate(20)
     	];
     	return view('dashboard.student.payments',$data)->withTitle('Payments');
     }
