@@ -81,6 +81,7 @@
                     <tr>
                       <th>Fee Item</th>
                       <th>Amount</th>
+                      <th>Amount to be paid</th>
                       <th>Currency</th>
                       <th>Control Number</th>
                       <th>Status</th>
@@ -90,9 +91,10 @@
                   @foreach($invoices as $invoice)
                   <tr>
                       <td>{{ $invoice->feeType->name }}</td>
-                      <td>{{ number_format($invoice->amount,0) }} TZS</td>
+                      <td>{{ number_format($invoice->actual_amount,0) }}</td>
+                      <td>{{ number_format($invoice->amount,0) }}</td>
                       <td>{{ $invoice->currency }}</td>
-                      <td>{{ $invoice->control_no }}</td>
+                      <td>{{ $invoice->control_no }} @if(!$invoice->control_no)<a href="#" onclick="window.location.reload();"><i class="fa fa-refresh" ></i> Refresh</a>@endif</td>
                       <td>
                         @if($invoice->gatewayPayment && $invoice->control_no)
                          <span class="badge badge-success">Paid</span>

@@ -16,6 +16,7 @@ class CreateInvoicesTable extends Migration
         Schema::create('invoices', function (Blueprint $table) {
             $table->id();
             $table->string('reference_no');
+            $table->decimal('actual_amount',16,2)->nullable();
             $table->decimal('amount',16,2);
             $table->string('control_no')->nullable();
             $table->string('message')->nullable();

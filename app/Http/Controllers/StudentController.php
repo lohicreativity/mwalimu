@@ -439,6 +439,7 @@ class StudentController extends Controller
             if($amount != 0.00){
                   $invoice = new Invoice;
                   $invoice->reference_no = 'MNMA-TF-'.time();
+                  $invoice->actual_amount = $amount_without_loan;
                   $invoice->amount = $amount;
                   $invoice->currency = $currency;
                   $invoice->payable_id = $student->id;
@@ -508,6 +509,7 @@ class StudentController extends Controller
             if($other_fees != 0.00){
                 $invoice = new Invoice;
                 $invoice->reference_no = 'MNMA-MSC'.time();
+                $invoice->actual_amount = $other_fees;
                 $invoice->amount = $other_fees;
                 $invoice->currency = $currency;
                 $invoice->payable_id = $student->id;
@@ -562,6 +564,7 @@ class StudentController extends Controller
             if($amount != 0.00){
                 $invoice = new Invoice;
                 $invoice->reference_no = 'MNMA-ID'.time();
+                $invoice->actual_amount = $amount;
                 $invoice->amount = $amount;
                 $invoice->currency = $currency;
                 $invoice->payable_id = $student->id;

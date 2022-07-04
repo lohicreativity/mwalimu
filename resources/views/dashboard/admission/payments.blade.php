@@ -57,7 +57,7 @@
                     </tr>
                     <tr>
                        <td>Programme Fee</td>
-                       <td>@if($program_fee_invoice) {{ number_format($program_fee_invoice->amount,0) }} {{ $program_fee_invoice->currency }}</td>
+                       <td>@if($program_fee_invoice) {{ number_format($program_fee_invoice->actual_amount,0) }} {{ $program_fee_invoice->currency }}</td>
                        @endif
                        <td>@if($program_fee_invoice) {{ $program_fee_invoice->control_no }} @if(!$program_fee_invoice->control_no)<a href="#" onclick="window.location.reload();"><i class="fa fa-refresh" ></i> Refresh</a>@endif  @endif</td>
                        <td>@if($program_fee_invoice) {{ number_format($program_fee_invoice->amount,0) }} {{ $program_fee_invoice->currency }} @endif</td>

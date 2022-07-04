@@ -21,6 +21,7 @@ use App\Domain\Academic\Models\ResultPublication;
 use App\Domain\Academic\Models\Appeal;
 use App\Domain\Registration\Models\Student;
 use App\Domain\Finance\Models\Invoice;
+use App\Domain\Settings\Models\Currency;
 use App\Domain\Finance\Models\FeeAmount;
 use Illuminate\Support\Facades\Http;
 use App\Models\User;
@@ -604,7 +605,8 @@ class AppealController extends Controller
          })->with(['moduleAssignment.programModuleAssignment'=>function($query) use ($request){
          	 $query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',$request->get('year_of_study'));
          },'moduleAssignment.module'])->where('student_id',$student->id)->get();
-
+        
+         $usd_currency = Currency::where('code','USD')->first();
          $count = 0;
          foreach($results as $result){
              if($request->get('result_'.$result->id)){
@@ -628,12 +630,13 @@ class AppealController extends Controller
              $amount = $count*$fee_amount->amount_in_tzs;
              $currency = 'TZS';
          }else{
-             $amount = $count*$fee_amount->amount_in_usd;
-             $currency = 'USD';
+             $amount = $count*$fee_amount->amount_in_usd*$usd_currency->factor;
+             $currency = 'TZS';
          }
 
         $invoice = new Invoice;
         $invoice->reference_no = 'MNMA-'.time();
+        $invoice->actual_amount = $amount;
         $invoice->amount = $amount;
         $invoice->currency = $currency;
         $invoice->payable_id = $student->id;
