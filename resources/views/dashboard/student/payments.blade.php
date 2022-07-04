@@ -53,25 +53,21 @@
                        <td>Paid Amount</td>
                        <td>Balance</td>
                     </tr>
-                    @foreach($invoices as $invoice)
+                    @foreach($receipts as $receipt)
                     <tr>
-                       <td>{{ $invoice->feeType->name }}</td>
-                       <td>{{ number_format($invoice->amount,2) }} {{ $invoice->currency }}</td>
+                       <td>{{ $receipt->fee_name }}</td>
+                       <td>{{ number_format($receipt->bill_amount,2) }} {{ $receipt->ccy }}</td>
                       <td>
-                         @if(isset($invoice->gatewayPayment))
-                            {{ number_format($invoice->gatewayPayment->paid_amount,2) }} TZS
-                         @endif
+                          {{ number_format($receipt->paid_amount,2) }} {{ $receipt->ccy }}
                        </td>
                        <td>
-                         @if(isset($invoice->gatewayPayment))
-                            {{ number_format($invoice->gatewayPayment->bill_amount-$invoice->gatewayPayment->paid_amount,2) }} TZS
-                         @endif
+                          {{ number_format($receipt->bill_amount-$receipt->paid_amount,2) }} {{ $receipt->ccy }}
                        </td>
                     </tr>
                     @endforeach
                  </table>
                  <div class="ss-pagination-links">
-                   {!! $invoices->render() !!}
+                   {!! $receipts->render() !!}
                  </div>
               </div>
             </div>
