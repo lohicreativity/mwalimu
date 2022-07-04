@@ -49,6 +49,7 @@
                  <table class="table table-bordered ss-paginated-table">
                     <tr>
                        <td>Fee Type</td>
+                       <td>Academic Year</td>
                        <td>Fee Amount</td>
                        <td>Paid Amount</td>
                        <td>Balance</td>
@@ -57,6 +58,7 @@
                     @foreach($receipts as $receipt)
                     <tr>
                        <td>{{ $receipt->fee_name }}</td>
+                       <td>{{ $receipt->academic_year }}</td>
                        <td>{{ number_format($receipt->bill_amount,2) }} {{ $receipt->ccy }}</td>
                       <td>
                           {{ number_format($receipt->paid_amount,2) }} {{ $receipt->ccy }}
