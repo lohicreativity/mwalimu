@@ -79,22 +79,22 @@
                <table class="table table-bordered">
                   <thead>
                     <tr>
+                      <th>Academic Year</th>
                       <th>Fee Item</th>
                       <th>Amount</th>
                       <th>Amount to be paid</th>
                       <th>Control Number</th>
-                      <th>Academic Year</th>
                       <th>Status</th>    
                     </tr>
                   </thead>
                   <tbody>
                   @foreach($invoices as $invoice)
                   <tr>
+                      <td>{{ $invoice->studyAcademicYear->academicYear->year }}</td>
                       <td>{{ $invoice->feeType->name }}</td>
                       <td>{{ number_format($invoice->actual_amount,0) }} {{ $invoice->currency }}</td>
                       <td>{{ number_format($invoice->amount,0) }} {{ $invoice->currency }}</td>
                       <td>{{ $invoice->control_no }} @if(!$invoice->control_no)<a href="#" onclick="window.location.reload();"><i class="fa fa-refresh" ></i> Refresh</a>@endif</td>
-                      <td>{{ $invoice->studyAcademicYear->academicYear->year }}</td>
                       <td>
                         @if($invoice->gatewayPayment && $invoice->control_no)
                          <span class="badge badge-success">Paid</span>
