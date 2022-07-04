@@ -40,9 +40,9 @@ class Invoice extends Model
     /**
      * Establish one to many relationship with study academic year
      */
-    public function studyAcademicYear()
+    public function applicable()
     {
-        return $this->belongsTo(StudyAcademicYear::class,'study_academic_year_id');
+        return $this->morphTo();
     }
 
     /**

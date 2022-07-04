@@ -375,7 +375,7 @@ class StudentController extends Controller
         $data = [
            'fee_types'=>FeeType::all(),
            'student'=>$student,
-           'invoices'=>Invoice::with(['studyAcademicYear.academicYear'])->where('payable_id',$student->id)->where('payable_type','student')->with(['feeType','gatewayPayment'])->latest()->paginate(20)
+           'invoices'=>Invoice::with(['applicable.academicYear'])->where('payable_id',$student->id)->where('payable_type','student')->with(['feeType','gatewayPayment'])->latest()->paginate(20)
         ];
         return view('dashboard.student.request-control-number',$data)->withTItle('Request Control Number');
     }
