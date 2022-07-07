@@ -245,7 +245,7 @@ class GraduantController extends Controller
                      $user = new User;
                      $user->email = $graduant->student->email;
                      $user->username = $graduant->student->first_name.' '.$graduant->student->surname;
-                     Mail::to($user)->queue(new GraduationAlert($graduant));
+                     Mail::to($user)->send(new GraduationAlert($graduant));
                   // }catch(\Exception $e){}
               }else{
                   $grad = Graduant::find($graduant->id);
