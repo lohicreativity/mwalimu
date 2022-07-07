@@ -56,10 +56,10 @@
                   {!! Form::input('hidden','graduant_id',$graduant->id) !!}
 
                   <label class="radio-inline">
-                    <input type="radio" name="status" value="1" @if($graduant->attendance_status === 1) checked="checked" @endif> I will attend the graduation
+                    <input type="radio" name="status" value="1" @if($graduant->attendance_status === 1) checked="checked" @endif> I will attend
                   </label>
                   <label class="radio-inline">
-                    <input type="radio" name="status" value="0" @if($graduant->attendance_status === 0) checked="checked" @endif> I will not attend the graduation
+                    <input type="radio" name="status" value="0" @if($graduant->attendance_status === 0) checked="checked" @endif> I will not attend
                   </label>
               </div>
               <div class="card-footer">
