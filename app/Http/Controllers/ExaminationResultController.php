@@ -894,7 +894,7 @@ class ExaminationResultController extends Controller
 
             $student = Student::find($request->get('student_id'));
 
-            $special_exam = SpecialExamRequest::where('student_id',$student->id)->where('module_assignment_id',$module_assignment->id)->where('type',$request->get('exam_type'))->where('status','APPROVED')->first();
+            $special_exam = SpecialExam::where('student_id',$student->id)->where('module_assignment_id',$module_assignment->id)->where('type',$request->get('exam_type'))->first();
 
             $retake_history = RetakeHistory::whereHas('moduleAssignment',function($query) use($module){
                   $query->where('module_id',$module->id);
