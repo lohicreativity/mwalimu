@@ -152,7 +152,7 @@ class GraduantController extends Controller
                $query->where('award_id',$request->get('program_level_id'));
            })->with(['student.campusProgram.program'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->where(function($query){
                   $query->where('status','GRADUATING')->orWhere('status','PENDING');
-           })->paginate(50)
+           })->paginate(50);
       }
     	$data = [
            'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
