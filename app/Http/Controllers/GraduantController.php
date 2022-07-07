@@ -50,7 +50,8 @@ class GraduantController extends Controller
      */
     public function sortGraduants(Request $request)
     {
-      if(ResultPublication::where('study_academic_year_id',session('active_academic_year_id'))->where('type','SUPP')->count() == 0){
+      $staff = User::find(Auth::user()->id)->staff;
+      if(ResultPublication::where('study_academic_year_id',session('active_academic_year_id'))->where('type','SUPP')->where('campus_id',$staff->campus_id)->count() == 0){
           return redirect()->back()->with('error','Supplementary results not published');
       }
       if(Appeal::whereHas('moduleAssignment',function($query){
