@@ -97,7 +97,8 @@ class ClearanceController extends Controller
            'study_academic_year'=>$request->has('study_academic_year_id')? StudyAcademicYear::with('academicYear')->find($request->get('study_academic_year_id')) : null,
            'clearances'=>$clearances,
            'awards'=>Award::all(),
-           'staff'=>User::find(Auth::user()->id)->staff
+           'staff'=>User::find(Auth::user()->id)->staff,
+           'request'=>$request
     	];
     	return view('dashboard.academic.clearance-list',$data)->withTitle('Clearance List');
     }
