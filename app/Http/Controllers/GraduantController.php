@@ -68,10 +68,11 @@ class GraduantController extends Controller
                 $query->where('name','ACTIVE');
             })->whereHas('annualRemarks',function($query) use($request){
                 $query->where('study_academic_year_id',$request->get('study_academic_year_id'));
-            })->with(['annualRemarks','overallRemark'])->whereHas('campusProgram',function($query) use ($program, $request){
+            })->with(['annualRemarks','overallRemark','academicStatus'])->whereHas('campusProgram',function($query) use ($program, $request){
                  $query->where('program_id',$program->id)->where('campus_id',$request->get('campus_id'));
             })->where('year_of_study',$program->min_duration)->get();
           	$excluded_list = [];
+            $graduant_list = [];
           	$status = StudentshipStatus::where('name','GRADUANT')->first();
           	foreach($students as $student){
           		if($student->overallRemark){
@@ -83,7 +84,11 @@ class GraduantController extends Controller
       	    		$graduant->student_id = $student->id;
       	    		$graduant->overall_remark_id = $student->overallRemark->id;
       	    		$graduant->study_academic_year_id = $request->get('study_academic_year_id');
-      	    		$graduant->status = 'PENDING';
+                if($student->academicStatus->name == 'PASS'){
+      	    		   $graduant->status = 'PENDING';
+                }else{
+                   $graduant->status = 'EXCLUDED';
+                }
                 $count = 0;
       	    		foreach($student->annualRemarks as $remark){
       	    			if($remark->remark != 'PASS'){
@@ -92,6 +97,7 @@ class GraduantController extends Controller
       	                   break;
       	    			}else{
                      $count++;
+                     $graduant_list[] = $student;
                   }
                   if($count >= $program->min_duration){
                      $graduant->status = 'PENDING';
@@ -119,6 +125,9 @@ class GraduantController extends Controller
     	    $student->save();
         }
     	}
+      if(count($graduant_list) == 0 && count($excluded_list) == 0){
+          return redirect()->back()->with('error','No students in the graduants list');
+      }
 
     	return redirect()->back()->with('message','Graduants sorted successfully');
 
