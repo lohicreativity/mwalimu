@@ -84,7 +84,7 @@
                <div class="card-body">
                 
                   <div class="form-group col-6">
-                    {!! Form::label('','Award') !!}
+                    {!! Form::label('','Programme Level') !!}
                     <select name="award_id" class="form-control" required>
                       <option value="">Select Programme Level</option>
                       @foreach($awards as $award)

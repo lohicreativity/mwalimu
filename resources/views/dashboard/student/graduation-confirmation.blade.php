@@ -20,12 +20,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Registration</h1>
+            <h1 class="m-0">Graduation Confirmation</h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item active"><a href="#">Home</a></li>
-              <li class="breadcrumb-item"><a href="#">Registration</a></li>
+              <li class="breadcrumb-item"><a href="#">Graduation Confirmation</a></li>
             </ol>
           </div><!-- /.col -->
         </div><!-- /.row -->
@@ -39,27 +39,36 @@
         <div class="row">
           <div class="col-12">
 
-            <div class="card">
+            <div class="card card-default">
               <div class="card-header">
-                <h3 class="card-title">Registration</h3>
+                <h3 class="card-title">{{ __('Graduation Confirmation') }}</h3>
               </div>
+              <!-- /.card-header -->
+              
+              {!! Form::open(['url'=>'student/confirm-graduation']) !!}
               <div class="card-body">
-                 @if(!$registration)
-                   <div class="alert alert-warning">
-                     <h4>You are not registered yet for this semester.</h4>
-                   </div>
-                 @else
-                   <div class="alert alert-success">
-                     <h4>You are already registered for this semester.</h4>
-                   </div>
-                 @endif
+                  @if($graduant->status == 'GRADUATING')
+                   <span class="badge-success">APPROVED</span>
+                  @else
+                   <span class="badge badge-warning">DISAPPROVED</span>
+                  @endif
+                  <br><br><br>
+                  {!! Form::input('hidden','graduant_id',$graduant->id) !!}
+
+                  <label class="radio-inline">
+                    <input type="radio" name="status" value="1" @if($graduant->attendance_status === 1) checked="checked" @endif> I will attend the graduation
+                  </label>
+                  <label class="radio-inline">
+                    <input type="radio" name="status" value="0" @if($graduant->attendance_status === 0) checked="checked" @endif> I will not attend the graduation
+                  </label>
               </div>
-              @if(!$registration)
               <div class="card-footer">
-                 <a href="{{ url('student/registration/create') }}" class="btn btn-primary">Register</a>
-              </div>
-              @endif
+              <button class="btn btn-primary" @if($graduant->attendance_status === null) type="submit" @else disabled="disabled" @endif>{{ __('Confirm') }}</button>
             </div>
+            {!! Form::close() !!}
+            </div>
+
+            
 
           </div>
         </div>

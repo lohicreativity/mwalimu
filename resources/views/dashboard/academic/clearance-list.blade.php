@@ -48,16 +48,27 @@
               <!-- /.card-header -->
               <div class="card-body">
                  {!! Form::open(['url'=>'academic/clearance','class'=>'ss-form-processing','method'=>'GET']) !!}
-                   
-                   <div class="form-group">
+                   <div class="row">
+                   <div class="form-group col-6">
                     <select name="study_academic_year_id" class="form-control" required>
                        <option value="">Select Study Academic Year</option>
                        @foreach($study_academic_years as $year)
                        <option value="{{ $year->id }}">{{ $year->academicYear->year }}</option>
                        @endforeach
                     </select>
-                     
+                    </div>
+                    <div class="form-group col-6">
+                    {!! Form::label('','Programme Level') !!}
+                    <select name="award_id" class="form-control" required>
+                      <option value="">Select Programme Level</option>
+                      @foreach($awards as $award)
+                      @if(str_contains($award->name,'Basic') || str_contains($award->name,'Ordinary') || str_contains($award->name,'Bachelor') || str_contains($award->name,'Masters'))
+                       <option value="{{ $award->id }}">{{ $award->name }}</option>
+                       @endif
+                      @endforeach
+                    </select>
                   </div>
+                   </div>
                   <div class="ss-form-actions">
                    <button type="submit" class="btn btn-primary">{{ __('Search') }}</button>
                   </div>
@@ -295,9 +306,6 @@
                    </tbody>
                  </table>
 
-                 <div class="ss-pagination-links">
-                     {!! $clearances->render() !!}
-                 </div>
               </div>
               
             </div>

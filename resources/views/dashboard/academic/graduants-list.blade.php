@@ -53,8 +53,44 @@
             <div class="card">
                  <div class="card-body">
                  {!! Form::open(['url'=>'academic/graduants','class'=>'ss-form-processing','method'=>'GET']) !!}
-                  <div class="row"> 
-                   <div class="form-group">
+                  @if(Auth::user()->hasRole('arc'))
+                   <div class="row">
+                   <div class="form-group col-4">
+                    {!! Form::label('','Study academic year') !!}
+                    <select name="study_academic_year_id" class="form-control" required>
+                       <option value="">Select Study Academic Year</option>
+                       @foreach($study_academic_years as $year)
+                       <option value="{{ $year->id }}">{{ $year->academicYear->year }}</option>
+                       @endforeach
+                    </select>
+                  </div>
+                  <div class="form-group col-4">
+                    {!! Form::label('','Programme level') !!}
+                    <select name="program_level_id" class="form-control" required>
+                      <option value="">Select Programme Level</option>
+                      @foreach($awards as $award)
+                      @if(str_contains($award->name,'Basic') || str_contains($award->name,'Ordinary') || str_contains($award->name,'Bachelor') || str_contains($award->name,'Masters'))
+                      <option value="{{ $award->id }}" @if($request->get('program_level_id') == $award->id) selected="selected" @endif>{{ $award->name }}</option>
+                      @endif
+                      @endforeach
+                    </select>
+                  </div>
+                  <div class="form-group col-4">
+                    {!! Form::label('','Select campus') !!}
+                    <select name="campus_id" class="form-control" required>
+                       <option value="">Select Campus</option>
+                       @foreach($campuses as $cp)
+                       @if($cp->id == $staff->campus_id)
+                       <option value="{{ $cp->id }}" @if($request->get('campus_id') == $cp->id) selected="selected" @endif>{{ $cp->name }}</option>
+                       @endif
+                       @endforeach
+                    </select>
+                  </div>
+                  </div>
+                   @else
+                   <div class="row">
+                   <div class="form-group col-6">
+                    {!! Form::label('','Study academic year') !!}
                     <select name="study_academic_year_id" class="form-control" required>
                        <option value="">Select Study Academic Year</option>
                        @foreach($study_academic_years as $year)
@@ -74,6 +110,7 @@
                     </select>
                   </div>
                   </div>
+                  @endif
                   <div class="ss-form-actions">
                    <button type="submit" class="btn btn-primary">{{ __('Search') }}</button>
                   </div>
@@ -92,8 +129,28 @@
               </div>
               <!-- /.card-header -->
               <div class="card-body">
-                 
-                <table id="example2" class="table table-bordered table-hover">
+                {!! Form::open(['url'=>'academic/graduants','method'=>'GET']) !!}
+                {!! Form::input('hidden','study_academic_year_id',$request->get('study_academic_year_id')) !!}
+
+                {!! Form::input('hidden','campus_id',$request->get('campus_id')) !!}
+
+                {!! Form::input('hidden','program_level_id',$request->get('program_level_id')) !!}
+                <div class="input-group ss-stretch">
+                 <input type="text" name="query" class="form-control" placeholder="Search for graduant name">
+                 <span class="input-group-btn">
+                   <button class="btn btn-default" type="submit"><span class="fa fa-search"></span></button>
+                 </span>
+                </div>
+                {!! Form::close() !!}
+
+                {!! Form::open(['url'=>'academic/approve-graduants','class'=>'ss-form-processing']) !!}
+
+                {!! Form::input('hidden','study_academic_year_id',$request->get('study_academic_year_id')) !!}
+
+                {!! Form::input('hidden','campus_id',$request->get('campus_id')) !!}
+
+                {!! Form::input('hidden','program_level_id',$request->get('program_level_id')) !!}
+                <table id="example2" class="table table-bordered table-hover ss-margin-top">
                   <thead>
                   <tr>
                     <th>SN</th>
@@ -104,6 +161,7 @@
                     <th>Campus</th>
                     <th>Status</th>
                     <th>GPA</th>
+                    <th>Approval</th>
                   </tr>
                   </thead>
                   <tbody>
@@ -115,12 +173,26 @@
                       <td>{{ $graduant->student->gender }}</td>
                       <td>{{ $graduant->student->campusProgram->program->name }}</td>
                       <td>{{ $graduant->student->campusProgram->campus->name }}</td>
-                      <td>{{ $graduant->status }}</td>
+                      <td>@if($graduant->status == 'GRADUATING') APPROVED @else DISAPPROVED @endif</td>
                       <td>{{ bcdiv($graduant->student->overallRemark->gpa,1,1) }}</td>
+                      <td>
+                        @if($graduant->status == 'GRADUATING')
+                           {!! Form::checkbox('graduant_'.$graduant->id,$graduant->id,true) !!}
+                        @else
+                           {!! Form::checkbox('graduant_'.$graduant->id,$graduant->id) !!}
+                        @endif
+                        {!! Form::input('hidden','grad_'.$graduant->id,$graduant->id) !!}
+                      </td>
                     </tr>
-                    @endforeach                  
+                    @endforeach  
+                    <tr>
+                      <td colspan="9">
+                        <button type="submit" class="btn btn-primary">Save Approvals</button>
+                      </td>
+                    </tr>                
                   </tbody>
                 </table>
+                {!! Form::close()!!}
                 <div class="ss-pagination-links">
                     {!! $graduants->appends($request->except('page'))->render() !!}
                 </div>

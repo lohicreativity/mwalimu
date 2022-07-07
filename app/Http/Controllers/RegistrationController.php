@@ -83,7 +83,7 @@ class RegistrationController extends Controller
         }
 
         if($misc_fee_paid < $misc_fee_invoice->amount){
-            return redirect()->back()->with('error','You cannot continue with registration because you have not paid sufficient other fees');
+            return redirect()->back()->with('error','You cannot continue with registration because you have not paid other fees');
         }
 
         $registration = new Registration;

@@ -79,4 +79,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
     Route::get('special-exam/supporting-document/{exam_id}/download',[SpecialExamController::class,'downloadSupportingDocument']);
     Route::get('special-exam/postponement-letter/{exam_id}/download',[SpecialExamController::class,'downloadLetter']);
 
+    Route::get('graduation-confirmation',[GraduantController::class,'graduationConfirmation']);
+    Route::post('confirm-graduation',[GraduantController::class, 'confirmGraduation']);
+
 });

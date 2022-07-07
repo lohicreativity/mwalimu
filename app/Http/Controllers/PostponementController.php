@@ -12,6 +12,7 @@ use App\Domain\Registration\Models\StudentshipStatus;
 use App\Domain\Academic\Actions\PostponementAction;
 use App\Models\User;
 use App\Utils\Util;
+use App\Utils\SystemLocation;
 use Validator, Auth;
 
 
@@ -57,12 +58,17 @@ class PostponementController extends Controller
       if(Postponement::where('student_id',$request->get('student_id'))->where('status','PENDING')->count() != 0){
             return redirect()->back()->with('error','You have pending postponement');
         }
+      if(Postponement::where('student_id',$request->get('student_id'))->where('status','POSTPONED')->count() != 0){
+            return redirect()->back()->with('error','You have not resumed from your previous postponement');
+        }
       if(Postponement::where('student_id',$request->get('student_id'))->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('semester_id',$request->get('semester_id'))->where('status','!=','RESUMED')->count() != 0){
             return redirect()->back()->with('error','You have already requested for postponement for this academic year');
         }
-
-        if(Registration::where('student_id',$request->get('student_id'))->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('semester_id',$request->get('semester_id'))->count() == 0){
-            return redirect()->back()->with('error','You cannot postpone because you have not been registered yet for this semester');
+        
+        if(Postponement::where('student_id',$request->get('student_id'))->where('status','POSTPONED')->count() == 0){
+            if(Registration::where('student_id',$request->get('student_id'))->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('semester_id',$request->get('semester_id'))->count() == 0){
+                return redirect()->back()->with('error','You cannot postpone because you have not been registered yet for this semester');
+            }
         }
     	$validation = Validator::make($request->all(),[
             'study_academic_year_id'=>'required',
@@ -233,6 +239,9 @@ class PostponementController extends Controller
     {
         try{
             $postponement = Postponement::findOrFail($id);
+            if($postponement->status != 'POSTPONED'){
+                return redirect()->back()->with('error','You cannot proceed with resumption because the postponement is not active');
+            }
             $postponement->status = 'RESUMED';
             $postponement->resumed_by_user_id = Auth::user()->id;
             $postponement->save();

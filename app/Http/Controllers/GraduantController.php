@@ -12,12 +12,19 @@ use App\Domain\Academic\Models\Appeal;
 use App\Domain\Academic\Models\Clearance;
 use App\Domain\Academic\Models\Award;
 use App\Domain\Settings\Models\NTALevel;
+use App\Domain\Settings\Models\Currency;
+use App\Domain\Finance\Models\Invoice;
+use App\Domain\Finance\Models\FeeType;
+use App\Domain\Finance\Models\FeeAmount;
 use App\Domain\Registration\Models\Student;
 use App\Domain\Registration\Models\StudentshipStatus;
+use App\Models\User;
 use Illuminate\Support\Facades\Http;
 use App\Utils\Util;
 use App\Exports\GraduantsExport;
 use App\Exports\GraduantsCertExport;
+use App\Mail\GraduationAlert;
+use Mail;
 
 class GraduantController extends Controller
 {
@@ -117,13 +124,40 @@ class GraduantController extends Controller
      * Show graduants list
      */
     public function showGraduants(Request $request)
-    {
+    { 
+      if($request->get('query')){
+         $graduants = $request->get('campus_id')? Graduant::whereHas('student',function($query) use($request){
+                 $query->where('first_name','LIKE','%'.$request->get('query').'%')->orWhere('middle_name','LIKE','%'.$request->get('query').'%')->orWhere('surname','LIKE','%'.$request->get('query').'%')->orWhere('registration_number','LIKE','%'.$request->get('query').'%');
+           })->whereHas('student.campusProgram.program',function($query) use($request){
+               $query->where('award_id',$request->get('program_level_id'));
+           })->whereHas('student.campusProgram',function($query) use($request){
+               $query->where('campus_id',$request->get('campus_id'));
+           })->with(['student.campusProgram.program'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->where(function($query){
+                  $query->where('status','GRADUATING')->orWhere('status','PENDING');
+           })->paginate(50) : Graduant::whereHas('student',function($query) use($request){
+                 $query->where('first_name','LIKE','%'.$request->get('query').'%')->orWhere('middle_name','LIKE','%'.$request->get('query').'%')->orWhere('surname','LIKE','%'.$request->get('query').'%')->orWhere('registration_number','LIKE','%'.$request->get('query').'%');
+           })->whereHas('student.campusProgram.program',function($query) use($request){
+               $query->where('award_id',$request->get('program_level_id'));
+           })->with(['student.campusProgram.program'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->where(function($query){
+                  $query->where('status','GRADUATING')->orWhere('status','PENDING');
+           })->paginate(50);
+      }else{
+         $graduants = $request->get('campus_id')? Graduant::whereHas('student.campusProgram.program',function($query) use($request){
+               $query->where('award_id',$request->get('program_level_id'));
+           })->whereHas('student.campusProgram',function($query) use($request){
+               $query->where('campus_id',$request->get('campus_id'));
+           })->with(['student.campusProgram.program'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->where(function($query){
+                  $query->where('status','GRADUATING')->orWhere('status','PENDING');
+           })->paginate(50) : Graduant::whereHas('student.campusProgram.program',function($query) use($request){
+               $query->where('award_id',$request->get('program_level_id'));
+           })->with(['student.campusProgram.program'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->where(function($query){
+                  $query->where('status','GRADUATING')->orWhere('status','PENDING');
+           })->paginate(50)
+      }
     	$data = [
            'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
            'study_academic_year'=>$request->has('study_academic_year_id')? StudyAcademicYear::with('academicYear')->find($request->get('study_academic_year_id')) : null,
-           'graduants'=>Graduant::whereHas('student.campusProgram.program',function($query) use($request){
-               $query->where('award_id',$request->get('program_level_id'));
-           })->with(['student.campusProgram.program.ntaLevel','student.campusProgram.campus','student.overallRemark'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('status','GRADUATING')->paginate(50),
+           'graduants'=>$graduants,
            'awards'=>Award::all(),
            'request'=>$request
     	];
@@ -135,16 +169,70 @@ class GraduantController extends Controller
      */
     public function showExcludedGraduants(Request $request)
     {
+      if($request->get('query')){
+         $non_graduants = $request->get('campus_id')? Graduant::whereHas('student',function($query) use($request){
+                 $query->where('first_name','LIKE','%'.$request->get('query').'%')->orWhere('middle_name','LIKE','%'.$request->get('query').'%')->orWhere('surname','LIKE','%'.$request->get('query').'%')->orWhere('registration_number','LIKE','%'.$request->get('query').'%');
+           })->whereHas('student.campusProgram.program',function($query) use($request){
+               $query->where('award_id',$request->get('program_level_id'));
+           })->whereHas('student.campusProgram',function($query) use($request){
+               $query->where('campus_id',$request->get('campus_id'));
+           })->with(['student.campusProgram.program'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('status','EXCLUDED')->paginate(50) : Graduant::whereHas('student',function($query) use($request){
+                 $query->where('first_name','LIKE','%'.$request->get('query').'%')->orWhere('middle_name','LIKE','%'.$request->get('query').'%')->orWhere('surname','LIKE','%'.$request->get('query').'%')->orWhere('registration_number','LIKE','%'.$request->get('query').'%');
+           })->whereHas('student.campusProgram.program',function($query) use($request){
+               $query->where('award_id',$request->get('program_level_id'));
+           })->with(['student.campusProgram.program'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('status','EXCLUDED')->paginate(50);
+      }else{
+         $non_graduants = $request->get('campus_id')? Graduant::whereHas('student.campusProgram.program',function($query) use($request){
+               $query->where('award_id',$request->get('program_level_id'));
+           })->whereHas('student.campusProgram',function($query) use($request){
+               $query->where('campus_id',$request->get('campus_id'));
+           })->with(['student.campusProgram.program'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('status','EXCLUDED')->paginate(50) : Graduant::whereHas('student.campusProgram.program',function($query) use($request){
+               $query->where('award_id',$request->get('program_level_id'));
+           })->with(['student.campusProgram.program'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('status','EXCLUDED')->paginate(50)
+      }
     	$data = [
            'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
            'study_academic_year'=>$request->has('study_academic_year_id')? StudyAcademicYear::with('academicYear')->find($request->get('study_academic_year_id')) : null,
-           'non_graduants'=>Graduant::whereHas('student.campusProgram.program',function($query) use($request){
-               $query->where('award_id',$request->get('program_level_id'));
-           })->with(['student.campusProgram.program'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('status','EXCLUDED')->paginate(50),
+           'non_graduants'=>$non_graduants,
            'awards'=>Award::all(),
            'request'=>$request
     	];
     	return view('dashboard.academic.non-graduants-list',$data)->withTitle('Non Graduants List');
+    }
+
+    /**
+     * Approve graduants
+     */
+    public function approveGraduants(Request $request)
+    {
+        $graduants = Graduant::whereHas('student.campusProgram.program',function($query) use($request){
+               $query->where('award_id',$request->get('program_level_id'));
+           })->whereHas('student.campusProgram',function($query) use($request){
+               $query->where('campus_id',$request->get('campus_id'));
+           })->with(['student.campusProgram.program'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->get();
+
+        foreach ($graduants as $graduant) {
+           if($request->get('grad_'.$graduant->id) == $graduant->id){
+              if($request->get('graduant_'.$graduant->id) == $graduant->id){
+                  $grad = Graduant::find($graduant->id);
+                  $grad->status = 'GRADUATING';
+                  $grad->save();
+
+                  try{
+                     $user = new User;
+                     $user->email = $graduant->student->email;
+                     $user->username = $graduant->student->first_name.' '.$graduant->student->surname;
+                     Mail::to($user)->queue(new GraduationAlert($graduant));
+                  }catch(\Exception $e){}
+              }else{
+                  $grad = Graduant::find($graduant->id);
+                  $grad->status = 'EXCLUDED';
+                  $grad->save();
+              }
+           }
+        }
+
+        return redirect()->back()->with('message','Graduants approved successfully');
     }
 
     /**
@@ -162,6 +250,127 @@ class GraduantController extends Controller
     {
           return (new GraduantsCertExport($request->get('study_academic_year_id')))->download('graduants-certificates.xlsx');
     }
+
+    /**
+     * Graduation confirmation 
+     */
+    public function graduationConfirmation(Request $request)
+    {   
+        $student = User::find(Auth::user()->id)->student;
+        $graduant = Graduant::where('student_id',$student->id)->where('status','GRADUATING')->first();
+        if(!$graduant){
+             return redirect()->back()->with('error','You are not in the graduants list');
+        }
+        $data = [
+           'student'=>$student,
+           'graduant'=>$graduant,
+        ];
+        return view('dashboard.student.graduation-confirmation',$data)->withTitle('Graduation Confirmation');
+    }
+
+    /**
+     * Confirm graduation attendance
+     */
+    public function confirmGraduation(Request $request)
+    {
+        $graduant = Graduant::with(['student.applicant'])->find($request->get('graduant_id'));
+        $graduant->attendance_status = $request->get('status');
+        $graduant->save();
+
+        $student = $graduant->student;
+
+        if($request->get('status') == 1){
+               $usd_currency = Currency::where('code','USD')->first();
+
+               $graduation_fee = FeeAmount::whereHas('feeItem',function($query){
+                  $query->where('name','LIKE','%Graduation Gown%');
+               })->where('study_academic_year_id',$graduant->study_academic_year_id)->first();
+
+               if(!$graduation_fee){
+                      return redirect()->back()->with('error','Graduation gown fee amount has not been set');
+                  }
+
+                if(str_contains($student->applicant->nationality,'Tanzania')){
+                  $amount = round($graduation_fee->amount_in_tzs);
+                  $currency = 'TZS';
+                }else{
+                  $amount = round($graduation_fee->amount_in_usd*$usd_currency->factor);
+                  $currency = 'TZS';//'USD';
+                }
+                  $feeType = FeeType::where('name','LIKE','%Graduation Gown%')->first();
+
+                  if(!$feeType){
+                      return redirect()->back()->with('error','Graduation gown fee type has not been set');
+                  }
+
+                  $invoice = new Invoice;
+                  $invoice->reference_no = 'MNMA-GF-'.time();
+                  $invoice->actual_amount = $amount;
+                  $invoice->amount = $amount;
+                  $invoice->currency = $currency;
+                  $invoice->payable_id = $student->id;
+                  $invoice->payable_type = 'student';
+                  $invoice->applicable_id = $graduant->study_academic_year_id;
+                  $invoice->applicable_type = 'academic_year';
+                  $invoice->fee_type_id = $feeType->id;
+                  $invoice->save();
+
+
+                  $generated_by = 'SP';
+                  $approved_by = 'SP';
+                  $inst_id = config('constants.SUBSPCODE');
+
+
+
+                  $result = $this->requestControlNumber($request,
+                                              $invoice->reference_no,
+                                              $inst_id,
+                                              $invoice->amount,
+                                              $feeType->description,
+                                              $feeType->gfs_code,
+                                              $feeType->payment_option,
+                                              $student->id,
+                                              $student->first_name.' '.$student->surname,
+                                              $student->phone,
+                                              $email,
+                                              $generated_by,
+                                              $approved_by,
+                                              $feeType->duration,
+                                              $invoice->currency);
+        }
+
+        return redirect()->back()->with('message','Graduation attendance confirmed successfully');
+    }
+
+    public function requestControlNumber(Request $request,$billno,$inst_id,$amount,$description,$gfs_code,$payment_option,$payerid,$payer_name,$payer_cell,$payer_email,$generated_by,$approved_by,$days,$currency){
+            $data = array(
+                'payment_ref'=>$billno,
+                'sub_sp_code'=>$inst_id,
+                'amount'=> $amount,
+                'desc'=> $description,
+                'gfs_code'=> $gfs_code,
+                'payment_type'=> $payment_option,
+                'payerid'=> $payerid,
+                'payer_name'=> $payer_name,
+                'payer_cell'=> $payer_cell,
+                'payer_email'=> $payer_email,
+                'days_expires_after'=> $days,
+                'generated_by'=>$generated_by,
+                'approved_by'=>$approved_by,
+                'currency'=>$currency
+            );
+
+            //$txt=print_r($data, true);
+            //$myfile = file_put_contents('/var/public_html/ifm/logs/req_bill.txt', $txt.PHP_EOL , FILE_APPEND | LOCK_EX);
+            $url = url('bills/post_bill');
+            $result = Http::withHeaders([
+                        'X-CSRF-TOKEN'=> csrf_token()
+                      ])->post($url,$data);
+
+            
+        return redirect()->back()->with('message','The bill with id '.$billno.' has been queued.', 200);
+                        
+        }
 
     /**
      * Enrollment report
