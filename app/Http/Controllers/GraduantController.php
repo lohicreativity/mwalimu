@@ -24,7 +24,7 @@ use App\Utils\Util;
 use App\Exports\GraduantsExport;
 use App\Exports\GraduantsCertExport;
 use App\Mail\GraduationAlert;
-use Mail;
+use Mail, Auth;
 
 class GraduantController extends Controller
 {
