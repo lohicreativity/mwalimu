@@ -124,6 +124,7 @@
               </div>
               <!-- /.card-header -->
               <div class="card-body">
+                {{--
                 {!! Form::open(['url'=>'academic/excluded-graduants','method'=>'GET']) !!}
                 {!! Form::input('hidden','study_academic_year_id',$request->get('study_academic_year_id')) !!}
 
@@ -136,7 +137,7 @@
                    <button class="btn btn-default" type="submit"><span class="fa fa-search"></span></button>
                  </span>
                 </div>
-                {!! Form::close() !!}
+                {!! Form::close() !!} --}}
 
                 {!! Form::open(['url'=>'academic/approve-graduants','class'=>'ss-form-processing']) !!}
 
@@ -145,7 +146,7 @@
                 {!! Form::input('hidden','campus_id',$request->get('campus_id')) !!}
 
                 {!! Form::input('hidden','program_level_id',$request->get('program_level_id')) !!}
-                <table id="example2" class="table table-bordered table-hover ss-margin-top">
+                <table id="example2" class="table table-bordered table-hover ss-paginated-table ss-margin-top">
                   <thead>
                   <tr>
                     <th>SN</th>
