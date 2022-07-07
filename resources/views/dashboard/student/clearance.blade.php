@@ -20,7 +20,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Clearance</h1>
+            <h1 class="m-0">Clearance Status</h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -42,7 +42,7 @@
           <div class="col-12">
             <div class="card">
               <div class="card-header">
-                 <h3 class="card-title">Request Clearance Status</h3>
+                 <h3 class="card-title">Clearance Status</h3>
               </div>
               <div class="card-body">
                 <table class="table table-bordered">
@@ -50,20 +50,20 @@
                     <tr>
                       <th>Finance</th>
                       <th>Library</th>
-                      <th>Dean of Students</th>
+                      <th>Hostel</th>
                       <th>HOD</th>
                     </tr>
                    </thead>
                    <tbody>
                      <tr>
-                       <td>@if($clearance->finance_status === 0) <i class="fa fa-ban"></i> @else <i class="fa fa-check"></i> @endif</td>
+                       <td>@if($clearance->finance_status === 0) <i class="fa fa-ban"></i> @elseif($clearance->finance_status === 1) <i class="fa fa-check"></i> @else PENDING @endif</td>
 
-                       <td>@if($clearance->library_status === 0) <i class="fa fa-ban"></i> @else <i class="fa fa-check"></i> @endif</td>
+                       <td>@if($clearance->library_status === 0) <i class="fa fa-ban"></i> @elseif($clearance->library_status === 1) <i class="fa fa-check"></i> @else PENDING @endif</td>
 
 
-                       <td>@if($clearance->hostel_status === 0) <i class="fa fa-ban"></i> @else <i class="fa fa-check"></i> @endif</td>
+                       <td>@if($clearance->hostel_status === 0) <i class="fa fa-ban"></i> @elseif($clearance->hostel_status === 1) <i class="fa fa-check"></i> @else PENDING @endif</td>
 
-                       <td>@if($clearance->hod_status === 0) <i class="fa fa-ban"></i> @else <i class="fa fa-check"></i> @endif</td>
+                       <td>@if($clearance->hod_status === 0) <i class="fa fa-ban"></i> @elseif($clearance->hod_status === 1) <i class="fa fa-check"></i> @else PENDING @endif</td>
                      </tr>
 
                    </tbody>
