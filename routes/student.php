@@ -10,6 +10,7 @@ use App\Http\Controllers\TranscriptRequestController;
 use App\Http\Controllers\PostponementController;
 use App\Http\Controllers\SpecialExamController;
 use App\Http\Controllers\PerformanceReportRequestController;
+use App\Http\Controllers\GraduantController;
 
 /*
 |--------------------------------------------------------------------------
