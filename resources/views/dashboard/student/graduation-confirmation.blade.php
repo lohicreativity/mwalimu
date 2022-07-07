@@ -52,6 +52,12 @@
                   @else
                    <span class="badge badge-warning">DISAPPROVED</span>
                   @endif
+
+                  @if($graduant->attendance_status === 1)
+                   <span class="badge-success">ATTENDING</span>
+                  @elseif($graduant->attendance_status === 0)
+                   <span class="badge badge-warning">NOT ATTENDING</span>
+                  @endif
                   <br><br><br>
                   {!! Form::input('hidden','graduant_id',$graduant->id) !!}
 
