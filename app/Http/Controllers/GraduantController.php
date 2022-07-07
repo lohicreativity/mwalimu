@@ -188,7 +188,7 @@ class GraduantController extends Controller
                $query->where('campus_id',$request->get('campus_id'));
            })->with(['student.campusProgram.program'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('status','EXCLUDED')->paginate(50) : Graduant::whereHas('student.campusProgram.program',function($query) use($request){
                $query->where('award_id',$request->get('program_level_id'));
-           })->with(['student.campusProgram.program'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('status','EXCLUDED')->paginate(50)
+           })->with(['student.campusProgram.program'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('status','EXCLUDED')->paginate(50);
       }
     	$data = [
            'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
