@@ -109,21 +109,23 @@ class GraduantController extends Controller
 	                   break;
       	    			}
                   $count++;
-                  $graduant_list[] = $student;
-                  if($count >= $program->min_duration){
-                     if($student->academicStatus->name == 'PASS'){
-                         $graduant->status = 'PENDING';
-                         if($cls = Clearance::where('student_id')->first()){
-                            $clearance = $cls;
-                         }else{
-                            $clearance = new Clearance;
-                         }
-                         $clearance->student_id = $student->id;
-                         $clearance->study_academic_year_id = $request->get('study_academic_year_id');
-                         $clearance->save();
-                     }
-                  }
       	    		}
+                if($graduant->status != 'EXCLUDED'){
+                    $graduant_list[] = $student;
+                    if($count >= $program->min_duration){
+                       if($student->academicStatus->name == 'PASS'){
+                           $graduant->status = 'PENDING';
+                           if($cls = Clearance::where('student_id')->first()){
+                              $clearance = $cls;
+                           }else{
+                              $clearance = new Clearance;
+                           }
+                           $clearance->student_id = $student->id;
+                           $clearance->study_academic_year_id = $request->get('study_academic_year_id');
+                           $clearance->save();
+                       }
+                    }
+                }
       	    		$graduant->save();
           	  }
     	    $student = Student::find($student->id);
