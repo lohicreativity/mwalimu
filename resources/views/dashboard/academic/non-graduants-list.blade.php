@@ -21,12 +21,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>{{ __('Non Graduants List') }}</h1>
+            <h1>{{ __('Excluded List') }}</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">{{ __('Non Graduants List') }}</li>
+              <li class="breadcrumb-item active">{{ __('Excluded List') }}</li>
             </ol>
           </div>
         </div>
@@ -118,7 +118,7 @@
             @if(count($non_graduants) != 0 && $study_academic_year)
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">List of Examination Policies - {{ $study_academic_year->academicYear->year }}</h3>
+                <h3 class="card-title">Excluded List - {{ $study_academic_year->academicYear->year }}</h3>
               </div>
               <!-- /.card-header -->
               <div class="card-body">

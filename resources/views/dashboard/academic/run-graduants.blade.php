@@ -84,7 +84,7 @@
             @if($campus && $study_academic_year)
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">Run Graduants - {{ $study_academic_year->academicYear->year }}</h3>
+                <h3 class="card-title">Run Graduants List - {{ $study_academic_year->academicYear->year }}</h3>
               </div>
               <!-- /.card-header -->
               {!! Form::open(['url'=>'academic/graduants/sort','class'=>'ss-form-processing']) !!}
@@ -111,7 +111,7 @@
                   </div>
               </div>
                <div class="card-footer">
-                  <button type="submit" class="btn btn-primary">{{ __('Run Graduants') }}</button>
+                  <button type="submit" class="btn btn-primary">{{ __('Run Graduants List') }}</button>
                 </div>
               {!! Form::close() !!}
              </div>

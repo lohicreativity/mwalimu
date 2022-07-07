@@ -38,14 +38,10 @@ class ClearanceController extends Controller
                  $query->where('award_id',$request->get('award_id'));
             })->whereHas('student.studentshipStatus',function($query){
                 $query->where('name','ACTIVE')->orWhere('name','GRADUANT');
-            })->whereHas('student.semesterRemarks',function($query) use($request){
-                $query->where('remark','PASS')->where('study_academic_year_id',$request->get('study_academic_year_id'));
             })->with(['student.campusProgram.program'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->whereNull('hod_status')->orWhere('hod_status',0)->latest()->get() : Clearance::whereHas('student.campusProgram.program',function($query) use($request){
                  $query->where('award_id',$request->get('award_id'));
             })->whereHas('student.studentshipStatus',function($query){
                 $query->where('name','ACTIVE')->orWhere('name','GRADUANT');
-            })->whereHas('student.semesterRemarks',function($query) use($request){
-                $query->where('remark','PASS')->where('study_academic_year_id',$request->get('study_academic_year_id'));
             })->with(['student.campusProgram.program'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->whereNull('hod_status')->orWhere('hod_status',0)->latest()->get();
         }elseif(Auth::user()->hasRole('finance-officer')){
            $clearances = $request->has('query')? Clearance::whereHas('student',function($query) use($request){
@@ -54,14 +50,10 @@ class ClearanceController extends Controller
                  $query->where('award_id',$request->get('award_id'));
             })->whereHas('student.studentshipStatus',function($query){
                 $query->where('name','ACTIVE')->orWhere('name','GRADUANT');
-            })->whereHas('student.semesterRemarks',function($query) use($request){
-                $query->where('remark','PASS')->where('study_academic_year_id',$request->get('study_academic_year_id'));
             })->with(['student.campusProgram.program'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->whereNull('finance_status')->orWhere('finance_status',0)->latest()->get() : Clearance::whereHas('student.campusProgram.program',function($query) use($request){
                  $query->where('award_id',$request->get('award_id'));
             })->whereHas('student.studentshipStatus',function($query){
                 $query->where('name','ACTIVE')->orWhere('name','GRADUANT');
-            })->whereHas('student.semesterRemarks',function($query) use($request){
-                $query->where('remark','PASS')->where('study_academic_year_id',$request->get('study_academic_year_id'));
             })->with(['student.campusProgram.program'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->whereNull('finance_status')->orWhere('finance_status',0)->latest()->get();
         }elseif(Auth::user()->hasRole('librarian')){
            $clearances = $request->has('query')? Clearance::whereHas('student',function($query) use($request){
@@ -70,14 +62,10 @@ class ClearanceController extends Controller
                  $query->where('award_id',$request->get('award_id'));
             })->whereHas('student.studentshipStatus',function($query){
                 $query->where('name','ACTIVE')->orWhere('name','GRADUANT');
-            })->whereHas('student.semesterRemarks',function($query) use($request){
-                $query->where('remark','PASS')->where('study_academic_year_id',$request->get('study_academic_year_id'));
             })->with(['student.campusProgram.program'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->whereNull('library_status')->orWhere('library_status',0)->latest()->get() : Clearance::whereHas('student.campusProgram.program',function($query) use($request){
                  $query->where('award_id',$request->get('award_id'));
             })->whereHas('student.studentshipStatus',function($query){
                 $query->where('name','ACTIVE')->orWhere('name','GRADUANT');
-            })->whereHas('student.semesterRemarks',function($query) use($request){
-                $query->where('remark','PASS')->where('study_academic_year_id',$request->get('study_academic_year_id'));
             })->with(['student.campusProgram.program'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->whereNull('library_status')->orWhere('library_status',0)->latest()->get();
         }elseif(Auth::user()->hasRole('dean-of-students')){
            $clearances = $request->get('query')? Clearance::whereHas('student',function($query) use($request){
@@ -86,14 +74,10 @@ class ClearanceController extends Controller
                  $query->where('award_id',$request->get('award_id'));
             })->whereHas('student.studentshipStatus',function($query){
                 $query->where('name','ACTIVE')->orWhere('name','GRADUANT');
-            })->whereHas('student.semesterRemarks',function($query) use($request){
-                $query->where('remark','PASS')->where('study_academic_year_id',$request->get('study_academic_year_id'));
             })->with(['student.campusProgram.program'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->whereNull('hostel_status')->orWhere('hostel_status',0)->latest()->get() : Clearance::whereHas('student.campusProgram.program',function($query) use($request){
                  $query->where('award_id',$request->get('award_id'));
             })->whereHas('student.studentshipStatus',function($query){
                 $query->where('name','ACTIVE')->orWhere('name','GRADUANT');
-            })->whereHas('student.semesterRemarks',function($query) use($request){
-                $query->where('remark','PASS')->where('study_academic_year_id',$request->get('study_academic_year_id'));
             })->with(['student.campusProgram.program'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->whereNull('hostel_status')->orWhere('hostel_status',0)->latest()->get();
         }else{
            $clearances = $request->has('query')? Clearance::whereHas('student',function($query) use($request){
@@ -102,14 +86,10 @@ class ClearanceController extends Controller
                  $query->where('award_id',$request->get('award_id'));
             })->whereHas('student.studentshipStatus',function($query){
                 $query->where('name','ACTIVE')->orWhere('name','GRADUANT');
-            })->whereHas('student.semesterRemarks',function($query) use($request){
-                $query->where('remark','PASS')->where('study_academic_year_id',$request->get('study_academic_year_id'));
             })->with(['student.campusProgram.program'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->latest()->get() : Clearance::whereHas('student.campusProgram.program',function($query) use($request){
                  $query->where('award_id',$request->get('award_id'));
             })->whereHas('student.studentshipStatus',function($query){
                 $query->where('name','ACTIVE')->orWhere('name','GRADUANT');
-            })->whereHas('student.semesterRemarks',function($query) use($request){
-                $query->where('remark','PASS')->where('study_academic_year_id',$request->get('study_academic_year_id'));
             })->with(['student.campusProgram.program'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->latest()->get();
         }
     	$data = [

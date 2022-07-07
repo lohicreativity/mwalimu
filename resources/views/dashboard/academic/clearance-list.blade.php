@@ -20,7 +20,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Clearance</h1>
+            <h1 class="m-0">Clearance List</h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -54,7 +54,7 @@
                     <select name="study_academic_year_id" class="form-control" required>
                        <option value="">Select Study Academic Year</option>
                        @foreach($study_academic_years as $year)
-                       <option value="{{ $year->id }}">{{ $year->academicYear->year }}</option>
+                       <option value="{{ $year->id }}" @if($request->get('study_academic_year_id') == $year->id) selected="selected" @endif>{{ $year->academicYear->year }}</option>
                        @endforeach
                     </select>
                     </div>
@@ -82,9 +82,10 @@
             @if($study_academic_year)
             <div class="card">
               <div class="card-header">
-                 <h3 class="card-title">Request Clearance</h3>
+                 <h3 class="card-title">Clearance List</h3>
               </div>
               <div class="card-body">
+                  {{--
                   {!! Form::open(['url'=>'academic/clearance','method'=>'GET']) !!}
 
                   {!! Form::input('hidden','study_academic_year_id',$study_academic_year->id) !!}
@@ -94,8 +95,8 @@
                    <button class="btn btn-default" type="submit"><span class="fa fa-search"></span></button>
                  </span>
                 </div>
-                {!! Form::close() !!}
-                 <table class="table table-bordered ss-margin-top ss-paginated-table">
+                {!! Form::close() !!} --}}
+                 <table class="table table-bordered ss-paginated-table">
                    <thead>
                     <tr>
                       <th>Student</th>

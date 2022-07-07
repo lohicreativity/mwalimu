@@ -112,8 +112,7 @@ class GraduantController extends Controller
                     $graduant_list[] = $student;
                     if($count >= $program->min_duration){
                        if($student->academicStatus->name == 'PASS'){
-                           $graduant->status = 'PENDING';
-                           if($cls = Clearance::where('student_id')->first()){
+                           if($cls = Clearance::where('student_id',$student->id)->first()){
                               $clearance = $cls;
                            }else{
                               $clearance = new Clearance;
