@@ -17,6 +17,7 @@ use App\Domain\Academic\Models\Department;
 use App\Domain\Settings\Models\NTALevel;
 use App\Domain\Academic\Models\SemesterRemark;
 use App\Domain\Academic\Models\SpecialExam;
+use App\Domain\Academic\Models\SpecialExamRequest;
 use App\Domain\Academic\Models\Appeal;
 use App\Domain\Academic\Models\AnnualRemark;
 use App\Domain\Academic\Models\OverallRemark;
@@ -893,7 +894,7 @@ class ExaminationResultController extends Controller
 
             $student = Student::find($request->get('student_id'));
 
-            $special_exam = SpecialExam::where('student_id',$student->id)->where('module_assignment_id',$module_assignment->id)->where('type',$request->get('exam_type'))->where('status','APPROVED')->first();
+            $special_exam = SpecialExamRequest::where('student_id',$student->id)->where('module_assignment_id',$module_assignment->id)->where('type',$request->get('exam_type'))->where('status','APPROVED')->first();
 
             $retake_history = RetakeHistory::whereHas('moduleAssignment',function($query) use($module){
                   $query->where('module_id',$module->id);
