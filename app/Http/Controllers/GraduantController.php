@@ -116,7 +116,11 @@ class GraduantController extends Controller
                      if($remark->remark == 'POSTPONED'){
                        $graduant->reason = 'Postponed Results';
                      }else{
-                       $graduant->reason = 'Incomplete Results';
+                       if(str_contains($student->academicStatus->name,'DISCO')){
+                           $graduant->reason = 'Failed & Disco';
+                       }else{
+                           $graduant->reason = 'Incomplete Results';
+                       }
                      }
                   }
       	    		}
