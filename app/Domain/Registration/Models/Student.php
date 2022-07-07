@@ -13,6 +13,7 @@ use App\Domain\Academic\Models\SemesterRemark;
 use App\Domain\Academic\Models\AnnualRemark;
 use App\Domain\Academic\Models\OverallRemark;
 use App\Domain\Academic\Models\SpecialExam;
+use App\Domain\Academic\Models\AcademicStatus;
 use App\Domain\Application\Models\Applicant;
 use App\Domain\Settings\Models\DisabilityStatus;
 
@@ -88,11 +89,19 @@ class Student extends Model
     }
 
     /**
-     * Establish one to many relationship with campus programs
+     * Establish one to many relationship with studentship statuses
      */
     public function studentshipStatus()
     {
         return $this->belongsTo(StudentshipStatus::class,'studentship_status_id');
+    }
+
+    /**
+     * Establish one to many relationship with academic statuses
+     */
+    public function academicStatus()
+    {
+        return $this->belongsTo(AcademicStatus::class,'academic_status_id');
     }
 
     /**
