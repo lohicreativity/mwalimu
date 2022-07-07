@@ -78,7 +78,7 @@ class GraduantController extends Controller
       	    		$graduant->student_id = $student->id;
       	    		$graduant->overall_remark_id = $student->overallRemark->id;
       	    		$graduant->study_academic_year_id = $request->get('study_academic_year_id');
-      	    		$graduant->status = 'GRADUATING';
+      	    		$graduant->status = 'PENDING';
                 $count = 0;
       	    		foreach($student->annualRemarks as $remark){
       	    			if($remark->remark != 'PASS'){
@@ -89,7 +89,7 @@ class GraduantController extends Controller
                      $count++;
                   }
                   if($count >= $program->min_duration){
-                     $graduant->status = 'GRADUATING';
+                     $graduant->status = 'PENDING';
                      if($cls = Clearance::where('student_id')->first()){
                         $clearance = $cls;
                      }else{
