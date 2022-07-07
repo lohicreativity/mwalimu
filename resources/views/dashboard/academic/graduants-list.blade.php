@@ -180,9 +180,9 @@
                         @if($graduant->status == 'GRADUATING')
                            {!! Form::checkbox('graduant_'.$graduant->id,$graduant->id,true) !!}
                         @else
-                           {!! Form::checkbox('graduant_'.$graduant->id,$graduant->id) !!}
+                           {!! Form::checkbox('graduant_'.$graduant->id,$graduant->id,true) !!}
                         @endif
-                        {!! Form::input('hidden','grad_'.$graduant->id,$graduant->id,true) !!}
+                        {!! Form::input('hidden','grad_'.$graduant->id,$graduant->id) !!}
                       </td>
                       @endif
                     </tr>
