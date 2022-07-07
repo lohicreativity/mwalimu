@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Domain\Academic\Models\StudyAcademicYear;
 use App\Domain\Academic\Models\Semester;
+use App\Domain\Academic\Models\AcademicStatus;
 use App\Domain\Settings\Models\Campus;
 use App\Domain\Academic\Models\CampusProgram;
 use App\Domain\Academic\Models\ExaminationResult;
@@ -490,6 +491,12 @@ class ExaminationResultController extends Controller
                             $remark->class = null;
                           }
                           $remark->save();
+
+                          $status = AcademicStatus::where('name',$remark->remark)->first();
+
+                          $stud = Student::find($key);
+                          $stud->academic_status_id = $status->id;
+                          $stud->save();
                        }
                  }else{
                      $sem_remarks = SemesterRemark::where('student_id',$key)->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',$buffer['year_of_study'])->get();
@@ -519,6 +526,12 @@ class ExaminationResultController extends Controller
                               $remark->class = null;
                             }
                             $remark->save();
+
+                            $status = AcademicStatus::where('name',$remark->remark)->first();
+
+                            $stud = Student::find($key);
+                            $stud->academic_status_id = $status->id;
+                            $stud->save();
                         }
                        
                        $points = 0;
@@ -1318,6 +1331,12 @@ class ExaminationResultController extends Controller
                       $rem->class = null;
                     }
                     $rem->save();
+
+                    $status = AcademicStatus::where('name',$remark->remark)->first();
+
+                    $stud = Student::find($key);
+                    $stud->academic_status_id = $status->id;
+                    $stud->save();
                }
 
            DB::commit();
