@@ -251,6 +251,7 @@ class GraduantController extends Controller
               }else{
                   $grad = Graduant::find($graduant->id);
                   $grad->status = 'EXCLUDED';
+                  $grad->reason = 'Disapproved';
                   $grad->save();
               }
            }
