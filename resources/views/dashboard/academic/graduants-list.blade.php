@@ -156,7 +156,6 @@
                     <th>Reg. No.</th>
                     <th>Sex</th>
                     <th>Programme</th>
-                    <th>Campus</th>
                     <th>Status</th>
                     <th>GPA</th>
                     @if(Auth::user()->hasRole('arc'))
@@ -172,7 +171,6 @@
                       <td>{{ $graduant->student->registration_number }}</td>
                       <td>{{ $graduant->student->gender }}</td>
                       <td>{{ $graduant->student->campusProgram->program->name }}</td>
-                      <td>{{ $graduant->student->campusProgram->campus->name }}</td>
                       <td>@if($graduant->status == 'GRADUATING') APPROVED @elseif($graduant->status == 'PENDING') PENDING @else DISAPPROVED @endif</td>
                       <td>{{ bcdiv($graduant->student->overallRemark->gpa,1,1) }}</td>
                       @if(Auth::user()->hasRole('arc'))
@@ -189,7 +187,7 @@
                     @endforeach  
                     @if(Auth::user()->hasRole('arc'))
                     <tr>
-                      <td colspan="9">
+                      <td colspan="8">
                         <button type="submit" class="btn btn-primary">Save Approvals</button>
                       </td>
                     </tr>       
