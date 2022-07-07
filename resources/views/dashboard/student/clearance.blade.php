@@ -42,16 +42,33 @@
           <div class="col-12">
             <div class="card">
               <div class="card-header">
-                 <h3 class="card-title">Request Clearance</h3>
+                 <h3 class="card-title">Request Clearance Status</h3>
               </div>
-              {!! Form::open(['url'=>'student/clearance/store','class'=>'ss-form-processing']) !!}
+              <div class="card-body">
+                <table class="table table-bordered">
+                   <thead>
+                    <tr>
+                      <th>Finance</th>
+                      <th>Library</th>
+                      <th>Dean of Students</th>
+                      <th>HOD</th>
+                    </tr>
+                   </thead>
+                   <tbody>
+                     <tr>
+                       <td>@if($clearance->finance_status === 0) <i class="fa fa-ban"></i> @else <i class="fa fa-check"></i> @endif</td>
 
-                 {!! Form::input('hidden','student_id',$student->id) !!}
-                 {!! Form::input('hidden','study_academic_year_id',$registration->study_academic_year_id) !!}
-                <div class="card-footer">
-                  <button type="submit" class="btn btn-primary">{{ __('Request Clearance') }}</button>
-                </div>
-              {!! Form::close() !!}
+                       <td>@if($clearance->library_status === 0) <i class="fa fa-ban"></i> @else <i class="fa fa-check"></i> @endif</td>
+
+
+                       <td>@if($clearance->hostel_status === 0) <i class="fa fa-ban"></i> @else <i class="fa fa-check"></i> @endif</td>
+
+                       <td>@if($clearance->hod_status === 0) <i class="fa fa-ban"></i> @else <i class="fa fa-check"></i> @endif</td>
+                     </tr>
+
+                   </tbody>
+                 </table>
+              </div>
             </div>
           </div>
           

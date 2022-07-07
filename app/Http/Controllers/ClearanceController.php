@@ -21,7 +21,8 @@ class ClearanceController extends Controller
     	$student = User::find(Auth::user()->id)->student;
     	$data = [
            'student'=>$student,
-           'registration'=>Registration::where('student_id',$student->id)->latest()->first()
+           'registration'=>Registration::where('student_id',$student->id)->latest()->first(),
+           'clearance'=>Clearance::where('student_id',$student->id)->first()
     	];
     	return view('dashboard.student.clearance',$data)->withTitle('Clearance');
     }

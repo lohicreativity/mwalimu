@@ -54,7 +54,7 @@
                   @endif
 
                   @if($graduant->attendance_status === 1)
-                   <span class="badge-success">ATTENDING</span>
+                   <span class="badge-success">CONFIRMED</span>
                   @elseif($graduant->attendance_status === 0)
                    <span class="badge badge-warning">NOT ATTENDING</span>
                   @endif
