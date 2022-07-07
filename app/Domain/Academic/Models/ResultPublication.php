@@ -4,6 +4,7 @@ namespace App\Domain\Academic\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Domain\Settings\Models\Campus;
 
 class ResultPublication extends Model
 {
@@ -17,6 +18,22 @@ class ResultPublication extends Model
     public function semester()
     {
     	return $this->belongsTo(Semester::class,'semester_id');
+    }
+
+    /**
+     * Establish one to many relationship with campuses
+     */
+    public function campus()
+    {
+        return $this->belongsTo(Campus::class,'campus_id');
+    }
+
+    /**
+     * Establish one to many relationship with nta levels
+     */
+    public function ntaLevel()
+    {
+        return $this->belongsTo(NTALevel::class,'nta_level_id');
     }
 
     /**

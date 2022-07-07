@@ -13,6 +13,8 @@ class ResultPublicationAction implements ResultPublicationInterface{
 		$publication = new ResultPublication;
                 $publication->study_academic_year_id = $request->get('study_academic_year_id');
                 $publication->semester_id = $request->get('semester_id');
+                $publication->campus_id = $request->get('campus_id');
+                $publication->nta_level_id = $request->get('nta_level_id');
                 $publication->status = $request->get('status');
                 $publication->published_by_user_id = Auth::user()->id;
                 $publication->published_at = now();
@@ -23,6 +25,8 @@ class ResultPublicationAction implements ResultPublicationInterface{
 		$award = ResultPublication::find($request->get('result_publication_id'));
                 $publication->study_academic_year_id = $request->get('study_academic_year_id');
                 $publication->semester_id = $request->get('semester_id');
+                $publication->campus_id = $request->get('campus_id');
+                $publication->nta_level_id = $request->get('nta_level_id');
                 $publication->status = $request->get('status');
                 $publication->published_by_user_id = Auth::user()->id;
                 $publication->published_at = now();

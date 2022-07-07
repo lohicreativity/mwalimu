@@ -73,6 +73,8 @@
                   <tr>
                     <th>Study Academic Year</th>
                     <th>Semester</th>
+                    <th>NTA Level</th>
+                    <th>Campus</th>
                     <th>Status</th>
                     <th>Type</th>
                     <th>Actions</th>
@@ -83,6 +85,8 @@
                   <tr>
                     <td>{{ $publication->studyAcademicYear->academicYear->year }}</td>
                     <td>{{ $publication->semester->name }}</td>
+                    <td>{{ $publication->ntaLevel->name }}</td>
+                    <td>{{ $publication->campus->name }}</td>
                     <td>{{ $publication->status }}</td>
                     <td>{{ $publication->type }}</td>
                     <td>

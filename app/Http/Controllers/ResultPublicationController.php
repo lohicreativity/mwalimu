@@ -20,7 +20,7 @@ class ResultPublicationController extends Controller
     	$data = [
     	   'semesters'=>Semester::all(),
     	   'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
-           'publications'=>ResultPublication::with(['semester','StudyAcademicYear.academicYear'])->paginate(20)
+           'publications'=>ResultPublication::with(['semester','StudyAcademicYear.academicYear','ntaLevel','campus'])->paginate(20)
     	];
     	return view('dashboard.academic.results-publications',$data)->withTitle('Results Publications');
     }
