@@ -113,7 +113,7 @@ class GraduantController extends Controller
                      }
                   }else{
                      $graduant->status = 'EXCLUDED';
-                     if($remark->remark == 'POSTPONED'){
+                     if($remark->remark == 'POSTPONED' || str_contains($student->academicStatus->name,'POSTPONED')){
                        $graduant->reason = 'Postponed Results';
                      }else{
                        if(str_contains($student->academicStatus->name,'DISCO')){
