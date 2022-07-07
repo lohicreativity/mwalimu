@@ -143,7 +143,6 @@
 
                 {!! Form::input('hidden','campus_id',$request->get('campus_id')) !!}
 
-                {!! Form::input('hidden','program_level_id',$request->get('program_level_id')) !!}
                 <table id="example2" class="table table-bordered table-hover ss-paginated-table ss-margin-top">
                   <thead>
                   <tr>
@@ -152,9 +151,6 @@
                     <th>Reg. No.</th>
                     <th>Programmes</th>
                     <th>Reason</th>
-                    @if(Auth::user()->hasRole('arc'))
-                    <th>Approval</th>
-                    @endif
                   </tr>
                   </thead>
                   <tbody>
@@ -166,27 +162,10 @@
                       <td>{{ $graduant->student->campusProgram->program->name }}</td>
                       <td><a href="{{ url('academic/results/show-student-report?registration_number='.$graduant->student->registration_number) }}">{{ $graduant->reason }}</a></td>
                     </tr>
-                    @if(Auth::user()->hasRole('arc'))
-                    <td>
-                        @if($graduant->status == 'GRADUATING')
-                           {!! Form::checkbox('graduant_'.$graduant->id,$graduant->id,true) !!}
-                        @else
-                           {!! Form::checkbox('graduant_'.$graduant->id,$graduant->id) !!}
-                        @endif
-                        {!! Form::input('hidden','grad_'.$graduant->id,$graduant->id) !!}
-                      </td>
-                      @endif 
-                    @endforeach   
-                    @if(Auth::user()->hasRole('arc'))
-                    <tr>
-                      <td colspan="6">
-                        <button type="submit" class="btn btn-primary">Save Approvals</button>
-                      </td>
-                    </tr>  
-                    @endif              
+                    @endforeach                
                   </tbody>
                 </table>
-                {!! Form::close() !!}
+
                 <div class="ss-pagination-links">
                     {!! $non_graduants->appends($request->except('page'))->render() !!}
                 </div>
