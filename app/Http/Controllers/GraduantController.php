@@ -356,7 +356,7 @@ class GraduantController extends Controller
                                               $student->id,
                                               $student->first_name.' '.$student->surname,
                                               $student->phone,
-                                              $email,
+                                              $student->email,
                                               $generated_by,
                                               $approved_by,
                                               $feeType->duration,
