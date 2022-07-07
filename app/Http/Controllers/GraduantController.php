@@ -61,7 +61,8 @@ class GraduantController extends Controller
       }
 
       $nta_level = NTALevel::with(['programs'])->find($request->get('nta_level_id'));
-
+      $excluded_list = [];
+      $graduant_list = [];
       foreach($nta_level->programs as $program){
           	$campus_program = CampusProgram::with('program')->find($request->get('campus_program_id'));
           	$students = Student::whereHas('studentshipStatus',function($query){
@@ -71,8 +72,7 @@ class GraduantController extends Controller
             })->with(['annualRemarks','overallRemark','academicStatus'])->whereHas('campusProgram',function($query) use ($program, $request){
                  $query->where('program_id',$program->id)->where('campus_id',$request->get('campus_id'));
             })->where('year_of_study',$program->min_duration)->get();
-          	$excluded_list = [];
-            $graduant_list = [];
+          	
           	$status = StudentshipStatus::where('name','GRADUANT')->first();
           	foreach($students as $student){
           		if($student->overallRemark){
