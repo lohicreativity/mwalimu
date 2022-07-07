@@ -241,12 +241,12 @@ class GraduantController extends Controller
                   $grad->status = 'GRADUATING';
                   $grad->save();
 
-                  try{
+                  // try{
                      $user = new User;
                      $user->email = $graduant->student->email;
                      $user->username = $graduant->student->first_name.' '.$graduant->student->surname;
                      Mail::to($user)->queue(new GraduationAlert($graduant));
-                  }catch(\Exception $e){}
+                  // }catch(\Exception $e){}
               }else{
                   $grad = Graduant::find($graduant->id);
                   $grad->status = 'EXCLUDED';
