@@ -296,7 +296,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 	Route::post('graduants/sort',[GraduantController::class,'sortGraduants']);
 	Route::get('graduants',[GraduantController::class,'showGraduants']);
 	Route::get('excluded-graduants',[GraduantController::class,'showExcludedGraduants']);
-	Route::get('approve-graduants',[GraduantController::class,'approveGraduants']);
+	Route::post('approve-graduants',[GraduantController::class,'approveGraduants']);
 
 
 	Route::get('results/appeals',[AppealController::class,'index']);
