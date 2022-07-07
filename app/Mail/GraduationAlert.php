@@ -31,7 +31,7 @@ class GraduationAlert extends Mailable
      */
     public function build()
     {
-        return $this->view('emails.custom_notification')
+        return $this->view('emails.custom-notification')
                     ->subject('Graduation Confirmation')
                     ->with([
                         'heading'=>'Graduation Confirmation',
