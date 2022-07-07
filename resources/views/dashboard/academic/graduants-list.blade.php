@@ -182,7 +182,7 @@
                         @else
                            {!! Form::checkbox('graduant_'.$graduant->id,$graduant->id) !!}
                         @endif
-                        {!! Form::input('hidden','grad_'.$graduant->id,$graduant->id) !!}
+                        {!! Form::input('hidden','grad_'.$graduant->id,$graduant->id,true) !!}
                       </td>
                       @endif
                     </tr>
