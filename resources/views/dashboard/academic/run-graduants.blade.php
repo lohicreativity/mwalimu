@@ -96,7 +96,9 @@
                     <select name="nta_level_id" class="form-control" required>
                        <option value="">Select NTA Level</option>
                        @foreach($nta_levels as $level)
+                          @if(str_contains($level->name,4) || str_contains($level->name,6) || str_contains($level->name,8) || str_contains($level->name,9))
                           <option value="{{ $level->id }}">{{ $level->name }}</option>
+                          @endif
                        @endforeach
                     </select>
                   </div>
