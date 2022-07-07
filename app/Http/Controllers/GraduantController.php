@@ -66,8 +66,8 @@ class GraduantController extends Controller
           	$campus_program = CampusProgram::with('program')->find($request->get('campus_program_id'));
           	$students = Student::whereHas('studentshipStatus',function($query){
                 $query->where('name','ACTIVE');
-            })->whereHas('academicStatus',function($query){
-                $query->where('name','PASS');
+            })->whereHas('annualRemarks',function($query) use($request){
+                $query->where('study_academic_year_id',$request->get('study_academic_year_id'));
             })->with(['annualRemarks','overallRemark'])->whereHas('campusProgram',function($query) use ($program, $request){
                  $query->where('program_id',$program->id)->where('campus_id',$request->get('campus_id'));
             })->where('year_of_study',$program->min_duration)->get();
