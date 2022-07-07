@@ -153,7 +153,9 @@
                     <th>Reg. No.</th>
                     <th>Programmes</th>
                     <th>Reason</th>
+                    @if(Auth::user()->hasRole('arc'))
                     <th>Approval</th>
+                    @endif
                   </tr>
                   </thead>
                   <tbody>
@@ -165,6 +167,7 @@
                       <td>{{ $graduant->student->campusProgram->program->name }}</td>
                       <td><a href="{{ url('academic/results/show-student-report?registration_number='.$graduant->student->registration_number) }}">{{ $graduant->reason }}</a></td>
                     </tr>
+                    @if(Auth::user()->hasRole('arc'))
                     <td>
                         @if($graduant->status == 'GRADUATING')
                            {!! Form::checkbox('graduant_'.$graduant->id,$graduant->id,true) !!}
@@ -173,12 +176,15 @@
                         @endif
                         {!! Form::input('hidden','grad_'.$graduant->id,$graduant->id) !!}
                       </td>
+                      @endif 
                     @endforeach   
+                    @if(Auth::user()->hasRole('arc'))
                     <tr>
-                      <td colspan="9">
+                      <td colspan="6">
                         <button type="submit" class="btn btn-primary">Save Approvals</button>
                       </td>
-                    </tr>                
+                    </tr>  
+                    @endif              
                   </tbody>
                 </table>
                 {!! Form::close() !!}

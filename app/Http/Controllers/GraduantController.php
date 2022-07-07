@@ -159,6 +159,7 @@ class GraduantController extends Controller
            'study_academic_year'=>$request->has('study_academic_year_id')? StudyAcademicYear::with('academicYear')->find($request->get('study_academic_year_id')) : null,
            'graduants'=>$graduants,
            'awards'=>Award::all(),
+           'campuses'=>Campus::all(),
            'request'=>$request
     	];
     	return view('dashboard.academic.graduants-list',$data)->withTitle('Graduants List');
@@ -195,6 +196,7 @@ class GraduantController extends Controller
            'study_academic_year'=>$request->has('study_academic_year_id')? StudyAcademicYear::with('academicYear')->find($request->get('study_academic_year_id')) : null,
            'non_graduants'=>$non_graduants,
            'awards'=>Award::all(),
+           'campuses'=>Campus::all(),
            'request'=>$request
     	];
     	return view('dashboard.academic.non-graduants-list',$data)->withTitle('Non Graduants List');
