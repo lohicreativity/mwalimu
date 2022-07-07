@@ -94,12 +94,23 @@ class GraduantController extends Controller
       	    			if($remark->remark != 'PASS'){
       	    			   $graduant->status = 'EXCLUDED';
       	                   $excluded_list[] = $student;
+                           if($remark->remark == 'POSTPONED')){
+                             $graduant->reason = 'Postponed';
+                             break;
+                           }else{
+                             if(str_contains($student->academicStatus->name,'DISCO')){
+                                 $graduant->reason = 'Failed & Disco';
+                                 break;
+                             }else{
+                                 $graduant->reason = 'Incomplete Results';
+                                 break;
+                             }
+                           }
       	                   break;
       	    			}else{
                      $count++;
                      $graduant_list[] = $student;
-                  }
-                  if($count >= $program->min_duration){
+                     if($count >= $program->min_duration){
                      if($student->academicStatus->name == 'PASS'){
                        $graduant->status = 'PENDING';
                        if($cls = Clearance::where('student_id')->first()){
@@ -111,19 +122,9 @@ class GraduantController extends Controller
                        $clearance->study_academic_year_id = $request->get('study_academic_year_id');
                        $clearance->save();
                      }
-                  }else{
-                     $graduant->status = 'EXCLUDED';
-                     if($remark->remark == 'POSTPONED' || str_contains($student->academicStatus->name,'POSTPONED')){
-                       $graduant->reason = 'Postponed Results';
-                     }
-                       if(str_contains($student->academicStatus->name,'DISCO')){
-                           $graduant->reason = 'Failed & Disco';
-                       }elseif(str_contains($student->academicStatus->name,'POSTPONED')){
-                           $graduant->reason = 'Postponed Results';
-                       }else{
-                           $graduant->reason = 'Incomplete Results';
-                       }
+                    }
                   }
+
       	    		}
       	    		$graduant->save();
           	  }
