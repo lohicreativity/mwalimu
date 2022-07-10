@@ -132,7 +132,7 @@
                        <td>{{ $clearance->student->campusProgram->program->name }}</td>
 
                        @if(Auth::user()->hasRole('finance-officer'))
-                       <td>@if($clearance->finance_status === 0) <i class="fa fa-ban"></i> @endif</td>
+                       <td>@if($clearance->finance_status === 0) <i class="fa fa-ban"></i> @else <i class="fa fa-check"></i> @endif</td>
                       {{--<td><a href="#" class="btn btn-primary" data-toggle="modal" data-target="#ss-stage-finance-{{ $clearance->id }}">Clear</a>
                             <div class="modal fade" id="ss-stage-finance-{{ $clearance->id }}">
                         <div class="modal-dialog modal-lg">
@@ -179,7 +179,7 @@
                        </td>
                        @endif
                        @if(Auth::user()->hasRole('librarian'))
-                       <td>@if($clearance->library_status === 0) <i class="fa fa-ban"></i> @endif</td>
+                       <td>@if($clearance->library_status === 0) <i class="fa fa-ban"></i> @else <i class="fa fa-check"></i> @endif</td>
                       {{-- <td>
                         <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#ss-stage-library-{{ $clearance->id }}">Clear</a>
                             <div class="modal fade" id="ss-stage-library-{{ $clearance->id }}">
@@ -228,7 +228,7 @@
                        @endif
                        @if(Auth::user()->hasRole('dean-of-students'))
 
-                       <td>@if($clearance->hostel_status === 0) <i class="fa fa-ban"></i> @endif</td>
+                       <td>@if($clearance->hostel_status === 0) <i class="fa fa-ban"></i> @else <i class="fa fa-check"></i> @endif</td>
                        {{--<td>
                          
                          <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#ss-stage-hostel-{{ $clearance->id }}">Clear</a>
@@ -278,7 +278,7 @@
                        @endif
                       @if(Auth::user()->hasRole('hod'))
 
-                       <td>@if($clearance->hod_status === 0) <i class="fa fa-ban"></i> @endif</td>
+                       <td>@if($clearance->hod_status === 0) <i class="fa fa-ban"></i> @else <i class="fa fa-check"></i> @endif</td>
                        {{--<td>
                            
                            <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#ss-stage-hod-{{ $clearance->id }}">Clear</a>
