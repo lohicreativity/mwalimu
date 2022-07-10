@@ -129,7 +129,7 @@ class ClearanceController extends Controller
 
         foreach ($clearances as $clearance) {
             if($request->get('clear_'.$clearance->id) == $clearance->id){
-                if($request->get('clearance_id') == $clearance->id){
+                if($request->get('clearance_'.$clearance->id) == $clearance->id){
                     $clear = Clearance::find($clearance->id);
                     if($request->get('group') == 'hod'){
                         $clear->hod_status = 1;
