@@ -142,7 +142,9 @@
                       @if($post->status == 'POSTPONED' && $is_renewal && $post->is_renewal == 1)
                       <a href="{{ url('student/postponement/'.$post->id.'/resume') }}" class="btn btn-primary">Resume</a>
                       @elseif($post->status == 'POSTPONED' && !$is_renewal && $post->is_renewal == null)
+                      @if($post->status == 'POSTPONED' && $post->resumption_letter == null)
                       <a href="{{ url('student/postponement/'.$post->id.'/resume') }}" class="btn btn-primary">Resume</a>
+                      @endif
                       @endif
 
                        <div class="modal fade" id="ss-delete-post-{{ $post->id }}">

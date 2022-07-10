@@ -46,6 +46,9 @@
         @if($postponements_arc_count != 0 || $special_exams_arc_count != 0)
         <div class="alert alert-warning">You have pending postponement requests</div>
         @endif
+        @if($resumptions_arc_count != 0)
+        <div class="alert alert-warning">You have pending resumptions requests</div>
+        @endif
         @endif
         
       </div><!-- /.container-fluid -->
