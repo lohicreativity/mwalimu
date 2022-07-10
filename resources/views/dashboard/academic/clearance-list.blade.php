@@ -85,7 +85,7 @@
                  <h3 class="card-title">Clearance List</h3>
               </div>
               <div class="card-body">
-                  {{--
+                
                   {!! Form::open(['url'=>'academic/clearance','method'=>'GET']) !!}
 
                   {!! Form::input('hidden','study_academic_year_id',$study_academic_year->id) !!}
@@ -95,7 +95,11 @@
                    <button class="btn btn-default" type="submit"><span class="fa fa-search"></span></button>
                  </span>
                 </div>
-                {!! Form::close() !!} --}}
+                {!! Form::close() !!} 
+
+                {!! Form::open(['url'=>'academic/bulk-clearance','class'=>'ss-form-processing']) !!}
+
+                {!! Form::input('hidden','study_academic_year_id',$study_academic_year->id) !!}
                  <table class="table table-bordered ss-paginated-table">
                    <thead>
                     <tr>
@@ -105,18 +109,22 @@
                       @if(Auth::user()->hasRole('finance-officer'))
                       <th></th>
                       <th>Action</th>
+                      <th>Clearance</th>
                       @endif
                       @if(Auth::user()->hasRole('librarian'))
                       <th></th>
                       <th>Action</th>
+                      <th>Clearance</th>
                       @endif
                       @if(Auth::user()->hasRole('dean-of-students'))
                       <th></th>
                       <th>Action</th>
+                      <th>Clearance</th>
                       @endif
                       @if(Auth::user()->hasRole('hod'))
                       <th></th>
                       <th>Action</th>
+                      <th>Clearance</th>
                       @endif
                     </tr>
                    </thead>
@@ -168,6 +176,11 @@
                       </div>
                       <!-- /.modal -->
                        </td>
+                       <td>
+                        {!! Form::checkbox('clearance_'.$clearance->id,$clearance->id,true) !!}
+                        {!! Form::input('hidden','clear_'.$clearance->id,$clearance->id) !!}
+                        {!! Form::input('hidden','group','finance-officer') !!}
+                       </td>
                        @endif
                        @if(Auth::user()->hasRole('librarian'))
                        <td>@if($clearance->library_status === 0) <i class="fa fa-ban"></i> @endif</td>
@@ -210,6 +223,11 @@
                         <!-- /.modal-dialog -->
                       </div>
                       <!-- /.modal -->
+                       </td>
+                       <td>
+                        {!! Form::checkbox('clearance_'.$clearance->id,$clearance->id,true) !!}
+                        {!! Form::input('hidden','clear_'.$clearance->id,$clearance->id) !!}
+                        {!! Form::input('hidden','group','librarian') !!}
                        </td>
                        @endif
                        @if(Auth::user()->hasRole('dean-of-students'))
@@ -256,6 +274,11 @@
                       </div>
                       <!-- /.modal -->
                        </td>
+                       <td>
+                        {!! Form::checkbox('clearance_'.$clearance->id,$clearance->id,true) !!}
+                        {!! Form::input('hidden','clear_'.$clearance->id,$clearance->id) !!}
+                        {!! Form::input('hidden','group','dean-of-students') !!}
+                       </td>
                        @endif
                       @if(Auth::user()->hasRole('hod'))
 
@@ -301,13 +324,23 @@
                       </div>
                       <!-- /.modal -->
                        </td>
+                       <td>
+                        {!! Form::checkbox('clearance_'.$clearance->id,$clearance->id,true) !!}
+                        {!! Form::input('hidden','clear_'.$clearance->id,$clearance->id) !!}
+                        {!! Form::input('hidden','group','hod') !!}
+                       </td>
                        @endif
+                       
                      </tr>
                     @endforeach
-
+                      <tr>
+                      <td colspan="8">
+                        <button type="submit" class="btn btn-primary">Clear</button>
+                      </td>
+                    </tr> 
                    </tbody>
                  </table>
-
+                {!! Form::close() !!}
               </div>
               
             </div>

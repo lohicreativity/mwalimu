@@ -291,6 +291,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 
 	Route::get('clearance',[ClearanceController::class,'showList']);
 	Route::post('clearance/update',[ClearanceController::class,'update']);
+	Route::post('bulk-clearance',[ClearanceController::class,'clearBulk']);
 
 	Route::get('run-graduants',[GraduantController::class,'runGraduants']);
 	Route::post('graduants/sort',[GraduantController::class,'sortGraduants']);

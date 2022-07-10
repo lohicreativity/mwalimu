@@ -121,6 +121,37 @@ class ClearanceController extends Controller
     }
 
     /**
+     * Clear bulk
+     */
+    public function clearBulk(Request $request)
+    {
+        $clearances = Clearance::where('study_academic_year_id',$request->get('study_academic_year_id'))->get();
+
+        foreach ($clearances as $clearance) {
+            if($request->get('clear_'.$clearance->id) == $clearance->id){
+                if($request->get('clearance_id') == $clearance->id){
+                    $clear = Clearance::find($clearance->id);
+                    if($request->get('group') == 'hod'){
+                        $clear->hod_status = 1;
+                    }
+                    if($request->get('group') == 'dean-of-students'){
+                        $clear->hostel_status = 1;
+                    }
+                    if($request->get('group') == 'finance-officer'){
+                        $clear->finance_status = 1;
+                    }
+                    if($request->get('group') == 'librarian'){
+                        $clear->library_status = 1;
+                    }
+                    $clearance->save();
+                }
+            }
+        }
+
+        return redirect()->back()->with('message','Clearance list updated successfully');
+    }
+
+    /**
      * Update clearance 
      */
     public function update(Request $request)
