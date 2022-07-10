@@ -160,7 +160,7 @@
                       
                        @endif
                     </td>
-                    @if(!Auth::user()->hasRole('arc'))
+                    @if(!Auth::user()->hasRole('hod'))
                       <td>
                         @if($post->status == 'PENDING')
                         {!! Form::checkbox('post_'.$post->id,$post->id,true) !!}
@@ -170,7 +170,7 @@
                   </tr>
                   @endforeach
                   
-                  @if(!Auth::user()->hasRole('arc'))
+                  @if(!Auth::user()->hasRole('hod'))
                    <tr>
                      <td colspan="9">
                       
