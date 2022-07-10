@@ -143,7 +143,7 @@ class ClearanceController extends Controller
                     if($request->get('group') == 'librarian'){
                         $clear->library_status = 1;
                     }
-                    $clearance->save();
+                    $clear->save();
                 }
             }
         }
