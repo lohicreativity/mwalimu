@@ -119,9 +119,18 @@
                     <td>@if($post->semester) {{ $post->semester->name }} @endif</td>
                     <td>{{ $post->category }}</td>
                     <td>{{ $post->status }}</td>
-                    <td><a href="{{ url('student/postponement-letter/'.$post->id.'/download') }}">Postponement Letter</a><br>
+                    <td>
+                      <a href="{{ url('student/postponement-letter/'.$post->id.'/download') }}">Postponement Letter</a><br>
 
-                      <a href="{{ url('student/supporting-document/'.$post->id.'/download') }}">Supporting Document</a></td>
+                      @if(!empty($post->supporting_document))
+                      <a href="{{ url('student/supporting-document/'.$post->id.'/download') }}">Supporting Document</a>
+                      @endif
+
+                      @if(!empty($post->resumption_letter))
+                      <a href="{{ url('student/resumption-letter/'.$post->id.'/download') }}">Resumption Letter</a></td>
+                      @endif
+
+                    </td>
                     <td>
                       @if($post->status == 'PENDING')
                       <a class="btn btn-danger btn-sm" href="#" data-toggle="modal" data-target="#ss-delete-post-{{ $post->id }}">
@@ -142,7 +151,7 @@
                       @if($post->status == 'POSTPONED' && $is_renewal && $post->is_renewal == 1)
                       <a href="{{ url('student/postponement/'.$post->id.'/resume') }}" class="btn btn-primary">Resume</a>
                       @elseif($post->status == 'POSTPONED' && !$is_renewal && $post->is_renewal == null)
-                      @if($post->status == 'POSTPONED' && $post->resumption_letter === null)
+                      @if($post->status == 'POSTPONED' && empty($post->resumption_letter))
                       <a href="{{ url('student/postponement/'.$post->id.'/resume') }}" class="btn btn-primary">Resume</a>
                       @endif
                       @endif

@@ -70,6 +70,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
     Route::get('postponements',[StudentController::class,'requestPostponement']);
 
     Route::get('postponement-letter/{id}/download',[PostponementController::class,'downloadLetter']);
+    Route::get('resumption-letter/{id}/download',[PostponementController::class,'downloadResumptionLetter']);
     Route::get('supporting-document/{id}/download',[PostponementController::class,'downloadSupportingDocument']);
     Route::get('postponement/{id}/resume',[PostponementController::class,'showResume']);
     Route::post('postponement/resume',[PostponementController::class,'submitResume']);
