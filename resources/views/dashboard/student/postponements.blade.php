@@ -140,7 +140,7 @@
                        </a>
                       @endif
 
-                      @if($post->status == 'POSTPONED' && !is_null($post->resumption_letter) && !is_null($post->resume_recommended))
+                      @if($post->status == 'POSTPONED' && !is_null($post->resumption_letter) && is_null($post->resume_recommended))
                       <a class="btn btn-danger btn-sm" href="{{ url('student/postponement/'.$post->id.'/cancel-resumption') }}">
                               <i class="fas fa-trash">
                               </i>
