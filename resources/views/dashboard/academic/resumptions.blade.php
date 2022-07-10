@@ -66,7 +66,7 @@
             @if(count($postponements) != 0)
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">List of Postponement Resumptions</h3>
+                <h3 class="card-title">List of Resumptions</h3>
               </div>
               <!-- /.card-header -->
               {!! Form::open(['url'=>'academic/accept-resumptions','class'=>'ss-form-processing']) !!}

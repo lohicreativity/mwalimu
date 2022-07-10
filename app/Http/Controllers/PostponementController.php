@@ -42,7 +42,7 @@ class PostponementController extends Controller
     {
       $data = [
            'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
-           'postponements'=>Postponement::with(['student','StudyAcademicYear.academicYear','semester'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->get(),
+           'postponements'=>Postponement::with(['student','StudyAcademicYear.academicYear','semester'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->whereNotNull('resumption_letter')->get(),
            'semesters'=>Semester::all(),
            'staff'=>User::find(Auth::user()->id)->staff,
            'request'=>$request
