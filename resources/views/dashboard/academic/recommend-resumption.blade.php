@@ -116,10 +116,10 @@
                    <div class="row">
                      <div class="col-12">
                         <label class="radio-inline">
-                          <input type="radio" name="recommended" id="inlineRadio1" value="1" @if($postponement->recommended === 1) checked="checked" @endif> Recommended
+                          <input type="radio" name="recommended" id="inlineRadio1" value="1" @if($postponement->resume_recommended === 1) checked="checked" @endif> Recommended
                         </label>
                         <label class="radio-inline">
-                          <input type="radio" name="recommended" id="inlineRadio2" value="0" @if($postponement->recommended === 0) checked="checked" @endif> Not Recommended
+                          <input type="radio" name="recommended" id="inlineRadio2" value="0" @if($postponement->resume_recommended === 0) checked="checked" @endif> Not Recommended
                         </label>
 
                      </div>
@@ -127,7 +127,7 @@
                    <div class="row">
                     <div class="form-group col-12">
                       {!! Form::label('','Recommendation') !!}
-                      {!! Form::textarea('recommendation',$postponement->recommendation,['class'=>'form-control','placeholder'=>'Recommendation','rows'=>3,'required'=>true]) !!}
+                      {!! Form::textarea('recommendation',$postponement->resumption_recommendation,['class'=>'form-control','placeholder'=>'Recommendation','rows'=>3,'required'=>true]) !!}
 
                       {!! Form::input('hidden','postponement_id',$postponement->id) !!}
                     </div>
