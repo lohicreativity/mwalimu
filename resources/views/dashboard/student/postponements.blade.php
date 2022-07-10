@@ -123,7 +123,7 @@
                       <a href="{{ url('student/postponement-letter/'.$post->id.'/download') }}">Postponement Letter</a><br>
 
                       @if(!is_null($post->supporting_document))
-                      <a href="{{ url('student/supporting-document/'.$post->id.'/download') }}">Supporting Document</a>
+                      <a href="{{ url('student/supporting-document/'.$post->id.'/download') }}">Supporting Document</a><br>
                       @endif
 
                       @if(!is_null($post->resumption_letter))
