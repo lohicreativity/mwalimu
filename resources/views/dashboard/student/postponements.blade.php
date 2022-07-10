@@ -140,7 +140,7 @@
                        </a>
                       @endif
 
-                      @if($post->status == 'POSTPONED' && $post->resumption_letter !== null && $post->resume_recommended !== null)
+                      @if($post->status == 'POSTPONED' && !is_null($post->resumption_letter) && !is_null($post->resume_recommended))
                       <a class="btn btn-danger btn-sm" href="{{ url('student/postponement/'.$post->id.'/cancel-resumption') }}">
                               <i class="fas fa-trash">
                               </i>
@@ -155,6 +155,8 @@
                       <a href="{{ url('student/postponement/'.$post->id.'/resume') }}" class="btn btn-primary">Resume</a>
                       @endif
                       @endif
+
+                      {{ is_null($post->resumption_letter) }}
 
                        <div class="modal fade" id="ss-delete-post-{{ $post->id }}">
                         <div class="modal-dialog modal-lg">
