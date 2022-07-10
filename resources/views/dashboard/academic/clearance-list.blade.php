@@ -108,22 +108,18 @@
                       <th>Programme</th>
                       @if(Auth::user()->hasRole('finance-officer'))
                       <th></th>
-                      <th>Action</th>
                       <th>Clearance</th>
                       @endif
                       @if(Auth::user()->hasRole('librarian'))
                       <th></th>
-                      <th>Action</th>
                       <th>Clearance</th>
                       @endif
                       @if(Auth::user()->hasRole('dean-of-students'))
                       <th></th>
-                      <th>Action</th>
                       <th>Clearance</th>
                       @endif
                       @if(Auth::user()->hasRole('hod'))
                       <th></th>
-                      <th>Action</th>
                       <th>Clearance</th>
                       @endif
                     </tr>
@@ -137,7 +133,7 @@
 
                        @if(Auth::user()->hasRole('finance-officer'))
                        <td>@if($clearance->finance_status === 0) <i class="fa fa-ban"></i> @endif</td>
-                       <td><a href="#" class="btn btn-primary" data-toggle="modal" data-target="#ss-stage-finance-{{ $clearance->id }}">Clear</a>
+                      {{--<td><a href="#" class="btn btn-primary" data-toggle="modal" data-target="#ss-stage-finance-{{ $clearance->id }}">Clear</a>
                             <div class="modal fade" id="ss-stage-finance-{{ $clearance->id }}">
                         <div class="modal-dialog modal-lg">
                           <div class="modal-content">
@@ -175,7 +171,7 @@
                         <!-- /.modal-dialog -->
                       </div>
                       <!-- /.modal -->
-                       </td>
+                       </td> --}}
                        <td>
                         {!! Form::checkbox('clearance_'.$clearance->id,$clearance->id,true) !!}
                         {!! Form::input('hidden','clear_'.$clearance->id,$clearance->id) !!}
@@ -184,7 +180,7 @@
                        @endif
                        @if(Auth::user()->hasRole('librarian'))
                        <td>@if($clearance->library_status === 0) <i class="fa fa-ban"></i> @endif</td>
-                       <td>
+                      {{-- <td>
                         <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#ss-stage-library-{{ $clearance->id }}">Clear</a>
                             <div class="modal fade" id="ss-stage-library-{{ $clearance->id }}">
                         <div class="modal-dialog modal-lg">
@@ -223,7 +219,7 @@
                         <!-- /.modal-dialog -->
                       </div>
                       <!-- /.modal -->
-                       </td>
+                       </td> --}}
                        <td>
                         {!! Form::checkbox('clearance_'.$clearance->id,$clearance->id,true) !!}
                         {!! Form::input('hidden','clear_'.$clearance->id,$clearance->id) !!}
@@ -233,7 +229,7 @@
                        @if(Auth::user()->hasRole('dean-of-students'))
 
                        <td>@if($clearance->hostel_status === 0) <i class="fa fa-ban"></i> @endif</td>
-                       <td>
+                       {{--<td>
                          
                          <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#ss-stage-hostel-{{ $clearance->id }}">Clear</a>
                             <div class="modal fade" id="ss-stage-hostel-{{ $clearance->id }}">
@@ -273,7 +269,7 @@
                         <!-- /.modal-dialog -->
                       </div>
                       <!-- /.modal -->
-                       </td>
+                       </td> --}}
                        <td>
                         {!! Form::checkbox('clearance_'.$clearance->id,$clearance->id,true) !!}
                         {!! Form::input('hidden','clear_'.$clearance->id,$clearance->id) !!}
@@ -283,7 +279,7 @@
                       @if(Auth::user()->hasRole('hod'))
 
                        <td>@if($clearance->hod_status === 0) <i class="fa fa-ban"></i> @endif</td>
-                       <td>
+                       {{--<td>
                            
                            <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#ss-stage-hod-{{ $clearance->id }}">Clear</a>
                             <div class="modal fade" id="ss-stage-hod-{{ $clearance->id }}">
@@ -323,7 +319,7 @@
                         <!-- /.modal-dialog -->
                       </div>
                       <!-- /.modal -->
-                       </td>
+                       </td>--}}
                        <td>
                         {!! Form::checkbox('clearance_'.$clearance->id,$clearance->id,true) !!}
                         {!! Form::input('hidden','clear_'.$clearance->id,$clearance->id) !!}
@@ -335,7 +331,7 @@
                     @endforeach
                       <tr>
                       <td colspan="8">
-                        <button type="submit" class="btn btn-primary">Clear</button>
+                        <button type="submit" class="btn btn-primary">Clear All Selected</button>
                       </td>
                     </tr> 
                    </tbody>
