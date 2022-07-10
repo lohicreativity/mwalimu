@@ -101,6 +101,8 @@ class ClearanceController extends Controller
            'staff'=>User::find(Auth::user()->id)->staff,
            'request'=>$request
     	];
+
+        return $clearances;
     	return view('dashboard.academic.clearance-list',$data)->withTitle('Clearance List');
     }
 
