@@ -162,7 +162,7 @@
                     </td>
                     @if(!Auth::user()->hasRole('hod'))
                       <td>
-                        @if($post->status == 'PENDING')
+                        @if($post->status == 'POSTPONED')
                         {!! Form::checkbox('post_'.$post->id,$post->id,true) !!}
                         @endif
                       </td>
