@@ -130,6 +130,14 @@
                               Cancel
                        </a>
                       @endif
+
+                      @if($post->status == 'POSTPONED' && $post->resumption_letter !== null && $post->resume_recommended !== null)
+                      <a class="btn btn-danger btn-sm" href="{{ url('student/postponement/'.$post->id.'/cancel-resumption') }}">
+                              <i class="fas fa-trash">
+                              </i>
+                              Cancel Resumption
+                       </a>
+                      @endif
                       
                       @if($post->status == 'POSTPONED' && $is_renewal && $post->is_renewal == 1)
                       <a href="{{ url('student/postponement/'.$post->id.'/resume') }}" class="btn btn-primary">Resume</a>

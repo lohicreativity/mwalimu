@@ -300,6 +300,24 @@ class PostponementController extends Controller
     }
 
     /**
+     * Cancel resumption
+     */
+    public function cancelResumption($id)
+    {
+        try{
+           $post = Postponement::findOrFail($id);
+           if(file_exists(public_path().'/uploads/'.$post->resumption_letter)){
+               unlink(public_path().'/uploads/'.$post->resumption_letter);
+           }
+           $post->resumption_letter = null;
+           $post->save();
+           return redirect()->back()->with('message','Resumption cancelled successfully');
+        }catch(\Exception $e){
+            return redirect()->back()->with('error','Unable to get resource specified in this request');
+        }
+    }
+
+    /**
      * Download letter
      */
     public function downloadLetter(Request $request, $id)
