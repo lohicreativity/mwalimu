@@ -189,7 +189,7 @@ class PostponementController extends Controller
                 if(!$ps->recommended_by_user_id){
                 return redirect()->back()->with('error','Special exam cannot be accepted because it has not been recommended');
                 }
-                $ps->status = $request->get('action') == 'Accept'? 'RESUMED' : 'POSTPONED';
+                $ps->status = $request->get('action') == 'Accept Selected'? 'RESUMED' : 'POSTPONED';
                 $ps->resumed_by_user_id = Auth::user()->id;
                 $ps->save();
                 if($request->get('accept')){
