@@ -145,6 +145,21 @@ class ClearanceController extends Controller
                         $clear->library_status = 1;
                     }
                     $clear->save();
+                }else{
+                    $clear = Clearance::find($clearance->id);
+                    if($request->get('group') == 'hod'){
+                        $clear->hod_status = 0;
+                    }
+                    if($request->get('group') == 'dean-of-students'){
+                        $clear->hostel_status = 0;
+                    }
+                    if($request->get('group') == 'finance-officer'){
+                        $clear->finance_status = 0;
+                    }
+                    if($request->get('group') == 'librarian'){
+                        $clear->library_status = 0;
+                    }
+                    $clear->save();
                 }
             }
         }
