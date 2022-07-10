@@ -149,6 +149,7 @@
                       @endif
                       
                       @if($post->status == 'POSTPONED' && $is_renewal && $post->is_renewal == 1)
+                      {{ is_null($post->resumption_letter) }}
                       <a href="{{ url('student/postponement/'.$post->id.'/resume') }}" class="btn btn-primary">Resume</a>
                       @elseif($post->status == 'POSTPONED' && !$is_renewal && $post->is_renewal == null)
                       @if($post->status == 'POSTPONED' && is_null($post->resumption_letter))
