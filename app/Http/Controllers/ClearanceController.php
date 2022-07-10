@@ -127,6 +127,8 @@ class ClearanceController extends Controller
     {
         $clearances = Clearance::where('study_academic_year_id',$request->get('study_academic_year_id'))->get();
 
+        return $request->all();
+
         foreach ($clearances as $clearance) {
             if($request->get('clear_'.$clearance->id) == $clearance->id){
                 if($request->get('clearance_'.$clearance->id) == $clearance->id){
