@@ -386,7 +386,7 @@ class StudentController extends Controller
      */
     public function requestPaymentControlNumber(Request $request)
     {
-        $student = Student::with(['applicant','studentshipStatus'])->find($request->get('student_id'));
+        $student = Student::with(['applicant','studentshipStatus','academicStatus'])->find($request->get('student_id'));
         $email = $student->email? $student->email : 'admission@mnma.ac.tz';
 
         DB::beginTransaction();
@@ -396,7 +396,7 @@ class StudentController extends Controller
         if($student->studentshipStatus->name == 'POSTPONED'){
              return redirect()->back()->with('error','You cannot continue with registration because you have been postponed');
         }
-        if($student->studentshipStatus->name == 'FAILED&DISCO'){
+        if($student->academicStatus->name == 'FAILED&DISCO'){
           return redirect()->back()->with('error','You cannot continue with registration because you have been discontinued');
         }
         $annual_remarks = AnnualRemark::where('student_id',$student->id)->latest()->get();

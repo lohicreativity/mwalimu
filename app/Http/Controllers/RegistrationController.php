@@ -26,11 +26,11 @@ class RegistrationController extends Controller
      */
     public function create(Request $request)
     {
-    	$student = User::find(Auth::user()->id)->student()->with(['applicant','studentshipStatus'])->first();
+    	$student = User::find(Auth::user()->id)->student()->with(['applicant','studentshipStatus','academicStatus'])->first();
       if($student->studentshipStatus->name == 'POSTPONED'){
           return redirect()->back()->with('error','You cannot continue with registration because you have been postponed');
       }
-      if($student->studentshipStatus->name == 'FAILED&DISCO'){
+      if($student->academicStatus->name == 'FAILED&DISCO'){
           return redirect()->back()->with('error','You cannot continue with registration because you have been discontinued');
       }
     	$annual_remarks = AnnualRemark::where('student_id',$student->id)->latest()->get();
