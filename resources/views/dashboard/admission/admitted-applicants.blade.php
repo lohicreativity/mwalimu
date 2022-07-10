@@ -82,10 +82,6 @@
                <div class="card-header">
                  <h3 class="card-title">{{ __('Admitted Applicants') }}</h3><br>
                </div>
-
-              
-
-               
                <!-- /.card-header -->
                <div class="card-body">
                   {{--
@@ -126,7 +122,6 @@
                           <th>Phone</th>
                           <th>Gender</th>
                           <th>Programme</th>
-                          <th>Status</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -139,16 +134,6 @@
                            @if($selection->status == 'APPROVING')
                            {{ $selection->campusProgram->program->name }}
                            @endif
-                          @endforeach
-                      </td>
-                      <td>@foreach($applicant->selections as $selection)
-                          @if($selection->status == 'SELECTED' || $selection->status == 'APPROVING' || $selection->status == 'PENDING')
-                           @if($selection->status == 'SELECTED')
-                           <span class="badge badge-success">{{ $selection->status }} @if($applicant->multiple_admissions == 1)*@endif</span>
-                           @else
-                           <span class="badge badge-warning">{{ $selection->status }}</span>
-                           @endif
-                          @endif
                           @endforeach
                       </td>
                    </tr>

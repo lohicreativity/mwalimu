@@ -26,6 +26,7 @@ use App\Domain\Registration\Models\Registration;
 use App\Domain\Academic\Models\AcademicStatus;
 use App\Domain\Registration\Models\Student;
 use App\Domain\Application\Models\ApplicationWindow;
+use App\Domain\Application\Models\InsuranceRegistration;
 use App\Domain\Application\Models\TamisemiStudent;
 use App\Domain\Application\Models\NextOfKin;
 use App\Domain\Application\Models\InternalTransfer;
@@ -1340,7 +1341,7 @@ class ApplicationController extends Controller
 
         
 
-        $applicant = Applicant::with(['intake','campus','nextOfKin','country','region','district','ward'])->find($request->get('applicant_id'));
+        $applicant = Applicant::with(['intake','campus','nextOfKin','country','region','district','ward','insurances'])->find($request->get('applicant_id'));
         $applicant->results_check = $request->get('results_check')? 1 : 0;
         $applicant->insurance_check = $request->get('insurance_check')? 1 : 0;
         $applicant->personal_info_check = $request->get('personal_info_check')? 1 : 0;
@@ -1503,10 +1504,18 @@ class ApplicationController extends Controller
                                     $fee_amount->feeItem->feeType->duration,
                                     $invoice->currency);
         }
+
+        $check_insurance = false;
+        if(count($applicant->insurances) != 0){
+            if($applicant->insurances[0]->verification_status != 'VERIFIED'){
+                $check_insurance = true;
+            }
+        }
         
         if($ac_year->nhif_enabled == 1){
-            if($applicant->insurance_status == 0){
-                 $path = public_path().'/img/user-avatar.png';
+            if($applicant->insurance_status == 0 || $check_insurance){
+                 try{
+                 $path = public_path().'/avatars/'.$student->image;
                  $type = pathinfo($path, PATHINFO_EXTENSION);
                  $data = file_get_contents($path);
                  $base64 = base64_encode($data); //'data:image/' . $type . ';base64,' . base64_encode($data);
@@ -1600,6 +1609,13 @@ class ApplicationController extends Controller
                 $err = curl_error($curl_handle);
 
                 curl_close($curl_handle);
+                }catch(\Exception $e){
+                    $record = new InsuranceRegistration;
+                    $record->applicant_id = $applicant->id;
+                    $record->student_id = $student->id;
+                    $record->is_success = 0;
+                    $record->save();
+                }
                 }
             }
 
@@ -1720,7 +1736,7 @@ class ApplicationController extends Controller
             $applicants = Applicant::whereDoesntHave('student')->whereHas('selections',function($query) use($request){
                  $query->where('status','SELECTED');
             })->with(['intake','selections.campusProgram.program'])->where('campus_id',$staff->campus_id)->where(function($query) use($request){
-                   $query->where('first_name','LIKE','%'.$request->get('query').'%')->orWhere('middle_name','LIKE','%'.$request->get('query').'%')->orWhere('surname','LIKE','%'.$request->get('query').'%');
+                   $query->where('first_name','LIKE','%'.$request->get('query').'%')->orWhere('middle_name','LIKE','%'.$request->get('query').'%')->orWhere('surname','LIKE','%'.$request->get('query').'%')->orWhere('index_number','LIKE','%'.$request->get('query').'%');
                  })->where('application_window_id',$application_window->id)->where(function($query){
                      $query->where('confirmation_status','!==','CANCELLED')->orWhere('confirmation_status','!==','TRANSFERED')->orWhereNull('confirmation_status');
                    })->where(function($query){

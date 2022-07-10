@@ -10,6 +10,7 @@ use App\Domain\Academic\Models\ElectivePolicy;
 use App\Domain\Academic\Models\ElectiveModuleLimit;
 use App\Domain\Academic\Models\ProgramModuleAssignment;
 use App\Domain\Academic\Models\AnnualRemark;
+use App\Domain\Academic\Models\SemesterRemark;
 use App\Domain\Academic\Models\ExaminationResult;
 use App\Domain\Academic\Models\ModuleAssignment;
 use App\Domain\Registration\Models\Student;
@@ -385,11 +386,42 @@ class StudentController extends Controller
      */
     public function requestPaymentControlNumber(Request $request)
     {
-        $student = Student::with('applicant')->find($request->get('student_id'));
+        $student = Student::with(['applicant','studentshipStatus'])->find($request->get('student_id'));
         $email = $student->email? $student->email : 'admission@mnma.ac.tz';
+
         DB::beginTransaction();
         $study_academic_year = StudyAcademicYear::find(session('active_academic_year_id'));
         $usd_currency = Currency::where('code','USD')->first();
+
+        if($student->studentshipStatus->name == 'POSTPONED'){
+             return redirect()->back()->with('error','You cannot continue with registration because you have been postponed');
+        }
+        $annual_remarks = AnnualRemark::where('student_id',$student->id)->latest()->get();
+        $semester_remarks = SemesterRemark::with('semester')->where('student_id',$student->id)->latest()->get();
+        $can_register = true;
+        if(count($annual_remarks) != 0){
+            $last_annual_remark = $annual_remarks[0];
+            $year_of_study = $last_annual_remark->year_of_study;
+            if($last_annual_remark->remark == 'RETAKE'){
+                $year_of_study = $last_annual_remark->year_of_study;
+            }elseif($last_annual_remark->remark == 'CARRY'){
+                $year_of_study = $last_annual_remark->year_of_study;
+            }elseif($last_annual_remark->remark == 'PASS'){
+                if(str_contains($semester_remarks[0]->semester->name,'2')){
+                   $year_of_study = $last_annual_remark->year_of_study + 1;
+                }else{
+                   $year_of_study = $last_annual_remark->year_of_study;
+                }
+            }elseif($last_annual_remark->remark == 'FAIL&DISCO'){
+            $can_register = false;
+            return redirect()->back()->with('error','You cannot continue with registration because you have been discontinued');
+          }elseif($last_annual_remark->remark == 'INCOMPLETE'){
+            $can_register = false;
+            return redirect()->back()->with('error','You cannot continue with registration because you have incomplete results');
+          }
+        }
+
+
 
         if($request->get('fee_type') == 'TUITION'){
             $existing_tuition_invoice = Invoice::whereHas('feeType',function($query){

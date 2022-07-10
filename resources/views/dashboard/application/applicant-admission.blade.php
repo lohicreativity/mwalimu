@@ -90,38 +90,7 @@
              @if($applicant->has_postponed == 1)
              <div class="alert alert-warning">Applicant has postponed.</div>
              @endif
-             <div class="accordion" id="accordionExample">
-                <div class="card">
-                  @foreach($applicant->nectaResultDetails as $key=>$detail)
-                  <div class="card-header" id="headingOne">
-                    <h2 class="mb-0">
-                      <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#ss-detail-{{ $detail->id}}" aria-expanded="true" aria-controls="collapseOne">
-                        @if($detail->exam_id == 1)
-                          Form IV Results
-                        @else
-                          Form VI Results
-                        @endif
-                      </button>
-                    </h2>
-                  </div>
-
-                  <div id="ss-detail-{{ $detail->id }}" class="collapse @if($key == 0) show @endif" aria-labelledby="headingOne" data-parent="#accordionExample">
-                    <div class="card-body">
-                       <table class="table table-bordered">
-                         <tr><td>Index Number:</td><td>{{ $detail->index_number }}</td></tr>
-                         <tr><td>Division:</td><td>{{ $detail->division }}</td></tr>
-                         <tr><td>Points:</td><td>{{ $detail->points }}</td></tr>
-                         @foreach($detail->results as $result)
-                            <tr><td>{{ $result->subject_name }}</td><td>{{ $result->grade}}</td></tr>
-                         @endforeach
-                         </table>
-                    </div>
-                  </div>
-                  @endforeach
-                </div>
-              </div>
-
-              <div class="accordion" id="accordionExample-2">
+             <div class="accordion" id="accordionExample-2">
                 @if($applicant->birth_certificate)
                 <div class="card">
                   <div class="card-header" id="ss-birth-certificate">
@@ -285,6 +254,39 @@
                 </div>
                 @endif
               </div><!-- end of accordian -->
+              
+             <div class="accordion" id="accordionExample-{{ $detail->id }}">
+                <div class="card">
+                  @foreach($applicant->nectaResultDetails as $key=>$detail)
+                  <div class="card-header" id="headingOne-{{ $detail->id }}">
+                    <h2 class="mb-0">
+                      <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#ss-detail-{{ $detail->id}}" aria-expanded="true" aria-controls="collapseOne-{{ $detail->id }}">
+                        @if($detail->exam_id == 1)
+                          Form IV Results
+                        @else
+                          Form VI Results
+                        @endif
+                      </button>
+                    </h2>
+                  </div>
+
+                  <div id="ss-detail-{{ $detail->id }}" class="collapse @if($key == 0) --show @endif" aria-labelledby="headingOne-{{ $detail->id }}" data-parent="#accordionExample-{{ $detail->id }}">
+                    <div class="card-body">
+                       <table class="table table-bordered">
+                         <tr><td>Index Number:</td><td>{{ $detail->index_number }}</td></tr>
+                         <tr><td>Division:</td><td>{{ $detail->division }}</td></tr>
+                         <tr><td>Points:</td><td>{{ $detail->points }}</td></tr>
+                         @foreach($detail->results as $result)
+                            <tr><td>{{ $result->subject_name }}</td><td>{{ $result->grade}}</td></tr>
+                         @endforeach
+                         </table>
+                    </div>
+                  </div>
+                  @endforeach
+                </div>
+              </div>
+
+              
 
               <div class="card">
                  {!! Form::open(['url'=>'application/register-applicant','class'=>'ss-form-processing']) !!}
@@ -318,7 +320,7 @@
                        </div>
                     </div>
                     <div class="row">
-                       <div class="col-6">
+<!--                        <div class="col-6">
                           <div class="form-group">
                             <div class="custom-control custom-checkbox">
                               <input class="custom-control-input" name="health_insurance_check" type="checkbox" id="health-insurance-check" value="1" @if($applicant->insurance_check == 1) checked="checked" @endif disabled readonly>
@@ -326,7 +328,7 @@
                               <input type="hidden" name="insurance_check" @if($applicant->insurance_check == 1) value="1" @else value="0" @endif>
                             </div>
                           </div>
-                       </div>
+                       </div> -->
                        <div class="col-6">
                           <div class="form-group">
                             <div class="custom-control custom-checkbox">

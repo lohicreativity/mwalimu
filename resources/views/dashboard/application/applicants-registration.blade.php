@@ -48,8 +48,7 @@
                <div class="card-body">
                   {!! Form::open(['url'=>'application/applicants-registration','method'=>'GET']) !!}
                   <div class="input-group">
-                   <input type="text" name="query" placeholder="Search for applicant name" class="form-control">
-                   <input type="text" name="index_number" placeholder="Search for applicant index number" class="form-control">
+                   <input type="text" name="query" placeholder="Search for applicant name or index number" class="form-control">
                    <span class="input-group-btn">
                      <button class="btn btn-default" type="submit"><span class="fa fa-search"></span></button>
                    </span>
@@ -64,7 +63,7 @@
                           <th>Name</th>
                           <th>Gender</th>
                           <th>Programme</th>
-                          <th>Status</th>
+                          <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -80,7 +79,7 @@
                       </td>
                       <td>@foreach($applicant->selections as $selection)
                            @if($selection->status == 'SELECTED')
-                           <span class="badge badge-warning">{{ $selection->status }}</span> <a href="{{ url('application/admit-applicant/'.$applicant->id.'/'.$selection->id) }}" class="btn btn-primary">Register</a>
+                            <a @if($applicant->documents_complete_status != 1) disabled="disabled" @else href="{{ url('application/admit-applicant/'.$applicant->id.'/'.$selection->id) }}" @endif class="btn btn-primary">Register</a>
                            @endif
                           @endforeach
                       </td>

@@ -91,6 +91,7 @@ class RegistrationController extends Controller
         $registration->student_id = $student->id;
         $registration->study_academic_year_id = session('active_academic_year_id');
         $registration->semester_id = session('active_semester_id');
+        $registration->registration_date = date('Y-m-d');
         $registration->save();
 
         $stud = Student::find($student->id);
