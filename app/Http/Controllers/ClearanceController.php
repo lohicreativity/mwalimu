@@ -134,6 +134,7 @@ class ClearanceController extends Controller
                     if($request->get('group') == 'hod'){
                         $clear->hod_status = 1;
                     }
+                    return $request->get('group');
                     if($request->get('group') == 'dean-of-students'){
                         $clear->hostel_status = 1;
                     }
