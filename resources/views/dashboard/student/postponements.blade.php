@@ -118,7 +118,7 @@
                     <td>{{ $post->studyAcademicYear->academicYear->year }}</td>
                     <td>@if($post->semester) {{ $post->semester->name }} @endif</td>
                     <td>{{ $post->category }}</td>
-                    <td>{{ $post->status }}</td>
+                    <td>@if($post->status == 'POSTPONED' && !is_null($post->resumed_by_user_id)) DECLINED @else {{ $post->status }} @endif</td>
                     <td>
                       <a href="{{ url('student/postponement-letter/'.$post->id.'/download') }}">Postponement Letter</a><br>
 
