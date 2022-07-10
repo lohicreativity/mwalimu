@@ -69,7 +69,7 @@
                 <h3 class="card-title">List of Postponement Resumptions</h3>
               </div>
               <!-- /.card-header -->
-              {!! Form::open(['url'=>'academic/accept-postponements','class'=>'ss-form-processing']) !!}
+              {!! Form::open(['url'=>'academic/accept-resumptions','class'=>'ss-form-processing']) !!}
 
                 {!! Form::input('hidden','study_academic_year_id',$request->get('study_academic_year_id')) !!}
               <div class="card-body">

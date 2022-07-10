@@ -175,6 +175,35 @@ class PostponementController extends Controller
     }
 
     /**
+     * Accept in bulk
+     */
+    public function acceptResumptions(Request $request)
+    {
+         $postponements = Postponement::where('study_academic_year_id',$request->get('study_academic_year_id'))->get();
+
+         $status = StudentshipStatus::where('name','ACTIVE')->first();
+
+         foreach($postponements as $post){
+            if($request->get('post_'.$post->id) == $post->id){
+                $ps = Postponement::find($post->id);
+                if(!$ps->recommended_by_user_id){
+                return redirect()->back()->with('error','Special exam cannot be accepted because it has not been recommended');
+                }
+                $ps->status = $request->get('action') == 'Accept'? 'RESUMED' : 'POSTPONED';
+                $ps->resumed_by_user_id = Auth::user()->id;
+                $ps->save();
+                if($request->get('accept')){
+                  $student = Student::find($post->student_id);
+                  $student->studentship_status_id = $status->id;
+                  $student->save();
+                }
+            }
+         }
+
+         return redirect()->back()->with('message','Resumptions accepted successfully');
+    }
+
+    /**
      * Decline the specified postponement
      */
     public function decline(Request $request, $id)
