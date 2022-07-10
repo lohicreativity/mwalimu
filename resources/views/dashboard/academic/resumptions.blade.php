@@ -44,7 +44,7 @@
               </div>
               <!-- /.card-header -->
                  <div class="card-body">
-                 {!! Form::open(['url'=>'academic/postponements','class'=>'ss-form-processing','method'=>'GET']) !!}
+                 {!! Form::open(['url'=>'academic/resumptions','class'=>'ss-form-processing','method'=>'GET']) !!}
                    
                    <div class="form-group">
                     <select name="study_academic_year_id" class="form-control" required>
@@ -108,7 +108,7 @@
                     @endif
                     <td>
                       @if(Auth::user()->hasRole('hod'))
-                      @if($post->status == 'PENDING')
+                      @if($post->status == 'PENDING' || $post->status == 'POSTPONED')
                       <a class="btn btn-info btn-sm" href="{{ url('academic/postponement/'.$post->id.'/resume/recommend') }}">
                               <i class="fas fa-eye-open">
                               </i>

@@ -292,6 +292,7 @@ class PostponementController extends Controller
             $postponement = Postponement::find($request->get('postponement_id'));
             $postponement->resumption_recommendation = $request->get('recommendation');
             $postponement->resume_recommended = $request->get('recommended');
+            $postponement->resume_recommended_by_user_id = Auth::user()->id;
             $postponement->save();
 
             return redirect()->to('academic/resumptions?study_academic_year_id='.session('active_academic_year_id'))->with('message','Resumptions recommended successfully');
