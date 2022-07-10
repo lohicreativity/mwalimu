@@ -1733,7 +1733,7 @@ class ApplicationController extends Controller
              return redirect()->back()->with('error','No corresponding application window');
          }
          if($request->get('query')){
-            $applicants = Applicant::whereDoesntHave('student')->whereHas('selections',function($query) use($request){
+            $applicants = Applicant::doesntHave('student')->whereHas('selections',function($query) use($request){
                  $query->where('status','SELECTED');
             })->with(['intake','selections.campusProgram.program'])->where('campus_id',$staff->campus_id)->where(function($query) use($request){
                    $query->where('first_name','LIKE','%'.$request->get('query').'%')->orWhere('middle_name','LIKE','%'.$request->get('query').'%')->orWhere('surname','LIKE','%'.$request->get('query').'%')->orWhere('index_number','LIKE','%'.$request->get('query').'%');
@@ -1746,7 +1746,7 @@ class ApplicationController extends Controller
                   return redirect()->back()->with('error','No applicant with searched name or already registered');
               }
          }elseif($request->get('index_number')){
-            $applicants = Applicant::whereDoesntHave('student')->whereHas('selections',function($query) use($request){
+            $applicants = Applicant::doesntHave('student')->whereDoesntHave('student')->whereHas('selections',function($query) use($request){
                  $query->where('status','SELECTED');
             })->with(['intake','selections.campusProgram.program'])->where('index_number','LIKE','%'.$request->get('index_number').'%')->where('application_window_id',$application_window->id)->where(function($query){
                      $query->where('confirmation_status','!==','CANCELLED')->orWhere('confirmation_status','!==','TRANSFERED')->orWhereNull('confirmation_status');
