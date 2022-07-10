@@ -229,6 +229,7 @@ class PostponementController extends Controller
 
             $postponement->resumption_letter = $request->file('resumption_letter')->getClientOriginalName();
         }
+        $postponement->save();
         return redirect()->to('student/postponements')->with('message','Resumption letter submitted successfully');
     }
 

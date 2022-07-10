@@ -26,6 +26,7 @@ class CreatePostponementsTable extends Migration
             $table->string('resumption_letter')->nullable();
             $table->text('resumption_recommendation')->nullable();
             $table->tinyInteger('resume_recommended')->tinyInteger();
+            $table->unsignedBigInteger('resume_recommended_by_user_id')->nullable();
             $table->unsignedBigInteger('recommended_by_user_id')->nullable();
             $table->unsignedBigInteger('postponed_by_user_id')->nullable();
             $table->unsignedBigInteger('resumed_by_user_id')->nullable();
