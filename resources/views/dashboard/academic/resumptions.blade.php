@@ -112,7 +112,7 @@
                       <a class="btn btn-info btn-sm" href="{{ url('academic/postponement/'.$post->id.'/resume/recommend') }}">
                               <i class="fas fa-eye-open">
                               </i>
-                              @if($post->recommendation) Edit Recommendation @else Recommend @endif
+                              @if($post->resumption_recommendation) Edit Recommendation @else Recommend @endif
                        </a>
                        @endif
                        @else
