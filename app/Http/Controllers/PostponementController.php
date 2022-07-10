@@ -163,7 +163,7 @@ class PostponementController extends Controller
                 $ps->status = $request->get('action') == 'Accept Selected'? 'POSTPONED' : 'DECLINED';
                 $ps->postponed_by_user_id = Auth::user()->id;
                 $ps->save();
-                if($request->get('accept')){
+                if($ps->status == 'POSTPONED'){
                   $student = Student::find($post->student_id);
                   $student->studentship_status_id = $status->id;
                   $student->save();
@@ -192,7 +192,7 @@ class PostponementController extends Controller
                 $ps->status = $request->get('action') == 'Accept Selected'? 'RESUMED' : 'POSTPONED';
                 $ps->resumed_by_user_id = Auth::user()->id;
                 $ps->save();
-                if($request->get('accept')){
+                if($ps->status == 'RESUMED'){
                   $student = Student::find($post->student_id);
                   $student->studentship_status_id = $status->id;
                   $student->save();
