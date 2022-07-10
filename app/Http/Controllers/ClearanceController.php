@@ -102,7 +102,6 @@ class ClearanceController extends Controller
            'request'=>$request
     	];
 
-        return $clearances;
     	return view('dashboard.academic.clearance-list',$data)->withTitle('Clearance List');
     }
 
