@@ -122,11 +122,11 @@
                     <td>
                       <a href="{{ url('student/postponement-letter/'.$post->id.'/download') }}">Postponement Letter</a><br>
 
-                      @if(!empty($post->supporting_document))
+                      @if(!is_null($post->supporting_document))
                       <a href="{{ url('student/supporting-document/'.$post->id.'/download') }}">Supporting Document</a>
                       @endif
 
-                      @if(!empty($post->resumption_letter))
+                      @if(!is_null($post->resumption_letter))
                       <a href="{{ url('student/resumption-letter/'.$post->id.'/download') }}">Resumption Letter</a></td>
                       @endif
 
@@ -155,8 +155,6 @@
                       <a href="{{ url('student/postponement/'.$post->id.'/resume') }}" class="btn btn-primary">Resume</a>
                       @endif
                       @endif
-
-                      {{ is_null($post->resumption_letter) }}
 
                        <div class="modal fade" id="ss-delete-post-{{ $post->id }}">
                         <div class="modal-dialog modal-lg">
