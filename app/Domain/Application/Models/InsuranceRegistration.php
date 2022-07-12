@@ -5,6 +5,7 @@ namespace App\Domain\Application\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Domain\Registration\Models\Student;
+use App\Domain\Academic\Models\StudyAcademicYear;
 use App\Models\User;
 
 class InsuranceRegistration extends Model
@@ -27,6 +28,14 @@ class InsuranceRegistration extends Model
     public function student()
     {
         return $this->belongsTo(Student::class,'student_id');
+    }
+
+    /**
+     * Establish one to one relationship with study academic years
+     */
+    public function studyAcademicYear()
+    {
+        return $this->belongsTo(StudyAcademicYear::class,'study_academic_year_id');
     }
 
 }

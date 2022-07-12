@@ -1515,107 +1515,108 @@ class ApplicationController extends Controller
         if($ac_year->nhif_enabled == 1){
             if($applicant->insurance_status == 0 || $check_insurance){
                  try{
-                 $path = public_path().'/avatars/'.$student->image;
-                 $type = pathinfo($path, PATHINFO_EXTENSION);
-                 $data = file_get_contents($path);
-                 $base64 = base64_encode($data); //'data:image/' . $type . ';base64,' . base64_encode($data);
-                 $data = [
-                      'FormFourIndexNo'=>str_replace('/', '-', $applicant->index_number),
-                      'FirstName'=> $applicant->first_name,
-                      'MiddleName'=> $applicant->middle_name,
-                      'Surname'=> $applicant->surname,
-                      'AdmissionNo'=> $student->registration_number,
-                      'CollageFaculty'=> $applicant->campus->name,
-                      'MobileNo'=> '0'.substr($applicant->phone,3),
-                      'ProgrammeOfStudy'=> $selection->campusProgram->program->name,
-                      'CourseDuration'=> $selection->campusProgram->program->min_duration,
-                      'MaritalStatus'=> "Single",
-                      'DateJoiningEmployer'=> date('Y-m-d'),
-                      'DateOfBirth'=> $applicant->birth_date,
-                      'NationalID'=> $applicant->nin? $applicant->nin : '',
-                      'Gender'=> $applicant->gender == 'M'? 'Male' : 'Female',
-                      'PhotoImage'=>$base64
-                  ];
-                      
-                  $url = 'http://196.13.105.15/OMRS/api/v1/Verification/StudentRegistration';
-                  $token = NHIFService::requestToken();
+                     $path = public_path().'/avatars/'.$student->image;
+                     $type = pathinfo($path, PATHINFO_EXTENSION);
+                     $data = file_get_contents($path);
+                     $base64 = base64_encode($data); //'data:image/' . $type . ';base64,' . base64_encode($data);
+                     $data = [
+                          'FormFourIndexNo'=>str_replace('/', '-', $applicant->index_number),
+                          'FirstName'=> $applicant->first_name,
+                          'MiddleName'=> $applicant->middle_name,
+                          'Surname'=> $applicant->surname,
+                          'AdmissionNo'=> $student->registration_number,
+                          'CollageFaculty'=> $applicant->campus->name,
+                          'MobileNo'=> '0'.substr($applicant->phone,3),
+                          'ProgrammeOfStudy'=> $selection->campusProgram->program->name,
+                          'CourseDuration'=> $selection->campusProgram->program->min_duration,
+                          'MaritalStatus'=> "Single",
+                          'DateJoiningEmployer'=> date('Y-m-d'),
+                          'DateOfBirth'=> $applicant->birth_date,
+                          'NationalID'=> $applicant->nin? $applicant->nin : '',
+                          'Gender'=> $applicant->gender == 'M'? 'Male' : 'Female',
+                          'PhotoImage'=>$base64
+                      ];
+                          
+                      $url = 'http://196.13.105.15/OMRS/api/v1/Verification/StudentRegistration';
+                      $token = NHIFService::requestToken();
 
-                      //return $token;
-                  $curl_handle = curl_init();
+                          //return $token;
+                      $curl_handle = curl_init();
 
-                     // return json_encode($data);
-           
+                         // return json_encode($data);
+               
 
-                  curl_setopt_array($curl_handle, array(
-                  CURLOPT_URL => $url,
-                  CURLOPT_HTTPHEADER => array('Content-Type: application/json',$token),
-                  CURLOPT_RETURNTRANSFER => true,
-                  CURLOPT_ENCODING => "",
-                  CURLOPT_MAXREDIRS => 10,
-                  CURLOPT_TIMEOUT => 4200,
-                  CURLOPT_FOLLOWLOCATION => false,
-                  CURLOPT_SSL_VERIFYPEER => false,
-                  CURLOPT_CUSTOMREQUEST => "POST",
-                  CURLOPT_POSTFIELDS => json_encode([$data])
-                  ));
+                      curl_setopt_array($curl_handle, array(
+                      CURLOPT_URL => $url,
+                      CURLOPT_HTTPHEADER => array('Content-Type: application/json',$token),
+                      CURLOPT_RETURNTRANSFER => true,
+                      CURLOPT_ENCODING => "",
+                      CURLOPT_MAXREDIRS => 10,
+                      CURLOPT_TIMEOUT => 4200,
+                      CURLOPT_FOLLOWLOCATION => false,
+                      CURLOPT_SSL_VERIFYPEER => false,
+                      CURLOPT_CUSTOMREQUEST => "POST",
+                      CURLOPT_POSTFIELDS => json_encode([$data])
+                      ));
 
-                  $response = curl_exec($curl_handle);
-                  $response = json_decode($response);
-                  $StatusCode = curl_getinfo($curl_handle, CURLINFO_HTTP_CODE);
-                  $err = curl_error($curl_handle);
+                      $response = curl_exec($curl_handle);
+                      $response = json_decode($response);
+                      $StatusCode = curl_getinfo($curl_handle, CURLINFO_HTTP_CODE);
+                      $err = curl_error($curl_handle);
 
-                  curl_close($curl_handle);
+                      curl_close($curl_handle);
 
-                  $data = [
-                  'BatchNo'=>'8002217/'.$ac_year->academicYear->year.'/001',
-                  'Description'=>'Batch submitted on '.date('m d, Y'),
-                  'CardApplications'=>[ 
-                     array(
-                      'CorrelationID'=>$applicant->index_number,
-                        'MobileNo'=>'0'.substr($applicant->phone, 3),
-                        'AcademicYear'=>$ac_year->academicYear->year,
-                        'YearOfStudy'=>1,
-                        'CardNo'=>null,
-                        'Category'=>1//$response->statusCode == 200? 1 : 2
-                     )      
-                   ]
-                 ];
-                
-                $url = 'http://196.13.105.15/OMRS/api/v1/Verification/SubmitCardApplications';
-                // $token = NHIFService::requestToken();
+                      $data = [
+                      'BatchNo'=>'8002217/'.$ac_year->academicYear->year.'/001',
+                      'Description'=>'Batch submitted on '.date('m d, Y'),
+                      'CardApplications'=>[ 
+                         array(
+                          'CorrelationID'=>$applicant->index_number,
+                            'MobileNo'=>'0'.substr($applicant->phone, 3),
+                            'AcademicYear'=>$ac_year->academicYear->year,
+                            'YearOfStudy'=>1,
+                            'CardNo'=>null,
+                            'Category'=>1//$response->statusCode == 200? 1 : 2
+                         )      
+                       ]
+                     ];
+                    
+                    $url = 'http://196.13.105.15/OMRS/api/v1/Verification/SubmitCardApplications';
+                    // $token = NHIFService::requestToken();
 
-                //return $token;
-                $curl_handle = curl_init();
+                    //return $token;
+                    $curl_handle = curl_init();
 
-                          //  return json_encode($data);
-                 
+                              //  return json_encode($data);
+                     
 
-                  curl_setopt_array($curl_handle, array(
-                  CURLOPT_URL => $url,
-                  CURLOPT_HTTPHEADER => array('Content-Type: application/json',$token),
-                  CURLOPT_RETURNTRANSFER => true,
-                  CURLOPT_ENCODING => "",
-                  CURLOPT_MAXREDIRS => 10,
-                  CURLOPT_TIMEOUT => 4200,
-                  CURLOPT_FOLLOWLOCATION => false,
-                  CURLOPT_SSL_VERIFYPEER => false,
-                  CURLOPT_CUSTOMREQUEST => "POST",
-                  CURLOPT_POSTFIELDS => json_encode($data)
-                ));
+                      curl_setopt_array($curl_handle, array(
+                      CURLOPT_URL => $url,
+                      CURLOPT_HTTPHEADER => array('Content-Type: application/json',$token),
+                      CURLOPT_RETURNTRANSFER => true,
+                      CURLOPT_ENCODING => "",
+                      CURLOPT_MAXREDIRS => 10,
+                      CURLOPT_TIMEOUT => 4200,
+                      CURLOPT_FOLLOWLOCATION => false,
+                      CURLOPT_SSL_VERIFYPEER => false,
+                      CURLOPT_CUSTOMREQUEST => "POST",
+                      CURLOPT_POSTFIELDS => json_encode($data)
+                    ));
 
-                $response = curl_exec($curl_handle);
-                $response = json_decode($response);
-                $StatusCode = curl_getinfo($curl_handle, CURLINFO_HTTP_CODE);
-                $err = curl_error($curl_handle);
+                    $response = curl_exec($curl_handle);
+                    $response = json_decode($response);
+                    $StatusCode = curl_getinfo($curl_handle, CURLINFO_HTTP_CODE);
+                    $err = curl_error($curl_handle);
 
-                curl_close($curl_handle);
-                }catch(\Exception $e){
-                    $record = new InsuranceRegistration;
-                    $record->applicant_id = $applicant->id;
-                    $record->student_id = $student->id;
-                    $record->is_success = 0;
-                    $record->save();
-                }
+                    curl_close($curl_handle);
+                    }catch(\Exception $e){
+                        $record = new InsuranceRegistration;
+                        $record->applicant_id = $applicant->id;
+                        $record->student_id = $student->id;
+                        $record->study_academic_year_id = $ac_year->id;
+                        $record->is_success = 0;
+                        $record->save();
+                    }
                 }
             }
 
@@ -1718,6 +1719,144 @@ class ApplicationController extends Controller
         }else{
            return redirect()->to('application/applicants-registration')->with('message','Student registered successfully with registration number '.$student->registration_number);
         }
+    }
+
+    /**
+     * Show failed insurance registrations
+     */
+    public function showFailedInsuranceRegistrations(Request $request)
+    {
+        $data = [
+           'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
+           'study_academic_year'=>StudyAcademicYear::find($request->get('study_academic_year_id')),
+           'records'=>InsuranceRegistration::with(['student','applicant'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->get(),
+           'request'=>$request
+        ];
+        return view('dashboard.admission.failed-insurance-registrations',$data)->withTitle('Failed Insurance Registrations');
+    }
+
+    /**
+     * Resubmit insurance registrations
+     */
+    public function resubmitInsuranceRegistrations(Request $request)
+    {
+        foreach($records as $ins){
+            if($request->get('record_'.$ins->id) == $ins->id){
+                 try{
+                     $rec = InsuranceRegistration::with(['student.campusProgram.program','applicant','studyAcademicYear.academicYear'])->findOrFail($ins->id);
+                     $student = $rec->student;
+                     $applicant = $rec->applicant;
+                     $path = public_path().'/avatars/'.$student->image;
+                     $type = pathinfo($path, PATHINFO_EXTENSION);
+                     $data = file_get_contents($path);
+                     $base64 = base64_encode($data); //'data:image/' . $type . ';base64,' . base64_encode($data);
+                     $data = [
+                          'FormFourIndexNo'=>str_replace('/', '-', $applicant->index_number),
+                          'FirstName'=> $applicant->first_name,
+                          'MiddleName'=> $applicant->middle_name,
+                          'Surname'=> $applicant->surname,
+                          'AdmissionNo'=> $student->registration_number,
+                          'CollageFaculty'=> $applicant->campus->name,
+                          'MobileNo'=> '0'.substr($applicant->phone,3),
+                          'ProgrammeOfStudy'=> $student->campusProgram->program->name,
+                          'CourseDuration'=> $student->campusProgram->program->min_duration,
+                          'MaritalStatus'=> "Single",
+                          'DateJoiningEmployer'=> date('Y-m-d'),
+                          'DateOfBirth'=> $applicant->birth_date,
+                          'NationalID'=> $applicant->nin? $applicant->nin : '',
+                          'Gender'=> $applicant->gender == 'M'? 'Male' : 'Female',
+                          'PhotoImage'=>$base64
+                      ];
+                          
+                      $url = 'http://196.13.105.15/OMRS/api/v1/Verification/StudentRegistration';
+                      $token = NHIFService::requestToken();
+
+                          //return $token;
+                      $curl_handle = curl_init();
+
+                         // return json_encode($data);
+               
+
+                      curl_setopt_array($curl_handle, array(
+                      CURLOPT_URL => $url,
+                      CURLOPT_HTTPHEADER => array('Content-Type: application/json',$token),
+                      CURLOPT_RETURNTRANSFER => true,
+                      CURLOPT_ENCODING => "",
+                      CURLOPT_MAXREDIRS => 10,
+                      CURLOPT_TIMEOUT => 4200,
+                      CURLOPT_FOLLOWLOCATION => false,
+                      CURLOPT_SSL_VERIFYPEER => false,
+                      CURLOPT_CUSTOMREQUEST => "POST",
+                      CURLOPT_POSTFIELDS => json_encode([$data])
+                      ));
+
+                      $response = curl_exec($curl_handle);
+                      $response = json_decode($response);
+                      $StatusCode = curl_getinfo($curl_handle, CURLINFO_HTTP_CODE);
+                      $err = curl_error($curl_handle);
+
+                      curl_close($curl_handle);
+
+                      $data = [
+                      'BatchNo'=>'8002217/'.$rec->studyAcademicYear->academicYear->year.'/001',
+                      'Description'=>'Batch submitted on '.date('m d, Y'),
+                      'CardApplications'=>[ 
+                         array(
+                          'CorrelationID'=>$applicant->index_number,
+                            'MobileNo'=>'0'.substr($applicant->phone, 3),
+                            'AcademicYear'=>$rec->studyAcademicYear->academicYear->year,
+                            'YearOfStudy'=>1,
+                            'CardNo'=>null,
+                            'Category'=>1//$response->statusCode == 200? 1 : 2
+                         )      
+                       ]
+                     ];
+                    
+                    $url = 'http://196.13.105.15/OMRS/api/v1/Verification/SubmitCardApplications';
+                    // $token = NHIFService::requestToken();
+
+                    //return $token;
+                    $curl_handle = curl_init();
+
+                              //  return json_encode($data);
+                     
+
+                      curl_setopt_array($curl_handle, array(
+                      CURLOPT_URL => $url,
+                      CURLOPT_HTTPHEADER => array('Content-Type: application/json',$token),
+                      CURLOPT_RETURNTRANSFER => true,
+                      CURLOPT_ENCODING => "",
+                      CURLOPT_MAXREDIRS => 10,
+                      CURLOPT_TIMEOUT => 4200,
+                      CURLOPT_FOLLOWLOCATION => false,
+                      CURLOPT_SSL_VERIFYPEER => false,
+                      CURLOPT_CUSTOMREQUEST => "POST",
+                      CURLOPT_POSTFIELDS => json_encode($data)
+                    ));
+
+                    $response = curl_exec($curl_handle);
+                    $response = json_decode($response);
+                    $StatusCode = curl_getinfo($curl_handle, CURLINFO_HTTP_CODE);
+                    $err = curl_error($curl_handle);
+
+                    curl_close($curl_handle);
+                        $record = InsuranceRegistration::find($request->get('record_'.$ins->id));
+                        $record->applicant_id = $applicant->id;
+                        $record->student_id = $student->id;
+                        $record->study_academic_year_id = $ac_year->id;
+                        $record->is_success = 1;
+                        $record->save();
+                    }catch(\Exception $e){
+                        $record = InsuranceRegistration::find($request->get('record_'.$ins->id));
+                        $record->applicant_id = $applicant->id;
+                        $record->student_id = $student->id;
+                        $record->study_academic_year_id = 
+                        $record->is_success = 0;
+                        $record->save();
+                    }
+            }
+        }
+        return redirect()->back()->with('message','Insurance registrations resubmited successfully');
     }
 
     /**

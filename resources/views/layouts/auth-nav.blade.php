@@ -416,6 +416,12 @@
                 </a>
               </li>
               <li class="nav-item">
+                <a href="{{ url('application/failed-insurance-registrations?study_academic_year_id='.session('active_academic_year_id')) }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Insurance Registations</p>
+                </a>
+              </li>
+              <li class="nav-item">
                 <a href="{{ url('registration/internal-transfer') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Internal Transfer</p>

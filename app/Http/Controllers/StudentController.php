@@ -400,7 +400,10 @@ class StudentController extends Controller
           return redirect()->back()->with('error','You cannot continue with registration because you have been discontinued');
         }
         if($student->academicStatus->name == 'ABSCOND'){
-          return redirect()->back()->with('error','You cannot continue with registration because you have incomplete case');
+          return redirect()->back()->with('error','You cannot continue with registration because you have an incomplete case');
+        }
+        if($student->academicStatus->name == 'INCOMPLETE'){
+          return redirect()->back()->with('error','You cannot continue with registration because you have an incomplete case');
         }
         $annual_remarks = AnnualRemark::where('student_id',$student->id)->latest()->get();
         $semester_remarks = SemesterRemark::with('semester')->where('student_id',$student->id)->latest()->get();
