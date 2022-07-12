@@ -2732,7 +2732,7 @@ class ApplicationController extends Controller
                      $query->where('campus_id',$staff->campus_id);
         })->with(['applicant.selections'=>function($query){
               $query->where('status','SELECTED');
-        },'selections.campusProgram.program'])->where('registration_number',$request->get('registration_number'))->first();
+        },'applicant.selections.campusProgram.program'])->where('registration_number',$request->get('registration_number'))->first();
         if(!$student && $request->get('registration_number')){
             return redirect()->back()->with('error','Student does not belong to this campus');
         }
@@ -2759,7 +2759,7 @@ class ApplicationController extends Controller
                      $query->where('campus_id',$staff->campus_id);
         })->with(['applicant.selections'=>function($query){
               $query->where('status','SELECTED');
-        },'selections.campusProgram.program'])->where('registration_number',$request->get('registration_number'))->first();
+        },'applicant.selections.campusProgram.program'])->where('registration_number',$request->get('registration_number'))->first();
         if(!$student && $request->get('registration_number')){
             return redirect()->back()->with('error','Student does not belong to this campus');
         }
