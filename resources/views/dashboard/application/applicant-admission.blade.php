@@ -255,10 +255,10 @@
                 @endif
               </div><!-- end of accordian -->
               
-             <div class="accordion" id="accordionExample-{{ $detail->id }}">
+             <div class="accordion" id="accordionExample">
                 <div class="card">
                   @foreach($applicant->nectaResultDetails as $key=>$detail)
-                  <div class="card-header" id="headingOne-{{ $detail->id }}">
+                  <div class="card-header" id="headingOne">
                     <h2 class="mb-0">
                       <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#ss-detail-{{ $detail->id}}" aria-expanded="true" aria-controls="collapseOne-{{ $detail->id }}">
                         @if($detail->exam_id == 1)
@@ -270,7 +270,7 @@
                     </h2>
                   </div>
 
-                  <div id="ss-detail-{{ $detail->id }}" class="collapse @if($key == 0) --show @endif" aria-labelledby="headingOne-{{ $detail->id }}" data-parent="#accordionExample-{{ $detail->id }}">
+                  <div id="ss-detail-{{ $detail->id }}" class="collapse @if($key == 0) --show @endif" aria-labelledby="headingOne" data-parent="#accordionExample">
                     <div class="card-body">
                        <table class="table table-bordered">
                          <tr><td>Index Number:</td><td>{{ $detail->index_number }}</td></tr>
