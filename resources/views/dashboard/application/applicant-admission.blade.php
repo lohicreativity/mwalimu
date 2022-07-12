@@ -95,13 +95,13 @@
                 <div class="card">
                   <div class="card-header" id="ss-birth-certificate">
                     <h2 class="mb-0">
-                      <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                      <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseBirth" aria-expanded="true" aria-controls="collapseBirth">
                         Birth Certificate
                       </button>
                     </h2>
                   </div>
 
-                  <div id="collapseOne" class="collapse" aria-labelledby="ss-birth-certificate" data-parent="#accordionExample-2">
+                  <div id="collapseBirth" class="collapse" aria-labelledby="ss-birth-certificate" data-parent="#accordionExample-2">
                     <div class="card-body">
                       @if(explode('.',$applicant->birth_certificate)[1] == 'pdf')
                          <iframe
@@ -122,13 +122,13 @@
                 <div class="card">
                   <div class="card-header" id="ss-o-level-certificate">
                     <h2 class="mb-0">
-                      <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                      <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOlevel" aria-expanded="true" aria-controls="collapseOlevel">
                         O-Level Certificate
                       </button>
                     </h2>
                   </div>
 
-                  <div id="collapseOne" class="collapse" aria-labelledby="ss-o-level-certificate" data-parent="#accordionExample-2">
+                  <div id="collapseOlevel" class="collapse" aria-labelledby="ss-o-level-certificate" data-parent="#accordionExample-2">
                     <div class="card-body">
                       @if(explode('.',$applicant->o_level_certificate)[1] == 'pdf')
                          <iframe
@@ -149,13 +149,13 @@
                 <div class="card">
                   <div class="card-header" id="ss-a-level-certificate">
                     <h2 class="mb-0">
-                      <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                      <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseAlevel" aria-expanded="true" aria-controls="collapseAlevel">
                         A-Level Certificate
                       </button>
                     </h2>
                   </div>
 
-                  <div id="collapseOne" class="collapse" aria-labelledby="ss-a-level-certificate" data-parent="#accordionExample-2">
+                  <div id="collapseAlevel" class="collapse" aria-labelledby="ss-a-level-certificate" data-parent="#accordionExample-2">
                     <div class="card-body">
                       @if(explode('.',$applicant->a_level_certificate)[1] == 'pdf')
                          <iframe
@@ -176,13 +176,13 @@
                 <div class="card">
                   <div class="card-header" id="ss-diploma-certificate">
                     <h2 class="mb-0">
-                      <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                      <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseDiploma" aria-expanded="true" aria-controls="collapseDiploma">
                         Diploma Certificate
                       </button>
                     </h2>
                   </div>
 
-                  <div id="collapseOne" class="collapse" aria-labelledby="ss-diploma-certificate" data-parent="#accordionExample-2">
+                  <div id="collapseDiploma" class="collapse" aria-labelledby="ss-diploma-certificate" data-parent="#accordionExample-2">
                     <div class="card-body">
                       @if(explode('.',$applicant->diploma_certificate)[1] == 'pdf')
                          <iframe
@@ -203,13 +203,13 @@
                 <div class="card">
                   <div class="card-header" id="ss-avn-certificate">
                     <h2 class="mb-0">
-                      <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                      <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseAvn" aria-expanded="true" aria-controls="collapseAvn">
                         AVN Certificate
                       </button>
                     </h2>
                   </div>
 
-                  <div id="collapseOne" class="collapse" aria-labelledby="ss-avn-certificate" data-parent="#accordionExample-2">
+                  <div id="collapseAvn" class="collapse" aria-labelledby="ss-avn-certificate" data-parent="#accordionExample-2">
                     <div class="card-body">
                       @if(explode('.',$applicant->avn_certificate)[1] == 'pdf')
                          <iframe
@@ -230,13 +230,13 @@
                 <div class="card">
                   <div class="card-header" id="ss-postponement-letter">
                     <h2 class="mb-0">
-                      <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                      <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapsePostLetter" aria-expanded="true" aria-controls="collapsePostLetter">
                         Postponement Letter
                       </button>
                     </h2>
                   </div>
 
-                  <div id="collapseOne" class="collapse" aria-labelledby="ss-postponement-letter" data-parent="#accordionExample-2">
+                  <div id="collapsePostLetter" class="collapse" aria-labelledby="ss-postponement-letter" data-parent="#accordionExample-2">
                     <div class="card-body">
                       @if(explode('.',$applicant->postponement_letter)[1] == 'pdf')
                          <iframe
@@ -258,7 +258,7 @@
              <div class="accordion" id="accordionExample">
                 <div class="card">
                   @foreach($applicant->nectaResultDetails as $key=>$detail)
-                  <div class="card-header" id="headingOne">
+                  <div class="card-header" id="headingTwo">
                     <h2 class="mb-0">
                       <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#ss-detail-{{ $detail->id}}" aria-expanded="true" aria-controls="collapseOne-{{ $detail->id }}">
                         @if($detail->exam_id == 1)
@@ -270,7 +270,7 @@
                     </h2>
                   </div>
 
-                  <div id="ss-detail-{{ $detail->id }}" class="collapse @if($key == 0) --show @endif" aria-labelledby="headingOne" data-parent="#accordionExample">
+                  <div id="ss-detail-{{ $detail->id }}" class="collapse @if($key == 0) --show @endif" aria-labelledby="headingTwo" data-parent="#accordionExample">
                     <div class="card-body">
                        <table class="table table-bordered">
                          <tr><td>Index Number:</td><td>{{ $detail->index_number }}</td></tr>
