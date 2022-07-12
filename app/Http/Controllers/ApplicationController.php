@@ -1354,9 +1354,10 @@ class ApplicationController extends Controller
         $studentship_status = StudentshipStatus::where('name','ACTIVE')->first();
         $academic_status = AcademicStatus::where('name','FRESHER')->first();
         $semester = Semester::where('status','ACTIVE')->first();
-        $last_student = Student::where('campus_program_id',$selection->campusProgram->id)->max(SUBSTRING(REVERSE(registration_number),0,7));
+        $last_student = DB::table('students')->select(DB::raw('SUBSTRING(REVERSE(registration_number),0,7)'))->first();
+        //Student::where('campus_program_id',$selection->campusProgram->id)->max();
         if($last_student){
-           $code = sprintf('%04d',explode('/', $last_student)[2] + 1);
+           $code = sprintf('%04d',explode('/', $last_student)[1] + 1);
         }else{
            $code = sprintf('%04d',1);
         }
