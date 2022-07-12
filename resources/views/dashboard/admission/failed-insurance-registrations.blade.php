@@ -44,9 +44,6 @@
                  <h3 class="card-title">Select Study Academic Year</h3>
               </div>
               <!-- /.card-header -->
-            </div>
-
-            <div class="card">
                  <div class="card-body">
                  {!! Form::open(['url'=>'application/failed-insurance-registrations','class'=>'ss-form-processing','method'=>'GET']) !!}
                    <div class="row">

@@ -79,7 +79,9 @@
                       </td>
                       <td>@foreach($applicant->selections as $selection)
                            @if($selection->status == 'SELECTED')
-                            <a @if($applicant->documents_complete_status != 1) disabled="disabled" @else href="{{ url('application/admit-applicant/'.$applicant->id.'/'.$selection->id) }}" @endif class="btn btn-primary">Register</a>
+                            @if($applicant->documents_complete_status == 1 && $applicant->tuition_payment_check == 1 && $applicant->other_payment_check == 1)
+                            <a href="{{ url('application/admit-applicant/'.$applicant->id.'/'.$selection->id) }}" class="btn btn-primary">Register</a>
+                            @endif
                            @endif
                           @endforeach
                       </td>
