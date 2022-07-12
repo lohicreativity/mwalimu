@@ -1420,7 +1420,7 @@ class ApplicationController extends Controller
         $loan_allocation = LoanAllocation::where('index_number',$applicant->index_number)->where('study_academic_year_id',$ac_year->id)->first();
 
         if($loan_allocation){
-            if($loan_allocation->has_signed == 1){
+            if($loan_allocation->has_signed == 1 && $applicant->has_postponed != 1){
                  if($reg = Registration::where('student_id',$student->id)->where('study_academic_year_id',$ac_year->id)->where('semester_id',$semester->id)->first()){
                     $registration = $reg;
                   }else{
@@ -1430,6 +1430,7 @@ class ApplicationController extends Controller
                   $registration->semester_id = $semester->id;
                   $registration->student_id = $student->id;
                   $registration->year_of_study = 1;
+                  $registration->registration_date = date('Y-m-d');
                   $registration->registered_by_staff_id = $staff->id;
                   $registration->status = 'REGISTERED';
                   $registration->save();
@@ -1439,7 +1440,23 @@ class ApplicationController extends Controller
               $loan_allocation->save();
         }else{
             if($ac_year->nhif_enabled == 1){
-                if($applicant->insurance_check == 1){
+                if($applicant->insurance_check == 1 && $applicant->has_postponed != 1){
+                    if($reg = Registration::where('student_id',$student->id)->where('study_academic_year_id',$ac_year->id)->where('semester_id',$semester->id)->first()){
+                      $registration = $reg;
+                    }else{
+                      $registration = new Registration;
+                    }
+                    $registration->study_academic_year_id = $ac_year->id;
+                    $registration->semester_id = $semester->id;
+                    $registration->student_id = $student->id;
+                    $registration->year_of_study = 1;
+                    $registration->registration_date = date('Y-m-d');
+                    $registration->registered_by_staff_id = $staff->id;
+                    $registration->status = 'REGISTERED';
+                    $registration->save();
+                }
+            }else{
+                if($applicant->has_postponed != 1){
                     if($reg = Registration::where('student_id',$student->id)->where('study_academic_year_id',$ac_year->id)->where('semester_id',$semester->id)->first()){
                       $registration = $reg;
                     }else{
@@ -1453,19 +1470,6 @@ class ApplicationController extends Controller
                     $registration->status = 'REGISTERED';
                     $registration->save();
                 }
-            }else{
-                if($reg = Registration::where('student_id',$student->id)->where('study_academic_year_id',$ac_year->id)->where('semester_id',$semester->id)->first()){
-                  $registration = $reg;
-                }else{
-                  $registration = new Registration;
-                }
-                $registration->study_academic_year_id = $ac_year->id;
-                $registration->semester_id = $semester->id;
-                $registration->student_id = $student->id;
-                $registration->year_of_study = 1;
-                $registration->registered_by_staff_id = $staff->id;
-                $registration->status = 'REGISTERED';
-                $registration->save();
             }
         }
 
