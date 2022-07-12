@@ -170,7 +170,7 @@ class SpecialDateController extends Controller
 
         $date = SpecialDate::find($request->get('special_date_id'));
         $date->date = DateMaker::toDBDate($request->get('registration_date'));
-        $date->begin_date = Carbon::parse($request->get('registration_date'))->format('Y-m-d')->subDays(13);
+        $date->begin_date = Carbon::parse($request->get('registration_date'))->subDays(13)->format('Y-m-d');
         $date->name = $request->get('name');
         $date->campus_id = $request->get('campus_id');
         $date->study_academic_year_id = $request->get('study_academic_year_id');
