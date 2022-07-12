@@ -76,7 +76,7 @@
               <div class="card">
               <div class="card-header">
                 <h3 class="card-title">Search Results</h3><br>
-                <a href="{{ url('registration/show-id-card?registration_number='.$student->registration_number) }}" class="btn btn-primary">Preview ID</a>
+                <a href="{{ url('registration/show-id-card?registration_number='.$student->registration_number) }}" class="btn btn-primary">Print ID</a>
               </div>
               <!-- /.card-header -->
               <div class="card-body">

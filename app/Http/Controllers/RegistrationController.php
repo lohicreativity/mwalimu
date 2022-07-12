@@ -214,10 +214,23 @@ class RegistrationController extends Controller
      */
     public function showIDCard(Request $request)
     {
+        $student = Student::with('campusProgram.program','campusProgram.campus')->where('registration_number',$request->get('registration_number'))->first();
+        $ac_year = StudyAcademicYear::where('status','ACTIVE')->first();
+        $semester = Semester::where('status','ACTIVE')->first();
+        $registration = Registration::where('student_id',$student->id)->where('study_academic_year_id',$ac_year->id)->where('semester_id',$semester->id)->first();
+        if(!$registration){
+             return redirect()->back()->with('error','Student has not been registered for this semester');
+        }
+        if(!file_exists(public_path().'/avatars/'.$student->image)){
+             return redirect()->back()->with('error','Student image is missing');
+        }
+        if(!file_exists(public_path().'/signatures/'.$student->signature)){
+             return redirect()->back()->with('error','Student signature is missing');
+        }
         $data = [
-            'student'=>Student::with('campusProgram.program','campusProgram.campus')->where('registration_number',$request->get('registration_number'))->first(),
-            'semester'=>Semester::where('status','ACTIVE')->first(),
-            'study_academic_year'=>StudyAcademicYear::where('status','ACTIVE')->first()
+            'student'=>$student,
+            'semester'=>$semester,
+            'study_academic_year'=>$ac_year
         ];
          $pdf = PDF::loadView('dashboard.registration.reports.id-card',$data,[],[
                'format'=>'A7',
