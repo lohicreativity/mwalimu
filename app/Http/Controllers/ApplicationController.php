@@ -1466,6 +1466,7 @@ class ApplicationController extends Controller
                     $registration->semester_id = $semester->id;
                     $registration->student_id = $student->id;
                     $registration->year_of_study = 1;
+                    $registration->registration_date = date('Y-m-d');
                     $registration->registered_by_staff_id = $staff->id;
                     $registration->status = 'REGISTERED';
                     $registration->save();
