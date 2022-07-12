@@ -108,11 +108,11 @@
                               src="https://drive.google.com/viewerng/viewer?embedded=true&url={{ asset('uploads/'.$applicant->birth_certificate) }}#toolbar=0&scrollbar=0"
                               frameBorder="0"
                               scrolling="auto"
-                              height="auto"
+                              height="400px"
                               width="100%"
                           ></iframe>
                       @else
-                         <img src="{{ asset('uploads/'.$applicant->birth_certificate) }}" height="auto" width="100%">
+                         <img src="{{ asset('uploads/'.$applicant->birth_certificate) }}" height="400px" width="100%">
                       @endif
                     </div>
                   </div>
@@ -135,11 +135,11 @@
                               src="https://drive.google.com/viewerng/viewer?embedded=true&url={{ asset('uploads/'.$applicant->o_level_certificate) }}#toolbar=0&scrollbar=0"
                               frameBorder="0"
                               scrolling="auto"
-                              height="auto"
+                              height="400px"
                               width="100%"
                           ></iframe>
                       @else
-                         <img src="{{ asset('uploads/'.$applicant->o_level_certificate) }}" height="auto" width="100%">
+                         <img src="{{ asset('uploads/'.$applicant->o_level_certificate) }}" height="400px" width="100%">
                       @endif
                     </div>
                   </div>
@@ -162,11 +162,11 @@
                               src="https://drive.google.com/viewerng/viewer?embedded=true&url={{ asset('uploads/'.$applicant->a_level_certificate) }}#toolbar=0&scrollbar=0"
                               frameBorder="0"
                               scrolling="auto"
-                              height="auto"
+                              height="400px"
                               width="100%"
                           ></iframe>
                       @else
-                         <img src="{{ asset('uploads/'.$applicant->a_level_certificate) }}" height="auto" width="100%">
+                         <img src="{{ asset('uploads/'.$applicant->a_level_certificate) }}" height="400px" width="100%">
                       @endif
                     </div>
                   </div>
@@ -189,11 +189,11 @@
                               src="https://drive.google.com/viewerng/viewer?embedded=true&url={{ asset('uploads/'.$applicant->diploma_certificate) }}#toolbar=0&scrollbar=0"
                               frameBorder="0"
                               scrolling="auto"
-                              height="auto"
+                              height="400px"
                               width="100%"
                           ></iframe>
                       @else
-                         <img src="{{ asset('uploads/'.$applicant->diploma_certificate) }}" height="auto" width="100%">
+                         <img src="{{ asset('uploads/'.$applicant->diploma_certificate) }}" height="400px" width="100%">
                       @endif
                     </div>
                   </div>
@@ -216,11 +216,11 @@
                               src="https://drive.google.com/viewerng/viewer?embedded=true&url={{ asset('uploads/'.$applicant->avn_certificate) }}#toolbar=0&scrollbar=0"
                               frameBorder="0"
                               scrolling="auto"
-                              height="auto"
+                              height="400px"
                               width="100%"
                           ></iframe>
                       @else
-                         <img src="{{ asset('uploads/'.$applicant->avn_certificate) }}" height="auto" width="100%">
+                         <img src="{{ asset('uploads/'.$applicant->avn_certificate) }}" height="400px" width="100%">
                       @endif
                     </div>
                   </div>
@@ -243,11 +243,11 @@
                               src="https://drive.google.com/viewerng/viewer?embedded=true&url={{ asset('uploads/'.$applicant->postponement_letter) }}#toolbar=0&scrollbar=0"
                               frameBorder="0"
                               scrolling="auto"
-                              height="auto"
+                              height="400px"
                               width="100%"
                           ></iframe>
                       @else
-                         <img src="{{ asset('uploads/'.$applicant->postponement_letter) }}" height="auto" width="100%">
+                         <img src="{{ asset('uploads/'.$applicant->postponement_letter) }}" height="400px" width="100%">
                       @endif
                     </div>
                   </div>
