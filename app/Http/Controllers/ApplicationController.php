@@ -1729,7 +1729,7 @@ class ApplicationController extends Controller
         $data = [
            'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
            'study_academic_year'=>StudyAcademicYear::find($request->get('study_academic_year_id')),
-           'records'=>InsuranceRegistration::with(['student','applicant'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->get(),
+           'records'=>InsuranceRegistration::with(['student','applicant'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('is_success',0)->get(),
            'request'=>$request
         ];
         return view('dashboard.admission.failed-insurance-registrations',$data)->withTitle('Failed Insurance Registrations');
