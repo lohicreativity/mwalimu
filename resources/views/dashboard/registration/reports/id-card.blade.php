@@ -234,9 +234,9 @@
      </div>
      <div class="row">
         <div class="col-md-3" style="text-align: center;">
-          @if(file_exists(public_path().'/avatars/'.$student->image))
+          @if(Storage::exists(public_path().'/avatars/'.$student->image))
           <img src="{{ asset('avatars/'.$student->image)}}" class="ss-logo" style="text-align: center; width: 150px;">
-          @elseif(file_exists(public_path().'/uploads/'.$student->image))
+          @elseif(Storage::exists(public_path().'/uploads/'.$student->image))
           <img src="{{ asset('uploads/'.$student->image)}}" class="ss-logo" style="text-align: center; width: 150px;">
           @endif
         </div>

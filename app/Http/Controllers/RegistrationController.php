@@ -221,7 +221,7 @@ class RegistrationController extends Controller
         if(!$registration){
              return redirect()->back()->with('error','Student has not been registered for this semester');
         }
-        if(!Storage::exists(public_path().'/avatars/'.$student->image)){
+        if(!Storage::exists(public_path().'/avatars/'.$student->image) && !Storage::exists(public_path().'/uploads/'.$student->image)){
              return redirect()->back()->with('error','Student image is missing');
         }
         if(!Storage::exists(public_path().'/signatures/'.$student->signature)){
