@@ -83,8 +83,6 @@
                     </thead>
                     <tbody>
                      @foreach($campus_programs as $cp)
-
-                     @if($cp->program->department_id == $staff->department_id)
                        
  
                        @for($i = 1; $i <= $cp->program->min_duration; $i++)
@@ -281,7 +279,7 @@
                          </td>
                        </tr>
                        @endfor
-                       @endif
+                      
                      @endforeach
                     </tbody>
                   </table>

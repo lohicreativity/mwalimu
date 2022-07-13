@@ -23,17 +23,20 @@ class StreamController extends Controller
       */
      public function index(Request $request)
      {
+        $staff = User::find(Auth::user()->id)->staff;
      	$data = [
             'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
-            'study_academic_year'=>$request->has('study_academic_year_id')? StudyAcademicYear::with(['academicYear','streams'=>function($query) use ($request){
+            'study_academic_year'=>$request->get('study_academic_year_id')? StudyAcademicYear::with(['academicYear','streams'=>function($query) use ($request){
                    $query->where('study_academic_year_id',$request->get('study_academic_year_id'));
                 },'streams.groups'])->find($request->get('study_academic_year_id')) : null,
             'semester'=>Semester::find($request->get('semester_id')),
             'semesters'=>Semester::all(),
-            'campus_programs'=>CampusProgram::with(['program','campus','students.registrations'=>function($query) use($request){
+            'campus_programs'=>CampusProgram::whereHas('program.departments',function($query) use($staff){
+                  $query->where('id',$staff->department_id);
+            })->with(['program.departments','campus','students.registrations'=>function($query) use($request){
                    $query->where('study_academic_year_id',$request->get('study_academic_year_id'));
              },'streams.groups','groups'])->get(),
-            'staff'=>User::find(Auth::user()->id)->staff,
+            'staff'=>$staff,
             'request'=>$request
      	];
      	return view('dashboard.academic.streams-and-groups',$data)->withTitle('Streams and Groups');
