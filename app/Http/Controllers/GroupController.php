@@ -9,7 +9,7 @@ use App\Domain\Academic\Models\Department;
 use App\Domain\Registration\Models\Registration;
 use App\Utils\Util;
 use App\Models\User;
-use Validator, PDF;
+use Validator, Auth, PDF;
 
 class GroupController extends Controller
 {
