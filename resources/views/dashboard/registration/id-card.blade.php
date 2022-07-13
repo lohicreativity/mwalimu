@@ -112,7 +112,11 @@
                          <input type=button value="Save Snapshot" onClick="saveSnap({{$student->id}})" class="btn btn-primary">
                        </td>
                        <td>
-                         <div id="ss-camera-results"></div>
+                         <div id="ss-camera-results">
+                            @if(file_exists(public_path().'/uploads/'.$student->image))
+                            <img id="ss-camera-prev" src="{{ public_path().'/uploads/'.$student->image }}"/>
+                            @endif
+                         </div>
                        </td>
                      </tr>
                      <tr>
