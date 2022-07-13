@@ -11,7 +11,7 @@ use App\Domain\Settings\Models\NTALevel;
 use App\Domain\Academic\Actions\ModuleAction;
 use App\Models\User;
 use App\Utils\Util;
-use Validator, Auth, File;
+use Validator, Auth, File, Storage;
 
 class ModuleController extends Controller
 {
@@ -100,7 +100,7 @@ class ModuleController extends Controller
     {
         try{
             $module = Module::findOrFail($id);
-            if(!file_exists(public_path('uploads/'.$module->syllabus))){
+            if(!Storage::exists(public_path('uploads/'.$module->syllabus))){
                 return redirect()->back()->with('error','Syllabus document not found');
             }
             return response()->download(public_path('uploads/'.$module->syllabus));
