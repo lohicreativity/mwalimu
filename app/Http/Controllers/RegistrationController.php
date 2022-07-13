@@ -194,7 +194,12 @@ class RegistrationController extends Controller
         $student = Student::with('applicant','campusProgram.program','campusProgram.campus')->where('registration_number',$request->get('registration_number'))->first();
             
         $ac_year = StudyAcademicYear::where('status','ACTIVE')->first();
+        $semester = Semester::where('status','ACTIVE')->first();
           if($student){
+              $registration = Registration::where('student_id',$student->id)->where('study_academic_year_id',$ac_year->id)->where('semester_id',$semester->id)->first();
+              if(!$registration){
+                  return redirect()->back()->with('error','Student has not been registered for this semester');
+              }
               if($student->applicant->insurance_status == 0 && $ac_year->nhif_enabled == 1){
                   return redirect()->back()->with('error','Student does not have insurance');
               }
@@ -202,7 +207,7 @@ class RegistrationController extends Controller
         
         $data = [
             'student'=>$student,
-            'semester'=>Semester::where('status','ACTIVE')->first(),
+            'semester'=>$semester,
             'study_academic_year'=>$ac_year
         ];
         return view('dashboard.registration.id-card',$data)->withTitle('ID Card');
@@ -224,7 +229,7 @@ class RegistrationController extends Controller
 
         $id_ivoices = Invoice::whereHas('feeType',function($query){
              $query->where('name','LIKE','%Identity Card%');
-        })->where('study_academic_year_id',$ac_year->id)->where('student_id',$student->id)->where('is_printed',0)->get();
+        })->where('applicable_id',$ac_year->id)->where('applicable_type','academic_year')->where('student_id',$student->id)->where('is_printed',0)->get();
 
         if(count($id_ivoices) == 0 && $registration->id_print_status != 0){
             return redirect()->back()->with('error','Student ID already printed');
