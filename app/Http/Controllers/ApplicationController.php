@@ -2745,7 +2745,7 @@ class ApplicationController extends Controller
         }
         $data = [
             'student'=>$student,
-            'admitted_program_id'=>$student->applicant->selections[0]->campusProgram->id,
+            'admitted_program_id'=>$student? $student->applicant->selections[0]->campusProgram->id : null,
             'campus_programs'=>$student? CampusProgram::whereHas('program',function($query) use($student){
                  $query->where('award_id',$student->applicant->program_level_id)->where('campus_id',$student->applicant->campus_id);
             })->with('program')->get() : [],
