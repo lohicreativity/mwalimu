@@ -17,7 +17,7 @@ use App\Domain\Settings\Models\Currency;
 use App\Models\User;
 use Illuminate\Support\Facades\Http;
 use Intervention\Image\ImageManagerStatic as Image;
-use Auth, PDF, DomPDF, File;
+use Auth, PDF, DomPDF, File, Storage;
 
 class RegistrationController extends Controller
 {
@@ -221,10 +221,10 @@ class RegistrationController extends Controller
         if(!$registration){
              return redirect()->back()->with('error','Student has not been registered for this semester');
         }
-        if(!File::exists(public_path().'/avatars/'.$student->image)){
+        if(!Storage::exists(public_path().'/avatars/'.$student->image)){
              return redirect()->back()->with('error','Student image is missing');
         }
-        if(!File::exists(public_path().'/signatures/'.$student->signature)){
+        if(!Storage::exists(public_path().'/signatures/'.$student->signature)){
              return redirect()->back()->with('error','Student signature is missing');
         }
         $data = [
