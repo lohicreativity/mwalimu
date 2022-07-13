@@ -27,7 +27,7 @@ class StreamController extends Controller
             'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
             'study_academic_year'=>$request->has('study_academic_year_id')? StudyAcademicYear::with(['academicYear','streams'=>function($query) use ($request){
                    $query->where('study_academic_year_id',$request->get('study_academic_year_id'));
-                },'streams.groups','campusPrograms'])->find($request->get('study_academic_year_id')) : null,
+                },'streams.groups'])->find($request->get('study_academic_year_id')) : null,
             'semester'=>Semester::find($request->get('semester_id')),
             'semesters'=>Semester::all(),
             'campus_programs'=>CampusProgram::with(['program','campus','students.registrations'=>function($query) use($request){
