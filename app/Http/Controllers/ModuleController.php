@@ -100,7 +100,7 @@ class ModuleController extends Controller
     {
         try{
             $module = Module::findOrFail($id);
-            if(!Storage::exists(public_path('uploads/'.$module->syllabus))){
+            if(!file_exists(public_path('uploads/'.$module->syllabus))){
                 return redirect()->back()->with('error','Syllabus document not found');
             }
             return response()->download(public_path('uploads/'.$module->syllabus));
