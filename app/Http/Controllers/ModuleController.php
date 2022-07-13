@@ -106,7 +106,7 @@ class ModuleController extends Controller
             }
             return response()->download(public_path('uploads/'.$module->syllabus));
         }catch(\Exception $e){
-            return redirect()->back()->with('error','Unable to get the resource specified in this request');
+            return redirect()->back()->with('error','Syllabus document not found');
         }
     }
 
