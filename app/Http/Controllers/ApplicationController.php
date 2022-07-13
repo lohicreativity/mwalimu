@@ -2773,9 +2773,6 @@ class ApplicationController extends Controller
            })->with(['program','campus','entryRequirements'=>function($query) use($window){
                 $query->where('application_window_id',$window->id);
            }])->where('campus_id',$applicant->campus_id)->get() : [];
-
-
-           return $campus_programs;
         
 
         $award = $applicant->programLevel;
