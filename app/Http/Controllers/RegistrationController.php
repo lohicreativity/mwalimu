@@ -221,6 +221,19 @@ class RegistrationController extends Controller
         if(!$registration){
              return redirect()->back()->with('error','Student has not been registered for this semester');
         }
+
+        $id_ivoices = Invoice::whereHas('feeType',function($query){
+             $query->where('name','LIKE','%Identity Card%');
+        })->where('study_academic_year_id',$ac_year->id)->where('student_id',$student->id)->where('is_printed',0)->get();
+
+        if(count($id_ivoices) == 0 && $registration->id_print_status != 0){
+            return redirect()->back()->with('error','Student ID already printed');
+        }
+        $registration->id_print_status = 1;
+        $registration->save();
+
+        Invoice::where('study_academic_year_id',$ac_year->id)->where('student_id',$student->id)->where('is_printed',0)->update(['is_printed'=>1]);
+
         if(!$student->image){
              return redirect()->back()->with('error','Student image is missing');
         }

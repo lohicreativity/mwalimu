@@ -17,6 +17,7 @@ use App\Domain\Registration\Models\Student;
 use App\Domain\Academic\Models\ResultPublication;
 use App\Domain\Academic\Models\Postponement;
 use App\Domain\Registration\Models\Registration;
+use App\Domain\Registration\Models\IdCardRequest;
 use App\Domain\Finance\Models\FeeType;
 use App\Domain\Finance\Models\FeeAmount;
 use App\Domain\Finance\Models\Invoice;
@@ -614,6 +615,11 @@ class StudentController extends Controller
                 $invoice->applicable_id = $study_academic_year->id;
                 $invoice->applicable_type = 'academic_year';
                 $invoice->save();
+
+                $id_req = new IdCardRequest;
+                $id_req->student_id = $student->id;
+                $id_req->study_academic_year_id = $study_academic_year->id;
+                $id_req->save();
 
 
                 $generated_by = 'SP';

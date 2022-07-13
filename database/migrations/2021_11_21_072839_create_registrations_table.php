@@ -23,6 +23,7 @@ class CreateRegistrationsTable extends Migration
             $table->unsignedBigInteger('group_id')->default(0);
             $table->date('registration_date');
             $table->string('status')->default('REGISTERED');
+            $table->tinyInteger('id_print_status')->default(0);
             $table->unsignedBigInteger('registered_by_staff_id');
             $table->timestamps();
 
