@@ -2745,7 +2745,7 @@ class ApplicationController extends Controller
               $query->where('status','SELECTED');
         },'applicant.selections.campusProgram.program'])->where('registration_number',$request->get('registration_number'))->first();
         if(!$student && $request->get('registration_number')){
-            return redirect()->back()->with('error','Student does not belong to this campus');
+            return redirect()->back()->with('error','Student either does not belong to this campus or does not qualify for transfer');
         }
         $programs = [];
         // $campus_programs = $student? CampusProgram::whereHas('program',function($query) use($student){
