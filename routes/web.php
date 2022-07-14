@@ -53,10 +53,10 @@ Route::get('test',function(){
  //    }
 
 	// return public_path('uploads/');
-	$gp = GatewayPayment::find(4);
+	$gatepay = GatewayPayment::find(4);
 	
 	
-	$invoice = Invoice::with('feeType')->where('control_no',$gp->control_no)->first();
+	$invoice = Invoice::with('feeType')->where('control_no',$gatepay->control_no)->first();
 		$invoice->gateway_payment_id = $gatepay->id;
 		$invoice->save();
 
