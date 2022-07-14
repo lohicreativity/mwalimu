@@ -639,6 +639,8 @@ class AppealController extends Controller
         $invoice->actual_amount = $amount;
         $invoice->amount = $amount;
         $invoice->currency = $currency;
+		$invoice->applicable_id = $request->get('study_academic_year_id');
+		$invoice->applicable_type = 'academic_year';
         $invoice->payable_id = $student->id;
         $invoice->payable_type = 'student';
         $invoice->fee_type_id = $fee_amount->feeItem->feeType->id;
