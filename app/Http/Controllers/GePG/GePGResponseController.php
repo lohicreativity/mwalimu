@@ -47,12 +47,14 @@ class GePGResponseController extends Controller
 		// $control_no = 'MNMA-1643902233';
 		// $message = 'MNMA-1643902233';
 		// $status = 'MNMA-1643902233';
-
-		$invoice = Invoice::where('reference_no',$bill_id)->first();
-		$invoice->control_no = $control_no;
-		$invoice->message = $message;
-		$invoice->status = $status;
-		$invoice->save();
+        
+		try{
+		   $invoice = Invoice::where('reference_no',$bill_id)->firstOrFail();
+		   $invoice->control_no = $control_no;
+		   $invoice->message = $message;
+		   $invoice->status = $status;
+		   $invoice->save();
+		}catch(\Exception $e){}
     }
 
     /**
@@ -206,11 +208,16 @@ class GePGResponseController extends Controller
 	        }
 
 	        if($student->registration_year >= 2022){
-                $inv = Invoice::with(['gatewayPayment','feeType'])->find($invoice->id);
+                //$inv = Invoice::with(['gatewayPayment','feeType'])->find($invoice->id);
+				$inv =  DB::table('invoices')->select(DB::raw('invoices.*,gateway_payments.*,fee_types.*'))
+			             ->join('gateway_payments','invoices.control_no','=','gateway_payments.control_no')
+						 ->join('fee_types','invoices.fee_type_id','=','fee_types.id')
+						 ->where('invoices.id',$invoice->id)
+						 ->first();
 
-				$acpac->query("INSERT INTO invoices (INVNUMBER,INVDATE,INVDESC,IDCUST,NAMECUST,[LINENO],REVACT,REVDESC,REVREF,REVAMT,IMPORTED,IMPDATE) VALUES ('".$inv->gatewayPayment->control_no."','".date('Y',strtotime($inv->created_at))."','".$inv->feeType->description."','".$stud_reg."','".$stud_name."','1','".$inv->feeType->gl_code."','".$inv->feeType->name."','".$inv->feeType->description."','".$inv->amount."','0','".date('Y',strtotime(now()))."')");
+				$acpac->query("INSERT INTO invoices (INVNUMBER,INVDATE,INVDESC,IDCUST,NAMECUST,[LINENO],REVACT,REVDESC,REVREF,REVAMT,IMPORTED,IMPDATE) VALUES ('".$inv->control_no."','".date('Y',strtotime($inv->created_at))."','".$inv->feeType->description."','".$stud_reg."','".$stud_name."','1','".$inv->gl_code."','".$inv->name."','".$inv->description."','".$inv->amount."','0','".date('Y',strtotime(now()))."')");
 
-		        if($inv->gatewayPayment->psp_name == 'National Microfinance Bank'){
+		        if($inv->psp_name == 'National Microfinance Bank'){
 		            $bank_code = 619;
 		            $bank_name = 'NMB';
 		        }else{
@@ -218,12 +225,17 @@ class GePGResponseController extends Controller
 		            $bank_name = 'CRDB';
 		        }
 
-		        $acpac->query("INSERT INTO receipts (BANK,BANKNAME,RCPNUMBER,RCPDATE,RCPDESC,IDCUST,NAMECUST,INVOICE,AMTAPPLIED,IMPORTED,IMPDATE) VALUES ('".$bank_code."','".$bank_name."','".substr($inv->gatewayPayment->transaction_id,5)."','".date('Ymd',strtotime($inv->gatewayPayment->datetime))."','".$inv->feeType->description."','".$stud_reg."','".$stud_name."','".$inv->gatewayPayment->control_no."','".$inv->gatewayPayment->paid_amount."','0','".date('Ymd',strtotime(now()))."')");
+		        $acpac->query("INSERT INTO receipts (BANK,BANKNAME,RCPNUMBER,RCPDATE,RCPDESC,IDCUST,NAMECUST,INVOICE,AMTAPPLIED,IMPORTED,IMPDATE) VALUES ('".$bank_code."','".$bank_name."','".substr($inv->transaction_id,5)."','".date('Ymd',strtotime($inv->datetime))."','".$inv->feeType->description."','".$stud_reg."','".$stud_name."','".$inv->control_no."','".$inv->paid_amount."','0','".date('Ymd',strtotime(now()))."')");
 
 	        }else{
-               $inv = Invoice::with(['gatewayPayment','feeType'])->find($invoice->id);
+               //$inv = Invoice::with(['gatewayPayment','feeType'])->find($invoice->id);
+			   $inv =  DB::table('invoices')->select(DB::raw('invoices.*,gateway_payments.*,fee_types.*'))
+			             ->join('gateway_payments','invoices.control_no','=','gateway_payments.control_no')
+						 ->join('fee_types','invoices.fee_type_id','=','fee_types.id')
+						 ->where('invoices.id',$invoice->id)
+						 ->first();
 
-		        if($inv->gatewayPayment->psp_name == 'National Microfinance Bank'){
+		        if($inv->psp_name == 'National Microfinance Bank'){
 		            $bank_code = 619;
 		            $bank_name = 'NMB';
 		        }else{
@@ -233,7 +245,7 @@ class GePGResponseController extends Controller
 
 		        $stud_reg = 'NULL';
 
-		        $acpac->query("INSERT INTO receipts (BANK,BANKNAME,RCPNUMBER,RCPDATE,RCPDESC,IDCUST,NAMECUST,INVOICE,AMTAPPLIED,IMPORTED,IMPDATE) VALUES ('".$bank_code."','".$bank_name."','".substr($inv->gatewayPayment->transaction_id,5)."','".date('Ymd',strtotime($inv->gatewayPayment->datetime))."','".$inv->feeType->description."','".$stud_reg."','".$stud_name."','".$inv->gatewayPayment->control_no."','".$inv->gatewayPayment->paid_amount."','0','".date('Ymd',strtotime(now()))."')");
+		        $acpac->query("INSERT INTO receipts (BANK,BANKNAME,RCPNUMBER,RCPDATE,RCPDESC,IDCUST,NAMECUST,INVOICE,AMTAPPLIED,IMPORTED,IMPDATE) VALUES ('".$bank_code."','".$bank_name."','".substr($inv->transaction_id,5)."','".date('Ymd',strtotime($inv->datetime))."','".$inv->description."','".$stud_reg."','".$stud_name."','".$inv->control_no."','".$inv->paid_amount."','0','".date('Ymd',strtotime(now()))."')");
 	        }
 		}
 
@@ -306,4 +318,5 @@ class GePGResponseController extends Controller
            $x++;
         }
     }
+
 }
