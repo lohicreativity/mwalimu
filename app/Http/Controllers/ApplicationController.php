@@ -3647,7 +3647,7 @@ class ApplicationController extends Controller
 			
 			$reg_count = Registration::whereHas('student',function($query) use($selection){
 				$query->where('campus_program_id',$selection->campusProgram->id);
-			})->where('study_academic_year_id',$ac_year->id)->where('semester_id'.$semester->id)->where('year_of_study',1)->count();
+			})->where('study_academic_year_id',$ac_year->id)->where('semester_id',$semester->id)->where('year_of_study',1)->count();
 		
 		    if($selection->campusProgram->entryRequirements[0]->max_capacity < $reg_count){
 				DB::rollback();
