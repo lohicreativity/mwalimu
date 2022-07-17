@@ -3627,13 +3627,6 @@ class ApplicationController extends Controller
         
 
         //if($array['Response']['ResponseParameters']['StatusCode'] == 200){
-            $transfer = new InternalTransfer;
-            $transfer->student_id = $student->id;
-            $transfer->previous_campus_program_id = $admitted_program->id;
-            $transfer->current_campus_program_id = $transfer_program->id;
-            $transfer->transfered_by_user_id = Auth::user()->id;
-			$student->registration_number = 'MNMA/'.$program_code.'/'.$code.'/'.$year;
-			
 			ApplicantProgramSelection::where('applicant_id',$applicant->id)->where('status','SELECTED')->update(['status'=>'ELIGIBLE']);
 
             $select = new ApplicantProgramSelection;
@@ -3673,6 +3666,13 @@ class ApplicationController extends Controller
 				   $stud_group =  $applicant->program_level_id.$selection->campusProgram->id.$year;
 				}  
 			}
+			
+            $transfer = new InternalTransfer;
+            $transfer->student_id = $student->id;
+            $transfer->previous_campus_program_id = $admitted_program->id;
+            $transfer->current_campus_program_id = $transfer_program->id;
+            $transfer->transfered_by_user_id = Auth::user()->id;
+			$student->registration_number = 'MNMA/'.$program_code.'/'.$code.'/'.$year;
 			
 			$user = new User;
 			$user->username = $student->registration_number;
