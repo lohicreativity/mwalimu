@@ -1411,9 +1411,8 @@ class ApplicationController extends Controller
         $student->disability_status_id = $applicant->disability_status_id;
         $student->studentship_status_id = $studentship_status->id;
         $student->academic_status_id = $academic_status->id;
-        $student->save();
-
-        $user = User::find($applicant->user_id);
+		
+		$user = User::find($applicant->user_id);
         $user->username = $student->registration_number;
         $user->email = $student->email;
         $password = strtoupper(Util::randString(8));
@@ -1423,6 +1422,11 @@ class ApplicationController extends Controller
 
         $role = Role::where('name','student')->first();
         $user->roles()->sync([$role->id]);
+		
+		$student->user_id = $user->id;
+        $student->save();
+
+       
         
         $loan_allocation = LoanAllocation::where('index_number',$applicant->index_number)->where('study_academic_year_id',$ac_year->id)->first();
 
@@ -1739,7 +1743,7 @@ class ApplicationController extends Controller
         $acpac->close();
 
         try{
-           //Mail::to($user)->send(new StudentAccountCreated($student, $selection->campusProgram->program->name,$ac_year->academicYear->year, $password));
+           Mail::to($user)->send(new StudentAccountCreated($student, $selection->campusProgram->program->name,$ac_year->academicYear->year, $password));
         }catch(\Exception $e){}
         DB::commit();
         if($days < 0){
@@ -3277,7 +3281,7 @@ class ApplicationController extends Controller
      */
     public function submitInternalTransfer(Request $request)
     {
-        $student = Student::with(['applicant.selections.campusProgram','applicant.nectaResultDetails.results','applicant.nacteResultDetails.results','applicant.programLevel','applicant.campus'])->find($request->get('student_id'));
+        $student = Student::with(['applicant.selections.campusProgram','applicant.nectaResultDetails.results','applicant.nacteResultDetails.results','applicant.programLevel','applicant.campus','applicant.nextOfKin'])->find($request->get('student_id'));
 
         $award = $student->applicant->programLevel;
         $applicant = $student->applicant;
@@ -3656,8 +3660,22 @@ class ApplicationController extends Controller
             $transfer->current_campus_program_id = $transfer_program->id;
             $transfer->transfered_by_user_id = Auth::user()->id;
 			$student->registration_number = 'MNMA/'.$program_code.'/'.$code.'/'.$year;
-            $transfer->save();
+			
+			$user = new User;
+			$user->username = $student->registration_number;
+			$user->email = $student->email;
+			$password = strtoupper(Util::randString(8));
+			$user->password = Hash::make($password);
+			$user->must_update_password = 1;
+			$user->save();
 
+			$role = Role::where('name','student')->first();
+			$user->roles()->sync([$role->id]);
+		    
+			$student->user_id = $user->id;
+            $transfer->save();
+			
+			
             ApplicantProgramSelection::where('applicant_id',$applicant->id)->where('status','SELECTED')->update(['status'=>'ELIGIBLE']);
 
             $select = new ApplicantProgramSelection;
@@ -3667,6 +3685,96 @@ class ApplicationController extends Controller
             $select->order = 5;
             $select->status = 'SELECTED';
             $select->save();
+			
+			$tuition_invoice = Invoice::whereHas('feeType',function($query){
+               $query->where('name','LIKE','%Tuition%');
+			})->with(['gatewayPayment','feeType'])->where('payable_type','applicant')->where('payable_id',$applicant->id)->first();
+
+			$misc_invoice = Invoice::whereHas('feeType',function($query){
+				   $query->where('name','LIKE','%Miscellaneous%');
+			})->with(['gatewayPayment','feeType'])->where('payable_type','applicant')->where('payable_id',$applicant->id)->first();
+
+			$usd_currency = Currency::where('code','USD')->first();
+
+			$acpac = new ACPACService;
+			$stud_name = $student->surname.', '.$student->first_name.' '.$student->middle_name;
+			$stud_reg = substr($student->registration_number, 5);
+			$stud_reg = str_replace('/', '', $stud_reg);
+			$parts = explode('.', $stud_reg);
+			if($parts[0] == 'BTC'){
+				$stud_reg = 'BT'.$parts[1];
+			}else{
+				$stud_reg = $parts[0].$parts[1];
+			}
+			$next_of_kin = $applicant->nextOfKin->surname.', '.$applicant->nextOfKin->first_name.' '.$applicant->nextOfKin->middle_name;
+			$gparts = explode('.', $program_code);
+		   
+			// $acpac->query("INSERT INTO receipts (BANK,BANKNAME,RCPNUMBER,RCPDATE,RCPDESC,IDCUST,NAMECUST,INVOICE,AMTAPPLIED,IMPORTED,IMPDATE) VALUES ('B','CRDB','REC02','10','TF','MNMA002','TEST','INV002','100.0','B','10')");
+			$next_of_kin_email = $applicant->nextOfKin->email? $applicant->nextOfKin->email : 'UNKNOWN';
+			
+			$acpac->query("INSERT INTO customer (IDCUST,IDGRP,NAMECUST,TEXTSTRE1,TEXTSTRE2,TEXTSTRE3,TEXTSTRE4,NAMECITY,CODESTTE,CODEPSTL,CODECTRY,NAMECTAC,TEXTPHON1,TEXTPHON2,CODETERR,IDACCTSET,IDAUTOCASH,IDBILLCYCL,IDSVCCHRG,IDDLNQ,CODECURN,EMAIL1,EMAIL2) VALUES ('".$stud_reg."','".$stud_group."','".$stud_name."','".$applicant->address."','".$applicant->district->name."','".$applicant->ward->name."','".$applicant->street."','".$applicant->region->name."','".$applicant->region->name."','".$applicant->address."','".$applicant->country->name."','".$next_of_kin."','".$applicant->phone."','".$applicant->nextOfKin->phone."','".$program_code."','STD','NIL','NIL','NIL','NIL','TSH','".$applicant->email."','".$next_of_kin_email."')");
+			  
+			$acpac->query("INSERT INTO invoices (INVNUMBER,INVDATE,INVDESC,IDCUST,NAMECUST,[LINENO],REVACT,REVDESC,REVREF,REVAMT,IMPORTED,IMPDATE) VALUES ('".$tuition_invoice->control_no."','".date('Y',strtotime($tuition_invoice->created_at))."','".$tuition_invoice->feeType->description."','".$stud_reg."','".$stud_name."','1','".$tuition_invoice->feeType->gl_code."','".$tuition_invoice->feeType->name."','".$tuition_invoice->feeType->description."','".$tuition_invoice->amount."','0','".date('Y',strtotime(now()))."')");
+
+			if(str_contains($applicant->programLevel->name,'Bachelor')){
+				$quality_assurance_fee = FeeAmount::whereHas('feeItem',function($query){
+					$query->where('name','LIKE','%TCU%');
+				})->where('study_academic_year_id',$ac_year->id)->with(['feeItem.feeType'])->first();
+			}else{
+				$quality_assurance_fee = FeeAmount::whereHas('feeItem',function($query){
+					$query->where('name','LIKE','%NACTE%');
+				})->where('study_academic_year_id',$ac_year->id)->with(['feeItem.feeType'])->first();
+			}
+
+			$other_fees = FeeAmount::whereHas('feeItem',function($query){
+					$query->where('is_mandatory',1)->where('name','NOT LIKE','%NACTE%')->where('name','NOT LIKE','%TCU%');
+				})->with(['feeItem.feeType'])->where('study_academic_year_id',$ac_year->id)->get();
+
+			if(str_contains($applicant->nationality,'Tanzania')){
+				$acpac->query("INSERT INTO invoices (INVNUMBER,INVDATE,INVDESC,IDCUST,NAMECUST,[LINENO],REVACT,REVDESC,REVREF,REVAMT,IMPORTED,IMPDATE) VALUES ('".$misc_invoice->control_no."','".date('Y',strtotime($misc_invoice->created_at))."','".$quality_assurance_fee->feeItem->feeType->description."','".$stud_reg."','".$stud_name."','1','".$quality_assurance_fee->feeItem->feeType->gl_code."','".$quality_assurance_fee->feeItem->feeType->name."','".$quality_assurance_fee->feeItem->feeType->description."','".$quality_assurance_fee->amount_in_tzs."','0','".date('Y',strtotime(now()))."')");
+
+				foreach ($other_fees as $fee) {
+					$acpac->query("INSERT INTO invoices (INVNUMBER,INVDATE,INVDESC,IDCUST,NAMECUST,[LINENO],REVACT,REVDESC,REVREF,REVAMT,IMPORTED,IMPDATE) VALUES ('".$misc_invoice->control_no."','".date('Y',strtotime($misc_invoice->created_at))."','".$fee->feeItem->feeType->description."','".$stud_reg."','".$stud_name."','1','".$fee->feeItem->feeType->gl_code."','".$fee->feeItem->feeType->name."','".$fee->feeItem->feeType->description."','".$fee->amount_in_tzs."','0','".date('Y',strtotime(now()))."')");
+				}
+			}else{
+				$acpac->query("INSERT INTO invoices (INVNUMBER,INVDATE,INVDESC,IDCUST,NAMECUST,[LINENO],REVACT,REVDESC,REVREF,REVAMT,IMPORTED,IMPDATE) VALUES ('".$misc_invoice->control_no."','".date('Y',strtotime($misc_invoice->created_at))."','".$quality_assurance_fee->feeItem->feeType->description."','".$stud_reg."','".$stud_name."','1','".$quality_assurance_fee->feeItem->feeType->gl_code."','".$quality_assurance_fee->feeItem->feeType->name."','".$quality_assurance_fee->feeItem->feeType->description."','".($fee->amount_in_usd*$usd_currency->factor)."','0','".date('Y',strtotime(now()))."')");
+
+				foreach ($other_fees as $fee) {
+					$acpac->query("INSERT INTO invoices (INVNUMBER,INVDATE,INVDESC,IDCUST,NAMECUST,[LINENO],REVACT,REVDESC,REVREF,REVAMT,IMPORTED,IMPDATE) VALUES ('".$misc_invoice->control_no."','".date('Y',strtotime($misc_invoice->created_at))."','".$fee->feeItem->feeType->description."','".$stud_reg."','".$stud_name."','1','".$fee->feeItem->feeType->gl_code."','".$fee->feeItem->feeType->name."','".$fee->feeItem->feeType->description."','".($fee->amount_in_usd*$usd_currency->factor)."','0','".date('Y',strtotime(now()))."')");
+				}
+			}
+			
+			
+
+			$tuition_receipts = GatewayPayment::where('control_no',$tuition_invoice->control_no)->get();
+
+			foreach($tuition_receipts as $receipt){
+				if($receipt->psp_name == 'National Microfinance Bank'){
+					$bank_code = 619;
+					$bank_name = 'NMB';
+				}else{
+					$bank_code = 615;
+					$bank_name = 'CRDB';
+				}
+
+				$acpac->query("INSERT INTO receipts (BANK,BANKNAME,RCPNUMBER,RCPDATE,RCPDESC,IDCUST,NAMECUST,INVOICE,AMTAPPLIED,IMPORTED,IMPDATE) VALUES ('".$bank_code."','".$bank_name."','".substr($receipt->transaction_id,5)."','".date('Ymd',strtotime($receipt->datetime))."','".$tuition_invoice->feeType->description."','".$stud_reg."','".$stud_name."','".$receipt->control_no."','".$receipt->paid_amount."','0','".date('Ymd',strtotime(now()))."')");
+			}
+
+			$misc_receipts = GatewayPayment::where('control_no',$misc_invoice->control_no)->get();
+			
+			foreach ($misc_receipts as $receipt) {
+				if($receipt->psp_name == 'National Microfinance Bank'){
+					$bank_code = 619;
+					$bank_name = 'NMB';
+				}else{
+					$bank_code = 615;
+					$bank_name = 'CRDB';
+				}
+				
+				$acpac->query("INSERT INTO receipts (BANK,BANKNAME,RCPNUMBER,RCPDATE,RCPDESC,IDCUST,NAMECUST,INVOICE,AMTAPPLIED,IMPORTED,IMPDATE) VALUES ('".$bank_code."','".$bank_name."','".substr($receipt->transaction_id,5)."','".date('Ymd',strtotime($receipt->datetime))."','".$misc_invoice->feeType->description."','".$stud_reg."','".$stud_name."','".$receipt->control_no."','".$receipt->paid_amount."','0','".date('Ymd',strtotime(now()))."')");
+			}
+
+			$acpac->close();
             return redirect()->to('registration/internal-transfer')->with('message','Transfer completed successfully');
         }else{
             return redirect()->back()->with('error','Unable to complete transfer. '.$array['Response']['ResponseParameters']['StatusDescription']);
