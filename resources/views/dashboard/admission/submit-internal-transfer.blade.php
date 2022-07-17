@@ -138,7 +138,8 @@
                          <th>Index Number</th>
                          <th>Previous Programme</th>
                          <th>Current Programme</th>
-                         <th>Date Transfered</th>
+                         <th>Previous Reg Number</th>
+						 <th>New Reg Number</th>
                          <th>Transfered By</th>
                        </tr>
                      </thead>
@@ -149,7 +150,8 @@
                          <td>{{ $transfer->applicant->index_number }}</td>
                          <td>{{ $transfer->previousProgram->program->name }}</td>
                          <td>{{ $transfer->currentProgram->program->name }}</td>
-                         <td>{{ $transfer->created_at }}</td>
+                         <td>{{ $transfer->student->applicant->user->username }}</td>
+						 <td>{{ $transfer->atudent->registration_number }}</td>
                          <td>{{ $transfer->user->staff->first_name }} {{ $transfer->user->staff->surname }}</td>
                        </tr>
                        @endforeach
