@@ -143,7 +143,9 @@ class CourseWorkResultController extends Controller
                          $query->where('name','LIKE','%Test%');
                       })->where('module_assignment_id',$request->get('module_assignment_id'))->where('student_id',$request->get('student_id'))->count();
 
-                        if($result = ExaminationResult::where('module_assignment_id',$request->get('module_assignment_id'))->where('student_id',$request->get('student_id'))->where('exam_type','FINAL')->first()){
+                        if($result = ExaminationResult::where('module_assignment_id',$request->get('module_assignment_id'))->where('student_id',$request->get('student_id'))->where(function($query){
+							$query->where('exam_type','FINAL')->orWhere('exam_type','APPEAL');
+						})->first()){
                             $exam_result = $result;
                             $exam_result->module_assignment_id = $request->get('module_assignment_id');
                             $exam_result->student_id = $request->get('student_id');
