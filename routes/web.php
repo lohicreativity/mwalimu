@@ -154,7 +154,7 @@ Route::get('test',function(){
 						 ->where('invoices.id',$invoice->id)
 						 ->first();
 
-				$acpac->query("INSERT INTO invoices (INVNUMBER,INVDATE,INVDESC,IDCUST,NAMECUST,[LINENO],REVACT,REVDESC,REVREF,REVAMT,IMPORTED,IMPDATE) VALUES ('".$inv->control_no."','".date('Y',strtotime($inv->created_at))."','".$inv->feeType->description."','".$stud_reg."','".$stud_name."','1','".$inv->gl_code."','".$inv->name."','".$inv->description."','".$inv->amount."','0','".date('Y',strtotime(now()))."')");
+				//$acpac->query("INSERT INTO invoices (INVNUMBER,INVDATE,INVDESC,IDCUST,NAMECUST,[LINENO],REVACT,REVDESC,REVREF,REVAMT,IMPORTED,IMPDATE) VALUES ('".$inv->control_no."','".date('Y',strtotime($inv->created_at))."','".$inv->feeType->description."','".$stud_reg."','".$stud_name."','1','".$inv->gl_code."','".$inv->name."','".$inv->description."','".$inv->amount."','0','".date('Y',strtotime(now()))."')");
 
 		        if($inv->psp_name == 'National Microfinance Bank'){
 		            $bank_code = 619;
@@ -164,7 +164,7 @@ Route::get('test',function(){
 		            $bank_name = 'CRDB';
 		        }
 
-		        $acpac->query("INSERT INTO receipts (BANK,BANKNAME,RCPNUMBER,RCPDATE,RCPDESC,IDCUST,NAMECUST,INVOICE,AMTAPPLIED,IMPORTED,IMPDATE) VALUES ('".$bank_code."','".$bank_name."','".substr($inv->transaction_id,5)."','".date('Ymd',strtotime($inv->datetime))."','".$inv->feeType->description."','".$stud_reg."','".$stud_name."','".$inv->control_no."','".$inv->paid_amount."','0','".date('Ymd',strtotime(now()))."')");
+		       // $acpac->query("INSERT INTO receipts (BANK,BANKNAME,RCPNUMBER,RCPDATE,RCPDESC,IDCUST,NAMECUST,INVOICE,AMTAPPLIED,IMPORTED,IMPDATE) VALUES ('".$bank_code."','".$bank_name."','".substr($inv->transaction_id,5)."','".date('Ymd',strtotime($inv->datetime))."','".$inv->feeType->description."','".$stud_reg."','".$stud_name."','".$inv->control_no."','".$inv->paid_amount."','0','".date('Ymd',strtotime(now()))."')");
 
 	        }else{
                //$inv = Invoice::with(['gatewayPayment','feeType'])->find($invoice->id);
