@@ -204,9 +204,9 @@ class ApplicationController extends Controller
     {
          $staff = User::find(Auth::user()->id)->staff;
          
-         $applicants = Applicant::where('application_window_id',$request->get('application_window_id'))->whereHas('selections',function($query) use($request){
+         $applicants = Applicant::whereHas('selections',function($query) use($request){
                  $query->where('status','SELECTED');
-            })->with(['intake','selections.campusProgram.program'])->where('program_level_id',$request->get('program_level_id'))->where('confirmation_status','!=','CANCELLED')->where('confirmation_status','!=','TRANSFERED')->get();
+            })->with(['intake','selections.campusProgram.program'])->where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$request->get('program_level_id'))->where('confirmation_status','!=','CANCELLED')->where('confirmation_status','!=','TRANSFERED')->get();
          
 		 return $applicants;
          $data = [
