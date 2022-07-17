@@ -9,6 +9,8 @@ use App\Domain\Application\Models\Applicant;
 use App\Domain\Academic\Models\CampusProgram;
 use App\Domain\Academic\Models\StudyAcademicYear;
 use App\Domain\Academic\Models\Semester;
+use App\Domain\Academic\Models\Stream;
+use App\Domain\Academic\Models\Group;
 use App\Domain\Academic\Models\Department;
 use App\Domain\Finance\Models\FeeAmount;
 use App\Domain\Finance\Models\ProgramFee;
@@ -3691,6 +3693,23 @@ class ApplicationController extends Controller
 		    
 			$student->user_id = $user->id;
             $transfer->save();
+			
+			$semester = Semester::where('status','ACTIVE')->first();
+			
+			$reg = Registration::where('student|_id',$student->id)->where('study_academic_year_id',$ac_year->id)->where('semester_id'.$semester->id)->where('year_of_study',1)->first();
+			$stream = Stream::where('campus_program_id',$selection->campusProgram->id)->where('study_academic_year_id',$ac_year->id)->first();
+			if($stream){
+			   $reg->stream_id = $stream->id;
+			   $group = Group::where('stream_id',$stream->id)->first();
+			   if($group){
+				   $reg->group_id = $group->id;
+			   }else{
+				   $reg->group_id = 0;
+			   }
+			}else{
+				$reg->stream_id = 0;
+			}
+			$reg->save();
 			
 			
 			
