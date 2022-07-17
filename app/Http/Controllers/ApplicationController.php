@@ -207,7 +207,7 @@ class ApplicationController extends Controller
          $applicants = Applicant::whereHas('selections',function($query) use($request){
                  $query->where('status','SELECTED');
             })->with(['intake','selections.campusProgram.program'])->where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$request->get('program_level_id'))->where('confirmation_status','!=','CANCELLED')->where('confirmation_status','!=','TRANSFERED')->where('status','ADMITTED')->get();
-         
+         return $request->all();
          $data = [
             'staff'=>$staff,
             'application_windows'=>ApplicationWindow::where('campus_id',$staff->campus_id)->get(),
