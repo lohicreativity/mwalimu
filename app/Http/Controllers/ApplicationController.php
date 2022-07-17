@@ -208,6 +208,7 @@ class ApplicationController extends Controller
                  $query->where('status','SELECTED');
             })->with(['intake','selections.campusProgram.program'])->where('program_level_id',$request->get('program_level_id'))->where('confirmation_status','!=','CANCELLED')->where('confirmation_status','!=','TRANSFERED')->get();
          
+		 return $applicants;
          $data = [
             'staff'=>$staff,
             'application_windows'=>ApplicationWindow::where('campus_id',$staff->campus_id)->get(),
