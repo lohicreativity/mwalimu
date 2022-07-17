@@ -3282,6 +3282,7 @@ class ApplicationController extends Controller
      */
     public function submitInternalTransfer(Request $request)
     {
+		DB::beginTransaction();
         $student = Student::with(['applicant.selections.campusProgram','applicant.nectaResultDetails.results','applicant.nacteResultDetails.results','applicant.programLevel','applicant.campus','applicant.nextOfKin'])->find($request->get('student_id'));
 
         $award = $student->applicant->programLevel;
@@ -3779,7 +3780,8 @@ class ApplicationController extends Controller
 			$acpac->close();
 			try{
                 Mail::to($user)->send(new StudentAccountCreated($student, $selection->campusProgram->program->name,$ac_year->academicYear->year, $password));
-            }catch(\Exception $e){}
+                DB::commit();
+			}catch(\Exception $e){}
             return redirect()->to('registration/internal-transfer')->with('message','Transfer completed successfully');
         //}else{
             //return redirect()->back()->with('error','Unable to complete transfer. '.$array['Response']['ResponseParameters']['StatusDescription']);
