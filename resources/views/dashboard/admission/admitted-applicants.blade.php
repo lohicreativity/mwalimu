@@ -131,7 +131,7 @@
                       <td>{{ $applicant->phone }}</td>
                       <td>{{ $applicant->gender }}</td>
                       <td>@foreach($applicant->selections as $selection)
-                           @if($selection->status == 'APPROVING')
+                           @if($selection->status == 'SELECTED')
                            {{ $selection->campusProgram->program->name }}
                            @endif
                           @endforeach
@@ -141,9 +141,7 @@
                    </tbody>
                   </table>
 
-                  <div class="ss-pagination-links">
-                     {!! $applicants->appends($request->except('page'))->render() !!}
-                  </div>
+                  
                </div>
             </div>
 
