@@ -3639,9 +3639,9 @@ class ApplicationController extends Controller
             $select->status = 'SELECTED';
             $select->save();
 			
-			$selection = ApplicantProgramSelection::with('campusProgram.program','campusProgram.entryRequirements'=>function($query){
+			$selection = ApplicantProgramSelection::with(['campusProgram.program','campusProgram.entryRequirements'=>function($query){
 			    $query->latest();
-		    })->where('applicant_id',$applicant->id)->where('status','SELECTED')->first();
+		    }])->where('applicant_id',$applicant->id)->where('status','SELECTED')->first();
 			
 			$semester = Semester::where('status','ACTIVE')->first();
 			
