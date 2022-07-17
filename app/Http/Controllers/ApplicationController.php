@@ -3639,7 +3639,20 @@ class ApplicationController extends Controller
             $select->status = 'SELECTED';
             $select->save();
 			
-			$selection = ApplicantProgramSelection::with('campusProgram.program')->where('applicant_id',$applicant->id)->where('status','SELECTED')->first();
+			$selection = ApplicantProgramSelection::with('campusProgram.program','campusProgram.entryRequirements'=>function($query){
+			    $query->latest();
+		    })->where('applicant_id',$applicant->id)->where('status','SELECTED')->first();
+			
+			$semester = Semester::where('status','ACTIVE')->first();
+			
+			$reg_count = Registration::whereHas('student',function($query) use($selection){
+				$query->where('campus_program_id',$selection->campusProgram->id);
+			})->where('study_academic_year_id',$ac_year->id)->where('semester_id'.$semester->id)->where('year_of_study',1)->count();
+		
+		    if($selection->campusProgram->entryRequirements[0]->max_capacity < $reg_count){
+				DB::rollback();
+				return redirect()->back()->with('error','Programme does not have capacity to accomodate the transfer');
+			}
 		
 			$last_student = DB::table('students')->select(DB::raw('MAX(SUBSTRING(REVERSE(registration_number),0,7)) AS last_number'))->where('campus_program_id',$selection->campusProgram->id)->first();
 			//Student::where('campus_program_id',$selection->campusProgram->id)->max();
@@ -3693,8 +3706,6 @@ class ApplicationController extends Controller
 		    
 			$student->user_id = $user->id;
             $transfer->save();
-			
-			$semester = Semester::where('status','ACTIVE')->first();
 			
 			$reg = Registration::where('student|_id',$student->id)->where('study_academic_year_id',$ac_year->id)->where('semester_id'.$semester->id)->where('year_of_study',1)->first();
 			$stream = Stream::where('campus_program_id',$selection->campusProgram->id)->where('study_academic_year_id',$ac_year->id)->first();
