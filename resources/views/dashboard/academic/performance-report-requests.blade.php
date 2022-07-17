@@ -51,7 +51,7 @@
                     <select name="study_academic_year_id" class="form-control" required>
                        <option value="">Select Study Academic Year</option>
                        @foreach($study_academic_years as $year)
-                       <option value="{{ $year->id }}">{{ $year->academicYear->year }}</option>
+                       <option value="{{ $year->id }}" @if($request->get('study_academic_year_id') == $year->id) selected="selected" @endif>{{ $year->academicYear->year }}</option>
                        @endforeach
                     </select>
                   </div>
@@ -71,6 +71,7 @@
               </div>
               <!-- /.card-header -->
               <div class="card-body">
+			  {{--
                  {!! Form::open(['url'=>'academic/performance-report-requests','method'=>'GET']) !!}
                 <div class="input-group ss-stretch">
                  <input type="text" name="query" class="form-control" placeholder="Search for student name or registration number">
@@ -78,8 +79,8 @@
                    <button class="btn btn-default" type="submit"><span class="fa fa-search"></span></button>
                  </span>
                 </div>
-                {!! Form::close() !!}
-                <table id="example2" class="table table-bordered table-hover ss-margin-top">
+                {!! Form::close() !!} --}}
+                <table id="example2" class="table table-bordered table-hover ss-margin-top ss-paginated-table">
                   <thead>
                   <tr>
                     <th>Student</th>

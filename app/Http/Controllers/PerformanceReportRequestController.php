@@ -23,8 +23,9 @@ class PerformanceReportRequestController extends Controller
            'study_academic_year'=>StudyAcademicYear::find($request->get('study_academic_year_id')),
            'performance_report_requests'=>$request->has('query')? PerformanceReportRequest::whereHas('student',function($query) use($request){
                    $query->where('first_name','LIKE','%'.$request->get('query').'%')->orWhere('middle_name','LIKE','%'.$request->get('query').'%')->orWhere('surname','LIKE','%'.$request->get('query').'%')->orWhere('registration_number','LIKE','%'.$request->get('query').'%');
-           })->with(['student.campusProgram.program'])->paginate(20) : PerformanceReportRequest::with(['student.campusProgram.program'])->where('payment_status','PAID')->latest()->paginate(20)
-    	];
+           })->with(['student.campusProgram.program'])->paginate(20) : PerformanceReportRequest::with(['student.campusProgram.program'])->where('payment_status','PAID')->latest()->paginate(20),
+    	   'request'=>$request
+		];
     	return view('dashboard.academic.performance-report-requests',$data)->withTitle('Performance Report Requests');
     }
 
