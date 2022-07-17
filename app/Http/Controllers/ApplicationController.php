@@ -2774,7 +2774,7 @@ class ApplicationController extends Controller
         if($student){
 
         $applicant = Student::find($student->id)->applicant()->with(['selections.campusProgram.program','selections'=>function($query){
-                $query->orderBy('order','asc');
+                $query->where('status','SELECTED')->orderBy('order','asc');
             },'nectaResultDetails'=>function($query){
                  $query->where('verified',1);
             },'nacteResultDetails'=>function($query){

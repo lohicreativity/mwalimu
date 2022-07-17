@@ -140,7 +140,7 @@
                          <th>Current Programme</th>
                          <th>Previous Reg Number</th>
 						 <th>New Reg Number</th>
-                         <th>Transfered By</th>
+                         <th>Date Transfered</th>
                        </tr>
                      </thead>
                      <tbody>
@@ -152,7 +152,7 @@
                          <td>{{ $transfer->currentProgram->program->name }}</td>
                          <td>{{ $transfer->student->applicant->user->username }}</td>
 						 <td>{{ $transfer->atudent->registration_number }}</td>
-                         <td>{{ $transfer->user->staff->first_name }} {{ $transfer->user->staff->surname }}</td>
+                         <td>{{ date('Y-m-d',strtotime($transfer->created_at)) }}</td>
                        </tr>
                        @endforeach
                      </tbody>
