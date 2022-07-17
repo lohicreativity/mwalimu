@@ -3675,6 +3675,7 @@ class ApplicationController extends Controller
 			
 			$student = Student::find($student->id);
 			$student->registration_number = 'MNMA/'.$program_code.'/'.$code.'/'.$year;
+			$student->campus_program_id = $selection->campusProgram->id;
 			$student->save();
 			
 			$user = new User;
