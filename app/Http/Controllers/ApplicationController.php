@@ -2812,9 +2812,9 @@ class ApplicationController extends Controller
            }
            // $selected_program[$applicant->id] = false;
            $subject_count = 0;
+		   $has_capacity = true;
               foreach($campus_programs as $program){
-                
-
+                  
                   if(count($program->entryRequirements) == 0){
                     return redirect()->back()->with('error',$program->program->name.' does not have entry requirements');
                   }

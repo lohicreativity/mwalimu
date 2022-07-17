@@ -189,4 +189,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 
     Route::get('failed-insurance-registrations',[ApplicationController::class,'showFailedInsuranceRegistrations']);
     Route::post('resubmit-insurance-registrations',[ApplicationController::class,'resubmitInsuranceRegistrations']);
+	
+	Route::get('internal-transfers',[ApplicationController::class,'showInternalTransfersAdmin']);
+	Route::get('external-transfers',[ApplicationController::class,'showExternalTransfersAdmin']);
 });
