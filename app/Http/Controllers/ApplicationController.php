@@ -3289,6 +3289,11 @@ class ApplicationController extends Controller
         if(!$registration){
 			return redirect()->back()->with('error','Student has not been registered yet');
 		}
+		
+		$reg_date = SpecialDate::where('name','New Registration Period')->where('study_academic_year_id',$ac_year->id)->first();
+		if(Carbon::parse($reg_date->date))->addDays(7)->format('Y-m-d') < date('Y-m-d')){
+			return redirect()->back()->with('error','Registration period has already passed');
+		}
         $transfer_program = CampusProgram::with(['entryRequirements'=>function($query) use($applicant){
              $query->where('application_window_id',$applicant->application_window_id);
         },'program'])->find($request->get('campus_program_id'));
