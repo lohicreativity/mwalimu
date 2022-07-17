@@ -214,7 +214,7 @@ class GePGResponseController extends Controller
 						 ->join('fee_types','invoices.fee_type_id','=','fee_types.id')
 						 ->where('invoices.id',$invoice->id)
 						 ->first();
-
+/*
 				$acpac->query("INSERT INTO invoices (INVNUMBER,INVDATE,INVDESC,IDCUST,NAMECUST,[LINENO],REVACT,REVDESC,REVREF,REVAMT,IMPORTED,IMPDATE) VALUES ('".$inv->control_no."','".date('Y',strtotime($inv->created_at))."','".$inv->description."','".$stud_reg."','".$stud_name."','1','".$inv->gl_code."','".$inv->name."','".$inv->description."','".$inv->amount."','0','".date('Y',strtotime(now()))."')");
 
 		        if($inv->psp_name == 'National Microfinance Bank'){
@@ -226,7 +226,7 @@ class GePGResponseController extends Controller
 		        }
 
 		        $acpac->query("INSERT INTO receipts (BANK,BANKNAME,RCPNUMBER,RCPDATE,RCPDESC,IDCUST,NAMECUST,INVOICE,AMTAPPLIED,IMPORTED,IMPDATE) VALUES ('".$bank_code."','".$bank_name."','".substr($inv->transaction_id,5)."','".date('Ymd',strtotime($inv->datetime))."','".$inv->description."','".$stud_reg."','".$stud_name."','".$inv->control_no."','".$inv->paid_amount."','0','".date('Ymd',strtotime(now()))."')");
-
+*/
 	        }else{
                //$inv = Invoice::with(['gatewayPayment','feeType'])->find($invoice->id);
 			   $inv =  DB::table('invoices')->select(DB::raw('invoices.*,gateway_payments.*,fee_types.*'))
