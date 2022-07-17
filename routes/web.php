@@ -57,7 +57,7 @@ Route::get('test',function(){
 	
 	$invoice = Invoice::with('feeType')->where('control_no','994120242948')->first();
 		//$invoice->gateway_payment_id = $gatepay->id;
-		$invoice->save();
+		//$invoice->save();
 
 		$acpac = new ACPACService;
 		if($invoice->payable_type == 'applicant'){
