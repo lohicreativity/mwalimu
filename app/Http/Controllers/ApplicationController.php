@@ -2728,6 +2728,19 @@ class ApplicationController extends Controller
             return redirect()->back()->with('error','Unable to restore admission. '.$array['Response']['ResponseParameters']['StatusDescription']);
         }
     }
+	
+	/**
+	 * Display internal transfers to admin
+	 */
+	 public function showInternalTransfersAdmin(Request $request)
+	 {
+		 $data = [
+		     'transfers'=>InternalTransfer::whereHas('student.applicant',function($query) use($staff){
+                  $query->where('campus_id',$staff->campus_id);
+            })->with(['student.applicant','previousProgram.program','currentProgram.program','user.staff'])->latest()->paginate(20)
+		 ];
+		 return view('dashboard.application.internal-transfers',$data)->withTitle('Internal Transfer');
+	 }
 
     /**
      * Show internal transfer
@@ -3268,7 +3281,14 @@ class ApplicationController extends Controller
 
         $award = $student->applicant->programLevel;
         $applicant = $student->applicant;
-
+		
+		$sc_year = StudyAcademicYear::where('status','ACTIVE')->first();
+		$semester = Semester::where('status','ACTIVE')->first();
+		
+		$registration = Registration::where('student_id',$student->id)->where('study_academic_year_id',$ac_year->id)->where('semester_id',$semester->id)->first();
+        if(!$registration){
+			return redirect()->back()->with('error','Student has not been registered yet');
+		}
         $transfer_program = CampusProgram::with(['entryRequirements'=>function($query) use($applicant){
              $query->where('application_window_id',$applicant->application_window_id);
         },'program'])->find($request->get('campus_program_id'));
