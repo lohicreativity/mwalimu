@@ -51,12 +51,12 @@ Route::get('test',function(){
  //    	print_r($row);
  //    }
 
-	// return public_path('uploads/');
+	// return public_path('uploads/'); 31083
 	$gatepay = GatewayPayment::find(4);
 	
 	
-	$invoice = Invoice::with('feeType')->where('control_no',$gatepay->control_no)->first();
-		$invoice->gateway_payment_id = $gatepay->id;
+	$invoice = Invoice::with('feeType')->where('control_no','994120242948')->first();
+		//$invoice->gateway_payment_id = $gatepay->id;
 		$invoice->save();
 
 		$acpac = new ACPACService;
