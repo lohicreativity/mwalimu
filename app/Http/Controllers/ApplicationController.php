@@ -3633,7 +3633,7 @@ class ApplicationController extends Controller
         }
 
         
-        
+       /* 
         $url = 'http://41.59.90.200/admission/submitInternalTransfers';
         $xml_request = '<?xml version="1.0" encoding="UTF-8"?>
                         <Request>
@@ -3651,10 +3651,11 @@ class ApplicationController extends Controller
         $xml_response=simplexml_load_string($this->sendXmlOverPost($url,$xml_request));
         $json = json_encode($xml_response);
         $array = json_decode($json,TRUE);
+		*/
 
         
 
-        if($array['Response']['ResponseParameters']['StatusCode'] == 200){
+        //if($array['Response']['ResponseParameters']['StatusCode'] == 200){
             $transfer = new InternalTransfer;
             $transfer->student_id = $student->id;
             $transfer->previous_campus_program_id = $admitted_program->id;
@@ -3776,10 +3777,13 @@ class ApplicationController extends Controller
 			}
 
 			$acpac->close();
+			try{
+                Mail::to($user)->send(new StudentAccountCreated($student, $selection->campusProgram->program->name,$ac_year->academicYear->year, $password));
+            }catch(\Exception $e){}
             return redirect()->to('registration/internal-transfer')->with('message','Transfer completed successfully');
-        }else{
-            return redirect()->back()->with('error','Unable to complete transfer. '.$array['Response']['ResponseParameters']['StatusDescription']);
-        }
+        //}else{
+            //return redirect()->back()->with('error','Unable to complete transfer. '.$array['Response']['ResponseParameters']['StatusDescription']);
+        //}
     }
 
     /**
