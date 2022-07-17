@@ -124,22 +124,22 @@
                      <thead>
                        <tr>
                          <th>Name</th>
-                         <th>Registration Number</th>
+                         <th>Previous Reg Number</th>
                          <th>Previous Programme</th>
+						 <th>Current Reg Number</th>
                          <th>Current Programme</th>
                          <th>Date Transfered</th>
-                         <th>Transfered By</th>
                        </tr>
                      </thead>
                      <tbody>
                       @foreach($transfers as $transfer)
                        <tr>
                          <td>{{ $transfer->student->first_name }} {{ $transfer->student->middle_name }} {{ $transfer->student->surname }}</td>
-                         <td>{{ $transfer->student->registration_number }}</td>
+                         <td>{{ $transfer->student->applicant->username }}</td>
                          <td>{{ $transfer->previousProgram->program->name }}</td>
+						 <td>{{ $transfer->student->registration_number }}</td>
                          <td>{{ $transfer->currentProgram->program->name }}</td>
-                         <td>{{ $transfer->created_at }}</td>
-                         <td>{{ $transfer->user->staff->first_name }} {{ $transfer->user->staff->surname }}</td>
+                         <td>{{ date('Y-m-d',strtotime($transfer->created_at)) }}</td>
                        </tr>
                        @endforeach
                      </tbody>
