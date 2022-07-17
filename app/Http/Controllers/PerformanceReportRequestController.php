@@ -54,7 +54,7 @@ class PerformanceReportRequestController extends Controller
          
 		 $pf = PerformanceReportRequest::where('student_id',$student->id)->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',$request->get('year_of_study'))->first();
          if($pf){
-			if(Carbon::parse($pf->created_at)->addDays(14)->format('Y-m-d') < date('Y-m-d')){
+			if(Carbon::parse($pf->created_at)->addDays(14)->format('Y-m-d') > date('Y-m-d')){
                  return redirect()->back()->with('error','You have aleady requested for perfomance report control number');
 			}				
 		 }
