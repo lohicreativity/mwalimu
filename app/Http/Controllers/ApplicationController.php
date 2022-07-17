@@ -3283,7 +3283,7 @@ class ApplicationController extends Controller
     public function submitInternalTransfer(Request $request)
     {
 		DB::beginTransaction();
-        $student = Student::with(['applicant.selections.campusProgram','applicant.nectaResultDetails.results','applicant.nacteResultDetails.results','applicant.programLevel','applicant.campus','applicant.nextOfKin'])->find($request->get('student_id'));
+        $student = Student::with(['applicant.selections.campusProgram','applicant.nectaResultDetails.results','applicant.nacteResultDetails.results','applicant.programLevel','applicant.campus','applicant.nextOfKin','applicant.intake'])->find($request->get('student_id'));
 
         $award = $student->applicant->programLevel;
         $applicant = $student->applicant;
@@ -3303,36 +3303,6 @@ class ApplicationController extends Controller
         $transfer_program = CampusProgram::with(['entryRequirements'=>function($query) use($applicant){
              $query->where('application_window_id',$applicant->application_window_id);
         },'program'])->find($request->get('campus_program_id'));
-		
-		$selection = ApplicantProgramSelection::with('campusProgram.program')->where('applicant_id',$applicant->id)->where('status','SELECTED')->first();
-		
-		$last_student = DB::table('students')->select(DB::raw('MAX(SUBSTRING(REVERSE(registration_number),0,7)) AS last_number'))->where('campus_program_id',$selection->campusProgram->id)->first();
-        //Student::where('campus_program_id',$selection->campusProgram->id)->max();
-        if(!empty($last_student->last_number)){
-           $code = sprintf('%04d',explode('/', $last_student->last_number)[2] + 1);
-        }else{
-           $code = sprintf('%04d',1);
-        }
-        $year = substr(date('Y'), 2);
-
-        $prog_code = explode('.', $selection->campusProgram->program->code);
-        if(str_contains($applicant->intake->name,'March')){
-            if(!str_contains($applicant->campus->name,'Kivukoni')){
-               $program_code = $prog_code[0].'Z3.'.$prog_code[1];
-               $stud_group =  $applicant->program_level_id.'Z'.$selection->campusProgram->id.$year;
-            }else{
-               $program_code = $prog_code[0].'3.'.$prog_code[1];
-               $stud_group =  $applicant->program_level_id.$selection->campusProgram->id.$year;
-            }  
-        }else{
-            if(!str_contains($applicant->campus->name,'Kivukoni')){
-               $program_code = $prog_code[0].'Z.'.$prog_code[1];
-               $stud_group =  $applicant->program_level_id.'Z'.$selection->campusProgram->id.$year;
-            }else{
-               $program_code = $prog_code[0].'.'.$prog_code[1];
-               $stud_group =  $applicant->program_level_id.$selection->campusProgram->id.$year;
-            }  
-        }
         
 
 
@@ -3664,6 +3634,46 @@ class ApplicationController extends Controller
             $transfer->transfered_by_user_id = Auth::user()->id;
 			$student->registration_number = 'MNMA/'.$program_code.'/'.$code.'/'.$year;
 			
+			ApplicantProgramSelection::where('applicant_id',$applicant->id)->where('status','SELECTED')->update(['status'=>'ELIGIBLE']);
+
+            $select = new ApplicantProgramSelection;
+            $select->applicant_id = $applicant->id;
+            $select->campus_program_id = $transfer_program->id;
+            $select->application_window_id = $applicant->application_window_id;
+            $select->order = 5;
+            $select->status = 'SELECTED';
+            $select->save();
+			
+			$selection = ApplicantProgramSelection::with('campusProgram.program')->where('applicant_id',$applicant->id)->where('status','SELECTED')->first();
+		
+			$last_student = DB::table('students')->select(DB::raw('MAX(SUBSTRING(REVERSE(registration_number),0,7)) AS last_number'))->where('campus_program_id',$selection->campusProgram->id)->first();
+			//Student::where('campus_program_id',$selection->campusProgram->id)->max();
+			if(!empty($last_student->last_number)){
+			   $code = sprintf('%04d',explode('/', $last_student->last_number)[2] + 1);
+			}else{
+			   $code = sprintf('%04d',1);
+			}
+			$year = substr(date('Y'), 2);
+
+			$prog_code = explode('.', $selection->campusProgram->program->code);
+			if(str_contains($applicant->intake->name,'March')){
+				if(!str_contains($applicant->campus->name,'Kivukoni')){
+				   $program_code = $prog_code[0].'Z3.'.$prog_code[1];
+				   $stud_group =  $applicant->program_level_id.'Z'.$selection->campusProgram->id.$year;
+				}else{
+				   $program_code = $prog_code[0].'3.'.$prog_code[1];
+				   $stud_group =  $applicant->program_level_id.$selection->campusProgram->id.$year;
+				}  
+			}else{
+				if(!str_contains($applicant->campus->name,'Kivukoni')){
+				   $program_code = $prog_code[0].'Z.'.$prog_code[1];
+				   $stud_group =  $applicant->program_level_id.'Z'.$selection->campusProgram->id.$year;
+				}else{
+				   $program_code = $prog_code[0].'.'.$prog_code[1];
+				   $stud_group =  $applicant->program_level_id.$selection->campusProgram->id.$year;
+				}  
+			}
+			
 			$user = new User;
 			$user->username = $student->registration_number;
 			$user->email = $student->email;
@@ -3679,15 +3689,6 @@ class ApplicationController extends Controller
             $transfer->save();
 			
 			
-            ApplicantProgramSelection::where('applicant_id',$applicant->id)->where('status','SELECTED')->update(['status'=>'ELIGIBLE']);
-
-            $select = new ApplicantProgramSelection;
-            $select->applicant_id = $applicant->id;
-            $select->campus_program_id = $transfer_program->id;
-            $select->application_window_id = $applicant->application_window_id;
-            $select->order = 5;
-            $select->status = 'SELECTED';
-            $select->save();
 			
 			$tuition_invoice = Invoice::whereHas('feeType',function($query){
                $query->where('name','LIKE','%Tuition%');
