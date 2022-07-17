@@ -20,7 +20,6 @@ use App\Domain\Finance\Models\GatewayPayment;
 use App\Domain\Finance\Models\LoanAllocation;
 use App\Domain\Finance\Models\PaymentReconciliation;
 use App\Domain\Registration\Models\Student;
-use DB;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
