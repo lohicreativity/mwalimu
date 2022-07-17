@@ -3295,7 +3295,7 @@ class ApplicationController extends Controller
 		}
 		
 		$reg_date = SpecialDate::where('name','New Registration Period')->where('study_academic_year_id',$ac_year->id)->first();
-		if(Carbon::parse($reg_date->date))->addDays(7)->format('Y-m-d') < date('Y-m-d')){
+		if(Carbon::parse($reg_date->date)->addDays(7)->format('Y-m-d') < date('Y-m-d')){
 			return redirect()->back()->with('error','Registration period has already passed');
 		}
         $transfer_program = CampusProgram::with(['entryRequirements'=>function($query) use($applicant){
