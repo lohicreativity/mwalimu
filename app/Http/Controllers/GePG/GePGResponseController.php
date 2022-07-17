@@ -234,7 +234,7 @@ class GePGResponseController extends Controller
 						 ->join('fee_types','invoices.fee_type_id','=','fee_types.id')
 						 ->where('invoices.id',$invoice->id)
 						 ->first();
-
+ /*
 		        if($inv->psp_name == 'National Microfinance Bank'){
 		            $bank_code = 619;
 		            $bank_name = 'NMB';
@@ -246,7 +246,8 @@ class GePGResponseController extends Controller
 		        $stud_reg = 'NULL';
 
 		        $acpac->query("INSERT INTO receipts (BANK,BANKNAME,RCPNUMBER,RCPDATE,RCPDESC,IDCUST,NAMECUST,INVOICE,AMTAPPLIED,IMPORTED,IMPDATE) VALUES ('".$bank_code."','".$bank_name."','".substr($inv->transaction_id,5)."','".date('Ymd',strtotime($inv->datetime))."','".$inv->description."','".$stud_reg."','".$stud_name."','".$inv->control_no."','".$inv->paid_amount."','0','".date('Ymd',strtotime(now()))."')");
-	        }
+	        */
+			}
 		}
 
 		
