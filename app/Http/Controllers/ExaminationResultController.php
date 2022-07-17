@@ -675,6 +675,7 @@ class ExaminationResultController extends Controller
             ];
             return view('dashboard.academic.edit-examination-results',$data)->withTitle('Edit Examination Results');
         }catch(\Exception $e){
+			return $e->getMessage();
             return redirect()->back()->with('error','Unable to get the resource specified in this request');
         }
     }
