@@ -3707,7 +3707,7 @@ class ApplicationController extends Controller
 			$student->user_id = $user->id;
             $transfer->save();
 			
-			$reg = Registration::where('student|_id',$student->id)->where('study_academic_year_id',$ac_year->id)->where('semester_id'.$semester->id)->where('year_of_study',1)->first();
+			$reg = Registration::where('student_id',$student->id)->where('study_academic_year_id',$ac_year->id)->where('semester_id',$semester->id)->where('year_of_study',1)->first();
 			$stream = Stream::where('campus_program_id',$selection->campusProgram->id)->where('study_academic_year_id',$ac_year->id)->first();
 			if($stream){
 			   $reg->stream_id = $stream->id;
