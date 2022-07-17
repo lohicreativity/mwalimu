@@ -135,7 +135,7 @@
                       @foreach($transfers as $transfer)
                        <tr>
                          <td>{{ $transfer->student->first_name }} {{ $transfer->student->middle_name }} {{ $transfer->student->surname }}</td>
-                         <td>{{ $transfer->student->applicant->username }}</td>
+                         <td>{{ $transfer->student->applicant->user->username }}</td>
                          <td>{{ $transfer->previousProgram->program->name }}</td>
 						 <td>{{ $transfer->student->registration_number }}</td>
                          <td>{{ $transfer->currentProgram->program->name }}</td>
