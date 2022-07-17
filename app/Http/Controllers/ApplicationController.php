@@ -3681,7 +3681,7 @@ class ApplicationController extends Controller
             ApplicantProgramSelection::where('applicant_id',$applicant->id)->where('status','SELECTED')->update(['status'=>'ELIGIBLE']);
 
             $select = new ApplicantProgramSelection;
-            $select->student_id = $student->id;
+            $select->applicant_id = $applicant->id;
             $select->campus_program_id = $transfer_program->id;
             $select->application_window_id = $applicant->application_window_id;
             $select->order = 5;
