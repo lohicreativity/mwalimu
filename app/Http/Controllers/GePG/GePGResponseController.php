@@ -188,7 +188,7 @@ class GePGResponseController extends Controller
 			}
 
 			if(str_contains($invoice->feeType->name,'Performance Report')){
-				 PerfomanceReportRequest::where('student_id',$invoice->payable_id)->update(['payment_status'=>'PAID']);
+				 PerfomanceReportRequest::where('student_id',$invoice->payable_id)->update(['payment_status'=>'PAID','status'=>'PENDING']);
 			}
 
 			if(str_contains($invoice->feeType->name,'Transcript')){

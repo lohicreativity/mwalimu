@@ -34,6 +34,9 @@ class PerformanceReportRequestController extends Controller
     public function ready(Request $request)
     {
         $report = PerformanceReportRequest::find($request->get('report_id'));
+		if($report->status == 'ATTENDED'){
+			return redirect()->back()->with('error','Request already attended');
+		}
         $report->status = 'ATTENDED';
         $report->save();
 
