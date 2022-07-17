@@ -3286,7 +3286,7 @@ class ApplicationController extends Controller
         $award = $student->applicant->programLevel;
         $applicant = $student->applicant;
 		
-		$sc_year = StudyAcademicYear::where('status','ACTIVE')->first();
+		$ac_year = StudyAcademicYear::where('status','ACTIVE')->first();
 		$semester = Semester::where('status','ACTIVE')->first();
 		
 		$registration = Registration::where('student_id',$student->id)->where('study_academic_year_id',$ac_year->id)->where('semester_id',$semester->id)->first();
