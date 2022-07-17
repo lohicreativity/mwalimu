@@ -3672,7 +3672,10 @@ class ApplicationController extends Controller
             $transfer->previous_campus_program_id = $admitted_program->id;
             $transfer->current_campus_program_id = $transfer_program->id;
             $transfer->transfered_by_user_id = Auth::user()->id;
+			
+			$student = Student::find($student->id);
 			$student->registration_number = 'MNMA/'.$program_code.'/'.$code.'/'.$year;
+			$student->save();
 			
 			$user = new User;
 			$user->username = $student->registration_number;
