@@ -1360,7 +1360,7 @@ class ApplicationController extends Controller
         $studentship_status = ($applicant->has_postponed == 1)? StudentshipStatus::where('name','POSTPONED')->first() : StudentshipStatus::where('name','ACTIVE')->first();
         $academic_status = AcademicStatus::where('name','FRESHER')->first();
         $semester = Semester::where('status','ACTIVE')->first();
-        $last_student = DB::table('students')->select(DB::raw('MAX(SUBSTRING(REVERSE(registration_number),0,7)) AS last_number'))->first();
+        $last_student = DB::table('students')->select(DB::raw('MAX(SUBSTRING(REVERSE(registration_number),0,7)) AS last_number'))->where('campus_program_id',$selection->campusProgram->id'campus_pro')->first();
         //Student::where('campus_program_id',$selection->campusProgram->id)->max();
         if(!empty($last_student->last_number)){
            $code = sprintf('%04d',explode('/', $last_student->last_number)[2] + 1);
@@ -3277,7 +3277,7 @@ class ApplicationController extends Controller
      */
     public function submitInternalTransfer(Request $request)
     {
-        $student = Student::with(['applicant.selections.campusProgram','applicant.nectaResultDetails.results','applicant.nacteResultDetails.results','applicant.programLevel'])->find($request->get('student_id'));
+        $student = Student::with(['applicant.selections.campusProgram','applicant.nectaResultDetails.results','applicant.nacteResultDetails.results','applicant.programLevel','applicant.campus'])->find($request->get('student_id'));
 
         $award = $student->applicant->programLevel;
         $applicant = $student->applicant;
@@ -3297,6 +3297,38 @@ class ApplicationController extends Controller
         $transfer_program = CampusProgram::with(['entryRequirements'=>function($query) use($applicant){
              $query->where('application_window_id',$applicant->application_window_id);
         },'program'])->find($request->get('campus_program_id'));
+		
+		$selection = ApplicantProgramSelection::with('campusProgram.program')->where('applicant_id',$applicant->id)->where('status','SELECTED')->first();
+		
+		$last_student = DB::table('students')->select(DB::raw('MAX(SUBSTRING(REVERSE(registration_number),0,7)) AS last_number'))->where('campus_program_id',$selection->campusProgram->id)->first();
+        //Student::where('campus_program_id',$selection->campusProgram->id)->max();
+        if(!empty($last_student->last_number)){
+           $code = sprintf('%04d',explode('/', $last_student->last_number)[2] + 1);
+        }else{
+           $code = sprintf('%04d',1);
+        }
+        $year = substr(date('Y'), 2);
+
+        $prog_code = explode('.', $selection->campusProgram->program->code);
+        if(str_contains($applicant->intake->name,'March')){
+            if(!str_contains($applicant->campus->name,'Kivukoni')){
+               $program_code = $prog_code[0].'Z3.'.$prog_code[1];
+               $stud_group =  $applicant->program_level_id.'Z'.$selection->campusProgram->id.$year;
+            }else{
+               $program_code = $prog_code[0].'3.'.$prog_code[1];
+               $stud_group =  $applicant->program_level_id.$selection->campusProgram->id.$year;
+            }  
+        }else{
+            if(!str_contains($applicant->campus->name,'Kivukoni')){
+               $program_code = $prog_code[0].'Z.'.$prog_code[1];
+               $stud_group =  $applicant->program_level_id.'Z'.$selection->campusProgram->id.$year;
+            }else{
+               $program_code = $prog_code[0].'.'.$prog_code[1];
+               $stud_group =  $applicant->program_level_id.$selection->campusProgram->id.$year;
+            }  
+        }
+        
+
 
         $transfer_program_code = $transfer_program->regulator_code;
 
@@ -3623,6 +3655,7 @@ class ApplicationController extends Controller
             $transfer->previous_campus_program_id = $admitted_program->id;
             $transfer->current_campus_program_id = $transfer_program->id;
             $transfer->transfered_by_user_id = Auth::user()->id;
+			$student->registration_number = 'MNMA/'.$program_code.'/'.$code.'/'.$year;
             $transfer->save();
 
             ApplicantProgramSelection::where('applicant_id',$applicant->id)->where('status','SELECTED')->update(['status'=>'ELIGIBLE']);
