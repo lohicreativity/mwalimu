@@ -26,7 +26,7 @@ class ProgramAction implements ProgramInterface{
                         $program->save();
 						
 						$prog = new CampusProgram;
-						$prog->program_id = $request->get('program_id');
+						$prog->program_id = $program->id;
 						$prog->campus_id = $request->get('campus_id');
 						$prog->regulator_code = $request->get('regulator_code');
 						$prog->save();
@@ -51,7 +51,7 @@ class ProgramAction implements ProgramInterface{
 				
 				$prog = CampusProgram::find($request->get('campus_program_id'));
 				$prog->program_id = $request->get('program_id');
-				$prog->campus_id = $request->get('campus_id');
+				//$prog->campus_id = $request->get('campus_id');
 				$prog->regulator_code = $request->get('regulator_code');
 				$prog->save();
 				
