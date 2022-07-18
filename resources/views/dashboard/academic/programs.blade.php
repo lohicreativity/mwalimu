@@ -335,7 +335,7 @@
 											{!! Form::label('','Regulator Code') !!}
 											{!! Form::text('regulator_code',$program->campusPrograms[0]->regulator_code,$regulator_code) !!}
 											
-											{!! Form::input('hidden','campus_program_id',$program->campusProgram[0]->id) !!}
+											{!! Form::input('hidden','campus_program_id',$program->campusPrograms[0]->id) !!}
 											@else
 										    {!! Form::label('','Regulator Code') !!}
 											{!! Form::text('regulator_code',null,$regulator_code) !!}
