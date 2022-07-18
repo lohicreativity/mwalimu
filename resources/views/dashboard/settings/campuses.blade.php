@@ -271,6 +271,7 @@
                               </i>
                               View Programmes
                        </a>
+					   {{--
                       @can('assign-campus-programme')
                        @if(Auth::user()->hasRole('administrator'))
                        <a class="btn btn-info btn-sm" href="{{ url('academic/campus/'.$campus->id.'/campus-programs') }}">
@@ -286,7 +287,7 @@
                        </a>
                        @endif
                       @endcan
-                      
+					   --}}
                       @can('edit-campus')
                       @if(Auth::user()->hasRole('administrator'))
                       <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-edit-campus-{{ $campus->id }}">
