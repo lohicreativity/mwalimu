@@ -52,7 +52,7 @@ Route::get('test',function(){
  //    }
 
 	// return public_path('uploads/'); 31083
-	$gatepay = GatewayPayment::find(31089);
+	$gatepay = GatewayPayment::find(31973);
 	
 	
 	$invoice = Invoice::with('feeType')->where('control_no',$gatepay->control_no)->first();
