@@ -458,7 +458,7 @@ class ApplicantController extends Controller
                               
                               if($o_level_grades[$result->grade] >= $o_level_grades[$program->entryRequirements[0]->pass_grade]){
 
-                                // $applicant->rank_points += $o_level_grades[$result->grade];
+                                $applicant->rank_points += $o_level_grades[$result->grade];
                                 $subject_count += 1;
 
                                  if(unserialize($program->entryRequirements[0]->must_subjects) != ''){
@@ -826,9 +826,11 @@ class ApplicantController extends Controller
                         }
                 }
             if($subject_count != 0){
-               $applicant->rank_points = $applicant->rank_points / $subject_count;
+			   $app = Applicant::find($applicant->id);
+               $app->rank_points = $applicant->rank_points / $subject_count;
+			   $app->save();
             }
-            $applicant->save();
+            
         }
         $data = [
            'applicant'=>$applicant,
