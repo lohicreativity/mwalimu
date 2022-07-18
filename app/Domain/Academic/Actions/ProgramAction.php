@@ -37,7 +37,7 @@ class ProgramAction implements ProgramInterface{
 	}
 
 	public function update(Request $request){
-		$program = Program::find($request->get('program_id'));
+		        $program = Program::find($request->get('program_id'));
                 $program->name = $request->get('name');
                 $program->code = $request->get('code');
                 // $program->department_id = $request->get('department_id');
@@ -48,6 +48,14 @@ class ProgramAction implements ProgramInterface{
                 $program->max_duration = $request->get('max_duration');
                 // $program->category = $request->get('category');
                 $program->save();
+				
+				$prog = CampusProgram::find($request->get('campus_program_id'));
+				$prog->program_id = $request->get('program_id');
+				$prog->campus_id = $request->get('campus_id');
+				$prog->regulator_code = $request->get('regulator_code');
+				$prog->save();
+				
+				
 
                 $program->departments()->attach([$request->get('department_id')=>['campus_id'=>$request->get('campus_id')]]);
 	}

@@ -32,9 +32,13 @@ class ProgramController extends Controller
         }
       }else{
           if($request->has('query')){
-            $programs = Program::with(['departments','ntaLevel','award'])->where('name','LIKE','%'.$request->get('query').'%')->OrWhere('code','LIKE','%'.$request->get('query').'%')->orderBy('nta_level_id',$request->get('nta_level'))->paginate(20);
+            $programs = Program::with(['departments','ntaLevel','award','campusPrograms'=>function($query) use($staff){
+				$query->where('campus_id',$staff->campus_id);
+			}])->where('name','LIKE','%'.$request->get('query').'%')->OrWhere('code','LIKE','%'.$request->get('query').'%')->orderBy('nta_level_id',$request->get('nta_level'))->paginate(20);
           }else{
-             $programs = Program::with(['department','ntaLevel','award'])->orderBy('code')->paginate(20);
+             $programs = Program::with(['department','ntaLevel','award','campusPrograms'=>function($query) use($staff){
+				$query->where('campus_id',$staff->campus_id);
+			}])->orderBy('code')->paginate(20);
           }
       }
     	$data = [

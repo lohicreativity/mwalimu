@@ -332,9 +332,10 @@
                                         </div>
                                         <div class="form-group col-4">
 											{!! Form::label('','Regulator Code') !!}
-											{!! Form::text('regulator_code',null,$regulator_code) !!}
+											{!! Form::text('regulator_code',$program->campusProgram[0]->regulator_code,$regulator_code) !!}
 											
 											{!! Form::input('hidden','campus_id',$staff->campus_id) !!}
+											{!! Form::input('hidden','campus_program_id',$program->campusProgram[0]->id) !!}
 										  </div>
                                        </div>
                                       <div class="ss-form-actions">
