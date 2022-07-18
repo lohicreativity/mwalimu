@@ -61,7 +61,7 @@ class EntryRequirementAction implements EntryRequirementInterface{
 		$requirement = EntryRequirement::find($rq->id);
             $requirement->application_window_id = $request->get('application_window_id');
             $requirement->equivalent_gpa = $request->get('equivalent_gpa');
-            $requirement->equivalent_majors = $request->get('equivalent_majors');
+            $requirement->equivalent_majors = serialize($request->get('equivalent_majors'));
             $requirement->equivalent_average_grade = $request->get('equivalent_average_grade');
             $requirement->equivalent_must_subjects = serialize($request->get('equivalent_must_subjects'));
             $requirement->open_equivalent_gpa = $request->get('open_equivalent_gpa');
