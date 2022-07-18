@@ -52,10 +52,10 @@ Route::get('test',function(){
  //    }
 
 	// return public_path('uploads/'); 31083
-	$gatepay = GatewayPayment::find(4);
+	$gatepay = GatewayPayment::find(31089);
 	
 	
-	$invoice = Invoice::with('feeType')->where('control_no','994120242948')->first();
+	$invoice = Invoice::with('feeType')->where('control_no',$gatepay->control_no)->first();
 		//$invoice->gateway_payment_id = $gatepay->id;
 		//$invoice->save();
 
@@ -153,6 +153,8 @@ Route::get('test',function(){
 						 ->join('fee_types','invoices.fee_type_id','=','fee_types.id')
 						 ->where('invoices.id',$invoice->id)
 						 ->first();
+						 
+			    return $inv;
 
 				$acpac->query("INSERT INTO invoices (INVNUMBER,INVDATE,INVDESC,IDCUST,NAMECUST,[LINENO],REVACT,REVDESC,REVREF,REVAMT,IMPORTED,IMPDATE) VALUES ('".$inv->control_no."','".date('Y',strtotime($inv->created_at))."','".$inv->description."','".$stud_reg."','".$stud_name."','1','".$inv->gl_code."','".$inv->name."','".$inv->description."','".$inv->amount."','0','".date('Y',strtotime(now()))."')");
 
