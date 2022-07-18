@@ -1141,25 +1141,34 @@ class ApplicationController extends Controller
 
                 if(isset($program->entryRequirements[0])){
                 foreach($applicants as $applicant){
-                  
-                  foreach($applicant->selections as $selection){
-                     if($selection->order == $choice && $selection->campus_program_id == $program->id){
-                        if($count[$program->id] < $program->entryRequirements[0]->max_capacity && $selection->status == 'ELIGIBLE' && !$selected_program[$applicant->id]){
-                           if(ApplicantProgramSelection::where('applicant_id',$applicant->id)->where('status','APPROVING')->count() == 0 && ($applicant->avn_no_results !== 1 || $applicant->teacher_diploma_certificate == null)){
-                               $select = ApplicantProgramSelection::find($selection->id);
-                               $select->status = 'APPROVING';
-                               $select->status_changed_at = now();
-                               $select->save();
+				  $has_results = true;
+                  if($applicant->teacher_certificate_status != 1){
+					  if(count($applicant->nacteResultDetails) != 0){
+						  if(count($applicant->nacteResultDetails[0]->results) == 0){
+							  $has_results = false;
+						  }
+					  }
+					  if($has_results){
+						  foreach($applicant->selections as $selection){
+							 if($selection->order == $choice && $selection->campus_program_id == $program->id){
+								if($count[$program->id] < $program->entryRequirements[0]->max_capacity && $selection->status == 'ELIGIBLE' && !$selected_program[$applicant->id]){
+								   if(ApplicantProgramSelection::where('applicant_id',$applicant->id)->where('status','APPROVING')->count() == 0 && ($applicant->avn_no_results !== 1 || $applicant->teacher_diploma_certificate == null)){
+									   $select = ApplicantProgramSelection::find($selection->id);
+									   $select->status = 'APPROVING';
+									   $select->status_changed_at = now();
+									   $select->save();
 
-                               Applicant::where('id',$applicant->id)->update(['status'=>'SELECTED']);
+									   Applicant::where('id',$applicant->id)->update(['status'=>'SELECTED']);
 
-                               $selected_program[$applicant->id] = true;
+									   $selected_program[$applicant->id] = true;
 
-                               $count[$program->id]++;
-                           }
-                        }
-                     }
-                  }
+									   $count[$program->id]++;
+								   }
+								}
+							 }
+						  }
+					  }
+				  }
                 }
               }
            }
@@ -1245,25 +1254,34 @@ class ApplicationController extends Controller
 
                 if(isset($program->entryRequirements[0])){
                 foreach($applicants as $applicant){
-                  
-                  foreach($applicant->selections as $selection){
-                     if($selection->order == $choice && $selection->campus_program_id == $program->id){
-                        if($count[$program->id] < $program->entryRequirements[0]->max_capacity && $selection->status == 'ELIGIBLE' && !$selected_program[$applicant->id]){
-                           if(ApplicantProgramSelection::where('applicant_id',$applicant->id)->where('status','APPROVING')->count() == 0 && ($applicant->avn_no_results !== 1 || $applicant->teacher_diploma_certificate == null)){
-                               $select = ApplicantProgramSelection::find($selection->id);
-                               $select->status = 'APPROVING';
-                               $select->status_changed_at = now();
-                               $select->save();
+				  $has_results = true;
+                  if($applicant->teacher_certificate_status != 1){
+					  if(count($applicant->nacteResultDetails) != 0){
+						  if(count($applicant->nacteResultDetails[0]->results) == 0){
+							  $has_results = false;
+						  }
+					  }
+					  if($has_results){
+						  foreach($applicant->selections as $selection){
+							 if($selection->order == $choice && $selection->campus_program_id == $program->id){
+								if($count[$program->id] < $program->entryRequirements[0]->max_capacity && $selection->status == 'ELIGIBLE' && !$selected_program[$applicant->id]){
+								   if(ApplicantProgramSelection::where('applicant_id',$applicant->id)->where('status','APPROVING')->count() == 0 && ($applicant->avn_no_results !== 1 || $applicant->teacher_diploma_certificate == null)){
+									   $select = ApplicantProgramSelection::find($selection->id);
+									   $select->status = 'APPROVING';
+									   $select->status_changed_at = now();
+									   $select->save();
 
-                               Applicant::where('id',$applicant->id)->update(['status'=>'SELECTED']);
+									   Applicant::where('id',$applicant->id)->update(['status'=>'SELECTED']);
 
-                               $selected_program[$applicant->id] = true;
+									   $selected_program[$applicant->id] = true;
 
-                               $count[$program->id]++;
-                           }
-                        }
-                     }
-                  }
+									   $count[$program->id]++;
+								   }
+								}
+							 }
+						  }
+					  }
+				  }
                 }
               }
            }
