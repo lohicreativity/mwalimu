@@ -59,6 +59,12 @@
                      'class'=>'form-control',
                      'required'=>true
                   ];
+				  
+				  $regulator_code = [
+                     'placeholder'=>'Regulator Code',
+                     'class'=>'form-control',
+                     'required'=>true
+                  ];
 
                   $description = [
                      'placeholder'=>'Description',
@@ -142,7 +148,12 @@
                     {!! Form::input('hidden','award_id',null,['id'=>'ss-nta-award-input']) !!}
                     {!! Form::input('hidden','campus_id',$staff->campus_id) !!}
                   </div>
-                   
+                  <div class="form-group col-4">
+                    {!! Form::label('','Regulator Code') !!}
+                    {!! Form::text('regulator_code',null,$regulator_code) !!}
+					
+					{!! Form::input('hidden','campus_id',$staff->campus_id) !!}
+                  </div> 
                  </div>
                 </div>
                 <!-- /.card-body -->
@@ -228,6 +239,12 @@
                                        'class'=>'form-control',
                                        'required'=>true
                                     ];
+									
+									$regulator_code = [
+										 'placeholder'=>'Regulator Code',
+										 'class'=>'form-control',
+										 'required'=>true
+									  ];
 
                                     $description = [
                                        'placeholder'=>'Description',
@@ -313,7 +330,12 @@
 
                                           {!! Form::input('hidden','award_id',$program->award_id,['id'=>'ss-nta-award-input-'.$program->id]) !!}
                                         </div>
-                                        
+                                        <div class="form-group col-4">
+											{!! Form::label('','Regulator Code') !!}
+											{!! Form::text('regulator_code',null,$regulator_code) !!}
+											
+											{!! Form::input('hidden','campus_id',$staff->campus_id) !!}
+										  </div>
                                        </div>
                                       <div class="ss-form-actions">
                                        <button type="submit" class="btn btn-primary">{{ __('Save Changes') }}</button>

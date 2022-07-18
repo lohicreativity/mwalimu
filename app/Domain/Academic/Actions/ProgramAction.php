@@ -4,6 +4,7 @@ namespace App\Domain\Academic\Actions;
 
 use Illuminate\Http\Request;
 use App\Domain\Academic\Models\Program;
+use App\Domain\Academic\Models\CampusProgram;
 use App\Domain\Academic\Repositories\Interfaces\ProgramInterface;
 
 class ProgramAction implements ProgramInterface{
@@ -23,6 +24,12 @@ class ProgramAction implements ProgramInterface{
                         $program->max_duration = $request->get('max_duration');
                         // $program->category = $request->get('category');
                         $program->save();
+						
+						$prog = new CampusProgram;
+						$prog->program_id = $request->get('program_id');
+						$prog->campus_id = $request->get('campus_id');
+						$prog->regulator_code = $request->get('regulator_code');
+						$prog->save();
                 }
                 
 
