@@ -224,7 +224,7 @@ class ApplicantController extends Controller
      */
     public function editBasicInfo(Request $request)
     {
-        $applicant = User::find(Auth::user()->id)->applicants()->where('campus_id',session('applicant_campus_id'))->first();
+        $applicant = User::find(Auth::user()->id)->applicants()->with(['programLevel'])->where('campus_id',session('applicant_campus_id'))->first();
 
         if($applicant->is_tamisemi !== 1){
             if(!ApplicationWindow::where('campus_id',session('applicant_campus_id'))->where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('status','ACTIVE')->first()){
@@ -236,8 +236,9 @@ class ApplicantController extends Controller
                  }
             }
         }
-
-        if($applicant->is_tcu_verified === null){
+        
+		
+        if($applicant->is_tcu_verified === null && str_contains($applicant->programLevel->name,'Degree')){
             $url='http://api.tcu.go.tz/applicants/checkStatus';
             $fullindex=str_replace('-','/',Auth::user()->username);
             $xml_request='<?xml version="1.0" encoding="UTF-8"?> 

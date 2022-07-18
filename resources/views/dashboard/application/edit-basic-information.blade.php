@@ -157,7 +157,7 @@
               @endphp
               {!! Form::open(['url'=>'application/update-basic-info','class'=>'ss-form-processing','files'=>true]) !!}
                 <div class="card-body">
-                @if($applicant->is_tcu_verified != 1)
+                @if($applicant->is_tcu_verified != 1 && str_contains($applicant->programLevel->name,'Degree'))
                 <div class="alert alert-warning">
                    You cannot proceed with this application because it seems you have admission with another institution. Please contact TCU for clarification.
                 </div>
@@ -313,7 +313,7 @@
                 <!-- /.card-body -->
 
                 <div class="card-footer">
-                  <button @if($applicant->is_tcu_verified != 1) disabled="disabled" @else type="submit" @endif class="btn btn-primary">{{ __('Save') }}</button>
+                  <button @if($applicant->is_tcu_verified != 1 && str_contains($applicant->programLevel->name,'Degree')) disabled="disabled" @else type="submit" @endif class="btn btn-primary">{{ __('Save') }}</button>
                 </div>
               {!! Form::close() !!}
             </div>

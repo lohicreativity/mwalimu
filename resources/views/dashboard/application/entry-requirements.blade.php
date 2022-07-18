@@ -1122,12 +1122,12 @@
                                         {!! Form::label('','Equivalent Average Grade') !!}
                                         <select name="equivalent_average_grade" class="form-control" disabled="disabled">
                                            <option value="">Select Pass Grade</option>
-                                           <option value="A">A</option>
-                                           <option value="B">B</option>
-                                           <option value="C">C</option>
-                                           <option value="D">D</option>
-                                           <option value="E">E</option>
-                                           <option value="F">F</option>
+                                           <option value="A" @if($requirement->equivalent_average_grade == 'A') selected="selected" @endif>A</option>
+                                             <option value="B" @if($requirement->equivalent_average_grade == 'B') selected="selected" @endif>B</option>
+                                             <option value="C" @if($requirement->equivalent_average_grade == 'C') selected="selected" @endif>C</option>
+                                             <option value="D" @if($requirement->equivalent_average_grade == 'D') selected="selected" @endif>D</option>
+                                             <option value="E" @if($requirement->equivalent_average_grade == 'E') selected="selected" @endif>E</option>
+                                             <option value="F" @if($requirement->equivalent_average_grade == 'F') selected="selected" @endif>F</option>
                                         </select>
                                       </div>
                                       {!! Form::input('hidden','application_window_id',$application_window->id) !!}
@@ -1161,13 +1161,12 @@
                                       <div class="form-group col-3">
                                         {!! Form::label('','Pass Grade') !!}
                                         <select name="pass_grade" class="form-control">
-                                           <option value="">Select Pass Grade</option>
-                                           <option value="A">A</option>
-                                           <option value="B">B</option>
-                                           <option value="C">C</option>
-                                           <option value="D">D</option>
-                                           <option value="E">E</option>
-                                           <option value="F">F</option>
+                                           <option value="A" @if($requirement->pass_grade == 'A') selected="selected" @endif>A</option>
+                                             <option value="B" @if($requirement->pass_grade == 'B') selected="selected" @endif>B</option>
+                                             <option value="C" @if($requirement->pass_grade == 'C') selected="selected" @endif>C</option>
+                                             <option value="D" @if($requirement->pass_grade == 'D') selected="selected" @endif>D</option>
+                                             <option value="E" @if($requirement->pass_grade == 'E') selected="selected" @endif>E</option>
+                                             <option value="F" @if($requirement->pass_grade == 'F') selected="selected" @endif>F</option>
                                         </select>
                                       </div>
                                       
@@ -1427,25 +1426,25 @@
                                           {!! Form::label('','Pass Grade') !!}
                                           <select name="pass_grade" class="form-control">
                                              <option value="">Select Pass Grade</option>
-                                             <option value="A">A</option>
-                                             <option value="B">B</option>
-                                             <option value="C">C</option>
-                                             <option value="D">D</option>
-                                             <option value="E">E</option>
-                                             <option value="F">F</option>
+                                             <option value="A" @if($requirement->pass_grade == 'A') selected="selected" @endif>A</option>
+                                             <option value="B" @if($requirement->pass_grade == 'B') selected="selected" @endif>B</option>
+                                             <option value="C" @if($requirement->pass_grade == 'C') selected="selected" @endif>C</option>
+                                             <option value="D" @if($requirement->pass_grade == 'D') selected="selected" @endif>D</option>
+                                             <option value="E" @if($requirement->pass_grade == 'E') selected="selected" @endif>E</option>
+                                             <option value="F" @if($requirement->pass_grade == 'F') selected="selected" @endif>F</option>
                                           </select>
                                         </div>
                                         <div class="form-group col-3">
                                           {!! Form::label('','NTA Level') !!}
                                           <select name="nta_level" class="form-control">
                                              <option value="">Select NTA Level</option>
-                                             <option value="4">4</option>
-                                             <option value="5">5</option>
-                                             <option value="6">6</option>
-                                             <option value="7">7</option>
-                                             <option value="8">8</option>
-                                             <option value="9">9</option>
-                                             <option value="10">10</option>
+                                             <option value="4" @if($requirement->nta_level == 4) selected="selected" @endif>4</option>
+                                               <option value="5" @if($requirement->nta_level == 5) selected="selected" @endif>5</option>
+                                               <option value="6" @if($requirement->nta_level == 6) selected="selected" @endif>6</option>
+                                               <option value="7" @if($requirement->nta_level == 7) selected="selected" @endif>7</option>
+                                               <option value="8" @if($requirement->nta_level == 8) selected="selected" @endif>8</option>
+                                               <option value="9" @if($requirement->nta_level == 9) selected="selected" @endif>9</option>
+                                               <option value="10" @if($requirement->nta_level == 10) selected="selected" @endif>10</option>
                                           </select>
                                         </div>
                                         <div class="form-group col-3">
