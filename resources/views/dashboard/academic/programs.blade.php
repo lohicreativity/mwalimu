@@ -205,7 +205,11 @@
                     <td>{{ $program->name }}</td>
                     <td>{{ $program->code }}</td>
 					<td>@foreach($program->departments as $dept) <p>{{ $dept->name }}</p> @endforeach</td>
-					<td>@foreach($program->departments as $dept) @foreach($dept->staffs as $stf) @if($stf->user->hasRole('hod')) <p>{{ $dept->name }} - {{ $stf->title}} {{ $stf->first_name }} {{ $stf->surname }}</p> @endif @endforeach @endforech</td>
+					<td>@foreach($program->departments as $dept) 
+					         @foreach($dept->staffs as $stf) 
+							    @if($stf->user->hasRole('hod')) <p>{{ $dept->name }} - {{ $stf->title}} {{ $stf->first_name }} {{ $stf->surname }}</p> @endif 
+							 @endforeach 
+					    @endforeach</td>
                     <td>
                       @can('edit-programme')
                       <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-edit-program-{{ $program->id }}">
