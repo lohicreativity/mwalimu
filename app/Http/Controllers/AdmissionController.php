@@ -52,6 +52,7 @@ class AdmissionController extends Controller
     	    })->with('gatewayPayment')->where('payable_id',$applicant->id)->where('payable_type','applicant')->first();
     	}else{
     		$hostel_fee = null;
+			$hostel_fee_amount = null;
     		$hostel_fee_invoice = null;
     	}
 
@@ -103,9 +104,18 @@ class AdmissionController extends Controller
             $insurance_fee = null;
             $insurance_fee_invoice = null;
         }
+		if(str_contains($applicant->nationality,'Tanzania')){
+			$program_fee_amount = $program_fee->amount_in_tzs;
+			$other_fee_amount = $other_fees_tzs;
+		}else{
+			$program_fee_amount = $program_fee->amount_in_usd;
+			$other_fee_amount = $other_fees_usd;
+		}
     	$data = [
            'applicant'=>$applicant,
            'program_fee'=>$program_fee,
+		   'program_fee_amount'=>$program_fee_amount,
+		   'other_fee_amount'=>$other_fee_amount,
            'hostel_fee'=>$hostel_fee,
            'insurance_fee'=>$insurance_fee,
            'other_fees_tzs'=>$other_fees_tzs,
