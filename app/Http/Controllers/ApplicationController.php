@@ -2047,7 +2047,8 @@ class ApplicationController extends Controller
              $query->where('status','SELECTED');
         },'selections.campusProgram.program','applicationWindow','country','selections.campusProgram.campus'])->where('program_level_id',$request->get('program_level_id'))->where('status','SELECTED')->where('application_window_id',$request->get('application_window_id'))->get();
 
-        // Applicant::whereHas('intake.applicationWindows',function($query) use($request){
+        return $applicants;    
+   	   // Applicant::whereHas('intake.applicationWindows',function($query) use($request){
         //      $query->where('id',$request->application_window_id);
         // })->whereHas('selections',function($query) use($request){
         //      $query->where('status','APPROVING');
@@ -2072,7 +2073,7 @@ class ApplicationController extends Controller
                }
 
                $medical_insurance_fee = FeeAmount::where('study_academic_year_id',$study_academic_year->id)->whereHas('feeItem',function($query){
-                   $query->where('name','LIKE','%NHIF%');
+                   $query->where('name','LIKE','%NHIF%')->orWhere('name','LIKE','%Medical Care%');
                })->first();
 
                if(!$medical_insurance_fee){
@@ -2103,7 +2104,7 @@ class ApplicationController extends Controller
                }
 
                $students_union_fee = FeeAmount::where('study_academic_year_id',$study_academic_year->id)->whereHas('feeItem',function($query){
-                   $query->where('name','LIKE','%MNMASO%');
+                   $query->where('name','LIKE','%MNMASO%')->orWhere('name','LIKE','%Student Organization%');
                })->first();
 
                if(!$students_union_fee){

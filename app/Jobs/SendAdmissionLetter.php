@@ -83,7 +83,7 @@ class SendAdmissionLetter implements ShouldQueue
                }
 
                $medical_insurance_fee = FeeAmount::where('study_academic_year_id',$study_academic_year->id)->whereHas('feeItem',function($query){
-                   $query->where('name','LIKE','%NHIF%');
+                   $query->where('name','LIKE','%NHIF%')->orWhere('name','LIKE','%Medical Care%');
                })->first();
 
                if(!$medical_insurance_fee){
@@ -114,7 +114,7 @@ class SendAdmissionLetter implements ShouldQueue
                }
 
                $students_union_fee = FeeAmount::where('study_academic_year_id',$study_academic_year->id)->whereHas('feeItem',function($query){
-                   $query->where('name','LIKE','%MNMASO%');
+                   $query->where('name','LIKE','%MNMASO%')->orWhere('name','LIKE','%Student Organization%');
                })->first();
 
                if(!$students_union_fee){
