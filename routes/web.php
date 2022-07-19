@@ -46,6 +46,30 @@ Route::get('test',function(){
      //$acpac->query("INSERT INTO customer (IDCUST,IDGRP,NAMECUST,TEXTSTRE1,TEXTSTRE2,TEXTSTRE3,TEXTSTRE4,NAMECITY,CODESTTE,CODEPSTL,CODECTRY,NAMECTAC,TEXTPHON1,TEXTPHON2,CODETERR,IDACCTSET,CODECURN,EMAIL1,EMAIL2) VALUES ('BDED485922','44322','SHOBOLE, JOVITH ','P.O Box 27,Simiyu','ARUMERU','BANG','Unknown','Tanzania','Tanzania','P.O Box 27,Simiyu','Tanzania','Jones, Shobole Nyombi','255753690473','0787691417','BD.ED','STD','TSH','dennis.lupiana@gmail.com','UNKNOWN')");
 	
 	//$acpac->query("INSERT INTO customer (IDCUST,IDGRP,NAMECUST,TEXTSTRE1,TEXTSTRE2,TEXTSTRE3,TEXTSTRE4,NAMECITY,CODESTTE,CODEPSTL,CODECTRY,NAMECTAC,TEXTPHON1,TEXTPHON2,CODETERR,IDACCTSET,CODECURN,EMAIL1,EMAIL2) VALUES ('BTBA000122','16722','LEOPOLD, LEONTINE ','ILEMELA','ARUMERU','BANG','9193 DSM','Tanzania','Tanzania','ILEMELA','Tanzania','NGWARA, NYAMBOHA KIKARO','255754991909','0754991909','BTC.BA','STD','TSH','yusufu.erick@mnma.ac.tz','leontine97@gmail.com')");
+	// $acpac->query("DELETE FROM customer");
+	// $acpac->query("DELETE FROM invoices");
+	// $acpac->query("DELETE FROM receipts");
+	$results = $acpac->query('SELECT * FROM customer');
+     while ($row = sqlsrv_fetch_array($results)) {
+     	print_r($row);
+     }
+}
+
+Route::get('delete',function(){
+	// $payment = App\Domain\Finance\Models\NactePayment::latest()->first();
+	// $result = Illuminate\Support\Facades\Http::get('https://www.nacte.go.tz/nacteapi/index.php/api/payment/'.$payment->reference_no.'/JKb6229cfce105c6.0fb7aaa46fe8bc757813ab7f5391c58d90f891e4c86badb055b90896b8206d33.4160cea2b30cf96a8977d2de8141a655213b737d');
+
+	// $response = Http::get('https://www.nacte.go.tz/nacteapi/index.php/api/particulars/NS1198.0038.2009-4/'.config('constants.NACTE_API_KEY'));
+
+	// return $response;
+
+	// return $result;
+	 $acpac = new ACPACService;
+	// //$acpac->query("INSERT INTO receipts (BANK,BANKNAME,RCPNUMBER,RCPDATE,RCPDESC,IDCUST,NAMECUST,INVOICE,AMTAPPLIED,IMPORTED,IMPDATE) VALUES
+ //   //('J','CRDB','REC03','10','TF','MNMA003','TEST','INV003','100.0','C','10')");
+     //$acpac->query("INSERT INTO customer (IDCUST,IDGRP,NAMECUST,TEXTSTRE1,TEXTSTRE2,TEXTSTRE3,TEXTSTRE4,NAMECITY,CODESTTE,CODEPSTL,CODECTRY,NAMECTAC,TEXTPHON1,TEXTPHON2,CODETERR,IDACCTSET,CODECURN,EMAIL1,EMAIL2) VALUES ('BDED485922','44322','SHOBOLE, JOVITH ','P.O Box 27,Simiyu','ARUMERU','BANG','Unknown','Tanzania','Tanzania','P.O Box 27,Simiyu','Tanzania','Jones, Shobole Nyombi','255753690473','0787691417','BD.ED','STD','TSH','dennis.lupiana@gmail.com','UNKNOWN')");
+	
+	//$acpac->query("INSERT INTO customer (IDCUST,IDGRP,NAMECUST,TEXTSTRE1,TEXTSTRE2,TEXTSTRE3,TEXTSTRE4,NAMECITY,CODESTTE,CODEPSTL,CODECTRY,NAMECTAC,TEXTPHON1,TEXTPHON2,CODETERR,IDACCTSET,CODECURN,EMAIL1,EMAIL2) VALUES ('BTBA000122','16722','LEOPOLD, LEONTINE ','ILEMELA','ARUMERU','BANG','9193 DSM','Tanzania','Tanzania','ILEMELA','Tanzania','NGWARA, NYAMBOHA KIKARO','255754991909','0754991909','BTC.BA','STD','TSH','yusufu.erick@mnma.ac.tz','leontine97@gmail.com')");
 	 $acpac->query("DELETE FROM customer");
 	// $acpac->query("DELETE FROM invoices");
 	// $acpac->query("DELETE FROM receipts");
