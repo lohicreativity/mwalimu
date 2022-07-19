@@ -53,7 +53,7 @@ Route::get('test',function(){
      while ($row = sqlsrv_fetch_array($results)) {
      	print_r($row);
      }
-}
+});
 
 Route::get('delete',function(){
 	// $payment = App\Domain\Finance\Models\NactePayment::latest()->first();
