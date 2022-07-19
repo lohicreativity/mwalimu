@@ -2046,8 +2046,7 @@ class ApplicationController extends Controller
         })->with(['nextOfKin','intake','selections'=>function($query){
              $query->where('status','SELECTED');
         },'selections.campusProgram.program','applicationWindow','country','selections.campusProgram.campus'])->where('program_level_id',$request->get('program_level_id'))->where('status','SELECTED')->where('application_window_id',$request->get('application_window_id'))->get();
-
-        return $applicants;    
+   
    	   // Applicant::whereHas('intake.applicationWindows',function($query) use($request){
         //      $query->where('id',$request->application_window_id);
         // })->whereHas('selections',function($query) use($request){
