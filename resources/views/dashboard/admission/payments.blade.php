@@ -58,7 +58,7 @@
                     <tr>
                        <td>Programme Fee</td>
                        <td>@if($program_fee_invoice) {{ number_format($program_fee_invoice->actual_amount,0) }} {{ $program_fee_invoice->currency }}</td>
-                       @else @if($program_fee_amount) {{ mumber_format($program_fee_amount,2) }}  TZS @endif @endif
+                       @else @if($program_fee_amount) {{ number_format($program_fee_amount,2) }}  TZS @endif @endif
                        <td>@if($program_fee_invoice) {{ $program_fee_invoice->control_no }} @if(!$program_fee_invoice->control_no)<a href="#" onclick="window.location.reload();"><i class="fa fa-refresh" ></i> Refresh</a>@endif  @endif</td>
                        <td>@if($program_fee_invoice) {{ number_format($program_fee_invoice->amount,0) }} {{ $program_fee_invoice->currency }} @endif</td>
                        <td>
@@ -80,7 +80,7 @@
                     @if($applicant->has_postponed != 1)
                     <tr>
                        <td>Other Fees</td>
-                       <td>@if($other_fee_invoice) {{ number_format($other_fee_invoice->amount,0) }} {{ $other_fee_invoice->currency }} @else @if($other_fee_amount) {{ mumber_format($other_fee_amount,2) }}  TZS @endif  @endif</td>
+                       <td>@if($other_fee_invoice) {{ number_format($other_fee_invoice->amount,0) }} {{ $other_fee_invoice->currency }} @else @if($other_fee_amount) {{ number_format($other_fee_amount,2) }}  TZS @endif  @endif</td>
                        <td>@if($other_fee_invoice) {{ $other_fee_invoice->control_no }} @if(!$other_fee_invoice->control_no)<a href="#" onclick="window.location.reload();"><i class="fa fa-refresh" ></i> Refresh</a>@endif  @endif</td>
                        <td>@if($other_fee_invoice) {{ number_format($other_fee_invoice->amount,0) }} {{ $other_fee_invoice->currency }} @endif</td>
                        <td>
