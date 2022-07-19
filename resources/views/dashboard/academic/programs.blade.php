@@ -195,6 +195,7 @@
                     <th>Name</th>
                     <th>Code</th>
                     <th>NTA Level</th>
+					<th>Department</th>
                     <th>Min Duration</th>
                     <th>Max Duration</th>
                     <th>Actions</th>
@@ -206,6 +207,7 @@
                     <td>{{ $program->name }}</td>
                     <td>{{ $program->code }}</td>
                     <td>{{ $program->ntaLevel->name }}</td>
+					<td>@foreach($program->departments as $dept) <p>{{ $dept->name }}</p> @endforeach</td>
                     <td>{{ $program->min_duration }}</td>
                     <td>{{ $program->max_duration }}</td>
                     <td>
