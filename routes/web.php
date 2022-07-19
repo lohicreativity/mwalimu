@@ -46,14 +46,14 @@ Route::get('test',function(){
      //$acpac->query("INSERT INTO customer (IDCUST,IDGRP,NAMECUST,TEXTSTRE1,TEXTSTRE2,TEXTSTRE3,TEXTSTRE4,NAMECITY,CODESTTE,CODEPSTL,CODECTRY,NAMECTAC,TEXTPHON1,TEXTPHON2,CODETERR,IDACCTSET,CODECURN,EMAIL1,EMAIL2) VALUES ('BDED485922','44322','SHOBOLE, JOVITH ','P.O Box 27,Simiyu','ARUMERU','BANG','Unknown','Tanzania','Tanzania','P.O Box 27,Simiyu','Tanzania','Jones, Shobole Nyombi','255753690473','0787691417','BD.ED','STD','TSH','dennis.lupiana@gmail.com','UNKNOWN')");
 	
 	//$acpac->query("INSERT INTO customer (IDCUST,IDGRP,NAMECUST,TEXTSTRE1,TEXTSTRE2,TEXTSTRE3,TEXTSTRE4,NAMECITY,CODESTTE,CODEPSTL,CODECTRY,NAMECTAC,TEXTPHON1,TEXTPHON2,CODETERR,IDACCTSET,CODECURN,EMAIL1,EMAIL2) VALUES ('BTBA000122','16722','LEOPOLD, LEONTINE ','ILEMELA','ARUMERU','BANG','9193 DSM','Tanzania','Tanzania','ILEMELA','Tanzania','NGWARA, NYAMBOHA KIKARO','255754991909','0754991909','BTC.BA','STD','TSH','yusufu.erick@mnma.ac.tz','leontine97@gmail.com')");
-	// $acpac->query("DELETE FROM customer");
+	 $acpac->query("DELETE FROM customer");
 	// $acpac->query("DELETE FROM invoices");
 	// $acpac->query("DELETE FROM receipts");
 	$results = $acpac->query('SELECT * FROM customer');
      while ($row = sqlsrv_fetch_array($results)) {
      	print_r($row);
      }
-
+     /*
 	// return public_path('uploads/'); 31083
 	$gatepay = GatewayPayment::find(31973);
 	
@@ -189,7 +189,7 @@ Route::get('test',function(){
 
 		        $acpac->query("INSERT INTO receipts (BANK,BANKNAME,RCPNUMBER,RCPDATE,RCPDESC,IDCUST,NAMECUST,INVOICE,AMTAPPLIED,IMPORTED,IMPDATE) VALUES ('".$bank_code."','".$bank_name."','".substr($inv->transaction_id,5)."','".date('Ymd',strtotime($inv->datetime))."','".$inv->description."','".$stud_reg."','".$stud_name."','".$inv->control_no."','".$inv->paid_amount."','0','".date('Ymd',strtotime(now()))."')");
 	        }
-		}
+		}*/
 		
 		return 'Done';
 });
