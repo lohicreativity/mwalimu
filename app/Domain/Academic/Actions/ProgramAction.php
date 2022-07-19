@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Domain\Academic\Models\Program;
 use App\Domain\Academic\Models\CampusProgram;
 use App\Domain\Academic\Repositories\Interfaces\ProgramInterface;
+use DB;
 
 class ProgramAction implements ProgramInterface{
 	
@@ -25,14 +26,20 @@ class ProgramAction implements ProgramInterface{
                         // $program->category = $request->get('category');
                         $program->save();
 						
-						$prog = new CampusProgram;
-						$prog->program_id = $program->id;
-						$prog->campus_id = $request->get('campus_id');
-						$prog->regulator_code = $request->get('regulator_code');
-						$prog->save();
+						
                 }
+				
+				if($pr = CampusProgram::where('program_id',$program->id)->where('campus_id',$request->get('campus_id'))->first()){
+					$prog = $pr;
+				}else{
+					$prog = new CampusProgram;
+				}
+				$prog->program_id = $program->id;
+				$prog->campus_id = $request->get('campus_id');
+				$prog->regulator_code = $request->get('regulator_code');
+				$prog->save();
                 
-
+                DB::table('program_department')->where('program_id',$program->id)->where('campus_id',$request->get('campus_id'))->delete();
                 $program->departments()->attach([$request->get('department_id')=>['campus_id'=>$request->get('campus_id')]]);
 	}
 
