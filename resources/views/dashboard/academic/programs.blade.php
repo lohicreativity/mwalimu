@@ -207,7 +207,7 @@
 					<td>@foreach($program->departments as $dept) <p>{{ $dept->name }}</p> @endforeach</td>
 					<td>@foreach($program->departments as $dept) 
 					         @foreach($dept->staffs as $stf) 
-							    @if($stf->user->hasRole('hod')) <p>{{ $dept->name }} - {{ $stf->title}} {{ $stf->first_name }} {{ $stf->surname }}</p> @endif 
+							    @if($stf->user->hasRole('hod')) <p>{{ $stf->title}} {{ $stf->first_name }} {{ $stf->surname }}</p> @endif 
 							 @endforeach 
 					    @endforeach</td>
                     <td>
