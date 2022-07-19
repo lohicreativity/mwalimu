@@ -194,10 +194,8 @@
                   <tr>
                     <th>Name</th>
                     <th>Code</th>
-                    <th>NTA Level</th>
 					<th>Department</th>
-                    <th>Min Duration</th>
-                    <th>Max Duration</th>
+					<th>HOD</th>
                     <th>Actions</th>
                   </tr>
                   </thead>
@@ -206,10 +204,8 @@
                   <tr>
                     <td>{{ $program->name }}</td>
                     <td>{{ $program->code }}</td>
-                    <td>{{ $program->ntaLevel->name }}</td>
 					<td>@foreach($program->departments as $dept) <p>{{ $dept->name }}</p> @endforeach</td>
-                    <td>{{ $program->min_duration }}</td>
-                    <td>{{ $program->max_duration }}</td>
+					<td>@foreach($program->departments as $dept) @foreach($dept->staffs as $stf) @if($stf->user->hasRole('hod')) <p>{{ $dept->name }} - {{ $stf->title}} {{ $stf->first_name }} {{ $stf->surname }}</p> @endif @endforeach @endforech</td>
                     <td>
                       @can('edit-programme')
                       <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-edit-program-{{ $program->id }}">

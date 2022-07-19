@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Domain\Settings\Models\UnitCategory;
 use App\Domain\Settings\Models\Campus;
+use App\Domain\HumanResources\Models\Staff;
 
 class Department extends Model
 {
@@ -22,6 +23,14 @@ class Department extends Model
     {
         return $this->belongsToMany(Program::class,'program_department','department_id','program_id')->withPivot('campus_id');
     }
+	
+	/**
+	 * Establish one to many relationship with staff
+	 */
+	 public function staffs()
+	 {
+		 return $this->hasMany(Staff::class,'department_id');
+	 }
 
     /**
      * Establish one to many relationship with unit categories
