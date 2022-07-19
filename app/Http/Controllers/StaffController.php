@@ -136,8 +136,7 @@ class StaffController extends Controller
             'birth_date'=>'required',
             'email'=>'required|email|unique:users',
             'address'=>'required',
-            'phone'=>'required',
-            'nin'=>'required',
+            'phone'=>'required'
 
         ]);
 
@@ -165,8 +164,7 @@ class StaffController extends Controller
             'surname'=>'required',
             'birth_date'=>'required',
             'address'=>'required',
-            'phone'=>'required',
-            'nin'=>'required',
+            'phone'=>'required'
             
         ]);
 
