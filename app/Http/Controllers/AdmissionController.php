@@ -108,8 +108,8 @@ class AdmissionController extends Controller
 			$program_fee_amount = $program_fee->amount_in_tzs;
 			$other_fee_amount = $other_fees_tzs;
 		}else{
-			$program_fee_amount = $program_fee->amount_in_usd;
-			$other_fee_amount = $other_fees_usd;
+			$program_fee_amount = $program_fee->amount_in_usd*$usd_currency->factor;
+			$other_fee_amount = $other_fees_usd*$usd_currency->factor;
 		}
     	$data = [
            'applicant'=>$applicant,
