@@ -114,7 +114,7 @@ class SendAdmissionLetter implements ShouldQueue
                }
 
                $students_union_fee = FeeAmount::where('study_academic_year_id',$study_academic_year->id)->whereHas('feeItem',function($query){
-                   $query->where('name','LIKE','%MNMASO%')->orWhere('name','LIKE','%Student Organization%');
+                   $query->where('name','LIKE','%MNMASO%')->orWhere('name','LIKE','%Student Organization%')->orWhere('name','LIKE','%MASO%');
                })->first();
 
                if(!$students_union_fee){
