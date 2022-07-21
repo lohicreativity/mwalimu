@@ -2300,7 +2300,7 @@ class ApplicationController extends Controller
      */
     public function updateHostelStatus(Request $request)
     {
-        $applicants = Applicant::where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$request->get('program_level_id'))->where('hostel_status',1)->get();
+        $applicants = Applicant::where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$request->get('program_level_id'))->where('hostel_status','!=',0)->get();
 
         foreach($applicants as $applicant){
             if($request->get('app_'.$applicant->id) == $applicant->id){
@@ -2309,12 +2309,11 @@ class ApplicationController extends Controller
 					$app->hostel_available_status = 1;
 					$app->save();
 				}
-            }
-			/*else{
+            }else{
                 $app = Applicant::find($applicant->id);
                 $app->hostel_available_status = 0;
                 $app->save();
-            }*/
+            }
         }
 
         return redirect()->back()->with('message','Insurance status updated successfully');
