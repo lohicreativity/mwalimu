@@ -105,16 +105,16 @@
                          <th>Applicant</th>
                          <th>Gender</th>
                          <th>Programme</th>
-                         <th>Location</th>
+                         <th>Category</th>
                          <th>Status</th>
-                         <th>Verification</th>
+                         <th>Allocate</th>
                        </tr>
                      </thead>
                      <tbody>
                        @foreach($applicants as $applicant)
                        <tr>
                          <td>{{ $applicant->first_name }} {{ $applicant->middle_name }} {{ $applicant->surname }}</td>
-                         <td>@if($applicant->hostel_status == 1) Yes @else No @endif</td>
+                         <td>{{ $applicant->gender }}</td>
                          <td>{{ $applicant->selections[0]->campusProgram->program->name }}</td>
                          <td>
                              @if($applicant->hostel_status === 1)
@@ -129,9 +129,11 @@
                          </td>
                          <td>
                              @if($applicant->hostel_available_status === 1)
-                                AVAILABLE
+                                Allocated
                              @elseif($applicant->hostel_available_status === 0)
-                                NOT AVAILABLE
+                                Not Allocated
+							 @else
+								Pending
                              @endif
                          </td>
                          <td>
