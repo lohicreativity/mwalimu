@@ -7,6 +7,7 @@ use App\Domain\Academic\Models\Program;
 use App\Domain\Academic\Models\Department;
 use App\Domain\Academic\Models\CampusProgram;
 use App\Domain\Academic\Models\Award;
+use App\Domain\Application\Models\ApplicantProgramSelection;
 use App\Domain\Settings\Models\NTALevel;
 use App\Domain\Academic\Actions\ProgramAction;
 use App\Models\User;
@@ -118,8 +119,13 @@ class ProgramController extends Controller
     {
         try{
             $program = Program::findOrFail($id);
-            $program->delete();
-			
+            
+			if(ApplicantProgramSelection::whereHas('campusProgram',function($query) use ($program){
+				  $query->where('program_id',$program->id);
+			})->count() != 0){
+				return redirect()->back()->with('error','Campus program cannot be deleted because it has applicants progromme selections');
+			}
+			$program->delete();
 			CampusProgram::where('program_id',$program->id)->delete();
             return redirect()->back()->with('message','Program deleted successfully');
         }catch(Exception $e){
