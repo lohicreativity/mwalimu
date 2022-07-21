@@ -2395,10 +2395,27 @@ class ApplicationController extends Controller
 
         $callback = function() use ($list) 
               {
+				  if($list->hostel_available_status === 1){
+                             $status =   'Allocated';
+			      }elseif($list->hostel_available_status === 0){
+                            $status =    'Not Allocated';
+				  }else{
+							$status =	'Pending';
+				  }
+				  
+				  if($list->hostel_status === 1)
+                         $category =  'On Campus';
+			      }elseif($list->hostel_status === 2){
+                           $category =     'Off Campus';
+			      }elseif($list->hostel_status == 3){
+                           $category =     'Any';
+			      }else{
+                            $category =    'None';
+			      }
                   $file_handle = fopen('php://output', 'w');
-                  fputcsv($file_handle,['Index Number','First Name','Middle Name','Surname','Gender','Programme','Status']);
+                  fputcsv($file_handle,['Index Number','First Name','Middle Name','Surname','Gender','Programme','Category','Status']);
                   foreach ($list as $row) { 
-                      fputcsv($file_handle, [$row->index_number,$row->first_name,$row->middle_name,$row->surname,$row->gender == 'M'? 'Male' : 'Female', $row->selections[0]->campusProgram->program->name,$row->hostel_status == 1? 'Yes' : 'No']);
+                      fputcsv($file_handle, [$row->index_number,$row->first_name,$row->middle_name,$row->surname,$row->gender == 'M'? 'Male' : 'Female', $row->selections[0]->campusProgram->program->name,$category,$status]);
                   }
                   fclose($file_handle);
               };
