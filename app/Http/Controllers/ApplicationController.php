@@ -2364,13 +2364,17 @@ class ApplicationController extends Controller
                $query->where('status','SELECTED');
            })->with(['selections'=>function($query){
                $query->where('status','SELECTED');
-           },'selections.campusProgram.program'])->where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$request->get('program_level_id'))->where('hostel_status',1)->where(function($query) use($request){
+           },'selections.campusProgram.program'])->where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$request->get('program_level_id'))->where(function($query){
+			$query->where('hostel_status','!=',0)->orWhereNull('hostel_status');
+		})->where(function($query) use($request){
                   $query->where('first_name','LIKE','%'.$request->get('query').'%')->orWhere('middle_name','LIKE','%'.$request->get('query').'%')->orWhere('surname','LIKE','%'.$request->get('query').'%');
             })->get() : Applicant::whereHas('selections',function($query){
                $query->where('status','SELECTED');
            })->with(['selections'=>function($query){
                $query->where('status','SELECTED');
-           },'selections.campusProgram.program'])->where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$request->get('program_level_id'))->where('hostel_status',1)->get(),
+           },'selections.campusProgram.program'])->where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$request->get('program_level_id'))->where(function($query){
+			$query->where('hostel_status','!=',0)->orWhereNull('hostel_status');
+		})->get(),
            'request'=>$request
         ];
         return view('dashboard.application.hostel-statuses',$data)->withTitle('Applicant Insurance Status');
