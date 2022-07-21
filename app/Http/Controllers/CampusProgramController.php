@@ -140,10 +140,10 @@ class CampusProgramController extends Controller
         try{
             $program = CampusProgram::findOrFail($id);
             if(ProgramModuleAssignment::where('campus_program_id',$program->id)->count() != 0 || Student::where('campus_program_id',$program->id)->count() != 0){
-               return redirect()->back()->with('error','Campus program cannot be deleted because it has program mudule assignments or students');
+               return redirect()->back()->with('error','The programme cannot be deleted because it has program mudule assignments or students');
             }
 			if(ApplicantProgramSelection::where('campus_program_id',$program->id)->count() != 0){
-				return redirect()->back()->with('error','Campus program cannot be deleted because it has applicants progromme selections');
+				return redirect()->back()->with('error','The programme cannot be deleted because it has applicants progromme selections');
 			}
             $program->delete();
             return redirect()->back()->with('message','Campus program deleted successfully');

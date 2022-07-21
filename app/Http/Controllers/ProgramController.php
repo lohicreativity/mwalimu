@@ -123,7 +123,7 @@ class ProgramController extends Controller
 			if(ApplicantProgramSelection::whereHas('campusProgram',function($query) use ($program){
 				  $query->where('program_id',$program->id);
 			})->count() != 0){
-				return redirect()->back()->with('error','Campus program cannot be deleted because it has applicants progromme selections');
+				return redirect()->back()->with('error','The programme cannot be deleted because it has already been used');
 			}
 			$program->delete();
 			CampusProgram::where('program_id',$program->id)->delete();

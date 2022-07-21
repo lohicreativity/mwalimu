@@ -62,8 +62,7 @@
 				  
 				  $regulator_code = [
                      'placeholder'=>'Regulator Code',
-                     'class'=>'form-control',
-                     'required'=>true
+                     'class'=>'form-control'
                   ];
 
                   $description = [
@@ -244,8 +243,7 @@
 									
 									$regulator_code = [
 										 'placeholder'=>'Regulator Code',
-										 'class'=>'form-control',
-										 'required'=>true
+										 'class'=>'form-control'
 									  ];
 
                                     $description = [
@@ -270,6 +268,13 @@
                                      'readonly'=>true,
                                      'required'=>true
                                   ];
+								  
+								  $programDeptIds = [];
+								  foreach($program->departments as $dept){
+									  if($dept->campus_id == $staff->campus_id){
+										  $programDeptIds[] = $dept->id;
+									  }
+								  }
                                 @endphp
 
                                 {!! Form::open(['url'=>'academic/program/update','class'=>'ss-form-processing']) !!}
@@ -298,7 +303,7 @@
                                           <select name="department_id" class="form-control" required>
                                             <option value="">Select Department</option>
                                             @foreach($departments as $department)
-                                            <option value="{{ $department->id }}" @if($department->id == $program->department_id) selected="selected" @endif>{{ $department->name }}</option>
+                                            <option value="{{ $department->id }}" @if(in_array($department->id,$programDeptIds)) selected="selected" @endif>{{ $department->name }}</option>
                                             @endforeach
                                           </select>
                                         </div>
