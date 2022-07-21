@@ -9,6 +9,7 @@ use App\Domain\Academic\Models\StudyAcademicYear;
 use App\Domain\Academic\Models\ProgramModuleAssignment;
 use App\Domain\Registration\Models\Registration;
 use App\Domain\Registration\Models\Student;
+use App\Domain\Application\Models\ApplicantProgramSelection;
 use App\Domain\Settings\Models\Campus;
 use App\Domain\Academic\Models\Program;
 use App\Domain\Academic\Actions\CampusProgramAction;
@@ -140,10 +141,12 @@ class CampusProgramController extends Controller
             $program = CampusProgram::findOrFail($id);
             if(ProgramModuleAssignment::where('campus_program_id',$program->id)->count() != 0 || Student::where('campus_program_id',$program->id)->count() != 0){
                return redirect()->back()->with('error','Campus program cannot be deleted because it has program mudule assignments or students');
-            }else{
-               $program->delete();
-               return redirect()->back()->with('message','Campus program deleted successfully');
             }
+			if(ApplicantProgramSelection::where('campus_program_id',$program->id)->count() != 0){
+				return redirect()->back()->with('error','Campus program cannot be deleted because it has applicants progromme selections');
+			}
+            $program->delete();
+            return redirect()->back()->with('message','Campus program deleted successfully');
         }catch(Exception $e){
             return redirect()->back()->with('error','Unable to get the resource specified in this request');
         }
