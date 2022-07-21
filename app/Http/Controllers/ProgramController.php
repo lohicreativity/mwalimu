@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Domain\Academic\Models\Program;
 use App\Domain\Academic\Models\Department;
+use App\Domain\Academic\Models\CampusProgram;
 use App\Domain\Academic\Models\Award;
 use App\Domain\Settings\Models\NTALevel;
 use App\Domain\Academic\Actions\ProgramAction;
@@ -118,6 +119,8 @@ class ProgramController extends Controller
         try{
             $program = Program::findOrFail($id);
             $program->delete();
+			
+			CampusProgram::where('program_id',$program->id)->delete();
             return redirect()->back()->with('message','Program deleted successfully');
         }catch(Exception $e){
             return redirect()->back()->with('error','Unable to get the resource specified in this request');
