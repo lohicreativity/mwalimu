@@ -2403,7 +2403,7 @@ class ApplicationController extends Controller
 							$status =	'Pending';
 				  }
 				  
-				  if($list->hostel_status === 1)
+				  if($list->hostel_status === 1){
                          $category =  'On Campus';
 			      }elseif($list->hostel_status === 2){
                            $category =     'Off Campus';
