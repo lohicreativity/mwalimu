@@ -2301,7 +2301,7 @@ class ApplicationController extends Controller
     public function updateHostelStatus(Request $request)
     {
         $applicants = Applicant::where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$request->get('program_level_id'))->where('hostel_status','!=',0)->get();
-
+        return $applicants;
         foreach($applicants as $applicant){
             if($request->get('app_'.$applicant->id) == $applicant->id){
 				if($request->get('applicant_'.$applicant->id) == $applicant->id){
