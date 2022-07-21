@@ -2309,11 +2309,12 @@ class ApplicationController extends Controller
 					$app->hostel_available_status = 1;
 					$app->save();
 				}
-            }else{
+            }
+			/*else{
                 $app = Applicant::find($applicant->id);
                 $app->hostel_available_status = 0;
                 $app->save();
-            }
+            }*/
         }
 
         return redirect()->back()->with('message','Insurance status updated successfully');
