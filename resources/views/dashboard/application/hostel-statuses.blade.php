@@ -103,7 +103,7 @@
                      <thead>
                        <tr>
                          <th>Applicant</th>
-                         <th>Gender</th>
+                         <th>Sex</th>
                          <th>Programme</th>
                          <th>Category</th>
                          <th>Status</th>
@@ -142,6 +142,8 @@
                              @else
                                 {!! Form::checkbox('applicant_'.$applicant->id,$applicant->id) !!}
                              @endif
+							 
+							 {!! Form::input('hidden','app_'.$applicant->id,$applicant->id) !!}
                          </td>
                        </tr>
                        @endforeach

@@ -2103,7 +2103,7 @@ class ApplicationController extends Controller
                }
 
                $students_union_fee = FeeAmount::where('study_academic_year_id',$study_academic_year->id)->whereHas('feeItem',function($query){
-                   $query->where('name','LIKE','%MNMASO%')->orWhere('name','LIKE','%Student Organization%');
+                   $query->where('name','LIKE','%MNMASO%')->orWhere('name','LIKE','%Student Organization%')->orWhere('name','LIKE','%MASO%');
                })->first();
 
                if(!$students_union_fee){
@@ -2303,10 +2303,12 @@ class ApplicationController extends Controller
         $applicants = Applicant::where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$request->get('program_level_id'))->where('hostel_status',1)->get();
 
         foreach($applicants as $applicant){
-            if($request->get('applicant_'.$applicant->id) == $applicant->id){
-                $app = Applicant::find($applicant->id);
-                $app->hostel_available_status = 1;
-                $app->save();
+            if($request->get('app_'.$applicant->id) == $applicant->id){
+				if($request->get('app_'.$applicant->id) == $applicant->id){
+					$app = Applicant::find($applicant->id);
+					$app->hostel_available_status = 1;
+					$app->save();
+				}
             }else{
                 $app = Applicant::find($applicant->id);
                 $app->hostel_available_status = 0;
