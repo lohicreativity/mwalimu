@@ -25,7 +25,7 @@ class Program extends Model
      */
     public function departments()
     {
-        return $this->belongsToMany(Department::class,'program_department','program_id','department_id')->withPivot('campus_id');
+        return $this->belongsToMany(Department::class,'program_department','program_id','department_id')->withPivot('campus_id','department_id');
     }
 
     /**
