@@ -70,8 +70,12 @@
                     <tr>
                       <td>{{ $assignment->module->name }} ({{ ucwords(strtolower($assignment->category)) }})</td>
                       <td>{{ $assignment->module->code }}</td>
-                      <td>{{ $assignment->staff->title }} {{ $assignment->staff->first_name }} {{ $assignment->staff->surname }}</td>
-                      <td>{{ $assignment->staff->room }}</td>
+                      <td>
+					      @if(count($assignment->moduleAssignments) != 0)
+						  {{ $assignment->moduleAssignments[0]->staff->title }} {{ $assignment->moduleAssignments[0]->staff->first_name }} {{ $assignment->moduleAssignments[0]->staff->surname }}
+					      @endif
+					  </td>
+                      <td>@if(count($assignment->moduleAssignments) != 0) {{ $assignment->moduleAssignments[0]->staff->room }} @endif</td>
                       
                       <td>
                           @if($assignment->category == 'OPTIONAL')

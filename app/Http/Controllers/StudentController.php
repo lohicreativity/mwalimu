@@ -97,7 +97,7 @@ class StudentController extends Controller
     	$program = CampusProgram::find($student->campus_program_id)->program;
     	$study_academic_year = StudyAcademicYear::with(['moduleAssignments'=>function($query) use($student){
                 $query->where('campus_program_id',$student->campus_program_id)->where('year_of_study',$student->year_of_study);
-            },'moduleAssignments.campusProgram','moduleAssignments.module','moduleAssignments.semester','moduleAssignments.staff','academicYear'])->where('status','ACTIVE')->first();
+            },'moduleAssignments.campusProgram','moduleAssignments.module','moduleAssignments.semester','moduleAssignments.moduleAssignments.staff','academicYear'])->where('status','ACTIVE')->first();
     	if(!$study_academic_year){
     		return redirect()->back()->with('error','No active academic year');
     	}
