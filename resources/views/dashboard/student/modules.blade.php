@@ -58,8 +58,8 @@
                   <tr>
                     <th>Module</th>
                     <th>Code</th>
-                    <th>Type</th>
-                    <th>Category</th>
+                    <th>Staff</th>
+                    <th>Room</th>
                     <th>Actions</th>
                   </tr>
                   </thead>
@@ -68,10 +68,10 @@
                    @foreach($study_academic_year->moduleAssignments as $assignment)
                      @if($semester->id == $assignment->semester_id)
                     <tr>
-                      <td>{{ $assignment->module->name }}</td>
+                      <td>{{ $assignment->module->name }} ({{ ucwords(strtolower($assignment->category)) }})</td>
                       <td>{{ $assignment->module->code }}</td>
-                      <td>{{ $assignment->type }}</td>
-                      <td>{{ $assignment->category }}</td>
+                      <td>{{ $assignment->staff->title }} {{ $assignment->staff->first_name }} {{ $assignment->staff->surname }}</td>
+                      <td>{{ $assignment->staff->room }}</td>
                       
                       <td>
                           @if($assignment->category == 'OPTIONAL')
