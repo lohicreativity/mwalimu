@@ -2377,6 +2377,7 @@ class ApplicationController extends Controller
 		})->get(),
            'request'=>$request
         ];
+		return $data['applicants'];
         return view('dashboard.application.hostel-statuses',$data)->withTitle('Applicant Insurance Status');
     }
 
