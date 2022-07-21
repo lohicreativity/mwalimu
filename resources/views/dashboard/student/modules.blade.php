@@ -60,7 +60,7 @@
                     <th>Code</th>
                     <th>Staff</th>
                     <th>Room</th>
-                    <th>Actions</th>
+                    <th>Category</th>
                   </tr>
                   </thead>
                   <tbody>
@@ -68,7 +68,7 @@
                    @foreach($study_academic_year->moduleAssignments as $assignment)
                      @if($semester->id == $assignment->semester_id)
                     <tr>
-                      <td>{{ $assignment->module->name }} ({{ ucwords(strtolower($assignment->category)) }})</td>
+                      <td><a href="{{ url('academic/module/'.$assignment->module_id.'/download-syllabus') }}">{{ $assignment->module->name }}</a></td>
                       <td>{{ $assignment->module->code }}</td>
                       <td>
 					      @if(count($assignment->moduleAssignments) != 0)
