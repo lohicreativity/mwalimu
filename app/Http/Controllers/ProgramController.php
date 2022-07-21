@@ -8,6 +8,7 @@ use App\Domain\Academic\Models\Department;
 use App\Domain\Academic\Models\CampusProgram;
 use App\Domain\Academic\Models\Award;
 use App\Domain\Application\Models\ApplicantProgramSelection;
+use App\Domain\Application\Models\ApplicationWindow;
 use App\Domain\Settings\Models\NTALevel;
 use App\Domain\Academic\Actions\ProgramAction;
 use App\Models\User;
@@ -121,6 +122,11 @@ class ProgramController extends Controller
             $program = Program::findOrFail($id);
             
 			if(ApplicantProgramSelection::whereHas('campusProgram',function($query) use ($program){
+				  $query->where('program_id',$program->id);
+			})->count() != 0){
+				return redirect()->back()->with('error','The programme cannot be deleted because it has already been used');
+			}
+			if(ApplicationWindow::whereHas('campusPrograms',function($query) use ($program){
 				  $query->where('program_id',$program->id);
 			})->count() != 0){
 				return redirect()->back()->with('error','The programme cannot be deleted because it has already been used');
