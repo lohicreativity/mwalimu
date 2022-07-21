@@ -2365,7 +2365,7 @@ class ApplicationController extends Controller
            })->with(['selections'=>function($query){
                $query->where('status','SELECTED');
            },'selections.campusProgram.program'])->where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$request->get('program_level_id'))->where(function($query){
-			$query->where('hostel_status','!=',0);
+			$query->where('hostel_status',1)->orWhere('hostel_status',2)->orWhere('hostel_status',3);
 		})->where(function($query) use($request){
                   $query->where('first_name','LIKE','%'.$request->get('query').'%')->orWhere('middle_name','LIKE','%'.$request->get('query').'%')->orWhere('surname','LIKE','%'.$request->get('query').'%');
             })->get() : Applicant::whereHas('selections',function($query){
@@ -2373,7 +2373,7 @@ class ApplicationController extends Controller
            })->with(['selections'=>function($query){
                $query->where('status','SELECTED');
            },'selections.campusProgram.program'])->where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$request->get('program_level_id'))->where(function($query){
-			$query->where('hostel_status','!=',0);
+			$query->where('hostel_status',1)->orWhere('hostel_status',2)->orWhere('hostel_status',3);
 		})->get(),
            'request'=>$request
         ];
