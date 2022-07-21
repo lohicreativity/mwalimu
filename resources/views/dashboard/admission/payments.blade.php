@@ -112,7 +112,7 @@
                     @if($hostel_fee)
                     <tr>
                        <td>Hostel Fee</td>
-                       <td>@if($hostel_fee_invoice) {{ number_format($hostel_fee_invoice->amount,0) }} {{ $hostel_fee_invoice->currency }} @endif</td>
+                       <td>@if($hostel_fee_invoice) {{ number_format($hostel_fee_invoice->amount,0) }} {{ $hostel_fee_invoice->currency }} @else @if($hostel_fee_amount) {{ number_format($hostel_fee_amount,2) }}  TZS @endif @endif</td>
                        <td>@if($hostel_fee_invoice) {{ $hostel_fee_invoice->control_no }} @if(!$hostel_fee_invoice->control_no)<a href="#" onclick="window.location.reload();"><i class="fa fa-refresh" ></i> Refresh</a>@endif @endif</td>
                        <td>
                          @if($hostel_fee_invoice)
