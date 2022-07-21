@@ -2304,7 +2304,7 @@ class ApplicationController extends Controller
 
         foreach($applicants as $applicant){
             if($request->get('app_'.$applicant->id) == $applicant->id){
-				if($request->get('app_'.$applicant->id) == $applicant->id){
+				if($request->get('applicant_'.$applicant->id) == $applicant->id){
 					$app = Applicant::find($applicant->id);
 					$app->hostel_available_status = 1;
 					$app->save();
