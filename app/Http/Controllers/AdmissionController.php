@@ -107,11 +107,15 @@ class AdmissionController extends Controller
 		if(str_contains($applicant->nationality,'Tanzania')){
 			$program_fee_amount = $program_fee->amount_in_tzs;
 			$other_fee_amount = $other_fees_tzs;
-			$hostel_fee_amount = $hostel_fee->amount_in_tzs;
+			if(str_contains($applicant->hostel_available_status,1)){
+				$hostel_fee_amount = $hostel_fee->amount_in_tzs;
+			}
 		}else{
 			$program_fee_amount = $program_fee->amount_in_usd*$usd_currency->factor;
 			$other_fee_amount = $other_fees_usd*$usd_currency->factor;
-			$hostel_fee_amount = $hostel_fee->amount_in_usd*$usd_currency->factor;
+			if(str_contains($applicant->hostel_available_status,1)){
+				$hostel_fee_amount = $hostel_fee->amount_in_usd*$usd_currency->factor;
+			}
 		}
     	$data = [
            'applicant'=>$applicant,
