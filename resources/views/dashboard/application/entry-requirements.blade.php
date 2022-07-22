@@ -401,6 +401,12 @@
                    'placeholder'=>'Max Capacity',
                    'class'=>'form-control'
                 ];
+				
+				$subsidiary_pass_subjects = [
+                   'placeholder'=>'Subsidiary Pass Subjects',
+                   'class'=>'form-control',
+                   'required'=>true
+                ];
              @endphp
 
                {!! Form::open(['url'=>'application/entry-requirement/store','class'=>'ss-form-processing']) !!}
