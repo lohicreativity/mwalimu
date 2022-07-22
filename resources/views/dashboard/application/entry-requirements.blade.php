@@ -300,7 +300,7 @@
               {!! Form::close() !!}
             </div><!-- /tabpane -->
             <div class="tab-pane" id="ss-diploma" role="tabpanel">
-              @php
+               @php
                 $equivalent_gpa = [
                    'placeholder'=>'Equivalent GPA',
                    'class'=>'form-control',
@@ -331,11 +331,6 @@
                    'readonly'=>true
                 ];
 
-                $min_pass_subjects = [
-                   'placeholder'=>'Min Pass Subjects',
-                   'class'=>'form-control'
-                ];
-
                 $open_equivalent_average_grade = [
                    'placeholder'=>'Open Equivalent Average Grade',
                    'class'=>'form-control',
@@ -351,28 +346,35 @@
                 $principle_pass_subjects = [
                    'placeholder'=>'Principle Pass Subjects',
                    'class'=>'form-control',
-                   'readonly'=>true
+                   'required'=>true
+                ];
+
+                $subsidiary_pass_subjects = [
+                   'placeholder'=>'Subsidiary Pass Subjects',
+                   'class'=>'form-control',
+                   'required'=>true
                 ];
 
                 $pass_subjects = [
                    'placeholder'=>'Pass Subjects',
-                   'class'=>'form-control'
+                   'class'=>'form-control',
+                   'required'=>true
                 ];
 
                 $pass_grade = [
                    'placeholder'=>'Pass Grade',
-                   'class'=>'form-control'
+                   'class'=>'form-control',
+                   'required'=>true
                 ];
 
-                $nva_level = [
-                   'placeholder'=>'NVA Level',
+                $award_level = [
+                   'placeholder'=>'Award Level',
                    'class'=>'form-control'
                 ];
 
                 $award_division = [
                    'placeholder'=>'Award Division',
-                   'class'=>'form-control',
-                   'readonly'=>true
+                   'class'=>'form-control'
                 ];
 
                 $exclude_subjects = [
@@ -387,25 +389,17 @@
 
                 $subsidiary_subjects = [
                    'placeholder'=>'Subsidiary Subjects',
-                   'class'=>'form-control',
-                   'readonly'=>true
+                   'class'=>'form-control'
                 ];
 
                 $principle_subjects = [
                    'placeholder'=>'Principle Subjects',
-                   'class'=>'form-control',
-                   'readonly'=>true
+                   'class'=>'form-control'
                 ];
 
                 $max_capacity = [
                    'placeholder'=>'Max Capacity',
                    'class'=>'form-control'
-                ];
-				
-				$subsidiary_pass_subjects = [
-                   'placeholder'=>'Subsidiary Pass Subjects',
-                   'class'=>'form-control',
-                   'required'=>true
                 ];
              @endphp
 
