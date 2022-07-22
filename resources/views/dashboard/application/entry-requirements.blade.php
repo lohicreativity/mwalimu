@@ -610,7 +610,7 @@
                 </div>
               {!! Form::close() !!}
             </div><!-- /tabpane -->
-            <div class="tab-pane" id="ss-degree" role="tabpanel">
+            <div class="tab-pane active" id="ss-degree" role="tabpanel">
                @php
                 $equivalent_gpa = [
                    'placeholder'=>'Equivalent GPA',
