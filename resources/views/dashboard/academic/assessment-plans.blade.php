@@ -178,7 +178,7 @@
                                        <p id="ss-confirmation-text">Are you sure you want to reset this assessment plan?</p>
                                        <div class="ss-form-controls">
                                          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                                         <a href="{{ url('academic/assessment-plan/'.$module_assignment->id.'/reset') }}" class="btn btn-danger">Delete</a>
+                                         <a href="{{ url('academic/assessment-plan/'.$module_assignment->id.'/reset') }}" class="btn btn-danger">Reset</a>
                                          </div><!-- end of ss-form-controls -->
                                       </div><!-- end of ss-confirmation-container -->
                                   </div><!-- end of col-md-12 -->
