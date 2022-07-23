@@ -117,7 +117,7 @@
                          <td>@if(count($applicant->insurances) != 0) {{ $applicant->insurances[0]->insurance_name }} @endif</td>
                          <td>@if(count($applicant->insurances) != 0) {{ $applicant->insurances[0]->membership_number }} @endif</td>
                          <td>@if(count($applicant->insurances) != 0) {{ $applicant->insurances[0]->expire_date }} @endif</td>
-                         <td>@if(count($applicant->insurances) != 0) {{ @if($applicant->insurances[0]->verification_status == '') {{Pending}}@endif }} @endif</td>
+                         <td>@if(count($applicant->insurances) != 0) @if($applicant->insurances[0]->verification_status == '') {{Pending}} @endif  @endif</td>
                          <td>
                              @if(count($applicant->insurances) != 0) 
                                  @if($applicant->insurances[0]->verification_status == 'VERIFIED')
