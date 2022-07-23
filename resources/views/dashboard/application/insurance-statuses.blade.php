@@ -118,7 +118,7 @@
                          <td>@if(count($applicant->insurances) != 0) {{ $applicant->insurances[0]->membership_number }} @endif</td>
                          <td>@if(count($applicant->insurances) != 0) {{ $applicant->insurances[0]->expire_date }} @endif</td>
                          <td>@if(count($applicant->insurances) != 0) 
-								@if($applicant->insurances[0]->verification_status === 'NULL') Pending 
+								@if($applicant->insurances[0]->verification_status === 'KUKU') Pending 
 							    
 								@endif 
 							 @endif</td>
