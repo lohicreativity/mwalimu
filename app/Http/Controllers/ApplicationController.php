@@ -1311,6 +1311,8 @@ class ApplicationController extends Controller
 				$app = Applicant::find($applicant->id);
 				$app->status = 'ADMITTED';
 				$app->save();
+				
+				ExternalTransfer::where('applicant_id',$applicant->id)->update(['status'=>'ELIGIBLE']);
 				}
 			}
         }
@@ -4404,7 +4406,7 @@ class ApplicationController extends Controller
      */
     public function submitExternalTransfer(Request $request)
     {
-		$transfers = ExternalTransfer::where('status','PENDING')->get();
+		$transfers = ExternalTransfer::where('status','ELIGIBLE')->get();
 		foreach($transfers as $trans){
 			if($request->get('transfer_'.$trans->id) == $trans->id){
         $applicant = Applicant::with(['selections.campusProgram','nectaResultDetails','nacteResultDetails'])->find($trans->applicant_id);
