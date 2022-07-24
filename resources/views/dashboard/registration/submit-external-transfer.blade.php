@@ -85,65 +85,8 @@
                      </select>
 					</div>
                   </div>
-                  <div class="ss-form-actions">
-                   <button type="submit" class="btn btn-primary">{{ __('Register Applicant') }}</button>
-                  </div>
-
-                 {!! Form::close() !!}
-              </div>
-            </div>
-            <!-- /.card -->
-
-            <div class="card">
-              <div class="card-header">
-                <h3 class="card-title">Search for Applicant</h3>
-              </div>
-              <!-- /.card-header -->
-              <div class="card-body">
-                 @php
-                     $index_number = [
-                         'class'=>'form-control',
-                         'placeholder'=>'Index number',
-                         'required'=>true
-                     ];
-                 @endphp 
-                 {!! Form::open(['url'=>'registration/external-transfer','class'=>'ss-form-processing','method'=>'GET']) !!}
-                   
-                  <div class="row">
-                  <div class="form-group col-6">
-                    {!! Form::label('','Enter applicant index number') !!}
-                    {!! Form::text('index_number',null,$index_number) !!}
-                  </div>
-                  </div>
-                  <div class="ss-form-actions">
-                   <button type="submit" class="btn btn-primary">{{ __('Search') }}</button>
-                  </div>
-
-                 {!! Form::close() !!}
-              </div>
-            </div>
-            <!-- /.card -->
-
-
-            @if($applicant)
-              <div class="card">
-              <div class="card-header">
-                <h3 class="card-title">Submit External Transfer</h3>
-              </div>
-              <!-- /.card-header -->
-              {!! Form::open(['url'=>'registration/submit-external-transfer','class'=>'ss-form-processing']) !!}
-              <div class="card-body">
-                 <table class="table table-bordered">
-                    <tr>
-                       <td>Student:</td>
-                       <td>{{ $applicant->first_name }} {{ $applicant->middle_name }} {{ $applicant->surname }}</td>
-                    </tr>
-                    <tr>
-                       <td>Index Number:</td>
-                       <td>{{ $applicant->index_number }}</td>
-                    </tr>
-                 </table><br>
-                 <div class="form-group ss-margin-top">
+				  <div class="row">
+				   <div class="form-group ss-margin-top">
                    {!! Form::label('','Enter previous programme code') !!}
                    {!! Form::text('program_code',null,['class'=>'form-control','placeholder'=>'Programme code','required'=>true]) !!}
                  </div>  
@@ -156,14 +99,18 @@
                       @endforeach
                     </select>
                  </div> 
-                 {!! Form::input('hidden','applicant_id',$applicant->id) !!}
               </div>
-              <div class="card-footer">
-                  <button type="submit" class="btn btn-primary">{{ __('Submit External Transfer') }}</button>
+                  <div class="ss-form-actions">
+                   <button type="submit" class="btn btn-primary">{{ __('Register Applicant') }}</button>
+                  </div>
+
+                 {!! Form::close() !!}
               </div>
-              {!! Form::close() !!}
             </div>
-            @else
+            <!-- /.card -->
+
+
+
             @if(count($transfers) != 0)
             <div class="card">
               <div class="card-header">
@@ -201,7 +148,6 @@
                    </div> 
               </div>
             </div>
-            @endif
             @endif
 
           </div>

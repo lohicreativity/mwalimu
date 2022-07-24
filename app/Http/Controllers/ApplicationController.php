@@ -3729,8 +3729,73 @@ class ApplicationController extends Controller
 		$applicant->is_transfered = 1;
         $applicant->save();
 		 }
-		 
 		 ApplicantProgramSelection::where('applicant_id',$applicant->id)->delete();
+		 
+		  $applicant = Applicant::with(['selections.campusProgram','nectaResultDetails','nacteResultDetails'])->find($applicant->id);
+
+        $selection = new ApplicantProgramSelection;
+		$selection->applicant_id = $applicant->id;
+		$selection->campus_program_id = $request->get('campus_program_id');	
+        $selection->order = 1;
+        $selection->status = 'SELECTED';
+        $selection->save();		
+		
+		$prog = CampusProgram::with('program')->find($request->get('campus_program_id'));
+		$admitted_program = $prog;
+		$admitted_program_code = $prog->program->code;
+
+        $f6indexno = null;
+        foreach($student->applicant->nectaResultDetails as $detail){
+            if($detail->exam_id == 2){
+               $f6indexno = $detail->index_number;
+               break;
+            }
+        }
+		
+		if($f6indexno == null){
+			foreach($student->applicant->nacteResultDetails as $detail){
+               $f6indexno = $detail->avn;
+               break;
+            }
+		}
+        
+        $url = 'http://41.59.90.200/admission/submitInternalTransfers';
+        $xml_request = '<?xml version="1.0" encoding="UTF-8"?>
+                        <Request>
+                        <UsernameToken>
+                        <Username>'.config('constants.TCU_USERNAME').'</Username>
+                        <SessionToken>'.config('constants.TCU_TOKEN').'</SessionToken>
+                        </UsernameToken>
+                        <RequestParameters>
+                         <f4indexno>'.$applicant->index_number.'</f4indexno>
+                         <f6indexno>'.$f6indexno.'</f6indexno>
+                         <CurrentProgrammeCode>'.$admitted_program_code.'</CurrentProgrammeCode>
+                         <PreviousProgrammeCode>'.$request->get('program_code').'</PreviousProgrammeCode>
+                        </RequestParameters>
+                        </Request>';
+        $xml_response=simplexml_load_string($this->sendXmlOverPost($url,$xml_request));
+        $json = json_encode($xml_response);
+        $array = json_decode($json,TRUE);
+
+        
+
+
+        if($array['Response']['ResponseParameters']['StatusCode'] == 200){
+            $transfer = new ExternalTransfer;
+            $transfer->applicant_id = $student->id;
+            $transfer->new_campus_program_id = $admitted_program->id;
+            $transfer->previous_program = $request->get('program_code');
+            $transfer->transfered_by_user_id = Auth::user()->id;
+            $transfer->save();
+
+            $applicant->confirmation_status = 'TRANSFERED';
+            $applicant->save();
+            return redirect()->to('registration/external-transfer')->with('message','Transfer completed successfully');
+        }else{
+            return redirect()->back()->with('error','Unable to complete transfer. '.$array['Response']['ResponseParameters']['StatusDescription']);
+        }
+		 
+		 
 		 return redirect()->back()->with('message','Applicant account created successfully');
 		 
 	 }
@@ -3741,56 +3806,22 @@ class ApplicationController extends Controller
     public function showExternalTransfer(Request $request)
     {
         $staff = User::find(Auth::user()->id)->staff;
-        $applicant = Applicant::where('campus_id',$staff->campus_id)->with(['selections'=>function($query){
-              $query->where('status','SELECTED');
-        },'selections.campusProgram.program','applicationWindow','programLevel','nectaResultDetails.results','nacteResultDetails.results','outResultDetails.results'])->where('index_number',$request->get('index_number'))->first();
 		
-        if(!$applicant && $request->get('index_number')){
-            return redirect()->back()->with('error','Applicant does not belong to this campus');
-        }
+		$window = ApplicationWindow::where('status','ACTIVE')->where('campus_id',$staff->campus_id)->first();
 		
-		if($applicant){
-		$window = $applicant? $applicant->applicationWindow : null;
-		
-		$campus_programs = $window? $window->campusPrograms()->whereHas('program',function($query) use($applicant){
-                   $query->where('award_id',$applicant->program_level_id);
+		$campus_programs = $window? $window->campusPrograms()->whereHas('program.award',function($query) use($applicant){
+                   $query->where('name','LIKE','%Degree%');
            })->whereHas('entryRequirements',function($query) use($window){
                    $query->where('application_window_id',$window->id);
            })->with(['program','campus','entryRequirements'=>function($query) use($window){
                 $query->where('application_window_id',$window->id);
-           }])->where('campus_id',$applicant->campus_id)->get() : [];
-        
-
-        $award = $applicant? $applicant->programLevel : null;
-
-        }
-        
-        // if($applicant){
-        //     if($applicant->multiple_admissions == 1 && $applicant->confirmation_status != 'CONFIRMED'){
-        //          return redirect()->back()->with('error','The applicant has multiple admissions and has not yet confirmed');
-        //     }
-        //     if($applicant->multiple_admissions == 0 && $applicant->confirmation_status == 'CANCELLED'){
-        //          return redirect()->back()->with('error','The applicant has cancelled the admission');
-        //     }
-        //     if($applicant->multiple_admissions == 0 && $applicant->confirmation_status == 'TRANSFERED'){
-        //          return redirect()->back()->with('error','The applicant has already been transfered');
-        //     }
-        //     $admission_status = null;
-        //     foreach($applicant->selections as $selection){
-        //         if($selection->status == 'SELECTED'){
-        //             $admission_status = true;
-        //         }
-        //     }
-        //     if(!$admission_status){
-        //         return redirect()->back()->with('error','Applicant has not been admitted');
-        //     }
-        // }
+           }])->where('campus_id',$staff->campus_id)->get() : [];
+       
         $data = [
-            'applicant'=>$applicant,
             'transfers'=>ExternalTransfer::whereHas('applicant',function($query) use($staff){
                   $query->where('campus_id',$staff->campus_id);
             })->with(['applicant.user','previousProgram.program','user.staff'])->paginate(20),
-			'campus_programs'=>$applicant? $campus_programs : [],
+			'campus_programs'=>$campus_programs,
             'staff'=>$staff
         ];
         return view('dashboard.registration.submit-external-transfer',$data)->withTitle('External Transfer');
