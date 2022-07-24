@@ -1301,7 +1301,7 @@ class ApplicationController extends Controller
             }
 			
 			if(count($programs) != 0){
-				//if($programs[0]->id == $applicant->selections[0]->campus_program_id){
+				if($programs[0]->id == $applicant->selections[0]->campus_program_id){
 				   $selection = ApplicantProgramSelection::find($applicant->selections[0]->id);
 				   $selection->status = 'SELECTED';
 				   $selection->save();
@@ -1311,8 +1311,8 @@ class ApplicationController extends Controller
 				   $app->save();
 				
 				   ExternalTransfer::where('applicant_id',$applicant->id)->update(['status'=>'ELIGIBLE']);
-				//}
-			}else{
+				}
+			}else{ 
 				ExternalTransfer::where('applicant_id',$applicant->id)->update(['status'=>'NOT ELIGIBLE']);
 			}
         }
