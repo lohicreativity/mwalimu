@@ -17,9 +17,9 @@ class ExternalTransfer extends Model
     /**
      * Establish one to many relationship with students
      */
-    public function student()
+    public function applicant()
     {
-    	return $this->belongsTo(Student::class,'student_id');
+    	return $this->belongsTo(Applicant::class,'applicant_id');
     }
 
     /**

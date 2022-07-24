@@ -138,7 +138,7 @@
             <!-- /.card -->
 
 
-            @if($student)
+            @if($applicant)
               <div class="card">
               <div class="card-header">
                 <h3 class="card-title">Submit External Transfer</h3>
