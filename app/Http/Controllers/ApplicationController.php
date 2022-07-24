@@ -3296,7 +3296,7 @@ class ApplicationController extends Controller
             return redirect()->back()->with('error','Applicant does not belong to this campus');
         }
 		
-		$window = $applicant? $applicant->applicationWindow null;
+		$window = $applicant? $applicant->applicationWindow : null;
 		
 		$campus_programs = $window? $window->campusPrograms()->whereHas('program',function($query) use($applicant){
                    $query->where('award_id',$applicant->program_level_id);
