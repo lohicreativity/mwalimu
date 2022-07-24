@@ -101,7 +101,11 @@
                 <div class="card-body ss-center">
                   <div class="row">
                     <div class="col-12">
+					@if($applicant->is_transfered != 1)
                     <h3 class="ss-color-danger"><i class="fa fa-check-circle"></i> We are sorry to inform you that you have not been selected for this academic year.</h3>
+				    @else
+					<h3 class="ss-color-danger"><i class="fa fa-check-circle"></i> We are sorry to inform you that you have not been transfered successfully for this academic year.</h3>
+					@endif
                     </div>
                   </div>
                 </div>
