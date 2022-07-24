@@ -19,24 +19,28 @@
                 </a>
               </li>
               @if($applicant->is_tamisemi != 1)
+				  @if($applicant->is_transfered != 1)
               <li class="nav-item">
                 <a @if(($applicant->is_tcu_verified != 1 && str_contains($applicant->programLevel->name,'Degree')) || $applicant->basic_info_complete_status != 1) disabled="disabled" @else href="{{ url('application/payments') }}" @endif class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Payments @if($applicant->payment_complete_status == 1) <i class="fa fa-check"></i> @endif</p>
                 </a>
               </li>
+			     @endif
               <li class="nav-item">
                 <a @if($applicant->is_tcu_verified != 1 && str_contains($applicant->programLevel->name,'Degree')) disabled="disabled" @else href="{{ url('application/results') }}" @endif class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Request Results @if($applicant->results_complete_status == 1) <i class="fa fa-check"></i> @endif</p>
                 </a>
               </li>
+			   @if($applicant->is_transfered != 1)
               <li class="nav-item">
                 <a @if($applicant->is_tcu_verified != 1 && str_contains($applicant->programLevel->name,'Degree')) disabled="disabled" @else href="{{ url('application/select-programs') }}" @endif class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Select Programmes @if($applicant->programs_complete_status == 1) <i class="fa fa-check"></i> @endif</p>
                 </a>
               </li>
+			  @endif
               @if($applicant->avn_no_results === 1 || $applicant->teacher_certificate_status === 1)
               <li class="nav-item">
                 <a href="{{ url('application/upload-avn-documents') }}" class="nav-link">
