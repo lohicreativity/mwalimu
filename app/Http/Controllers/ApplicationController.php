@@ -3822,7 +3822,7 @@ class ApplicationController extends Controller
 	 {
 		 $transfers = InternalTransfer::whereHas('student.applicant.programLevel',function($query){
 			 $query->where('name','LIKE','%Degree%');
-		 })->with(['student.applicant.selections.campusProgram.program','student.applicant.nectaResultDetails','student.applicant.nacteResultDetails','campusProgram'])->where('status','PENDING')->get();
+		 })->with(['student.applicant.selections.campusProgram.program','student.applicant.nectaResultDetails','student.applicant.nacteResultDetails','previousProgram'])->where('status','PENDING')->get();
 		 foreach($transfers as $transfer){
 			  $admitted_program_code = null;
         foreach($transfer->student->applicant->selections as $selection){
@@ -3847,7 +3847,7 @@ class ApplicationController extends Controller
         }
 		}
 
-        $transfer_program_code = $transfer->campusProgram->regulator_code;
+        $transfer_program_code = $transfer->previousProgram->regulator_code;
         
         $url = 'http://41.59.90.200/admission/submitInternalTransfers';
         $xml_request = '<?xml version="1.0" encoding="UTF-8"?>
