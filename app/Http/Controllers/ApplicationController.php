@@ -3867,9 +3867,11 @@ class ApplicationController extends Controller
         $json = json_encode($xml_response);
         $array = json_decode($json,TRUE);
 		
+		if($array['Response']['ResponseParameters']['StatusCode'] == 200){
 		   $trans = InternalTransfer::find($transfer->id);
 		   $trans->status = 'TRANSFERED';
 		   $trans->save();
+		}
 		
 		 }
 		 return redirect()->back()->with('message','Transfers submitted successfully');
