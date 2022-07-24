@@ -3278,6 +3278,10 @@ class ApplicationController extends Controller
     {
 		DB::beginTransaction();
         $student = Student::with(['applicant.selections.campusProgram','applicant.nectaResultDetails.results','applicant.nacteResultDetails.results','applicant.programLevel','applicant.campus','applicant.nextOfKin','applicant.intake'])->find($request->get('student_id'));
+		
+		if(InternalTransfer::where('student_id',$student->id)->count() != 0){
+			return redirect()->back()->with('error','Student already transfered');
+		}
 
         $award = $student->applicant->programLevel;
         $applicant = $student->applicant;
@@ -3869,7 +3873,7 @@ class ApplicationController extends Controller
 		
 		if($array['Response']['ResponseParameters']['StatusCode'] == 200){
 		   $trans = InternalTransfer::find($transfer->id);
-		   $trans->status = 'TRANSFERED';
+		   $trans->status = 'SUBMITTED';
 		   $trans->save();
 		}
 		
