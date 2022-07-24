@@ -3809,7 +3809,7 @@ class ApplicationController extends Controller
 		
 		$window = ApplicationWindow::where('status','ACTIVE')->where('campus_id',$staff->campus_id)->first();
 		
-		$campus_programs = $window? $window->campusPrograms()->whereHas('program.award',function($query) use($applicant){
+		$campus_programs = $window? $window->campusPrograms()->whereHas('program.award',function($query){
                    $query->where('name','LIKE','%Degree%');
            })->whereHas('entryRequirements',function($query) use($window){
                    $query->where('application_window_id',$window->id);
