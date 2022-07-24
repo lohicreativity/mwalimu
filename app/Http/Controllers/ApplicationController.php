@@ -1302,7 +1302,8 @@ class ApplicationController extends Controller
                 }
             }
 			
-			if(count($programs) == 1){
+			if(count($programs) != 0){
+				if($programs[0]->id == $applicant->selections[0]->campus_program_id){
 				$selection = ApplicantProgramSelection::find($applicant->selections[0]->id);
 				$selection->status = 'SELECTED';
 				$selection->save();
@@ -1310,6 +1311,7 @@ class ApplicationController extends Controller
 				$app = Applicant::find($applicant->id);
 				$app->status = 'ADMITTED';
 				$app->save();
+				}
 			}
         }
 	   
@@ -3738,7 +3740,7 @@ class ApplicationController extends Controller
 		$selection->application_window_id = $application_window->id;
 		$selection->campus_program_id = $request->get('campus_program_id');	
         $selection->order = 1;
-        $selection->status = 'SELECTED';
+        $selection->status = 'PENDING';
         $selection->save();		
 		
 		$prog = CampusProgram::with('program')->find($request->get('campus_program_id'));
