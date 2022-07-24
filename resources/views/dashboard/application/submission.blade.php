@@ -37,7 +37,7 @@
     <section class="content">
       <div class="container-fluid">
         <!-- Small boxes (Stat box) -->
-          @if($applicant->payment_complete_status == 0)
+          @if($applicant->payment_complete_status == 0 && $applicant->is_transfered != 1)
             <div class="alert alert-warning">Payment section not completed</div>
             @else
           <div class="row">
