@@ -3243,7 +3243,6 @@ class ApplicationController extends Controller
 		 $award = Award::where('name','LIKE','%Degree%')->first();
 		 if($app = Applicant::where('index_number',$request->get('index_number'))->where('campus_id',$staff->campus_id)->first()){
 			 $applicant = $app;
-			 $applicant->status = 'ADMITTED';
 			 $applicant->is_transfered = 1;
 			 $applicant->save();
 			 
@@ -3269,7 +3268,6 @@ class ApplicationController extends Controller
         $applicant->program_level_id = $award->id;
         $applicant->intake_id = $application_window->intake_id;
 		$applicant->application_window_id = $application_window->id;
-		$applicant->status = 'ADMITTED';
 		$applicant->is_transfered = 1;
         $applicant->save();
 		 }
