@@ -835,9 +835,11 @@ class ApplicationController extends Controller
        if($applicant->next_of_kin_complete_status == 0){
           return redirect()->back()->with('error','Next of kin section not completed');
        }
+	   if($applicant->is_transfered != 1){
        if($applicant->payment_complete_status == 0){
           return redirect()->back()->with('error','Payment section not completed');
        }
+	   }
        if($applicant->results_complete_status == 0){
           return redirect()->back()->with('error','Results section not completed');
        }
@@ -3700,7 +3702,6 @@ class ApplicationController extends Controller
 		 if($app = Applicant::where('index_number',$request->get('index_number'))->where('campus_id',$staff->campus_id)->first()){
 			 $applicant = $app;
 			 $applicant->is_transfered = 1;
-			 $applicant->payment_complete_status = 1;
 			 $applicant->save();
 			 
 			 $user = User::where('username',$request->get('index_number'))->first();
@@ -3725,7 +3726,6 @@ class ApplicationController extends Controller
         $applicant->program_level_id = $award->id;
         $applicant->intake_id = $application_window->intake_id;
 		$applicant->application_window_id = $application_window->id;
-		$applicant->payment_complete_status = 1;
 		$applicant->is_transfered = 1;
         $applicant->save();
 		 }
