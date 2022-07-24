@@ -25,9 +25,9 @@ class ExternalTransfer extends Model
     /**
      * Establish one to many relationship with applicants
      */
-    public function previousProgram()
+    public function newProgram()
     {
-    	return $this->belongsTo(CampusProgram::class,'previous_campus_program_id');
+    	return $this->belongsTo(CampusProgram::class,'new_campus_program_id');
     }
 
     /**

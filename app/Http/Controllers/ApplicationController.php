@@ -3232,6 +3232,55 @@ class ApplicationController extends Controller
         ];
         return view('dashboard.registration.submit-internal-transfer',$data)->withTitle('Internal Transfer');
     }
+	
+	/**
+	 * Register external transfer
+	 */
+	 public function registerExternalTransfer(Request $request)
+	 {
+		 $staff = User::find(Auth::user()->id)->staff;
+		 $application_window = ApplicationWindow::where('campus_id',$staff->campus_id)->where('status','ACTIVE')->latest()->first();
+		 $award = Award::where('name','LIKE','%Degree%')->first();
+		 if($app = Applicant::where('index_number',$reqest->get('index_number')->where('campus_id',$staff->campus_id)->first())->){
+			 $applicant = $app;
+			 $applicant->status = 'ADMITTED';
+			 $applicant->is_transfered = 1;
+			 $applicant->save();
+			 
+			 $user = User::where('username',$request->get('index_number'))->first();
+		 }else{
+			 if($usr = User::where('username',$request->get('index_number'))->first()){
+            $user = $usr;
+        }else{
+            $user = new User;
+            $user->username = $request->get('index_number');
+            $user->password = Hash::make('password');
+            $user->save();
+        }
+
+        $role = Role::where('name','applicant')->first();
+        $user->roles()->sync([$role->id]);
+
+        $applicant = new Applicant;
+        $applicant->first_name = $request->get('first_name');
+        $applicant->middle_name = $request->get('middle_name');
+        $applicant->surname = $request->get('surname');
+        $applicant->user_id = $user->id;
+        $applicant->campus_id = $staff->campus_id;
+        $applicant->index_number = strtoupper($request->get('index_number'));
+        $applicant->entry_mode = $request->get('entry_mode');
+        $applicant->program_level_id = $award->id;
+        $applicant->intake_id = $application_window->intake_id;
+		$applicant->application_window_id = $application_window->id;
+		$applicant->status = 'ADMITTED';
+		$applicant->is_transfered = 1;
+        $applicant->save();
+		 }
+		 
+		 ApplicantProgramSelection::where('applicant_id',$applicant->id)->delete();
+		 return redirect()->back()->with('message','Applicant account created successfully');
+		 
+	 }
 
     /**
      * Show internal transfer
@@ -3892,17 +3941,18 @@ class ApplicationController extends Controller
      */
     public function submitExternalTransfer(Request $request)
     {
-        $student = Student::with(['applicant.selections.campusProgram','applicant.nectaResultDetails'])->find($request->get('student_id'));
+        $applicant = Applicant::with(['selections.campusProgram','nectaResultDetails','nacteResultDetails'])->find($request->get('applicant_id'));
 
-        $applicant = $student->applicant;
-
-        $admitted_program_code = null;
-        foreach($student->applicant->selections as $selection){
-            if($selection->status == 'SELECTED'){
-                $admitted_program = $selection->campusProgram;
-                $admitted_program_code = $selection->campusProgram->regulator_code;
-            }
-        }
+        $selection = new ApplicantProgramSelection;
+		$selection->applicant_id = $applicant->id;
+		$selection->campus_program_id = $request->get('campus_program_id');	
+        $selection->order = 1;
+        $selection->status = 'SELECTED';
+        $selection->save();		
+		
+		$prog = CampusProgram::with('program')->find($request->get('campus_program_id'));
+		$admitted_program = $prog;
+		$admitted_program_code = $prog->program->code;
 
         $f6indexno = null;
         foreach($student->applicant->nectaResultDetails as $detail){
@@ -3911,6 +3961,13 @@ class ApplicationController extends Controller
                break;
             }
         }
+		
+		if($f6indexno == null){
+			foreach($student->applicant->nacteResultDetails as $detail){
+               $f6indexno = $detail->avn;
+               break;
+            }
+		}
         
         $url = 'http://41.59.90.200/admission/submitInternalTransfers';
         $xml_request = '<?xml version="1.0" encoding="UTF-8"?>
@@ -3920,10 +3977,10 @@ class ApplicationController extends Controller
                         <SessionToken>'.config('constants.TCU_TOKEN').'</SessionToken>
                         </UsernameToken>
                         <RequestParameters>
-                         <f4indexno>'.$student->applicant->index_number.'</f4indexno>
+                         <f4indexno>'.$applicant->index_number.'</f4indexno>
                          <f6indexno>'.$f6indexno.'</f6indexno>
-                         <CurrentProgrammeCode>'.$request->get('program_code').'</CurrentProgrammeCode>
-                         <PreviousProgrammeCode>'.$admitted_program_code.'</PreviousProgrammeCode>
+                         <CurrentProgrammeCode>'.$admitted_program_code.'</CurrentProgrammeCode>
+                         <PreviousProgrammeCode>'.$request->get('program_code').'</PreviousProgrammeCode>
                         </RequestParameters>
                         </Request>';
         $xml_response=simplexml_load_string($this->sendXmlOverPost($url,$xml_request));
@@ -3935,9 +3992,9 @@ class ApplicationController extends Controller
 
         if($array['Response']['ResponseParameters']['StatusCode'] == 200){
             $transfer = new ExternalTransfer;
-            $transfer->student_id = $student->id;
-            $transfer->previous_campus_program_id = $admitted_program->id;
-            $transfer->current_program = $request->get('program_code');
+            $transfer->applicant_id = $student->id;
+            $transfer->new_campus_program_id = $admitted_program->id;
+            $transfer->previous_program = $request->get('program_code');
             $transfer->transfered_by_user_id = Auth::user()->id;
             $transfer->save();
 
