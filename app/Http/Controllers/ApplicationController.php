@@ -861,7 +861,7 @@ class ApplicationController extends Controller
        $applicant->save();
 	   
 	   if($applicant->is_transfered == 1){
-		  $applicant = Applicant::find($applicant->id)->with(['selections.campusProgram.program','selections'=>function($query){
+		  $applicant = Applicant::with(['selections.campusProgram.program','selections'=>function($query){
                 $query->where('status','SELECTED')->orderBy('order','asc');
             },'nectaResultDetails'=>function($query){
                  $query->where('verified',1);
@@ -869,7 +869,7 @@ class ApplicationController extends Controller
                  $query->where('verified',1);
             },'outResultDetails'=>function($query){
                  $query->where('verified',1);
-            },'selections.campusProgram.campus','nectaResultDetails.results','nacteResultDetails.results','outResultDetails.results','programLevel','applicationWindow'])->first();
+            },'selections.campusProgram.campus','nectaResultDetails.results','nacteResultDetails.results','outResultDetails.results','programLevel','applicationWindow'])-find($applicant->id);
 
         $window = $applicant->applicationWindow;
 
@@ -1304,15 +1304,15 @@ class ApplicationController extends Controller
 			
 			if(count($programs) != 0){
 				if($programs[0]->id == $applicant->selections[0]->campus_program_id){
-				$selection = ApplicantProgramSelection::find($applicant->selections[0]->id);
-				$selection->status = 'SELECTED';
-				$selection->save();
+				   $selection = ApplicantProgramSelection::find($applicant->selections[0]->id);
+				   $selection->status = 'SELECTED';
+				   $selection->save();
 				
-				$app = Applicant::find($applicant->id);
-				$app->status = 'ADMITTED';
-				$app->save();
+				   $app = Applicant::find($applicant->id);
+				   $app->status = 'ADMITTED';
+				   $app->save();
 				
-				ExternalTransfer::where('applicant_id',$applicant->id)->update(['status'=>'ELIGIBLE']);
+				   ExternalTransfer::where('applicant_id',$applicant->id)->update(['status'=>'ELIGIBLE']);
 				}
 			}else{
 				ExternalTransfer::where('applicant_id',$applicant->id)->update(['status'=>'NOT ELIGIBLE']);
@@ -3708,6 +3708,7 @@ class ApplicationController extends Controller
 		 if($app = Applicant::where('index_number',$request->get('index_number'))->where('campus_id',$staff->campus_id)->first()){
 			 $applicant = $app;
 			 $applicant->is_transfered = 1;
+			 $applicant->submission_complete_status = 0;
 			 $applicant->save();
 			 
 			 $user = User::where('username',$request->get('index_number'))->first();
