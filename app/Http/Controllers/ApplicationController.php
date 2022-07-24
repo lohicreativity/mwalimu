@@ -3757,9 +3757,9 @@ class ApplicationController extends Controller
         // }
         $data = [
             'applicant'=>$applicant,
-            'transfers'=>ExternalTransfer::whereHas('student.applicant',function($query) use($staff){
+            'transfers'=>ExternalTransfer::whereHas('applicant',function($query) use($staff){
                   $query->where('campus_id',$staff->campus_id);
-            })->with(['student.applicant.user','previousProgram.program','user.staff'])->paginate(20),
+            })->with(['applicant.user','previousProgram.program','user.staff'])->paginate(20),
 			'campus_programs'=>$applicant? $programs : [],
             'staff'=>$staff
         ];
