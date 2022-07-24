@@ -869,7 +869,7 @@ class ApplicationController extends Controller
                  $query->where('verified',1);
             },'outResultDetails'=>function($query){
                  $query->where('verified',1);
-            },'selections.campusProgram.campus','nectaResultDetails.results','nacteResultDetails.results','outResultDetails.results','programLevel','applicationWindow'])-find($applicant->id);
+            },'selections.campusProgram.campus','nectaResultDetails.results','nacteResultDetails.results','outResultDetails.results','programLevel','applicationWindow'])->find($applicant->id);
 
         $window = $applicant->applicationWindow;
 
