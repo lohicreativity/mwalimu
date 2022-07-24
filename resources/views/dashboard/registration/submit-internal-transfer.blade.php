@@ -130,6 +130,7 @@
 						 <th>Current Reg Number</th>
                          <th>Current Programme</th>
                          <th>Date Transfered</th>
+						 <th>Status</th>
                        </tr>
                      </thead>
                      <tbody>
@@ -145,7 +146,7 @@
                        </tr>
                        @endforeach
 					   <tr>
-					     <td><button type="submit" class="btn btn-primary">Submit Transfers</button></td>
+					     <td colspan="7"><button type="submit" class="btn btn-primary">Submit Transfers</button></td>
 					   </tr>
 					   {!! Form::close() !!}
                      </tbody>
