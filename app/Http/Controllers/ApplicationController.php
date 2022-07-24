@@ -3758,8 +3758,8 @@ class ApplicationController extends Controller
             'applicant'=>$applicant,
             'transfers'=>ExternalTransfer::whereHas('student.applicant',function($query) use($staff){
                   $query->where('campus_id',$staff->campus_id);
-			'campus_programs'=>$applicant? $programs : [],
             })->with(['student.applicant.user','previousProgram.program','user.staff'])->paginate(20),
+			'campus_programs'=>$applicant? $programs : [],
             'staff'=>$staff
         ];
         return view('dashboard.registration.submit-external-transfer',$data)->withTitle('External Transfer');
