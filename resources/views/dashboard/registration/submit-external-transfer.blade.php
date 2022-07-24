@@ -118,6 +118,7 @@
               </div>
               <!-- /.card-header -->
               <div class="card-body">
+			  {!! Form::open(['url'=>'registration/submit-external-transfers','class'=>'ss-form-processing']) !!}
                    <table class="table table-bordered" id="ss-transfers">
                      <thead>
                        <tr>
@@ -127,6 +128,7 @@
                          <th>New Programme</th>
                          <th>Date Transfered</th>
                          <th>Transfered By</th>
+						 <th>Status</th>
                        </tr>
                      </thead>
                      <tbody>
@@ -138,8 +140,13 @@
                          <td>{{ $transfer->campusProgram->program->name }}</td>
                          <td>{{ $transfer->created_at }}</td>
                          <td>{{ $transfer->user->staff->first_name }} {{ $transfer->user->staff->surname }}</td>
+                         <td>{{ $transfer->status }} {!! Form::input('hidden','transfer_'.$transfer->id,$transfer->id) !!}</td>
                        </tr>
                        @endforeach
+					   <tr>
+					     <td colspan="7"><button type="submit" class="btn btn-primary">Submit Transfers</button></td>
+					   </tr>
+					   {!! Form::close() !!}
                      </tbody>
                    </table>
 

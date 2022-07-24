@@ -3745,43 +3745,7 @@ class ApplicationController extends Controller
 		$admitted_program = $prog;
 		$admitted_program_code = $prog->program->code;
 
-        $f6indexno = null;
-        foreach($applicant->nectaResultDetails as $detail){
-            if($detail->exam_id == 2){
-               $f6indexno = $detail->index_number;
-               break;
-            }
-        }
-		
-		if($f6indexno == null){
-			foreach($applicant->nacteResultDetails as $detail){
-               $f6indexno = $detail->avn;
-               break;
-            }
-		}
         
-        $url = 'http://41.59.90.200/admission/submitInternalTransfers';
-        $xml_request = '<?xml version="1.0" encoding="UTF-8"?>
-                        <Request>
-                        <UsernameToken>
-                        <Username>'.config('constants.TCU_USERNAME').'</Username>
-                        <SessionToken>'.config('constants.TCU_TOKEN').'</SessionToken>
-                        </UsernameToken>
-                        <RequestParameters>
-                         <f4indexno>'.$applicant->index_number.'</f4indexno>
-                         <f6indexno>'.$f6indexno.'</f6indexno>
-                         <CurrentProgrammeCode>'.$admitted_program_code.'</CurrentProgrammeCode>
-                         <PreviousProgrammeCode>'.$request->get('program_code').'</PreviousProgrammeCode>
-                        </RequestParameters>
-                        </Request>';
-        $xml_response=simplexml_load_string($this->sendXmlOverPost($url,$xml_request));
-        $json = json_encode($xml_response);
-        $array = json_decode($json,TRUE);
-
-        
-
-
-        if($array['Response']['ResponseParameters']['StatusCode'] == 200){
             $transfer = new ExternalTransfer;
             $transfer->applicant_id = $student->id;
             $transfer->new_campus_program_id = $admitted_program->id;
@@ -3792,12 +3756,7 @@ class ApplicationController extends Controller
             $applicant->confirmation_status = 'TRANSFERED';
             $applicant->save();
             return redirect()->to('registration/external-transfer')->with('message','Transfer completed successfully');
-        }else{
-            return redirect()->back()->with('error','Unable to complete transfer. '.$array['Response']['ResponseParameters']['StatusDescription']);
-        }
-		 
-		 
-		 return redirect()->back()->with('message','Applicant account created successfully');
+       
 		 
 	 }
 
@@ -4443,7 +4402,9 @@ class ApplicationController extends Controller
      */
     public function submitExternalTransfer(Request $request)
     {
-        $applicant = Applicant::with(['selections.campusProgram','nectaResultDetails','nacteResultDetails'])->find($request->get('applicant_id'));
+		$transfers = ExternalTransfer::where('status','PENDING')->get();
+		foreach($transfers as $trans){
+        $applicant = Applicant::with(['selections.campusProgram','nectaResultDetails','nacteResultDetails'])->find($trans->applicant_id);
 
         $selection = new ApplicantProgramSelection;
 		$selection->applicant_id = $applicant->id;
@@ -4493,19 +4454,18 @@ class ApplicationController extends Controller
 
 
         if($array['Response']['ResponseParameters']['StatusCode'] == 200){
-            $transfer = new ExternalTransfer;
-            $transfer->applicant_id = $student->id;
-            $transfer->new_campus_program_id = $admitted_program->id;
-            $transfer->previous_program = $request->get('program_code');
-            $transfer->transfered_by_user_id = Auth::user()->id;
-            $transfer->save();
 
-            $applicant->confirmation_status = 'TRANSFERED';
+            $applicant->confirmation_status = 'SUBMITTED';
             $applicant->save();
-            return redirect()->to('registration/external-transfer')->with('message','Transfer completed successfully');
-        }else{
-            return redirect()->back()->with('error','Unable to complete transfer. '.$array['Response']['ResponseParameters']['StatusDescription']);
+			
+			$transfer = ExternalTransfer::find($trans->id);
+			$transfer->status = 'SUBMITTED';
+			$transfer->save();
+            // return redirect()->to('registration/external-transfer')->with('message','Transfer completed successfully');
         }
+		}
+		}
+		return redirect()->back()->with('message','External transfers submitted successfully');
     }
 
     /**

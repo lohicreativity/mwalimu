@@ -42,7 +42,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
     Route::post('submit-internal-transfer',[ApplicationController::class,'submitInternalTransfer']);
 
     Route::get('external-transfer',[ApplicationController::class,'showExternalTransfer']);
-    Route::post('submit-external-transfer',[ApplicationController::class,'submitExternalTransfer']);
+    Route::post('submit-external-transfers',[ApplicationController::class,'submitExternalTransfer']);
 });
 
 
