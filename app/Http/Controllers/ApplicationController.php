@@ -3296,6 +3296,7 @@ class ApplicationController extends Controller
             return redirect()->back()->with('error','Applicant does not belong to this campus');
         }
 		
+		if($applicant){
 		$window = $applicant? $applicant->applicationWindow : null;
 		
 		$campus_programs = $window? $window->campusPrograms()->whereHas('program',function($query) use($applicant){
@@ -3732,7 +3733,7 @@ class ApplicationController extends Controller
                         }
                 }
             }
-        
+        }
         
         // if($applicant){
         //     if($applicant->multiple_admissions == 1 && $applicant->confirmation_status != 'CONFIRMED'){
