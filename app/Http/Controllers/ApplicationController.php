@@ -3241,7 +3241,7 @@ class ApplicationController extends Controller
 		 $staff = User::find(Auth::user()->id)->staff;
 		 $application_window = ApplicationWindow::where('campus_id',$staff->campus_id)->where('status','ACTIVE')->latest()->first();
 		 $award = Award::where('name','LIKE','%Degree%')->first();
-		 if($app = Applicant::where('index_number',$reqest->get('index_number')->where('campus_id',$staff->campus_id)->first())->){
+		 if($app = Applicant::where('index_number',$reqest->get('index_number'))->where('campus_id',$staff->campus_id)->first())->){
 			 $applicant = $app;
 			 $applicant->status = 'ADMITTED';
 			 $applicant->is_transfered = 1;
