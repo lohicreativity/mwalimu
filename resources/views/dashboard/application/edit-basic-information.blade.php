@@ -157,7 +157,7 @@
               @endphp
               {!! Form::open(['url'=>'application/update-basic-info','class'=>'ss-form-processing','files'=>true]) !!}
                 <div class="card-body">
-                @if($applicant->is_tcu_verified != 1 && str_contains($applicant->programLevel->name,'Degree'))
+                @if($applicant->is_tcu_verified != 1 && str_contains($applicant->programLevel->name,'Degree')  && $applicant->is_transfered != 1)
                 <div class="alert alert-warning">
                    You cannot proceed with this application because it seems you have admission with another institution. Please contact TCU for clarification.
                 </div>
