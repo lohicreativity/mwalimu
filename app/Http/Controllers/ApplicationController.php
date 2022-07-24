@@ -3732,7 +3732,7 @@ class ApplicationController extends Controller
                         }
                 }
             }
-        }
+        
         
         // if($applicant){
         //     if($applicant->multiple_admissions == 1 && $applicant->confirmation_status != 'CONFIRMED'){
