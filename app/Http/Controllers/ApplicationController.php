@@ -3814,6 +3814,66 @@ class ApplicationController extends Controller
             //return redirect()->back()->with('error','Unable to complete transfer. '.$array['Response']['ResponseParameters']['StatusDescription']);
         //}
     }
+	
+	/**
+	 * Internal transfers submission_complete_status
+	 */
+	 public function internalTransfersSubmission(Request $request)
+	 {
+		 $transfers = InternalTransfer::whereHas('student.applicant.programLevel',function($query){
+			 $query->where('name','LIKE','%Degree%');
+		 })->with(['student.applicant.selections.campusProgram.program','student.applicant.nectaResultDetails','student.applicant.nacteResultDetails','campusProgram'])->where('status','PENDING')->get();
+		 foreach($transfers as $transfer){
+			  $admitted_program_code = null;
+        foreach($transfer->student->applicant->selections as $selection){
+            if($selection->status == 'SELECTED'){
+                $admitted_program = $selection->campusProgram;
+                $admitted_program_code = $selection->campusProgram->regulator_code;
+            }
+        }
+
+        $f6indexno = null;
+        foreach($transfer->student->applicant->nectaResultDetails as $detail){
+            if($detail->exam_id == 2){
+               $f6indexno = $detail->index_number;
+               break;
+            }
+        }
+		
+		if($f6indexno == null){
+        foreach($transfer->student->applicant->nacteResultDetails as $detail){
+               $f6indexno = $detail->avn;
+               break;
+        }
+		}
+
+        $transfer_program_code = $transfer->campusProgram->regulator_code;
+        
+        $url = 'http://41.59.90.200/admission/submitInternalTransfers';
+        $xml_request = '<?xml version="1.0" encoding="UTF-8"?>
+                        <Request>
+                        <UsernameToken>
+                        <Username>'.config('constants.TCU_USERNAME').'</Username>
+                        <SessionToken>'.config('constants.TCU_TOKEN').'</SessionToken>
+                        </UsernameToken>
+                        <RequestParameters>
+                         <f4indexno>'.$transfer->student->applicant->index_number.'</f4indexno>
+                         <f6indexno>'.$f6indexno.'</f6indexno>
+                         <CurrentProgrammeCode>'.$transfer_program_code.'</CurrentProgrammeCode>
+                         <PreviousProgrammeCode>'.$admitted_program_code.'</PreviousProgrammeCode>
+                        </RequestParameters>
+                        </Request>';
+        $xml_response=simplexml_load_string($this->sendXmlOverPost($url,$xml_request));
+        $json = json_encode($xml_response);
+        $array = json_decode($json,TRUE);
+		
+		   $trans = InternalTransfer::find($transfer->id);
+		   $trans->status = 'TRANSFERED';
+		   $trans->save();
+		
+		 }
+		 return redirect()->back()->with('message','Transfers submitted successfully');
+	 }
 
     /**
      * Submit external transfer
