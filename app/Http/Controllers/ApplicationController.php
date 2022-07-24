@@ -2756,6 +2756,12 @@ class ApplicationController extends Controller
         })->with(['applicant.selections'=>function($query){
               $query->where('status','SELECTED');
         },'applicant.selections.campusProgram.program'])->where('registration_number',$request->get('registration_number'))->first();
+		
+		if($student){
+			if(InternalTransfer::where('student_id',$student->id)->count() != 0){
+			   return redirect()->back()->with('error','Student already transfered');
+		    }
+		}
 
         if(!$student && $request->get('registration_number')){
             return redirect()->back()->with('error','Student either does not belong to this campus or does not qualify for transfer');
