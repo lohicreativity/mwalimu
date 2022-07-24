@@ -1314,6 +1314,8 @@ class ApplicationController extends Controller
 				
 				ExternalTransfer::where('applicant_id',$applicant->id)->update(['status'=>'ELIGIBLE']);
 				}
+			}else{
+				ExternalTransfer::where('applicant_id',$applicant->id)->update(['status'=>'NOT ELIGIBLE']);
 			}
         }
 	   
