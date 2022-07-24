@@ -4404,6 +4404,7 @@ class ApplicationController extends Controller
     {
 		$transfers = ExternalTransfer::where('status','PENDING')->get();
 		foreach($transfers as $trans){
+			if($request->get('transfer_'.$trans->id) == $trans->id){
         $applicant = Applicant::with(['selections.campusProgram','nectaResultDetails','nacteResultDetails'])->find($trans->applicant_id);
 
         $selection = new ApplicantProgramSelection;
