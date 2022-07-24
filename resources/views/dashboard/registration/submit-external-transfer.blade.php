@@ -70,20 +70,7 @@
                      ];
                  @endphp 
                  {!! Form::open(['url'=>'application/register-external-transfer','class'=>'ss-form-processing']) !!}
-                  <div class="row">
-                  <div class="form-group col-4">
-                    {!! Form::label('','First name') !!}
-                    {!! Form::text('first_name',null,$first_name) !!}
-                  </div>
-				   <div class="form-group col-4">
-                    {!! Form::label('','Middle name') !!}
-                    {!! Form::text('middle_name',null,$middle_name) !!}
-                  </div>
-				   <div class="form-group col-4">
-                    {!! Form::label('','Surname') !!}
-                    {!! Form::text('surname',null,$surname) !!}
-                  </div>
-				  </div>
+
                   <div class="row">
                   <div class="form-group col-6">
                     {!! Form::label('','Enter applicant index number') !!}

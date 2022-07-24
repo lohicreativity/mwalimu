@@ -3254,7 +3254,7 @@ class ApplicationController extends Controller
         }else{
             $user = new User;
             $user->username = $request->get('index_number');
-            $user->password = Hash::make('password');
+            $user->password = Hash::make('123456');
             $user->save();
         }
 
@@ -3262,9 +3262,6 @@ class ApplicationController extends Controller
         $user->roles()->sync([$role->id]);
 
         $applicant = new Applicant;
-        $applicant->first_name = $request->get('first_name');
-        $applicant->middle_name = $request->get('middle_name');
-        $applicant->surname = $request->get('surname');
         $applicant->user_id = $user->id;
         $applicant->campus_id = $staff->campus_id;
         $applicant->index_number = strtoupper($request->get('index_number'));
