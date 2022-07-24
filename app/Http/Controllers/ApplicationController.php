@@ -3780,7 +3780,7 @@ class ApplicationController extends Controller
         $data = [
             'transfers'=>ExternalTransfer::whereHas('applicant',function($query) use($staff){
                   $query->where('campus_id',$staff->campus_id);
-            })->with(['applicant.user','previousProgram.program','user.staff'])->paginate(20),
+            })->with(['applicant.user','newProgram.program','user.staff'])->paginate(20),
 			'campus_programs'=>$campus_programs,
             'staff'=>$staff
         ];
