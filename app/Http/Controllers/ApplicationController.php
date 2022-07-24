@@ -3733,7 +3733,7 @@ class ApplicationController extends Controller
                 }
             }
         }
-        }
+        
         // if($applicant){
         //     if($applicant->multiple_admissions == 1 && $applicant->confirmation_status != 'CONFIRMED'){
         //          return redirect()->back()->with('error','The applicant has multiple admissions and has not yet confirmed');
