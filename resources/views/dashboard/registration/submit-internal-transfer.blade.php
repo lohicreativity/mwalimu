@@ -112,7 +112,7 @@
               </div>
               {!! Form::close() !!}
             </div>
-            @else
+            @endif
             @if(count($transfers) != 0)
             <div class="card">
               <div class="card-header">
@@ -157,7 +157,6 @@
                    </div> 
               </div>
             </div>
-            @endif
             @endif
 
           </div>
