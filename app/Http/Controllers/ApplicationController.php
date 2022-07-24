@@ -871,7 +871,7 @@ class ApplicationController extends Controller
 
         $window = $applicant->applicationWindow;
 
-        $campus_programs = $window? [$applicant->selections[0]->campusProgram];
+        $campus_programs = $window? [$applicant->selections[0]->campusProgram] : [];
         
 
         $award = $applicant->programLevel;
