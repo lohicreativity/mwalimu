@@ -861,9 +861,7 @@ class ApplicationController extends Controller
        $applicant->save();
 	   
 	   if($applicant->is_transfered == 1){
-		  $applicant = Applicant::with(['selections.campusProgram.program','selections'=>function($query){
-                $query->where('status','SELECTED')->orderBy('order','asc');
-            },'nectaResultDetails'=>function($query){
+		  $applicant = Applicant::with(['selections.campusProgram.program','nectaResultDetails'=>function($query){
                  $query->where('verified',1);
             },'nacteResultDetails'=>function($query){
                  $query->where('verified',1);
