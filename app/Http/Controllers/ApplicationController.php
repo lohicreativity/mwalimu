@@ -3735,6 +3735,7 @@ class ApplicationController extends Controller
 
         $selection = new ApplicantProgramSelection;
 		$selection->applicant_id = $applicant->id;
+		$selection->application_window_id = $application_window->id;
 		$selection->campus_program_id = $request->get('campus_program_id');	
         $selection->order = 1;
         $selection->status = 'SELECTED';

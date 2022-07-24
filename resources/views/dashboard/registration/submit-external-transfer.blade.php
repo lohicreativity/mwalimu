@@ -86,11 +86,11 @@
 					</div>
                   </div>
 				  <div class="row">
-				   <div class="form-group ss-margin-top">
+				   <div class="form-group col-6">
                    {!! Form::label('','Enter previous programme code') !!}
                    {!! Form::text('program_code',null,['class'=>'form-control','placeholder'=>'Programme code','required'=>true]) !!}
                  </div>  
-				 <div class="form-group ss-margin-top">
+				 <div class="form-group col-6">
                    {!! Form::label('','Select new programme') !!}
                    <select name="campus_program_id" class="form-control" required>
                       <option value="">Select New Programme</option>
