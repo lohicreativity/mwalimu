@@ -3290,7 +3290,8 @@ class ApplicationController extends Controller
         $staff = User::find(Auth::user()->id)->staff;
         $applicant = Applicant::where('campus_id',$staff->campus_id)->with(['selections'=>function($query){
               $query->where('status','SELECTED');
-        },'selections.campusProgram.program','applicationWindow'])->where('index_number',$request->('index_number'))->first();
+        },'selections.campusProgram.program','applicationWindow'])->where('index_number',$request->get('index_number'))->first();
+		
         if(!$applicant && $request->get('index_number')){
             return redirect()->back()->with('error','Applicant does not belong to this campus');
         }
