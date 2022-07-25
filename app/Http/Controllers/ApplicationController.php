@@ -5009,7 +5009,7 @@ class ApplicationController extends Controller
                          <f4indexno>'.$applicant->index_number.'</f4indexno>
                          <f6indexno>'.$f6indexno.'</f6indexno>
                          <CurrentProgrammeCode>'.$admitted_program_code.'</CurrentProgrammeCode>
-                         <PreviousProgrammeCode>'.$transfer->previous_program.'</PreviousProgrammeCode>
+                         <PreviousProgrammeCode>'.$trans->previous_program.'</PreviousProgrammeCode>
                         </RequestParameters>
                         </Request>';
         $xml_response=simplexml_load_string($this->sendXmlOverPost($url,$xml_request));
