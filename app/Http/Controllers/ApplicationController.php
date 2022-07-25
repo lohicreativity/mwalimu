@@ -4296,7 +4296,7 @@ class ApplicationController extends Controller
 			'campus_programs'=>$programs,
             'staff'=>$staff
         ];
-        return view('dashboard.registration.submit-external-transfer',$data)->withTitle('External Transfer');
+        return view('dashboard.registration.edit-external-transfer',$data)->withTitle('External Transfer');
     }
 
     /**
