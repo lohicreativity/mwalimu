@@ -3790,7 +3790,7 @@ class ApplicationController extends Controller
 		$selection->application_window_id = $application_window->id;
 		$selection->campus_program_id = $request->get('campus_program_id');	
         $selection->order = 1;
-        $selection->status = 'PENDING';
+        $selection->status = 'SELECTED';
         $selection->save();		
 		
 		$prog = CampusProgram::with('program')->find($request->get('campus_program_id'));
@@ -3803,6 +3803,7 @@ class ApplicationController extends Controller
             $transfer->new_campus_program_id = $admitted_program->id;
             $transfer->previous_program = $request->get('program_code');
             $transfer->transfered_by_user_id = Auth::user()->id;
+			$transfer->status = 'ELIGIBLE';
             $transfer->save();
 
             $applicant->confirmation_status = 'TRANSFERED';
@@ -4715,7 +4716,7 @@ class ApplicationController extends Controller
 			$student = Student::find($student->id);
 			$student->registration_number = 'MNMA/'.$program_code.'/'.$code.'/'.$year;
 			$student->campus_program_id = $selection->campusProgram->id;
-			$student->save();
+			
 			
 			$user = new User;
 			$user->username = $student->registration_number;
@@ -4724,6 +4725,10 @@ class ApplicationController extends Controller
 			$user->password = Hash::make($password);
 			$user->must_update_password = 1;
 			$user->save();
+			
+			$last_user = User::find($applicant->user_id);
+			$last_user->status = 'INACTIVE';
+			$last_user->save();
 
 			$role = Role::where('name','student')->first();
 			$user->roles()->sync([$role->id]);

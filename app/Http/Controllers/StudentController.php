@@ -73,7 +73,8 @@ class StudentController extends Controller
 
         $credentials = [
             'username'=>$request->get('registration_number'),
-            'password'=>$request->get('password')
+            'password'=>$request->get('password'),
+			'status'=>'ACTIVE'
         ];
         if(Auth::attempt($credentials)){
           if(Auth::user()->must_update_password == 1){
