@@ -134,7 +134,7 @@
                      <tbody>
                       @foreach($transfers as $transfer)
                        <tr>
-                         <td>@if($transfer->status == 'SUBMITED') {{ $transfer->applicant->first_name }} {{ $transfer->applicant->middle_name }} {{ $transfer->applicant->surname }} @else <a href="{{ url('application/external-transfer/'.$transfer->id.'/edit') }}">{{ $transfer->applicant->first_name }} {{ $transfer->applicant->middle_name }} {{ $transfer->applicant->surname }}</a>@endif</td>
+                         <td>@if($transfer->status == 'SUBMITTED') {{ $transfer->applicant->first_name }} {{ $transfer->applicant->middle_name }} {{ $transfer->applicant->surname }} @else <a href="{{ url('application/external-transfer/'.$transfer->id.'/edit') }}">{{ $transfer->applicant->first_name }} {{ $transfer->applicant->middle_name }} {{ $transfer->applicant->surname }}</a>@endif</td>
                          <td>{{ $transfer->applicant->index_number }}</td>
 						 <td>{{ $transfer->previous_program }}</td>
                          <td>{{ $transfer->newProgram->program->name }}</td>
