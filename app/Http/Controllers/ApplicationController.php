@@ -3764,6 +3764,51 @@ class ApplicationController extends Controller
        
 		 
 	 }
+	 
+	 /**
+	 * Register external transfer
+	 */
+	 public function registerExternalTransfer(Request $request)
+	 {
+		 $staff = User::find(Auth::user()->id)->staff;
+		 $application_window = ApplicationWindow::where('campus_id',$staff->campus_id)->where('status','ACTIVE')->latest()->first();
+		 $award = Award::where('name','LIKE','%Degree%')->first();
+
+        $applicant = Applicant::where('index_number',$request->get('index_number'))->where('campus_id',$staff->campus_id)->first();
+        $applicant->index_number = strtoupper($request->get('index_number'));
+        $applicant->entry_mode = $request->get('entry_mode');
+		$applicant->is_transfered = 1;
+		$applicant->submission_complete_status = 0;
+        $applicant->save();
+		
+		 ApplicantProgramSelection::where('applicant_id',$applicant->id)->delete();
+		 
+		  $applicant = Applicant::with(['selections.campusProgram','nectaResultDetails','nacteResultDetails'])->find($applicant->id);
+
+        $selection = new ApplicantProgramSelection;
+		$selection->applicant_id = $applicant->id;
+		$selection->application_window_id = $application_window->id;
+		$selection->campus_program_id = $request->get('campus_program_id');	
+        $selection->order = 1;
+        $selection->status = 'PENDING';
+        $selection->save();		
+		
+		$prog = CampusProgram::with('program')->find($request->get('campus_program_id'));
+		$admitted_program = $prog;
+		$admitted_program_code = $prog->program->code;
+
+        
+            $transfer = new ExternalTransfer::find($request->get('transfer_id'));
+            $transfer->applicant_id = $applicant->id;
+            $transfer->new_campus_program_id = $admitted_program->id;
+            $transfer->previous_program = $request->get('program_code');
+            $transfer->transfered_by_user_id = Auth::user()->id;
+            $transfer->save();
+
+            $applicant->confirmation_status = 'TRANSFERED';
+            $applicant->save();
+            return redirect()->to('registration/external-transfer')->with('message','Transfer updated successfully'); 
+	 }
 
     /**
      * Show internal transfer

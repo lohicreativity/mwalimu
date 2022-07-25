@@ -134,7 +134,7 @@
                      <tbody>
                       @foreach($transfers as $transfer)
                        <tr>
-                         <td>{{ $transfer->applicant->first_name }} {{ $transfer->applicant->middle_name }} {{ $transfer->applicant->surname }}</td>
+                         <td><a href="#" data-toggle="modal" data-target="#ss-edit-external-{{ $transfer->id }}">{{ $transfer->applicant->first_name }} {{ $transfer->applicant->middle_name }} {{ $transfer->applicant->surname }}</a></td>
                          <td>{{ $transfer->applicant->index_number }}</td>
 						 <td>{{ $transfer->previous_program }}</td>
                          <td>{{ $transfer->newProgram->program->name }}</td>
@@ -142,6 +142,90 @@
                          <td>{{ $transfer->user->staff->first_name }} {{ $transfer->user->staff->surname }}</td>
                          <td>{{ $transfer->status }} {!! Form::input('hidden','transfer_'.$transfer->id,$transfer->id) !!}</td>
                        </tr>
+
+                      <div class="modal fade" id="ss-edit-external-{{ $transfer->id }}">
+                        <div class="modal-dialog modal-lg">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h4 class="modal-title"><i class="fa fa-exclamation-sign"></i> Edit External Transfer</h4>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+                            <div class="modal-body">
+                                @php
+				     $first_name = [
+                         'class'=>'form-control',
+                         'placeholder'=>'First name',
+                         'required'=>true
+                     ];
+					 
+					 $middle_name = [
+                         'class'=>'form-control',
+                         'placeholder'=>'Middle name',
+                     ];
+					 
+					 $surname = [
+                         'class'=>'form-control',
+                         'placeholder'=>'Surname',
+                         'required'=>true
+                     ];
+					 
+                     $index_number = [
+                         'class'=>'form-control',
+                         'placeholder'=>'Index number',
+						 'readonly'=>true,
+                         'required'=>true
+                     ];
+                 @endphp 
+                 {!! Form::open(['url'=>'application/update-external-transfer','class'=>'ss-form-processing']) !!}
+
+                  <div class="row">
+                  <div class="form-group col-6">
+                    {!! Form::label('','Enter applicant index number') !!}
+                    {!! Form::text('index_number',$transfer->applicant->index_number,$index_number) !!}
+					
+					{!! Form::input('hidden','transfer_id',$transfer->id) !!}
+                  </div>
+				  <div class="form-group col-6">
+				     {!! Form::label('','Entry mode') !!}
+				     <select name="entry_mode" class="form-control" required>
+                       <option value="">Select Highest Qualification</option>
+                       <option value="DIRECT" @if($transfer->applicant->entry_mode == 'DIRECT') selected="selected" @endif>Form IV or VI (Direct)</option>
+                       <option value="EQUIVALENT" @if($transfer->applicant->entry_mode == 'EQUIVALENT') selected="selected" @endif>Certificate or Diploma (Equivalent)</option>
+                     </select>
+					</div>
+                  </div>
+				  <div class="row">
+				   <div class="form-group col-6">
+                   {!! Form::label('','Enter previous programme code') !!}
+                   {!! Form::text('program_code',$transfer->previous_program,['class'=>'form-control','placeholder'=>'Programme code','required'=>true]) !!}
+                 </div>  
+				 <div class="form-group col-6">
+                   {!! Form::label('','Select new programme') !!}
+                   <select name="campus_program_id" class="form-control" required>
+                      <option value="">Select New Programme</option>
+                      @foreach($campus_programs as $program)
+                      <option value="{{ $program->id }}" @if($transfer->new_campus_program_id == $program->id) selected="selected" @endif>{{ $program->program->name }}</option>
+                      @endforeach
+                    </select>
+                 </div> 
+              </div>
+                  <div class="ss-form-actions">
+                   <button type="submit" class="btn btn-primary">{{ __('Save Changes') }}</button>
+                  </div>
+
+                 {!! Form::close() !!}
+                            </div>
+                            <div class="modal-footer justify-content-between">
+                              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
+                          </div>
+                          <!-- /.modal-content -->
+                        </div>
+                        <!-- /.modal-dialog -->
+                      </div>
+                      <!-- /.modal -->
                        @endforeach
 					   <tr>
 					     <td colspan="7"><button type="submit" class="btn btn-primary">Submit Transfers</button></td>
