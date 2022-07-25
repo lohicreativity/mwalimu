@@ -3766,9 +3766,9 @@ class ApplicationController extends Controller
 	 }
 	 
 	 /**
-	 * Register external transfer
+	 * Update external transfer
 	 */
-	 public function registerExternalTransfer(Request $request)
+	 public function updateExternalTransfer(Request $request)
 	 {
 		 $staff = User::find(Auth::user()->id)->staff;
 		 $application_window = ApplicationWindow::where('campus_id',$staff->campus_id)->where('status','ACTIVE')->latest()->first();
