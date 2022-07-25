@@ -3798,7 +3798,7 @@ class ApplicationController extends Controller
 		$admitted_program_code = $prog->program->code;
 
         
-            $transfer = new ExternalTransfer::find($request->get('transfer_id'));
+            $transfer = ExternalTransfer::find($request->get('transfer_id'));
             $transfer->applicant_id = $applicant->id;
             $transfer->new_campus_program_id = $admitted_program->id;
             $transfer->previous_program = $request->get('program_code');
