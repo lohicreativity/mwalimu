@@ -5016,7 +5016,7 @@ class ApplicationController extends Controller
         $json = json_encode($xml_response);
         $array = json_decode($json,TRUE);
 		
-		return dd(trim($xml_request));
+		return dd($array);
 
         
 
