@@ -134,7 +134,7 @@
                      <tbody>
                       @foreach($transfers as $transfer)
                        <tr>
-                         <td><a href="#" data-toggle="modal" data-target="#ss-edit-external-{{ $transfer->id }}">{{ $transfer->applicant->first_name }} {{ $transfer->applicant->middle_name }} {{ $transfer->applicant->surname }}</a></td>
+                         <td><a href="{{ url('application/external-transfer/'.$transfer->id.'/edit') }}">{{ $transfer->applicant->first_name }} {{ $transfer->applicant->middle_name }} {{ $transfer->applicant->surname }}</a></td>
                          <td>{{ $transfer->applicant->index_number }}</td>
 						 <td>{{ $transfer->previous_program }}</td>
                          <td>{{ $transfer->newProgram->program->name }}</td>
