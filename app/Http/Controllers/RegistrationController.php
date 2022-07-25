@@ -14,6 +14,7 @@ use App\Domain\Finance\Models\GatewayPayment;
 use App\Domain\Registration\Models\Student;
 use App\Domain\Registration\Models\Registration;
 use App\Domain\Registration\Models\IdCardRequest;
+use App\Domain\Application\Models\InternalTransfer;
 use App\Domain\Settings\Models\Currency;
 use App\Models\User;
 use Illuminate\Support\Facades\Http;
@@ -86,11 +87,64 @@ class RegistrationController extends Controller
         $tuition_fee_paid = GatewayPayment::where('control_no',$tuition_fee_invoice->control_no)->sum('paid_amount');
 
         $misc_fee_paid = GatewayPayment::where('control_no',$misc_fee_invoice->control_no)->sum('paid_amount');
-
-
-        if($tuition_fee_paid < (0.6*$tuition_fee_invoice->amount)){
-            return redirect()->back()->with('error','You cannot continue with registration because you have not paid sufficient tuition fee');
-        }
+		
+		$semester = Semester::find(session('active_semester_id'));
+		
+		$usd_currency = Currency::where('code','USD')->first();
+         
+		if($student->applicant->is_transfered == 1){
+			if($year_of_study == 1 && str_contains($semester->name,'2')){
+				$new_program_fee = ProgramFee::with(['feeItem.feeType'])->where('study_academic_year_id',session('active_academic_year_id'))->where('campus_program_id',$student->campus_program_id)->first();
+				
+				$transfer = InternalTransfer::where('student_id',$student->id)->first();
+				
+				$old_program_fee = ProgramFee::with(['feeItem.feeType'])->where('study_academic_year_id',session('active_academic_year_id'))->where('campus_program_id',$transfer->previous_campus_program_id)->first();
+				
+				$extra_fee_invoice = Invoice::whereHas('feeType',function($query){
+                   $query->where('name','LIKE','%Tuition%');
+                })->where('payable_id',$student->id)->where('payable_type','student')->where('applicable_type','academic_year')->where('applicable_id',session('active_academic_year_id'))->where('id','!=',$tuition_fee_invoice->id)->first();
+				
+				if($extra_fee_invoice){
+					$extra_fee_paid = GatewayPayment::where('control_no',$extra_fee_invoice->control_no)->sum('paid_amount');
+					if($extra_fee_paid){
+					   $tuition_fee_paid += $extra_fee_paid;
+					}
+				}
+				
+				if(str_contains($student->applicant->nationality,'Tanzania')){
+				     $fee_diff = $new_program_fee->amount_in_tzs - $old_program_fee->amount_in_tzs;
+					 $fee_amount = $new_program_fee->amount_in_tzs;
+				}else{
+					 $fee_diff = ($new_program_fee->amount_in_usd - $old_program_fee->amount_in_usd)*$usd_currency->factor;
+					 $fee_amount = $new_program_fee->amount_in_usd*$usd_currency->factor;
+				}
+				
+				if(str_contains($student->applicant->nationality,'Tanzania')){
+					$new_fee_amount = $new_program_fee->amount_in_tzs;
+				}else{
+					$new_fee_amount = $new_program_fee->amount_in_usd*$usd_currency->factor;
+				}
+				
+				if($fee_diff > 0){
+					if($tuition_fee_paid < (0.6*($tuition_fee_invoice->amount+$fee_diff))){
+                       return redirect()->back()->with('error','You cannot continue with registration because you have not paid sufficient tuition fee');
+                    }
+				}elseif($fee_diff < 0){
+					if($tuition_fee_paid < (0.6*($tuition_fee_invoice->amount+$fee_diff))){
+                       return redirect()->back()->with('error','You cannot continue with registration because you have not paid sufficient tuition fee');
+                    }
+				}
+				
+			}else{
+				if($tuition_fee_paid < (0.6*$tuition_fee_invoice->amount)){
+                   return redirect()->back()->with('error','You cannot continue with registration because you have not paid sufficient tuition fee');
+                }
+			}
+		}else{
+           if($tuition_fee_paid < (0.6*$tuition_fee_invoice->amount)){
+              return redirect()->back()->with('error','You cannot continue with registration because you have not paid sufficient tuition fee');
+           }
+		}
 
         if($misc_fee_paid < $misc_fee_invoice->amount){
             return redirect()->back()->with('error','You cannot continue with registration because you have not paid other fees');

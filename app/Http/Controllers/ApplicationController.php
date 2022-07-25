@@ -3787,7 +3787,7 @@ class ApplicationController extends Controller
 
         $selection = new ApplicantProgramSelection;
 		$selection->applicant_id = $applicant->id;
-		$selection->application_window_id = $application_window->id;
+		$selection->application_window_id = $applicant->application_window_id;
 		$selection->campus_program_id = $request->get('campus_program_id');	
         $selection->order = 1;
         $selection->status = 'SELECTED';
@@ -4736,6 +4736,54 @@ class ApplicationController extends Controller
 			$student->user_id = $user->id;
             $transfer->save();
 			
+			$old_program_fee = ProgramFee::with(['feeItem.feeType'])->where('study_academic_year_id',$ac_year->id)->where('campus_program_id',$admitted_program->id)->first();
+		    $new_program_fee = ProgramFee::with(['feeItem.feeType'])->where('study_academic_year_id',$ac_year->id)->where('campus_program_id',$transfer_program->id)->first();
+			$usd_currency = Currency::where('code','USD')->first();
+			
+		    if(str_contains($student->applicant->nationality,'Tanzania')){
+				 $fee_diff = $new_program_fee->amount_in_tzs - $old_program_fee->amount_in_tzs;
+				 $fee_amount = $new_program_fee->amount_in_tzs;
+			}else{
+				 $fee_diff = ($new_program_fee->amount_in_usd - $old_program_fee->amount_in_usd)*$usd_currency->factor;
+				 $fee_amount = $new_program_fee->amount_in_usd*$usd_currency->factor;
+			}
+			if($fee_diff > 0){
+				$invoice = new Invoice;
+                  $invoice->reference_no = 'MNMA-TF-'.time();
+                  $invoice->actual_amount = $fee_amount;
+                  $invoice->amount = $fee_diff;
+                  $invoice->currency = 'TZS';
+                  $invoice->payable_id = $student->id;
+                  $invoice->payable_type = 'student';
+                  $invoice->applicable_id = $ac_year->id;
+                  $invoice->applicable_type = 'academic_year';
+                  $invoice->fee_type_id = $new_program_fee->feeItem->feeType->id;
+                  $invoice->save();
+
+
+                  $generated_by = 'SP';
+                  $approved_by = 'SP';
+                  $inst_id = config('constants.SUBSPCODE');
+
+
+
+                  $result = $this->requestControlNumber($request,
+                                              $invoice->reference_no,
+                                              $inst_id,
+                                              $invoice->amount,
+                                              $new_program_fee->feeItem->feeType->description,
+                                              $new_program_fee->feeItem->feeType->gfs_code,
+                                              $new_program_fee->feeItem->feeType->payment_option,
+                                              $student->id,
+                                              $student->first_name.' '.$student->surname,
+                                              $student->phone,
+                                              $student->email,
+                                              $generated_by,
+                                              $approved_by,
+                                              $new_program_fee->feeItem->feeType->duration,
+                                              $invoice->currency);
+			}
+			
 			$reg = Registration::where('student_id',$student->id)->where('study_academic_year_id',$ac_year->id)->where('semester_id',$semester->id)->where('year_of_study',1)->first();
 			$stream = Stream::where('campus_program_id',$selection->campusProgram->id)->where('study_academic_year_id',$ac_year->id)->first();
 			if($stream){
@@ -4924,12 +4972,12 @@ class ApplicationController extends Controller
 			if($request->get('transfer_'.$trans->id) == $trans->id){
         $applicant = Applicant::with(['selections.campusProgram','nectaResultDetails','nacteResultDetails'])->find($trans->applicant_id);
 
-        $selection = new ApplicantProgramSelection;
+        /*$selection = new ApplicantProgramSelection;
 		$selection->applicant_id = $applicant->id;
 		$selection->campus_program_id = $request->get('campus_program_id');	
         $selection->order = 1;
         $selection->status = 'SELECTED';
-        $selection->save();		
+        $selection->save();		*/
 		
 		$prog = CampusProgram::with('program')->find($request->get('campus_program_id'));
 		$admitted_program = $prog;
@@ -4961,7 +5009,7 @@ class ApplicationController extends Controller
                          <f4indexno>'.$applicant->index_number.'</f4indexno>
                          <f6indexno>'.$f6indexno.'</f6indexno>
                          <CurrentProgrammeCode>'.$admitted_program_code.'</CurrentProgrammeCode>
-                         <PreviousProgrammeCode>'.$request->get('program_code').'</PreviousProgrammeCode>
+                         <PreviousProgrammeCode>'.$transfer->previous_program.'</PreviousProgrammeCode>
                         </RequestParameters>
                         </Request>';
         $xml_response=simplexml_load_string($this->sendXmlOverPost($url,$xml_request));
