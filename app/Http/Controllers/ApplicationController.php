@@ -4998,7 +4998,7 @@ class ApplicationController extends Controller
             }
 		}
         
-        $url = 'http://41.59.90.200/admission/submitInternalTransfers';
+        $url = 'http://41.59.90.200/admission/submitInterInstitutionalTransfers';
         $xml_request = '<?xml version="1.0" encoding="UTF-8"?>
                         <Request>
                         <UsernameToken>
