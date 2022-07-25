@@ -4984,7 +4984,7 @@ class ApplicationController extends Controller
 		$admitted_program_code = $prog->program->code;
 
         $f6indexno = null;
-        foreach($student->applicant->nectaResultDetails as $detail){
+        foreach($applicant->nectaResultDetails as $detail){
             if($detail->exam_id == 2){
                $f6indexno = $detail->index_number;
                break;
@@ -4992,7 +4992,7 @@ class ApplicationController extends Controller
         }
 		
 		if($f6indexno == null){
-			foreach($student->applicant->nacteResultDetails as $detail){
+			foreach($applicant->nacteResultDetails as $detail){
                $f6indexno = $detail->avn;
                break;
             }
