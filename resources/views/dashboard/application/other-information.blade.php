@@ -286,7 +286,7 @@
                   </label>
               </div>
               <div class="card-footer">
-              <button @if($program_fee_invoice) disabled="disabled" @else type="submit" @endif class="btn btn-primary">{{ __('Submit Hostel Request') }}</button>
+              <button>Submit Hostel Request</button>
             </div>
             {!! Form::close() !!}
             </div>
