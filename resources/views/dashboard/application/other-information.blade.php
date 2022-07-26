@@ -286,7 +286,7 @@
                   </label>
               </div>
               <div class="card-footer">
-              <button>Submit Hostel Request</button>
+              <button class="btn btn-primary">Submit Hostel Request</button>
             </div>
             {!! Form::close() !!}
             </div>
