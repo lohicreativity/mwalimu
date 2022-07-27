@@ -4679,7 +4679,7 @@ class ApplicationController extends Controller
 				return redirect()->back()->with('error','Programme does not have capacity to accomodate the transfer');
 			}
 		
-			$last_student = DB::table('students')->select(DB::raw('MAX(SUBSTRING(REVERSE(registration_number),0,7)) AS last_number'))->where('campus_program_id',$transfer_program->id)->first();
+			$last_student = DB::table('students')->select(DB::raw('MAX(SUBSTRING(REVERSE(registration_number),0,7)) AS last_number'))->where('campus_program_id',$transfer_program->id)->get();
 			//Student::where('campus_program_id',$selection->campusProgram->id)->max();
 			return $last_student;
 			if(!empty($last_student->last_number)){
