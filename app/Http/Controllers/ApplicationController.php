@@ -5012,8 +5012,6 @@ class ApplicationController extends Controller
         $xml_response=simplexml_load_string($this->sendXmlOverPost($url,$xml_request));
         $json = json_encode($xml_response);
         $array = json_decode($json,TRUE);
-		
-		return dd($xml_request);
 
         
 

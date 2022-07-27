@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Domain\Application\Actions\NextOfKinAction;
+use App\Domain\Application\Models\Applicant;
 use App\Utils\Util;
 use Validator;
 
@@ -30,8 +31,14 @@ class NextOfKinController extends Controller
         }
 
         (new NextOfKinAction)->store($request);
-
-        return redirect()->to('application/payments')->with('message','Next of Kin created successfully');
+		
+		$applicant = Applicant::find($request->get('applicant_id'));
+        
+		if($applicant->is_transfered == 1){
+			return redirect()->to('application/results')->with('message','Next of Kin created successfully');
+		}else{
+           return redirect()->to('application/payments')->with('message','Next of Kin created successfully');
+		}
     }
 
     /**
@@ -56,6 +63,12 @@ class NextOfKinController extends Controller
 
         (new NextOfKinAction)->update($request);
 
-        return Util::requestResponse($request,'Next of Kin updated successfully');
+        $applicant = Applicant::find($request->get('applicant_id'));
+        
+		if($applicant->is_transfered == 1){
+			return redirect()->to('application/results')->with('message','Next of Kin created successfully');
+		}else{
+            return Util::requestResponse($request,'Next of Kin updated successfully');
+		}
     }
 }
