@@ -72,7 +72,11 @@ class RegistrationController extends Controller
 
         $tuition_fee_invoice = Invoice::whereHas('feeType',function($query){
                    $query->where('name','LIKE','%Tuition%');
-        })->where('payable_id',$student->id)->where('payable_type','student')->where('applicable_type','academic_year')->where('applicable_id',session('active_academic_year_id'))->first();
+        })->where(function($query) use($student){
+			$query->where('payable_type','student')->where('applicable_type','academic_year')->where('applicable_id',session('active_academic_year_id'))->where('payable_id',$student->id);
+		})->orWhere(function($query) use($student){
+			$query->where('payable_type','applicant')->where('applicable_type','academic_year')->where('applicable_id',session('active_academic_year_id'))->where('payable_id',$student->applicant_id);
+		})->first();
 
         if(!$tuition_fee_invoice && $year_of_study != 1 && count($annual_remarks) != 0){
             return redirect()->back()->with('error','You have not requested for tuition fee control number');
@@ -80,7 +84,11 @@ class RegistrationController extends Controller
 
         $misc_fee_invoice = Invoice::whereHas('feeType',function($query){
                    $query->where('name','LIKE','%Miscellaneous%');
-        })->where('payable_id',$student->id)->where('payable_type','student')->where('applicable_type','academic_year')->where('applicable_id',session('active_academic_year_id'))->first();
+        })->where(function($query) use($student){
+			$query->where('payable_type','student')->where('applicable_type','academic_year')->where('applicable_id',session('active_academic_year_id'))->where('payable_id',$student->id);
+		})->orWhere(function($query) use($student){
+			$query->where('payable_type','applicant')->where('applicable_type','academic_year')->where('applicable_id',session('active_academic_year_id'))->where('payable_id',$student->applicant_id);
+		})->first();
 
         if(!$misc_fee_invoice && $year_of_study != 1 && count($annual_remarks) != 0){
             return redirect()->back()->with('error','You have not requested for other fees control number');
