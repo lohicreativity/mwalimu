@@ -4908,15 +4908,9 @@ class ApplicationController extends Controller
 	 {
 		 $transfers = InternalTransfer::whereHas('student.applicant.programLevel',function($query){
 			 $query->where('name','LIKE','%Degree%');
-		 })->with(['student.applicant.selections.campusProgram.program','student.applicant.nectaResultDetails','student.applicant.nacteResultDetails','previousProgram'])->where('status','PENDING')->get();
+		 })->with(['student.applicant.selections.campusProgram.program','previousProgram','student.applicant.nectaResultDetails','student.applicant.nacteResultDetails','previousProgram'])->get();
 		 foreach($transfers as $transfer){
 			  $admitted_program_code = null;
-        foreach($transfer->student->applicant->selections as $selection){
-            if($selection->status == 'PENDING'){
-                $admitted_program = $selection->campusProgram;
-                $admitted_program_code = $selection->campusProgram->regulator_code;
-            }
-        }
 
         $f6indexno = null;
         foreach($transfer->student->applicant->nectaResultDetails as $detail){
@@ -4947,7 +4941,7 @@ class ApplicationController extends Controller
                          <f6indexno>'.$f6indexno.'</f6indexno>
 						 <Gender>'.$transfer->student->applicant->gender.'</ Gender >
                          <CurrentProgrammeCode>'.$transfer_program_code.'</CurrentProgrammeCode>
-                         <PreviousProgrammeCode>'.$admitted_program_code.'</PreviousProgrammeCode>
+                         <PreviousProgrammeCode>'.$transfer->previousProgram->regulator_code.'</PreviousProgrammeCode>
                         </RequestParameters>
                         </Request>';
         $xml_response=simplexml_load_string($this->sendXmlOverPost($url,$xml_request));
