@@ -4908,7 +4908,7 @@ class ApplicationController extends Controller
 	 {
 		 $transfers = InternalTransfer::whereHas('student.applicant.programLevel',function($query){
 			 $query->where('name','LIKE','%Degree%');
-		 })->with(['student.applicant.selections.campusProgram.program','previousProgram','student.applicant.nectaResultDetails','student.applicant.nacteResultDetails','previousProgram'])->get();
+		 })->with(['student.applicant.selections.campusProgram.program','previousProgram','student.applicant.nectaResultDetails','student.applicant.nacteResultDetails','previousProgram'])->where('status','PENDING')->get();
 		 foreach($transfers as $transfer){
 			  $admitted_program_code = null;
 
