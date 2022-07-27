@@ -3778,7 +3778,6 @@ class ApplicationController extends Controller
         $applicant->index_number = strtoupper($request->get('index_number'));
         $applicant->entry_mode = $request->get('entry_mode');
 		$applicant->is_transfered = 1;
-		$applicant->submission_complete_status = 0;
         $applicant->save();
 		
 		 ApplicantProgramSelection::where('applicant_id',$applicant->id)->delete();
