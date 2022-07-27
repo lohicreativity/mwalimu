@@ -156,7 +156,7 @@ class RegistrationController extends Controller
            }
 		}
 
-        if($misc_fee_paid < $misc_fee_invoice->amount){
+        if($misc_fee_paid < $misc_fee_invoice->amount && str_contains($semester->name,'1')){
             return redirect()->back()->with('error','You cannot continue with registration because you have not paid other fees');
         }
 
