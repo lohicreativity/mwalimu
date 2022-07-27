@@ -4670,8 +4670,8 @@ class ApplicationController extends Controller
 			
 			$semester = Semester::where('status','ACTIVE')->first();
 			
-			$reg_count = Registration::whereHas('student',function($query) use($selection){
-				$query->where('campus_program_id',$selection->campusProgram->id);
+			$reg_count = Registration::whereHas('student',function($query) use($transfer_program){
+				$query->where('campus_program_id',$transfer_program->id);
 			})->where('study_academic_year_id',$ac_year->id)->where('semester_id',$semester->id)->where('year_of_study',1)->count();
 		
 		    if($selection->campusProgram->entryRequirements[0]->max_capacity < $reg_count){
@@ -4688,22 +4688,22 @@ class ApplicationController extends Controller
 			}
 			$year = substr(date('Y'), 2);
 
-			$prog_code = explode('.', $selection->campusProgram->program->code);
+			$prog_code = explode('.', $transfer_program->program->code);
 			if(str_contains($applicant->intake->name,'March')){
 				if(!str_contains($applicant->campus->name,'Kivukoni')){
 				   $program_code = $prog_code[0].'Z3.'.$prog_code[1];
-				   $stud_group =  $applicant->program_level_id.'Z'.$selection->campusProgram->id.$year;
+				   $stud_group =  $applicant->program_level_id.'Z'.$transfer_program->id.$year;
 				}else{
 				   $program_code = $prog_code[0].'3.'.$prog_code[1];
-				   $stud_group =  $applicant->program_level_id.$selection->campusProgram->id.$year;
+				   $stud_group =  $applicant->program_level_id.$transfer_program->id.$year;
 				}  
 			}else{
 				if(!str_contains($applicant->campus->name,'Kivukoni')){
 				   $program_code = $prog_code[0].'Z.'.$prog_code[1];
-				   $stud_group =  $applicant->program_level_id.'Z'.$selection->campusProgram->id.$year;
+				   $stud_group =  $applicant->program_level_id.'Z'.$transfer_program->id.$year;
 				}else{
 				   $program_code = $prog_code[0].'.'.$prog_code[1];
-				   $stud_group =  $applicant->program_level_id.$selection->campusProgram->id.$year;
+				   $stud_group =  $applicant->program_level_id.$transfer_program->id.$year;
 				}  
 			}
 			
