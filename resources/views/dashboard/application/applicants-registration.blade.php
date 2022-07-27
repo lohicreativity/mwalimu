@@ -61,7 +61,7 @@
                     <thead>
                         <tr>
                           <th>Name</th>
-                          <th>Gender</th>
+                          <th>Sex</th>
                           <th>Programme</th>
                           <th>Action</th>
                         </tr>
