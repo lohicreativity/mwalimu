@@ -382,7 +382,7 @@ class StudentController extends Controller
         $data = [
            'fee_types'=>FeeType::all(),
            'student'=>$student,
-           'invoices'=>Invoice::with(['applicable.academicYear','feeType','gatewayPayment'])->where(function($query) use($student){
+           'invoices'=>Invoice::with(['applicable','feeType','gatewayPayment'])->where(function($query) use($student){
 			      $query->where('payable_id',$student->id)->where('payable_type','student');
 		   })->orWhere(function($query) use($student){
 			      $query->where('payable_id',$student->applicant_id)->where('payable_type','applicant');
