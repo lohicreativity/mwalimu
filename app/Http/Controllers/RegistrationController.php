@@ -66,7 +66,9 @@ class RegistrationController extends Controller
           }
         }elseif(count($semester_remarks) == 1){
         	$year_of_study = 1;
-        }
+        }else{
+			$year_of_study = 1;
+		}
 
         $tuition_fee_invoice = Invoice::whereHas('feeType',function($query){
                    $query->where('name','LIKE','%Tuition%');
