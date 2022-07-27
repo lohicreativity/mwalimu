@@ -119,7 +119,7 @@ class GePGResponseController extends Controller
         $invoice = Invoice::with('feeType')->where('control_no',$control_no)->first();
 		$invoice->gateway_payment_id = $gatepay->id;
 		$invoice->save();
-        /*
+        
 		$acpac = new ACPACService;
 		if($invoice->payable_type == 'applicant'){
 			$applicant = Applicant::find($invoice->payable_id);
@@ -249,7 +249,7 @@ class GePGResponseController extends Controller
 		        $acpac->query("INSERT INTO receipts (BANK,BANKNAME,RCPNUMBER,RCPDATE,RCPDESC,IDCUST,NAMECUST,INVOICE,AMTAPPLIED,IMPORTED,IMPDATE) VALUES ('".$bank_code."','".$bank_name."','".substr($inv->transaction_id,5)."','".date('Ymd',strtotime($inv->datetime))."','".$inv->description."','".$stud_reg."','".$stud_name."','".$inv->control_no."','".$inv->paid_amount."','0','".date('Ymd',strtotime(now()))."')");
 	        }
 		}
-   */
+   
 		
 		
     }
