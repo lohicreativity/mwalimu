@@ -4945,6 +4945,7 @@ class ApplicationController extends Controller
                         <RequestParameters>
                          <f4indexno>'.$transfer->student->applicant->index_number.'</f4indexno>
                          <f6indexno>'.$f6indexno.'</f6indexno>
+						 <Gender>'.$transfer->student->applicant->gender.'</ Gender >
                          <CurrentProgrammeCode>'.$transfer_program_code.'</CurrentProgrammeCode>
                          <PreviousProgrammeCode>'.$admitted_program_code.'</PreviousProgrammeCode>
                         </RequestParameters>
@@ -5009,6 +5010,7 @@ class ApplicationController extends Controller
                         <RequestParameters>
                          <f4indexno>'.$applicant->index_number.'</f4indexno>
                          <f6indexno>'.$f6indexno.'</f6indexno>
+						 <Gender>'.$applicant->gender.'</ Gender >
                          <CurrentProgrammeCode>'.$admitted_program_code.'</CurrentProgrammeCode>
                          <PreviousProgrammeCode>'.$trans->previous_program.'</PreviousProgrammeCode>
                         </RequestParameters>
