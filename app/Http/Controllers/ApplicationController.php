@@ -4734,6 +4734,7 @@ class ApplicationController extends Controller
 			$user->roles()->sync([$role->id]);
 		    
 			$student->user_id = $user->id;
+			$student->save();
             $transfer->save();
 			
 			$old_program_fee = ProgramFee::with(['feeItem.feeType'])->where('study_academic_year_id',$ac_year->id)->where('campus_program_id',$admitted_program->id)->first();
