@@ -3806,6 +3806,7 @@ class ApplicationController extends Controller
             $transfer->save();
 
             $applicant->confirmation_status = 'TRANSFERED';
+			$applicant->status = 'ADMITTED';
             $applicant->save();
             return redirect()->to('registration/external-transfer')->with('message','Transfer updated successfully'); 
 	 }
