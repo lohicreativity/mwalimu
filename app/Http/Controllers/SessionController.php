@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Domain\Academic\Models\StudyAcademicYear;
 use Auth, Validator, Hash;
 
 class SessionController extends Controller
@@ -14,8 +15,10 @@ class SessionController extends Controller
 	public function changePassword(Request $request)
 	{
 		$student = User::find(Auth::user()->id)->student()->with('applicant')->first();
+		$ac_year = StudyAcademicYear::where('status','ACTIVE')->first();
 		$data = [
-           'student'=>$student
+           'student'=>$student,
+		   'study_academic_year'=>$ac_year
 		];
 		return view('auth.change-password',$data)->withTitle('Change Password');
 	}

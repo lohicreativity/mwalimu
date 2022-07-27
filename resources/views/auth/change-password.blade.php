@@ -47,7 +47,7 @@
               </div>
               <div class="card-body">
                  @if(isset($student))
-                    @if($student->applicant->insurance_check != 1)
+                    @if($student->applicant->insurance_check != 1 && $study_academic_year->nhif_enabled == 1)
                      <div class="alert alert-warning">Please pay insurance charges to proceed with registration.</div>
                     @endif
                  @endif
