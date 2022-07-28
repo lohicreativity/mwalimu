@@ -262,6 +262,12 @@
                   <p>Graduation Confirmation</p>
                 </a>
               </li>
+			  <li class="nav-item">
+                <a href="{{ url('student/show-indicate-continue') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Indicate Continue</p>
+                </a>
+              </li>
             </ul>
           </li>
           @else

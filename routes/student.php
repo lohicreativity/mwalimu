@@ -84,5 +84,9 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 
     Route::get('graduation-confirmation',[GraduantController::class,'graduationConfirmation']);
     Route::post('confirm-graduation',[GraduantController::class, 'confirmGraduation']);
+	
+	
+	Route::get('show-indicate-continue',[StudentController::class,'showIndicateContinue']);
+	Route::post('indicate-continue',[StudentController::class,'indicateContinue']);
 
 });

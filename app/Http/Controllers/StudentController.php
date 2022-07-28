@@ -24,9 +24,12 @@ use App\Domain\Finance\Models\Invoice;
 use App\Domain\Finance\Models\ProgramFee;
 use App\Domain\Finance\Models\GatewatPayment;
 use App\Domain\Finance\Models\LoanAllocation;
+use App\Domain\Application\Models\NacteResultDetail;
+use App\Domain\Application\Models\NacteResult;
 use App\Domain\Settings\Models\Currency;
 use Illuminate\Support\Facades\Http;
 use App\Models\User;
+use App\Models\Role;
 use Auth, Validator, DB;
 
 class StudentController extends Controller
@@ -767,6 +770,92 @@ class StudentController extends Controller
         return view('dashboard.student.postponements',$data)->withTitle('Postponements');
 
     }
+	
+	/**
+	 * Show indicate continue
+	 */
+	 public function showIndicateContinue(Request $request)
+	 {
+		 $student = User::find(Auth::user()->id)->student;
+		 $data = [
+		    'student'=>$student
+		 ];
+		 return view('dashboard.student.indicate-continue',$data)->withTitle('Indicate Continue');
+	 }
+	 
+	 /**
+	  * Indicate continue
+	  */
+	  public function indicateContinue(Request $request)
+	  {
+		  DB::beginTransaction();
+		  $student = Student::has('overallRemarks')->with(['applicant','campusProgram.program','overalRemsrks'=>function($query){
+			  $query->latest();
+		  }])->find($request->get('student_id'));
+		  if(!$student){
+			  return redirect()->back()->with('error','You cannot indicate to continue with upper level');
+		  }
+		  $application_window = ApplicationWindow::where('campus_id',$student->applicant->campus_id)->where('status','ACTIVE')->latest()->first();
+		  if(!$application_window){
+			  return redirect()->back()->with('error','Application window not defined');
+		  }
+		  
+		  $applicant = new Applicant;
+		  $applicant->first_name = $student->applicant->first_name;
+		  $applicant->middle_name = $student->applicant->middle_name;
+		  $applicant->surname = $student->applicant->surname;
+		  $applicant->index_number = $student->applicant->index_number;
+		  $applicant->entry_mode = 'EQUIVALENT';
+		  $applicant->campus_id = $student->applicant->campus_id;
+		  $applicant->intake_id = $student->applicant->intake_id;
+		  $applicant->application_window_id = $application_window->id;
+		  
+		  
+		  $user = new User;
+		  $user->username = $applicant->index_number;
+		  $user->password = Hash::make('123456');
+		  $user->save();
+		  
+		  $role = Role::where('name','applicant')->first();
+		  $user->roles()->sync([$role->id]);
+		  
+		  $applicant->user_id = $user->id;
+		  $applicant->save();
+		  
+	      $results = ExaminationResult::whereHas('moduleAssignent.programModuleAssignment',function($query) use($student){
+		        $query->where('year_of_study',$student->year_of_study);
+	      })->where('student_id',$student->id)->get();
+		  
+		    $detail = new NacteResultDetail;
+		    $detail->institution = 'MNMA';
+			$detail->programme = $student->campusProgram->program->name;
+			$detail->firstname = $student->first_name;
+			$detail->middlename = $student->middle_name;
+			$detail->surname = $student->surname;
+			$detail->gender = $student->gender;
+			$detail->avn = $student->registration_number;
+			$detail->registration_number = $student->registration_number;
+			$detail->diploma_gpa = $student->overallRemarks[0]->gpa;
+			$detail->diploma_code = $student->campusProgram->program->code;
+			$detail->diploma_category = 'Category';
+			$detail->diploma_graduation_year = date('Y');
+			$detail->username = $student->surname;
+			$detail->date_birth = $student->birth_date;
+			$detail->applicant_id = $applicant->id;
+			$detail->save();
+			
+			
+			foreach($results as $result){
+				 $res = new NacteResult;
+				 $res->subject = $result->moduleAssignment->module->name;
+				 $res->grade = $result->grade;
+				 $res->applicant_id = $applicant->id;
+				 $res->nacte_result_detail_id = $detail->id;
+				 $res->save();
+			}
+		  DB::commit();
+		  return redirect()->back()->with('message','You have indicated to continue with upper level successfully');
+	  }
 
     /**
      * Logout student
