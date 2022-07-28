@@ -224,7 +224,7 @@
                       </div>
                       <!-- /.modal -->
 
-                      <a class="btn btn-danger btn-sm" href="#" data-toggle="modal" data-target="#ss-delete-item-{{ $item->id }}">
+                      <a class="btn btn-danger btn-sm" href="#" @if(Utils\Util::arrayContains($item->name,['MNMASO','Medical Examination','Caution Money','Practical Training','TCU','NACTE','Identity Card','Registration','Late Registration'])) disabled="disabled" @else data-toggle="modal" data-target="#ss-delete-item-{{ $item->id }}" @endif>
                               <i class="fas fa-trash">
                               </i>
                               Delete

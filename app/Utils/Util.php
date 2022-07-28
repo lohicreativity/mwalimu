@@ -23,6 +23,23 @@ class Util {
            }
         }
    }
+   
+   /**
+    * Check if array contains
+	*/
+	public static function arrayContains($item, $collection)
+	{
+		$status = false;
+		if(is_array($collection)){
+			foreach($collection as $itm){
+				if(str_contains($item,$itm)){
+					$status = true;
+					break;
+				}
+			}
+		}
+		return $status;
+	}
 
    /**
     * Compute GPA
