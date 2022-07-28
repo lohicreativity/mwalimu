@@ -558,11 +558,15 @@ class ModuleAssignmentController extends Controller
                 $students = $module_assignment->programModuleAssignment->students()->get(); 
                 $registrations = Registration::whereHas('student.options.moduleAssignments',function($query) use($module_assignment){
                      $query->where('id',$module_assignment->id);
-                })->with(['student.courseWorkResults.assessmentPlan'])->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)->where('study_academic_year_id',$module_assignment->programModuleAssignment->study_academic_year_id)->where('semester_id',$module_assignment->programModuleAssignment->semester_id)->get();
+                })->with(['student.courseWorkResults.assessmentPlan','student.courseWorkResults'=>function($query) use($module_assignment){
+					    $query->where('module_assignment_id',$module_assignment->id);
+				  }])->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)->where('study_academic_year_id',$module_assignment->programModuleAssignment->study_academic_year_id)->where('semester_id',$module_assignment->programModuleAssignment->semester_id)->get();
             }else{
                 $registrations = Registration::whereHas('student',function($query) use ($module_assignment){
                         $query->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id);
-                  })->with(['student.courseWorkResults.assessmentPlan'])->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)->where('study_academic_year_id',$module_assignment->programModuleAssignment->study_academic_year_id)->where('semester_id',$module_assignment->programModuleAssignment->semester_id)->get();
+                  })->with(['student.courseWorkResults.assessmentPlan','student.courseWorkResults'=>function($query) use($module_assignment){
+					    $query->where('module_assignment_id',$module_assignment->id);
+				  }])->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)->where('study_academic_year_id',$module_assignment->programModuleAssignment->study_academic_year_id)->where('semester_id',$module_assignment->programModuleAssignment->semester_id)->get();
             }
 
                 $data = [
