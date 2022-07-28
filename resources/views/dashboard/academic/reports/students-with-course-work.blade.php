@@ -230,7 +230,9 @@
                             $cw_total = 0;
                         @endphp
                       @foreach($assessment_plans as $plan)
-                        
+                        @php 
+							$cw_available = false; 
+						@endphp
                         @foreach($reg->student->courseWorkResults as $result)
                           @if($result->assessment_plan_id == $plan->id)
                           <td>{{ $result->score }}</td>
@@ -238,20 +240,14 @@
                                $cw_available = true; 
                                $cw_total += $result->score;
                             @endphp
-                          @else
-                            @php 
-                                $cw_available = false; 
-                            @endphp
                           @endif
                         @endforeach
-                        
-
-                        
+                         @if(!$cw_available)
+                            <td>-</td>
+                         @endif
                       @endforeach
-                      @for($i = 0; $i < $empty_columns; $i++)
-                        <td>-</td>
-                      @endfor
-                      <td>@if(count($reg->student->courseWorkResults) != 0 && $course_work_processed) {{ $cw_total }} @else - @endif</td>
+                    
+                      <td>@if(count($reg->student->courseWorkResults) == count($assessment_plans) && $course_work_processed) {{ $cw_total }} @else - @endif</td>
                       <td></td>
                     </tr>
                     @endforeach
