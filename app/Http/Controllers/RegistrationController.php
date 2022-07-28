@@ -136,13 +136,25 @@ class RegistrationController extends Controller
 				}
 				
 				if($fee_diff > 0){
-					if($tuition_fee_paid < (0.6*($tuition_fee_invoice->amount+$fee_diff))){
-                       return redirect()->back()->with('error','You cannot continue with registration because you have not paid sufficient tuition fee');
-                    }
+					if(str_contains($semester->name,1)){
+					    if($tuition_fee_paid < (0.6*($tuition_fee_invoice->amount+$fee_diff))){
+                           return redirect()->back()->with('error','You cannot continue with registration because you have not paid sufficient tuition fee');
+                        }
+					}else{
+						if($tuition_fee_paid < (1.0*($tuition_fee_invoice->amount+$fee_diff))){
+                           return redirect()->back()->with('error','You cannot continue with registration because you have not paid sufficient tuition fee');
+                        }
+					}
 				}elseif($fee_diff < 0){
-					if($tuition_fee_paid < (0.6*($tuition_fee_invoice->amount+$fee_diff))){
-                       return redirect()->back()->with('error','You cannot continue with registration because you have not paid sufficient tuition fee');
-                    }
+					if(str_contains($semester->name,1)){
+					   if($tuition_fee_paid < (0.6*($tuition_fee_invoice->amount+$fee_diff))){
+                          return redirect()->back()->with('error','You cannot continue with registration because you have not paid sufficient tuition fee');
+                       }
+					}else{
+					   if($tuition_fee_paid < (1.0*($tuition_fee_invoice->amount+$fee_diff))){
+                          return redirect()->back()->with('error','You cannot continue with registration because you have not paid sufficient tuition fee');
+                       }
+					}
 				}
 				
 			}else{
