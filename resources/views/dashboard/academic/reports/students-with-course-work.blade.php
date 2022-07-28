@@ -247,7 +247,7 @@
                          @endif
                       @endforeach
                     
-                      <td>@if(count($reg->student->courseWorkResults) != 0 && $course_work_processed) {{ $cw_total }} @else - @endif</td>
+                      <td>@if(count($reg->student->courseWorkResults) == count($assessment_plans) && $course_work_processed) {{ $cw_total }} @else - @endif</td>
                       <td></td>
                     </tr>
                     @endforeach
