@@ -568,6 +568,7 @@ class ExaminationResultController extends Controller
                  if($pub = ResultPublication::where('study_academic_year_id',$request->get('study_academic_year_id'))->where('semester_id',$request->get('semester_id'))->first()){
                     $publication = $pub;
                  }else{
+					$staff = User::find(Auth::user()->id)->staff; // Added by Lupiana 30/07/2020 
                     $publication = new ResultPublication;
                     $publication->study_academic_year_id = $request->get('study_academic_year_id');
                     $publication->semester_id = $request->get('semester_id') == 'SUPPLEMENTARY'? 0 : $request->get('semester_id');
@@ -1077,7 +1078,7 @@ class ExaminationResultController extends Controller
                        $query->where('campus_program_id',$campus_program->id)->where('category','OPTIONAL');
                   })->whereNotNull('final_uploaded_at')->where('student_id',$student->id)->distinct()->count('module_assignment_id') != $elective_policy->number_of_options){
                     DB::rollback();
-                    return redirect()->back()->with('error','Some optional modules as missing final marks');
+                    return redirect()->back()->with('error','Some optional modules are missing final marks');
                 }
               }
             $total_credit = 0;
