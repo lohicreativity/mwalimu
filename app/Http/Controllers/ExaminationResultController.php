@@ -568,7 +568,6 @@ class ExaminationResultController extends Controller
                  if($pub = ResultPublication::where('study_academic_year_id',$request->get('study_academic_year_id'))->where('semester_id',$request->get('semester_id'))->first()){
                     $publication = $pub;
                  }else{
-					$staff = User::find(Auth::user()->id)->staff; // Added by Lupiana 30/07/2020 
                     $publication = new ResultPublication;
                     $publication->study_academic_year_id = $request->get('study_academic_year_id');
                     $publication->semester_id = $request->get('semester_id') == 'SUPPLEMENTARY'? 0 : $request->get('semester_id');
