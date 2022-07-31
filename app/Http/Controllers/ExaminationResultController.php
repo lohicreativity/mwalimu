@@ -68,6 +68,8 @@ class ExaminationResultController extends Controller
             'publications'=>$request->has('study_academic_year_id')? ResultPublication::with(['studyAcademicYear.academicYear','semester','ntaLevel'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->latest()->get() : [],
             'process_records'=>ExaminationProcessRecord::whereHas('campusProgram',function($query) use ($staff){
                   $query->where('campus_id',$staff->campus_id);
+               })->whereHas('campusProgram.program.departments',function($query) use ($staff){
+                  $query->where('id',$staff->department_id);
                })->with(['campusProgram.program','semester'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->latest()->paginate(20),
             'staff'=>$staff,
             'request'=>$request
