@@ -793,6 +793,9 @@ class StudentController extends Controller
 	  {
 		  DB::beginTransaction();
 		  $student = Student::has('overallRemark')->with(['applicant','campusProgram.program','overallRemark'])->find($request->get('student_id'));
+		  if($student->continue_status == 1){
+			  return redirect()->back()->with('error','You have already indicated your continuation status');
+		  }
 		  if(!$student){
 			  return redirect()->back()->with('error','You cannot indicate to continue with upper level');
 		  }
@@ -810,8 +813,8 @@ class StudentController extends Controller
 		  $applicant->campus_id = $student->applicant->campus_id;
 		  $applicant->intake_id = $student->applicant->intake_id;
 		  $applicant->application_window_id = $application_window->id;
+		  $applicant->is_continue = 1;
 		  
-		  NectaResultDetail::where('applicant_id',$student->applicant_id)->update(['applicant_id'=>$applicant->id]);
 		  
 		  
 		  $user = new User;
@@ -824,6 +827,8 @@ class StudentController extends Controller
 		  
 		  $applicant->user_id = $user->id;
 		  $applicant->save();
+		  
+		  NectaResultDetail::where('applicant_id',$student->applicant_id)->update(['applicant_id'=>$applicant->id]);
 		  
 	      $results = ExaminationResult::whereHas('moduleAssignment.programModuleAssignment',function($query) use($student){
 		        $query->where('year_of_study',$student->year_of_study);
@@ -845,6 +850,7 @@ class StudentController extends Controller
 			$detail->username = $student->surname;
 			$detail->date_birth = $student->birth_date;
 			$detail->applicant_id = $applicant->id;
+			$detail->verified = 1;
 			$detail->save();
 			
 			
@@ -856,6 +862,7 @@ class StudentController extends Controller
 				 $res->nacte_result_detail_id = $detail->id;
 				 $res->save();
 			}
+		  Student::where('id',$student->id)->update(['continue_status'=>1]);
 		  DB::commit();
 		  return redirect()->back()->with('message','You have indicated to continue with upper level successfully');
 	  }
