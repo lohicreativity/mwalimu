@@ -573,7 +573,7 @@ class ExaminationResultController extends Controller
                     $publication->study_academic_year_id = $request->get('study_academic_year_id');
                     $publication->semester_id = $request->get('semester_id') == 'SUPPLEMENTARY'? 0 : $request->get('semester_id');
                     $publication->type = $request->get('semester_id') == 'SUPPLEMENTARY'? 'SUPP' : 'FINAL';
-                    $publication->campus_id = $staff->campus_id;
+                    $publication->campus_id = $campus_program->campus_id;
                     $publication->nta_level_id = $campus_program->program->nta_level_id;
                     $publication->published_by_user_id = Auth::user()->id;
                     $publication->save();
