@@ -26,6 +26,7 @@ use App\Domain\Finance\Models\GatewatPayment;
 use App\Domain\Finance\Models\LoanAllocation;
 use App\Domain\Application\Models\NacteResultDetail;
 use App\Domain\Application\Models\NacteResult;
+use App\Domain\Application\Models\ApplicationWindow;
 use App\Domain\Settings\Models\Currency;
 use Illuminate\Support\Facades\Http;
 use App\Models\User;
