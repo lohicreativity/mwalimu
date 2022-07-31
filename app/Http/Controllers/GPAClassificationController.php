@@ -17,7 +17,7 @@ class GPAClassificationController extends Controller
     /**
      * Display a list of levels
      */
-    public function index()
+    public function index(Request $request)
     {
     	$data = [
            'nta_levels'=>NTALevel::with(['award','programs'])->get(),
