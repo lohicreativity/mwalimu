@@ -32,7 +32,7 @@ use App\Domain\Settings\Models\Currency;
 use Illuminate\Support\Facades\Http;
 use App\Models\User;
 use App\Models\Role;
-use Auth, Validator, DB;
+use Auth, Hash, Validator, DB;
 
 class StudentController extends Controller
 {
