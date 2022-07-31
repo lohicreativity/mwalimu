@@ -2671,7 +2671,9 @@ class ExaminationResultController extends Controller
            'semesters'=>Semester::all(),
            'campuses'=>Campus::all(),
            'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
-           'modules'=>$request->has('study_academic_year_id')? ProgramModuleAssignment::with(['module','examinationResults'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',explode('_',$request->get('campus_program_id'))[2])->where('campus_program_id',explode('_',$request->get('campus_program_id'))[0])->where('semester_id',$request->get('semester_id'))->get() : [],
+           'modules'=>$request->has('study_academic_year_id')? ProgramModuleAssignment::with(['module','examinationResults','moduleAssignments'=>function($query) use($request){
+			   $query->where('study_academic_year_id',$request->get('study_academic_year_id'));
+		   }])->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',explode('_',$request->get('campus_program_id'))[2])->where('campus_program_id',explode('_',$request->get('campus_program_id'))[0])->where('semester_id',$request->get('semester_id'))->get() : [],
            'staff'=>User::find(Auth::user()->id)->staff,
            'request'=>$request
     	];
