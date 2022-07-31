@@ -69,7 +69,7 @@
 				<div class="row">
 				  <div class="form-group col-6">
 					{!! Form::label('','NTA level') !!}
-					<select name="nta_level_id[]" class="form-control ss-tags-input" multiple>
+					<select name="nta_level_id" class="form-control">
 					  <option value="">Select NTA Level</option>
 					  @foreach($nta_levels as $level)
 					  <option value="{{ $level->id }}" @if($level->id == $request->get('nta_level_id')) selected="selected" @endif>{{ $level->name }}</option>
@@ -129,7 +129,7 @@
 					  </div>
 					  <div class="form-group col-4">
 						{!! Form::label('','NTA level') !!}
-						<select name="nta_level_id" class="form-control">
+						<select name="nta_level_id[]" class="form-control ss-select-tags" multiple>
 						  <option value="">Select NTA Level</option>
 						  @foreach($nta_levels as $level)
 						  <option value="{{ $level->id }}">{{ $level->name }}</option>
