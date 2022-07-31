@@ -792,7 +792,7 @@ class StudentController extends Controller
                  $query->where('verified',1);
             },'outResultDetails'=>function($query){
                  $query->where('verified',1);
-            },'selections.campusProgram.campus','nectaResultDetails.results','nacteResultDetails.results','outResultDetails.results','programLevel','applicationWindow'])->where('campus_id',$student->campus_id)->latest()->first();
+            },'selections.campusProgram.campus','nectaResultDetails.results','nacteResultDetails.results','outResultDetails.results','programLevel','applicationWindow'])->where('campus_id',$student->applicant->campus_id)->latest()->first();
 
         $window = $applicant->applicationWindow;
 
