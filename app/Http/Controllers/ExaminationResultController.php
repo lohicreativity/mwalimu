@@ -556,6 +556,7 @@ class ExaminationResultController extends Controller
                          }
                          $remark->student_id = $student->id;
                          $remark->gpa = $overall_gpa;
+						 $remark->remark = Util::getOverallRemark($sem_remarks);
                          $remark->class = $overall_remark;
                          $remark->save();
                       }
