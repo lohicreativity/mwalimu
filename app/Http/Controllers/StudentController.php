@@ -789,9 +789,7 @@ class StudentController extends Controller
 	  public function indicateContinue(Request $request)
 	  {
 		  DB::beginTransaction();
-		  $student = Student::has('overallRemarks')->with(['applicant','campusProgram.program','overalRemsrks'=>function($query){
-			  $query->latest();
-		  }])->find($request->get('student_id'));
+		  $student = Student::has('overallRemark')->with(['applicant','campusProgram.program','overalRemsrk'])->find($request->get('student_id'));
 		  if(!$student){
 			  return redirect()->back()->with('error','You cannot indicate to continue with upper level');
 		  }
