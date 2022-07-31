@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Domain\Academic\Models\StudyAcademicYear;
 use App\Domain\Academic\Models\Semester;
+use App\Domain\Academic\Models\Award;
 use App\Domain\Academic\Models\CampusProgram;
 use App\Domain\Academic\Models\ElectivePolicy;
 use App\Domain\Academic\Models\ElectiveModuleLimit;
@@ -792,7 +793,7 @@ class StudentController extends Controller
 	  public function indicateContinue(Request $request)
 	  {
 		  DB::beginTransaction();
-		  $student = Student::has('overallRemark')->with(['applicant','campusProgram.program','overallRemark'])->find($request->get('student_id'));
+		  $student = Student::has('overallRemark')->with(['applicant.programLevel','campusProgram.program','overallRemark'])->find($request->get('student_id'));
 		  if($student->continue_status == 1){
 			  return redirect()->back()->with('error','You have already indicated your continuation status');
 		  }
@@ -804,6 +805,17 @@ class StudentController extends Controller
 			  return redirect()->back()->with('error','Application window not defined');
 		  }
 		  
+		  $past_level = $student->applicant->programLevel;
+		  if(str_contains($past_level->code,'BTC')){
+			  $level = Award::where('code','OD')->first();
+		  }elseif(str_contains($past_level->code,'OD')){
+			  $level = Award::where('code','HD')->first();
+		  }elseif(str_contains($past_level->code,'HD')){
+			  $level = Award::where('code','BD')->first();
+		  }elseif(str_contains($past_level->code,'BD')){
+			  $level = Award::where('code','MD')->first();
+		  }
+		  
 		  $applicant = new Applicant;
 		  $applicant->first_name = $student->applicant->first_name;
 		  $applicant->middle_name = $student->applicant->middle_name;
@@ -813,6 +825,18 @@ class StudentController extends Controller
 		  $applicant->campus_id = $student->applicant->campus_id;
 		  $applicant->intake_id = $student->applicant->intake_id;
 		  $applicant->application_window_id = $application_window->id;
+		  $applicant->birth_date = $student->applicant->birth_date;
+		  $applicant->nationality = $student->applicant->nationality;
+		  $applicant->next_of_kin_id = $student->applicant->next_of_kin_id;
+		  $applicant->email = $student->applicant->email;
+		  $applicant->country_id = $student->applicant->country_id;
+		  $applicant->region_id = $student->applicant->region_id;
+		  $applicant->district_id = $student->applicant->district_id;
+		  $applicant->ward_id = $student->applicant->ward_id;
+		  $applicant->street = $student->applicant->street;
+		  $applicant->nin = $student->applicant->nin;
+		  $applicant->phone = $student->applicant->phone;
+		  $applicant->program_level_id = $level->id;
 		  $applicant->is_continue = 1;
 		  
 		  
