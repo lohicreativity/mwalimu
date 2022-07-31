@@ -13,6 +13,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\CurrencyController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\SystemModuleController;
+use App\Http\Controllers\GPAClassificationController;
 use App\Http\Controllers\SpecialDateController;
 
 /*
