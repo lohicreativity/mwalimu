@@ -41,7 +41,7 @@
             <!-- general form elements -->
 			<div class="card card-default">
               <div class="card-header">
-                <h3 class="card-title">{{ __('Add NTA Level') }}</h3>
+                <h3 class="card-title">{{ __('Select NTA Level') }}</h3>
               </div>
               <!-- /.card-header -->
               <!-- form start -->
@@ -65,6 +65,7 @@
 				  ];
 			  @endphp
 			{!! Form::open(['url'=>'settings/gpa-classifications','method'=>'GET','class'=>'ss-form-processing']) !!}
+			<div class="card-body">
 				<div class="row">
 				  <div class="form-group col-6">
 					{!! Form::label('','NTA level') !!}
@@ -120,6 +121,7 @@
 					  ];
 				  @endphp
 				{!! Form::open(['url'=>'settings/gpa-classification/store','class'=>'ss-form-processing']) !!}
+				 <div class="card-body">
 					<div class="row">
 					  <div class="form-group col-4">
 						{!! Form::label('','Name') !!}
