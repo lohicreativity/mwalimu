@@ -549,6 +549,9 @@ class ExaminationResultController extends Controller
                       
                       $overall_gpa = bcdiv($points/$credits, 1,1);
                       $gpa_class = GPAClassification::where('nta_level_id',$student->campusProgram->program->nta_level_id)->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('min_gpa','<=',bcdiv($overall_gpa,1,1))->where('max_gpa','>=',bcdiv($overall_gpa,1,1))->first();
+					  if(!$gpa_class){
+						  return redirect()->back()->with('error','GPA classification not defined');
+					  }
                       if($gpa_class && $student_buffer[$student->id]['year_of_study'] == $student->year_of_study && str_contains($semester->name,2)){
                          $overall_remark = $gpa_class->class;
 
