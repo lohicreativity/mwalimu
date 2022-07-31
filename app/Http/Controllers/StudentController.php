@@ -822,7 +822,7 @@ class StudentController extends Controller
 		  $applicant->user_id = $user->id;
 		  $applicant->save();
 		  
-	      $results = ExaminationResult::whereHas('moduleAssignent.programModuleAssignment',function($query) use($student){
+	      $results = ExaminationResult::whereHas('moduleAssignment.programModuleAssignment',function($query) use($student){
 		        $query->where('year_of_study',$student->year_of_study);
 	      })->where('student_id',$student->id)->get();
 		  
