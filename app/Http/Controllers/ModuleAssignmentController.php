@@ -361,13 +361,8 @@ class ModuleAssignmentController extends Controller
          try{
               
               $module_assignment = ModuleAssignment::with('assessmentPlans','module','programModuleAssignment.campusProgram.program')->findOrFail($request->get('module_assignment_id'));
-
-              $module = Module::with('ntaLevel')->find($module_assignment->module_id);
-              $policy = ExaminationPolicy::where('nta_level_id',$module->ntaLevel->id)->where('study_academic_year_id',$module_assignment->study_academic_year_id)->where('type',$module_assignment->programModuleAssignment->campusProgram->program->category)->first();
-
-              $module_assignment->course_work_process_status = 'PROCESSED';
-              $module_assignment->save();
-              // Check if all components are uploaded
+			  
+			  // Check if all components are uploaded
               $assessment_upload_status = true;
               $assessment_plans = AssessmentPlan::where('module_assignment_id',$module_assignment->id)->get();
               foreach ($assessment_plans as $key => $plan) {
@@ -379,6 +374,13 @@ class ModuleAssignmentController extends Controller
               if(!$assessment_upload_status){
                   return redirect()->back()->with('error','Some assessment components are not uploaded');
               }
+
+              $module = Module::with('ntaLevel')->find($module_assignment->module_id);
+              $policy = ExaminationPolicy::where('nta_level_id',$module->ntaLevel->id)->where('study_academic_year_id',$module_assignment->study_academic_year_id)->where('type',$module_assignment->programModuleAssignment->campusProgram->program->category)->first();
+
+              $module_assignment->course_work_process_status = 'PROCESSED';
+              $module_assignment->save();
+              
 
               if($module_assignment->programModuleAssignment->category == 'OPTIONAL'){
                 $students = $module_assignment->programModuleAssignment->students()->get();
@@ -869,7 +871,7 @@ class ModuleAssignmentController extends Controller
                 foreach($uploaded_students as $up_stud){
                    if(Student::whereHas('registrations',function($query) use($module_assignment){
                      $query->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)->where('semester_id',$module_assignment->programModuleAssignment->semester_id)->where('study_academic_year_id',$module_assignment->programModuleAssignment->study_academic_year_id);
-                })->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id)->where('registration_number',$up_stud[1])->count() == 0){
+                })->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id)->where('registration_number',$up_stud->registration_number)->count() == 0){
                       $invalid_students[] = $up_stud;
                    }
                 }
