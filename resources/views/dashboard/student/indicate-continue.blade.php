@@ -48,7 +48,7 @@
 			  {!! Form::input('hidden','student_id',$student->id) !!}
               </div>
               <div class="card-footer">
-                 <button type="submit" class="btn btn-primary">Continue with Upper Level<button>
+                 <button type="submit" class="btn btn-primary">Continue with Upper Level</button>
               </div>
               {!! Form::close() !!}
             </div>
