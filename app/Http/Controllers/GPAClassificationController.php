@@ -22,7 +22,7 @@ class GPAClassificationController extends Controller
     	$data = [
            'nta_levels'=>NTALevel::with(['award','programs'])->get(),
            'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
-		   'classifications'=>GPAClassification::where('study_academic_year_id',$request->get(''study_academic_year_id))->where('nta_level_id',$request->get('nta_level_id'))->paginate(20),
+		   'classifications'=>GPAClassification::where('study_academic_year_id',$request->get('study_academic_year_id'))->where('nta_level_id',$request->get('nta_level_id'))->paginate(20),
 		   'nta_level'=>NTALevel::find($request->get('nta_level_id')),
 		   'study_academic_year'=>StudyAcademicYear::with('academicYear')->find($request->get('study_academic_year_id')),
            'staff'=>User::find(Auth::user()->id)->staff,
