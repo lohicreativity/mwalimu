@@ -70,7 +70,7 @@ class Util {
     */
    public static function getOverallRemark($remarks, $results = [], $retake = [], $carry = [])
    {
-      return $remark = $this->getAnnualRemark($remarks,$results,$retake,$carry);
+      return $remark = Self::getAnnualRemark($remarks,$results,$retake,$carry);
    }
 
    /**
