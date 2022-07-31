@@ -179,9 +179,10 @@
                   <tr>
                     <th>Study Academic Year</th>
                     <th>Semester</th>
+					<th>NTA Level</th>
                     <th>Status</th>
                     <th>Type</th>
-                    <th>Actions</th>
+                    
                   </tr>
                   </thead>
                   <tbody>
@@ -189,26 +190,9 @@
                   <tr>
                     <td>{{ $publication->studyAcademicYear->academicYear->year }}</td>
                     <td>@if($publication->semester) {{ $publication->semester->name }} @else SUPP @endif</td>
+					<td>{{ $publication->ntaLevel->name }}</td>
                     <td>{{ $publication->status }}</td>
                     <td>{{ $publication->type }}</td>
-                    <td>
-                      @can('publish-examination-results')
-                      @if($publication->status == 'PUBLISHED')
-                        <a class="btn btn-info btn-sm" href="{{ url('academic/result-publication/'.$publication->id.'/unpublish') }}">
-                              <i class="fas fa-ban">
-                              </i>
-                              Unpublish
-                       </a>
-                      @else
-                        <a class="btn btn-info btn-sm" href="{{ url('academic/result-publication/'.$publication->id.'/publish') }}">
-                              <i class="fas fa-check-circle">
-                              </i>
-                              Publish
-                       </a>
-                      @endif
-                      @endcan
-                      
-                    </td>
                   </tr>
                   @endforeach
                   

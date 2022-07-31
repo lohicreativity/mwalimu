@@ -64,7 +64,7 @@ class ExaminationResultController extends Controller
             'active_semester'=>Semester::where('status','ACTIVE')->first(),
             'first_semester_publish_status'=>$first_semester_publish_status,
             'second_semester_publish_status'=>$second_semester_publish_status,
-            'publications'=>$request->has('study_academic_year_id')? ResultPublication::with(['studyAcademicYear.academicYear','semester'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->get() : [],
+            'publications'=>$request->has('study_academic_year_id')? ResultPublication::with(['studyAcademicYear.academicYear','semester','ntaLevel'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->get() : [],
             'process_records'=>ExaminationProcessRecord::whereHas('campusProgram',function($query) use ($request){
                   $query->where('campus_id',$request->get('campus_id'));
                })->with(['campusProgram.program','semester'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->paginate(20),
