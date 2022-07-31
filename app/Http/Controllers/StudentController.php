@@ -783,6 +783,7 @@ class StudentController extends Controller
 	 {
 		 $student = User::find(Auth::user()->id)->student()->with('applicant')->first();
 		 
+		 if($student->continue_status == 1){
 		 $applicant = Applicant::where('index_number',$student->applicant->index_number)->with(['selections.campusProgram.program','selections'=>function($query){
                 $query->orderBy('order','asc');
             },'nectaResultDetails'=>function($query){
@@ -1233,6 +1234,11 @@ class StudentController extends Controller
             }
             
         }
+	    }else{
+			$window = null;
+			$programs = [];
+			$applicant = null;
+		}
         $data = [
            'applicant'=>$applicant,
            'campus'=>Campus::find($student->campus_id),

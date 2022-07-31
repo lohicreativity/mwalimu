@@ -48,7 +48,7 @@
 			  {!! Form::input('hidden','student_id',$student->id) !!}
               </div>
               <div class="card-footer">
-                 <button type="submit" class="btn btn-primary">Continue with Upper Level</button>
+                 <button @if($student->continue_status == 1) disabled="disabled" @else type="submit" @endif class="btn btn-primary">Continue with Upper Level</button>
               </div>
               {!! Form::close() !!}
             </div>
