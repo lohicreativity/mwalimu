@@ -50,14 +50,15 @@ class GPAClassificationController extends Controller
            }
         }
 
-
+        foreach($request->get('nta_level_id') as $id){
         $class = new GPAClassification;
-		$class->nta_level_id = $request->get('nta_level_id');
+		$class->nta_level_id = $id;
 		$class->study_academic_year_id = $request->get('study_academic_year_id');
 		$class->min_gpa = $request->get('min_gpa');
 		$class->max_gpa = $request->get('max_gpa');
 		$class->name = $request->get('name');
 		$class->save();
+		}
 
         return Util::requestResponse($request,'NTA Level created successfully');
     }

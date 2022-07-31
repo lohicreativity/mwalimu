@@ -69,7 +69,7 @@
 				<div class="row">
 				  <div class="form-group col-6">
 					{!! Form::label('','NTA level') !!}
-					<select name="nta_level_id" class="form-control">
+					<select name="nta_level_id[]" class="form-control ss-tags-input" multiple>
 					  <option value="">Select NTA Level</option>
 					  @foreach($nta_levels as $level)
 					  <option value="{{ $level->id }}" @if($level->id == $request->get('nta_level_id')) selected="selected" @endif>{{ $level->name }}</option>
@@ -138,7 +138,7 @@
 					  </div>
 					  <div class="form-group col-4">
 						{!! Form::label('','Study academic year') !!}
-						<select name="nta_level_id" class="form-control">
+						<select name="study_academic_year_id" class="form-control">
 						  <option value="">Select Study Academic Year</option>
 						  @foreach($study_academic_years as $year)
 						  <option value="{{ $year->id }}">{{ $year->academicYear->year }}</option>
@@ -245,7 +245,7 @@
                                       </div>
 									  <div class="form-group col-4">
                                         {!! Form::label('','Study academic year') !!}
-                                        <select name="nta_level_id" class="form-control">
+                                        <select name="study_academic_year_id" class="form-control">
                                           <option value="">Select Study Academic Year</option>
                                           @foreach($study_academic_years as $year)
                                           <option value="{{ $year->id }}" @if($year->id == $class->study_academic_year_id) selected="selected" @endif>{{ $year->academicYear->year }}</option>
