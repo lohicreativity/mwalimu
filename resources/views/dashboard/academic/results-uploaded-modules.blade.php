@@ -119,7 +119,7 @@
                     <select name="study_academic_year_id" class="form-control" required>
                        <option value="">Select Study Academic Year</option>
                        @foreach($study_academic_years as $year)
-                       <option value="{{ $year->id }}" @if($request->get('study_academic_year_id') == $year->id) selected="selected" @endif>{{ $year->academicYear->year }}</option>
+                       <option value="{{ $year->id }}" @if(session('active_academic_year_id') == $year->id) selected="selected" @endif>{{ $year->academicYear->year }}</option>
                        @endforeach
                     </select>
                   </div>
@@ -130,7 +130,7 @@
                     <select name="semester_id" class="form-control" required>
                        <option value="">Select Semester</option>
                        @foreach($semesters as $semester)
-                       <option value="{{ $semester->id }}" @if($request->get('semester_id') == $semester->id) selected="selected" @endif>{{ $semester->name }}</option>
+                       <option value="{{ $semester->id }}" @if(session('active_semester_id') == $semester->id) selected="selected" @endif>{{ $semester->name }}</option>
                        @endforeach
                     </select>
                     {!! Form::input('hidden','campus_id',$campus->id) !!}
