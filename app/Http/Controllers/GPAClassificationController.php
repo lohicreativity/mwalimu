@@ -12,7 +12,7 @@ use App\Models\User;
 use App\Utils\Util;
 use Validator, Auth;
 
-class NTALevelController extends Controller
+class GPAClassificationController extends Controller
 {
     /**
      * Display a list of levels
