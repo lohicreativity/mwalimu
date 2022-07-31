@@ -835,7 +835,7 @@ class StudentController extends Controller
 			$detail->gender = $student->gender;
 			$detail->avn = $student->registration_number;
 			$detail->registration_number = $student->registration_number;
-			$detail->diploma_gpa = $student->overallRemarks[0]->gpa;
+			$detail->diploma_gpa = $student->overallRemark->gpa;
 			$detail->diploma_code = $student->campusProgram->program->code;
 			$detail->diploma_category = 'Category';
 			$detail->diploma_graduation_year = date('Y');
