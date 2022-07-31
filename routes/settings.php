@@ -49,6 +49,11 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 	Route::post('intake/store', [IntakeController::class,'store']);
 	Route::post('intake/update', [IntakeController::class,'update']);
 	Route::get('intake/{id}/destroy', [IntakeController::class,'destroy']);
+	
+	Route::get('gpa-classifications', [GPAClassificationController::class,'index']);
+	Route::post('gpa-classification/store', [GPAClassificationController::class,'store']);
+	Route::post('gpa-classification/update', [GPAClassificationController::class,'update']);
+	Route::get('gpa-classification/{id}/destroy', [GPAClassificationController::class,'destroy']);
 
 
 	Route::get('countries', [CountryController::class,'index'])->name('countries');

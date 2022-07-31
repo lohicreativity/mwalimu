@@ -34,6 +34,7 @@ use App\Http\Controllers\ApplicationWindowController;
 use App\Http\Controllers\ClearanceController;
 use App\Http\Controllers\GraduantController;
 use App\Http\Controllers\AppealController;
+use App\Http\Controllers\GPAClassificationController;
 use App\Http\Controllers\TranscriptRequestController;
 use App\Http\Controllers\PerformanceReportRequestController;
 
