@@ -50,7 +50,13 @@ class PerformanceReportRequestController extends Controller
      */
     public function store(Request $request)
     {
-    	 $student = User::find(Auth::user()->id)->student()->with('applicant')->first();
+    	 $student = User::find(Auth::user()->id)->student()->with(['applicant','registrations'=>function($query) use($request){
+			 $request->get('study_academic_year_id',$request->get('study_academic_year_id'))->where('semester_id',session('active_semester_id'));
+		 }])->first();
+		 
+		 if(count($student->registrations) == 0){
+			 return redirect()->back()->with('error','You have not been registered yet.');
+		 }
          
 		 $pf = PerformanceReportRequest::where('student_id',$student->id)->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',$request->get('year_of_study'))->first();
          if($pf){
