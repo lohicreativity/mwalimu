@@ -260,6 +260,12 @@ class ProgramModuleAssignmentController extends Controller
         if(ProgramModuleAssignment::where('module_id',$request->get('module_id'))->where('semester_id',$request->get('semester_id'))->where('year_of_study',$request->get('year_of_study'))->where('campus_program_id',$request->get('campus_program_id'))->where('study_academic_year_id',$request->get('study_academic_year_id'))->count() != 0){
              return redirect()->back()->withInput()->with('error','Module already added in this study academic year');
         }
+		
+		$module = Module::find($request->get('module_id'));
+		
+		if($module->course_work_based == 1 && $request->get('course_work_min_mark') == 0){
+			return redirect()->back()->with('error','Coursework minimum mark cannot be zero');
+		}
 
 
         return (new ProgramModuleAssignmentAction)->store($request);
