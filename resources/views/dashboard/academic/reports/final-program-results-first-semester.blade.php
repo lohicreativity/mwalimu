@@ -283,8 +283,8 @@
 
                             <td @if($result->course_work_remark == 'FAIL') class="ss-custom-grey ss-center" @else class="ss-center" @endif>@if($result->course_work_score) {{ $result->course_work_score }} @else - @endif</td>
                             <td @if($result->final_remark == 'FAIL') class="ss-custom-grey ss-center" @else class="ss-center" @endif>@if($result->final_score) {{ $result->final_score }} @else - @endif</td>
-                            <td @if($result->course_work_remark == 'FAIL' || $result->final_remark == 'FAIL') class="ss-custom-grey ss-center" @else class="ss-center" @endif>@if($result->total_score) {{ round($result->total_score) }} @else - @endif</td>
-                            <td @if($result->course_work_remark == 'FAIL' || $result->final_remark == 'FAIL') class="ss-custom-grey ss-center" @else class="ss-center" @endif>@if($result->grade) {{ $result->grade }} @else - @endif</td>
+                            <td @if($result->course_work_remark == 'FAIL' || $result->final_remark == 'FAIL') class="ss-custom-grey-- ss-center" @else class="ss-center" @endif>@if($result->total_score) {{ round($result->total_score) }} @else - @endif</td>
+                            <td @if($result->course_work_remark == 'FAIL' || $result->final_remark == 'FAIL') class="ss-custom-grey-- ss-center" @else class="ss-center" @endif>@if($result->grade) {{ $result->grade }} @else - @endif</td>
                             @endif
                           @endforeach
                           

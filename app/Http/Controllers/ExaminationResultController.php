@@ -106,7 +106,7 @@ class ExaminationResultController extends Controller
 
         foreach($module_assignments as $assign){
           if($assign->programModuleAssignment->category == 'COMPULSORY'){
-          	if($assign->course_work_process_status != 'PROCESSED'){
+          	if($assign->course_work_process_status != 'PROCESSED' && $assign->module->course_work_based == 1){
               DB::rollback();
           		return redirect()->back()->with('error',$assign->module->name.'-'.$assign->module->code.' course works not processed');
           	}
@@ -116,7 +116,7 @@ class ExaminationResultController extends Controller
           	}
           }else{
             $exam_student_count = ProgramModuleAssignment::find($assign->program_module_assignment_id)->optedStudents()->count();
-            if($assign->course_work_process_status != 'PROCESSED' && $exam_student_count != 0){
+            if($assign->course_work_process_status != 'PROCESSED' && $exam_student_count != 0 && $assign->module->course_work_based == 1){
               DB::rollback();
               return redirect()->back()->with('error',$assign->module->name.'-'.$assign->module->code.' course works not processed');
             }
@@ -303,9 +303,6 @@ class ExaminationResultController extends Controller
                   
                   $processed_result->final_processed_by_user_id = Auth::user()->id;
                   $processed_result->final_processed_at = now();
-				  if($processed_result->final_processed_at == null){
-					  return $processed_result;
-				  }
                   $processed_result->save();
 
                   $student_buffer[$student->id]['results'][] =  $processed_result;
