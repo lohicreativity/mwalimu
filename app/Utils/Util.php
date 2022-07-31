@@ -68,7 +68,7 @@ class Util {
    /**
     * Get overall remark
     */
-   public function getOverallRemark($remarks, $results = [], $retake = [], $carry = [])
+   public static function getOverallRemark($remarks, $results = [], $retake = [], $carry = [])
    {
       return $remark = $this->getAnnualRemark($remarks,$results,$retake,$carry);
    }
