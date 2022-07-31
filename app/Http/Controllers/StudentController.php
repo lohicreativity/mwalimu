@@ -25,6 +25,7 @@ use App\Domain\Finance\Models\ProgramFee;
 use App\Domain\Finance\Models\GatewatPayment;
 use App\Domain\Finance\Models\LoanAllocation;
 use App\Domain\Application\Models\NacteResultDetail;
+use App\Domain\Application\Models\NectaResultDetail;
 use App\Domain\Application\Models\NacteResult;
 use App\Domain\Application\Models\ApplicationWindow;
 use App\Domain\Application\Models\Applicant;
@@ -809,6 +810,8 @@ class StudentController extends Controller
 		  $applicant->campus_id = $student->applicant->campus_id;
 		  $applicant->intake_id = $student->applicant->intake_id;
 		  $applicant->application_window_id = $application_window->id;
+		  
+		  NectaResultDetail::where('applicant_id',$student->applicant_id)->update(['applicant_id'=>$applicant->id]);
 		  
 		  
 		  $user = new User;
