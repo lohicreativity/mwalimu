@@ -303,6 +303,9 @@ class ExaminationResultController extends Controller
                   
                   $processed_result->final_processed_by_user_id = Auth::user()->id;
                   $processed_result->final_processed_at = now();
+				  if($processed_result->final_processed_at == null){
+					  return $processed_result;
+				  }
                   $processed_result->save();
 
                   $student_buffer[$student->id]['results'][] =  $processed_result;
