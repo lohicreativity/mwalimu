@@ -53,6 +53,7 @@ class ExaminationResultController extends Controller
          })->where('status','PUBLISHED')->where('study_academic_year_id',$request->get('study_academic_year_id'))->count() != 0){
          $second_semester_publish_status = true;
       }
+	  $staff = User::find(Auth::user()->id)->staff;
     	$data = [
     	    'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
             'study_academic_year'=>$request->has('study_academic_year_id')? StudyAcademicYear::with('academicYear')->find($request->get('study_academic_year_id')) : null,
@@ -65,10 +66,10 @@ class ExaminationResultController extends Controller
             'first_semester_publish_status'=>$first_semester_publish_status,
             'second_semester_publish_status'=>$second_semester_publish_status,
             'publications'=>$request->has('study_academic_year_id')? ResultPublication::with(['studyAcademicYear.academicYear','semester','ntaLevel'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->latest()->get() : [],
-            'process_records'=>ExaminationProcessRecord::whereHas('campusProgram',function($query) use ($request){
-                  $query->where('campus_id',$request->get('campus_id'));
-               })->with(['campusProgram.program','semester'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->paginate(20),
-            'staff'=>User::find(Auth::user()->id)->staff,
+            'process_records'=>ExaminationProcessRecord::whereHas('campusProgram',function($query) use ($staff){
+                  $query->where('campus_id',$staff->campus_id);
+               })->with(['campusProgram.program','semester'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->latest()->paginate(20),
+            'staff'=>$staff,
             'request'=>$request
     	];
     	return view('dashboard.academic.results-processing',$data)->withTitle('Results Processing');
