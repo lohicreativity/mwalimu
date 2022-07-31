@@ -982,11 +982,12 @@ class ModuleAssignmentController extends Controller
               }
               fclose($file_handle);
               foreach($line_of_text as $line){
-                $student = Student::whereHas('registrations',function($query) use($module_assignment){
-                     $query->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)->where('semester_id',$module_assignment->programModuleAssignment->semester_id)->where('study_academic_year_id',$module_assignment->programModuleAssignment->study_academic_year_id);
-                })->whereHas('studentshipStatus',function($query){
-                      $query->where('name','ACTIVE');
-                })->where('registration_number',trim($line[0]))->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id)->first();
+				  //whereHas('registrations',function($query) use($module_assignment){
+                   //  $query->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)->where('semester_id',$module_assignment->programMo//duleAssignment->semester_id)->where('study_academic_year_id',$module_assignment->programModuleAssignment->study_academic_year_id);
+                //})->whereHas('studentshipStatus',function($query){
+                     // $query->where('name','ACTIVE');
+               // })->
+                $student = Student::where('registration_number',trim($line[0]))->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id)->first();
 
                 if($student && !empty($line[1])){
                   if($request->get('assessment_plan_id') == 'FINAL_EXAM'){
