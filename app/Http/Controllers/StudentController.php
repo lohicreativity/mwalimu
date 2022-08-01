@@ -1299,6 +1299,12 @@ class StudentController extends Controller
 		  $applicant->phone = $student->applicant->phone;
 		  $applicant->gender = $student->applicant->gender;
 		  $applicant->address = $student->applicant->address;
+                  $applicant->o_level_certificate = $student->applicant->o_level_certificate;
+                  $applicant->birth_certificate = $student->applicant->birth_certificate;
+                  $applicant->a_level_certificate = $student->applicant->a_level_certificate;
+                  $applicant->diploma_certificate = $student->applicant->diploma_certificate;
+                  $applicant->passport_picture = $student->applicant->passport_picture;
+                  $applicant->teacher_diploma_certificate = $student->applicant->teacher_diploma_certificate;
 		  $applicant->disability_status_id = $student->applicant->disability_status_id;
 		  $applicant->program_level_id = $level->id;
 		  $applicant->is_continue = 1;
