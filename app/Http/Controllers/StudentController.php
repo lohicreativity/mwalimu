@@ -800,9 +800,8 @@ class StudentController extends Controller
                    $query->where('award_id',$applicant->program_level_id);
            })->with(['program','campus','entryRequirements'=>function($query) use($window){
                 $query->where('application_window_id',$window->id);
-           }])->where('campus_id',session('applicant_campus_id'))->get() : [];
+           }])->where('campus_id',$applicant->campus_id)->get() : [];
         
-        return json_encode($campus_programs);
         $award = $applicant->programLevel;
         $programs = [];
 
@@ -1000,8 +999,6 @@ class StudentController extends Controller
                        if($o_level_pass_count >= $program->entryRequirements[0]->pass_subjects && $has_btc){
                            $programs[] = $program;
                        }
-
-                       return json_encode($programs);
                    }
                    
                    // Bachelor
