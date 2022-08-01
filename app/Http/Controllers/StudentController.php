@@ -1000,9 +1000,9 @@ class StudentController extends Controller
                        if($o_level_pass_count >= $program->entryRequirements[0]->pass_subjects && $has_btc){
                            $programs[] = $program;
                        }
-                   }
 
-                   return json_encode($programs);
+                       return json_encode($programs);
+                   }
                    
                    // Bachelor
                    if(str_contains($award->name,'Bachelor')){
