@@ -204,7 +204,7 @@ class AdmissionController extends Controller
         $invoice->payable_id = $applicant->id;
         $invoice->payable_type = 'applicant';
         $invoice->fee_type_id = $program_fee->feeItem->feeType->id;
-		$invoice->applicable_id = $ac_year->id;
+		$invoice->applicable_id = $study_academic_year->id;
 		$invoice->applicable_type = 'academic_year';
         $invoice->save();
 
@@ -255,7 +255,7 @@ class AdmissionController extends Controller
         $invoice->payable_id = $applicant->id;
         $invoice->payable_type = 'applicant';
         $invoice->fee_type_id = $hostel_fee->feeItem->feeType->id;
-		$invoice->applicable_id = $ac_year->id;
+		$invoice->applicable_id = $study_academic_year->id;
 		$invoice->applicable_type = 'academic_year';
         $invoice->save();
 
@@ -324,8 +324,8 @@ class AdmissionController extends Controller
         $invoice->payable_id = $applicant->id;
         $invoice->payable_type = 'applicant';
         $invoice->fee_type_id = $feeType->id;
-		$invoice->applicable_id = $applicant->applicationWindow->id;
-		$invoice->applicable_type = 'application_window';
+		$invoice->applicable_id = $study_academic_year->id;
+		$invoice->applicable_type = 'academic_year';
         $invoice->save();
 
 
