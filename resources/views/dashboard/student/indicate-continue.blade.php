@@ -63,14 +63,12 @@
                  <table class="table table-bordered">
                     <thead>
                        <tr>
-                         <th>Choice</th>
                          <th>Programme</th>
                        </tr>
                     </thead>
                     <tbody>
                     <tr>
-                       <td>1</td>
-                       <td>@if(App\Domain\Application\Models\ApplicantProgramSelection::hasSelectedChoice($applicant->selections,1)) Choice Selected @else <a href="#" data-toggle="modal" data-target="#ss-first-choice">Select Choice Programme</a> @endif</td>
+                       <td>@if(App\Domain\Application\Models\ApplicantProgramSelection::hasSelectedChoice($applicant->selections,1)) Choice Selected @else <a href="#" data-toggle="modal" data-target="#ss-first-choice">Select Programme</a> @endif</td>
                     </tr>
                    
                   </tbody>
@@ -83,7 +81,7 @@
                 <div class="modal-dialog modal-lg">
                   <div class="modal-content">
                     <div class="modal-header">
-                      <h4 class="modal-title">1st Choice Programme</h4>
+                      <h4 class="modal-title">Choose Programme</h4>
                       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                       </button>
@@ -317,7 +315,6 @@
                  <table class="table table-bordered">
                     <thead>
                        <tr>
-                         <th>Choice</th>
                          <th>Programme</th>
                          <th>Campus</th>
                          <th>Action</th>
@@ -326,7 +323,6 @@
                     <tbody>
                     @foreach($applicant->selections as $key=>$selection)
                     <tr>
-                       <td>{{ $selection->order }}</td>
                        <td>{{ $selection->campusProgram->program->name }}</td>
                        <td>{{ $selection->campusProgram->campus->name }}</td>
                        <td>
