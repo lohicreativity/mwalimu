@@ -895,6 +895,7 @@ class StudentController extends Controller
 
                    // Diploma
                    if(str_contains($award->name,'Diploma')){
+                       return $award;
                        $o_level_pass_count = 0;
                        $a_level_principle_pass_count = 0;
                        $a_level_subsidiary_pass_count = 0;
