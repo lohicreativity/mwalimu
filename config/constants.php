@@ -5,13 +5,13 @@ return [
 
    'SITE_SHORT_NAME'=>'MNMA',
 
-   'SITE_DOMAIN'=>'mnma.ac.tz',
+   'SITE_DOMAIN'=>'arms.mnma.ac.tz',
 
-   'SITE_WEB_DOMAIN'=>'www.mnma.ac.tz',
+   'SITE_WEB_DOMAIN'=>'www.arms.mnma.ac.tz',
 
-   'SITE_URL'=>'https://mnma.ac.tz',
+   'SITE_URL'=>'https://arms.mnma.ac.tz',
 
-   'SITE_BASE_URL'=>'https://mnma.ac.tz',
+   'SITE_BASE_URL'=>'https://arms.mnma.ac.tz',
 
    'SITE_IP_ADDRESS'=>'http://41.59.91.194',
 

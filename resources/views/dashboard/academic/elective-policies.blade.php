@@ -51,7 +51,7 @@
                     <select name="study_academic_year_id" class="form-control" required>
                        <option value="">Select Study Academic Year</option>
                        @foreach($study_academic_years as $year)
-                       <option value="{{ $year->id }}">{{ $year->academicYear->year }}</option>
+                       <option value="{{ $year->id }}" @if($year->id == $request->get('study_academic_year_id')) selected="selected" @endif>{{ $year->academicYear->year }}</option>
                        @endforeach
                     </select>
                      
@@ -198,7 +198,7 @@
                                     <select name="campus_program_id" class="form-control" required>
                                        <option value="">Select Campus Programme</option>
                                        @foreach($campus_programs as $prog)
-                                       <option value="{{ $prog->id }}" @if($prog->id == $policy->campus_program_id) selected="selected" @endif>{{ $prog->program->name }} - {{ $prog->campus->name }}</option>
+                                       <option value="{{ $prog->id }}" @if($prog->id == $policy->campus_program_id) selected="selected" @else disabled="disabled" @endif>{{ $prog->program->name }} - {{ $prog->campus->name }}</option>
                                        @endforeach
                                     </select>
                                   </div>
@@ -207,7 +207,7 @@
                                     <select name="semester_id" class="form-control" required>
                                        <option value="">Select Semester</option>
                                        @foreach($semesters as $semester)
-                                       <option value="{{ $semester->id }}" @if($policy->semester_id == $semester->id) selected="selected" @endif>{{ $semester->name }}</option>
+                                       <option value="{{ $semester->id }}" @if($policy->semester_id == $semester->id) selected="selected" @else disabled="disabled" @endif>{{ $semester->name }}</option>
                                        @endforeach
                                     </select>
                                   </div>

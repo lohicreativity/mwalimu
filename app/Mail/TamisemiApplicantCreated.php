@@ -43,7 +43,7 @@ class TamisemiApplicantCreated extends Mailable
                     ->with([
                         'heading'=>'TAMISEMI Selected Students for MNMA',
                         'name'=>$this->student->fullname,
-                        'notification_message'=>'I am pleased to inform you that TAMISEMI has selected you for '.$this->program_name.' at The Mwalimu Nyerere Memorial Academy.'.' Please visit http://41.59.91.194/application/login to log in to your user account to provide more information. Your username and password are as follows;',
+                        'notification_message'=>'I am pleased to inform you that TAMISEMI has selected you for '.$this->program_name.' at The Mwalimu Nyerere Memorial Academy.'.' Please visit '.config('constants.SITE_URL').'/application/login to log in to your user account to provide more information. Your username and password are as follows;',
                         'username'=>$this->applicant->index_number,
                         'password'=>$this->applicant->surname
                     ]);

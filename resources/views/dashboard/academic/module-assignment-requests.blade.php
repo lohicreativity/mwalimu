@@ -115,7 +115,7 @@
                             
                             <p class="ss-font-xs ss-no-margin ss-bold">Facilitator:</p>
                             @foreach($req->programModuleAssignment->moduleAssignments as $modAssign)
-                            <p class="ss-font-xs ss-no-margin ss-italic">{{ $modAssign->staff->title }} {{ $modAssign->staff->first_name }} {{ $modAssign->staff->middle_name }} {{ $modAssign->staff->surname }}
+                            <p class="ss-font-xs ss-no-margin ss-italic">{{ $modAssign->staff->title }} {{ $modAssign->staff->first_name }} {{ $modAssign->staff->middle_name }} {{ $modAssign->staff->surname }} - {{ $modAssign->staff->phone }}
                             
                             @can('delete-module-facilitator')
                             <a href="#" data-toggle="modal" data-target="#ss-delete-module-assignment-{{ $modAssign->id }}" class="ss-color-danger ss-right">Remove</a></p>
