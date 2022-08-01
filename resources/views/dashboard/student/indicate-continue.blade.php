@@ -337,7 +337,7 @@
                        <td>{{ $selection->campusProgram->program->name }}</td>
                        <td>{{ $selection->campusProgram->campus->name }}</td>
                        <td>
-                         @if($key == count($applicant->selections)-1)
+                         @if($key == count($applicant->selections)-1 && !$program_fee_invoice)
                         <a href="{{ url('application/reset-program-selection/'.$selection->id) }}" class="ss-italic ss-color-danger">Reset Selection</a>
                          @endif
                       </td>
