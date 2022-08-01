@@ -1268,17 +1268,7 @@ class StudentController extends Controller
 			  return redirect()->back()->with('error','Application window not defined');
 		  }
 
-                  $window = $application_window;
-
-                  $campus_programs = $window? $window->campusPrograms()->whereHas('program',function($query) use($applicant){
-                   $query->where('award_id',$applicant->program_level_id);
-                  })->with(['program','campus','entryRequirements'=>function($query) use($window){
-                 $query->where('application_window_id',$window->id);
-                  }])->where('campus_id',$request->get('campus_id'))->get() : [];
-
-                  if(count($campus_programs) == 0){
-			  return redirect()->back()->with('error','Selected campus does not have programmes');
-		  }
+                 
 		  
 		  $past_level = $student->applicant->programLevel;
 		  if(str_contains($past_level->code,'BTC')){
@@ -1289,6 +1279,18 @@ class StudentController extends Controller
 			  $level = Award::where('code','BD')->first();
 		  }elseif(str_contains($past_level->code,'BD')){
 			  $level = Award::where('code','MD')->first();
+		  }
+
+                  $window = $application_window;
+
+                  $campus_programs = $window? $window->campusPrograms()->whereHas('program',function($query) use($level){
+                   $query->where('award_id',$level->id);
+                  })->with(['program','campus','entryRequirements'=>function($query) use($window){
+                 $query->where('application_window_id',$window->id);
+                  }])->where('campus_id',$request->get('campus_id'))->get() : [];
+
+                  if(count($campus_programs) == 0){
+			  return redirect()->back()->with('error','Selected campus does not have programmes');
 		  }
 		  
 		  $applicant = new Applicant;
