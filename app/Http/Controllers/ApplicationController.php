@@ -656,6 +656,7 @@ class ApplicationController extends Controller
         $applicant = Applicant::find($request->get('applicant_id'));
         if($applicant->is_continue ==1){
             $applicant->status = 'ADMITTED';
+            $applicant->save();
         }
 
         $similar_count = ApplicantProgramSelection::where('applicant_id',$request->get('applicant_id'))->where('campus_program_id',$request->get('campus_program_id'))->count();
@@ -696,7 +697,13 @@ class ApplicationController extends Controller
     public function resetProgramSelection($id)
     {
         try{
-          $selection = ApplicantProgramSelection::findOrFail($id);
+          $selection = ApplicantProgramSelection::with('applicant')->findOrFail($id);
+          if($selection->applicant->is_continue ==1){
+            $applicant = Applicant::find($selection->applicant_id);
+            $applicant->status = null;
+            $applicant->save();
+          }
+          
           if($selection->order == 1){
               Applicant::where('id',$selection->applicant_id)->update(['programs_complete_status'=>0,'submission_complete_status'=>0]);
           }
