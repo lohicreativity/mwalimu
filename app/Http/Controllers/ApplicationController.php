@@ -651,6 +651,11 @@ class ApplicationController extends Controller
     public function selectProgram(Request $request)
     {   
         $count = ApplicantProgramSelection::where('applicant_id',$request->get('applicant_id'))->count();
+        if($applicant->is_continue ==1){
+            $applicant->status = 'ADMITTED';
+        }
+
+        $applicant = Applicant::find($request->get('applicant_id'));
 
         $similar_count = ApplicantProgramSelection::where('applicant_id',$request->get('applicant_id'))->where('campus_program_id',$request->get('campus_program_id'))->count();
         if($similar_count == 0){
@@ -662,6 +667,9 @@ class ApplicationController extends Controller
                  $selection->campus_program_id = $request->campus_program_id;
                  $selection->application_window_id = $request->get('application_window_id');
                  $selection->order = $request->get('choice');
+                 if($applicant->is_continue ==1){
+                    $selection->status = 'SELECTED';
+                 }
                  $selection->save();
 
                  $select_count = ApplicantProgramSelection::where('applicant_id',$request->get('applicant_id'))->count();
