@@ -796,8 +796,6 @@ class StudentController extends Controller
 
         $window = $applicant->applicationWindow;
 
-          return $applicant;
-
         $campus_programs = $window? $window->campusPrograms()->whereHas('program',function($query) use($applicant){
                    $query->where('award_id',$applicant->program_level_id);
            })->with(['program','campus','entryRequirements'=>function($query) use($window){
@@ -1003,6 +1001,8 @@ class StudentController extends Controller
                            $programs[] = $program;
                        }
                    }
+
+                   return json_encode($programs);
                    
                    // Bachelor
                    if(str_contains($award->name,'Bachelor')){
