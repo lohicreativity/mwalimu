@@ -802,7 +802,7 @@ class StudentController extends Controller
                 $query->where('application_window_id',$window->id);
            }])->where('campus_id',session('applicant_campus_id'))->get() : [];
         
-
+        return json_encode($campus_programs);
         $award = $applicant->programLevel;
         $programs = [];
 
@@ -895,7 +895,6 @@ class StudentController extends Controller
 
                    // Diploma
                    if(str_contains($award->name,'Diploma')){
-                       return $applicant;
                        $o_level_pass_count = 0;
                        $a_level_principle_pass_count = 0;
                        $a_level_subsidiary_pass_count = 0;
