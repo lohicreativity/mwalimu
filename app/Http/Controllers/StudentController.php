@@ -1372,7 +1372,7 @@ class StudentController extends Controller
 			}
 		  Student::where('id',$student->id)->update(['continue_status'=>1]);
 		  DB::commit();
-		  return redirect()->back()->with('message','You have indicated to continue with upper level successfully');
+		  return redirect()->to('student/show-indicate-continue?campus_id='.$request->get('campus_id'))->with('message','You have indicated to continue with upper level successfully');
 	  }
 
     /**

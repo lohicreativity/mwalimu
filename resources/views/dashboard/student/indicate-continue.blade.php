@@ -120,6 +120,8 @@
 
                                      {!! Form::input('hidden','campus_program_id',$prog->id) !!}
 
+                                     {!! Form::input('hidden','campus_id',$request->get('campus_id')) !!}
+
                                      {!! Form::input('hidden','choice',1) !!}
 
                                      {!! Form::input('hidden','application_window_id',$application_window->id) !!}
