@@ -68,12 +68,14 @@
               </li>
               @endif
               @if($applicant->status === 'ADMITTED')
+              @if($applicant->is_continue != 1)
               <li class="nav-item">
                 <a href="{{ url('application/admission-package') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Admission Package</p>
                 </a>
               </li>
+              @endif
               <li class="nav-item">
                 <a href="{{ url('application/upload-documents') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
