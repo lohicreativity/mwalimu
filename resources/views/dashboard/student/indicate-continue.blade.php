@@ -46,6 +46,15 @@
 			  {!! Form::open(['url'=>'student/indicate-continue','class'=>'ss-form-processing']) !!}
               <div class="card-body">
 			  {!! Form::input('hidden','student_id',$student->id) !!}
+                     <div class="form-group">
+                        {!! Form::label('','Select campus') !!}
+                        <select name="campus_id" class="form-control" required>
+                             <option value="">Select Campus</select>
+                          @foreach($campuses as $campus)
+                             <option value="{{ $campus->id }}" @if($campus->id == $student->applicant->campus_id) selected="selected" @endif>{{ $campus->name }}</option>
+                          @endforeach
+                        </select>
+                     </div>
               </div>
               <div class="card-footer">
                  <button @if($student->continue_status == 1) disabled="disabled" @else type="submit" @endif class="btn btn-primary">Continue with Upper Level</button>
