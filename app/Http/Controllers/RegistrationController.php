@@ -262,6 +262,91 @@ class RegistrationController extends Controller
         return redirect()->back()->with('message','The bill with id '.$billno.' has been queued.', 200);
                         
         }
+		
+	/**
+	 * Show statistics
+	 */
+	 public function statistics(Request $request)
+	 {
+		 $staff = User::find(Auth::user()->id)->staff;
+		 $data = [
+		    'active_students'=>Registration::whereHas('student.studentshipStatus',function($query){
+				  $query->where('name','ACTIVE');
+			})->with(['student'])->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->count(),
+			'postponed_students'=>Student::whereHas('studentshipStatus',function($query){
+				  $query->where('name','POSTPONED');
+			})->with(['student'])->count(),
+			'deceased_students'=>Registration::whereHas('student.studentshipStatus',function($query){
+				  $query->where('name','DECEASED');
+			})->with(['student'])->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->count(),
+			'unregisered_students'=>Student::where('studentshipStatus',function($query){
+				  $query->where('name','!=','GRADUANT');
+			})->whereDoesntHave('registrations',function($query){
+				  $query->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'));
+			})->count()
+		 ];
+		 
+		 return view('dashboard.registration.statistics',$data)->withTitle('Registration Statistics');
+	 }
+	 
+	 /**
+	  * Show active students
+	  */
+	  public function showActiveStudents(Request $request)
+	  {
+		   $staff = User::find(Auth::user()->id)->staff;
+		   $data = [
+		    'active_students'=>Registration::whereHas('student.studentshipStatus',function($query){
+				  $query->where('name','ACTIVE');
+			})->with(['student'])->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->get()
+		   ];
+		   return view('dashboard.registration.active-students',$data)->withTitle('Active Students');
+	  }
+	  
+	  /**
+	  * Show postponed students
+	  */
+	  public function showPostponedStudents(Request $request)
+	  {
+		   $staff = User::find(Auth::user()->id)->staff;
+		   $data = [
+		    'postponed_students'=>Student::whereHas('studentshipStatus',function($query){
+				  $query->where('name','POSTPONED');
+			})->with(['student'])->get()
+		   ];
+		   return view('dashboard.registration.postponed-students',$data)->withTitle('Postponed Students');
+	  }
+	  
+	  /**
+	  * Show deceased students
+	  */
+	  public function showDeceasedStudents(Request $request)
+	  {
+		   $staff = User::find(Auth::user()->id)->staff;
+		   $data = [
+		    'postponed_students'=>Registration::whereHas('student.studentshipStatus',function($query){
+				  $query->where('name','DECEASED');
+			})->with(['student'])->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->get()
+		   ];
+		   return view('dashboard.registration.deceased-students',$data)->withTitle('Deceased Students');
+	  }
+	  
+	  /**
+	 * Show unregistered students
+	 */
+	 public function showUnregisteredStudents(Request $request)
+	 {
+		 $staff = User::find(Auth::user()->id)->staff;
+		 $data = [
+			'unregisered_students'=>Student::where('studentshipStatus',function($query){
+				  $query->where('name','!=','GRADUANT');
+			})->whereDoesntHave('registrations',function($query){
+				  $query->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'));
+			})->get()
+		 ];
+		 
+		 return view('dashboard.registration.unregistered-students',$data)->withTitle('Unregistered Students');
+	 }
 
     /**
      * Print ID card

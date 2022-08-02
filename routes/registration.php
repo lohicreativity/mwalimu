@@ -43,6 +43,12 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 
     Route::get('external-transfer',[ApplicationController::class,'showExternalTransfer']);
     Route::post('submit-external-transfers',[ApplicationController::class,'submitExternalTransfer']);
+	
+	Route::get('statistics',[RegistrationController::class,'statistics']);
+	Route::get('active-students',[RegistrationController::class,'showActiveStudents']);
+	Route::get('deceased-students',[RegistrationController::class,'showDeceasedStudents']);
+	Route::get('postponed-students',[RegistrationController::class,'showPostponedStudents']);
+	Route::get('unregistered-students',[RegistrationController::class,'showActiveStudents']);
 });
 
 
