@@ -272,13 +272,13 @@ class RegistrationController extends Controller
 		 $data = [
 		    'active_students'=>Registration::whereHas('student.studentshipStatus',function($query){
 				  $query->where('name','ACTIVE');
-			})->with(['student'])->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->count(),
+			})->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->count(),
 			'postponed_students'=>Student::whereHas('studentshipStatus',function($query){
 				  $query->where('name','POSTPONED');
-			})->with(['student'])->count(),
+			})->count(),
 			'deceased_students'=>Registration::whereHas('student.studentshipStatus',function($query){
 				  $query->where('name','DECEASED');
-			})->with(['student'])->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->count(),
+			})->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->count(),
 			'unregistered_students'=>Student::whereHas('studentshipStatus',function($query){
 				  $query->where('name','!=','GRADUANT');
 			})->whereDoesntHave('registrations',function($query){
@@ -298,7 +298,7 @@ class RegistrationController extends Controller
 		   $data = [
 		    'active_students'=>Registration::whereHas('student.studentshipStatus',function($query){
 				  $query->where('name','ACTIVE');
-			})->with(['student'])->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->get()
+			})->with(['student.campusProgram.program'])->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->get()
 		   ];
 		   return view('dashboard.registration.active-students',$data)->withTitle('Active Students');
 	  }
@@ -312,7 +312,7 @@ class RegistrationController extends Controller
 		   $data = [
 		    'postponed_students'=>Student::whereHas('studentshipStatus',function($query){
 				  $query->where('name','POSTPONED');
-			})->with(['student'])->get()
+			})->with(['campusProgram.program'])->get()
 		   ];
 		   return view('dashboard.registration.postponed-students',$data)->withTitle('Postponed Students');
 	  }
@@ -326,7 +326,7 @@ class RegistrationController extends Controller
 		   $data = [
 		    'postponed_students'=>Registration::whereHas('student.studentshipStatus',function($query){
 				  $query->where('name','DECEASED');
-			})->with(['student'])->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->get()
+			})->with(['student.campusProgram.program'])->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->get()
 		   ];
 		   return view('dashboard.registration.deceased-students',$data)->withTitle('Deceased Students');
 	  }
@@ -342,7 +342,7 @@ class RegistrationController extends Controller
 				  $query->where('name','!=','GRADUANT');
 			})->whereDoesntHave('registrations',function($query){
 				  $query->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'));
-			})->get()
+			})->with(['campusProgram.program'])->get()
 		 ];
 		 
 		 return view('dashboard.registration.unregistered-students',$data)->withTitle('Unregistered Students');
