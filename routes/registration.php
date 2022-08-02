@@ -48,7 +48,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 	Route::get('active-students',[RegistrationController::class,'showActiveStudents']);
 	Route::get('deceased-students',[RegistrationController::class,'showDeceasedStudents']);
 	Route::get('postponed-students',[RegistrationController::class,'showPostponedStudents']);
-	Route::get('unregistered-students',[RegistrationController::class,'showActiveStudents']);
+	Route::get('unregistered-students',[RegistrationController::class,'showUnregisteredStudents']);
 });
 
 
