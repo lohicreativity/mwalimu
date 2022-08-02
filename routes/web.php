@@ -40,7 +40,7 @@ Route::get('test',function(){
 	// return $response;
 
 	// return $result;
-	 $acpac = new ACPACService;
+	 //$acpac = new ACPACService;
 	// //$acpac->query("INSERT INTO receipts (BANK,BANKNAME,RCPNUMBER,RCPDATE,RCPDESC,IDCUST,NAMECUST,INVOICE,AMTAPPLIED,IMPORTED,IMPDATE) VALUES
  //   //('J','CRDB','REC03','10','TF','MNMA003','TEST','INV003','100.0','C','10')");
      //$acpac->query("INSERT INTO customer (IDCUST,IDGRP,NAMECUST,TEXTSTRE1,TEXTSTRE2,TEXTSTRE3,TEXTSTRE4,NAMECITY,CODESTTE,CODEPSTL,CODECTRY,NAMECTAC,TEXTPHON1,TEXTPHON2,CODETERR,IDACCTSET,CODECURN,EMAIL1,EMAIL2) VALUES ('BDED485922','44322','SHOBOLE, JOVITH ','P.O Box 27,Simiyu','ARUMERU','BANG','Unknown','Tanzania','Tanzania','P.O Box 27,Simiyu','Tanzania','Jones, Shobole Nyombi','255753690473','0787691417','BD.ED','STD','TSH','dennis.lupiana@gmail.com','UNKNOWN')");
@@ -49,10 +49,147 @@ Route::get('test',function(){
 	// $acpac->query("DELETE FROM customer");
 	// $acpac->query("DELETE FROM invoices");
 	// $acpac->query("DELETE FROM receipts");
-	$results = $acpac->query('SELECT * FROM customer');
+	/*$results = $acpac->query('SELECT * FROM customer');
      while ($row = sqlsrv_fetch_array($results)) {
      	print_r($row);
-     }
+     }*/
+	 
+	 $gatepay = GatewayPayment::find(39898);
+	 $control_no = '994120243736';
+	 $invoice = Invoice::with('feeType')->where('control_no',$control_no)->first();
+		$invoice->gateway_payment_id = $gatepay->id;
+		$invoice->save();
+        
+		$acpac = new ACPACService;
+		if($invoice->payable_type == 'applicant'){
+			$applicant = Applicant::find($invoice->payable_id);
+			$stud_name = $applicant->surname.', '.$applicant->first_name.' '.$applicant->middle_name;
+			$stud_reg = 'NULL';
+			if(str_contains($invoice->feeType->name,'Application Fee')){
+			   $applicant->payment_complete_status = 1;
+			   $applicant->save();
+
+			   //$inv = Invoice::with(['gatewayPayment','feeType'])->find($invoice->id);
+               $inv =  DB::table('invoices')->select(DB::raw('invoices.*,gateway_payments.*,fee_types.*'))
+			             ->join('gateway_payments','invoices.control_no','=','gateway_payments.control_no')
+						 ->join('fee_types','invoices.fee_type_id','=','fee_types.id')
+						 ->where('invoices.id',$invoice->id)
+						 ->first();
+                
+		        if($inv->psp_name == 'National Microfinance Bank'){
+		            $bank_code = 619;
+		            $bank_name = 'NMB';
+		        }else{
+		            $bank_code = 615;
+		            $bank_name = 'CRDB';
+		        }
+
+		        $acpac->query("INSERT INTO receipts (BANK,BANKNAME,RCPNUMBER,RCPDATE,RCPDESC,IDCUST,NAMECUST,INVOICE,AMTAPPLIED,IMPORTED,IMPDATE) VALUES ('".$bank_code."','".$bank_name."','".substr($inv->transaction_id,5)."','".date('Ymd',strtotime($inv->datetime))."','".$inv->description."','".$stud_reg."','".$stud_name."','".$inv->control_no."','".$inv->paid_amount."','0','".date('Ymd',strtotime(now()))."')");
+		       
+			}
+
+			
+
+			if(str_contains($invoice->feeType->name,'Tuition Fee')){
+				$paid_amount = GatewayPayment::where('bill_id',$invoice->reference_no)->sum('paid_amount');
+				$percentage = $paid_amount/$invoice->amount;
+				$applicant = Applicant::with('applicationWindow')->find($invoice->payable_id);
+
+				$ac_year = date('Y',strtotime($applicant->applicationWindow->end_date));
+		    	$study_academic_year = StudyAcademicYear::whereHas('academicYear',function($query) use($ac_year){
+		    		   $query->where('year','LIKE','%'.$ac_year.'/%');
+		    	})->first();
+
+		    	if($study_academic_year){
+		    		$loan_allocation = LoanAllocation::where('index_number',$applicant->index_number)->where('study_academic_year_id',$study_academic_year->id)->first();
+		    	}else{
+		    		$loan_allocation = null;
+		    	}			
+
+                if($loan_allocation){
+                   $percentage = ($paid_amount+$loan_allocation->tuition_fee)/$invoice->amount;
+                   $applicant->tuition_payment_check = $percentage >= 0.6? 1 : 0;
+                }else{
+			       $applicant->tuition_payment_check = $percentage >= 0.6? 1 : 0;
+			    }
+			    $applicant->save();
+			}
+
+			if(str_contains($invoice->feeType->name,'Miscellaneous')){
+				$applicant = Applicant::find($invoice->payable_id);
+			    $applicant->other_payment_check = $data['paid_amount'] == $invoice->amount? 1 : 0;
+			    $applicant->save();
+			}
+			
+		}
+
+		if($invoice->payable_type == 'student'){
+			if(str_contains($invoice->feeType->name,'Appeal')){
+				 Appeal::where('student_id',$invoice->payable_id)->where('invoice_id',$invoice->id)->update(['is_paid'=>1]);
+			}
+
+			if(str_contains($invoice->feeType->name,'Performance Report')){
+				 PerfomanceReportRequest::where('student_id',$invoice->payable_id)->update(['payment_status'=>'PAID','status'=>'PENDING']);
+			}
+
+			if(str_contains($invoice->feeType->name,'Transcript')){
+				 TranscriptRequest::where('student_id',$invoice->payable_id)->update(['payment_status'=>'PAID']);
+			}
+
+			$student = Student::find($invoice->payable_id);
+            
+			$stud_name = $student->surname.', '.$student->first_name.' '.$student->middle_name;
+	        $stud_reg = substr($student->registration_number, 5);
+	        $stud_reg = str_replace('/', '', $stud_reg);
+	        $parts = explode('.', $stud_reg);
+	        if($parts[0] == 'BTC'){
+	            $stud_reg = 'BT'.$parts[1];
+	        }else{
+	            $stud_reg = $parts[0].$parts[1];
+	        }
+
+	        if($student->registration_year >= 2022){
+                //$inv = Invoice::with(['gatewayPayment','feeType'])->find($invoice->id);
+				$inv =  DB::table('invoices')->select(DB::raw('invoices.*,gateway_payments.*,fee_types.*'))
+			             ->join('gateway_payments','invoices.control_no','=','gateway_payments.control_no')
+						 ->join('fee_types','invoices.fee_type_id','=','fee_types.id')
+						 ->where('invoices.id',$invoice->id)
+						 ->first();
+
+				$acpac->query("INSERT INTO invoices (INVNUMBER,INVDATE,INVDESC,IDCUST,NAMECUST,[LINENO],REVACT,REVDESC,REVREF,REVAMT,IMPORTED,IMPDATE) VALUES ('".$inv->control_no."','".date('Y',strtotime($inv->created_at))."','".$inv->description."','".$stud_reg."','".$stud_name."','1','".$inv->gl_code."','".$inv->name."','".$inv->description."','".$inv->amount."','0','".date('Y',strtotime(now()))."')");
+
+		        if($inv->psp_name == 'National Microfinance Bank'){
+		            $bank_code = 619;
+		            $bank_name = 'NMB';
+		        }else{
+		            $bank_code = 615;
+		            $bank_name = 'CRDB';
+		        }
+
+		        $acpac->query("INSERT INTO receipts (BANK,BANKNAME,RCPNUMBER,RCPDATE,RCPDESC,IDCUST,NAMECUST,INVOICE,AMTAPPLIED,IMPORTED,IMPDATE) VALUES ('".$bank_code."','".$bank_name."','".substr($inv->transaction_id,5)."','".date('Ymd',strtotime($inv->datetime))."','".$inv->description."','".$stud_reg."','".$stud_name."','".$inv->control_no."','".$inv->paid_amount."','0','".date('Ymd',strtotime(now()))."')");
+
+	        }else{
+               //$inv = Invoice::with(['gatewayPayment','feeType'])->find($invoice->id);
+			   $inv =  DB::table('invoices')->select(DB::raw('invoices.*,gateway_payments.*,fee_types.*'))
+			             ->join('gateway_payments','invoices.control_no','=','gateway_payments.control_no')
+						 ->join('fee_types','invoices.fee_type_id','=','fee_types.id')
+						 ->where('invoices.id',$invoice->id)
+						 ->first();
+
+		        if($inv->psp_name == 'National Microfinance Bank'){
+		            $bank_code = 619;
+		            $bank_name = 'NMB';
+		        }else{
+		            $bank_code = 615;
+		            $bank_name = 'CRDB';
+		        }
+
+		        $stud_reg = 'NULL';
+
+		        $acpac->query("INSERT INTO receipts (BANK,BANKNAME,RCPNUMBER,RCPDATE,RCPDESC,IDCUST,NAMECUST,INVOICE,AMTAPPLIED,IMPORTED,IMPDATE) VALUES ('".$bank_code."','".$bank_name."','".substr($inv->transaction_id,5)."','".date('Ymd',strtotime($inv->datetime))."','".$inv->description."','".$stud_reg."','".$stud_name."','".$inv->control_no."','".$inv->paid_amount."','0','".date('Ymd',strtotime(now()))."')");
+	        }
+		}
+		return 'Done';
 });
 
 Route::get('delete/{id}',function($id){
