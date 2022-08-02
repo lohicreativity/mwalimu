@@ -340,6 +340,8 @@ class RegistrationController extends Controller
 		 $data = [
 			'unregistered_students'=>Student::whereHas('studentshipStatus',function($query){
 				  $query->where('name','!=','GRADUANT');
+			})->whereHas('academicStatus',function($query){
+				  $query->where('name','!=','FAIL&DISCO');
 			})->whereDoesntHave('registrations',function($query){
 				  $query->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'));
 			})->with(['campusProgram.program'])->get()
