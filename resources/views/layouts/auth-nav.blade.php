@@ -477,7 +477,7 @@
 			  <li class="nav-item">
                 <a href="{{ url('registration/statistics') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>{{ __('Statistics') }}</p>
+                  <p>{{ __('Registration Status') }}</p>
                 </a>
               </li>
             </ul>
