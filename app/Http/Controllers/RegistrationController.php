@@ -279,7 +279,7 @@ class RegistrationController extends Controller
 			'deceased_students'=>Registration::whereHas('student.studentshipStatus',function($query){
 				  $query->where('name','DECEASED');
 			})->with(['student'])->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->count(),
-			'unregisered_students'=>Student::where('studentshipStatus',function($query){
+			'unregisered_students'=>Student::whereHas('studentshipStatus',function($query){
 				  $query->where('name','!=','GRADUANT');
 			})->whereDoesntHave('registrations',function($query){
 				  $query->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'));
@@ -338,7 +338,7 @@ class RegistrationController extends Controller
 	 {
 		 $staff = User::find(Auth::user()->id)->staff;
 		 $data = [
-			'unregisered_students'=>Student::where('studentshipStatus',function($query){
+			'unregisered_students'=>Student::whereHas('studentshipStatus',function($query){
 				  $query->where('name','!=','GRADUANT');
 			})->whereDoesntHave('registrations',function($query){
 				  $query->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'));
