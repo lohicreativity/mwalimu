@@ -336,9 +336,76 @@ class RegistrationController extends Controller
 	  }
 	  
 	  /**
+	  * Download active students
+	  */
+	  public function downloadActiveStudents(Request $request)
+	  {
+		   $staff = User::find(Auth::user()->id)->staff;
+		   
+		   $headers = [
+                      'Cache-Control'       => 'must-revalidate, post-check=0, pre-check=0',   
+                      'Content-type'        => 'text/csv',
+                      'Content-Disposition' => 'attachment; filename=REGISTERED-STUDENTS.csv',
+                      'Expires'             => '0',
+                      'Pragma'              => 'public'
+              ];
+		   $students = Auth::user()->hasRole('hod')? Registration::whereHas('student.campusProgram.program.departments',function($query) use($staff){
+				  $query->where('id',$staff->department_id);
+			})->whereHas('student.studentshipStatus',function($query){
+				  $query->where('name','ACTIVE');
+			})->with(['student.campusProgram.program'])->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->get() : Registration::whereHas('student.studentshipStatus',function($query){
+				  $query->where('name','ACTIVE');
+			})->with(['student.campusProgram.program'])->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->get();
+		   $callback = function() use ($applicants) 
+              {
+                  $file_handle = fopen('php://output', 'w');
+                  fputcsv($file_handle, ['Name','Sex','Registration Number','Program']);
+                  foreach ($students as $row) { 
+                      fputcsv($file_handle, [$row->student->first_name.' '.$row->student->middle_name.' '.$row->student->surname,$row->student->gender,$row->student->registration_number,$row->student->campusProgram->program->name]);
+                  }
+                  fclose($file_handle);
+              };
+
+              return response()->stream($callback, 200, $headers);
+	  }
+	  
+	  /**
 	  * Show postponed students
 	  */
 	  public function showPostponedStudents(Request $request)
+	  {
+		   $staff = User::find(Auth::user()->id)->staff;
+		   $headers = [
+                      'Cache-Control'       => 'must-revalidate, post-check=0, pre-check=0',   
+                      'Content-type'        => 'text/csv',
+                      'Content-Disposition' => 'attachment; filename=POSTPONED-STUDENTS.csv',
+                      'Expires'             => '0',
+                      'Pragma'              => 'public'
+              ];
+		   $students = Auth::user()->hasRole('hod')? Student::whereHas('campusProgram.program.departments',function($query) use($staff){
+				  $query->where('id',$staff->department_id);
+			})->whereHas('studentshipStatus',function($query){
+				  $query->where('name','POSTPONED');
+			})->with(['campusProgram.program'])->get() : Student::whereHas('studentshipStatus',function($query){
+				  $query->where('name','POSTPONED');
+			})->with(['campusProgram.program'])->get();
+		   $callback = function() use ($applicants) 
+              {
+                  $file_handle = fopen('php://output', 'w');
+                  fputcsv($file_handle, ['Name','Sex','Registration Number','Program']);
+                  foreach ($students as $row) { 
+                      fputcsv($file_handle, [$row->first_name.' '.$row->middle_name.' '.$row->surname,$row->gender,$row->registration_number,$row->campusProgram->program->name]);
+                  }
+                  fclose($file_handle);
+              };
+
+              return response()->stream($callback, 200, $headers);
+	  }
+	  
+	  /**
+	  * Download postponed students
+	  */
+	  public function downloadPostponedStudents(Request $request)
 	  {
 		   $staff = User::find(Auth::user()->id)->staff;
 		   $data = [
@@ -360,8 +427,14 @@ class RegistrationController extends Controller
 	  public function showDeceasedStudents(Request $request)
 	  {
 		   $staff = User::find(Auth::user()->id)->staff;
-		   $data = [
-		    'deceased_students'=>Auth::user()->hasRole('hod')? Registration::whereHas('student.campusProgram.program.departments',function($query) use($staff){
+		   $headers = [
+                      'Cache-Control'       => 'must-revalidate, post-check=0, pre-check=0',   
+                      'Content-type'        => 'text/csv',
+                      'Content-Disposition' => 'attachment; filename=DECEASED-STUDENTS.csv',
+                      'Expires'             => '0',
+                      'Pragma'              => 'public'
+              ];
+		   $students = Auth::user()->hasRole('hod')? Registration::whereHas('student.campusProgram.program.departments',function($query) use($staff){
 				  $query->where('id',$staff->department_id);
 			})->whereHas('student.studentshipStatus',function($query){
 				  $query->where('name','DECEASED');
@@ -371,6 +444,34 @@ class RegistrationController extends Controller
 			'semester'=>Semester::find(session('active_semester_id'))
 		   ];
 		   return view('dashboard.registration.deceased-students',$data)->withTitle('Deceased Students');
+	  }
+	  
+	  /**
+	  * Download deceased students
+	  */
+	  public function downloadDeceasedStudents(Request $request)
+	  {
+		   $staff = User::find(Auth::user()->id)->staff;
+		   $data = [
+		    'deceased_students'=>Auth::user()->hasRole('hod')? Registration::whereHas('student.campusProgram.program.departments',function($query) use($staff){
+				  $query->where('id',$staff->department_id);
+			})->whereHas('student.studentshipStatus',function($query){
+				  $query->where('name','DECEASED');
+			})->with(['student.campusProgram.program'])->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->get() : Registration::whereHas('student.studentshipStatus',function($query){
+				  $query->where('name','DECEASED');
+			})->with(['student.campusProgram.program'])->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->get();
+			
+			 $callback = function() use ($applicants) 
+              {
+                  $file_handle = fopen('php://output', 'w');
+                  fputcsv($file_handle, ['Name','Sex','Registration Number','Program']);
+                  foreach ($students as $row) { 
+                      fputcsv($file_handle, [$row->student->first_name.' '.$row->student->middle_name.' '.$row->student->surname,$row->student->gender,$row->student->registration_number,$row->student->campusProgram->program->name]);
+                  }
+                  fclose($file_handle);
+              };
+
+              return response()->stream($callback, 200, $headers);
 	  }
 	  
 	  /**
@@ -399,6 +500,48 @@ class RegistrationController extends Controller
 		 ];
 		 
 		 return view('dashboard.registration.unregistered-students',$data)->withTitle('Unregistered Students');
+	 }
+	 
+	   /**
+	 * Download unregistered students
+	 */
+	 public function downloadUnregisteredStudents(Request $request)
+	 {
+		 $staff = User::find(Auth::user()->id)->staff;
+		 $headers = [
+                      'Cache-Control'       => 'must-revalidate, post-check=0, pre-check=0',   
+                      'Content-type'        => 'text/csv',
+                      'Content-Disposition' => 'attachment; filename=REGISTERED-STUDENTS.csv',
+                      'Expires'             => '0',
+                      'Pragma'              => 'public'
+              ];
+		 $students = Auth::user()->hasRole('hod')? Student::whereHas('campusProgram.program.departments',function($query) use($staff){
+				  $query->where('id',$staff->department_id);
+			})->whereHas('studentshipStatus',function($query){
+				  $query->where('name','!=','GRADUANT');
+			})->whereHas('academicStatus',function($query){
+				  $query->where('name','!=','FAIL&DISCO');
+			})->whereDoesntHave('registrations',function($query){
+				  $query->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'));
+			})->with(['campusProgram.program','academicStatus'])->get() : Student::whereHas('studentshipStatus',function($query){
+				  $query->where('name','!=','GRADUANT');
+			})->whereHas('academicStatus',function($query){
+				  $query->where('name','!=','FAIL&DISCO');
+			})->whereDoesntHave('registrations',function($query){
+				  $query->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'));
+			})->with(['campusProgram.program','academicStatus'])->get();
+			 $callback = function() use ($applicants) 
+              {
+                  $file_handle = fopen('php://output', 'w');
+                  fputcsv($file_handle, ['Name','Sex','Registration Number','Program','Status']);
+                  foreach ($students as $row) { 
+                      fputcsv($file_handle, [$row->first_name.' '.$row->middle_name.' '.$row->surname,$row->gender,$row->registration_number,$row->campusProgram->program->name,$row->academicStatus->name]);
+                  }
+                  fclose($file_handle);
+              };
+
+              return response()->stream($callback, 200, $headers);
+
 	 }
 
     /**

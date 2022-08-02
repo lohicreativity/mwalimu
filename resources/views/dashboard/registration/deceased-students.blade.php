@@ -44,6 +44,7 @@
              <div class="card">
                <div class="card-header">
                  <h3 class="card-title">{{ __('Deceased Students') }}</h3><br>
+				 <a href="{{ url('registration/download-deceased-students') }}" class="btn btn-primary">Download List</a>
                </div>
                <!-- /.card-header -->
                <div class="card-body">

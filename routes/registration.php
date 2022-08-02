@@ -49,6 +49,10 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 	Route::get('deceased-students',[RegistrationController::class,'showDeceasedStudents']);
 	Route::get('postponed-students',[RegistrationController::class,'showPostponedStudents']);
 	Route::get('unregistered-students',[RegistrationController::class,'showUnregisteredStudents']);
+	Route::get('download-active-students',[RegistrationController::class,'downloadActiveStudents']);
+	Route::get('download-deceased-students',[RegistrationController::class,'downloadDeceasedStudents']);
+	Route::get('download-postponed-students',[RegistrationController::class,'downloadPostponedStudents']);
+	Route::get('download-unregistered-students',[RegistrationController::class,'downloadUnregisteredStudents']);
 });
 
 
