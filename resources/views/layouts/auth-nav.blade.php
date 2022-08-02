@@ -474,6 +474,12 @@
                   <p>{{ __('Resumptions') }}</p>
                 </a>
               </li>
+			  <li class="nav-item">
+                <a href="{{ url('registration/statistics') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>{{ __('Statistics') }}</p>
+                </a>
+              </li>
             </ul>
           </li>
           <li class="nav-item">
