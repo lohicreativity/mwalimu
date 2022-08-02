@@ -55,6 +55,7 @@
                           <th>Gender</th>
                           <th>Registration Number</th>
                           <th>Programme</th>
+						  <th>Status</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -64,6 +65,7 @@
                       <td>{{ $student->gender }}</td>
                       <td>{{ $student->registration_number }}</td>
                       <td>{{ $student->campusProgram->program->name }}</td>
+					  <td>{{ $student->academicStatus->name }}</td>
                    </tr>
                  @endforeach
                    </tbody>
