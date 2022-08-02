@@ -356,7 +356,7 @@ class RegistrationController extends Controller
 			})->with(['student.campusProgram.program'])->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->get() : Registration::whereHas('student.studentshipStatus',function($query){
 				  $query->where('name','ACTIVE');
 			})->with(['student.campusProgram.program'])->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->get();
-		   $callback = function() use ($applicants) 
+		   $callback = function() use ($students) 
               {
                   $file_handle = fopen('php://output', 'w');
                   fputcsv($file_handle, ['Name','Sex','Registration Number','Program']);
@@ -389,7 +389,7 @@ class RegistrationController extends Controller
 			})->with(['campusProgram.program'])->get() : Student::whereHas('studentshipStatus',function($query){
 				  $query->where('name','POSTPONED');
 			})->with(['campusProgram.program'])->get();
-		   $callback = function() use ($applicants) 
+		   $callback = function() use ($students) 
               {
                   $file_handle = fopen('php://output', 'w');
                   fputcsv($file_handle, ['Name','Sex','Registration Number','Program']);
@@ -461,7 +461,7 @@ class RegistrationController extends Controller
 				  $query->where('name','DECEASED');
 			})->with(['student.campusProgram.program'])->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->get();
 			
-			 $callback = function() use ($applicants) 
+			 $callback = function() use ($students) 
               {
                   $file_handle = fopen('php://output', 'w');
                   fputcsv($file_handle, ['Name','Sex','Registration Number','Program']);
@@ -530,7 +530,7 @@ class RegistrationController extends Controller
 			})->whereDoesntHave('registrations',function($query){
 				  $query->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'));
 			})->with(['campusProgram.program','academicStatus'])->get();
-			 $callback = function() use ($applicants) 
+			 $callback = function() use ($students) 
               {
                   $file_handle = fopen('php://output', 'w');
                   fputcsv($file_handle, ['Name','Sex','Registration Number','Program','Status']);
