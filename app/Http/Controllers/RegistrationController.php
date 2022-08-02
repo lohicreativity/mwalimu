@@ -324,7 +324,7 @@ class RegistrationController extends Controller
 	  {
 		   $staff = User::find(Auth::user()->id)->staff;
 		   $data = [
-		    'postponed_students'=>Registration::whereHas('student.studentshipStatus',function($query){
+		    'deceased_students'=>Registration::whereHas('student.studentshipStatus',function($query){
 				  $query->where('name','DECEASED');
 			})->with(['student.campusProgram.program'])->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->get()
 		   ];
