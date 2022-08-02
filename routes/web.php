@@ -54,6 +54,7 @@ Route::get('test',function(){
      	print_r($row);
      }*/
 	 
+	 
 	 $gatepay = GatewayPayment::find(39898);
 	 $control_no = '994120243736';
 	 $invoice = Invoice::with('feeType')->where('control_no',$control_no)->first();
@@ -117,7 +118,7 @@ Route::get('test',function(){
 
 			if(str_contains($invoice->feeType->name,'Miscellaneous')){
 				$applicant = Applicant::find($invoice->payable_id);
-			    $applicant->other_payment_check = $data['paid_amount'] == $invoice->amount? 1 : 0;
+			    $applicant->other_payment_check = $gatepay->paid_amount == $invoice->amount? 1 : 0;
 			    $applicant->save();
 			}
 			
