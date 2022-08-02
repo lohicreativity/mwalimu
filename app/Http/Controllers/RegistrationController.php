@@ -329,7 +329,8 @@ class RegistrationController extends Controller
 				  $query->where('name','ACTIVE');
 			})->with(['student.campusProgram.program'])->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->get() : Registration::whereHas('student.studentshipStatus',function($query){
 				  $query->where('name','ACTIVE');
-			})->with(['student.campusProgram.program'])->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->get()
+			})->with(['student.campusProgram.program'])->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->get(),
+			'semester'=>Semester::find(session('active_semester_id'))
 		   ];
 		   return view('dashboard.registration.active-students',$data)->withTitle('Active Students');
 	  }
@@ -347,7 +348,8 @@ class RegistrationController extends Controller
 				  $query->where('name','POSTPONED');
 			})->with(['campusProgram.program'])->get() : Student::whereHas('studentshipStatus',function($query){
 				  $query->where('name','POSTPONED');
-			})->with(['campusProgram.program'])->get()
+			})->with(['campusProgram.program'])->get(),
+			'semester'=>Semester::find(session('active_semester_id'))
 		   ];
 		   return view('dashboard.registration.postponed-students',$data)->withTitle('Postponed Students');
 	  }
@@ -365,7 +367,8 @@ class RegistrationController extends Controller
 				  $query->where('name','DECEASED');
 			})->with(['student.campusProgram.program'])->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->get() : Registration::whereHas('student.studentshipStatus',function($query){
 				  $query->where('name','DECEASED');
-			})->with(['student.campusProgram.program'])->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->get()
+			})->with(['student.campusProgram.program'])->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->get(),
+			'semester'=>Semester::find(session('active_semester_id'))
 		   ];
 		   return view('dashboard.registration.deceased-students',$data)->withTitle('Deceased Students');
 	  }
@@ -391,7 +394,8 @@ class RegistrationController extends Controller
 				  $query->where('name','!=','FAIL&DISCO');
 			})->whereDoesntHave('registrations',function($query){
 				  $query->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'));
-			})->with(['campusProgram.program','academicStatus'])->get()
+			})->with(['campusProgram.program','academicStatus'])->get(),
+			'semester'=>Semester::find(session('active_semester_id'))
 		 ];
 		 
 		 return view('dashboard.registration.unregistered-students',$data)->withTitle('Unregistered Students');
