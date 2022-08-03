@@ -1455,7 +1455,7 @@ class ApplicationController extends Controller
             'surname'=>'required',
             'index_number'=>'required|unique:applicants',
             'entry_mode'=>'required',
-            'password'=>'required|min:8'
+            'password'=>'required|min:8',
 			'password_confirmation'=>'same:password'
         ]);
 
