@@ -489,9 +489,6 @@ class ApplicantController extends Controller
                               }
                            }
                          }
-						 if($program->id == 11){
-							 return $o_level_pass_count;
-						 }
                          if($o_level_pass_count >= $program->entryRequirements[0]->pass_subjects){
                            $programs[] = $program;
                          }
