@@ -304,12 +304,6 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="{{ url('application/entry-requirements-capacity?application_window_id='.session('active_window_id')) }}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Program Max Capacity</p>
-                </a>
-              </li>
-              <li class="nav-item">
                 <a href="{{ url('application/application-dashboard?campus_id='.session('staff_campus_id').'&application_window_id='.session('active_window_id')) }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>{{ __('Application Dashboard') }}</p>
@@ -338,6 +332,12 @@
               </p>
             </a>
             <ul class="nav nav-treeview">
+			  <li class="nav-item">
+                <a href="{{ url('application/entry-requirements-capacity?application_window_id='.session('active_window_id')) }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Program Max Capacity</p>
+                </a>
+              </li>
               <li class="nav-item">
                 <a href="{{ url('application/tamisemi-applicants?application_window_id='.session('active_window_id')) }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>

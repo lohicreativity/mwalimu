@@ -124,6 +124,18 @@ class ApplicationController extends Controller
         ];
         return view('dashboard.application.applicants-list',$data)->withTitle('Applicants');
     }
+	
+	/**
+	 * Reset selections
+	 */
+	 public function resetSelections(Request $request)
+	 {
+		 $staff = User::find(Auth::user()->id)->staff;
+		 ApplicantProgramSelection::whereHas('applicant',function($query) use($staff){
+			 $query->where('campus_id',$staff->campus_id);
+		 })->where('application_window_id',$request->get('application_window_id'))->where('status','SELECTED')->update(['status'=>'ELIGIBLE']);
+		 return redirect()->back()->with('message','Selections reset successfully');
+	 }
 
     /**
      * Selected applicants
@@ -136,7 +148,7 @@ class ApplicationController extends Controller
                  $query->where('id',$request->get('application_window_id'));
             })->whereHas('selections',function($query) use($request){
                  $query->where('status','APPROVING')->orWhere('status','SELECTED')->orWhere('status','PENDING');
-            })->with(['nextOfKin','intake','selections.campusProgram.program'])->where('program_level_id',$request->get('program_level_id'))->where('campus_id',$staff->campus_id)->where('status','SELECTED')->get();
+            })->with(['nextOfKin','intake','selections.campusProgram.program','nectaResultDetails','nacteResultDetails'])->where('program_level_id',$request->get('program_level_id'))->where('campus_id',$staff->campus_id)->where('status','SELECTED')->get();
          
 
          $data = [
@@ -180,7 +192,7 @@ class ApplicationController extends Controller
          
          $applicants = Applicant::whereHas('selections',function($query) use($request){
                  $query->where('status','SELECTED');
-            })->with(['intake','selections.campusProgram.program'])->where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$request->get('program_level_id'))->where(function($query){
+            })->with(['intake','selections.campusProgram.program','nectaResultDetails','nacteResultDetails'])->where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$request->get('program_level_id'))->where(function($query){
 				$query->where('confirmation_status','!=','CANCELLED')->orWhere('confirmation_status','!=','TRANSFERED')->orWhereNull('confirmation_status');
 			})->where('status','ADMITTED')->get();
 
@@ -1444,6 +1456,7 @@ class ApplicationController extends Controller
             'index_number'=>'required|unique:applicants',
             'entry_mode'=>'required',
             'password'=>'required|min:8'
+			'password_confirmation'=>'same:password'
         ]);
 
         if($validation->fails()){
@@ -2677,7 +2690,10 @@ class ApplicationController extends Controller
      */
     public function searchForApplicant(Request $request)
     {   
-        $applicant = Applicant::where('index_number',$request->get('index_number'))->first();
+	    $staff = User::find(Auth::user()->id)->staff;
+        $applicant = Applicant::where('index_number',$request->get('index_number'))->where(function($query) use($staff){
+			$query->where('campus_id',$staff->campus_id)->orWhere('campas_id',0);
+		})->first();
         if($request->get('index_number') && !$applicant){
             return redirect()->back()->with('error','Student does not exists');
         }
@@ -5438,7 +5454,7 @@ class ApplicationController extends Controller
         $nactecode = $campus_program->regulator_code;
         $token = config('constants.NACTE_API_KEY');
         $url="https://www.nacte.go.tz/nacteapi/index.php/api/tamisemiconfirmedlist/".$nactecode."-".$applyr."-".$intake."/".$token;
-
+        try{
         $arrContextOptions=array(
             "ssl"=>array(
               "verify_peer"=> false,
@@ -5578,6 +5594,8 @@ class ApplicationController extends Controller
                 $selection->order = 1;
                 $selection->status = 'SELECTED';
                 $selection->save();
+				
+			  }catch(\Exception $e){}
 
                 try{
                     Mail::to($user)->queue(new TamisemiApplicantCreated($student,$applicant,$campus_program->program->name));

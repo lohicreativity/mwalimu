@@ -98,6 +98,7 @@
                </div>
                <div class="card-footer">
                   <button type="submit" class="btn btn-primary">{{ __('Run Selection') }}</button>
+				  <a href="{{ url('application/reset-selections?application_window_id='.$application_window->id) }}" class="btn btn-primary">Reset Selection</a>
                 </div>
               {!! Form::close() !!}
             </div>

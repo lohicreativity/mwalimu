@@ -18,5 +18,13 @@ class NectaResult extends Model
     {
     	return $this->belongsTo(Applicant::class,'applicant_id');
     }
+	
+	/**
+     * Establish one to many relationship with details
+     */
+    public function detail()
+    {
+    	return $this->belongsTo(NectaResultDetail::class,'necta_result_detail_id');
+    }
 
 }

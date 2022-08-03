@@ -275,6 +275,8 @@
                     <thead>
                         <tr>
                           <th>Name</th>
+						  <th>Form IV Index No.</th>
+						  <th>Form VI Index No./AVN</th>
                           <th>Phone</th>
                           <th>Gender</th>
                           <th>Programme</th>
@@ -285,11 +287,19 @@
                  @foreach($applicants as $applicant)
                    <tr>
                       <td>{{ $applicant->first_name }} {{ $applicant->middle_name }} {{ $applicant->surname }}</td>
-                      <td>{{ $applicant->phone }}</td>
+                      <td>{{ $applicant->index_number }}</td>
+					  <td>@foreach($applicant->nectaResultDetails as $detail)
+					        @if($detail->exam_id == 2) {{ $detail->index_number }} @endif
+						  @endforeach
+						  @foreach($applicant->nacteResultDetails as $detail)
+					        {{ $detail->avn }}
+						  @endforeach
+					  </td>
+					  <td>{{ $applicant->phone }}</td>
                       <td>{{ $applicant->gender }}</td>
                       <td>@foreach($applicant->selections as $selection)
                            @if($selection->status == 'APPROVING' || $selection->status == 'SELECTED')
-                           {{ $selection->campusProgram->program->name }}
+                           {{ $selection->campusProgram->program->code }}
                            @endif
                           @endforeach
                       </td>

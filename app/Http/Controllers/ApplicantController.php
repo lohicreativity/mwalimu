@@ -975,7 +975,8 @@ class ApplicantController extends Controller
     {
          $applicant = Applicant::find($request->get('applicant_id'));
          $invoice = Invoice::find($request->get('invoice_id'));
-         $invoice->delete();
+		 $invoice->applicable_id = 0;
+         $invoice->save();
          return response()->json(['status','200']);
     }
 

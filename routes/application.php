@@ -196,4 +196,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 	Route::post('internal-transfers-submission',[ApplicationController::class,'internalTransfersSubmission']);
 	Route::post('register-external-transfer',[ApplicationController::class,'registerExternalTransfer']);
 	Route::post('update-external-transfer',[ApplicationController::class,'updateExternalTransfer']);
+	
+	Route::get('check-receipt',[ApplicantController::class,'checkReceipt']);
+	Route::get('reset-selection',[ApplicationController::class,'resetSelections']);
 });

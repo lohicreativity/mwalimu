@@ -38,9 +38,13 @@
         <!-- Small boxes (Stat box) -->
         <div class="row">
           <div class="col-12">
+		  
             @if($applicant->payment_complete_status == 0)
             <div class="alert alert-warning">Payment section not completed</div>
             @else
+		    @if(count($campus_programs) == 0)
+			<div class="alert alert-warning">Unfortunately you do not qualify in any program</div>
+		    @endif
                         <div class="card">
               <div class="card-header">
                 <h3 class="card-title">Selections</h3>

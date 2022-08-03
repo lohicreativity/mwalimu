@@ -66,7 +66,7 @@
                     @if($invoice)
                     <tr>
                       <td>Control Number</td>
-                      <td>{{ $invoice->control_no }} @if($invoice->control_no == null) <a href="#" onclick="window.location.reload();">Refresh</a>@else @if(!$gateway_payment)<a href="#" id="ss-reset-control-number" data-token="{{ session()->token() }}" data-applicant-id="{{ $applicant->id }}" data-invoice-id="{{ $invoice->id }}"><i class="fa fa-refresh" ></i> Reset</a>@endif @endif</td>
+                      <td>{{ $invoice->control_no }} @if($invoice->control_no == null) <a href="#" onclick="window.location.reload();">Refresh</a>@else @if(!$gateway_payment)<a href="#" onclick="window.location.reload();"><i class="fa fa-refresh" ></i> Refresh</a>@endif @endif</td>
                     </tr>
                     @endif
                     @if(!$invoice)
@@ -106,5 +106,18 @@
   <!-- /.control-sidebar -->
 </div>
 <!-- ./wrapper -->
+
+<script type="text/javascript">
+    setInterval(function(){
+		$.ajax({
+			url:'/application/check-receipt?invoice_id={{ $invoice->id }}',
+			method:'GET'
+		}).done(function(data){
+			if(data.code == 200){
+				window.location.href = {{ url('application/results') }}
+			}
+		});
+	},1000);
+</script>
 
 @endsection
