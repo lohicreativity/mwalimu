@@ -56,7 +56,7 @@ class EntryRequirementController extends Controller
 		   })->distinct()->get(['subject_name']),
 		   'high_subjects'=>NectaResult::whereHas('detail',function($query){
 			   $query->where('exam_id',2);
-		   })->distinct()->get(['subject_name'])
+		   })->distinct()->get(['subject_name']),
            'equivalent_subjects'=>NacteResult::distinct()->get('subject'),
            'staff'=>$staff,
            'diploma_programs'=>Program::whereHas('campusPrograms',function($query) use($staff){
