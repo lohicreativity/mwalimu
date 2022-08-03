@@ -5475,6 +5475,7 @@ class ApplicationController extends Controller
           $jsondata= curl_exec($curl);
             curl_close($curl);
              $returnedObject = json_decode($jsondata);
+			 }catch(\Exception $e){}
 
              if(!isset($returnedObject->params)){
                 return redirect()->back()->with('error','No students to retrieve from TAMISEMI for selected programme');
@@ -5595,7 +5596,7 @@ class ApplicationController extends Controller
                 $selection->status = 'SELECTED';
                 $selection->save();
 				
-			  }catch(\Exception $e){}
+			  
 
                 try{
                     Mail::to($user)->queue(new TamisemiApplicantCreated($student,$applicant,$campus_program->program->name));
