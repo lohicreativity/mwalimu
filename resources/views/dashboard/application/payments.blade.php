@@ -109,16 +109,19 @@
 
 <script type="text/javascript">
     @if($invoice)
-    setInterval(function(){
-		$.ajax({
-			url:'/application/check-receipt?invoice_id={{ $invoice->id }}',
-			method:'GET'
-		}).done(function(data){
-			if(data.code == 200){
-				window.location.href = {{ url('application/results') }}
-			}
-		});
-	},1000);
+		
+	window.onload = function(){
+		setInterval(function(){
+			$.ajax({
+				url:'/application/check-receipt?invoice_id={{ $invoice->id }}',
+				method:'GET'
+			}).done(function(data){
+				if(data.code == 200){
+					window.location.href = "{{ url('application/results') }}"
+				}
+			});
+		},1000);
+	};
 	@endif
 </script>
 
