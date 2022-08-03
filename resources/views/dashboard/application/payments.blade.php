@@ -66,7 +66,7 @@
                     @if($invoice)
                     <tr>
                       <td>Control Number</td>
-                      <td>{{ $invoice->control_no }} @if($invoice->control_no == null) <a href="#" onclick="window.location.reload();">Refresh</a>@else @if(!$gateway_payment)<a href="#" onclick="window.location.reload();"><i class="fa fa-refresh" ></i> Refresh</a>@endif @endif</td>
+                      <td>{{ $invoice->control_no }} @if($invoice->control_no == null) <a href="#" onclick="window.location.reload();">Refresh</a>@else @if(!$gateway_payment)@endif @endif</td>
                     </tr>
                     @endif
                     @if(!$invoice)
