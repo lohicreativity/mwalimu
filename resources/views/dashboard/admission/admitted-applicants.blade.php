@@ -133,7 +133,7 @@
 					  <td>{{ $applicant->index_number }}</td>
 					  <td>@foreach($applicant->nectaResultDetails as $detail)
 					        @if($detail->exam_id == 2) {{ $detail->index_number }} @endif
-						  @endforeach
+						  @endforeach <br>
 						  @foreach($applicant->nacteResultDetails as $detail)
 					        {{ $detail->avn }}
 						  @endforeach
