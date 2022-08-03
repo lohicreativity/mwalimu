@@ -489,6 +489,8 @@ class ApplicantController extends Controller
                               }
                            }
                          }
+						 
+						 return $o_level_pass_count;
                          if($o_level_pass_count >= $program->entryRequirements[0]->pass_subjects){
                            $programs[] = $program;
                          }
@@ -1375,5 +1377,18 @@ class ApplicantController extends Controller
 
         return redirect()->back()->with('message','NACTE registration number updated successfully');
     }
+	
+	/**
+	 * Check for receipt
+	 */
+	 public function checkReceipt(Request $request)
+	 {
+		 $invoice = Invoice::find($request->get('invoice_id'));
+		 if(GatewayPayment::where('control_no',$invoice->control_no)->count() != 0){
+			 return response()->json(['code'=>200]);
+		 }else{
+			 return response()->json(['code'=>201]);
+		 }
+	 }
 
 }
