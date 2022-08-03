@@ -108,6 +108,7 @@
 <!-- ./wrapper -->
 
 <script type="text/javascript">
+    @if($invoice)
     setInterval(function(){
 		$.ajax({
 			url:'/application/check-receipt?invoice_id={{ $invoice->id }}',
@@ -118,6 +119,7 @@
 			}
 		});
 	},1000);
+	@endif
 </script>
 
 @endsection
