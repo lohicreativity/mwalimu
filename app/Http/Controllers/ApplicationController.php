@@ -5687,13 +5687,7 @@ class ApplicationController extends Controller
 			},'nectaResultDetails.results','nacteResultDetails.results','outResultDetails.results','programLevel','applicationWindow'])->where('is_tamisemi',1)->where('application_window_id',$application_window->id)->first();
         
 		foreach($applicants as $applicant){
-        $window = $applicant->applicationWindow;
-
-        $campus_programs = $window? $window->campusPrograms()->whereHas('program',function($query) use($applicant){
-                   $query->where('award_id',$applicant->program_level_id);
-           })->with(['program','campus','entryRequirements'=>function($query) use($window){
-                $query->where('application_window_id',$window->id);
-           }])->where('campus_id',session('applicant_campus_id'))->get() : [];
+       
         
 
         $award = $applicant->programLevel;
