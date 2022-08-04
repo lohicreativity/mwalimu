@@ -5418,12 +5418,14 @@ class ApplicationController extends Controller
     {
         $staff = User::find(Auth::user()->id)->staff;
 		if($request->get('status') == 'unqualified'){
-			$applicants = Applicant::doesntHave('selections')->with(['selections.campusProgram.program','campus','selections'=>function($query){
+			$applicants = Applicant::whereHas('selections',function($query) use($request){
+				$query->where('campus_program_id',$request->get('campus_program_id'))->where('status','!=','SELECTED');
+			})->with(['selections.campusProgram.program','campus','selections'=>function($query){
 				$query->where('status','SELECTED');
 			}])->where('application_window_id',$request->get('application_window_id'))->where('is_tamisemi',1)->get();
 		}else{
 			$applicants = Applicant::whereHas('selections',function($query) use($request){
-				$query->where('campus_program_id',$request->get('campus_program_id'));
+				$query->where('campus_program_id',$request->get('campus_program_id'))->where('status','SELECTED');
 			})->with(['selections.campusProgram.program','campus','selections'=>function($query){
 				$query->where('status','SELECTED');
 			}])->where('application_window_id',$request->get('application_window_id'))->where('is_tamisemi',1)->get();
