@@ -133,7 +133,7 @@ class ApplicationController extends Controller
 		 $staff = User::find(Auth::user()->id)->staff;
 		 ApplicantProgramSelection::whereHas('applicant',function($query) use($staff){
 			 $query->where('campus_id',$staff->campus_id);
-		 })->where('application_window_id',$request->get('application_window_id'))->where('status','SELECTED')->update(['status'=>'ELIGIBLE']);
+		 })->where('application_window_id',$request->get('application_window_id'))->update(['status'=>'ELIGIBLE']);
 		 Applicant::where('application_window_id',$request->get('application_window_id'))->where('campus_id',$staff->campus_id)->update(['status'=>null]);
 		 return redirect()->back()->with('message','Selections reset successfully');
 	 }
