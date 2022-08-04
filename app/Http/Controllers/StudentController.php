@@ -1333,6 +1333,10 @@ class StudentController extends Controller
 		  $user->password = Hash::make('123456');
 		  $user->save();
 		  
+		  $old_user = User::find($student->user_id);
+		  $old_user->status = 'INACTIVE';
+		  $old_user->save();
+		  
 		  $role = Role::where('name','applicant')->first();
 		  $user->roles()->sync([$role->id]);
 		  

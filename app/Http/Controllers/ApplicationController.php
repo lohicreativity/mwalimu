@@ -5422,6 +5422,11 @@ class ApplicationController extends Controller
             'campus_programs'=>CampusProgram::whereHas('program',function($query){
                  $query->where('name','LIKE','%Basic%');
             })->where('campus_id',$staff->campus_id)->get(),
+			'applicants'=>Applicant::whereHas('selections',function($query) use($request){
+				$query->where('campus_program_id',$request->get('campus_program_id'));
+			})->with(['selections.campusProgram.program','campus','selections'=>function($query){
+				$query->where('status','SELECTED');
+			}])->where('application_window_id',$request->get('application_window_id'))->where('is_tamisemi',1)->get(),
             'request'=>$request
         ];
         return view('dashboard.application.tamisemi-applicants',$data)->withTitle('TAMISEMI Applicants');
@@ -5930,7 +5935,7 @@ class ApplicationController extends Controller
             }
         }
 
-        return redirect()->back()->with('message','TAMISEMI applicants retrieved successfully');
+        return redirect()->to('application/tamisemi-applicants?application_window_id='.$request->get('application_window_id').'&campus_program_id='.$request->get('campus_program_id'))->with('message','TAMISEMI applicants retrieved successfully');
     }
 
 

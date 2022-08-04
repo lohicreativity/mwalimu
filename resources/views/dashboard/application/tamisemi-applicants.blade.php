@@ -75,6 +75,39 @@
                </div>
              </div>
              <!-- /.card -->     
+			 
+			 @if(count($applicants) != 0)
+			 <div class="card">
+               <div class="card-header">
+                 <h3 class="card-title">{{ __('TAMISEMI Applicants') }}</h3>
+               </div>
+               <!-- /.card-header -->
+               <div class="card-body">
+			      <table class="table table-bordered ss-paginated-table">
+				     <thead>
+					     <tr>
+						    <th>Name</th>
+							<th>Sex</th>
+							<th>Index Number</th>
+							<th>Programme</th>
+							<th>Campus</th>
+						 </tr>
+					 </thead>
+					 <tbody>
+					     @foreach($applicants as $applicant)
+						 <tr>
+						    <td>{{ $applicant->first_name }} {{ $applicant->middle_name }} {{ $applicant->surname }}</td>
+							<td>{{ $applicant->gender }}</td>
+							<td>{{ $applicant->index_number }}</td>
+							<td>{{ $applicant->selections[0]->campusProgram->program->name }}</td>
+							<td>{{ $applicant->campus->name }}</td>
+						 </tr>
+						 @endforeach
+					 <tbody>
+				  </table>
+			   </div>
+			  </div>
+			 @endif
 
            </div>
           </div>
