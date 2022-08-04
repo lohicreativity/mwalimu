@@ -5938,8 +5938,8 @@ class ApplicationController extends Controller
                        }
                    }
                 }
-            }
-        }*/
+            }*/
+        }
 
         return redirect()->to('application/tamisemi-applicants?application_window_id='.$request->get('application_window_id').'&campus_program_id='.$request->get('campus_program_id'))->with('message','TAMISEMI applicants retrieved successfully');
     }
