@@ -5420,9 +5420,7 @@ class ApplicationController extends Controller
 		if($request->get('status') == 'unqualified'){
 			$applicants = Applicant::whereHas('selections',function($query) use($request){
 				$query->where('campus_program_id',$request->get('campus_program_id'))->where('status','!=','SELECTED');
-			})->with(['selections.campusProgram.program','campus','selections'=>function($query){
-				$query->where('status','SELECTED');
-			}])->where('application_window_id',$request->get('application_window_id'))->where('is_tamisemi',1)->get();
+			})->with(['selections.campusProgram.program','campus'])->where('application_window_id',$request->get('application_window_id'))->where('is_tamisemi',1)->get();
 		}else{
 			$applicants = Applicant::whereHas('selections',function($query) use($request){
 				$query->where('campus_program_id',$request->get('campus_program_id'))->where('status','SELECTED');

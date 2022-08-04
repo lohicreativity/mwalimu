@@ -93,6 +93,7 @@
 							<th>Index Number</th>
 							<th>Programme</th>
 							<th>Campus</th>
+							<th>Phone</th>
 						 </tr>
 					 </thead>
 					 <tbody>
@@ -103,6 +104,7 @@
 							<td>{{ $applicant->index_number }}</td>
 							<td>@if(count($applicant->selections) != 0) {{ $applicant->selections[0]->campusProgram->program->name }} @endif</td>
 							<td>{{ $applicant->campus->name }}</td>
+							<td>{{ $applicant->phone }}</td>
 						 </tr>
 						 @endforeach
 					 <tbody>
