@@ -100,7 +100,7 @@
 						    <td>{{ $applicant->first_name }} {{ $applicant->middle_name }} {{ $applicant->surname }}</td>
 							<td>{{ $applicant->gender }}</td>
 							<td>{{ $applicant->index_number }}</td>
-							<td>{{ $applicant->selections[0]->campusProgram->program->name }}</td>
+							<td>@if(count($applicant->selections) != 0) {{ $applicant->selections[0]->campusProgram->program->name }} @endif</td>
 							<td>{{ $applicant->campus->name }}</td>
 						 </tr>
 						 @endforeach
