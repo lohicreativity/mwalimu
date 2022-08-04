@@ -1323,6 +1323,7 @@ class StudentController extends Controller
                   $applicant->passport_picture = $student->applicant->passport_picture;
                   $applicant->teacher_diploma_certificate = $student->applicant->teacher_diploma_certificate;
 		  $applicant->disability_status_id = $student->applicant->disability_status_id;
+		  $applicant->documents_complete_status = 1;
 		  $applicant->program_level_id = $level->id;
 		  $applicant->is_continue = 1;
 		  
