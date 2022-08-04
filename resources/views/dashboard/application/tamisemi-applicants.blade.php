@@ -102,7 +102,7 @@
 						    <td>{{ $applicant->first_name }} {{ $applicant->middle_name }} {{ $applicant->surname }}</td>
 							<td>{{ $applicant->gender }}</td>
 							<td>{{ $applicant->index_number }}</td>
-							<td>@if(count($applicant->selections) != 0) {{ $applicant->selections[0]->campusProgram->program->name }} @endif</td>
+							<td>@if(count($applicant->selections) != 0) {{ $applicant->selections[0]->campusProgram->program->name }} @else N/A @endif</td>
 							<td>{{ $applicant->campus->name }}</td>
 							<td>{{ $applicant->phone }}</td>
 						 </tr>
