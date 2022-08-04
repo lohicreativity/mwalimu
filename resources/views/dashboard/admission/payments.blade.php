@@ -180,7 +180,7 @@
 				method:'GET'
 			}).done(function(data){
 				if(data.code == 200){
-					window.location.reload();
+					//window.location.reload();
 				}
 			});
 		},1000);
