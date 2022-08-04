@@ -5685,7 +5685,7 @@ class ApplicationController extends Controller
                  $query->where('verified',1);
             },'selections.campusProgram.campus','selections.campusProgram.entryRequirements'=>function($query) use($application_window){
 				 $query->where('application_window_id',$application_window->id);
-			},'nectaResultDetails.results','nacteResultDetails.results','outResultDetails.results','programLevel','applicationWindow'])->where('is_tamisemi',1)->where('application_window_id',$application_window->id)->first();
+			},'nectaResultDetails.results','nacteResultDetails.results','outResultDetails.results','programLevel','applicationWindow'])->where('is_tamisemi',1)->where('application_window_id',$application_window->id)->get();
         
 		foreach($applicants as $applicant){
        
