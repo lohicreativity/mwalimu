@@ -5450,6 +5450,7 @@ class ApplicationController extends Controller
 		if($request->get('action') == 'Search Unqualified'){
 			return redirect()->to('application/tamisemi-applicants?application_window_id='.$request->get('application_window_id').'&campus_program_id='.$request->get('campus_program_id').'&status=unqualified');
 		}
+		DB::beginTransaction();
         $ac_year = StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first();
         $applyr = 2020;
         $application_window = ApplicationWindow::with('intake')->find($request->get('application_window_id'));
@@ -6151,7 +6152,7 @@ class ApplicationController extends Controller
 
         
         }
-
+        DB::commit();
         return redirect()->to('application/tamisemi-applicants?application_window_id='.$request->get('application_window_id').'&campus_program_id='.$request->get('campus_program_id'))->with('message','TAMISEMI applicants retrieved successfully');
     }
 
