@@ -2691,7 +2691,9 @@ class ApplicationController extends Controller
     public function searchForApplicant(Request $request)
     {   
 	    $staff = User::find(Auth::user()->id)->staff;
-        $applicant = Applicant::where('index_number',$request->get('index_number'))->first();
+        $applicant = Applicant::where('index_number',$request->get('index_number'))->where(function($query) use($staff){
+			// $query->where('campus_id',$staff->campus_id)->orWhere('campus_id',0);
+		})->first();
         if($request->get('index_number') && !$applicant){
             return redirect()->back()->with('error','Student does not exists');
         }
@@ -5620,12 +5622,12 @@ class ApplicationController extends Controller
             $index_no = $parts[0]."-".$parts[1];
             $exam_year = $parts[2];
             $exam_id = 1;
-            $response = Http::get('https://api.necta.go.tz/api/public/auth/'.config('constants.NECTA_API_KEY'));
-			if(json_decode($response) == null){
-				return redirect()->back()->with('error','Temporary network failure occured in retrieving NECTA results, please try again');
-			}
-            $token = json_decode($response)->token;
-            $response = Http::get('https://api.necta.go.tz/api/public/results/'.$index_no.'/'.$exam_id.'/'.$exam_year.'/'.$token);
+			$response = Http::post('https://api.necta.go.tz/api/results/individual',[
+                'api_key'=>config('constants.NECTA_API_KEY'),
+                'exam_year'=>$exam_year,
+                'index_number'=>$index_no,
+                'exam_id'=>$exam_id
+            ]);
             if(!isset(json_decode($response)->results)){
                 return redirect()->back()->with('error','Invalid Index number or year');
             }
@@ -5640,13 +5642,13 @@ class ApplicationController extends Controller
                 $detail->last_name = json_decode($response)->particulars->last_name;
                 $detail->sex = json_decode($response)->particulars->sex;
                 $detail->index_number = str_replace('-','/',$index_no); //json_decode($response)->particulars->index_number;
-                $detail->division = json_decode($response)->results->division->division;
-                $detail->points = json_decode($response)->results->division->points;
+                $detail->division = json_decode($response)->results->division;
+                $detail->points = json_decode($response)->results->points;
                 $detail->exam_id = $exam_id;
                 $detail->applicant_id = $applicant->id;
                 $detail->save();
             }
-            foreach(json_decode($response)->results->subjects as $subject){
+            foreach(json_decode($response)->subjects as $subject){
                 if($rs = NectaResult::where('subject_code',$subject->subject_code)->where('necta_result_detail_id',$detail->id)->first()){
                     $res = $rs;
                 }else{
