@@ -69,7 +69,8 @@
                  </div>
                    <div class="ss-form-actions">
                     <input type="submit" name="action" class="btn btn-primary" value="Retrieve">
-					<input type="submit" name="action" class="btn btn-primary" value="Search">
+					<input type="submit" name="action" class="btn btn-primary" value="Search Qualified">
+					<input type="submit" name="action" class="btn btn-primary" value="Search Unqualified">
                    </div>
  
                   {!! Form::close() !!}

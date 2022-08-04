@@ -5417,16 +5417,23 @@ class ApplicationController extends Controller
     public function tamisemiApplicants(Request $request)
     {
         $staff = User::find(Auth::user()->id)->staff;
+		if($request->get('status') == 'unqualified'){
+			$applicants = Applicant::doesntHave('selections')->with(['selections.campusProgram.program','campus','selections'=>function($query){
+				$query->where('status','SELECTED');
+			}])->where('application_window_id',$request->get('application_window_id'))->where('is_tamisemi',1)->get();
+		}else{
+			$applicants = Applicant::whereHas('selections',function($query) use($request){
+				$query->where('campus_program_id',$request->get('campus_program_id'));
+			})->with(['selections.campusProgram.program','campus','selections'=>function($query){
+				$query->where('status','SELECTED');
+			}])->where('application_window_id',$request->get('application_window_id'))->where('is_tamisemi',1)->get();
+		}
         $data = [
             'application_windows'=>ApplicationWindow::where('campus_id',$staff->campus_id)->get(),
             'campus_programs'=>CampusProgram::whereHas('program',function($query){
                  $query->where('name','LIKE','%Basic%');
             })->where('campus_id',$staff->campus_id)->get(),
-			'applicants'=>Applicant::whereHas('selections',function($query) use($request){
-				$query->where('campus_program_id',$request->get('campus_program_id'));
-			})->with(['selections.campusProgram.program','campus','selections'=>function($query){
-				$query->where('status','SELECTED');
-			}])->where('application_window_id',$request->get('application_window_id'))->where('is_tamisemi',1)->get(),
+			'applicants'=>$applicants,
             'request'=>$request
         ];
         return view('dashboard.application.tamisemi-applicants',$data)->withTitle('TAMISEMI Applicants');
@@ -5437,8 +5444,11 @@ class ApplicationController extends Controller
      */
     public function downloadTamisemiApplicants(Request $request)
     {
-		if($request->get('action') == 'Search'){
-			return redirect()->to('application/tamisemi-applicants?application_window_id='.$request->get('application_window_id').'&campus_program_id='.$request->get('campus_program_id'));
+		if($request->get('action') == 'Search Qualified'){
+			return redirect()->to('application/tamisemi-applicants?application_window_id='.$request->get('application_window_id').'&campus_program_id='.$request->get('campus_program_id').'&status=qualified');
+		}
+		if($request->get('action') == 'Search Unqualified'){
+			return redirect()->to('application/tamisemi-applicants?application_window_id='.$request->get('application_window_id').'&campus_program_id='.$request->get('campus_program_id').'&status=unqualified');
 		}
         $ac_year = StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first();
         $applyr = 2020;
@@ -5664,7 +5674,6 @@ class ApplicationController extends Controller
         }
 
 
-        /**
         $applicants = Applicant::with(['selections','nectaResultDetails.results','programLevel'])->where('application_window_id',$application_window->id)->where('is_tamisemi',1)->get();
         $o_level_grades = ['A'=>5,'B+'=>4,'B'=>3,'C'=>2,'D'=>1,'E'=>0.5,'F'=>0];
 
@@ -5938,7 +5947,7 @@ class ApplicationController extends Controller
                        }
                    }
                 }
-            }*/
+            }
         }
 
         return redirect()->to('application/tamisemi-applicants?application_window_id='.$request->get('application_window_id').'&campus_program_id='.$request->get('campus_program_id'))->with('message','TAMISEMI applicants retrieved successfully');
