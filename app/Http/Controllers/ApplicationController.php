@@ -5557,7 +5557,7 @@ class ApplicationController extends Controller
                     $user = new User;
                 }
                 $user->username = $form4index;
-                $user->email = 'dennis.lupiana@gmail.com';//$student->email;
+                $user->email = $student->email;
                 $user->password = Hash::make($surname);
                 $user->save();
 
@@ -5623,6 +5623,9 @@ class ApplicationController extends Controller
             $exam_year = $parts[2];
             $exam_id = 1;
             $response = Http::get('https://api.necta.go.tz/api/public/auth/'.config('constants.NECTA_API_KEY'));
+			if(json_decode($response) == null){
+				return redirect()->back()->with('error','Temporary network failure occured in retrieving NECTA results, please try again');
+			}
             $token = json_decode($response)->token;
             $response = Http::get('https://api.necta.go.tz/api/public/results/'.$index_no.'/'.$exam_id.'/'.$exam_year.'/'.$token);
             if(!isset(json_decode($response)->results)){
