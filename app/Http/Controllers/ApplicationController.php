@@ -5437,6 +5437,9 @@ class ApplicationController extends Controller
      */
     public function downloadTamisemiApplicants(Request $request)
     {
+		if($request->get('action') == 'Search'){
+			return redirect()->to('application/tamisemi-applicants?application_window_id='.$request->get('application_window_id').'&campus_program_id='.$request->get('campus_program_id'));
+		}
         $ac_year = StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first();
         $applyr = 2020;
         $application_window = ApplicationWindow::with('intake')->find($request->get('application_window_id'));

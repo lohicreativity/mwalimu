@@ -68,7 +68,8 @@
                   </div>
                  </div>
                    <div class="ss-form-actions">
-                    <button type="submit" class="btn btn-primary">{{ __('Retrieve TAMISEMI Applicants') }}</button>
+                    <input type="submit" name="action" class="btn btn-primary" value="Retrieve">
+					<input type="submit" name="action" class="btn btn-primary" value="Search">
                    </div>
  
                   {!! Form::close() !!}
