@@ -9,7 +9,7 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\NactePaymentController;
 use App\Http\Controllers\LoanAllocationController;
-
+use App\Http\Controllers\ACPACController;
 
 
 
@@ -63,6 +63,9 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 	Route::get('loan-bank-details',[LoanAllocationController::class,'showLoanBankDetails']);
 	Route::post('loan-allocation-update-signatures',[LoanAllocationController::class,'updateSignatures']);
 	Route::get('notify-loan-students',[LoanAllocationController::class,'notifyLoanStudents']);
+
+	Route::get('invoices',[ACPACController::class,'invoices']);
+	Route::get('receipts',[ACPACController::class,'receipts']);
 });
 
 

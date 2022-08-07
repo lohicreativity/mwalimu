@@ -527,6 +527,18 @@
                   <p>{{ __('NACTE Payments') }}</p>
                 </a>
               </li>
+              <li class="nav-item">
+                <a href="{{ url('finance/invoices') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>{{ __('Invoices') }}</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ url('finance/invoices') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>{{ __('Receipts') }}</p>
+                </a>
+              </li>
             </ul>
           </li>
            <li class="nav-item">
