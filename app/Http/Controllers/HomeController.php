@@ -7,7 +7,7 @@ use App\Domain\Academic\Models\SpecialExamRequest;
 use App\Domain\Academic\Models\Postponement;
 use App\Domain\Academic\Models\StudyAcademicYear;
 use App\Domain\Academic\Models\Semester;
-use App\Domain\RegistrationModels\Registration;
+use App\Domain\Registration\Models\Registration;
 use App\Models\User;
 use App\Models\UserSession;
 use Auth;
