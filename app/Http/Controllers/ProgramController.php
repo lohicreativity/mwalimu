@@ -114,6 +114,15 @@ class ProgramController extends Controller
     }
 
     /**
+     * Get by code
+     */
+    public function getByCode(Request $request)
+    {
+        $program = Program::where('code',$request->get('code'));
+        return response()->json(['program'=>$program]);
+    }
+
+    /**
      * Remove the specified program
      */
     public function destroy($id)

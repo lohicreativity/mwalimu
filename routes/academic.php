@@ -330,4 +330,6 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
     Route::get('student-search',[StudentController::class, 'searchForStudent']);
     Route::get('student-profile',[StudentController::class,'showStudentProfile']);
     Route::get('student-program-module-assignment/{id}',[ProgramModuleAssignmentController::class,'showOptionalStudents']);
+
+    Route::get('get-program-by-code',[ProgramController::class,'getByCode']);
 });

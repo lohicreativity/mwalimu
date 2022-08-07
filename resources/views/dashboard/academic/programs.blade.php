@@ -51,16 +51,18 @@
                   $name = [
                      'placeholder'=>'Name',
                      'class'=>'form-control',
+                     'id'=>'ss-name',
                      'required'=>true
                   ];
 
                   $code = [
                      'placeholder'=>'Code',
                      'class'=>'form-control',
+                     'id'=>'ss-code',
                      'required'=>true
                   ];
 				  
-				  $regulator_code = [
+				          $regulator_code = [
                      'placeholder'=>'Regulator Code',
                      'class'=>'form-control'
                   ];
@@ -68,6 +70,7 @@
                   $description = [
                      'placeholder'=>'Description',
                      'class'=>'form-control',
+                     'id'=>'ss-description',
                      'rows'=>2,
                      'required'=>true
                   ];
@@ -151,7 +154,7 @@
                     {!! Form::label('','Regulator Code') !!}
                     {!! Form::text('regulator_code',null,$regulator_code) !!}
 					
-					{!! Form::input('hidden','campus_id',$staff->campus_id) !!}
+					          {!! Form::input('hidden','campus_id',$staff->campus_id) !!}
                   </div> 
                  </div>
                 </div>
@@ -439,5 +442,22 @@
   <!-- /.control-sidebar -->
 </div>
 <!-- ./wrapper -->
+
+<script type="text/javascript">
+  
+  window.onload = function(){
+      $('#ss-code').on('keyup',function(e){
+         $.ajax({
+           url:'/academic/get-program-by-code?code='+$(e.target).val(),
+           method:'GET'
+         }).done(function(data){
+             if(data.program != null){
+               $('#ss-name').val(data.program.name);
+               $('#ss-description').val(data.program.description);
+             }
+         });
+      });
+  };
+</script>
 
 @endsection

@@ -297,24 +297,30 @@
                 </a>
               </li>
               @endcan
+              @can('view-entry-requirements')
               <li class="nav-item">
                 <a href="{{ url('application/entry-requirements?application_window_id='.session('active_window_id')) }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Entry Requirements</p>
                 </a>
               </li>
+              @endcan
+              @can('view-application-dashboard')
               <li class="nav-item">
                 <a href="{{ url('application/application-dashboard?campus_id='.session('staff_campus_id').'&application_window_id='.session('active_window_id')) }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>{{ __('Application Dashboard') }}</p>
                 </a>
               </li>
+              @endcan
+              @can('view-edit-applicant-details')
               <li class="nav-item">
                 <a href="{{ url('application/edit-applicant-details') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Edit Applicant Details</p>
                 </a>
               </li>
+              @endcan
               <!-- <li class="nav-item">
                 <a href="{{ url('application/search-for-applicant') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
@@ -332,36 +338,46 @@
               </p>
             </a>
             <ul class="nav nav-treeview">
-			  <li class="nav-item">
+              @can('view-max-capacity')
+			        <li class="nav-item">
                 <a href="{{ url('application/entry-requirements-capacity?application_window_id='.session('active_window_id')) }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Program Max Capacity</p>
                 </a>
               </li>
+              @endcan
+              @can('view-tamisemi-applicants')
               <li class="nav-item">
                 <a href="{{ url('application/tamisemi-applicants?application_window_id='.session('active_window_id')) }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>TAMISEMI Applicants</p>
                 </a>
               </li>
+              @endcan
+              @can('view-run-selection')
               <li class="nav-item">
                 <a href="{{ url('application/run-selection?application_window_id='.session('active_window_id')) }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Run Selection</p>
                 </a>
               </li>
+              @endcan
+              @can('view-selected-applicants')
               <li class="nav-item">
                 <a href="{{ url('application/selected-applicants?application_window_id='.session('active_window_id')) }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Selected Applicants</p>
                 </a>
               </li>
+              @endcan
+              @can('view-fetch-results')
                <li class="nav-item">
                 <a href="{{ url('application/admin-fetch-results') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Fetch Results</p>
                 </a>
               </li>
+              @endcan
             </ul>
           </li>
           <li class="nav-item">
@@ -373,42 +389,54 @@
               </p>
             </a>
             <ul class="nav nav-treeview">
+              @can('view-upload-attachments')
               <li class="nav-item">
                 <a href="{{ url('application/upload-attachments') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Upload Attachments</p>
                 </a>
               </li>
+              @endcan
+              @can('view-orientation-date')
               <li class="nav-item">
                 <a href="{{ url('registration/orientation-date?study_academic_year_id='.session('latest_academic_year_id').'&campus_id='.session('staff_campus_id')) }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Orientation Date</p>
                 </a>
               </li>
+              @endcan
+              @can('view-admit-applicants')
               <li class="nav-item">
                 <a href="{{ url('application/applicants-admission') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Admit Applicants</p>
                 </a>
               </li>
+              @endcan
+              @can('view-admitted-applicants')
               <li class="nav-item">
                 <a href="{{ url('application/admitted-applicants?application_window_id='.session('active_window_id')) }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Admitted Applicants</p>
                 </a>
               </li>
+              @endcan
+              @can('view-insurance-status')
               <li class="nav-item">
                 <a href="{{ url('application/insurance-statuses?application_window_id='.session('active_window_id')) }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Insurance Status</p>
                 </a>
               </li>
+              @endcan
+              @can('view-hostel-request')
               <li class="nav-item">
                 <a href="{{ url('application/hostel-statuses?application_window_id='.session('active_window_id')) }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Hostel Request</p>
                 </a>
               </li>
+              @endcan
             </ul>
           </li>
           <li class="nav-item">
@@ -420,66 +448,86 @@
               </p>
             </a>
             <ul class="nav nav-treeview">
+              @can('view-applicants-registration')
               <li class="nav-item">
                 <a href="{{ url('application/applicants-registration?application_window_id='.session('active_window_id')) }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Applicants Registration</p>
                 </a>
               </li>
+              @endcan
+              @can('view-insurance-registrations')
               <li class="nav-item">
                 <a href="{{ url('application/failed-insurance-registrations?study_academic_year_id='.session('active_academic_year_id')) }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Insurance Registations</p>
                 </a>
               </li>
+              @endcan
+              @can('view-internal-transfer')
               <li class="nav-item">
                 <a href="{{ url('registration/internal-transfer') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Internal Transfer</p>
                 </a>
               </li>
+              @endcan
+              @can('view-external-transfer')
               <li class="nav-item">
                 <a href="{{ url('registration/external-transfer') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>External Transfer</p>
                 </a>
               </li>
+              @endcan
+              @can('view-reset-deadline')
               <li class="nav-item">
                 <a href="{{ url('registration/registration-deadline?study_academic_year_id='.session('active_academic_year_id').'&campus_id='.session('staff_campus_id')) }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Reset Deadline</p>
                 </a>
               </li>
+              @endcan
+              @can('view-identity-cards')
               <li class="nav-item">
                 <a href="{{ url('registration/print-id-card') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Identity Cards</p>
                 </a>
               </li>
+              @endcan
+              @can('view-identity-cards')
               <li class="nav-item">
                 <a href="{{ url('registration/print-id-card-bulk') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Identity Cards Bulk</p>
                 </a>
               </li>
+              @endcan
+              @can('view-postponements')
               <li class="nav-item">
                 <a href="{{ url('academic/postponements?study_academic_year_id='.session('active_academic_year_id')) }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>{{ __('Postponements') }}</p>
                 </a>
               </li>
+              @endcan
+              @can('view-resumptions')
               <li class="nav-item">
                 <a href="{{ url('academic/postponement/resumptions?study_academic_year_id='.session('active_academic_year_id')) }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>{{ __('Resumptions') }}</p>
                 </a>
               </li>
-			  <li class="nav-item">
+              @endcan
+              @can('view-registration-status')
+			        <li class="nav-item">
                 <a href="{{ url('registration/statistics') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>{{ __('Registration Status') }}</p>
                 </a>
               </li>
+              @endcan
             </ul>
           </li>
           <li class="nav-item">
@@ -491,54 +539,70 @@
               </p>
             </a>
             <ul class="nav nav-treeview">
+              @can('view-fee-types')
               <li class="nav-item">
                 <a href="{{ url('finance/fee-types') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>{{ __('Fee Types') }}</p>
                 </a>
               </li>
+              @endcan
+              @can('view-fee-items')
               <li class="nav-item">
                 <a href="{{ url('finance/fee-items') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>{{ __('Fee Items') }}</p>
                 </a>
               </li>
+              @endcan
+              @can('view-fee-amounts')
               <li class="nav-item">
                 <a href="{{ url('finance/fee-amounts') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>{{ __('Fee Amounts') }}</p>
                 </a>
               </li>
+              @endcan
+              @can('view-programme-fees')
               <li class="nav-item">
                 <a href="{{ url('finance/program-fees?campus_id='.session('staff_campus_id')) }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>{{ __('Programme Fees') }}</p>
                 </a>
               </li>
+              @endcan
+              @can('view-payments')
               <li class="nav-item">
                 <a href="{{ url('finance/payments') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>{{ __('Payments') }}</p>
                 </a>
               </li>
+              @endcan
+              @can('view-nacte-payments')
               <li class="nav-item">
                 <a href="{{ url('finance/nacte-payments') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>{{ __('NACTE Payments') }}</p>
                 </a>
               </li>
+              @endcan
+              @can('view-invoices')
               <li class="nav-item">
                 <a href="{{ url('finance/invoices') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>{{ __('Invoices') }}</p>
                 </a>
               </li>
+              @endcan
+              @can('view-receipts')
               <li class="nav-item">
                 <a href="{{ url('finance/invoices') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>{{ __('Receipts') }}</p>
                 </a>
               </li>
+              @endcan
             </ul>
           </li>
            <li class="nav-item">
@@ -622,42 +686,54 @@
                 </a>
               </li>
               @endcan 
+              @can('view-results-appeal')
               <li class="nav-item">
                 <a href="{{ url('academic/results/appeals?study_academic_year_id='.session('active_academic_year_id').'&campus_id='.session('staff_campus_id')) }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>{{ __('Results Appeals') }}</p>
                 </a>
               </li>
+              @endcan
+              @can('view-statement-of-results')
               <li class="nav-item">
                 <a href="{{ url('academic/performance-report-requests?study_academic_year_id='.session('active_academic_year_id').'&campus_id='.session('staff_campus_id')) }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>{{ __('Statement of Results') }}</p>
                 </a>
               </li>
+              @endcan
+              @can('view-marks-editing')
               <li class="nav-item">
                 <a href="{{ url('academic/results/student-mark-editing') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>{{ __('Marks Editing') }}</p>
                 </a>
               </li>
+              @endcan
+              @can('view-special-exams')
               <li class="nav-item">
                 <a href="{{ url('academic/special-exams?study_academic_year_id='.session('active_academic_year_id')) }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>{{ __('Special Exams') }}</p>
                 </a>
               </li>
+              @endcan
+              @can('view-best-students')
               <li class="nav-item">
                 <a href="{{ url('academic/results?study_academic_year_id='.session('active_academic_year_id').'&campus_id='.session('staff_campus_id')) }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>{{ __('Best Students') }}</p>
                 </a>
               </li>
+              @endcan
+              @can('view-global-report')
               <li class="nav-item">
                 <a href="{{ url('academic/results/global-report') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>{{ __('Global Report') }}</p>
                 </a>
               </li>
+              @endcan
             </ul>
           </li>
           <li class="nav-item">
@@ -669,30 +745,38 @@
               </p>
             </a>
             <ul class="nav nav-treeview">
+              @can('view-graduants-list')
               <li class="nav-item">
                 <a href="{{ url('academic/run-graduants?study_academic_year_id='.session('active_academic_year_id').'&campus_id='.session('staff_campus_id')) }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Graduants List</p>
                 </a>
               </li>
+              @endcan
+              @can('view-clearance')
               <li class="nav-item">
                 <a href="{{ url('academic/clearance?study_academic_year_id='.session('active_academic_year_id')) }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Clearance</p>
                 </a>
               </li>
+              @endcan
+              @can('view-transcript-requests')
               <li class="nav-item">
                 <a href="{{ url('academic/transcript-requests?study_academic_year_id='.session('active_academic_year_id')) }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Transcript Requests</p>
                 </a>
               </li>
+              @endcan
+              @can('view-graduation-list')
               <li class="nav-item">
                 <a href="{{ url('academic/staff-module-assignments?study_academic_year_id='.session('active_academic_year_id')) }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Graduation List</p>
                 </a>
               </li>
+              @endcan
             </ul>
           </li>
           <li class="nav-item">
@@ -844,30 +928,38 @@
                 </a>
               </li>
               @endcan
-			  <li class="nav-item">
+              @can('view-gpa-classification')
+			         <li class="nav-item">
                 <a href="{{ url('settings/gpa-classifications?study_academic_year_id='.session('active_academic_year_id')) }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>{{ __('GPA Classification') }}</p>
                 </a>
               </li>
+              @endcan
+              @can('edit-graduation-date')
               <li class="nav-item">
                 <a href="{{ url('settings/graduation-date?study_academic_year_id='.session('active_academic_year_id')) }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>{{ __('Graduation Date') }}</p>
                 </a>
               </li>
+              @endcan
+              @can('view-enrollment-report')
               <li class="nav-item">
                 <a href="{{ url('academic/enrollment-report?study_academic_year_id='.session('active_academic_year_id')) }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>{{ __('Enrollment Report') }}</p>
                 </a>
               </li>
+              @endcan
+              @can('search-student')
               <li class="nav-item">
                 <a href="{{ url('academic/student-search') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>{{ __('Student Search') }}</p>
                 </a>
               </li>
+              @endcan
             </ul>
           </li>
           <li class="nav-item">
