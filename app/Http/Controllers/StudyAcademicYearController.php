@@ -59,7 +59,9 @@ class StudyAcademicYearController extends Controller
 			return redirect()->back()->with('error','End date cannot be less than begin date');
 		}elseif(strtotime($request->get('begin_date')) < strtotime(now()->format('Y-m-d'))){
 			return redirect()->back()->with('error','Begin date cannot be less than today date');
-		}
+		}elseif(strtotime($request->get('end_date')) < strtotime(now()->format('Y-m-d'))){
+            return redirect()->back()->with('error','End date cannot be less than today date');
+        }
 
         (new StudyAcademicYearAction)->store($request);
 
@@ -88,7 +90,9 @@ class StudyAcademicYearController extends Controller
 			return redirect()->back()->with('error','End date cannot be less than begin date');
 		}elseif(strtotime($request->get('begin_date')) < strtotime(now()->format('Y-m-d'))){
 			return redirect()->back()->with('error','Begin date cannot be less than today date');
-		}
+		}elseif(strtotime($request->get('end_date')) < strtotime(now()->format('Y-m-d'))){
+            return redirect()->back()->with('error','End date cannot be less than today date');
+        }
 
 
         (new StudyAcademicYearAction)->update($request);

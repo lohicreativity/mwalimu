@@ -63,11 +63,11 @@ class NACTEServiceController extends Controller
                 }
              }
 
-        $applicant = Applicant::with('programLevel')->find($request->get('applicant_id'));
-        if(str_contains($applicant->programLevel->name,'Bachelor') && $applicant->entry_mode == 'EQUIVALENT' && $detail->diploma_gpa >= 3){
-                $applicant->results_complete_status = 1;
-            }
-        $applicant->save();
+        // $applicant = Applicant::with('programLevel')->find($request->get('applicant_id'));
+        // if(str_contains($applicant->programLevel->name,'Bachelor') && $applicant->entry_mode == 'EQUIVALENT' && $detail->diploma_gpa >= 3){
+        //         $applicant->results_complete_status = 1;
+        //     }
+        // $applicant->save();
 
             $details = NacteResultDetail::with('results')->find($detail->id);
             return response()->json(['details'=>$details,'exists'=>0]);
