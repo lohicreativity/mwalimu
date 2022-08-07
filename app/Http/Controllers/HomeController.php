@@ -35,14 +35,14 @@ class HomeController extends Controller
            'special_exams_arc_count'=>SpecialExamRequest::whereNull('approved_by_user_id')->count(),
            'postponements_hod_count'=>Postponement::whereNull('recommended_by_user_id')->count(),
            'special_exams_hod_count'=>SpecialExamRequest::whereNull('recommended_by_user_id')->count(),
-           'postponement_count'=>Postponement::whereNotNull('postponed_by_user_id')->where('study_academic_year_id',$ac_year->id)->where('semester_id',$semester->id)->count(),
-           'last_postponement'=>Postponement::whereNotNull('postponed_by_user_id')->where('study_academic_year_id',$ac_year->id)->where('semester_id',$semester->id)->latest()->first(),
+           'postponement_count'=>Postponement::whereNotNull('postponed_by_user_id')->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->count(),
+           'last_postponement'=>Postponement::whereNotNull('postponed_by_user_id')->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->latest()->first(),
            'deceased_count'=>Registration::whereHas('student.studentshipStatus',function($query){
                   $query->where('name','DECEASED');
-            })->where('study_academic_year_id',$ac_year->id)->where('semester_id',$semester->id)->count(),
+            })->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->count(),
            'last_deceased'=>Registration::whereHas('student.studentshipStatus',function($query){
                   $query->where('name','DECEASED');
-            })->where('study_academic_year_id',$ac_year->id)->where('semester_id',$semester->id)->latest()->first(),
+            })->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->latest()->first(),
            'last_session'=>UserSession::where('user_id',Auth::user()->id)->latest()->offset(1)->first()
         ];
     	return view('dashboard',$data)->withTitle('Home');

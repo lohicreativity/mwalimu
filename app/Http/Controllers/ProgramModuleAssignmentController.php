@@ -39,6 +39,19 @@ class ProgramModuleAssignmentController extends Controller
     }
 
     /**
+     * Show optional students
+     */
+    public function showOptionalStudents(Request $request, $id)
+    {
+        $data = [
+           'students'=>ProgramModuleAssignment::find($id)->students,
+           'assignment'=>ProgramModuleAssignment::with('module')->find($id),
+           'staff'=>User::find(Auth::user()->id)->staff
+        ];
+        return view('dashboard.academic.optional-students',$data)->withTitle('Optional Students');
+    }
+
+    /**
      * Allocate options
      */
     public function allocateOptions(Request $request)

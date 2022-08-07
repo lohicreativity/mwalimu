@@ -157,7 +157,13 @@
                                     <td>{{ $assignment->year_of_study }}</td>
                                     <td>{{ $assignment->module->credit }}</td>
                                     <td>{{ $assignment->semester->name }}</td>
-                                    <td>{{ $assignment->category }}</td>
+                                    <td>
+                                      @if($assignment->category == 'OPTIONAL')
+                                      <a href="{{ url('academic/student-program-module-assignment/'.$assignment->id) }}">{{ $assignment->category }}</a>
+                                      @else
+                                      {{ $assignment->category }}
+                                      @endif
+                                    </td>
                                     <td>{{ $assignment->type }}</td>
                                     <!-- <td>
                                       <a class="btn btn-info btn-sm" href="{{ url('academic/module-assignment/'.$assignment->id.'/special-exams') }}">
