@@ -32,6 +32,9 @@ class ProgramFeeController extends Controller
       $study_ac_yr = StudyAcademicYear::whereHas('academicYear',function($query) use($ac_year){
             $query->where('year','LIKE','%'.$ac_year.'/%');
       })->first();
+      if(!$study_ac_yr){
+            return redirect()->back()->with('error','No corresponding academic year');
+      }
     	$data = [
            'fees'=>$request->get('query')? ProgramFee::wherehas('campusProgram',function($query) use($request){
                 $query->where('campus_id',$request->get('campus_id'));
