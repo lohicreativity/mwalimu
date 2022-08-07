@@ -34,6 +34,7 @@ use App\Http\Controllers\ApplicationWindowController;
 use App\Http\Controllers\ClearanceController;
 use App\Http\Controllers\GraduantController;
 use App\Http\Controllers\AppealController;
+use App\Http\Controllers\StudentController;
 use App\Http\Controllers\GPAClassificationController;
 use App\Http\Controllers\TranscriptRequestController;
 use App\Http\Controllers\PerformanceReportRequestController;
@@ -325,5 +326,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
     Route::get('enrollment-report',[GraduantController::class,'enrollmentReport']);
     Route::get('submit-enrolled-students',[GraduantController::class,'submitEnrolledStudents']);
     Route::get('download-enrolled-students',[GraduantController::class,'downloadEnrolledStudents']);
+
+    Route::get('student-search',[StudentController::class, 'searchForStudent']);
+    Route::get('student-profile',[StudentController::class,'showStudentProfile']);
 
 });

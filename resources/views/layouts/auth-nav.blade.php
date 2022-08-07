@@ -862,6 +862,12 @@
                   <p>{{ __('Enrollment Report') }}</p>
                 </a>
               </li>
+              <li class="nav-item">
+                <a href="{{ url('academic/student-search') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>{{ __('Student Search') }}</p>
+                </a>
+              </li>
             </ul>
           </li>
           <li class="nav-item">

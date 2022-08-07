@@ -103,7 +103,7 @@ tains page content -->
 
                           @endphp
 
-                          {!! Form::open(['url'=>'staff/staff/update-details','class'=>'ss-form-processing','files'=>true]) !!}
+                          {!! Form::open(['url'=>'student/update-details','class'=>'ss-form-processing','files'=>true]) !!}
 
                           <div class="form-group">
                              {!! Form::label('','Phone') !!}
@@ -116,10 +116,20 @@ tains page content -->
                           </div>
 
                           <div class="form-group">
+                             {!! Form::label('','Studentship Status') !!}
+                             <select name="studentship_status_id" class="form-control">
+                                <option value="">Select Status</option>
+                                @foreach($statuses as $status)
+                                <option value="{{ $status->id }}">{{ $status->name }}</option>
+                                @endforeach
+                             </select>
+                          </div>
+
+                          <div class="form-group">
                              {!! Form::label('','Upload profile picture') !!}
                              {!! Form::file('image',['class'=>'form-control']) !!}
 
-                             {!! Form::input('hidden','staff_id',$student->id) !!}
+                             {!! Form::input('hidden','student_id',$student->id) !!}
                           </div>
 
                           <div class="ss-form-controls">

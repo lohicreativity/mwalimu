@@ -13,6 +13,7 @@ use App\Domain\Academic\Models\ProgramModuleAssignment;
 use App\Domain\Academic\Models\AnnualRemark;
 use App\Domain\Academic\Models\SemesterRemark;
 use App\Domain\Academic\Models\ExaminationResult;
+use App\Domain\Academic\Models\StudentshipStatus;
 use App\Domain\Academic\Models\ModuleAssignment;
 use App\Domain\Registration\Models\Student;
 use App\Domain\Academic\Models\ResultPublication;
@@ -1382,6 +1383,41 @@ class StudentController extends Controller
 		  DB::commit();
 		  return redirect()->to('student/show-indicate-continue?campus_id='.$request->get('campus_id'))->with('message','You have indicated to continue with upper level successfully');
 	  }
+
+    /**
+     * Update details
+     */
+    public function updateDetails()
+    {
+        $student = Student::find($request->get('student_id'));
+        $student->studentship_status_id = $request->get('studentship_status_id');
+        $student->save();
+
+        return redirect()->back()->with('message','Student details updated successfully');
+    }
+
+    /**
+     * Display modules
+     */
+    public function searchForStudent(Request $request)
+    {
+        $data = [
+            'student'=>Student::with(['applicant.country','applicant.district','applicant.ward','campusProgram.campus','disabilityStatus'])->where('registration_number',$request->get('registration_number'))->first()
+        ];
+        return view('dashboard.academic.student-search',$data)->withTitle('Student Search');
+    }
+
+    /**
+     * Display modules
+     */
+    public function showStudentProfile(Request $request)
+    {
+        $data = [
+            'student'=>Student::with(['applicant.country','applicant.district','applicant.ward','campusProgram.campus','disabilityStatus'])->where('registration_number',$request->get('registration_number'))->first(),
+            'statuses'=>StudentshipStatus::all()
+        ];
+        return view('dashboard.academic.student-profile',$data)->withTitle('Profile');
+    }
 
     /**
      * Logout student

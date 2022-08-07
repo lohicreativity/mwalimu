@@ -89,4 +89,6 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 	Route::get('show-indicate-continue',[StudentController::class,'showIndicateContinue']);
 	Route::post('indicate-continue',[StudentController::class,'indicateContinue']);
 
+    Route::post('update-details',[StudentController::class,'updateDetails']);
+
 });
