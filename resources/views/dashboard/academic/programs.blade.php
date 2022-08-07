@@ -453,6 +453,7 @@
            url:'/academic/get-program-by-code?code='+$(e.target).val(),
            method:'GET'
          }).done(function(data){
+            console.log(data);
              if(data.program != null){
                $('#ss-name').val(data.program.name);
                $('#ss-description').val(data.program.description);
