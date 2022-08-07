@@ -28,6 +28,7 @@ use App\Domain\Academic\Models\CarryHistory;
 use App\Domain\Academic\Models\GPAClassification;
 use App\Domain\Academic\Models\ExaminationProcessRecord;
 use App\Domain\Academic\Models\ProgramModuleAssignment;
+use App\Domain\Academic\Models\ExaminationResultChange;
 use App\Domain\Registration\Models\Student;
 use App\Domain\Settings\Models\Intake;
 use App\Models\User;
@@ -826,10 +827,60 @@ class ExaminationResultController extends Controller
 
             if($res = ExaminationResult::where('module_assignment_id',$request->get('module_assignment_id'))->where('student_id',$request->get('student_id'))->where('exam_type',$request->get('exam_type'))->first()){
                   $result = $res;
+                  $result->module_assignment_id = $request->get('module_assignment_id');
+                  $result->student_id = $request->get('student_id');
+                  if($request->has('final_score')){
+                  $result->course_work_score = $request->get('course_work_score');
+                  $score_before = $result->final_score;
+                  $result->final_score = ($request->get('final_score')*$module_assignment->programModuleAssignment->final_min_mark)/100;
+                  }else{
+                     $result->final_score = null;
+                  }
+                  if($request->get('appeal_score')){
+                     $result->appeal_score = ($request->get('appeal_score')*$module_assignment->programModuleAssignment->final_min_mark)/100;
+                  }
+                  if($request->get('appeal_supp_score')){
+                     $result->appeal_supp_score = $request->get('appeal_supp_score');
+                  }
+                  if($request->get('supp_score')){
+                     $result->exam_type = 'SUPP';
+                     $result->supp_score = $request->get('supp_score');
+                     $result->supp_processed_by_user_id = Auth::user()->id;
+                     $result->supp_processed_at = now();
+                  }else{
+                     $result->supp_score = null;
+                     $result->supp_processed_by_user_id = Auth::user()->id;
+                     $result->supp_processed_at = null;
+                  }
+                  $result->exam_type = $request->get('exam_type');
+                  if($carry_history){
+                     $result->exam_category = 'CARRY';
+                  }
+                  if($retake_history){
+                     $result->exam_category = 'RETAKE';
+                  }
+                  if($special_exam && !$request->get('final_score')){
+                     $result->final_remark = 'POSTPONED';
+                  }else{
+                     $result->final_remark = $module_assignment->programModuleAssignment->final_pass_score <= $result->final_score? 'PASS' : 'FAIL';
+                  }
+                  if($result->supp_score){
+                     $result->final_exam_remark = $module_assignment->programModuleAssignment->module_pass_score <= $result->supp_score? 'PASS' : 'FAIL';
+                  }
+                  $result->final_uploaded_at = now();
+                  $result->uploaded_by_user_id = Auth::user()->id;
+                  $result->save();
+
+                  $change = new ExaminationResultChange;
+                  $change->resultable_id = $result->id;
+                  $change->from_score = $score_before;
+                  $change->to_score = $result->score;
+                  $change->resultable_type = 'course_work_result';
+                  $change->user_id = Auth::user()->id;
+                  $change->save();
               }else{
                   $result = new ExaminationResult;
-              }
-              $result->module_assignment_id = $request->get('module_assignment_id');
+                  $result->module_assignment_id = $request->get('module_assignment_id');
                 $result->student_id = $request->get('student_id');
                 if($request->has('final_score')){
                 $result->course_work_score = $request->get('course_work_score');
@@ -871,6 +922,8 @@ class ExaminationResultController extends Controller
                 $result->final_uploaded_at = now();
                 $result->uploaded_by_user_id = Auth::user()->id;
                 $result->save();
+              }
+              
                 DB::commit();
 
                 // return $this->processStudentResults($request,$student->id,$module_assignment->study_academic_year_id,$module_assignment->programModuleAssignment->year_of_study);
@@ -1438,7 +1491,7 @@ class ExaminationResultController extends Controller
                    $query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',explode('_',$request->get('campus_program_id'))[2]);
               },'semesterRemarks.semester','examinationResults'=>function($query) use($assignmentIds){
                 $query->whereIn('module_assignment_id',$assignmentIds);
-              }])->where('campus_program_id',$campus_program->id)->get();
+              },'examinationResults.changes'])->where('campus_program_id',$campus_program->id)->get();
            }else{
               $students = Student::whereHas('applicant',function($query) use($request){
                   $query->where('intake_id',$request->get('intake_id'));
@@ -1450,7 +1503,7 @@ class ExaminationResultController extends Controller
                    $query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',explode('_',$request->get('campus_program_id'))[2]);
               },'examinationResults'=>function($query) use($assignmentIds){
               	$query->whereIn('module_assignment_id',$assignmentIds);
-              }])->where('campus_program_id',$campus_program->id)->get();
+              },'examinationResults.changes'])->where('campus_program_id',$campus_program->id)->get();
           }
         }else{
             $students = Student::whereHas('applicant',function($query) use($request){
@@ -1465,7 +1518,7 @@ class ExaminationResultController extends Controller
                    $query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',explode('_',$request->get('campus_program_id'))[2]);
               },'examinationResults'=>function($query) use($assignmentIds){
                 $query->whereIn('module_assignment_id',$assignmentIds);
-              },'specialExams'])->where('campus_program_id',$campus_program->id)->get();
+              },'specialExams','examinationResults.changes'])->where('campus_program_id',$campus_program->id)->get();
         }
 
 

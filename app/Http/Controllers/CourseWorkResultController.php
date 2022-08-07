@@ -8,6 +8,7 @@ use App\Domain\Academic\Models\ModuleAssignment;
 use App\Domain\Academic\Models\ExaminationPolicy;
 use App\Domain\Academic\Models\CourseWorkResult;
 use App\Domain\Academic\Models\ExaminationResult;
+use App\Domain\Academic\Models\ExaminationResultChange;
 use App\Domain\Academic\Models\Module;
 use App\Domain\Registration\Models\Student;
 use App\Models\User;
@@ -125,15 +126,33 @@ class CourseWorkResultController extends Controller
               }
     	    		if($res = CourseWorkResult::where('student_id',$request->get('student_id'))->where('assessment_plan_id',$plan->id)->first()){
     	    			$result = $res;
+                        $result->student_id = $request->get('student_id');
+                        $score_before = $result->score;
+                        $result->score = ($request->get('plan_'.$plan->id.'_score')*$plan->weight)/100;
+                        $result->assessment_plan_id = $plan->id;
+                        $result->module_assignment_id = $request->get('module_assignment_id');
+                        $result->uploaded_by_user_id = Auth::user()->id;
+                        $result->save();
+
+                        $change = new ExaminationResultChange;
+                        $change->resultable_id = $result->id;
+                        $change->from_score = $score_before;
+                        $change->to_score = $result->score;
+                        $change->resultable_type = 'course_work_result';
+                        $change->user_id = Auth::user()->id;
+                        $change->save();
     	    		}else{
     	    			$result = new CourseWorkResult;
+                        $result->student_id = $request->get('student_id');
+                        $result->score = ($request->get('plan_'.$plan->id.'_score')*$plan->weight)/100;
+                        $result->assessment_plan_id = $plan->id;
+                        $result->module_assignment_id = $request->get('module_assignment_id');
+                        $result->uploaded_by_user_id = Auth::user()->id;
+                        $result->save();
     	    		}
-    	    		$result->student_id = $request->get('student_id');
-    	    		$result->score = ($request->get('plan_'.$plan->id.'_score')*$plan->weight)/100;
-    	    		$result->assessment_plan_id = $plan->id;
-    	    		$result->module_assignment_id = $request->get('module_assignment_id');
-    	    		$result->uploaded_by_user_id = Auth::user()->id;
-    	    		$result->save();
+    	    		
+
+                    
         	  }
         	}
         	$course_work = CourseWorkResult::where('module_assignment_id',$request->get('module_assignment_id'))->where('student_id',$request->get('student_id'))->sum('score');

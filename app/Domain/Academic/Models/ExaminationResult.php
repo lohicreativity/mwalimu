@@ -21,6 +21,14 @@ class ExaminationResult extends Model
     }
 
     /**
+     * Establish one to many polymorphic relationship with examination result changes
+     */
+    public function changes()
+    {
+        return $this->morphMany(ExaminationResultChange::class,'resultable');
+    }
+
+    /**
      * Establish one to many polymorphic relatioship with retakables
      */
     public function retakable()

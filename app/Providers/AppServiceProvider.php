@@ -13,6 +13,8 @@ use App\Domain\Registration\Models\Student;
 use App\Domain\Application\Models\Applicant;
 use App\Domain\Application\Models\ApplicationWindow;
 use App\Domain\Academic\Models\StudyAcademicYear;
+use App\Domain\Academic\Models\ExaminationResult;
+use App\Domain\Academic\Models\CourseWorkResult;
 use App\Models\User;
 
 class AppServiceProvider extends ServiceProvider
@@ -32,7 +34,9 @@ class AppServiceProvider extends ServiceProvider
             'user'=>User::class,
             'appeal'=>Appeal::class,
             'academic_year'=>StudyAcademicYear::class,
-            'application_window'=>ApplicationWindow::class
+            'application_window'=>ApplicationWindow::class,
+            'examination_result'=>ExaminationResult::class,
+            'course_work_result'=>CourseWorkResult::class
         ]);
     }
 
