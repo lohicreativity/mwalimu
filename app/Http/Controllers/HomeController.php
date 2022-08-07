@@ -44,7 +44,7 @@ class HomeController extends Controller
            'last_deceased'=>Registration::whereHas('student.studentshipStatus',function($query){
                   $query->where('name','DECEASED');
             })->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->latest()->first(),
-           'last_session'=>UserSession::where('user_id',Auth::user()->id)->latest()->offset(1)->first()
+           'last_session'=>UserSession::where('user_id',Auth::user()->id)->orderBy('last_activity','desc')->offset(1)->first()
         ];
     	return view('dashboard',$data)->withTitle('Home');
     }
