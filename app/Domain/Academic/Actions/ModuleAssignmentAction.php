@@ -8,9 +8,10 @@ use App\Domain\Academic\Models\Module;
 use App\Domain\Academic\Models\ProgramModuleAssignment;
 use App\Domain\HumanResources\Models\Staff;
 use App\Domain\Academic\Repositories\Interfaces\ModuleAssignmentInterface;
+use App\Mail\StaffModuleAssigned;
 use App\Models\User;
 use App\Utils\Util;
-use Auth;
+use Auth, Mail;
 
 class ModuleAssignmentAction implements ModuleAssignmentInterface{
 	
@@ -34,6 +35,11 @@ class ModuleAssignmentAction implements ModuleAssignmentInterface{
                 }
                 
                 $assignment->save();
+                $assign = ModuleAssignment::with(['staff','module','studyAcademicYear','programModuleAssignment.semester'])->find($assign->id);
+                $user = User::find($assigned_staff->user_id);
+                try{
+                   Mail::to($user)->queue(new StaffModuleAssigned($assign));
+                }catch(\Exception $e){}
                 return redirect()->back()->with('message','Module assigned to staff successfully');
 	}
 
