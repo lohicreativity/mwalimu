@@ -95,13 +95,13 @@
                 <div class="card-body">
                   
                   <div class="row">
-                  <div class="form-group col-8">
-                    {!! Form::label('','Name') !!}
-                    {!! Form::text('name',null,$name) !!}
-                  </div>
                    <div class="form-group col-4">
                     {!! Form::label('','Code') !!}
                     {!! Form::text('code',null,$code) !!}
+                  </div>
+                  <div class="form-group col-8">
+                    {!! Form::label('','Name') !!}
+                    {!! Form::text('name',null,$name) !!}
                   </div>
                   </div>
                   <div class="row">
@@ -282,16 +282,16 @@
 
                                 {!! Form::open(['url'=>'academic/program/update','class'=>'ss-form-processing']) !!}
                                    <div class="row">
+                                    <div class="form-group col-4">
+                                      {!! Form::label('','Code') !!}
+                                      {!! Form::text('code',$program->code,$code) !!}
+                                    </div>
                                     <div class="form-group col-8">
                                       {!! Form::label('','Name') !!}
                                       {!! Form::text('name',$program->name,$name) !!}
 
                                       {!! Form::input('hidden','program_id',$program->id) !!}
                                       {!! Form::input('hidden','campus_id',$staff->campus_id) !!}
-                                    </div>
-                                    <div class="form-group col-4">
-                                      {!! Form::label('','Code') !!}
-                                      {!! Form::text('code',$program->code,$code) !!}
                                     </div>
                                     </div>
                                     <div class="row">
@@ -446,7 +446,9 @@
 <script type="text/javascript">
   
   window.onload = function(){
+
       $('#ss-code').on('keyup',function(e){
+         console.log(e.target.value);
          $.ajax({
            url:'/academic/get-program-by-code?code='+$(e.target).val(),
            method:'GET'
