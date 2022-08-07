@@ -1793,6 +1793,9 @@ class ApplicationController extends Controller
         $staff = User::find(Auth::user()->id)->staff;
 
         $ac_year = StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first();
+        if(!$ac_year){
+            return redirect()->back()->with('error','No active academic year');
+        }
         $reg_date = SpecialDate::where('study_academic_year_id',$ac_year->id)->where('name','New Registration Period')->where('campus_id',$staff->campus_id)->first();
         if(!$reg_date){
             return redirect()->back()->with('error','Registration period has not been set');
@@ -2359,6 +2362,9 @@ class ApplicationController extends Controller
     {
          $staff = User::find(Auth::user()->id)->staff;
          $ac_year = StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first();
+         if(!$ac_year){
+            return redirect()->back()->with('error','No active academic year');
+         }
          $application_window = ApplicationWindow::where('campus_id',$staff->campus_id)->whereYear('end_date',explode('/',$ac_year->academicYear->year)[0])->first();
 
          if(!$application_window){
