@@ -15,9 +15,9 @@ class ACPACController extends Controller
     public function invoices(Request $request)
     {
         if($request->get('begin_date') && $request->get('end_date')){
-              $invoices = Invoice::with(['payable','feeType'])->where('created_at','>=',DateMaker::toDBDate($request->get('begin_date')))->where('created_at','<=',DateMaker::toDBDate($request->get('end_date')))->latest()->get();
+              $invoices = Invoice::has('payable')->with(['payable','feeType'])->where('created_at','>=',DateMaker::toDBDate($request->get('begin_date')))->where('created_at','<=',DateMaker::toDBDate($request->get('end_date')))->latest()->get();
         }else{
-              $invoices = Invoice::with(['payable','feeType'])->latest()->get();
+              $invoices = Invoice::has('payable')->with(['payable','feeType'])->latest()->get();
         }
         $data = [
            'invoices'=>$invoices
