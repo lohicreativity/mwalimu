@@ -1003,8 +1003,10 @@ class ApplicantController extends Controller
     {
          $applicant = Applicant::find($request->get('applicant_id'));
          $invoice = Invoice::where('payable_id',$applicant->id)->where('payable_type','applicant')->latest()->first();
-		 $invoice->applicable_id = 0;
-         $invoice->save();
+         if(GatewayPayment::where('control_no',$invoice->control_no)->count() == 0){
+		   $invoice->applicable_id = 0;
+           $invoice->save();
+         }
          return response()->json(['status','200']);
     }
 
