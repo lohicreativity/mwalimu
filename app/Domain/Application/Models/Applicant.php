@@ -14,6 +14,7 @@ use App\Domain\Settings\Models\DisabilityStatus;
 use App\Domain\Settings\Models\Campus;
 use App\Domain\Finance\Models\Invoice;
 use App\Domain\Registration\Models\Student;
+use App\Domain\Academic\Models\CampusProgram;
 use App\Models\User;
 
 class Applicant extends Model
