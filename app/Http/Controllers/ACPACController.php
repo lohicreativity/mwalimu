@@ -14,8 +14,13 @@ class ACPACController extends Controller
      **/
     public function invoices(Request $request)
     {
+        if($request->get('begin_date') && $request->get('end_date')){
+              $invoices = Invoice::with(['payable','feeType'])->where('created_at','>=',DateMaker::toDBDate($request->get('begin_date')))->where('created_at','<=',DateMaker::toDBDate($request->get('end_date')))->latest()->get();
+        }else{
+              $invoices = Invoice::with(['payable','feeType'])->latest()->get();
+        }
         $data = [
-           'invoices'=>Invoice::with(['payable','feeType'])->where('created_at','>=',DateMaker::toDBDate($request->get('begin_date')))->where('created_at','<=',DateMaker::toDBDate($request->get('end_date')))->latest()->get()
+           'invoices'=>$invoices
         ];
         return view('dashboard.finance.invoices',$data)->withTitle('Invoices');
     }
@@ -25,8 +30,13 @@ class ACPACController extends Controller
      **/
     public function receipts(Request $request)
     {
+        if($request->get('begin_date') && $request->get('end_date')){
+           $receipts = GatewayPayment::where('created_at','>=',DateMaker::toDBDate($request->get('begin_date')))->where('created_at','<=',DateMaker::toDBDate($request->get('end_date')))->latest()->get();
+        }else{
+           $receipts = GatewayPayment::latest()->get();
+        }
         $data = [
-           'receipts'=>GatewayPayment::where('created_at','>=',DateMaker::toDBDate($request->get('begin_date')))->where('created_at','<=',DateMaker::toDBDate($request->get('end_date')))->latest()->get()
+           'receipts'=>$receipts
         ];
         return view('dashboard.finance.receipts',$data)->withTitle('Receipts');
     }
