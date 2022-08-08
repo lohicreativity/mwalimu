@@ -175,7 +175,7 @@
           clearInterval(progInterval);
         }
       });
-    },5000);
+    },10000);
   @endif
 
     @if($other_fee_invoice)
@@ -190,7 +190,7 @@
           clearInterval(otherInterval);
 				}
 			});
-		},5000);
+		},10000);
     @endif
     
     @if($hostel_fee_invoice)
@@ -206,7 +206,7 @@
           clearInterval(hostelInterval);
         }
       });
-    },5000);
+    },10000);
     @endif
 	};
 	

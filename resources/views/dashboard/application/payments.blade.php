@@ -111,7 +111,7 @@
     @if($invoice)
 		
 	window.onload = function(){
-		setInterval(function(){
+		const payInterval = setInterval(function(){
 			$.ajax({
 				url:'/application/check-receipt?invoice_id={{ $invoice->id }}',
 				method:'GET'
