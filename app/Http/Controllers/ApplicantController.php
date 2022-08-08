@@ -940,7 +940,7 @@ class ApplicantController extends Controller
             'date'=>'required',
             'month'=>'required',
             'year'=>'required',
-            'phone'=>'required|regex:/[0-9]{3}[0-9]{9}/i',
+            'phone'=>'required|regex:/(\+?255|0|^){1}[-. ]?[0-9]{6}\z/',
             'address'=>'required',
             'nationality'=>'required',
         ]);
