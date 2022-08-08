@@ -40,10 +40,10 @@
           <div class="col-12">
 		  
             @if($applicant->payment_complete_status == 0)
-            <div class="alert alert-warning">Payment section not completed</div>
+            <div class="alert alert-warning">Payment section not completed.</div>
             @else
 		    @if(count($campus_programs) == 0)
-			<div class="alert alert-warning">Unfortunately you do not qualify in any program</div>
+			<div class="alert alert-warning">Unfortunately you do not qualify in any of our programmes offered in this campus.</div>
 		    @endif
                         <div class="card">
               <div class="card-header">
