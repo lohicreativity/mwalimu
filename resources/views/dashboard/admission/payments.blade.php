@@ -168,7 +168,7 @@
 					window.location.reload();
 				}
 			});
-		},1000);
+		},5000);
 	};
 	@endif
 	
@@ -184,7 +184,7 @@
 					window.location.reload();
 				}
 			});
-		},1000);
+		},5000);
 	};
 	@endif
 	
@@ -200,7 +200,7 @@
 					window.location.reload();
 				}
 			});
-		},1000);
+		},5000);
 	};
 	@endif
 </script>
