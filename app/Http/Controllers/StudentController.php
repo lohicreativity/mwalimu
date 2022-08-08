@@ -1433,6 +1433,46 @@ class StudentController extends Controller
     }
 
     /**
+     * Set deceased
+     */
+    public function setDeceased(Request $request)
+    {
+        $status = StudentshipStatus::where('name','DECEASED')->first();
+        $student = Student::find($request->get('student_id'));
+        $student->studentship_status_id = $status->id;
+        $student->save();
+
+        return redirect()->back()->with('message','Studentship status updated successfully');
+    }
+
+    /**
+     * Reset password
+     */
+    public function resetPassword(Request $request)
+    {
+        $student = Student::find($request->get('student_id'));
+        $user = User::find($student->user_id);
+        $user->password = Hash::make('123456');
+        $user->save();
+
+        return redirect()->back()->with('message','Password reset successfully');
+    }
+         
+     /**
+     * Reset control number
+     */
+    public function resetControlNumber(Request $request)
+    {
+        $student = Student::find($request->get('student_id'));
+        $invoice = Invoice::where('payable_id',$student->id)->where('payable_type','student')->latest()->first();
+         if(GatewayPayment::where('control_no',$invoice->control_no)->count() == 0){
+           $invoice->payable_id = 0;
+           $invoice->save();
+         }
+
+        return redirect()->back()->with('message','Control number reset successfully');
+    }
+    /**
      * Logout student
      */
     public function logout(Request $request)
