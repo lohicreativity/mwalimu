@@ -102,6 +102,7 @@
                       </thead>
                       <tbody>
                         @foreach($invoices as $key=>$invoice)
+                          @if($invoice->payable->campusProgram->campus_id == $request->get('campus_id'))
                           <tr>
                            <td>{{ $key+1 }}</td>
                            <td>
@@ -128,6 +129,7 @@
                            <td>{{ $invoice->control_no }} @if(!$invoice->control_no)<a href="#" onclick="window.location.reload();"><i class="fa fa-refresh" ></i> Refresh</a>@endif</td>
                            <td>{{ $invoice->created_at }}</td>
                           </tr>
+                          @endif
                         @endforeach
                       </tbody>
                     </table>

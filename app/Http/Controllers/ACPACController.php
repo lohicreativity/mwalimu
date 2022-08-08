@@ -21,7 +21,6 @@ class ACPACController extends Controller
         }else{
               $invoices = Invoice::has('payable')->where('payable_type','student')->with(['payable.campusProgram.program','feeType'])->where('applicable_id',$request->get('study_academic_year_id'))->where('applicable_type','academic_year')->latest()->get();
         }
-        return $invoices;
         $data = [
            'invoices'=>$invoices,
            'campuses'=>Campus::all(),
