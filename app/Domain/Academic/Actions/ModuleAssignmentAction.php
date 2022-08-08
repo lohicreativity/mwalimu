@@ -35,11 +35,13 @@ class ModuleAssignmentAction implements ModuleAssignmentInterface{
                 }
                 
                 $assignment->save();
-                $assign = ModuleAssignment::with(['staff','module','studyAcademicYear','programModuleAssignment.semester'])->find($assignment->id);
+                $assign = ModuleAssignment::with(['staff','module','studyAcademicYear','programModuleAssignment.semester'])->where('confirmed',1)->find($assignment->id);
+                if($assign){
                 $user = User::find($assigned_staff->user_id);
                 try{
                    Mail::to($user)->queue(new StaffModuleAssigned($assign));
                 }catch(\Exception $e){}
+                }
                 return redirect()->back()->with('message','Module assigned to staff successfully');
 	}
 
@@ -59,6 +61,13 @@ class ModuleAssignmentAction implements ModuleAssignmentInterface{
         $assignment = ModuleAssignment::find($id);
         $assignment->confirmed = 1;
         $assignment->save();
+
+        $assign = ModuleAssignment::with(['staff','module','studyAcademicYear','programModuleAssignment.semester'])->find($assignment->id);
+        $assigned_staff = Staff::find($assign->staff_id);
+        $user = User::find($assigned_staff->user_id);
+        try{
+           Mail::to($user)->queue(new StaffModuleAssigned($assign));
+        }catch(\Exception $e){}
     }
 
     public function rejectConfirmation(Request $request,$id)
