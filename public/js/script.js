@@ -1506,14 +1506,6 @@ function readMoreClose(target){
 }
 
 $('#ss-reload-control-number').on('click',function(e){
-    // console.log(localStorage.getItem('reload_counter'));
-    if(localStorage.getItem('reload_counter')){
-        localStorage.setItem('reload_counter',parseInt(localStorage.getItem('reload_counter'))+1);
-    }else{
-        localStorage.setItem('reload_counter',1);
-    }
-
-    if(parseInt(localStorage.getItem('reload_counter')) >= 3){
         $.ajax({
           url:'/application/delete-applicant-invoice',
           method:'POST',
@@ -1530,10 +1522,6 @@ $('#ss-reload-control-number').on('click',function(e){
               }
               toastr.success("Control number reset successfully");
         });
-    }else{
-       window.location.reload();
-    }
-
 });
 
 $('#ss-reset-control-number').on('click',function(e){
