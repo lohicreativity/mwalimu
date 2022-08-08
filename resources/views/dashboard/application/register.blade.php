@@ -129,7 +129,8 @@
           }).done(function(data){
               console.log(data);
               if(data.award != null){
-                if(data.award.name.inludes('Certificate')){
+                var text = data.award.name;
+                if(text.inludes('Certificate')){
                   var element = '<option value="">Select Highest Qualification</option>';
                       element += '<option value="DIRECT">Form IV or VI (Direct)</option>';
                 }else{
