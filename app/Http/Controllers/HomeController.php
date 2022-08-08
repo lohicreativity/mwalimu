@@ -36,7 +36,7 @@ class HomeController extends Controller
            'special_exams_arc_count'=>SpecialExamRequest::whereNull('approved_by_user_id')->count(),
            'postponements_hod_count'=>Postponement::whereNull('recommended_by_user_id')->count(),
            'special_exams_hod_count'=>SpecialExamRequest::whereNull('recommended_by_user_id')->count(),
-           'postponement_count'=>Postponement::whereNotNull('postponed_by_user_id')->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->count(),
+           'postponements_count'=>Postponement::whereNotNull('postponed_by_user_id')->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->count(),
            'last_postponement'=>Postponement::whereNotNull('postponed_by_user_id')->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->latest()->first(),
            'deceased_count'=>Registration::whereHas('student.studentshipStatus',function($query){
                   $query->where('name','DECEASED');
