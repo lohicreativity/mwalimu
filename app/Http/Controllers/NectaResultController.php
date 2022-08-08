@@ -65,8 +65,8 @@ class NectaResultController extends Controller
     public function nullify(Request $request)
     {
         $detail = NectaResultDetail::find($request->get('detail_id'));
-        NectaResult::where('necta_result_detail_id',$request->get('necta_result_detail_id'))->delete();
-        // $detail->results->delete();
+        NectaResult::where('necta_result_detail_id',$request->get('detail_id'))->delete();
+        //$detail->results->delete();
         $detail->delete();
         return redirect()->back()->with('error','NECTA results names do not match your application names');
     }

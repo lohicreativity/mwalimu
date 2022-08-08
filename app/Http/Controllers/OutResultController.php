@@ -48,7 +48,7 @@ class OutResultController extends Controller
     public function nullify(Request $request)
     {
         $detail = OutResultDetail::find($request->get('detail_id'));
-        OutResult::where('out_result_detail_id',$request->get('out_result_detail_id'))->delete();
+        OutResult::where('out_result_detail_id',$request->get('detail_id'))->delete();
         // $detail->results->delete();
         $detail->delete();
         return redirect()->back()->with('error','OUT results index number does not match your Form IV index number');
