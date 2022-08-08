@@ -1530,11 +1530,17 @@ $('#ss-reset-control-number').on('click',function(e){
       method:'POST',
       data:{
          _token:$(e.target).data('token'),
-         applicant_id:$(e.target).data('applicant-id'),
-         invoice_id:$(e.target).data('invoice-id')
+         applicant_id:$(e.target).data('applicant-id')
       }
     }).done(function(data,success){
         window.location.reload();
+        toastr.options =
+              {
+                "closeButton" : true,
+                "progressBar" : true
+              }
+              toastr.success("Control number reset successfully");
+        });
     });
 
 });
