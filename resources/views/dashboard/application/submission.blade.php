@@ -72,7 +72,7 @@
               {!! Form::close() !!}
               </div>
               @else
-              @if($applicant->status !== null)
+              @if($applicant->status === null)
               <div class="card card-default">
               <div class="card-header">
                 <h3 class="card-title">{{ __('Application Submission') }}</h3>
