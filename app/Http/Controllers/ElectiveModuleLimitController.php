@@ -27,7 +27,8 @@ class ElectiveModuleLimitController extends Controller
            'campuses'=>Campus::all(),
            'semesters'=>Semester::all(),
            'awards'=>Award::all(),
-           'staff'=>User::find(Auth::user()->id)->staff
+           'staff'=>User::find(Auth::user()->id)->staff,
+           'request'=>$request
     	];
     	return view('dashboard.academic.elective-module-limits',$data)->withTitle('Elective Module Limits');
     }
