@@ -61,7 +61,7 @@
                   <tr>
                     <td>{{ $student->first_name }} {{ $student->middle_name }} {{ $student->surname }}</td>
                     <td>{{ $student->registration_number }}</td>
-                    <td>{{ $student->sex }}</td>
+                    <td>{{ $student->gender }}</td>
                   </tr>
                   @endforeach
 
