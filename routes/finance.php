@@ -66,6 +66,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 
 	Route::get('invoices',[ACPACController::class,'invoices']);
 	Route::get('receipts',[ACPACController::class,'receipts']);
+	Route::get('download-invoices',[ACPACController::class,'downloadInvoices']);
+	Route::get('download-receipts',[ACPACController::class,'downloadReceipts']);
 });
 
 

@@ -75,6 +75,7 @@
          <div class="card card-default">
               <div class="card-header">
                 <h3 class="card-title">{{ __('Invoices') }}</h3><br>
+                <a href="{{ url('finance/download-invoices?study_academic_year_id='.$request->get('study_academic_year_id').'&campus_id='.$request->get('campus_id')) }}" class="btn btn-primary">Download</a>
               </div>
               <div class="card-body">
               {{--

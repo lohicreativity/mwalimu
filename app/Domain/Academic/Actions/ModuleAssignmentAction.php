@@ -35,7 +35,7 @@ class ModuleAssignmentAction implements ModuleAssignmentInterface{
                 }
                 
                 $assignment->save();
-                $assign = ModuleAssignment::with(['staff','module','studyAcademicYear','programModuleAssignment.semester'])->find($assign->id);
+                $assign = ModuleAssignment::with(['staff','module','studyAcademicYear','programModuleAssignment.semester'])->find($assignment->id);
                 $user = User::find($assigned_staff->user_id);
                 try{
                    Mail::to($user)->queue(new StaffModuleAssigned($assign));
