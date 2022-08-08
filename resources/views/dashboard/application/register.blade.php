@@ -130,7 +130,7 @@
               console.log(data);
               if(data.award != null){
                 var text = data.award.name;
-                if(text.inludes('Certificate')){
+                if(text.includes('Certificate')){
                   var element = '<option value="">Select Highest Qualification</option>';
                       element += '<option value="DIRECT">Form IV or VI (Direct)</option>';
                 }else{
