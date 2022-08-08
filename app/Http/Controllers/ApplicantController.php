@@ -414,6 +414,10 @@ class ApplicantController extends Controller
                  $query->where('verified',1);
             },'selections.campusProgram.campus','nectaResultDetails.results','nacteResultDetails.results','outResultDetails.results','programLevel','applicationWindow'])->where('campus_id',session('applicant_campus_id'))->first();
 
+        if($applicant->results_complete_status == 0){
+            return redirect()->to('application/results');
+        }
+
         $window = $applicant->applicationWindow;
 
         $campus_programs = $window? $window->campusPrograms()->whereHas('program',function($query) use($applicant){

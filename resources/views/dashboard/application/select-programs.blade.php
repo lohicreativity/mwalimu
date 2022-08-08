@@ -44,7 +44,7 @@
             @else
 		    @if(count($campus_programs) == 0)
 			<div class="alert alert-warning">Unfortunately you do not qualify in any of our programmes offered in this campus.</div>
-		    @endif
+		    @else
                         <div class="card">
               <div class="card-header">
                 <h3 class="card-title">Selections</h3>
@@ -85,7 +85,7 @@
                  </table>
               </div>
             </div>
-            
+            @endif
 
              <div class="modal fade" id="ss-first-choice">
                 <div class="modal-dialog modal-lg">
