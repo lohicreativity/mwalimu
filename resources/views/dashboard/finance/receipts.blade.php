@@ -37,6 +37,7 @@
     <section class="content">
       <div class="container-fluid">
         <!-- Small boxes (Stat box) -->
+        <div class="card card-default">
         <div class="card-header">
                  <h3 class="card-title">{{ __('Select Study Academic Year') }}</h3>
                </div>
