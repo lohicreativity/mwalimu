@@ -28,7 +28,7 @@ class ApplicantAction implements ApplicantInterface{
         $applicant->middle_name = $request->get('middle_name');
         $applicant->surname = $request->get('surname');
         $applicant->email = $request->get('email');
-        $applicant->phone = $request->get('phone');
+        $applicant->phone = str_replace('+','',$request->get('phone'));
         $applicant->birth_date = $request->get('year').'-'.$request->get('month').'-'.$request->get('date');
         $applicant->nationality = $request->get('nationality');
         $applicant->gender = $request->get('gender');
