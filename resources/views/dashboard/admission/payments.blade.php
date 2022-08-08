@@ -171,8 +171,9 @@
         method:'GET'
       }).done(function(data){
         if(data.code == 200){
-          window.location.reload();
           clearInterval(progInterval);
+          window.location.reload();
+          
         }
       });
     },10000);
@@ -186,8 +187,9 @@
 				method:'GET'
 			}).done(function(data){
 				if(data.code == 200){
-					window.location.reload();
           clearInterval(otherInterval);
+					window.location.reload();
+          
 				}
 			});
 		},10000);
@@ -202,8 +204,9 @@
         method:'GET'
       }).done(function(data){
         if(data.code == 200){
-          window.location.reload();
           clearInterval(hostelInterval);
+          window.location.reload();
+          
         }
       });
     },10000);
