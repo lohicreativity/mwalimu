@@ -48,7 +48,7 @@ class ACPACController extends Controller
                ->where('invoices.applicable_type','academic_year')
                ->where('invoices.applicable_id',$request->get('study_academic_year_id'))
                ->where('gateway_payments.created_at','>=',DateMaker::toDBDate($request->get('begin_date')))
-               ->where('gateway_payments.created_at','<=',DateMaker::toDBDate($request->get('end_date')))->
+               ->where('gateway_payments.created_at','<=',DateMaker::toDBDate($request->get('end_date')))
                ->get();
         }else{
            $receipts = DB::table('gateway_payments')->select(DB::raw('gateway_payments.*, invoices.*, students.*, programs.name as programme'))
