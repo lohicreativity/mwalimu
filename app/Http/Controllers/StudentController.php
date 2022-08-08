@@ -11,7 +11,7 @@ use App\Domain\Academic\Models\ElectivePolicy;
 use App\Domain\Academic\Models\ElectiveModuleLimit;
 use App\Domain\Academic\Models\ProgramModuleAssignment;
 use App\Domain\Academic\Models\AnnualRemark;
-use App\Domain\Academic\Models\PerfomanceReportRequest;
+use App\Domain\Academic\Models\PerformanceReportRequest;
 use App\Domain\Academic\Models\SemesterRemark;
 use App\Domain\Academic\Models\ExaminationResult;
 use App\Domain\Registration\Models\StudentshipStatus;
@@ -51,7 +51,7 @@ class StudentController extends Controller
             'student'=>$student,
             'loan_allocation'=>LoanAllocation::where('index_number',$student->applicant->index_number)->where('loan_amount','!=',0.00)->where('study_academic_year_id',session('active_academic_year_id'))->first(),
             'registration'=>Registration::where('student_id',$student->id)->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->where('status','REGISTERED')->first(),
-            'performance_report'=>PerfomanceReportRequest::where('student_id',$student->id)->where('status','ATTENDED')->latest()->first()
+            'performance_report'=>PerformanceReportRequest::where('student_id',$student->id)->where('status','ATTENDED')->latest()->first()
 		];
 		return view('dashboard.student.home',$data)->withTitle('Dashboard');
 	}
