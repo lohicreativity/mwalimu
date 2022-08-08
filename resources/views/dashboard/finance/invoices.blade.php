@@ -56,12 +56,11 @@
                       <thead>
                         <tr>
                           <th>S/N</th>
+                          <th>Customer ID</th>
                           <th>Reference #</th>
                           <th>Payer Name</th>
-                          <th>Institution</th>
                           <th>Bill Type</th>
                           <th>Bill Amount</th>
-                          <th>Currency</th>
                           <th>Control Number</th>
                           <th>Date Created</th>
                         </tr>
@@ -70,11 +69,27 @@
                         @foreach($invoices as $key=>$invoice)
                           <tr>
                            <td>{{ $key+1 }}</td>
+                           <td>
+                               @php
+                                  if($invoice->payable_type == 'student'){
+                                  $stud_reg = substr($invoice->payable->registration_number, 5);
+                                  $stud_reg = str_replace('/', '', $stud_reg);
+                                  $parts = explode('.', $stud_reg);
+                                  if($parts[0] == 'BTC'){
+                                      $stud_reg = 'BT'.$parts[1];
+                                  }else{
+                                      $stud_reg = $parts[0].$parts[1];
+                                  }
+                                  }else{
+                                      $stud_reg = null;
+                                  }
+                               @endphp
+                               @if($stud_reg) {{ $stud_reg }} @else N/A @endif
+                           </td>
                            <td>{{ $invoice->reference_no }}</td>
                            <td>{{ $invoice->payable->first_name }} {{ $invoice->payable->middle_name }} {{ $invoice->payable->surname }}</td>
                            <td>{{ $invoice->feeType->name }}</td>
                            <td>{{ number_format($invoice->amount,2) }}</td>
-                           <td>{{ $invoice->currency }}</td>
                            <td>{{ $invoice->control_no }} @if(!$invoice->control_no)<a href="#" onclick="window.location.reload();"><i class="fa fa-refresh" ></i> Refresh</a>@endif</td>
                            <td>{{ $invoice->created_at }}</td>
                           </tr>
