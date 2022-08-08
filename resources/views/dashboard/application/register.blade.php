@@ -122,10 +122,12 @@
   window.onload = function(){
       
       $('#ss-program-level').on('change',function(e){
+          console.log(e.target.value);
           $.ajax({
               url:'/application/get-award-by-id?id='+$(e.target).val(),
               method:'GET'
           }).done(function(data){
+              console.log(data);
               if(data.award != null){
                 if(data.award.name.inludes('Certificate')){
                   var element = '<option value="">Select Highest Qualification</option>';
