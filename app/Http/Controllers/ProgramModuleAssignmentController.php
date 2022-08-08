@@ -51,6 +51,39 @@ class ProgramModuleAssignmentController extends Controller
         return view('dashboard.academic.optional-students',$data)->withTitle('Optional Students');
     }
 
+    
+    /**
+     * Download optional students
+     */
+    public function downloadOptedStudents(Request $request)
+    {
+          
+           $list = ProgramModuleAssignment::find($request->get('assignment_id'))->students,
+           $assignment = ProgramModuleAssignment::with('module')->find($request->get('assignment_id'));
+
+            $headers = [
+                      'Cache-Control'       => 'must-revalidate, post-check=0, pre-check=0',   
+                      'Content-type'        => 'text/csv',
+                      'Content-Disposition' => 'attachment; filename=OPTED-STUDENTS-.'.date('Y-m-d').'-'.$assignment->module->code.'.csv',
+                      'Expires'             => '0',
+                      'Pragma'              => 'public'
+              ];
+
+              $callback = function() use ($list) 
+          {
+              $file_handle = fopen('php://output', 'w');
+              fputcsv($file_handle,['NAME','REGISTRATION NUMBER','SEX']);
+              foreach ($list as $student) { 
+
+                  fputcsv($file_handle, [$student->first_name.' '.$student->middle_name.' '.$student->surname,$student->registration_number,$student->gender
+                    ]);
+              }
+              fclose($file_handle);
+          };
+
+          return response()->stream($callback, 200, $headers)
+    }
+
     /**
      * Allocate options
      */
