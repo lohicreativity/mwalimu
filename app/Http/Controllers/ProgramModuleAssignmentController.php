@@ -58,7 +58,7 @@ class ProgramModuleAssignmentController extends Controller
     public function downloadOptedStudents(Request $request)
     {
           
-           $list = ProgramModuleAssignment::find($request->get('assignment_id'))->students,
+           $list = ProgramModuleAssignment::find($request->get('assignment_id'))->students;
            $assignment = ProgramModuleAssignment::with('module')->find($request->get('assignment_id'));
 
             $headers = [
