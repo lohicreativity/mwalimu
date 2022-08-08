@@ -10,6 +10,7 @@ use App\Http\Controllers\NacteResultController;
 use App\Http\Controllers\OutResultController;
 use App\Http\Controllers\EntryRequirementController;
 use App\Http\Controllers\NHIFController;
+use App\Http\Controllers\AwardController;
 use App\Http\Controllers\ResultsRequests\NECTAServiceController;
 use App\Http\Controllers\ResultsRequests\NACTEServiceController;
 use App\Http\Controllers\ResultsRequests\OUTServiceController;
