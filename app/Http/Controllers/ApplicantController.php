@@ -415,7 +415,7 @@ class ApplicantController extends Controller
             },'selections.campusProgram.campus','nectaResultDetails.results','nacteResultDetails.results','outResultDetails.results','programLevel','applicationWindow'])->where('campus_id',session('applicant_campus_id'))->first();
 
         if($applicant->results_complete_status == 0){
-            return redirect()->to('application/results');
+            return redirect()->to('application/results')->with('error','You must first complete results section');
         }
 
         $window = $applicant->applicationWindow;
