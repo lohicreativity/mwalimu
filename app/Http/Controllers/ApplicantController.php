@@ -519,9 +519,16 @@ class ApplicantController extends Controller
                               }
                            }
                          }
-                         if(($o_level_pass_count+$o_level_must_pass_count) >= $program->entryRequirements[0]->pass_subjects){
-                           $programs[] = $program;
+                         if(unserialize($program->entryRequirements[0]->must_subjects) != ''){
+                             if(($o_level_pass_count+$o_level_must_pass_count) >= $program->entryRequirements[0]->pass_subjects && $o_level_must_pass_count >= count(unserialize($program->entryRequirements[0]->must_subjects))){
+                               $programs[] = $program;
+                             }
+                         }else{
+                            if(($o_level_pass_count+$o_level_must_pass_count) >= $program->entryRequirements[0]->pass_subjects){
+                               $programs[] = $program;
+                             }
                          }
+                         
                        }
                    }
 
