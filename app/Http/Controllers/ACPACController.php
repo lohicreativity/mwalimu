@@ -64,7 +64,10 @@ class ACPACController extends Controller
                ->get();
         }
         $data = [
-           'receipts'=>$receipts
+           'receipts'=>$receipts,
+           'campuses'=>Campus::all(),
+           'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
+           'request'=>$request
         ];
         return view('dashboard.finance.receipts',$data)->withTitle('Receipts');
     }
