@@ -36,7 +36,42 @@
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
-        <!-- Small boxes (Stat box) -->
+        <!-- Small boxes (Stat box) --><div class="card">
+               <div class="card-header">
+                 <h3 class="card-title">{{ __('Select Study Academic Year') }}</h3>
+               </div>
+               <!-- /.card-header -->
+               <div class="card-body">
+                  {!! Form::open(['url'=>'finance/invoices','class'=>'ss-form-processing','method'=>'GET']) !!}
+                    <div class="row">
+                    <div class="form-group col-6">
+                     <select name="study_academic_year_id" class="form-control" required>
+                        <option value="">Select Study Academic Year</option>
+                        @foreach($study_academic_years as $year)
+                        <option value="{{ $year->id }}" @if($request->get('study_academic_year_id') == $year->id) selected="selected" @endif>{{ $year->academicYear->year }}</option>
+                        @endforeach
+                     </select>
+                   </div>
+                   <div class="form-group col-6">
+                     <select name="campus_id" class="form-control" required>
+                        <option value="">Select Study Academic Year</option>
+                        @foreach($campuses as $campus)
+                        <option value="{{ $campus->id }}" @if($request->get('campus_id') == $campus->id) selected="selected" @endif>{{ $campus->name }}</option>
+                        @endforeach
+                     </select>
+                   </div>
+                 </div>
+                   <div class="ss-form-actions">
+                    <button type="submit" class="btn btn-primary">{{ __('Search') }}</button>
+                   </div>
+ 
+                  {!! Form::close() !!}
+               </div>
+             </div>
+             <!-- /.card -->
+
+
+        @if(count($invoices) != 0)
          <div class="card card-default">
               <div class="card-header">
                 <h3 class="card-title">{{ __('Invoices') }}</h3><br>
@@ -57,8 +92,8 @@
                         <tr>
                           <th>S/N</th>
                           <th>Customer ID</th>
-                          <th>Reference #</th>
                           <th>Payer Name</th>
+                          <th>Programme</th>
                           <th>Bill Type</th>
                           <th>Bill Amount</th>
                           <th>Control Number</th>
@@ -86,8 +121,8 @@
                                @endphp
                                @if($stud_reg) {{ $stud_reg }} @else N/A @endif
                            </td>
-                           <td>{{ $invoice->reference_no }}</td>
                            <td>{{ $invoice->payable->first_name }} {{ $invoice->payable->middle_name }} {{ $invoice->payable->surname }}</td>
+                           <td>{{ $invoice->payable->campusProgram->program->code }}</td>
                            <td>{{ $invoice->feeType->name }}</td>
                            <td>{{ number_format($invoice->amount,2) }}</td>
                            <td>{{ $invoice->control_no }} @if(!$invoice->control_no)<a href="#" onclick="window.location.reload();"><i class="fa fa-refresh" ></i> Refresh</a>@endif</td>
@@ -102,6 +137,7 @@
               </div>
           </div>
           </div><!-- end of card -->
+          @endif
       </div><!-- /.container-fluid -->
     </section>
     <!-- /.content -->
