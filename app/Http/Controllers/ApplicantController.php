@@ -253,6 +253,22 @@ class ApplicantController extends Controller
                  }
             }
         }
+
+        if($applicant->basic_info_complete_status == 1){
+          if($applicant->next_of_kin_complete_status == 1){
+              if($applicant->payment_complete_status == 1){
+                  if($applicant->results_complete_status == 1){
+                     return redirect()->to('application/submission');
+                  }else{
+                     return redirect()->to('application/results');
+                  }
+              }else{
+                 return redirect()->to('application/payments');
+              }
+          }else{
+              return redirect()->to('application/next-of-kin');
+          }
+        }
         
 		
         if($applicant->is_tcu_verified === null && str_contains($applicant->programLevel->name,'Degree')){
