@@ -692,6 +692,9 @@ class RegistrationController extends Controller
     {
         $staff = User::find(Auth::user()->id)->staff;
         $study_academic_year = StudyAcademicYear::where('status','ACTIVE')->first();
+        if(!$study_academic_year){
+        	return redirect()->back()->with('error','No active academic year');
+        }
         $semester = Semester::where('status','ACTIVE')->first();
         $data = [
             'campus_programs'=>CampusProgram::with('program')->where('campus_id',$staff->campus_id)->get(),
