@@ -164,28 +164,30 @@
 
      @if($program_fee_invoice)
 
-    setInterval(function(){
-      console.log('+++++++++Programme');
+   const progInterval = setInterval(function(){
+
       $.ajax({
         url:'/application/check-receipt?invoice_id={{ $program_fee_invoice->id }}',
         method:'GET'
       }).done(function(data){
         if(data.code == 200){
           window.location.reload();
+          clearInterval(progInterval);
         }
       });
     },5000);
   @endif
 
     @if($other_fee_invoice)
-		setInterval(function(){
-      console.log('+++++++++Other');
+		const otherInterval = setInterval(function(){
+
 			$.ajax({
 				url:'/application/check-receipt?invoice_id={{ $other_fee_invoice->id }}',
 				method:'GET'
 			}).done(function(data){
 				if(data.code == 200){
 					window.location.reload();
+          clearInterval(otherInterval);
 				}
 			});
 		},5000);
@@ -193,14 +195,15 @@
     
     @if($hostel_fee_invoice)
     
-    setInterval(function(){
-      console.log('+++++++++Hostel');
+    const hostelInterval = setInterval(function(){
+
       $.ajax({
         url:'/application/check-receipt?invoice_id={{ $hostel_fee_invoice->id }}',
         method:'GET'
       }).done(function(data){
         if(data.code == 200){
           window.location.reload();
+          clearInterval(hostelInterval);
         }
       });
     },5000);
