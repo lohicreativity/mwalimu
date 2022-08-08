@@ -131,11 +131,11 @@
               if(data.award != null){
                 if(data.award.name.inludes('Certificate')){
                   var element = '<option value="">Select Highest Qualification</option>';
-                              += '<option value="DIRECT">Form IV or VI (Direct)</option>';
+                      element += '<option value="DIRECT">Form IV or VI (Direct)</option>';
                 }else{
                   var element = '<option value="">Select Highest Qualification</option>';
-                              += '<option value="DIRECT">Form IV or VI (Direct)</option>';
-                              += '<option value="EQUIVALENT">Certificate or Diploma (Equivalent)</option>';
+                      element += '<option value="DIRECT">Form IV or VI (Direct)</option>';
+                      element += '<option value="EQUIVALENT">Certificate or Diploma (Equivalent)</option>';
                 }
                 $('#ss-entry-mode').html(element);
               }
