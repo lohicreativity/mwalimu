@@ -68,7 +68,7 @@
                   <div class="row">
                   <div class="form-group col-4">
                     {!! Form::label('','Index number') !!}
-                    {!! Form::text('index_number',null,$index_number) !!}
+                    {!! Form::text('index_number',$applicant->index_number,$index_number) !!}
                   </div>
                   <div class="form-group col-6">
 
