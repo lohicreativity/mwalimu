@@ -175,7 +175,7 @@ class SendAdmissionLetter implements ShouldQueue
                  'campus_name'=>$applicant->selections[0]->campusProgram->campus->name,
                  'orientation_date'=>$orientation_date,
                  'applicant_name'=>$applicant->first_name.' '.$applicant->surname,
-                 'reference_number'=>$applicant->admission_reference_no,
+                 'reference_number'=>$request->reference_number,
                  'program_name'=>$applicant->selections[0]->campusProgram->program->name,
                  'program_code_name'=>$applicant->selections[0]->campusProgram->program->award->name,
                  'study_year'=>$study_academic_year->academicYear->year,
