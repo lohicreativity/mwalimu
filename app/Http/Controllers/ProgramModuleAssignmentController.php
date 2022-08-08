@@ -81,7 +81,7 @@ class ProgramModuleAssignmentController extends Controller
               fclose($file_handle);
           };
 
-          return response()->stream($callback, 200, $headers)
+          return response()->stream($callback, 200, $headers);
     }
 
     /**
