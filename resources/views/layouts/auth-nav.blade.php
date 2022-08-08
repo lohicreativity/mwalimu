@@ -429,11 +429,11 @@
                 </a>
               </li>
               @endcan
-              @can('view-hostel-request')
+              @can('view-hostel-requests')
               <li class="nav-item">
                 <a href="{{ url('application/hostel-statuses?application_window_id='.session('active_window_id')) }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Hostel Request</p>
+                  <p>Hostel Requests</p>
                 </a>
               </li>
               @endcan
