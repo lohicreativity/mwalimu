@@ -104,7 +104,7 @@
                        <td>{{ $student->address }}</td>
                      </tr>
                      <tr>
-                       <td><a href="{{ url('academic/student-profile?registration_number='.$student->registration_number) }}" class="btn btn-primary">View Profile</a> <a href="#" class="btn btn-primary btn-block" data-toggle="modal" data-target="#ss-edit-student-profile"><b>Edit Profile</b></a></td>
+                       <td><a href="{{ url('academic/student-profile?registration_number='.$student->registration_number) }}" class="btn btn-primary">View Profile</a> <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#ss-edit-student-profile"><b>Edit Profile</b></a></td>
                        <td></td>
                      </tr>
                    </table>
