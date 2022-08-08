@@ -614,24 +614,30 @@
               </p>
             </a>
             <ul class="nav nav-treeview">
+              @can('view-upload-loan-allocations')
               <li class="nav-item">
                 <a href="{{ url('finance/loan-allocations?study_academic_year_id='.session('active_academic_year_id')) }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>{{ __('Upload Loan Allocations') }}</p>
                 </a>
               </li>
+              @endcan
+              @can('view-loan-allocations')
               <li class="nav-item">
                 <a href="{{ url('finance/loan-beneficiaries?study_academic_year_id='.session('active_academic_year_id')) }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>{{ __('Loan Allocations') }}</p>
                 </a>
               </li>
+              @endcan
+              @can('view-loan-payments')
               <li class="nav-item">
                 <a href="{{ url('finance/loan-bank-details?study_academic_year_id='.session('active_academic_year_id')) }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>{{ __('Loan Payments') }}</p>
                 </a>
               </li>
+              @endcan
             </ul>
           </li>
           <li class="nav-item">
