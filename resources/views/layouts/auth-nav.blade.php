@@ -528,6 +528,14 @@
                 </a>
               </li>
               @endcan
+              @can('search-student')
+              <li class="nav-item">
+                <a href="{{ url('academic/student-search') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>{{ __('Student Search') }}</p>
+                </a>
+              </li>
+              @endcan
             </ul>
           </li>
           <li class="nav-item">
@@ -955,14 +963,6 @@
                 <a href="{{ url('academic/enrollment-report?study_academic_year_id='.session('active_academic_year_id')) }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>{{ __('Enrollment Report') }}</p>
-                </a>
-              </li>
-              @endcan
-              @can('search-student')
-              <li class="nav-item">
-                <a href="{{ url('academic/student-search') }}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>{{ __('Student Search') }}</p>
                 </a>
               </li>
               @endcan

@@ -12,6 +12,7 @@ use App\Domain\Academic\Models\ElectiveModuleLimit;
 use App\Domain\Academic\Models\ProgramModuleAssignment;
 use App\Domain\Academic\Models\AnnualRemark;
 use App\Domain\Academic\Models\SemesterRemark;
+use App\Domain\Academic\Models\StudentshipStatus;
 use App\Domain\Academic\Models\ExaminationResult;
 use App\Domain\Academic\Models\StudentshipStatus;
 use App\Domain\Academic\Models\ModuleAssignment;

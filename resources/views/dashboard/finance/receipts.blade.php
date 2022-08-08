@@ -77,7 +77,8 @@
                 <h3 class="card-title">{{ __('Receipts') }}</h3><br>
               </div>
               <div class="card-body">
-                {!! Form::open(['url'=>'finance/receipts','method'=>'GET']) !!}
+                {{--
+                {!! Form::open(['url'=>'finance/receipts','method'=>'GET','class'=>'ss-margin-bottom']) !!}
                 <div class="input-group ss-stretch">
                  <input type="text" name="begin_date" class="form-control ss-datepicker" placeholder="Begin date">
                  <input type="text" name="end_date" class="form-control ss-datepicker" placeholder="Begin date">
@@ -86,6 +87,7 @@
                  </span>
                 </div>
                 {!! Form::close() !!}
+                --}}
                   @if(count($receipts) != 0)
                     <table class="table table-bordered ss-paginated-table ss-margin-top">
                       <thead>
