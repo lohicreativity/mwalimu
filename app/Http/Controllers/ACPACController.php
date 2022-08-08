@@ -17,14 +17,11 @@ class ACPACController extends Controller
     public function invoices(Request $request)
     {
         if($request->get('begin_date') && $request->get('end_date')){
-              $invoices = Invoice::has('payable')->where('payable_type','student')->whereHas('payable.campusProgram',function($query) use($request){
-                    $query->where('campus_id',$request->get('campus_id'));
-              })->with(['payable.campusProgram.program','feeType'])->where('created_at','>=',DateMaker::toDBDate($request->get('begin_date')))->where('created_at','<=',DateMaker::toDBDate($request->get('end_date')))->where('payable_type','student')->where('applicable_id',$request->get('study_academic_year_id'))->where('applicable_type','academic_year')->latest()->get();
+              $invoices = Invoice::has('payable')->where('payable_type','student')->with(['payable.campusProgram.program','feeType'])->where('created_at','>=',DateMaker::toDBDate($request->get('begin_date')))->where('created_at','<=',DateMaker::toDBDate($request->get('end_date')))->where('payable_type','student')->where('applicable_id',$request->get('study_academic_year_id'))->where('applicable_type','academic_year')->latest()->get();
         }else{
-              $invoices = Invoice::has('payable')->where('payable_type','student')->whereHas('payable.campusProgram',function($query) use($request){
-                    $query->where('campus_id',$request->get('campus_id'));
-              })->with(['payable.campusProgram.program','feeType'])->where('payable_type','student')->where('applicable_id',$request->get('study_academic_year_id'))->where('applicable_type','academic_year')->latest()->get();
+              $invoices = Invoice::has('payable')->where('payable_type','student')->with(['payable.campusProgram.program','feeType'])->where('payable_type','student')->where('payable_type','student')->where('applicable_id',$request->get('study_academic_year_id'))->where('applicable_type','academic_year')->latest()->get();
         }
+        return $invoices;
         $data = [
            'invoices'=>$invoices,
            'campuses'=>Campus::all(),
