@@ -76,7 +76,8 @@ class ProgramController extends Controller
     {
     	$validation = Validator::make($request->all(),[
             'name'=>'required',
-            'code'=>'required'
+            'code'=>'required',
+            'regulator_code'=>'unique:campus_program'
         ]);
 
         if($validation->fails()){
