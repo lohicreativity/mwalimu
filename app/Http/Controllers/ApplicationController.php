@@ -2206,6 +2206,14 @@ class ApplicationController extends Controller
 
         $acpac->close();
 
+        Invoice::whereHas('feeType',function($query){
+               $query->where('name','LIKE','%Tuition%');
+        })->with(['gatewayPayment','feeType'])->where('payable_type','applicant')->where('payable_id',$applicant->id)->update(['payable_type'=>'student','payable_id'=>$student->id]);
+
+        Invoice::whereHas('feeType',function($query){
+               $query->where('name','LIKE','%Miscellaneous%');
+        })->with(['gatewayPayment','feeType'])->where('payable_type','applicant')->where('payable_id',$applicant->id)->update(['payable_type'=>'student','payable_id'=>$student->id]);
+
         try{
            Mail::to($user)->send(new StudentAccountCreated($student, $selection->campusProgram->program->name,$ac_year->academicYear->year, $password));
         }catch(\Exception $e){}
