@@ -31,12 +31,12 @@ class StaffModuleAssigned extends Mailable
      */
     public function build()
     {
-         return $this->view('emails.custom-notification')
+         return $this->view('emails.module-assignment')
                     ->subject('Module Assignment')
                     ->with([
                        'heading'=>'Module Assignment',
                        'name'=>$this->assignment->staff->first_name.' '.$this->assignment->staff->surname,
-                       'notification_message'=>'Please note that you have been assigned '.$this->assignment->module->name.' - '.$this->assignment->module->code.' in '.$this->assignment->programModuleAssignment->semester->name.' of academic year '.$this->assignment->studyAcademicYear->academicYear->year,
+                       'notification_message'=>'Please note that you have been assigned <strong>'.$this->assignment->module->name.' - '.$this->assignment->module->code.'</strong> in '.$this->assignment->programModuleAssignment->semester->name.' of academic year '.$this->assignment->studyAcademicYear->academicYear->year.'.',
                     ]);
     }
 }
