@@ -39,6 +39,7 @@
         <div class="row">
           <div class="col-12">
             <!-- general form elements -->
+             @can('add-fee-amount')
             <div class="card card-default">
               <div class="card-header">
                 <h3 class="card-title">{{ __('Add Amount') }}</h3>
@@ -97,6 +98,7 @@
               {!! Form::close() !!}
             </div>
             <!-- /.card -->
+            @endcan
 
             @if(count($amounts) != 0)
             <div class="card">
@@ -124,12 +126,13 @@
                     <td>{{ number_format($amount->amount_in_usd,2) }}</td>
                     <td>{{ $amount->studyAcademicYear->academicYear->year }}</td>
                     <td>
+                      @can('edit-fee-amount')
                       <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-edit-amount-{{ $amount->id }}">
                               <i class="fas fa-pencil-alt">
                               </i>
                               Edit
                        </a>
-
+                      @endcan
                        <div class="modal fade" id="ss-edit-amount-{{ $amount->id }}">
                         <div class="modal-dialog modal-lg">
                           <div class="modal-content">
@@ -200,13 +203,14 @@
                         <!-- /.modal-dialog -->
                       </div>
                       <!-- /.modal -->
-
+                      
+                      @can('delete-fee-amount')
                       <a class="btn btn-danger btn-sm" href="#" data-toggle="modal" data-target="#ss-delete-amount-{{ $amount->id }}">
                               <i class="fas fa-trash">
                               </i>
                               Delete
                        </a>
-
+                       @endcan
                        <div class="modal fade" id="ss-delete-amount-{{ $amount->id }}">
                         <div class="modal-dialog modal-lg">
                           <div class="modal-content">

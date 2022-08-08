@@ -39,6 +39,7 @@
         <div class="row">
           <div class="col-12">
             <!-- general form elements -->
+            @can('add-fee-type')
             <div class="card card-default">
               <div class="card-header">
                 <h3 class="card-title">{{ __('Add Type') }}</h3>
@@ -153,6 +154,7 @@
               {!! Form::close() !!}
             </div>
             <!-- /.card -->
+            @endcan
 
             @if(count($types) != 0)
             <div class="card">
@@ -199,12 +201,13 @@
                       @endif
                     </td>
                     <td>
+                      @can('edit-fee-type')
                       <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-edit-type-{{ $type->id }}">
                               <i class="fas fa-pencil-alt">
                               </i>
                               Edit
                        </a>
-
+                      @endcan
                        <div class="modal fade" id="ss-edit-type-{{ $type->id }}">
                         <div class="modal-dialog modal-lg">
                           <div class="modal-content">
@@ -330,13 +333,14 @@
                         <!-- /.modal-dialog -->
                       </div>
                       <!-- /.modal -->
-
+                      
+                      @can('delete-fee-type')
                       <a class="btn btn-danger btn-sm" href="#" data-toggle="modal" data-target="#ss-delete-type-{{ $type->id }}">
                               <i class="fas fa-trash">
                               </i>
                               Delete
                        </a>
-
+                      @endcan
                        <div class="modal fade" id="ss-delete-type-{{ $type->id }}">
                         <div class="modal-dialog modal-lg">
                           <div class="modal-content">

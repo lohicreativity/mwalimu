@@ -44,6 +44,10 @@
               <div class="alert alert-warning">Please visit loans office for signing your loan payment.</div>
             @endif
           @endif
+          @if($performance_report)
+            <div class="alert alert-success">Your performance report is ready.</div>
+          @endif
+          {{--
           @if(!$registration)
           <div class="card">
               <div class="card-header">
@@ -131,6 +135,7 @@
             </div>
             <!-- /.modal -->
           @endif
+          --}}
         <!-- Main row -->
         <div class="row">
           <!-- Left col -->

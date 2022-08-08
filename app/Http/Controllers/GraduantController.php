@@ -51,6 +51,18 @@ class GraduantController extends Controller
     public function sortGraduants(Request $request)
     {
       $staff = User::find(Auth::user()->id)->staff;
+
+      $past_graduants = Student::whereHas('studentshipStatus',function($query){
+                $query->where('name','GRADUANT');
+      })->whereHas('annualRemarks',function($query) use($request){
+                $query->where('study_academic_year_id','!=',$request->get('study_academic_year_id'));
+            })->get();
+      foreach($past_graduants as $grad){
+          $user = User::find($grad->user_id);
+          $user->status = 'INACTIVE';
+          $user->save();
+      }
+      
       if(ResultPublication::where('study_academic_year_id',session('active_academic_year_id'))->where('type','SUPP')->where('campus_id',$staff->campus_id)->count() == 0){
           return redirect()->back()->with('error','Supplementary results not published');
       }

@@ -153,8 +153,9 @@
                   </div>
                   {!! Form::input('hidden','applicant_id',$applicant->id) !!}
                   <div class="ss-form-actions">
+                   @if($applicant->campus_id != 0)
                    <button type="submit" class="btn btn-primary">{{ __('Save Changes') }}</button>
-
+                   @endif
                    <a href="{{ url('application/reset-applicant-password-default?user_id='.$applicant->user_id.'&applicant_id='.$applicant->id) }}" class="btn btn-primary">Reset Password</a>
 
                    <a href="#" id="ss-reset-control-number" data-token="{{ session()->token() }}" data-applicant-id="{{ $applicant->id }}" class="btn btn-primary">Reset Control Number</a>

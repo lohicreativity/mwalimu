@@ -39,6 +39,7 @@
         <div class="row">
           <div class="col-12">
             <!-- general form elements -->
+            @can('add-fee-item')
             <div class="card card-default">
               <div class="card-header">
                 <h3 class="card-title">{{ __('Add item') }}</h3>
@@ -106,6 +107,7 @@
               {!! Form::close() !!}
             </div>
             <!-- /.card -->
+            @endcan
 
             @if(count($items) != 0)
             <div class="card">
@@ -223,13 +225,14 @@
                         <!-- /.modal-dialog -->
                       </div>
                       <!-- /.modal -->
-
+                     
+                     @can('delete-fee-item')
                       <a class="btn btn-danger btn-sm" href="#" @if(App\Utils\Util::arrayContains($item->name,['MNMASO','Medical Examination','Caution Money','Practical Training','TCU','NACTE','Identity Card','Registration','Late Registration'])) disabled="disabled" @else data-toggle="modal" data-target="#ss-delete-item-{{ $item->id }}" @endif>
                               <i class="fas fa-trash">
                               </i>
                               Delete
                        </a>
-
+                      @endcan
                        <div class="modal fade" id="ss-delete-item-{{ $item->id }}">
                         <div class="modal-dialog modal-lg">
                           <div class="modal-content">
