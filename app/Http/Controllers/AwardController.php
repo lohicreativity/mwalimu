@@ -91,4 +91,13 @@ class AwardController extends Controller
             return redirect()->back()->with('error','Unable to get the resource specified in this request');
         }
     }
+
+    /**
+     * Get by ID
+     */
+    public function getById(Request $request)
+    {
+        $award = Award::find($request->get('id'));
+        return response()->json(['award'=>$award]);
+    }
 }

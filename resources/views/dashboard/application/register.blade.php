@@ -43,7 +43,7 @@
           </div>
         </div>
         <div class="input-group mb-3">
-          <select name="program_level_id" class="form-control" required>
+          <select name="program_level_id" class="form-control" id="ss-program-level" required>
              <option value="">Select Program Level</option>
              @foreach($awards as $award)
              @if(str_contains($award->name,'Basic') || str_contains($award->name,'Ordinary') || str_contains($award->name,'Bachelor') || str_contains($award->name,'Masters'))
@@ -58,7 +58,7 @@
           </div>
         </div>
         <div class="input-group mb-3">
-          <select name="entry_mode" class="form-control" required>
+          <select name="entry_mode" class="form-control" id="ss-entry-mode" required>
              <option value="">Select Highest Qualification</option>
              <option value="DIRECT" @if(old('entry_mode') == 'DIRECT') selected="selected" @endif>Form IV or VI (Direct)</option>
              <option value="EQUIVALENT" @if(old('entry_mode') == 'EQUIVALENT') selected="selected" @endif>Certificate or Diploma (Equivalent)</option>
@@ -117,4 +117,30 @@
   </div>
 </div>
 <!-- /.login-box -->
+
+<script type="text/javascript">
+  window.onload = function(){
+      
+      $('#ss-program-level').on('change',function(e){
+          $.ajax({
+              url:'/application/get-award-by-id?id='+$(e.target).val(),
+              method:'GET'
+          }).done(function(data){
+              if(data.award != null){
+                if(data.award.name.inludes('Certificate')){
+                  var element = '<option value="">Select Highest Qualification</option>';
+                              += '<option value="DIRECT">Form IV or VI (Direct)</option>';
+                }else{
+                  var element = '<option value="">Select Highest Qualification</option>';
+                              += '<option value="DIRECT">Form IV or VI (Direct)</option>';
+                              += '<option value="EQUIVALENT">Certificate or Diploma (Equivalent)</option>';
+                }
+                $('#ss-entry-mode').html(element);
+              }
+
+          });
+      });
+
+  };
+</script>
 @endsection
