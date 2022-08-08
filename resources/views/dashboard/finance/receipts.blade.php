@@ -70,7 +70,8 @@
                </div>
              </div>
              <!-- /.card -->
-
+          
+          @if(count($receipts) != 0)
          <div class="card card-default">
               <div class="card-header">
                 <h3 class="card-title">{{ __('Receipts') }}</h3><br>
@@ -122,6 +123,7 @@
                   @endif
               </div>
           </div>
+          @endif
           </div><!-- end of row -->
       </div><!-- /.container-fluid -->
     </section>
