@@ -19,11 +19,11 @@ class ACPACController extends Controller
         if($request->get('begin_date') && $request->get('end_date')){
               $invoices = Invoice::has('payable')->whereHas('payable.campusProgram',function($query) use($request){
                     $query->where('campus_id',$request->get('campus_id'));
-              })->with(['payable.campusProgram.program','feeType'])->where('created_at','>=',DateMaker::toDBDate($request->get('begin_date')))->where('created_at','<=',DateMaker::toDBDate($request->get('end_date')))->where('payable_type','student')->where('applicable_id',$request->get('study_academic_year_id'))->where('applicable_type','academic_year')->latest()->get();
+              })->with(['payable.campusProgram.program','feeType'])->where('created_at','>=',DateMaker::toDBDate($request->get('begin_date')))->where('created_at','<=',DateMaker::toDBDate($request->get('end_date')))->where('payable_type','student')->where('payable_type','student')->where('applicable_id',$request->get('study_academic_year_id'))->where('applicable_type','academic_year')->latest()->get();
         }else{
               $invoices = Invoice::has('payable')->whereHas('payable.campusProgram',function($query) use($request){
                     $query->where('campus_id',$request->get('campus_id'));
-              })->with(['payable.campusProgram.program','feeType'])->where('payable_type','student')->where('applicable_id',$request->get('study_academic_year_id'))->where('applicable_type','academic_year')->latest()->get();
+              })->with(['payable.campusProgram.program','feeType'])->where('payable_type','student')->where('payable_type','student')->where('applicable_id',$request->get('study_academic_year_id'))->where('applicable_type','academic_year')->latest()->get();
         }
         $data = [
            'invoices'=>$invoices,
