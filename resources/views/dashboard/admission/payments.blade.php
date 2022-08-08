@@ -156,26 +156,28 @@
   @include('layouts.footer')
   
   <script type="text/javascript">
-    @if($program_fee_invoice)
-		
-	window.onload = function(){
-		setInterval(function(){
-      console.log('+++++++++Programme');
-			$.ajax({
-				url:'/application/check-receipt?invoice_id={{ $program_fee_invoice->id }}',
-				method:'GET'
-			}).done(function(data){
-				if(data.code == 200){
-					window.location.reload();
-				}
-			});
-		},5000);
-	};
-	@endif
+   
 	
-	@if($other_fee_invoice)
+	
 		
 	window.onload = function(){
+
+     @if($program_fee_invoice)
+
+    setInterval(function(){
+      console.log('+++++++++Programme');
+      $.ajax({
+        url:'/application/check-receipt?invoice_id={{ $program_fee_invoice->id }}',
+        method:'GET'
+      }).done(function(data){
+        if(data.code == 200){
+          window.location.reload();
+        }
+      });
+    },5000);
+  @endif
+
+    @if($other_fee_invoice)
 		setInterval(function(){
       console.log('+++++++++Other');
 			$.ajax({
@@ -187,25 +189,26 @@
 				}
 			});
 		},5000);
-	};
-	@endif
-	
-	@if($hostel_fee_invoice)
-		
-	window.onload = function(){
-		setInterval(function(){
+    @endif
+    
+    @if($hostel_fee_invoice)
+    
+    setInterval(function(){
       console.log('+++++++++Hostel');
-			$.ajax({
-				url:'/application/check-receipt?invoice_id={{ $hostel_fee_invoice->id }}',
-				method:'GET'
-			}).done(function(data){
-				if(data.code == 200){
-					window.location.reload();
-				}
-			});
-		},5000);
+      $.ajax({
+        url:'/application/check-receipt?invoice_id={{ $hostel_fee_invoice->id }}',
+        method:'GET'
+      }).done(function(data){
+        if(data.code == 200){
+          window.location.reload();
+        }
+      });
+    },5000);
+    @endif
 	};
-	@endif
+	
+	
+	
 </script>
 
   <!-- Control Sidebar -->
