@@ -194,7 +194,7 @@
                 <table id="example2" class="table table-bordered table-hover">
                   <thead>
                   <tr>
-                    <th>Name</th>
+                    <th>Regulator Code</th>
                     <th>Code</th>
 					<th>Department</th>
 					<th>HOD</th>
@@ -204,12 +204,12 @@
                   <tbody>
                   @foreach($programs as $program)
                   <tr>
-                    <td>{{ $program->name }}</td>
+                    <td>@if(count($program->campusPrograms) != 0) $program->campusPrograms[0]->regulator_code @endif</td>
                     <td>{{ $program->code }}</td>
 					<td>@foreach($program->departments as $dept) <p>{{ $dept->name }}</p> @endforeach</td>
 					<td>@foreach($program->departments as $dept) 
 					         @foreach($dept->staffs as $stf) 
-							    @if($stf->user->hasRole('hod')) <p>{{ $stf->title}} {{ $stf->first_name }} {{ $stf->surname }}</p> @endif 
+							    @if($stf->user->hasRole('hod')) <p class="ss-font-xs ss-no-margin">{{ $stf->title}} {{ $stf->first_name }} {{ $stf->surname }}</p> @endif 
 							 @endforeach 
 					    @endforeach</td>
                     <td>

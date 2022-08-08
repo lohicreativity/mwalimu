@@ -31,7 +31,11 @@ class ProgramController extends Controller
         }else{
           $programs = Program::whereHas('departments',function($query) use($staff){
              $query->where('id',$staff->department_id);
-          })->with(['departments','ntaLevel','award'])->orderBy('code')->paginate(20);
+          })->with(['departments'=>function($query) use($staff){
+                $query->where('campus_id',$staff->campus_id);
+            },'ntaLevel','award','campusPrograms'=>function($query) use($staff){
+                $query->where('campus_id',$staff->campus_id);
+            },])->orderBy('code')->paginate(20);
         }
       }else{
           if($request->has('query')){
