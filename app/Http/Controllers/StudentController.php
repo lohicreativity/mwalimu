@@ -1442,6 +1442,10 @@ class StudentController extends Controller
         $student->studentship_status_id = $status->id;
         $student->save();
 
+        $user = User::find($student->user_id);
+        $user->status = 'INACTIVE';
+        $user->save();
+
         return redirect()->back()->with('message','Studentship status updated successfully');
     }
 

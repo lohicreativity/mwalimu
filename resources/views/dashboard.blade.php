@@ -53,11 +53,8 @@
 
         @if(Auth::user()->hasRole('finance-officer'))
         @if(!$last_session)
-        @if($postponements_count != 0)
-        <div class="alert alert-warning">You have pending postponement requests</div>
-        @endif
-        @if($deceased_count != 0)
-        <div class="alert alert-warning">You have deceased cases</div>
+        @if($postponements_count != 0 || $deceased_count != 0)
+        <div class="alert alert-warning">You have new change of status cases</div>
         @endif
         @else
         @if($postponements_count != 0)
@@ -65,7 +62,7 @@
         <div class="alert alert-warning">You have pending postponement requests</div>
         @endif
         @endif
-        @if($deceased_count != 0)
+        @if()
         @if($last_session->last_activity > strtotime($last_deceased->updated_at))
         <div class="alert alert-warning">You have deceased cases</div>
         @endif
