@@ -156,6 +156,8 @@
                    <button type="submit" class="btn btn-primary">{{ __('Save Changes') }}</button>
 
                    <a href="{{ url('application/reset-applicant-password-default?user_id='.$applicant->user_id.'&applicant_id='.$applicant->id) }}" class="btn btn-primary">Reset Password</a>
+
+                   <a href="#" data-token="{{ session()->token() }}" data-applicant-id="{{ $applicant->id }}" class="btn btn-primary">Reset Control Number</a>
                   </div>
 
                    {!! Form::close() !!}
