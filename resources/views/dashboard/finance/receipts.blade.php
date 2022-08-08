@@ -37,6 +37,39 @@
     <section class="content">
       <div class="container-fluid">
         <!-- Small boxes (Stat box) -->
+        <div class="card-header">
+                 <h3 class="card-title">{{ __('Select Study Academic Year') }}</h3>
+               </div>
+               <!-- /.card-header -->
+               <div class="card-body">
+                  {!! Form::open(['url'=>'finance/receipts','class'=>'ss-form-processing','method'=>'GET']) !!}
+                    <div class="row">
+                    <div class="form-group col-6">
+                     <select name="study_academic_year_id" class="form-control" required>
+                        <option value="">Select Campus</option>
+                        @foreach($study_academic_years as $year)
+                        <option value="{{ $year->id }}" @if($request->get('study_academic_year_id') == $year->id) selected="selected" @endif>{{ $year->academicYear->year }}</option>
+                        @endforeach
+                     </select>
+                   </div>
+                   <div class="form-group col-6">
+                     <select name="campus_id" class="form-control" required>
+                        <option value="">Select Study Academic Year</option>
+                        @foreach($campuses as $campus)
+                        <option value="{{ $campus->id }}" @if($request->get('campus_id') == $campus->id) selected="selected" @endif>{{ $campus->name }}</option>
+                        @endforeach
+                     </select>
+                   </div>
+                 </div>
+                   <div class="ss-form-actions">
+                    <button type="submit" class="btn btn-primary">{{ __('Search') }}</button>
+                   </div>
+ 
+                  {!! Form::close() !!}
+               </div>
+             </div>
+             <!-- /.card -->
+
          <div class="card card-default">
               <div class="card-header">
                 <h3 class="card-title">{{ __('Receipts') }}</h3><br>
@@ -56,13 +89,12 @@
                       <thead>
                         <tr>
                           <th>S/N</th>
-                          <th>Reference #</th>
                           <th>Receipt #</th>
+                          <th>Customer ID</th>
                           <th>Payer Name</th>
-                          <th>Bank</th>
+                          <th>Study Year</th>
                           <th>Bill Amount</th>
                           <th>Paid Amount</th>
-                          <th>Currency</th>
                           <th>Control Number</th>
                           <th>Date Created</th>
                         </tr>
@@ -71,13 +103,13 @@
                         @foreach($receipts as $key=>$receipt)
                           <tr>
                            <td>{{ $key+1 }}</td>
-                           <td>{{ $receipt->pay_refId }}</td>
                            <td>{{ $receipt->transaction_id }}</td>
+                           <td>{{ $receipt->pay_refId }}</td>
                            <td>{{ $receipt->payer_name }}</td>
-                           <td>{{ $receipt->bank }}</td>
+                           <td>{{ $receipt->programme }}</td>
+                           <td>{{ $receipt->year_of_study }}</td>
                            <td>{{ number_format($receipt->amount,2) }}</td>
                            <td>{{ number_format($receipt->paid_amount,2) }}</td>
-                           <td>{{ $receipt->currency }}</td>
                            <td>{{ $receipt->control_no }}</td>
                            <td>{{ $receipt->created_at }}</td>
                           </tr>
