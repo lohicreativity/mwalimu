@@ -95,7 +95,7 @@
                        </td>
 
                     </tr>
-
+                    {{--
                     @if($insurance_fee)
                     <tr>
                        <td>Insurance Fee</td>
@@ -109,6 +109,7 @@
                        <td></td>
                     </tr>
                     @endif
+                    --}}
                     @if($hostel_fee)
                     <tr>
                        <td>Hostel Fee</td>
