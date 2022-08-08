@@ -160,6 +160,7 @@
 		
 	window.onload = function(){
 		setInterval(function(){
+      console.log('+++++++++Programme');
 			$.ajax({
 				url:'/application/check-receipt?invoice_id={{ $program_fee_invoice->id }}',
 				method:'GET'
@@ -176,6 +177,7 @@
 		
 	window.onload = function(){
 		setInterval(function(){
+      console.log('+++++++++Other');
 			$.ajax({
 				url:'/application/check-receipt?invoice_id={{ $other_fee_invoice->id }}',
 				method:'GET'
@@ -192,6 +194,7 @@
 		
 	window.onload = function(){
 		setInterval(function(){
+      console.log('+++++++++Hostel');
 			$.ajax({
 				url:'/application/check-receipt?invoice_id={{ $hostel_fee_invoice->id }}',
 				method:'GET'
