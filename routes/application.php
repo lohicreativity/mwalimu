@@ -200,6 +200,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 	
 	Route::get('check-receipt',[ApplicantController::class,'checkReceipt']);
 	Route::get('reset-selections',[ApplicationController::class,'resetSelections']);
-
-	Route::get('get-award-by-id',[AwardController::class,'getById']);
+	
 });
+
+Route::get('get-award-by-id',[AwardController::class,'getById']);
