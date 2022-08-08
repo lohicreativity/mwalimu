@@ -103,7 +103,10 @@
                        <td>{{ $applicant->address }}</td>
                      </tr>
                      <tr>
-                       <td><a href="{{ url('application/reset-applicant-password-default?user_id='.$applicant->user_id) }}" class="btn btn-primary">Reset Password</a> </td>
+                       <td><a href="{{ url('application/reset-applicant-password-default?user_id='.$applicant->user_id) }}" class="btn btn-primary">Reset Password</a> 
+
+                        <a href="#" data-token="{{ session()->token() }}" data-applicant-id="{{ $applicant->id }}" class="btn btn-primary">Reset Control Number</a> 
+                       </td>
                        <td></td>
                      </tr>
                    </table>
