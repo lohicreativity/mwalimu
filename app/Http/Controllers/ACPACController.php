@@ -37,7 +37,7 @@ class ACPACController extends Controller
     public function receipts(Request $request)
     {
         if($request->get('begin_date') && $request->get('end_date')){
-           $receipts = DB::table('gateway_payments')->select(DB::raw('gateway_payments.*, invoices.*, students.*, programs.name as programme'))
+           $receipts = DB::table('gateway_payments')->select(DB::raw('gateway_payments.*, invoices.*, students.*, programs.code as programme'))
                ->join('invoices','gateway_payments.control_no','=','invoices.control_no')
                ->join('students','invoices.payable_id','=','students.id')
                ->join('campus_program','students.campus_program_id','=','campus_program.id')
@@ -51,7 +51,7 @@ class ACPACController extends Controller
                ->where('gateway_payments.created_at','<=',DateMaker::toDBDate($request->get('end_date')))
                ->get();
         }else{
-           $receipts = DB::table('gateway_payments')->select(DB::raw('gateway_payments.*, invoices.*, students.*, programs.name as programme'))
+           $receipts = DB::table('gateway_payments')->select(DB::raw('gateway_payments.*, invoices.*, students.*, programs.code as programme'))
                ->join('invoices','gateway_payments.control_no','=','invoices.control_no')
                ->join('students','invoices.payable_id','=','students.id')
                ->join('campus_program','students.campus_program_id','=','campus_program.id')

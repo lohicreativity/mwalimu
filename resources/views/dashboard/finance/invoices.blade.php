@@ -91,9 +91,11 @@
                       <thead>
                         <tr>
                           <th>S/N</th>
+                          <th>Reference #</th>
                           <th>Customer ID</th>
                           <th>Payer Name</th>
                           <th>Programme</th>
+                          <th>Year of Study</th>
                           <th>Bill Type</th>
                           <th>Bill Amount</th>
                           <th>Control Number</th>
@@ -105,6 +107,7 @@
                           @if($invoice->payable->campusProgram->campus_id == $request->get('campus_id'))
                           <tr>
                            <td>{{ $key+1 }}</td>
+                           <td>{{ $invoice->reference_no }}</td>
                            <td>
                                @php
                                   if($invoice->payable_type == 'student'){
@@ -124,6 +127,7 @@
                            </td>
                            <td>{{ $invoice->payable->first_name }} {{ $invoice->payable->middle_name }} {{ $invoice->payable->surname }}</td>
                            <td>{{ $invoice->payable->campusProgram->program->code }}</td>
+                           <td>{{ $invoice->payable->year_of_study }}</td>
                            <td>{{ $invoice->feeType->name }}</td>
                            <td>{{ number_format($invoice->amount,2) }}</td>
                            <td>{{ $invoice->control_no }} @if(!$invoice->control_no)<a href="#" onclick="window.location.reload();"><i class="fa fa-refresh" ></i> Refresh</a>@endif</td>

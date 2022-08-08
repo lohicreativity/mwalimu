@@ -94,6 +94,7 @@
                           <th>Receipt #</th>
                           <th>Customer ID</th>
                           <th>Payer Name</th>
+                          <th>Programme</th>
                           <th>Study Year</th>
                           <th>Bill Amount</th>
                           <th>Paid Amount</th>
@@ -106,7 +107,23 @@
                           <tr>
                            <td>{{ $key+1 }}</td>
                            <td>{{ $receipt->transaction_id }}</td>
-                           <td>{{ $receipt->pay_refId }}</td>
+                           <td>
+                               @php
+                                  if($receipt->payable_type == 'student'){
+                                  $stud_reg = substr($receipt->registration_number, 5);
+                                  $stud_reg = str_replace('/', '', $stud_reg);
+                                  $parts = explode('.', $stud_reg);
+                                  if($parts[0] == 'BTC'){
+                                      $stud_reg = 'BT'.$parts[1];
+                                  }else{
+                                      $stud_reg = $parts[0].$parts[1];
+                                  }
+                                  }else{
+                                      $stud_reg = null;
+                                  }
+                               @endphp
+                               @if($stud_reg) {{ $stud_reg }} @else N/A @endif
+                           </td>
                            <td>{{ $receipt->payer_name }}</td>
                            <td>{{ $receipt->programme }}</td>
                            <td>{{ $receipt->year_of_study }}</td>
