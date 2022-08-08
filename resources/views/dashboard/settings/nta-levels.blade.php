@@ -127,7 +127,7 @@
                     <td>{{ $level->name }}</td>
                     <td>{{ $level->award->name }}</td>
                     <td>@if(str_contains($level->name,'8')) 1 @else {{ $level->min_duration }} @endif</td>
-                    <td>@if(str_contains($level->name,'8')) 1 @else {{ $level->max_duration }} @endif</td>
+                    <td>{{ $level->max_duration }}</td>
                     <td>
                       @can('edit-nta-level')
                       <a class="btn btn-info btn-sm" href="#" @if(count($level->programs) == 0) data-toggle="modal" data-target="#ss-edit-level-{{ $level->id }}" @else disabled="disabled" @endif>
