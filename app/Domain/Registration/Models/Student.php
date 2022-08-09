@@ -13,6 +13,7 @@ use App\Domain\Academic\Models\SemesterRemark;
 use App\Domain\Academic\Models\AnnualRemark;
 use App\Domain\Academic\Models\OverallRemark;
 use App\Domain\Academic\Models\SpecialExam;
+use App\Domain\Academic\Models\Postponement;
 use App\Domain\Academic\Models\AcademicStatus;
 use App\Domain\Application\Models\Applicant;
 use App\Domain\Settings\Models\DisabilityStatus;
@@ -46,6 +47,14 @@ class Student extends Model
     public function annualRemarks()
     {
         return $this->hasMany(AnnualRemark::class,'student_id');
+    }
+
+    /**
+     * Establish one to many relationship with postponements
+     */
+    public function postponements()
+    {
+        return $this->hasMany(Postponement::class,'student_id');
     }
 
     /**
