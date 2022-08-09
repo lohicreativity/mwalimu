@@ -71,13 +71,19 @@ class CourseWorkResultController extends Controller
         if(!$student){
             return redirect()->back()->with('error','Student does not exist');
         }
-        $mod_assign = ModuleAssignment::find($request->get('module_assignment_id'));
+        $mod_assign = ModuleAssignment::with('programModuleAssignment')->find($request->get('module_assignment_id'));
+        if($mod_assign->programModuleAssignment->category == 'OPTIONAL'){
+            if(ProgramModuleAssignment::find($mod_assign->programModuleAssignment->id)->optedStudents()->count() == 0){
+                return redirect()->back()->with('error','This optional module does not have opted students');
+            }
+        }
         if($exam = ExaminationResult::where('student_id',$student->id)->where('module_assignment_id',$request->get('module_assignment_id'))->first()){
            $exam = $exam;
         }else{
            $exam = new ExaminationResult;
            $exam->module_assignment_id = $request->get('module_assignment_id');
            $exam->student_id = $student->id;
+           $exam->uploaded_by_user_id = Auth::user()->id;
            $exam->save();
         }
       
