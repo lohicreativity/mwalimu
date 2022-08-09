@@ -54,7 +54,7 @@
                   @can('view-student-results')
                   <li class="nav-item"><a class="nav-link" href="{{ url('academic/results/show-student-results') }}">{{ __('View Student Results') }}</a></li>
                   @endcan
-                  @can('publish-examination-results')
+                  @can('view-publish-examination-results')
                   <li class="nav-item"><a class="nav-link" href="{{ url('academic/results-publications') }}">{{ __('Publish Results') }}</a></li>
                   @endcan
                   @can('view-uploaded-modules')
