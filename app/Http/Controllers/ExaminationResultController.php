@@ -1152,9 +1152,11 @@ class ExaminationResultController extends Controller
               $elective_policy = ElectivePolicy::where('campus_program_id',$campus_program->id)->where('study_academic_year_id',$ac_yr_id)->where('semester_id',$semester->id)->first();
 
               if($elective_policy){
-                if(ExaminationResult::whereHas('moduleAssignment.programModuleAssignment',function($query) use($campus_program){
+                if(ExaminationResult::whereHas('moduleAssignment',function($query){
+                       $query->where('final_upload_status','UPLOADED');
+                  })->whereHas('moduleAssignment.programModuleAssignment',function($query) use($campus_program){
                        $query->where('campus_program_id',$campus_program->id)->where('category','OPTIONAL');
-                  })->whereNotNull('final_uploaded_at')->where('student_id',$student->id)->distinct()->count('module_assignment_id') < $elective_policy->number_of_options){
+                  })->where('student_id',$student->id)->distinct()->count('module_assignment_id') < $elective_policy->number_of_options){
                     DB::rollback();
                     return redirect()->back()->with('error','Some optional modules are missing final marks');
                 }
