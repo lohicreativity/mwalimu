@@ -1154,7 +1154,7 @@ class ExaminationResultController extends Controller
               if($elective_policy){
                 if(ExaminationResult::whereHas('moduleAssignment.programModuleAssignment',function($query) use($campus_program){
                        $query->where('campus_program_id',$campus_program->id)->where('category','OPTIONAL');
-                  })->whereNotNull('final_uploaded_at')->where('student_id',$student->id)->distinct()->count('module_assignment_id') != $elective_policy->number_of_options){
+                  })->whereNotNull('final_uploaded_at')->where('student_id',$student->id)->distinct()->count('module_assignment_id') < $elective_policy->number_of_options){
                     DB::rollback();
                     return redirect()->back()->with('error','Some optional modules are missing final marks');
                 }
