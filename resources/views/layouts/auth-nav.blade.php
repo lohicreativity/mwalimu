@@ -536,6 +536,14 @@
                 </a>
               </li>
               @endcan
+              @can('view-special-case-students')
+              <li class="nav-item">
+                <a href="{{ url('academic/special-case-students') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>{{ __('Special Case Students') }}</p>
+                </a>
+              </li>
+              @endcan
             </ul>
           </li>
           <li class="nav-item">

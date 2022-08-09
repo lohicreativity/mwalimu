@@ -1478,6 +1478,24 @@ class StudentController extends Controller
 
         return redirect()->back()->with('message','Control number reset successfully');
     }
+
+    /**
+     * Special case students
+     */
+    public function specialCaseStudents(Request $request)
+    {
+        $staff = User::find(Auth::user()->id)->staff;
+        $data = [
+            'students'=>Student::whereHas('studentshipStatus',function($query){
+                $query->where('name','DECEASED')->orWhere('name','POSTPONED');
+            })->with(['postponements'=>function($query){
+                $query->where('status','POSTPONED')->latest();
+            },'studentshipStatus'])->latest()->get(),
+            'staff'=>$staff
+        ];
+        return view('dashboard.academic.special-case-students',$data)->withTitle('Special Case Students');
+    }
+
     /**
      * Logout student
      */

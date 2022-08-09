@@ -333,4 +333,6 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 
     Route::get('get-program-by-code',[ProgramController::class,'getByCode']);
     Route::get('download-opted-students',[ProgramModuleAssignmentController::class, 'downloadOptedStudents']);
+
+    Route::get('special-case-students',[StudentController::class,'specialCaseStudents']);
 });
