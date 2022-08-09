@@ -114,7 +114,7 @@
                   $marks = [
                      'placeholder'=>'Marks',
                      'class'=>'form-control',
-                     'min'=>0,
+                     'min'=>1,
                      'steps'=>'any',
                      'required'=>true
                   ];
