@@ -888,7 +888,7 @@ class ExaminationResultController extends Controller
                   $change->resultable_id = $result->id;
                   $change->from_score = $score_before;
                   $change->to_score = $result->score;
-                  $change->resultable_type = 'course_work_result';
+                  $change->resultable_type = 'examination_result';
                   $change->user_id = Auth::user()->id;
                   $change->save();
               }else{
