@@ -90,6 +90,7 @@
                     <td>{{ $publication->status }}</td>
                     <td>{{ $publication->type }}</td>
                     <td>
+                      @can('publish-examination-results')
                       @if($publication->status == 'PUBLISHED')
                         <a class="btn btn-info btn-sm" href="{{ url('academic/result-publication/'.$publication->id.'/unpublish') }}">
                               <i class="fas fa-ban">
@@ -103,7 +104,7 @@
                               Publish
                        </a>
                       @endif
-                      
+                      @endcan
                     </td>
                   </tr>
                   @endforeach
