@@ -883,14 +883,16 @@ class ExaminationResultController extends Controller
                   $result->final_uploaded_at = now();
                   $result->uploaded_by_user_id = Auth::user()->id;
                   $result->save();
-
-                  $change = new ExaminationResultChange;
-                  $change->resultable_id = $result->id;
-                  $change->from_score = $score_before;
-                  $change->to_score = $result->final_score;
-                  $change->resultable_type = 'examination_result';
-                  $change->user_id = Auth::user()->id;
-                  $change->save();
+                  
+                  if(!Auth::user()->hasRole('hod')){
+                      $change = new ExaminationResultChange;
+                      $change->resultable_id = $result->id;
+                      $change->from_score = $score_before;
+                      $change->to_score = $result->final_score;
+                      $change->resultable_type = 'examination_result';
+                      $change->user_id = Auth::user()->id;
+                      $change->save();
+                  }
               }else{
                   $result = new ExaminationResult;
                   $result->module_assignment_id = $request->get('module_assignment_id');
@@ -2309,7 +2311,9 @@ class ExaminationResultController extends Controller
      */
     public function showStudentResultsReport(Request $request)
     {
-    	$student = Student::with(['campusProgram.program.departments'])->where('registration_number',$request->get('registration_number'))->first();
+    	$student = Student::whereHas('studentshipStatus',function($query){
+           $query->where('name','ACTIVE');
+      })->with(['campusProgram.program.departments'])->where('registration_number',$request->get('registration_number'))->first();
       $staff = User::find(Auth::user()->id)->staff;
       if(!$student){
           return redirect()->back()->with('error','No student found with searched registration number');
