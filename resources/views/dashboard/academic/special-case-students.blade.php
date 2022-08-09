@@ -42,7 +42,6 @@
             <div class="card">
               <div class="card-header">
                 <h3 class="card-title">List of Special Case Students</h3><br>
-                <a href="{{ url('academic/download-opted-students?assignment_id='.$assignment->id) }}" class="btn btn-primary">Download</a>
               </div>
               <!-- /.card-header -->
                  
