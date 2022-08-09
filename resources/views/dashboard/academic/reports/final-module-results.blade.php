@@ -220,11 +220,11 @@
                       <td>{{ $student->surname }}, {{ $student->first_name }} {{ $student->middle_name}}</td>
                       @foreach($student->examinationResults as $result)
                         @if($result->module_assignment_id == $module_assignment->id)
-                        <td>{{ $result->course_work_score }}</td>
-                        <td>{{ $result->final_score }}</td>
-                        <td>{{ $result->total_score }}</td>
-                        <td>{{ $result->grade }}</td>
-                        <td>{{ $result->final_exam_remark }}</td>
+                        <td>@if($result->course_work_score){{ $result->course_work_score }} @else - @endif</td>
+                        <td>@if($result->final_score) {{ $result->final_score }} @else - @endif</td>
+                        <td>@if($result->total_score){{ $result->total_score }} @else - @endif</td>
+                        <td>@if($result->grade){{ $result->grade }} @else - @endif</td>
+                        <td>@if($result->final_exam_remark) {{ $result->final_exam_remark }} @else - @endif</td>
                         @endif
                       @endforeach
 

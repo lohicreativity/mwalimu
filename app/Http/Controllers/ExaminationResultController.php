@@ -2264,7 +2264,9 @@ class ExaminationResultController extends Controller
           }
       }
 
-    	$students = Student::whereHas('examinationResults.moduleAssignment',function($query) use($request){
+    	$students = Student::whereHas('studentshipStatus',function($query){
+          $query->where('name','ACTIVE');
+      })->whereHas('examinationResults.moduleAssignment',function($query) use($request){
         	$query->where('module_id',$request->get('module_id'));
         })->with(['examinationResults.moduleAssignment'=>function($query) use($request){
         	$query->where('module_id',$request->get('module_id'));
