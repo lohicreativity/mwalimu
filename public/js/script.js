@@ -1540,7 +1540,6 @@ $('#ss-reset-control-number').on('click',function(e){
                 "progressBar" : true
               }
               toastr.success("Control number reset successfully");
-        });
     });
 
 });
