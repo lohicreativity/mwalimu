@@ -887,7 +887,7 @@ class ExaminationResultController extends Controller
                   $change = new ExaminationResultChange;
                   $change->resultable_id = $result->id;
                   $change->from_score = $score_before;
-                  $change->to_score = $result->score;
+                  $change->to_score = $result->final_score;
                   $change->resultable_type = 'examination_result';
                   $change->user_id = Auth::user()->id;
                   $change->save();
