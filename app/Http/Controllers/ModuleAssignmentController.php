@@ -8,6 +8,7 @@ use App\Domain\Academic\Models\StudyAcademicYear;
 use App\Domain\Academic\Models\Module;
 use App\Domain\Academic\Models\ResultFile;
 use App\Domain\Academic\Models\Semester;
+use App\Domain\Academic\Models\Postponement;
 use App\Domain\Academic\Models\CampusProgram;
 use App\Domain\Settings\Models\Campus;
 use App\Domain\Academic\Models\AssessmentPlan;
@@ -899,6 +900,7 @@ class ModuleAssignmentController extends Controller
                 if($request->get('assessment_plan_id') == 'FINAL_EXAM'){
                   if(ExaminationResult::where('module_assignment_id',$request->get('module_assignment_id'))->where('student_id',$student->id)->whereNotNull('final_score')->count() == 0){
                   $special_exam = SpecialExam::where('student_id',$student->id)->where('module_assignment_id',$module_assignment->id)->where('type','FINAL')->where('status','APPROVED')->first();
+                  $postponement = Postponement::where('student_id',$student->id)->where('study_academic_year_id',$module_assignment->study_academic_year_id)->where('semester_id',$module_assignment->programModuleAssignment->semester_id)->where('status','POSTPONED')->first();
 
                       $result_log = new ExaminationResultLog;
                       $result_log->module_assignment_id = $request->get('module_assignment_id');
@@ -906,7 +908,7 @@ class ModuleAssignmentController extends Controller
                       $result_log->final_score = null;
                       
                       $result_log->exam_type = 'FINAL';
-                      if($special_exam){
+                      if($special_exam || $postponement){
                          $result_log->final_remark = 'POSTPONED';
                       }else{
                          $result_log->final_remark = 'INCOMPLETE';
@@ -925,7 +927,7 @@ class ModuleAssignmentController extends Controller
                       $result->student_id = $student->id;
                       $result->final_score = null;
                       $result->exam_type = 'FINAL';
-                      if($special_exam){
+                      if($special_exam || $postponement){
                          $result->final_remark = 'POSTPONED';
                       }else{
                          $result->final_remark = 'INCOMPLETE';
@@ -993,6 +995,7 @@ class ModuleAssignmentController extends Controller
                 if($student && !empty($line[1])){
                   if($request->get('assessment_plan_id') == 'FINAL_EXAM'){
                       $special_exam = SpecialExam::where('student_id',$student->id)->where('module_assignment_id',$module_assignment->id)->where('type','FINAL')->where('status','APPROVED')->first();
+                      $postponement = Postponement::where('student_id',$student->id)->where('study_academic_year_id',$module_assignment->study_academic_year_id)->where('semester_id',$module_assignment->programModuleAssignment->semester_id)->where('status','POSTPONED')->first();
 
                       $retake_history = RetakeHistory::whereHas('moduleAssignment',function($query) use($module){
                             $query->where('module_id',$module->id);
@@ -1017,7 +1020,7 @@ class ModuleAssignmentController extends Controller
                          $result_log->retakable_type = 'retake_history';
                       }
                       $result_log->exam_type = 'FINAL';
-                      if($special_exam){
+                      if($special_exam || $postponement){
                          $result_log->final_remark = 'POSTPONED';
                       }else{
                          $result_log->final_remark = $module_assignment->programModuleAssignment->final_pass_score <= $result_log->final_score? 'PASS' : 'FAIL';
@@ -1046,7 +1049,7 @@ class ModuleAssignmentController extends Controller
                          $result->retakable_id = $retake_history->id;
                          $result->retakable_type = 'retake_history';
                       }
-                      if($special_exam){
+                      if($special_exam || $postponement){
                          $result->final_remark = 'POSTPONED';
                       }else{
                          $result->final_remark = $module_assignment->programModuleAssignment->final_pass_score <= $result->final_score? 'PASS' : 'FAIL';
@@ -1066,6 +1069,7 @@ class ModuleAssignmentController extends Controller
                       }
 
                       $special_exam = SpecialExam::where('student_id',$student->id)->where('module_assignment_id',$module_assignment->id)->where('type','SUPP')->where('status','APPROVED')->first();
+                      $postponement = Postponement::where('student_id',$student->id)->where('study_academic_year_id',$module_assignment->study_academic_year_id)->where('semester_id',$module_assignment->programModuleAssignment->semester_id)->where('status','POSTPONED')->first();
                       $grading_policy = GradingPolicy::where('nta_level_id',$module_assignment->module->ntaLevel->id)->where('grade','C')->first();
                           
                           $upload_allowed = true;
@@ -1122,8 +1126,8 @@ class ModuleAssignmentController extends Controller
                               }
                               $result->module_assignment_id = $request->get('module_assignment_id');
                               $result->student_id = $student->id;
-                              if($special_exam){
-                                 $result->final_score = !$special_exam? (trim($line[1])*$module_assignment->programModuleAssignment->final_min_mark)/100 : null;
+                              if($special_exam || $postponement){
+                                 $result->final_score = !$special_exam && !$postponement? (trim($line[1])*$module_assignment->programModuleAssignment->final_min_mark)/100 : null;
                                  $result->final_remark = $module_assignment->programModuleAssignment->final_pass_score <= $result->final_score? 'PASS' : 'FAIL';
                                  $result->supp_score = null;
                               }else{
@@ -1144,6 +1148,7 @@ class ModuleAssignmentController extends Controller
                   }elseif($request->get('assessment_plan_id') == 'CARRY'){
 
                       $special_exam = SpecialExam::where('student_id',$student->id)->where('module_assignment_id',$module_assignment->id)->where('type','CARRY')->where('status','APPROVED')->first();
+                      $postponement = Postponement::where('student_id',$student->id)->where('study_academic_year_id',$module_assignment->study_academic_year_id)->where('semester_id',$module_assignment->programModuleAssignment->semester_id)->where('status','POSTPONED')->first();
                       $grading_policy = GradingPolicy::where('nta_level_id',$module_assignment->module->ntaLevel->id)->where('grade','C')->first();
                           
                           $upload_allowed = true;
@@ -1157,7 +1162,7 @@ class ModuleAssignmentController extends Controller
                           }
                           $result->module_assignment_id = $request->get('module_assignment_id');
                           $result->student_id = $student->id;
-                          if($special_exam){
+                          if($special_exam || $postponement){
                              $result->final_score = trim($line[1]);
                              $result->final_remark = $module_assignment->programModuleAssignment->final_pass_score <= $result->final_score? 'PASS' : 'FAIL';
                              $result->final_score = null;

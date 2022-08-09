@@ -1083,13 +1083,25 @@ class ExaminationResultController extends Controller
 
 
               foreach($module_assignments as $assign){
-                if($assign->course_work_process_status != 'PROCESSED'){
-                  DB::rollback();
-                  return redirect()->back()->with('error',$assign->module->name.'-'.$assign->module->code.' course works not processed');
-                }
-                if($assign->final_upload_status == null){
-                  DB::rollback();
-                  return redirect()->back()->with('error',$assign->module->name.'-'.$assign->module->code.' final not uploaded');
+                if($assign->programModuleAssignment->category == 'COMPULSORY'){
+                  if($assign->course_work_process_status != 'PROCESSED' && $assign->module->course_work_based == 1){
+                    DB::rollback();
+                    return redirect()->back()->with('error',$assign->module->name.'-'.$assign->module->code.' course works not processed');
+                  }
+                  if($assign->final_upload_status == null){
+                    DB::rollback();
+                    return redirect()->back()->with('error',$assign->module->name.'-'.$assign->module->code.' final not uploaded');
+                  }
+                }else{
+                  $exam_student_count = ProgramModuleAssignment::find($assign->program_module_assignment_id)->optedStudents()->count();
+                  if($assign->course_work_process_status != 'PROCESSED' && $exam_student_count != 0 && $assign->module->course_work_based == 1){
+                    DB::rollback();
+                    return redirect()->back()->with('error',$assign->module->name.'-'.$assign->module->code.' course works not processed');
+                  }
+                  if($assign->final_upload_status == null && $exam_student_count != 0){
+                    DB::rollback();
+                    return redirect()->back()->with('error',$assign->module->name.'-'.$assign->module->code.' final not uploaded');
+                  }
                 }
               }
 
