@@ -84,7 +84,13 @@ class ExaminationResultController extends Controller
     public function process(Request $request)
     {
     	DB::beginTransaction();
+
     	$campus_program = CampusProgram::with('program')->find(explode('_',$request->get('campus_program_id'))[0]);
+      
+      if(ResultPublication::where('study_academic_year_id',$request->get('study_academic_year_id'))->where('semester_id',$request->get('semester_id'))->where('nta_level_id',$campus_program->program->nta_level_id)->where('status','PUBLISHED')->count() != 0){
+                  return redirect()->back()->with('error','Unable to edit results because results already published');
+              }
+
     	$module_assignments = ModuleAssignment::whereHas('programModuleAssignment',function($query) use($request){
                 $query->where('campus_program_id',explode('_',$request->get('campus_program_id'))[0])->where('year_of_study',explode('_',$request->get('campus_program_id'))[2]);
     	         })->whereHas('programModuleAssignment.campusProgram',function($query) use($campus_program){
