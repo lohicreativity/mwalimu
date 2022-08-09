@@ -10,6 +10,7 @@ use App\Domain\Academic\Models\CourseWorkResult;
 use App\Domain\Academic\Models\ExaminationResult;
 use App\Domain\Academic\Models\ExaminationResultChange;
 use App\Domain\Academic\Models\Module;
+use App\Domain\Academic\Models\ProgramModuleAssignment;
 use App\Domain\Registration\Models\Student;
 use App\Models\User;
 use Auth, Validator;
