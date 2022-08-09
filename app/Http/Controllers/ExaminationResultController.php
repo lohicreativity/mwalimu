@@ -210,9 +210,7 @@ class ExaminationResultController extends Controller
       		}
 
       		  foreach($results as $key=>$result){
-      			$student = Student::whereHas('studentshipStatus',function($query){
-                  $query->where('name','ACTIVE');
-            })->with(['campusProgram.program.ntaLevel'])->find($result->student_id);
+      			$student = Student::with(['campusProgram.program.ntaLevel'])->find($result->student_id);
                   
       			
                   $optional_programs = ProgramModuleAssignment::whereHas('optedStudents',function($query) use($student){
