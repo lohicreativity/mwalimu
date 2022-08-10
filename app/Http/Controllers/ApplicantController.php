@@ -219,7 +219,11 @@ class ApplicantController extends Controller
           if($applicant->next_of_kin_complete_status == 1){
               if($applicant->payment_complete_status == 1){
                   if($applicant->results_complete_status == 1){
-                     return redirect()->to('application/submission');
+                     if($applicant->programs_complete_status == 1){
+                         return redirect()->to('application/submission');
+                     }else{
+                         return redirect()->to('application/programs');
+                     }
                   }else{
                      return redirect()->to('application/results');
                   }

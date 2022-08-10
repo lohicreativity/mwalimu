@@ -1241,7 +1241,7 @@ class ModuleAssignmentController extends Controller
                       $result->save();
                   }
                 }else{
-                    return redirect()->back()->with('error','Invalid entries in the uploade file');
+                    return redirect()->back()->with('error','Invalid entries in column B in the uploaded file');
                 }
               }
               DB::commit();
