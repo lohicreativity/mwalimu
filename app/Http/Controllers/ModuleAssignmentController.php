@@ -419,6 +419,8 @@ class ModuleAssignmentController extends Controller
                      $query->where('name','LIKE','%Test%');
                   })->where('module_assignment_id',$module_assignment->id)->where('student_id',$student->id)->count();
 
+                      $postponement = Postponement::where('student_id',$student->id)->where('study_academic_year_id',$module_assignment->study_academic_year_id)->where('semester_id',$module_assignment->programModuleAssignment->semester_id)->where('status','POSTPONED')->first();
+
                     if($result = ExaminationResult::where('module_assignment_id',$module_assignment->id)->where('student_id',$student->id)->where('exam_type','FINAL')->first()){
                         $exam_result = $result;
                         $exam_result->module_assignment_id = $module_assignment->id;
@@ -429,7 +431,10 @@ class ModuleAssignmentController extends Controller
                         }else{
                            $exam_result->course_work_remark = $module_assignment->programModuleAssignment->course_work_pass_score <= $course_work? 'PASS' : 'FAIL';
                         }
-                        
+                        if($postponement){
+                           $exam_result->course_work_score = null;
+                           $exam_result->course_work_remark = 'POSTPONED';
+                        }
                         $exam_result->processed_by_user_id = Auth::user()->id;
                         $exam_result->processed_at = now();
                         $exam_result->save();
@@ -438,10 +443,15 @@ class ModuleAssignmentController extends Controller
                         $exam_result->module_assignment_id = $module_assignment->id;
                         $exam_result->student_id = $student->id;
                         $exam_result->course_work_score = $course_work_count < 2? null : $course_work;
+
                         if(is_null($course_work) || $course_work_count < 2){
                            $exam_result->course_work_remark = 'INCOMPLETE';
                         }else{
                            $exam_result->course_work_remark = $module_assignment->programModuleAssignment->course_work_pass_score <= $course_work? 'PASS' : 'FAIL';
+                        }
+                        if($postponement){
+                           $exam_result->course_work_score = null;
+                           $exam_result->course_work_remark = 'POSTPONED';
                         }
                         $exam_result->uploaded_by_user_id = Auth::user()->id;
                         $exam_result->processed_by_user_id = Auth::user()->id;
