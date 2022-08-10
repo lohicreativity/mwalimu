@@ -619,6 +619,8 @@ class ApplicantController extends Controller
                                        if(in_array($result->subject_name, unserialize($program->entryRequirements[0]->subsidiary_subjects))){
                                          $a_level_subsidiary_pass_count += 1;
                                        }
+                                 }else{
+                                    $a_level_subsidiary_pass_count += 1;
                                  }
                               }
                            }
