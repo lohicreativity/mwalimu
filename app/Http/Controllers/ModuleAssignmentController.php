@@ -1020,6 +1020,7 @@ class ModuleAssignmentController extends Controller
                   $line_of_text[] = fgetcsv($file_handle, 0, ',');
               }
               fclose($file_handle);
+              return dd($line_of_text);
               foreach($line_of_text as $line){
 				  //whereHas('registrations',function($query) use($module_assignment){
                    //  $query->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)->where('semester_id',$module_assignment->programMo//duleAssignment->semester_id)->where('study_academic_year_id',$module_assignment->programModuleAssignment->study_academic_year_id);
@@ -1236,8 +1237,6 @@ class ModuleAssignmentController extends Controller
                       $result->score = (trim($line[1])*$plan->weight)/100;
                       $result->uploaded_by_user_id = Auth::user()->id;
                       $result->save();
-
-                      return $result;
                   }
                 }
               }
