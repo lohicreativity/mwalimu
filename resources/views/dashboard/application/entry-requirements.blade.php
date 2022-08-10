@@ -1094,7 +1094,7 @@
                                           <select name="campus_program_id" class="form-control" required>
                                             <option value="">Select Programme</option>
                                             @foreach($campus_programs as $program)
-                                            <option value="{{ $program->id }}" @if($program->id == $requirement->campus_program_id) selected="selected" @endif>{{ $program->program->name }}</option>
+                                            <option value="{{ $program->id }}" @if($program->id == $requirement->campus_program_id) selected="selected" @else disabled="disabled" @endif>{{ $program->program->name }}</option>
                                             @endforeach
                                           </select>
                                         </div>
@@ -1304,7 +1304,7 @@
                                           <select name="campus_program_id" class="form-control" required>
                                             <option value="">Select Programme</option>
                                             @foreach($campus_programs as $program)
-                                            <option value="{{ $program->id }}" @if($program->id == $requirement->campus_program_id) selected="selected" @endif>{{ $program->program->name }}</option>
+                                            <option value="{{ $program->id }}" @if($program->id == $requirement->campus_program_id) selected="selected" @else disabled="disabled" @endif>{{ $program->program->name }}</option>
                                             @endforeach
                                           </select>
                                         </div>
@@ -1605,7 +1605,7 @@
                                             <select name="campus_program_id" class="form-control" required>
                                               <option value="">Select Programme</option>
                                               @foreach($campus_programs as $program)
-                                              <option value="{{ $program->id }}" @if($program->id == $requirement->campus_program_id) selected="selected" @endif>{{ $program->program->name }}</option>
+                                              <option value="{{ $program->id }}" @if($program->id == $requirement->campus_program_id) selected="selected" @else disabled="disabled" @endif>{{ $program->program->name }}</option>
                                               @endforeach
                                             </select>
                                           </div>
