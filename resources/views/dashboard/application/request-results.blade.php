@@ -367,9 +367,9 @@
                     {!! Form::text('nacte_reg_no',null,$nacte_reg_number) !!}
                   </div>
                   <div class="col-8">
-                     @if($applicant->nacte_reg_no)
-                     <p class="ss-font-xs">Reg No: {{ $applicant->nacte_reg_no }} <i class="fa fa-check"></i></p>
-                    @endif
+                    @foreach($nacte_results as $result)
+                     <p class="ss-font-xs">Reg No: {{ $result->registration_number }} <br>GPA: {{ $result->gpa }} <i class="fa fa-check"></i></p>
+                    @endforeach
                   </div>
                  </div>
               </div>
