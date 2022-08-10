@@ -1457,7 +1457,7 @@ class ApplicantController extends Controller
         }
         $applicant->save();
 
-        if($det = NacteResultDetail::where('registration_number',json_decode($response)->params[0]->registration_number)->first()){
+        if($det = NacteResultDetail::where('registration_number',json_decode($response)->params[0]->registration_number)->where('applicant_id',$request->get('applicant_id'))->first()){
             $detail = $det;
         }else{
             $detail = new NacteResultDetail;
@@ -1473,6 +1473,7 @@ class ApplicantController extends Controller
         $detail->programme = json_decode($response)->params[0]->programme_name;
         $detail->diploma_graduation_year = json_decode($response)->params[0]->accademic_year;
         $detail->verified = 1;
+        $detail->applicant_id = $request->get('applicant_id');
         $detail->save();
 
         return redirect()->back()->with('message','NACTE registration number updated successfully');
