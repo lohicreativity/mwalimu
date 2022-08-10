@@ -1028,8 +1028,9 @@ class ModuleAssignmentController extends Controller
                      // $query->where('name','ACTIVE');
                // })->
                 $student = Student::where('registration_number',trim($line[0]))->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id)->first();
-                return $request->get('assessment_plan_id');
+                
                 if($student && !empty($line[1])){
+                  return $request->get('assessment_plan_id');
                   if($request->get('assessment_plan_id') == 'FINAL_EXAM'){
                       $special_exam = SpecialExam::where('student_id',$student->id)->where('module_assignment_id',$module_assignment->id)->where('type','FINAL')->where('status','APPROVED')->first();
                       $postponement = Postponement::where('student_id',$student->id)->where('study_academic_year_id',$module_assignment->study_academic_year_id)->where('semester_id',$module_assignment->programModuleAssignment->semester_id)->where('status','POSTPONED')->first();
