@@ -216,7 +216,9 @@ class ModuleAssignmentController extends Controller
                     'year_of_study'=>$module_assignment->programModuleAssignment->year_of_study,
                     'staff'=>$module_assignment->staff,
                     'module'=>$module_assignment->module,
-                    'students'=>Student::whereHas('registrations',function($query) use ($module_assignment){
+                    'students'=>Student::whereHas('studentshipStatus',function($query){
+                        $query->where('name','ACTIVE');
+                     })->whereHas('registrations',function($query) use ($module_assignment){
                          $query->where('study_academic_year_id',$module_assignment->study_academic_year_id)->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id);
                       })->get()
                  ];
@@ -1241,7 +1243,7 @@ class ModuleAssignmentController extends Controller
                       $result->save();
                   }
                 }else{
-                    return redirect()->back()->with('error','Invalid entries in column B in the uploaded file');
+                    return redirect()->back()->with('error','Invalid entries in column B of the uploaded file');
                 }
               }
               DB::commit();
