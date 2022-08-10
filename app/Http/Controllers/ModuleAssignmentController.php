@@ -293,7 +293,9 @@ class ModuleAssignmentController extends Controller
          try{
              $module_assignment = ModuleAssignment::with('assessmentPlans','module','programModuleAssignment')->findOrFail($id);
              if($module_assignment->programModuleAssignment->category == 'OPTIONAL'){
-                $total_students_count = $module_assignment->programModuleAssignment->students()->count();
+                $total_students_count = $module_assignment->programModuleAssignment->students()->whereHas('studentshipStatus',function($query){
+                    $query->where('name','ACTIVE');
+                })->count();
              }else{
                 $total_students_count = Student::whereHas('studentshipStatus',function($query){
                     $query->where('name','ACTIVE');
