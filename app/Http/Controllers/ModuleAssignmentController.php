@@ -172,7 +172,9 @@ class ModuleAssignmentController extends Controller
 
           $data = [
              'module_assignment'=>$module_assignment,
-             'campus_program'=>CampusProgram::with(['students.registrations'=>function($query) use($module_assignment){
+             'campus_program'=>CampusProgram::with(['students.studentshipStatus'=>function($query){
+                   $query->where('name','ACTIVE');
+             },'students.registrations'=>function($query) use($module_assignment){
                    $query->where('study_academic_year_id',$module_assignment->study_academic_year_id);
              },'streams'=>function($query) use ($module_assignment){
                    $query->where('study_academic_year_id',$module_assignment->study_academic_year_id);

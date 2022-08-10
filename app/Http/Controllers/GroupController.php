@@ -57,7 +57,9 @@ class GroupController extends Controller
                 $query->where('department_id',$staff->department_id);
            },'stream.campusProgram.campus'])->findOrFail($id);
 	    	$data = [
-	           'registrations'=>Registration::with('student')->where('group_id',$id)->get(),
+	           'registrations'=>Registration::whereHas('studentshipStatus',function($query){
+                        $query->where('name','ACTIVE');
+                     })->with('student')->where('group_id',$id)->get(),
 	           'group'=>$group,
 	           'department'=>$group->stream->campusProgram->program->departments[0]
 	    	];

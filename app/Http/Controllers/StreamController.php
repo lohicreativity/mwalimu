@@ -33,7 +33,9 @@ class StreamController extends Controller
             'semesters'=>Semester::all(),
             'campus_programs'=>CampusProgram::whereHas('program.departments',function($query) use($staff){
                   $query->where('id',$staff->department_id);
-            })->with(['program.departments','campus','students.registrations'=>function($query) use($request){
+            })->with(['program.departments','campus','students.studentshipStatus'=>function($query){
+                   $query->where('name','ACTIVE');
+             },'students.registrations'=>function($query) use($request){
                    $query->where('study_academic_year_id',$request->get('study_academic_year_id'));
              },'streams.groups','groups'])->get(),
             'staff'=>$staff,
@@ -103,7 +105,9 @@ class StreamController extends Controller
                 }
             }
 	    	$data = [
-	           'registrations'=>Registration::with('student')->where('stream_id',$id)->get(),
+	           'registrations'=>Registration::whereHas('student.studentshipStatus',function($query){
+                        $query->where('name','ACTIVE');
+                     })->with('student')->where('stream_id',$id)->get(),
 	           'stream'=>$stream,
 	           'department'=>$department
 	    	];
