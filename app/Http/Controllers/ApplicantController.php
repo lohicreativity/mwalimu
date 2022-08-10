@@ -1428,7 +1428,7 @@ class ApplicantController extends Controller
 
         if($mode_before != $applicant->entry_mode || $level_before != $applicant->program_level_id){
             ApplicantProgramSelection::where('applicant_id',$applicant->id)->delete();
-            Applicant::where('applicant_id',$applicant->id)->update(['programs_complete_status'=>0]);
+            Applicant::where('id',$applicant->id)->update(['programs_complete_status'=>0]);
         }
 
         return redirect()->back()->with('message','Applicant details updated successfully');
