@@ -27,6 +27,7 @@ use App\Domain\Application\Models\OutResult;
 use App\Domain\Application\Models\OutResultDetail;
 use App\Domain\Application\Models\NacteResultDetail;
 use App\Domain\Application\Models\ApplicationWindow;
+use App\Domain\Application\Models\ApplicantProgramSelection;
 use App\Domain\Application\Models\HealthInsurance;
 use App\Domain\Academic\Models\StudyAcademicYear;
 use App\Domain\Academic\Models\Award;
