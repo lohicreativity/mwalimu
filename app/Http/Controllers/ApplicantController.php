@@ -1414,11 +1414,20 @@ class ApplicantController extends Controller
         if(!ApplicationWindow::where('campus_id',$applicant->campus_id)->where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('status','ACTIVE')->first()){
                return redirect()->back()->with('error','Application window already closed');
         }
+        if($applicant->submission_complete_status == 1){
+            return redirect()->back()->with('error','Applicant details cannot be modified because the application is already submitted');
+        }
+        $mode_before = $applicant->entry_mode;
         $applicant->phone = $request->get('phone');
         $applicant->email = $request->get('email');
         $applicant->entry_mode = $request->get('entry_mode');
         $applicant->program_level_id = $request->get('program_level_id');
         $applicant->save();
+
+        if($mode_before != $applicant->entry_mode){
+            ApplicantProgramSelection::where('applicant_id',$applicant->id)->delete();
+            Applicant::where('applicant_id',$applicant->id)->update(['programs_complete_status'=>0]);
+        }
 
         return redirect()->back()->with('message','Applicant details updated successfully');
     }
