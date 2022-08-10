@@ -222,7 +222,7 @@ class ApplicantController extends Controller
                      if($applicant->programs_complete_status == 1){
                          return redirect()->to('application/submission');
                      }else{
-                         return redirect()->to('application/programs');
+                         return redirect()->to('application/select-programs');
                      }
                   }else{
                      return redirect()->to('application/results');
