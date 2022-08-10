@@ -1029,7 +1029,7 @@ class ModuleAssignmentController extends Controller
                // })->
                 $student = Student::where('registration_number',trim($line[0]))->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id)->first();
                 
-                return $student;
+                return $line[1];
                 if($student && !empty($line[1])){
 
                   if($request->get('assessment_plan_id') == 'FINAL_EXAM'){
