@@ -116,7 +116,9 @@ class CampusProgramController extends Controller
                 }
             }
             $data = [
-               'registrations'=>$request->has('semester_id')? Registration::with(['student'])->whereHas('student.campusProgram',function($query) use($id){
+               'registrations'=>$request->has('semester_id')? Registration::whereHas('student.studentshipStatus',function($query){
+                        $query->where('name','ACTIVE');
+                     })->with(['student'])->whereHas('student.campusProgram',function($query) use($id){
                       $query->where('id',$id);
                    })->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',$request->get('year_of_study'))->where('semester_id',$request->get('semester_id'))->get() : Registration::with(['student'])->whereHas('student.campusProgram',function($query) use($id){
                       $query->where('id',$id);
