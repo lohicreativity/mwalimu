@@ -1439,12 +1439,17 @@ class ApplicantController extends Controller
               return redirect()->back()->withInput()->withErrors($validation->messages());
            }
         }
-
+        
+        try{
         $response = Http::get('https://www.nacte.go.tz/nacteapi/index.php/api/particulars/'.str_replace('/', '.', $request->get('nacte_reg_no')).'-4/'.config('constants.NACTE_API_KEY'));
+        }catch(\Exception $e){
+            return redirect()->back()->with('error','Unexpected network error occured. Please try again');
+        }
 
         if(json_decode($response)->code != 200){
             return redirect()->back()->with('error','Invalid NACTE Registration number');
         }
+        return json_decode($response);
         $applicant = Applicant::find($request->get('applicant_id'));
         $applicant->nacte_reg_no = $request->get('nacte_reg_no');
         if(NectaResultDetail::where('applicant_id',$applicant->id)->where('verified',1)->count() != 0){
