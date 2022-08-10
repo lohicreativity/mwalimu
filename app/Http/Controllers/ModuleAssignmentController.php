@@ -1001,7 +1001,7 @@ class ModuleAssignmentController extends Controller
                  return redirect()->back()->with('error','Invalid registration number. Please check registration number '.implode(', ', $invalid_students_entries));
               }
               
-              
+              DB::beginTransaction();
               $file = new ResultFile;
               $file->file_name = $file_name;
               $file->extension = $request->file('results_file')->guessClientExtension();
@@ -1236,10 +1236,12 @@ class ModuleAssignmentController extends Controller
                       $result->score = (trim($line[1])*$plan->weight)/100;
                       $result->uploaded_by_user_id = Auth::user()->id;
                       $result->save();
+
+                      return $result;
                   }
                 }
               }
-              
+              DB::commit();
           }
           return redirect()->back()->with('message','Results uploaded successfully');
     }
