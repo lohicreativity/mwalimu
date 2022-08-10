@@ -1449,7 +1449,7 @@ class ApplicantController extends Controller
         if(json_decode($response)->code != 200){
             return redirect()->back()->with('error','Invalid NACTE Registration number');
         }
-
+        return json_decode($response);
         $applicant = Applicant::find($request->get('applicant_id'));
         $applicant->nacte_reg_no = $request->get('nacte_reg_no');
         if(NectaResultDetail::where('applicant_id',$applicant->id)->where('verified',1)->count() != 0){
