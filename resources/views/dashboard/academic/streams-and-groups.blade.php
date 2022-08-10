@@ -93,6 +93,7 @@
                              $students_number = 0;
                            @endphp
                            @foreach($cp->students as $stud)
+                             @if($stud->studentshipStatus)
                              @foreach($stud->registrations as $reg)
                               @if($reg->year_of_study == $i)
                                  @php
@@ -100,6 +101,7 @@
                                  @endphp
                               @endif
                              @endforeach
+                             @endif
                            @endforeach
                        <tr>
                         <td><a href="{{ url('academic/campus/campus-program/'.$cp->id.'/attendance?year_of_study='.$i.'&study_academic_year_id='.$study_academic_year->id) }}" target="_blank">{{ $cp->program->name }} - Year {{ $i }} ({{ $students_number }})</a>
