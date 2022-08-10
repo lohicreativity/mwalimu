@@ -1447,6 +1447,9 @@ class ApplicantController extends Controller
         }
         $applicant = Applicant::find($request->get('applicant_id'));
         $applicant->nacte_reg_no = $request->get('nacte_reg_no');
+        if(NectaResultDetail::where('applicant_id',$applicant->id)->where('verified',1)->count() != 0){
+           $applicant->results_complete_status = 1;
+        }
         $applicant->save();
 
         return redirect()->back()->with('message','NACTE registration number updated successfully');

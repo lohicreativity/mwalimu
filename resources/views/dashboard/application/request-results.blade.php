@@ -352,7 +352,7 @@
               <!-- /.card-header -->
               @php
                   $nacte_reg_number = [
-                     'placeholder'=>'N18-642-0000',
+                     'placeholder'=>'NS0001/0002/2001',
                      'class'=>'form-control',
                      'required'=>true
                   ];
@@ -365,7 +365,11 @@
                   <div class="form-group col-4">
                     {!! Form::label('','NACTE Reg mumber') !!}
                     {!! Form::text('nacte_reg_no',null,$nacte_reg_number) !!}
-
+                  </div>
+                  <div class="col-8">
+                     @if($applicant->nacte_reg_no)
+                     <p class="ss-font-xs">Reg No: {{ $applicant->nacte_reg_no }} <i class="fa fa-check"></i></p>
+                    @endif
                   </div>
                  </div>
               </div>
