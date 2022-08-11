@@ -394,7 +394,6 @@ class ExaminationResultController extends Controller
         }
 
         foreach($student_buffer as $key=>$buffer){
-          return $key;
                  $pass_status = 'PASS';
                  $supp_exams = [];
                  $retake_exams = [];
@@ -427,7 +426,7 @@ class ExaminationResultController extends Controller
                         $pass_status = 'SUPP'; 
                         $supp_exams[] = $res->moduleAssignment->module->code;
                     }   
-                    
+                              return $pass_status;
                  }
 
                  if($request->get('semester_id') != 'SUPPLEMENTARY'){
