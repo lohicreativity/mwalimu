@@ -89,8 +89,9 @@
                   </thead>
                   <tbody>
                   @foreach($invoices as $invoice)
+                  @if($invoice->payable_type == 'student')
                   <tr>
-                      <td>{{ $invoice->applicable->academicYear }}</td>
+                      <td>{{ $invoice->applicable->academicYear->year }}</td>
                       <td>{{ $invoice->feeType->name }}</td>
                       <td>{{ number_format($invoice->actual_amount,0) }} {{ $invoice->currency }}</td>
                       <td>{{ number_format($invoice->amount,0) }} {{ $invoice->currency }}</td>
@@ -104,6 +105,7 @@
                       </td>
                       
                   </tr>
+                  @endif
                   @endforeach
                   </tbody>
                </table>
