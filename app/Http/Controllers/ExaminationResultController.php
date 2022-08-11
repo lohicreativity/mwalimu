@@ -394,6 +394,7 @@ class ExaminationResultController extends Controller
         }
 
         foreach($student_buffer as $key=>$buffer){
+          return $key;
                  $pass_status = 'PASS';
                  $supp_exams = [];
                  $retake_exams = [];
