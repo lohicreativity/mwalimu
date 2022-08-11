@@ -538,8 +538,8 @@ class ExaminationResultController extends Controller
 
                             $status = AcademicStatus::where('name',$remark->remark)->first();
                             $stud = Student::find($key);
-                            return $stud->academic_status_id.' '.$status->id;
                             $stud->academic_status_id = $status->id;
+                            return $stud->academic_status_id;
                             $stud->save();
                         }
                        
