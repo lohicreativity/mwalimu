@@ -90,7 +90,7 @@
                   <tbody>
                   @foreach($invoices as $invoice)
                   <tr>
-                      <td>{{ $invoice->applicable->academicYear->year }}</td>
+                      <td>{{ $invoice->applicable->academicYear }}</td>
                       <td>{{ $invoice->feeType->name }}</td>
                       <td>{{ number_format($invoice->actual_amount,0) }} {{ $invoice->currency }}</td>
                       <td>{{ number_format($invoice->amount,0) }} {{ $invoice->currency }}</td>
