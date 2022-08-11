@@ -426,7 +426,6 @@ class ExaminationResultController extends Controller
                         $pass_status = 'SUPP'; 
                         $supp_exams[] = $res->moduleAssignment->module->code;
                     }   
-                              return $pass_status;
                  }
 
                  if($request->get('semester_id') != 'SUPPLEMENTARY'){
@@ -540,6 +539,7 @@ class ExaminationResultController extends Controller
                             $status = AcademicStatus::where('name',$remark->remark)->first();
 
                             $stud = Student::find($key);
+                            return $stud;
                             $stud->academic_status_id = $status->id;
                             $stud->save();
                         }
