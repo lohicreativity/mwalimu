@@ -504,7 +504,7 @@ class ExaminationResultController extends Controller
                           $status = AcademicStatus::where('name',$remark->remark)->first();
 
                           $stud = Student::find($key);
-                          if(!$stud === 2){
+                          if(!$stud === 3){
                           $stud->academic_status_id = $status->id;
                           $stud->save();
                         }
