@@ -504,10 +504,8 @@ class ExaminationResultController extends Controller
                           $status = AcademicStatus::where('name',$remark->remark)->first();
 
                           $stud = Student::find($key);
-                          if(!$stud === 3){
                           $stud->academic_status_id = $status->id;
                           $stud->save();
-                        }
                        }
                  }else{
                      $sem_remarks = SemesterRemark::where('student_id',$key)->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',$buffer['year_of_study'])->get();
@@ -540,8 +538,10 @@ class ExaminationResultController extends Controller
 
                             $status = AcademicStatus::where('name',$remark->remark)->first();
                             $stud = Student::find($key);
+                            if(!$stud === 1){
                             $stud->academic_status_id = $status->id;
                             $stud->save();
+                          }
                         }
                        
                        $points = 0;
