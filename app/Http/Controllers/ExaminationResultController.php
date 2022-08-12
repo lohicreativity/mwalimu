@@ -102,7 +102,7 @@ class ExaminationResultController extends Controller
     		$semester = Semester::find($request->get('semester_id'));
     
     	    $module_assignments = ModuleAssignment::whereHas('programModuleAssignment',function($query) use($request){
-                $query->where('campus_program_id',explode('_',$request->get('campus_program_id'))[0])->where('year_of_study',explode('_',$request->get('campus_program_id'))[2]);
+                $query->where('campus_program_id',explode('_',$request->get('campus_program_id'))[0])->where('year_of_study',explode('_',$request->get('campus_program_id'))[2])->where('semester_id',$request->get('semester_id'));
     	        })->whereHas('programModuleAssignment.campusProgram',function($query) use($campus_program){
     	    	$query->where('program_id',$campus_program->program->id);
     	        })->with('module.ntaLevel','programModuleAssignment.campusProgram.program','studyAcademicYear')->where('study_academic_year_id',$request->get('study_academic_year_id'))->get();
@@ -110,7 +110,7 @@ class ExaminationResultController extends Controller
         	
       if(count($module_assignments) == 0){
           DB::rollback();
-          return redirect()->back()->with('error','No results to process here');
+          return redirect()->back()->with('error','No results to process');
       }
 
 
