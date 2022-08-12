@@ -110,7 +110,7 @@ class ExaminationResultController extends Controller
         	
       if(count($module_assignments) == 0){
           DB::rollback();
-          return redirect()->back()->with('error','No results to process');
+          return redirect()->back()->with('error','No results to process here');
       }
 
 
