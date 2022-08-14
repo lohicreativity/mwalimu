@@ -957,8 +957,10 @@ class ApplicantController extends Controller
     public function submission(Request $request)
     {
         $applicant = User::find(Auth::user()->id)->applicants()->with('programLevel')->where('campus_id',session('applicant_campus_id'))->first();
-        if($applicant->programs_complete_status != 1){
-            return redirect()->back()->with('error','You must first select programmes');
+        if(ApplicationWindow::where('campus_id',session('applicant_campus_id'))->where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('status','ACTIVE')->first()){
+            if($applicant->programs_complete_status != 1){
+                return redirect()->back()->with('error','You must first select programmes');
+            }
         }
         $selection_status = true;
         if(!ApplicationWindow::where('campus_id',session('applicant_campus_id'))->where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('status','ACTIVE')->first()){
