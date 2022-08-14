@@ -2589,15 +2589,17 @@ class ApplicationController extends Controller
                   $nacte_quality_assurance_fee = FeeAmount::where('study_academic_year_id',$study_academic_year->id)->whereHas('feeItem',function($query){
                    $query->where('name','LIKE','%TCU%');
                   })->first();
+                  $message = 'TCU fee not defined';
                }else{
                   $nacte_quality_assurance_fee = FeeAmount::where('study_academic_year_id',$study_academic_year->id)->whereHas('feeItem',function($query){
                    $query->where('name','LIKE','%NACTE%');
                   })->first();
+                  $message = 'NACTE fee not defined';
                }
                
 
                if(!$nacte_quality_assurance_fee){
-                   return redirect()->back()->with('error','NACTE fee not defined');
+                   return redirect()->back()->with('error',$message);
                }
 
                $practical_training_fee = FeeAmount::where('study_academic_year_id',$study_academic_year->id)->whereHas('feeItem',function($query){
