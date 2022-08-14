@@ -18,7 +18,7 @@ class SpecialExamAction implements SpecialExamInterface{
               $result_log->student_id = $request->get('student_id');
               $result_log->final_score = null;
               $result_log->exam_type = 'FINAL';
-              $result_log->final_remark = 'INCOMPLETE';
+              $result_log->final_remark = 'POSTPONED';
               $result_log->final_uploaded_at = now();
               $result_log->uploaded_by_user_id = Auth::user()->id;
               $result_log->save();
@@ -32,7 +32,7 @@ class SpecialExamAction implements SpecialExamInterface{
               $result->student_id = $request->get('student_id');
               $result->final_score = null;
               $result->exam_type = 'FINAL';
-              $result->final_remark = 'INCOMPLETE';
+              $result->final_remark = 'POSTPONED';
               $result->final_uploaded_at = now();
               $result->uploaded_by_user_id = Auth::user()->id;
               $result->save();
