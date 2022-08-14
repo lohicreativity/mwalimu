@@ -38,7 +38,7 @@ class SpecialExamAction implements SpecialExamInterface{
               $result->save();
 
 
-		$exam = new SpecialExam;
+		            $exam = new SpecialExam;
                 $exam->student_id = $request->get('student_id');
                 $exam->study_academic_year_id = $request->get('study_academic_year_id');
                 $exam->module_assignment_id = $request->get('module_assignment_id');
