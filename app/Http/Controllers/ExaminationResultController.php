@@ -2172,6 +2172,8 @@ class ExaminationResultController extends Controller
             
             }
           }
+
+          return json_encode($modules);
         $data = [
            'campus'=>$campus_program->campus,
            'program'=>$campus_program->program,
