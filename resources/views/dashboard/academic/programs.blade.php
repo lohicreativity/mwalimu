@@ -132,7 +132,7 @@
                  <div class="row">
                   <div class="form-group col-4">
                     {!! Form::label('','NTA level') !!}
-                    <select name="nta_level_id" class="form-control ss-select-nta-level" required data-min-target="#ss-min-duration" data-max-target="#ss-max-duration" data-token="{{ session()->token() }}" data-source-url="{{ url('api/v1/get-nta-level') }}" data-award-target="#ss-nta-award, #ss-nta-award-input">
+                    <select name="nta_level_id" class="form-control ss-select-nta-level" required data-min-target="#ss-min-duration" data-max-target="#ss-max-duration" data-token="{{ session()->token() }}" data-source-url="{{ url('api/v1/get-nta-level') }}" data-award-target="#ss-nta-award, #ss-nta-award-input" id="ss-nta-level">
                       <option value="">Select NTA level</option>
                       @foreach($nta_levels as $level)
                       <option value="{{ $level->id }}">{{ $level->name }}</option>
@@ -457,6 +457,11 @@
              if(data.program != null){
                $('#ss-name').val(data.program.name);
                $('#ss-description').val(data.program.description);
+               $('#ss-nta-level').val(data.program.nta_level_id);
+               $('#ss-nta-award').val(data.program.award_id);
+               $('#ss-nta-award-input').val(data.program.award_id);
+               $('#ss-min-duration').val(data.program.min_duration);
+               $('#ss-max-duration').val(data.program.max_duration);
              }
          });
       });
