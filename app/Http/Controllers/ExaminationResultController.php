@@ -591,6 +591,7 @@ class ExaminationResultController extends Controller
                         $remark->save();
                      }  
 
+                      $sem_remarks = SemesterRemark::where('student_id',$key)->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',$buffer['year_of_study'])->get();
                       
                        if($rm = AnnualRemark::where('student_id',$key)->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',$buffer['year_of_study'])->first()){
                           $remark = $rm;

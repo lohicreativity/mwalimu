@@ -44,6 +44,7 @@ class SpecialExamAction implements SpecialExamInterface{
                 $exam->module_assignment_id = $request->get('module_assignment_id');
                 $exam->semester_id = $request->get('semester_id');
                 $exam->type = $request->get('type');
+                $exam->status = 'APPROVED';
                 $exam->save();
                DB::commit();
 	}
