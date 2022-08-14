@@ -148,11 +148,7 @@ class ExaminationResultController extends Controller
                 },'carryHistory.carrableResults'=>function($query){
                    $query->latest();
                 }])->where('module_assignment_id',$assignment->id)->get();
-      		// $policy = ExaminationPolicy::where('nta_level_id',$assignment->module->ntaLevel->id)->where('study_academic_year_id',$assignment->study_academic_year_id)->where('type',$assignment->programModuleAssignment->campusProgram->program->category)->first();
-      		
-      		// if(!$policy){
-      		// 	return redirect()->back()->with('error','Some programmes are missing examination policy');
-      		// }
+
       		if($request->get('semester_id') != 'SUPPLEMENTARY'){
   	            if(Util::stripSpacesUpper($semester->name) == Util::stripSpacesUpper('Semester 2')){
 
@@ -500,7 +496,7 @@ class ExaminationResultController extends Controller
                                    $query->latest();
                                 },'carryHistory.carrableResults'=>function($query){
                                    $query->latest();
-                                }])->where('module_assignment_id',$assignment->id)->get();
+                                }])->where('module_assignment_id',$assignment->id)->where('student_id',$key)->get();
                   
                             $core_programs = ProgramModuleAssignment::with(['module'])->where('study_academic_year_id',$assignment->study_academic_year_id)->where('year_of_study',$assignment->programModuleAssignment->year_of_study)->where('category','COMPULSORY')->where('campus_program_id',$assign->programModuleAssignment->campus_program_id)->get();
 
