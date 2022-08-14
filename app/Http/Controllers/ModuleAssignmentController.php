@@ -874,7 +874,7 @@ class ModuleAssignmentController extends Controller
               
 
               foreach($all_students as $std){
-                  if(!$reg = Registration::where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)->where('semester_id',$module_assignment->programModuleAssignment->semester_id)->where('study_academic_year_id',$module_assignment->programModuleAssignment->study_academic_year_id)->where('student_id',$stud->id)->first()){
+                  if(!$reg = Registration::where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)->where('semester_id',$module_assignment->programModuleAssignment->semester_id)->where('study_academic_year_id',$module_assignment->programModuleAssignment->study_academic_year_id)->where('student_id',$std->id)->first()){
                         $registration = new Registration;
                         $registration->student_id = $std->id;
                         $registration->year_of_study = $module_assignment->programModuleAssignment->year_of_study;
