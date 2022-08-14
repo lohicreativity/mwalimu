@@ -289,9 +289,26 @@ class ExaminationResultController extends Controller
                              }
 
                           	if(Util::stripSpacesUpper($assignment->module->ntaLevel->name) == Util::stripSpacesUpper('NTA Level 7')){
-                                  $processed_result->final_exam_remark = $assignment->programModuleAssignment->module_pass_mark <= $processed_result->supp_score? 'PASS' : 'CARRY';
+                                  if($assignment->programModuleAssignment->year_of_study == 1){
+                                       if($processed_result->retakable_id != null){
+                                            $processed_result->final_exam_remark = $assignment->programModuleAssignment->module_pass_mark <= $processed_result->supp_score? 'PASS' : 'REPEAT';
+                                       }else{
+                                            $processed_result->final_exam_remark = $assignment->programModuleAssignment->module_pass_mark <= $processed_result->supp_score? 'PASS' : 'CARRY';
+                                       }
+                                  }else{
+                                       if($processed_result->retakable_id != null){
+                                            $processed_result->final_exam_remark = $assignment->programModuleAssignment->module_pass_mark <= $processed_result->supp_score? 'PASS' : 'REPEAT';
+                                       }else{
+                                            $processed_result->final_exam_remark = $assignment->programModuleAssignment->module_pass_mark <= $processed_result->supp_score? 'PASS' : 'RETAKE';
+                                       }
+                                  }
+                                  
                           	}else{
-                                  $processed_result->final_exam_remark = $assignment->programModuleAssignment->module_pass_mark <= $processed_result->supp_score? 'PASS' : 'RETAKE';
+                                  if($processed_result->retakable_id != null){
+                                      $processed_result->final_exam_remark = $assignment->programModuleAssignment->module_pass_mark <= $processed_result->supp_score? 'PASS' : 'REPEAT';
+                                  }else{
+                                      $processed_result->final_exam_remark = $assignment->programModuleAssignment->module_pass_mark <= $processed_result->supp_score? 'PASS' : 'RETAKE';
+                                  }
                           	}
                             
                           	$processed_result->supp_processed_at = now();
@@ -422,6 +439,11 @@ class ExaminationResultController extends Controller
                         break;
                     } 
 
+                    if($res->final_exam_remark == 'REPEAT'){
+                       $pass_status = 'REPEAT'; 
+                       break;
+                    }
+
                     if($res->final_exam_remark == 'FAIL'){
                         $pass_status = 'SUPP'; 
                         $supp_exams[] = $res->moduleAssignment->module->code;
@@ -490,6 +512,9 @@ class ExaminationResultController extends Controller
                              $remark->gpa = null;
                           }else{
                                $remark->gpa = Util::computeGPA($buffer['annual_credit'],$buffer['annual_results']);
+                               if($remark->gpa < 2.0){
+                                   $remark->remark = 'FAIL&DISCO';
+                               }
                                $remark->point = Util::computeGPAPoints($buffer['annual_credit'],$buffer['annual_results']);
                                $remark->credit = $buffer['annual_credit'];
                           } 
@@ -504,10 +529,9 @@ class ExaminationResultController extends Controller
                           $status = AcademicStatus::where('name',$remark->remark)->first();
 
                           $stud = Student::find($key);
-                            if(!$stud === 1){
-                            $stud->academic_status_id = $status->id;
-                            $stud->save();
-                          }
+                          $stud->academic_status_id = $status->id;
+                          $stud->save();
+                        
                        }
                  }else{
                      $sem_remarks = SemesterRemark::where('student_id',$key)->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',$buffer['year_of_study'])->get();
@@ -527,6 +551,9 @@ class ExaminationResultController extends Controller
                                $remark->gpa = null;
                             }else{
                                  $remark->gpa = Util::computeGPA($buffer['annual_credit'],$buffer['annual_results']);
+                                 if($remark->gpa < 2.0){
+                                    $remark->remark = 'FAIL&DISCO';
+                                 }
                                  $remark->point = Util::computeGPAPoints($buffer['annual_credit'],$buffer['annual_results']);
                                  $remark->credit = $buffer['annual_credit'];
                             }
@@ -540,10 +567,9 @@ class ExaminationResultController extends Controller
 
                             $status = AcademicStatus::where('name',$remark->remark)->first();
                             $stud = Student::find($key);
-                           if(!$stud === 1){
                             $stud->academic_status_id = $status->id;
                             $stud->save();
-                          }
+                           
                         }
                        
                        $points = 0;
@@ -1242,10 +1268,27 @@ class ExaminationResultController extends Controller
 
                         if($processed_result->supp_score){
                           if(Util::stripSpacesUpper($assignment->module->ntaLevel->name) == Util::stripSpacesUpper('NTA Level 7')){
-                                $processed_result->final_exam_remark = $assignment->programModuleAssignment->module_pass_mark <= $processed_result->supp_score? 'PASS' : 'CARRY';
-                          }else{
-                                $processed_result->final_exam_remark = $assignment->programModuleAssignment->module_pass_mark <= $processed_result->supp_score? 'PASS' : 'RETAKE';
-                          }
+                                  if($assignment->programModuleAssignment->year_of_study == 1){
+                                       if($processed_result->retakable_id != null){
+                                            $processed_result->final_exam_remark = $assignment->programModuleAssignment->module_pass_mark <= $processed_result->supp_score? 'PASS' : 'REPEAT';
+                                       }else{
+                                            $processed_result->final_exam_remark = $assignment->programModuleAssignment->module_pass_mark <= $processed_result->supp_score? 'PASS' : 'CARRY';
+                                       }
+                                  }else{
+                                       if($processed_result->retakable_id != null){
+                                            $processed_result->final_exam_remark = $assignment->programModuleAssignment->module_pass_mark <= $processed_result->supp_score? 'PASS' : 'REPEAT';
+                                       }else{
+                                            $processed_result->final_exam_remark = $assignment->programModuleAssignment->module_pass_mark <= $processed_result->supp_score? 'PASS' : 'RETAKE';
+                                       }
+                                  }
+                                  
+                            }else{
+                                  if($processed_result->retakable_id != null){
+                                      $processed_result->final_exam_remark = $assignment->programModuleAssignment->module_pass_mark <= $processed_result->supp_score? 'PASS' : 'REPEAT';
+                                  }else{
+                                      $processed_result->final_exam_remark = $assignment->programModuleAssignment->module_pass_mark <= $processed_result->supp_score? 'PASS' : 'RETAKE';
+                                  }
+                            }
 
                           $processed_result->supp_processed_at = now();
                           $processed_result->supp_processed_by_user_id = Auth::user()->id;
@@ -1363,6 +1406,11 @@ class ExaminationResultController extends Controller
                       break;
                   } 
 
+                  if($res->final_exam_remark == 'REPEAT'){
+                      $pass_status = 'REPEAT'; 
+                      break;
+                  } 
+
                   if($res->final_exam_remark == 'FAIL'){
                       $pass_status = 'SUPP'; 
                       $supp_exams[] = $res->moduleAssignment->module->code;
@@ -1413,6 +1461,9 @@ class ExaminationResultController extends Controller
                        $rem->gpa = null;
                     }else{
                          $rem->gpa = Util::computeGPA($buffer['annual_credit'],$buffer['annual_results']);
+                         if($rem->gpa < 2.0){
+                            $rem->remark = 'FAIL&DISCO';
+                         }
                          $rem->point = Util::computeGPAPoints($buffer['annual_credit'],$buffer['annual_results']);
                          $remark->credit = $buffer['annual_credit'];
                     }

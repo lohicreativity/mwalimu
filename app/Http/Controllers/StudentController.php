@@ -417,7 +417,10 @@ class StudentController extends Controller
         if($student->studentshipStatus->name == 'POSTPONED'){
              return redirect()->back()->with('error','You cannot continue with registration because you have been postponed');
         }
-        if($student->academicStatus->name == 'FAILED&DISCO'){
+        if($student->studentshipStatus->name == 'GRADUANT'){
+            return redirect()->back()->with('error','You cannot continue with registration because you have already graduated');
+        }
+        if($student->academicStatus->name == 'FAIL&DISCO'){
           return redirect()->back()->with('error','You cannot continue with registration because you have been discontinued');
         }
         if($student->academicStatus->name == 'ABSCOND'){

@@ -858,6 +858,32 @@ class ModuleAssignmentController extends Controller
          if($request->hasFile('results_file')){
           // DB::beginTransaction();
               $module_assignment = ModuleAssignment::with(['module','studyAcademicYear.academicYear','programModuleAssignment.campusProgram.program'])->find($request->get('module_assignment_id'));
+              if($request->get('assessment_plan_id') == 'SUPPLEMENTARY'){
+                    $all_students = Student::whereHas('studentshipStatus',function($query){
+                            $query->where('name','ACTIVE')->orWhere('name','POSTPONED');
+                      })->whereHas('academicStatus',function($query){
+                            $query->where('name','PASS')->orWhere('name','FRESHER')->orWhere('name','RETAKE')->orWhere('name','POSTPONED')->orWhere('name','SUPP');
+                      })->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id)->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)->get();
+              }else{
+                    $all_students = Student::whereHas('studentshipStatus',function($query){
+                            $query->where('name','ACTIVE')->orWhere('name','POSTPONED');
+                      })->whereHas('academicStatus',function($query){
+                            $query->where('name','PASS')->orWhere('name','FRESHER')->orWhere('name','RETAKE')->orWhere('name','POSTPONED');
+                      })->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id)->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)->get();
+              }
+              
+
+              foreach($all_students as $std){
+                  if(!$reg = Registration::where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)->where('semester_id',$module_assignment->programModuleAssignment->semester_id)->where('study_academic_year_id',$module_assignment->programModuleAssignment->study_academic_year_id)->where('student_id',$stud->id)->first()){
+                        $registration = new Registration;
+                        $registration->student_id = $stud->id;
+                        $registration->year_of_study = $module_assignment->programModuleAssignment->year_of_study;
+                        $registration->study_academic_year_id = $module_assignment->programModuleAssignment->study_academic_year_id;
+                        $registration->semester_id = $module_assignment->programModuleAssignment->semester_id;
+                        $registration->save();
+                  }
+              }
+
               $academicYear = $module_assignment->studyAcademicYear->academicYear;
 
               $module = Module::with('ntaLevel')->find($module_assignment->module_id);
@@ -916,6 +942,22 @@ class ModuleAssignmentController extends Controller
                     session()->flash('non_opted_students',$non_opted_students);
                     return redirect()->back()->with('error','Uploaded students have not opted this module');
                 }
+                if($request->get('assessment_plan_id') == 'SUPPLEMENTARY'){
+                    $students = $module_assignment->programModuleAssignment->students()->get();
+                
+                    $non_opted_students = [];
+                    foreach($uploaded_students as $up_stud){
+                       if($module_assignment->programModuleAssignment->students()->whereHas('academicStatus',function($query){
+                          $query->where('name','INCOMPLETE')->orWhere('name','SUPP');
+                       })->where('id',$up_stud->id)->count() == 0){
+                          $non_opted_students[] = $up_stud;
+                       }
+                    }
+                    if(count($non_opted_students) != 0){
+                        session()->flash('non_opted_students',$non_opted_students);
+                        return redirect()->back()->with('error','Uploaded students have not opted this module');
+                    }
+                }
               }else{
                 $students = Student::whereHas('registrations',function($query) use($module_assignment){
                      $query->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)->where('semester_id',$module_assignment->programModuleAssignment->semester_id)->where('study_academic_year_id',$module_assignment->programModuleAssignment->study_academic_year_id);
@@ -932,6 +974,23 @@ class ModuleAssignmentController extends Controller
                 if(count($invalid_students) != 0){
                      session()->flash('invalid_students',$invalid_students);
                      return redirect()->back()->with('error','Uploaded students do not exists');
+                }
+
+                if($request->get('assessment_plan_id') == 'SUPPLEMENTARY'){
+                    $invalid_students = [];
+                    foreach($uploaded_students as $up_stud){
+                       if(Student::whereHas('academicStatus',function($query){
+                          $query->where('name','INCOMPLETE')->orWhere('name','SUPP');
+                       })->whereHas('registrations',function($query) use($module_assignment){
+                         $query->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)->where('semester_id',$module_assignment->programModuleAssignment->semester_id)->where('study_academic_year_id',$module_assignment->programModuleAssignment->study_academic_year_id);
+                    })->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id)->where('registration_number',$up_stud->registration_number)->count() == 0){
+                          $invalid_students[] = $up_stud;
+                       }
+                    }
+                    if(count($invalid_students) != 0){
+                         session()->flash('invalid_students',$invalid_students);
+                         return redirect()->back()->with('error','Uploaded students do not exists');
+                    }
                 }
               }
 
@@ -1117,7 +1176,7 @@ class ModuleAssignmentController extends Controller
                       
                       $supp_upload_allowed = true;
                       if($semester_remark){
-                          if($semester_remark->remark != 'FAIL&DISCO' || $Semester_remark->remark != 'PASS'){
+                          if($semester_remark->remark != 'FAIL&DISCO' || $semester_remark->remark != 'PASS'){
                               $supp_upload_allowed = false;
                           }
                       }

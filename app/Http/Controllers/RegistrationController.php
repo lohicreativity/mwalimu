@@ -32,7 +32,10 @@ class RegistrationController extends Controller
       if($student->studentshipStatus->name == 'POSTPONED'){
           return redirect()->back()->with('error','You cannot continue with registration because you have been postponed');
       }
-      if($student->academicStatus->name == 'FAILED&DISCO'){
+      if($student->studentshipStatus->name == 'GRADUANT'){
+          return redirect()->back()->with('error','You cannot continue with registration because you have already graduated');
+      }
+      if($student->academicStatus->name == 'FAIL&DISCO'){
           return redirect()->back()->with('error','You cannot continue with registration because you have been discontinued');
       }
       if($student->academicStatus->name == 'ABSCOND'){
@@ -50,6 +53,10 @@ class RegistrationController extends Controller
         	if($last_annual_remark->remark == 'RETAKE'){
                 $year_of_study = $last_annual_remark->year_of_study;
         	}elseif($last_annual_remark->remark == 'CARRY'){
+                $year_of_study = $last_annual_remark->year_of_study;
+        	}elseif($last_annual_remark->remark == 'REPEAT'){
+                $year_of_study = $last_annual_remark->year_of_study;
+        	}elseif($last_annual_remark->remark == 'SUPP'){
                 $year_of_study = $last_annual_remark->year_of_study;
         	}elseif($last_annual_remark->remark == 'PASS'){
         		if(str_contains($semester_remarks[0]->semester->name,'2')){
@@ -137,9 +144,16 @@ class RegistrationController extends Controller
 				
 				if($fee_diff > 0){
 					if(str_contains($semester->name,1)){
-					    if($tuition_fee_paid < (0.6*($tuition_fee_invoice->amount+$fee_diff))){
-                           return redirect()->back()->with('error','You cannot continue with registration because you have not paid sufficient tuition fee');
-                        }
+						if($student->academicStatus->name == 'RETAKE'){
+                             if($tuition_fee_paid < (0.5*($tuition_fee_invoice->amount+$fee_diff))){
+	                           return redirect()->back()->with('error','You cannot continue with registration because you have not paid sufficient tuition fee');
+	                        }
+						}else{
+                            if($tuition_fee_paid < (0.6*($tuition_fee_invoice->amount+$fee_diff))){
+	                           return redirect()->back()->with('error','You cannot continue with registration because you have not paid sufficient tuition fee');
+	                        }
+						}
+					    
 					}else{
 						if($tuition_fee_paid < (1.0*($tuition_fee_invoice->amount+$fee_diff))){
                            return redirect()->back()->with('error','You cannot continue with registration because you have not paid sufficient tuition fee');
@@ -147,8 +161,14 @@ class RegistrationController extends Controller
 					}
 				}elseif($fee_diff < 0){
 					if(str_contains($semester->name,1)){
-					   if($tuition_fee_paid < (0.6*($tuition_fee_invoice->amount+$fee_diff))){
-                          return redirect()->back()->with('error','You cannot continue with registration because you have not paid sufficient tuition fee');
+					   if($student->academicStatus->name == 'RETAKE'){
+						   if($tuition_fee_paid < (0.5*($tuition_fee_invoice->amount+$fee_diff))){
+	                          return redirect()->back()->with('error','You cannot continue with registration because you have not paid sufficient tuition fee');
+	                       }
+                       }else{
+                       	   if($tuition_fee_paid < (0.6*($tuition_fee_invoice->amount+$fee_diff))){
+	                          return redirect()->back()->with('error','You cannot continue with registration because you have not paid sufficient tuition fee');
+	                       }
                        }
 					}else{
 					   if($tuition_fee_paid < (1.0*($tuition_fee_invoice->amount+$fee_diff))){
@@ -158,14 +178,26 @@ class RegistrationController extends Controller
 				}
 				
 			}else{
-				if($tuition_fee_paid < (0.6*$tuition_fee_invoice->amount)){
-                   return redirect()->back()->with('error','You cannot continue with registration because you have not paid sufficient tuition fee');
+				if($student->academicStatus->name == 'RETAKE'){
+					if($tuition_fee_paid < (0.5*$tuition_fee_invoice->amount)){
+	                   return redirect()->back()->with('error','You cannot continue with registration because you have not paid sufficient tuition fee');
+	                }
+                }else{
+                	if($tuition_fee_paid < (0.6*$tuition_fee_invoice->amount)){
+	                   return redirect()->back()->with('error','You cannot continue with registration because you have not paid sufficient tuition fee');
+	                }
                 }
 			}
 		}else{
-           if($tuition_fee_paid < (0.6*$tuition_fee_invoice->amount)){
-              return redirect()->back()->with('error','You cannot continue with registration because you have not paid sufficient tuition fee');
-           }
+			if($student->academicStatus->name == 'RETAKE'){
+	           if($tuition_fee_paid < (0.5*$tuition_fee_invoice->amount)){
+	              return redirect()->back()->with('error','You cannot continue with registration because you have not paid sufficient tuition fee');
+	           }
+            }else{
+            	if($tuition_fee_paid < (0.6*$tuition_fee_invoice->amount)){
+	              return redirect()->back()->with('error','You cannot continue with registration because you have not paid sufficient tuition fee');
+	           }
+            }
 		}
 
         if($misc_fee_paid < $misc_fee_invoice->amount && str_contains($semester->name,'1')){
