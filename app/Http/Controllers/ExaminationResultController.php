@@ -1712,6 +1712,7 @@ class ExaminationResultController extends Controller
 
         foreach($module_assignments as $assignment){
               $modules[$assignment->module->code] = [];
+              $modules[$assignment->module->code]['semester_id'] = $assignment->programModuleAssignment->semester_id; 
               $modules[$assignment->module->code]['grades'] = [];
               $modules[$assignment->module->code]['grades_perc'] = [];
               $modules[$assignment->module->code]['grades']['ML'] = [];
@@ -2173,7 +2174,7 @@ class ExaminationResultController extends Controller
             }
           }
 
-          return json_encode($modules);
+
         $data = [
            'campus'=>$campus_program->campus,
            'program'=>$campus_program->program,
