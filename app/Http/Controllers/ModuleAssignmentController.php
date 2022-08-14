@@ -207,7 +207,7 @@ class ModuleAssignmentController extends Controller
                     'staff'=>$module_assignment->staff,
                     'module'=>$module_assignment->module,
                     'students'=>$module_assignment->programModuleAssignment->students()->whereHas('registrations',function($query) use ($module_assignment){
-                         $query->where('study_academic_year_id',$module_assignment->study_academic_year_id)->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id);
+                         $query->where('study_academic_year_id',$module_assignment->study_academic_year_id)->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id)->where('status','REGISTERED');
                       })->whereHas('studentshipStatus',function($query){
                         $query->where('name','ACTIVE');
                      })->get()
@@ -225,7 +225,7 @@ class ModuleAssignmentController extends Controller
                     'students'=>Student::whereHas('studentshipStatus',function($query){
                         $query->where('name','ACTIVE');
                      })->whereHas('registrations',function($query) use ($module_assignment){
-                         $query->where('study_academic_year_id',$module_assignment->study_academic_year_id)->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id);
+                         $query->where('study_academic_year_id',$module_assignment->study_academic_year_id)->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id)->where('status','REGISTERED');
                       })->get()
                  ];
                  return view('dashboard.academic.reports.students-in-core-module', $data);
