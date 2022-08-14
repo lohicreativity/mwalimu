@@ -1690,7 +1690,7 @@ class ExaminationResultController extends Controller
               })->whereHas('registrations',function($query) use($request){
                  $query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',explode('_',$request->get('campus_program_id'))[2]);
             })->whereHas('annualRemarks',function($query) use($request){
-                   $query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',explode('_',$request->get('campus_program_id'))[2])->where('remark','!=','PASS');
+                   $query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',explode('_',$request->get('campus_program_id'))[2]);
               })->with(['semesterRemarks'=>function($query) use ($request){
                    $query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',explode('_',$request->get('campus_program_id'))[2]);
               },'semesterRemarks.semester','annualRemarks'=>function($query) use($request){
