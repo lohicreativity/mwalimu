@@ -189,7 +189,7 @@
                   @foreach($publications as $publication)
                   <tr>
                     <td>{{ $publication->studyAcademicYear->academicYear->year }}</td>
-                    <td>@if($publication->semester) {{ $publication->semester->name }} @else SUPP @endif</td>
+                    <td>@if($publication->semester) {{ $publication->semester->name }} @else Supplementary @endif</td>
 					<td>{{ $publication->ntaLevel->name }}</td>
                     <td>{{ $publication->status }}</td>
                     <td>{{ $publication->type }}</td>
