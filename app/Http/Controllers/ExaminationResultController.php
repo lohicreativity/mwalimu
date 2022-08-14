@@ -515,7 +515,7 @@ class ExaminationResultController extends Controller
                             }
                           }
 
-                            foreach($results as $key=>$result){
+                            foreach($results as $resKey=>$result){
                             $student = Student::with(['campusProgram.program.ntaLevel'])->find($result->student_id);
                                   
                             
@@ -535,7 +535,7 @@ class ExaminationResultController extends Controller
                             }
                         }
 
-                        foreach($stud_buffer as $k=>$buf){
+                        foreach($stud_buffer as $bufKey=>$buf){
                              $sem_pass_status = 'PASS';
                              $supp_exams = [];
                              $retake_exams = [];
@@ -594,10 +594,7 @@ class ExaminationResultController extends Controller
                         $remark->serialized = count($supp_exams) != 0? serialize(['supp_exams'=>$supp_exams,'carry_exams'=>$carry_exams,'retake_exams'=>$retake_exams]) : null;
                         $remark->save();
                      }  
-                 }
-                 
-                 if($request->get('semester_id') == 'SUPPLEMENTARY'){
-                     $sem_remarks = SemesterRemark::where('student_id',$key)->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',$buffer['year_of_study'])->get();
+
                       
                        if($rm = AnnualRemark::where('student_id',$key)->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',$buffer['year_of_study'])->first()){
                           $remark = $rm;
