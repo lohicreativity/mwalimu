@@ -59,7 +59,16 @@
                  @foreach($semesters as $key=>$semester)
                     @php
                        $publish_status = false;
+                       $sem_reg[$semester->id] = false;
                     @endphp
+
+                    @foreach($student->registrations as $reg)
+                        @if($reg->semester_id == $semester->id)
+                          @php
+                            $sem_reg[$semester->id] = true;
+                          @endphp
+                        @endif
+                    @endforeach
 
                    @foreach($publications as $publication)
                       @if($publication->semester_id == $semester->id)
@@ -69,7 +78,7 @@
                       @endif
                    @endforeach
 
-                   @if(count($semester->remarks) != 0 && $publish_status)
+                   @if(count($semester->remarks) != 0 && $publish_status && $sem_reg[$semester->id])
                 <div class="row">
                 <div class="col-12">
                  <h4 class="ss-no-margin">{{ $semester->name }}</h4>

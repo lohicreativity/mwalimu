@@ -206,7 +206,11 @@ class ModuleAssignmentController extends Controller
                     'study_academic_year'=>$module_assignment->studyAcademicYear,
                     'staff'=>$module_assignment->staff,
                     'module'=>$module_assignment->module,
-                    'students'=>$module_assignment->programModuleAssignment->students
+                    'students'=>$module_assignment->programModuleAssignment->students()->whereHas('registrations',function($query) use ($module_assignment){
+                         $query->where('study_academic_year_id',$module_assignment->study_academic_year_id)->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id);
+                      })->whereHas('studentshipStatus',function($query){
+                        $query->where('name','ACTIVE');
+                     })->get()
                  ];
                  return view('dashboard.academic.reports.students-in-optional-module', $data);
              }else{
