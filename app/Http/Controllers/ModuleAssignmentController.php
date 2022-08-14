@@ -948,7 +948,7 @@ class ModuleAssignmentController extends Controller
                     $non_opted_students = [];
                     foreach($uploaded_students as $up_stud){
                        if($module_assignment->programModuleAssignment->students()->whereHas('academicStatus',function($query){
-                          $query->where('name','INCOMPLETE')->orWhere('name','SUPP');
+                          $query->where('name','POSTPONED')->orWhere('name','SUPP');
                        })->where('id',$up_stud->id)->count() == 0){
                           $non_opted_students[] = $up_stud;
                        }
