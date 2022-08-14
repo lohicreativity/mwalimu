@@ -592,7 +592,7 @@ class ExaminationResultController extends Controller
                      }  
 
                       $sem_remarks = SemesterRemark::where('student_id',$key)->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',$buffer['year_of_study'])->get();
-                      
+
                        if($rm = AnnualRemark::where('student_id',$key)->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',$buffer['year_of_study'])->first()){
                           $remark = $rm;
                           $remark->student_id = $key;
@@ -1837,9 +1837,9 @@ class ExaminationResultController extends Controller
         foreach($students as $key=>$student){
             
             foreach($module_assignments as $assignment){
-
+                     $modules[$assignment->module->code]['semester_id'] = $assignment->programModuleAssignment->semester_id; 
                      if($student->gender == 'M'){
-                         $modules[$assignment->module->code]['semester_id'] = $assignment->programModuleAssignment->semester_id;          
+                                  
                          $modules[$assignment->module->code]['ML']['total_count'] += 1;
                          
                       }elseif($student->gender == 'F'){
