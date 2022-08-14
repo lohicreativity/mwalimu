@@ -980,7 +980,7 @@ class ModuleAssignmentController extends Controller
                     $invalid_students = [];
                     foreach($uploaded_students as $up_stud){
                        if(Student::whereHas('academicStatus',function($query){
-                          $query->where('name','INCOMPLETE')->orWhere('name','SUPP');
+                          $query->where('name','SUPP')->orWhere('name','POSTPONED');
                        })->whereHas('registrations',function($query) use($module_assignment){
                          $query->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)->where('semester_id',$module_assignment->programModuleAssignment->semester_id)->where('study_academic_year_id',$module_assignment->programModuleAssignment->study_academic_year_id);
                     })->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id)->where('registration_number',$up_stud->registration_number)->count() == 0){
