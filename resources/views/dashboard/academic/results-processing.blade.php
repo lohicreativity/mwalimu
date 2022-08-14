@@ -224,7 +224,7 @@
                   @foreach($process_records as $record)
                   <tr>
                      <td>{{ $record->campusProgram->program->name }}</td>
-                     <td>{{ $record->semester->name }}</td>
+                     <td>@if($record->semester) {{ $record->semester->name }} @else Supplementary @endif</td>
                      <td>{{ $record->year_of_study }}</td>
                      <td>{{ $record->created_at }}</td>
                   </tr>
