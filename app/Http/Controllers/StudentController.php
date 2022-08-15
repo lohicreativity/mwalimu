@@ -1426,7 +1426,8 @@ class StudentController extends Controller
 		  $applicant->save();
 		  
 		  NectaResultDetail::where('applicant_id',$student->applicant_id)->update(['applicant_id'=>$applicant->id]);
-		  
+		  NectaResult::where('applicant_id',$student->applicant_id)->update(['applicant_id'=>$applicant->id]);
+
 	      $results = ExaminationResult::whereHas('moduleAssignment.programModuleAssignment',function($query) use($student){
 		        $query->where('year_of_study',$student->year_of_study);
 	      })->where('student_id',$student->id)->get();
