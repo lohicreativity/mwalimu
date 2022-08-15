@@ -3478,7 +3478,7 @@ class ApplicationController extends Controller
                               }
                            }
                          }  
-                       
+                       }
 
                        if($o_level_pass_count >= $program->entryRequirements[0]->pass_subjects && ($a_level_subsidiary_pass_count >= 1 && $a_level_principle_pass_count >= 1)){
                            $programs[] = $program;
@@ -3488,6 +3488,7 @@ class ApplicationController extends Controller
                       
 
                        if(unserialize($program->entryRequirements[0]->equivalent_majors) != ''){
+                        return "Hello";
                            foreach(unserialize($program->entryRequirements[0]->equivalent_majors) as $sub){
                                 foreach($applicant->nacteResultDetails as $det){
                                    if(str_contains($det->programme,$sub) && str_contains($det->programme,'Basic')){
