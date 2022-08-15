@@ -3495,6 +3495,7 @@ class ApplicationController extends Controller
                                      $has_btc = true;
                                    }
                                 }
+                                return $sub.' '.$det->programme;
                            }
                        }
                            
