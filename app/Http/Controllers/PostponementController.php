@@ -42,7 +42,7 @@ class PostponementController extends Controller
     {
       $data = [
            'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
-           'postponements'=>Postponement::with(['student','StudyAcademicYear.academicYear','semester'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->whereNotNull('resumption_letter')->get(),
+           'postponements'=>Postponement::with(['student','StudyAcademicYear.academicYear','semester'])->where('resume_study_academic_year_id',$request->get('study_academic_year_id'))->whereNotNull('resumption_letter')->get(),
            'semesters'=>Semester::all(),
            'staff'=>User::find(Auth::user()->id)->staff,
            'request'=>$request
@@ -190,6 +190,7 @@ class PostponementController extends Controller
                 return redirect()->back()->with('error','Special exam cannot be accepted because it has not been recommended');
                 }
                 $ps->status = $request->get('action') == 'Accept Selected'? 'RESUMED' : 'POSTPONED';
+                $ps->resume_study_academic_year_id = session('active_academic_year_id');
                 $ps->resumed_by_user_id = Auth::user()->id;
                 $ps->save();
                 if($ps->status == 'RESUMED'){
@@ -255,7 +256,7 @@ class PostponementController extends Controller
         if($request->hasFile('resumption_letter')){
             $destination = SystemLocation::uploadsDirectory();
             $request->file('resumption_letter')->move($destination, $request->file('resumption_letter')->getClientOriginalName());
-
+            $postponement->resume_study_academic_year_id = session('active_academic_year_id');
             $postponement->resumption_letter = $request->file('resumption_letter')->getClientOriginalName();
         }
         $postponement->save();
@@ -274,6 +275,7 @@ class PostponementController extends Controller
             }
             $postponement->status = 'RESUMED';
             $postponement->resumed_by_user_id = Auth::user()->id;
+            $postponement->resume_study_academic_year_id = session('active_academic_year_id');
             $postponement->save();
 
             $status = StudentshipStatus::where('name','ACTIVE')->first();
