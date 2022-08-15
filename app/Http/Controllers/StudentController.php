@@ -413,16 +413,19 @@ class StudentController extends Controller
      */
     public function requestPaymentControlNumber(Request $request)
     {
-        $student = Student::with(['applicant','studentshipStatus','academicStatus','semesterRemarks'])->find($request->get('student_id'));
+        $student = Student::with(['applicant','studentshipStatus','academicStatus','semesterRemarks'=>function($query){
+            $query->latest();
+        },'semesterRemarks.semester'])->find($request->get('student_id'));
         $email = $student->email? $student->email : 'admission@mnma.ac.tz';
 
         DB::beginTransaction();
         $study_academic_year = StudyAcademicYear::find(session('active_academic_year_id'));
+        $semester = Semester::find(session('active_semester_id'));
         $usd_currency = Currency::where('code','USD')->first();
            
         foreach($student->semesterRemarks as $rem){
           if($student->academicStatus->name == 'RETAKE'){
-              if($rem->semester_id == session('active_semester_id') && $rem->study_academic_year_id == session('active_academic_year_id') && $rem->status != 'RETAKE'){
+              if($rem->semester_id == session('active_semester_id') && $rem->status != 'RETAKE'){
                       return redirect()->back()->with('error','You are not allowed to register for retake this semester');
               }
           }
