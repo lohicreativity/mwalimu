@@ -993,7 +993,7 @@ class ApplicationController extends Controller
                        }
                    }
 
-/*                   // Diploma
+                   // Diploma
                    if(str_contains($award->name,'Diploma')){
                        $o_level_pass_count = 0;
                        $a_level_principle_pass_count = 0;
@@ -1100,7 +1100,7 @@ class ApplicationController extends Controller
                        if($o_level_pass_count >= $program->entryRequirements[0]->pass_subjects && $has_btc){
                            $programs[] = $program;
                        }
-                   }*/
+                   }
                    
                    // Bachelor
                    if(str_contains($award->name,'Bachelor')){
@@ -4328,7 +4328,7 @@ class ApplicationController extends Controller
                    }
 
                    // Diploma
-                   /*if(str_contains($award->name,'Diploma')){
+                   if(str_contains($award->name,'Diploma')){
                        $o_level_pass_count = 0;
                        $a_level_principle_pass_count = 0;
                        $a_level_subsidiary_pass_count = 0;
@@ -4434,7 +4434,7 @@ class ApplicationController extends Controller
                        if($o_level_pass_count >= $program->entryRequirements[0]->pass_subjects && $has_btc){
                            $programs[] = $program;
                        }
-                   }*/
+                   }
                    
                    // Bachelor
                    if(str_contains($award->name,'Bachelor')){
@@ -4780,7 +4780,7 @@ class ApplicationController extends Controller
                        }
                    }
 
-                   /*// Diploma
+                   // Diploma
                    if(str_contains($award->name,'Diploma')){
                        $o_level_pass_count = 0;
                        $a_level_principle_pass_count = 0;
@@ -4878,7 +4878,7 @@ class ApplicationController extends Controller
                        }else{
                           return redirect()->back()->with('error','Applicant does not qualify for transfer');
                        }
-                   }*/
+                   }
                    
                    // Bachelor
                    if(str_contains($award->name,'Bachelor')){
@@ -5805,7 +5805,7 @@ class ApplicationController extends Controller
                    }
 
                    // Diploma
-                  /* if(str_contains($award->name,'Diploma')){
+                  if(str_contains($award->name,'Diploma')){
                        $o_level_pass_count = 0;
                        $a_level_principle_pass_count = 0;
                        $a_level_subsidiary_pass_count = 0;
@@ -5917,7 +5917,7 @@ class ApplicationController extends Controller
                            $select->status_changed_at = now();
                            $select->save();
                        }
-                   }*/
+                   }
                    
                    // Bachelor
                    if(str_contains($award->name,'Bachelor')){
