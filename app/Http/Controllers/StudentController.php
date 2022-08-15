@@ -1266,7 +1266,7 @@ class StudentController extends Controller
            'campus_programs'=>$window? $programs : [],
            'campuses'=>Campus::all(),
 		   'student'=>$student,
-           'program_fee_invoice'=>Invoice::where('payable_id',$applicant->id)->where('payable_type','applicant')->first(),
+           'program_fee_invoice'=>Invoice::where('payable_id',$student->id)->where('payable_type','student')->first(),
            'request'=>$request
         ];
 		 return view('dashboard.student.indicate-continue',$data)->withTitle('Indicate Continue');
