@@ -3397,6 +3397,7 @@ class ApplicationController extends Controller
 
                    // Diploma
                    if(str_contains($award->name,'Diploma')){
+                                                return 'Hello';
                        $o_level_pass_count = 0;
                        $a_level_principle_pass_count = 0;
                        $a_level_subsidiary_pass_count = 0;
@@ -3436,7 +3437,6 @@ class ApplicationController extends Controller
                               }
                            }
                          }elseif($detail->exam_id === 2){
-                            return 'Hello';
                            $other_advance_must_subject_ready = false;
                            $other_advance_subsidiary_ready = false;
                            foreach ($detail->results as $key => $result) {
