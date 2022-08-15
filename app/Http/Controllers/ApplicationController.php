@@ -3397,6 +3397,7 @@ class ApplicationController extends Controller
 
                    // Diploma
                    if(str_contains($award->name,'Diploma')){
+                                            return "Hello";
                        $o_level_pass_count = 0;
                        $a_level_principle_pass_count = 0;
                        $a_level_subsidiary_pass_count = 0;
@@ -3488,7 +3489,6 @@ class ApplicationController extends Controller
                       
 
                        if(unserialize($program->entryRequirements[0]->equivalent_majors) != ''){
-                        return "Hello";
                            foreach(unserialize($program->entryRequirements[0]->equivalent_majors) as $sub){
                                 foreach($applicant->nacteResultDetails as $det){
                                    if(str_contains($det->programme,$sub) && str_contains($det->programme,'Basic')){
