@@ -106,7 +106,7 @@ class StudentController extends Controller
     {
     	$student = User::find(Auth::user()->id)->student()->with(['registrations'=>function($query){
             $query->where('study_academic_year_id',session('active_academic_year_id'))->where('status','REGISTERED');
-        }])->first();
+        },'academicStatus'])->first();
     	$campus = CampusProgram::find($student->campus_program_id)->campus;
     	$program = CampusProgram::find($student->campus_program_id)->program;
     	$study_academic_year = StudyAcademicYear::with(['moduleAssignments'=>function($query) use($student){
@@ -251,7 +251,7 @@ class StudentController extends Controller
          }])->first();
          $study_academic_year = StudyAcademicYear::with('academicYear')->find($ac_yr_id);
 
-         $retake_sem_remarks = SemesterRemark::where('student_id',$student->id)->where('status','RETAKE')->where('year_of_study',$yr_of_study)->get();
+         $retake_sem_remarks = SemesterRemark::where('student_id',$student->id)->where('remark','RETAKE')->where('year_of_study',$yr_of_study)->get();
          
          $semesters = Semester::with(['remarks'=>function($query) use ($student, $ac_yr_id){
          	 $query->where('student_id',$student->id)->where('study_academic_year_id',$ac_yr_id);
