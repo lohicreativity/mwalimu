@@ -425,8 +425,7 @@ class StudentController extends Controller
            
         foreach($student->semesterRemarks as $rem){
           if($student->academicStatus->name == 'RETAKE'){
-              if($rem->semester_id == session('active_semester_id') && $rem->status != 'RETAKE'){
-                      return session('active_semester_id').' - '.$rem->semester_id.' - '.$rem->status;
+              if($rem->semester_id == session('active_semester_id') && $rem->remark != 'RETAKE'){
                       return redirect()->back()->with('error','You are not allowed to register for retake in this semester');
               }
           }
