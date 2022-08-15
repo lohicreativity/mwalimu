@@ -573,7 +573,7 @@
               @endcan
               @can('view-fee-amounts')
               <li class="nav-item">
-                <a href="{{ url('finance/fee-amounts') }}" class="nav-link">
+                <a href="{{ url('finance/fee-amounts?study_academic_year_id='.session('active_academic_year_id')) }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>{{ __('Fee Amounts') }}</p>
                 </a>
@@ -581,7 +581,7 @@
               @endcan
               @can('view-programme-fees')
               <li class="nav-item">
-                <a href="{{ url('finance/program-fees?campus_id='.session('staff_campus_id')) }}" class="nav-link">
+                <a href="{{ url('finance/program-fees?campus_id='.session('staff_campus_id').'&study_academic_year_id='.session('active_academic_year_id')) }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>{{ __('Programme Fees') }}</p>
                 </a>

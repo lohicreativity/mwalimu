@@ -248,6 +248,8 @@ class StudentController extends Controller
             $query->where('study_academic_year_id',$ac_yr_id)->where('year_of_study',$yr_of_study);
          }])->first();
          $study_academic_year = StudyAcademicYear::with('academicYear')->find($ac_yr_id);
+
+         $retake_sem_remarks = SemesterRemark::where('student_id',$student->id)->where('status','RETAKE')->where('year_of_study',$yr_of_study)->get();
          
          $semesters = Semester::with(['remarks'=>function($query) use ($student, $ac_yr_id){
          	 $query->where('student_id',$student->id)->where('study_academic_year_id',$ac_yr_id);
@@ -276,6 +278,7 @@ class StudentController extends Controller
          	'semesters'=>$semesters,
          	'annual_remark'=>$annual_remark,
          	'results'=>$results,
+            'retake_sem_remarks'=>$retake_sem_remarks,
          	'study_academic_year'=>$study_academic_year,
          	'core_programs'=>$core_programs,
          	'publications'=>$publications,
@@ -494,15 +497,28 @@ class StudentController extends Controller
                      $currency = 'TZS'; //'USD';
                  }
             }else{
-                 if(str_contains($student->applicant->nationality,'Tanzania')){
-                     $amount = round($program_fee->amount_in_tzs);
-                     $amount_loan = 0.00;
-                     $currency = 'TZS';
+                 if($student->academicStatus->name == 'RETAKE'){
+                    if(str_contains($student->applicant->nationality,'Tanzania')){
+                         $amount = round(0.5*$program_fee->amount_in_tzs);
+                         $amount_loan = 0.00;
+                         $currency = 'TZS';
+                     }else{
+                         $amount = round(0.5*$program_fee->amount_in_usd*$usd_currency->factor);
+                         $amount_loan = 0.00;
+                         $currency = 'TZS'; //'USD';
+                     }
                  }else{
-                     $amount = round($program_fee->amount_in_usd*$usd_currency->factor);
-                     $amount_loan = 0.00;
-                     $currency = 'TZS'; //'USD';
+                    if(str_contains($student->applicant->nationality,'Tanzania')){
+                         $amount = round($program_fee->amount_in_tzs);
+                         $amount_loan = 0.00;
+                         $currency = 'TZS';
+                     }else{
+                         $amount = round($program_fee->amount_in_usd*$usd_currency->factor);
+                         $amount_loan = 0.00;
+                         $currency = 'TZS'; //'USD';
+                     }
                  }
+                 
             }
 
                  if(str_contains($student->applicant->nationality,'Tanzania')){
