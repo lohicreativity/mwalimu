@@ -78,7 +78,7 @@
                       @endif
                    @endforeach
 
-                   @if(count($semester->remarks) != 0 && $publish_status && $sem_reg[$semester->id])
+                   @if(count($semester->remarks) != 0 && $publish_status && $sem_reg[$semester->id] == true)
                 <div class="row">
                 <div class="col-12">
                  <h4 class="ss-no-margin">{{ $semester->name }}</h4>
