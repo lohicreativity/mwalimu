@@ -432,6 +432,7 @@
                        <option value="Accountancy">Accountancy</option>
                        <option value="Finance">Finance</option>
                        <option value="Nursing">Nursing</option>
+                       <option value="Youth">Youth</option>
                        <option value="Clinical Science">Clinical Science</option>
                        <option value="Police Science">Police Science</option>
                        <option value="International Relations">International Relations</option>
@@ -756,6 +757,7 @@
                        <option value="Accountancy">Accountancy</option>
                        <option value="Finance">Finance</option>
                        <option value="Nursing">Nursing</option>
+                       <option value="Youth">Youth</option>
                        <option value="Clinical Science">Clinical Science</option>
                        <option value="Police Science">Police Science</option>
                        <option value="International Relations">International Relations</option>
@@ -1330,6 +1332,7 @@
                                                <option value="Accountancy" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Accountancy',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Accountancy</option>
                                                <option value="Finance" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Finance',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Finance</option>
                                                <option value="Nursing" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Nursing',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Nursing</option>
+                                               <option value="Youth" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Youth',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Youth</option>
                                                <option value="Clinical Science" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Clinical Science',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Clinical Science</option>
                                                <option value="Police Science" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Police Science',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Police Science</option>
                                                <option value="International Relations" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('International Relations',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>International Relations</option>
