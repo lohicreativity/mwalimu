@@ -104,7 +104,9 @@ class StudentController extends Controller
      */
     public function showModules(Request $request)
     {
-    	$student = User::find(Auth::user()->id)->student;
+    	$student = User::find(Auth::user()->id)->student()->with(['registrations'=>function($query){
+            $query->where('study_academic_year_id',session('active_academic_year_id'))->where('status','REGISTERED');
+        }])->first();
     	$campus = CampusProgram::find($student->campus_program_id)->campus;
     	$program = CampusProgram::find($student->campus_program_id)->program;
     	$study_academic_year = StudyAcademicYear::with(['moduleAssignments'=>function($query) use($student){

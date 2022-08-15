@@ -43,7 +43,19 @@
 
             @if($study_academic_year)
             @foreach($semesters as $semester)
-            <div class="card">
+                    @php
+                       $sem_reg[$semester->id] = false;
+                    @endphp
+
+                    @foreach($student->registrations as $reg)
+                        @if($reg->semester_id == $semester->id)
+                          @php
+                            $sem_reg[$semester->id] = true;
+                          @endphp
+                        @endif
+                    @endforeach
+
+            <div class="card" @if($student->academicStatus->name == 'RETAKE' && !$sem_reg[$semester->id]) style="display: none;" @endif>
               <div class="card-header">
                 <h3 class="card-title">{{ __('List of Modules') }} - Year {{ $student->year_of_study }} - {{ $semester->name }} - @if(count($semester->electivePolicies) != 0) ({{ $semester->electivePolicies[0]->number_of_options }} Options Maximum) @endif
 
