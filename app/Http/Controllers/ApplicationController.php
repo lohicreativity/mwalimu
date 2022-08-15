@@ -993,7 +993,7 @@ class ApplicationController extends Controller
                        }
                    }
 
-                  /* // Diploma
+/*                   // Diploma
                    if(str_contains($award->name,'Diploma')){
                        $o_level_pass_count = 0;
                        $a_level_principle_pass_count = 0;
@@ -3394,7 +3394,7 @@ class ApplicationController extends Controller
                          }
                        }
                    }
-/*
+
                    // Diploma
                    if(str_contains($award->name,'Diploma')){
                        $o_level_pass_count = 0;
@@ -3502,7 +3502,7 @@ class ApplicationController extends Controller
                        if($o_level_pass_count >= $program->entryRequirements[0]->pass_subjects && $has_btc){
                            $programs[] = $program;
                        }
-                   }*/
+                   }
                    
                    // Bachelor
                    if(str_contains($award->name,'Bachelor')){
