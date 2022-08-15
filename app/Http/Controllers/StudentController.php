@@ -475,10 +475,8 @@ class StudentController extends Controller
                 $query->where('name','LIKE','%Tuition%');
             })->where('applicable_type','academic_year')->where('applicable_id',$study_academic_year->id)->where('payable_id',$student->id)->where('payable_type','student')->first();
             
-            if($student->academicStatus->name != 'RETAKE'){
-                if($existing_tuition_invoice){
-                    return redirect()->back()->with('error','You have already requested for tuition fee control number for this academic year');
-                }
+            if($existing_tuition_invoice){
+                return redirect()->back()->with('error','You have already requested for tuition fee control number for this academic year');
             }
             
 			
