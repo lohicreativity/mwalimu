@@ -413,12 +413,20 @@ class StudentController extends Controller
      */
     public function requestPaymentControlNumber(Request $request)
     {
-        $student = Student::with(['applicant','studentshipStatus','academicStatus'])->find($request->get('student_id'));
+        $student = Student::with(['applicant','studentshipStatus','academicStatus','semesterRemarks'])->find($request->get('student_id'));
         $email = $student->email? $student->email : 'admission@mnma.ac.tz';
 
         DB::beginTransaction();
         $study_academic_year = StudyAcademicYear::find(session('active_academic_year_id'));
         $usd_currency = Currency::where('code','USD')->first();
+           
+        foreach($student->semesterRemarks as $rem){
+          if($student->academicStatus->name == 'RETAKE'){
+              if($rem->semester_id == session('active_semester_id') && $rem->study_academic_year_id == session('active_academic_year_id') && $rem->status != 'RETAKE'){
+                      return redirect()->back()->with('error','You are not allowed to register for retake this semester');
+              }
+          }
+       }
 
         if($student->studentshipStatus->name == 'POSTPONED'){
              return redirect()->back()->with('error','You cannot continue with registration because you have been postponed');
@@ -466,10 +474,13 @@ class StudentController extends Controller
             $existing_tuition_invoice = Invoice::whereHas('feeType',function($query){
                 $query->where('name','LIKE','%Tuition%');
             })->where('applicable_type','academic_year')->where('applicable_id',$study_academic_year->id)->where('payable_id',$student->id)->where('payable_type','student')->first();
-
-            if($existing_tuition_invoice){
-                return redirect()->back()->with('error','You have already requested for tuition fee control number for this academic year');
+            
+            if($student->academicStatus->name != 'RETAKE'){
+                if($existing_tuition_invoice){
+                    return redirect()->back()->with('error','You have already requested for tuition fee control number for this academic year');
+                }
             }
+            
 			
 			$existing_tuition_invoice = Invoice::whereHas('feeType',function($query){
                 $query->where('name','LIKE','%Tuition%');
