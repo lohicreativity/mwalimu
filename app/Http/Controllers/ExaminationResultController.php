@@ -665,7 +665,9 @@ class ExaminationResultController extends Controller
                        
                        $points = 0;
                       $credits = 0;
+                          
 
+                      if($student_buffer[$student->id]['year_of_study'] == $student->year_of_study && str_contains($semester->name,2)){
                       $results = ExaminationResult::where('student_id',$key)->get();
                       
                       foreach($results as $rs){
@@ -692,6 +694,7 @@ class ExaminationResultController extends Controller
                          $remark->class = $overall_remark;
                          $remark->save();
                       }
+                    }
                    }
                  }
 
@@ -886,6 +889,7 @@ class ExaminationResultController extends Controller
                 if($carry_history){
                    $result->exam_category = 'CARRY';
                 }
+
                 if($retake_history){
                    $result->exam_category = 'RETAKE';
                 }
