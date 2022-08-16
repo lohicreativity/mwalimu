@@ -924,8 +924,7 @@ class ModuleAssignmentController extends Controller
               fclose($file_handle);
               $invalid_students_entries = [];
               foreach($line_of_text_1 as $line){
-                //return trim($line[0]);
-                 $stud = Student::where('registration_number','MNMA/BTC.YW/0001/22')->first();
+                 $stud = Student::where('registration_number',trim($line[0]))->first();
                  if($stud){
                     $uploaded_students[] = $stud;
                  }else{
