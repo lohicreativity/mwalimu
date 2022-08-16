@@ -91,7 +91,7 @@
                       {!! Form::text('supp_score',null,$supp_score) !!}
 
                       {!! Form::input('hidden','student_id',$student->id) !!}
-                      {!! Form::input('hidden','exam_type','FIRST') !!}
+                      {!! Form::input('hidden','exam_type','FINAL') !!}
 
                     </div>
                   </div>
