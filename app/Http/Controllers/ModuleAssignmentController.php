@@ -502,7 +502,9 @@ class ModuleAssignmentController extends Controller
                     'department'=>$module_assignment->programModuleAssignment->campusProgram->program->department,
                     'module'=>$module_assignment->module,
                     'study_academic_year'=>$module_assignment->studyAcademicYear,
-                    'students'=>Student::whereHas('registrations',function($query) use($module_assignment){
+                    'students'=>Student::whereHas('studentshipStatus',function($query){
+                          $query->where('name','ACTIVE');
+                    })->whereHas('registrations',function($query) use($module_assignment){
                           $query->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)->where('semester_id',$module_assignment->programModuleAssignment->semester_id)->where('study_academic_year_id',$module_assignment->programModuleAssignment->study_academic_year_id);
                       })->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id)->orderBy('registration_number')->get()
                 ];
