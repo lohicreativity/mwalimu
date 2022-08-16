@@ -926,12 +926,15 @@ class ModuleAssignmentController extends Controller
               fclose($file_handle);
               $invalid_students_entries = [];
               foreach($line_of_text_1 as $line){
-                 $stud = Student::where('registration_number',trim($line[0]))->first();
-                 if($stud){
-                    $uploaded_students[] = $stud;
-                 }else{
-                    $invalid_students_entries[] = $line[0];
+                 if(gettype($line) != 'boolean'){
+                    $stud = Student::where('registration_number',trim($line[0]))->first();
+                     if($stud){
+                        $uploaded_students[] = $stud;
+                     }else{
+                        $invalid_students_entries[] = $line[0];
+                     }
                  }
+                 
               }
 
               // Get students taking the module
@@ -1070,9 +1073,11 @@ class ModuleAssignmentController extends Controller
               fclose($file_handle);
               $invalidEntries = [];
               foreach($line_of_text_2 as $line){
-                   if((floatval(trim($line[1])) < 0 || floatval(trim($line[1])) > 100 || !is_numeric(trim($line[1]))) && !empty($line[1])){
-                     $validationStatus = false;
-                     $invalidEntries[] = trim($line[0]);
+                   if(gettype($line) != 'boolean'){
+                       if((floatval(trim($line[1])) < 0 || floatval(trim($line[1])) > 100 || !is_numeric(trim($line[1]))) && !empty($line[1])){
+                         $validationStatus = false;
+                         $invalidEntries[] = trim($line[0]);
+                       }
                    }
               }
 
@@ -1110,6 +1115,7 @@ class ModuleAssignmentController extends Controller
                 //})->whereHas('studentshipStatus',function($query){
                      // $query->where('name','ACTIVE');
                // })->
+                if(gettype($line) != 'boolean'){
                 $student = Student::where('registration_number',trim($line[0]))->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id)->first();
                 
                 if($student && !empty($line[1])){
@@ -1331,6 +1337,7 @@ class ModuleAssignmentController extends Controller
                   }
                 }else{
                     return redirect()->back()->with('error','Invalid entries in column B of the uploaded file');
+                }
                 }
               }
               DB::commit();
