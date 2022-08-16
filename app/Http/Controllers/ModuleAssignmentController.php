@@ -965,7 +965,7 @@ class ModuleAssignmentController extends Controller
               }else{
                 $students = Student::whereHas('registrations',function($query) use($module_assignment){
                      $query->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)->where('semester_id',$module_assignment->programModuleAssignment->semester_id)->where('study_academic_year_id',$module_assignment->programModuleAssignment->study_academic_year_id);
-                })->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id)->get();
+                })->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id)->with('academicStatus')->get();
 
                 $invalid_students = [];
                 foreach($uploaded_students as $up_stud){
@@ -1016,7 +1016,8 @@ class ModuleAssignmentController extends Controller
                   if(ExaminationResult::where('module_assignment_id',$request->get('module_assignment_id'))->where('student_id',$student->id)->whereNotNull('final_score')->count() == 0){
                   $special_exam = SpecialExam::where('student_id',$student->id)->where('module_assignment_id',$module_assignment->id)->where('type','FINAL')->where('status','APPROVED')->first();
                   $postponement = Postponement::where('student_id',$student->id)->where('study_academic_year_id',$module_assignment->study_academic_year_id)->where('semester_id',$module_assignment->programModuleAssignment->semester_id)->where('status','POSTPONED')->first();
-
+                      
+                      if($student->academicStatus->status != 'RETAKE'){
                       $result_log = new ExaminationResultLog;
                       $result_log->module_assignment_id = $request->get('module_assignment_id');
                       $result_log->student_id = $student->id;
@@ -1050,6 +1051,7 @@ class ModuleAssignmentController extends Controller
                       $result->final_uploaded_at = now();
                       $result->uploaded_by_user_id = Auth::user()->id;
                       $result->save();
+                      }
                     }
                   }
               }
