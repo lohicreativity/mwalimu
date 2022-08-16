@@ -191,7 +191,7 @@ class ApplicationController extends Controller
     {
          $staff = User::find(Auth::user()->id)->staff;
          
-         $applicants = Applicant::whereHas('selections',function($query) use($request){
+         $applicants = Applicant::doesntHave('student')->whereHas('selections',function($query) use($request){
                  $query->where('status','SELECTED');
             })->with(['intake','selections.campusProgram.program','nectaResultDetails','nacteResultDetails'])->where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$request->get('program_level_id'))->where(function($query){
 				$query->where('confirmation_status','!=','CANCELLED')->orWhere('confirmation_status','!=','TRANSFERED')->orWhereNull('confirmation_status');
@@ -2208,11 +2208,11 @@ class ApplicationController extends Controller
 
         Invoice::whereHas('feeType',function($query){
                $query->where('name','LIKE','%Tuition%');
-        })->with(['gatewayPayment','feeType'])->where('payable_type','applicant')->where('payable_id',$applicant->id)->update(['payable_type'=>'student','payable_id'=>$student->id]);
+        })->with(['gatewayPayment','feeType'])->where('payable_type','applicant')->where('payable_id',$applicant->id)->update(['payable_type'=>'student','payable_id'=>$student->id,'applicable_id'=>$ac_year->id,'applicable_type'=>'academic_year']);
 
         Invoice::whereHas('feeType',function($query){
                $query->where('name','LIKE','%Miscellaneous%');
-        })->with(['gatewayPayment','feeType'])->where('payable_type','applicant')->where('payable_id',$applicant->id)->update(['payable_type'=>'student','payable_id'=>$student->id]);
+        })->with(['gatewayPayment','feeType'])->where('payable_type','applicant')->where('payable_id',$applicant->id)->update(['payable_type'=>'student','payable_id'=>$student->id,'applicable_id'=>$ac_year->id,'applicable_type'=>'academic_year']);
 
         try{
            Mail::to($user)->send(new StudentAccountCreated($student, $selection->campusProgram->program->name,$ac_year->academicYear->year, $password));

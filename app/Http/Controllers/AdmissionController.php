@@ -250,6 +250,7 @@ class AdmissionController extends Controller
 
         $invoice = new Invoice;
         $invoice->reference_no = 'MNMA-'.$hostel_fee->feeItem->feeType->code.'-'.time();
+        $invoice->actual_amount = $amount;
         $invoice->amount = $amount;
         $invoice->currency = $currency;
         $invoice->payable_id = $applicant->id;
