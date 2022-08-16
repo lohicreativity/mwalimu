@@ -510,11 +510,11 @@ class ModuleAssignmentController extends Controller
                 ];
             }
               $headers = [
-                      'Cache-Control'       => 'must-revalidate, post-check=0, pre-check=0',   
+                      // 'Cache-Control'       => 'must-revalidate, post-check=0, pre-check=0',   
                       'Content-type'        => 'application/csv',
-                      'Content-Disposition' => 'attachment; filename='.$module_assignment->module->code.'_'.$module_assignment->studyAcademicYear->academicYear->year.'.csv',
-                      'Expires'             => '0',
-                      'Pragma'              => 'public'
+                      'Content-Disposition' => 'attachment; filename='.$module_assignment->module->code.'_'.$module_assignment->studyAcademicYear->academicYear->year.'.csv;',
+                      // 'Expires'             => '0',
+                      // 'Pragma'              => 'public'
               ];
 
               $list = $data['students'];
