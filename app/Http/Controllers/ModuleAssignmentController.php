@@ -925,6 +925,7 @@ class ModuleAssignmentController extends Controller
               $invalid_students_entries = [];
               foreach($line_of_text_1 as $line){
                  $stud = Student::where('registration_number',trim($line[0]))->first();
+                 return $stud;
                  if($stud){
                     $uploaded_students[] = $stud;
                  }else{
