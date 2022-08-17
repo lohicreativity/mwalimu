@@ -638,8 +638,8 @@ class ExaminationResultController extends Controller
                             $remark->student_id = $key;
                             $remark->year_of_study = $buffer['year_of_study'];
                             $remark->study_academic_year_id = $request->get('study_academic_year_id');
-                            $remark->remark = Util::getAnnualRemark($sem_remarks,$buffer['annual_results']) != 'POSTPONED'? Util::getAnnualRemark($sem_remarks,$buffer['annual_results']) : null;
-                            if($remark->remark == 'INCOMPLETE' || $remark->remark == 'INCOMPLETE' || $remark->remark == null){
+                            $remark->remark = Util::getAnnualRemark($sem_remarks,$buffer['annual_results']);
+                            if($remark->remark == 'INCOMPLETE' || $remark->remark == 'INCOMPLETE' || $remark->remark == 'POSTPONED'){
                                $remark->gpa = null;
                             }else{
                                  $remark->gpa = Util::computeGPA($buffer['annual_credit'],$buffer['annual_results']);
@@ -648,6 +648,9 @@ class ExaminationResultController extends Controller
                                  }
                                  $remark->point = Util::computeGPAPoints($buffer['annual_credit'],$buffer['annual_results']);
                                  $remark->credit = $buffer['annual_credit'];
+                            }
+                            if($sem_remarks[0]->remark == 'POSTPONED' && $sem_remarks[(count($sem_remarks)-1)]->remark != 'POSTPONED'){
+                                $remark->remark = $sem_remarks[(count($sem_remarks)-1)]->remark;
                             }
                            $gpa_class = GPAClassification::where('nta_level_id',$buffer['nta_level']->id)->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('min_gpa','<=',bcdiv($remark->gpa,1,1))->where('max_gpa','>=',bcdiv($remark->gpa,1,1))->first();
                             if($remark->gpa && $gpa_class){
