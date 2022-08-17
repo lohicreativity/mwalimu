@@ -690,7 +690,9 @@ class ExaminationResultController extends Controller
                          }else{
                             $remark = new OverallRemark;
                          }
-                         $remark->student_id = $student->id;
+                         $remark->student_id = $key;
+                         $remark->point = $points;
+                         $remark->credit = $credits;
                          $remark->gpa = $overall_gpa;
 						 $remark->remark = Util::getOverallRemark($sem_remarks);
                          $remark->class = Util::getOverallRemark($sem_remarks) == 'PASS' || Util::getOverallRemark($sem_remarks) == 'CARRY' || Util::getOverallRemark($sem_remarks) == 'RETAKE'? $overall_remark : null;
@@ -1603,6 +1605,8 @@ class ExaminationResultController extends Controller
                          }
                          $remark->student_id = $student->id;
                          $remark->gpa = $overall_gpa;
+                         $remark->point = $points;
+                         $remark->credit = $credits;
              $remark->remark = Util::getOverallRemark($sem_remarks);
                          $remark->class = Util::getOverallRemark($sem_remarks) == 'PASS' || Util::getOverallRemark($sem_remarks) == 'CARRY' || Util::getOverallRemark($sem_remarks) == 'RETAKE'? $overall_remark : null;
                          $remark->save();
