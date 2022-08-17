@@ -675,7 +675,7 @@ class ExaminationResultController extends Controller
                       $credits = 0;
 
                       foreach($results as $rs){
-                           if($rs->point != null){
+                           if(!is_null($rs->point)){
                               $points += ($rs->point*$rs->moduleAssignment->programModuleAssignment->module->credit);
                               $credits += $rs->moduleAssignment->programModuleAssignment->module->credit;
                            }   
