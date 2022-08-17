@@ -1460,8 +1460,6 @@ class ExaminationResultController extends Controller
 
             }
           }
-
-          return $annual_module_assignments;
           
           foreach ($annual_module_assignments as $assign) {
             $annual_results = ExaminationResult::with(['moduleAssignment.module'])->where('module_assignment_id',$assign->id)->where('student_id',$student->id)->get();
@@ -1494,6 +1492,8 @@ class ExaminationResultController extends Controller
 
             }
         }
+
+        return $student_buffer[$student->id]['annual_results'];
 
           foreach($student_buffer as $key=>$buffer){
                $pass_status = 'PASS';
