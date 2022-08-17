@@ -1493,8 +1493,6 @@ class ExaminationResultController extends Controller
             }
         }
 
-        return $student_buffer[$student->id]['annual_results'];
-
           foreach($student_buffer as $key=>$buffer){
                $pass_status = 'PASS';
                $supp_exams = [];
