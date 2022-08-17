@@ -671,15 +671,17 @@ class ExaminationResultController extends Controller
                       $results = ExaminationResult::where('student_id',$key)->get();
                       
                       foreach($results as $rs){
-                           $points += $rs->point*$result->moduleAssignment->programModuleAssignment->module->credit;
-                           $credits += $rs->moduleAssignment->programModuleAssignment->module->credit;
+                           if($rs->point){
+                              $points += $rs->point*$result->moduleAssignment->programModuleAssignment->module->credit;
+                              $credits += $rs->moduleAssignment->programModuleAssignment->module->credit;
+                           }   
                       }
                       
                       $overall_gpa = bcdiv($points/$credits, 1,1);
                       $gpa_class = GPAClassification::where('nta_level_id',$student->campusProgram->program->nta_level_id)->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('min_gpa','<=',bcdiv($overall_gpa,1,1))->where('max_gpa','>=',bcdiv($overall_gpa,1,1))->first();
-					  if(!$gpa_class){
-						  return redirect()->back()->with('error','GPA classification not defined');
-					  }
+          					  // if(!$gpa_class){
+          						 //  return redirect()->back()->with('error','GPA classification not defined');
+          					  // }
                       if($gpa_class && $student_buffer[$student->id]['year_of_study'] == $student->year_of_study && str_contains($semester->name,2)){
                          $overall_remark = $gpa_class->class;
 
@@ -691,7 +693,7 @@ class ExaminationResultController extends Controller
                          $remark->student_id = $student->id;
                          $remark->gpa = $overall_gpa;
 						 $remark->remark = Util::getOverallRemark($sem_remarks);
-                         $remark->class = $overall_remark;
+                         $remark->class = Util::getOverallRemark($sem_remarks) == 'PASS' || Util::getOverallRemark($sem_remarks) == 'CARRY' || Util::getOverallRemark($sem_remarks) == 'RETAKE'? $overall_remark : null;
                          $remark->save();
                       }
                     }
@@ -1575,6 +1577,37 @@ class ExaminationResultController extends Controller
                     $stud = Student::find($key);
                     $stud->academic_status_id = $status->id;
                     $stud->save();
+
+                    if($student_buffer[$student->id]['year_of_study'] == $student->year_of_study && str_contains($semester->name,2)){
+                      $results = ExaminationResult::where('student_id',$key)->get();
+                      
+                      foreach($results as $rs){
+                           if($rs->point){
+                              $points += $rs->point*$result->moduleAssignment->programModuleAssignment->module->credit;
+                              $credits += $rs->moduleAssignment->programModuleAssignment->module->credit;
+                           }   
+                      }
+                      
+                      $overall_gpa = bcdiv($points/$credits, 1,1);
+                      $gpa_class = GPAClassification::where('nta_level_id',$student->campusProgram->program->nta_level_id)->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('min_gpa','<=',bcdiv($overall_gpa,1,1))->where('max_gpa','>=',bcdiv($overall_gpa,1,1))->first();
+                      // if(!$gpa_class){
+                       //  return redirect()->back()->with('error','GPA classification not defined');
+                      // }
+                      if($gpa_class && $student_buffer[$student->id]['year_of_study'] == $student->year_of_study && str_contains($semester->name,2)){
+                         $overall_remark = $gpa_class->class;
+
+                         if($rm = OverallRemark::where('student_id',$key)->first()){
+                            $remark = $rm;
+                         }else{
+                            $remark = new OverallRemark;
+                         }
+                         $remark->student_id = $student->id;
+                         $remark->gpa = $overall_gpa;
+             $remark->remark = Util::getOverallRemark($sem_remarks);
+                         $remark->class = Util::getOverallRemark($sem_remarks) == 'PASS' || Util::getOverallRemark($sem_remarks) == 'CARRY' || Util::getOverallRemark($sem_remarks) == 'RETAKE'? $overall_remark : null;
+                         $remark->save();
+                      }
+                    }
                }
 
            DB::commit();
