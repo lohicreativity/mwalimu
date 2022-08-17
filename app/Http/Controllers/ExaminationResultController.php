@@ -1575,13 +1575,12 @@ class ExaminationResultController extends Controller
                     if($rem->remark == 'INCOMPLETE' || $rem->remark == 'INCOMPLETE' || $rem->remark == 'POSTPONED'){
                        $rem->gpa = null;
                     }else{
-                      return $buffer['annual_results'];
                          $rem->gpa = Util::computeGPA($buffer['annual_credit'],$buffer['annual_results']);
                          if($rem->gpa < 2.0){
                             $rem->remark = 'FAIL&DISCO';
                          }
                          $rem->point = Util::computeGPAPoints($buffer['annual_credit'],$buffer['annual_results']);
-                         $remark->credit = $buffer['annual_credit'];
+                         $rem->credit = $buffer['annual_credit'];
                     }
                     if($sem_remarks[0]->remark == 'POSTPONED' && $sem_remarks[(count($sem_remarks)-1)]->remark != 'POSTPONED'){
                                 $rem->remark = $sem_remarks[(count($sem_remarks)-1)]->remark;
