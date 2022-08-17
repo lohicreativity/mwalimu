@@ -933,6 +933,7 @@ class ExaminationResultController extends Controller
                 return redirect()->to('academic/results/'.$student->id.'/'.$module_assignment->study_academic_year_id.'/'.$module_assignment->programModuleAssignment->id.'/edit-student-results')->with('message','Results added successfully');
 
         }catch(\Exception $e){
+            return $e->getMessage();
             return redirect()->back()->with('error','Unable to get the resource specified in this request'); 
         }
     }
