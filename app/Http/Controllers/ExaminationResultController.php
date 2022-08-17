@@ -411,6 +411,7 @@ class ExaminationResultController extends Controller
                  $supp_exams = [];
                  $retake_exams = [];
                  $carry_exams = [];
+                 $student = Student::with(['campusProgram.program.ntaLevel'])->find($key);
               if(isset($buffer['results'])){
                  foreach($buffer['results'] as $res){
                     if($res->final_exam_remark == 'INCOMPLETE'){
@@ -674,7 +675,7 @@ class ExaminationResultController extends Controller
                       $credits = 0;
 
                       foreach($results as $rs){
-                           if($rs->point){
+                           if($rs->point != null){
                               $points += ($rs->point*$rs->moduleAssignment->programModuleAssignment->module->credit);
                               $credits += $rs->moduleAssignment->programModuleAssignment->module->credit;
                            }   
