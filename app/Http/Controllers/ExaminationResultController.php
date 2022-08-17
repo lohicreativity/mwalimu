@@ -1330,8 +1330,6 @@ class ExaminationResultController extends Controller
                       $query->where('student_id',$student->id);
                         })->with(['module'])->where('study_academic_year_id',$assignment->study_academic_year_id)->where('year_of_study',$assignment->programModuleAssignment->year_of_study)->where('semester_id',$request->get('semester_id'))->where('category','OPTIONAL')->get();
 
-                    return $optional_programs;
-
                    foreach($optional_programs as $prog){
                        $student_buffer[$student->id]['opt_credit'] += $prog->module->credit;
                    }
@@ -1429,7 +1427,7 @@ class ExaminationResultController extends Controller
 
                     $student_buffer[$student->id]['results'][] =  $processed_result;
                     $student_buffer[$student->id]['year_of_study'] = $yr_of_study;
-                    $student_buffer[$student->id]['total_credit'] = $total_credit;
+                    // $student_buffer[$student->id]['total_credit'] = $total_credit;
                     $student_buffer[$student->id]['nta_level'] = $campus_program->program->ntaLevel;
 
                     if($processed_result->final_exam_remark == 'RETAKE'){
