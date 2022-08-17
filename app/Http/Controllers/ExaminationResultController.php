@@ -1487,8 +1487,8 @@ class ExaminationResultController extends Controller
                $student_buffer[$student->id]['annual_credit'] = $annual_credit;
                foreach($optional_programs as $prog){
                    $student_buffer[$student->id]['opt_credit'] += $prog->module->credit;
-                   $student_buffer[$student->id]['annual_credit'] = $student_buffer[$student->id]['opt_credit'] + $annual_credit;
                }
+               $student_buffer[$student->id]['annual_credit'] = $student_buffer[$student->id]['opt_credit'] + $annual_credit;
             }
         }
 
