@@ -1580,6 +1580,9 @@ class ExaminationResultController extends Controller
                          $rem->point = Util::computeGPAPoints($buffer['annual_credit'],$buffer['annual_results']);
                          $remark->credit = $buffer['annual_credit'];
                     }
+                    if($sem_remarks[0]->remark == 'POSTPONED' && $sem_remarks[(count($sem_remarks)-1)]->remark != 'POSTPONED'){
+                                $remark->remark = $sem_remarks[(count($sem_remarks)-1)]->remark;
+                            }
                     $gpa_class = GPAClassification::where('nta_level_id',$buffer['nta_level']->id)->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('min_gpa','<=',bcdiv($rem->gpa,1,1))->where('max_gpa','>=',bcdiv($rem->gpa,1,1))->first();
                     if($rem->gpa && $gpa_class){
                       $rem->class = $gpa_class->name;
@@ -1594,12 +1597,16 @@ class ExaminationResultController extends Controller
                     $stud->academic_status_id = $status->id;
                     $stud->save();
 
-                    if($student_buffer[$student->id]['year_of_study'] == $student->year_of_study && str_contains($semester->name,2)){
-                      $results = ExaminationResult::where('student_id',$key)->get();
+                    if($student_buffer[$key]['year_of_study'] == $student->year_of_study && str_contains($semester->name,2)){
                       
+                      $sem_remarks = SemesterRemark::where('student_id',$key)->get();
+                      $results = ExaminationResult::where('student_id',$key)->get();
+                      $points = 0;
+                      $credits = 0;
+
                       foreach($results as $rs){
-                           if($rs->point){
-                              $points += $rs->point*$result->moduleAssignment->programModuleAssignment->module->credit;
+                           if(!is_null($rs->point)){
+                              $points += ($rs->point*$rs->moduleAssignment->programModuleAssignment->module->credit);
                               $credits += $rs->moduleAssignment->programModuleAssignment->module->credit;
                            }   
                       }
@@ -1609,20 +1616,26 @@ class ExaminationResultController extends Controller
                       // if(!$gpa_class){
                        //  return redirect()->back()->with('error','GPA classification not defined');
                       // }
-                      if($gpa_class && $student_buffer[$student->id]['year_of_study'] == $student->year_of_study && str_contains($semester->name,2)){
-                         $overall_remark = $gpa_class->class;
+                      if($gpa_class && $student_buffer[$key]['year_of_study'] == $student->year_of_study && str_contains($semester->name,2)){
+                         $overall_remark = $gpa_class->name;
 
                          if($rm = OverallRemark::where('student_id',$key)->first()){
                             $remark = $rm;
                          }else{
                             $remark = new OverallRemark;
                          }
-                         $remark->student_id = $student->id;
-                         $remark->gpa = $overall_gpa;
+                         $remark->student_id = $key;
                          $remark->point = $points;
                          $remark->credit = $credits;
-             $remark->remark = Util::getOverallRemark($sem_remarks);
-                         $remark->class = Util::getOverallRemark($sem_remarks) == 'PASS' || Util::getOverallRemark($sem_remarks) == 'CARRY' || Util::getOverallRemark($sem_remarks) == 'RETAKE'? $overall_remark : null;
+                         $remark->gpa = Util::getOverallRemark($sem_remarks) != 'POSTPONED' || Util::getOverallRemark($sem_remarks) != 'INCOMPLETE'? $overall_gpa : null;
+                         
+                         if(Util::getOverallRemark($sem_remarks) == 'POSTPONED'){
+                            $remark->remark = null;
+                           $remark->class = null;
+                         }else{
+                            $remark->remark = Util::getOverallRemark($sem_remarks);
+                            $remark->class = Util::getOverallRemark($sem_remarks) == 'PASS' || Util::getOverallRemark($sem_remarks) == 'CARRY' || Util::getOverallRemark($sem_remarks) == 'RETAKE' || Util::getOverallRemark($sem_remarks) == 'SUPP'? $overall_remark : null;
+                         }
                          $remark->save();
                       }
                     }
@@ -1632,6 +1645,7 @@ class ExaminationResultController extends Controller
 
            return redirect()->to('academic/results/'.$student->id.'/'.$ac_yr_id.'/'.$yr_of_study.'/show-student-results')->with('message','Results processed successfully');
         }catch(\Exception $e){
+           return $e->getMessage();
            return redirect()->back()->with('error','Unable to get the resource specified in this request');
         }
     }
