@@ -638,8 +638,8 @@ class ExaminationResultController extends Controller
                             $remark->student_id = $key;
                             $remark->year_of_study = $buffer['year_of_study'];
                             $remark->study_academic_year_id = $request->get('study_academic_year_id');
-                            $remark->remark = Util::getAnnualRemark($sem_remarks,$buffer['annual_results']);
-                            if($remark->remark == 'INCOMPLETE' || $remark->remark == 'INCOMPLETE' || $remark->remark == 'POSTPONED'){
+                            $remark->remark = Util::getAnnualRemark($sem_remarks,$buffer['annual_results']) != 'POSTPONED'? Util::getAnnualRemark($sem_remarks,$buffer['annual_results']) : null;
+                            if($remark->remark == 'INCOMPLETE' || $remark->remark == 'INCOMPLETE' || $remark->remark == null){
                                $remark->gpa = null;
                             }else{
                                  $remark->gpa = Util::computeGPA($buffer['annual_credit'],$buffer['annual_results']);
@@ -697,9 +697,15 @@ class ExaminationResultController extends Controller
                          $remark->student_id = $key;
                          $remark->point = $points;
                          $remark->credit = $credits;
-                         $remark->gpa = $overall_gpa;
-						             $remark->remark = Util::getOverallRemark($sem_remarks);
-                         $remark->class = Util::getOverallRemark($sem_remarks) == 'PASS' || Util::getOverallRemark($sem_remarks) == 'CARRY' || Util::getOverallRemark($sem_remarks) == 'RETAKE' || Util::getOverallRemark($sem_remarks) == 'SUPP'? $overall_remark : null;
+                         $remark->gpa = Util::getOverallRemark($sem_remarks) != 'POSTPONED' || Util::getOverallRemark($sem_remarks) != 'INCOMPLETE'? $overall_gpa : null;
+						             
+                         if(Util::getOverallRemark($sem_remarks) == 'POSTPONED'){
+                            $remark->remark = null;
+                           $remark->class = null;
+                         }else{
+                            $remark->remark = Util::getOverallRemark($sem_remarks);
+                            $remark->class = Util::getOverallRemark($sem_remarks) == 'PASS' || Util::getOverallRemark($sem_remarks) == 'CARRY' || Util::getOverallRemark($sem_remarks) == 'RETAKE' || Util::getOverallRemark($sem_remarks) == 'SUPP'? $overall_remark : null;
+                         }
                          $remark->save();
                       }
                     }
