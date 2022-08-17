@@ -512,11 +512,11 @@ class ExaminationResultController extends Controller
                           }
 
                             foreach($results as $resKey=>$result){
-                            $student = Student::with(['campusProgram.program.ntaLevel'])->find($result->student_id);
+                            $std = Student::with(['campusProgram.program.ntaLevel'])->find($result->student_id);
                                   
                             
-                                  $optional_programs = ProgramModuleAssignment::whereHas('optedStudents',function($query) use($student){
-                                    $query->where('student_id',$student->id);
+                                  $optional_programs = ProgramModuleAssignment::whereHas('optedStudents',function($query) use($std){
+                                    $query->where('student_id',$std->id);
                                       })->with(['module'])->where('study_academic_year_id',$assignment->study_academic_year_id)->where('year_of_study',$assignment->programModuleAssignment->year_of_study)->where('semester_id',$rem->semester_id)->where('category','OPTIONAL')->get();
                                 
                                  $stud_buffer[$key]['total_credit'] = $total_credit;
@@ -666,8 +666,9 @@ class ExaminationResultController extends Controller
                        
                           
 
-                      if($student_buffer[$student->id]['year_of_study'] == $student->year_of_study && str_contains($semester->name,2)){
-
+                      if($student_buffer[$key]['year_of_study'] == $student->year_of_study && str_contains($semester->name,2)){
+                      
+                      $sem_remarks = SemesterRemark::where('student_id',$key)->get();
                       $results = ExaminationResult::where('student_id',$key)->get();
                       $points = 0;
                       $credits = 0;
@@ -684,8 +685,8 @@ class ExaminationResultController extends Controller
           					  // if(!$gpa_class){
           						 //  return redirect()->back()->with('error','GPA classification not defined');
           					  // }
-                      if($gpa_class && $student_buffer[$student->id]['year_of_study'] == $student->year_of_study && str_contains($semester->name,2)){
-                         $overall_remark = $gpa_class->class;
+                      if($gpa_class && $student_buffer[$key]['year_of_study'] == $student->year_of_study && str_contains($semester->name,2)){
+                         $overall_remark = $gpa_class->name;
 
                          if($rm = OverallRemark::where('student_id',$key)->first()){
                             $remark = $rm;
@@ -696,7 +697,7 @@ class ExaminationResultController extends Controller
                          $remark->point = $points;
                          $remark->credit = $credits;
                          $remark->gpa = $overall_gpa;
-						 $remark->remark = Util::getOverallRemark($sem_remarks);
+						             $remark->remark = Util::getOverallRemark($sem_remarks);
                          $remark->class = Util::getOverallRemark($sem_remarks) == 'PASS' || Util::getOverallRemark($sem_remarks) == 'CARRY' || Util::getOverallRemark($sem_remarks) == 'RETAKE' || Util::getOverallRemark($sem_remarks) == 'SUPP'? $overall_remark : null;
                          $remark->save();
                       }
