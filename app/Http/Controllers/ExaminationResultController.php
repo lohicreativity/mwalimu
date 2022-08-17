@@ -672,7 +672,7 @@ class ExaminationResultController extends Controller
                       
                       foreach($results as $rs){
                            if($rs->point){
-                              $points += $rs->point*$result->moduleAssignment->programModuleAssignment->module->credit;
+                              $points += ($rs->point*$result->moduleAssignment->programModuleAssignment->module->credit);
                               $credits += $rs->moduleAssignment->programModuleAssignment->module->credit;
                            }   
                       }
@@ -695,7 +695,7 @@ class ExaminationResultController extends Controller
                          $remark->credit = $credits;
                          $remark->gpa = $overall_gpa;
 						 $remark->remark = Util::getOverallRemark($sem_remarks);
-                         $remark->class = Util::getOverallRemark($sem_remarks) == 'PASS' || Util::getOverallRemark($sem_remarks) == 'CARRY' || Util::getOverallRemark($sem_remarks) == 'RETAKE'? $overall_remark : null;
+                         $remark->class = Util::getOverallRemark($sem_remarks) == 'PASS' || Util::getOverallRemark($sem_remarks) == 'CARRY' || Util::getOverallRemark($sem_remarks) == 'RETAKE' || Util::getOverallRemark($sem_remarks) == 'SUPP'? $overall_remark : null;
                          $remark->save();
                       }
                     }
