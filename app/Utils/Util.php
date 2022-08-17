@@ -48,7 +48,7 @@ class Util {
    {
        $total_weights = 0;
        foreach($results as $res){
-          $total_weights += $res->point*$res->moduleAssignment->module->credit;
+          $total_weights += ($res->point*$res->moduleAssignment->module->credit);
        }
        return bcdiv($total_weights/$total_credits,1,4);
    }
@@ -60,7 +60,7 @@ class Util {
    {
        $total_weights = 0;
        foreach($results as $res){
-          $total_weights += $res->point*$res->moduleAssignment->module->credit;
+          $total_weights += ($res->point*$res->moduleAssignment->module->credit);
        }
        return $total_weights;
    }

@@ -1460,9 +1460,11 @@ class ExaminationResultController extends Controller
 
             }
           }
+
+          return $annual_module_assignments;
           
           foreach ($annual_module_assignments as $assign) {
-            $annual_results = ExaminationResult::where('module_assignment_id',$assign->id)->where('student_id',$student->id)->get();
+            $annual_results = ExaminationResult::with(['moduleAssignment.module'])->where('module_assignment_id',$assign->id)->where('student_id',$student->id)->get();
 
             if(Util::stripSpacesUpper($semester->name) == Util::stripSpacesUpper('Semester 2')){
 
@@ -1487,8 +1489,9 @@ class ExaminationResultController extends Controller
                $student_buffer[$student->id]['annual_credit'] = $annual_credit;
                foreach($optional_programs as $prog){
                    $student_buffer[$student->id]['opt_credit'] += $prog->module->credit;
+                   $student_buffer[$student->id]['annual_credit'] = $student_buffer[$student->id]['opt_credit'] + $annual_credit;
                }
-               $student_buffer[$student->id]['annual_credit'] = $student_buffer[$student->id]['opt_credit'] + $annual_credit;
+
             }
         }
 
