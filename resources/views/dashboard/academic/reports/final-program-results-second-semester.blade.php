@@ -321,7 +321,7 @@
                         @if($student->annualRemarks[0]->gpa) {{ bcdiv($student->annualRemarks[0]->gpa,1,1) }} @else N/A @endif
                       </td>
                       <td>
-                        @if($student->annualRemarks[0]->remark) @if($student->annualRemarks[1]->remark == 'POSTPONED' && $student->annualRemarks[0]->remark != 'POSTPONED') N/A @else {{ $student->annualRemarks[0]->remark }} @endif @else N/A @endif
+                        @if($student->annualRemarks[0]->remark) @if($student->semesterRemarks[0]->remark == 'POSTPONED' && $student->semesterRemarks[1]->remark != 'POSTPONED') N/A @else {{ $student->annualRemarks[0]->remark }} @endif @else N/A @endif
                       </td>
                       <td>
                         @if($student->annualRemarks[0]->class) {{ $student->annualRemarks[0]->class }} @else N/A @endif
