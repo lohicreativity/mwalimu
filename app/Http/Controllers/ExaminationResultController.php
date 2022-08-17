@@ -1330,9 +1330,12 @@ class ExaminationResultController extends Controller
                       $query->where('student_id',$student->id);
                         })->with(['module'])->where('study_academic_year_id',$assignment->study_academic_year_id)->where('year_of_study',$assignment->programModuleAssignment->year_of_study)->where('semester_id',$request->get('semester_id'))->where('category','OPTIONAL')->get();
 
+                    return $optional_programs;
+
                    foreach($optional_programs as $prog){
                        $student_buffer[$student->id]['opt_credit'] += $prog->module->credit;
                    }
+
                    $student_buffer[$student->id]['total_credit'] = $student_buffer[$student->id]['opt_credit'] + $total_credit;
 
                     if($result->retakeHistory && isset($result->retakeHistory->retakeHistory->retakableResults[0])){
@@ -1477,8 +1480,8 @@ class ExaminationResultController extends Controller
             
           foreach($annual_results as $key=>$result){
                 
-                $optional_programs = ProgramModuleAssignment::whereHas('students',function($query) use($student){
-                  $query->where('id',$student->id);
+                $optional_programs = ProgramModuleAssignment::whereHas('optedStudents',function($query) use($student){
+                  $query->where('student_id',$student->id);
                     })->with(['module'])->where('study_academic_year_id',$assign->study_academic_year_id)->where('year_of_study',$assign->programModuleAssignment->year_of_study)->where('category','OPTIONAL')->get();
                
                $student_buffer[$student->id]['annual_results'][] =  $result;
