@@ -663,16 +663,18 @@ class ExaminationResultController extends Controller
                            
                         }
                        
-                       $points = 0;
-                      $credits = 0;
+                       
                           
 
                       if($student_buffer[$student->id]['year_of_study'] == $student->year_of_study && str_contains($semester->name,2)){
+
                       $results = ExaminationResult::where('student_id',$key)->get();
-                      
+                      $points = 0;
+                      $credits = 0;
+
                       foreach($results as $rs){
                            if($rs->point){
-                              $points += ($rs->point*$result->moduleAssignment->programModuleAssignment->module->credit);
+                              $points += ($rs->point*$rs->moduleAssignment->programModuleAssignment->module->credit);
                               $credits += $rs->moduleAssignment->programModuleAssignment->module->credit;
                            }   
                       }
