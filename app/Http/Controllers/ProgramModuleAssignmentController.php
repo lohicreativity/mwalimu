@@ -124,6 +124,8 @@ class ProgramModuleAssignmentController extends Controller
                           $query->whereIn('id',$opt_mod_ids);
                       })->where('year_of_study',$yr)->where('campus_program_id',$campus_program->id)->get();
 
+              return $non_opt_students;
+
               $skip = count($optional_modules) != 0? intdiv(count($non_opt_students),count($optional_modules)) : 0;
               $remainder = count($optional_modules) != 0? count($non_opt_students)%count($optional_modules) : 0;
               $studCount = 0;
