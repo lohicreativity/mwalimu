@@ -578,6 +578,8 @@ class ModuleAssignmentController extends Controller
                       })->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id)->get()
                 ];
             }
+
+            return $data['students'];
             return view('dashboard.academic.reports.total-students-in-module', $data);
             
         }catch(\Exception $e){
