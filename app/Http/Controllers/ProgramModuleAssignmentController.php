@@ -136,6 +136,7 @@ class ProgramModuleAssignmentController extends Controller
               foreach($optional_modules as $mod){
                   $opt_mod_stud[$mod->id]['count'] = ProgramModuleAssignment::find($mod->id)->students()->count();
                   $opt_mod_stud[$mod->id]['perc'] = $opt_mod_stud[$mod->id]['count']/(count($opt_students)+count($non_opt_students))*100;
+
               }
 
 
@@ -144,7 +145,7 @@ class ProgramModuleAssignmentController extends Controller
               $studCount = 0;
                  
               foreach($optional_modules as $key=>$module){
-                  if($opt_mod_stud[$module->id]['count'] != 0 && $opt_mod_stud[$module->id]['perc'] >= 50){
+                  if(($opt_mod_stud[$module->id]['count'] != 0 && $opt_mod_stud[$module->id]['perc'] >= 50) || count($opt_students) == 0){
                       foreach($non_opt_students as $stKey=>$student){
                          
                          if(Student::find($student->id)->options()->whereIn('id',$opt_mod_ids)->count() < $elective_policy->number_of_options){
