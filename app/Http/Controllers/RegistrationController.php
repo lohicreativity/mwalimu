@@ -28,7 +28,7 @@ class RegistrationController extends Controller
      */
     public function create(Request $request)
     {
-    	$student = User::find(Auth::user()->id)->student()->with(['applicant','studentshipStatus','academicStatus','semesterRemarks'])->first();
+    	$student = User::find(Auth::user()->id)->student()->with(['applicant','studentshipStatus','academicStatus','semesterRemarks','overallRemark'])->first();
       foreach($student->semesterRemarks as $rem){
           if($student->academicStatus->name == 'RETAKE'){
               if($rem->semester_id == session('active_semester_id') && $rem->remark != 'RETAKE'){
@@ -36,6 +36,11 @@ class RegistrationController extends Controller
               }
           }
        }
+      if($student->overallRemark){
+          if($student->overallRemark->remark == 'SUPP'){
+              return redirect()->back()->with('error','You are not allowed to register for this semester');
+          }
+      }
       if($student->studentshipStatus->name == 'POSTPONED'){
           return redirect()->back()->with('error','You cannot continue with registration because you have been postponed');
       }
