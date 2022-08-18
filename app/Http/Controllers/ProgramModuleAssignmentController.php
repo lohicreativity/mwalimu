@@ -120,11 +120,13 @@ class ProgramModuleAssignmentController extends Controller
                   $opt_mod_ids[] = $mod->id;
               }
 
-              $non_opt_students = Student::whereDoesntHave('options',function($query) use($opt_mod_ids){
+              $non_opt_students = Student::whereHas('studentshipStatus',function($query){
+                  $query->where('name','ACTIVE');
+              })->whereDoesntHave('options',function($query) use($opt_mod_ids){
                           $query->whereIn('id',$opt_mod_ids);
                       })->where('year_of_study',$yr)->where('campus_program_id',$campus_program->id)->get();
 
-              return $non_opt_students;
+              return $optional_modules;
 
               $skip = count($optional_modules) != 0? intdiv(count($non_opt_students),count($optional_modules)) : 0;
               $remainder = count($optional_modules) != 0? count($non_opt_students)%count($optional_modules) : 0;
