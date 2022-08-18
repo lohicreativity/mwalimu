@@ -122,12 +122,16 @@ class ProgramModuleAssignmentController extends Controller
 
               $non_opt_students = Student::whereHas('studentshipStatus',function($query){
                   $query->where('name','ACTIVE');
+              })->whereHas('registrations',function($query) use($request,$yr){
+                   $query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',$yr)->where('semester_id',$request->get('semester_id'));
               })->whereDoesntHave('options',function($query) use($opt_mod_ids){
                           $query->whereIn('id',$opt_mod_ids);
                       })->where('year_of_study',$yr)->where('campus_program_id',$campus_program->id)->get();
 
               $opt_students = Student::whereHas('studentshipStatus',function($query){
                   $query->where('name','ACTIVE');
+              })->whereHas('registrations',function($query) use($request,$yr){
+                   $query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',$yr)->where('semester_id',$request->get('semester_id'));
               })->whereHas('options',function($query) use($opt_mod_ids){
                           $query->whereIn('id',$opt_mod_ids);
                       })->where('year_of_study',$yr)->where('campus_program_id',$campus_program->id)->get();
