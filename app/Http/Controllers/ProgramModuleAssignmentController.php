@@ -132,10 +132,10 @@ class ProgramModuleAssignmentController extends Controller
                           $query->whereIn('id',$opt_mod_ids);
                       })->where('year_of_study',$yr)->where('campus_program_id',$campus_program->id)->get();
 
-              $opt_mod_studs = [];
+              $opt_mod_stud = [];
               foreach($optional_modules as $mod){
-                  $opt_mod_studs[$mod->id]['count'] = ProgramModuleAssignment::find($mod->id)->students()->count();
-                  $opt_mod_studs[$mod->id]['perc'] = $opt_mod_studs[$mod->id]['count']/(count($opt_students)+count($non_opt_students))*100;
+                  $opt_mod_stud[$mod->id]['count'] = ProgramModuleAssignment::find($mod->id)->students()->count();
+                  $opt_mod_stud[$mod->id]['perc'] = $opt_mod_studs[$mod->id]['count']/(count($opt_students)+count($non_opt_students))*100;
               }
 
 
