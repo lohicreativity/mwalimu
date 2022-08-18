@@ -559,9 +559,10 @@ class ModuleAssignmentController extends Controller
                     'study_academic_year'=>$module_assignment->studyAcademicYear,
                     'staff'=>$module_assignment->staff,
                     'module'=>$module_assignment->module,
-                    'students'=>$module_assignment->programModuleAssignment->students()->get()
+                    'students'=>$module_assignment->programModuleAssignment->students()->->whereHas('studentshipStatus',function($query){
+                        $query->where('name','ACTIVE');
+                     })->get()
                 ];
-
                 
             }else{
                 
@@ -578,8 +579,6 @@ class ModuleAssignmentController extends Controller
                       })->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id)->get()
                 ];
             }
-
-            return $data['students'];
             return view('dashboard.academic.reports.total-students-in-module', $data);
             
         }catch(\Exception $e){
