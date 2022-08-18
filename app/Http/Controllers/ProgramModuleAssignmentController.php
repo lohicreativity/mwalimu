@@ -126,7 +126,6 @@ class ProgramModuleAssignmentController extends Controller
                           $query->whereIn('id',$opt_mod_ids);
                       })->where('year_of_study',$yr)->where('campus_program_id',$campus_program->id)->get();
 
-              return $optional_modules;
 
               $skip = count($optional_modules) != 0? intdiv(count($non_opt_students),count($optional_modules)) : 0;
               $remainder = count($optional_modules) != 0? count($non_opt_students)%count($optional_modules) : 0;
@@ -138,16 +137,19 @@ class ProgramModuleAssignmentController extends Controller
                      if($key == (count($optional_modules)-1)){
                         $skip = $skip + $remainder;
                      }
-                     if($count <= $skip){
-                        if($stKey >= $studCount){
+                     
+                        // if($stKey >= $studCount){
                           if(Student::find($student->id)->options()->whereIn('id',$opt_mod_ids)->count() < $elective_policy->number_of_options){
-                            $program_mod_assign = ProgramModuleAssignment::find($module->id);
-                            $program_mod_assign->students()->attach([$student->id]);
+                              if($count <= $skip){
+                                $program_mod_assign = ProgramModuleAssignment::find($module->id);
+                                $program_mod_assign->students()->attach([$student->id]);
+                                $count += 1;
+                             }
                           }
-                          $studCount += 1;
-                        } 
-                     }
-                     $count += 1;
+                          // $studCount += 1;
+                        // } 
+                     
+                     // $count += 1;
                   }
                 }
               } 
