@@ -559,7 +559,7 @@ class ModuleAssignmentController extends Controller
                     'study_academic_year'=>$module_assignment->studyAcademicYear,
                     'staff'=>$module_assignment->staff,
                     'module'=>$module_assignment->module,
-                    'students'=>$module_assignment->programModuleAssignment->students()->->whereHas('studentshipStatus',function($query){
+                    'students'=>$module_assignment->programModuleAssignment->students()->whereHas('studentshipStatus',function($query){
                         $query->where('name','ACTIVE');
                      })->get()
                 ];
