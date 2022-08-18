@@ -30,12 +30,12 @@ class RegistrationController extends Controller
     {
     	$student = User::find(Auth::user()->id)->student()->with(['applicant','studentshipStatus','academicStatus','semesterRemarks'])->first();
       foreach($student->semesterRemarks as $rem){
-      	  if($student->academicStatus->name == 'RETAKE'){
-	      	  if($rem->semester_id == session('active_semester_id') && $rem->study_academic_year_id == session('active_academic_year_id') && $rem->remark != 'RETAKE'){
-	                  return redirect()->back()->with('error','You are not allowed to register for retake this semester');
-	      	  }
-      	  }
-      }
+          if($student->academicStatus->name == 'RETAKE'){
+              if($rem->semester_id == session('active_semester_id') && $rem->remark != 'RETAKE'){
+                      return redirect()->back()->with('error','You are not allowed to register for retake in this semester');
+              }
+          }
+       }
       if($student->studentshipStatus->name == 'POSTPONED'){
           return redirect()->back()->with('error','You cannot continue with registration because you have been postponed');
       }

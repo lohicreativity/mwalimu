@@ -143,6 +143,7 @@ class SpecialExamController extends Controller
                         $exam->module_assignment_id = $request->get('mod_assign_'.$assign->id);
                         $exam->semester_id = session('active_semester_id');
                         $exam->type = $request->get('type');
+                        $exam->status = 'APPROVED';
                         $exam->special_exam_request_id = $req->id;
                         $exam->save();
                 }
