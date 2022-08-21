@@ -709,7 +709,7 @@ class ExaminationResultController extends Controller
                             $stud->academic_status_id = $status->id;
                             $stud->save();
 
-                            if($student_buffer[$key]['year_of_study'] == $student->year_of_study && str_contains($semester->name,'2')){
+                            if($student_buffer[$key]['year_of_study'] == $student->year_of_study){
                       
                               $sem_remarks = SemesterRemark::where('student_id',$key)->get();
                               $results = ExaminationResult::where('student_id',$key)->get();
@@ -725,10 +725,10 @@ class ExaminationResultController extends Controller
                               
                               $overall_gpa = $credits != 0? bcdiv($points/$credits, 1,1) : null;
                               $gpa_class = GPAClassification::where('nta_level_id',$student->campusProgram->program->nta_level_id)->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('min_gpa','<=',bcdiv($overall_gpa,1,1))->where('max_gpa','>=',bcdiv($overall_gpa,1,1))->first();
-                              if(!$gpa_class && $key == 7){
-                                return redirect()->back()->with('error','GPA classification not defined');
-                              }
-                              if($gpa_class && $student_buffer[$key]['year_of_study'] == $student->year_of_study && str_contains($semester->name,'2')){
+                              // if(!$gpa_class){
+                               //  return redirect()->back()->with('error','GPA classification not defined');
+                              // }
+                              if($gpa_class && $student_buffer[$key]['year_of_study'] == $student->year_of_study){
                                  $overall_remark = $gpa_class->name;
 
                                  if($rm = OverallRemark::where('student_id',$key)->first()){
