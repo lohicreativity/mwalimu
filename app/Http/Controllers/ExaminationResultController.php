@@ -708,7 +708,7 @@ class ExaminationResultController extends Controller
                             $stud->academic_status_id = $status->id;
                             $stud->save();
 
-                            if($student_buffer[$key]['year_of_study'] == $student->year_of_study && str_contains($semester->name,2)){
+                            if($student_buffer[$key]['year_of_study'] == $student->year_of_study){
                       
                               $sem_remarks = SemesterRemark::where('student_id',$key)->get();
                               $results = ExaminationResult::where('student_id',$key)->get();
@@ -727,7 +727,7 @@ class ExaminationResultController extends Controller
                               // if(!$gpa_class){
                                //  return redirect()->back()->with('error','GPA classification not defined');
                               // }
-                              if($gpa_class && $student_buffer[$key]['year_of_study'] == $student->year_of_study && str_contains($semester->name,2)){
+                              if($gpa_class && $student_buffer[$key]['year_of_study'] == $student->year_of_study){
                                  $overall_remark = $gpa_class->name;
 
                                  if($rm = OverallRemark::where('student_id',$key)->first()){
