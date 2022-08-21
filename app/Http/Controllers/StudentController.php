@@ -299,21 +299,21 @@ class StudentController extends Controller
          $student = Student::with(['campusProgram.program'])->find($student_id);
          $study_academic_year = StudyAcademicYear::with('academicYear')->find($ac_yr_id);
          $semesters = Semester::with(['remarks'=>function($query) use ($student, $ac_yr_id, $yr_of_study, $request){
-           $query->where('student_id',$student->id)->where('year_of_study',$yr_of_study)->where(function($query) use($request){
+           $query->where('student_id',$student->id)->where('year_of_study',$yr_of_study)->where(function($query) use($ac_yr_id, $request){
                $query->where('study_academic_year_id',$ac_yr_id)->orWhere('study_academic_year_id',$request->get('next_ac_yr_id'));
            });
          }])->get();
          $results = ExaminationResult::whereHas('moduleAssignment',function($query) use ($ac_yr_id, $request){
              //$query->where('study_academic_year_id',$ac_yr_id);
-             $query->where(function($query) use($request){
+             $query->where(function($query) use($ac_yr_id, $request){
                $query->where('study_academic_year_id',$ac_yr_id)->orWhere('study_academic_year_id',$request->get('next_ac_yr_id'));
            });
          })->whereHas('moduleAssignment.programModuleAssignment',function($query) use ($ac_yr_id, $yr_of_study, $request){
-             $query->where('year_of_study',$yr_of_study)->where(function($query) use($request){
+             $query->where('year_of_study',$yr_of_study)->where(function($query) use($ac_yr_id, $request){
                $query->where('study_academic_year_id',$ac_yr_id)->orWhere('study_academic_year_id',$request->get('next_ac_yr_id'));
            });//->where('study_academic_year_id',$ac_yr_id);
          })->with(['moduleAssignment.programModuleAssignment'=>function($query) use ($ac_yr_id,$yr_of_study, $request){
-           $query->where('year_of_study',$yr_of_study)->where(function($query) use($request){
+           $query->where('year_of_study',$yr_of_study)->where(function($query) use($ac_yr_id, $request){
                $query->where('study_academic_year_id',$ac_yr_id)->orWhere('study_academic_year_id',$request->get('next_ac_yr_id'));
            });//->where('study_academic_year_id',$ac_yr_id);
          },'moduleAssignment','moduleAssignment.module','carryHistory.carrableResults'=>function($query){
@@ -324,29 +324,33 @@ class StudentController extends Controller
          
         // ->where('study_academic_year_id',$ac_yr_id)
        //  where('study_academic_year_id',$ac_yr_id)->
-         $core_programs = ProgramModuleAssignment::with(['module'])->where(function($query) use($request){
+         $core_programs = ProgramModuleAssignment::with(['module'])->where(function($query) use($ac_yr_id, $request){
                $query->where('study_academic_year_id',$ac_yr_id)->orWhere('study_academic_year_id',$request->get('next_ac_yr_id'));
            })->where('year_of_study',$yr_of_study)->where('category','COMPULSORY')->where('campus_program_id',$student->campus_program_id)->get();
          $optional_programs = ProgramModuleAssignment::whereHas('students',function($query) use($student_id){
              $query->where('id',$student_id);
-             })->with(['module'])->where(function($query) use($request){
+             })->with(['module'])->where(function($query) use($ac_yr_id, $request){
                $query->where('study_academic_year_id',$ac_yr_id)->orWhere('study_academic_year_id',$request->get('next_ac_yr_id'));
            })->where('year_of_study',$yr_of_study)->where('category','OPTIONAL')->get();
           //where('study_academic_year_id',$ac_yr_id)->
-          $annual_remark = AnnualRemark::where(function($query) use($request){
+          $annual_remark = AnnualRemark::where(function($query) use($ac_yr_id, $request){
                $query->where('study_academic_year_id',$ac_yr_id)->orWhere('study_academic_year_id',$request->get('next_ac_yr_id'));
            })->where('student_id',$student_id)->where('year_of_study',$yr_of_study)->first();
          // if(count($optional_programs) == 0){
          //   $optional_programs = ProgramModuleAssignment::with(['module'])->where('study_academic_year_id',$ac_yr_id)->where('year_of_study',$yr_of_study)->where('category','OPTIONAL')->get();
          // }
 
-         $core_program_modules = ModuleAssignment::whereHas('programModuleAssignment',function($query) use ($ac_yr_id,$yr_of_study){
-                   $query->where('study_academic_year_id',$ac_yr_id)->where('year_of_study',$yr_of_study)->where('category','COMPULSORY');
+         $core_program_modules = ModuleAssignment::whereHas('programModuleAssignment',function($query) use ($ac_yr_id,$yr_of_study, $request){
+                   $query->where(function($query) use($ac_yr_id, $request){
+               $query->where('study_academic_year_id',$ac_yr_id)->orWhere('study_academic_year_id',$request->get('next_ac_yr_id'));
+           })->where('year_of_study',$yr_of_study)->where('category','COMPULSORY');
                  })->get();
             $opt_program_modules = ModuleAssignment::whereHas('programModuleAssignment.students',function($query) use($student){
                      $query->where('id',$student->id);
-                 })->whereHas('programModuleAssignment',function($query) use($ac_yr_id,$yr_of_study){
-                     $query->where('study_academic_year_id',$ac_yr_id)->where('year_of_study',$yr_of_study)->where('category','OPTIONAL');
+                 })->whereHas('programModuleAssignment',function($query) use($ac_yr_id,$yr_of_study, $request){
+                     $query->where(function($query) use($ac_yr_id, $request){
+               $query->where('study_academic_year_id',$ac_yr_id)->orWhere('study_academic_year_id',$request->get('next_ac_yr_id'));
+               })->where('year_of_study',$yr_of_study)->where('category','OPTIONAL');
                 })->get();
 
             $publications = ResultPublication::where('study_academic_year_id',$ac_yr_id)->where('status','PUBLISHED')->get();
