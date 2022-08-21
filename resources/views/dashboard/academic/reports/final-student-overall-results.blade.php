@@ -105,6 +105,7 @@
                         $count = 1;
                       @endphp
                     @foreach($core_programs as $program)
+                       {{--
                         @if($semester->id == $program->semester_id && !in_array($program->id,$programIds))
                          <tr>
                           <td>{{ $count }}</td>
@@ -120,6 +121,7 @@
                           $count += 1;
                         @endphp
                        @endif
+                       --}}
                       @foreach($results as $result)
                         @if($result->final_exam_remark == 'POSTPONED' && count($result->moduleAssignment->specialExams) == 0)
 
@@ -190,6 +192,7 @@
                       @endforeach
                     @endforeach
                     @foreach($optional_programs as $program)
+                       {{--
                         @if($semester->id == $program->semester_id && !in_array($program->id,$programIds))
                          <tr>
                           <td>{{ $count }}</td>
@@ -205,6 +208,7 @@
                           $count += 1;
                         @endphp
                        @endif
+                       --}}
                        @foreach($results as $result)
                          @if($result->final_exam_remark == 'POSTPONED' && count($result->moduleAssignment->specialExams) == 0)
 
