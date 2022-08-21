@@ -390,7 +390,7 @@ class ExaminationResultController extends Controller
           }
             
             foreach($annual_results as $key=>$result){
-            $student = Student::find($result->student_id);
+            $student = Student::with(['campusProgram.program.ntaLevel'])->find($result->student_id);
                   
                   $optional_programs = ProgramModuleAssignment::whereHas('optedStudents',function($query) use($student){
                     $query->where('student_id',$student->id);
@@ -400,6 +400,7 @@ class ExaminationResultController extends Controller
                     $student_buffer[$student->id]['results'] = [];
                     $student_buffer[$student->id]['total_credit'] = 0;
                  }
+                 $student_buffer[$student->id]['nta_level'] = $student->campusProgram->program->ntaLevel;
                  $student_buffer[$student->id]['annual_results'][] =  $result;
                  $student_buffer[$student->id]['year_of_study'] = explode('_',$request->get('campus_program_id'))[2];
                  $student_buffer[$student->id]['annual_credit'] = $annual_credit;
@@ -1532,6 +1533,7 @@ class ExaminationResultController extends Controller
                     $student_buffer[$student->id]['results'] = [];
                     $student_buffer[$student->id]['total_credit'] = 0;
                  }
+                $student_buffer[$student->id]['nta_level'] = $student->campusProgram->program->ntaLevel;
                $student_buffer[$student->id]['annual_results'][] =  $result;
                $student_buffer[$student->id]['year_of_study'] = $yr_of_study;
                $student_buffer[$student->id]['annual_credit'] = $annual_credit;
