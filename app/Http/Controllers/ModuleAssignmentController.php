@@ -421,12 +421,14 @@ class ModuleAssignmentController extends Controller
              DB::beginTransaction();
              foreach ($students as $key => $student) {
                 $course_work = CourseWorkResult::where('module_assignment_id',$module_assignment->id)->where('student_id',$student->id)->sum('score');
+                $student_course_work_count = CourseWorkResult::where('module_assignment_id',$module_assignment->id)->where('student_id',$student->id)->count();
+
                 $course_work_count = CourseWorkResult::whereHas('assessmentPlan',function($query) use ($module_assignment){
                      $query->where('name','LIKE','%Test%');
                   })->where('module_assignment_id',$module_assignment->id)->where('student_id',$student->id)->count();
 
                       $postponement = Postponement::where('student_id',$student->id)->where('study_academic_year_id',$module_assignment->study_academic_year_id)->where('semester_id',$module_assignment->programModuleAssignment->semester_id)->where('status','POSTPONED')->first();
-
+                  
                     if($result = ExaminationResult::where('module_assignment_id',$module_assignment->id)->where('student_id',$student->id)->where('exam_type','FINAL')->first()){
                         $exam_result = $result;
                         $exam_result->module_assignment_id = $module_assignment->id;
@@ -445,6 +447,7 @@ class ModuleAssignmentController extends Controller
                         $exam_result->processed_at = now();
                         $exam_result->save();
                     }else{
+                        if($student_course_work_count != 0){
                         $exam_result = new ExaminationResult;
                         $exam_result->module_assignment_id = $module_assignment->id;
                         $exam_result->student_id = $student->id;
@@ -463,6 +466,7 @@ class ModuleAssignmentController extends Controller
                         $exam_result->processed_by_user_id = Auth::user()->id;
                         $exam_result->processed_at = now();
                         $exam_result->save();
+                        }
                     }
                     
              }
