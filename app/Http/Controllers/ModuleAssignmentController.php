@@ -1012,6 +1012,11 @@ class ModuleAssignmentController extends Controller
                           $student_present = true;
                       }
                   }
+                  if(ExaminationResult::where('student_id',$student->id)->whereHas('moduleAssignment.programModuleAssignment',function($query) use($student){
+                       $query->where('year_of_study',$student->year_of_study)->where('semester_id',$module_assignment->programModuleAssignment->semester_id);
+                  })->count() != 0){
+                      $student_present = true;
+                  }
                   if(!$student_present){
                       $missing_students[] = $stud;
                   }
