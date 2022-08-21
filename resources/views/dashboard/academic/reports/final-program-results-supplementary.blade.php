@@ -267,13 +267,15 @@
                             @foreach($student->examinationResults as $result)
                                  @if($result->module_assignment_id == $assignment->id)
                                     @if(!is_null($result->supp_score))
-                                        <h1>{{ $result->supp_score }}</h1>
+                                     
                                         @php $display_student = true; @endphp
                                     @else
-                                      @if(count($result->moduleAssignment->specialExams) != 0) 
+                                      @foreach($result->moduleAssignment->specialExams as $ex)
+                                      @if(count($result->moduleAssignment->specialExams) != 0 && $ex->student_id == $student->id) 
                                         @php $display_student = true; @endphp
-                                        <h1>{{ count($result->moduleAssignment->specialExams) }}</h1>
+                                  
                                       @endif
+                                      @endforeach
                                     @endif
                                  @endif
                                @endforeach
