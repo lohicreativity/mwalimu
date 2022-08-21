@@ -266,6 +266,7 @@
                           @foreach($mods as $assignment)
                             @foreach($student->examinationResults as $result)
                                  @if($result->module_assignment_id == $assignment->id)
+                                    <h1>{{ $result->module_assignment_id }}</h1>
                                     @if(!is_null($result->supp_score))
                                         @php $display_student = true; @endphp
                                     @else
@@ -278,7 +279,6 @@
                             @endforeach
                         @endforeach
                     
-                    @if($student->registration_number != 'MNMA/BTC.YW/0002/22')
                     @if($display_student)
                     <tr>
                       <td>{{ $key+1 }}</td>
@@ -343,7 +343,6 @@
                       @endif
                       @endif
                     </tr>
-                     @endif
                      @endif
                     @endforeach
                   </table>
