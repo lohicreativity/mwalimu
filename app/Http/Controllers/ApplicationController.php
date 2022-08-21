@@ -5184,11 +5184,11 @@ class ApplicationController extends Controller
 			
 			$tuition_invoice = Invoice::whereHas('feeType',function($query){
                $query->where('name','LIKE','%Tuition%');
-			})->with(['gatewayPayment','feeType'])->where('payable_type','applicant')->where('payable_id',$applicant->id)->first();
+			})->with(['gatewayPayment','feeType'])->where('payable_type','student')->where('payable_id',$student->id)->first();
 
 			$misc_invoice = Invoice::whereHas('feeType',function($query){
 				   $query->where('name','LIKE','%Miscellaneous%');
-			})->with(['gatewayPayment','feeType'])->where('payable_type','applicant')->where('payable_id',$applicant->id)->first();
+			})->with(['gatewayPayment','feeType'])->where('payable_type','student')->where('payable_id',$student->id)->first();
 
 			$usd_currency = Currency::where('code','USD')->first();
 
