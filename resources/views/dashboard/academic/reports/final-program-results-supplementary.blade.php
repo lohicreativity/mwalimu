@@ -261,6 +261,7 @@
 
                     @foreach($students as $key=>$student)
                       @php $display_student = false; @endphp
+                      {{--
                       @foreach($sem_modules as $mdKey=>$mods)
                           @foreach($mods as $assignment)
                             @foreach($student->examinationResults as $result)
@@ -276,6 +277,7 @@
                                @endforeach
                             @endforeach
                         @endforeach
+                        --}}
                     @if($display_student)
                     <tr>
                       <td>{{ $key+1 }}</td>
