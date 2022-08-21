@@ -121,6 +121,9 @@
                         @endphp
                        @endif
                       @foreach($results as $result)
+                        @if($result->final_exam_remark == 'POSTPONED' && count($result->moduleAssignment->specialExams) == 0)
+
+                        @else
                          @if($result->moduleAssignment->programModuleAssignment->semester_id == $semester->id && $result->moduleAssignment->programModuleAssignment->id == $program->id)
 
                          @if($result->retakeHistory)
@@ -183,6 +186,7 @@
                           @endphp
                          @endif
                          @endif
+                        @endif
                       @endforeach
                     @endforeach
                     @foreach($optional_programs as $program)
@@ -202,6 +206,10 @@
                         @endphp
                        @endif
                        @foreach($results as $result)
+                         @if($result->final_exam_remark == 'POSTPONED' && count($result->moduleAssignment->specialExams) == 0)
+
+                         @else
+
                          @if($result->moduleAssignment->programModuleAssignment->semester_id == $semester->id && $result->moduleAssignment->programModuleAssignment->id == $program->id)
 
                          @if($result->retakeHistory)
@@ -264,6 +272,7 @@
                           @endphp
                          @endif
                          @endif
+                        @endif
                       @endforeach
                      @endforeach
                     </tbody>
