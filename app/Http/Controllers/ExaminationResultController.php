@@ -406,7 +406,8 @@ class ExaminationResultController extends Controller
                  }
             }
         }
-
+        
+        return dd($student_buffer);
         foreach($student_buffer as $key=>$buffer){
                  $pass_status = 'PASS';
                  $supp_exams = [];
@@ -703,10 +704,6 @@ class ExaminationResultController extends Controller
                               $remark->class = null;
                             }
                             $remark->save();
-
-                            if($student->id == 7){
-                                return $remark;
-                            }
 
                             $status = AcademicStatus::where('name',$remark->remark)->first();
                             $stud = Student::find($key);
