@@ -397,6 +397,7 @@ class ApplicationController extends Controller
                         <RequestParameters>
                         <f4indexno>'.$applicant->index_number.'</f4indexno >
                         <f6indexno>'.$f6indexno.'</f6indexno>
+                        <Gender>'.$applicant->gender.'</Gender>
                         <SelectedProgrammes>'.implode(',', $selected_programs).'</SelectedProgrammes>
                         <MobileNumber>'.str_replace('-', '', $applicant->phone).'</MobileNumber>
                         <OtherMobileNumber></OtherMobileNumber>
@@ -423,6 +424,7 @@ class ApplicationController extends Controller
                         <RequestParameters>
                         <f4indexno>'.$applicant->index_number.'</f4indexno >
                         <f6indexno>'.$f6indexno.'</f6indexno>
+                        <Gender>'.$applicant->gender.'</Gender>
                         <SelectedProgrammes>'.implode(',', $selected_programs).'</SelectedProgrammes>
                         <MobileNumber>'.str_replace('-', '', $applicant->phone).'</MobileNumber>
                         <OtherMobileNumber></OtherMobileNumber>
