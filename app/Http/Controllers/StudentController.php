@@ -316,6 +316,8 @@ class StudentController extends Controller
            $query->where('year_of_study',$yr_of_study)->where(function($query) use($ac_yr_id, $request){
                $query->where('study_academic_year_id',$ac_yr_id)->orWhere('study_academic_year_id',$request->get('next_ac_yr_id'));
            });//->where('study_academic_year_id',$ac_yr_id);
+         },'moduleAssignment.specialExams'=>function($query, $student){
+            $query->where('student_id',$student->id);
          },'moduleAssignment','moduleAssignment.module','carryHistory.carrableResults'=>function($query){
             $query->latest();
          },'retakeHistory.retakableResults'=>function($query){

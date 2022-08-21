@@ -62,6 +62,14 @@ class ModuleAssignment extends Model
     }
 
     /**
+     * Establish one to many relationship with special exams
+     */
+    public function specialExams()
+    {
+        return $this->hasMany(SpecialExam::class,'module_assignment_id');
+    }
+
+    /**
      * Establish one to many relationship with staffs
      */
     public function staff()

@@ -107,6 +107,9 @@
                         @endphp
                        @endif
                       @foreach($results as $result)
+                        @if($result->final_exam_remark == 'POSTPONED' && count($result->specialExams) != 0)
+
+                        @else
                          @if($result->moduleAssignment->programModuleAssignment->semester_id == $semester->id && $result->moduleAssignment->programModuleAssignment->id == $program->id)
 
                          @if($result->retakeHistory)
@@ -170,6 +173,7 @@
                          @endif
                          @endif
                       @endforeach
+                      @endif
                     @endforeach
                     @foreach($optional_programs as $program)
                         @if($semester->id == $program->semester_id && !in_array($program->id,$programIds))
@@ -188,6 +192,9 @@
                         @endphp
                        @endif
                        @foreach($results as $result)
+                         @if($result->final_exam_remark == 'POSTPONED' && count($result->specialExams) != 0)
+
+                         @else
                          @if($result->moduleAssignment->programModuleAssignment->semester_id == $semester->id && $result->moduleAssignment->programModuleAssignment->id == $program->id)
 
                          @if($result->retakeHistory)
@@ -251,6 +258,7 @@
                          @endif
                          @endif
                       @endforeach
+                      @endif
                      @endforeach
                     </tbody>
                  </table>
