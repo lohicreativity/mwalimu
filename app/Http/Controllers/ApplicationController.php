@@ -3821,11 +3821,11 @@ class ApplicationController extends Controller
             $applicant->save();
 			
 
-        $applicant = Applicant::whereHas('selections',function($query) use($request){
-             $query->where('status','SELECTED');
-        })->with(['nextOfKin','intake','selections'=>function($query){
-             $query->where('status','SELECTED');
-        },'selections.campusProgram.program','applicationWindow','country','selections.campusProgram.campus'])->where('program_level_id',$applicant->program_level_id)->where('application_window_id',$applicant->application_window_id)->find($applicant->id);
+        // $applicant = Applicant::whereHas('selections',function($query) use($request){
+        //      $query->where('status','SELECTED');
+        // })->with(['nextOfKin','intake','selections'=>function($query){
+        //      $query->where('status','SELECTED');
+        // },'selections.campusProgram.program','applicationWindow','country','selections.campusProgram.campus'])->where('program_level_id',$applicant->program_level_id)->where('application_window_id',$applicant->application_window_id)->find($applicant->id);
 
         // Applicant::whereHas('intake.applicationWindows',function($query) use($request){
         //      $query->where('id',$request->application_window_id);
