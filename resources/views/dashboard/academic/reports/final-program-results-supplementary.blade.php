@@ -265,10 +265,8 @@
                           @foreach($mods as $assignment)
                             @foreach($student->examinationResults as $result)
                                  @if($result->module_assignment_id == $assignment->id)
-                                    @if($result->supp_score)
-                                      @if($result->supp_score) 
+                                    @if(!is_null($result->supp_score))
                                         @php $display_student = true; @endphp
-                                      @endif
                                     @else
                                       @if(count($result->moduleAssignment->specialExams) != 0) 
                                         @php $display_student = true; @endphp
@@ -278,7 +276,7 @@
                                @endforeach
                             @endforeach
                         @endforeach
-                    @if($display_student == true)
+                    @if($display_student)
                     <tr>
                       <td>{{ $key+1 }}</td>
                       @if($request->get('reg_display_type') == 'SHOW')
