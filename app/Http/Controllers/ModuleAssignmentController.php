@@ -1012,12 +1012,6 @@ class ModuleAssignmentController extends Controller
                           $student_present = true;
                       }
                   }
-                  
-                  if($stud->id == 7){
-                  return ExaminationResult::where('student_id',$stud->id)->whereHas('moduleAssignment.programModuleAssignment',function($query) use($stud, $module_assignment){
-                       $query->where('year_of_study',$stud->year_of_study)->where('semester_id',$module_assignment->programModuleAssignment->semester_id);
-                  })->get();
-                  }
                   if(ExaminationResult::where('student_id',$stud->id)->whereHas('moduleAssignment.programModuleAssignment',function($query) use($stud, $module_assignment){
                        $query->where('year_of_study',$stud->year_of_study)->where('semester_id',$module_assignment->programModuleAssignment->semester_id);
                   })->count() != 0){
