@@ -278,7 +278,7 @@
                             @endforeach
                         @endforeach
                     
-                    @if($student->registration_number != 'MNMA/BTC.YW/0001/22')
+                    @if($student->registration_number != 'MNMA/BTC.YW/0002/22')
                     @if($display_student)
                     <tr>
                       <td>{{ $key+1 }}</td>
