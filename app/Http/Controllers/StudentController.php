@@ -326,7 +326,7 @@ class StudentController extends Controller
        //  where('study_academic_year_id',$ac_yr_id)->
          $core_programs = ProgramModuleAssignment::with(['module'])->where(function($query) use($request){
                $query->where('study_academic_year_id',$ac_yr_id)->orWhere('study_academic_year_id',$request->get('next_ac_yr_id'));
-           });->where('year_of_study',$yr_of_study)->where('category','COMPULSORY')->where('campus_program_id',$student->campus_program_id)->get();
+           })->where('year_of_study',$yr_of_study)->where('category','COMPULSORY')->where('campus_program_id',$student->campus_program_id)->get();
          $optional_programs = ProgramModuleAssignment::whereHas('students',function($query) use($student_id){
              $query->where('id',$student_id);
              })->with(['module'])->where(function($query) use($request){
