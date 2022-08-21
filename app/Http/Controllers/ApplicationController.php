@@ -2985,16 +2985,18 @@ class ApplicationController extends Controller
         $json = json_encode($xml_response);
         $array = json_decode($json,TRUE);
 
-        return dd($array);
+        if($array['Response']['ResponseParameters']['StatusCode'] == 200){
+            foreach($array['Response']['ResponseParameters']['Applicant'] as $data){
+                $applicant = Applicant::where('index_number',$data['f4indexno'])->first();
+                if($applicant){
+                   $applicant->multiple_admissions = $data['AdmissionStatusCode'] == 225? 1 : 0;
+                   $applicant->save();
 
-        foreach($array['Response']['ResponseParameters']['Applicant'] as $data){
-            $applicant = Applicant::where('index_number',$data['f4indexno'])->first();
-            if($applicant){
-               $applicant->multiple_admissions = $data['AdmissionStatusCode'] == 225? 1 : 0;
-               $applicant->save();
-
-               $selection = ApplicantProgramSelection::where('applicant_id',$applicant)->where('status','APPROVING')->update(['status'=>'SELECTED']);
+                   $selection = ApplicantProgramSelection::where('applicant_id',$applicant)->where('status','APPROVING')->update(['status'=>'SELECTED']);
+                }
             }
+        }else{
+            return redirect()->back()->with('message','No applicants retrieved from TCU');
         }
 
         ApplicantProgramSelection::whereHas('applicant',function($query) use($request){
