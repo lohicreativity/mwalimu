@@ -172,8 +172,8 @@
                           @endphp
                          @endif
                          @endif
+                         @endif
                       @endforeach
-                      @endif
                     @endforeach
                     @foreach($optional_programs as $program)
                         @if($semester->id == $program->semester_id && !in_array($program->id,$programIds))
@@ -257,8 +257,8 @@
                           @endphp
                          @endif
                          @endif
+                         @endif
                       @endforeach
-                      @endif
                      @endforeach
                     </tbody>
                  </table>
