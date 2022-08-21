@@ -261,7 +261,9 @@
 
                     @foreach($students as $key=>$student)
                       @php $display_student = false; @endphp
-                    @foreach($student->examinationResults as $result)
+                      @foreach($sem_modules as $mdKey=>$mods)
+                          @foreach($mods as $assignment)
+                              @foreach($student->examinationResults as $result)
                                  @if($result->module_assignment_id == $assignment->id)
                                     @if($result->supp_score)
                                       @if($result->supp_score) 
@@ -274,6 +276,8 @@
                                     @endif
                                  @endif
                                @endforeach
+                          @endforeach
+                       @endforeach
                     @if($display_student)
                     <tr>
                       <td>{{ $key+1 }}</td>
@@ -338,12 +342,11 @@
                       @endif
                       @endif
                     </tr>
-                     @endif
+                     r@endif
                     @endforeach
                   </table>
                 </div><!-- end of table-responsive -->
                 
-
 
           </div><!-- end of col-md-12 -->
         </div><!-- end of row -->
