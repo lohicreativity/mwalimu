@@ -3760,6 +3760,7 @@ class ApplicationController extends Controller
 	 {
 		 $staff = User::find(Auth::user()->id)->staff;
 		 $application_window = ApplicationWindow::where('campus_id',$staff->campus_id)->where('status','ACTIVE')->latest()->first();
+
 		 $award = Award::where('name','LIKE','%Degree%')->first();
 		 if($app = Applicant::where('index_number',$request->get('index_number'))->where('campus_id',$staff->campus_id)->first()){
 			 $applicant = $app;
@@ -3794,7 +3795,7 @@ class ApplicationController extends Controller
 		 }
 		 ApplicantProgramSelection::where('applicant_id',$applicant->id)->delete();
 		 
-		  $applicant = Applicant::with(['selections.campusProgram','nectaResultDetails','nacteResultDetails'])->find($applicant->id);
+		  $applicant = Applicant::with(['selections.campusProgram','nectaResultDetails','nacteResultDetails','applicationWindow'])->find($applicant->id);
 
         $selection = new ApplicantProgramSelection;
 		$selection->applicant_id = $applicant->id;
