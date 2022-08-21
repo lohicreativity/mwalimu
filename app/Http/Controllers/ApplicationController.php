@@ -2996,7 +2996,7 @@ class ApplicationController extends Controller
                 }
             }
         }else{
-            return redirect()->back()->with('message','No applicants retrieved from TCU');
+            return redirect()->back()->with('error','No applicants retrieved from TCU');
         }
 
         ApplicantProgramSelection::whereHas('applicant',function($query) use($request){
