@@ -224,6 +224,7 @@ class ExaminationResultController extends Controller
                  $student_buffer[$student->id]['nta_level'] = $student->campusProgram->program->ntaLevel;
                  $student_buffer[$student->id]['total_credit'] = $total_credit;
                  $student_buffer[$student->id]['opt_credit'] = 0;
+                 $student_buffer[$student->id]['results'] = [];
 
                  foreach($optional_programs as $prog){
                      $student_buffer[$student->id]['opt_credit'] += $prog->module->credit; 
@@ -412,7 +413,7 @@ class ExaminationResultController extends Controller
                  $retake_exams = [];
                  $carry_exams = [];
                  $student = Student::with(['campusProgram.program.ntaLevel'])->find($key);
-              if($buffer['results']){
+              if(isset($buffer['results'])){
                  foreach($buffer['results'] as $res){
                     if($res->final_exam_remark == 'INCOMPLETE'){
                         $pass_status = 'INCOMPLETE';
@@ -537,7 +538,7 @@ class ExaminationResultController extends Controller
                              $supp_exams = [];
                              $retake_exams = [];
                              $carry_exams = [];
-                          if($buf['results']){
+                          if(isset($buf['results'])){
                              foreach($buf['results'] as $res){
                                 if($res->final_exam_remark == 'INCOMPLETE'){
                                     $sem_pass_status = 'INCOMPLETE';
