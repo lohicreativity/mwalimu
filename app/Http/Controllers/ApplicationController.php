@@ -2985,6 +2985,8 @@ class ApplicationController extends Controller
         $json = json_encode($xml_response);
         $array = json_decode($json,TRUE);
 
+        return dd($array);
+
         foreach($array['Response']['ResponseParameters']['Applicant'] as $data){
             $applicant = Applicant::where('index_number',$data['f4indexno'])->first();
             if($applicant){
