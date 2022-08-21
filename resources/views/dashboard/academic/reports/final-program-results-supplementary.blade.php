@@ -278,7 +278,7 @@
                                @endforeach
                             @endforeach
                         @endforeach
-                    @if($display_student)
+                    @if($display_student == true)
                     <tr>
                       <td>{{ $key+1 }}</td>
                       @if($request->get('reg_display_type') == 'SHOW')
