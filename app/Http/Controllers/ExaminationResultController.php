@@ -666,7 +666,7 @@ class ExaminationResultController extends Controller
                                  
                                  if(Util::getOverallRemark($sem_remarks) == 'POSTPONED'){
                                     $remark->remark = null;
-                                   $remark->class = null;
+                                    $remark->class = null;
                                  }else{
                                     $remark->remark = Util::getOverallRemark($sem_remarks);
                                     $remark->class = Util::getOverallRemark($sem_remarks) == 'PASS' || Util::getOverallRemark($sem_remarks) == 'CARRY' || Util::getOverallRemark($sem_remarks) == 'RETAKE' || Util::getOverallRemark($sem_remarks) == 'SUPP'? $overall_remark : null;
