@@ -672,8 +672,6 @@ class ExaminationResultController extends Controller
                  }else{
                      $sem_remarks = SemesterRemark::where('student_id',$key)->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',$buffer['year_of_study'])->get();
                      if(Util::stripSpacesUpper($semester->name) == Util::stripSpacesUpper('Semester 2')){
-
-                        return $semester;
                         
                          if($rm = AnnualRemark::where('student_id',$key)->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',$buffer['year_of_study'])->first()){
                             $remark = $rm;
@@ -705,6 +703,10 @@ class ExaminationResultController extends Controller
                               $remark->class = null;
                             }
                             $remark->save();
+
+                            if($student->id == 7){
+                                return $remark;
+                            }
 
                             $status = AcademicStatus::where('name',$remark->remark)->first();
                             $stud = Student::find($key);
