@@ -50,7 +50,11 @@ class Util {
        foreach($results as $res){
           $total_weights += ($res->point*$res->moduleAssignment->module->credit);
        }
-       return bcdiv($total_weights/$total_credits,1,4);
+       if($total_credit != 0){
+          return bcdiv($total_weights/$total_credits,1,4);
+       }else{
+          return null;
+       }
    }
 
    /**
