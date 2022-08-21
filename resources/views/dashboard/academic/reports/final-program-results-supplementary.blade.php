@@ -260,6 +260,21 @@
                     
 
                     @foreach($students as $key=>$student)
+                      @php $display_student = false; @endphp
+                    @foreach($student->examinationResults as $result)
+                                 @if($result->module_assignment_id == $assignment->id)
+                                    @if($result->supp_score)
+                                      @if($result->supp_score) 
+                                        @php $display_student = true; @endphp
+                                      @endif
+                                    @else
+                                      @if(count($result->moduleAssignment->specialExams) != 0) 
+                                        @php $display_student = true; @endphp
+                                      @endif
+                                    @endif
+                                 @endif
+                               @endforeach
+                    @if($display_student)
                     <tr>
                       <td>{{ $key+1 }}</td>
                       @if($request->get('reg_display_type') == 'SHOW')
@@ -323,6 +338,7 @@
                       @endif
                       @endif
                     </tr>
+                     @endif
                     @endforeach
                   </table>
                 </div><!-- end of table-responsive -->
