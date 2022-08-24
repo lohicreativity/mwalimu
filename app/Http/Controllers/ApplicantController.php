@@ -839,6 +839,7 @@ class ApplicantController extends Controller
                              foreach(unserialize($program->entryRequirements[0]->equivalent_majors) as $sub){
 
                                if(str_contains($detail->programme,$sub)){
+                                return 'hello';
                                    $has_major = true;
                                }
                              }
@@ -859,7 +860,7 @@ class ApplicantController extends Controller
                           }
                        }
                         if(unserialize($program->entryRequirements[0]->equivalent_majors) != ''){
-                            return $has_major.'-'.$o_level_pass_count.'-'.$nacte_gpa.'-'.$program->entryRequirements[0]->equivalent_gpa;
+                           // return $has_major.'-'.$o_level_pass_count.'-'.$nacte_gpa.'-'.$program->entryRequirements[0]->equivalent_gpa;
                             if($o_level_pass_count >= $program->entryRequirements[0]->pass_subjects && $has_major && $nacte_gpa >= $program->entryRequirements[0]->equivalent_gpa){
                                 
                                $programs[] = $program;
