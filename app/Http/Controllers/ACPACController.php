@@ -32,7 +32,7 @@ class ACPACController extends Controller
     }
 
     /**
-     * Download invoicesdsfsffsfds
+     * Download invoicesd
      **/
     public function downloadInvoices(Request $request)
     {
