@@ -837,7 +837,7 @@ class ApplicantController extends Controller
                        if(unserialize($program->entryRequirements[0]->equivalent_majors) != '' && unserialize($program->entryRequirements[0]->level) == 'degree'){
                            foreach($applicant->nacteResultDetails as $detail){
                              foreach(unserialize($program->entryRequirements[0]->equivalent_majors) as $sub){
-                                return $sub;
+                                return 'hello';
                                if(str_contains($detail->programme,$sub)){
 
                                    $has_major = true;
