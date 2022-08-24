@@ -34,7 +34,7 @@ class ACPACController extends Controller
     /**
      * Download invoices
      **/
-    public function invoices(Request $request)
+    public function downloadinvoices(Request $request)
     {
          $headers = [
                       'Cache-Control'       => 'must-revalidate, post-check=0, pre-check=0',   
