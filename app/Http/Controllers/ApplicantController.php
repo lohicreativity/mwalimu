@@ -833,6 +833,19 @@ class ApplicantController extends Controller
                        $equivalent_must_subjects_count = 0;
                        $nacte_gpa = null;
                        $out_gpa = null;
+                       $has_nacte_results = false;
+
+                       foreach($applicant->nacteResultDetails as $detail){
+                             if(count($detail->results) == 0){
+                                $has_nacte_results = true;
+                             }
+                            $nacte_gpa = $detail->diploma_gpa;
+                        }
+                        
+                        if($o_level_pass_count >= $program->entryRequirements[0]->pass_subjects && $has_nacte_results && $nacte_gpa >= $program->entryRequirements[0]->equivalent_gpa){
+                                
+                            $programs[] = $program;
+                        }
 
                        if(unserialize($program->entryRequirements[0]->equivalent_majors) != ''){
 
