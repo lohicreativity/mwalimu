@@ -1602,7 +1602,7 @@ class ExaminationResultController extends Controller
                 }
                 $remark->year_of_study = $buffer['year_of_study'];
                 $remark->serialized = count($supp_exams) != 0? serialize(['supp_exams'=>$supp_exams,'carry_exams'=>$carry_exams,'retake_exams'=>$retake_exams]) : null;
-                $gpa_class = GPAClassification::where('nta_level_id',$buffer['nta_level']->id)->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('min_gpa','<=',bcdiv($remark->gpa,1,1))->where('max_gpa','>=',bcdiv($remark->gpa,1,1))->first();
+                $gpa_class = GPAClassification::where('nta_level_id',$buffer['nta_level']->id)->where('study_academic_year_id',$ac_yr_id)->where('min_gpa','<=',bcdiv($remark->gpa,1,1))->where('max_gpa','>=',bcdiv($remark->gpa,1,1))->first();
                 if($remark->gpa && $gpa_class){
                   $remark->class = $gpa_class->name;
                 }else{
@@ -1637,7 +1637,7 @@ class ExaminationResultController extends Controller
                     if($sem_remarks[0]->remark == 'POSTPONED' && $sem_remarks[(count($sem_remarks)-1)]->remark != 'POSTPONED'){
                                 $rem->remark = $sem_remarks[(count($sem_remarks)-1)]->remark;
                             }
-                    $gpa_class = GPAClassification::where('nta_level_id',$buffer['nta_level']->id)->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('min_gpa','<=',bcdiv($rem->gpa,1,1))->where('max_gpa','>=',bcdiv($rem->gpa,1,1))->first();
+                    $gpa_class = GPAClassification::where('nta_level_id',$buffer['nta_level']->id)->where('study_academic_year_id',$ac_yr_id)->where('min_gpa','<=',bcdiv($rem->gpa,1,1))->where('max_gpa','>=',bcdiv($rem->gpa,1,1))->first();
                     if($rem->gpa && $gpa_class){
                       $rem->class = $gpa_class->name;
                     }else{
@@ -1666,7 +1666,7 @@ class ExaminationResultController extends Controller
                       }
                       
                       $overall_gpa = $credits != 0? bcdiv($points/$credits, 1,1) : null;
-                      $gpa_class = GPAClassification::where('nta_level_id',$student->campusProgram->program->nta_level_id)->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('min_gpa','<=',bcdiv($overall_gpa,1,1))->where('max_gpa','>=',bcdiv($overall_gpa,1,1))->first();
+                      $gpa_class = GPAClassification::where('nta_level_id',$student->campusProgram->program->nta_level_id)->where('study_academic_year_id',$ac_yr_id)->where('min_gpa','<=',bcdiv($overall_gpa,1,1))->where('max_gpa','>=',bcdiv($overall_gpa,1,1))->first();
                       // if(!$gpa_class){
                        //  return redirect()->back()->with('error','GPA classification not defined');
                       // }
