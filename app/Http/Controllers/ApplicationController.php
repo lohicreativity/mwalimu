@@ -622,7 +622,7 @@ class ApplicationController extends Controller
                     // curl_close($ch);
                     // return dd($result);
 
-                    if($result->code == 200){
+                    if(isset($result->code) && $result->code == 200){
 
                         Applicant::where('id',$applicant->id)->update(['status'=>'SUBMITTED']);
 
@@ -632,7 +632,7 @@ class ApplicationController extends Controller
                         $log->application_window_id = $request->get('application_window_id');
                         $log->submitted = 1;
                         $log->save();
-                    
+
                     }
 
                   }
