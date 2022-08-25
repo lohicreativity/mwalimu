@@ -118,7 +118,7 @@
                   <tbody>
                   @foreach($payments as $payment)
                   <tr>
-                    <td>{{ $payment->reference_number }}</td>
+                    <td>{{ $payment->reference_no }}</td>
                     <td>{{ number_format($payment->amount,2) }}</td>
                     <td>{{ $payment->campus->name }}</td>
                     <td>{{ $payment->studyAcademicYear->academicYear->year }}</td>

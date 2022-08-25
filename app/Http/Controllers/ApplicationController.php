@@ -132,7 +132,7 @@ class ApplicationController extends Controller
 	 {
 		 $staff = User::find(Auth::user()->id)->staff;
 		 ApplicantProgramSelection::whereHas('applicant',function($query) use($staff){
-			 $query->where('campus_id',$staff->campus_id);
+			 $query->where('campus_id',$staff->campus_id)->where('status','!=','SELECTED')->where('status','!=','ADMITTED')->where('status','!=','SUBMITTED');
 		 })->where('application_window_id',$request->get('application_window_id'))->update(['status'=>'ELIGIBLE']);
 		 Applicant::where('application_window_id',$request->get('application_window_id'))->where('campus_id',$staff->campus_id)->update(['status'=>null]);
 		 return redirect()->back()->with('message','Selections reset successfully');
@@ -468,7 +468,8 @@ class ApplicationController extends Controller
                   
           
                   $payment = NactePayment::latest()->first();
-                  // $result = Http::get('https://www.nacte.go.tz/nacteapi/index.php/api/payment/'.$payment->reference_no.'/'.config('NACTE_API_SECRET'));
+                  $result = Http::get('https://www.nacte.go.tz/nacteapi/index.php/api/payment/'.$payment->reference_no.'/'.config('NACTE_API_SECRET'));
+                  return dd($result);
                   // json_decode($result)['params'][0]['balance']/5000
                   if(300000/5000 >= count($applicants)){
                       return redirect()->back()->with('error','No sufficient NACTE payment balance');
