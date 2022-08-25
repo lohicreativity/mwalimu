@@ -419,6 +419,7 @@ class ExaminationResultController extends Controller
                  $carry_exams = [];
                  $student = Student::with(['campusProgram.program.ntaLevel'])->find($key);
               if(isset($buffer['results'])){
+                 return $buffer['results'];
                  foreach($buffer['results'] as $res){
                     if($res->final_exam_remark == 'INCOMPLETE'){
                         $pass_status = 'INCOMPLETE';
