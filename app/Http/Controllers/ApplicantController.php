@@ -837,9 +837,9 @@ class ApplicantController extends Controller
                        if(unserialize($program->entryRequirements[0]->equivalent_majors) != ''){
                            foreach($applicant->nacteResultDetails as $detail){
                              foreach(unserialize($program->entryRequirements[0]->equivalent_majors) as $sub){
-                 
+                                return $detail->programme.'-'.$sub;
                                if(str_contains($detail->programme,$sub)){
-               return $sub;
+
                                    $has_major = true;
                                }
                              }
