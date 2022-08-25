@@ -229,7 +229,7 @@
                       @foreach($module_assignments as $assignment)
                       <td class="ss-bold" colspan="4">{{ $assignment->module->code }} ({{ $assignment->module->credit }})</td>
                       @endforeach
-                      <td colspan="2"></td>
+                      <td colspan="5"></td>
                     </tr>
                     <tr>
                       
@@ -241,6 +241,8 @@
                       @endforeach
                       
                       <td class="ss-bold">GPA</td>
+                      <td class="ss-bold">POINTS</td>
+                      <td class="ss-bold">CREDITS</td>
                       <td class="ss-bold">REMARK</td>
                       <td class="ss-bold">CLASS</td>
                     </tr>
@@ -299,6 +301,12 @@
                       
                       <td>@if(count($student->semesterRemarks) != 0)   
                         @if($student->semesterRemarks[0]->gpa) {{ bcdiv($student->semesterRemarks[0]->gpa,1,1) }} @else N/A @endif 
+                      @endif</td>
+                      <td>@if(count($student->semesterRemarks) != 0)   
+                        @if($student->semesterRemarks[0]->gpa) {{ $student->semesterRemarks[0]->point }} @else N/A @endif 
+                      @endif</td>
+                      <td>@if(count($student->semesterRemarks) != 0)   
+                        @if($student->semesterRemarks[0]->gpa) {{ $student->semesterRemarks[0]->credit }} @else N/A @endif 
                       @endif</td>
                       <td>@if(count($student->semesterRemarks) != 0)   
                         @if($student->semesterRemarks[0]->remark) {{ $student->semesterRemarks[0]->remark }} @else N/A @endif 
