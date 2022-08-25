@@ -349,9 +349,7 @@ class ApplicationController extends Controller
         $staff = User::find(Auth::user()->id)->staff;
         $award = Award::find($request->get('program_level_id'));
 
-        $applicants = Applicant::whereHas('intake.applicationWindows',function($query) use($request){
-                 $query->where('id',$request->get('application_window_id'));
-            })->with(['nextOfKin.region','region','district','intake','selections.campusProgram.program','nectaResultDetails'])->where('program_level_id',$request->get('program_level_id'))->where('campus_id',$staff->campus_id)->get();
+        $applicants = Applicant::with(['nextOfKin.region','region','district','intake','selections.campusProgram.program','nectaResultDetails','intake'])->where('program_level_id',$request->get('program_level_id'))->where('campus_id',$staff->campus_id)->where('application_window_id',$request->get('application_window_id'))->get();
 
         if(ApplicantProgramSelection::whereHas('applicant',function($query) use($request,$staff){
              $query->where('campus_id',$staff->campus_id)->where('program_level_id',$request->get('program_level_id'));
@@ -538,11 +536,11 @@ class ApplicationController extends Controller
                   $data = array(
                       'heading' => array(
                           'authorization' => 'e52ab037dc82d24960d9b9c678b5a6147a1ba6ea',
-                          'intake' => 'SEPTEMBER',
+                          'intake' => strtoupper($applicant->intake->name),
                           'programme_id' => '13f781c5dbe25cf387f708eaf40a7a0eae6291e7',
-                          'application_year' => '2022',
+                          'application_year' => date('Y'),
                           'level' => '5',
-                          'payment_reference_number' => 'APITEST1003',
+                          'payment_reference_number' => $payment->reference_no,
                       ),
                       'students' => array(
                           ['particulars' => array(
