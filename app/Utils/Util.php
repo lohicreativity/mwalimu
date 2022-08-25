@@ -41,6 +41,15 @@ class Util {
 		return $status;
 	}
 
+    /**
+     * Array element is contained in search key
+     */
+    public static function arrayIsContainedInKey($key,$array){
+        array_filter($array,function($element) use($key){
+           return (str_contains(strtolower($key),strtolower($element)) !== false);
+        });
+    }
+
    /**
     * Compute GPA
     */

@@ -495,29 +495,29 @@ class ApplicantController extends Controller
 
                                  if(unserialize($program->entryRequirements[0]->must_subjects) != ''){
                                     if(unserialize($program->entryRequirements[0]->other_must_subjects) != ''){
-                                       if(in_array($result->subject_name, unserialize($program->entryRequirements[0]->must_subjects))){
+                                       if(Util::arrayIsContainedInKey($result->subject_name, unserialize($program->entryRequirements[0]->must_subjects))){
                                          // $o_level_pass_count += 1;
                                          $o_level_must_pass_count += 1;
                                        }
-                                       if(in_array($result->subject_name, unserialize($program->entryRequirements[0]->other_must_subjects))){
+                                       if(Util::arrayIsContainedInKey($result->subject_name, unserialize($program->entryRequirements[0]->other_must_subjects))){
                                          $o_level_pass_count += 1;
                                          $other_must_subject_ready = true;
                                        }
                                       
                                     }else{
-                                       if(in_array($result->subject_name, unserialize($program->entryRequirements[0]->must_subjects))){
+                                       if(Util::arrayIsContainedInKey($result->subject_name, unserialize($program->entryRequirements[0]->must_subjects))){
                                          // $o_level_pass_count += 1;
                                           $o_level_must_pass_count += 1;
                                        }
                                        
                                        if(unserialize($program->entryRequirements[0]->exclude_subjects) != ''){
-                                       if(!in_array($result->subject_name, unserialize($program->entryRequirements[0]->exclude_subjects)) && !in_array($result->subject_name, unserialize($program->entryRequirements[0]->must_subjects))){
+                                       if(!Util::arrayIsContainedInKey($result->subject_name, unserialize($program->entryRequirements[0]->exclude_subjects)) && !Util::arrayIsContainedInKey($result->subject_name, unserialize($program->entryRequirements[0]->must_subjects))){
                                          $o_level_pass_count += 1;
                                        }
                                        }
                                     }
                                  }elseif(unserialize($program->entryRequirements[0]->exclude_subjects) != ''){
-                                    if(!in_array($result->subject_name, unserialize($program->entryRequirements[0]->exclude_subjects))){
+                                    if(!Util::arrayIsContainedInKey($result->subject_name, unserialize($program->entryRequirements[0]->exclude_subjects))){
                                          $o_level_pass_count += 1;
                                     }
                                  }else{
@@ -559,29 +559,29 @@ class ApplicantController extends Controller
 
                                  if(unserialize($program->entryRequirements[0]->must_subjects) != ''){
                                     if(unserialize($program->entryRequirements[0]->other_must_subjects) != ''){
-                                       if(in_array($result->subject_name, unserialize($program->entryRequirements[0]->must_subjects))){
+                                       if(Util::arrayIsContainedInKey($result->subject_name, unserialize($program->entryRequirements[0]->must_subjects))){
                                          // $o_level_pass_count += 1;
                                          $o_level_must_pass_count += 1;
                                        }
-                                       if(in_array($result->subject_name, unserialize($program->entryRequirements[0]->other_must_subjects)) && !$other_must_subject_ready){
+                                       if(Util::arrayIsContainedInKey($result->subject_name, unserialize($program->entryRequirements[0]->other_must_subjects)) && !$other_must_subject_ready){
                                          $o_level_pass_count += 1;
                                          $other_must_subject_ready = true;
                                        }
                                  
                                     }else{
-                                       if(in_array($result->subject_name, unserialize($program->entryRequirements[0]->must_subjects))){
+                                       if(Util::arrayIsContainedInKey($result->subject_name, unserialize($program->entryRequirements[0]->must_subjects))){
                                          // $o_level_pass_count += 1;
                                         $o_level_must_pass_count += 1;
                                        }
                                        
                                        if(unserialize($program->entryRequirements[0]->exclude_subjects) != ''){
-                                       if(!in_array($result->subject_name, unserialize($program->entryRequirements[0]->exclude_subjects)) && !in_array($result->subject_name, unserialize($program->entryRequirements[0]->must_subjects))){
+                                       if(!Util::arrayIsContainedInKey($result->subject_name, unserialize($program->entryRequirements[0]->exclude_subjects)) && !Util::arrayIsContainedInKey($result->subject_name, unserialize($program->entryRequirements[0]->must_subjects))){
                                          $o_level_pass_count += 1;
                                        }
                                        }
                                     }
                                  }elseif(unserialize($program->entryRequirements[0]->exclude_subjects) != ''){
-                                    if(!in_array($result->subject_name, unserialize($program->entryRequirements[0]->exclude_subjects))){
+                                    if(!Util::arrayIsContainedInKey($result->subject_name, unserialize($program->entryRequirements[0]->exclude_subjects))){
                                          $o_level_pass_count += 1;
                                     }
                                  }else{
@@ -600,22 +600,22 @@ class ApplicantController extends Controller
                                  $subject_count += 1;
                                  if(unserialize($program->entryRequirements[0]->advance_must_subjects) != ''){
                                     if(unserialize($program->entryRequirements[0]->other_advance_must_subjects) != ''){
-                                       if(in_array($result->subject_name, unserialize($program->entryRequirements[0]->advance_must_subjects))){
+                                       if(Util::arrayIsContainedInKey($result->subject_name, unserialize($program->entryRequirements[0]->advance_must_subjects))){
                                          $a_level_principle_pass_count += 1;
                                        }
 
-                                       if(in_array($result->subject_name, unserialize($program->entryRequirements[0]->other_advance_must_subjects)) && !$other_advance_must_subject_ready){
+                                       if(Util::arrayIsContainedInKey($result->subject_name, unserialize($program->entryRequirements[0]->other_advance_must_subjects)) && !$other_advance_must_subject_ready){
                                          $a_level_principle_pass_count += 1;
                                          $other_advance_must_subject_ready = true;
                                        }
 
                                     }else{
-                                       if(in_array($result->subject_name, unserialize($program->entryRequirements[0]->advance_must_subjects))){
+                                       if(Util::arrayIsContainedInKey($result->subject_name, unserialize($program->entryRequirements[0]->advance_must_subjects))){
                                          $a_level_principle_pass_count += 1;
                                        }
                                     }
                                  }elseif(unserialize($program->entryRequirements[0]->advance_exclude_subjects) != ''){
-                                    if(!in_array($result->subject_name, unserialize($program->entryRequirements[0]->advance_exclude_subjects))){
+                                    if(!Util::arrayIsContainedInKey($result->subject_name, unserialize($program->entryRequirements[0]->advance_exclude_subjects))){
                                          $a_level_principle_pass_count += 1;
                                     }
                                  }else{
@@ -625,7 +625,7 @@ class ApplicantController extends Controller
                               if($a_level_grades[$result->grade] >= $a_level_grades[$subsidiary_pass_grade]){
 
                                  if(unserialize($program->entryRequirements[0]->subsidiary_subjects) != ''){
-                                       if(in_array($result->subject_name, unserialize($program->entryRequirements[0]->subsidiary_subjects))){
+                                       if(Util::arrayIsContainedInKey($result->subject_name, unserialize($program->entryRequirements[0]->subsidiary_subjects))){
                                          $a_level_subsidiary_pass_count += 1;
                                        }
                                  }else{
@@ -892,7 +892,7 @@ class ApplicantController extends Controller
                         
                         foreach($applicant->outResultDetails as $detail){
                             foreach($detail->results as $key => $result){
-                                if(!in_array($result->code, $exclude_out_subjects_codes)){
+                                if(!Util::arrayIsContainedInKey($result->code, $exclude_out_subjects_codes)){
                                    if($out_grades[$result->grade] >= $out_grades['C']){
                                       $out_pass_subjects_count += 1;
                                    }
