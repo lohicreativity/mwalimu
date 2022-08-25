@@ -269,8 +269,8 @@ class ExaminationResultController extends Controller
                       $processed_result->point = $grading_policy? $grading_policy->point : null;
                       if($processed_result->course_work_remark == 'FAIL' || $processed_result->final_remark == 'FAIL'){
                          $processed_result->final_exam_remark = 'FAIL';
-                         // $processed_result->grade = 'F';
-                         // $processed_result->point = 0;
+                         $processed_result->grade = 'F';
+                         $processed_result->point = 0;
                       }else{
                         $processed_result->final_exam_remark = $assignment->programModuleAssignment->module_pass_mark <= $processed_result->total_score? 'PASS' : 'FAIL';
                       }
@@ -463,7 +463,7 @@ class ExaminationResultController extends Controller
                         $remark->student_id = $key;
                         $remark->semester_id = $request->get('semester_id');
                         $remark->remark = $pass_status;
-                        if($remark->remark == 'INCOMPLETE' || $remark->remark == 'INCOMPLETE' || $remark->remark == 'POSTPONED'){
+                        if($remark->remark == 'INCOMPLETE' || $remark->remark == 'INCOMPLETE' || $remark->remark == 'POSTPONED' || $remark->remark == 'SUPP'){
                              $remark->gpa = null;
                         }else{
                            $remark->gpa = Util::computeGPA($buffer['total_credit'],$buffer['results']);
@@ -586,7 +586,7 @@ class ExaminationResultController extends Controller
                         $remark->study_academic_year_id = $request->get('study_academic_year_id');
                         $remark->student_id = $key;
                         $remark->remark = $sem_pass_status;
-                        if($remark->remark == 'INCOMPLETE' || $remark->remark == 'INCOMPLETE' || $remark->remark == 'POSTPONED'){
+                        if($remark->remark == 'INCOMPLETE' || $remark->remark == 'INCOMPLETE' || $remark->remark == 'POSTPONED' || $remark->remark == 'SUPP'){
                              $remark->gpa = null;
                         }else{
                            $remark->gpa = Util::computeGPA($stud_buffer[$key]['total_credit'],$stud_buffer[$key]['results']);
@@ -606,7 +606,7 @@ class ExaminationResultController extends Controller
                           $remark->year_of_study = $buffer['year_of_study'];
                           $remark->study_academic_year_id = $request->get('study_academic_year_id');
                           $remark->remark = Util::getAnnualRemark($sem_remarks,$buffer['annual_results']);
-                          if($remark->remark == 'INCOMPLETE' || $remark->remark == 'INCOMPLETE' || $remark->remark == 'POSTPONED'){
+                          if($remark->remark == 'INCOMPLETE' || $remark->remark == 'INCOMPLETE' || $remark->remark == 'POSTPONED' || $remark->remark == 'SUPP'){
                              $remark->gpa = null;
                           }else{
                                $remark->gpa = Util::computeGPA($buffer['annual_credit'],$buffer['annual_results']);
@@ -688,7 +688,7 @@ class ExaminationResultController extends Controller
                             $remark->year_of_study = $buffer['year_of_study'];
                             $remark->study_academic_year_id = $request->get('study_academic_year_id');
                             $remark->remark = Util::getAnnualRemark($sem_remarks,$buffer['annual_results']);
-                            if($remark->remark == 'INCOMPLETE' || $remark->remark == 'INCOMPLETE' || $remark->remark == 'POSTPONED'){
+                            if($remark->remark == 'INCOMPLETE' || $remark->remark == 'INCOMPLETE' || $remark->remark == 'POSTPONED' || $remark->remark == 'SUPP'){
                                $remark->gpa = null;
                             }else{
                                  $remark->gpa = Util::computeGPA($buffer['annual_credit'],$buffer['annual_results']);
@@ -1421,8 +1421,8 @@ class ExaminationResultController extends Controller
                         $processed_result->point = $grading_policy? $grading_policy->point : null;
                         if($processed_result->course_work_remark == 'FAIL' || $processed_result->final_remark == 'FAIL'){
                            $processed_result->final_exam_remark = 'FAIL';
-                           // $processed_result->grade = 'F';
-                           // $processed_result->point = 0;
+                           $processed_result->grade = 'F';
+                           $processed_result->point = 0;
                         }else{
                           $processed_result->final_exam_remark = $assignment->programModuleAssignment->module_pass_mark <= $processed_result->total_score? 'PASS' : 'FAIL';
                         }
@@ -1593,7 +1593,7 @@ class ExaminationResultController extends Controller
                 $remark->student_id = $key;
                 $remark->semester_id = $request->get('semester_id');
                 $remark->remark = $pass_status;
-                if($remark->remark == 'INCOMPLETE' || $remark->remark == 'INCOMPLETE' || $remark->remark == 'POSTPONED'){
+                if($remark->remark == 'INCOMPLETE' || $remark->remark == 'INCOMPLETE' || $remark->remark == 'POSTPONED' || $remark->remark == 'SUPP'){
                      $remark->gpa = null;
                 }else{
                    $remark->gpa = Util::computeGPA($buffer['total_credit'],$buffer['results']);
@@ -1624,7 +1624,7 @@ class ExaminationResultController extends Controller
                     $rem->year_of_study = $buffer['year_of_study'];
                     $rem->study_academic_year_id = $ac_yr_id;
                     $rem->remark = Util::getAnnualRemark($sem_remarks,$buffer['annual_results']);
-                    if($rem->remark == 'INCOMPLETE' || $rem->remark == 'INCOMPLETE' || $rem->remark == 'POSTPONED'){
+                    if($rem->remark == 'INCOMPLETE' || $rem->remark == 'INCOMPLETE' || $rem->remark == 'POSTPONED' || $rem->remark == 'SUPP'){
                        $rem->gpa = null;
                     }else{
                          $rem->gpa = Util::computeGPA($buffer['annual_credit'],$buffer['annual_results']);
