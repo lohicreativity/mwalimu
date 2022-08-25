@@ -349,7 +349,7 @@ class ApplicationController extends Controller
         $staff = User::find(Auth::user()->id)->staff;
         $award = Award::find($request->get('program_level_id'));
 
-        $applicants = Applicant::with(['nextOfKin.region','region','district','intake','selections.campusProgram.program','nectaResultDetails','intake'])->where('program_level_id',$request->get('program_level_id'))->where('campus_id',$staff->campus_id)->where('application_window_id',$request->get('application_window_id'))->get();
+        $applicants = Applicant::with(['nextOfKin.region','region','district','intake','selections.campusProgram.program.ntaLevel','nectaResultDetails','intake'])->where('program_level_id',$request->get('program_level_id'))->where('campus_id',$staff->campus_id)->where('application_window_id',$request->get('application_window_id'))->get();
 
         if(ApplicantProgramSelection::whereHas('applicant',function($query) use($request,$staff){
              $query->where('campus_id',$staff->campus_id)->where('program_level_id',$request->get('program_level_id'));
@@ -482,6 +482,13 @@ class ApplicationController extends Controller
                        }
                    }
 
+                   $approving_selection = null;
+                   foreach($applicant->selections as $selection){
+                       if($selection->status == 'APPROVING'){
+                           $approving_selection = $selection;
+                       }
+                   }
+
                   // $params = [
                   //      'firstname'=>$applicant->first_name,
                   //      'secondname'=>$applicant->middle_name,
@@ -527,12 +534,15 @@ class ApplicationController extends Controller
                   //         ['particulars'=>$params]
                   //     ]
                   //  ];
-                 if(ApplicantSubmissionLog::where('applicant_id',$applicant->id)->where('program_level_id',$request->get('program_level_id'))->count() == 0){
+                 if(ApplicantSubmissionLog::where('applicant_id',$applicant->id)->where('program_level_id',$request->get('program_level_id'))->count() == 0 && $approving_selection != null){
                    //API URL
                   $url = 'https://www.nacte.go.tz/nacteapi/index.php/api/upload';
 
 
                   $ch = curl_init($url);
+
+                  $string = $approving_selection->campusProgram->program->ntaLevel->name;
+                  $last_character = (strlen($string) - 1);
 
                   $data = array(
                       'heading' => array(
@@ -540,13 +550,13 @@ class ApplicationController extends Controller
                           'intake' => strtoupper($applicant->intake->name),
                           'programme_id' => '13f781c5dbe25cf387f708eaf40a7a0eae6291e7',
                           'application_year' => date('Y'),
-                          'level' => '5',
+                          'level' => substr($string, $last_character),
                           'payment_reference_number' => $payment->reference_no,
                       ),
                       'students' => array(
                           ['particulars' => array(
                                   'firstname' => $applicant->first_name,
-                                  'secondname' => $applicant->middle_name,
+                                  'secondname' => $applicant->middle_name != null? $applicant->middle_name : '',
                                   'surname' => $applicant->surname,
                                   'DOB' => DateMaker::toStandardDate($applicant->birth_date),
                                   'gender' => $applicant->gender == 'M'? 'Male' : 'Female',
