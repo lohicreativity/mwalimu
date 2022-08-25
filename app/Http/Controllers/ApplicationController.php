@@ -489,7 +489,7 @@ class ApplicationController extends Controller
                        }
                    }
 
-                   return $approving_selection;
+                   //return $approving_selection;
 
                   // $params = [
                   //      'firstname'=>$applicant->first_name,
@@ -633,6 +633,7 @@ class ApplicationController extends Controller
                     // $result = curl_exec($ch);
                     // curl_close($ch);
                     // return dd($result);
+                      return $result;
                       if(isset($result->code)){
                         if($result->code == 200){
 
