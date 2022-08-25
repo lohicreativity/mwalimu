@@ -633,9 +633,8 @@ class ApplicationController extends Controller
                     // $result = curl_exec($ch);
                     // curl_close($ch);
                     // return dd($result);
-                      return $result;
-                      if(isset($result->code)){
-                        if($result->code == 200){
+                      if(isset(json_decode($result)->code)){
+                        if(json_decode($result)->code == 200){
 
                             Applicant::where('id',$applicant->id)->update(['status'=>'SUBMITTED']);
 
