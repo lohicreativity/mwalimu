@@ -527,7 +527,7 @@ class ApplicationController extends Controller
                   //         ['particulars'=>$params]
                   //     ]
                   //  ];
-
+                 if(ApplicantSubmissionLog::where('applicant_id',$applicant->id)->where('program_level_id',$request->get('program_level_id'))->count() == 0){
                    //API URL
                   $url = 'https://www.nacte.go.tz/nacteapi/index.php/api/upload';
 
@@ -621,8 +621,6 @@ class ApplicationController extends Controller
                     // $result = curl_exec($ch);
                     // curl_close($ch);
                     // return dd($result);
-
-                    if(isset($result->code) && $result->code == 200){
 
                         Applicant::where('id',$applicant->id)->update(['status'=>'SUBMITTED']);
 
