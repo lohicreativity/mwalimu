@@ -847,7 +847,7 @@ class ApplicantController extends Controller
                             $programs[] = $program;
                         }
 
-                       if(unserialize($program->entryRequirements[0]->equivalent_majors) != ''){
+                       if(unserialize($program->entryRequirements[0]->equivalent_majors) != '' && $has_nacte_results){
 
                            foreach($applicant->nacteResultDetails as $detail){
                              foreach(unserialize($program->entryRequirements[0]->equivalent_majors) as $sub){
@@ -860,7 +860,7 @@ class ApplicantController extends Controller
                              $nacte_gpa = $detail->diploma_gpa;
                            }
                        }else{
-                          if(unserialize($program->entryRequirements[0]->equivalent_must_subjects) != ''){
+                          if(unserialize($program->entryRequirements[0]->equivalent_must_subjects) != '' && $has_nacte_results){
                               foreach($applicant->nacteResultDetails as $detail){
                                   foreach($detail->results as $result){
                                       foreach(unserialize($program->entryRequirements[0]->equivalent_must_subjects) as $sub){
@@ -873,13 +873,13 @@ class ApplicantController extends Controller
                               }
                           }
                        }
-                        if(unserialize($program->entryRequirements[0]->equivalent_majors) != ''){
+                        if(unserialize($program->entryRequirements[0]->equivalent_majors) != '' && $has_nacte_results){
                            // return $has_major.'-'.$o_level_pass_count.'-'.$nacte_gpa.'-'.$program->entryRequirements[0]->equivalent_gpa;
                             if($o_level_pass_count >= $program->entryRequirements[0]->pass_subjects && $has_major && $nacte_gpa >= $program->entryRequirements[0]->equivalent_gpa){
                                 
                                $programs[] = $program;
                             }
-                        }elseif(unserialize($program->entryRequirements[0]->equivalent_must_subjects) != ''){
+                        }elseif(unserialize($program->entryRequirements[0]->equivalent_must_subjects) != '' && $has_nacte_results){
                             if(($o_level_pass_count >= $program->entryRequirements[0]->pass_subjects && $equivalent_must_subjects_count >= count(unserialize($program->entryRequirements[0]->equivalent_must_subjects)) && $nacte_gpa >= $program->entryRequirements[0]->equivalent_gpa)  || ($o_level_pass_count >= $program->entryRequirements[0]->pass_subjects && $applicant->avn_no_results === 1 && $nacte_gpa >= $program->entryRequirements[0]->equivalent_gpa)){
                                 
                                $programs[] = $program;
