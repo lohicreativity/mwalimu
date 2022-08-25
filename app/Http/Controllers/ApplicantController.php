@@ -651,7 +651,7 @@ class ApplicantController extends Controller
                        if(unserialize($program->entryRequirements[0]->equivalent_majors) != ''){
                            foreach(unserialize($program->entryRequirements[0]->equivalent_majors) as $sub){
                                 foreach($applicant->nacteResultDetails as $det){
-                                   if(str_contains($det->programme,$sub) && str_contains($det->programme,'Basic')){
+                                   if(str_contains(strtolower($det->programme),strtolower($sub)) && str_contains(strtolower($det->programme),'basic')){
                                      $has_btc = true;
                                    }
                                 }
@@ -850,7 +850,7 @@ class ApplicantController extends Controller
                               foreach($applicant->nacteResultDetails as $detail){
                                   foreach($detail->results as $result){
                                       foreach(unserialize($program->entryRequirements[0]->equivalent_must_subjects) as $sub){
-                                          if(str_contains($result->subject,$sub)){
+                                          if(str_contains(strtolower($result->subject),strtolower($sub))){
                                               $equivalent_must_subjects_count += 1;
                                           }
                                       }
