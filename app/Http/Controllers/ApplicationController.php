@@ -452,6 +452,7 @@ class ApplicationController extends Controller
                     // $select = ApplicantProgramSelection::find($approving_selection->id);
                     // $select->status = 'SELECTED';
                     // $select->save();
+                    Applicant::where('id',$applicant->id)->update(['status'=>'SUBMITTED']);
 
                     $log = new ApplicantSubmissionLog;
                     $log->applicant_id = $applicant->id;
@@ -599,7 +600,7 @@ class ApplicationController extends Controller
                   curl_close($ch);
 
                   //echo message
-                  return $result;
+                  //return $result;
 
                     // $url = 'http://41.93.40.137/nacteapi/index.php/api/upload';
 
@@ -621,13 +622,18 @@ class ApplicationController extends Controller
                     // curl_close($ch);
                     // return dd($result);
 
+                    if($result->code == 200){
 
-                    // $log = new ApplicantSubmissionLog;
-                    // $log->applicant_id = $applicant->id;
-                    // $log->program_level_id = $request->get('program_level_id');
-                    // $log->application_window_id = $request->get('application_window_id');
-                    // $log->submitted = 1;
-                    // $log->save();
+                        Applicant::where('id',$applicant->id)->update(['status'=>'SUBMITTED']);
+
+                        $log = new ApplicantSubmissionLog;
+                        $log->applicant_id = $applicant->id;
+                        $log->program_level_id = $request->get('program_level_id');
+                        $log->application_window_id = $request->get('application_window_id');
+                        $log->submitted = 1;
+                        $log->save();
+                    
+                    }
 
                   }
 
