@@ -621,15 +621,19 @@ class ApplicationController extends Controller
                     // $result = curl_exec($ch);
                     // curl_close($ch);
                     // return dd($result);
+                      if(isset($result->code)){
+                        if($result->code == 200){
 
-                        Applicant::where('id',$applicant->id)->update(['status'=>'SUBMITTED']);
+                            Applicant::where('id',$applicant->id)->update(['status'=>'SUBMITTED']);
 
-                        $log = new ApplicantSubmissionLog;
-                        $log->applicant_id = $applicant->id;
-                        $log->program_level_id = $request->get('program_level_id');
-                        $log->application_window_id = $request->get('application_window_id');
-                        $log->submitted = 1;
-                        $log->save();
+                            $log = new ApplicantSubmissionLog;
+                            $log->applicant_id = $applicant->id;
+                            $log->program_level_id = $request->get('program_level_id');
+                            $log->application_window_id = $request->get('application_window_id');
+                            $log->submitted = 1;
+                            $log->save();
+                        }
+                     }
 
                     }
 
