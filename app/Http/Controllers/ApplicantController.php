@@ -835,7 +835,7 @@ class ApplicantController extends Controller
                        $out_gpa = null;
 
                        if(unserialize($program->entryRequirements[0]->equivalent_majors) != ''){
-                        return count($applicant->nacteResultDetails->results)
+                        return count($applicant->nacteResultDetails->results);
                            foreach($applicant->nacteResultDetails as $detail){
                              foreach(unserialize($program->entryRequirements[0]->equivalent_majors) as $sub){
 
