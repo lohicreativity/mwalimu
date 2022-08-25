@@ -1533,7 +1533,7 @@ class ExaminationResultController extends Controller
                     $student_buffer[$student->id]['results'] = [];
                     $student_buffer[$student->id]['total_credit'] = 0;
                  }
-                $student_buffer[$student->id]['nta_level'] = $student->campusProgram->program->ntaLevel;
+                $student_buffer[$student->id]['nta_level'] = $campus_program->program->ntaLevel;
                $student_buffer[$student->id]['annual_results'][] =  $result;
                $student_buffer[$student->id]['year_of_study'] = $yr_of_study;
                $student_buffer[$student->id]['annual_credit'] = $annual_credit;
