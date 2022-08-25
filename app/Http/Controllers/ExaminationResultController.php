@@ -3070,7 +3070,7 @@ class ExaminationResultController extends Controller
 			   $query->whereNotNull('course_work_score');
 		   },'moduleAssignments'=>function($query) use($request){
 			   $query->where('study_academic_year_id',$request->get('study_academic_year_id'));
-		   }])->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',explode('_',$request->get('campus_program_id'))[2])->where('campus_program_id',explode('_',$request->get('campus_program_id'))[0])->where('semester_id',$request->get('semester_id'))->get() : [],
+		   },'moduleAssignments.staff'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',explode('_',$request->get('campus_program_id'))[2])->where('campus_program_id',explode('_',$request->get('campus_program_id'))[0])->where('semester_id',$request->get('semester_id'))->get() : [],
            'staff'=>User::find(Auth::user()->id)->staff,
            'request'=>$request
     	];
