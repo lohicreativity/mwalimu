@@ -850,7 +850,6 @@ class ApplicantController extends Controller
                        if(unserialize($program->entryRequirements[0]->equivalent_majors) != ''){
 
                            foreach($applicant->nacteResultDetails as $detail){
-                             return count($detail->results);
                              foreach(unserialize($program->entryRequirements[0]->equivalent_majors) as $sub){
 
                                if(str_contains(strtolower($detail->programme),strtolower($sub))){
