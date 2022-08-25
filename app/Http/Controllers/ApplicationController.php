@@ -489,6 +489,8 @@ class ApplicationController extends Controller
                        }
                    }
 
+                   return $approving_selection;
+
                   // $params = [
                   //      'firstname'=>$applicant->first_name,
                   //      'secondname'=>$applicant->middle_name,
