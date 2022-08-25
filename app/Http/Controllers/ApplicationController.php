@@ -5137,7 +5137,13 @@ class ApplicationController extends Controller
             $transfer->save();
 			
 			$old_program_fee = ProgramFee::with(['feeItem.feeType'])->where('study_academic_year_id',$ac_year->id)->where('campus_program_id',$admitted_program->id)->first();
+            if(!$old_program_fee){
+                return redirect()->back()->with('error','Previous programme fee not set');
+            }
 		    $new_program_fee = ProgramFee::with(['feeItem.feeType'])->where('study_academic_year_id',$ac_year->id)->where('campus_program_id',$transfer_program->id)->first();
+            if(!$new_program_fee){
+                return redirect()->back()->with('error','New programme fee not set');
+            }
 			$usd_currency = Currency::where('code','USD')->first();
 			
 		    if(str_contains($student->applicant->nationality,'Tanzania')){
