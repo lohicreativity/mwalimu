@@ -32,6 +32,8 @@ class CreateGatewayPaymentsTable extends Migration
             $table->string('psp_name')->nullable();
             $table->string('ctry_AccNum')->nullable();
             // $table->integer('flag')->nullable();
+            $table->string('datetime')->nullable();
+            $table->tinyInteger('is_updated')->default(0);
             $table->timestamps();
         });
     }
