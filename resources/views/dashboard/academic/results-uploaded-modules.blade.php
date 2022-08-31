@@ -174,11 +174,6 @@
                    </thead>
                    <tbody>
                       @foreach($modules as $key=>$module)
-<!--                        $module_category = '';
-                        @if($module->programModuleAssignment->category == 'Optional')
-                            $module_category = $module->programModuleAssignment->category;
-
-                        @endif -->
                       <tr>
                         <td>{{ $key+1 }}</td>
                         <td>{{ $module->module->code }}</td>
