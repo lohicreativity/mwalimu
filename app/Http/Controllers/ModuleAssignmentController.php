@@ -567,7 +567,7 @@ class ModuleAssignmentController extends Controller
                     'module'=>$module_assignment->module,
                     'students'=>$module_assignment->programModuleAssignment->students()->whereHas('studentshipStatus',function($query){
                         $query->where('name','ACTIVE');
-                     })->whereHas('registrations',function($query){
+                     })->whereHas('registrations',function($query) use($module_assignment) {
                           $query->where('status','REGISTERED');})->get()
                 ];
                 
@@ -611,7 +611,6 @@ class ModuleAssignmentController extends Controller
                 $students = $module_assignment->programModuleAssignment->students()->get(); 
                 $registrations = Registration::whereHas('student.studentshipStatus',function($query){
                     $query->where('name','ACTIVE');
-                })->where('status','REGISTERED'); 
                 })->whereHas('student.options.moduleAssignments',function($query) use($module_assignment){
                      $query->where('id',$module_assignment->id);
                 })->with(['student.courseWorkResults.assessmentPlan','student.courseWorkResults'=>function($query) use($module_assignment){
