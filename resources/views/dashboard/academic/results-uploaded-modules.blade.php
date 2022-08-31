@@ -173,16 +173,16 @@
                      </tr>
                    </thead>
                    <tbody>
-                     @foreach($modules as $key=>$module)
+<!--                      @foreach($modules as $key=>$module)
                         $module_category = '';
                         @if($module->programModuleAssignment->category == 'Optional')
                             $module_category = $module->programModuleAssignment->category;
 
-                        @endif
+                        @endif -->
                       <tr>
                         <td>{{ $key+1 }}</td>
                         <td>{{ $module->module->code }}</td>
-                        <td>{{ $module->module->name }} {{ ($module_category) }}</td>
+                        <td>{{ $module->module->name }} <!-- {{ ($module_category) }} --></td>
                         <td>@if(count($module->moduleAssignments) != 0) {{ $module->moduleAssignments[0]->staff->title }} {{ $module->moduleAssignments[0]->staff->first_name }} {{ $module->moduleAssignments[0]->staff->surname }} @endif</td>
                         <td>@if(count($module->moduleAssignments) != 0) {{ $module->moduleAssignments[0]->staff->phone }} @endif</td>
 						@if(count($module->moduleAssignments) != 0)
