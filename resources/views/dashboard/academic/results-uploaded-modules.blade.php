@@ -175,7 +175,7 @@
                    <tbody>
                      @foreach($modules as $key=>$module)
                         $module_category = '';
-                        @if($module->programModuleAssignments->category == 'Optional')
+                        @if($module->programModuleAssignment->category == 'Optional')
                             $module_category = $module->programModuleAssignment->category;
 
                         @endif
