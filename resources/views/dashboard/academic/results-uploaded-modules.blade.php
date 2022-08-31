@@ -173,8 +173,8 @@
                      </tr>
                    </thead>
                    <tbody>
-<!--                      @foreach($modules as $key=>$module)
-                        $module_category = '';
+                      @foreach($modules as $key=>$module)
+<!--                        $module_category = '';
                         @if($module->programModuleAssignment->category == 'Optional')
                             $module_category = $module->programModuleAssignment->category;
 
