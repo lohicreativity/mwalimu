@@ -581,7 +581,7 @@ class ModuleAssignmentController extends Controller
                     'students'=>Student::whereHas('studentshipStatus',function($query){
                           $query->where('name','ACTIVE');
                       })->whereHas('registrations',function($query) {
-                          $query->where('status','REGISTERED');} use($module_assignment))
+                          $query->where('status','REGISTERED');}) use($module_assignment)
                           $query->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)->where('semester_id',$module_assignment->programModuleAssignment->semester_id)->where('study_academic_year_id',$module_assignment->programModuleAssignment->study_academic_year_id);
                       })->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id)->get()
                 ];
