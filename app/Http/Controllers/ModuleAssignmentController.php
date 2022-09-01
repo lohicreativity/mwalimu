@@ -673,9 +673,6 @@ class ModuleAssignmentController extends Controller
                 })->with('student.courseWorkResults')->where('module_assignment_id',$module_assignment->id)->where('course_work_remark','INCOMPLETE')->get()
                 ];
 
-               $registrations = Registration::whereHas('student.studentshipStatus',function($query){
-                    $query->where('name','ACTIVE')->where('status','REGISTERED');
-
                 return view('dashboard.academic.reports.students-with-no-course-work',$data);
         }catch(\Exception $e){
             return $e->getMessage();
