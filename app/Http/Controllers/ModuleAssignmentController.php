@@ -667,9 +667,8 @@ class ModuleAssignmentController extends Controller
                     'assessment_plans'=>AssessmentPlan::where('module_assignment_id',$module_assignment->id)->get(),
                     'results'=>ExaminationResult::whereHas('student.studentshipStatus',function($query){
                     $query->where('name','ACTIVE');
-                })->whereHas('registrations',function($query) {
-                          $query->where('status','REGISTERED');
-                })->with('student.courseWorkResults')->where('module_assignment_id',$module_assignment->id)->where('course_work_remark','INCOMPLETE')->get()
+                })->whereHas('registration.status','REGISTERED');
+                ->with('student.courseWorkResults')->where('module_assignment_id',$module_assignment->id)->where('course_work_remark','INCOMPLETE')->get()
                 ];
 
                 return view('dashboard.academic.reports.students-with-no-course-work',$data);
