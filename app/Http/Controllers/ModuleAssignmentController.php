@@ -610,7 +610,7 @@ class ModuleAssignmentController extends Controller
            if($module_assignment->programModuleAssignment->category == 'OPTIONAL'){
                 $students = $module_assignment->programModuleAssignment->students()->get(); 
                 $registrations = Registration::whereHas('student.studentshipStatus',function($query){
-                    $query->where('name','ACTIVE');
+                    $query->where('name','ACTIVE')->where('status','REGISTERED');
                 })->whereHas('student.options.moduleAssignments',function($query) use($module_assignment){
                      $query->where('id',$module_assignment->id);
                 })->with(['student.courseWorkResults.assessmentPlan','student.courseWorkResults'=>function($query) use($module_assignment){
