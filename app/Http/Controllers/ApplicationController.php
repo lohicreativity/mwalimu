@@ -131,9 +131,9 @@ class ApplicationController extends Controller
 	 public function resetSelections(Request $request)
 	 {
 		 $staff = User::find(Auth::user()->id)->staff;
-		 ApplicantProgramSelection::whereHas('applicant',function($query){
-			 $query->where('campus_id',$staff->campus_id)->where('program_level_id',$request->get('program_level_id'))->where('status','!=','ADMITTED')->where('status','!=','SUBMITTED');
-		 })->where('application_window_id',$request->get('application_window_id'))->update(['status'=>'ELIGIBLE']);
+		 ApplicantProgramSelection::whereHas('applicant',function($query) use($staff){
+            $query->where('campus_id',$staff->campus_id)->where('program_level_id',$request->get('program_level_id'))->where('status','!=','ADMITTED')->where('status','!=','SUBMITTED');
+         })->where('application_window_id',$request->get('application_window_id'))->update(['status'=>'ELIGIBLE']);
 		 Applicant::where('application_window_id',$request->get('application_window_id'))->where('campus_id',$staff->campus_id)->where('program_level_id',$request->get('program_level_id'))->where('status','!=','ADMITTED')->where('status','!=','SUBMITTED')->update(['status'=>null]);
 		 return redirect()->back()->with('message','Selection reset successfully');
 	 }
