@@ -134,7 +134,7 @@ class ApplicationController extends Controller
 		 ApplicantProgramSelection::whereHas('applicant',function($query) use($staff, $request){
             $query->where('campus_id',$staff->campus_id)->where('program_level_id',$request->get('program_level_id'))->where('status','==','ADMITTED')->orwhere('status','==','SUBMITTED');
          })->where('application_window_id',$request->get('application_window_id'))->update(['status'=>'ELIGIBLE']);
-		 Applicant::where('application_window_id',$request->get('application_window_id'))->where('campus_id',$staff->campus_id)->where('program_level_id',$request->get('program_level_id'))->where('status','!=','ADMITTED')->orwhere('status','!=','SUBMITTED')->update(['status'=>null]);
+		 Applicant::where('application_window_id',$request->get('application_window_id'))->where('campus_id',$staff->campus_id)->where('program_level_id',$request->get('program_level_id'))->where('status','!==','ADMITTED')->where('status','!==','SUBMITTED')->update(['status'=>null]);
 		 return redirect()->back()->with('message','Selection reset successfully');
 	 }
 
