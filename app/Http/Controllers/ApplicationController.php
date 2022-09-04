@@ -1862,10 +1862,12 @@ class ApplicationController extends Controller
         if(str_contains($applicant->intake->name,'March')){
             if(!str_contains($applicant->campus->name,'Kivukoni')){
                $program_code = $prog_code[0].'Z3.'.$prog_code[1];
-               $stud_group =  $applicant->program_level_id.'Z'.$selection->campusProgram->id.$year;
+               //$stud_group =  $applicant->program_level_id.'Z'.$selection->campusProgram->id.$year;
+               $stud_group =  $selection->campusProgram->program->code;
             }else{
                $program_code = $prog_code[0].'3.'.$prog_code[1];
-               $stud_group =  $applicant->program_level_id.$selection->campusProgram->id.$year;
+               //$stud_group =  $applicant->program_level_id.$selection->campusProgram->id.$year;
+               $stud_group =  $selection->campusProgram->program->code;
             }  
         }else{
             if(!str_contains($applicant->campus->name,'Kivukoni')){
