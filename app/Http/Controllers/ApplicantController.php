@@ -617,7 +617,6 @@ class ApplicantController extends Controller
                                  }elseif(unserialize($program->entryRequirements[0]->advance_exclude_subjects) != ''){
                                     if(!Util::arrayIsContainedInKey($result->subject_name, unserialize($program->entryRequirements[0]->advance_exclude_subjects))){
                                          $a_level_principle_pass_count += 1;
-                                         return $a_level_principle_pass_count;
                                     }
                                  }else{
                                     $a_level_principle_pass_count += 1;
@@ -642,7 +641,10 @@ class ApplicantController extends Controller
                            $programs[] = $program;
                         }
                         }else{
-                            if(($o_level_pass_count+$o_level_must_pass_count) >= $program->entryRequirements[0]->pass_subjects && ($a_level_subsidiary_pass_count >= 1 && $a_level_principle_pass_count >= 1)){
+                            if(($o_level_pass_count+$o_level_must_pass_count) >= $program->entryRequirements[0]->pass_subjects && ($a_level_subsidiary_pass_count >= 1 && $a_level_principle_pass_count == 1)){
+                             $programs[] = $program;
+                           }
+                            if(($o_level_pass_count+$o_level_must_pass_count) >= $program->entryRequirements[0]->pass_subjects && $a_level_principle_pass_count > 1){
                              $programs[] = $program;
                            }
                         }
