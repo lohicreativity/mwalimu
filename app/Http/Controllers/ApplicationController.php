@@ -1833,7 +1833,7 @@ class ApplicationController extends Controller
 
         
 
-        $applicant = Applicant::with(['intake','campus','nextOfKin','country','region','district','ward','insurances'])->find($request->get('applicant_id'));
+        $applicant = Applicant::with(['intake','campus','nextOfKin','country','region','district','ward','insurances','programLevel'])->find($request->get('applicant_id'));
         $applicant->results_check = $request->get('results_check')? 1 : 0;
         $applicant->insurance_check = $request->get('insurance_check')? 1 : 0;
         $applicant->personal_info_check = $request->get('personal_info_check')? 1 : 0;
@@ -1863,11 +1863,11 @@ class ApplicationController extends Controller
             if(!str_contains($applicant->campus->name,'Kivukoni')){
                $program_code = $prog_code[0].'Z3.'.$prog_code[1];
                //$stud_group =  $applicant->program_level_id.'Z'.$selection->campusProgram->id.$year;
-               $stud_group =  $selection->campusProgram->program->code;
+               $stud_group =  $applicant->programLevel->code.'Z'.str_replace('.','',$selection->campusProgram->program->code);
             }else{
                $program_code = $prog_code[0].'3.'.$prog_code[1];
                //$stud_group =  $applicant->program_level_id.$selection->campusProgram->id.$year;
-               $stud_group =  $selection->campusProgram->program->code;
+               $stud_group =  $applicant->programLevel->code.'Z'.str_replace('.','',$selection->campusProgram->program->code);
             }  
         }else{
             if(!str_contains($applicant->campus->name,'Kivukoni')){
