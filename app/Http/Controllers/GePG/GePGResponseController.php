@@ -96,7 +96,7 @@ class GePGResponseController extends Controller
 
 
 
-
+      if(GatewayPayment::where('transaction_id',$transaction_id)->count() == 0){
 		$gatepay = new GatewayPayment;
 		$gatepay->transaction_id = $transaction_id;
 		// $gatepay->sp_code = $sp_code;
@@ -179,6 +179,7 @@ class GePGResponseController extends Controller
         }
 
 		dispatch(new UpdateGatewayPayment($gatepay));
+	   }
 
   //       $invoice = Invoice::with('feeType')->where('control_no',$control_no)->first();
 		// $invoice->gateway_payment_id = $gatepay->id;
