@@ -1404,6 +1404,8 @@ class ApplicationController extends Controller
         }
         $invoice->payable_id = $applicant->id;
         $invoice->payable_type = 'applicant';
+        $invoice->applicable_id = $applicant->application_window_id;
+        $invoice->applicable_type = 'application_window';
         $invoice->fee_type_id = $fee_amount->feeItem->fee_type_id;
         $invoice->save();
 

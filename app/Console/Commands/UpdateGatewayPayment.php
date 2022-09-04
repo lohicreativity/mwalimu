@@ -51,8 +51,8 @@ class UpdateGatewayPayment extends Command
     public function handle()
     {
         DB::beginTransaction();
-            $gatepays = GatewayPayment::where('is_updated',0)->get();
-            foreach($gatepays as $gatepay){
+        $gatepays = GatewayPayment::where('is_updated',0)->get();
+        foreach($gatepays as $gatepay){
             $invoice = Invoice::with('feeType')->where('control_no',$gatepay->control_no)->first();
             $acpac = new ACPACService;
             if($invoice->payable_type == 'applicant'){
