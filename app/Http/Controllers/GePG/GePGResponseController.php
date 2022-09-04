@@ -16,7 +16,7 @@ use App\Domain\Finance\Models\PaymentReconciliation;
 use App\Domain\Registration\Models\Student;
 use Illuminate\Support\Facades\Log;
 use App\Services\ACPACService;
-use App\Jobs\UpdateGatewayPayment;
+//use App\Jobs\UpdateGatewayPayment;
 use DB;
 
 class GePGResponseController extends Controller
@@ -62,7 +62,7 @@ class GePGResponseController extends Controller
      * Receive payment receipt from GePG
      */
     public function getReceipt(Request $request)
-	{
+	 {
     	$arrContextOptions = array(
 		      "ssl"=>array(
 		            "verify_peer"=>false,
