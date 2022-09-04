@@ -26,8 +26,6 @@ class GePGResponseController extends Controller
      */
     public function getBill(Request $request)
     {
-    	return true;
-    	
     	$arrContextOptions=array(
 		      "ssl"=>array(
 		            "verify_peer"=>false,
@@ -228,11 +226,7 @@ class GePGResponseController extends Controller
 				// 					'$DptCellNum','$DptName','$DptEmailAddr','$Remarks','$ReconcRsv1','$ReconcRsv2','$ReconcRsv3')");
 
 				$recon = new PaymentReconciliation;
-				$recon->SpReconcReqId = $
-
-
-
-				SpReconcReqId;
+				$recon->SpReconcReqId = $SpReconcReqId;
 				//$recon->ReconcStsCode = $ReconcStsCode;
 				$recon->SpBillId = $SpBillId;
 				$recon->BillCtrNum = $BillCtrNum;
