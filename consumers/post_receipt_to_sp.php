@@ -3,10 +3,10 @@ require_once 'config.php';
 require_once 'helpers.php';
 require_once 'vendor/autoload.php';
 require_once 'producer.php';
-use PhpAmqpLib\Connection\AMQPConnection;
+use PhpAmqpLib\Connection\AMQPStreamConnection;
 use function \FluidXml\fluidxml;
 
-$connection = new AMQPConnection(RABBIT_HOST,RABBIT_PORT,RABBIT_USER,RABBIT_PASS);            
+$connection = new AMQPStreamConnection(RABBIT_HOST,RABBIT_PORT,RABBIT_USER,RABBIT_PASS);            
 $channel = $connection->channel();
 $channel->exchange_declare('sp_exchange', 'direct', false, true, false);
 $channel->queue_declare('receipt.to.sp', false, true, false, false);
