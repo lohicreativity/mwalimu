@@ -178,7 +178,7 @@ class GePGResponseController extends Controller
 
         }
 
-		dispatch(new UpdateGatewayPayment($gatepay));
+		//dispatch(new UpdateGatewayPayment($gatepay));
 	   }
 
   //       $invoice = Invoice::with('feeType')->where('control_no',$control_no)->first();

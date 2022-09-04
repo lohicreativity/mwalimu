@@ -46,7 +46,7 @@ class UpdateGatewayPayment implements ShouldQueue
     public function handle()
     { 
         DB::beginTransaction();
-        $invoice = Invoice::with('feeType')->where('control_no',$this->gatepay->control_no)->first()
+        $invoice = Invoice::with('feeType')->where('control_no',$this->gatepay->control_no)->first();
         $acpac = new ACPACService;
         if($invoice->payable_type == 'applicant'){
             $applicant = Applicant::find($invoice->payable_id);
