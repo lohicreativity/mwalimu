@@ -1395,9 +1395,11 @@ class ApplicationController extends Controller
         $invoice->reference_no = 'MNMA-'.time();
         if(str_contains($applicant->nationality,'Tanzania')){
            $invoice->amount = round($fee_amount->amount_in_tzs);
+           $invoice->actual_amount = $invoice->amount;
            $invoice->currency = 'TZS';
         }else{
            $invoice->amount = round($fee_amount->amount_in_usd*$usd_currency->factor);
+           $invoice->actual_amount = $invoice->amount;
            $invoice->currency = 'TZS';//'USD';
         }
         $invoice->payable_id = $applicant->id;
