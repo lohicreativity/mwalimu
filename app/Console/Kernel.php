@@ -15,7 +15,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+        App\Console\Commands\UpdateGatewayPayment::class
     ];
 
     /**
@@ -30,7 +30,7 @@ class Kernel extends ConsoleKernel
          //$schedule->command('queue:work')
                 //  ->timezone('Africa/Dar_es_Salaam')
                 //  ->everyMinute();
-        $schedule->call(new UpdateGatewayPayment)->timezone('Africa/Dar_es_Salaam')->everyMinute();
+        $schedule->command('invoice:update-gateway-payment')->timezone('Africa/Dar_es_Salaam')->everyMinute();
         // $schedule->call(new UpdateGatewayPayment)->timezone('Africa/Dar_es_Salaam')->dailyAt('22:00');
         // $schedule->call(new UpdateGatewayPayment)->timezone('Africa/Dar_es_Salaam')->dailyAt('07:00');
         // $schedule->call(new UpdateGatewayPayment)->timezone('Africa/Dar_es_Salaam')->dailyAt('12:00');

@@ -24,7 +24,7 @@ class UpdateGatewayPayment extends Command
      *
      * @var string
      */
-    protected $signature = 'update-gateway-payment';
+    protected $signature = 'invoice:update-gateway-payment';
 
     /**
      * The console command description.
