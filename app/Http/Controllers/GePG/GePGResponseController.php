@@ -119,7 +119,7 @@ class GePGResponseController extends Controller
 		$gatepay->save();
        
        $invoice = Invoice::with('feeType')->where('control_no',$control_no)->first();
-       
+
         if($invoice->payable_type == 'applicant'){
             $applicant = Applicant::find($invoice->payable_id);
             $stud_name = $applicant->surname.', '.$applicant->first_name.' '.$applicant->middle_name;
@@ -178,7 +178,7 @@ class GePGResponseController extends Controller
 
         }
 
-		dispatch(new UpdateGatewayPayment($gatepay));
+		// dispatch(new UpdateGatewayPayment($gatepay));
 
   //       $invoice = Invoice::with('feeType')->where('control_no',$control_no)->first();
 		// $invoice->gateway_payment_id = $gatepay->id;
@@ -226,7 +226,11 @@ class GePGResponseController extends Controller
 				// 					'$DptCellNum','$DptName','$DptEmailAddr','$Remarks','$ReconcRsv1','$ReconcRsv2','$ReconcRsv3')");
 
 				$recon = new PaymentReconciliation;
-				$recon->SpReconcReqId = $SpReconcReqId;
+				$recon->SpReconcReqId = $
+
+
+
+				SpReconcReqId;
 				//$recon->ReconcStsCode = $ReconcStsCode;
 				$recon->SpBillId = $SpBillId;
 				$recon->BillCtrNum = $BillCtrNum;
