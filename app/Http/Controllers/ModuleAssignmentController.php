@@ -955,11 +955,14 @@ class ModuleAssignmentController extends Controller
               }
               fclose($file_handle);
               $invalid_students_entries = [];
+              $missing_students = [];
               foreach($line_of_text_1 as $line){
                  if(gettype($line) != 'boolean'){
                     $stud = Student::where('registration_number',trim($line[0]))->first();
-                     if($stud){
+                     if($stud && !empty($line[1])){
                         $uploaded_students[] = $stud;
+                     }elseif($stud && empty($line[1])){
+                        $missing_students[] = $stud;
                      }else{
                         $invalid_students_entries[] = $line[0];
                      }
@@ -1033,7 +1036,7 @@ class ModuleAssignmentController extends Controller
                 }
               }
 
-              $missing_students = [];
+              
               foreach($students as $stud){
                   $student_present = false;
                   foreach($uploaded_students as $up_stud){
