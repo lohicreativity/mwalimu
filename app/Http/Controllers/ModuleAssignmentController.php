@@ -1397,6 +1397,48 @@ class ModuleAssignmentController extends Controller
                   }
                 }elseif($student && !empty($line[1]) && isset($line[2])){
                     return redirect()->back()->with('error','Invalid entries in column B of the uploaded file');
+                }elseif($student && empty($line[1])){
+                    if($request->get('assessment_plan_id') == 'SUPPLEMENTARY'){
+                        $semester_remark = SemesterRemark::where('semester_id',$module_assignment->programModuleAssignment->semester_id)->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('student_id',$student->id)->first();
+                      
+                      $supp_upload_allowed = true;
+                      if($semester_remark){
+                          if($semester_remark->remark != 'FAIL&DISCO' || $semester_remark->remark != 'PASS'){
+                              $supp_upload_allowed = false;
+                          }
+                      }
+
+                      $special_exam = SpecialExam::where('student_id',$student->id)->where('module_assignment_id',$module_assignment->id)->where('type','SUPP')->where('status','APPROVED')->first();
+                      $final_special_exam = SpecialExam::where('student_id',$student->id)->where('module_assignment_id',$module_assignment->id)->where('type','FINAL')->where('status','APPROVED')->first();
+                      $postponement = Postponement::where('student_id',$student->id)->where('study_academic_year_id',$module_assignment->study_academic_year_id)->where('semester_id',$module_assignment->programModuleAssignment->semester_id)->where('status','POSTPONED')->first();
+                      $grading_policy = GradingPolicy::where('nta_level_id',$module_assignment->module->ntaLevel->id)->where('grade','C')->first();
+                          
+                          $upload_allowed = true;
+                          if($res = ExaminationResult::where('module_assignment_id',$request->get('module_assignment_id'))->where('student_id',$student->id)->where('exam_type','FINAL')->first()){
+                              $result = $res;
+                              if($res->final_exam_remark == 'PASS'){
+                                  $upload_allowed = false; 
+                              }
+                          }else{
+                             $result = new ExaminationResult;
+                          }
+                          $result->module_assignment_id = $request->get('module_assignment_id');
+                          $result->student_id = $student->id;
+                          if($special_exam || $postponement){
+                             $result->final_score = null;
+                             $result->final_remark = 'INCOMPLETE'
+                             $result->supp_score = null;
+                          }else{
+                             $result->final_remark = 'INCOMPLETE'
+                             $result->supp_score = null;
+                          }
+                          $result->final_uploaded_at = now();
+                          $result->uploaded_by_user_id = Auth::user()->id;
+                          if($supp_upload_allowed && $upload_allowed){
+                            $result->save();
+                          }
+
+                    }
                 }
                 }
               }
