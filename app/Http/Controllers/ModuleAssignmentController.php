@@ -1395,7 +1395,7 @@ class ModuleAssignmentController extends Controller
                       $result->uploaded_by_user_id = Auth::user()->id;
                       $result->save();
                   }
-                }else{
+                }elseif($student && !empty($line[1]) && isset($line[2])){
                     return redirect()->back()->with('error','Invalid entries in column B of the uploaded file');
                 }
                 }
