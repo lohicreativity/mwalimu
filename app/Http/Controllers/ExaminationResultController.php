@@ -280,9 +280,11 @@ class ExaminationResultController extends Controller
                              if($processed_result->supp_score < $assignment->programModuleAssignment->module_pass_mark){
                                  $processed_result->grade = 'F';
                                  $processed_result->point = 0;
+                                 $processed_result->supp_remark = 'FAIL';
                              }else{
                                 $processed_result->grade = 'C';
                                 $processed_result->point = 2;
+                                $processed_result->supp_remark = 'PASS';
                              }
 
                           	if(Util::stripSpacesUpper($assignment->module->ntaLevel->name) == Util::stripSpacesUpper('NTA Level 7')){
@@ -310,7 +312,11 @@ class ExaminationResultController extends Controller
                             
                           	$processed_result->supp_processed_at = now();
                           	$processed_result->supp_processed_by_user_id = Auth::user()->id;
-                        	}
+                        	}else{
+                            if($processed_result->supp_remark == 'INCOMPLETE'){
+                                $processed_result->final_exam_remark = 'INCOMPLETE';
+                            }
+                          }
                       }
                   }
 

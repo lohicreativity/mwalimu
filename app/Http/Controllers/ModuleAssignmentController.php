@@ -1426,11 +1426,13 @@ class ModuleAssignmentController extends Controller
                           $result->student_id = $student->id;
                           if($special_exam || $postponement){
                              $result->final_score = null;
-                             $result->final_remark = 'INCOMPLETE'
+                             $result->final_remark = 'INCOMPLETE';
                              $result->supp_score = null;
+                             $result->supp_remark = 'INCOMPLETE';
                           }else{
-                             $result->final_remark = 'INCOMPLETE'
+                             $result->final_remark = 'INCOMPLETE';
                              $result->supp_score = null;
+                             $result->supp_remark = 'INCOMPLETE';
                           }
                           $result->final_uploaded_at = now();
                           $result->uploaded_by_user_id = Auth::user()->id;
