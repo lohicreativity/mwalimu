@@ -1041,10 +1041,24 @@ class ModuleAssignmentController extends Controller
                           $student_present = true;
                       }
                   }
-                  if(ExaminationResult::where('student_id',$stud->id)->whereHas('moduleAssignment.programModuleAssignment',function($query) use($stud, $module_assignment){
-                       $query->where('year_of_study',$stud->year_of_study)->where('semester_id',$module_assignment->programModuleAssignment->semester_id);
-                  })->count() != 0){
-                      $student_present = true;
+                  if($request->get('assessment_plan_id') == 'FINAL_EXAM'){
+                    if(ExaminationResult::where('student_id',$stud->id)->whereHas('moduleAssignment.programModuleAssignment',function($query) use($stud, $module_assignment){
+                         $query->where('year_of_study',$stud->year_of_study)->where('semester_id',$module_assignment->programModuleAssignment->semester_id);
+                    })->whereNotNull('final_uploaded_at')->count() != 0){
+                        $student_present = true;
+                    }
+                  }elseif($request->get('assessment_plan_id') == 'SUPPLEMENTARY'){
+                    if(ExaminationResult::where('student_id',$stud->id)->whereHas('moduleAssignment.programModuleAssignment',function($query) use($stud, $module_assignment){
+                         $query->where('year_of_study',$stud->year_of_study)->where('semester_id',$module_assignment->programModuleAssignment->semester_id);
+                    })->whereNotNull('supp_score')->count() != 0){
+                        $student_present = true;
+                    }
+                  }else{
+                    if(ExaminationResult::where('student_id',$stud->id)->whereHas('moduleAssignment.programModuleAssignment',function($query) use($stud, $module_assignment){
+                         $query->where('year_of_study',$stud->year_of_study)->where('semester_id',$module_assignment->programModuleAssignment->semester_id);
+                    })->whereNull('final_uploaded_at')->count() != 0){
+                        $student_present = true;
+                    }
                   }
                   if(!$student_present){
                       $missing_students[] = $stud;
