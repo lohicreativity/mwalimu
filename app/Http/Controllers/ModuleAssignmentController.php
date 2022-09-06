@@ -1109,7 +1109,7 @@ class ModuleAssignmentController extends Controller
               $invalidEntries = [];
               foreach($line_of_text_2 as $line){
                    if(gettype($line) != 'boolean'){
-                       if((floatval(trim($line[1])) < 0 || floatval(trim($line[1])) > 100 || !is_numeric(trim($line[1]))) && !empty($line[1])){
+                       if((floatval(trim($line[1])) < 0 || floatval(trim($line[1])) > 100 || (!is_numeric(trim($line[1]))) && !empty($line[1]))){
                          $validationStatus = false;
                          $invalidEntries[] = trim($line[0]);
                        }
