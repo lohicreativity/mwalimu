@@ -320,6 +320,7 @@ class AdmissionController extends Controller
 
         $invoice = new Invoice;
         $invoice->reference_no = 'MNMA-MSC'.time();
+        $invoice->actual_amount = $other_fees;
         $invoice->amount = $other_fees;
         $invoice->currency = $currency;
         $invoice->payable_id = $applicant->id;
