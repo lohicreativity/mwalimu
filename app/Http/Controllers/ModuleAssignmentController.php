@@ -449,7 +449,7 @@ class ModuleAssignmentController extends Controller
                         $exam_result->processed_at = now();
                         $exam_result->save();
                     }else{
-                        if($student_course_work_count != 0){
+                        // if($student_course_work_count != 0){
                         $exam_result = new ExaminationResult;
                         $exam_result->module_assignment_id = $module_assignment->id;
                         $exam_result->student_id = $student->id;
@@ -468,7 +468,7 @@ class ModuleAssignmentController extends Controller
                         $exam_result->processed_by_user_id = Auth::user()->id;
                         $exam_result->processed_at = now();
                         $exam_result->save();
-                        }
+                        // }
                     }
                     
              }
