@@ -1170,7 +1170,11 @@ class ModuleAssignmentController extends Controller
                       $result_log = new ExaminationResultLog;
                       $result_log->module_assignment_id = $request->get('module_assignment_id');
                       $result_log->student_id = $student->id;
-                      $result_log->final_score = !$special_exam? (trim($line[1])*$module_assignment->programModuleAssignment->final_min_mark)/100 : null;
+                      if($special_exam || $postponement){
+                        $result_log->final_score = null;
+                      }else{
+                        $result_log->final_score = (trim($line[1])*$module_assignment->programModuleAssignment->final_min_mark)/100;
+                      }
                       if($carry_history){
                          $result_log->exam_category = 'CARRY';
                          $result_log->retakable_id = $carry_history->id;
@@ -1199,7 +1203,11 @@ class ModuleAssignmentController extends Controller
                       }
                       $result->module_assignment_id = $request->get('module_assignment_id');
                       $result->student_id = $student->id;
-                      $result->final_score = !$special_exam? (trim($line[1])*$module_assignment->programModuleAssignment->final_min_mark)/100 : null;
+                      if($special_exam || $postponement){
+                        $result->final_score = null;
+                      }else{
+                        $result->final_score = (trim($line[1])*$module_assignment->programModuleAssignment->final_min_mark)/100;
+                      }
                       $result->exam_type = 'FINAL';
                       if($carry_history){
                          $result->exam_category = 'CARRY';
