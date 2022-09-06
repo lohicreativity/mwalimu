@@ -118,7 +118,6 @@ Route::get('test',function(){
         }
 
 		//dispatch(new UpdateGatewayPayment($gatepay));
-	   }
 	   return 'Done';
 	 
 	 
