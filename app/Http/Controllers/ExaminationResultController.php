@@ -224,11 +224,18 @@ class ExaminationResultController extends Controller
                  $student_buffer[$student->id]['nta_level'] = $student->campusProgram->program->ntaLevel;
                  $student_buffer[$student->id]['total_credit'] = $total_credit;
                  $student_buffer[$student->id]['opt_credit'] = 0;
+                 $student_buffer[$student->id]['opt_prog'] = 0;
+                 $student_buffer[$student->id]['opt_prog_status'] = true;
                  //$student_buffer[$student->id]['results'] = [];
 
                  foreach($optional_programs as $prog){
                      $student_buffer[$student->id]['opt_credit'] += $prog->module->credit; 
+                     $student_buffer[$student->id]['opt_prog'] += 1;
                  }
+                 if($student_buffer[$student->id]['opt_prog'] < $elective_policy->number_of_options){
+                     $student_buffer[$student->id]['opt_prog_status'] = false;
+                 }
+                 // $student_buffer[$student->id]['opt_prog_status'] = $elective_policy->number_of_options ;
                  $student_buffer[$student->id]['total_credit'] = $student_buffer[$student->id]['opt_credit'] + $total_credit;
 
                   if($result->retakeHistory && isset($result->retakeHistory->retakeHistory->retakableResults[0])){
@@ -468,7 +475,7 @@ class ExaminationResultController extends Controller
                         $remark->study_academic_year_id = $request->get('study_academic_year_id');
                         $remark->student_id = $key;
                         $remark->semester_id = $request->get('semester_id');
-                        $remark->remark = $pass_status;
+                        $remark->remark = ($buffer['opt_prog_status'])? $pass_status : 'INCOMPLETE';
                         if($remark->remark == 'INCOMPLETE' || $remark->remark == 'INCOMPLETE' || $remark->remark == 'POSTPONED' || $remark->remark == 'SUPP'){
                              $remark->gpa = null;
                         }else{
@@ -488,7 +495,7 @@ class ExaminationResultController extends Controller
                  }
 
                  if($request->get('semester_id') == 'SUPPLEMENTARY'){
-                     $sem_remarks = SemesterRemark::where('student_id',$key)->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',$buffer['year_of_study'])->get();
+                     $sem_remarks = SemesterRemark::with(['student'])->where('student_id',$key)->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',$buffer['year_of_study'])->get();
 
 
 
@@ -501,6 +508,8 @@ class ExaminationResultController extends Controller
 
                         $stud_buffer = [];
                         $ann_credit = 0;
+
+                        $elective_policy = ElectivePolicy::where('campus_program_id',$rem->student->campus_program_id)->where('study_academic_year_id',$rem->study_academic_year_id)->where('semester_id',$rem->semester_id)->first();
 
                         foreach ($mod_assignments as $assignment) {
                           $results = ExaminationResult::whereHas('student.applicant',function($query) use($request){
@@ -534,10 +543,15 @@ class ExaminationResultController extends Controller
                                 
                                  $stud_buffer[$key]['total_credit'] = $total_credit;
                                  $stud_buffer[$key]['opt_credit'] = 0;
+                                 $stud_buffer[$key]['opt_prog_status'] = true;
                                  $stud_buffer[$key]['results'][] = $result;
 
                                  foreach($optional_programs as $prog){
-                                     $stud_buffer[$key]['opt_credit'] += $prog->module->credit; 
+                                     $stud_buffer[$key]['opt_credit'] += $prog->module->credit;
+                                     $stud_buffer[$key]['opt_prog'] += 1; 
+                                 }
+                                 if($stud_buffer[$key]['opt_prog_status'] < $elective_policy->number_of_options){
+                                    $stud_buffer[$key]['opt_prog_status'] = false;
                                  }
                                  $stud_buffer[$key]['total_credit'] = $stud_buffer[$key]['opt_credit'] + $total_credit;           
 
@@ -591,7 +605,7 @@ class ExaminationResultController extends Controller
                         $remark = SemesterRemark::find($rem->id);
                         $remark->study_academic_year_id = $request->get('study_academic_year_id');
                         $remark->student_id = $key;
-                        $remark->remark = $sem_pass_status;
+                        $remark->remark = ($stud_buffer[$key]['opt_prog_status'])? $sem_pass_status : 'INCOMPLETE';
                         if($remark->remark == 'INCOMPLETE' || $remark->remark == 'INCOMPLETE' || $remark->remark == 'POSTPONED' || $remark->remark == 'SUPP'){
                              $remark->gpa = null;
                         }else{
@@ -1376,6 +1390,8 @@ class ExaminationResultController extends Controller
             }
 
             $student_buffer[$student->id]['opt_credit'] = 0;
+            $student_buffer[$student->id]['opt_prog'] = 0;
+            $student_buffer[$student->id]['opt_prog_status'] = true;
 
             foreach($results as $key=>$result){          
               
@@ -1385,6 +1401,11 @@ class ExaminationResultController extends Controller
 
                    foreach($optional_programs as $prog){
                        $student_buffer[$student->id]['opt_credit'] += $prog->module->credit;
+                       $student_buffer[$student->id]['opt_prog'] += 1;
+                   }
+
+                   if($student_buffer[$student->id]['opt_prog'] < $elective_policy->number_of_options){
+                       $student_buffer[$student->id]['opt_prog_status'] = false;
                    }
 
                    $student_buffer[$student->id]['total_credit'] = $student_buffer[$student->id]['opt_credit'] + $total_credit;
@@ -1598,7 +1619,7 @@ class ExaminationResultController extends Controller
                 $remark->study_academic_year_id = $ac_yr_id;
                 $remark->student_id = $key;
                 $remark->semester_id = $request->get('semester_id');
-                $remark->remark = $pass_status;
+                $remark->remark = ($buffer['opt_prog_status'])? $pass_status : 'INCOMPLETE';
                 if($remark->remark == 'INCOMPLETE' || $remark->remark == 'INCOMPLETE' || $remark->remark == 'POSTPONED' || $remark->remark == 'SUPP'){
                      $remark->gpa = null;
                 }else{
