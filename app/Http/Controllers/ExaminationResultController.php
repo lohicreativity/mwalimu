@@ -548,6 +548,7 @@ class ExaminationResultController extends Controller
                                  $stud_buffer[$key]['total_credit'] = $total_credit;
                                  $stud_buffer[$key]['opt_credit'] = 0;
                                  $stud_buffer[$key]['opt_prog_status'] = true;
+                                 $stud_buffer[$key]['opt_prog'] = 0;
                                  $stud_buffer[$key]['results'][] = $result;
 
                                  foreach($optional_programs as $prog){
