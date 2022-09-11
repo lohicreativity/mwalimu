@@ -257,7 +257,7 @@
                       
                     </tr>
                     
-                    
+                    @php $count = 0; @endphp
 
                     @foreach($students as $key=>$student)
                       @php $display_student = false; @endphp
@@ -284,7 +284,7 @@
                     
                     @if($display_student)
                     <tr>
-                      <td>{{ $key+1 }}</td>
+                      <td>{{ $count }}</td>
                       @if($request->get('reg_display_type') == 'SHOW')
                       <td>{{ $student->registration_number }}</td>
                       @endif
@@ -346,6 +346,9 @@
                       @endif
                       @endif
                     </tr>
+                     @php
+                       $count++;
+                     @endphp
                      @endif
                     @endforeach
                   </table>
