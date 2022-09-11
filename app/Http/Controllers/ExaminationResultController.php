@@ -228,12 +228,16 @@ class ExaminationResultController extends Controller
                  $student_buffer[$student->id]['opt_prog_status'] = true;
                  //$student_buffer[$student->id]['results'] = [];
 
+                 $elective_policy = ElectivePolicy::where('campus_program_id',$campus_program->id)->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('semester_id',$request->get('semester_id'))->first();
+
                  foreach($optional_programs as $prog){
                      $student_buffer[$student->id]['opt_credit'] += $prog->module->credit; 
                      $student_buffer[$student->id]['opt_prog'] += 1;
                  }
+                 if($elective_policy){
                  if($student_buffer[$student->id]['opt_prog'] < $elective_policy->number_of_options){
                      $student_buffer[$student->id]['opt_prog_status'] = false;
+                 }
                  }
                  // $student_buffer[$student->id]['opt_prog_status'] = $elective_policy->number_of_options ;
                  $student_buffer[$student->id]['total_credit'] = $student_buffer[$student->id]['opt_credit'] + $total_credit;
