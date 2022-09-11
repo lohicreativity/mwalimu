@@ -776,7 +776,7 @@ class ExaminationResultController extends Controller
                                  $remark->save();
                               }
                             }
-                           
+                           ResultPublication::where('study_academic_year_id',$request->get('study_academic_year_id'))->where('semester_id',0)->where('nta_level_id',$campus_program->program->nta_level_id)->delete();
                         //}
                        
                    }
@@ -785,7 +785,7 @@ class ExaminationResultController extends Controller
                   
 
 
-                 if($pub = ResultPublication::where('study_academic_year_id',$request->get('study_academic_year_id'))->where('semester_id',$request->get('semester_id'))->first()){
+                 if($pub = ResultPublication::where('study_academic_year_id',$request->get('study_academic_year_id'))->where('semester_id',$request->get('semester_id'))->where('nta_level_id',$campus_program->program->nta_level_id)->first()){
                     $publication = $pub;
                  }else{
                     $publication = new ResultPublication;
@@ -935,7 +935,12 @@ class ExaminationResultController extends Controller
             //       return redirect()->back()->withInput()->with('error','No examination policy defined for this module NTA level and study academic year');
             // }
 
-            $student = Student::find($request->get('student_id'));
+            $student = Student::with('options')->find($request->get('student_id'));
+            if($module_assignment->programModuleAssignment->category == 'OPTIONAL'){
+                if(DB::table('student_program_module_assignment')->where('student_id',$student->id)->where('program_module_assignment_id',$module_assignment->program_module_assignment_id)->count() == 0){
+                    $student->options()->attach([$module_assignment->program_module_assignment_id]);
+                }
+            }
 
             $special_exam = SpecialExam::where('student_id',$student->id)->where('module_assignment_id',$module_assignment->id)->where('type',$request->get('exam_type'))->where('status','APPROVED')->first();
 
@@ -2702,7 +2707,7 @@ class ExaminationResultController extends Controller
                    $query->where('study_academic_year_id',$ac_yr_id)->where('year_of_study',$yr_of_study)->where('category','COMPULSORY');
                  })->get();
             $opt_program_modules = ModuleAssignment::whereHas('programModuleAssignment.students',function($query) use($student){
-                     $query->where('id',$student->id);
+                     //$query->where('id',$student->id);
                  })->whereHas('programModuleAssignment',function($query) use($ac_yr_id,$yr_of_study){
                      $query->where('study_academic_year_id',$ac_yr_id)->where('year_of_study',$yr_of_study)->where('category','OPTIONAL');
                 })->get();
