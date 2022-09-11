@@ -558,7 +558,7 @@ class ExaminationResultController extends Controller
                                  if($stud_buffer[$key]['opt_prog_status'] < $elective_policy->number_of_options){
                                     $stud_buffer[$key]['opt_prog_status'] = false;
                                  }
-                                 $stud_buffer[$key]['total_credit'] = $stud_buffer[$key]['opt_credit'] + $total_credit;           
+                                 $stud_buffer[$key]['total_credit'] = $stud_buffer[$key]['opt_credit'] + $tot_credit;           
 
                             }
                         }
