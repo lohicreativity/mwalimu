@@ -59,6 +59,7 @@
                  @foreach($semesters as $key=>$semester)
                     @php
                        $publish_status = false;
+                       $supp_publish_status = false;
                        $sem_reg[$semester->id] = false;
                     @endphp
 
@@ -74,6 +75,11 @@
                       @if($publication->semester_id == $semester->id)
                         @php
                           $publish_status = true;
+                        @endphp
+                      @endif
+                      @if($publication->type == 'SUPP' && $publication->status == 'PUBLISHED')
+                        @php
+                          $supp_publish_status = true;
                         @endphp
                       @endif
                    @endforeach
@@ -124,8 +130,8 @@
                           <td>@if(!$result->supp_processed_at) {{ $result->course_work_score }} @else N/A @endif</td>
                           <td @if($result->exam_type == 'APPEAL') class="ss-grey" @endif>@if(!$result->supp_processed_at) {{ $result->final_score }} @else N/A @endif</td>
                           <td>@if(!$result->supp_processed_at) {{ round($result->total_score) }} @else {{ round($result->supp_score) }}@endif</td>
-                          <td>{{ $result->grade }}</td>
-                          <td>{{ $result->final_exam_remark }}</td>
+                          <td>@if($result->supp_score && !$supp_publish_status) F @else {{ $result->grade }} @endif</td>
+                          <td>@if($result->supp_score && !$supp_publish_status) FAIL @else {{ $result->final_exam_remark }} @endif</td>
                         </tr>
                           @php
                             $count += 1;
@@ -158,8 +164,8 @@
                           <td>@if(!$result->supp_processed_at) {{ $result->course_work_score }} @else N/A @endif</td>
                           <td @if($result->exam_type == 'APPEAL') class="ss-grey" @endif>@if(!$result->supp_processed_at) {{ $result->final_score }} @else N/A @endif</td>
                           <td>@if(!$result->supp_processed_at) {{ round($result->total_score) }} @else {{ round($result->supp_score) }}@endif</td>
-                          <td>{{ $result->grade }}</td>
-                          <td>{{ $result->final_exam_remark }}</td>
+                          <td>@if($result->supp_score && !$supp_publish_status) F @else {{ $result->grade }} @endif</td>
+                          <td>@if($result->supp_score && !$supp_publish_status) FAIL @else {{ $result->final_exam_remark }} @endif</td>
                         </tr>
                           @php
                             $count += 1;

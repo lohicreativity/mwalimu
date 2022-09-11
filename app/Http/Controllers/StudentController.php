@@ -248,7 +248,7 @@ class StudentController extends Controller
     {
     	 $student = User::find(Auth::user()->id)->student()->with(['registrations'=>function($query) use($ac_yr_id,$yr_of_study){
             $query->where('study_academic_year_id',$ac_yr_id)->where('year_of_study',$yr_of_study)->where('status','REGISTERED');
-         }])->first();
+         }])->with(['campusProgram.program'])->first();
          $study_academic_year = StudyAcademicYear::with('academicYear')->find($ac_yr_id);
 
          $retake_sem_remarks = SemesterRemark::where('student_id',$student->id)->where('remark','RETAKE')->where('year_of_study',$yr_of_study)->get();
@@ -271,7 +271,7 @@ class StudentController extends Controller
 
           $annual_remark = AnnualRemark::where('student_id',$student->id)->where('study_academic_year_id',$ac_yr_id)->where('year_of_study',$yr_of_study)->first();
 
-          $publications = ResultPublication::where('study_academic_year_id',$ac_yr_id)->where('status','PUBLISHED')->get();
+          $publications = ResultPublication::where('study_academic_year_id',$ac_yr_id)->where('status','PUBLISHED')->where('nta_level_id',$student->campusProgram->program->nta_level_id)->get();
          // if(count($optional_programs) == 0){
          // 	$optional_programs = ProgramModuleAssignment::with(['module'])->where('study_academic_year_id',$ac_yr_id)->where('year_of_study',$yr_of_study)->where('category','OPTIONAL')->get();
          // }
