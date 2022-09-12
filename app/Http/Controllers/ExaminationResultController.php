@@ -939,6 +939,11 @@ class ExaminationResultController extends Controller
             // }
 
             $student = Student::with('options')->find($request->get('student_id'));
+            $elective_policy = ElectivePolicy::where('campus_program_id',$student->campus_program_id)->where('study_academic_year_id',$module_assignment->study_academic_year_id)->where('semester_id',$module_assignment->programModuleAssignment->semester_id)->first();
+            if(DB::table('student_program_module_assignment')->where('student_id',$student->id)->count() >= $elective_policy->number_of_options){
+                return redirect()->back()->with('error','Number of options in elective policy has reached maximum limit');
+            }
+
             if($module_assignment->programModuleAssignment->category == 'OPTIONAL'){
                 if(DB::table('student_program_module_assignment')->where('student_id',$student->id)->where('program_module_assignment_id',$module_assignment->program_module_assignment_id)->count() == 0){
                     $student->options()->attach([$module_assignment->program_module_assignment_id]);
