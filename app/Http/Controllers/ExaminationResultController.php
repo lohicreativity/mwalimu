@@ -2710,7 +2710,7 @@ class ExaminationResultController extends Controller
                    $query->where('study_academic_year_id',$ac_yr_id)->where('year_of_study',$yr_of_study)->where('category','COMPULSORY');
                  })->get();
             $opt_program_modules = ModuleAssignment::whereHas('programModuleAssignment.students',function($query) use($student){
-                     $query->where('id',$student->id);
+                     //$query->where('id',$student->id);
                  })->whereHas('programModuleAssignment',function($query) use($ac_yr_id,$yr_of_study){
                      $query->where('study_academic_year_id',$ac_yr_id)->where('year_of_study',$yr_of_study)->where('category','OPTIONAL');
                 })->get();
