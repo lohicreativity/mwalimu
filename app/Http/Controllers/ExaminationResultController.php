@@ -831,8 +831,6 @@ class ExaminationResultController extends Controller
                      $query->where('study_academic_year_id',$ac_yr_id)->where('year_of_study',$yr_of_study)->where('category','OPTIONAL')->where('semester_id',$semester_id);
                 })->get();
 
-            return $opt_program_modules;
-
               $moduleIds = [];
               foreach ($core_program_modules as $module) {
                 foreach($results as $result){
