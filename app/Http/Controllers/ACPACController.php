@@ -152,7 +152,6 @@ class ACPACController extends Controller
                ->join('campus_program','students.campus_program_id','=','campus_program.id')
                ->join('programs','campus_program.program_id','=','programs.id')
                ->join('study_academic_years','invoices.applicable_id','=','study_academic_years.id')
-               ->where('invoices.gateway_payment_id', 'gateway_payments.id')
                ->where('invoices.payable_type','student')
                ->where('campus_program.campus_id',$request->get('campus_id'))
                ->where('invoices.applicable_type','academic_year')
