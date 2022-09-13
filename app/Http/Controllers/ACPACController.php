@@ -147,7 +147,7 @@ class ACPACController extends Controller
                ->get();
         }else{
            $receipts = DB::table('gateway_payments')->select(DB::raw('gateway_payments.*, invoices.*, students.*, programs.code as programme'))
-               ->join('invoices','gateway_payments.control_no','=','invoices.control_no')
+               ->join('invoices','gateway_payments.id','=','invoices.gateway_payment_id')
                ->join('students','invoices.payable_id','=','students.id')
                ->join('campus_program','students.campus_program_id','=','campus_program.id')
                ->join('programs','campus_program.program_id','=','programs.id')
