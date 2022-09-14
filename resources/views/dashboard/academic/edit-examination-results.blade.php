@@ -62,7 +62,7 @@
                   ];
 
               @endphp
-              
+              {{--
               @if($result->supp_score == null)
                @php
                   $supp_score = [
@@ -79,6 +79,7 @@
                   ];
               @endphp
               @endif
+              --}}
               @php
                   $supp_score = [
                      'placeholder'=>'Supp score',
