@@ -69,7 +69,6 @@
                      'placeholder'=>'Supp score',
                      'class'=>'form-control',
                      'readonly'=>true
-
                   ];
               @endphp
               @else
@@ -80,6 +79,12 @@
                   ];
               @endphp
               @endif
+              @php
+                  $supp_score = [
+                     'placeholder'=>'Supp score',
+                     'class'=>'form-control',
+                  ];
+              @endphp
               {!! Form::open(['url'=>'academic/results/update-examination-results','class'=>'ss-form-processing']) !!}
                 <div class="card-body">
                   <div class="row">
