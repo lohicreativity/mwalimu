@@ -175,11 +175,15 @@
                      @endforeach
                      @if(isset($missing_modules[$semester->id]))
                      @if(count($missing_modules[$semester->id]) != 0)
+                      @foreach($semester->remarks as $remark)
+                      @if($remark->remark == 'INCOMPLETE')
                      <tr>
                         <td colspan="8"><a href="{{ url('academic/results/'.$student->id.'/'.$study_academic_year->id.'/'.$year_of_study.'/'.$semester->id.'/add-student-results') }}">{{ __('Add Results') }}</a></td>
                      </tr>
+                      @endif
+                     @endforeach
                      @endif
-                     @endif
+                    @endif
                     </tbody>
                  </table>
                </div>
