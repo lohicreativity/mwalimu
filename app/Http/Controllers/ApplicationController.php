@@ -1864,29 +1864,86 @@ class ApplicationController extends Controller
         $year = substr(date('Y'), 2);
 
         $prog_code = explode('.', $selection->campusProgram->program->code);
+
+        $program_code = $prog_code[0].'.'.$prog_code[1];
+               
+
+        $stud_group = explode('.', $selection->campusProgram->program->code);
+
+
         if(str_contains($applicant->intake->name,'March')){
+
             if(!str_contains($applicant->campus->name,'Kivukoni')){
+
                $program_code = $prog_code[0].'Z3.'.$prog_code[1];
                //$stud_group =  $applicant->program_level_id.'Z'.$selection->campusProgram->id.$year;
                $stud_group =  $applicant->programLevel->code.'Z'.str_replace('.','',$selection->campusProgram->program->code);
+
             }else{
+
                $program_code = $prog_code[0].'3.'.$prog_code[1];
                //$stud_group =  $applicant->program_level_id.$selection->campusProgram->id.$year;
                $stud_group =  $applicant->programLevel->code.'Z'.str_replace('.','',$selection->campusProgram->program->code);
             }  
+            
         }else{
-            if(!str_contains($applicant->campus->name,'Kivukoni')){
-               $program_code = $prog_code[0].'Z.'.$prog_code[1];
-               $stud_group =  $applicant->program_level_id.'Z'.$selection->campusProgram->id.$year;
-            }else{
-               $program_code = $prog_code[0].'.'.$prog_code[1];
-               // $stud_group =  $applicant->program_level_id.$selection->campusProgram->id.$year;
+
+            // september intake
+
+            if(str_contains($applicant->campus->name,'Karume')){
+
+                $program_code = $prog_code[0].'Z.'.$prog_code[1];
 
                $stud_group = explode('.', $selection->campusProgram->program->code);
 
-               $stud_group = $stud_group[0].$stud_group[1];
+                if (str_contains(strtolower($selection->campusProgram->program->name), 'bachelor')) {           
 
-               return $stud_group;
+                    if (str_contains($selection->campusProgram->program->name, 'Leadership') && str_contains($selection->campusProgram->program->name, 'Governance')) {
+
+                    $stud_group = $stud_group[0].$stud_group[1].'Z';
+
+                    } elseif (str_contains($selection->campusProgram->program->name, 'Procurement') && str_contains($selection->campusProgram->program->name, 'Supply')) {
+
+                    $stud_group = $stud_group[0].$stud_group[1].'Z';
+
+                    } else {
+
+                    $stud_group = $stud_group[0].'Z'.$stud_group[1];
+
+                    }
+
+                } else if (str_contains(strtolower($selection->campusProgram->program->name), 'certificate'))) {
+
+
+                }
+
+               
+            } elseif (str_contains($applicant->campus->name,'Kivukoni')) {
+
+                if (str_contains(strtolower($selection->campusProgram->program->name), 'bachelor'))) {
+                    
+                    if (str_contains(strtolower($selection->campusProgram->program->name), 'human') && str_contains(strtolower($selection->campusProgram->program->name), 'resource')) {
+
+                        $stud_group = substr($stud_group[0], 0, 1).$stud_group[1];
+                    } else {
+
+                        $stud_group = $stud_group[0].$stud_group[1];
+
+                    }
+
+                } elseif (str_contains(strtolower($selection->campusProgram->program->name), 'diploma'))) {
+
+                        $stud_group = substr($stud_group[0], 1, 1).$stud_group[1].'9';
+
+
+                } elseif (str_contains(strtolower($selection->campusProgram->program->name), 'certificate'))) {
+
+                        $stud_group = 'C'.$stud_group[1].'9';
+
+
+                }
+
+
 
             }  
         }
