@@ -1854,7 +1854,7 @@ class ApplicationController extends Controller
         if(!empty($last_student->last_number)){
            $code = sprintf('%04d',strrev(explode('/', $last_student->last_number)[1]) + 1);
 
-                return $code;
+                return $last_student->last_number[1];
 
         }else{
            $code = sprintf('%04d',1);
