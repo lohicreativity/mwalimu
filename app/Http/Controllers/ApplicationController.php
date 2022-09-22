@@ -1843,8 +1843,6 @@ class ApplicationController extends Controller
 
         $selection = ApplicantProgramSelection::with('campusProgram.program')->where('applicant_id',$request->get('applicant_id'))->where('status','SELECTED')->first();
 
-        return $selection->campusProgram->program->code;
-
         $studentship_status = ($applicant->has_postponed == 1)? StudentshipStatus::where('name','POSTPONED')->first() : StudentshipStatus::where('name','ACTIVE')->first();
         $academic_status = AcademicStatus::where('name','FRESHER')->first();
         $semester = Semester::where('status','ACTIVE')->first();
@@ -1884,7 +1882,12 @@ class ApplicationController extends Controller
                $program_code = $prog_code[0].'.'.$prog_code[1];
                // $stud_group =  $applicant->program_level_id.$selection->campusProgram->id.$year;
 
-               return $selection->program->code;
+               $stud_group = explode('.', $selection->campusProgram->program->code);
+
+               $stud_group = $stud_group[0].$stud_group[1];
+
+               return $stud_group;
+
             }  
         }
 
