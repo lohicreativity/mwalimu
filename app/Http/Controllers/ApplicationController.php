@@ -1882,7 +1882,7 @@ class ApplicationController extends Controller
                $program_code = $prog_code[0].'.'.$prog_code[1];
                // $stud_group =  $applicant->program_level_id.$selection->campusProgram->id.$year;
 
-               return $selection->programs->code;
+               return $selection->program->code;
             }  
         }
 
