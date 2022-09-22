@@ -1843,7 +1843,7 @@ class ApplicationController extends Controller
 
         $selection = ApplicantProgramSelection::with('campusProgram.program')->where('applicant_id',$request->get('applicant_id'))->where('status','SELECTED')->first();
 
-        return $selection->program->name;
+        return $selection->campusProgram->id;
 
         $studentship_status = ($applicant->has_postponed == 1)? StudentshipStatus::where('name','POSTPONED')->first() : StudentshipStatus::where('name','ACTIVE')->first();
         $academic_status = AcademicStatus::where('name','FRESHER')->first();
