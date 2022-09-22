@@ -1849,12 +1849,16 @@ class ApplicationController extends Controller
         if(str_contains($semester->name,'2')){
             return redirect()->back()->with('error','Active semester must be set to first semester');
         }
-        $last_student = DB::table('students')->select(DB::raw('MAX(SUBSTRING(REVERSE(registration_number),1,7)) AS last_number'))->where('campus_program_id',$selection->campusProgram->id)->first();
+        // $last_student = DB::table('students')->select(DB::raw('MAX(SUBSTRING(REVERSE(registration_number),1,7)) AS last_number'))->where('campus_program_id',$selection->campusProgram->id)->first();
+        $last_student = DB::table('students')->select(DB::raw('MAX(REVERSE(SUBSTRING(REVERSE(registration_number),1,7))) AS last_number'))->where('campus_program_id',$selection->campusProgram->id)->first();
         //Student::where('campus_program_id',$selection->campusProgram->id)->max();
         if(!empty($last_student->last_number)){
-           $code = sprintf('%04d',strrev(explode('/', $last_student->last_number)[1]) + 1);
+           // $code = sprintf('%04d',strrev(explode('/', $last_student->last_number)[1]) + 1);
 
-                return explode('/', $last_student->last_number[1]);
+            $code = explode('/', $last_student->last_number[0]) + 1;
+
+
+                return $code;
 
         }else{
            $code = sprintf('%04d',1);
