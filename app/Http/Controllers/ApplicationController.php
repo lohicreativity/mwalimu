@@ -1852,19 +1852,11 @@ class ApplicationController extends Controller
         // $last_student = DB::table('students')->select(DB::raw('MAX(SUBSTRING(REVERSE(registration_number),1,7)) AS last_number'))->where('campus_program_id',$selection->campusProgram->id)->first();
         $last_student = DB::table('students')->select(DB::raw('MAX(REVERSE(SUBSTRING(REVERSE(registration_number),1,7))) AS last_number'))->where('campus_program_id',$selection->campusProgram->id)->first();
 
-        // return $last_student->last_number;
         //Student::where('campus_program_id',$selection->campusProgram->id)->max();
         if(!empty($last_student->last_number)){
         $code = sprintf('%04d', substr($last_student->last_number, 0, 4) + 1);
 
-            // $code = explode('/', $last_student->last_number[0]);
-
-            // $code = substr($last_student->last_number, 0, 4);
-
-            // $new_code = intval($code) + 1;
-
-
-            return $code;
+            // return $code;
 
         }else{
            $code = sprintf('%04d',1);
