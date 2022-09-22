@@ -1861,8 +1861,10 @@ class ApplicationController extends Controller
 
             $code = substr($last_student->last_number, 0, 4);
 
+            $new_code = intval($code) + 1;
 
-                return $code;
+
+            return $new_code;
 
         }else{
            $code = sprintf('%04d',1);
