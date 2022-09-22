@@ -1859,7 +1859,7 @@ class ApplicationController extends Controller
 
             // $code = explode('/', $last_student->last_number[0]);
 
-            $code = substr($last_student->last_number, 1, 4);
+            $code = substr($last_student->last_number, 0, 4);
 
 
                 return $code;
