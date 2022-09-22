@@ -1885,7 +1885,7 @@ class ApplicationController extends Controller
                //$stud_group =  $applicant->program_level_id.$selection->campusProgram->id.$year;
                $stud_group =  $applicant->programLevel->code.'Z'.str_replace('.','',$selection->campusProgram->program->code);
             }  
-            
+
         }else{
 
             // september intake
@@ -1939,12 +1939,7 @@ class ApplicationController extends Controller
                 } elseif (str_contains(strtolower($selection->campusProgram->program->name), 'certificate'))) {
 
                         $stud_group = 'C'.$stud_group[1].'9';
-
-
                 }
-
-
-
             }  
         }
 
