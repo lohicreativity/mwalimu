@@ -1920,7 +1920,7 @@ class ApplicationController extends Controller
                
             } elseif (str_contains($applicant->campus->name,'Kivukoni')) {
 
-                if (str_contains(strtolower($selection->campusProgram->program->name), 'bachelor'))) {
+                if (str_contains(strtolower($selection->campusProgram->program->name), 'bachelor')) {
                     
                     if (str_contains(strtolower($selection->campusProgram->program->name), 'human') && str_contains(strtolower($selection->campusProgram->program->name), 'resource')) {
 
@@ -1931,12 +1931,12 @@ class ApplicationController extends Controller
 
                     }
 
-                } elseif (str_contains(strtolower($selection->campusProgram->program->name), 'diploma'))) {
+                } elseif (str_contains(strtolower($selection->campusProgram->program->name), 'diploma')) {
 
                         $stud_group = substr($stud_group[0], 1, 1).$stud_group[1].'9';
 
 
-                } elseif (str_contains(strtolower($selection->campusProgram->program->name), 'certificate'))) {
+                } elseif (str_contains(strtolower($selection->campusProgram->program->name), 'certificate')) {
 
                         $stud_group = 'C'.$stud_group[1].'9';
                 }
