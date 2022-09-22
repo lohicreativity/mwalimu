@@ -1912,7 +1912,7 @@ class ApplicationController extends Controller
 
                     }
 
-                } else if (str_contains(strtolower($selection->campusProgram->program->name), 'certificate'))) {
+                } else if (str_contains(strtolower($selection->campusProgram->program->name), 'certificate')) {
 
 
                 }
