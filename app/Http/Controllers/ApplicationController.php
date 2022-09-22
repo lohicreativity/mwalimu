@@ -1855,16 +1855,16 @@ class ApplicationController extends Controller
         // return $last_student->last_number;
         //Student::where('campus_program_id',$selection->campusProgram->id)->max();
         if(!empty($last_student->last_number)){
-           // $code = sprintf('%04d',strrev(explode('/', $last_student->last_number)[1]) + 1);
+        $code = sprintf('%04d', substr($last_student->last_number, 0, 4) + 1);
 
             // $code = explode('/', $last_student->last_number[0]);
 
-            $code = substr($last_student->last_number, 0, 4);
+            // $code = substr($last_student->last_number, 0, 4);
 
-            $new_code = intval($code) + 1;
+            // $new_code = intval($code) + 1;
 
 
-            return $new_code;
+            return $code;
 
         }else{
            $code = sprintf('%04d',1);
