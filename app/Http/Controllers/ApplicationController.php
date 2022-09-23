@@ -176,8 +176,8 @@ class ApplicationController extends Controller
          ->where('program_level_id',$request->get('program_level_id'))
  /*         ->where(function ($y) {
                $y->where('status','!=','ADMITTED')
-                     ->orWhere('status','!=','SUBMITTED')*/;
-            })->update(['status'=>null]);
+                     ->orWhere('status','!=','SUBMITTED');
+            })*/->update(['status'=>null]);
 
 		 return redirect()->back()->with('message','Selections reset successfully');
 	 }
