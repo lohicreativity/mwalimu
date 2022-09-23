@@ -188,7 +188,7 @@ class ApplicationController extends Controller
                      $q->where('status','!=','ADMITTED')
                        ->orWhere('status','!=','SUBMITTED');
                     });
-              })->toSql()->update(['status'=>'ELIGIBLE']);
+              })->toSql(); //->update(['status'=>'ELIGIBLE']);
 
 		 return Applicant::where('application_window_id',$request->get('application_window_id'))
          ->where('campus_id',$staff->campus_id)
