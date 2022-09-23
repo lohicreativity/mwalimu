@@ -133,15 +133,19 @@ class ApplicationController extends Controller
 		 $staff = User::find(Auth::user()->id)->staff;
 
          // removed selected status where clause
+         update `applicant_program_selections` 
+         set `status` = ELIGIBLE, `applicant_program_selections`.`updated_at` = 2022-09-23 11:04:55 
+         where exists (select * from `applicants` 
+            where `applicant_program_selections`.`applicant_id` = `applicants`.`id` and (`campus_id` = 1 and `status` != ADMITTED or `status` != SUBMITTED)) and `application_window_id` = 23 and `program_level_id` is null
 
 		 ApplicantProgramSelection::whereHas('applicant',function($query) use($staff){
 			 $query->where('campus_id',$staff->campus_id)
+             ->where('application_window_id',$request->get('application_window_id'))
+             ->where('program_level_id',$request->get('program_level_id'))
              ->where('status','!=','ADMITTED')
              ->orWhere('status','!=','SUBMITTED');
 
-		 })->where('application_window_id',$request->get('application_window_id'))
-            ->where('program_level_id', $request->get('program_level_id'))
-            ->update(['status'=>'ELIGIBLE']);
+		 })->update(['status'=>'ELIGIBLE']);
 
 		 return Applicant::where('application_window_id',$request->get('application_window_id'))
          ->where('campus_id',$staff->campus_id)
@@ -149,7 +153,7 @@ class ApplicationController extends Controller
          ->where('status','!=','ADMITTED')
          ->orWhere('status','!=','SUBMITTED')
          ->update(['status'=>null]);
-         
+
 		 return redirect()->back()->with('message','Selections reset successfully');
 	 }
 
