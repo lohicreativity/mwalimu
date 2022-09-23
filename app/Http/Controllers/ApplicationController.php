@@ -148,8 +148,8 @@ class ApplicationController extends Controller
 			 $query->where('campus_id',$staff->campus_id)
              ->where('application_window_id',$request->get('application_window_id'))
              ->where('program_level_id',$request->get('program_level_id'))
-             ->where(function ($query) {
-               $query->where('status','!=','ADMITTED')
+             ->where(function ($x) {
+               $x->where('status','!=','ADMITTED')
                      ->orWhere('status','!=','SUBMITTED');
 
 		      })->update(['status'=>'ELIGIBLE']);
