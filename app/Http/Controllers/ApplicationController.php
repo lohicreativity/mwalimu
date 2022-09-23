@@ -171,10 +171,12 @@ class ApplicationController extends Controller
          ApplicantProgramSelection::whereHas('applicant',function($query) use($staff, $request){
              $query->where(function ($q) use($staff, $request) {
                $q->where('campus_id',$staff->campus_id)
-                 ->where('status','!=','ADMITTED')
                  ->where('application_window_id',$request->get('application_window_id'))
                  ->where('program_level_id',$request->get('program_level_id'))
-                 ->orWhere('status','!=','SUBMITTED');
+                 ->where(function ($s){
+                     $s->where('status','!=','ADMITTED')
+                       ->orWhere('status','!=','SUBMITTED');
+                 });
 
               });
 
