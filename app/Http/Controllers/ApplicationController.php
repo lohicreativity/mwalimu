@@ -186,7 +186,7 @@ class ApplicationController extends Controller
                    ->where('program_level_id',$request->get('program_level_id'))
                    ->where(function ($q){
                      $q->where('status','!=','ADMITTED')
-                       ->orWherikole('status','!=','SUBMITTED');
+                       ->orWhere('status','!=','SUBMITTED');
                     });
               })->update(['status'=>'ELIGIBLE']);
 
