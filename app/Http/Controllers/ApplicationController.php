@@ -155,13 +155,17 @@ class ApplicationController extends Controller
 		      })->update(['status'=>'ELIGIBLE']);
 
          });*/
-
-
+/*whereHas('author', function ($query) use ($keyword)
+                     {
+                          $query->where('surname', 'LIKE', '%'.$keyword.'%')
+                               ->orWhere('name', 'LIKE', '%'.$keyword.'%');
+                     })
+*/
          ApplicantProgramSelection::whereHas('applicant',function($query) use($staff){
              $query->where('campus_id',$staff->campus_id)
-             ->where(function ($q) {
+             /*->where(function ($q) {
                $q->where('status','!=','ADMITTED')
-                     ->orWhere('status','!=','SUBMITTED');
+                     ->orWhere('status','!=','SUBMITTED')*/;
 
               })->update(['status'=>'ELIGIBLE']);
 
