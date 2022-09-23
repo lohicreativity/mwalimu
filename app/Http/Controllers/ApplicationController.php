@@ -138,21 +138,29 @@ class ApplicationController extends Controller
          // where exists (select * from `applicants` 
          //    where `applicant_program_selections`.`applicant_id` = `applicants`.`id` and (`campus_id` = 1 and `status` != ADMITTED or `status` != SUBMITTED)) and `application_window_id` = 23 and `program_level_id` is null
 
+         // ->where('name', '=', 'John')
+         //   ->where(function ($query) {
+         //       $query->where('status','!=','ADMITTED')
+         //             ->orWhere('status','!=','SUBMITTED');
+         //   })
+
 		 ApplicantProgramSelection::whereHas('applicant',function($query) use($staff, $request){
 			 $query->where('campus_id',$staff->campus_id)
              ->where('application_window_id',$request->get('application_window_id'))
              ->where('program_level_id',$request->get('program_level_id'))
-             ->where('status','!=','ADMITTED')
-             ->orWhere('status','!=','SUBMITTED');
+             ->where(function ($query) {
+               $query->where('status','!=','ADMITTED')
+                     ->orWhere('status','!=','SUBMITTED');
 
-		 })->update(['status'=>'ELIGIBLE']);
+		      })->update(['status'=>'ELIGIBLE']);
 
 		 return Applicant::where('application_window_id',$request->get('application_window_id'))
          ->where('campus_id',$staff->campus_id)
          ->where('program_level_id',$request->get('program_level_id'))
-         ->where('status','!=','ADMITTED')
-         ->orWhere('status','!=','SUBMITTED')
-         ->update(['status'=>null]);
+          ->where(function ($query) {
+               $query->where('status','!=','ADMITTED')
+                     ->orWhere('status','!=','SUBMITTED');
+            })->update(['status'=>null]);
 
 		 return redirect()->back()->with('message','Selections reset successfully');
 	 }
