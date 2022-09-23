@@ -170,9 +170,9 @@ class ApplicationController extends Controller
 */
          ApplicantProgramSelection::whereHas('applicant',function($query) use($staff, $request){
              $query->where(function ($q) use($staff, $request) {
-               $q->where('campus_id',1)
+               $q->where('campus_id',$staff->campus_id)
                  ->where('application_window_id',$request->get('application_window_id'))
-                 ->where('program_level_id',1))
+                 ->where('program_level_id',$request->get('program_level_id'))
                  ->where(function ($s){
                      $s->where('status','!=','ADMITTED')
                        ->orWhere('status','!=','SUBMITTED');
@@ -183,8 +183,8 @@ class ApplicationController extends Controller
          })->update(['status'=>'ELIGIBLE']);
 
 		 return Applicant::where('application_window_id',$request->get('application_window_id'))
-         ->where('campus_id',1)
-         ->where('program_level_id',1))
+         ->where('campus_id',$staff->campus_id)
+         ->where('program_level_id',$request->get('program_level_id'))
          ->where(function ($y) {
                $y->where('status','!=','ADMITTED')
                  ->orWhere('status','!=','SUBMITTED');
