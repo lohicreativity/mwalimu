@@ -167,20 +167,28 @@ class ApplicationController extends Controller
                 ->orWhere('name', 'LIKE', '%'.$keyword.'%');
         });
     })
-*/
-         ApplicantProgramSelection::whereHas('applicant',function($query) use($staff, $request){
+
+    function($query) use($staff, $request){
              $query->where(function ($q) use($staff, $request) {
                $q->where('campus_id',$staff->campus_id)
                  ->where('application_window_id',$request->get('application_window_id'))
                  ->where('program_level_id',$request->get('program_level_id'))
                  ->where(function ($s){
                      $s->where('status','!=','ADMITTED')
-                       ->orWhere('status','!=','SUBMITTED');
+                       ->orWherikole('status','!=','SUBMITTED');
                  });
 
               });
-
-         })->update(['status'=>'ELIGIBLE']);
+*/
+         ApplicantProgramSelection::whereHas('applicant',function($query) use($staff, $request){
+             $query->where('campus_id',$staff->campus_id)
+                   ->where('application_window_id',$request->get('application_window_id'))
+                   ->where('program_level_id',$request->get('program_level_id'))
+                   ->where(function ($q){
+                     $q->where('status','!=','ADMITTED')
+                       ->orWherikole('status','!=','SUBMITTED');
+                    });
+              })->update(['status'=>'ELIGIBLE']);
 
 		 return Applicant::where('application_window_id',$request->get('application_window_id'))
          ->where('campus_id',$staff->campus_id)
