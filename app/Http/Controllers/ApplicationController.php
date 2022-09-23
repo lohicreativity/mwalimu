@@ -138,7 +138,7 @@ class ApplicationController extends Controller
          // where exists (select * from `applicants` 
          //    where `applicant_program_selections`.`applicant_id` = `applicants`.`id` and (`campus_id` = 1 and `status` != ADMITTED or `status` != SUBMITTED)) and `application_window_id` = 23 and `program_level_id` is null
 
-		 ApplicantProgramSelection::whereHas('applicant',function($query) use($staff){
+		 ApplicantProgramSelection::whereHas('applicant',function($query) use($staff, $request){
 			 $query->where('campus_id',$staff->campus_id)
              ->where('application_window_id',$request->get('application_window_id'))
              ->where('program_level_id',$request->get('program_level_id'))
