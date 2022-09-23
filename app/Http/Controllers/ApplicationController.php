@@ -160,15 +160,21 @@ class ApplicationController extends Controller
                           $query->where('surname', 'LIKE', '%'.$keyword.'%')
                                ->orWhere('name', 'LIKE', '%'.$keyword.'%');
                      })
+
+                     Book::whereHas('author', function ($query) use ($keyword) {
+        $query->where(function ($q) use ($keyword) {
+            $q->where('surname', 'LIKE', '%'.$keyword.'%')
+                ->orWhere('name', 'LIKE', '%'.$keyword.'%');
+        });
+    })
 */
          ApplicantProgramSelection::whereHas('applicant',function($query) use($staff){
-             $query->where('campus_id',$staff->campus_id)
-                    ->orWhere('status','!=','SUBMITTED');
-             /*->where(function ($q) {
-               $q->where('status','!=','ADMITTED')
+             $query->where(function ($q) {
+               $q->where('campus_id',$staff->campus_id)
+                ->where('status','!=','ADMITTED')
                      ->orWhere('status','!=','SUBMITTED');
 
-              })*/
+              })
 
          })->update(['status'=>'ELIGIBLE']);
 
