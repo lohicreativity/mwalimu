@@ -185,10 +185,10 @@ class ApplicationController extends Controller
 		 return Applicant::where('application_window_id',$request->get('application_window_id'))
          ->where('campus_id',$staff->campus_id)
          ->where('program_level_id',$request->get('program_level_id'))
- /*         ->where(function ($y) {
+         ->where(function ($y) {
                $y->where('status','!=','ADMITTED')
-                     ->orWhere('status','!=','SUBMITTED');
-            })*/->update(['status'=>null]);
+                 ->orWhere('status','!=','SUBMITTED');
+            })->update(['status'=>null]);
 
 		 return redirect()->back()->with('message','Selections reset successfully');
 	 }
