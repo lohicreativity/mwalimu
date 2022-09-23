@@ -174,7 +174,7 @@ class ApplicationController extends Controller
                 ->where('status','!=','ADMITTED')
                      ->orWhere('status','!=','SUBMITTED');
 
-              })
+              });
 
          })->update(['status'=>'ELIGIBLE']);
 
