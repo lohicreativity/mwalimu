@@ -143,14 +143,29 @@ class ApplicationController extends Controller
          //       $query->where('status','!=','ADMITTED')
          //             ->orWhere('status','!=','SUBMITTED');
          //   })
-
+/*
 		 ApplicantProgramSelection::whereHas('applicant',function($query) use($staff){
 			 $query->where('campus_id',$staff->campus_id)
+             ->where('application_window_id',$request->get('application_window_id'))
+             ->where('program_level_id',$request->get('program_level_id'))
              ->where(function ($query) {
                $query->where('status','!=','ADMITTED')
                      ->orWhere('status','!=','SUBMITTED');
 
 		      })->update(['status'=>'ELIGIBLE']);
+
+         });*/
+
+
+         ApplicantProgramSelection::whereHas('applicant',function($query) use($staff){
+             $query->where('campus_id',$staff->campus_id)
+             ->where('application_window_id',$request->get('application_window_id'))
+             ->where('program_level_id',$request->get('program_level_id'))
+             ->where(function ($q) {
+               $q->where('status','!=','ADMITTED')
+                     ->orWhere('status','!=','SUBMITTED');
+
+              })->update(['status'=>'ELIGIBLE']);
 
          });
 
