@@ -6374,8 +6374,6 @@ class ApplicationController extends Controller
         $applicant->teacher_certificate_status = $request->get('teacher_certificate_status');
         $applicant->save();
 
-        return 'Hello';
-
         return redirect()->back()->with('message','Teacher certificate status updated successfully');
     }
 }
