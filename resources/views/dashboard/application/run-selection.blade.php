@@ -115,16 +115,8 @@
       urlString = document.getElementById('resetLink').getAttribute('href');
       newStr = urlString.substring(0, urlString.indexOf('&program_level_id=') + '&program_level_id='.length);
       newUrl = newStr + selectValue + "') }}";
-      console.log(newUrl);
-      // document.getElementById('resetLink').setAttribute("href", newUrl);
+      document.getElementById('resetLink').setAttribute("href", newUrl);
     }
-
-      // function reset () {
-      //   selectValue = document.getElementById('awards').value;
-      //   urlString = document.getElementById('resetLink').getAttribute('href');
-      //   strLength = "program_level_id=".length;
-      //   document.getElementById('resetLink').setAttribute("href", , selectValue));
-      // }
   </script>
   <!-- /.content-wrapper -->
   @include('layouts.footer')
