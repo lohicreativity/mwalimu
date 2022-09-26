@@ -190,7 +190,7 @@ class ApplicationController extends Controller
                     });
               })->update(['status'=>'ELIGIBLE']);
 
-		 return Applicant::where('application_window_id',$request->get('application_window_id'))
+		 Applicant::where('application_window_id',$request->get('application_window_id'))
          ->where('campus_id',$staff->campus_id)
          ->where('program_level_id',$request->get('program_level_id'))
          ->where(function ($y) {
