@@ -116,12 +116,12 @@
       document.getElementById('resetLink').setAttribute("href", urlString.replace("pid", selectValue));
     }
 
-    function reset () {
-      selectValue = document.getElementById('awards').value;
-      urlString = document.getElementById('resetLink').getAttribute('href');
-      strLength = "program_level_id=".length;
-      document.getElementById('resetLink').setAttribute("href", , selectValue));
-    }
+      // function reset () {
+      //   selectValue = document.getElementById('awards').value;
+      //   urlString = document.getElementById('resetLink').getAttribute('href');
+      //   strLength = "program_level_id=".length;
+      //   document.getElementById('resetLink').setAttribute("href", , selectValue));
+      // }
   </script>
   <!-- /.content-wrapper -->
   @include('layouts.footer')
