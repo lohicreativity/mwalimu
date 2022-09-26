@@ -195,7 +195,7 @@ class ApplicationController extends Controller
                        ->orWhere('status','!=','SUBMITTED');
                     });
 
-              })->update(['status'=>'ELIGIBLE']);
+              })->update(['statussasa'=>'ELIGIBLE']);
 
 		 Applicant::where('application_window_id',$request->get('application_window_id'))
          ->where('campus_id',$staff->campus_id)
