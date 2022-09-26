@@ -179,12 +179,19 @@ class ApplicationController extends Controller
                  });
 
               });
+<<<<<<< HEAD
 */
 <<<<<<< HEAD
           ApplicantProgramSelection::whereHas('applicant',function($query) use($staff, $request){
 =======
          return ApplicantProgramSelection::whereHas('applicant',function($query) use($staff, $request){
 >>>>>>> f5f960ad35dfc8acfc3fc8b68fef55a89e545b29
+=======
+
+              
+*/
+         return ApplicantProgramSelection::whereHas('applicant',function($query) use($staff, $request){
+>>>>>>> 3351a2a3d18890a1176f318294ad2d3b113f973f
              $query->where('campus_id',$staff->campus_id)
                    ->where('application_window_id',$request->get('application_window_id'))
                    ->where('program_level_id',$request->get('program_level_id'))
@@ -193,10 +200,14 @@ class ApplicationController extends Controller
                        ->orWhere('status','!=','SUBMITTED');
                     });
 <<<<<<< HEAD
+<<<<<<< HEAD
               })->update(['status'=>'ELIGIBLE']);
 =======
               })->update(['status'=>'ELIGIBLE'])->toSql();
 >>>>>>> f5f960ad35dfc8acfc3fc8b68fef55a89e545b29
+=======
+              })->update(['status'=>'ELIGIBLE'])->toSql();
+>>>>>>> 3351a2a3d18890a1176f318294ad2d3b113f973f
 
 		 Applicant::where('application_window_id',$request->get('application_window_id'))
          ->where('campus_id',$staff->campus_id)
