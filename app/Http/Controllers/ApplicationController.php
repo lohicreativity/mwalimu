@@ -206,7 +206,7 @@ class ApplicationController extends Controller
         //          ->orWhere('status','!=','SUBMITTED');
         //     })->update(['status'=>null]);
 
-        return $request->get('award_id');
+        return $request->input('award_id');
 
 		 return redirect()->back()->with('message','Selections reset successfully');
 	 }
