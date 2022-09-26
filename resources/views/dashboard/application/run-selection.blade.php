@@ -112,7 +112,7 @@
   <script>
     function val () {
       selectValue = document.getElementById('awards').value;
-      document.getElementById('resetLink').setAttribute("href", "{{ url('application/reset-selections?application_window_id='.$application_window->id.'&program_level_id='." + selectValue + ") }}");
+      document.getElementById('resetLink').setAttribute("href", "{{ url('application/reset-selections?application_window_id='.$application_window->id.'&amp;program_level_id='." + selectValue + ") }}");
     }
   </script>
   <!-- /.content-wrapper -->
