@@ -85,7 +85,7 @@
                 
                   <div class="form-group col-6">
                     {!! Form::label('','Programme Level') !!}
-                    <select name="award_id" class="form-control" required>
+                    <select onchange="val()" name="award_id" id="awards" class="form-control" required>
                       <option value="">Select Programme Level</option>
                       @foreach($awards as $award)
                       @if(str_contains($award->name,'Basic') || str_contains($award->name,'Ordinary') || str_contains($award->name,'Bachelor') || str_contains($award->name,'Masters'))
@@ -109,6 +109,12 @@
     </section>
     <!-- /.content -->
   </div>
+  <script>
+    function val () {
+      selectValue = document.getElementById('awards').value;
+      alert(selectValue);
+    }
+  </script>
   <!-- /.content-wrapper -->
   @include('layouts.footer')
 
