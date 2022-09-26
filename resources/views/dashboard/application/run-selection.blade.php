@@ -98,7 +98,7 @@
                </div>
                <div class="card-footer">
                   <button type="submit" class="btn btn-primary">{{ __('Run Selection') }}</button>
-				  <a id="resetLink"  href="{{ url('application/reset-selections?application_window_id='.$application_window->id.'&program_level_id=pid') }}" class="btn btn-primary">Reset Selection</a>
+				  <a id="resetLink" onclick="reset()" href="{{ url('application/reset-selections?application_window_id='.$application_window->id.'&program_level_id=pid') }}" class="btn btn-primary">Reset Selection</a>
                 </div>
               {!! Form::close() !!}
             </div>
@@ -113,15 +113,16 @@
     function val () {
       selectValue = document.getElementById('awards').value;
       urlString = document.getElementById('resetLink').getAttribute('href');
+      alert(urlString);
       document.getElementById('resetLink').setAttribute("href", urlString.replace("pid", selectValue));
     }
 
-      // function reset () {
-      //   selectValue = document.getElementById('awards').value;
-      //   urlString = document.getElementById('resetLink').getAttribute('href');
-      //   strLength = "program_level_id=".length;
-      //   document.getElementById('resetLink').setAttribute("href", , selectValue));
-      // }
+      function reset () {
+        selectValue = document.getElementById('awards').value;
+        urlString = document.getElementById('resetLink').getAttribute('href');
+        strLength = "program_level_id=".length;
+        document.getElementById('resetLink').setAttribute("href", , selectValue));
+      }
   </script>
   <!-- /.content-wrapper -->
   @include('layouts.footer')
