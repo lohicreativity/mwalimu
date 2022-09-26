@@ -187,26 +187,25 @@ class ApplicationController extends Controller
 
               
 */
-        //  return ApplicantProgramSelection::whereHas('applicant',function($query) use($staff, $request){
-        //      $query->where('campus_id',$staff->campus_id)
-        //            ->where('application_window_id',$request->get('application_window_id'))
-        //            ->where('program_level_id',$request->get('program_level_id'))
-        //            ->where(function ($q){
-        //              $q->where('status','!=','ADMITTED')
-        //                ->orWhere('status','!=','SUBMITTED');
-        //             });
+        ApplicantProgramSelection::whereHas('applicant',function($query) use($staff, $request){
+             $query->where('campus_id',$staff->campus_id)
+                   ->where('application_window_id',$request->get('application_window_id'))
+                   ->where('program_level_id',$request->get('program_level_id'))
+                   ->where(function ($q){
+                     $q->where('status','!=','ADMITTED')
+                       ->orWhere('status','!=','SUBMITTED');
+                    });
 
-        //       })->update(['status'=>'ELIGIBLE']);
+              })->update(['status'=>'ELIGIBLE']);
 
-		//  Applicant::where('application_window_id',$request->get('application_window_id'))
-        //  ->where('campus_id',$staff->campus_id)
-        //  ->where('program_level_id',$request->get('program_level_id'))
-        //  ->where(function ($y) {
-        //        $y->where('status','!=','ADMITTED')
-        //          ->orWhere('status','!=','SUBMITTED');
-        //     })->update(['status'=>null]);
+		 Applicant::where('application_window_id',$request->get('application_window_id'))
+         ->where('campus_id',$staff->campus_id)
+         ->where('program_level_id',$request->get('program_level_id'))
+         ->where(function ($y) {
+               $y->where('status','!=','ADMITTED')
+                 ->orWhere('status','!=','SUBMITTED');
+            })->update(['status'=>null]);
 
-        return $request->get('program_level_id');
 
 		 return redirect()->back()->with('message','Selections reset successfully');
 	 }
