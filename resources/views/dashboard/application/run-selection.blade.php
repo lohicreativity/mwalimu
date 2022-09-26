@@ -98,7 +98,7 @@
                </div>
                <div class="card-footer">
                   <button type="submit" class="btn btn-primary">{{ __('Run Selection') }}</button>
-				  <a id="resetLink" href="{{ url('application/reset-selections?application_window_id='.$application_window->id.'&program_level_id=pid') }}" class="btn btn-primary">Reset Selection</a>
+				  <a id="resetLink" href="{{ url('application/reset-selections?application_window_id='.$application_window->id.'&program_level_id=') }}" class="btn btn-primary">Reset Selection</a>
                 </div>
               {!! Form::close() !!}
             </div>
@@ -114,7 +114,7 @@
       selectValue = document.getElementById('awards').value;
       urlString = document.getElementById('resetLink').getAttribute('href');
       newStr = urlString.substring(0, urlString.indexOf('&program_level_id=') + '&program_level_id='.length);
-      newUrl = newStr + selectValue + "') }}";
+      newUrl = newStr + selectValue;
       document.getElementById('resetLink').setAttribute("href", newUrl);
     }
   </script>
