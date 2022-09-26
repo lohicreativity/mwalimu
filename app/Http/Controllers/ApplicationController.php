@@ -179,6 +179,8 @@ class ApplicationController extends Controller
                  });
 
               });
+
+              
 */
          return ApplicantProgramSelection::whereHas('applicant',function($query) use($staff, $request){
              $query->where('campus_id',$staff->campus_id)
