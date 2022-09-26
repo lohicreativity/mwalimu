@@ -113,7 +113,7 @@
     function val () {
       selectValue = document.getElementById('awards').value;
       urlString = document.getElementById('resetLink').getAttribute('href');
-      newStr = urlString.substring(0, str.indexOf('&program_level_id=') + '&program_level_id='.length);
+      newStr = urlString.substring(0, urlString.indexOf('&program_level_id=') + '&program_level_id='.length);
       console.log(newStr);
       // newUrl = newStr + selectValue + "') }}";
       // document.getElementById('resetLink').setAttribute("href", newUrl);
