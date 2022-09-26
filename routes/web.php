@@ -41,11 +41,15 @@ Route::get('test',function(){
 
 	// return $result;
 	 $acpac = new ACPACService;
+<<<<<<< HEAD
 
+=======
+>>>>>>> f5f960ad35dfc8acfc3fc8b68fef55a89e545b29
 	// //$acpac->query("INSERT INTO receipts (BANK,BANKNAME,RCPNUMBER,RCPDATE,RCPDESC,IDCUST,NAMECUST,INVOICE,AMTAPPLIED,IMPORTED,IMPDATE) VALUES
  //   //('J','CRDB','REC03','10','TF','MNMA003','TEST','INV003','100.0','C','10')");
      //$acpac->query("INSERT INTO customer (IDCUST,IDGRP,NAMECUST,TEXTSTRE1,TEXTSTRE2,TEXTSTRE3,TEXTSTRE4,NAMECITY,CODESTTE,CODEPSTL,CODECTRY,NAMECTAC,TEXTPHON1,TEXTPHON2,CODETERR,IDACCTSET,CODECURN,EMAIL1,EMAIL2) VALUES ('BDED485922','44322','SHOBOLE, JOVITH ','P.O Box 27,Simiyu','ARUMERU','BANG','Unknown','Tanzania','Tanzania','P.O Box 27,Simiyu','Tanzania','Jones, Shobole Nyombi','255753690473','0787691417','BD.ED','STD','TSH','dennis.lupiana@gmail.com','UNKNOWN')");
 	
+<<<<<<< HEAD
 	$acpac->query("INSERT INTO customer (IDCUST,IDGRP,NAMECUST,TEXTSTRE1,TEXTSTRE2,TEXTSTRE3,TEXTSTRE4,NAMECITY,CODESTTE,CODEPSTL,CODECTRY,NAMECTAC,TEXTPHON1,TEXTPHON2,CODETERR,IDACCTSET,CODECURN,EMAIL1,EMAIL2) VALUES ('BTCOD001422','CCOD9','MPAMBA, OTHUMAN S','fddgdgfd','KIGOMA','MATENDO','','KIGOMA','Tanzania','fddgdgfd','Tanzania','dsfdsafsdf, ddgfdsff ','255746508500','255746508500','','STD','TSH','dennis.lupiana@gmail.com','UNKNOWN')");
 
 	// INSERT INTO customer (IDCUST,IDGRP,NAMECUST,TEXTSTRE1,TEXTSTRE2,TEXTSTRE3,TEXTSTRE4,NAMECITY,CODESTTE,CODEPSTL,CODECTRY,NAMECTAC,TEXTPHON1,TEXTPHON2,CODETERR,IDACCTSET,CODECURN,EMAIL1,EMAIL2) VALUES ('BTCOD00122','12221','MPAMBA, OTHUMAN S','fddgdgfd','KIGOMA','MATENDO','qwerty','KIGOMA','Tanzania','fddgdgfd','Tanzania','dsfdsafsdf, ddgfdsff ','255746508500','255746508500','BTC.COD','STD','TSH','dennis.lupiana@gmail.com','UNKNOWN')
@@ -58,6 +62,16 @@ Route::get('test',function(){
      while ($row = sqlsrv_fetch_array($results)) {
      	print_r($row);
     }
+=======
+	//$acpac->query("INSERT INTO customer (IDCUST,IDGRP,NAMECUST,TEXTSTRE1,TEXTSTRE2,TEXTSTRE3,TEXTSTRE4,NAMECITY,CODESTTE,CODEPSTL,CODECTRY,NAMECTAC,TEXTPHON1,TEXTPHON2,CODETERR,IDACCTSET,CODECURN,EMAIL1,EMAIL2) VALUES ('BTBA000122','16722','LEOPOLD, LEONTINE ','ILEMELA','ARUMERU','BANG','9193 DSM','Tanzania','Tanzania','ILEMELA','Tanzania','NGWARA, NYAMBOHA KIKARO','255754991909','0754991909','BTC.BA','STD','TSH','yusufu.erick@mnma.ac.tz','leontine97@gmail.com')");
+	// $acpac->query("DELETE FROM customer");
+	// $acpac->query("DELETE FROM invoices");
+	// $acpac->query("DELETE FROM receipts");
+	// $results = $acpac->query('SELECT * FROM receipts');
+ //     while ($row = sqlsrv_fetch_array($results)) {
+ //     	print_r($row);
+ //     }
+>>>>>>> f5f960ad35dfc8acfc3fc8b68fef55a89e545b29
 
 	 // $gatepay = GatewayPayment::find(349072);
 	 

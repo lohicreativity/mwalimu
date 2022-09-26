@@ -180,11 +180,7 @@ class ApplicationController extends Controller
 
               });
 */
-<<<<<<< HEAD
           ApplicantProgramSelection::whereHas('applicant',function($query) use($staff, $request){
-=======
-         return ApplicantProgramSelection::whereHas('applicant',function($query) use($staff, $request){
->>>>>>> f5f960ad35dfc8acfc3fc8b68fef55a89e545b29
              $query->where('campus_id',$staff->campus_id)
                    ->where('application_window_id',$request->get('application_window_id'))
                    ->where('program_level_id',$request->get('program_level_id'))
@@ -192,11 +188,7 @@ class ApplicationController extends Controller
                      $q->where('status','!=','ADMITTED')
                        ->orWhere('status','!=','SUBMITTED');
                     });
-<<<<<<< HEAD
               })->update(['status'=>'ELIGIBLE']);
-=======
-              })->update(['status'=>'ELIGIBLE'])->toSql();
->>>>>>> f5f960ad35dfc8acfc3fc8b68fef55a89e545b29
 
 		 Applicant::where('application_window_id',$request->get('application_window_id'))
          ->where('campus_id',$staff->campus_id)
