@@ -180,7 +180,7 @@ class ApplicationController extends Controller
 
               });
 */
-          ApplicantProgramSelection::whereHas('applicant',function($query) use($staff, $request){
+         return ApplicantProgramSelection::whereHas('applicant',function($query) use($staff, $request){
              $query->where('campus_id',$staff->campus_id)
                    ->where('application_window_id',$request->get('application_window_id'))
                    ->where('program_level_id',$request->get('program_level_id'))
@@ -188,7 +188,7 @@ class ApplicationController extends Controller
                      $q->where('status','!=','ADMITTED')
                        ->orWhere('status','!=','SUBMITTED');
                     });
-              })->update(['status'=>'ELIGIBLE']);
+              })->update(['status'=>'ELIGIBLE'])->toSql();
 
 		 Applicant::where('application_window_id',$request->get('application_window_id'))
          ->where('campus_id',$staff->campus_id)
