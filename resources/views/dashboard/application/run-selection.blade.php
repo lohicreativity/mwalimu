@@ -112,6 +112,7 @@
   <script>
     function val () {
       selectValue = document.getElementById('awards').value;
+      alert(selectValue);
       urlString = document.getElementById('resetLink').getAttribute('href');
       document.getElementById('resetLink').setAttribute("href", urlString.replace("pid", selectValue));
     }
