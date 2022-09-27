@@ -16,6 +16,7 @@ use App\Utils\Util;
 use App\Utils\DateMaker;
 use Validator, Auth;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class ApplicationWindowController extends Controller
 {
@@ -26,7 +27,8 @@ class ApplicationWindowController extends Controller
     {
     	$data = [
            'windows'=>ApplicationWindow::with(['campus','intake'])
-           ->where('YEAR(end_date)', '=', now()->format('Y'))
+        //    ->where('YEAR(end_date)', '=', now()->format('Y'))
+            ->where(DB::raw('YEAR(end_date)'), '=', now()->format('Y'))
            ->paginate(20),
            'intakes'=>Intake::all(),
            'campuses'=>Campus::all(),
