@@ -284,7 +284,7 @@
                             @endphp
 
                             <td 
-                              @if($result->course_work_remark == 'FAIL') 
+                              @if($result->course_work_remark == 'FAIL' && !$result->supp_processed_at) 
                               class="ss-custom-grey ss-center" 
                               @else 
                               class="ss-center" 
@@ -300,7 +300,7 @@
                               
                           </td>
                             <td 
-                              @if($result->final_remark == 'FAIL') 
+                              @if($result->final_remark == 'FAIL' && !$result->supp_processed_at) 
                               class="ss-custom-grey ss-center" 
                               @elseif(count($result->changes) != 0) 
                               class="ss-center ss-custom-lightblue" 
