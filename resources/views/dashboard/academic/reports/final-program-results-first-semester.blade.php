@@ -291,7 +291,7 @@
                               @endif>
 
                               @if($result->supp_processed_at)
-                              NA
+                              N/A
                               @else 
                                 @if($result->course_work_score) 
                                 {{ $result->course_work_score }} 
@@ -309,7 +309,7 @@
                               @endif>
 
                               @if($result->supp_processed_at)
-                              NA
+                              N/A
                               @else 
                                 @if($result->final_score) 
                                 {{ $result->final_score }} 

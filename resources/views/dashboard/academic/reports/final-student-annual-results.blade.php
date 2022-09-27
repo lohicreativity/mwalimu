@@ -128,7 +128,20 @@
                           <td>@if(!$result->supp_processed_at) @if($result->course_work_score) {{ $result->course_work_score }} @else - @endif @else N/A @endif</td>
                           <td @if($result->exam_type == 'APPEAL') class="ss-grey" @endif>@if(!$result->supp_processed_at) {{ $result->final_score }} @else N/A @endif</td>
                           <td>@if(!$result->supp_processed_at) @if($result->total_score) {{ round($result->total_score) }} @else - @endif @else {{ round($result->supp_score) }}@endif</td>
-                          <td>@if($result->grade) {{ $result->grade }} @else - @endif</td>
+                          <td>
+                            @if($result->supp_processed_at)
+
+                              @if($result->grade) 
+                                {{ $result->grade }}*
+                              @else - @endif
+
+                            @else
+                              @if($result->grade) 
+                              {{ $result->grade }} 
+                              @else - @endif
+                            @endif
+                            
+                          </td>
                           <td>{{ $result->final_exam_remark }}</td>
                         </tr>
                           @php
