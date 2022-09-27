@@ -1072,8 +1072,15 @@ class ExaminationResultController extends Controller
             //       return redirect()->back()->withInput()->with('error','No examination policy defined for this module NTA level and study academic year');
             // }
 
-            $student = Student::find($request->get('student_id'))
-            ->join('students.studentship_status_id', '=', 'studentship_statuses.id');
+            // $student = Student::find($request->get('student_id'));
+            // studentshipStatus
+
+            // $student = Student::whereHas('studentshipStatus', function($query) use($request) {
+            //    $query->where('student_id',$request->get('student_id'));
+            // });
+
+            $student = Student::whereHas('studentshipStatus')
+            ->where('student_id',$request->get('student_id'));
 
             $special_exam = SpecialExam::where('student_id',$student->id)->where('module_assignment_id',$module_assignment->id)->where('type',$request->get('exam_type'))->where('status','APPROVED')->first();
 
