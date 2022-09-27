@@ -283,10 +283,48 @@
                               $results_present = true;
                             @endphp
 
-                            <td @if($result->course_work_remark == 'FAIL') class="ss-custom-grey ss-center" @else class="ss-center" @endif>@if($result->course_work_score) {{ $result->course_work_score }} @else - @endif</td>
-                            <td @if($result->final_remark == 'FAIL') class="ss-custom-grey ss-center" @elseif(count($result->changes) != 0) class="ss-center ss-custom-lightblue" @else class="ss-center" @endif>@if($result->final_score) {{ $result->final_score }} @else - @endif</td>
-                            <td @if($result->course_work_remark == 'FAIL' || $result->final_remark == 'FAIL') class="ss-custom-grey-- ss-center" @else class="ss-center" @endif>@if($result->total_score) {{ round($result->total_score) }} @else - @endif</td>
-                            <td @if($result->course_work_remark == 'FAIL' || $result->final_remark == 'FAIL') class="ss-custom-grey-- ss-center" @else class="ss-center" @endif>@if($result->grade) {{ $result->grade }} @else - @endif</td>
+                            <td 
+                              @if($result->course_work_remark == 'FAIL') class="ss-custom-grey ss-center" 
+                              @else class="ss-center" @endif>@if($result->course_work_score) 
+                              {{ $result->course_work_score }} 
+                              @else - @endif
+                          </td>
+                            <td 
+                              @if($result->final_remark == 'FAIL') class="ss-custom-grey ss-center" 
+                              @elseif(count($result->changes) != 0) class="ss-center ss-custom-lightblue" 
+                              @else class="ss-center" @endif>@if($result->final_score) {{ $result->final_score }} 
+                              @else - @endif
+                            </td>
+                            <td 
+                              @if($result->course_work_remark == 'FAIL' || $result->final_remark == 'FAIL')
+
+                                @if($result->supp_processed_at) class="ss-center"
+
+                                  @if($result->supp_score) 
+                                    {{ round($result->supp_score) }} 
+                                  @else - @endif
+
+                                @else
+                                class="ss-custom-grey-- ss-center"
+
+                                  @if($result->total_score) 
+                                    {{ round($result->total_score) }} 
+                                  @else - @endif
+
+                                @endif
+
+                              @endif>
+
+                             
+                          </td>
+                            <td 
+                              @if($result->course_work_remark == 'FAIL' || $result->final_remark == 'FAIL') class="ss-custom-grey-- ss-center" 
+                              @else class="ss-center" 
+                              @endif>@if($result->grade) 
+                              {{ $result->grade }} 
+                              @else - @endif
+                          </td>
+
                             @endif
                           @endforeach
                           
