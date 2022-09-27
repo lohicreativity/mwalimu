@@ -1077,6 +1077,8 @@ class ExaminationResultController extends Controller
             ->select('name')
             ->where('id', '=', $student->studentship_status_id)
             ->get();
+
+            return $studentship_status;
             // studentshipStatus
 
             // $student = Student::whereHas('studentshipStatus', function($query) use($request) {
