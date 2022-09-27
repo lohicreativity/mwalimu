@@ -1072,7 +1072,7 @@ class ExaminationResultController extends Controller
             //       return redirect()->back()->withInput()->with('error','No examination policy defined for this module NTA level and study academic year');
             // }
 
-            // $student = Student::find($request->get('student_id'));
+            $student = Student::find($request->get('student_id'));
             // studentshipStatus
 
             // $student = Student::whereHas('studentshipStatus', function($query) use($request) {
@@ -1082,10 +1082,10 @@ class ExaminationResultController extends Controller
             // $student = Student::whereHas('studentshipStatus')
             // ->where('id',$request->get('student_id'));
 
-            $student = DB::table('students')
-            ->join('studentship_statuses', 'students.studentship_status_id', '=', 'studentship_statuses.id')
-            ->where('students.id', '=', $request->get('student_id'))
-            ->get();
+            // $student = DB::table('students')
+            // ->join('studentship_statuses', 'students.studentship_status_id', '=', 'studentship_statuses.id')
+            // ->where('students.id', '=', $request->get('student_id'))
+            // ->get();
 
             $special_exam = SpecialExam::where('student_id',$student->id)->where('module_assignment_id',$module_assignment->id)->where('type',$request->get('exam_type'))->where('status','APPROVED')->first();
 
@@ -1105,7 +1105,7 @@ class ExaminationResultController extends Controller
                   $result->course_work_score = $request->get('course_work_score');
                   $score_before = $result->final_score;
                   
-                     if ($student->name == 'GRADUANT' || $student->name == 'DECEASED') {
+                     if ($student->studentship_status_id == 5 || $student->studentship_status_id == 6) {
                         return redirect()->back()->with('error','Unable to update deceased or graduant student results'); 
                      } else {
                         $result->final_score = ($request->get('final_score')*$module_assignment->programModuleAssignment->final_min_mark)/100;
