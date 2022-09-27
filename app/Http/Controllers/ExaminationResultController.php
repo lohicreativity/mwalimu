@@ -2606,8 +2606,9 @@ class ExaminationResultController extends Controller
            'staff'=>User::find(Auth::user()->id)->staff,
            'request'=>$request
         ];
+        
 
-        return var_dump($students);
+        return var_dump($students->student->examinationResults);
         
         if($request->get('semester_id') != 'SUPPLEMENTARY'){
             if(Util::stripSpacesUpper($semester->name) == Util::stripSpacesUpper('Semester 2')){
