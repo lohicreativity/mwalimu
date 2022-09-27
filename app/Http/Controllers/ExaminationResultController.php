@@ -1080,7 +1080,7 @@ class ExaminationResultController extends Controller
             // });
 
             $student = Student::whereHas('studentshipStatus')
-            ->where('student_id',$request->get('student_id'));
+            ->where('id',$request->get('student_id'));
 
             $special_exam = SpecialExam::where('student_id',$student->id)->where('module_assignment_id',$module_assignment->id)->where('type',$request->get('exam_type'))->where('status','APPROVED')->first();
 
