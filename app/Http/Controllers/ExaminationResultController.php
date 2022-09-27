@@ -260,7 +260,13 @@ class ExaminationResultController extends Controller
                   	$processed_result->total_score = round($result->course_work_score + $result->final_score);
                   }
 
-                  $grading_policy = GradingPolicy::where('nta_level_id',$assignment->module->ntaLevel->id)->where('study_academic_year_id',$assignment->studyAcademicYear->id)->where('min_score','<=',round($processed_result->total_score))->where('max_score','>=',round($processed_result->total_score))->first();
+                  $grading_policy = GradingPolicy::where('nta_level_id',$assignment->module->ntaLevel->id)
+                  ->where('study_academic_year_id',$assignment->studyAcademicYear->id)
+                  ->where('min_score','<=',round($processed_result->total_score))
+                  ->where('max_score','>=',round($processed_result->total_score))
+                  ->first();
+
+                  return $grading_policy->point."     " .$grading_policy->grade;
     
                   if(!$grading_policy){
                      return redirect()->back()->with('error','Some programmes NTA level are missing grading policies');
@@ -279,9 +285,20 @@ class ExaminationResultController extends Controller
                   	$processed_result->grade = $grading_policy? $grading_policy->grade : null;
                       $processed_result->point = $grading_policy? $grading_policy->point : null;
                       if($processed_result->course_work_remark == 'FAIL' || $processed_result->final_remark == 'FAIL'){
-                         $processed_result->final_exam_remark = 'FAIL';
-                         $processed_result->grade = 'F';
-                         $processed_result->point = 0;
+
+                        if ($processed_result->supp_processed_at) {
+                           $processed_result->final_exam_remark = 'PASS';
+                           $processed_result->grade = 'C';
+                           $processed_result->point = $grading_policy->point;
+                        } else {
+
+                           $processed_result->final_exam_remark = 'FAIL';
+                           $processed_result->grade = 'F';
+                           $processed_result->point = $grading_policy->point;
+
+                        }
+
+                         
                       }else{
                         $processed_result->final_exam_remark = $assignment->programModuleAssignment->module_pass_mark <= $processed_result->total_score? 'PASS' : 'FAIL';
                       }
