@@ -296,9 +296,14 @@
                               @else - @endif
                             </td>
                             <td 
-                              @if($result->course_work_remark == 'FAIL' || $result->final_remark == 'FAIL') class="ss-custom-grey-- ss-center" 
-                              @else class="ss-center" 
+                              @if($result->course_work_remark == 'FAIL' || $result->final_remark == 'FAIL') 
+                                class="ss-custom-grey-- ss-center" 
+                              @elseif($result->supp_processed_at)
+                                class="ss-center" 
+                              @else 
+                                class="ss-center" 
                               @endif>
+
                               @if($result->supp_processed_at)
                                 @if($result->supp_score) 
                                 {{ round($result->supp_score) }} 
