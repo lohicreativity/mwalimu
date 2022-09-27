@@ -297,7 +297,8 @@
                             </td>
                             <td 
                               @if($result->course_work_remark == 'FAIL' || $result->final_remark == 'FAIL')
-
+                              100
+                              @else
                                 {{ round($result->supp_score) }}
 
                               @endif>
