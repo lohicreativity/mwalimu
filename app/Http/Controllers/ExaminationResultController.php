@@ -2607,7 +2607,7 @@ class ExaminationResultController extends Controller
            'request'=>$request
         ];
 
-        return var_dump($students->examinationResults);
+        return var_dump($students);
         
         if($request->get('semester_id') != 'SUPPLEMENTARY'){
             if(Util::stripSpacesUpper($semester->name) == Util::stripSpacesUpper('Semester 2')){
