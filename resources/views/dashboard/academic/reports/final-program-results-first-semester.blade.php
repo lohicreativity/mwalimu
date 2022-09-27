@@ -298,7 +298,7 @@
                             <td 
                               @if($result->course_work_remark == 'FAIL' || $result->final_remark == 'FAIL') class="ss-custom-grey-- ss-center" 
                               @else class="ss-center" 
-                              @endif>@if($result->total_score) 
+                              @endif>@if($result->supp_score) 
                               {{ round($result->supp_score) }} 
                               @else - @endif
                           </td>
