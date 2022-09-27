@@ -101,7 +101,7 @@ class ApplicantController extends Controller
 
         $tamisemi_applicant = Applicant::where('index_number',$request->get('index_number'))->where('is_tamisemi',1)->first();
         
-        $window = ApplicationWindow::where('end_date','>=',now()->format('Y-m-d'))
+        $window = ApplicationWindow::where('end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))
         ->where('campus_id',$request->get('campus_id'))
         ->where('status','ACTIVE')->latest()->first();
 
