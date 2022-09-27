@@ -1073,6 +1073,10 @@ class ExaminationResultController extends Controller
             // }
 
             $student = Student::find($request->get('student_id'));
+            $studentship_status = DB::table('studentship_statuses')
+            ->select('name')
+            ->where('id', '=', $student->studentship_status_id)
+            ->get();
             // studentshipStatus
 
             // $student = Student::whereHas('studentshipStatus', function($query) use($request) {
@@ -1105,7 +1109,7 @@ class ExaminationResultController extends Controller
                   $result->course_work_score = $request->get('course_work_score');
                   $score_before = $result->final_score;
                   
-                     if ($student->studentship_status_id == 5 || $student->studentship_status_id == 6) {
+                     if ($studentship_status == 'GRADUANT' || $studentship_status == 'DECEASED') {
                         return redirect()->back()->with('error','Unable to update deceased or graduant student results'); 
                      } else {
                         $result->final_score = ($request->get('final_score')*$module_assignment->programModuleAssignment->final_min_mark)/100;
