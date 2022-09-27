@@ -266,7 +266,7 @@ class ExaminationResultController extends Controller
                   ->where('max_score','>=',round($processed_result->total_score))
                   ->first();
 
-                  return $grading_policy->point."     " .$grading_policy->grade;
+                  return $grading_policy->point."     " .$grading_policy->grade."     ".$grading_policy->nta_level_id;
     
                   if(!$grading_policy){
                      return redirect()->back()->with('error','Some programmes NTA level are missing grading policies');
