@@ -296,14 +296,11 @@
                               @else - @endif
                             </td>
                             <td 
-                              @if($result->course_work_remark == 'FAIL' || $result->final_remark == 'FAIL')
-                              100
-                              @else
-                                {{ round($result->supp_score) }}
-
-                              @endif>
-
-                             
+                              @if($result->course_work_remark == 'FAIL' || $result->final_remark == 'FAIL') class="ss-custom-grey-- ss-center" 
+                              @else class="ss-center" 
+                              @endif>@if($result->total_score) 
+                              {{ round($result->total_score) }} 
+                              @else - @endif
                           </td>
                             <td 
                               @if($result->course_work_remark == 'FAIL' || $result->final_remark == 'FAIL') class="ss-custom-grey-- ss-center" 
@@ -312,7 +309,7 @@
                               {{ $result->grade }} 
                               @else - @endif
                           </td>
-
+                          
                             @endif
                           @endforeach
                           
