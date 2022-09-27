@@ -25,7 +25,9 @@ class ApplicationWindowController extends Controller
     public function index(Request $request)
     {
     	$data = [
-           'windows'=>ApplicationWindow::with(['campus','intake'])->paginate(20),
+           'windows'=>ApplicationWindow::with(['campus','intake'])
+           ->where('YEAR(end_date)', '=', now()->format('Y'))
+           ->paginate(20),
            'intakes'=>Intake::all(),
            'campuses'=>Campus::all(),
            'staff'=>User::find(Auth::user()->id)->staff,
