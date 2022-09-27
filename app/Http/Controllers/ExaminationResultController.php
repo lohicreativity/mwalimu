@@ -1078,9 +1078,6 @@ class ExaminationResultController extends Controller
             ->where('id', '=', $student->studentship_status_id)
             ->get();
 
-            return $studentship_status[0]->name;
-            // studentshipStatus
-
             // $student = Student::whereHas('studentshipStatus', function($query) use($request) {
             //    $query->where('student_id',$request->get('student_id'));
             // });
@@ -1111,7 +1108,7 @@ class ExaminationResultController extends Controller
                   $result->course_work_score = $request->get('course_work_score');
                   $score_before = $result->final_score;
                   
-                     if ($studentship_status == 'GRADUANT' || $studentship_status == 'DECEASED') {
+                     if ($studentship_status[0]->name == 'GRADUANT' || $studentship_status[0]->name == 'DECEASED') {
                         return redirect()->back()->with('error','Unable to update deceased or graduant student results'); 
                      } else {
                         $result->final_score = ($request->get('final_score')*$module_assignment->programModuleAssignment->final_min_mark)/100;
@@ -1167,13 +1164,19 @@ class ExaminationResultController extends Controller
               }else{
                   $result = new ExaminationResult;
                   $result->module_assignment_id = $request->get('module_assignment_id');
-                $result->student_id = $request->get('student_id');
-                if($request->has('final_score')){
-                $result->course_work_score = $request->get('course_work_score');
-                $result->final_score = ($request->get('final_score')*$module_assignment->programModuleAssignment->final_min_mark)/100;
-                }else{
-                   $result->final_score = null;
-                }
+                  $result->student_id = $request->get('student_id');
+                  if($request->has('final_score')){
+                  $result->course_work_score = $request->get('course_work_score');
+
+                  if ($studentship_status[0]->name == 'GRADUANT' || $studentship_status[0]->name == 'DECEASED') {
+                     return redirect()->back()->with('error','Unable to update deceased or graduant student results'); 
+                  } else {
+                     $result->final_score = ($request->get('final_score')*$module_assignment->programModuleAssignment->final_min_mark)/100;
+                  }
+
+                  }else{
+                     $result->final_score = null;
+                  }
                 if($request->get('appeal_score')){
                    $result->appeal_score = ($request->get('appeal_score')*$module_assignment->programModuleAssignment->final_min_mark)/100;
                 }
