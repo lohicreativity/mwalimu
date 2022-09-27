@@ -284,10 +284,20 @@
                             @endphp
 
                             <td 
-                              @if($result->course_work_remark == 'FAIL') class="ss-custom-grey ss-center" 
-                              @else class="ss-center" @endif>@if($result->course_work_score) 
-                              {{ $result->course_work_score }} 
-                              @else - @endif
+                              @if($result->course_work_remark == 'FAIL') 
+                              class="ss-custom-grey ss-center" 
+                              @else 
+                              class="ss-center" 
+                              @endif>
+
+                              @if($result->supp_processed_at)
+                              NA
+                              @else 
+                                @if($result->course_work_score) 
+                                {{ $result->course_work_score }} 
+                                @else - @endif
+                              @endif
+                              
                           </td>
                             <td 
                               @if($result->final_remark == 'FAIL') class="ss-custom-grey ss-center" 
