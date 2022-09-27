@@ -28,7 +28,7 @@ class ApplicationWindowController extends Controller
     	$data = [
            'windows'=>ApplicationWindow::with(['campus','intake'])
         //    ->where('YEAR(end_date)', '=', now()->format('Y'))
-            ->where(DB::raw('YEAR(end_date)'), '=', now()->format('Y'))
+            ->whereBetween(DB::raw('YEAR(end_date)'), [now()->format('Y') - 1, now()->format('Y')])
            ->paginate(20),
            'intakes'=>Intake::all(),
            'campuses'=>Campus::all(),
