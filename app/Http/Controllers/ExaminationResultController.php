@@ -284,17 +284,21 @@ class ExaminationResultController extends Controller
                       $processed_result->point = $grading_policy? $grading_policy->point : null;
                       if($processed_result->course_work_remark == 'FAIL' || $processed_result->final_remark == 'FAIL'){
 
-                        if ($processed_result->supp_processed_at) {
-                           $processed_result->final_exam_remark = 'PASS';
-                           $processed_result->grade = 'C';
-                           $processed_result->point = 1;
-                        } else {
+                        // if ($processed_result->supp_processed_at) {
+                        //    $processed_result->final_exam_remark = 'PASS';
+                        //    $processed_result->grade = 'C';
+                        //    $processed_result->point = 1;
+                        // } else {
+
+                        //    $processed_result->final_exam_remark = 'FAIL';
+                        //    $processed_result->grade = 'F';
+                        //    $processed_result->point = 0;
+
+                        // }
 
                            $processed_result->final_exam_remark = 'FAIL';
                            $processed_result->grade = 'F';
                            $processed_result->point = 0;
-
-                        }
 
                          
                       }else{
@@ -1487,22 +1491,22 @@ class ExaminationResultController extends Controller
                         $processed_result->point = $grading_policy? $grading_policy->point : null;
                         if($processed_result->course_work_remark == 'FAIL' || $processed_result->final_remark == 'FAIL'){
 
-                           if ($processed_result->supp_processed_at) {
-                              $processed_result->final_exam_remark = 'PASS';
-                              $processed_result->grade = 'C';
-                              $processed_result->point = 1;
-                           } else {
+                           // if ($processed_result->supp_processed_at) {
+                           //    $processed_result->final_exam_remark = 'PASS';
+                           //    $processed_result->grade = 'C';
+                           //    $processed_result->point = 1;
+                           // } else {
    
-                              $processed_result->final_exam_remark = 'FAIL';
-                              $processed_result->grade = 'F';
-                              $processed_result->point = 0;
+                           //    $processed_result->final_exam_remark = 'FAIL';
+                           //    $processed_result->grade = 'F';
+                           //    $processed_result->point = 0;
    
-                           }
+                           // }
 
-                           // $processed_result->final_exam_remark = 'FAIL';
-                           // $processed_result->grade = 'F';
-                           // $processed_result->point = 0;
-                           
+                           $processed_result->final_exam_remark = 'FAIL';
+                           $processed_result->grade = 'F';
+                           $processed_result->point = 0;
+
                         }else{
                           $processed_result->final_exam_remark = $assignment->programModuleAssignment->module_pass_mark <= $processed_result->total_score? 'PASS' : 'FAIL';
                         }
