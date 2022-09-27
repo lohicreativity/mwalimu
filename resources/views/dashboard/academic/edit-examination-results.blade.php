@@ -100,8 +100,13 @@
                       {!! Form::text('final_score',round($result->final_score*100/$result->moduleAssignment->programModuleAssignment->final_min_mark,1),$final_score) !!}
                     </div>
                     <div class="form-group col-4">
+
+                      @if($result->supp_processed_at && ($result->course_work_remark == 'FAIL' || $result->final_remark == 'FAIL'))
                       {!! Form::label('','Supp score') !!}
                       {!! Form::text('supp_score',$result->supp_score,$supp_score) !!}
+                      @endif
+
+                      
 
                       {!! Form::input('hidden','student_id',$student->id) !!}
                       {!! Form::input('hidden','exam_type',$result->exam_type) !!}
