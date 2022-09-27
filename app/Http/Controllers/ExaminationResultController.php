@@ -286,7 +286,7 @@ class ExaminationResultController extends Controller
 
                         if ($processed_result->supp_processed_at) {
                            $processed_result->final_exam_remark = 'PASS';
-                           $processed_result->grade = 'C*';
+                           $processed_result->grade = 'C';
                            $processed_result->point = 1;
                         } else {
 
@@ -1493,7 +1493,7 @@ class ExaminationResultController extends Controller
 
                            if ($processed_result->supp_processed_at) {
                               $processed_result->final_exam_remark = 'PASS';
-                              $processed_result->grade = 'C*';
+                              $processed_result->grade = 'C';
                               $processed_result->point = 1;
                            } else {
    

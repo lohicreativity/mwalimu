@@ -338,11 +338,25 @@
                               
                           </td>
                             <td 
-                              @if($result->course_work_remark == 'FAIL' || $result->final_remark == 'FAIL') class="ss-custom-grey-- ss-center" 
+                              @if($result->course_work_remark == 'FAIL' || $result->final_remark == 'FAIL') 
+                                class="ss-custom-grey-- ss-center" 
                               @else class="ss-center" 
-                              @endif>@if($result->grade) 
-                              {{ $result->grade }} 
-                              @else - @endif
+                              @endif>
+                              
+                                @if($result->supp_processed_at)
+                                  
+                                  @if($result->grade) 
+                                    {{ $result->grade }}* 
+                                  @else - @endif
+
+
+                                @else 
+                                  @if($result->grade) 
+                                    {{ $result->grade }} 
+                                  @else - @endif
+                                @endif
+                              
+                              
                           </td>
                           
                             @endif
