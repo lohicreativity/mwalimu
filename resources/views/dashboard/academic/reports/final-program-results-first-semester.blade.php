@@ -300,10 +300,22 @@
                               
                           </td>
                             <td 
-                              @if($result->final_remark == 'FAIL') class="ss-custom-grey ss-center" 
-                              @elseif(count($result->changes) != 0) class="ss-center ss-custom-lightblue" 
-                              @else class="ss-center" @endif>@if($result->final_score) {{ $result->final_score }} 
-                              @else - @endif
+                              @if($result->final_remark == 'FAIL') 
+                              class="ss-custom-grey ss-center" 
+                              @elseif(count($result->changes) != 0) 
+                              class="ss-center ss-custom-lightblue" 
+                              @else 
+                              class="ss-center" 
+                              @endif>
+
+                              @if($result->supp_processed_at)
+                              NA
+                              @else 
+                                @if($result->final_score) 
+                                {{ $result->final_score }} 
+                                @else - @endif
+                              @endif
+                              
                             </td>
                             <td 
                               @if($result->course_work_remark == 'FAIL' || $result->final_remark == 'FAIL') 
