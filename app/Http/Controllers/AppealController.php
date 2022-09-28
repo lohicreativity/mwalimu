@@ -175,20 +175,11 @@ class AppealController extends Controller
                               return redirect()->back()->with('error','No results to process');
                           }
 
-                          foreach ($uploaded_students as $value) {
-
-                            
-
-                          }
-
                           foreach($module_assignments as $assign){
 
-                            // foreach ($uploaded_students as $value) {
+                            foreach ($uploaded_students as $value) {
 
-                            //     // print_r($uploaded_students);
-
-
-                            //   if ($value[2] == $assign->module->code) {
+                              if ($value[2] == $assign->module->code) {
 
                                 if($assign->course_work_process_status != 'PROCESSED'){
                                   DB::rollback();
@@ -199,8 +190,8 @@ class AppealController extends Controller
                                   return redirect()->back()->with('error',$assign->module->name.'-'.$assign->module->code.' final not uploaded');
                                 }
 
-                            //   }
-                            // }
+                              }
+                            }
                             
                           }
 
