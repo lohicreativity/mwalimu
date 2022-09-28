@@ -178,7 +178,7 @@ class AppealController extends Controller
 
                           foreach($module_assignments as $assign){
                             if($assign->course_work_process_status != 'PROCESSED'){
-                              return $assign->programModuleAssignment->category;
+                              // return $assign->programModuleAssignment->category;
                               DB::rollback();
                               return redirect()->back()->with('error',$assign->module->name.'-'.$assign->module->code.' course works not processed');
                             }
