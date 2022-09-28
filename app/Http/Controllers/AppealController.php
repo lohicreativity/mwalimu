@@ -123,11 +123,11 @@ class AppealController extends Controller
               $file_handle = fopen($csvFile, 'r');
               while (($output = fgetcsv($file_handle, 0, ',')) != false) {
                   $line_of_text[] = $output;
-                  return $line_of_text;
               }
               fclose($file_handle);
               foreach($line_of_text as $line){
                     $uploaded_students[] = $line;
+                    return $uploaded_students;
               }
 
               foreach($uploaded_students as $student){
