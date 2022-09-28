@@ -2144,7 +2144,12 @@ class ExaminationResultController extends Controller
               return redirect()->back()->with('error','No results processed yet for this programme');
            }
         }
-        $grading_policies = GradingPolicy::where('nta_level_id',$campus_program->program->nta_level_id)->where('study_academic_year_id',$request->get('study_academic_year_id'))->orderBy('min_score')->get();
+        $grading_policies = GradingPolicy::where('nta_level_id',$campus_program->program->nta_level_id)
+        ->where('study_academic_year_id',$request->get('study_academic_year_id'))
+        ->orderBy('min_score')
+        ->get();
+
+        return $grading_policies;
 
         $modules = [];
 
