@@ -131,6 +131,8 @@ class AppealController extends Controller
 
               foreach($uploaded_students as $student){
 
+                return $student[1];
+
                   $result = ExaminationResult::whereHas('student',function($query) use($student){
                       $query->where('registration_number',$student[1]);
                   })->whereHas('moduleAssignment.module',function($query) use($student){
