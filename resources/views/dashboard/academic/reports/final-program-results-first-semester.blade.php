@@ -423,7 +423,7 @@
                         <td class="ss-bold">F</td>
                         <td class="ss-bold">TT</td>
                         @endforeach
-                        <td class="ss-bold">M</td>
+                        <!-- <td class="ss-bold">M</td>
                         <td class="ss-bold">F</td>
                         <td class="ss-bold">TT</td>
                         <td class="ss-bold">M</td>
@@ -452,7 +452,7 @@
                         <td class="ss-bold">TT</td>
                         <td class="ss-bold">M</td>
                         <td class="ss-bold">F</td>
-                        <td class="ss-bold">TT</td>
+                        <td class="ss-bold">TT</td> -->
                       </tr>
                       @foreach($modules as $modKey=>$mod)
                       <tr>
