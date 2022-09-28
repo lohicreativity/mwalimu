@@ -135,7 +135,7 @@ class AppealController extends Controller
 
 
                   $result = ExaminationResult::whereHas('student',function($query) use($student){
-                      $query->where('registration_number',  implode('/', explode('/', $student[1])));
+                      $query->where('registration_umber', $student[1]);
                   })->whereHas('moduleAssignment.module',function($query) use($student){
                        $query->where('code',$student[2]);
                   })->with(['moduleAssignment.programModuleAssignment'])->first();
