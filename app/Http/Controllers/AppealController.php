@@ -175,6 +175,8 @@ class AppealController extends Controller
                               return redirect()->back()->with('error','No results to process');
                           }
 
+                          DB::rollback();
+
 
                           // foreach($module_assignments as $assign){
                           //   if($assign->course_work_process_status != 'PROCESSED'){
