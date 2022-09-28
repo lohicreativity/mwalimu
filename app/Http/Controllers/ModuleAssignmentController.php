@@ -959,14 +959,11 @@ class ModuleAssignmentController extends Controller
               foreach($line_of_text_1 as $line){
                  if(gettype($line) != 'boolean'){
                     $stud = Student::where('registration_number',trim($line[0]))->first();
-                     if($stud && !empty($line[1])){
-                        return $line[1]." 1";
+                     if($stud && (!empty($line[1]) || $line[1] == 0)){
                         $uploaded_students[] = $stud;
                      }elseif($stud && empty($line[1])){
-                        return $line[1]." 2";
                         $missing_students[] = $stud;
                      }else{
-                        return $line[1]." 3";
                         $invalid_students_entries[] = $line[0];
                      }
                  }
@@ -1173,7 +1170,11 @@ class ModuleAssignmentController extends Controller
                 if(gettype($line) != 'boolean'){
                 $student = Student::where('registration_number',trim($line[0]))->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id)->first();
                 
+                    return $line[1].' 1';
+
                 if($student && !empty($line[1])){
+
+                    return $line[1].' 2';
 
                   if($request->get('assessment_plan_id') == 'FINAL_EXAM'){
                       $special_exam = SpecialExam::where('student_id',$student->id)->where('module_assignment_id',$module_assignment->id)->where('type','FINAL')->where('status','APPROVED')->first();
