@@ -175,18 +175,23 @@ class AppealController extends Controller
                               return redirect()->back()->with('error','No results to process');
                           }
 
-
                           foreach($module_assignments as $assign){
 
-                            // if($assign->course_work_process_status != 'PROCESSED'){
-                            //   DB::rollback();
-                            //   return redirect()->back()->with('error',$assign->module->name.'-'.$assign->module->code.' course works not processed');
-                            // }
-                            // if($assign->final_upload_status == null){
-                            //   DB::rollback();
-                            //   return redirect()->back()->with('error',$assign->module->name.'-'.$assign->module->code.' final not uploaded');
-                            // }
+                            foreach ($uploaded_students as $key => $value) {
+                              if ($key[2] == $assign->module->code) {
 
+                                if($assign->course_work_process_status != 'PROCESSED'){
+                                  DB::rollback();
+                                  return redirect()->back()->with('error',$assign->module->name.'-'.$assign->module->code.' course works not processed');
+                                }
+                                if($assign->final_upload_status == null){
+                                  DB::rollback();
+                                  return redirect()->back()->with('error',$assign->module->name.'-'.$assign->module->code.' final not uploaded');
+                                }
+
+                              }
+                            }
+                            
                           }
 
                       $student_buffer = [];
