@@ -161,8 +161,11 @@ class ExaminationResultController extends Controller
     	    }
 
             if(ExaminationResult::whereHas('moduleAssignment.programModuleAssignment',function($query) use($campus_program){
-                   $query->where('campus_program_id',$campus_program->id)->where('category','COMPULSORY');
-              })->whereNotNull('final_uploaded_at')->distinct()->count('module_assignment_id') < count($core_programs)){
+                   $query->where('campus_program_id',$campus_program->id)
+                   ->where('category','COMPULSORY');
+               })->whereNotNull('final_uploaded_at')
+               ->distinct()
+               ->count('module_assignment_id') < count($core_programs)){
                 
                 $available_programs = ExaminationResult::whereHas('moduleAssignment.programModuleAssignment',function($query) use($campus_program){
                    $query->where('campus_program_id',$campus_program->id)->where('category','COMPULSORY');
