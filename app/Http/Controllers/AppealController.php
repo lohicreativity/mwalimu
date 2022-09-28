@@ -177,14 +177,14 @@ class AppealController extends Controller
                               
                           // });
 
-                          $count_opted_students = DB::table('program_module_assignments')
-                          ->join('student_program_moule_assignment', 'program_module_assignments.id', '=', 'student_program_module_assignment.program_module_assignment_id')
-                          ->where('campus_program_id',$student->campus_program_id)
-                          ->where('year_of_study',$yr_of_study)
-                          ->where('semester_id',$semester_id)
-                          ->count();
+                          // $count_opted_students = DB::table('program_module_assignments')
+                          // ->join('student_program_moule_assignment', 'program_module_assignments.id', '=', 'student_program_module_assignment.program_module_assignment_id')
+                          // ->where('campus_program_id',$student->campus_program_id)
+                          // ->where('year_of_study',$yr_of_study)
+                          // ->where('semester_id',$semester_id)
+                          // ->count();
 
-                          return $count_opted_students;
+                          // return $count_opted_students;
 
                 
                           // $module_assignments = ExaminationResult::whereHas('moduleAssignment.programModuleAssignment',function($query) use($campus_program){
@@ -192,23 +192,24 @@ class AppealController extends Controller
                           //          ->where('category','OPTIONAL');
                           //     })->whereNotNull('final_uploaded_at');
                               
-                          if(count($module_assignments) == 0){
-                              DB::rollback();
-                              return redirect()->back()->with('error','No results to process');
-                          }
+                          // if(count($module_assignments) == 0){
+                          //     DB::rollback();
+                          //     return redirect()->back()->with('error','No results to process');
+                          // }
 
 
-                          foreach($module_assignments as $assign){
-                            if($assign->course_work_process_status != 'PROCESSED' && $assign->programModuleAssignment->category == 'OPTIONAL' ){
-                              // return $assign->programModuleAssignment->category;
-                              DB::rollback();
-                              return redirect()->back()->with('error',$assign->module->name.'-'.$assign->module->code.' course works not processed');
-                            }
-                            if($assign->final_upload_status == null){
-                              DB::rollback();
-                              return redirect()->back()->with('error',$assign->module->name.'-'.$assign->module->code.' final not uploaded');
-                            }
-                          }
+                          // foreach($module_assignments as $assign){
+
+                          //   // if($assign->course_work_process_status != 'PROCESSED' && $assign->programModuleAssignment->category == 'OPTIONAL' ){
+                          //   //   // return $assign->programModuleAssignment->category;
+                          //   //   DB::rollback();
+                          //   //   return redirect()->back()->with('error',$assign->module->name.'-'.$assign->module->code.' course works not processed');
+                          //   // }
+                          //   // if($assign->final_upload_status == null){
+                          //   //   DB::rollback();
+                          //   //   return redirect()->back()->with('error',$assign->module->name.'-'.$assign->module->code.' final not uploaded');
+                          //   // }
+                          // }
 
                       $student_buffer = [];
                       $annual_credit = 0;
