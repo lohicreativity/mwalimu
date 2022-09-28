@@ -1170,7 +1170,7 @@ class ModuleAssignmentController extends Controller
                 if(gettype($line) != 'boolean'){
                 $student = Student::where('registration_number',trim($line[0]))->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id)->first();
                 
-                if($student && !empty($line[1])){
+                if($student && (!empty($line[1]) || $line[1] == 0)){
 
                     return $line[1].' 2';
 
