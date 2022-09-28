@@ -2146,10 +2146,8 @@ class ExaminationResultController extends Controller
         }
         $grading_policies = GradingPolicy::where('nta_level_id',$campus_program->program->nta_level_id)
         ->where('study_academic_year_id',$request->get('study_academic_year_id'))
-        ->orderBy('min_score')
+        ->orderBy('min_scoe')
         ->get();
-
-        return $grading_policies;
 
         $modules = [];
 
