@@ -381,7 +381,7 @@
                         @if($student->semesterRemarks[0]->gpa) {{ $student->semesterRemarks[0]->credit }} @else N/A @endif 
                       @endif</td>
                       <td>@if(count($student->semesterRemarks) != 0)   
-                        @if($student->semesterRemarks[0]->remark) {{ $student->semesterRemarks[0]->remark }} @else N/A @endif 
+                        @if($student->semesterRemarks[0]->remark) {{ ucwords(strtolower($student->semesterRemarks[0]->remark)) }} @else N/A @endif 
                       @endif</td>
                       <td>@if(count($student->semesterRemarks) != 0)   
                         @if($student->semesterRemarks[0]->class) {{ $student->semesterRemarks[0]->class }} @else N/A @endif 
