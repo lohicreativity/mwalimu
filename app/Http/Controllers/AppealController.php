@@ -177,6 +177,8 @@ class AppealController extends Controller
 
                           foreach($module_assignments as $assign){
 
+                            print_r($assign);
+
                             foreach ($uploaded_students as $value) {
 
                               if ($value[2] == $assign->module->code) {
