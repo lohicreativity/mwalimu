@@ -177,7 +177,7 @@ class AppealController extends Controller
 
                           foreach ($uploaded_students as $value) {
 
-                            print_r($uploaded_students);
+                            print_r($uploaded_students).' people';
 
                           }
 
