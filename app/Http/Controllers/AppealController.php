@@ -181,28 +181,28 @@ class AppealController extends Controller
 
                           }
 
-                          // foreach($module_assignments as $assign){
+                          foreach($module_assignments as $assign){
 
-                          //   foreach ($uploaded_students as $value) {
+                            // foreach ($uploaded_students as $value) {
 
-                          //       // print_r($uploaded_students);
+                            //     // print_r($uploaded_students);
 
 
-                          //     if ($value[2] == $assign->module->code) {
+                            //   if ($value[2] == $assign->module->code) {
 
-                          //       if($assign->course_work_process_status != 'PROCESSED'){
-                          //         DB::rollback();
-                          //         return redirect()->back()->with('error',$assign->module->name.'-'.$assign->module->code.' course works not processed');
-                          //       }
-                          //       if($assign->final_upload_status == null){
-                          //         DB::rollback();
-                          //         return redirect()->back()->with('error',$assign->module->name.'-'.$assign->module->code.' final not uploaded');
-                          //       }
+                                if($assign->course_work_process_status != 'PROCESSED'){
+                                  DB::rollback();
+                                  return redirect()->back()->with('error',$assign->module->name.'-'.$assign->module->code.' course works not processed');
+                                }
+                                if($assign->final_upload_status == null){
+                                  DB::rollback();
+                                  return redirect()->back()->with('error',$assign->module->name.'-'.$assign->module->code.' final not uploaded');
+                                }
 
-                          //     }
-                          //   }
+                            //   }
+                            // }
                             
-                          // }
+                          }
 
                       $student_buffer = [];
                       $annual_credit = 0;
