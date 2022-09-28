@@ -122,14 +122,12 @@ class AppealController extends Controller
               $csvFile = $destination.$csvFileName;
               $file_handle = fopen($csvFile, 'r');
               while (!feof($file_handle)) {
-                  $line_of_text = fgetcsv($file_handle, 0, ',');
+                  $line_of_text[] = fgetcsv($file_handle, 0, ',');
               }
               fclose($file_handle);
-              return $line_of_text;
-              // foreach($line_of_text as $line){
-              //       return $line_of_text;
-              //       $uploaded_students[] = $line;
-              // }
+              foreach($line_of_text as $line){
+                    $uploaded_students[] = $line;
+              }
 
               foreach($uploaded_students as $student){
 
