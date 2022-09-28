@@ -179,9 +179,7 @@ class AppealController extends Controller
 
                             foreach ($uploaded_students as $value) {
 
-                              return $value[2].'   '.$assign->module->code;
-
-                              if ($key[2] == $assign->module->code) {
+                              if ($value[2] == $assign->module->code) {
 
                                 if($assign->course_work_process_status != 'PROCESSED'){
                                   DB::rollback();
