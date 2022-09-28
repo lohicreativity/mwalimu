@@ -130,12 +130,16 @@ class AppealController extends Controller
               }
 
               foreach($uploaded_students as $student){
+                
+
+
 
                   $result = ExaminationResult::whereHas('student',function($query) use($student){
-                      $query->where('registration_number',$student[1]);
+                      $query->where('registration_number',  implode('/', explode('/', $student[1])));
                   })->whereHas('moduleAssignment.module',function($query) use($student){
                        $query->where('code',$student[2]);
                   })->with(['moduleAssignment.programModuleAssignment'])->first();
+
 
                   $result->final_score = ($student[3]*$result->moduleAssignment->programModuleAssignment->final_min_mark)/100;
                   $result->final_remark = $result->moduleAssignment->programModuleAssignment->final_pass_score <= $student[3]? 'PASS' : 'FAIL';
