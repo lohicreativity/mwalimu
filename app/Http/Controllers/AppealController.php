@@ -168,10 +168,20 @@ class AppealController extends Controller
                                 $query->where('campus_program_id',$student->campus_program_id)
                                 ->where('year_of_study',$yr_of_study)
                                 ->where('semester_id',$semester_id);
-                              })->whereNotNull('final_uploaded_at')->whereHas('programModuleAssignment.campusProgram',function($query) use($campus_program){
+                              })->whereHas('programModuleAssignment.campusProgram',function($query) use($campus_program){
                             $query->where('program_id',$campus_program->program->id);
                               })->with('module.ntaLevel','programModuleAssignment.campusProgram.program','studyAcademicYear')->where('study_academic_year_id',$ac_yr_id)
                               ->get();
+
+                          // $opted_modules = ProgramModuleAssignment::whereHas('optedStudents', function($query) use($request, $student) {
+                              
+                          // });
+
+                          $count_opted_students = DB::table('ProgramModuleAssignment')
+                          ->join('student_program_module_assignment', 'ProgramModuleAssignment.id', '=', 'student_program_module_assignment.program_module_assignment_id')
+                          ->count();
+
+                          return $count_opted_students;
 
                 
                           // $module_assignments = ExaminationResult::whereHas('moduleAssignment.programModuleAssignment',function($query) use($campus_program){
@@ -186,7 +196,7 @@ class AppealController extends Controller
 
 
                           foreach($module_assignments as $assign){
-                            if($assign->course_work_process_status != 'PROCESSED'){
+                            if($assign->course_work_process_status != 'PROCESSED' && $assign->programModuleAssignment->category == 'OPTIONAL' ){
                               // return $assign->programModuleAssignment->category;
                               DB::rollback();
                               return redirect()->back()->with('error',$assign->module->name.'-'.$assign->module->code.' course works not processed');
