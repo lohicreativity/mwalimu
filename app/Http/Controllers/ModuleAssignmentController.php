@@ -960,10 +960,13 @@ class ModuleAssignmentController extends Controller
                  if(gettype($line) != 'boolean'){
                     $stud = Student::where('registration_number',trim($line[0]))->first();
                      if($stud && (!empty($line[1]) || $line[1] == 0)){
+                        return $line[1]." 1";
                         $uploaded_students[] = $stud;
                      }elseif($stud && empty($line[1])){
+                        return $line[1]." 2";
                         $missing_students[] = $stud;
                      }else{
+                        return $line[1]." 3";
                         $invalid_students_entries[] = $line[0];
                      }
                  }
