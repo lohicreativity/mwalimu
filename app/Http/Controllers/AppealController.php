@@ -156,7 +156,8 @@ class AppealController extends Controller
                         $campus_program = CampusProgram::with(['program.ntaLevel'])->find($student->campus_program_id);
                         $semester = Semester::find($semester_id);
                         $module_assignments = ModuleAssignment::whereHas('programModuleAssignment',function($query) use($request,$student,$yr_of_study){
-                                  $query->where('campus_program_id',$student->campus_program_id)->where('year_of_study',$yr_of_study);
+                                  $query->where('campus_program_id',$student->campus_program_id)
+                                  ->where('year_of_study',$yr_of_study);
                                  })->whereHas('programModuleAssignment.campusProgram',function($query) use($campus_program){
                                 $query->where('program_id',$campus_program->program->id);
                               })->with('module.ntaLevel','programModuleAssignment.campusProgram.program','studyAcademicYear')->where('study_academic_year_id',$ac_yr_id)->get();
@@ -164,11 +165,19 @@ class AppealController extends Controller
                          $annual_module_assignments = $module_assignments;
                     
                           $module_assignments = ModuleAssignment::whereHas('programModuleAssignment',function($query) use($request,$student,$yr_of_study, $semester_id){
-                                $query->where('campus_program_id',$student->campus_program_id)->where('year_of_study',$yr_of_study)->where('semester_id',$semester_id);
-                              })->whereHas('programModuleAssignment.campusProgram',function($query) use($campus_program){
+                                $query->where('campus_program_id',$student->campus_program_id)
+                                ->where('year_of_study',$yr_of_study)
+                                ->where('semester_id',$semester_id);
+                              })->whereNotNull('final_uploaded_at')->whereHas('programModuleAssignment.campusProgram',function($query) use($campus_program){
                             $query->where('program_id',$campus_program->program->id);
-                              })->with('module.ntaLevel','programModuleAssignment.campusProgram.program','studyAcademicYear')->where('study_academic_year_id',$ac_yr_id)->get();
+                              })->with('module.ntaLevel','programModuleAssignment.campusProgram.program','studyAcademicYear')->where('study_academic_year_id',$ac_yr_id)
+                              ->get();
 
+                
+                          // $module_assignments = ExaminationResult::whereHas('moduleAssignment.programModuleAssignment',function($query) use($campus_program){
+                          //          $query->where('campus_program_id',$campus_program->id)
+                          //          ->where('category','OPTIONAL');
+                          //     })->whereNotNull('final_uploaded_at');
                               
                           if(count($module_assignments) == 0){
                               DB::rollback();

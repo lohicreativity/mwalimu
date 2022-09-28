@@ -185,12 +185,18 @@ class ExaminationResultController extends Controller
                 return redirect()->back()->with('error','Some modules are missing final marks ('.implode(',', $missing_programs).')');
             }
 
-            $elective_policy = ElectivePolicy::where('campus_program_id',$campus_program->id)->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('semester_id',$request->get('semester_id'))->first();
+            $elective_policy = ElectivePolicy::where('campus_program_id',$campus_program->id)
+            ->where('study_academic_year_id',$request->get('study_academic_year_id'))
+            ->where('semester_id',$request->get('semester_id'))
+            ->first();
 
             if($elective_policy){
               if(ExaminationResult::whereHas('moduleAssignment.programModuleAssignment',function($query) use($campus_program){
-                     $query->where('campus_program_id',$campus_program->id)->where('category','OPTIONAL');
-                })->whereNotNull('final_uploaded_at')->distinct()->count('module_assignment_id') < $elective_policy->number_of_options){
+                     $query->where('campus_program_id',$campus_program->id)
+                     ->where('category','OPTIONAL');
+                })->whereNotNull('final_uploaded_at')
+                ->distinct()
+                ->count('module_assignment_id') < $elective_policy->number_of_options){
                   DB::rollback();
                   return redirect()->back()->with('error','Some optional modules are missing final marks');
               }
