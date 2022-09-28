@@ -178,7 +178,7 @@ class AppealController extends Controller
                           // });
 
                           $count_opted_students = DB::table('program_module_assignments')
-                          ->join('student_program_module_assignment', 'ProgramModuleAssignment.id', '=', 'student_program_module_assignment.program_module_assignment_id')
+                          ->join('student_program_module_assignment', 'program_module_assignments.id', '=', 'student_program_module_assignment.program_module_assignment_id')
                           ->count();
 
                           return $count_opted_students;
