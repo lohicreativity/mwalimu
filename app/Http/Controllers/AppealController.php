@@ -177,9 +177,9 @@ class AppealController extends Controller
 
                           foreach($module_assignments as $assign){
 
-                            foreach ($uploaded_students as $key => $value) {
+                            foreach ($uploaded_students as $value) {
 
-                              return $key[2].'   '.$assign->module->code;
+                              return $value[2].'   '.$assign->module->code;
 
                               if ($key[2] == $assign->module->code) {
 
