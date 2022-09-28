@@ -126,6 +126,7 @@ class AppealController extends Controller
               }
               fclose($file_handle);
               foreach($line_of_text as $line){
+                    return $line_of_text;
                     $uploaded_students[] = $line;
               }
 
