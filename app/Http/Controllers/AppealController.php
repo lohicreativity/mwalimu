@@ -175,11 +175,17 @@ class AppealController extends Controller
                               return redirect()->back()->with('error','No results to process');
                           }
 
+                          foreach ($uploaded_students as $value) {
+
+                            print_r($uploaded_students);
+
+                          }
+
                           foreach($module_assignments as $assign){
 
                             foreach ($uploaded_students as $value) {
 
-                                print_r($uploaded_students);
+                                // print_r($uploaded_students);
 
 
                               if ($value[2] == $assign->module->code) {
