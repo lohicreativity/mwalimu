@@ -156,8 +156,7 @@ class AppealController extends Controller
                         $campus_program = CampusProgram::with(['program.ntaLevel'])->find($student->campus_program_id);
                         $semester = Semester::find($semester_id);
                         $module_assignments = ModuleAssignment::whereHas('programModuleAssignment',function($query) use($request,$student,$yr_of_study){
-                                  $query->where('campus_program_id',$student->campus_program_id)
-                                  ->where('year_of_study',$yr_of_study);
+                                  $query->where('campus_program_id',$student->campus_program_id)->where('year_of_study',$yr_of_study);
                                  })->whereHas('programModuleAssignment.campusProgram',function($query) use($campus_program){
                                 $query->where('program_id',$campus_program->program->id);
                               })->with('module.ntaLevel','programModuleAssignment.campusProgram.program','studyAcademicYear')->where('study_academic_year_id',$ac_yr_id)->get();
@@ -165,51 +164,28 @@ class AppealController extends Controller
                          $annual_module_assignments = $module_assignments;
                     
                           $module_assignments = ModuleAssignment::whereHas('programModuleAssignment',function($query) use($request,$student,$yr_of_study, $semester_id){
-                                $query->where('campus_program_id',$student->campus_program_id)
-                                ->where('year_of_study',$yr_of_study)
-                                ->where('semester_id',$semester_id);
+                                $query->where('campus_program_id',$student->campus_program_id)->where('year_of_study',$yr_of_study)->where('semester_id',$semester_id);
                               })->whereHas('programModuleAssignment.campusProgram',function($query) use($campus_program){
                             $query->where('program_id',$campus_program->program->id);
-                              })->with('module.ntaLevel','programModuleAssignment.campusProgram.program','studyAcademicYear')->where('study_academic_year_id',$ac_yr_id)
-                              ->get();
+                              })->with('module.ntaLevel','programModuleAssignment.campusProgram.program','studyAcademicYear')->where('study_academic_year_id',$ac_yr_id)->get();
 
-                          // $opted_modules = ProgramModuleAssignment::whereHas('optedStudents', function($query) use($request, $student) {
                               
-                          // });
-
-                          // $count_opted_students = DB::table('program_module_assignments')
-                          // ->join('student_program_moule_assignment', 'program_module_assignments.id', '=', 'student_program_module_assignment.program_module_assignment_id')
-                          // ->where('campus_program_id',$student->campus_program_id)
-                          // ->where('year_of_study',$yr_of_study)
-                          // ->where('semester_id',$semester_id)
-                          // ->count();
-
-                          // return $count_opted_students;
-
-                
-                          // $module_assignments = ExaminationResult::whereHas('moduleAssignment.programModuleAssignment',function($query) use($campus_program){
-                          //          $query->where('campus_program_id',$campus_program->id)
-                          //          ->where('category','OPTIONAL');
-                          //     })->whereNotNull('final_uploaded_at');
-                              
-                          // if(count($module_assignments) == 0){
-                          //     DB::rollback();
-                          //     return redirect()->back()->with('error','No results to process');
-                          // }
+                          if(count($module_assignments) == 0){
+                              DB::rollback();
+                              return redirect()->back()->with('error','No results to process');
+                          }
 
 
-                          // foreach($module_assignments as $assign){
-
-                          //   // if($assign->course_work_process_status != 'PROCESSED' && $assign->programModuleAssignment->category == 'OPTIONAL' ){
-                          //   //   // return $assign->programModuleAssignment->category;
-                          //   //   DB::rollback();
-                          //   //   return redirect()->back()->with('error',$assign->module->name.'-'.$assign->module->code.' course works not processed');
-                          //   // }
-                          //   // if($assign->final_upload_status == null){
-                          //   //   DB::rollback();
-                          //   //   return redirect()->back()->with('error',$assign->module->name.'-'.$assign->module->code.' final not uploaded');
-                          //   // }
-                          // }
+                          foreach($module_assignments as $assign){
+                            if($assign->course_work_process_status != 'PROCESSED'){
+                              DB::rollback();
+                              return redirect()->back()->with('error',$assign->module->name.'-'.$assign->module->code.' course works not processed');
+                            }
+                            if($assign->final_upload_status == null){
+                              DB::rollback();
+                              return redirect()->back()->with('error',$assign->module->name.'-'.$assign->module->code.' final not uploaded');
+                            }
+                          }
 
                       $student_buffer = [];
                       $annual_credit = 0;
