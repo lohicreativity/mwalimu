@@ -53,10 +53,10 @@
                      <select name="type" class="form-control" required>
                        <option value="">Select Type</option>
                        @if(!$second_semester_publish_status)
-                       <option value="FINAL">Final</option>
+                       <option value="FINAL" selected>Final</option>
                        @endif
                        @if($second_semester_publish_status)
-                       <option value="SUPP">Supplementary</option>
+                       <option value="SUPP" selected>Supplementary</option>
                        @endif
                      </select>
 
