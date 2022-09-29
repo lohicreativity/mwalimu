@@ -76,7 +76,6 @@
                 <div class="row">
 
                 @foreach($module_assignments as $assign)
-<!-- {{ $ex->moduleAssignment->module->id }} <br> -->
                 @if(count($special_exam_requests) != 0)
                    @foreach($special_exam_requests as $exl)
                      @foreach($exl->exams as $ex)
