@@ -95,65 +95,31 @@
                                       {{ $assign->module->name }}
                                   </label>
                                 </div>
-                              </div>                          
+                              </div>  
+                              @elseif($assign->programModuleAssignment->category == 'OPTIONAL' && $opted_module[0]->module_id == $assign->module_id && $assign->module_id != $ex->moduleAssignment->module->id) 
+                              <div class="col-3">
+                                <div class="checkbox">
+                                  <label>
+                                      {!! Form::checkbox('mod_assign_'.$assign->id,$assign->id) !!}
+                                      {{ $assign->module->name }}
+                                  </label>
+                                </div>
+                              </div>
+                              @elseif($assign->programModuleAssignment->category == 'COMPULSORY' && $assign->module_id == $ex->moduleAssignment->module->id) 
+                              <div class="col-3">
+                                <div class="checkbox">
+                                  <label>
+                                      {!! Form::checkbox('mod_assign_'.$assign->id,$assign->id) !!}
+                                      {{ $assign->module->name }}
+                                  </label>
+                                </div>
+                              </div>
+
                               @endif
                           @endforeach
                         @endforeach
-                      @else  
-                          @if(count($special_exam_requests) != 0)
-                            @foreach($special_exam_requests as $exl)
-                              @foreach($exl->exams as $ex)
-                                  @if($assign->programModuleAssignment->category == 'OPTIONAL' && $opted_module[0]->module_id == $assign->module_id && $assign->module_id != $ex->moduleAssignment->module->id)
-                                  <div class="col-3">
-                                    <div class="checkbox">
-                                      <label>
-                                          {!! Form::checkbox('mod_assign_'.$assign->id,$assign->id, true, array('disabled')) !!}
-                                          {{ $assign->module->name }}
-                                          $specialExamsList[] = $ex->moduleAssignment->module->id;
-                                      </label>
-                                    </div>
-                                  </div>
-                                  @elseif($assign->programModuleAssignment->category == 'COMPULSORY' && $assign->module_id != $ex->moduleAssignment->module->id)
-                                  <div class="col-3">
-                                    <div class="checkbox">
-                                      <label>
-                                          {!! Form::checkbox('mod_assign_'.$assign->id,$assign->id, true, array('disabled')) !!}
-                                          {{ $assign->module->name }}
-                                          $specialExamsList[] = $ex->moduleAssignment->module->id;
-                                      </label>
-                                    </div>
-                                  </div>                          
-                                  @endif
-                              
-                              @endforeach
-                        @endforeach
-                        @else 
-                        @if($assign->programModuleAssignment->category == 'OPTIONAL' && $opted_module[0]->module_id == $assign->module_id && $assign->module_id != $ex->moduleAssignment->module->id)
-                                  <div class="col-3">
-                                    <div class="checkbox">
-                                      <label>
-                                          {!! Form::checkbox('mod_assign_'.$assign->id,$assign->id, true, array('disabled')) !!}
-                                          {{ $assign->module->name }}
-                                          $specialExamsList[] = $ex->moduleAssignment->module->id;
-                                      </label>
-                                    </div>
-                                  </div>
-                                  @elseif($assign->programModuleAssignment->category == 'COMPULSORY' && $assign->module_id != $ex->moduleAssignment->module->id)
-                                  <div class="col-3">
-                                    <div class="checkbox">
-                                      <label>
-                                          {!! Form::checkbox('mod_assign_'.$assign->id,$assign->id, true, array('disabled')) !!}
-                                          {{ $assign->module->name }}
-                                          $specialExamsList[] = $ex->moduleAssignment->module->id;
-                                      </label>
-                                    </div>
-                                  </div>                          
-                                  @endif
-                           @endif
-
-                    @endif
-
-                @endforeach
+                      @endif
+                    @foreach
                 </div>
                 </div>
                 <div class="card-footer">
