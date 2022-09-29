@@ -77,7 +77,7 @@
 
                    @foreach($special_exam_requests as $exl)
                      @foreach($exl->exams as $ex)
-                     {{ $ex->moduleAssignment->module->name }} <br>
+                     {{ $ex->moduleAssignment->module->id }} <br>
                      @endforeach
                    @endforeach
                 </div>
