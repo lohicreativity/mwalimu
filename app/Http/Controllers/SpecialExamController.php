@@ -105,9 +105,9 @@ class SpecialExamController extends Controller
 
         $student = Student::find($request->get('student_id'));
 
-        if($r = SpecialExamRequest::where('student_id',$request->get('student_id'))->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->where('type',$request->get('type'))->first()){
-            $req = $r;
-        }else{
+        // if($r = SpecialExamRequest::where('student_id',$request->get('student_id'))->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->where('type',$request->get('type'))->first()){
+        //     $req = $r;
+        // }else{
             $req = new SpecialExamRequest;
             $req->semester_id = session('active_semester_id');
             $req->study_academic_year_id = session('active_academic_year_id');
@@ -126,7 +126,7 @@ class SpecialExamController extends Controller
                   $req->supporting_document = $request->file('supporting_document')->getClientOriginalName();
             }
             $req->save();
-        }
+        // }
 
         $module_assignments = ModuleAssignment::whereHas('programModuleAssignment',function($query) use($student){
                $query->where('semester_id',session('active_semester_id'))->where('campus_program_id',$student->campus_program_id);
