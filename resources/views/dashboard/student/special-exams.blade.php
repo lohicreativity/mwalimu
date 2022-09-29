@@ -75,7 +75,7 @@
                 </div>
                 <div class="row">
                    @foreach($module_assignments as $assign)
-                    @if($assign->category == 'OPTIONAL' || $opted_module->program_module_assignment_id != $assign->id)
+                    @if($assign->category == 'OPTIONAL' || $opted_module[0]->program_module_assignment_id != $assign->id)
                     @continue
                    @else
                    <div class="col-3">
