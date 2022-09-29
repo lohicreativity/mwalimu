@@ -1063,6 +1063,13 @@ class ExaminationResultController extends Controller
                 'supp_score'=>'min:0|max:100',
             ]);
 
+            $special_exam = SpecialExam::where('study_academic_year_id',$request->get('study_academic_year_id'))->where('semester_id',$request->get('semester_id'))->where('status','PENDING')->first();
+
+            if ($special_exam) {
+               return redirect()->back()->with('error','There is pending request for special exam'); 
+            }
+
+
             if($validation->fails()){
                if($request->ajax()){
                   return response()->json(array('error_messages'=>$validation->messages()));
