@@ -75,7 +75,7 @@
                 </div>
                 <div class="row">
                    @foreach($module_assignments as $assign)
-                   {{ $opted_module[0]->module_id }} : {{ $assign->module_id}} : {{ $assign->category }} <br>
+                   {{ $opted_module[0]->module_id }} : {{ $assign->module_id}} : {{ $assign->program_module_assignment->category }} <br>
                    @endforeach
                 </div>
                 </div>
