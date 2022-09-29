@@ -95,14 +95,11 @@
                                       {{ $assign->module->name }}
                                   </label>
                                 </div>
-                              </div>  
-                              
-
+                              </div>                          
                               @endif
                           @endforeach
                         @endforeach
                       @endif
-                    @foreach
                 </div>
                 </div>
                 <div class="card-footer">
