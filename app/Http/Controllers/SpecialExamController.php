@@ -43,13 +43,13 @@ class SpecialExamController extends Controller
     {
         $student = User::find(Auth::user()->id)->student;
 
-        $optedSubjects = DB::table('student_program_module_assignment')
-        ->join('program_module_assignments', 'student_program_module_assignment.student_id', '=', 'program_module_assignments.id')
-        ->where('student_program_module_assignment.student_id', '=', $student->id)
-        ->where('program_module_assignments.semester_id', '=', session('active_semester_id'))
-        ->get();
+        // $optedSubjects = DB::table('student_program_module_assignment')
+        // ->join('program_module_assignments', 'student_program_module_assignment.student_id', '=', 'program_module_assignments.id')
+        // ->where('student_program_module_assignment.student_id', '=', $student->id)
+        // ->where('program_module_assignments.semester_id', '=', session('active_semester_id'))
+        // ->get();
 
-        return $optedSubjects;
+        // return $optedSubjects;
 
         $second_semester_publish_status = false;
          if(ResultPublication::whereHas('semester',function($query){

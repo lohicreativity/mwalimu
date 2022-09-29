@@ -75,25 +75,7 @@
                 </div>
                 <div class="row">
                    @foreach($module_assignments as $assign)
-                    @if($opted_module[0]->module_id == $assign->id)
-                    <div class="col-3">
-                     <div class="checkbox">
-                       <label>
-                          {!! Form::checkbox('mod_assign_'.$assign->id,$assign->id) !!}
-                          {{ $assign->module->name }}
-                       </label>
-                     </div>
-                   </div>
-                   @else
-                   <div class="col-3">
-                     <div class="checkbox">
-                       <label>
-                          {!! Form::checkbox('mod_assign_'.$assign->id,$assign->id) !!}
-                          {{ $assign->module->name }}
-                       </label>
-                     </div>
-                   </div>
-                    @endif
+                   {{ $opted_module[0]->module_id }} : {{ $assign->id}}
                    @endforeach
                 </div>
                 </div>
