@@ -75,7 +75,7 @@
                 </div>
                 <div class="row">
                    @foreach($module_assignments as $assign)
-                    @if($opted_module[0]->program_module_assignment_id == $assign->id)
+                    @if($opted_module[0]->module_id == $assign->module_id)
                     <div class="col-3">
                      <div class="checkbox">
                        <label>
