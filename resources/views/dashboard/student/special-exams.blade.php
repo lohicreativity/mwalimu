@@ -95,9 +95,8 @@
                                       {{ $assign->module->name }}
                                   </label>
                                 </div>
-                              </div>    
-                   @else
-                   @if($assign->programModuleAssignment->category == 'OPTIONAL' && $opted_module[0]->module_id == $assign->module_id && $assign->module_id == $ex->moduleAssignment->module->id)
+                              </div>                    
+                            @elseif($assign->programModuleAssignment->category == 'OPTIONAL' && $opted_module[0]->module_id == $assign->module_id && $assign->module_id != $ex->moduleAssignment->module->id)
                               <div class="col-3">
                                 <div class="checkbox">
                                   <label>
@@ -106,7 +105,7 @@
                                   </label>
                                 </div>
                               </div>
-                              @elseif($assign->programModuleAssignment->category == 'COMPULSORY' && $assign->module_id == $ex->moduleAssignment->module->id)
+                              @elseif($assign->programModuleAssignment->category == 'COMPULSORY' && $assign->module_id != $ex->moduleAssignment->module->id)
                               <div class="col-3">
                                 <div class="checkbox">
                                   <label>
@@ -115,7 +114,6 @@
                                   </label>
                                 </div>
                               </div> 
-                              @endif
                               @endif
                           @endforeach
                         @endforeach
