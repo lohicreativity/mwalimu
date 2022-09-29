@@ -75,7 +75,16 @@
                 </div>
                 <div class="row">
                    @foreach($module_assignments as $assign)
-                    @if($opted_module[0]->program_module_assignment_id == $assign->id)
+                   @if($assign->category == 'COMPULSORY')
+                   <div class="col-3">
+                     <div class="checkbox">
+                       <label>
+                          {!! Form::checkbox('mod_assign_'.$assign->id,$assign->id) !!}
+                          {{ $assign->module->name }}
+                       </label>
+                     </div>
+                   </div>
+                    @elseif($opted_module[0]->program_module_assignment_id == $assign->id)
                     <div class="col-3">
                      <div class="checkbox">
                        <label>
