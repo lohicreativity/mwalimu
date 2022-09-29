@@ -84,7 +84,6 @@
                             <label>
                                 {!! Form::checkbox('mod_assign_'.$assign->id,$assign->id, true, array('disabled')) !!}
                                 {{ $assign->module->name }}
-                                $specialExamsList[] = $ex->moduleAssignment->module->id;
                             </label>
                           </div>
                         </div>
@@ -94,14 +93,14 @@
                             <label>
                                 {!! Form::checkbox('mod_assign_'.$assign->id,$assign->id, true, array('disabled')) !!}
                                 {{ $assign->module->name }}
-                                $specialExamsList[] = $ex->moduleAssignment->module->id;
                             </label>
                           </div>
                         </div>                          
                         @endif
                      @endforeach
                    @endforeach
-                   @elseif(count($special_exam_requests) != 0)
+                   @else
+                   @if(count($special_exam_requests) != 0)
                         @foreach($special_exam_requests as $exl)
                           @foreach($exl->exams as $ex)
                               @if($assign->programModuleAssignment->category == 'OPTIONAL' && $opted_module[0]->module_id == $assign->module_id && $assign->module_id != $ex->moduleAssignment->module->id)
