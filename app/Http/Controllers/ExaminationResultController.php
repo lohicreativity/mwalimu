@@ -18,6 +18,7 @@ use App\Domain\Academic\Models\Department;
 use App\Domain\Settings\Models\NTALevel;
 use App\Domain\Academic\Models\SemesterRemark;
 use App\Domain\Academic\Models\SpecialExam;
+use App\Domain\Academic\Models\Postponement;
 use App\Domain\Academic\Models\SpecialExamRequest;
 use App\Domain\Academic\Models\Appeal;
 use App\Domain\Academic\Models\AnnualRemark;
@@ -85,8 +86,11 @@ class ExaminationResultController extends Controller
     {
       $special_exam = SpecialExam::where('study_academic_year_id',$request->get('study_academic_year_id'))->where('semester_id',$request->get('semester_id'))->where('status','PENDING')->first();
 
+      $special_exam = Postponement::where('study_academic_year_id',$request->get('study_academic_year_id'))->where('semester_id',$request->get('semester_id'))->where('status','PENDING')->first();
+
+
       if ($special_exam) {
-         return redirect()->back()->with('error','There is pending request for special exams');
+         return redirect()->back()->with('error','There is pending request for special exams or postponement');
       }
 
     	DB::beginTransaction();
