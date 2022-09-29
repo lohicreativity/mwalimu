@@ -73,12 +73,12 @@ class SpecialExamController extends Controller
             })->with(['module','programModuleAssignment'])
             ->where('study_academic_year_id',session('active_academic_year_id'))
             ->get(), 
-           'special_exam_requests'=>SpecialExamRequest::with(['exams.moduleAssignment.programModuleAssignment','exams.moduleAssignment.module'])->where('student_id',$student->id),
+           'special_exam_requests'=>SpecialExamRequest::with(['exams.moduleAssignment.programModuleAssignment','exams.moduleAssignment.module'])->where('student_id',$student->id)->paginate(20),
            'student'=>$student,
            'request'=>$request
         ];
 
-        // return $data['special_exam_requests']->moduleAssignment->module_id;
+        // return $data['special_exam_requests']->exams->module_assignment->module_id;
         return view('dashboard.student.special-exams',$data)->withTitle('Exam Postponement');
     }
 
