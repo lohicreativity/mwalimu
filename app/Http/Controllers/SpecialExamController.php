@@ -50,8 +50,11 @@ class SpecialExamController extends Controller
         $data =  [
            'second_semester_publish_status'=>$second_semester_publish_status,
            'module_assignments'=>ModuleAssignment::whereHas('programModuleAssignment',function($query) use($student){
-               $query->where('semester_id',session('active_semester_id'))->where('campus_program_id',$student->campus_program_id);
-           })->with(['module','programModuleAssignment'])->where('study_academic_year_id',session('active_academic_year_id'))->get(),
+               $query->where('semeste_id',session('active_semester_id'))
+               ->where('campus_program_id',$student->campus_program_id);
+           })->with(['module','programModuleAssignment'])
+           ->where('study_academic_year_id',session('active_academic_year_id'))
+           ->get(),
            'special_exam_requests'=>SpecialExamRequest::with(['exams.moduleAssignment.programModuleAssignment','exams.moduleAssignment.module'])->where('student_id',$student->id)->paginate(20),
            'student'=>$student,
            'request'=>$request
