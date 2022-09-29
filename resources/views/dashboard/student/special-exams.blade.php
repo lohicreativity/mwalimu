@@ -76,7 +76,7 @@
                 <div class="row">
                 @php
                     $specialExamsList[];
-                
+                    @endphp
                 @foreach($module_assignments as $assign)
                 @if(count($special_exam_requests) != 0)
                    @foreach($special_exam_requests as $exl)
@@ -108,7 +108,7 @@
                 @endforeach
 
                   {{ $specialExamsList }}
-                @endphp
+
                    @foreach($special_exam_requests as $exl)
                      @foreach($exl->exams as $ex)
                      <!-- {{ $ex->moduleAssignment->module->id }} <br> -->
