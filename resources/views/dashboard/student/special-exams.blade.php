@@ -75,7 +75,7 @@
                 </div>
                 <div class="row">
                    @foreach($module_assignments as $assign)
-                    @if($assign->type == 'OPTIONAL' && $opted_module->program_module_assignment_id == $assign->id)
+                    @if($assign->type == 'OPTIONAL' || $opted_module->program_module_assignment_id == $assign->id)
                     <div class="col-3">
                      <div class="checkbox">
                        <label>
