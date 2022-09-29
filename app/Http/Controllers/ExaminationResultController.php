@@ -83,7 +83,9 @@ class ExaminationResultController extends Controller
      */
     public function process(Request $request)
     {
-      return 123;
+      $special_exam = SpecialExam::where('study_academic_year_id',$request->get('study_academic_year_id'))->where('semester_id',$request->get('semester_id'))->where('status','PENDING')->first();
+      return $special_exam;
+
     	DB::beginTransaction();
 
     	$campus_program = CampusProgram::with('program')->find(explode('_',$request->get('campus_program_id'))[0]);
