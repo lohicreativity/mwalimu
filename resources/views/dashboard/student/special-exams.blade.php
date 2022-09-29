@@ -75,9 +75,7 @@
                 </div>
                 <div class="row">
 
-                   @foreach($special_exam_requests as $examspecial)
-                    {{ $examspecial->exams }}
-                   @endforeach
+                   
                 </div>
                 </div>
                 <div class="card-footer">
