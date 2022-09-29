@@ -43,13 +43,13 @@ class SpecialExamController extends Controller
     {
         $student = User::find(Auth::user()->id)->student;
 
-        $optedSubjects = DB::table('student_program_module_assignment')
-        ->join('program_module_assignments', 'student_program_module_assignment.student_id', '=', 'program_module_assignments.id')
-        ->where('student_program_module_assignment.student_id', '=', $student->id)
-        ->where('program_module_assignments.semester_id', '=', session('active_semester_id'))
-        ->get();
+        // $optedSubjects = DB::table('student_program_module_assignment')
+        // ->join('program_module_assignments', 'student_program_module_assignment.student_id', '=', 'program_module_assignments.id')
+        // ->where('student_program_module_assignment.student_id', '=', $student->id)
+        // ->where('program_module_assignments.semester_id', '=', session('active_semester_id'))
+        // ->get();
 
-        return $optedSubjects;
+        // return $optedSubjects;
 
         $second_semester_publish_status = false;
          if(ResultPublication::whereHas('semester',function($query){
@@ -60,7 +60,9 @@ class SpecialExamController extends Controller
         $data =  [
            'second_semester_publish_status'=>$second_semester_publish_status,
            'module_assignments'=>ModuleAssignment::whereHas('programModuleAssignment',function($query) use($student){
-               $query->where('semester_id',session('active_semester_id'))
+               $query->join('student_program_module_assignment', 'program_module_assignments.id', '=', 'student_program_module_assignment.program_module_assignment_id')
+               ->where('semester_id',session('active_semester_id'))
+               ->where('student_program_module_assignment.student_id', '=', $student->id)
                ->where('campus_program_id',$student->campus_program_id);
            })->with(['module','programModuleAssignment'])
            ->where('study_academic_year_id',session('active_academic_year_id'))
@@ -69,6 +71,8 @@ class SpecialExamController extends Controller
            'student'=>$student,
            'request'=>$request
         ];
+
+        return $data['module_assignments'];
         return view('dashboard.student.special-exams',$data)->withTitle('Exam Postponement');
     }
 
