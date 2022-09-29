@@ -100,7 +100,7 @@
                           @endforeach
                         @endforeach
                       @endif
-                
+                    @foreach
                 </div>
                 </div>
                 <div class="card-footer">
