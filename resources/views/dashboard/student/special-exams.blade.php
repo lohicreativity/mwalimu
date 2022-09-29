@@ -76,7 +76,7 @@
                 <div class="row">
 
                    @foreach($special_exam_requests as $examspecial)
-                    {{ $examspecial->exams->module_id }} <br>
+                    {{ $examspecial->exams }} <br>
                    @endforeach
                 </div>
                 </div>
