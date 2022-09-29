@@ -74,8 +74,6 @@
                   </div>
                 </div>
                 <div class="row">
-
-                @foreach($module_assignments as $assign)
                 @if(count($special_exam_requests) != 0)
                    @foreach($special_exam_requests as $exl)
                      @foreach($exl->exams as $ex)
@@ -102,6 +100,9 @@
                    @endforeach
                 @endif
 
+                @foreach($module_assignments as $assign)
+                
+                      
 
                   @if($assign->programModuleAssignment->category == 'OPTIONAL' && $opted_module[0]->module_id == $assign->module_id)
                     <div class="col-3">
