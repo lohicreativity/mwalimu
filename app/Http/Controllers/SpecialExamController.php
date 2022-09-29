@@ -10,11 +10,12 @@ use App\Domain\Academic\Models\ModuleAssignment;
 use App\Domain\Academic\Models\ResultPublication;
 use App\Domain\Academic\Models\Semester;
 use App\Domain\Registration\Models\Student;
+use App\Domain\Registration\Models\StudentProgramModuleAssignment;
 use App\Domain\Academic\Actions\SpecialExamAction;
 use App\Models\User;
 use App\Utils\Util;
 use App\Utils\SystemLocation;
-use Validator, Auth;
+use Validator, Auth, DB;
 
 class SpecialExamController extends Controller
 {
@@ -41,6 +42,14 @@ class SpecialExamController extends Controller
     public function showPostponement(Request $request)
     {
         $student = User::find(Auth::user()->id)->student;
+
+        $optedSubjects = DB::table('student_program_module_assignment')
+        ->join('program_module_assignments', 'student_program_module_assignment.student_id', '=', 'program_module_assignments.id')
+        ->where('student_program_module_assignment.student_id', '=', $student->id)
+        ->get();
+
+        return $optedSubjects;
+
         $second_semester_publish_status = false;
          if(ResultPublication::whereHas('semester',function($query){
              $query->where('name','LIKE','%2%');
@@ -50,7 +59,7 @@ class SpecialExamController extends Controller
         $data =  [
            'second_semester_publish_status'=>$second_semester_publish_status,
            'module_assignments'=>ModuleAssignment::whereHas('programModuleAssignment',function($query) use($student){
-               $query->where('semeste_id',session('active_semester_id'))
+               $query->where('semester_id',session('active_semester_id'))
                ->where('campus_program_id',$student->campus_program_id);
            })->with(['module','programModuleAssignment'])
            ->where('study_academic_year_id',session('active_academic_year_id'))
