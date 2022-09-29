@@ -83,6 +83,7 @@ class ExaminationResultController extends Controller
      */
     public function process(Request $request)
     {
+      return 123;
     	DB::beginTransaction();
 
     	$campus_program = CampusProgram::with('program')->find(explode('_',$request->get('campus_program_id'))[0]);
@@ -1057,20 +1058,12 @@ class ExaminationResultController extends Controller
      */
     public function update(Request $request)
     {
-      return 123;
         try{
             $validation = Validator::make($request->all(),[
                 'final_score'=>'numeric|min:0|max:100',
                 'supp_score'=>'min:0|max:100',
             ]);
 
-            // $special_exam = SpecialExam::where('study_academic_year_id',$request->get('study_academic_year_id'))->where('semester_id',$request->get('semester_id'))->where('status','PENDING')->first();
-
-            // return $special_exam;
-
-            // if ($special_exam) {
-            //    return redirect()->back()->with('error','There is pending request for special exam'); 
-            // }
 
 
             if($validation->fails()){
