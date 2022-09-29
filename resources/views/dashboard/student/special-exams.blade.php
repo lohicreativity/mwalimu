@@ -75,7 +75,8 @@
                 </div>
                 <div class="row">
                    @foreach($module_assignments as $assign)
-                   <div class="col-3">
+                    @if($assign->type == 'OPTIONAL' && $opted_module->program_module_assignment_id == $assign->id)
+                    <div class="col-3">
                      <div class="checkbox">
                        <label>
                           {!! Form::checkbox('mod_assign_'.$assign->id,$assign->id) !!}
@@ -83,6 +84,7 @@
                        </label>
                      </div>
                    </div>
+                    @endif
                    @endforeach
                 </div>
                 </div>
