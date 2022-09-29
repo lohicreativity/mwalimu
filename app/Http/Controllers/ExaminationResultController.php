@@ -1057,7 +1057,6 @@ class ExaminationResultController extends Controller
      */
     public function update(Request $request)
     {
-      return 123;
         try{
             $validation = Validator::make($request->all(),[
                 'final_score'=>'numeric|min:0|max:100',
