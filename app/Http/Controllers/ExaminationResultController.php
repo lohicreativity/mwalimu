@@ -84,7 +84,10 @@ class ExaminationResultController extends Controller
     public function process(Request $request)
     {
       $special_exam = SpecialExam::where('study_academic_year_id',$request->get('study_academic_year_id'))->where('semester_id',$request->get('semester_id'))->where('status','PENDING')->first();
-      return $special_exam;
+
+      if ($special_exam) {
+         return redirect()->back()->with('error','There is pending request for special exams');
+      }
 
     	DB::beginTransaction();
 
