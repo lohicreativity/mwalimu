@@ -74,6 +74,7 @@
                   </div>
                 </div>
                 <div class="row">
+                @foreach($module_assignments as $assign)
                 @if(count($special_exam_requests) != 0)
                    @foreach($special_exam_requests as $exl)
                      @foreach($exl->exams as $ex)
@@ -99,6 +100,7 @@
                      @endforeach
                    @endforeach
                 @endif
+                @endforeach
 
                 @foreach($module_assignments as $assign)
                 
