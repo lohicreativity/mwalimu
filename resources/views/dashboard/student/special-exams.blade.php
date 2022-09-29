@@ -96,24 +96,7 @@
                                   </label>
                                 </div>
                               </div>  
-                              @elseif($assign->programModuleAssignment->category == 'OPTIONAL' && $opted_module[0]->module_id == $assign->module_id && $assign->module_id != $ex->moduleAssignment->module->id) 
-                              <div class="col-3">
-                                <div class="checkbox">
-                                  <label>
-                                      {!! Form::checkbox('mod_assign_'.$assign->id,$assign->id) !!}
-                                      {{ $assign->module->name }}
-                                  </label>
-                                </div>
-                              </div>
-                              @elseif($assign->programModuleAssignment->category == 'COMPULSORY' && $assign->module_id == $ex->moduleAssignment->module->id) 
-                              <div class="col-3">
-                                <div class="checkbox">
-                                  <label>
-                                      {!! Form::checkbox('mod_assign_'.$assign->id,$assign->id) !!}
-                                      {{ $assign->module->name }}
-                                  </label>
-                                </div>
-                              </div>
+                              
 
                               @endif
                           @endforeach
