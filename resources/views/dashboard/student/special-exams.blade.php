@@ -85,7 +85,7 @@
                         </label>
                       </div>
                     </div> 
-                  @elseif(empty($opted_module))
+                  @elseif(empty($opted_module) && $assign->programModuleAssignment->category == 'OPTIONAL')
                     <div class="col-3">
                       <div class="checkbox">
                         <label>
