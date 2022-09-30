@@ -76,7 +76,7 @@
                 <div class="row">
 
                 @foreach($module_assignments as $assign)
-                  @if(empty($opted_module) && $assign->programModuleAssignment->category == 'OPTIONAL')
+                  @if(sizeof($opted_module) == 0 && $assign->programModuleAssignment->category == 'OPTIONAL')
                     <div class="col-3">
                       <div class="checkbox">
                         <label>
