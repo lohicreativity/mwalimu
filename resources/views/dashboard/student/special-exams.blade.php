@@ -80,7 +80,16 @@
                     <div class="col-3">
                       <div class="checkbox">
                         <label>
-                          {!! Form::checkbox('mod_assign_'.$assign->id,$assign->id, true, array('disabled')) !!}
+                          {!! Form::checkbox('mod_assign_'.$assign->id,$assign->id) !!}
+                          {{ $assign->module->name }}
+                        </label>
+                      </div>
+                    </div>
+                  @elseif($assign->programModuleAssignment->category == 'COMPULSORY')
+                    <div class="col-3">
+                      <div class="checkbox">
+                        <label>
+                          {!! Form::checkbox('mod_assign_'.$assign->id,$assign->id) !!}
                           {{ $assign->module->name }}
                         </label>
                       </div>
