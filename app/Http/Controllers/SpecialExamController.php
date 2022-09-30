@@ -78,7 +78,7 @@ class SpecialExamController extends Controller
            'request'=>$request
         ];
 
-        // return $data['special_exam_requests'];
+        return $data['opted_module'];
         return view('dashboard.student.special-exams',$data)->withTitle('Exam Postponement');
     }
 
