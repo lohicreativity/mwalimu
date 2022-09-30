@@ -92,7 +92,7 @@
                           @endif
                           @if($assign->module_id != $ex->moduleAssignment->module->id)
                             {{ ($assign->module_id != $ex->moduleAssignment->module->id) }} <br>
-                            {{ $assign->module_id : $ex->moduleAssignment->module->id }} <br>
+                            {{ $assign->module_id - $ex->moduleAssignment->module->id }} <br>
                             
                           @endif
                         @endforeach
