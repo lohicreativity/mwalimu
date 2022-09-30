@@ -88,18 +88,17 @@
                                   {{ $assign->module->name }}
                                 </label>
                               </div>
-                            </div>
-                          @else 
-                            @if($assign->module_id != $ex->moduleAssignment->module->id)
-                              <div class="col-3">
-                                <div class="checkbox">
-                                  <label>
-                                    {!! Form::checkbox('mod_assign_'.$assign->id,$assign->id) !!}
-                                    {{ $assign->module->name }}
-                                  </label>
-                                </div>
+                            </div>                          
+                          @endif
+                          @if($assign->module_id != $ex->moduleAssignment->module->id)
+                            <div class="col-3">
+                              <div class="checkbox">
+                                <label>
+                                  {!! Form::checkbox('mod_assign_'.$assign->id,$assign->id) !!}
+                                  {{ $assign->module->name }}
+                                </label>
                               </div>
-                            @endif 
+                            </div>
                           @endif
                         @endforeach
                       @endforeach
