@@ -89,7 +89,7 @@
                               </label>
                             </div>
                           </div>
-                        @else 
+                        @elseif($opted_module[0]->module_id == $assign->module_id) 
                           <div class="col-3">
                             <div class="checkbox">
                               <label>
