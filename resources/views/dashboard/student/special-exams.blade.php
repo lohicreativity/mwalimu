@@ -81,7 +81,7 @@
                       @foreach($special_exam_requests as $exl)
                         @foreach($exl->exams as $ex)
                           @if($assign->module_id == $ex->moduleAssignment->module->id)
-                          {{ ($assign->module_id == $ex->moduleAssignment->module->id) }}
+                          {{ (($assign->module_id == $ex->moduleAssignment->module->id) + 1) }}
                             <div class="col-3">
                               <div class="checkbox">
                                 <label>
