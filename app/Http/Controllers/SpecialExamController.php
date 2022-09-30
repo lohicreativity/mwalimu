@@ -129,6 +129,21 @@ class SpecialExamController extends Controller
 
         $student = Student::find($request->get('student_id'));
 
+        $opted_modules = ModuleAssignment::whereHas('programModuleAssignment',function($query) use($student){
+            $query->join('student_program_module_assignment', 'program_module_assignments.id', '=', 'student_program_module_assignment.program_module_assignment_id')
+            ->where('semester_id',session('active_semester_id'))
+            ->where('student_program_module_assignment.student_id', '=', $student->id)
+            ->where('campus_program_id',$student->campus_program_id);
+            })->with(['module','programModuleAssignment'])
+            ->where('study_academic_year_id',session('active_academic_year_id'))
+            ->get();
+        
+        return $opted_modules;
+        
+        // if ($request->get('mod_assign_'.$assign->id) ) {
+        //     return redirect()->back()->with('error','You have');
+        // }
+
         // if($r = SpecialExamRequest::where('student_id',$request->get('student_id'))->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->where('type',$request->get('type'))->first()){
         //     $req = $r;
         // }else{

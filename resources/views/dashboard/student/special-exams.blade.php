@@ -74,13 +74,12 @@
                   </div>
                 </div>
                 <div class="row">
-
                 @foreach($module_assignments as $assign)
                   @if(sizeof($opted_module) == 0 && $assign->programModuleAssignment->category == 'OPTIONAL')
                     <div class="col-3">
                       <div class="checkbox">
                         <label>
-                          {!! Form::checkbox('mod_assign_'.$assign->id,$assign->id, false, array('disabled')) !!}
+                          {!! Form::checkbox('mod_assign_'.$assign->id,$assign->id) !!}
                           {{ $assign->module->name }}
                         </label>
                       </div>
