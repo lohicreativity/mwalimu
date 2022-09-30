@@ -138,7 +138,7 @@ class SpecialExamController extends Controller
             ->where('study_academic_year_id',session('active_academic_year_id'))
             ->get();
 
-        if (sizeof($opted_modules)) {
+        if (sizeof($opted_modules) == 0) {
             return redirect()->back()->with('error','You did not opt this module');
         }
 
