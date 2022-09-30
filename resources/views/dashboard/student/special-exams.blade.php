@@ -77,7 +77,14 @@
 
                 @foreach($module_assignments as $assign)
                   @if(sizeof($opted_module) == 0 && $assign->programModuleAssignment->category == 'OPTIONAL')
-                                    
+                    <div class="col-3">
+                      <div class="checkbox">
+                        <label>
+                          {!! Form::checkbox('mod_assign_'.$assign->id,$assign->id, array('disabled')) !!}
+                          {{ $assign->module->name }}
+                        </label>
+                      </div>
+                    </div>   
                   @elseif($assign->programModuleAssignment->category == 'OPTIONAL' && $opted_module[0]->module_id == $assign->module_id)
                     <div class="col-3">
                       <div class="checkbox">
