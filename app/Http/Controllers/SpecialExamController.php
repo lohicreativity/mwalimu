@@ -77,8 +77,9 @@ class SpecialExamController extends Controller
            'student'=>$student,
            'request'=>$request
         ];
+        
 
-        if (empty($data['opted_module'])) {
+        if (is_null($data['opted_module'])) {
             return 'Empty';
         }
 
