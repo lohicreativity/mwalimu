@@ -76,7 +76,7 @@
                 <div class="row">
 
                 @foreach($module_assignments as $assign)
-                  @if($assign->programModuleAssignment->category == 'COMPULSORY' && $opted_module[0]->module_id == $assign->module_id)
+                  @if($assign->programModuleAssignment->category == 'OPTIONAL' && $opted_module[0]->module_id == $assign->module_id)
                     @if(count($special_exam_requests) != 0)
                       @foreach($special_exam_requests as $exl)
                         @foreach($exl->exams as $ex)
@@ -93,7 +93,7 @@
                             <div class="col-3">
                               <div class="checkbox">
                                 <label>
-                                  {!! Form::checkbox('mod_assign_'.$assign->id,$assign->id, false) !!}
+                                  {!! Form::checkbox('mod_assign_'.$assign->id,$assign->id, true, array('disabled')) !!}
                                   {{ $assign->module->name }}
                                 </label>
                               </div>
