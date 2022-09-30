@@ -79,7 +79,7 @@ class SpecialExamController extends Controller
         ];
         
 
-        if (is_null($data['opted_module'])) {
+        if (sizeof($data['opted_module']) == 0) {
             return 'Empty';
         }
 
