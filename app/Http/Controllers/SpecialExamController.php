@@ -137,8 +137,12 @@ class SpecialExamController extends Controller
             })->with(['module','programModuleAssignment'])
             ->where('study_academic_year_id',session('active_academic_year_id'))
             ->get();
+
+        if (sizeof($opted_modules)) {
+            return redirect()->back()->with('error','You did not opt this module');
+        }
+
         
-        return $opted_modules;
         
         // if ($request->get('mod_assign_'.$assign->id) ) {
         //     return redirect()->back()->with('error','You have');
