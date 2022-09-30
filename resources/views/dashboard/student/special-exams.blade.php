@@ -80,7 +80,7 @@
                     <div class="col-3">
                       <div class="checkbox">
                         <label>
-                          {!! Form::checkbox('mod_assign_'.$assign->id,$assign->id, array('disabled')) !!}
+                          {!! Form::checkbox('mod_assign_'.$assign->id,$assign->id, false, array('disabled')) !!}
                           {{ $assign->module->name }}
                         </label>
                       </div>
