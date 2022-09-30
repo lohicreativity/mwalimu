@@ -101,7 +101,7 @@
                                                 <div class="col-3">
                                                   <div class="checkbox">
                                                     <label>
-                                                        {!! Form::checkbox('mod_assign_'.$assign->id,$assign->id) !!}
+                                                        {!! Form::checkbox('mod_assign_'.$assign->id,$assign->id, false) !!}
                                                         {{ $assign->module->name }}
                                                     </label>
                                                   </div>
@@ -110,7 +110,7 @@
                                                 <div class="col-3">
                                                   <div class="checkbox">
                                                     <label>
-                                                        {!! Form::checkbox('mod_assign_'.$assign->id,$assign->id) !!}
+                                                        {!! Form::checkbox('mod_assign_'.$assign->id,$assign->id, false) !!}
                                                         {{ $assign->module->name }}
                                                     </label>
                                                   </div>
