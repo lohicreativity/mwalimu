@@ -90,14 +90,16 @@
                               </div>
                             </div>
                           @else 
-                            <div class="col-3">
-                              <div class="checkbox">
-                                <label>
-                                  {!! Form::checkbox('mod_assign_'.$assign->id,$assign->id) !!}
-                                  {{ $assign->module->name }}
-                                </label>
+                            @if($assign->module_id != $ex->moduleAssignment->module->id)
+                              <div class="col-3">
+                                <div class="checkbox">
+                                  <label>
+                                    {!! Form::checkbox('mod_assign_'.$assign->id,$assign->id) !!}
+                                    {{ $assign->module->name }}
+                                  </label>
+                                </div>
                               </div>
-                            </div>
+                            @endif 
                           @endif
                         @endforeach
                       @endforeach
