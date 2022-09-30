@@ -80,19 +80,15 @@
                     @if(count($special_exam_requests) != 0)
                       @foreach($special_exam_requests as $exl)
                         @foreach($exl->exams as $ex)
-                          @if($assign->module_id == $ex->moduleAssignment->module->id)
+                          @if($assign->module_id != $ex->moduleAssignment->module->id)
                             <div class="col-3">
                               <div class="checkbox">
                                 <label>
-                                  {!! Form::checkbox('mod_assign_'.$assign->id,$assign->id, true, array('disabled')) !!}
+                                  {!! Form::checkbox('mod_assign_'.$assign->id,$assign->id) !!}
                                   {{ $assign->module->name }}
                                 </label>
                               </div>
                             </div>                          
-                          @endif
-                          @if($assign->module_id != $ex->moduleAssignment->module->id)
-                            
-                            
                           @endif
                         @endforeach
                       @endforeach
