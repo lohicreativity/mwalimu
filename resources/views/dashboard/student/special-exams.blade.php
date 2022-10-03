@@ -157,8 +157,9 @@
                     <td>{{ $exam->semester->name }}</td>
                     <td>
                       @foreach($exam->exams as $ex)
-                        {{ $ex->moduleAssignment->module->name }} - 
-                        {{ $ex->moduleAssignment->module->code }},
+                        <!-- {{ $ex->moduleAssignment->module->name }} - 
+                        {{ $ex->moduleAssignment->module->code }}, -->
+                        {{ $ex }} text
                       @endforeach
                     </td>
                     <td>{{ $exam->type }}</td>
