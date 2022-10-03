@@ -12,7 +12,6 @@
   @include('layouts.auth-header')
 
   @include('layouts.sidebar')
-tains page content -->
 
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->

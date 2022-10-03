@@ -43,20 +43,35 @@ class SpecialExamController extends Controller
     {
         $student = User::find(Auth::user()->id)->student;
 
-        // $optedSubjects = DB::table('student_program_module_assignment')
-        // ->join('program_module_assignments', 'student_program_module_assignment.student_id', '=', 'program_module_assignments.id')
-        // ->where('student_program_module_assignment.student_id', '=', $student->id)
-        // ->where('program_module_assignments.semester_id', '=', session('active_semester_id'))
-        // ->get();
-
-        // return $optedSubjects;
-
         $second_semester_publish_status = false;
          if(ResultPublication::whereHas('semester',function($query){
              $query->where('name','LIKE','%2%');
          })->where('study_academic_year_id',session('active_academic_year_id'))->where('status','PUBLISHED')->count() != 0){
             $second_semester_publish_status = true;
          }
+
+
+        $annual_remark = DB::table('annual_remarks')
+        ->where('student_id', $student->id)
+        ->where('study_academic_year_id', session('active_academic_year_id'))
+        ->select('remark')
+        ->get();
+
+        $suppExams = DB::table('examination_results')
+        ->join('module_assignments', 'examination_results.module_id', '=', 'module_assignments.id')
+        ->join('program_module_assignments', 'module_assignments.program_module_assignemnt_id', '=', 'program_module_assignments.id')
+        ->join('modules', 'module_assignments.module_id', '=', 'modules.id')
+        ->where('examination_results.student_id', $student->id)
+        ->where('module_assignments.study_academic_year_id', session('active_academic_year_id'))
+        ->where('program_module_assignments.semester_id', session('active_semester_id'))
+        ->where('program_module_assignments.campus_program_id', $student->campus_program_id)
+        ->where('examination_results.remark', '=', 'SUPP')
+        ->select('modules.name', 'modules.code')
+        ->get();
+
+        return $suppExams;
+
+
         $data =  [
            'second_semester_publish_status'=>$second_semester_publish_status,
            'module_assignments'=>ModuleAssignment::whereHas('programModuleAssignment',function($query) use($student){
