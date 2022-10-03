@@ -207,7 +207,7 @@
                     @if(!Auth::user()->hasRole('hod'))
                       <td>
                         @if($exam->status == 'PENDING')
-                        {!! Form::checkbox('post_'.$exam->id,$exam->id,true) !!}
+                        {!! Form::checkbox('exam_'.$exam->id,$exam->id,true) !!}
                         @endif
                       </td>
                     @endif
@@ -219,7 +219,8 @@
                      <tr>
                        <td colspan="9">
                         
-                        <input type="submit" class="btn btn-primary" name="action" value="Accept Selected"> <input type="submit" class="btn btn-primary" name="action" value="Decline Selected">
+                        <input type="submit" class="btn btn-primary" name="action" value="Accept Selected"> 
+                        <input type="submit" class="btn btn-primary" name="action" value="Decline Selected">
                         
                       </td>
                      </tr>
