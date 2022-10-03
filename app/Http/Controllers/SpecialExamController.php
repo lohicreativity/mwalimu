@@ -68,6 +68,12 @@ class SpecialExamController extends Controller
         ->select('module_assignments.id', 'modules.name', 'modules.code', 'examination_results.final_exam_remark')
         ->get();
 
+        if (sizeof($suppExams) == 0) {
+            return redirect()->back()->with('error','No modules to postpone');
+        }
+
+
+
         $annual = $annual_remark->pluck('remark')->all();
 
         $data =  [
