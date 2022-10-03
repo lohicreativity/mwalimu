@@ -155,11 +155,17 @@
                             @else 
                             {{ round($result->supp_score) }}
                             @endif</td>
-                          <td>@if($result->supp_score && !$supp_publish_status) 
-                            F 
+                          <td>
+                            @if($result->supp_score && !$supp_publish_status) 
+                              @if(empty($result->course_work_score) && empty($result->final_score))
+                                - 
+                              @else 
+                              F 
+                              @endif
                             @else 
                             {{ $result->grade }} 
-                            @endif</td>
+                            @endif
+                          </td>
                           <td>
                             @if($result->supp_score && !$supp_publish_status) FAIL @else {{ $result->final_exam_remark }} @endif</td>
                         </tr>
