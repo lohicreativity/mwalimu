@@ -138,12 +138,20 @@
                             N/A 
                             @endif</td>
                           <td @if($result->exam_type == 'APPEAL') class="ss-grey" @endif>
-                            @if(!$result->supp_processed_at) 
-                            {{ $result->final_score }} 
+                            @if(!$result->supp_processed_at)
+                              @if(empty($result->final_score))
+                              -
+                              @else
+                              {{ $result->final_score }} 
+                              @endif
                             @else N/A 
                             @endif</td>
                           <td>@if(!$result->supp_processed_at) 
-                            {{ round($result->total_score) }} 
+                                @if(empty($result->course_work_score) && empty($result->final_score))
+                                  -
+                                @else
+                                  {{ round($result->total_score) }}
+                                @endif 
                             @else 
                             {{ round($result->supp_score) }}
                             @endif</td>
