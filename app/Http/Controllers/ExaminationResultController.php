@@ -3061,6 +3061,8 @@ class ExaminationResultController extends Controller
               ->select('number_of_options')
               ->get();
 
+              return $num_options;
+
          $data = [
          	'semesters'=>$semesters,
          	'annual_remark'=>$annual_remark,
