@@ -139,7 +139,7 @@ class SpecialExamController extends Controller
             ->get();
 
         if (sizeof($opted_modules) == 0) {
-            return redirect()->back()->with('error','You did not opt this module');
+            return redirect()->back()->with('error','You have not opted any optional modules');
         }
 
         
