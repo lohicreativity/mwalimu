@@ -172,7 +172,7 @@ class SpecialExamController extends Controller
             if($request->hasFile('postponement_letter')){
                 $destination = SystemLocation::uploadsDirectory();
                 $request->file('postponement_letter')->move($destination, $request->file('postponement_letter')->getClientOriginalName());
-            
+                return $request->file('postponement_letter')->getClientOriginalName();
             }
 
             if($request->hasFile('supporting_document')){
