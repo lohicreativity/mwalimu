@@ -892,12 +892,12 @@ class ExaminationResultController extends Controller
               
               $missing_modules = [];
               foreach ($core_program_modules as $module) {
-                 if(!in_array($module->id, $moduleIds)){
+                 if(in_array($module->id, $moduleIds)){
                     $missing_modules[] = $module;
                  }
               }
               foreach ($opt_program_modules as $module) {
-                 if(!in_array($module->id, $moduleIds)){
+                 if(in_array($module->id, $moduleIds)){
                     $missing_modules[] = $module;
                  }
               }
