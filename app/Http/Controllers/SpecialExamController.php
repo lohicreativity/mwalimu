@@ -65,12 +65,10 @@ class SpecialExamController extends Controller
         ->where('module_assignments.study_academic_year_id', session('active_academic_year_id'))
         ->where('program_module_assignments.campus_program_id', $student->campus_program_id)
         ->whereIn('examination_results.final_exam_remark', ['FAIL', 'POSTPONED'])
-        ->select('modules.name', 'modules.code', 'examination_results.final_exam_remark')
+        ->select('module_assignments.id', 'modules.name', 'modules.code', 'examination_results.final_exam_remark')
         ->get();
 
         $annual = $annual_remark->pluck('remark')->all();
-
-        return $annual[0];
 
         $data =  [
            'second_semester_publish_status'=>$second_semester_publish_status,
@@ -91,7 +89,7 @@ class SpecialExamController extends Controller
             'special_exam_requests'=>SpecialExamRequest::with(['exams.moduleAssignment.programModuleAssignment','exams.moduleAssignment.module'])->where('student_id',$student->id)->paginate(20),
             'student'=>$student,
             'request'=>$request,
-            'annual_remark' => $annual_remark,
+            'annual_remark' => $annual[0],
             'suppExams'     => $suppExams
         ];
     

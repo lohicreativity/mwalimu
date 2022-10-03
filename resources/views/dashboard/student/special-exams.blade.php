@@ -74,7 +74,16 @@
                 </div>
                 <div class="row">
                 @if($second_semester_publish_status)
-                  
+                  @foreach($suppExams as $supp)
+                    <div class="col-3">
+                      <div class="checkbox">
+                        <label>
+                          {!! Form::checkbox('mod_assign_'.$supp->id,$supp->id) !!}
+                          {{ $supp->name }}
+                        </label>
+                      </div>
+                    </div> 
+                  @endforeach
 
                 @else 
 
