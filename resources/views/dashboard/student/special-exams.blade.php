@@ -75,6 +75,20 @@
                 <div class="row">
                 @if($second_semester_publish_status)
                   @foreach($suppExams as $supp)
+                    @if(count($special_exam_requests) != 0)
+                      @foreach($special_exam_requests->exams as $exam)
+                        @if($exam->module->name == $supp->name)
+                          <div class="col-3">
+                            <div class="checkbox">
+                              <label>
+                                {!! Form::checkbox('mod_assign_'.$supp->id,$supp->id, false, array('disabled')) !!}
+                                {{ $supp->name }}
+                              </label>
+                            </div>
+                          </div> 
+                        @endif
+                      @endforeach
+                    @else 
                     <div class="col-3">
                       <div class="checkbox">
                         <label>
@@ -82,7 +96,8 @@
                           {{ $supp->name }}
                         </label>
                       </div>
-                    </div> 
+                    </div>
+                    @endif 
                   @endforeach
 
                 @else 
