@@ -3068,7 +3068,7 @@ class ExaminationResultController extends Controller
 
 
               $opt = DB::table('program_module_assignments')
-               ->join('student_program_module_assignment', 'program_module_assignment.id', '=', 'student_program_module_assignment.program_module_assignment_id')
+               ->join('student_program_module_assignment', 'program_module_assignments.id', '=', 'student_program_module_assignment.program_module_assignment_id')
                ->where('study_academic_year_id',$ac_yr_id)
                ->where('semester_id', session('active_semester_id'))
                ->where('campus_program_id',$student->campus_program_id)
