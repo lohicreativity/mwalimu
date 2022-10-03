@@ -3075,9 +3075,6 @@ class ExaminationResultController extends Controller
                ->where('student_program_module_assignment.student_id', $student->id)
                ->where('year_of_study',$yr_of_study)
                ->count();
-
-            return $opt;
-
               
               $var_options = $num_options->pluck('number_of_options')->all();
 
@@ -3092,7 +3089,8 @@ class ExaminationResultController extends Controller
           'missing_modules' => $missing_modules,
           'student'=>$student,
           'staff'=>User::find(Auth::user()->id)->staff,
-          'num_options' => $var_options[0]
+          'num_options' => $var_options[0],
+          'opt'     => $opt
          ];
          return view('dashboard.academic.reports.final-student-annual-results',$data)->withTitle('Student Results');
     }
