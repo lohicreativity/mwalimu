@@ -160,16 +160,21 @@
                             @endif
                           </td>
                           <td>
-                            @if($result->supp_processed_at)
-
-                              @if($result->grade) 
-                                {{ $result->grade }}*
-                              @else - @endif
-
+                            @if($result->supp_score && !$supp_publish_status)
+                              F
                             @else
-                              @if($result->grade) 
-                              {{ $result->grade }} 
-                              @else - @endif
+
+                              @if($result->supp_processed_at)
+
+                                @if($result->grade) 
+                                  {{ $result->grade }}*
+                                @else - @endif
+
+
+                              @else
+                                @if($result->grade) 
+                                {{ $result->grade }} 
+                                @else - @endif
                             @endif
                             
                           </td>

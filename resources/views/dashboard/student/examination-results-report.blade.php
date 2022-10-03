@@ -156,16 +156,21 @@
                             {{ round($result->supp_score) }}
                             @endif</td>
                           <td>
-                            @if($result->supp_score && !$supp_publish_status) 
-                            F 
-                            @elseif(!$result->supp_processed_at) 
-                              @if(empty($result->grade))
-                                  -
+                            @if($result->supp_score && !$supp_publish_status)
+                                F
                               @else
-                              {{ $result->grade }} 
-                              @endif
-                            @elseif($result->supp_processed_at)
-                            {{ $result->grade }} 
+
+                                @if($result->supp_processed_at)
+
+                                  @if($result->grade) 
+                                    {{ $result->grade }}*
+                                  @else - @endif
+
+
+                                @else
+                                  @if($result->grade) 
+                                  {{ $result->grade }} 
+                                  @else - @endif
                             @endif
                           </td>
                           <td>
