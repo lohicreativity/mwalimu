@@ -3061,7 +3061,7 @@ class ExaminationResultController extends Controller
               ->select('number_of_options')
               ->get();
 
-              return $num_options->pluck();
+              return $num_options[0];
 
          $data = [
          	'semesters'=>$semesters,
