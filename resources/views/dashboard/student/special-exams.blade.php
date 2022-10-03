@@ -74,7 +74,8 @@
                 </div>
                 <div class="row">
                 @if($second_semester_publish_status)
-                
+                  
+
                 @else 
 
                   @foreach($module_assignments as $assign)

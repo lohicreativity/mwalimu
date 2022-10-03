@@ -68,19 +68,7 @@ class SpecialExamController extends Controller
         ->select('modules.name', 'modules.code', 'examination_results.final_exam_remark')
         ->get();
 
-        return $suppExams;
-
-        // $postponedExams = DB::table('examination_results')
-        // ->join('module_assignments', 'examination_results.module_assignment_id', '=', 'module_assignments.id')
-        // ->join('program_module_assignments', 'module_assignments.program_module_assignment_id', '=', 'program_module_assignments.id')
-        // ->join('modules', 'module_assignments.module_id', '=', 'modules.id')
-        // ->where('examination_results.student_id', $student->id)
-        // ->where('module_assignments.study_academic_year_id', session('active_academic_year_id'))
-        // ->where('program_module_assignments.semester_id', session('active_semester_id'))
-        // ->where('program_module_assignments.campus_program_id', $student->campus_program_id)
-        // ->where('examination_results.final_exam_remark', '=', 'FAIL')
-        // ->select('modules.name', 'modules.code')
-        // ->get();
+        return $annual_remark;
 
         $data =  [
            'second_semester_publish_status'=>$second_semester_publish_status,
