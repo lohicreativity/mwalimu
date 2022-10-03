@@ -83,7 +83,7 @@ class SpecialExamController extends Controller
             })->with(['module','programModuleAssignment'])
             ->where('study_academic_year_id',session('active_academic_year_id'))
             ->get(), 
-            'special_exam_requests'=>SpecialExamRequest::with(['exams.moduleAssignment.programModuleAssignment','exams.moduleAssignment.module'])->where('student_id',$student->id)->paginate(20),
+            'special_exam_requests'=>SpecialExamRequest::with(['exams.moduleAssignment.programModuleAssignment','exams.moduleAssignment.module'])->where('studet_id',$student->id)->paginate(20),
             'student'=>$student,
             'request'=>$request,
             'suppExams'     => $suppExams
