@@ -51,11 +51,6 @@ class SpecialExamController extends Controller
          }
 
 
-        $annual_remark = DB::table('annual_remarks')
-        ->where('student_id', $student->id)
-        ->where('study_academic_year_id', session('active_academic_year_id'))
-        ->select('remark')
-        ->get();
 
         $suppExams = DB::table('examination_results')
         ->join('module_assignments', 'examination_results.module_assignment_id', '=', 'module_assignments.id')
@@ -95,7 +90,6 @@ class SpecialExamController extends Controller
             'special_exam_requests'=>SpecialExamRequest::with(['exams.moduleAssignment.programModuleAssignment','exams.moduleAssignment.module'])->where('student_id',$student->id)->paginate(20),
             'student'=>$student,
             'request'=>$request,
-            'annual_remark' => $annual[0],
             'suppExams'     => $suppExams
         ];
     
@@ -172,29 +166,39 @@ class SpecialExamController extends Controller
         // if($r = SpecialExamRequest::where('student_id',$request->get('student_id'))->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->where('type',$request->get('type'))->first()){
         //     $req = $r;
         // }else{
-            $req = new SpecialExamRequest;
-            $req->semester_id = session('active_semester_id');
-            $req->study_academic_year_id = session('active_academic_year_id');
-            $req->student_id = $request->get('student_id');
-            $req->type = $request->get('type');
-            $req->status = 'PENDING';
-            if($request->hasFile('postponement_letter')){
-              $destination = SystemLocation::uploadsDirectory();
-              $request->file('postponement_letter')->move($destination, $request->file('postponement_letter')->getClientOriginalName());
-                  $req->postponement_letter = $request->file('postponement_letter')->getClientOriginalName();
-              
-            }
-            if($request->hasFile('supporting_document')){
-                  $destination = SystemLocation::uploadsDirectory();
-                  $request->file('supporting_document')->move($destination, $request->file('supporting_document')->getClientOriginalName());
-                  $req->supporting_document = $request->file('supporting_document')->getClientOriginalName();
-            }
-            $req->save();
-        // }
 
-        $module_assignments = ModuleAssignment::whereHas('programModuleAssignment',function($query) use($student){
-               $query->where('semester_id',session('active_semester_id'))->where('campus_program_id',$student->campus_program_id);
-           })->with(['module','programModuleAssignment'])->where('study_academic_year_id',session('active_academic_year_id'))->get();
+
+            $module_assignments = ModuleAssignment::whereHas('programModuleAssignment',function($query) use($student){
+                $query->where('campus_program_id',$student->campus_program_id);
+            })->with(['module','programModuleAssignment'])->where('study_academic_year_id',session('active_academic_year_id'))->get();
+
+            foreach($module_assignments as $assign){
+                if($request->get('mod_assign_'.$assign->id) == $assign->id){
+
+
+                    $req = new SpecialExamRequest;
+                    $req->semester_id = $assign->programModuleAssignment->semester_id;
+                    $req->study_academic_year_id = session('active_academic_year_id');
+                    $req->student_id = $request->get('student_id');
+                    $req->type = $request->get('type');
+                    $req->status = 'PENDING';
+                    if($request->hasFile('postponement_letter')){
+                    $destination = SystemLocation::uploadsDirectory();
+                    $request->file('postponement_letter')->move($destination, $request->file('postponement_letter')->getClientOriginalName());
+                        $req->postponement_letter = $request->file('postponement_letter')->getClientOriginalName();
+                    
+                    }
+                    if($request->hasFile('supporting_document')){
+                        $destination = SystemLocation::uploadsDirectory();
+                        $request->file('supporting_document')->move($destination, $request->file('supporting_document')->getClientOriginalName());
+                        $req->supporting_document = $request->file('supporting_document')->getClientOriginalName();
+                    }
+                    $req->save();
+
+                }
+            }
+            
+        // }
 
         
 
