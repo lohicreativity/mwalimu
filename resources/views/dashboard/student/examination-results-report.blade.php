@@ -127,11 +127,33 @@
                           <td>{{ $count }}</td>
                           <td>{{ $result->moduleAssignment->module->code }}</td>
                           <td>{{ $result->moduleAssignment->module->name }}</td>
-                          <td>@if(!$result->supp_processed_at) {{ $result->course_work_score }} @else N/A @endif</td>
-                          <td @if($result->exam_type == 'APPEAL') class="ss-grey" @endif>@if(!$result->supp_processed_at) {{ $result->final_score }} @else N/A @endif</td>
-                          <td>@if(!$result->supp_processed_at) {{ round($result->total_score) }} @else {{ round($result->supp_score) }}@endif</td>
-                          <td>@if($result->supp_score && !$supp_publish_status) F @else {{ $result->grade }} @endif</td>
-                          <td>@if($result->supp_score && !$supp_publish_status) FAIL @else {{ $result->final_exam_remark }} @endif</td>
+                          <td>
+                            @if(!$result->supp_processed_at)
+                              @if(empty($result->course_work_score))
+                              -
+                              @else
+                                {{ $result->course_work_score }} 
+                              @endif
+                            @else 
+                            N/A 
+                            @endif</td>
+                          <td @if($result->exam_type == 'APPEAL') class="ss-grey" @endif>
+                            @if(!$result->supp_processed_at) 
+                            {{ $result->final_score }} 
+                            @else N/A 
+                            @endif</td>
+                          <td>@if(!$result->supp_processed_at) 
+                            {{ round($result->total_score) }} 
+                            @else 
+                            {{ round($result->supp_score) }}
+                            @endif</td>
+                          <td>@if($result->supp_score && !$supp_publish_status) 
+                            F 
+                            @else 
+                            {{ $result->grade }} 
+                            @endif</td>
+                          <td>
+                            @if($result->supp_score && !$supp_publish_status) FAIL @else {{ $result->final_exam_remark }} @endif</td>
                         </tr>
                           @php
                             $count += 1;
