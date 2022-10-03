@@ -157,10 +157,10 @@
                             @endif</td>
                           <td>
                             @if($result->supp_score && !$supp_publish_status) 
+                            F 
+                            @elseif(!$result->supp_processed_at) 
                               @if(empty($result->grade))
-                                - 
-                              @else 
-                              F 
+                                  -
                               @endif
                             @else 
                             {{ $result->grade }} 
