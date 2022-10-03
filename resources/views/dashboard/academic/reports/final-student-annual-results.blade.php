@@ -274,11 +274,32 @@
 
                       <tr>
                          <td><strong>{{ $remark->remark }}</strong>
-                             @if($remark->serialized) @if(!empty(unserialize($remark->serialized)['supp_exams'])) [{{ implode(', ',unserialize($remark->serialized)['supp_exams']) }}] @endif @endif
-                             @if($remark->serialized) @if(!empty(unserialize($remark->serialized)['retake_exams'])) [{{ implode(', ',unserialize($remark->serialized)['retake_exams']) }}] @endif @endif
-                             @if($remark->serialized) @if(!empty(unserialize($remark->serialized)['carry_exams'])) [{{ implode(', ',unserialize($remark->serialized)['carry_exams']) }}] @endif @endif
+
+                          @if($remark->remark != 'INCOMPLETE')
+                            @if($remark->serialized) 
+                              @if(!empty(unserialize($remark->serialized)['supp_exams'])) 
+                                [{{ implode(', ',unserialize($remark->serialized)['supp_exams']) }}] 
+                              @endif 
+                            @endif
+                            @if($remark->serialized) 
+                              @if(!empty(unserialize($remark->serialized)['retake_exams'])) 
+                                [{{ implode(', ',unserialize($remark->serialized)['retake_exams']) }}] 
+                              @endif 
+                            @endif
+                            @if($remark->serialized) 
+                              @if(!empty(unserialize($remark->serialized)['carry_exams'])) 
+                              [{{ implode(', ',unserialize($remark->serialized)['carry_exams']) }}] 
+                              @endif 
+                            @endif
+                          @endif
+                          
                          </td>
-                         <td>@if($remark->gpa) {{ bcdiv($remark->gpa,1,1) }} @else N/A @endif</td>
+                         <td>
+                          @if($remark->gpa) 
+                            {{ bcdiv($remark->gpa,1,1) }} 
+                          @else 
+                            N/A 
+                          @endif</td>
                       </tr>
                       @endforeach
                    </tbody>
