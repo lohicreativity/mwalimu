@@ -3007,9 +3007,14 @@ class ExaminationResultController extends Controller
          },'moduleAssignment','moduleAssignment.module'])->where('student_id',$student->id)->get();
 
          $core_programs = ProgramModuleAssignment::with(['module'])->where('study_academic_year_id',$ac_yr_id)->where('year_of_study',$yr_of_study)->where('category','COMPULSORY')->where('campus_program_id',$student->campus_program_id)->get();
+         
          $optional_programs = ProgramModuleAssignment::whereHas('students',function($query) use($student_id){
          	   $query->where('id',$student_id);
-             })->with(['module'])->where('study_academic_year_id',$ac_yr_id)->where('year_of_study',$yr_of_study)->where('category','OPTIONAL')->get();
+             })->with(['module'])
+             ->where('study_academic_year_id',$ac_yr_id)
+             ->where('year_of_study',$yr_of_study)
+             ->where('category','OPTIONAL')
+             ->get();
 
           $annual_remark = AnnualRemark::where('student_id',$student_id)->where('study_academic_year_id',$ac_yr_id)->where('year_of_study',$yr_of_study)->first();
          // if(count($optional_programs) == 0){
@@ -3060,6 +3065,18 @@ class ExaminationResultController extends Controller
               ->where('year_of_study', $yr_of_study)
               ->select('number_of_options')
               ->get();
+
+
+              $opt = DB::table('program_module_assignments')
+               ->join('student_program_module_assignment', 'program_module_assignment.id', '=', 'student_program_module_assignment.program_module_assignment_id')
+               ->where('study_academic_year_id',$ac_yr_id)
+               ->where('semester_id', session('active_semester_id'))
+               ->where('campus_program_id',$student->campus_program_id)
+               ->where('student_program_module_assignment.student_id', $student->id)
+               ->where('year_of_study',$yr_of_study)
+               ->count();
+
+            return $opt;
 
               
               $var_options = $num_options->pluck('number_of_options')->all();
