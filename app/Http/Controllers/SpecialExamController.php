@@ -180,8 +180,6 @@ class SpecialExamController extends Controller
 
             }
 
-            return $request->file('postponement_letter')->getClientOriginalName();
-
             foreach($module_assignments as $assign){
                 if($request->get('mod_assign_'.$assign->id) == $assign->id){
 
