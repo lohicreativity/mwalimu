@@ -50,8 +50,12 @@ class PerformanceReportRequestController extends Controller
      */
     public function store(Request $request)
     {
-    	 $student = User::find(Auth::user()->id)->student()->with(['applicant','registrations'=>function($query) use($request){
-			 $request->get('study_academic_year_id',$request->get('study_academic_year_id'))->where('semester_id', intval(session('active_semester_id')));
+    	//  $student = User::find(Auth::user()->id)->student()->with(['applicant','registrations'=>function($query) use($request){
+		// 	 $request->get('study_academic_year_id',$request->get('study_academic_year_id'))->where('semester_id', intval(session('active_semester_id')));
+		//  }])->first();
+
+         $student = User::find(Auth::user()->id)->student()->with(['applicant','registrations'=>function($query) use($request){
+			 $query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('semester_id', session('active_semester_id'));
 		 }])->first();
 		 
 		 if(count($student->registrations) == 0){
