@@ -863,7 +863,6 @@ class ExaminationResultController extends Controller
             $student = Student::findOrFail($student_id);
             $results = ExaminationResult::with(['moduleAssignment.programModuleAssignment','moduleAssignment.studyAcademicYear.academicYear'])
             ->where('student_id',$student->id)
-            ->where('final_exam_remark', 'INCOMPLETE')
             ->get();
             $core_program_modules = ModuleAssignment::whereHas('programModuleAssignment',function($query) use ($ac_yr_id,$yr_of_study,$semester_id){
                    $query->where('study_academic_year_id',$ac_yr_id)->where('year_of_study',$yr_of_study)->where('category','COMPULSORY')->where('semester_id',$semester_id);
@@ -892,12 +891,12 @@ class ExaminationResultController extends Controller
               
               $missing_modules = [];
               foreach ($core_program_modules as $module) {
-                 if(in_array($module->id, $moduleIds)){
+                 if(!in_array($module->id, $moduleIds)){
                     $missing_modules[] = $module;
                  }
               }
               foreach ($opt_program_modules as $module) {
-                 if(in_array($module->id, $moduleIds)){
+                 if(!in_array($module->id, $moduleIds)){
                     $missing_modules[] = $module;
                  }
               }
@@ -2997,7 +2996,9 @@ class ExaminationResultController extends Controller
          $student = Student::with(['campusProgram.program'])->find($student_id);
          $study_academic_year = StudyAcademicYear::with('academicYear')->find($ac_yr_id);
          $semesters = Semester::with(['remarks'=>function($query) use ($student, $ac_yr_id, $yr_of_study){
-         	 $query->where('student_id',$student->id)->where('study_academic_year_id',$ac_yr_id)->where('year_of_study',$yr_of_study);
+         	 $query->where('student_id',$student->id)
+             ->where('study_academic_year_id',$ac_yr_id)
+             ->where('year_of_study',$yr_of_study);
          }])->get();
          $results = ExaminationResult::whereHas('moduleAssignment',function($query) use ($ac_yr_id, $student_id){
          	   $query->where('study_academic_year_id',$ac_yr_id)->where('student_id',$student_id);
@@ -3051,6 +3052,15 @@ class ExaminationResultController extends Controller
                  }
               }
 
+         
+              $num_options = DB::table('elective_policies')
+              ->where('campus_program_id', $student->campus_program_id)
+              ->where('study_academic_year_id', $ac_yr_id)
+              ->where('semester_id', session('active_semester_id'))
+              ->where('year_of_study', $yr_of_study)
+              ->select('number_of_options')
+              ->get();
+
          $data = [
          	'semesters'=>$semesters,
          	'annual_remark'=>$annual_remark,
@@ -3061,7 +3071,8 @@ class ExaminationResultController extends Controller
          	'optional_programs'=>$optional_programs,
           'missing_modules' => $missing_modules,
           'student'=>$student,
-          'staff'=>User::find(Auth::user()->id)->staff
+          'staff'=>User::find(Auth::user()->id)->staff,
+          'num_options' => $num_options
          ];
          return view('dashboard.academic.reports.final-student-annual-results',$data)->withTitle('Student Results');
     }
