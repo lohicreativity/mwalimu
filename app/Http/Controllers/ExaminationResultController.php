@@ -3062,8 +3062,7 @@ class ExaminationResultController extends Controller
               ->get();
 
               
-
-              return $num_options[0]->pluck('number_of_options')->all();
+              $var_options = $num_options->pluck('number_of_options')->all();
 
          $data = [
          	'semesters'=>$semesters,
@@ -3076,7 +3075,7 @@ class ExaminationResultController extends Controller
           'missing_modules' => $missing_modules,
           'student'=>$student,
           'staff'=>User::find(Auth::user()->id)->staff,
-          'num_options' => $num_options
+          'num_options' => $var_options[0]
          ];
          return view('dashboard.academic.reports.final-student-annual-results',$data)->withTitle('Student Results');
     }
