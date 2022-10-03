@@ -202,15 +202,65 @@
                        @endif
                        @foreach($results as $result)
                          @if($result->moduleAssignment->programModuleAssignment->semester_id == $semester->id && $result->moduleAssignment->programModuleAssignment->id == $program->id)
-                         <tr @if($result->exam_type == 'APPEAL') class="ss-grey" @endif>
+                         <tr>
                           <td>{{ $count }}</td>
-                          <td>{{ $result->moduleAssignment->module->code }}</td>
+                          <td>@if($result->final_exam_remark != 'POSTPONED')<a href="{{ url('academic/results/'.$student->id.'/'.$study_academic_year->id.'/'.$result->moduleAssignment->programModuleAssignment->id.'/edit-student-results') }}">{{ $result->moduleAssignment->module->code }}</a> @else {{ $result->moduleAssignment->module->code }} @endif</td>
                           <td>{{ $result->moduleAssignment->module->name }}</td>
-                          <td>@if(!$result->supp_processed_at) {{ $result->course_work_score }} @else @if($result->supp_score && !$supp_publish_status) {{ $result->course_work_score }} @else N/A @endif @endif</td>
-                          <td @if($result->exam_type == 'APPEAL') class="ss-grey" @endif>@if(!$result->supp_processed_at) {{ $result->final_score }} @else @if($result->supp_score && !$supp_publish_status) {{ $result->final_score }} @else N/A @endif @endif</td>
-                          <td>@if(!$result->supp_processed_at) {{ round($result->total_score) }} @else {{ round($result->supp_score) }}@endif</td>
-                          <td>@if($result->supp_score && !$supp_publish_status) F @else {{ $result->grade }} @endif</td>
-                          <td>@if($result->supp_score && !$supp_publish_status) FAIL @else {{ $result->final_exam_remark }} @endif</td>
+                          <td>
+                            @if(!$result->supp_processed_at) 
+                              @if($result->course_work_score) 
+                                {{ $result->course_work_score }} 
+                              @else - @endif 
+                            @else 
+                              N/A 
+                            @endif
+                          </td>
+                          <td 
+                            @if($result->exam_type == 'APPEAL') 
+                              class="ss-grey" 
+                            @endif>
+
+                              @if(!$result->supp_processed_at)
+
+                                @if($result->final_score) 
+                                {{ $result->final_score }} 
+                                @else - @endif
+
+                              @else 
+                              N/A 
+                              @endif
+
+                          </td>
+                          <td>
+                            @if(!$result->supp_processed_at) 
+                              @if($result->total_score) 
+                                {{ round($result->total_score) }} 
+                              @else - @endif 
+                            @else 
+                              {{ round($result->supp_score) }}
+                            @endif
+                          </td>
+                          <td>
+                            @if($result->supp_score && !$supp_publish_status)
+                              F
+                            @else
+
+                              @if($result->supp_processed_at)
+
+                                @if($result->grade) 
+                                  {{ $result->grade }}*
+                                @else - @endif
+
+
+                              @else
+                                @if($result->grade) 
+                                {{ $result->grade }} 
+                                @else - @endif
+                              @endif
+                            @endif
+                            
+                          </td>
+                          <td>{{ $result->final_exam_remark }}</td>
                         </tr>
                           @php
                             $count += 1;
