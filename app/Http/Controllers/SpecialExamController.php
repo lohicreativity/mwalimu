@@ -63,7 +63,6 @@ class SpecialExamController extends Controller
         ->join('modules', 'module_assignments.module_id', '=', 'modules.id')
         ->where('examination_results.student_id', $student->id)
         ->where('module_assignments.study_academic_year_id', session('active_academic_year_id'))
-        ->where('program_module_assignments.semester_id', session('active_semester_id'))
         ->where('program_module_assignments.campus_program_id', $student->campus_program_id)
         ->whereIn('examination_results.final_exam_remark', ['FAIL', 'POSTPONED'])
         ->select('modules.name', 'modules.code', 'examination_results.final_exam_remark')
