@@ -861,7 +861,10 @@ class ExaminationResultController extends Controller
     {
         try{
             $student = Student::findOrFail($student_id);
-            $results = ExaminationResult::with(['moduleAssignment.programModuleAssignment','moduleAssignment.studyAcademicYear.academicYear'])->where('student_id',$student->id)->get();
+            $results = ExaminationResult::with(['moduleAssignment.programModuleAssignment','moduleAssignment.studyAcademicYear.academicYear'])
+            ->where('student_id',$student->id)
+            ->where('final_exam_remark', 'INCOMPLETE')
+            ->get();
             $core_program_modules = ModuleAssignment::whereHas('programModuleAssignment',function($query) use ($ac_yr_id,$yr_of_study,$semester_id){
                    $query->where('study_academic_year_id',$ac_yr_id)->where('year_of_study',$yr_of_study)->where('category','COMPULSORY')->where('semester_id',$semester_id);
                  })->get();
@@ -870,6 +873,7 @@ class ExaminationResultController extends Controller
                 })->get();
 
               $moduleIds = [];
+
               foreach ($core_program_modules as $module) {
                 foreach($results as $result){
                    if($result->module_assignment_id == $module->id){
