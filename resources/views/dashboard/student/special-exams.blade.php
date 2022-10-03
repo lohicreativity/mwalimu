@@ -88,9 +88,7 @@
                               </div>
                             </div> 
                           @endif
-                        @endforeach
-                      @endforeach
-                
+                        @endforeach  
                       @endforeach
                     @else 
                     <div class="col-3">
