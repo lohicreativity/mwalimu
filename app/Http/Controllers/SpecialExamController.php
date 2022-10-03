@@ -168,6 +168,19 @@ class SpecialExamController extends Controller
                 $query->where('campus_program_id',$student->campus_program_id);
             })->with(['module','programModuleAssignment'])->where('study_academic_year_id',session('active_academic_year_id'))->get();
 
+
+            if($request->hasFile('postponement_letter')){
+                $destination = SystemLocation::uploadsDirectory();
+                $request->file('postponement_letter')->move($destination, $request->file('postponement_letter')->getClientOriginalName());
+            
+            }
+
+            if($request->hasFile('supporting_document')){
+                $destination = SystemLocation::uploadsDirectory();
+                $request->file('supporting_document')->move($destination, $request->file('supporting_document')->getClientOriginalName());
+
+            }
+
             foreach($module_assignments as $assign){
                 if($request->get('mod_assign_'.$assign->id) == $assign->id){
 
@@ -178,17 +191,8 @@ class SpecialExamController extends Controller
                     $req->student_id = $request->get('student_id');
                     $req->type = $request->get('type');
                     $req->status = 'PENDING';
-                    if($request->hasFile('postponement_letter')){
-                    $destination = SystemLocation::uploadsDirectory();
-                    $request->file('postponement_letter')->move($destination, $request->file('postponement_letter')->getClientOriginalName());
-                        $req->postponement_letter = $request->file('postponement_letter')->getClientOriginalName();
-                    
-                    }
-                    if($request->hasFile('supporting_document')){
-                        $destination = SystemLocation::uploadsDirectory();
-                        $request->file('supporting_document')->move($destination, $request->file('supporting_document')->getClientOriginalName());
-                        $req->supporting_document = $request->file('supporting_document')->getClientOriginalName();
-                    }
+                    $req->postponement_letter = $request->file('postponement_letter')->getClientOriginalName();
+                    $req->supporting_document = $request->file('supporting_document')->getClientOriginalName();
                     $req->save();
 
                 }
