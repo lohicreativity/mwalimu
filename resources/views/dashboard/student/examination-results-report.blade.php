@@ -157,8 +157,8 @@
                             @endif</td>
                           <td>
                             @if($result->supp_score && !$supp_publish_status)
-                                F
-                              @else
+                              F
+                            @else
 
                                 @if($result->supp_processed_at)
 
@@ -171,7 +171,9 @@
                                   @if($result->grade) 
                                   {{ $result->grade }} 
                                   @else - @endif
+                                @endif
                             @endif
+                            
                           </td>
                           <td>
                             @if($result->supp_score && !$supp_publish_status) FAIL @else {{ $result->final_exam_remark }} @endif</td>

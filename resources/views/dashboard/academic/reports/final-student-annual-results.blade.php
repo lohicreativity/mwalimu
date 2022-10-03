@@ -175,6 +175,7 @@
                                 @if($result->grade) 
                                 {{ $result->grade }} 
                                 @else - @endif
+                              @endif
                             @endif
                             
                           </td>
