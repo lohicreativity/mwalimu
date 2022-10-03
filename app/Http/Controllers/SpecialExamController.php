@@ -191,7 +191,9 @@ class SpecialExamController extends Controller
                     $req->type = $request->get('type');
                     $req->status = 'PENDING';
                     $req->postponement_letter = $request->file('postponement_letter')->getClientOriginalName();
+                    if($request->hasFile('supporting_document')){
                     $req->supporting_document = $request->file('supporting_document')->getClientOriginalName();
+                    }
                     $req->save();
 
                 }
