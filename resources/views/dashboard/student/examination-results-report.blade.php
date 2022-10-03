@@ -157,7 +157,7 @@
                             @endif</td>
                           <td>
                             @if($result->supp_score && !$supp_publish_status) 
-                              @if(empty($result->course_work_score) && empty($result->final_score))
+                              @if(empty($result->grade))
                                 - 
                               @else 
                               F 
