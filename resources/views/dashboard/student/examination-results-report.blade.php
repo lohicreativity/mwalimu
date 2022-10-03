@@ -161,8 +161,10 @@
                             @elseif(!$result->supp_processed_at) 
                               @if(empty($result->grade))
                                   -
+                              @else
+                              {{ $result->grade }} 
                               @endif
-                            @else 
+                            @elseif($result->supp_processed_at)
                             {{ $result->grade }} 
                             @endif
                           </td>
