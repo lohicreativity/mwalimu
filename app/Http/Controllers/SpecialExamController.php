@@ -67,10 +67,6 @@ class SpecialExamController extends Controller
             return redirect()->back()->with('error','No modules to postpone');
         }
 
-
-
-        $annual = $annual_remark->pluck('remark')->all();
-
         $data =  [
            'second_semester_publish_status'=>$second_semester_publish_status,
            'module_assignments'=>ModuleAssignment::whereHas('programModuleAssignment',function($query) use($student){
