@@ -68,7 +68,9 @@ class SpecialExamController extends Controller
         ->select('modules.name', 'modules.code', 'examination_results.final_exam_remark')
         ->get();
 
-        return $annual_remark;
+        $annual = $annual_remark->pluck('remark')->all();
+
+        return $annual[0];
 
         $data =  [
            'second_semester_publish_status'=>$second_semester_publish_status,
