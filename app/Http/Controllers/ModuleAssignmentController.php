@@ -900,6 +900,7 @@ class ModuleAssignmentController extends Controller
                       })->whereHas('academicStatus',function($query){
                             $query->where('name','PASS')->orWhere('name','FRESHER')->orWhere('name','RETAKE')->orWhere('name','POSTPONED')->orWhere('name','SUPP');
                       })->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id)->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)->get();
+                      return $all_students;
               }else{
                     $all_students = Student::whereHas('studentshipStatus',function($query){
                             $query->where('name','ACTIVE')->orWhere('name','POSTPONED');
