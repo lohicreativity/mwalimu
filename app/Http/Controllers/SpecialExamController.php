@@ -71,6 +71,7 @@ class SpecialExamController extends Controller
          ->where('campus_program.id', $student->campus_program_id)
          ->where('results_publications.semester_id', session('active_semester_id'))
          ->where('results_publications.study_academic_year_id', session('active_academic_year_id'))
+         ->where('results_publications.status', 'PUBLISHED')
          ->get();
 
          return $resultPublished;
