@@ -117,10 +117,13 @@
                                   {{ $assign->module->name }}
                                 </label>
                               </div>
-                            </div>
+                            </div> 
+                            @endif
+                          @endforeach
+                        @endforeach
+                      @endif
 
-
-                            @if(sizeof($opted_module) == 0 && $assign->programModuleAssignment->category == 'OPTIONAL')
+                    @if(sizeof($opted_module) == 0 && $assign->programModuleAssignment->category == 'OPTIONAL')
                       <div class="col-3">
                         <div class="checkbox">
                           <label>
@@ -147,16 +150,7 @@
                           </label>
                         </div>
                       </div>
-                            
-                            @endif
-                          @endforeach
-                        @endforeach
-                      @endif
-
-
-
-
-                    
+                    @endif
                   @endforeach
 
                 @endif
