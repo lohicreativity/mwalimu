@@ -63,6 +63,18 @@ class SpecialExamController extends Controller
         ->select('module_assignments.id', 'modules.name', 'modules.code', 'examination_results.final_exam_remark')
         ->get();
 
+         $resultPublished = DB::table('students')
+         ->join('campus_program', 'students.campus_program_id', '=', 'campus_program.id')
+         ->join('programs', 'campus_program.program_id', '=', 'programs.id')
+         ->join('results_publications', 'programs.nta_level_id', '=', 'results_publications.nta_level_id')
+         ->where('students.id', $student->id)
+         ->where('campus_program.id', $student->campus_program_id)
+         ->where('results_publications.semester_id', session('active_semester_id'))
+         ->where('results_publications.study_academic_year_id', session('active_academic_year_id'))
+         ->get();
+
+         return $resultPublished;
+
         if (sizeof($suppExams) == 0) {
             return redirect()->back()->with('error','No modules to postpone');
         }
