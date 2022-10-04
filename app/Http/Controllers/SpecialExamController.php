@@ -69,14 +69,14 @@ class SpecialExamController extends Controller
          ->join('results_publications', 'programs.nta_level_id', '=', 'results_publications.nta_level_id')
          ->where('students.id', $student->id)
          ->where('campus_program.id', $student->campus_program_id)
-         ->where('results_publications.semester_id', session('active_semester_id'))
+         ->where('results_publications.semester_id', 2)
          ->where('results_publications.study_academic_year_id', session('active_academic_year_id'))
          ->where('results_publications.status', 'PUBLISHED')
          ->get();
 
          return $resultPublished;
 
-        if (sizeof($suppExams) == 0) {
+        if (sizeof($suppExams) == 0 && $resultPublished) {
             return redirect()->back()->with('error','No modules to postpone');
         }
 
