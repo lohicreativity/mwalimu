@@ -338,16 +338,26 @@ class SpecialExamController extends Controller
     public function acceptSpecialExams(Request $request)
     {
          $exams = SpecialExamRequest::where('study_academic_year_id',$request->get('study_academic_year_id'))->get();
+         $Special_exams = SpecialExam::where('study_academic_year_id',$request->get('study_academic_year_id'))->get();
 
          foreach($exams as $exam){
             if(!$exam->recommended_by_user_id){
                 return redirect()->back()->with('error','Special exam cannot be accepted because it has not been recommended');
                 }
-            if($request->get('exam_'.$exam->id) == $exam->id){
-                $req = SpecialExamRequest::find($exam->id);
-                $req->status = $request->get('action') == 'Accept Selected'? 'POSTPONED' : 'DECLINED';
-                $req->approved_by_user_id = Auth::user()->id;
-                $req->save();
+
+            if($request->get('exam_'.$exam->id) == $exam->id ){
+                    $req = SpecialExamRequest::find($exam->id);
+                    $req->status = $request->get('action') == 'Accept Selected'? 'POSTPONED' : 'DECLINED';
+                    $req->approved_by_user_id = Auth::user()->id;
+                    $req->save();
+                }
+
+            foreach($Special_exams as $se){
+                if($request->get('exam_'.$exam->id) == $se->special_exam_request_id){
+                    $req = SpecialExam::where('special_exam_request_id', $exam->id);
+                    $req->status = $request->get('action') == 'Accept Selected'? 'APPROVED' : 'DECLINED';
+                    $req->save();
+                }
             }
          }
 
@@ -362,12 +372,15 @@ class SpecialExamController extends Controller
     {
         try{
             $exam = SpecialExamRequest::findOrFail($id);
+            $Special_exam = SpecialExam::where('special_exam_request_id', $id);
             if(!$exam->recommended_by_user_id){
                 return redirect()->back()->with('error','Special exam cannot be accepted because it has not been recommended');
             }
-            $exam->status = 'APPROVED';
+            $exam->status = 'POSTPONED';
+            $Special_exam->status = 'APPROVED';
             $exam->approved_by_user_id = Auth::user()->id;
             $exam->save();
+            $Special_exam->save();
 
             return redirect()->back()->with('message','Special exam approve successfully');
         }catch(Exception $e){
