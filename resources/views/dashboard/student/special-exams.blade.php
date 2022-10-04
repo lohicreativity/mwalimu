@@ -123,7 +123,11 @@
                         @endforeach
                       @endif
 
-                    @if(sizeof($opted_module) == 0 && $assign->programModuleAssignment->category == 'OPTIONAL')
+                      @if(count($special_exam_requests) != 0)
+                        @foreach($special_exam_requests as $exam)
+                          @foreach($exam->exams as $ex)
+                            @if($ex->moduleAssignment->module->name != $assign->module->name)
+                            @if(sizeof($opted_module) == 0 && $assign->programModuleAssignment->category == 'OPTIONAL')
                       <div class="col-3">
                         <div class="checkbox">
                           <label>
@@ -151,6 +155,10 @@
                         </div>
                       </div>
                     @endif
+                            @endif
+                          @endforeach
+                        @endforeach
+                      @endif
                   @endforeach
 
                 @endif
