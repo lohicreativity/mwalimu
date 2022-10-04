@@ -1011,7 +1011,6 @@ class ModuleAssignmentController extends Controller
                      $query->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)->where('semester_id',$module_assignment->programModuleAssignment->semester_id)->where('study_academic_year_id',$module_assignment->programModuleAssignment->study_academic_year_id);
                 })->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id)->where('registration_number',$up_stud->registration_number)->count() == 0){
                       $invalid_students[] = $up_stud;
-                      return $invalid_students;
                    }
                 }
                 if(count($invalid_students) != 0){
@@ -1030,6 +1029,7 @@ class ModuleAssignmentController extends Controller
                           $invalid_students[] = $up_stud;
                        }
                     }
+                    return $invalid_students;
                     if(count($invalid_students) != 0){
                          session()->flash('invalid_students',$invalid_students);
                          return redirect()->back()->with('error','Uploaded students do not exists');
