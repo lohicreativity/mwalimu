@@ -109,7 +109,7 @@
                       @if(count($special_exam_requests) != 0)
                         @foreach($special_exam_requests as $exam)
                           @foreach($exam->exams as $ex)
-                            @if($ex->moduleAssignment->module->name != $assign->module->name)
+                            @if($ex->moduleAssignment->module->name == $assign->module->name)
                             <div class="col-3">
                               <div class="checkbox">
                                 <label>
