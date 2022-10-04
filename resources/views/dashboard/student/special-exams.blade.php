@@ -114,7 +114,7 @@
                               <div class="checkbox">
                                 <label>
                                   {!! Form::checkbox('mod_assign_'.$assign->id,$assign->id, false, array('disabled')) !!}
-                                  {{ $supp->name }}
+                                  {{ $assing->module->name }}
                                 </label>
                               </div>
                             </div> 
