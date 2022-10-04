@@ -109,7 +109,7 @@
                       @if(count($special_exam_requests) != 0)
                         @foreach($special_exam_requests as $exam)
                           @foreach($exam->exams as $ex)
-                            @if(strcmp($ex->moduleAssignment->module->name, $assign->module->name) != 0)
+                            @if($ex->moduleAssignment->module->name == $assign->module->name)
                             <div class="col-3">
                               <div class="checkbox">
                                 <label>
@@ -117,7 +117,16 @@
                                   {{ $assign->module->name }}
                                 </label>
                               </div>
-                            </div> 
+                            </div>
+                            @else 
+                            <div class="col-3">
+                              <div class="checkbox">
+                                <label>
+                                  {!! Form::checkbox('mod_assign_'.$assign->id,$assign->id) !!}
+                                  {{ $assign->module->name }}
+                                </label>
+                              </div>
+                            </div>
                             @endif
                           @endforeach
                         @endforeach
