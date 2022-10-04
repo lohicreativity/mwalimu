@@ -340,7 +340,7 @@ class SpecialExamController extends Controller
          $exams = SpecialExamRequest::where('study_academic_year_id',$request->get('study_academic_year_id'))->get();
          $Special_exams = SpecialExam::where('study_academic_year_id',$request->get('study_academic_year_id'))->first();
 
-        return $Special_exams;
+        // return $Special_exams;
 
          foreach($exams as $exam){
             if(!$exam->recommended_by_user_id){
