@@ -338,7 +338,7 @@ class SpecialExamController extends Controller
     public function acceptSpecialExams(Request $request)
     {
          $exams = SpecialExamRequest::where('study_academic_year_id',$request->get('study_academic_year_id'))->get();
-         $Special_exams = SpecialExam::where('study_academic_year_id',$request->get('study_academic_year_id'))->get();
+         $Special_exams = SpecialExam::where('study_academic_year_id',$request->get('study_academic_year_id'))->first();
 
          foreach($exams as $exam){
             if(!$exam->recommended_by_user_id){
