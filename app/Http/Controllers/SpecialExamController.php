@@ -355,7 +355,7 @@ class SpecialExamController extends Controller
                 }
 
             foreach($Special_exams as $se){
-                if($request->get('exam_'.$exam->id) == $se->special_exam_request_id){
+                if($request->get('exam_'.$exam->id) == intval($se->special_exam_request_id)){
                     $req = SpecialExam::where('special_exam_request_id', $exam->id);
                     $req->status = $request->get('action') == 'Accept Selected'? 'APPROVED' : 'DECLINED';
                     $req->save();
