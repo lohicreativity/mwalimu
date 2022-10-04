@@ -74,6 +74,8 @@ class SpecialExamController extends Controller
          ->where('results_publications.status', 'PUBLISHED')
          ->get();
 
+         return sizeof($resultPublished);
+
         if (sizeof($resultPublished) == 0) {
             return redirect()->back()->with('error','No modules to postpone');
         }
