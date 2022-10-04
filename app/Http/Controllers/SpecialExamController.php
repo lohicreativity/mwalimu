@@ -372,7 +372,7 @@ class SpecialExamController extends Controller
     {
         try{
             $exam = SpecialExamRequest::findOrFail($id);
-            $Special_exam = SpecialExam::where('special_exam_request_id', $id);
+            $Special_exam = SpecialExam::where('special_exam_request_id', $id)->first();
             if(!$exam->recommended_by_user_id){
                 return redirect()->back()->with('error','Special exam cannot be accepted because it has not been recommended');
             }
