@@ -762,9 +762,9 @@ class ExaminationResultController extends Controller
                                  $remark->credit = $buffer['annual_credit'];
                             }
                             if($sem_remarks[0]->remark == 'POSTPONED' && $sem_remarks[(count($sem_remarks)-1)]->remark != 'POSTPONED'){
-                                $remark->remark = $sem_remarks[(count($sem_remarks)-1)]->remark;
-                                $stud = Student::find($key);
-                                return $stud;
+                              //update annual remark
+                              //   $remark->remark = $sem_remarks[(count($sem_remarks)-1)]->remark;
+                              $remark->remark = $sem_remarks[0]->remark;
                             }
                            $gpa_class = GPAClassification::where('nta_level_id',$buffer['nta_level']->id)->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('min_gpa','<=',bcdiv($remark->gpa,1,1))->where('max_gpa','>=',bcdiv($remark->gpa,1,1))->first();
                             if($remark->gpa && $gpa_class){
