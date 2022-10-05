@@ -1068,6 +1068,8 @@ class ModuleAssignmentController extends Controller
                   }
               }
 
+              return $missing_students;
+
               foreach($missing_students as $student){
                 if($request->get('assessment_plan_id') == 'FINAL_EXAM'){
                   if(ExaminationResult::where('module_assignment_id',$request->get('module_assignment_id'))->where('student_id',$student->id)->whereNotNull('final_score')->count() == 0){
