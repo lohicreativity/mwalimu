@@ -1775,8 +1775,7 @@ class ExaminationResultController extends Controller
                          $rem->credit = $buffer['annual_credit'];
                     }
                     if($sem_remarks[0]->remark == 'POSTPONED' && $sem_remarks[(count($sem_remarks)-1)]->remark != 'POSTPONED'){
-                               // $rem->remark = $sem_remarks[(count($sem_remarks)-1)]->remark;
-                               $rem->remark = $sem_remarks[0]->remark;
+                               $rem->remark = $sem_remarks[(count($sem_remarks)-1)]->remark;
                             }
                     $gpa_class = GPAClassification::where('nta_level_id',$buffer['nta_level']->id)->where('study_academic_year_id',$ac_yr_id)->where('min_gpa','<=',bcdiv($rem->gpa,1,1))->where('max_gpa','>=',bcdiv($rem->gpa,1,1))->first();
                     if($rem->gpa && $gpa_class){
