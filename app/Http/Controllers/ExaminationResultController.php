@@ -739,7 +739,6 @@ class ExaminationResultController extends Controller
                             }
                  }else{
                      $sem_remarks = SemesterRemark::where('student_id',$key)->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',$buffer['year_of_study'])->get();
-                     return $sem_remarks;
                      //if(Util::stripSpacesUpper($semester->name) == Util::stripSpacesUpper('Semester 2')){
                         
                          if($rm = AnnualRemark::where('student_id',$key)->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',$buffer['year_of_study'])->first()){
@@ -776,6 +775,7 @@ class ExaminationResultController extends Controller
                             $status = AcademicStatus::where('name',$remark->remark)->first();
                             $stud = Student::find($key);
                             $stud->academic_status_id = $status->id;
+                            return $status->id.'first';
                             $stud->save();
 
                             if($student_buffer[$key]['year_of_study'] == $student->year_of_study){
@@ -1788,6 +1788,7 @@ class ExaminationResultController extends Controller
 
                     $stud = Student::find($key);
                     $stud->academic_status_id = $status->id;
+                    return $status->id.'second';
                     $stud->save();
 
                     if($process_type == 'SUPP'){
@@ -1946,6 +1947,7 @@ class ExaminationResultController extends Controller
 
                           $stud = Student::find($key);
                           $stud->academic_status_id = $status->id;
+                          return $status->id.'third';
                           $stud->save();
                         
                        }
