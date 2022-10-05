@@ -959,8 +959,6 @@ class ModuleAssignmentController extends Controller
               foreach($line_of_text_1 as $line){
                  if(gettype($line) != 'boolean'){
                     $stud = Student::where('registration_number',trim($line[0]))->first();
-
-                    // checked if student has zero marks
                      if($stud && (!empty($line[1]) || $line[1] == 0)){
                         $uploaded_students[] = $stud;
                      }elseif($stud && empty($line[1])){
@@ -1177,6 +1175,7 @@ class ModuleAssignmentController extends Controller
                   if($request->get('assessment_plan_id') == 'FINAL_EXAM'){
                       $special_exam = SpecialExam::where('student_id',$student->id)->where('module_assignment_id',$module_assignment->id)->where('type','FINAL')->where('status','APPROVED')->first();
                       $postponement = Postponement::where('student_id',$student->id)->where('study_academic_year_id',$module_assignment->study_academic_year_id)->where('semester_id',$module_assignment->programModuleAssignment->semester_id)->where('status','POSTPONED')->first();
+
 
                       $retake_history = RetakeHistory::whereHas('moduleAssignment',function($query) use($module){
                             $query->where('module_id',$module->id);
