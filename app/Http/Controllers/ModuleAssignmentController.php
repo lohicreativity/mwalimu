@@ -959,7 +959,7 @@ class ModuleAssignmentController extends Controller
               foreach($line_of_text_1 as $line){
                  if(gettype($line) != 'boolean'){
                     $stud = Student::where('registration_number',trim($line[0]))->first();
-                     if($stud && (!empty($line[1]) || $line[1] == 0)){
+                     if($stud && !empty($line[1])){
                         $uploaded_students[] = $stud;
                      }elseif($stud && empty($line[1])){
                         $missing_students[] = $stud;
@@ -1029,7 +1029,6 @@ class ModuleAssignmentController extends Controller
                           $invalid_students[] = $up_stud;
                        }
                     }
-
                     if(count($invalid_students) != 0){
                          session()->flash('invalid_students',$invalid_students);
                          return redirect()->back()->with('error','Uploaded students do not exists');
@@ -1072,18 +1071,8 @@ class ModuleAssignmentController extends Controller
               foreach($missing_students as $student){
                 if($request->get('assessment_plan_id') == 'FINAL_EXAM'){
                   if(ExaminationResult::where('module_assignment_id',$request->get('module_assignment_id'))->where('student_id',$student->id)->whereNotNull('final_score')->count() == 0){
-                  $special_exam = SpecialExam::where('student_id',$student->id)
-                  ->where('module_assignment_id',$module_assignment->id)
-                  ->where('type','FINAL')
-                  ->where('status','APPROVED')
-                  ->first();
-
-
-                  $postponement = Postponement::where('student_id',$student->id)
-                  ->where('study_academic_year_id',$module_assignment->study_academic_year_id)
-                  ->where('semester_id',$module_assignment->programModuleAssignment->semester_id)
-                  ->where('status','POSTPONED')
-                  ->first();
+                  $special_exam = SpecialExam::where('student_id',$student->id)->where('module_assignment_id',$module_assignment->id)->where('type','FINAL')->where('status','APPROVED')->first();
+                  $postponement = Postponement::where('student_id',$student->id)->where('study_academic_year_id',$module_assignment->study_academic_year_id)->where('semester_id',$module_assignment->programModuleAssignment->semester_id)->where('status','POSTPONED')->first();
                       
                       if($student->academicStatus->status != 'RETAKE'){
                       $result_log = new ExaminationResultLog;
@@ -1181,13 +1170,11 @@ class ModuleAssignmentController extends Controller
                 if(gettype($line) != 'boolean'){
                 $student = Student::where('registration_number',trim($line[0]))->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id)->first();
                 
-                if($student && (!empty($line[1]) || $line[1] == 0)){
+                if($student && !empty($line[1])){
 
                   if($request->get('assessment_plan_id') == 'FINAL_EXAM'){
                       $special_exam = SpecialExam::where('student_id',$student->id)->where('module_assignment_id',$module_assignment->id)->where('type','FINAL')->where('status','APPROVED')->first();
                       $postponement = Postponement::where('student_id',$student->id)->where('study_academic_year_id',$module_assignment->study_academic_year_id)->where('semester_id',$module_assignment->programModuleAssignment->semester_id)->where('status','POSTPONED')->first();
-
-                        return $special_exam;
 
                       $retake_history = RetakeHistory::whereHas('moduleAssignment',function($query) use($module){
                             $query->where('module_id',$module->id);
