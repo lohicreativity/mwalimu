@@ -1633,7 +1633,13 @@ class ApplicationController extends Controller
 
         $staff = User::find(Auth::user()->id)->staff;
 
-        $closed_window = ApplicationWindow::where('campus_id',$staff->campus_id)->where('status','INACTIVE')->latest()->first();
+        // $closed_window = ApplicationWindow::where('campus_id',$staff->campus_id)->where('status','INACTIVE')->latest()->first();
+        // changed closed window query
+
+        $closed_window = ApplicationWindow::where('campus_id',$request->get('campus_id'))
+        ->where('end_date','>=', implode('-', explode('-', now()->format('Y-m-d'))))
+        ->where('status','INACTIVE')->latest()->first();
+        
         if($closed_window){
             return redirect()->back()->with('error','Application window is not active');
         }
