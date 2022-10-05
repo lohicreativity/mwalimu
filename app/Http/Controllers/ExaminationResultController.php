@@ -739,6 +739,7 @@ class ExaminationResultController extends Controller
                             }
                  }else{
                      $sem_remarks = SemesterRemark::where('student_id',$key)->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',$buffer['year_of_study'])->get();
+                     return $sem_remarks;
                      //if(Util::stripSpacesUpper($semester->name) == Util::stripSpacesUpper('Semester 2')){
                         
                          if($rm = AnnualRemark::where('student_id',$key)->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',$buffer['year_of_study'])->first()){
@@ -751,7 +752,6 @@ class ExaminationResultController extends Controller
                             $remark->year_of_study = $buffer['year_of_study'];
                             $remark->study_academic_year_id = $request->get('study_academic_year_id');
                             $remark->remark = Util::getAnnualRemark($sem_remarks,$buffer['annual_results']);
-                            return 'data1'.Util::getAnnualRemark($sem_remarks,$buffer['annual_results']);
                             if($remark->remark == 'INCOMPLETE' || $remark->remark == 'INCOMPLETE' || $remark->remark == 'POSTPONED' || $remark->remark == 'SUPP'){
                                $remark->gpa = null;
                             }else{
