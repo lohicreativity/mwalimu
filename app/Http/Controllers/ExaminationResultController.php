@@ -763,6 +763,8 @@ class ExaminationResultController extends Controller
                             }
                             if($sem_remarks[0]->remark == 'POSTPONED' && $sem_remarks[(count($sem_remarks)-1)]->remark != 'POSTPONED'){
                                 $remark->remark = $sem_remarks[(count($sem_remarks)-1)]->remark;
+                                $stud = Student::find($key);
+                                return $stud;
                             }
                            $gpa_class = GPAClassification::where('nta_level_id',$buffer['nta_level']->id)->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('min_gpa','<=',bcdiv($remark->gpa,1,1))->where('max_gpa','>=',bcdiv($remark->gpa,1,1))->first();
                             if($remark->gpa && $gpa_class){
@@ -775,7 +777,6 @@ class ExaminationResultController extends Controller
                             $status = AcademicStatus::where('name',$remark->remark)->first();
                             $stud = Student::find($key);
                             $stud->academic_status_id = $status->id;
-                            return $status->id.'first';
                             $stud->save();
 
                             if($student_buffer[$key]['year_of_study'] == $student->year_of_study){
@@ -1774,7 +1775,8 @@ class ExaminationResultController extends Controller
                          $rem->credit = $buffer['annual_credit'];
                     }
                     if($sem_remarks[0]->remark == 'POSTPONED' && $sem_remarks[(count($sem_remarks)-1)]->remark != 'POSTPONED'){
-                                $rem->remark = $sem_remarks[(count($sem_remarks)-1)]->remark;
+                               // $rem->remark = $sem_remarks[(count($sem_remarks)-1)]->remark;
+                               $rem->remark = $sem_remarks[0]->remark;
                             }
                     $gpa_class = GPAClassification::where('nta_level_id',$buffer['nta_level']->id)->where('study_academic_year_id',$ac_yr_id)->where('min_gpa','<=',bcdiv($rem->gpa,1,1))->where('max_gpa','>=',bcdiv($rem->gpa,1,1))->first();
                     if($rem->gpa && $gpa_class){
@@ -1788,7 +1790,6 @@ class ExaminationResultController extends Controller
 
                     $stud = Student::find($key);
                     $stud->academic_status_id = $status->id;
-                    return $status->id.'second';
                     $stud->save();
 
                     if($process_type == 'SUPP'){
@@ -1947,7 +1948,6 @@ class ExaminationResultController extends Controller
 
                           $stud = Student::find($key);
                           $stud->academic_status_id = $status->id;
-                          return $status->id.'third';
                           $stud->save();
                         
                        }
