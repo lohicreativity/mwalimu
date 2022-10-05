@@ -1072,8 +1072,19 @@ class ModuleAssignmentController extends Controller
               foreach($missing_students as $student){
                 if($request->get('assessment_plan_id') == 'FINAL_EXAM'){
                   if(ExaminationResult::where('module_assignment_id',$request->get('module_assignment_id'))->where('student_id',$student->id)->whereNotNull('final_score')->count() == 0){
-                  $special_exam = SpecialExam::where('student_id',$student->id)->where('module_assignment_id',$module_assignment->id)->where('type','FINAL')->where('status','APPROVED')->first();
-                  $postponement = Postponement::where('student_id',$student->id)->where('study_academic_year_id',$module_assignment->study_academic_year_id)->where('semester_id',$module_assignment->programModuleAssignment->semester_id)->where('status','POSTPONED')->first();
+                  $special_exam = SpecialExam::where('student_id',$student->id)
+                  ->where('module_assignment_id',$module_assignment->id)
+                  ->where('type','FINAL')
+                  ->where('status','APPROVED')
+                  ->first();
+
+                  return $special_exam;
+
+                  $postponement = Postponement::where('student_id',$student->id)
+                  ->where('study_academic_year_id',$module_assignment->study_academic_year_id)
+                  ->where('semester_id',$module_assignment->programModuleAssignment->semester_id)
+                  ->where('status','POSTPONED')
+                  ->first();
                       
                       if($student->academicStatus->status != 'RETAKE'){
                       $result_log = new ExaminationResultLog;
