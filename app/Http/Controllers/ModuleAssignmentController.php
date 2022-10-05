@@ -1044,8 +1044,6 @@ class ModuleAssignmentController extends Controller
                   foreach($uploaded_students as $up_stud){
                       if($up_stud->id == $stud->id){
                           $student_present = true;
-                      }else {
-                        return $stud;
                       }
                   }
                   if($request->get('assessment_plan_id') == 'FINAL_EXAM'){
@@ -1176,7 +1174,7 @@ class ModuleAssignmentController extends Controller
                 if(gettype($line) != 'boolean'){
                 $student = Student::where('registration_number',trim($line[0]))->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id)->first();
                 
-                if($student && !empty($line[1])){
+                if($student && (!empty($line[1]) || $line[1] == 0)){
 
                   if($request->get('assessment_plan_id') == 'FINAL_EXAM'){
                       $special_exam = SpecialExam::where('student_id',$student->id)->where('module_assignment_id',$module_assignment->id)->where('type','FINAL')->where('status','APPROVED')->first();
