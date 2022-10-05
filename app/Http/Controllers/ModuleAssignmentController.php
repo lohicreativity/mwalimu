@@ -1044,6 +1044,8 @@ class ModuleAssignmentController extends Controller
                   foreach($uploaded_students as $up_stud){
                       if($up_stud->id == $stud->id){
                           $student_present = true;
+                      }else {
+                        return $stud;
                       }
                   }
                   if($request->get('assessment_plan_id') == 'FINAL_EXAM'){
