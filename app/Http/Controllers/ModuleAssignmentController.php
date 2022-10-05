@@ -959,7 +959,9 @@ class ModuleAssignmentController extends Controller
               foreach($line_of_text_1 as $line){
                  if(gettype($line) != 'boolean'){
                     $stud = Student::where('registration_number',trim($line[0]))->first();
-                     if($stud && !empty($line[1])){
+
+                    // checked if student has zero marks
+                     if($stud && (!empty($line[1]) || $line[1] == 0)){
                         $uploaded_students[] = $stud;
                      }elseif($stud && empty($line[1])){
                         $missing_students[] = $stud;
