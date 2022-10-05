@@ -669,7 +669,6 @@ class ExaminationResultController extends Controller
                           $remark->year_of_study = $buffer['year_of_study'];
                           $remark->study_academic_year_id = $request->get('study_academic_year_id');
                           $remark->remark = Util::getAnnualRemark($sem_remarks,$buffer['annual_results']);
-                          return Util::getAnnualRemark($sem_remarks,$buffer['annual_results']);
                           if($remark->remark == 'INCOMPLETE' || $remark->remark == 'INCOMPLETE' || $remark->remark == 'POSTPONED' || $remark->remark == 'SUPP'){
                              $remark->gpa = null;
                           }else{
@@ -752,6 +751,7 @@ class ExaminationResultController extends Controller
                             $remark->year_of_study = $buffer['year_of_study'];
                             $remark->study_academic_year_id = $request->get('study_academic_year_id');
                             $remark->remark = Util::getAnnualRemark($sem_remarks,$buffer['annual_results']);
+                            return 'data1'.Util::getAnnualRemark($sem_remarks,$buffer['annual_results']);
                             if($remark->remark == 'INCOMPLETE' || $remark->remark == 'INCOMPLETE' || $remark->remark == 'POSTPONED' || $remark->remark == 'SUPP'){
                                $remark->gpa = null;
                             }else{
@@ -1762,6 +1762,7 @@ class ExaminationResultController extends Controller
                     $rem->year_of_study = $buffer['year_of_study'];
                     $rem->study_academic_year_id = $ac_yr_id;
                     $rem->remark = Util::getAnnualRemark($sem_remarks,$buffer['annual_results']);
+                    return 'data2'.Util::getAnnualRemark($sem_remarks,$buffer['annual_results']);
                     if($rem->remark == 'INCOMPLETE' || $rem->remark == 'INCOMPLETE' || $rem->remark == 'POSTPONED' || $rem->remark == 'SUPP'){
                        $rem->gpa = null;
                     }else{
@@ -1922,6 +1923,7 @@ class ExaminationResultController extends Controller
                           $remark->year_of_study = $buffer['year_of_study'];
                           $remark->study_academic_year_id = $ac_yr_id;
                           $remark->remark = Util::getAnnualRemark($sem_remarks,$buffer['annual_results']);
+                          return 'data3'.Util::getAnnualRemark($sem_remarks,$buffer['annual_results']);
                           if($remark->remark == 'INCOMPLETE' || $remark->remark == 'INCOMPLETE' || $remark->remark == 'POSTPONED' || $remark->remark == 'SUPP'){
                              $remark->gpa = null;
                           }else{
