@@ -766,7 +766,7 @@ class ExaminationResultController extends Controller
                                  // return $stud;
                                  return Util::computeGPA($buffer['annual_credit'],$buffer['annual_results']);
                                  $remark->gpa = Util::computeGPA($buffer['annual_credit'],$buffer['annual_results']);
-                                 if($remark->gpa < 2.5){
+                                 if($remark->gpa < 2.0){
                                     return 'Second section supp';
                                     $remark->remark = 'FAIL&DISCO';
                                     $remark->point = Util::computeGPAPoints($buffer['annual_credit'],$buffer['annual_results']);
@@ -1788,7 +1788,6 @@ class ExaminationResultController extends Controller
                     $rem->year_of_study = $buffer['year_of_study'];
                     $rem->study_academic_year_id = $ac_yr_id;
                     $rem->remark = Util::getAnnualRemark($sem_remarks,$buffer['annual_results']);
-                    return 'data2'.Util::getAnnualRemark($sem_remarks,$buffer['annual_results']);
                     if($rem->remark == 'INCOMPLETE' || $rem->remark == 'INCOMPLETE' || $rem->remark == 'POSTPONED' || $rem->remark == 'SUPP'){
                        $rem->gpa = null;
                     }else{
