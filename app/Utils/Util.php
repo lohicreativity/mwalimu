@@ -101,7 +101,6 @@ class Util {
        $remark = 'PASS';
        
        if (count($remarks) == 2) {
-          return count($remarks);
         if(count($supp_exams) > (count($results)/2)){
             $remark = 'FAIL&DISCO';
          }
