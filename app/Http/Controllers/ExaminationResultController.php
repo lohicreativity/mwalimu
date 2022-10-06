@@ -695,6 +695,7 @@ class ExaminationResultController extends Controller
                           }
                           $remark->save();
 
+                          return $remark->remark;
                           $status = AcademicStatus::where('name',$remark->remark)->first();
 
 
