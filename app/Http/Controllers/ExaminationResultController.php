@@ -456,6 +456,8 @@ class ExaminationResultController extends Controller
                     $student_buffer[$student->id]['total_credit'] = 0;
                  }
 
+                 // undefined array key "opt_prog_status" toyota
+
                  $student_buffer[$student->id]['nta_level'] = $student->campusProgram->program->ntaLevel;
                  $student_buffer[$student->id]['annual_results'][] =  $result;
                  $student_buffer[$student->id]['year_of_study'] = explode('_',$request->get('campus_program_id'))[2];
