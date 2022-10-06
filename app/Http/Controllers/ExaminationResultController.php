@@ -3110,8 +3110,6 @@ class ExaminationResultController extends Controller
               ->where('type', 'SUPP')
               ->get();
 
-              return $supp_publish_status;
-
          $data = [
          	'semesters'=>$semesters,
          	'annual_remark'=>$annual_remark,
@@ -3124,7 +3122,8 @@ class ExaminationResultController extends Controller
             'student'=>$student,
             'staff'=>User::find(Auth::user()->id)->staff,
             'num_options' => $var_options[0],
-            'opt'     => $opt
+            'opt'     => $opt,
+            'supp_publish_status' => $supp_publish_status
          ];
          return view('dashboard.academic.reports.final-student-annual-results',$data)->withTitle('Student Results');
     }
