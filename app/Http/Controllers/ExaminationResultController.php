@@ -696,7 +696,7 @@ class ExaminationResultController extends Controller
                           $remark->save();
 
                           $status = AcademicStatus::where('name',$remark->remark)->first();
-
+                          return $status;
                           $stud = Student::find($key);
                           $stud->academic_status_id = $status->id;
                           $stud->save();
