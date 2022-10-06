@@ -758,7 +758,7 @@ class ExaminationResultController extends Controller
                            }
                         }
 
-                        return $buffer['annual_results'];
+                        return count($buffer['annual_results'])/2;
 
                          if($rm = AnnualRemark::where('student_id',$key)->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',$buffer['year_of_study'])->first()){
                             $remark = $rm;
