@@ -3104,7 +3104,7 @@ class ExaminationResultController extends Controller
 
               $supp_publish_status = DB::table('results_publications')
               ->where('study_academic_year_id', $ac_yr_id)
-              ->where('nta_level_id', $student->campusProgram->programs->nta_level_id)
+              ->where('nta_level_id', $student->campusProgram->program->nta_level_id)
               ->where('campus_id', $student->campusProgram->campus_id)
               ->where('status', 'PUBLISHED')
               ->where('type', 'SUPP')
