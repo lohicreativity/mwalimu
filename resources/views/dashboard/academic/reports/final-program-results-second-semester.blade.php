@@ -246,6 +246,8 @@
                           <td class="ss-bold">2ND SEM REMARK</td>
                           <td class="ss-bold">1ST SEM REMARK</td>
                           <td class="ss-bold">GPA</td>
+                          <td class="ss-bold">POINTS</td>
+                          <td class="ss-bold">CREDITS</td>
                           <td class="ss-bold">OVERALL REMARK</td>
                           <td class="ss-bold">CLASS</td>
                          @else
