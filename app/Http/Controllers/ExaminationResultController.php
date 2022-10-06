@@ -766,7 +766,7 @@ class ExaminationResultController extends Controller
                                  // return $stud;
                                  return Util::computeGPA($buffer['annual_credit'],$buffer['annual_results']);
                                  $remark->gpa = Util::computeGPA($buffer['annual_credit'],$buffer['annual_results']);
-                                 if($remark->gpa < 2.0){
+                                 if($remark->gpa < 2.5){
                                     return 'Second section supp';
                                     $remark->remark = 'FAIL&DISCO';
                                     $remark->point = Util::computeGPAPoints($buffer['annual_credit'],$buffer['annual_results']);
