@@ -751,7 +751,14 @@ class ExaminationResultController extends Controller
                      $sem_remarks = SemesterRemark::where('student_id',$key)->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',$buffer['year_of_study'])->get();
                      //if(Util::stripSpacesUpper($semester->name) == Util::stripSpacesUpper('Semester 2')){
                          
-                         return count( $sem_remarks);
+                        $supp_exams = [];
+                        foreach($buffer['annual_results'] as $result){  
+                           if($result->final_exam_remark == 'FAIL'){
+                               $supp_exams[] = $result->moduleAssignment->module->code;
+                           }
+                        }
+
+                        return $supp_exams;
 
                          if($rm = AnnualRemark::where('student_id',$key)->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',$buffer['year_of_study'])->first()){
                             $remark = $rm;
