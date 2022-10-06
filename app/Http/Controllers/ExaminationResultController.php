@@ -455,10 +455,12 @@ class ExaminationResultController extends Controller
                     $student_buffer[$student->id]['results'] = [];
                     $student_buffer[$student->id]['total_credit'] = 0;
                  }
+
                  $student_buffer[$student->id]['nta_level'] = $student->campusProgram->program->ntaLevel;
                  $student_buffer[$student->id]['annual_results'][] =  $result;
                  $student_buffer[$student->id]['year_of_study'] = explode('_',$request->get('campus_program_id'))[2];
                  $student_buffer[$student->id]['annual_credit'] = $annual_credit;
+                 $student_buffer[$student->id]['opt_prog_status'] = true;
                  $student_buffer[$student->id]['opt_credit'] = 0;
                  foreach($optional_programs as $prog){
                      $student_buffer[$student->id]['opt_credit'] += $prog->module->credit;
