@@ -99,9 +99,12 @@ class Util {
        }
 
        $remark = 'PASS';
-       if(count($supp_exams) > (count($results)/2)){
-          $remark = 'FAIL&DISCO';
+       if (count($remarks) == 2) {
+        if(count($supp_exams) > (count($results)/2)){
+            $remark = 'FAIL&DISCO';
+         }
        }
+       
        foreach($remarks as $rem){
           if($rem->remark == 'FAIL&DISCO'){
              $remark = 'FAIL&DISCO';
