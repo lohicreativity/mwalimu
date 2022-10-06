@@ -762,10 +762,9 @@ class ExaminationResultController extends Controller
                             //removed duplicate remark of incomplete
                             if($remark->remark == 'INCOMPLETE' || $remark->remark == 'POSTPONED' || $remark->remark == 'SUPP'){
                               if($remark->remark == 'SUPP'){
-                                 return 'Second section supp';
-
                                  $remark->gpa = Util::computeGPA($buffer['annual_credit'],$buffer['annual_results']);
                                  if($remark->gpa < 2.0){
+                                    return 'Second section supp';
                                     $remark->remark = 'FAIL&DISCO';
                                     $remark->point = Util::computeGPAPoints($buffer['annual_credit'],$buffer['annual_results']);
                                     $remark->credit = $buffer['annual_credit'];
