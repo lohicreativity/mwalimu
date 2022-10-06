@@ -699,7 +699,7 @@ class ExaminationResultController extends Controller
 
 
                           $stud = Student::find($key);
-                          return $status.'   '.$status->id;
+                        //   return $status.'   '.$status->id;
                           $stud->academic_status_id = $status->id;
                           $stud->save();
                         
