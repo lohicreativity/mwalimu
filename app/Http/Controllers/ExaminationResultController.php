@@ -762,12 +762,8 @@ class ExaminationResultController extends Controller
                             //removed duplicate remark of incomplete
                             if($remark->remark == 'INCOMPLETE' || $remark->remark == 'POSTPONED' || $remark->remark == 'SUPP'){
                               if($remark->remark == 'SUPP'){
-                                 $stud = Student::find($key);
-                                 // return $stud;
-                                 return Util::computeGPA($buffer['annual_credit'],$buffer['annual_results']);
                                  $remark->gpa = Util::computeGPA($buffer['annual_credit'],$buffer['annual_results']);
                                  if($remark->gpa < 2.0){
-                                    return 'Second section supp';
                                     $remark->remark = 'FAIL&DISCO';
                                     $remark->point = Util::computeGPAPoints($buffer['annual_credit'],$buffer['annual_results']);
                                     $remark->credit = $buffer['annual_credit'];
@@ -778,7 +774,6 @@ class ExaminationResultController extends Controller
                                  $remark->gpa = null;
                               }
                             }else{
-                                 return 'Second section';
                                  $remark->gpa = Util::computeGPA($buffer['annual_credit'],$buffer['annual_results']);
                                  if($remark->gpa < 2.0){
                                     $remark->remark = 'FAIL&DISCO';
@@ -1948,7 +1943,6 @@ class ExaminationResultController extends Controller
                           $remark->year_of_study = $buffer['year_of_study'];
                           $remark->study_academic_year_id = $ac_yr_id;
                           $remark->remark = Util::getAnnualRemark($sem_remarks,$buffer['annual_results']);
-                          return 'data3'.Util::getAnnualRemark($sem_remarks,$buffer['annual_results']);
                           if($remark->remark == 'INCOMPLETE' || $remark->remark == 'INCOMPLETE' || $remark->remark == 'POSTPONED' || $remark->remark == 'SUPP'){
                              $remark->gpa = null;
                           }else{
