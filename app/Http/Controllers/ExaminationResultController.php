@@ -700,6 +700,7 @@ class ExaminationResultController extends Controller
                           $stud = Student::find($key);
                           if ($stud->academic_status_id != 5) {
                            # code...
+                           return $key;
                            $stud->academic_status_id = $status->id;
                            $stud->save();
                           }
