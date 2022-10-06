@@ -3102,19 +3102,29 @@ class ExaminationResultController extends Controller
               
               $var_options = $num_options->pluck('number_of_options')->all();
 
+              $supp_publish_status = DB::table('results_publications')
+              ->where('study_academic_year_id', $ac_yr_id)
+              ->where('nta_level_id', $student->campusProgram->programs->nta_level_id)
+              ->where('campus_id', $student->campusProgram->campus_id)
+              ->where('status', 'PUBLISHED')
+              ->where('type', 'SUPP')
+              ->get();
+
+              return $supp_publish_status;
+
          $data = [
          	'semesters'=>$semesters,
          	'annual_remark'=>$annual_remark,
          	'results'=>$results,
-          'year_of_study'=>$yr_of_study,
+            'year_of_study'=>$yr_of_study,
          	'study_academic_year'=>$study_academic_year,
          	'core_programs'=>$core_programs,
          	'optional_programs'=>$optional_programs,
-          'missing_modules' => $missing_modules,
-          'student'=>$student,
-          'staff'=>User::find(Auth::user()->id)->staff,
-          'num_options' => $var_options[0],
-          'opt'     => $opt
+            'missing_modules' => $missing_modules,
+            'student'=>$student,
+            'staff'=>User::find(Auth::user()->id)->staff,
+            'num_options' => $var_options[0],
+            'opt'     => $opt
          ];
          return view('dashboard.academic.reports.final-student-annual-results',$data)->withTitle('Student Results');
     }
