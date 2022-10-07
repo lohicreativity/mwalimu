@@ -25,7 +25,7 @@ class CarryHistory extends Model
      */
     public function carrableResults()
     {
-        return $this->morphMany(ExaminationResult::class,'retakable_id');
+        return $this->morphMany(ExaminationResult::class,'retakable');
     }
 
     /**
