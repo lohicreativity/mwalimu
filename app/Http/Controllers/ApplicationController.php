@@ -1938,26 +1938,59 @@ class ApplicationController extends Controller
 
         $prog_code = explode('.', $selection->campusProgram->program->code);
 
-        $program_code = $prog_code[0].'.'.$prog_code[1];
-               
+        $program_code = $prog_code[0].'.'.$prog_code[1];    
 
         $stud_group = explode('.', $selection->campusProgram->program->code);
 
 
         if(str_contains($applicant->intake->name,'March')){
 
-            if(!str_contains($applicant->campus->name,'Kivukoni')){
+            if(str_contains($applicant->campus->name,'Kivukoni')){
 
-               $program_code = $prog_code[0].'Z3.'.$prog_code[1];
-               //$stud_group =  $applicant->program_level_id.'Z'.$selection->campusProgram->id.$year;
-               $stud_group =  $applicant->programLevel->code.'Z'.str_replace('.','',$selection->campusProgram->program->code);
+                if (str_contains(strtolower($selection->campusProgram->program->name), 'diploma')) {
 
-            }else{
+                    $stud_group = substr($stud_group[0], 1, 1).$stud_group[1].'3';
 
-               $program_code = $prog_code[0].'3.'.$prog_code[1];
-               //$stud_group =  $applicant->program_level_id.$selection->campusProgram->id.$year;
-               $stud_group =  $applicant->programLevel->code.'Z'.str_replace('.','',$selection->campusProgram->program->code);
-            }  
+                } elseif (str_contains(strtolower($selection->campusProgram->program->name), 'certificate')) {
+
+                    $stud_group = 'C'.$stud_group[1].'3';
+
+                }
+
+            } elseif (str_contains($applicant->campus->name,'Karume')) {
+
+                    $program_code = $prog_code[0].'Z3.'.$prog_code[1];
+
+                    if (str_contains(strtolower($selection->campusProgram->program->name), 'diploma')) {
+
+                        $stud_group = substr($stud_group[0], 1, 1).$stud_group[1].'Z3';
+    
+                    } elseif (str_contains(strtolower($selection->campusProgram->program->name), 'certificate')) {
+    
+                        $stud_group = 'C'.$stud_group[1].'Z3';
+    
+                    }
+
+
+            //    $program_code = $prog_code[0].'3.'.$prog_code[1];
+            //    //$stud_group =  $applicant->program_level_id.$selection->campusProgram->id.$year;
+            //    $stud_group =  $applicant->programLevel->code.'Z'.str_replace('.','',$selection->campusProgram->program->code);
+            }  elseif (str_contains($applicant->campus->name,'Pemba')) {
+
+                $program_code = $prog_code[0].'P3.'.$prog_code[1];
+
+                if (str_contains(strtolower($selection->campusProgram->program->name), 'diploma')) {
+
+                    $stud_group = substr($stud_group[0], 1, 1).$stud_group[1].'P3';
+
+                } elseif (str_contains(strtolower($selection->campusProgram->program->name), 'certificate')) {
+
+                    $stud_group = 'C'.$stud_group[1].'P3';
+
+                }
+
+
+            }
 
         }else{
 
@@ -1966,8 +1999,6 @@ class ApplicationController extends Controller
             if(str_contains($applicant->campus->name,'Karume')){
 
                 $program_code = $prog_code[0].'Z.'.$prog_code[1];
-
-               $stud_group = explode('.', $selection->campusProgram->program->code);
 
                 if (str_contains(strtolower($selection->campusProgram->program->name), 'bachelor')) {           
 
@@ -1985,8 +2016,13 @@ class ApplicationController extends Controller
 
                     }
 
+                } else if (str_contains(strtolower($selection->campusProgram->program->name), 'diploma')) {
+
+                    $stud_group = substr($stud_group[0], 1, 1).$stud_group[1].'Z9';
+
                 } else if (str_contains(strtolower($selection->campusProgram->program->name), 'certificate')) {
 
+                    $stud_group = 'C'.$stud_group[1].'Z9';
 
                 }
 
@@ -1998,6 +2034,7 @@ class ApplicationController extends Controller
                     if (str_contains(strtolower($selection->campusProgram->program->name), 'human') && str_contains(strtolower($selection->campusProgram->program->name), 'resource')) {
 
                         $stud_group = substr($stud_group[0], 0, 1).$stud_group[1];
+                        
                     } else {
 
                         $stud_group = $stud_group[0].$stud_group[1];
@@ -2007,13 +2044,27 @@ class ApplicationController extends Controller
                 } elseif (str_contains(strtolower($selection->campusProgram->program->name), 'diploma')) {
 
                         $stud_group = substr($stud_group[0], 1, 1).$stud_group[1].'9';
-                        return $stud_group;
-
 
                 } elseif (str_contains(strtolower($selection->campusProgram->program->name), 'certificate')) {
 
-                        $stud_group = 'C'.$stud_group[1].'9';
+                        $stud_group = 'C'.$stud_group[1];
                 }
+            } elseif (str_contains($applicant->campus->name,'Pemba')) {
+
+                if (str_contains(strtolower($selection->campusProgram->program->name), 'bachelor')) {
+
+                    $stud_group = $stud_group[0].$stud_group[1].'P';
+
+                } elseif (str_contains(strtolower($selection->campusProgram->program->name), 'diploma')) {
+
+                    $stud_group = substr($stud_group[0], 1, 1).$stud_group[1].'P9';
+
+                } elseif (str_contains(strtolower($selection->campusProgram->program->name), 'certificate')) {
+
+                    $stud_group = 'C'.$stud_group[1].'P9';
+
+                }
+
             }  
         }
 
