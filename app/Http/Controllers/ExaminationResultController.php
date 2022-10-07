@@ -1541,7 +1541,7 @@ class ExaminationResultController extends Controller
                             return $result->carryHistory->carrableResults[0].'<br><br><br>'.'1';
                     }else{
                             $processed_result = ExaminationResult::find($result->id);
-                            return $result->carryHistory.'<br><br><br>'.'2';
+                            return $result->carryHistory->carrableResults[0].'<br><br><br>'.'2';
                     }
 
                     
