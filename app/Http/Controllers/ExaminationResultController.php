@@ -1538,10 +1538,12 @@ class ExaminationResultController extends Controller
                         $processed_result = ExaminationResult::find($result->retakeHistory->retakeHistory->retakableResults[0]->id);
                     }elseif($result->carryHistory && isset($result->carryHistory->carrableResults[0])){
                             $processed_result = ExaminationResult::find($result->carryHistory->carrableResults[0]->id);
-                            return $processed_result;
                     }else{
                             $processed_result = ExaminationResult::find($result->id);
                     }
+
+                    return $result->carryHistory->carrableResults[0];
+
                     if($result->course_work_remark == 'INCOMPLETE' || $result->final_remark == 'INCOMPLETE' || $result->final_remark == 'POSTPONED'){
                         $processed_result->total_score = null;
                     }else{
