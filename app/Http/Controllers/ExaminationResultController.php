@@ -1149,7 +1149,10 @@ class ExaminationResultController extends Controller
                             $query->where('module_id',$module->id);
                       })->where('student_id',$student->id)->first();
 
-            if($res = ExaminationResult::where('module_assignment_id',$request->get('module_assignment_id'))->where('student_id',$request->get('student_id'))->where('exam_type',$request->get('exam_type'))->first()){
+            if($res = ExaminationResult::where('module_assignment_id',$request->get('module_assignment_id'))
+            ->where('student_id',$request->get('student_id'))
+            ->where('exam_type',$request->get('exam_type'))
+            ->first()){
                   $result = $res;
                   $result->module_assignment_id = $request->get('module_assignment_id');
                   $result->student_id = $request->get('student_id');
@@ -1545,7 +1548,9 @@ class ExaminationResultController extends Controller
                     }
 
                     $grading_policy = GradingPolicy::where('nta_level_id',$assignment->module->ntaLevel->id)->where('study_academic_year_id',$assignment->studyAcademicYear->id)->where('min_score','<=',round($processed_result->total_score))->where('max_score','>=',round($processed_result->total_score))->first();
-
+ 
+                     return $grading_policy;
+                     
                     if($processed_result->appeal_score){
                       $grading_policy = GradingPolicy::where('nta_level_id',$assignment->module->ntaLevel->id)->where('study_academic_year_id',$assignment->studyAcademicYear->id)->where('min_score','<=',round($processed_result->appeal_score))->where('max_score','>=',round($processed_result->appeal_score))->first();
                     }
