@@ -2007,6 +2007,7 @@ class ApplicationController extends Controller
                 } elseif (str_contains(strtolower($selection->campusProgram->program->name), 'diploma')) {
 
                         $stud_group = substr($stud_group[0], 1, 1).$stud_group[1].'9';
+                        return $stud_group;
 
 
                 } elseif (str_contains(strtolower($selection->campusProgram->program->name), 'certificate')) {
