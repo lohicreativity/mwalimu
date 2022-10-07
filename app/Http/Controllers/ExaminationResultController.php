@@ -1538,6 +1538,7 @@ class ExaminationResultController extends Controller
                         $processed_result = ExaminationResult::find($result->retakeHistory->retakeHistory->retakableResults[0]->id);
                     }elseif($result->carryHistory && isset($result->carryHistory->carrableResults[0])){
                             $processed_result = ExaminationResult::find($result->carryHistory->carrableResults[0]->id);
+                            return $processed_result;
                     }else{
                             $processed_result = ExaminationResult::find($result->id);
                     }
@@ -1550,7 +1551,7 @@ class ExaminationResultController extends Controller
                     $grading_policy = GradingPolicy::where('nta_level_id',$assignment->module->ntaLevel->id)->where('study_academic_year_id',$assignment->studyAcademicYear->id)->where('min_score','<=',round($processed_result->total_score))->where('max_score','>=',round($processed_result->total_score))->first();
  
                      return $grading_policy;
-                     
+
                     if($processed_result->appeal_score){
                       $grading_policy = GradingPolicy::where('nta_level_id',$assignment->module->ntaLevel->id)->where('study_academic_year_id',$assignment->studyAcademicYear->id)->where('min_score','<=',round($processed_result->appeal_score))->where('max_score','>=',round($processed_result->appeal_score))->first();
                     }
