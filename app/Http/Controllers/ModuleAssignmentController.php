@@ -359,7 +359,6 @@ class ModuleAssignmentController extends Controller
                 $program_results_process_status = true;
              }
 
-             return $module_assignment->assessmentPlans;
 
              $data = [
                 'module_assignment'=>$module_assignment,
