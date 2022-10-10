@@ -337,7 +337,6 @@ class SpecialExamController extends Controller
      */
     public function acceptSpecialExams(Request $request)
     {
-            return 123;
          $exams = SpecialExamRequest::where('study_academic_year_id',$request->get('study_academic_year_id'))->get();
         //  $Special_exams = SpecialExam::where('study_academic_year_id',$request->get('study_academic_year_id'))->first();
 
@@ -375,15 +374,15 @@ class SpecialExamController extends Controller
     {
         try{
             $exam = SpecialExamRequest::findOrFail($id);
-            // $Special_exam = SpecialExam::where('special_exam_request_id', $id)->first();
+            $Special_exam = SpecialExam::where('special_exam_request_id', $id)->first();
             if(!$exam->recommended_by_user_id){
                 return redirect()->back()->with('error','Special exam cannot be accepted because it has not been recommended');
             }
             $exam->status = 'POSTPONED';
-            // $Special_exam->status = 'APPROVED';
+            $Special_exam->status = 'APPROVED';
             $exam->approved_by_user_id = Auth::user()->id;
             $exam->save();
-            // $Special_exam->save();
+            $Special_exam->save();
 
             return redirect()->back()->with('message','Special exam approve successfully');
         }catch(Exception $e){
