@@ -349,7 +349,10 @@ class SpecialExamController extends Controller
 
             if($request->get('exam_'.$exam->id) == $exam->id ){
                     $req = SpecialExamRequest::find($exam->id);
+                    $special_exam = SpecialExam::where('special_exam_request_id', $exam->id)->all();
                     $req->status = $request->get('action') == 'Accept Selected'? 'POSTPONED' : 'DECLINED';
+                    $special_exam->status = $request->get('action') == 'Accept Selected'? 'APPROVED' : 'DECLINED';
+                    $special_exam->save();
                     $req->approved_by_user_id = Auth::user()->id;
                     $req->save();
                 }
@@ -374,15 +377,15 @@ class SpecialExamController extends Controller
     {
         try{
             $exam = SpecialExamRequest::findOrFail($id);
-            $Special_exam = SpecialExam::where('special_exam_request_id', $id)->first();
+            $special_exam = SpecialExam::where('special_exam_request_id', $id)->first();
             if(!$exam->recommended_by_user_id){
                 return redirect()->back()->with('error','Special exam cannot be accepted because it has not been recommended');
             }
             $exam->status = 'POSTPONED';
-            $Special_exam->status = 'APPROVED';
+            $special_exam->status = 'APPROVED';
             $exam->approved_by_user_id = Auth::user()->id;
             $exam->save();
-            $Special_exam->save();
+            $special_exam->save();
 
             return redirect()->back()->with('message','Special exam approve successfully');
         }catch(Exception $e){
