@@ -1612,7 +1612,7 @@ class ExaminationResultController extends Controller
                           if(Util::stripSpacesUpper($assignment->module->ntaLevel->name) == Util::stripSpacesUpper('NTA Level 7')){
                                   if($assignment->programModuleAssignment->year_of_study == 1){
                                        if($processed_result->retakable_id != null){
-                                          return $assignment->programModuleAssignment;
+                                          return $assignment->programModuleAssignment.'<br><br><br><br>'.$processed_result;
                                           //   return $assignment->programModuleAssignment->module_id.'<br><br>'. $processed_result->carryHistory->module_assignment_id;
                                           // if ($assignment->programModuleAssignment->id == $processed_result->carryHistory->module) {
                                           //    # code...
