@@ -1542,10 +1542,10 @@ class ExaminationResultController extends Controller
                             return $result->carryHistory->carrableResults;
                     }else{
                             $processed_result = ExaminationResult::find($result->id);
-                            return '3';
+                           //  return '3';
                     }
 
-                    return $result->carryHistory->carrableResults;
+                    return $result->carryHistory;
 
                     
 
