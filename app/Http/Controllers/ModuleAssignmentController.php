@@ -296,7 +296,7 @@ class ModuleAssignmentController extends Controller
     {
          try{
              $module_assignment = ModuleAssignment::with('assessmentPlans','module','programModuleAssignment')->findOrFail($id);
-             return $module_assignment;
+             
              if($module_assignment->programModuleAssignment->category == 'OPTIONAL'){
                 $total_students_count = $module_assignment->programModuleAssignment->students()->whereHas('studentshipStatus',function($query){
                     $query->where('name','ACTIVE');
@@ -358,6 +358,9 @@ class ModuleAssignmentController extends Controller
              if(ExaminationResult::where('module_assignment_id',$module_assignment->id)->whereNotNull('final_processed_at')->count() != 0){
                 $program_results_process_status = true;
              }
+
+             return $module_assignment->assessmentPlans;
+
              $data = [
                 'module_assignment'=>$module_assignment,
                 'final_upload_status'=>$final_upload_status,
