@@ -499,11 +499,7 @@ class ModuleAssignmentController extends Controller
                     'study_academic_year'=>$module_assignment->studyAcademicYear,
                     'staff'=>$module_assignment->staff,
                     'module'=>$module_assignment->module,
-                    'students'=>$module_assignment->programModuleAssignment->students()
-                    ->where(function ($query) {
-                        $query->join('studentship_statuses', 'students.studenship_status_id', '=', 'studentship_statuses.id' )
-                        ->where('studentship_statuses.name','ACTIVE');
-                    })->orderBy('registration_number')->get()
+                    'students'=>$module_assignment->programModuleAssignment->students()->orderBy('registration_number')->get()
                 ];
 
                 
