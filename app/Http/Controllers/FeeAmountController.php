@@ -19,7 +19,7 @@ class FeeAmountController extends Controller
     public function index()
     {
     	$data = [
-           'amounts'=>FeeAmount::with('feeItem')->paginate(20),
+           'amounts'=>FeeAmount::with('feeItem')->sortBy(['created_at', 'asc'])->paginate(20),
            'fee_items'=>FeeItem::all(),
            'study_academic_years'=>StudyAcademicYear::with('academicYear')->latest()->get(),
            'staff'=>User::find(Auth::user()->id)->staff

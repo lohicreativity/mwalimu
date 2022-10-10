@@ -119,7 +119,7 @@
                   </tr>
                   </thead>
                   <tbody>
-                  @foreach($amounts->sortBy(['created_at', 'desc']) as $amount)
+                  @foreach($amounts as $amount)
                   <tr>
                     <td>{{ $amount->feeItem->name }}</td>
                     <td>{{ number_format($amount->amount_in_tzs,2) }}</td>
