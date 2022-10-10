@@ -1517,6 +1517,8 @@ class ExaminationResultController extends Controller
             $student_buffer[$student->id]['opt_prog'] = 0;
             $student_buffer[$student->id]['opt_prog_status'] = true;
 
+            return $results;
+
             foreach($results as $key=>$result){          
               
                     $optional_programs = ProgramModuleAssignment::whereHas('optedStudents',function($query) use($student){
@@ -1536,15 +1538,11 @@ class ExaminationResultController extends Controller
 
                     if($result->retakeHistory && isset($result->retakeHistory->retakeHistory->retakableResults[0])){
                         $processed_result = ExaminationResult::find($result->retakeHistory->retakeHistory->retakableResults[0]->id);
-                        return '1';
                     }elseif($result->carryHistory && isset($result->carryHistory->carrableResults[0])){
-                            $processed_result = ExaminationResult::find($result->carryHistory->carrableResults[0]->id);
-                            return '2';
+                        $processed_result = ExaminationResult::find($result->carryHistory->carrableResults[0]->id);
 
                     }else{
-                            $processed_result = ExaminationResult::find($result->id);
-                            return '3';
-
+                        $processed_result = ExaminationResult::find($result->id);
                     }
 
 
