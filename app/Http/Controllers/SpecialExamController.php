@@ -78,6 +78,10 @@ class SpecialExamController extends Controller
             return redirect()->back()->with('error','No modules to postpone');
         }
 
+        if ($student->studentship_status_id == 3) {
+            return redirect()->back()->with('error','You have postponed semester or year');
+        }
+
         $data =  [
            'second_semester_publish_status'=>$second_semester_publish_status,
            'module_assignments'=>ModuleAssignment::whereHas('programModuleAssignment',function($query) use($student){
