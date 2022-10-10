@@ -1449,7 +1449,7 @@ class ExaminationResultController extends Controller
           $annual_credit = 0;
 
           foreach ($module_assignments as $assignment) {
-            $results = ExaminationResult::with(['retakeHistory.retakableResults'=>function($query){
+            $results = ExaminationResult::with(['retakeHistor.retakableResults'=>function($query){
                    $query->latest();
                 },'carryHistory.carrableResults'=>function($query){
                    $query->latest();
