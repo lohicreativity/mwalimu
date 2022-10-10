@@ -1612,12 +1612,13 @@ class ExaminationResultController extends Controller
                           if(Util::stripSpacesUpper($assignment->module->ntaLevel->name) == Util::stripSpacesUpper('NTA Level 7')){
                                   if($assignment->programModuleAssignment->year_of_study == 1){
                                        if($processed_result->retakable_id != null){
-                                          if ($assignment->id == $processed_result->carryHistory->module_assignment_id) {
-                                             $processed_result->final_exam_remark = 'CARRY';
-                                             # code...
-                                          } else {
                                              $processed_result->final_exam_remark = $assignment->programModuleAssignment->module_pass_mark <= $processed_result->supp_score? 'PASS' : 'REPEAT';
-                                          }
+                                          // if ($assignment->id == $processed_result->carryHistory->module_assignment_id) {
+                                          //    $processed_result->final_exam_remark = 'CARRY';
+                                          //    # code...
+                                          // } else {
+                                          //    $processed_result->final_exam_remark = $assignment->programModuleAssignment->module_pass_mark <= $processed_result->supp_score? 'PASS' : 'REPEAT';
+                                          // }
                                        }else{
                                             $processed_result->final_exam_remark = $assignment->programModuleAssignment->module_pass_mark <= $processed_result->supp_score? 'PASS' : 'CARRY';
                                        }
