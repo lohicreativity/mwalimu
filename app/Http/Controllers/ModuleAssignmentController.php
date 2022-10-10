@@ -500,14 +500,10 @@ class ModuleAssignmentController extends Controller
                     'staff'=>$module_assignment->staff,
                     'module'=>$module_assignment->module,
                     'students'=>$module_assignment->programModuleAssignment->students()
-                    ->whereExists(function ($query) {
-                        $query->select(DB::raw('name'))
-                              ->from('studenship_statuses')
-                              ->where('name', 'ACTIVE')
-                              ->whereColumn('studenship_statuses.id', 'students.studenship_status_id');
-                              
-                    })->get()
-                    ->orderBy('registration_number')->get()
+                    ->where(function ($query) {
+                        $query->join('studentship_statuses', 'students.studenship_status_id', '=', 'studentship_statuses.id' )
+                        ->where('studentship_statuses.name','ACTIVE');
+                    })->orderBy('registration_number')->get()
                 ];
 
                 
