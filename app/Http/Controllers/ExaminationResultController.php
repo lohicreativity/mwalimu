@@ -1539,7 +1539,7 @@ class ExaminationResultController extends Controller
                         return '1';
                     }elseif($result->carryHistory){
                            //  $processed_result = ExaminationResult::find($result->carryHistory->carrableResults[0]->id);
-                           return $result->carryHistory->id ."<br><br>". $result->carryHistory->student_id;
+                           return $result->carryHistory->id ."<br><br>". $result->carryHistory->student_id. "<br><br>".$result->result->carryHistory->module_assignment_id;
                            $processed_result = ExaminationResult::find($result->carryHistory->id);
                            //  return $processed_result;
                     }else{
