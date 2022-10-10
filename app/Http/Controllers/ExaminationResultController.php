@@ -1542,7 +1542,6 @@ class ExaminationResultController extends Controller
                         $processed_result = ExaminationResult::find($result->retakeHistory->retakeHistory->retakableResults[0]->id);
                     }elseif($result->carryHistory && isset($result->carryHistory->carrableResults[0])){
                         $processed_result = ExaminationResult::find($result->carryHistory->carrableResults[0]->id);
-                        return $processed_result;
                     }else{
                         $processed_result = ExaminationResult::find($result->id);
                     }
@@ -1587,7 +1586,13 @@ class ExaminationResultController extends Controller
                               $processed_result->final_exam_remark = 'PASS';
                               $processed_result->grade = 'C';
                               $processed_result->point = 1;
-                           } else {
+                           } elseif ($processed_result->supp_processed_at && $processed_result->final_exam_remark == 'CARRY') { 
+
+                              $processed_result->final_exam_remark = 'CARRY';
+                              $processed_result->grade = 'F';
+                              $processed_result->point = 0;
+
+                           } else  {
    
                               $processed_result->final_exam_remark = 'FAIL';
                               $processed_result->grade = 'F';
