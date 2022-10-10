@@ -1449,11 +1449,11 @@ class ExaminationResultController extends Controller
           $annual_credit = 0;
 
           foreach ($module_assignments as $assignment) {
-            $results = ExaminationResult::with(['retakeHistor.retakableResults'=>function($query){
+            $results = ExaminationResult::with(['retakeHistory.retakableResults'=>function($query){
                    $query->latest();
                 },'carryHistory.carrableResults'=>function($query){
                    $query->latest();
-                }])->where('module_assignment_id',$assignment->id)->where('student_id',$student->id)->get();
+                }])->where('module_assignment_id',$assignment->i)->where('student_id',$student->id)->get();
             $policy = ExaminationPolicy::where('nta_level_id',$assignment->module->ntaLevel->id)->where('study_academic_year_id',$assignment->study_academic_year_id)->where('type',$assignment->programModuleAssignment->campusProgram->program->category)->first();
             
               // if(!$policy){
