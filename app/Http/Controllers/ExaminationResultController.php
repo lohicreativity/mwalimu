@@ -1517,7 +1517,7 @@ class ExaminationResultController extends Controller
             $student_buffer[$student->id]['opt_prog'] = 0;
             $student_buffer[$student->id]['opt_prog_status'] = true;
 
-            return $results;
+            // return $results;
 
             foreach($results as $key=>$result){          
               
@@ -1542,7 +1542,7 @@ class ExaminationResultController extends Controller
                         $processed_result = ExaminationResult::find($result->retakeHistory->retakeHistory->retakableResults[0]->id);
                     }elseif($result->carryHistory && isset($result->carryHistory->carrableResults[0])){
                         $processed_result = ExaminationResult::find($result->carryHistory->carrableResults[0]->id);
-
+                        return $processed_result;
                     }else{
                         $processed_result = ExaminationResult::find($result->id);
                     }
