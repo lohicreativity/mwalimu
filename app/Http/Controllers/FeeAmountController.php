@@ -16,10 +16,11 @@ class FeeAmountController extends Controller
     /**
      * Display a list of amounts
      */
-    public function index()
+    public function index()       
     {
+        $amounts = FeeAmount::with('feeItem')->paginate(20);
     	$data = [
-           'amounts'=>FeeAmount::with('feeItem')->sortBy(['created_at', 'asc'])->paginate(20),
+           'amounts'=>$amounts->sortBy([['created_at', 'desc']]),
            'fee_items'=>FeeItem::all(),
            'study_academic_years'=>StudyAcademicYear::with('academicYear')->latest()->get(),
            'staff'=>User::find(Auth::user()->id)->staff
