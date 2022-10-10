@@ -1817,6 +1817,7 @@ class ExaminationResultController extends Controller
                     $status = AcademicStatus::where('name',$remark->remark)->first();
 
                     $stud = Student::find($key);
+                    return $key;
                     $stud->academic_status_id = $status->id;
                     $stud->save();
 
@@ -1947,8 +1948,8 @@ class ExaminationResultController extends Controller
 
                       $sem_remarks = SemesterRemark::where('student_id',$key)->where('study_academic_year_id',$ac_yr_id)->where('year_of_study',$buffer['year_of_study'])->get();
 
-                        return $sem_remarks;
 
+                      
                        if($rm = AnnualRemark::where('student_id',$key)->where('study_academic_year_id',$ac_yr_id)->where('year_of_study',$buffer['year_of_study'])->first()){
                           $remark = $rm;
                           $remark->student_id = $key;
