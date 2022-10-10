@@ -170,7 +170,15 @@
                     </a>
                     @endif
                 </p>
-                 <p>Students with no Final Marks: <a href="{{ url('academic/staff-module-assignment/'.$module_assignment->id.'/results/students-with-no-final-marks') }}" target="_blank">{{ $students_with_no_final_marks_count }}</a></p>
+                 <p>Students with no Final Marks: 
+                    @if($students_with_no_final_marks_count == 0)
+                      {{ $students_with_no_final_marks_count }}
+                    @else 
+                    <a href="{{ url('academic/staff-module-assignment/'.$module_assignment->id.'/results/students-with-no-final-marks') }}" target="_blank">
+                      {{ $students_with_no_final_marks_count }}
+                    </a>
+                    @endif
+                </p>
                  @if($first_semester_publish_status || $second_semester_publish_status)
                  <p>Students with Supplementary Cases: 
                     @if($supp_cases_count == 0)
