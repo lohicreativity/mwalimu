@@ -1536,11 +1536,16 @@ class ExaminationResultController extends Controller
 
                     if($result->retakeHistory && isset($result->retakeHistory->retakeHistory->retakableResults[0])){
                         $processed_result = ExaminationResult::find($result->retakeHistory->retakeHistory->retakableResults[0]->id);
+                        return '1';
                     }elseif($result->carryHistory && isset($result->carryHistory->carrableResults[0])){
                             $processed_result = ExaminationResult::find($result->carryHistory->carrableResults[0]->id);
+                            return $result->carryHistory->carrableResults;
                     }else{
                             $processed_result = ExaminationResult::find($result->id);
+                            return '3';
                     }
+
+                    return $result->carryHistory->carrableResults;
 
                     
 
@@ -1817,7 +1822,6 @@ class ExaminationResultController extends Controller
                     $status = AcademicStatus::where('name',$remark->remark)->first();
 
                     $stud = Student::find($key);
-                    return $key;
                     $stud->academic_status_id = $status->id;
                     $stud->save();
 
