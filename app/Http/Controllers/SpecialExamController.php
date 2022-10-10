@@ -349,7 +349,7 @@ class SpecialExamController extends Controller
 
             if($request->get('exam_'.$exam->id) == $exam->id ){
                     $req = SpecialExamRequest::find($exam->id);
-                    $special_exam = SpecialExam::where('special_exam_request_id', $exam->id)->all();
+                    $special_exam = SpecialExam::where('special_exam_request_id', $exam->id)->get();
                     $req->status = $request->get('action') == 'Accept Selected'? 'POSTPONED' : 'DECLINED';
                     $special_exam->status = $request->get('action') == 'Accept Selected'? 'APPROVED' : 'DECLINED';
                     $special_exam->save();
