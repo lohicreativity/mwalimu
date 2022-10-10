@@ -506,7 +506,7 @@ class ModuleAssignmentController extends Controller
                               ->where('name', 'ACTIVE')
                               ->whereColumn('studenship_statuses.id', 'students.studenship_status_id');
                               
-                    })
+                    })->get()
                     ->orderBy('registration_number')->get()
                 ];
 
