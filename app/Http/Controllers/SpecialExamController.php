@@ -337,6 +337,7 @@ class SpecialExamController extends Controller
      */
     public function acceptSpecialExams(Request $request)
     {
+            return 123;
          $exams = SpecialExamRequest::where('study_academic_year_id',$request->get('study_academic_year_id'))->get();
         //  $Special_exams = SpecialExam::where('study_academic_year_id',$request->get('study_academic_year_id'))->first();
 
