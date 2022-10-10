@@ -499,7 +499,16 @@ class ModuleAssignmentController extends Controller
                     'study_academic_year'=>$module_assignment->studyAcademicYear,
                     'staff'=>$module_assignment->staff,
                     'module'=>$module_assignment->module,
-                    'students'=>$module_assignment->programModuleAssignment->students()->orderBy('registration_number')->get()
+                    'students' => DB::table('module_assignments')
+                    ->join('program_module_assignments', 'module_assignments.program_module_assignment_id', '=', 'program_module_assignments.id')
+                    ->join('student_program_module_assignment', 'program_module_assignments.id', '=', 'student_program_module_assignment.program_module_assignment_id')
+                    ->join('students', 'student_program_module_assignment.student_id', '=', 'students.id')
+                    ->join('studentship_statuses', 'students.studentship_status_id', '=', 'studentship_statuses.id')
+                    ->where('studentship_statuses.name', 'ACTIVE')
+                    ->select('students.registration_number')
+                    ->orderBy('students.registration_number')
+                    ->get()
+                    // 'students'=>$module_assignment->programModuleAssignment->students()->orderBy('registration_number')->get()
                 ];
 
                 
