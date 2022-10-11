@@ -94,6 +94,8 @@ class SpecialExamController extends Controller
             return redirect()->back()->with('error','You have postponed semester or year');
         }
 
+        $check_special_exam[] = null;
+
         $data =  [
            'second_semester_publish_status'=>$second_semester_publish_status,
            'module_assignments'=>ModuleAssignment::whereHas('programModuleAssignment',function($query) use($student){
@@ -114,6 +116,7 @@ class SpecialExamController extends Controller
             'student'=>$student,
             'request'=>$request,
             'suppExams'     => $suppExams,
+            'check_special_exam' => $check_special_exam
         ];
     
 
