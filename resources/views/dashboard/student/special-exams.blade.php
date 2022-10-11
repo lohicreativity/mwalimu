@@ -125,10 +125,7 @@
                           @endforeach
                         @endforeach
                       @endif 
-                      @foreach($check_special_exam as $cse)
-                        @if($cse == $assign->module->name)
-                        @break
-                        @else 
+                        
                         @if(sizeof($opted_module) == 0 && $assign->programModuleAssignment->category == 'OPTIONAL')
                         <div class="col-3">
                           <div class="checkbox">
@@ -157,10 +154,6 @@
                           </div>
                         </div>
                       @endif 
-                        @endif
-                      @endforeach
-
-                     
                                                       
                   @endforeach
 
