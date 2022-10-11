@@ -126,7 +126,7 @@
 
                       {{ $special_exam_flag }}
 
-                    @if(sizeof($opted_module) == 0 && $assign->programModuleAssignment->category == 'OPTIONAL')
+                    @if(sizeof($opted_module) == 0 && $assign->programModuleAssignment->category == 'OPTIONAL' && $special_exam_flag == $assign->module->name)
                       <div class="col-3">
                         <div class="checkbox">
                           <label>
@@ -135,7 +135,7 @@
                           </label>
                         </div>
                       </div>   
-                    @elseif($assign->programModuleAssignment->category == 'OPTIONAL' && $opted_module[0]->module_id == $assign->module_id)
+                    @elseif($assign->programModuleAssignment->category == 'OPTIONAL' && $opted_module[0]->module_id == $assign->module_id  && $special_exam_flag == $assign->module->name)
                       <div class="col-3">
                         <div class="checkbox">
                           <label>
@@ -144,7 +144,7 @@
                           </label>
                         </div>
                       </div>
-                    @elseif($assign->programModuleAssignment->category == 'COMPULSORY')
+                    @elseif($assign->programModuleAssignment->category == 'COMPULSORY'  && $special_exam_flag == $assign->module->name)
                       <div class="col-3">
                         <div class="checkbox">
                           <label>
