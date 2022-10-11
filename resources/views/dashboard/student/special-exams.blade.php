@@ -118,8 +118,8 @@
                                 </label>
                               </div>
                             </div> 
-                            @endif
                             @continue($special_exam_flag = $assign->module->name)
+                            @endif                 
                           @endforeach
                         @endforeach
                       @endif
