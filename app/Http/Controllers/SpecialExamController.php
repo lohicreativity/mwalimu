@@ -114,7 +114,6 @@ class SpecialExamController extends Controller
             'student'=>$student,
             'request'=>$request,
             'suppExams'     => $suppExams,
-            'special_exam_flag' => false
         ];
     
 
