@@ -126,6 +126,8 @@
                         @endforeach
                       @endif 
 
+                      {{ $check_special_exam }}
+
                       @foreach($check_special_exam as $cse)
                         @if($cse == $assign->module->name)
                         @break
