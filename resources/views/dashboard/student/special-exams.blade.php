@@ -110,6 +110,9 @@
                         @foreach($special_exam_requests as $exam)
                           @foreach($exam->exams as $ex)
                             @if($ex->moduleAssignment->module->name == $assign->module->name)
+                            @php 
+                            $check_special_exam[] = $ex->moduleAssignment->module->name;
+                            @endphp
                             <div class="col-3">
                               <div class="checkbox">
                                 <label>
@@ -123,8 +126,11 @@
                         @endforeach
                       @endif 
 
-
-                      @if(sizeof($opted_module) == 0 && $assign->programModuleAssignment->category == 'OPTIONAL')
+                      @foreach($check_special_exam as $cse)
+                        @if($cse == $assign->module->name)
+                        @break
+                        @else 
+                        @if(sizeof($opted_module) == 0 && $assign->programModuleAssignment->category == 'OPTIONAL')
                         <div class="col-3">
                           <div class="checkbox">
                             <label>
@@ -151,7 +157,10 @@
                             </label>
                           </div>
                         </div>
-                      @endif                                  
+                      @endif 
+                        @endif
+                      @endforeach
+                                                      
                   @endforeach
 
                 @endif
