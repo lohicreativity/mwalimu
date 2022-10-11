@@ -126,7 +126,7 @@
                         @endforeach
                       @endif 
 
-                      @foreach($check_special_exam as $cse)
+                      @foreach($check_special_exam[] as $cse)
                         @if($cse == $assign->module->name)
                         @break
                         @else 
