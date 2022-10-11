@@ -125,7 +125,7 @@
 
                      @foreach($special_exam_requests as $exam) 
                       @foreach($exam->exams as $ex)
-                          @if($ex->moduleAssignment->module->name != $assign->module->name && sizeof($opted_module) == 0 && $assign->programModuleAssignment->category == 'OPTIONAL')
+                          @if($ex->moduleAssignment->module->name !== $assign->module->name && sizeof($opted_module) == 0 && $assign->programModuleAssignment->category == 'OPTIONAL')
                             <div class="col-3">
                               <div class="checkbox">
                                 <label>
@@ -134,7 +134,7 @@
                                 </label>
                               </div>
                             </div>   
-                            @elseif($ex->moduleAssignment->module->name != $assign->module->name && $assign->programModuleAssignment->category == 'OPTIONAL' && $opted_module[0]->module_id == $assign->module_id)
+                            @elseif($ex->moduleAssignment->module->name !== $assign->module->name && $assign->programModuleAssignment->category == 'OPTIONAL' && $opted_module[0]->module_id == $assign->module_id)
                             <div class="col-3">
                               <div class="checkbox">
                                 <label>
@@ -143,7 +143,7 @@
                                 </label>
                               </div>
                             </div>
-                            @elseif($ex->moduleAssignment->module->name != $assign->module->name && $assign->programModuleAssignment->category == 'COMPULSORY')
+                            @elseif($ex->moduleAssignment->module->name !== $assign->module->name && $assign->programModuleAssignment->category == 'COMPULSORY')
                             <div class="col-3">
                               <div class="checkbox">
                                 <label>
