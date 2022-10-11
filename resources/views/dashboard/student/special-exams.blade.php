@@ -126,7 +126,38 @@
                         @endforeach
                       @endif 
                       @foreach($check_special_exam as $cse)
-                      {{ $cse }}
+                        @if($cse == $assign->module->name)
+                        @break
+                        @else 
+                        @if(sizeof($opted_module) == 0 && $assign->programModuleAssignment->category == 'OPTIONAL')
+                        <div class="col-3">
+                          <div class="checkbox">
+                            <label>
+                              {!! Form::checkbox('mod_assign_'.$assign->id,$assign->id) !!}
+                              {{ $assign->module->name }}
+                            </label>
+                          </div>
+                        </div>   
+                        @elseif($assign->programModuleAssignment->category == 'OPTIONAL' && $opted_module[0]->module_id == $assign->module_id)
+                        <div class="col-3">
+                          <div class="checkbox">
+                            <label>
+                              {!! Form::checkbox('mod_assign_'.$assign->id,$assign->id) !!}
+                              {{ $assign->module->name }}
+                            </label>
+                          </div>
+                        </div>
+                        @elseif($assign->programModuleAssignment->category == 'COMPULSORY')
+                        <div class="col-3">
+                          <div class="checkbox">
+                            <label>
+                              {!! Form::checkbox('mod_assign_'.$assign->id,$assign->id) !!}
+                              {{ $assign->module->name }}
+                            </label>
+                          </div>
+                        </div>
+                      @endif 
+                        @endif
                       @endforeach
 
                      
