@@ -584,6 +584,10 @@ class AppealController extends Controller
          // 	$optional_programs = ProgramModuleAssignment::with(['module'])->where('study_academic_year_id',$ac_yr_id)->where('year_of_study',$yr_of_study)->where('category','OPTIONAL')->get();
          // }
 
+         if(!$publications) {
+          return redirect()->back()->with('error','Results have not yet published');
+         }
+
           $appeals = Appeal::where('student_id',$student->id)->get();
 
          $data = [
