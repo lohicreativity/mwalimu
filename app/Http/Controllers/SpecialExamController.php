@@ -79,7 +79,7 @@ class SpecialExamController extends Controller
         ->where('module_assignments.study_academic_year_id', session('active_academic_year_id'))
         ->where('program_module_assignments.semester_id', session('active_semester_id'))
         ->where('program_module_assignments.campus_program_id', $student->campus_program_id)
-        ->whereNotNull('examination_results.final_processed_by_user_id')
+        ->where('examination_results.final_processed_by_user_id', '<>', 0)
         ->count();
 
         if ($resultsProcessed) {
