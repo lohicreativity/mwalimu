@@ -113,6 +113,7 @@
                             <div class="col-3">
                               <div class="checkbox">
                                 <label>
+                                  $special_exam_flag = true;
                                   {!! Form::checkbox('mod_assign_'.$assign->id,$assign->id, false, array('disabled')) !!}
                                   {{ $assign->module->name }}
                                 </label>

@@ -113,7 +113,8 @@ class SpecialExamController extends Controller
             'special_exam_requests'=>SpecialExamRequest::with(['exams.moduleAssignment.programModuleAssignment','exams.moduleAssignment.module'])->where('student_id',$student->id)->paginate(20),
             'student'=>$student,
             'request'=>$request,
-            'suppExams'     => $suppExams
+            'suppExams'     => $suppExams,
+            'special_exam_flag' => false
         ];
     
 
