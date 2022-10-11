@@ -109,22 +109,22 @@
                       @if(count($special_exam_requests) != 0)
                         @foreach($special_exam_requests as $exam)
                           @foreach($exam->exams as $ex)
-                            @if($ex->moduleAssignment->module->name == $assign->module->name)
+                            @if($ex->moduleAssignment->module->name == $assign->module->name && $special_exam_flag == false)
                             <div class="col-3">
                               <div class="checkbox">
                                 <label>
-                                  $special_exam_flag = true;
                                   {!! Form::checkbox('mod_assign_'.$assign->id,$assign->id, false, array('disabled')) !!}
                                   {{ $assign->module->name }}
                                 </label>
                               </div>
                             </div> 
                             @endif
+                            @continue($special_exam_flag == true)
                           @endforeach
                         @endforeach
                       @endif
 
-                    @if(sizeof($opted_module) == 0 && $assign->programModuleAssignment->category == 'OPTIONAL')
+                    @if(sizeof($opted_module) == 0 && $assign->programModuleAssignment->category == 'OPTIONAL' && $special_exam_flag == false)
                       <div class="col-3">
                         <div class="checkbox">
                           <label>
@@ -133,7 +133,8 @@
                           </label>
                         </div>
                       </div>   
-                    @elseif($assign->programModuleAssignment->category == 'OPTIONAL' && $opted_module[0]->module_id == $assign->module_id)
+                      @break($special_exam_flag == false)
+                    @elseif($assign->programModuleAssignment->category == 'OPTIONAL' && $opted_module[0]->module_id == $assign->module_id  && $special_exam_flag == false)
                       <div class="col-3">
                         <div class="checkbox">
                           <label>
@@ -142,7 +143,7 @@
                           </label>
                         </div>
                       </div>
-                    @elseif($assign->programModuleAssignment->category == 'COMPULSORY')
+                    @elseif($assign->programModuleAssignment->category == 'COMPULSORY'  && $special_exam_flag == false)
                       <div class="col-3">
                         <div class="checkbox">
                           <label>
