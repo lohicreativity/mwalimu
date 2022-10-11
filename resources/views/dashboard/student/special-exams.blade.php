@@ -127,7 +127,7 @@
                       @endif 
                       
                     @foreach($check_special_exams as $cse)
-                      @if(sizeof($opted_module) == 0 && $assign->programModuleAssignment->category == 'OPTIONAL' && $cse == $assign->module->name)
+                      @if(sizeof($opted_module) == 0 && $assign->programModuleAssignment->category == 'OPTIONAL' && $cse != $assign->module->name)
                         <div class="col-3">
                           <div class="checkbox">
                             <label>
@@ -136,7 +136,7 @@
                             </label>
                           </div>
                         </div>   
-                      @elseif($assign->programModuleAssignment->category == 'OPTIONAL' && $opted_module[0]->module_id == $assign->module_id  && $cse == $assign->module->name)
+                      @elseif($assign->programModuleAssignment->category == 'OPTIONAL' && $opted_module[0]->module_id == $assign->module_id  && $cse != $assign->module->name)
                         <div class="col-3">
                           <div class="checkbox">
                             <label>
@@ -145,7 +145,7 @@
                             </label>
                           </div>
                         </div>
-                      @elseif($assign->programModuleAssignment->category == 'COMPULSORY'  && $cse == $assign->module->name)
+                      @elseif($assign->programModuleAssignment->category == 'COMPULSORY'  && $cse != $assign->module->name)
                         <div class="col-3">
                           <div class="checkbox">
                             <label>
