@@ -118,7 +118,7 @@
                                 </label>
                               </div>
                             </div> 
-                            @continue($special_exam_flag = $assign->module->name)
+                            @break($special_exam_flag = $assign->module->name)
                             @endif                 
                           @endforeach
                         @endforeach
