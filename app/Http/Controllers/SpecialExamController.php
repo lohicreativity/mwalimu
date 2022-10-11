@@ -72,7 +72,7 @@ class SpecialExamController extends Controller
          ->where('results_publications.status', 'PUBLISHED')
          ->get();
 
-         $resultsProccessed = DB::table('examination_results')
+         $resultsProcessed = DB::table('examination_results')
         ->join('module_assignments', 'examination_results.module_assignment_id', '=', 'module_assignments.id')
         ->join('program_module_assignments', 'module_assignments.program_module_assignment_id', '=', 'program_module_assignments.id')
         ->join('modules', 'module_assignments.module_id', '=', 'modules.id')
