@@ -118,15 +118,16 @@
                                 </label>
                               </div>
                             </div> 
-                            @break($special_exam_flag = $assign->module->name)
                             @endif                 
                           @endforeach
                         @endforeach
-                      @endif
+                      @endif 
+                      @php
+                          $counter = 1;
+                      @endphp
 
-                      {{ $special_exam_flag }}
-
-                    @if(sizeof($opted_module) == 0 && $assign->programModuleAssignment->category == 'OPTIONAL' && $special_exam_flag == $assign->module->name)
+                     {{ $counter }}
+                    @if(sizeof($opted_module) == 0 && $assign->programModuleAssignment->category == 'OPTIONAL')
                       <div class="col-3">
                         <div class="checkbox">
                           <label>
@@ -135,7 +136,7 @@
                           </label>
                         </div>
                       </div>   
-                    @elseif($assign->programModuleAssignment->category == 'OPTIONAL' && $opted_module[0]->module_id == $assign->module_id  && $special_exam_flag == $assign->module->name)
+                    @elseif($assign->programModuleAssignment->category == 'OPTIONAL' && $opted_module[0]->module_id == $assign->module_id)
                       <div class="col-3">
                         <div class="checkbox">
                           <label>
@@ -144,7 +145,7 @@
                           </label>
                         </div>
                       </div>
-                    @elseif($assign->programModuleAssignment->category == 'COMPULSORY'  && $special_exam_flag == $assign->module->name)
+                    @elseif($assign->programModuleAssignment->category == 'COMPULSORY')
                       <div class="col-3">
                         <div class="checkbox">
                           <label>
