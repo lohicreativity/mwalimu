@@ -1595,6 +1595,10 @@ class ExaminationResultController extends Controller
                               $processed_result->final_exam_remark = 'CARRY';
                               $processed_result->grade = 'F';
                               $processed_result->point = 0;
+                           }elseif($processed_result->supp_processed_at && $processed_result->final_exam_remark == 'RETAKE'){
+                              $processed_result->final_exam_remark = 'RETAKE';
+                              $processed_result->grade = 'F';
+                              $processed_result->point = 0;
                            } elseif ($processed_result->supp_processed_at) { 
 
                               $processed_result->final_exam_remark = 'PASS';
