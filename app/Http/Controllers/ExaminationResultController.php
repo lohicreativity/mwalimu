@@ -1005,7 +1005,51 @@ class ExaminationResultController extends Controller
         $query->where('program_id',$campus_program->program->id);
           })->with('module.ntaLevel','programModuleAssignment.campusProgram.program','studyAcademicYear')->where('module_assignments.id', $module_id)->where('study_academic_year_id',$ac_yr_id)->get();
 
-          return $module_assignment;
+         
+          if($module_assignment->programModuleAssignment->category == 'COMPULSORY'){
+            if($module_assignment->course_work_process_status != 'PROCESSED' && $module_assignment->module->course_work_based == 1){
+              DB::rollback();
+              return redirect()->back()->with('error',$module_assignment->module->name.'-'.$module_assignment->module->code.' course works not processed');
+            }
+            if($module_assignment->final_upload_status == null){
+              DB::rollback();
+              return redirect()->back()->with('error',$module_assignment->module->name.'-'.$module_assignment->module->code.' final not uploaded');
+            }
+          }else{
+            $exam_student_count = ProgramModuleAssignment::find($module_assignment->program_module_assignment_id)->optedStudents()->count();
+            if($module_assignment->course_work_process_status != 'PROCESSED' && $exam_student_count != 0 && $module_assignment->module->course_work_based == 1){
+              DB::rollback();
+              return redirect()->back()->with('error',$module_assignment->module->name.'-'.$module_assignment->module->code.' course works not processed');
+            }
+            if($module_assignment->final_upload_status == null && $exam_student_count != 0){
+              DB::rollback();
+              return redirect()->back()->with('error',$module_assignment->module->name.'-'.$module_assignment->module->code.' final not uploaded');
+            }
+          }
+
+          $student_buffer = [];
+          $annual_credit = 0;
+
+            $results = ExaminationResult::with(['retakeHistory.retakableResults'=>function($query){
+            $query->latest();
+            },'carryHistory.carrableResults'=>function($query){
+               $query->latest();
+            }])->where('module_assignment_id',$module_id)->where('student_id',$student->id)->get();
+
+            $policy = ExaminationPolicy::where('nta_level_id',$module_assignment->module->ntaLevel->id)->where('study_academic_year_id',$module_assignment->study_academic_year_id)->where('type',$module_assignment->programModuleAssignment->campusProgram->program->category)->first();
+     
+     
+            if(Util::stripSpacesUpper($semester->name) == Util::stripSpacesUpper('Semester 2')){
+               $core_programs = ProgramModuleAssignment::with(['module'])->where('study_academic_year_id',$module_assignment->study_academic_year_id)->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)->where('category','COMPULSORY')->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id)->get();
+            }else{
+               $core_programs = ProgramModuleAssignment::with(['module'])->where('study_academic_year_id',$module_assignment->study_academic_year_id)->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)->where('semester_id',$semester->id)->where('category','COMPULSORY')->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id)->get();
+            }
+
+            $total_credit = 0;
+
+            return $core_programs;
+          
+
 
 
       }catch(\Exception $e){
