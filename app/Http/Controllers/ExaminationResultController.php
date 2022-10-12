@@ -1463,9 +1463,9 @@ class ExaminationResultController extends Controller
           $annual_credit = 0;
 
           foreach ($module_assignments as $assignment) {
-            $results = ExaminationResult::with(['carryHistory.carrableResults'=>function($query){
+            $results = ExaminationResult::with(['retakeHistory.retakableResults'=>function($query){
                    $query->latest();
-                },'retakeHistory.retakableResults'=>function($query){
+                },'carryHistory.carrableResults'=>function($query){
                    $query->latest();
                 }])->where('module_assignment_id',$assignment->id)->where('student_id',$student->id)->get();
             $policy = ExaminationPolicy::where('nta_level_id',$assignment->module->ntaLevel->id)->where('study_academic_year_id',$assignment->study_academic_year_id)->where('type',$assignment->programModuleAssignment->campusProgram->program->category)->first();
@@ -1531,7 +1531,7 @@ class ExaminationResultController extends Controller
             $student_buffer[$student->id]['opt_prog'] = 0;
             $student_buffer[$student->id]['opt_prog_status'] = true;
 
-            return $results;
+            
 
             foreach($results as $key=>$result){          
               
@@ -1712,6 +1712,8 @@ class ExaminationResultController extends Controller
 
             }
           }
+
+          return $results;
           
           foreach ($annual_module_assignments as $assign) {
             $annual_results = ExaminationResult::with(['moduleAssignment.module'])->where('module_assignment_id',$assign->id)->where('student_id',$student->id)->get();
