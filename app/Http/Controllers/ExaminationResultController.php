@@ -412,6 +412,9 @@ class ExaminationResultController extends Controller
                       		$history->module_assignment_id = $assignment->id;
                       		$history->examination_result_id = $processed_result->id;
                       		$history->save();
+
+                           $exam_row = ExaminationResult::find($processed_result->id);
+                           return $exam_row;
                       	}
 
       		  }
@@ -602,7 +605,7 @@ class ExaminationResultController extends Controller
                                  }
                                  $stud_buffer[$key]['total_credit'] = $stud_buffer[$key]['opt_credit'] + $tot_credit;           
 
-                            }
+                           }
                         }
 
                         foreach($stud_buffer as $bufKey=>$buf){
