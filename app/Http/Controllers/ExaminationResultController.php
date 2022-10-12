@@ -1005,7 +1005,6 @@ class ExaminationResultController extends Controller
         $query->where('program_id',$campus_program->program->id);
           })->with('module.ntaLevel','programModuleAssignment.campusProgram.program','studyAcademicYear')->where('module_assignments.id', $module_id)->where('study_academic_year_id',$ac_yr_id)->first();
 
-          return $module_assignment->programModuleAssignment->category;
           if($module_assignment->programModuleAssignment->category == 'COMPULSORY'){
             if($module_assignment->course_work_process_status != 'PROCESSED' && $module_assignment->module->course_work_based == 1){
               DB::rollback();
@@ -1034,18 +1033,20 @@ class ExaminationResultController extends Controller
             $query->latest();
             },'carryHistory.carrableResults'=>function($query){
                $query->latest();
-            }])->where('module_assignment_id',$module_id)->where('student_id',$student->id)->get();
+            }])->where('module_assignment_id',$module_id)->where('student_id',$student->id)->first();
 
             $policy = ExaminationPolicy::where('nta_level_id',$module_assignment->module->ntaLevel->id)->where('study_academic_year_id',$module_assignment->study_academic_year_id)->where('type',$module_assignment->programModuleAssignment->campusProgram->program->category)->first();
      
      
             if(Util::stripSpacesUpper($semester->name) == Util::stripSpacesUpper('Semester 2')){
-               $core_programs = ProgramModuleAssignment::with(['module'])->where('study_academic_year_id',$module_assignment->study_academic_year_id)->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)->where('category','COMPULSORY')->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id)->get();
+               $core_programs = ProgramModuleAssignment::with(['module'])->where('study_academic_year_id',$module_assignment->study_academic_year_id)->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)->where('category','COMPULSORY')->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id)->first();
             }else{
-               $core_programs = ProgramModuleAssignment::with(['module'])->where('study_academic_year_id',$module_assignment->study_academic_year_id)->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)->where('semester_id',$semester->id)->where('category','COMPULSORY')->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id)->get();
+               $core_programs = ProgramModuleAssignment::with(['module'])->where('study_academic_year_id',$module_assignment->study_academic_year_id)->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)->where('semester_id',$semester->id)->where('category','COMPULSORY')->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id)->first();
             }
 
             $total_credit = 0;
+
+            return  $core_programs;
 
             
           
