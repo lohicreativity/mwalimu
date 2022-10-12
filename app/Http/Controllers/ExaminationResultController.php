@@ -1030,7 +1030,7 @@ class ExaminationResultController extends Controller
           $student_buffer = [];
           $annual_credit = 0;
 
-            $results = ExaminationResult::with(['retakeHistory.retakableResults'=>function($query){
+            $result = ExaminationResult::with(['retakeHistory.retakableResults'=>function($query){
             $query->latest();
             },'carryHistory.carrableResults'=>function($query){
                $query->latest();
@@ -1052,14 +1052,19 @@ class ExaminationResultController extends Controller
 
             $total_credit = 0;
 
-            if(Util::stripSpacesUpper($semester->name) == Util::stripSpacesUpper('Semester 2')){          
-               $annual_credit += $core_programs->module->credit;
-               }
+            $elective_policy = ElectivePolicy::where('campus_program_id',$campus_program->id)->where('study_academic_year_id',$ac_yr_id)->where('semester_id',$semester->id)->first();
 
-             if($core_programs->programModuleAssignment->semester_id == $request->get('semester_id')){
-                $total_credit += $core_programs->module->credit;
-               }
-            
+
+            if($core_programs){
+               if(Util::stripSpacesUpper($semester->name) == Util::stripSpacesUpper('Semester 2')){          
+                  $annual_credit += $core_programs->module->credit;
+                  }
+   
+                if($core_programs->programModuleAssignment->semester_id == $request->get('semester_id')){
+                   $total_credit += $core_programs->module->credit;
+                  }
+            }
+                       
                $student_buffer[$student->id]['opt_credit'] = 0;
                $student_buffer[$student->id]['opt_prog'] = 0;
                $student_buffer[$student->id]['opt_prog_status'] = true;
@@ -1070,8 +1075,29 @@ class ExaminationResultController extends Controller
                      $query->where('id',$module_id);
                        })->with(['module'])->where('study_academic_year_id',$module_assignment->study_academic_year_id)->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)->where('semester_id',$request->get('semester_id'))->where('category','OPTIONAL')->first();
 
-               return $optional_programs;        
+               if($optional_programs){
+                  $student_buffer[$student->id]['opt_credit'] += $optional_programs->module->credit;
+                  $student_buffer[$student->id]['opt_prog'] += 1; 
+                  if($student_buffer[$student->id]['opt_prog'] < $elective_policy->number_of_options){
+                     $student_buffer[$student->id]['opt_prog_status'] = false;
+                  }
+               }
 
+               $student_buffer[$student->id]['total_credit'] = $student_buffer[$student->id]['opt_credit'] + $total_credit;
+
+               if($result->retakeHistory && isset($result->retakeHistory->retakableResults[0])){
+                  $processed_result = ExaminationResult::find($result->retakeHistory->retakableResults[0]->id);
+                  
+              }elseif($result->carryHistory && isset($result->carryHistory->carrableResults[0])){
+                  $processed_result = ExaminationResult::find($result->carryHistory->carrableResults[0]->id);
+              }else{
+                  $processed_result = ExaminationResult::find($result->id);
+                  return $processed_result;
+              }
+
+      
+
+               
             
           
 
