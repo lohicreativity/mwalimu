@@ -412,20 +412,19 @@ class ExaminationResultController extends Controller
                       		$history->study_academic_year_id = $request->get('study_academic_year_id');
                       		$history->module_assignment_id = $assignment->id;
                       		$history->examination_result_id = $processed_result->id;
-                           if ($history->save()) {
-                              return 'Carry has been saved';
-                           } else {
-                              return 'Carry has not been saved';
-                           }
-                      		// $history->save();
+                           
+                      		$history->save();
 
-                           //  $exam_row = ExaminationResult::find($processed_result->id);
-                           //  return $exam_row;
+                            $exam_row = ExaminationResult::find($processed_result->id);
+                           
                            
                       	}
 
       		  }
       	   }
+
+
+            return CarryHistory::find($history->id);
           
 
              
