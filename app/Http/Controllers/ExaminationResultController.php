@@ -403,19 +403,21 @@ class ExaminationResultController extends Controller
                       	if($processed_result->final_exam_remark == 'CARRY'){
                       		if($hist = CarryHistory::where('study_academic_year_id',$request->get('study_academic_year_id'))->where('student_id',$student->id)->where('module_assignment_id',$assignment->id)->first()){
                       			$history = $hist;
-                              return "Section 1";
                       		}else{
                       			$history = new CarryHistory;
-                               return "Section 2";
                       		}
 
-                           return "Section 3";
 
                       		$history->student_id = $student->id;
                       		$history->study_academic_year_id = $request->get('study_academic_year_id');
                       		$history->module_assignment_id = $assignment->id;
                       		$history->examination_result_id = $processed_result->id;
-                      		$history->save();
+                           if ($history->save()) {
+                              return 'Carry has been saved';
+                           } else {
+                              return 'Carry has not been saved';
+                           }
+                      		// $history->save();
 
                            //  $exam_row = ExaminationResult::find($processed_result->id);
                            //  return $exam_row;
