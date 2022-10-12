@@ -1531,10 +1531,9 @@ class ExaminationResultController extends Controller
             $student_buffer[$student->id]['opt_prog'] = 0;
             $student_buffer[$student->id]['opt_prog_status'] = true;
 
-            if ($results[2]->module_assignment_id == 3) {
                # code...
                return $results;
-            }
+            
 
 
             foreach($results as $key=>$result){          
