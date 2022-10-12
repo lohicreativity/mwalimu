@@ -1092,8 +1092,18 @@ class ExaminationResultController extends Controller
                   $processed_result = ExaminationResult::find($result->carryHistory->carrableResults[0]->id);
               }else{
                   $processed_result = ExaminationResult::find($result->id);
-                  return $processed_result;
               }
+
+              if($result->course_work_remark == 'INCOMPLETE' || $result->final_remark == 'INCOMPLETE' || $result->final_remark == 'POSTPONED'){
+               $processed_result->total_score = null;
+            }else{
+               $processed_result->total_score = round($result->course_work_score + $result->final_score);
+            }
+
+            $grading_policy = GradingPolicy::where('nta_level_id',$module_assignment->module->ntaLevel->id)->where('study_academic_year_id',$module_assignment->studyAcademicYear->id)->where('min_score','<=',round($processed_result->total_score))->where('max_score','>=',round($processed_result->total_score))->first();
+
+            return $grading_policy->grade;
+
 
       
 
