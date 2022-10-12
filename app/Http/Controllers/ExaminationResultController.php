@@ -401,6 +401,7 @@ class ExaminationResultController extends Controller
                       	}
 
                       	if($processed_result->final_exam_remark == 'CARRY'){
+                           return 'Student has carry';
                       		if($hist = CarryHistory::where('study_academic_year_id',$request->get('study_academic_year_id'))->where('student_id',$student->id)->where('module_assignment_id',$assignment->id)->first()){
                       			$history = $hist;
                       		}else{
@@ -413,8 +414,9 @@ class ExaminationResultController extends Controller
                       		$history->examination_result_id = $processed_result->id;
                       		$history->save();
 
-                           $exam_row = ExaminationResult::find($processed_result->id);
-                           return $exam_row;
+                           //  $exam_row = ExaminationResult::find($processed_result->id);
+                           //  return $exam_row;
+                           
                       	}
 
       		  }
