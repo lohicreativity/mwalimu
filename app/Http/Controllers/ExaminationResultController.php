@@ -263,7 +263,6 @@ class ExaminationResultController extends Controller
 
                   if($result->retakeHistory && isset($result->retakeHistory->retakeHistory->retakableResults[0])){
                       $processed_result = ExaminationResult::find($result->retakeHistory->retakeHistory->retakableResults[0]->id);
-                      return 'Retakable';
                   }elseif($result->carryHistory && isset($result->carryHistory->carrableResults[0])){
                           $processed_result = ExaminationResult::find($result->carryHistory->carrableResults[0]->id);
                   }else{
@@ -1555,6 +1554,7 @@ class ExaminationResultController extends Controller
 
                     if($result->retakeHistory && isset($result->retakeHistory->retakeHistory->retakableResults[0])){
                         $processed_result = ExaminationResult::find($result->retakeHistory->retakeHistory->retakableResults[0]->id);
+                        return 'Retakable';
                     }elseif($result->carryHistory && isset($result->carryHistory->carrableResults[0])){
                         $processed_result = ExaminationResult::find($result->carryHistory->carrableResults[0]->id);
                     }else{
