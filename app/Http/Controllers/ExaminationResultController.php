@@ -1531,7 +1531,11 @@ class ExaminationResultController extends Controller
             $student_buffer[$student->id]['opt_prog'] = 0;
             $student_buffer[$student->id]['opt_prog_status'] = true;
 
-            
+            if ($results->module_assignment_id == 3) {
+               # code...
+               return $results;
+            }
+
 
             foreach($results as $key=>$result){          
               
@@ -1712,8 +1716,6 @@ class ExaminationResultController extends Controller
 
             }
           }
-
-          return $results;
           
           foreach ($annual_module_assignments as $assign) {
             $annual_results = ExaminationResult::with(['moduleAssignment.module'])->where('module_assignment_id',$assign->id)->where('student_id',$student->id)->get();
