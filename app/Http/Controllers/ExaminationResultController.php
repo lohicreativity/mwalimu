@@ -1040,12 +1040,12 @@ class ExaminationResultController extends Controller
      
             if(Util::stripSpacesUpper($semester->name) == Util::stripSpacesUpper('Semester 2')){
                $core_programs = ModuleAssignment::whereHas('programModuleAssignment',function($query) use($request,$student,$yr_of_study){
-                  $query->where('campus_program_id',$student->campus_program_id)->where('year_of_study',$yr_of_study)->where('semester_id',$request->get('semester_id'));
-               })->with(['module'])->where('module_assignments.id', $module_id)->where('study_academic_year_id',$module_assignment->study_academic_year_id)->where('category','COMPULSORY')->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id)->first();
+                  $query->where('campus_program_id',$student->campus_program_id)->where('year_of_study',$yr_of_study)->where('semester_id',$request->get('semester_id'))->where('category','COMPULSORY')->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id);
+               })->with(['module'])->where('module_assignments.id', $module_id)->where('study_academic_year_id',$module_assignment->study_academic_year_id)->first();
             }else{
                $core_programs = ModuleAssignment::whereHas('programModuleAssignment',function($query) use($request,$student,$yr_of_study){
-                  $query->where('campus_program_id',$student->campus_program_id)->where('year_of_study',$yr_of_study)->where('semester_id',$request->get('semester_id'));
-               })->with(['module'])->where('module_assignments.id', $module_id)->where('study_academic_year_id',$module_assignment->study_academic_year_id)->where('semester_id',$semester->id)->where('category','COMPULSORY')->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id)->first();
+                  $query->where('campus_program_id',$student->campus_program_id)->where('year_of_study',$yr_of_study)->where('semester_id',$request->get('semester_id'))->where('category','COMPULSORY')->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id);
+               })->with(['module'])->where('module_assignments.id', $module_id)->where('study_academic_year_id',$module_assignment->study_academic_year_id)->first();
             }
 
             $total_credit = 0;
