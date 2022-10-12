@@ -1686,7 +1686,7 @@ class ExaminationResultController extends Controller
                     // $student_buffer[$student->id]['total_credit'] = $total_credit;
                     $student_buffer[$student->id]['nta_level'] = $campus_program->program->ntaLevel;
 
-                    if($processed_result->final_exam_remark == 'REPEAT'){
+                    if($processed_result->final_exam_remark == 'RETAKE'){
                             if($hist = RetakeHistory::where('study_academic_year_id',$ac_yr_id)->where('student_id',$student->id)->where('module_assignment_id',$assignment->id)->first()){
                               $history = $hist;
                             }else{
