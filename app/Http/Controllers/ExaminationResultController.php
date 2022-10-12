@@ -1005,6 +1005,8 @@ class ExaminationResultController extends Controller
         $query->where('program_id',$campus_program->program->id);
           })->with('module.ntaLevel','programModuleAssignment.campusProgram.program','studyAcademicYear')->where('module_assignments.id', $module_id)->where('study_academic_year_id',$ac_yr_id)->first();
 
+          return $module_assignment;
+
           if($module_assignment->programModuleAssignment->category == 'COMPULSORY'){
             if($module_assignment->course_work_process_status != 'PROCESSED' && $module_assignment->module->course_work_based == 1){
               DB::rollback();
@@ -1042,6 +1044,7 @@ class ExaminationResultController extends Controller
                $core_programs = ModuleAssignment::whereHas('programModuleAssignment',function($query) use($request,$student,$yr_of_study){
                   $query->where('campus_program_id',$student->campus_program_id)->where('year_of_study',$yr_of_study)->where('semester_id',$request->get('semester_id'))->where('category','COMPULSORY')->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id);
                })->with(['module'])->where('module_assignments.id', $module_id)->where('study_academic_year_id',$module_assignment->study_academic_year_id)->first();
+                              
             }else{
                $core_programs = ModuleAssignment::whereHas('programModuleAssignment',function($query) use($request,$student,$yr_of_study){
                   $query->where('campus_program_id',$student->campus_program_id)->where('year_of_study',$yr_of_study)->where('semester_id',$request->get('semester_id'))->where('category','COMPULSORY')->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id);
