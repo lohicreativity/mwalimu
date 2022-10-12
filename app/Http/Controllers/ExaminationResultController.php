@@ -991,9 +991,9 @@ class ExaminationResultController extends Controller
     }
 
 
-    public function updateStudentResults(Request $request)
+    public function updateStudentResults(Request $request, $student_id, $ac_yr_id,$yr_of_study, $process_type = null)
     {
-      echo $request->get('exam_type');
+      echo $student_id."<br>".$ac_yr_id."<br>".$yr_of_study."<br>".$process_type;
     }
 
     /**
