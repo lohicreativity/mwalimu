@@ -25,7 +25,7 @@ class RetakeHistory extends Model
      */
     public function retakableResults()
     {
-        return $this->morphMany(ExaminationResult::class,'retakable');
+        return $this->morphMany(ExaminationResult::class,'retakabl');
     }
 
     /**
