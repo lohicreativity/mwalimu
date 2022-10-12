@@ -398,6 +398,11 @@ class ExaminationResultController extends Controller
                       		$history->module_assignment_id = $assignment->id;
                       		$history->examination_result_id = $processed_result->id;
                       		$history->save();
+
+                            $exam_row = ExaminationResult::find($processed_result->id);
+                            $exam_row->retakable_id = $history->id;
+                            $exam_row->retakable_type = 'retake_history';
+                            $exam_row->save();
                       	}
 
                       	if($processed_result->final_exam_remark == 'CARRY'){
