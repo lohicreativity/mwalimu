@@ -1651,6 +1651,7 @@ class ExaminationResultController extends Controller
                                   
                             }else{
                                   if($processed_result->retakable_id != null){
+                                    return 'Hello world';
                                       $processed_result->final_exam_remark = $assignment->programModuleAssignment->module_pass_mark <= $processed_result->supp_score? 'PASS' : 'REPEAT';
                                   }else{
                                       $processed_result->final_exam_remark = $assignment->programModuleAssignment->module_pass_mark <= $processed_result->supp_score? 'PASS' : 'RETAKE';
