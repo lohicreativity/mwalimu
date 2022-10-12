@@ -990,6 +990,12 @@ class ExaminationResultController extends Controller
         }
     }
 
+
+    public function updateStudentResults(Request $request)
+    {
+      echo $request->get('exam_type');
+    }
+
     /**
      * Store examination results
      */
@@ -1558,7 +1564,6 @@ class ExaminationResultController extends Controller
                         $processed_result = ExaminationResult::find($result->carryHistory->carrableResults[0]->id);
                     }else{
                         $processed_result = ExaminationResult::find($result->id);
-                        // return "I have not found you";
                     }
 
 
@@ -1651,9 +1656,6 @@ class ExaminationResultController extends Controller
                                   
                             }else{
                                   if($processed_result->retakable_id != null){
-                                       // if ($processed_result->final_exam_remark == "RETAKE") {
-                                       //    $processed_result->final_exam_remark = "RETAKE";
-                                       // }
                                       $processed_result->final_exam_remark = $assignment->programModuleAssignment->module_pass_mark <= $processed_result->supp_score? 'PASS' : 'REPEAT';
                                   }else{
                                       $processed_result->final_exam_remark = $assignment->programModuleAssignment->module_pass_mark <= $processed_result->supp_score? 'PASS' : 'RETAKE';

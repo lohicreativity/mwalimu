@@ -86,7 +86,7 @@
                      'class'=>'form-control',
                   ];
               @endphp
-              {!! Form::open(['url'=>'academic/results/update-examination-results','class'=>'ss-form-processing']) !!}
+              {!! Form::open(['url'=>'academic/results/update-student-examination-results','class'=>'ss-form-processing']) !!}
                 <div class="card-body">
                   <div class="row">
                     <div class="form-group col-4">
