@@ -1551,7 +1551,7 @@ class ExaminationResultController extends Controller
                    $student_buffer[$student->id]['total_credit'] = $student_buffer[$student->id]['opt_credit'] + $total_credit;
                    
                   
-                    if($result->retakeHistory && isset($result->retakeHistory->retakableResults[0])){
+                    if($result->retakeHistory && isset($result->retakeHistory->retakableResults[0]) && $result->module_assignment_id == 3){
                         $processed_result = ExaminationResult::find($result->retakeHistory->retakableResults[0]->id);
                         return $processed_result." I found you";
                         
