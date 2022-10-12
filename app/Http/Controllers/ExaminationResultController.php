@@ -991,9 +991,27 @@ class ExaminationResultController extends Controller
     }
 
 
-    public function updateStudentResults(Request $request, $module_id, $student_id, $ac_yr_id,$yr_of_study, $process_type = null)
+    public function updateStudentResults(Request $request, $module_id, $student_id, $ac_yr_id, $yr_of_study, $process_type = null)
     {
-      echo $student_id."<br>".$ac_yr_id."<br>".$yr_of_study."<br>".$module_id;
+      try{
+         DB::beginTransaction();
+         $student = Student::findOrFail($student_id);
+         $campus_program = CampusProgram::with(['program.ntaLevel'])->find($student->campus_program_id);
+         $semester = Semester::find($request->get('semester_id'));
+
+         $module_assignment = ModuleAssignment::whereHas('programModuleAssignment',function($query) use($request,$student,$yr_of_study){
+            $query->where('campus_program_id',$student->campus_program_id)->where('year_of_study',$yr_of_study)->where('semester_id',$request->get('semester_id'));
+          })->whereHas('programModuleAssignment.campusProgram',function($query) use($campus_program){
+        $query->where('program_id',$campus_program->program->id);
+          })->with('module.ntaLevel','programModuleAssignment.campusProgram.program','studyAcademicYear')->where('module_assignments.id', $module_id)->where('study_academic_year_id',$ac_yr_id)->get();
+
+          return $module_assignment;
+
+
+      }catch(\Exception $e){
+         return $e->getMessage();
+         return redirect()->back()->with('error','Unable to get the resource specified in this request');
+      }
     }
 
     /**
