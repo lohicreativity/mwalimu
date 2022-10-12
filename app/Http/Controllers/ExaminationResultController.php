@@ -1551,7 +1551,7 @@ class ExaminationResultController extends Controller
                    $student_buffer[$student->id]['total_credit'] = $student_buffer[$student->id]['opt_credit'] + $total_credit;
                    
                   
-                    if(isset($result->retakeHistory->retakableResults[0])){
+                    if($result->retakeHistory->retakableResults[0]){
                         $processed_result = ExaminationResult::find($result->retakeHistory->retakableResults[0]->id);
                         return $processed_result." I found you";
                         
@@ -1559,7 +1559,7 @@ class ExaminationResultController extends Controller
                         $processed_result = ExaminationResult::find($result->carryHistory->carrableResults[0]->id);
                     }else{
                         $processed_result = ExaminationResult::find($result->id);
-                        return "I have not found you";
+                        // return "I have not found you";
                     }
 
 
