@@ -1188,10 +1188,9 @@ class ExaminationResultController extends Controller
                   $processed_result->supp_processed_at = now();
                   $processed_result->supp_processed_by_user_id = Auth::user()->id;
 
-                  return $processed_result->final_exam_remark;
                   
                 }
-
+                return $processed_result->final_exam_remark;
 
              }
 
