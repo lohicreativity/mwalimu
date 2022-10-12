@@ -1068,7 +1068,7 @@ class ExaminationResultController extends Controller
                   $query->where('student_id',$student->id);
                     })->whereHas('moduleAssignments', function($query) use($module_id){
                      $query->where('id',$module_id);
-                       })->with(['module'])->where('study_academic_year_id',$assignment->study_academic_year_id)->where('year_of_study',$assignment->programModuleAssignment->year_of_study)->where('semester_id',$request->get('semester_id'))->where('category','OPTIONAL')->first();
+                       })->with(['module'])->where('study_academic_year_id',$module_assignment->study_academic_year_id)->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)->where('semester_id',$request->get('semester_id'))->where('category','OPTIONAL')->first();
 
                return $optional_programs;        
 
