@@ -1536,7 +1536,7 @@ class ExaminationResultController extends Controller
             foreach($results as $key=>$result){   
                
                   if ($result->module_assignment_id == 3) {
-                     return $result->retakeHistory->retakableResults[0];
+                     return $result->retakeHistory->retakeHistory->retakableResults[0];
                   }
               
                     $optional_programs = ProgramModuleAssignment::whereHas('optedStudents',function($query) use($student){
