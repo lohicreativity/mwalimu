@@ -1052,7 +1052,15 @@ class ExaminationResultController extends Controller
 
             $total_credit = 0;
 
-            return  $core_programs;
+            if(Util::stripSpacesUpper($semester->name) == Util::stripSpacesUpper('Semester 2')){          
+               $annual_credit += $core_programs->module->credit;
+               }
+
+             if($core_programs->programModuleAssignment->semester_id == $request->get('semester_id')){
+                $total_credit += $core_programs->module->credit;
+               }
+            
+               return $annual_credit."<br>".$total_credit;
 
             
           
