@@ -416,15 +416,15 @@ class ExaminationResultController extends Controller
                       		$history->save();
 
                             $exam_row = ExaminationResult::find($processed_result->id);
+                            $exam_row->retakable_id = $history->id;
+                            $exam_row->retakable_type = 'carry_history';
+                            $exam_row->save();
                            
                            
                       	}
 
       		  }
       	   }
-
-
-            return CarryHistory::find($history->id);
           
 
              
