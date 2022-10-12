@@ -1535,10 +1535,6 @@ class ExaminationResultController extends Controller
 
             foreach($results as $key=>$result){   
                
-                  if ($result->module_assignment_id == 3) {
-                     return $result->retakeHistory->retakeHistory->retakableResults[0];
-                  }
-              
                     $optional_programs = ProgramModuleAssignment::whereHas('optedStudents',function($query) use($student){
                       $query->where('student_id',$student->id);
                         })->with(['module'])->where('study_academic_year_id',$assignment->study_academic_year_id)->where('year_of_study',$assignment->programModuleAssignment->year_of_study)->where('semester_id',$request->get('semester_id'))->where('category','OPTIONAL')->get();
@@ -1555,13 +1551,15 @@ class ExaminationResultController extends Controller
                    $student_buffer[$student->id]['total_credit'] = $student_buffer[$student->id]['opt_credit'] + $total_credit;
                    
                   
-                    if($result->retakeHistory && isset($result->retakeHistory->retakeHistory->retakableResults[0])){
-                        $processed_result = ExaminationResult::find($result->retakeHistory->retakeHistory->retakableResults[0]->id);
+                    if($result->retakeHistory && isset($result->retakeHistory->retakableResults[0])){
+                        $processed_result = ExaminationResult::find($result->retakeHistory->retakableResults[0]->id);
+                        return $processed_result." I found you";
                         
                     }elseif($result->carryHistory && isset($result->carryHistory->carrableResults[0])){
                         $processed_result = ExaminationResult::find($result->carryHistory->carrableResults[0]->id);
                     }else{
                         $processed_result = ExaminationResult::find($result->id);
+                        return "I have not found you";
                     }
 
 
