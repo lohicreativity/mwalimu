@@ -1005,7 +1005,7 @@ class ExaminationResultController extends Controller
         $query->where('program_id',$campus_program->program->id);
           })->with('module.ntaLevel','programModuleAssignment.campusProgram.program','studyAcademicYear')->where('module_assignments.id', $module_id)->where('study_academic_year_id',$ac_yr_id)->get();
 
-          return $module_assignment->programModuleAssignment->category;
+          return $module_assignment->programModuleAssignment;
           if($module_assignment->programModuleAssignment->category == 'COMPULSORY'){
             if($module_assignment->course_work_process_status != 'PROCESSED' && $module_assignment->module->course_work_based == 1){
               DB::rollback();
