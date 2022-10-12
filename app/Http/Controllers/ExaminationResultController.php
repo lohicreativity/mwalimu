@@ -1531,7 +1531,7 @@ class ExaminationResultController extends Controller
             $student_buffer[$student->id]['opt_prog'] = 0;
             $student_buffer[$student->id]['opt_prog_status'] = true;
 
-            if ($results->module_assignment_id == 3) {
+            if ($results[0]->module_assignment_id == 3) {
                # code...
                return $results;
             }
