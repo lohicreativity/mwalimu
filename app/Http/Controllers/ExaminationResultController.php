@@ -1530,13 +1530,14 @@ class ExaminationResultController extends Controller
             $student_buffer[$student->id]['opt_credit'] = 0;
             $student_buffer[$student->id]['opt_prog'] = 0;
             $student_buffer[$student->id]['opt_prog_status'] = true;
-
-               # code...
-               return $results;
             
 
 
-            foreach($results as $key=>$result){          
+            foreach($results as $key=>$result){   
+               
+                  if ($result->module_assignment_id == 3) {
+                     return $result;
+                  }
               
                     $optional_programs = ProgramModuleAssignment::whereHas('optedStudents',function($query) use($student){
                       $query->where('student_id',$student->id);
