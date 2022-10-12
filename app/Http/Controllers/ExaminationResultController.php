@@ -1060,7 +1060,17 @@ class ExaminationResultController extends Controller
                 $total_credit += $core_programs->module->credit;
                }
             
-               return $annual_credit."<br>".$total_credit;
+               $student_buffer[$student->id]['opt_credit'] = 0;
+               $student_buffer[$student->id]['opt_prog'] = 0;
+               $student_buffer[$student->id]['opt_prog_status'] = true;
+
+               $optional_programs = ProgramModuleAssignment::whereHas('optedStudents',function($query) use($student){
+                  $query->where('student_id',$student->id);
+                    })->whereHas('moduleAssignments', function($query) use($module_id){
+                     $query->where('id',$module_id);
+                       })->with(['module'])->where('study_academic_year_id',$assignment->study_academic_year_id)->where('year_of_study',$assignment->programModuleAssignment->year_of_study)->where('semester_id',$request->get('semester_id'))->where('category','OPTIONAL')->first();
+
+               return $optional_programs;        
 
             
           
