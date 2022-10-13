@@ -2440,7 +2440,7 @@ class ExaminationResultController extends Controller
           }
 
           $data = ResultPublication::whereHas('semester', function($query) use($semester) {
-            $query->where((strtoupper(DB::raw('name'))), Util::stripSpacesUpper('Semester 2'));
+            $query->where('name', $semester->id);
           })->where('study_academic_year_id', $assign->study_academic_year_id)->where('nta_level_id', $campus_program->program->ntaLevel)->where('campus_id', $assign->programModuleAssignment->campus_program_id)->whereIn('status', ['UNPUBLISHED','PUBLISHED'])->first();
 
          return $data;
