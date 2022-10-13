@@ -2242,7 +2242,6 @@ class ExaminationResultController extends Controller
             $student_buffer[$student->id]['opt_prog'] = 0;
             $student_buffer[$student->id]['opt_prog_status'] = true;
             
-return $elective_policy->number_of_options;
 
             foreach($results as $key=>$result){   
                
@@ -2422,6 +2421,7 @@ return $elective_policy->number_of_options;
                           }
 
             }
+            return $student_buffer[$student->id]['opt_credit'];
           }
           
           foreach ($annual_module_assignments as $assign) {
