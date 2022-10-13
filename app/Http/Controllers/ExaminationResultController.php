@@ -2439,22 +2439,24 @@ class ExaminationResultController extends Controller
                 $annual_credit += $prog->module->credit;
           }
 
-          $data = DB::table('results_publications')->join('semesters','results_publications.semester_id','=','semesters.id')
-                  ->where('results_publications.semester_id', $semester->id)->where('results_publications.study_academic_year_id', $assign->study_academic_year_id)
-                  ->where('results_publications.nta_level_id', $campus_program->program->ntaLevel->id)->where('results_publications.campus_id', $campus_program->id)
-                  ->whereIn('results_publications.status', ['UNPUBLISHED','PUBLISHED'])
-                  ->select('semesters.name')
-                  ->first();
+          $data = DB::table('results_publications')
+          ->where('semester_id', $semester->id)
+          ->where('stud_academic_year', $assign->study_academic_year_id)
+          ->where('nta_level_id', $campus_program->program->ntaLevel->id)
+          ->whereIn('status', ['UNPUBLISHED','PUBLISHED'])
+          ->get();
 
-         return $data.'<br>'.$assign->study_academic_year_id;
+          return $data;
 
           foreach($annual_results as $key=>$result){
-                if(ResultPublications::whereHas('semester', function($query) use($semester) {
-                  $query->where(DB::raw(upper('name')), Util::stripSpacesUpper('Semester 2'));
-                })->where('study_academic_year_id', $assign->study_academic_year_id)->where('nta_level_id', $campus_program->program->ntaLevel)->where('campus_id', $assign->programModuleAssignment->campus_program_id)->whereIn('status', ['UNPUBLISHED','PUBLISHED'])->first()){
+                if(Util::stripSpacesUpper($semester->name) == Util::stripSpacesUpper('Semester 2')){
                   $optional_programs = ProgramModuleAssignment::whereHas('optedStudents',function($query) use($student){
                      $query->where('student_id',$student->id);
                        })->with(['module'])->where('study_academic_year_id',$assign->study_academic_year_id)->where('year_of_study',$assign->programModuleAssignment->year_of_study)->where('category','OPTIONAL')->get();
+                }else {
+                  $optional_programs = ProgramModuleAssignment::whereHas('optedStudents',function($query) use($student){
+                     $query->where('student_id',$student->id);
+                       })->with(['module'])->where('semester_id', $semester->id)->where('study_academic_year_id',$assign->study_academic_year_id)->where('year_of_study',$assign->programModuleAssignment->year_of_study)->where('category','OPTIONAL')->get();
                 }
                 
                if(!isset($student_buffer[$student->id]['results'])){
