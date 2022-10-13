@@ -2441,7 +2441,7 @@ class ExaminationResultController extends Controller
 
           $data = DB::table('results_publications')
           ->where('semester_id', $semester->id)
-          ->where('stud_academic_year', $assign->study_academic_year_id)
+          ->where('study_academic_year_id', $assign->study_academic_year_id)
           ->where('nta_level_id', $campus_program->program->ntaLevel->id)
           ->whereIn('status', ['UNPUBLISHED','PUBLISHED'])
           ->get();
