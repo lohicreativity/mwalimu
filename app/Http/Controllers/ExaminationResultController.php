@@ -2439,12 +2439,20 @@ class ExaminationResultController extends Controller
                 $annual_credit += $prog->module->credit;
           }
 
+          $data = ResultPublications::whereHas('semester', function($query) use($semester) {
+            $query->where(DB::raw(upper('name')), Util::stripSpacesUpper('Semester 2'));
+          })->where('study_academic_year_id', $assign->study_academic_year_id)->where('nta_level_id', $campus_program->program->ntaLevel)->where('campus_id', $assign->programModuleAssignment->campus_program_id)->whereIn('status', ['UNPUBLISHED','PUBLISHED'])->first();
+
+         return $data;
+
           foreach($annual_results as $key=>$result){
-                if(1){
+                if(ResultPublications::whereHas('semester', function($query) use($semester) {
+                  $query->where(DB::raw(upper('name')), Util::stripSpacesUpper('Semester 2'));
+                })->where('study_academic_year_id', $assign->study_academic_year_id)->where('nta_level_id', $campus_program->program->ntaLevel)->where('campus_id', $assign->programModuleAssignment->campus_program_id)->whereIn('status', ['UNPUBLISHED','PUBLISHED'])->first()){
                   $optional_programs = ProgramModuleAssignment::whereHas('optedStudents',function($query) use($student){
                      $query->where('student_id',$student->id);
-                       })->with(['module'])->where('study_academic_year_id',$assign->study_academic_year_id)->where('semester_id', $semester->id)->where('year_of_study',$assign->programModuleAssignment->year_of_study)->where('category','OPTIONAL')->get();
-                }else
+                       })->with(['module'])->where('study_academic_year_id',$assign->study_academic_year_id)->where('year_of_study',$assign->programModuleAssignment->year_of_study)->where('category','OPTIONAL')->get();
+                }
                 
                if(!isset($student_buffer[$student->id]['results'])){
                     $student_buffer[$student->id]['results'] = [];
@@ -2460,7 +2468,6 @@ class ExaminationResultController extends Controller
                }
             }
         }
-        return implode(',' , $student_buffer[$student->id]['annual_results']);
 
           foreach($student_buffer as $key=>$buffer){
                $pass_status = 'PASS';
