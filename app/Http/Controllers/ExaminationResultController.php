@@ -2441,12 +2441,12 @@ class ExaminationResultController extends Controller
 
           $data = DB::table('results_publications')->join('semesters','results_publications.semester_id','=','semesters.id')
                   ->where('results_publications.semester_id', $semester->id)->where('results_publications.study_academic_year_id', $assign->study_academic_year_id)
-                  ->where('results_publications.nta_level_id', $campus_program->program->ntaLevel->id)->where('results_publications.campus_id', $assign->programModuleAssignment->campus_program_id)
+                  ->where('results_publications.nta_level_id', $campus_program->program->ntaLevel->id)->where('results_publications.campus_id', $campus_program->id)
                   ->whereIn('results_publications.status', ['UNPUBLISHED','PUBLISHED'])
                   ->select(DB::raw('upper(semesters.name) as semname'))
                   ->get();
 
-         return $campus_program->program->ntaLevel->id;
+         return $data.'<br>'.$assign->study_academic_year_id;
 
           foreach($annual_results as $key=>$result){
                 if(ResultPublications::whereHas('semester', function($query) use($semester) {
