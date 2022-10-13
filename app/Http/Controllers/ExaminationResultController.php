@@ -2439,9 +2439,12 @@ class ExaminationResultController extends Controller
                 $annual_credit += $prog->module->credit;
           }
 
-          $data = ResultPublication::whereHas('semester', function($query) use($semester) {
-            $query->where('id', $semester->id);
-          })->where('study_academic_year_id', $assign->study_academic_year_id)->where('nta_level_id', $campus_program->program->ntaLevel)->where('campus_id', $assign->programModuleAssignment->campus_program_id)->whereIn('status', ['UNPUBLISHED','PUBLISHED'])->first();
+          $data = DB::table('results_publications')->join('semesters','results_publications.semester_id','=','semesters.id')
+                  ->where('semesters.id', $semester->id)->where('study_academic_year_id', $assign->study_academic_year_id)
+                  ->where('nta_level_id', $campus_program->program->ntaLevel)->where('campus_id', $assign->programModuleAssignment->campus_program_id)
+                  ->whereIn('status', ['UNPUBLISHED','PUBLISHED'])
+                  ->select(DB::raw('upper(semesters.name)'))
+                  ->first();
 
          return $data;
 
