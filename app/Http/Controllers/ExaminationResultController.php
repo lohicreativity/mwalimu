@@ -2421,7 +2421,6 @@ class ExaminationResultController extends Controller
                           }
 
             }
-            return $student_buffer[$student->id]['total_credit'];
           }
           
           foreach ($annual_module_assignments as $assign) {
