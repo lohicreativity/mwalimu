@@ -2425,7 +2425,6 @@ class ExaminationResultController extends Controller
           
           foreach ($annual_module_assignments as $assign) {
             $annual_results = ExaminationResult::with(['moduleAssignment.module'])->where('module_assignment_id',$assign->id)->where('student_id',$student->id)->get();
-            return $annual_results;
 
             if(Util::stripSpacesUpper($semester->name) == Util::stripSpacesUpper('Semester 2')){
 
@@ -2461,6 +2460,7 @@ class ExaminationResultController extends Controller
                }
             }
         }
+        return implode(',' , $student_buffer[$student->id]['annual_results']);
 
           foreach($student_buffer as $key=>$buffer){
                $pass_status = 'PASS';
