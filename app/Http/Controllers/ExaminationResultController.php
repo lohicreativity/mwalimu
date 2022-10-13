@@ -2440,21 +2440,16 @@ class ExaminationResultController extends Controller
           }
 
           $data = DB::table('results_publications')
-          ->where('semester_id', $semester->id)
           ->where('study_academic_year_id', $assign->study_academic_year_id)
           ->where('nta_level_id', $campus_program->program->ntaLevel->id)
           ->whereIn('status', ['UNPUBLISHED','PUBLISHED'])
-          ->first();
-
-          $semName = DB::table('semesters')
-          ->where('id', $data->semester_id)
-          ->select('name')
-          ->first();
+          ->count();
           
-          return $semName->name;
+          return $data;
+          
 
           foreach($annual_results as $key=>$result){
-                if(Util::stripSpacesUpper($semester->name) == Util::stripSpacesUpper('Semester 2')){
+                if(Util::stripSpacesUpper($semName->name) == Util::stripSpacesUpper('Semester 2')){
                   $optional_programs = ProgramModuleAssignment::whereHas('optedStudents',function($query) use($student){
                      $query->where('student_id',$student->id);
                        })->with(['module'])->where('study_academic_year_id',$assign->study_academic_year_id)->where('year_of_study',$assign->programModuleAssignment->year_of_study)->where('category','OPTIONAL')->get();
