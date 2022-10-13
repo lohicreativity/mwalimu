@@ -2444,9 +2444,14 @@ class ExaminationResultController extends Controller
           ->where('study_academic_year_id', $assign->study_academic_year_id)
           ->where('nta_level_id', $campus_program->program->ntaLevel->id)
           ->whereIn('status', ['UNPUBLISHED','PUBLISHED'])
-          ->get();
+          ->first();
 
-          return $data;
+          $semName = DB::table('semesters')
+          ->where('id', $data->semester_id)
+          ->select('name')
+          ->first();
+          
+          return $semName;
 
           foreach($annual_results as $key=>$result){
                 if(Util::stripSpacesUpper($semester->name) == Util::stripSpacesUpper('Semester 2')){
