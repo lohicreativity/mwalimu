@@ -2444,7 +2444,7 @@ class ExaminationResultController extends Controller
                   ->where('results_publications.nta_level_id', $campus_program->program->ntaLevel->id)->where('results_publications.campus_id', $campus_program->id)
                   ->whereIn('results_publications.status', ['UNPUBLISHED','PUBLISHED'])
                   ->select('semesters.name')
-                  ->get();
+                  ->first();
 
          return $data.'<br>'.$assign->study_academic_year_id;
 
