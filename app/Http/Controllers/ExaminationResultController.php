@@ -2513,7 +2513,7 @@ class ExaminationResultController extends Controller
                   //  $remark->gpa = Util::computeGPA($buffer['total_credit'],$buffer['results']);
                   //  $remark->point = Util::computeGPAPoints($buffer['total_credit'],$buffer['results']);
                   //  $remark->credit = $buffer['total_credit'];
-                  return Util::computeGPA($buffer['total_credit'],$buffer['results'])."<br><br>".$buffer['total_credit']."<br><br>".Util::computeGPAPoints($buffer['total_credit'],$buffer['results'])."<br><br>".$buffer['results'];
+                  return Util::computeGPA($buffer['total_credit'],$buffer['results'])."<br><br>".$buffer['total_credit']."<br><br>".Util::computeGPAPoints($buffer['total_credit'],$buffer['results'])."<br><br>".implode(", ", $buffer['results']);
                 }
                 $remark->year_of_study = $buffer['year_of_study'];
                 $remark->serialized = count($supp_exams) != 0? serialize(['supp_exams'=>$supp_exams,'carry_exams'=>$carry_exams,'retake_exams'=>$retake_exams]) : null;
