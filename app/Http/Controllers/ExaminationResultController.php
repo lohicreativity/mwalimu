@@ -2451,7 +2451,7 @@ class ExaminationResultController extends Controller
           ->select('name')
           ->first();
           
-          return $semName;
+          return $semName->name;
 
           foreach($annual_results as $key=>$result){
                 if(Util::stripSpacesUpper($semester->name) == Util::stripSpacesUpper('Semester 2')){
