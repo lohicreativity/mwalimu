@@ -2438,7 +2438,7 @@ class ExaminationResultController extends Controller
           foreach($core_programs as $prog){            
                 $annual_credit += $prog->module->credit;
           }
-            
+            return $annual_credit ;
           foreach($annual_results as $key=>$result){
                 
                 $optional_programs = ProgramModuleAssignment::whereHas('optedStudents',function($query) use($student){
