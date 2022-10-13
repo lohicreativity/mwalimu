@@ -2449,9 +2449,16 @@ class ExaminationResultController extends Controller
 
           foreach($annual_results as $key=>$result){
                 if($published_dataCount > 1){
-                  $optional_programs = ProgramModuleAssignment::whereHas('optedStudents',function($query) use($student){
-                     $query->where('student_id',$student->id);
-                       })->with(['module'])->where('study_academic_year_id',$assign->study_academic_year_id)->where('year_of_study',$assign->programModuleAssignment->year_of_study)->where('category','OPTIONAL')->get();
+                     if(Util::stripSpacesUpper($semester->name) == Util::stripSpacesUpper('Semester 2')) {
+                        $optional_programs = ProgramModuleAssignment::whereHas('optedStudents',function($query) use($student){
+                           $query->where('student_id',$student->id);
+                           })->with(['module'])->where('study_academic_year_id',$assign->study_academic_year_id)->where('year_of_study',$assign->programModuleAssignment->year_of_study)->where('category','OPTIONAL')->get();
+                     } else {
+                        $optional_programs = ProgramModuleAssignment::whereHas('optedStudents',function($query) use($student){
+                           $query->where('student_id',$student->id);
+                           })->with(['module'])->where('study_academic_year_id',$assign->study_academic_year_id)->where('year_of_study',$assign->programModuleAssignment->year_of_study)->where('category','OPTIONAL')->get();
+                     }
+                  
                 }else {
                   $optional_programs = ProgramModuleAssignment::whereHas('optedStudents',function($query) use($student){
                      $query->where('student_id',$student->id);
