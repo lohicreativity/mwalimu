@@ -2456,7 +2456,6 @@ class ExaminationResultController extends Controller
                    $student_buffer[$student->id]['opt_credit'] += $prog->module->credit;
                    $student_buffer[$student->id]['annual_credit'] = $student_buffer[$student->id]['opt_credit'] + $annual_credit;
                }
-return $student_buffer[$student->id]['annual_credit'];
             }
         }
 
@@ -2508,12 +2507,13 @@ return $student_buffer[$student->id]['annual_credit'];
                 $remark->student_id = $key;
                 $remark->semester_id = $request->get('semester_id');
                 $remark->remark = ($buffer['opt_prog_status'])? $pass_status : 'INCOMPLETE';
-                if($remark->remark == 'INCOMPLETE' || $remark->remark == 'INCOMPLETE' || $remark->remark == 'POSTPONED' || $remark->remark == 'SUPP'){
+                if($remark->remark == 'INCOMPLETE' || $remark->remark == 'POSTPONED' || $remark->remark == 'SUPP'){
                      $remark->gpa = null;
                 }else{
-                   $remark->gpa = Util::computeGPA($buffer['total_credit'],$buffer['results']);
-                   $remark->point = Util::computeGPAPoints($buffer['total_credit'],$buffer['results']);
-                   $remark->credit = $buffer['total_credit'];
+                  //  $remark->gpa = Util::computeGPA($buffer['total_credit'],$buffer['results']);
+                  //  $remark->point = Util::computeGPAPoints($buffer['total_credit'],$buffer['results']);
+                  //  $remark->credit = $buffer['total_credit'];
+                  return Util::computeGPA($buffer['total_credit'],$buffer['results'])."<br><br>".$buffer['total_credit']."<br><br>".Util::computeGPAPoints($buffer['total_credit'],$buffer['results'])."<br><br>".$buffer['results'];
                 }
                 $remark->year_of_study = $buffer['year_of_study'];
                 $remark->serialized = count($supp_exams) != 0? serialize(['supp_exams'=>$supp_exams,'carry_exams'=>$carry_exams,'retake_exams'=>$retake_exams]) : null;
