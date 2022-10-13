@@ -2230,7 +2230,7 @@ class ExaminationResultController extends Controller
               if(Util::stripSpacesUpper($semester->name) == Util::stripSpacesUpper('Semester 2')){          
                 $annual_credit += $prog->module->credit;
                 $count += 1;
-                }
+              }
 
               if($prog->semester_id == $request->get('semester_id')){
                  $total_credit += $prog->module->credit;
@@ -2238,7 +2238,7 @@ class ExaminationResultController extends Controller
                 }
             }
 
-            return $count.'<br><br>'.$total_count;
+            return $count;
 
             $student_buffer[$student->id]['opt_credit'] = 0;
             $student_buffer[$student->id]['opt_prog'] = 0;
