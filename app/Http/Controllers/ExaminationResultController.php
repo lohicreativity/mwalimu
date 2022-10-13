@@ -2443,7 +2443,7 @@ class ExaminationResultController extends Controller
                   ->where('results_publications.semester_id', $semester->id)->where('results_publications.study_academic_year_id', $assign->study_academic_year_id)
                   ->where('results_publications.nta_level_id', $campus_program->program->ntaLevel->id)->where('results_publications.campus_id', $campus_program->id)
                   ->whereIn('results_publications.status', ['UNPUBLISHED','PUBLISHED'])
-                  ->select(DB::raw('upper(semesters.name) as semname'))
+                  ->select('name')
                   ->get();
 
          return $data.'<br>'.$assign->study_academic_year_id;
