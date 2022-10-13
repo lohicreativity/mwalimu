@@ -2124,6 +2124,7 @@ class ExaminationResultController extends Controller
             $student = Student::findOrFail($student_id);
             $campus_program = CampusProgram::with(['program.ntaLevel'])->find($student->campus_program_id);
             $semester = Semester::find($request->get('semester_id'));
+            return $semester;
             $module_assignments = ModuleAssignment::whereHas('programModuleAssignment',function($query) use($request,$student,$yr_of_study){
                       $query->where('campus_program_id',$student->campus_program_id)->where('year_of_study',$yr_of_study);
                      })->whereHas('programModuleAssignment.campusProgram',function($query) use($campus_program){
