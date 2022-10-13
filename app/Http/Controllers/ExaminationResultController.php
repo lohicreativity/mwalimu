@@ -2425,6 +2425,7 @@ class ExaminationResultController extends Controller
           
           foreach ($annual_module_assignments as $assign) {
             $annual_results = ExaminationResult::with(['moduleAssignment.module'])->where('module_assignment_id',$assign->id)->where('student_id',$student->id)->get();
+            return $annual_results;
 
             if(Util::stripSpacesUpper($semester->name) == Util::stripSpacesUpper('Semester 2')){
 
@@ -2440,10 +2441,12 @@ class ExaminationResultController extends Controller
           }
 
           foreach($annual_results as $key=>$result){
+                if(1){
+                  $optional_programs = ProgramModuleAssignment::whereHas('optedStudents',function($query) use($student){
+                     $query->where('student_id',$student->id);
+                       })->with(['module'])->where('study_academic_year_id',$assign->study_academic_year_id)->where('semester_id', $semester->id)->where('year_of_study',$assign->programModuleAssignment->year_of_study)->where('category','OPTIONAL')->get();
+                }else
                 
-                $optional_programs = ProgramModuleAssignment::whereHas('optedStudents',function($query) use($student){
-                  $query->where('student_id',$student->id);
-                    })->with(['module'])->where('study_academic_year_id',$assign->study_academic_year_id)->where('semester_id', $semester->id)->where('year_of_study',$assign->programModuleAssignment->year_of_study)->where('category','OPTIONAL')->get();
                if(!isset($student_buffer[$student->id]['results'])){
                     $student_buffer[$student->id]['results'] = [];
                     $student_buffer[$student->id]['total_credit'] = 0;
