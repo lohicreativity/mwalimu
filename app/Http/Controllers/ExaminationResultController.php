@@ -2225,6 +2225,9 @@ class ExaminationResultController extends Controller
                 }
               }
             $total_credit = 0;
+
+            $count = 0;
+            $total_count = 0; 
             
             foreach($core_programs as $prog){
               if(Util::stripSpacesUpper($semester->name) == Util::stripSpacesUpper('Semester 2')){          
@@ -2238,7 +2241,7 @@ class ExaminationResultController extends Controller
                 }
             }
 
-            return $count;
+            return $count.'<br>'.$total_count;
 
             $student_buffer[$student->id]['opt_credit'] = 0;
             $student_buffer[$student->id]['opt_prog'] = 0;
