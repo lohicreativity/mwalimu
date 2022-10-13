@@ -2510,10 +2510,9 @@ class ExaminationResultController extends Controller
                 if($remark->remark == 'INCOMPLETE' || $remark->remark == 'POSTPONED' || $remark->remark == 'SUPP'){
                      $remark->gpa = null;
                 }else{
-                  //  $remark->gpa = Util::computeGPA($buffer['total_credit'],$buffer['results']);
-                  //  $remark->point = Util::computeGPAPoints($buffer['total_credit'],$buffer['results']);
-                  //  $remark->credit = $buffer['total_credit'];
-                  return Util::computeGPA($buffer['total_credit'],$buffer['results'])."<br><br>".$buffer['total_credit']."<br><br>".Util::computeGPAPoints($buffer['total_credit'],$buffer['results'])."<br><br>".implode(", ", $buffer['results']);
+                   $remark->gpa = Util::computeGPA($buffer['total_credit'],$buffer['results']);
+                   $remark->point = Util::computeGPAPoints($buffer['total_credit'],$buffer['results']);
+                   $remark->credit = $buffer['total_credit'];
                 }
                 $remark->year_of_study = $buffer['year_of_study'];
                 $remark->serialized = count($supp_exams) != 0? serialize(['supp_exams'=>$supp_exams,'carry_exams'=>$carry_exams,'retake_exams'=>$retake_exams]) : null;
@@ -2549,6 +2548,8 @@ class ExaminationResultController extends Controller
                          $rem->point = Util::computeGPAPoints($buffer['annual_credit'],$buffer['annual_results']);
                          $rem->credit = $buffer['annual_credit'];
                     }
+                    return Util::computeGPA($buffer['annual_credit'],$buffer['annual_results'])."<br><br>".$buffer['annual_credit']."<br><br>".Util::computeGPAPoints($buffer['annual_credit'],$buffer['annual_results'])."<br><br>".implode(", ", $buffer['annual_results']);
+
                     if($sem_remarks[0]->remark == 'POSTPONED' && $sem_remarks[(count($sem_remarks)-1)]->remark != 'POSTPONED'){
                                $rem->remark = $sem_remarks[(count($sem_remarks)-1)]->remark;
                             }
