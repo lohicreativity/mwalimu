@@ -2446,7 +2446,7 @@ class ExaminationResultController extends Controller
                   ->select(DB::raw('upper(semesters.name) as semname'))
                   ->get();
 
-         return $data;
+         return $campus_program->program->ntaLevel;
 
           foreach($annual_results as $key=>$result){
                 if(ResultPublications::whereHas('semester', function($query) use($semester) {
