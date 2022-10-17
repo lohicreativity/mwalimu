@@ -354,8 +354,6 @@ class ExaminationResultController extends Controller
                                             $processed_result->final_exam_remark = $assignment->programModuleAssignment->module_pass_mark <= $processed_result->supp_score? 'PASS' : 'RETAKE';
                                        }
                                   }
-
-                                  return "Supp section 1";
                                   
                           	}else{
                                   if($processed_result->retakable_id != null){
@@ -372,6 +370,8 @@ class ExaminationResultController extends Controller
                                 $processed_result->final_exam_remark = 'INCOMPLETE';
                             }
                           }
+
+                          return "Supp section 1";
                       }
                   }
 
