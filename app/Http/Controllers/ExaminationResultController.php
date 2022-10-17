@@ -2130,6 +2130,13 @@ class ExaminationResultController extends Controller
                     $query->where('program_id',$campus_program->program->id);
                   })->with('module.ntaLevel','programModuleAssignment.campusProgram.program','studyAcademicYear')->where('study_academic_year_id',$ac_yr_id)->get();
 
+            // check if semester one and two are processed
+            $published_dataCount = DB::table('results_publications')
+                  ->where('study_academic_year_id', $assign->study_academic_year_id)
+                  ->where('nta_level_id', $campus_program->program->ntaLevel->id)
+                  ->whereIn('status', ['UNPUBLISHED','PUBLISHED'])
+                  ->count();
+
              $annual_module_assignments = $module_assignments;
 
         
@@ -2427,7 +2434,7 @@ class ExaminationResultController extends Controller
           foreach ($annual_module_assignments as $assign) {
             $annual_results = ExaminationResult::with(['moduleAssignment.module'])->where('module_assignment_id',$assign->id)->where('student_id',$student->id)->get();
 
-            if(Util::stripSpacesUpper($semester->name) == Util::stripSpacesUpper('Semester 2')){
+            if($published_dataCount > 1){
 
               $core_programs = ProgramModuleAssignment::with(['module'])->where('study_academic_year_id',$assign->study_academic_year_id)->where('year_of_study',$assign->programModuleAssignment->year_of_study)->where('category','COMPULSORY')->where('campus_program_id',$assign->programModuleAssignment->campus_program_id)->get();
             }else{
@@ -2442,11 +2449,7 @@ class ExaminationResultController extends Controller
                 $annual_credit += $prog->module->credit;
           }
 
-         //  $published_dataCount = DB::table('results_publications')
-         //  ->where('study_academic_year_id', $assign->study_academic_year_id)
-         //  ->where('nta_level_id', $campus_program->program->ntaLevel->id)
-         //  ->whereIn('status', ['UNPUBLISHED','PUBLISHED'])
-         //  ->count();
+          
           
           
 
