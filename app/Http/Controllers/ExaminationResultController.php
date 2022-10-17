@@ -604,11 +604,8 @@ class ExaminationResultController extends Controller
 
                           
                           foreach($core_programs as $prog){
-
-                           return "Supp section";
-
                             
-                                 $ann_credit += $prog->module->credit;
+                              $ann_credit += $prog->module->credit;
 
                             if($prog->semester_id == $rem->semester_id){
                               $tot_credit += $prog->module->credit;
@@ -623,7 +620,8 @@ class ExaminationResultController extends Controller
                                     $query->where('student_id',$std->id);
                                       })->with(['module'])->where('study_academic_year_id',$assignment->study_academic_year_id)->where('year_of_study',$assignment->programModuleAssignment->year_of_study)->where('semester_id',$rem->semester_id)->where('category','OPTIONAL')->get();
 
-                                
+                                      return "Supp section";
+
                                  $stud_buffer[$key]['total_credit'] = $total_credit;
                                  $stud_buffer[$key]['opt_credit'] = 0;
                                  $stud_buffer[$key]['opt_prog_status'] = true;
