@@ -377,7 +377,6 @@ class ExaminationResultController extends Controller
                   if($result->exam_type == 'SUPP'){
                      $processed_result->total_score = $result->final_score;
                      $processed_result->grade = 'C';
-                     return "Supp section 1";
                   }
                   
                   if($result->exam_category == 'CARRY'){
@@ -385,7 +384,8 @@ class ExaminationResultController extends Controller
                   	 $processed_result->course_work_remark = null;
                   }
 
-                  
+                  return "Supp section 1";
+
                   $processed_result->final_processed_by_user_id = Auth::user()->id;
                   $processed_result->final_processed_at = now();
                   $processed_result->save();
