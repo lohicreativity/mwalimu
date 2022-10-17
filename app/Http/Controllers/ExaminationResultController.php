@@ -393,7 +393,6 @@ class ExaminationResultController extends Controller
 
                   $student_buffer[$student->id]['results'][] =  $processed_result;
 
-                  return "Supp section 1";
 
                   if($processed_result->final_exam_remark == 'RETAKE'){
                       		if($hist = RetakeHistory::where('study_academic_year_id',$request->get('study_academic_year_id'))->where('student_id',$student->id)->where('module_assignment_id',$assignment->id)->first()){
@@ -415,6 +414,7 @@ class ExaminationResultController extends Controller
                       	}
 
                       	if($processed_result->final_exam_remark == 'CARRY'){
+                           return "Supp section 1";
                       		if($hist = CarryHistory::where('study_academic_year_id',$request->get('study_academic_year_id'))->where('student_id',$student->id)->where('module_assignment_id',$assignment->id)->first()){
                       			$history = $hist;
                       		}else{
@@ -436,7 +436,7 @@ class ExaminationResultController extends Controller
                            
                            
                       	}
-
+                         return "Supp section 2";
       		  }
       	   }
           
