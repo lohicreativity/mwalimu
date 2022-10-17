@@ -326,8 +326,6 @@ class ExaminationResultController extends Controller
                       
                       if($request->get('semester_id') == 'SUPPLEMENTARY'){
 
-                        return "Supp section 1";
-
                         if($processed_result->supp_score){ 
                              if($processed_result->supp_score < $assignment->programModuleAssignment->module_pass_mark){
                                  $processed_result->grade = 'F';
