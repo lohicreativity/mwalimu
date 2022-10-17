@@ -581,7 +581,6 @@ class ExaminationResultController extends Controller
                         $query->where('program_id',$campus_program->program->id);
                           })->with('module.ntaLevel','programModuleAssignment.campusProgram.program','studyAcademicYear')->where('study_academic_year_id',$request->get('study_academic_year_id'))->get();
 
-                          return "Supp section";
 
                         $stud_buffer = [];
                         $ann_credit = 0;
@@ -601,6 +600,9 @@ class ExaminationResultController extends Controller
                             $core_programs = ProgramModuleAssignment::with(['module'])->where('study_academic_year_id',$assignment->study_academic_year_id)->where('year_of_study',$assignment->programModuleAssignment->year_of_study)->where('category','COMPULSORY')->where('campus_program_id',$assign->programModuleAssignment->campus_program_id)->get();
 
                           $tot_credit = 0;
+
+                          return "Supp section";
+
                           
                           foreach($core_programs as $prog){
                             
