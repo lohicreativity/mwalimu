@@ -2438,7 +2438,6 @@ class ExaminationResultController extends Controller
             ->count();
 
             if($published_dataCount > 1){
-
               $core_programs = ProgramModuleAssignment::with(['module'])->where('study_academic_year_id',$assign->study_academic_year_id)->where('year_of_study',$assign->programModuleAssignment->year_of_study)->where('category','COMPULSORY')->where('campus_program_id',$assign->programModuleAssignment->campus_program_id)->get();
             }else{
               $core_programs = ProgramModuleAssignment::with(['module'])->where('study_academic_year_id',$assign->study_academic_year_id)->where('year_of_study',$assign->programModuleAssignment->year_of_study)->where('semester_id',$semester->id)->where('category','COMPULSORY')->where('campus_program_id',$assign->programModuleAssignment->campus_program_id)->get();
@@ -2576,7 +2575,7 @@ class ExaminationResultController extends Controller
                          $rem->credit = $buffer['annual_credit'];
                     }
 
-                    return Util::computeGPA($buffer['annual_credit'],$buffer['annual_results'])."<br><br>".$buffer['annual_credit']."<br><br>".Util::computeGPAPoints($buffer['annual_credit'],$buffer['annual_results'])."<br><br>".implode(", ", $buffer['annual_results']);
+                  //   return Util::computeGPA($buffer['annual_credit'],$buffer['annual_results'])."<br><br>".$buffer['annual_credit']."<br><br>".Util::computeGPAPoints($buffer['annual_credit'],$buffer['annual_results'])."<br><br>".implode(", ", $buffer['annual_results']);
 
                     if($sem_remarks[0]->remark == 'POSTPONED' && $sem_remarks[(count($sem_remarks)-1)]->remark != 'POSTPONED'){
                                $rem->remark = $sem_remarks[(count($sem_remarks)-1)]->remark;
