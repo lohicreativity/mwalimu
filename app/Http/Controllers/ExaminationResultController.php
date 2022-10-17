@@ -384,6 +384,8 @@ class ExaminationResultController extends Controller
                   	 $processed_result->course_work_remark = null;
                   }
 
+                  return "Supp section";
+
 
                   $processed_result->final_processed_by_user_id = Auth::user()->id;
                   $processed_result->final_processed_at = now();
