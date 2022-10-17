@@ -325,6 +325,9 @@ class ExaminationResultController extends Controller
                       }
                       
                       if($request->get('semester_id') == 'SUPPLEMENTARY'){
+
+                        return "Supp section 1";
+
                         if($processed_result->supp_score){ 
                              if($processed_result->supp_score < $assignment->programModuleAssignment->module_pass_mark){
                                  $processed_result->grade = 'F';
@@ -556,10 +559,9 @@ class ExaminationResultController extends Controller
 
                  if($request->get('semester_id') == 'SUPPLEMENTARY'){
 
-                     return "Testing supplementary";
+                     return "Supp section 2";
 
                      $sem_remarks = SemesterRemark::with(['student'])->where('student_id',$key)->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',$buffer['year_of_study'])->get();
-
 
 
                      foreach ($sem_remarks as $rem) {
