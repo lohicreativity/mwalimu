@@ -620,7 +620,6 @@ class ExaminationResultController extends Controller
                                     $query->where('student_id',$std->id);
                                       })->with(['module'])->where('study_academic_year_id',$assignment->study_academic_year_id)->where('year_of_study',$assignment->programModuleAssignment->year_of_study)->where('semester_id',$rem->semester_id)->where('category','OPTIONAL')->get();
 
-                                      return "Supp section";
 
                                  $stud_buffer[$key]['total_credit'] = $total_credit;
                                  $stud_buffer[$key]['opt_credit'] = 0;
@@ -631,6 +630,7 @@ class ExaminationResultController extends Controller
                                  foreach($optional_programs as $prog){
                                      $stud_buffer[$key]['opt_credit'] += $prog->module->credit;
                                      $stud_buffer[$key]['opt_prog'] += 1; 
+                                     return "Supp section";
                                  }
                                  if($stud_buffer[$key]['opt_prog_status'] < $elective_policy->number_of_options){
                                     $stud_buffer[$key]['opt_prog_status'] = false;
