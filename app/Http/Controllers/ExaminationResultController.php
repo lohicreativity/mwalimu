@@ -571,9 +571,6 @@ class ExaminationResultController extends Controller
 
                  if($request->get('semester_id') == 'SUPPLEMENTARY'){
 
-                  return "Supp section";
-
-
                      $sem_remarks = SemesterRemark::with(['student'])->where('student_id',$key)->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',$buffer['year_of_study'])->get();
 
 
@@ -584,6 +581,7 @@ class ExaminationResultController extends Controller
                         $query->where('program_id',$campus_program->program->id);
                           })->with('module.ntaLevel','programModuleAssignment.campusProgram.program','studyAcademicYear')->where('study_academic_year_id',$request->get('study_academic_year_id'))->get();
 
+                          return "Supp section";
 
                         $stud_buffer = [];
                         $ann_credit = 0;
