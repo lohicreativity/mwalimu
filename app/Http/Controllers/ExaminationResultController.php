@@ -896,8 +896,10 @@ class ExaminationResultController extends Controller
                     $publication->published_by_user_id = Auth::user()->id;
                     $publication->save();
                  }
-                 return "Supp section 1";
             }
+            
+            return "Supp section 1";
+
 
         $process = new ExaminationProcessRecord;
         $process->study_academic_year_id = $request->get('study_academic_year_id');
