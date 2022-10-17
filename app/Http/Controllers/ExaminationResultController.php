@@ -439,9 +439,6 @@ class ExaminationResultController extends Controller
       		  }
       	   }
           
-
-            return "Supp section";
-
         
         foreach ($annual_module_assignments as $assign) {
           $annual_results = ExaminationResult::where('module_assignment_id',$assign->id)->get();
@@ -451,6 +448,7 @@ class ExaminationResultController extends Controller
               $core_programs = ProgramModuleAssignment::with(['module'])->where('study_academic_year_id',$assign->study_academic_year_id)->where('year_of_study',$assign->programModuleAssignment->year_of_study)->where('category','COMPULSORY')->where('campus_program_id',$assign->programModuleAssignment->campus_program_id)->get();
             }else{
               $core_programs = ProgramModuleAssignment::with(['module'])->where('study_academic_year_id',$assign->study_academic_year_id)->where('year_of_study',$assign->programModuleAssignment->year_of_study)->where('semester_id',$semester->id)->where('category','COMPULSORY')->where('campus_program_id',$assign->programModuleAssignment->campus_program_id)->get();
+              return "Supp section";
             }
           }else{
             $core_programs = ProgramModuleAssignment::with(['module'])->where('study_academic_year_id',$assign->study_academic_year_id)->where('year_of_study',$assign->programModuleAssignment->year_of_study)->where('category','COMPULSORY')->where('campus_program_id',$assign->programModuleAssignment->campus_program_id)->get();
