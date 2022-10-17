@@ -693,7 +693,6 @@ class ExaminationResultController extends Controller
                         $remark->save();
                      }  
 
-                     return "Supp section 1";
 
                       $sem_remarks = SemesterRemark::where('student_id',$key)->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',$buffer['year_of_study'])->get();
 
@@ -734,6 +733,9 @@ class ExaminationResultController extends Controller
                           $stud->save();
                         
                        }
+
+                       return "Supp section 1";
+
 
                        if($student_buffer[$key]['year_of_study'] == $student->year_of_study){
                       
