@@ -390,8 +390,6 @@ class ExaminationResultController extends Controller
                   $processed_result->final_processed_at = now();
                   $processed_result->save();
 
-                  return "Supp section";
-
 
                   $student_buffer[$student->id]['results'][] =  $processed_result;
 
@@ -437,6 +435,8 @@ class ExaminationResultController extends Controller
                            
                            
                       	}
+
+                         return "Supp section";
       		  }
       	   }
           
