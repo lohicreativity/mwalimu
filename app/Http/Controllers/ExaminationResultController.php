@@ -453,10 +453,8 @@ class ExaminationResultController extends Controller
             }
           }else{
             $core_programs = ProgramModuleAssignment::with(['module'])->where('study_academic_year_id',$assign->study_academic_year_id)->where('year_of_study',$assign->programModuleAssignment->year_of_study)->where('category','COMPULSORY')->where('campus_program_id',$assign->programModuleAssignment->campus_program_id)->get();
-            return "Supp section 1";
           }
 
-          return "Supp section 2";
 
            $annual_credit = 0; 
           foreach($core_programs as $prog){
@@ -564,6 +562,8 @@ class ExaminationResultController extends Controller
                         $remark->serialized = count($supp_exams) != 0? serialize(['supp_exams'=>$supp_exams,'carry_exams'=>$carry_exams,'retake_exams'=>$retake_exams]) : null;
                         $remark->save();
                  }
+
+                 return "Supp section 1";
 
                  if($request->get('semester_id') == 'SUPPLEMENTARY'){
 
