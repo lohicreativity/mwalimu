@@ -577,12 +577,13 @@ class ExaminationResultController extends Controller
                         $query->where('program_id',$campus_program->program->id);
                           })->with('module.ntaLevel','programModuleAssignment.campusProgram.program','studyAcademicYear')->where('study_academic_year_id',$request->get('study_academic_year_id'))->get();
 
-                          return "Supp section 1";
 
                         $stud_buffer = [];
                         $ann_credit = 0;
 
                         $elective_policy = ElectivePolicy::where('campus_program_id',$rem->student->campus_program_id)->where('study_academic_year_id',$rem->study_academic_year_id)->where('semester_id',$rem->semester_id)->first();
+                        return "Supp section 1";
+
 
                         foreach ($mod_assignments as $assignment) {
                           $results = ExaminationResult::whereHas('student.applicant',function($query) use($request){
