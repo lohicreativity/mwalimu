@@ -630,7 +630,6 @@ class ExaminationResultController extends Controller
                                  foreach($optional_programs as $prog){
                                      $stud_buffer[$key]['opt_credit'] += $prog->module->credit;
                                      $stud_buffer[$key]['opt_prog'] += 1; 
-                                     return "Supp section";
                                  }
                                  if($stud_buffer[$key]['opt_prog_status'] < $elective_policy->number_of_options){
                                     $stud_buffer[$key]['opt_prog_status'] = false;
@@ -641,6 +640,8 @@ class ExaminationResultController extends Controller
                         }
 
                         foreach($stud_buffer as $bufKey=>$buf){
+                           return "Supp section";
+
                              $sem_pass_status = 'PASS';
                              $supp_exams = [];
                              $retake_exams = [];
