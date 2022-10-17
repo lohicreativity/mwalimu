@@ -2567,7 +2567,8 @@ class ExaminationResultController extends Controller
                          $rem->point = Util::computeGPAPoints($buffer['annual_credit'],$buffer['annual_results']);
                          $rem->credit = $buffer['annual_credit'];
                     }
-                    return Util::computeGPA($buffer['annual_credit'],$buffer['annual_results'])."<br><br>".$buffer['annual_credit']."<br><br>".Util::computeGPAPoints($buffer['annual_credit'],$buffer['annual_results'])."<br><br>".implode(", ", $buffer['annual_results']);
+
+                  //   return Util::computeGPA($buffer['annual_credit'],$buffer['annual_results'])."<br><br>".$buffer['annual_credit']."<br><br>".Util::computeGPAPoints($buffer['annual_credit'],$buffer['annual_results'])."<br><br>".implode(", ", $buffer['annual_results']);
 
                     if($sem_remarks[0]->remark == 'POSTPONED' && $sem_remarks[(count($sem_remarks)-1)]->remark != 'POSTPONED'){
                                $rem->remark = $sem_remarks[(count($sem_remarks)-1)]->remark;
