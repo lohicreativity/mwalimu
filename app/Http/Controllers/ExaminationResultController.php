@@ -326,6 +326,8 @@ class ExaminationResultController extends Controller
                       
                       if($request->get('semester_id') == 'SUPPLEMENTARY'){
 
+                        
+
                         if($processed_result->supp_score){ 
                              if($processed_result->supp_score < $assignment->programModuleAssignment->module_pass_mark){
                                  $processed_result->grade = 'F';
@@ -336,6 +338,8 @@ class ExaminationResultController extends Controller
                                 $processed_result->point = 2;
                                 $processed_result->supp_remark = 'PASS';
                              }
+
+                             return "Supp section 1";
 
                           	if(Util::stripSpacesUpper($assignment->module->ntaLevel->name) == Util::stripSpacesUpper('NTA Level 7')){
                                   if($assignment->programModuleAssignment->year_of_study == 1){
@@ -556,8 +560,6 @@ class ExaminationResultController extends Controller
                  }
 
                  if($request->get('semester_id') == 'SUPPLEMENTARY'){
-
-                     return "Supp section 2";
 
                      $sem_remarks = SemesterRemark::with(['student'])->where('student_id',$key)->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',$buffer['year_of_study'])->get();
 
