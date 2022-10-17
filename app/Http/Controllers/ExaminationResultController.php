@@ -467,7 +467,6 @@ class ExaminationResultController extends Controller
 
             foreach($annual_results as $key=>$result){
 
-               return "Supp section";
 
             $student = Student::with(['campusProgram.program.ntaLevel'])->find($result->student_id);
                   
@@ -491,6 +490,7 @@ class ExaminationResultController extends Controller
                  foreach($optional_programs as $prog){
                      $student_buffer[$student->id]['opt_credit'] += $prog->module->credit;
                      $student_buffer[$student->id]['annual_credit'] = $student_buffer[$student->id]['opt_credit'] + $annual_credit;
+                     return "Supp section";
                  }
             }
         }
