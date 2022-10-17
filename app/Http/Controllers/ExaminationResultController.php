@@ -462,7 +462,6 @@ class ExaminationResultController extends Controller
                 }
              }else{
                     $annual_credit += $prog->module->credit;
-                    return "Supp section";
              }
           }
             
@@ -489,6 +488,8 @@ class ExaminationResultController extends Controller
                  foreach($optional_programs as $prog){
                      $student_buffer[$student->id]['opt_credit'] += $prog->module->credit;
                      $student_buffer[$student->id]['annual_credit'] = $student_buffer[$student->id]['opt_credit'] + $annual_credit;
+                     return "Supp section";
+
                  }
             }
         }
