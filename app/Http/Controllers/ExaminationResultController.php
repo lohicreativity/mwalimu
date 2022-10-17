@@ -389,9 +389,11 @@ class ExaminationResultController extends Controller
                   $processed_result->final_processed_at = now();
                   $processed_result->save();
 
-                  return "Supp section 1";
+
 
                   $student_buffer[$student->id]['results'][] =  $processed_result;
+
+                  return "Supp section 1";
 
                   if($processed_result->final_exam_remark == 'RETAKE'){
                       		if($hist = RetakeHistory::where('study_academic_year_id',$request->get('study_academic_year_id'))->where('student_id',$student->id)->where('module_assignment_id',$assignment->id)->first()){
