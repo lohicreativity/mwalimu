@@ -2143,10 +2143,7 @@ class ExaminationResultController extends Controller
      * Process student results
      */
     public function processStudentResults(Request $request, $module_id, $student_id, $ac_yr_id,$yr_of_study, $process_type = null)
-    {
-
-         return $module_id;
-         
+    {         
          try{
             DB::beginTransaction();
             $student = Student::findOrFail($student_id);
@@ -2371,6 +2368,8 @@ class ExaminationResultController extends Controller
                           if(Util::stripSpacesUpper($assignment->module->ntaLevel->name) == Util::stripSpacesUpper('NTA Level 7')){
                                   if($assignment->programModuleAssignment->year_of_study == 1){
                                        if($processed_result->retakable_id != null){
+
+                                             return $assignment->id."<br><br>".$module_id;
                                              $processed_result->final_exam_remark = $assignment->programModuleAssignment->module_pass_mark <= $processed_result->supp_score? 'PASS' : 'REPEAT';
                                           // if ($assignment->id == $processed_result->carryHistory->module_assignment_id) {
                                           //    $processed_result->final_exam_remark = 'CARRY';
