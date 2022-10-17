@@ -601,10 +601,12 @@ class ExaminationResultController extends Controller
 
                           $tot_credit = 0;
 
-                          return "Supp section";
 
                           
                           foreach($core_programs as $prog){
+
+                           return "Supp section";
+
                             
                                  $ann_credit += $prog->module->credit;
 
