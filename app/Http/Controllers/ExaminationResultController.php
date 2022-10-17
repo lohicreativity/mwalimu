@@ -464,9 +464,10 @@ class ExaminationResultController extends Controller
                     $annual_credit += $prog->module->credit;
              }
           }
+
+          return $annual_results;
             
             foreach($annual_results as $key=>$result){
-               return "Supp section";
 
             $student = Student::with(['campusProgram.program.ntaLevel'])->find($result->student_id);
                   
