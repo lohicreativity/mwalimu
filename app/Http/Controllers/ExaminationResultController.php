@@ -734,7 +734,6 @@ class ExaminationResultController extends Controller
                         
                        }
 
-                       return "Supp section 1";
 
 
                        if($student_buffer[$key]['year_of_study'] == $student->year_of_study){
@@ -779,6 +778,7 @@ class ExaminationResultController extends Controller
                                  $remark->save();
                               }
                             }
+                            return "Supp section 1";
                  }else{
                      $sem_remarks = SemesterRemark::where('student_id',$key)->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',$buffer['year_of_study'])->get();
                      //if(Util::stripSpacesUpper($semester->name) == Util::stripSpacesUpper('Semester 2')){
