@@ -906,9 +906,9 @@ class ExaminationResultController extends Controller
         $process->semester_id = $request->get('semester_id') == 'SUPPLEMENTARY'? 0 : $request->get('semester_id');
         $process->year_of_study = explode('_',$request->get('campus_program_id'))[2];
         $process->campus_program_id = explode('_',$request->get('campus_program_id'))[0];
-        return "Supp section 1";
         $process->save();
-    		DB::commit();
+    	  DB::commit();
+          return "Supp section 1";
 
         return redirect()->back()->with('message','Results processed successfully');
     }
