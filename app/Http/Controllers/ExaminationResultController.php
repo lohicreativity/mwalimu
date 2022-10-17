@@ -582,7 +582,6 @@ class ExaminationResultController extends Controller
                         $ann_credit = 0;
 
                         $elective_policy = ElectivePolicy::where('campus_program_id',$rem->student->campus_program_id)->where('study_academic_year_id',$rem->study_academic_year_id)->where('semester_id',$rem->semester_id)->first();
-                        return "Supp section 1";
 
 
                         foreach ($mod_assignments as $assignment) {
@@ -614,6 +613,8 @@ class ExaminationResultController extends Controller
                                   $optional_programs = ProgramModuleAssignment::whereHas('optedStudents',function($query) use($std){
                                     $query->where('student_id',$std->id);
                                       })->with(['module'])->where('study_academic_year_id',$assignment->study_academic_year_id)->where('year_of_study',$assignment->programModuleAssignment->year_of_study)->where('semester_id',$rem->semester_id)->where('category','OPTIONAL')->get();
+
+                                      return "Supp section 1";
                                 
                                  $stud_buffer[$key]['total_credit'] = $total_credit;
                                  $stud_buffer[$key]['opt_credit'] = 0;
