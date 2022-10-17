@@ -506,9 +506,6 @@ class ExaminationResultController extends Controller
                  $student = Student::with(['campusProgram.program.ntaLevel'])->find($key);
               if(isset($buffer['results'])){
                  foreach($buffer['results'] as $res){
-
-                  return "Supp section";
-
                     if($res->final_exam_remark == 'INCOMPLETE'){
                         $pass_status = 'INCOMPLETE';
                         break;
@@ -573,6 +570,9 @@ class ExaminationResultController extends Controller
 
 
                  if($request->get('semester_id') == 'SUPPLEMENTARY'){
+
+                  return "Supp section";
+
 
                      $sem_remarks = SemesterRemark::with(['student'])->where('student_id',$key)->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',$buffer['year_of_study'])->get();
 
