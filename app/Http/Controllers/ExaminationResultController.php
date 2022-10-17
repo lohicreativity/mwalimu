@@ -614,7 +614,6 @@ class ExaminationResultController extends Controller
                                     $query->where('student_id',$std->id);
                                       })->with(['module'])->where('study_academic_year_id',$assignment->study_academic_year_id)->where('year_of_study',$assignment->programModuleAssignment->year_of_study)->where('semester_id',$rem->semester_id)->where('category','OPTIONAL')->get();
 
-                                      return "Supp section 1";
                                 
                                  $stud_buffer[$key]['total_credit'] = $total_credit;
                                  $stud_buffer[$key]['opt_credit'] = 0;
@@ -693,6 +692,8 @@ class ExaminationResultController extends Controller
                         $remark->serialized = count($supp_exams) != 0? serialize(['supp_exams'=>$supp_exams,'carry_exams'=>$carry_exams,'retake_exams'=>$retake_exams]) : null;
                         $remark->save();
                      }  
+
+                     return "Supp section 1";
 
                       $sem_remarks = SemesterRemark::where('student_id',$key)->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',$buffer['year_of_study'])->get();
 
