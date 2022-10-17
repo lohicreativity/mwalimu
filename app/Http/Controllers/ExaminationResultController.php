@@ -2144,6 +2144,8 @@ class ExaminationResultController extends Controller
      */
     public function processStudentResults(Request $request, $module_id, $student_id, $ac_yr_id,$yr_of_study, $process_type = null)
     {
+
+         return $module_id;
          
          try{
             DB::beginTransaction();
