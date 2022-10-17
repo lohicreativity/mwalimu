@@ -883,7 +883,6 @@ class ExaminationResultController extends Controller
                  }
 
                   
-                 return "Supp section 1";
 
                  if($pub = ResultPublication::where('study_academic_year_id',$request->get('study_academic_year_id'))->where('semester_id',$request->get('semester_id'))->where('nta_level_id',$campus_program->program->nta_level_id)->first()){
                     $publication = $pub;
@@ -897,7 +896,7 @@ class ExaminationResultController extends Controller
                     $publication->published_by_user_id = Auth::user()->id;
                     $publication->save();
                  }
-  
+                 return "Supp section 1";
             }
 
         $process = new ExaminationProcessRecord;
