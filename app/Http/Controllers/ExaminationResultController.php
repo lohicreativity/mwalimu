@@ -2469,7 +2469,7 @@ class ExaminationResultController extends Controller
                 }
 
 
-                  return $optional_programs;
+                  
                 
                if(!isset($student_buffer[$student->id]['results'])){
                     $student_buffer[$student->id]['results'] = [];
