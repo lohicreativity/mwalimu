@@ -436,12 +436,12 @@ class ExaminationResultController extends Controller
                            
                       	}
 
-                         return "Supp section";
       		  }
       	   }
           
 
-             
+            return "Supp section";
+
         
         foreach ($annual_module_assignments as $assign) {
           $annual_results = ExaminationResult::where('module_assignment_id',$assign->id)->get();
