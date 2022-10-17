@@ -563,9 +563,10 @@ class ExaminationResultController extends Controller
                         $remark->save();
                  }
 
-                 return "Supp section 1";
+
 
                  if($request->get('semester_id') == 'SUPPLEMENTARY'){
+                  return "Supp section 1";
 
                      $sem_remarks = SemesterRemark::with(['student'])->where('student_id',$key)->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',$buffer['year_of_study'])->get();
 
