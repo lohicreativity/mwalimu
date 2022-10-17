@@ -498,7 +498,6 @@ class ExaminationResultController extends Controller
         
         foreach($student_buffer as $key=>$buffer){
 
-         return "Supp section";
          
                  $pass_status = 'PASS';
                  $supp_exams = [];
@@ -507,6 +506,9 @@ class ExaminationResultController extends Controller
                  $student = Student::with(['campusProgram.program.ntaLevel'])->find($key);
               if(isset($buffer['results'])){
                  foreach($buffer['results'] as $res){
+
+                  return "Supp section";
+
                     if($res->final_exam_remark == 'INCOMPLETE'){
                         $pass_status = 'INCOMPLETE';
                         break;
