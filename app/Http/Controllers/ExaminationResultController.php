@@ -371,13 +371,13 @@ class ExaminationResultController extends Controller
                             }
                           }
 
-                          return "Supp section 1";
                       }
                   }
 
                   if($result->exam_type == 'SUPP'){
                      $processed_result->total_score = $result->final_score;
                      $processed_result->grade = 'C';
+                     return "Supp section 1";
                   }
                   
                   if($result->exam_category == 'CARRY'){
