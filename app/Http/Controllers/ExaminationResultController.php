@@ -371,7 +371,7 @@ class ExaminationResultController extends Controller
                             }
                           }
 
-                      }
+                     }
                   }
 
                   if($result->exam_type == 'SUPP'){
@@ -465,9 +465,9 @@ class ExaminationResultController extends Controller
              }
           }
 
-          return $annual_results;
-            
             foreach($annual_results as $key=>$result){
+
+               return "Supp section";
 
             $student = Student::with(['campusProgram.program.ntaLevel'])->find($result->student_id);
                   
