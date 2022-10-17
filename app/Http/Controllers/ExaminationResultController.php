@@ -493,10 +493,13 @@ class ExaminationResultController extends Controller
                  }
             }
 
-            return "Supp section";
+            
         }
         
         foreach($student_buffer as $key=>$buffer){
+
+         return "Supp section";
+         
                  $pass_status = 'PASS';
                  $supp_exams = [];
                  $retake_exams = [];
