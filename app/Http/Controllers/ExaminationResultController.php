@@ -2132,7 +2132,6 @@ class ExaminationResultController extends Controller
 
              $annual_module_assignments = $module_assignments;
 
-             return $annual_module_assignments;
         
               $module_assignments = ModuleAssignment::whereHas('programModuleAssignment',function($query) use($request,$student,$yr_of_study){
                     $query->where('campus_program_id',$student->campus_program_id)->where('year_of_study',$yr_of_study)->where('semester_id',$request->get('semester_id'));
@@ -2434,6 +2433,8 @@ class ExaminationResultController extends Controller
             }else{
               $core_programs = ProgramModuleAssignment::with(['module'])->where('study_academic_year_id',$assign->study_academic_year_id)->where('year_of_study',$assign->programModuleAssignment->year_of_study)->where('semester_id',$semester->id)->where('category','COMPULSORY')->where('campus_program_id',$assign->programModuleAssignment->campus_program_id)->get();
             }
+
+            return $core_programs;
       
           $annual_credit = 0;
           $student_buffer[$student->id]['opt_credit'] = 0;
@@ -2464,6 +2465,8 @@ class ExaminationResultController extends Controller
                $optional_programs = ProgramModuleAssignment::whereHas('optedStudents',function($query) use($student){
                   $query->where('student_id',$student->id);
                   })->with(['module'])->where('study_academic_year_id',$assign->study_academic_year_id)->where('year_of_study',$assign->programModuleAssignment->year_of_study)->where('category','OPTIONAL')->get();
+
+                  return $optional_programs;
                 
                if(!isset($student_buffer[$student->id]['results'])){
                     $student_buffer[$student->id]['results'] = [];
