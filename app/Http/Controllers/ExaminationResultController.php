@@ -2131,6 +2131,8 @@ class ExaminationResultController extends Controller
                   })->with('module.ntaLevel','programModuleAssignment.campusProgram.program','studyAcademicYear')->where('study_academic_year_id',$ac_yr_id)->get();
 
              $annual_module_assignments = $module_assignments;
+
+             return $annual_module_assignments;
         
               $module_assignments = ModuleAssignment::whereHas('programModuleAssignment',function($query) use($request,$student,$yr_of_study){
                     $query->where('campus_program_id',$student->campus_program_id)->where('year_of_study',$yr_of_study)->where('semester_id',$request->get('semester_id'));
