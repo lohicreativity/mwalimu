@@ -2144,10 +2144,8 @@ class ExaminationResultController extends Controller
     /**
      * Process student results
      */
-    public function processStudentResults(Request $request,$student_id, $ac_yr_id,$yr_of_study, $process_type = null)
+    public function processStudentResults(Request $request, $student_id, $ac_yr_id,$yr_of_study, $process_type = null)
     {         
-
-         return session('module_code_id');
          
          try{
             DB::beginTransaction();
@@ -2373,6 +2371,8 @@ class ExaminationResultController extends Controller
                           if(Util::stripSpacesUpper($assignment->module->ntaLevel->name) == Util::stripSpacesUpper('NTA Level 7')){
                                   if($assignment->programModuleAssignment->year_of_study == 1){
                                        if($processed_result->retakable_id != null){
+
+                                          return session('module_code_id');
 
                                              // if ($assignment->id == $module_id) {
                                              //    $processed_result->final_exam_remark = $assignment->programModuleAssignment->module_pass_mark <= $processed_result->supp_score? 'PASS' : 'REPEAT';
