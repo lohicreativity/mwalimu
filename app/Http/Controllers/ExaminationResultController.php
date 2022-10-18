@@ -1947,14 +1947,11 @@ class ExaminationResultController extends Controller
                      $result->final_remark = $module_assignment->programModuleAssignment->final_pass_score <= $result->final_score? 'PASS' : 'FAIL';
                   }
                   if($result->supp_score && $result->retakable_type == 'carry_history'){
-                     return $module_assignment->programModuleAssignment->module_pass_mark."<br><br>".$result->supp_score."<br><br><br><br>".$module_assignment;
-                     // $result->final_exam_remark = $module_assignment->programModuleAssignment->module_pass_score <= $result->supp_score? 'PASS' : 'REPEAT';
+                     $result->final_exam_remark = $module_assignment->programModuleAssignment->module_pass_mark <= $result->supp_score? 'PASS' : 'REPEAT';
                   } else if ($result->supp_score && $result->retakable_type == 'retake_history') {
-                     return "second";
-                     // $result->final_exam_remark = $module_assignment->programModuleAssignment->module_pass_score <= $result->supp_score? 'PASS' : 'RETAKE';
+                     $result->final_exam_remark = $module_assignment->programModuleAssignment->module_pass_mark <= $result->supp_score? 'PASS' : 'RETAKE';
                   } else if ($result->supp_score) {
-                     return "third";
-                     // $result->final_exam_remark = $module_assignment->programModuleAssignment->module_pass_score <= $result->supp_score? 'PASS' : 'FAIL';
+                     $result->final_exam_remark = $module_assignment->programModuleAssignment->module_pass_mark <= $result->supp_score? 'PASS' : 'FAIL';
                   }
                   $result->final_uploaded_at = now();
                   $result->uploaded_by_user_id = Auth::user()->id;
