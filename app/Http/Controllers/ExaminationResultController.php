@@ -2369,7 +2369,10 @@ class ExaminationResultController extends Controller
                                   if($assignment->programModuleAssignment->year_of_study == 1){
                                        if($processed_result->retakable_id != null){
 
-                                             return $assignment->id."<br><br>".$module_id;
+                                             if ($assignment->id == $module_id) {
+                                                $processed_result->final_exam_remark = $assignment->programModuleAssignment->module_pass_mark <= $processed_result->supp_score? 'PASS' : 'REPEAT';
+                                             }
+
                                              $processed_result->final_exam_remark = $assignment->programModuleAssignment->module_pass_mark <= $processed_result->supp_score? 'PASS' : 'REPEAT';
                                           // if ($assignment->id == $processed_result->carryHistory->module_assignment_id) {
                                           //    $processed_result->final_exam_remark = 'CARRY';
@@ -2377,10 +2380,10 @@ class ExaminationResultController extends Controller
                                           // } else {
                                           //    $processed_result->final_exam_remark = $assignment->programModuleAssignment->module_pass_mark <= $processed_result->supp_score? 'PASS' : 'REPEAT';
                                           // }
-                                       }else{
+                                       } else {
                                             $processed_result->final_exam_remark = $assignment->programModuleAssignment->module_pass_mark <= $processed_result->supp_score? 'PASS' : 'CARRY';
                                        }
-                                  }else{
+                                  } else {
                                        if($processed_result->retakable_id != null){
                                             $processed_result->final_exam_remark = $assignment->programModuleAssignment->module_pass_mark <= $processed_result->supp_score? 'PASS' : 'REPEAT';
                                        }else{
@@ -2388,7 +2391,7 @@ class ExaminationResultController extends Controller
                                        }
                                   }
                                   
-                            }else{
+                            } else {
                                   if($processed_result->retakable_id != null){
                                       $processed_result->final_exam_remark = $assignment->programModuleAssignment->module_pass_mark <= $processed_result->supp_score? 'PASS' : 'REPEAT';
                                   }else{
