@@ -1947,7 +1947,7 @@ class ExaminationResultController extends Controller
                      $result->final_remark = $module_assignment->programModuleAssignment->final_pass_score <= $result->final_score? 'PASS' : 'FAIL';
                   }
                   if($result->supp_score && $result->retakable_type == 'carry_history'){
-                     return "first";
+                     return $module_assignment->programModuleAssignment->module_pass_score."<br><br>".$result->supp_score;
                      // $result->final_exam_remark = $module_assignment->programModuleAssignment->module_pass_score <= $result->supp_score? 'PASS' : 'REPEAT';
                   } else if ($result->supp_score && $result->retakable_type == 'retake_history') {
                      return "second";
