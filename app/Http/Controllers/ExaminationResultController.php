@@ -2372,11 +2372,7 @@ class ExaminationResultController extends Controller
                                   if($assignment->programModuleAssignment->year_of_study == 1){
                                        if($processed_result->retakable_id != null){
 
-                                          return session('module_code_id');
-
-                                             // if ($assignment->id == $module_id) {
-                                             //    $processed_result->final_exam_remark = $assignment->programModuleAssignment->module_pass_mark <= $processed_result->supp_score? 'PASS' : 'REPEAT';
-                                             // }
+                                             
 
                                              $processed_result->final_exam_remark = $assignment->programModuleAssignment->module_pass_mark <= $processed_result->supp_score? 'PASS' : 'REPEAT';
                                           // if ($assignment->id == $processed_result->carryHistory->module_assignment_id) {
@@ -2397,9 +2393,15 @@ class ExaminationResultController extends Controller
                                   }
                                   
                             } else {
+
+
                                   if($processed_result->retakable_id != null){
-                                      $processed_result->final_exam_remark = $assignment->programModuleAssignment->module_pass_mark <= $processed_result->supp_score? 'PASS' : 'REPEAT';
-                                  }else{
+
+                                    if ($assignment->id == session('module_code_id')) {
+                                       $processed_result->final_exam_remark = $assignment->programModuleAssignment->module_pass_mark <= $processed_result->supp_score? 'PASS' : 'REPEAT';
+                                    }
+
+                                  } else {
                                       $processed_result->final_exam_remark = $assignment->programModuleAssignment->module_pass_mark <= $processed_result->supp_score? 'PASS' : 'RETAKE';
                                   }
                             }
