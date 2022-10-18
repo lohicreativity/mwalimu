@@ -1946,8 +1946,12 @@ class ExaminationResultController extends Controller
                   }else{
                      $result->final_remark = $module_assignment->programModuleAssignment->final_pass_score <= $result->final_score? 'PASS' : 'FAIL';
                   }
-                  if($result->supp_score){
-                     // $result->final_exam_remark = $module_assignment->programModuleAssignment->module_pass_score <= $result->supp_score? 'PASS' : 'FAIL';
+                  if($result->supp_score && $result->retakable_type == 'carry_history'){
+                     $result->final_exam_remark = $module_assignment->programModuleAssignment->module_pass_score <= $result->supp_score? 'PASS' : 'REPEAT';
+                  } else if ($result->supp_score && $result->retakable_type == 'retake_history') {
+                     $result->final_exam_remark = $module_assignment->programModuleAssignment->module_pass_score <= $result->supp_score? 'PASS' : 'RETAKE';
+                  } else if ($result->supp_score) {
+                     $result->final_exam_remark = $module_assignment->programModuleAssignment->module_pass_score <= $result->supp_score? 'PASS' : 'FAIL';
                   }
                   $result->final_uploaded_at = now();
                   $result->uploaded_by_user_id = Auth::user()->id;
