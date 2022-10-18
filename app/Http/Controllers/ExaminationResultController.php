@@ -1947,7 +1947,7 @@ class ExaminationResultController extends Controller
                      $result->final_remark = $module_assignment->programModuleAssignment->final_pass_score <= $result->final_score? 'PASS' : 'FAIL';
                   }
                   if($result->supp_score){
-                     $result->final_exam_remark = $module_assignment->programModuleAssignment->module_pass_score <= $result->supp_score? 'PASS' : 'FAIL';
+                     // $result->final_exam_remark = $module_assignment->programModuleAssignment->module_pass_score <= $result->supp_score? 'PASS' : 'FAIL';
                   }
                   $result->final_uploaded_at = now();
                   $result->uploaded_by_user_id = Auth::user()->id;
@@ -2007,7 +2007,7 @@ class ExaminationResultController extends Controller
                    $result->final_remark = $module_assignment->programModuleAssignment->final_pass_score <= $result->final_score? 'PASS' : 'FAIL';
                 }
                 if($result->supp_score){
-                  //  $result->final_exam_remark = $module_assignment->programModuleAssignment->module_pass_score <= $result->supp_score? 'PASS' : 'FAIL';
+                   $result->final_exam_remark = $module_assignment->programModuleAssignment->module_pass_score <= $result->supp_score? 'PASS' : 'FAIL';
                 }
                 $result->final_uploaded_at = now();
                 $result->uploaded_by_user_id = Auth::user()->id;
