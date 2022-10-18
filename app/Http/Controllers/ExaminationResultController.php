@@ -2011,7 +2011,7 @@ class ExaminationResultController extends Controller
                    $result->final_remark = $module_assignment->programModuleAssignment->final_pass_score <= $result->final_score? 'PASS' : 'FAIL';
                 }
                 if($result->supp_score){
-                   $result->final_exam_remark = $module_assignment->programModuleAssignment->module_pass_score <= $result->supp_score? 'PASS' : 'FAIL';
+                   $result->final_exam_remark = $module_assignment->programModuleAssignment->module_pass_mark <= $result->supp_score? 'PASS' : 'FAIL';
                 }
                 $result->final_uploaded_at = now();
                 $result->uploaded_by_user_id = Auth::user()->id;
@@ -2339,8 +2339,6 @@ class ExaminationResultController extends Controller
                         $processed_result->point = $grading_policy? $grading_policy->point : null;
 
                         if($processed_result->course_work_remark == 'FAIL' || $processed_result->final_remark == 'FAIL'){
-
-                           return $processed_result->final_exam_remark;
 
                            if($processed_result->supp_processed_at && $processed_result->final_exam_remark == 'CARRY') {
                               $processed_result->final_exam_remark = 'CARRY';
