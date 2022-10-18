@@ -2334,6 +2334,7 @@ class ExaminationResultController extends Controller
                         $processed_result->grade = $grading_policy? $grading_policy->grade : null;
                         $processed_result->point = $grading_policy? $grading_policy->point : null;
                         if($processed_result->course_work_remark == 'FAIL' || $processed_result->final_remark == 'FAIL'){
+
                            if($processed_result->supp_processed_at && $processed_result->final_exam_remark == 'CARRY') {
                               $processed_result->final_exam_remark = 'CARRY';
                               $processed_result->grade = 'F';
@@ -2368,7 +2369,7 @@ class ExaminationResultController extends Controller
                                   if($assignment->programModuleAssignment->year_of_study == 1){
                                        if($processed_result->retakable_id != null){
 
-                                             
+                                             return 123;
 
                                              $processed_result->final_exam_remark = $assignment->programModuleAssignment->module_pass_mark <= $processed_result->supp_score? 'PASS' : 'REPEAT';
                                           // if ($assignment->id == $processed_result->carryHistory->module_assignment_id) {
@@ -2390,6 +2391,7 @@ class ExaminationResultController extends Controller
                                   
                             } else {
 
+                                 return 987;
 
                                   if($processed_result->retakable_id != null){
 
