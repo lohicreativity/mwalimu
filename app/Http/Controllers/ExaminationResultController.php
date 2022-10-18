@@ -2016,6 +2016,8 @@ class ExaminationResultController extends Controller
               
                 DB::commit();
 
+                session(['module_code_id' => $request->get('module_assignment_id')]);
+
                 // return $this->processStudentResults($request,$student->id,$module_assignment->study_academic_year_id,$module_assignment->programModuleAssignment->year_of_study);
                //  $request->get('module_assignment_id').'/'.
                 if($request->get('supp_score')){
@@ -2144,6 +2146,9 @@ class ExaminationResultController extends Controller
      */
     public function processStudentResults(Request $request,$student_id, $ac_yr_id,$yr_of_study, $process_type = null)
     {         
+
+         return session('module_code_id');
+         
          try{
             DB::beginTransaction();
             $student = Student::findOrFail($student_id);
