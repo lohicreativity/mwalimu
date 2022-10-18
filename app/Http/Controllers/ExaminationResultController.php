@@ -1829,7 +1829,7 @@ class ExaminationResultController extends Controller
                     $process_type = null;
                 }
 
-                $this->processStudentResults($request, '', $student->id,$module_assignment->study_academic_year_id,$module_assignment->programModuleAssignment->year_of_study, $process_type);
+                $this->processStudentResults($request, $student->id,$module_assignment->study_academic_year_id,$module_assignment->programModuleAssignment->year_of_study, $process_type);
 
                 return redirect()->to('academic/results/'.$student->id.'/'.$module_assignment->study_academic_year_id.'/'.$module_assignment->programModuleAssignment->id.'/edit-student-results')->with('message','Results added successfully');
 
