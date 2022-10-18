@@ -2302,7 +2302,7 @@ class ExaminationResultController extends Controller
                     }
 
 
-
+                   return $processed_result;
                     
 
                     if($result->course_work_remark == 'INCOMPLETE' || $result->final_remark == 'INCOMPLETE' || $result->final_remark == 'POSTPONED'){
