@@ -267,7 +267,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 	Route::post('results/update-course-work-results',[CourseWorkResultController::class,'update']);
 	Route::get('results/{student_id}/{ac_yr_id}/{prog_id}/edit-student-results',[ExaminationResultController::class,'edit']);
 	Route::get('results/{student_id}/{ac_yr_id}/{yr_of_study}/{semester_id}/add-student-results',[ExaminationResultController::class,'create']);
-	Route::get('results/{module_id}/{student_id}/{ac_yr_id}/{yr_of_study}/process-student-results',[ExaminationResultController::class,'processStudentResults']);
+	Route::get('results/{student_id}/{ac_yr_id}/{yr_of_study}/process-student-results',[ExaminationResultController::class,'processStudentResults']);
 	Route::get('results/{module_id}/{student_id}/{ac_yr_id}/{yr_of_study}/process-student-examination-results',[ExaminationResultController::class,'updateStudentResults']);
 
 	Route::get('results/upload-module-results',[ExaminationResultController::class, 'uploadModuleResults']);

@@ -2019,9 +2019,9 @@ class ExaminationResultController extends Controller
                 // return $this->processStudentResults($request,$student->id,$module_assignment->study_academic_year_id,$module_assignment->programModuleAssignment->year_of_study);
                //  $request->get('module_assignment_id').'/'.
                 if($request->get('supp_score')){
-                    return redirect()->to('academic/results/'.$request->get('module_assignment_id').'/'.$request->get('student_id').'/'.$module_assignment->study_academic_year_id.'/'.$module_assignment->programModuleAssignment->year_of_study.'/process-student-results?semester_id='.$module_assignment->programModuleAssignment->semester_id.'&process_type=SUPP');
+                    return redirect()->to('academic/results/'.$request->get('student_id').'/'.$module_assignment->study_academic_year_id.'/'.$module_assignment->programModuleAssignment->year_of_study.'/process-student-results?semester_id='.$module_assignment->programModuleAssignment->semester_id.'&process_type=SUPP');
                 }else{
-                    return redirect()->to('academic/results/'.$request->get('module_assignment_id').'/'.$request->get('student_id').'/'.$module_assignment->study_academic_year_id.'/'.$module_assignment->programModuleAssignment->year_of_study.'/process-student-results?semester_id='.$module_assignment->programModuleAssignment->semester_id);
+                    return redirect()->to('academic/results/'.$request->get('student_id').'/'.$module_assignment->study_academic_year_id.'/'.$module_assignment->programModuleAssignment->year_of_study.'/process-student-results?semester_id='.$module_assignment->programModuleAssignment->semester_id);
                 }
                
 
@@ -2142,7 +2142,7 @@ class ExaminationResultController extends Controller
     /**
      * Process student results
      */
-    public function processStudentResults(Request $request, $module_id, $student_id, $ac_yr_id,$yr_of_study, $process_type = null)
+    public function processStudentResults(Request $request,$student_id, $ac_yr_id,$yr_of_study, $process_type = null)
     {         
          try{
             DB::beginTransaction();
@@ -2369,9 +2369,9 @@ class ExaminationResultController extends Controller
                                   if($assignment->programModuleAssignment->year_of_study == 1){
                                        if($processed_result->retakable_id != null){
 
-                                             if ($assignment->id == $module_id) {
-                                                $processed_result->final_exam_remark = $assignment->programModuleAssignment->module_pass_mark <= $processed_result->supp_score? 'PASS' : 'REPEAT';
-                                             }
+                                             // if ($assignment->id == $module_id) {
+                                             //    $processed_result->final_exam_remark = $assignment->programModuleAssignment->module_pass_mark <= $processed_result->supp_score? 'PASS' : 'REPEAT';
+                                             // }
 
                                              $processed_result->final_exam_remark = $assignment->programModuleAssignment->module_pass_mark <= $processed_result->supp_score? 'PASS' : 'REPEAT';
                                           // if ($assignment->id == $processed_result->carryHistory->module_assignment_id) {
