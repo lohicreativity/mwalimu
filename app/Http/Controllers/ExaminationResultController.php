@@ -2332,12 +2332,15 @@ class ExaminationResultController extends Controller
                       if($processed_result->course_work_remark == 'INCOMPLETE' || $processed_result->course_work_remark == 'POSTPONED'){
                           $processed_result->final_exam_remark = $processed_result->course_work_remark;
                       }
-                    }else{
-                      $processed_result->grade = $grading_policy? $grading_policy->grade : null;
+                    } else {
+
+                        $processed_result->grade = $grading_policy? $grading_policy->grade : null;
                         $processed_result->point = $grading_policy? $grading_policy->point : null;
                         if($processed_result->course_work_remark == 'FAIL' || $processed_result->final_remark == 'FAIL'){
 
+                              return "First section";
                            if ($processed_result->supp_processed_at && $processed_result->final_exam_remark == 'CARRY') {
+                              return "Second section";
                               $processed_result->final_exam_remark = 'CARRY';
                               $processed_result->grade = 'F';
                               $processed_result->point = 0;
@@ -2346,7 +2349,7 @@ class ExaminationResultController extends Controller
                               $processed_result->grade = 'F';
                               $processed_result->point = 0;
                            } elseif ($processed_result->supp_processed_at) { 
-
+                              return "Third section";
                               $processed_result->final_exam_remark = 'PASS';
                               $processed_result->grade = 'C';
                               $processed_result->point = 1;
@@ -2364,6 +2367,7 @@ class ExaminationResultController extends Controller
                            // $processed_result->point = 0;
 
                         }else{
+                           return "Fourth section";
                           $processed_result->final_exam_remark = $assignment->programModuleAssignment->module_pass_mark <= $processed_result->total_score? 'PASS' : 'FAIL';
                         }
 
