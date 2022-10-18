@@ -2297,12 +2297,10 @@ class ExaminationResultController extends Controller
                         
                     }elseif($result->carryHistory && isset($result->carryHistory->carrableResults[0])){
                         $processed_result = ExaminationResult::find($result->carryHistory->carrableResults[0]->id);
+                        return 123;
                     }else{
                         $processed_result = ExaminationResult::find($result->id);
                     }
-
-
-                   return $processed_result;
                     
 
                     if($result->course_work_remark == 'INCOMPLETE' || $result->final_remark == 'INCOMPLETE' || $result->final_remark == 'POSTPONED'){
