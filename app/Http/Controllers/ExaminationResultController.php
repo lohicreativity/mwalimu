@@ -2349,10 +2349,10 @@ class ExaminationResultController extends Controller
                               $processed_result->point = 0;
                               return 2;
                            } elseif ($processed_result->supp_processed_at) { 
-                              $processed_result->final_exam_remark = 'PASS';
-                              $processed_result->grade = 'C';
-                              $processed_result->point = 1;
-                              return 3;
+                              // $processed_result->final_exam_remark = 'PASS';
+                              // $processed_result->grade = 'C';
+                              // $processed_result->point = 1;
+                              // return 3;
                            } else  {
    
                               $processed_result->final_exam_remark = 'FAIL';
