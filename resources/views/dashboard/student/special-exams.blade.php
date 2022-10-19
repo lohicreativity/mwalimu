@@ -73,7 +73,21 @@
                   </div>
                 </div>
                 <div class="row">
-                @foreach($module_without_special as $assign)
+
+                @if($special_exam_requests)
+                    @foreach($special_exam_requests as $exam)
+                      @foreach($exam->exams as $ex)
+                      <div class="col-3">
+                              <div class="checkbox">
+                                <label>
+                                  {!! Form::checkbox('mod_assign_'.$ex->moduleAssignment->id,$ex->moduleAssignment->id, false, array('disabled')) !!}
+                                  {{ $ex->moduleAssignment->module->name }}
+                                </label>
+                              </div>
+                            </div>  
+                      @endforeach
+                    @endforeach
+                    @foreach($module_without_special as $assign)
                     @if(sizeof($opted_module) == 0 && $assign->programModuleAssignment->category == 'OPTIONAL')
                             <div class="col-3">
                               <div class="checkbox">
@@ -103,6 +117,8 @@
                             </div>
                           @endif 
                 @endforeach
+                @endif
+                
                 </div>
                 </div>
                 <div class="card-footer">
