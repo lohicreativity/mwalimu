@@ -127,12 +127,13 @@ class ModuleAssignmentController extends Controller
            'request'=>$request,
            'semesters'=>Semester::all(),
            'assignments'=>$staff? ModuleAssignment::whereHas('studyAcademicYear.moduleAssignments',function($query) use ($request){
-                  $query->where('id',$request->get('study_academic_year_id'))
-                  ->orderBy('created_at', 'desc');
+                  $query->where('id',$request->get('study_academic_year_id'));
+                //   ->orderBy('created_at', 'desc');
                 //   ->orderBy('semester_id', 'asc');
              })->with(['studyAcademicYear.academicYear','module','programModuleAssignment.campusProgram.program','programModuleAssignment.campusProgram.campus','programModuleAssignment.semester'])
              ->where('staff_id',$staff->id)
              ->where('confirmed',1)
+             ->orderBy('created_at', 'desc')
              ->paginate(20) : [],
         ];
 
