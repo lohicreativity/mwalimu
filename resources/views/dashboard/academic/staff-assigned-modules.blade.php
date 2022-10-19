@@ -103,7 +103,7 @@
                   </tbody>
                 </table>
                 <div class="ss-pagination-links">
-                {!! $assignments->render() !!}
+                {!! $assignments->appends($request->except('page'))->render() !!}
                 </div>
               </div>
               <!-- /.card-body -->
