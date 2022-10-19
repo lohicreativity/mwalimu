@@ -124,6 +124,7 @@ class ModuleAssignmentController extends Controller
            'study_academic_years'=>StudyAcademicYear::all(),
            'study_academic_year'=>$request->has('study_academic_year_id')? StudyAcademicYear::with('academicYear')->find($request->get('study_academic_year_id')) : null,
            'staff'=>$staff,
+           'request'=>$request,
            'semesters'=>Semester::all(),
            'assignments'=>$staff? ModuleAssignment::whereHas('studyAcademicYear',function($query) use ($request){
                   $query->where('id',$request->get('study_academic_year_id'));
