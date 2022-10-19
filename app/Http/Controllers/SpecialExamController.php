@@ -98,7 +98,7 @@ class SpecialExamController extends Controller
 
         $Special_exams = SpecialExamRequest::with(['exams.moduleAssignment.programModuleAssignment','exams.moduleAssignment.module'])->where('student_id',$student->id)->paginate(20);
 
-        $Special_exams_requested = SpecialExam::with(['exams.moduleAssignment.programModuleAssignment','exams.moduleAssignment.module'])->where('student_id',$student->id)->get();
+        $Special_exams_requested = SpecialExam::where('student_id',$student->id)->get();
 
         foreach ($Special_exams_requested as $value) {
             $specialExams[] = $value->module_assignment_id;
