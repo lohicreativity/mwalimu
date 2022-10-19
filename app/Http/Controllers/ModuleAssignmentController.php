@@ -130,7 +130,7 @@ class ModuleAssignmentController extends Controller
              })->with(['studyAcademicYear.academicYear','module','programModuleAssignment.campusProgram.program','programModuleAssignment.campusProgram.campus','programModuleAssignment.semester'])->where('staff_id',$staff->id)->where('confirmed',1)->latest()->paginate(40) : [],
         ];
 
-        return $data['assignments'];
+        // return $data['assignments'];
         return view('dashboard.academic.staff-assigned-modules',$data)->withTitle('Staff Assigned Modules');
     }
 
