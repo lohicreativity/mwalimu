@@ -100,7 +100,8 @@ class SpecialExamController extends Controller
            'second_semester_publish_status'=>$second_semester_publish_status,
            'module_assignments'=>ModuleAssignment::whereHas('programModuleAssignment',function($query) use($student){
                $query->where('semester_id',session('active_semester_id'))
-               ->where('campus_program_id',$student->campus_program_id);
+               ->where('campus_program_id',$student->campus_program_id)
+               ->where('year_of_study', $student->year_of_study);
            })->with(['module','programModuleAssignment'])
            ->where('study_academic_year_id',session('active_academic_year_id'))
            ->get(),
