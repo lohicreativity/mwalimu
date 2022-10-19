@@ -72,19 +72,19 @@ class SpecialExamController extends Controller
          ->where('results_publications.status', 'PUBLISHED')
          ->get();
 
-         $resultsProcessed = DB::table('examination_results')
-        ->join('module_assignments', 'examination_results.module_assignment_id', '=', 'module_assignments.id')
-        ->join('program_module_assignments', 'module_assignments.program_module_assignment_id', '=', 'program_module_assignments.id')
-        ->join('modules', 'module_assignments.module_id', '=', 'modules.id')
-        ->where('module_assignments.study_academic_year_id', session('active_academic_year_id'))
-        ->where('program_module_assignments.semester_id', session('active_semester_id'))
-        ->where('program_module_assignments.campus_program_id', $student->campus_program_id)
-        ->where('examination_results.final_processed_by_user_id', '<>', 0)
-        ->count();
+        //  $resultsProcessed = DB::table('examination_results')
+        // ->join('module_assignments', 'examination_results.module_assignment_id', '=', 'module_assignments.id')
+        // ->join('program_module_assignments', 'module_assignments.program_module_assignment_id', '=', 'program_module_assignments.id')
+        // ->join('modules', 'module_assignments.module_id', '=', 'modules.id')
+        // ->where('module_assignments.study_academic_year_id', session('active_academic_year_id'))
+        // ->where('program_module_assignments.semester_id', session('active_semester_id'))
+        // ->where('program_module_assignments.campus_program_id', $student->campus_program_id)
+        // ->where('examination_results.final_processed_by_user_id', '<>', 0)
+        // ->count();
 
-        if ($resultsProcessed) {
-            return redirect()->back()->with('error','Examinations phase is over');
-        }
+        // if ($resultsProcessed) {
+        //     return redirect()->back()->with('error','Examinations phase is over');
+        // }
 
         if (sizeof($suppExams) == 0 && sizeof($resultPublished) != 0) {
             return redirect()->back()->with('error','No modules to postpone');
