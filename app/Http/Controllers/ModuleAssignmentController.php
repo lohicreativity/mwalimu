@@ -131,7 +131,7 @@ class ModuleAssignmentController extends Controller
              })->with(['studyAcademicYear.academicYear','module','programModuleAssignment.campusProgram.program','programModuleAssignment.campusProgram.campus','programModuleAssignment.semester'])
              ->where('staff_id',$staff->id)
              ->where('confirmed',1)
-             ->whereHas('programModuleAssignment', function ($query) {
+             ->whereHas('programModuleAssignment', function ($query) use ($request) {
                 $query->where('id',$request->get('study_academic_year_id'))
                 ->orderBy('program_module_assignments.year_of_study', 'asc')
                 ->orderBy('program_module_assignments.semester_id', 'asc');
