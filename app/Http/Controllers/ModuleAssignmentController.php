@@ -130,11 +130,10 @@ class ModuleAssignmentController extends Controller
                   $query->where('id',$request->get('study_academic_year_id'));
              })->with(['studyAcademicYear.academicYear','module','programModuleAssignment.campusProgram.program','programModuleAssignment.campusProgram.campus','programModuleAssignment.semester'])
              ->where('staff_id',$staff->id)
-             ->where('confirmed',1)->sortBy([
-                ['program_module_assignments.year_of_study', 'asc'],
-                ['program_module_assignments.semester_id', 'asc'],
-                ])
-            ->paginate(20) : [],
+             ->orderBy('program_module_assignments.year_of_study', 'asc')
+             ->orderBy('program_module_assignments.semester_id', 'asc')
+             ->where('confirmed',1)
+             ->paginate(20) : [],
         ];
 
         // return $data['assignments'];
