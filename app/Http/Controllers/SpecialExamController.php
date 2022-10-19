@@ -117,7 +117,7 @@ class SpecialExamController extends Controller
             $query->where('semester_id',session('active_semester_id'))
             ->where('campus_program_id',$student->campus_program_id)
             ->where('year_of_study', $student->year_of_study);
-        })->with(['module','programModuleAssignment'])
+        })->with(['modul','programModuleAssignment'])
         ->where('study_academic_year_id',session('active_academic_year_id'))
         ->whereNotIn('id', $specialExams)
         ->get(),
