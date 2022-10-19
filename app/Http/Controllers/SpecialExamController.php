@@ -116,10 +116,10 @@ class SpecialExamController extends Controller
            'module_without_special' =>ModuleAssignment::whereHas('programModuleAssignment',function($query) use($student){
             $query->where('semester_id',session('active_semester_id'))
             ->where('campus_program_id',$student->campus_program_id)
-            ->where('year_of_stud', $student->year_of_study);
+            ->where('year_of_study', $student->year_of_study);
         })->with(['module','programModuleAssignment'])
         ->where('study_academic_year_id',session('active_academic_year_id'))
-        ->whereNotIn('id', $specialExams)
+        ->whereNotIn('module_assignments.id', $specialExams)
         ->get(),
            'opted_module'=>ModuleAssignment::whereHas('programModuleAssignment',function($query) use($student){
             $query->join('student_program_module_assignment', 'program_module_assignments.id', '=', 'student_program_module_assignment.program_module_assignment_id')
@@ -136,7 +136,7 @@ class SpecialExamController extends Controller
             'check_special_exam' => $check_special_exam
         ];
     
-        return $Special_exams_requested;
+        return $data['module_without_special'];
         return view('dashboard.student.special-exams',$data)->withTitle('Exam Postponement');
     }
 
