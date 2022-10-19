@@ -133,7 +133,7 @@ class ModuleAssignmentController extends Controller
              })->with(['studyAcademicYear.academicYear','module','programModuleAssignment.campusProgram.program','programModuleAssignment.campusProgram.campus','programModuleAssignment.semester'])
              ->where('staff_id',$staff->id)
              ->where('confirmed',1)
-             ->orderBy('created_at', 'desc')
+             ->latest()
              ->paginate(20) : [],
         ];
 
