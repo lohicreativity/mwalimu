@@ -3928,6 +3928,7 @@ class ExaminationResultController extends Controller
                ->count();
               
               $var_options = $num_options->pluck('number_of_options')->all();
+              return $var_options;
 
               $supp_publish_status = DB::table('results_publications')
               ->where('study_academic_year_id', $ac_yr_id)
