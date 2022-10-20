@@ -121,7 +121,7 @@ class ModuleAssignmentController extends Controller
                    $query->where('status','ACTIVE');
             }])->where('user_id',Auth::user()->id)->first();
 
-            return $staff->id;
+            return $request->get('study_academic_year_id');
         $data = [
            'study_academic_years'=>StudyAcademicYear::all(),
            'study_academic_year'=>$request->has('study_academic_year_id')? StudyAcademicYear::with('academicYear')->find($request->get('study_academic_year_id')) : null,
