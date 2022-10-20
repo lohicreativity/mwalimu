@@ -74,7 +74,7 @@
                 </div>
                 <div class="row">
 
-                  @if($special_exam_requests)
+                  @if(sizeof($special_exam_requests->data) != 0)
                     @foreach($special_exam_requests as $exam)
                       @foreach($exam->exams as $ex)
                         <div class="col-3">
