@@ -28,7 +28,7 @@ class RegistrationController extends Controller
      */
     public function create(Request $request)
     {
-        return 5;
+
     	$student = User::find(Auth::user()->id)->student()->with(['applicant','studentshipStatus','academicStatus','semesterRemarks','overallRemark'])->first();
       foreach($student->semesterRemarks as $rem){
           if($student->academicStatus->name == 'RETAKE'){
@@ -162,7 +162,6 @@ class RegistrationController extends Controller
 	                           return redirect()->back()->with('error','You cannot continue with registration because you have not paid sufficient tuition fee');
 	                        }
 						}else{
-                            return $tuition_fee_paid."<br><br>".$tuition_fee_invoice->amount."<br><br>".$fee_diff."first";
                             if($tuition_fee_paid < (0.6*($tuition_fee_invoice->amount + $fee_diff))){
 	                           return redirect()->back()->with('error','You cannot continue with registration because you have not paid sufficient tuition fee');
 	                        }
@@ -180,7 +179,6 @@ class RegistrationController extends Controller
 	                          return redirect()->back()->with('error','You cannot continue with registration because you have not paid sufficient tuition fee');
 	                       }
                        }else{
-                            return $tuition_fee_paid."<br><br>".$tuition_fee_invoice->amount."<br><br>".$fee_diff."second";
                        	   if($tuition_fee_paid < (0.6*($tuition_fee_invoice->amount+$fee_diff))){
 	                          return redirect()->back()->with('error','You cannot continue with registration because you have not paid sufficient tuition fee');
 	                       }
@@ -209,6 +207,7 @@ class RegistrationController extends Controller
 	              return redirect()->back()->with('error','You cannot continue with registration because you have not paid sufficient tuition fee');
 	           }
             }else{
+                return 6;
             	if($tuition_fee_paid < (0.6*$tuition_fee_invoice->amount)){
 	              return redirect()->back()->with('error','You cannot continue with registration because you have not paid sufficient tuition fee');
 	           }
