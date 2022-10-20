@@ -3949,7 +3949,7 @@ class ExaminationResultController extends Controller
             'missing_modules' => $missing_modules,
             'student'=>$student,
             'staff'=>User::find(Auth::user()->id)->staff,
-            'num_options' => $var_options ? null: $var_options[0],
+            'num_options' => (sizeof($var_options) == 0) ? null: $var_options[0],
             'opt'     => $opt,
             'supp_publish_status' => $supp_publish_status
          ];
