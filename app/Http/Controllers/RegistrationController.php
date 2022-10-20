@@ -114,8 +114,10 @@ class RegistrationController extends Controller
         if(!$misc_fee_invoice && $year_of_study != 1 && count($annual_remarks) != 0){
             return redirect()->back()->with('error','You have not requested for other fees control number');
         }
+        return $tuition_fee_invoice->control_no;
 
         $tuition_fee_paid = GatewayPayment::where('control_no',$tuition_fee_invoice->control_no)->sum('paid_amount');
+
 
         $misc_fee_paid = GatewayPayment::where('control_no',$misc_fee_invoice->control_no)->sum('paid_amount');
 		
