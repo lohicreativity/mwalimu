@@ -96,7 +96,7 @@ class SpecialExamController extends Controller
 
         $specialExams_count = SpecialExamRequest::with(['exams.moduleAssignment.programModuleAssignment','exams.moduleAssignment.module'])->where('student_id',$student->id)->count();
 
-        $Special_exams = SpecialExamRequest::with(['exams.moduleAssignment.programModuleAssignment','exams.moduleAssignment.module'])->where('student_id',$student->id)->paginate(20);
+        // $Special_exams = SpecialExamRequest::with(['exams.moduleAssignment.programModuleAssignment','exams.moduleAssignment.module'])->where('student_id',$student->id)->paginate(20);
 
         $Special_exams_requested = SpecialExam::where('student_id',$student->id)->get();
 
@@ -104,13 +104,13 @@ class SpecialExamController extends Controller
             foreach ($Special_exams_requested as $value) {
                 $specialExams[] = $value->module_assignment_id;
             }
-        }else {
+        } else {
             $specialExams[] = null;
         }
 
-        foreach ($Special_exams_requested as $value) {
-            $specialExams[] = $value->module_assignment_id;
-        }
+        // foreach ($Special_exams_requested as $value) {
+        //     $specialExams[] = $value->module_assignment_id;
+        // }
 
         $data =  [
            'second_semester_publish_status'=>$second_semester_publish_status,
