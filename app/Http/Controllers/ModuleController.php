@@ -89,7 +89,7 @@ class ModuleController extends Controller
            }
         }
 
-        return $request->has('course_work_based');
+        return $request->has('course_work_based_edit');
 
         (new ModuleAction)->update($request);
 

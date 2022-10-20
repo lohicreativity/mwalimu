@@ -325,11 +325,11 @@
                                    <div class="row">
                                     <div class="form-group">
                                         <div class="custom-control custom-radio">
-                                          <input class="custom-control-input" type="radio" id="customRadio3-{{ $module->id }}" name="course_work_based" value="1" @if($module->course_work_based == 1) checked="checked" @endif required>
+                                          <input class="custom-control-input" type="radio" id="customRadio3-{{ $module->id }}" name="course_work_based_edit" value="1" @if($module->course_work_based == 1) checked="checked" @endif required>
                                           <label for="customRadio3-{{ $module->id }}" class="custom-control-label">Coursework Based</label>
                                         </div>
                                         <div class="custom-control custom-radio">
-                                          <input class="custom-control-input" type="radio" id="customRadio4-{{ $module->id }}" name="course_work_based" value="0" @if($module->course_work_based == 0) checked="checked" @endif required>
+                                          <input class="custom-control-input" type="radio" id="customRadio4-{{ $module->id }}" name="course_work_based_edit" value="0" @if($module->course_work_based == 0) checked="checked" @endif required>
                                           <label for="customRadio4-{{ $module->id }}" class="custom-control-label">Non-Coursework Based</label>
                                         </div>
                                     </div>
