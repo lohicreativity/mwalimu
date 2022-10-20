@@ -153,7 +153,7 @@ class RegistrationController extends Controller
 				}else{
 					$new_fee_amount = $new_program_fee->amount_in_usd*$usd_currency->factor;
 				}
-				
+				return $fee_diff;
 				if($fee_diff > 0){
 					if(str_contains($semester->name,1)){
 						if($student->academicStatus->name == 'RETAKE'){
