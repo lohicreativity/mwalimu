@@ -94,11 +94,7 @@ class SpecialExamController extends Controller
             return redirect()->back()->with('error','You have postponed semester or year');
         }
 
-        $check_special_exam[] = null;
-
         $specialExams_count = SpecialExamRequest::with(['exams.moduleAssignment.programModuleAssignment','exams.moduleAssignment.module'])->where('student_id',$student->id)->count();
-
-        return $specialExams_count;
 
         $Special_exams = SpecialExamRequest::with(['exams.moduleAssignment.programModuleAssignment','exams.moduleAssignment.module'])->where('student_id',$student->id)->paginate(20);
 
@@ -145,7 +141,7 @@ class SpecialExamController extends Controller
             'student'=>$student,
             'request'=>$request,
             'suppExams'     => $suppExams,
-            'check_special_exam' => $check_special_exam
+            'specialExams_count' => $specialExams_count
         ];
 
         // return $data['special_exam_requests'];
