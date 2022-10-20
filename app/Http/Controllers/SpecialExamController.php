@@ -102,9 +102,7 @@ class SpecialExamController extends Controller
 
         // $specialExams[] = null;
 
-        if($Special_exams_requested) {
-
-            return $Special_exams_requested;
+        if(sizeof($Special_exams_requested) != 0) {
 
             foreach ($Special_exams_requested as $value) {
                 $specialExams[] = $value->module_assignment_id;
