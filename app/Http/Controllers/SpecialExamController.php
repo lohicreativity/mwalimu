@@ -138,17 +138,35 @@ class SpecialExamController extends Controller
             'suppExams'     => $suppExams,
             'specialExams_count' => $specialExams_count
         ];
+
+        } else {
+
+            $data =  [
+                'second_semester_publish_status'=>$second_semester_publish_status,
+                'module_assignments'=>ModuleAssignment::whereHas('programModuleAssignment',function($query) use($student){
+                    $query->where('semester_id',session('active_semester_id'))
+                    ->where('campus_program_id',$student->campus_program_id)
+                    ->where('year_of_study', $student->year_of_study);
+                })->with(['module','programModuleAssignment'])
+                ->where('study_academic_year_id',session('active_academic_year_id'))
+                ->get(),
+                'opted_module'=>ModuleAssignment::whereHas('programModuleAssignment',function($query) use($student){
+                 $query->join('student_program_module_assignment', 'program_module_assignments.id', '=', 'student_program_module_assignment.program_module_assignment_id')
+                 ->where('semester_id',session('active_semester_id'))
+                 ->where('student_program_module_assignment.student_id', '=', $student->id)
+                 ->where('campus_program_id',$student->campus_program_id);
+                 })->with(['module','programModuleAssignment'])
+                 ->where('study_academic_year_id',session('active_academic_year_id'))
+                 ->get(), 
+                 'special_exam_requests'=> $Special_exams,
+                 'student'=>$student,
+                 'request'=>$request,
+                 'suppExams'     => $suppExams,
+                 'specialExams_count' => $specialExams_count
+             ];
+     
+
         }
-
-        return $specialExams;
-
-        // foreach ($Special_exams_requested as $value) {
-        //     $specialExams[] = $value->module_assignment_id;
-        // }
-
-        
-
-        // return $data['module_without_special'];
     
         return view('dashboard.student.special-exams',$data)->withTitle('Exam Postponement');
     }
