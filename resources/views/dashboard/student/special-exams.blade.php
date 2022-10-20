@@ -74,81 +74,85 @@
                 </div>
                 <div class="row">
 
-                @if($special_exam_requests)
+                  @if($special_exam_requests)
                     @foreach($special_exam_requests as $exam)
                       @foreach($exam->exams as $ex)
-                      <div class="col-3">
-                              <div class="checkbox">
-                                <label>
-                                  {!! Form::checkbox('mod_assign_'.$ex->moduleAssignment->id,$ex->moduleAssignment->id, false, array('disabled')) !!}
-                                  {{ $ex->moduleAssignment->module->name }}
-                                </label>
-                              </div>
-                            </div>  
+                        <div class="col-3">
+                          <div class="checkbox">
+                            <label>
+                              {!! Form::checkbox('mod_assign_'.$ex->moduleAssignment->id,$ex->moduleAssignment->id, false, array('disabled')) !!}
+                              {{ $ex->moduleAssignment->module->name }}
+                            </label>
+                          </div>
+                        </div>  
                       @endforeach
                     @endforeach
+
                     @foreach($module_without_special as $assign)
-                    @if(sizeof($opted_module) == 0 && $assign->programModuleAssignment->category == 'OPTIONAL')
-                            <div class="col-3">
-                              <div class="checkbox">
-                                <label>
-                                  {!! Form::checkbox('mod_assign_'.$assign->id,$assign->id) !!}
-                                  {{ $assign->module->name }}
-                                </label>
-                              </div>
-                            </div>   
-                            @elseif($assign->programModuleAssignment->category == 'OPTIONAL' && $opted_module[0]->module_id == $assign->module_id)
-                            <div class="col-3">
-                              <div class="checkbox">
-                                <label>
-                                  {!! Form::checkbox('mod_assign_'.$assign->id,$assign->id) !!}
-                                  {{ $assign->module->name }}
-                                </label>
-                              </div>
-                            </div>
-                            @elseif($assign->programModuleAssignment->category == 'COMPULSORY')
-                            <div class="col-3">
-                              <div class="checkbox">
-                                <label>
-                                  {!! Form::checkbox('mod_assign_'.$assign->id,$assign->id) !!}
-                                  {{ $assign->module->name }}
-                                </label>
-                              </div>
-                            </div>
-                          @endif 
-                @endforeach
-                @else
-                @foreach($module_assignments as $assign)
-                  @if(sizeof($opted_module) == 0 && $assign->programModuleAssignment->category == 'OPTIONAL')
-                          <div class="col-3">
-                            <div class="checkbox">
-                              <label>
-                                {!! Form::checkbox('mod_assign_'.$assign->id,$assign->id) !!}
-                                {{ $assign->module->name }}
-                              </label>
-                            </div>
-                          </div>   
-                          @elseif($assign->programModuleAssignment->category == 'OPTIONAL' && $opted_module[0]->module_id == $assign->module_id)
-                          <div class="col-3">
-                            <div class="checkbox">
-                              <label>
-                                {!! Form::checkbox('mod_assign_'.$assign->id,$assign->id) !!}
-                                {{ $assign->module->name }}
-                              </label>
-                            </div>
+                      @if(sizeof($opted_module) == 0 && $assign->programModuleAssignment->category == 'OPTIONAL')
+                        <div class="col-3">
+                          <div class="checkbox">
+                            <label>
+                              {!! Form::checkbox('mod_assign_'.$assign->id,$assign->id) !!}
+                              {{ $assign->module->name }}
+                            </label>
                           </div>
-                          @elseif($assign->programModuleAssignment->category == 'COMPULSORY')
-                          <div class="col-3">
-                            <div class="checkbox">
-                              <label>
-                                {!! Form::checkbox('mod_assign_'.$assign->id,$assign->id) !!}
-                                {{ $assign->module->name }}
-                              </label>
-                            </div>
+                        </div>   
+                      @elseif($assign->programModuleAssignment->category == 'OPTIONAL' && $opted_module[0]->module_id == $assign->module_id)
+                        <div class="col-3">
+                          <div class="checkbox">
+                            <label>
+                              {!! Form::checkbox('mod_assign_'.$assign->id,$assign->id) !!}
+                              {{ $assign->module->name }}
+                            </label>
                           </div>
-                        @endif 
-                  @endforeach
-                @endif
+                        </div>
+                      @elseif($assign->programModuleAssignment->category == 'COMPULSORY')
+                        <div class="col-3">
+                          <div class="checkbox">
+                            <label>
+                              {!! Form::checkbox('mod_assign_'.$assign->id,$assign->id) !!}
+                              {{ $assign->module->name }}
+                            </label>
+                          </div>
+                        </div>
+                      @endif 
+                    @endforeach
+
+                  @else
+
+                    @foreach($module_assignments as $assign)
+                      @if(sizeof($opted_module) == 0 && $assign->programModuleAssignment->category == 'OPTIONAL')
+                              <div class="col-3">
+                                <div class="checkbox">
+                                  <label>
+                                    {!! Form::checkbox('mod_assign_'.$assign->id,$assign->id) !!}
+                                    {{ $assign->module->name }}
+                                  </label>
+                                </div>
+                              </div>   
+                              @elseif($assign->programModuleAssignment->category == 'OPTIONAL' && $opted_module[0]->module_id == $assign->module_id)
+                              <div class="col-3">
+                                <div class="checkbox">
+                                  <label>
+                                    {!! Form::checkbox('mod_assign_'.$assign->id,$assign->id) !!}
+                                    {{ $assign->module->name }}
+                                  </label>
+                                </div>
+                              </div>
+                              @elseif($assign->programModuleAssignment->category == 'COMPULSORY')
+                              <div class="col-3">
+                                <div class="checkbox">
+                                  <label>
+                                    {!! Form::checkbox('mod_assign_'.$assign->id,$assign->id) !!}
+                                    {{ $assign->module->name }}
+                                  </label>
+                                </div>
+                              </div>
+                            @endif 
+                      @endforeach
+                      
+                  @endif
                 
                 </div>
                 </div>

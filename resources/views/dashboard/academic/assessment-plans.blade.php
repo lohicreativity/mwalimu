@@ -28,7 +28,7 @@
               <li class="breadcrumb-item"><a href="#">Home</a></li>
               <li class="breadcrumb-item"><a href="{{ url('academic/staff-module-assignments') }}">{{ __('Module Assignment') }}</a></li>
               <li class="breadcrumb-item"><a href="{{ url('academic/staff-module-assignment/'.$module_assignment->id.'/results') }}">{{ __('Results') }}</a></li>
-              @if(count($course_work_components) != 0)<li class="breadcrumb-item active">{{ __('CA Components') }}</li> @endif
+              <li class="breadcrumb-item active">{{ __('CA Components') }}</li>
             </ol>
           </div>
         </div>
