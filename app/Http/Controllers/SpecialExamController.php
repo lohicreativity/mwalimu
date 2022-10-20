@@ -117,7 +117,7 @@ class SpecialExamController extends Controller
            })->with(['module','programModuleAssignment'])
            ->where('study_academic_year_id',session('active_academic_year_id'))
            ->get(),
-           'module_without_special' => sizeof($specialExams) == 0 ? ModuleAssignment::whereHas('programModuleAssignment',function($query) use($student){
+           'module_without_special' => !is_null($specialExams) ? ModuleAssignment::whereHas('programModuleAssignment',function($query) use($student){
             $query->where('semester_id',session('active_semester_id'))
             ->where('campus_program_id',$student->campus_program_id)
             ->where('year_of_study', $student->year_of_study);
