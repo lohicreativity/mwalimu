@@ -100,12 +100,12 @@ class SpecialExamController extends Controller
 
         $Special_exams_requested = SpecialExam::where('student_id',$student->id)->get();
 
+        $specialExams[] = null;
+
         if($Special_exams_requested) {
             foreach ($Special_exams_requested as $value) {
                 $specialExams[] = $value->module_assignment_id;
             }
-        } else {
-            $specialExams[] = 0;
         }
 
         // foreach ($Special_exams_requested as $value) {
