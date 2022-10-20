@@ -142,7 +142,7 @@ class ModuleAssignmentController extends Controller
             $query->where('id',$request->get('study_academic_year_id'))
             ->orderBy('year_of_study', 'desc')
             ->orderBy('semester_id', 'asc');
-       })->where('staff_id',$staff->id)
+       })->with(['studyAcademicYear.academicYear'])->where('staff_id',$staff->id)
        ->where('confirmed',1)->get();
         return view('dashboard.academic.staff-assigned-modules',$data)->withTitle('Staff Assigned Modules');
     }
