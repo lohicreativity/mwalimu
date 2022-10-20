@@ -89,9 +89,6 @@ class ModuleController extends Controller
            }
         }
 
-        return $request->get('course_work_based');
-
-
         (new ModuleAction)->update($request);
 
         return Util::requestResponse($request,'Module updated successfully');
