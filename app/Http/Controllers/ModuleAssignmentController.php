@@ -138,7 +138,7 @@ class ModuleAssignmentController extends Controller
              ->paginate(20) : [],
         ];
 
-        // return $data['assignments'];
+        return $data['assignments'];
         return view('dashboard.academic.staff-assigned-modules',$data)->withTitle('Staff Assigned Modules');
     }
 
