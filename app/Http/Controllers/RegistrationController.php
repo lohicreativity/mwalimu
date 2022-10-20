@@ -208,7 +208,7 @@ class RegistrationController extends Controller
 	              return redirect()->back()->with('error','You cannot continue with registration because you have not paid sufficient tuition fee');
 	           }
             }else{
-                return $tuition_fee_paid."<br><br>".(0.6*$tuition_fee_invoice->amount)."<br><br>".$tuition_fee_invoice->amount;
+                // return $tuition_fee_paid."<br><br>".(0.6*$tuition_fee_invoice->amount)."<br><br>".$tuition_fee_invoice->amount;
             	if($tuition_fee_paid < (0.6*$tuition_fee_invoice->amount)){
 	              return redirect()->back()->with('error','You cannot continue with registration because you have not paid sufficient tuition fee');
 	           }
