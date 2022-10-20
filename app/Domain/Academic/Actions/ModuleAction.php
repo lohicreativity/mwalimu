@@ -42,6 +42,7 @@ class ModuleAction implements ModuleInterface{
                 // $module->department_id = $request->get('department_id');
                 $module->nta_level_id = $request->get('nta_level_id');
                 $module->course_work_based = $request->has('course_work_based');
+                return $request->has('course_work_based');
                 if($request->hasFile('syllabus')){
                   $destination = SystemLocation::uploadsDirectory();
                   $request->file('syllabus')->move($destination, $request->file('syllabus')->getClientOriginalName());
