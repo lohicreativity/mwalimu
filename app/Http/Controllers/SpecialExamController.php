@@ -108,6 +108,8 @@ class SpecialExamController extends Controller
             }
         }
 
+        return $specialExams;
+
         // foreach ($Special_exams_requested as $value) {
         //     $specialExams[] = $value->module_assignment_id;
         // }
@@ -144,7 +146,7 @@ class SpecialExamController extends Controller
             'specialExams_count' => $specialExams_count
         ];
 
-        return $data['module_without_special'];
+        // return $data['module_without_special'];
     
         return view('dashboard.student.special-exams',$data)->withTitle('Exam Postponement');
     }
