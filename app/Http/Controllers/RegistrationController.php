@@ -98,7 +98,6 @@ class RegistrationController extends Controller
 			$query->where('payable_type','applicant')->where('applicable_type','academic_year')->where('applicable_id',session('active_academic_year_id'))->where('payable_id',$student->applicant_id);
 		})->first();
 
-        return $tuition_fee_invoice;
 
         if(!$tuition_fee_invoice && $year_of_study != 1 && count($annual_remarks) != 0){
             return redirect()->back()->with('error','You have not requested for tuition fee control number');
