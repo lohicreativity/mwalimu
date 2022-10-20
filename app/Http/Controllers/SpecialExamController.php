@@ -96,7 +96,9 @@ class SpecialExamController extends Controller
 
         $check_special_exam[] = null;
 
-        $specialExams[] = null;
+        $specialExams_count = SpecialExamRequest::with(['exams.moduleAssignment.programModuleAssignment','exams.moduleAssignment.module'])->where('student_id',$student->id)->count();
+
+        return $specialExams_count;
 
         $Special_exams = SpecialExamRequest::with(['exams.moduleAssignment.programModuleAssignment','exams.moduleAssignment.module'])->where('student_id',$student->id)->paginate(20);
 
