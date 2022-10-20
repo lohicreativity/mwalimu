@@ -157,11 +157,12 @@ class RegistrationController extends Controller
 				if($fee_diff > 0){
 					if(str_contains($semester->name,1)){
 						if($student->academicStatus->name == 'RETAKE'){
-                             if($tuition_fee_paid < (1*($tuition_fee_invoice->amount+$fee_diff))){
+                             if($tuition_fee_paid < (1*($tuition_fee_invoice->amount + $fee_diff))){
 	                           return redirect()->back()->with('error','You cannot continue with registration because you have not paid sufficient tuition fee');
 	                        }
 						}else{
-                            if($tuition_fee_paid < (0.6*($tuition_fee_invoice->amount+$fee_diff))){
+                            if($tuition_fee_paid < (0.6*($tuition_fee_invoice->amount + $fee_diff))){
+                                return $tuition_fee_paid."<br><br>".$tuition_fee_invoice->amount."<br><br>".$fee_diff;
 	                           return redirect()->back()->with('error','You cannot continue with registration because you have not paid sufficient tuition fee');
 	                        }
 						}
