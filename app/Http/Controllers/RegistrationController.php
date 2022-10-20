@@ -28,6 +28,7 @@ class RegistrationController extends Controller
      */
     public function create(Request $request)
     {
+        return 5;
     	$student = User::find(Auth::user()->id)->student()->with(['applicant','studentshipStatus','academicStatus','semesterRemarks','overallRemark'])->first();
       foreach($student->semesterRemarks as $rem){
           if($student->academicStatus->name == 'RETAKE'){
@@ -153,7 +154,7 @@ class RegistrationController extends Controller
 				}else{
 					$new_fee_amount = $new_program_fee->amount_in_usd*$usd_currency->factor;
 				}
-				return $fee_diff;
+
 				if($fee_diff > 0){
 					if(str_contains($semester->name,1)){
 						if($student->academicStatus->name == 'RETAKE'){
