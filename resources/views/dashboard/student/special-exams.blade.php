@@ -121,8 +121,6 @@
 
                   @else
 
-                  12345
-
                     @foreach($module_assignments as $assign)
                       @if(sizeof($opted_module) == 0 && $assign->programModuleAssignment->category == 'OPTIONAL')
                               <div class="col-3">
