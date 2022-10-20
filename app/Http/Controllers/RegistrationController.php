@@ -114,7 +114,6 @@ class RegistrationController extends Controller
         if(!$misc_fee_invoice && $year_of_study != 1 && count($annual_remarks) != 0){
             return redirect()->back()->with('error','You have not requested for other fees control number');
         }
-        return $tuition_fee_invoice->control_no;
 
         $tuition_fee_paid = GatewayPayment::where('control_no',$tuition_fee_invoice->control_no)->sum('paid_amount');
 
@@ -210,7 +209,7 @@ class RegistrationController extends Controller
 	              return redirect()->back()->with('error','You cannot continue with registration because you have not paid sufficient tuition fee');
 	           }
             }else{
-                // return $tuition_fee_paid."<br><br>".(0.6*$tuition_fee_invoice->amount)."<br><br>".$tuition_fee_invoice->amount;
+                return $tuition_fee_paid."<br><br>".(0.6*$tuition_fee_invoice->amount)."<br><br>".$tuition_fee_invoice->amount;
             	if($tuition_fee_paid < (0.6*$tuition_fee_invoice->amount)){
 	              return redirect()->back()->with('error','You cannot continue with registration because you have not paid sufficient tuition fee');
 	           }
