@@ -138,7 +138,12 @@ class ModuleAssignmentController extends Controller
              ->paginate(20) : [],
         ];
 
-        return $data['assignments'];
+        return ModuleAssignment::whereHas('studyAcademicYear.moduleAssignments',function($query) use ($request){
+            $query->where('id',$request->get('study_academic_year_id'))
+            ->orderBy('year_of_study', 'desc')
+            ->orderBy('semester_id', 'asc');
+       })->where('staff_id',$staff->id)
+       ->where('confirmed',1)->get();
         return view('dashboard.academic.staff-assigned-modules',$data)->withTitle('Staff Assigned Modules');
     }
 
