@@ -560,6 +560,7 @@ class AppealController extends Controller
     public function showAcademicYearResults(Request $request, $ac_yr_id, $yr_of_study)
     {
     	 $student = User::find(Auth::user()->id)->student;
+       return $ac_yr_id;
          $study_academic_year = StudyAcademicYear::with('academicYear')->find($ac_yr_id);
          $semesters = Semester::with(['remarks'=>function($query) use ($student, $ac_yr_id){
          	 $query->where('student_id',$student->id)->where('study_academic_year_id',$ac_yr_id);
