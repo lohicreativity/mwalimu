@@ -572,7 +572,7 @@ class AppealController extends Controller
          	 $query->where('study_academic_year_id',$ac_yr_id)->where('year_of_study',$yr_of_study);
          },'moduleAssignment.module'])->where('student_id',$student->id)->get();
 
-         return $results->moduleAssignment->programModuleAssignment->module->nta_level_id;
+         return $results->moduleAssignment->module->nta_level_id;
 
          $core_programs = ProgramModuleAssignment::with(['module'])->where('study_academic_year_id',$ac_yr_id)->where('year_of_study',$yr_of_study)->where('category','COMPULSORY')->where('campus_program_id',$student->campus_program_id)->get();
          $optional_programs = ProgramModuleAssignment::whereHas('students',function($query) use($student){
