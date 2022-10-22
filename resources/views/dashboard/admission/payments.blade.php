@@ -164,36 +164,45 @@
 
      @if($program_fee_invoice)
 
-     const progInterval =    $.ajax({
-      
+     const countReload = 0;
+
+     if (countReload == 0) {
+
+      const progInterval = setInterval(function(){
+
+      $.ajax({
         url:'/application/check-receipt?invoice_id={{ $program_fee_invoice->id }}',
         method:'GET'
       }).done(function(data){
         if(data.code == 200){
           clearInterval(progInterval);
           window.location.reload();
-          
+          countReload++;
         }
       });
+      },10000);
+      
+     }
+
+    //  const progInterval =    $.ajax({
+
+    //     url:'/application/check-receipt?invoice_id={{ $program_fee_invoice->id }}',
+    //     method:'GET'
+    //   }).done(function(data){
+    //     if(data.code == 200){
+    //       clearInterval(progInterval);
+    //       window.location.reload();
+    //       countReload++;
+          
+    //     }
+    //   });
 
 
 
 
        
 
-  //  const progInterval = setInterval(function(){
-
-  //     $.ajax({
-  //       url:'/application/check-receipt?invoice_id={{ $program_fee_invoice->id }}',
-  //       method:'GET'
-  //     }).done(function(data){
-  //       if(data.code == 200){
-  //         clearInterval(progInterval);
-  //         window.location.reload();
-          
-  //       }
-  //     });
-  //   },10000);
+  
   @endif
 
     @if($other_fee_invoice)
