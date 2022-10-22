@@ -31,6 +31,7 @@ class ProgramFeeController extends Controller
       $ac_year = date('Y',strtotime($application_window->end_date));
       $study_ac_yr = StudyAcademicYear::whereHas('academicYear',function($query) use($ac_year){
             $query->where('year','LIKE','%'.$ac_year.'/%');
+            
       })->first();
       if(!$study_ac_yr){
             return redirect()->back()->with('error','No corresponding academic year');
