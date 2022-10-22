@@ -171,7 +171,7 @@
 
      if (localStorage.getItem("countReload") == 0) {
 
-      const progInterval = setInterval(function(){
+      const progInterval = 
 
       $.ajax({
         url:'/application/check-receipt?invoice_id={{ $program_fee_invoice->id }}',
@@ -183,7 +183,7 @@
           localStorage.setItem("countReload", countReload + 1);
         }
       });
-      },10000);
+      
       
      }
 
@@ -200,6 +200,21 @@
     //     }
     //   });
 
+
+
+//     const progInterval = setInterval(function(){
+
+// $.ajax({
+//   url:'/application/check-receipt?invoice_id={{ $program_fee_invoice->id }}',
+//   method:'GET'
+// }).done(function(data){
+//   if(data.code == 200){
+//     clearInterval(progInterval);
+//     window.location.reload();
+//     localStorage.setItem("countReload", countReload + 1);
+//   }
+// });
+// },10000);
 
 
 
