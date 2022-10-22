@@ -164,9 +164,12 @@
 
      @if($program_fee_invoice)
 
-     const countReload = 0;
+     var countReload = 0;
+     localStorage.setItem("countReload", countReload);
 
-     if (countReload == 0) {
+    //  const countReload = 0;
+
+     if (localStorage.getItem("countReload") == 0) {
 
       const progInterval = setInterval(function(){
 
@@ -177,7 +180,7 @@
         if(data.code == 200){
           clearInterval(progInterval);
           window.location.reload();
-          countReload++;
+          localStorage.setItem("countReload", countReload + 1);
         }
       });
       },10000);
