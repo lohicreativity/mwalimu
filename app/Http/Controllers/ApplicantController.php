@@ -109,7 +109,6 @@ class ApplicantController extends Controller
         ->where('end_date','>=', implode('-', explode('-', now()->format('Y-m-d'))))
         ->where('status','INACTIVE')->latest()->first();
 
-        return $closed_window;
 
         if($closed_window){
             return redirect()->back()->with('error','Application window is not active');
