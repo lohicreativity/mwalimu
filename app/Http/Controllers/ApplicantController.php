@@ -88,7 +88,7 @@ class ApplicantController extends Controller
         $credentials = [
             'username'=>$request->get('index_number'),
             'password'=>$request->get('password'),
-			'status'=>'ACTIVE'
+			   'status'=>'ACTIVE'
         ];
 
         $campus = Campus::find($request->get('campus_id'));
