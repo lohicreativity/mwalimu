@@ -583,7 +583,7 @@ class AppealController extends Controller
          // if(count($optional_programs) == 0){
          // 	$optional_programs = ProgramModuleAssignment::with(['module'])->where('study_academic_year_id',$ac_yr_id)->where('year_of_study',$yr_of_study)->where('category','OPTIONAL')->get();
          // }
-          $unpublished = ResultPublication::where('study_academic_year_id',$ac_yr_id)->where('status','UNPUBLISHED')->get();
+          $unpublished = ResultPublication::where('study_academic_year_id',$ac_yr_id)->where('status','PUBLISHED')->get();
           return $unpublished;
 
          if($unpublished) {
