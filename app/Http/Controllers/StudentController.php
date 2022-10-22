@@ -604,16 +604,14 @@ class StudentController extends Controller
             
             if(str_contains($student->applicant->programLevel->name,'Bachelor')){
                $quality_assurance_fee = FeeAmount::whereHas('feeItem',function($query){
-                  $query->where('name','LIKE','%TCU%');
+                  $query->where('nam','LIKE','%TCU%');
                })->where('study_academic_year_id',$study_academic_year->id)->first();
 
-               return "First section";
             }else{
                $quality_assurance_fee = FeeAmount::whereHas('feeItem',function($query){
                   $query->where('name','LIKE','%NACTE%');
                })->where('study_academic_year_id',$study_academic_year->id)->first();
 
-               return "Second section";
             }
             
             $other_fees_tzs = FeeAmount::whereHas('feeItem',function($query){
