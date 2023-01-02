@@ -301,7 +301,7 @@
                                 N/A
                                 @endif  
                               @endif          
-                          </td>
+                            </td>
                             <td 
                               @if($result->final_remark == 'FAIL' && !$result->supp_processed_at) 
                               class="ss-custom-grey ss-center" 

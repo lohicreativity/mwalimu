@@ -272,11 +272,26 @@ class ExaminationResultController extends Controller
                   if($result->course_work_remark == 'INCOMPLETE' || $result->final_remark == 'INCOMPLETE' || $result->final_remark == 'POSTPONED'){
                       $processed_result->total_score = null;
                   }else{
-                    $processed_result->course_work_remark = $assignment->programModuleAssignment->course_work_pass_score <= $processed_result->course_work_score ? 'PASS' : 'FAIL';
+                     
+                  //   $processed_result->course_work_remark = $assignment->programModuleAssignment->course_work_pass_score <= $processed_result->course_work_score ? 'PASS' : 'FAIL';
 
-                    $processed_result->final_remark = $assignment->programModuleAssignment->final_pass_score <= $processed_result->final_score? 'PASS' : 'FAIL';
+                  //   $processed_result->final_remark = $assignment->programModuleAssignment->final_pass_score <= $processed_result->final_score? 'PASS' : 'FAIL';
 
-                  	$processed_result->total_score = round($result->course_work_score + $result->final_score);
+                  // 	$processed_result->total_score = round($result->course_work_score + $result->final_score);
+
+                     if ($assignment->module->course_work_based == 1) {
+                        $processed_result->course_work_remark = $assignment->programModuleAssignment->course_work_pass_score <= $processed_result->course_work_score ? 'PASS' : 'FAIL';
+
+                        $processed_result->final_remark = $assignment->programModuleAssignment->final_pass_score <= $processed_result->final_score? 'PASS' : 'FAIL';
+
+                        $processed_result->total_score = round($result->course_work_score + $result->final_score);
+                     } else {
+
+                        $processed_result->course_work_remark = 'N/A';
+                        $processed_result->final_remark = $assignment->programModuleAssignment->final_pass_score <= $processed_result->final_score? 'PASS' : 'FAIL';
+                        $processed_result->total_score = $result->final_score;
+
+                     }
                   }
 
                   $grading_policy = GradingPolicy::where('nta_level_id',$assignment->module->ntaLevel->id)
