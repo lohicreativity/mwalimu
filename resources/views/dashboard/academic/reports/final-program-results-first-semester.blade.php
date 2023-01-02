@@ -298,7 +298,7 @@
                                   {{ $result->course_work_score }} 
                                   @else - @endif
                                 @else
-                                N/A
+                                {{ $assignment->course_work_based }}
                                 @endif
                                 
                               @endif
