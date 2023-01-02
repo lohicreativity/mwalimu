@@ -286,7 +286,6 @@ class ExaminationResultController extends Controller
                   ->first();
     
                   if(!$grading_policy){
-                     return $assignment->module->name;
                      return redirect()->back()->with('error','Some programmes NTA level are missing grading policies');
                   }
                   
