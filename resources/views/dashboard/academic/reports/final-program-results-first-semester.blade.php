@@ -293,12 +293,12 @@
                               @if($result->supp_processed_at)
                               N/A
                               @else 
-                                @if($assignment->course_work_based == 1)
+                                @if($assignment->module->course_work_based == 1)
                                   @if($result->course_work_score) 
                                   {{ $result->course_work_score }} 
                                   @else - @endif
                                 @else
-                                {{ $assignment->course_work_based }}
+                                {{ $assignment->module->course_work_based }}
                                 @endif
                                 
                               @endif
