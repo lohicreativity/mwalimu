@@ -150,9 +150,10 @@ class ModuleAssignmentController extends Controller
             $policy = ExaminationPolicy::where('nta_level_id',$module_assignment->module->ntaLevel->id)->where('study_academic_year_id',$module_assignment->study_academic_year_id)->where('type',$module_assignment->programModuleAssignment->campusProgram->program->category)->first();
 
             $final_upload_status = false;
-             if(ExaminationResult::where('module_assignment_id',$module_assignment->id)->where('final_uploaded_at','!=',null)->count() != 0){
+
+            if(ExaminationResult::where('module_assignment_id',$module_assignment->id)->where('final_uploaded_at','!=',null)->count() != 0){
                 $final_upload_status = true;
-             }
+            }
             // $data = [
             //    'module_assignment'=>$module_assignment,
             //    'final_upload_status'=>$final_upload_status,
@@ -164,7 +165,7 @@ class ModuleAssignmentController extends Controller
             // return view('dashboard.academic.assessment-plans',$data)->withTitle('Module Assessment Plans');
 
             return $module_assignment->module->id;
-            
+
         }catch(\Exception $e){
            return redirect()->back()->with('error','Unable to get the resource specified in this request');
         }
