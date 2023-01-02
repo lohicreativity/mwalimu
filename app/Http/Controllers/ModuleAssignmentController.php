@@ -153,15 +153,18 @@ class ModuleAssignmentController extends Controller
              if(ExaminationResult::where('module_assignment_id',$module_assignment->id)->where('final_uploaded_at','!=',null)->count() != 0){
                 $final_upload_status = true;
              }
-            $data = [
-               'module_assignment'=>$module_assignment,
-               'final_upload_status'=>$final_upload_status,
-               'assessment_plans'=>AssessmentPlan::where('module_assignment_id',$id)->get(),
-               'course_work_components'=>CourseWorkComponent::where('module_assignment_id',$id)->get(),
-               'staff'=>User::find(Auth::user()->id)->staff,
-               'policy'=>$policy
-            ];
-            return view('dashboard.academic.assessment-plans',$data)->withTitle('Module Assessment Plans');
+            // $data = [
+            //    'module_assignment'=>$module_assignment,
+            //    'final_upload_status'=>$final_upload_status,
+            //    'assessment_plans'=>AssessmentPlan::where('module_assignment_id',$id)->get(),
+            //    'course_work_components'=>CourseWorkComponent::where('module_assignment_id',$id)->get(),
+            //    'staff'=>User::find(Auth::user()->id)->staff,
+            //    'policy'=>$policy
+            // ];
+            // return view('dashboard.academic.assessment-plans',$data)->withTitle('Module Assessment Plans');
+
+            return $module_assignment->module->id;
+            
         }catch(\Exception $e){
            return redirect()->back()->with('error','Unable to get the resource specified in this request');
         }
