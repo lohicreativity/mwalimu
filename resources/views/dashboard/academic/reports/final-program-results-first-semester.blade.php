@@ -293,6 +293,8 @@
                               @if($result->supp_processed_at)
                               N/A
                               @else 
+                                @if()
+                                @endif
                                 @if($result->course_work_score) 
                                 {{ $result->course_work_score }} 
                                 @else - @endif
