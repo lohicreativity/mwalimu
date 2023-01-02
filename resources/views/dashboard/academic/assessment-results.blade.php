@@ -75,18 +75,26 @@
                     {!! Form::label('','Assessment') !!}
                     <select name="assessment_plan_id" class="form-control" required>
                       <option value="">Select Assessment</option>
+                      
+                      @if($module->course_work_based == 0)
+                       <option value="FINAL_EXAM">Final Exam</option>
+                       @if($second_semester_publish_status)
+                        <option value="SUPPLEMENTARY">Supplementary Exam</option>
+                       @endif
+                      @endif
+
                       @if(!$final_upload_status)
-                      @foreach($module_assignment->assessmentPlans as $plan)
-                      <option value="{{ $plan->id }}">{{ $plan->name }}</option>
-                      @endforeach
+                        @foreach($module_assignment->assessmentPlans as $plan)
+                        <option value="{{ $plan->id }}">{{ $plan->name }}</option>
+                        @endforeach
                       @endif
                       @if($module_assignment->course_work_process_status == 'PROCESSED')
-                      @if(!$program_results_process_status)
-                      <option value="FINAL_EXAM">Final Exam</option>
-                      @endif
-                      @if($second_semester_publish_status)
-                      <option value="SUPPLEMENTARY">Supplementary Exam</option>
-                      @endif
+                        @if(!$program_results_process_status)
+                        <option value="FINAL_EXAM">Final Exam</option>
+                        @endif
+                        @if($second_semester_publish_status)
+                        <option value="SUPPLEMENTARY">Supplementary Exam</option>
+                        @endif
                       @endif
                     </select>
 
