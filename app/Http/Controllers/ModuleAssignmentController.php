@@ -165,7 +165,11 @@ class ModuleAssignmentController extends Controller
                'module' => Module::find($module_assignment->module->id)
             ];
 
-            return view('dashboard.academic.assessment-plans',$data)->withTitle('Module Assessment Plans');
+            if ($data['module']->course_work_based == 1) {
+                return view('dashboard.academic.assessment-plans',$data)->withTitle('Module Assessment Plans');
+            } else {
+                return redirect('academic/staff-module-assignment/'.$data['module_assignment']->id.'/results');
+            }
 
 
         }catch(\Exception $e){
