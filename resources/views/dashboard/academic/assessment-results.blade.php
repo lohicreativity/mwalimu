@@ -156,7 +156,8 @@
                     </a>
                     @endif
                 </p>
-                 <p>Students with Coursework: 
+                @if($module->course_work_based == 1)
+                <p>Students with Coursework: 
                     @if($students_with_coursework_count == 0)
                       {{ $students_with_coursework_count }}
                     @else 
@@ -174,6 +175,8 @@
                     </a>
                     @endif
                 </p>
+                @endif
+                 
                 
                  <p>Students with Final Marks: 
                     @if($students_with_final_marks_count == 0)
@@ -221,7 +224,7 @@
                   
                  {!! Form::open(['url'=>'academic/staff-module-assignment/process-course-work','class'=>'ss-form-processing']) !!}
 
-                @if(!$final_upload_status)
+                @if(!$final_upload_status && $module->course_work_based == 1)
                  {!! Form::input('hidden','module_assignment_id',$module_assignment->id) !!}
                  <div class="ss-form-controls">
                   <button type="submit" class="btn btn-primary">{{ __('Process Course Work') }}</button>
