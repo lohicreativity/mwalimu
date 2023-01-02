@@ -56,102 +56,105 @@
                 </ul>
               </div><!-- /.card-header -->
               <!-- form start -->
-              @if(count($course_work_components) == 0)
-               {!! Form::open(['url'=>'academic/course-work-component/store','class'=>'ss-form-processing']) !!}
-                <div class="card-body">
-                  <div class="row">
-                  <div class="form-group col-6">
-                      {!! Form::label('','Test(s)') !!}
-                      <select name="tests" class="form-control" required>
-                         @for($i = 0; $i <= 4; $i++)
-                         <option value="{{ $i }}" @if($i == 2) selected="selected" @endif @if($i == 1) disabled="disabled" @endif>{{ $i }}</option>
-                         @endfor
-                      </select>
-                   </div>
-                 </div>
-                 <div class="row">
-                   <div class="form-group col-6">
-                      {!! Form::label('','Assignment(s)') !!}
-                      <select name="assignments" class="form-control" required>
-                         @for($i = 0; $i <= 4; $i++)
-                         <option value="{{ $i }}">{{ $i }}</option>
-                         @endfor
-                      </select>
-                   </div>
-                 </div>
-                 <div class="row">
-                   <div class="form-group col-6">
-                      {!! Form::label('','Quiz(es)') !!}
-                      <select name="quizes" class="form-control" required>
-                         @for($i = 0; $i <= 4; $i++)
-                         <option value="{{ $i }}">{{ $i }}</option>
-                         @endfor
-                      </select>
-                   </div>
+              @if($module->course_work_based == 1)
+                @if(count($course_work_components) == 0)
+                {!! Form::open(['url'=>'academic/course-work-component/store','class'=>'ss-form-processing']) !!}
+                  <div class="card-body">
+                    <div class="row">
+                    <div class="form-group col-6">
+                        {!! Form::label('','Test(s)') !!}
+                        <select name="tests" class="form-control" required>
+                          @for($i = 0; $i <= 4; $i++)
+                          <option value="{{ $i }}" @if($i == 2) selected="selected" @endif @if($i == 1) disabled="disabled" @endif>{{ $i }}</option>
+                          @endfor
+                        </select>
+                    </div>
                   </div>
                   <div class="row">
-                   <div class="form-group col-6">
-                      {!! Form::label('','Portfolio(s)') !!}
-                      <select name="portfolios" class="form-control" required>
-                         @for($i = 0; $i <= 4; $i++)
-                         <option value="{{ $i }}">{{ $i }}</option>
-                         @endfor
-                      </select>
-                   </div>
+                    <div class="form-group col-6">
+                        {!! Form::label('','Assignment(s)') !!}
+                        <select name="assignments" class="form-control" required>
+                          @for($i = 0; $i <= 4; $i++)
+                          <option value="{{ $i }}">{{ $i }}</option>
+                          @endfor
+                        </select>
+                    </div>
                   </div>
-                </div>
-                <!-- /.card-body -->
-                {!! Form::input('hidden','module_assignment_id',$module_assignment->id) !!}
-
-                <div class="card-footer">
-                  <button type="submit" class="btn btn-primary">{{ __('Add Assessment Components') }}</button>
-                </div>
-              {!! Form::close() !!}
-              @elseif(count($course_work_components) != 0 && count($assessment_plans) == 0)
-              @php
-                  $name = [
-                     'placeholder'=>'Name',
-                     'class'=>'form-control',
-                     'disabled'=>true,
-                  ];
-
-                  $marks = [
-                     'placeholder'=>'Marks',
-                     'class'=>'form-control',
-                     'min'=>1,
-                     'steps'=>'any',
-                     'required'=>true
-                  ];
-              @endphp
-              {!! Form::open(['url'=>'academic/assessment-plan/store','class'=>'ss-form-processing']) !!}
-                <div class="card-body">
-                  @foreach($course_work_components as $component)
-                  @for($i = 1; $i <= $component->quantity; $i++)
                   <div class="row">
-                  <div class="form-group col-6">
-                    {!! Form::label('',$component->name.$i) !!}
-                    {!! Form::text('name_component_'.$component->id,$component->name.$i,$name) !!}
-
-                    {!! Form::input('hidden','name_'.$i.'_component_'.$component->id,$component->name.$i) !!}
-
-                    
+                    <div class="form-group col-6">
+                        {!! Form::label('','Quiz(es)') !!}
+                        <select name="quizes" class="form-control" required>
+                          @for($i = 0; $i <= 4; $i++)
+                          <option value="{{ $i }}">{{ $i }}</option>
+                          @endfor
+                        </select>
+                    </div>
+                    </div>
+                    <div class="row">
+                    <div class="form-group col-6">
+                        {!! Form::label('','Portfolio(s)') !!}
+                        <select name="portfolios" class="form-control" required>
+                          @for($i = 0; $i <= 4; $i++)
+                          <option value="{{ $i }}">{{ $i }}</option>
+                          @endfor
+                        </select>
+                    </div>
+                    </div>
                   </div>
-                  <div class="form-group col-6">
-                    {!! Form::label('','Marks') !!}
-                    {!! Form::input('number','marks_'.$i.'_component_'.$component->id,null,$marks) !!}
-                  </div>
-                  </div>
-                  @endfor
-                  @endforeach
-                </div>
-                <!-- /.card-body -->
-                {!! Form::input('hidden','module_assignment_id',$module_assignment->id) !!}
-                <div class="card-footer">
-                  <button type="submit" class="btn btn-primary">{{ __('Add Assessment Plan') }}</button>
-                </div>
-              {!! Form::close() !!}
+                  <!-- /.card-body -->
+                  {!! Form::input('hidden','module_assignment_id',$module_assignment->id) !!}
 
+                  <div class="card-footer">
+                    <button type="submit" class="btn btn-primary">{{ __('Add Assessment Components') }}</button>
+                  </div>
+                {!! Form::close() !!}
+                @elseif(count($course_work_components) != 0 && count($assessment_plans) == 0)
+                @php
+                    $name = [
+                      'placeholder'=>'Name',
+                      'class'=>'form-control',
+                      'disabled'=>true,
+                    ];
+
+                    $marks = [
+                      'placeholder'=>'Marks',
+                      'class'=>'form-control',
+                      'min'=>1,
+                      'steps'=>'any',
+                      'required'=>true
+                    ];
+                @endphp
+                {!! Form::open(['url'=>'academic/assessment-plan/store','class'=>'ss-form-processing']) !!}
+                  <div class="card-body">
+                    @foreach($course_work_components as $component)
+                    @for($i = 1; $i <= $component->quantity; $i++)
+                    <div class="row">
+                    <div class="form-group col-6">
+                      {!! Form::label('',$component->name.$i) !!}
+                      {!! Form::text('name_component_'.$component->id,$component->name.$i,$name) !!}
+
+                      {!! Form::input('hidden','name_'.$i.'_component_'.$component->id,$component->name.$i) !!}
+
+                      
+                    </div>
+                    <div class="form-group col-6">
+                      {!! Form::label('','Marks') !!}
+                      {!! Form::input('number','marks_'.$i.'_component_'.$component->id,null,$marks) !!}
+                    </div>
+                    </div>
+                    @endfor
+                    @endforeach
+                  </div>
+                  <!-- /.card-body -->
+                  {!! Form::input('hidden','module_assignment_id',$module_assignment->id) !!}
+                  <div class="card-footer">
+                    <button type="submit" class="btn btn-primary">{{ __('Add Assessment Plan') }}</button>
+                  </div>
+                {!! Form::close() !!}
+
+                @endif
               @endif
+              
             </div>
             <!-- /.card -->
 
