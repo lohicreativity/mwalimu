@@ -2947,7 +2947,6 @@ class ExaminationResultController extends Controller
                    return redirect()->back()->with('error','Results not processed');
                 }
 
-         return $module_assignments[0]->module->name."<br>".$module_assignments[0]->module->course_work_based;
         }else{
         	$module_assignments = ModuleAssignment::whereHas('programModuleAssignment',function($query) use($request){
                 $query->where('campus_program_id',explode('_',$request->get('campus_program_id'))[0])->where('year_of_study',explode('_',$request->get('campus_program_id'))[2]);
