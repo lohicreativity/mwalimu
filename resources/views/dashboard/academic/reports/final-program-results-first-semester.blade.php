@@ -293,15 +293,13 @@
                               @if($result->supp_processed_at)
                               N/A
                               @else 
-                                @foreach($module_assignments as $mod)
-                                  @if($mod->course_work_based == 1)
-                                    @if($result->course_work_score) 
-                                      {{ $result->course_work_score }} 
-                                    @else - @endif
-                                  @else 
-                                  N/A
-                                  @endif
-                                @endforeach
+                                @if($assignment->course_work_based == 1)
+                                  @if($result->course_work_score) 
+                                  {{ $result->course_work_score }} 
+                                  @else - @endif
+                                @else
+                                N/A
+                                @endif
                                 
                               @endif
                               
