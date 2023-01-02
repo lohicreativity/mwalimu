@@ -47,8 +47,12 @@
                 <ul class="nav nav-tabs">
                   <li class="nav-item"><a class="nav-link" href="{{ url('academic/module/'.$module_assignment->module_id.'/download-syllabus') }}">{{ __('Module Syllabus') }}</a></li>
                   <li class="nav-item"><a class="nav-link active" href="{{ url('academic/staff-module-assignment/'.$module_assignment->id.'/attendance') }}">{{ __('Attendance') }}</a></li>
-                  <li class="nav-item"><a class="nav-link" href="{{ url('academic/staff-module-assignment/'.$module_assignment->id.'/assessment-plans') }}">{{ __('CA Components') }}</a></li>
+                  @if($module->course_work_based == 1)
+                  <li class="nav-item"><a class="nav-link active" href="{{ url('academic/staff-module-assignment/'.$module_assignment->id.'/assessment-plans') }}">{{ __('CA Components') }}</a></li>
                   <li class="nav-item"><a class="nav-link" href="{{ url('academic/staff-module-assignment/'.$module_assignment->id.'/results') }}">{{ __('Results Management') }}</a></li>
+                  @else
+                  <li class="nav-item"><a class="nav-link active" href="{{ url('academic/staff-module-assignment/'.$module_assignment->id.'/results') }}">{{ __('Results Management') }}</a></li>
+                  @endif
                 </ul>
               </div><!-- /.card-header -->
               <!-- form start -->
