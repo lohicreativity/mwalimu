@@ -279,19 +279,13 @@ class ExaminationResultController extends Controller
                   	$processed_result->total_score = round($result->course_work_score + $result->final_score);
                   }
 
-                  // $grading_policy = GradingPolicy::where('nta_level_id',$assignment->module->ntaLevel->id)
-                  // ->where('study_academic_year_id',$assignment->studyAcademicYear->id)
-                  // ->where('min_score','<=',round($processed_result->total_score))
-                  // ->where('max_score','>=',round($processed_result->total_score))
-                  // ->first();
-
                   $grading_policy = GradingPolicy::where('nta_level_id',$assignment->module->ntaLevel->id)
                   ->where('study_academic_year_id',$assignment->studyAcademicYear->id)
                   ->where('min_score','<=',round($processed_result->total_score))
                   ->where('max_score','>=',round($processed_result->total_score))
-                  ->get();
+                  ->first();
 
-                  return $grading_policy;
+
     
                   if(!$grading_policy){
                      return $assignment->module->name;
