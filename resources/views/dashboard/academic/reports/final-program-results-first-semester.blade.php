@@ -298,11 +298,9 @@
                                   {{ $result->course_work_score }} 
                                   @else - @endif
                                 @else
-                                {{ $assignment->module->course_work_based }}
-                                @endif
-                                
-                              @endif
-                              
+                                N/A
+                                @endif  
+                              @endif          
                           </td>
                             <td 
                               @if($result->final_remark == 'FAIL' && !$result->supp_processed_at) 
