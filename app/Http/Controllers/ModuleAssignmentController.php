@@ -418,13 +418,18 @@ class ModuleAssignmentController extends Controller
               $assessment_upload_status = true;
               $assessment_plans = AssessmentPlan::where('module_assignment_id',$module_assignment->id)->get();
 
-              return $assessment_plans;
-              
-              foreach ($assessment_plans as $key => $plan) {
-                  if(CourseWorkResult::where('assessment_plan_id',$plan->id)->count() == 0){
-                      $assessment_upload_status = false;
-                  }
+              if (sizeof($assessment_plans) == 0) {
+                $assessment_upload_status = false;
+              } else {
+
+                foreach ($assessment_plans as $key => $plan) {
+                    if(CourseWorkResult::where('assessment_plan_id',$plan->id)->count() == 0){
+                        $assessment_upload_status = false;
+                    }
+                }
               }
+
+              
 
               if(!$assessment_upload_status){
                   return redirect()->back()->with('error','Some assessment components are not uploaded');
