@@ -417,6 +417,9 @@ class ModuleAssignmentController extends Controller
 			  // Check if all components are uploaded
               $assessment_upload_status = true;
               $assessment_plans = AssessmentPlan::where('module_assignment_id',$module_assignment->id)->get();
+
+              return $assessment_plans;
+              
               foreach ($assessment_plans as $key => $plan) {
                   if(CourseWorkResult::where('assessment_plan_id',$plan->id)->count() == 0){
                       $assessment_upload_status = false;

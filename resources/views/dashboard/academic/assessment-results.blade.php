@@ -81,21 +81,23 @@
                        @if($second_semester_publish_status)
                         <option value="SUPPLEMENTARY">Supplementary Exam</option>
                        @endif
+                      @else
+                        @if(!$final_upload_status)
+                          @foreach($module_assignment->assessmentPlans as $plan)
+                          <option value="{{ $plan->id }}">{{ $plan->name }}</option>
+                          @endforeach
+                        @endif
+                        @if($module_assignment->course_work_process_status == 'PROCESSED')
+                          @if(!$program_results_process_status)
+                          <option value="FINAL_EXAM">Final Exam</option>
+                          @endif
+                          @if($second_semester_publish_status)
+                          <option value="SUPPLEMENTARY">Supplementary Exam</option>
+                          @endif
+                        @endif
                       @endif
 
-                      @if(!$final_upload_status)
-                        @foreach($module_assignment->assessmentPlans as $plan)
-                        <option value="{{ $plan->id }}">{{ $plan->name }}</option>
-                        @endforeach
-                      @endif
-                      @if($module_assignment->course_work_process_status == 'PROCESSED')
-                        @if(!$program_results_process_status)
-                        <option value="FINAL_EXAM">Final Exam</option>
-                        @endif
-                        @if($second_semester_publish_status)
-                        <option value="SUPPLEMENTARY">Supplementary Exam</option>
-                        @endif
-                      @endif
+                      
                     </select>
 
                     {!! Form::input('hidden','module_assignment_id',$module_assignment->id) !!}
