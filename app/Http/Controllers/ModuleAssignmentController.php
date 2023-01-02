@@ -186,6 +186,7 @@ class ModuleAssignmentController extends Controller
 
           $data = [
              'module_assignment'=>$module_assignment,
+             'module' => Module::find($module_assignment->module->id),
              'campus_program'=>CampusProgram::with(['students.studentshipStatus'=>function($query){
                    $query->where('name','ACTIVE');
              },'students.registrations'=>function($query) use($module_assignment){
@@ -390,6 +391,8 @@ class ModuleAssignmentController extends Controller
                 'supp_cases_count'=>$supp_cases_count,
                 'first_semester_publish_status'=>$first_semester_publish_status,
                 'second_semester_publish_status'=>$second_semester_publish_status,
+                'module' => Module::find($module_assignment->module->id),
+                
                 'staff'=>User::find(Auth::user()->id)->staff
              ];
              return view('dashboard.academic.assessment-results',$data)->withTitle('Upload Module Assignment Results');
