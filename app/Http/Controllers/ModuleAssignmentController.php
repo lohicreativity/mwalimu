@@ -165,9 +165,7 @@ class ModuleAssignmentController extends Controller
                'module' => Module::find($module_assignment->module->id)
             ];
 
-            return $data['module'];
-
-            // return view('dashboard.academic.assessment-plans',$data)->withTitle('Module Assessment Plans');
+            return view('dashboard.academic.assessment-plans',$data)->withTitle('Module Assessment Plans');
 
 
         }catch(\Exception $e){
