@@ -597,7 +597,6 @@ class ApplicantController extends Controller
                               }
                            }
                          }elseif($detail->exam_id === 2){
-							 return ""sss;
                            $other_advance_must_subject_ready = false;
                            $other_advance_subsidiary_ready = false;
                            foreach ($detail->results as $key => $result) {
@@ -623,6 +622,7 @@ class ApplicantController extends Controller
                                        }
                                     }
                                  }elseif(unserialize($program->entryRequirements[0]->advance_exclude_subjects) != ''){
+									 return "ddf";
                                     if(!Util::arrayIsContainedInKey($result->subject_name, unserialize($program->entryRequirements[0]->advance_exclude_subjects))){
                                          $a_level_principle_pass_count += 1;
                                     }
