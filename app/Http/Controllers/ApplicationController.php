@@ -1147,7 +1147,8 @@ class ApplicationController extends Controller
                                     }
                                  }elseif(unserialize($program->entryRequirements[0]->advance_exclude_subjects) != ''){
                                     if(!in_array($result->subject_name, unserialize($program->entryRequirements[0]->advance_exclude_subjects))){
-                                         $a_level_principle_pass_count += 1;
+                                        return $a_level_principle_pass_count += 1;
+										  
                                     }
                                  }else{
                                     $a_level_principle_pass_count += 1;
