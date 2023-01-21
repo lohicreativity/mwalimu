@@ -1092,7 +1092,7 @@ class ApplicationController extends Controller
                            foreach ($detail->results as $key => $result) {
 
                               if($o_level_grades[$result->grade] >= $o_level_grades[$program->entryRequirements[0]->pass_grade]){
-
+return "hello";
                                 // $applicant->rank_points += $o_level_grades[$result->grade];
                                 $subject_count += 1;
 
@@ -1126,7 +1126,7 @@ class ApplicationController extends Controller
                            foreach ($detail->results as $key => $result) {
 
                               if($a_level_grades[$result->grade] >= $a_level_grades[$principle_pass_grade]){
-									return "hellod";
+
                                  // $applicant->rank_points += $a_level_grades[$result->grade];
                                  $subject_count += 1;
                                  if(unserialize($program->entryRequirements[0]->advance_must_subjects) != ''){
