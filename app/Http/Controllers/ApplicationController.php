@@ -1082,6 +1082,7 @@ class ApplicationController extends Controller
 
                    // Diploma
                    if(str_contains($award->name,'Diploma')){
+					   return "hello";
                        $o_level_pass_count = 0;
                        $a_level_principle_pass_count = 0;
                        $a_level_subsidiary_pass_count = 0;
@@ -1092,7 +1093,7 @@ class ApplicationController extends Controller
                            foreach ($detail->results as $key => $result) {
 
                               if($o_level_grades[$result->grade] >= $o_level_grades[$program->entryRequirements[0]->pass_grade]){
-return "hello";
+
                                 // $applicant->rank_points += $o_level_grades[$result->grade];
                                 $subject_count += 1;
 
