@@ -1126,7 +1126,7 @@ class ApplicationController extends Controller
                            foreach ($detail->results as $key => $result) {
 
                               if($a_level_grades[$result->grade] >= $a_level_grades[$principle_pass_grade]){
-
+									return "hellod";
                                  // $applicant->rank_points += $a_level_grades[$result->grade];
                                  $subject_count += 1;
                                  if(unserialize($program->entryRequirements[0]->advance_must_subjects) != ''){
@@ -1147,7 +1147,7 @@ class ApplicationController extends Controller
                                     }
                                  }elseif(unserialize($program->entryRequirements[0]->advance_exclude_subjects) != ''){
                                     if(!in_array($result->subject_name, unserialize($program->entryRequirements[0]->advance_exclude_subjects))){
-                                        return $a_level_principle_pass_count += 1;
+                                        $a_level_principle_pass_count += 1;
 										  
                                     }
                                  }else{
