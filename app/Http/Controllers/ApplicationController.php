@@ -1433,7 +1433,7 @@ class ApplicationController extends Controller
                            foreach($applicant->nacteResultDetails as $detail){
                              foreach(unserialize($program->entryRequirements[0]->equivalent_majors) as $sub){
 
-                                if(str_contains(strtolower($detail->programme),strtolower($sub)){   lupi changed to convert all to lower cases
+                                if(str_contains(strtolower($detail->programme),strtolower($sub)){   //lupi changed to convert all to lower cases
                                // if(str_contains($detail->programme,$sub)){
                                    $has_major = true;
                                 }
