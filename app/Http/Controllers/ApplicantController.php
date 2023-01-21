@@ -630,7 +630,7 @@ class ApplicantController extends Controller
                                  }
                               }
                               if($a_level_grades[$result->grade] == $a_level_grades[$subsidiary_pass_grade]){
-
+// Original
 /*                                  if(unserialize($program->entryRequirements[0]->subsidiary_subjects) != ''){
                                        if(Util::arrayIsContainedInKey($result->subject_name, unserialize($program->entryRequirements[0]->subsidiary_subjects))){
                                          $a_level_subsidiary_pass_count += 1;
@@ -639,6 +639,7 @@ class ApplicantController extends Controller
                                  }else{
                                     $a_level_subsidiary_pass_count += 1;
                                  } */
+								 // lupi changed to properly count subsidiary points | tested
 								 if(unserialize($program->entryRequirements[0]->advance_must_subjects) != ''){
                                     if(unserialize($program->entryRequirements[0]->other_advance_must_subjects) != ''){
                                        if(in_array($result->subject_name, unserialize($program->entryRequirements[0]->advance_must_subjects))){
@@ -691,6 +692,12 @@ class ApplicantController extends Controller
                                    }
                                 }
                            }
+                       }else{       // lupi added the else part to determine btc status when equivalent majors have not been defined
+                            foreach($applicant->nacteResultDetails as $det){
+                                   if(str_contains(strtolower($det->programme),'basic')){
+                                     $has_btc = true;
+                                   }
+                                }
                        }
                            
 
