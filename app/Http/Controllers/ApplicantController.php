@@ -602,6 +602,7 @@ class ApplicantController extends Controller
                            foreach ($detail->results as $key => $result) {
 
                               if($a_level_grades[$result->grade] >= $a_level_grades[$principle_pass_grade]){
+return $principle_pass_grade;
                                  $applicant->rank_points += $a_level_grades[$result->grade];
                                  $subject_count += 1;
                                  if(unserialize($program->entryRequirements[0]->advance_must_subjects) != ''){
