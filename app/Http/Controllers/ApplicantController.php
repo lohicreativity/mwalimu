@@ -628,7 +628,6 @@ class ApplicantController extends Controller
                                  }else{
                                     $a_level_principle_pass_count += 1;
                                  }
-								 return $a_level_principle_pass_count;
                               }
                               if($a_level_grades[$result->grade] == $a_level_grades[$subsidiary_pass_grade]){
 // Original
