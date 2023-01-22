@@ -619,9 +619,9 @@ class ApplicantController extends Controller
                                  }else{
                                     $o_level_pass_count += 1;
                                  }
-								}
-                              }
-                           }
+								
+                              
+                           
                          }elseif($detail->exam_id === 2){
                            $other_advance_must_subject_ready = false;
                            $other_advance_subsidiary_ready = false;
