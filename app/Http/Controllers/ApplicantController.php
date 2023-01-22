@@ -665,8 +665,8 @@ class ApplicantController extends Controller
                                  }else{
                                     $a_level_subsidiary_pass_count += 1;
                                  }
-                              }
-							  return $a_level_subsidiary_pass_count;
+                              return $a_level_subsidiary_pass_count;
+							  }
                            }
                          }
                          
