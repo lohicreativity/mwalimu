@@ -620,7 +620,8 @@ class ApplicantController extends Controller
                                     $o_level_pass_count += 1;
                                  }
 								
-                              
+						   }
+						   }						   
                            
                          }elseif($detail->exam_id === 2){
                            $other_advance_must_subject_ready = false;
@@ -679,7 +680,7 @@ class ApplicantController extends Controller
                                     $a_level_principle_pass_count += 1;
                                  }
 								}
-							}
+						   
                               if($a_level_grades[$result->grade] == $a_level_grades[$subsidiary_pass_grade]){
 // Original
 /*                                  if(unserialize($program->entryRequirements[0]->subsidiary_subjects) != ''){
