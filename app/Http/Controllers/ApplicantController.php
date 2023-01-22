@@ -672,7 +672,9 @@ class ApplicantController extends Controller
                        }
                        if(unserialize($program->entryRequirements[0]->advance_must_subjects) != ''){		// lupi changed to check for advance_must_subjects
                        // if(unserialize($program->entryRequirements[0]->must_subjects) != ''){ original
-                       if(($o_level_pass_count+$o_level_must_pass_count) >= $program->entryRequirements[0]->pass_subjects && ($a_level_subsidiary_pass_count >= 1 && $a_level_principle_pass_count >= 1) && $o_level_must_pass_count >= count(unserialize($program->entryRequirements[0]->must_subjects))){
+					   // lupi changed the code below to ignore checks on form IV must subjects
+                       if(($o_level_pass_count+$o_level_must_pass_count) >= $program->entryRequirements[0]->pass_subjects && ($a_level_subsidiary_pass_count >= 1 && $a_level_principle_pass_count >= 1)){
+                       // if(($o_level_pass_count+$o_level_must_pass_count) >= $program->entryRequirements[0]->pass_subjects && ($a_level_subsidiary_pass_count >= 1 && $a_level_principle_pass_count >= 1) && $o_level_must_pass_count >= count(unserialize($program->entryRequirements[0]->must_subjects))){		// original
                            $programs[] = $program;
                         }
                         }else{
