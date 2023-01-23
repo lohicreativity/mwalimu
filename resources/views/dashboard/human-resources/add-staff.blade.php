@@ -92,8 +92,7 @@
 
                   $pf_number = [
                      'placeholder'=>'PF number',
-                     'class'=>'form-control',
-                     'required'=>true
+                     'class'=>'form-control'
                   ];
 
                   $nin = [
@@ -121,8 +120,7 @@
 
                   $street = [
                      'placeholder'=>'Street',
-                     'class'=>'form-control',
-                     'required'=>true
+                     'class'=>'form-control'
                   ];
 
                   $birth_date = [
