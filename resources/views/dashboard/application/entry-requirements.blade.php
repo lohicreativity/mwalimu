@@ -740,7 +740,7 @@
                       @endforeach
                     </select>
                   </div>
-                  <div class="form-group col-3" style="width: 100%;>
+                  <div class="form-group col-3" style="width: 100%";>
                     {!! Form::label('','Diploma GPA') !!}
                     {!! Form::text('equivalent_gpa',null,$equivalent_gpa) !!}
                   </div>
@@ -748,7 +748,7 @@
                     {!! Form::label('','Min Diploma GPA') !!}
                     {!! Form::text('min_equivalent_gpa',null,$min_equivalent_gpa) !!}
                   </div>
-                  <div class="form-group col-3" >
+                  <div class="form-group col-3" style="width: 100%";>
                     {!! Form::label('','Diploma Majors') !!}
                     <select name="equivalent_majors[]" class="form-control ss-select-tags" multiple="multiple" required>
                        {{--
