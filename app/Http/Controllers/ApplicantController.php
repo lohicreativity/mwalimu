@@ -607,11 +607,15 @@ class ApplicantController extends Controller
                                          $other_must_subject_ready = true;
                                        }
 
-                                    }else{
+                                    }elseif{
                                        if(in_array($result->subject_name, unserialize($program->entryRequirements[0]->must_subjects))){
                                          $o_level_pass_count += 1;
                                        }
-                                    }
+                                    }else{
+										if((count(unserialize($program->entryRequirements[0]->must_subjects) + count(unserialize($program->entryRequirements[0]->other_must_subjects)) < $program->entryRequirements[0]->pass_subjects){
+										 $o_level_pass_count += 1;	
+										}
+									}
                                  }elseif(unserialize($program->entryRequirements[0]->exclude_subjects) != ''){
                                     if(!in_array($result->subject_name, unserialize($program->entryRequirements[0]->exclude_subjects))){
                                         $o_level_pass_count += 1;
