@@ -424,13 +424,13 @@
 -->
                   <div class="form-group col-3">
                     {!! Form::label('','Certificate Majors') !!}
-                    <select name="equivalent_majors[]" class="form-control ss-select-tags" multiple="multiple">
+                    <select name="equivalent_majors[]" class="form-control ss-select-tags" multiple="multiple" style="width: 100%;" >
                        {{--
                        @foreach($diploma_programs as $prog)
-                       <option value="{{ substr($prog->name,20) }}" style="width: 100%;">{{ substr($prog->name,20) }}</option>
+                       <option value="{{ substr($prog->name,20) }}">{{ substr($prog->name,20) }}</option>
                        @endforeach
                        --}}
-                       <option value="Marketing" style="width: 100%;">Marketing</option>
+                       <option value="Marketing">Marketing</option>
                        <option value="Financial Administration">Financial Administration</option>
                        <option value="Accountancy">Accountancy</option>
                        <option value="Finance">Finance</option>
