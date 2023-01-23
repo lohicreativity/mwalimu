@@ -197,7 +197,7 @@
                       @endforeach
                     </select>
                   </div>
-                  <div class="form-group col-3">
+ <!--                 <div class="form-group col-3">
                     {!! Form::label('','Diploma GPA') !!}
                     {!! Form::text('equivalent_gpa',null,$equivalent_gpa) !!}
                   </div>
@@ -245,6 +245,7 @@
                     {!! Form::label('','Principle Pass Subjects') !!}
                     {!! Form::text('principle_pass_subjects',null,$principle_pass_subjects) !!}
                    </div>
+-->
                    <div class="form-group col-3">
                     {!! Form::label('','No. of Pass Subjects') !!}
                     {!! Form::text('pass_subjects',null,$pass_subjects) !!}
@@ -415,13 +416,15 @@
                       @endforeach
                     </select>
                   </div>
+<!--
                   <div class="form-group col-3">
                     {!! Form::label('','Equivalent GPA') !!}
                     {!! Form::text('equivalent_gpa',null,$equivalent_gpa) !!}
                   </div>
+-->
                   <div class="form-group col-3">
-                    {!! Form::label('','Equivalent Majors') !!}
-                    <select name="equivalent_majors[]" class="form-control ss-select-tags" multiple="multiple">
+                    {!! Form::label('','Certificate Majors') !!}
+                    <select name="equivalent_majors[]" class="form-control ss-select-tags" style="width: 100%; multiple="multiple">
                        {{--
                        @foreach($diploma_programs as $prog)
                        <option value="{{ substr($prog->name,20) }}">{{ substr($prog->name,20) }}</option>
@@ -462,6 +465,7 @@
                        <option value="Social Work">Social Work</option>
                     </select>
                   </div>
+<!--
                   <div class="form-group col-3">
                     {!! Form::label('','Equivalent Average Grade') !!}
                     <select name="equivalent_average_grade" class="form-control" disabled="disabled">
@@ -501,7 +505,7 @@
                     {!! Form::label('','Principle Pass Points') !!}
                     {!! Form::text('principle_pass_points',null,$principle_pass_points) !!}
                   </div>
-                 
+-->                 
                    <div class="form-group col-3">
                     {!! Form::label('','No. of Principle Pass Subjects') !!}
                     {!! Form::text('principle_pass_subjects',null,$principle_pass_subjects) !!}
@@ -540,7 +544,7 @@
                     {!! Form::label('','NTA Level') !!}
                     <select name="nta_level" class="form-control" required>
                        <option value="">Select NTA Level</option>
-                       <option value="4">4</option>
+                       <option value="4" selected>4</option>
                        <option value="5">5</option>
                        <option value="6">6</option>
                        <option value="7">7</option>
