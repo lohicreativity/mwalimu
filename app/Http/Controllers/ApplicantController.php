@@ -619,7 +619,7 @@ class ApplicantController extends Controller
                                  }else{
                                     $o_level_pass_count += 1;
                                  }
-								
+								return $o_level_pass_count;
 						   }
 						   }						   
                            
