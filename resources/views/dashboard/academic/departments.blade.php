@@ -106,7 +106,8 @@
                   </div>
                   <div class="form-group col-4">
                     {!! Form::label('','Campus') !!}
-                    <select name="campuses[]" class="form-control ss-select-tags" multiple="multiple">
+                    <!-- <select name="campuses[]" class="form-control ss-select-tags" multiple="multiple"> -->
+					 <select name="campuses" class="form-control" required>
                          <option value="">Select Parent</option>
                            @foreach($campuses as $campus)
                            <option value="{{ $campus->id }}">{{ $campus->name }}</option>
@@ -118,7 +119,7 @@
                 <!-- /.card-body -->
 
                 <div class="card-footer">
-                  <button type="submit" class="btn btn-primary">{{ __('Add Departm') }}</button>
+                  <button type="submit" class="btn btn-primary">{{ __('Add Department') }}</button>
                 </div>
               {!! Form::close() !!}
             </div>
