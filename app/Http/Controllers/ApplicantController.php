@@ -489,7 +489,6 @@ class ApplicantController extends Controller
                    // Certificate
                    if(str_contains($award->name,'Certificate')){
                        $o_level_pass_count = 0;
-					   $o_level_other_pass_count = 0;
                        $o_level_must_pass_count = 0;
                        foreach ($applicant->nectaResultDetails as $detailKey=>$detail) {
                          if($detail->exam_id == 1){
@@ -501,7 +500,7 @@ class ApplicantController extends Controller
                                 $applicant->rank_points += $o_level_grades[$result->grade];
                                 $subject_count += 1;
 
-/*                                  if(unserialize($program->entryRequirements[0]->must_subjects) != ''){
+                                 if(unserialize($program->entryRequirements[0]->must_subjects) != ''){
                                     if(unserialize($program->entryRequirements[0]->other_must_subjects) != ''){
                                        if(Util::arrayIsContainedInKey($result->subject_name, unserialize($program->entryRequirements[0]->must_subjects))){
                                          // $o_level_pass_count += 1;
@@ -530,50 +529,16 @@ class ApplicantController extends Controller
                                     }
                                  }else{
                                     $o_level_pass_count += 1;
-                                 } */
-								 
-								 // lupi changed
-								 if(unserialize($program->entryRequirements[0]->must_subjects) != ''){
-									
-                                    if(unserialize($program->entryRequirements[0]->other_must_subjects) != ''){
-                                       if(in_array($result->subject_name, unserialize($program->entryRequirements[0]->must_subjects))){
-                                         $o_level_pass_count += 1;
-                                       }
-
-                                       if(in_array($result->subject_name, unserialize($program->entryRequirements[0]->other_must_subjects)) && !$other_must_subject_ready){
-                                         $o_level_pass_count += 1;
-                                         $other_must_subject_ready = true;
-                                       }
-
-                                    }elseif(in_array($result->subject_name, unserialize($program->entryRequirements[0]->must_subjects))){
-                                         $o_level_pass_count += 1;
-                                    }else{
-										if(unserialize($program->entryRequirements[0]->other_must_subjects) != '' && (count(unserialize($program->entryRequirements[0]->must_subjects)) + count(unserialize($program->entryRequirements[0]->other_must_subjects))) < $program->entryRequirements[0]->pass_subjects){
-											$o_level_other_pass_count += 1;	
-										}elseif(count(unserialize($program->entryRequirements[0]->must_subjects)) < $program->entryRequirements[0]->pass_subjects && ($o_level_other_pass_count < ($program->entryRequirements[0]->pass_subjects - count(unserialize($program->entryRequirements[0]->must_subjects))))){
-											$o_level_other_pass_count += 1;											
-										}
-									}
-                                }elseif(unserialize($program->entryRequirements[0]->exclude_subjects) != ''){
-                                    if(!in_array($result->subject_name, unserialize($program->entryRequirements[0]->exclude_subjects))){
-                                        $o_level_pass_count += 1;
-										  
-                                    }
-                                }else{
-                                    $o_level_pass_count += 1;
-                                }
+                                 }
                               }
                            }
                          }
                          if(unserialize($program->entryRequirements[0]->must_subjects) != ''){
-                             if(($o_level_pass_count+$o_level_other_pass_count) >= $program->entryRequirements[0]->pass_subjects && $o_level_must_pass_count >= count(unserialize($program->entryRequirements[0]->must_subjects))){
-                         //    if(($o_level_pass_count+$o_level_must_pass_count) >= $program->entryRequirements[0]->pass_subjects && $o_level_must_pass_count >= count(unserialize($program->entryRequirements[0]->must_subjects))){
-
+                             if(($o_level_pass_count+$o_level_must_pass_count) >= $program->entryRequirements[0]->pass_subjects && $o_level_must_pass_count >= count(unserialize($program->entryRequirements[0]->must_subjects))){
                                $programs[] = $program;
                              }
                          }else{
-							if(($o_level_pass_count+$o_level_other_pass_count) >= $program->entryRequirements[0]->pass_subjects){
-                            // if(($o_level_pass_count+$o_level_must_pass_count) >= $program->entryRequirements[0]->pass_subjects){
+                            if(($o_level_pass_count+$o_level_must_pass_count) >= $program->entryRequirements[0]->pass_subjects){
                                $programs[] = $program;
                              }
                          }
