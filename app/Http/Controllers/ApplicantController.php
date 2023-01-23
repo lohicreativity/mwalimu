@@ -612,21 +612,19 @@ class ApplicantController extends Controller
                                          $o_level_pass_count += 1;
                                     }else{
 										if(unserialize($program->entryRequirements[0]->other_must_subjects) != '' && (count(unserialize($program->entryRequirements[0]->must_subjects)) + count(unserialize($program->entryRequirements[0]->other_must_subjects))) < $program->entryRequirements[0]->pass_subjects){
-										 $o_level_other_pass_count += 1;	
+											$o_level_other_pass_count += 1;	
 										}elseif(count(unserialize($program->entryRequirements[0]->must_subjects)) < $program->entryRequirements[0]->pass_subjects && ($o_level_other_pass_count < ($program->entryRequirements[0]->pass_subjects - count(unserialize($program->entryRequirements[0]->must_subjects))))){
-										 $o_level_other_pass_count += 1;											
+											$o_level_other_pass_count += 1;											
 										}
-
 									}
-                                 }elseif(unserialize($program->entryRequirements[0]->exclude_subjects) != ''){
+                                }elseif(unserialize($program->entryRequirements[0]->exclude_subjects) != ''){
                                     if(!in_array($result->subject_name, unserialize($program->entryRequirements[0]->exclude_subjects))){
                                         $o_level_pass_count += 1;
 										  
                                     }
-                                 }else{
+                                }else{
                                     $o_level_pass_count += 1;
-                                 }
-								//return $o_level_pass_count;
+                                }
 						   }
 						   }						   
                            
