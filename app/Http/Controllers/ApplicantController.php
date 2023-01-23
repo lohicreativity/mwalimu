@@ -607,8 +607,7 @@ class ApplicantController extends Controller
                                          $other_must_subject_ready = true;
                                        }
 
-                                    }elseif{
-                                       if(in_array($result->subject_name, unserialize($program->entryRequirements[0]->must_subjects))){
+                                    }elseif(in_array($result->subject_name, unserialize($program->entryRequirements[0]->must_subjects))){
                                          $o_level_pass_count += 1;
                                        }
                                     }else{
