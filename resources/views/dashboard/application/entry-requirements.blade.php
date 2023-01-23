@@ -263,7 +263,7 @@
                     </select>
                   </div>
                   <div class="form-group col-3">
-                    {!! Form::label('','Form IV Must Subjects') !!}
+                    {!! Form::label('','Must Subjects') !!}
                     <select name="must_subjects[]" class="form-control ss-select-tags" multiple="multiple">
                        @foreach($subjects as $sub)
                        <option value="{{ $sub->subject_name }}">{{ $sub->subject_name }}</option>
@@ -271,7 +271,7 @@
                     </select>
                   </div>
                   <div class="form-group col-3">
-                    {!! Form::label('','Form IV Other Must Subjects') !!}
+                    {!! Form::label('','Other Must Subjects') !!}
                     <select name="other_must_subjects[]" class="form-control ss-select-tags" multiple="multiple">
                        @foreach($subjects as $sub)
                        <option value="{{ $sub->subject_name }}">{{ $sub->subject_name }}</option>
@@ -279,7 +279,7 @@
                     </select>
                   </div>
 				  <div class="form-group col-3">
-                    {!! Form::label('','Form IV Exclude Subjects') !!}
+                    {!! Form::label('','Exclude Subjects') !!}
                     <select name="exclude_subjects[]" class="form-control ss-select-tags" multiple="multiple">
                        @foreach($subjects as $sub)
                        <option value="{{ $sub->subject_name }}">{{ $sub->subject_name }}</option>
@@ -338,7 +338,7 @@
                 ];
 
                 $principle_pass_points = [
-                   'placeholder'=>'Principle Pass Points',
+                   'placeholder'=>'No. of Principle Pass Points',
                    'class'=>'form-control',
                    'readonly'=>true
                 ];
@@ -362,7 +362,7 @@
                 ];
 
                 $pass_grade = [
-                   'placeholder'=>'Pass Grade',
+                   'placeholder'=>'Form IV Pass Grade',
                    'class'=>'form-control',
                    'required'=>true
                 ];
@@ -378,12 +378,12 @@
                 ];
 
                 $exclude_subjects = [
-                   'placeholder'=>'Exclude Subjects',
+                   'placeholder'=>'Form IV Exclude Subjects',
                    'class'=>'form-control'
                 ];
 
                 $must_subjects = [
-                   'placeholder'=>'Must Subjects',
+                   'placeholder'=>'Form IV Must Subjects',
                    'class'=>'form-control'
                 ];
 
@@ -409,7 +409,7 @@
                  <div class="row">
                   <div class="form-group col-3">
                     {!! Form::label('','Programme') !!}<br>
-                    <select name="campus_program_ids[]" class="form-control ss-select-tags" required multiple="multiple">
+                    <select name="campus_program_ids[]" class="form-control ss-select-tags" style="width: 100%; required multiple="multiple">
                       <option value="">Select Programme</option>
                       @foreach($diploma_campus_programs as $program)
                       <option value="{{ $program->id }}">{{ $program->program->name }}</option>
@@ -506,7 +506,7 @@
                     {!! Form::text('principle_pass_points',null,$principle_pass_points) !!}
                   </div>
 -->                 
-                   <div class="form-group col-3">
+                   <div class="form-group col-3" >
                     {!! Form::label('','No. of Principle Pass Subjects') !!}
                     {!! Form::text('principle_pass_subjects',null,$principle_pass_subjects) !!}
                    </div>
@@ -529,13 +529,13 @@
                   </div> 
                   
 -->                  <div class="form-group col-3">
-                    {!! Form::label('','Pass Grade') !!}
+                    {!! Form::label('','Form IV Pass Grade') !!}
                     <select name="pass_grade" class="form-control" required>
                        <option value="">Select Pass Grade</option>
                        <option value="A">A</option>
                        <option value="B">B</option>
                        <option value="C">C</option>
-                       <option value="D">D</option>
+                       <option value="D" selected>D</option>
                        <option value="E">E</option>
                        <option value="F">F</option>
                     </select>
@@ -555,7 +555,7 @@
                   </div>
                   <div class="form-group col-3">
                     {!! Form::label('','Form IV Must Subjects') !!}
-                    <select name="must_subjects[]" class="form-control ss-select-tags" multiple="multiple">
+                    <select name="must_subjects[]" class="form-control ss-select-tags" style="width: 100%; multiple="multiple">
                        @foreach($subjects as $sub)
                        <option value="{{ $sub->subject_name }}">{{ $sub->subject_name }}</option>
                        @endforeach
@@ -563,7 +563,7 @@
                   </div>
                    <div class="form-group col-3">
                     {!! Form::label('','Form IV Other Must Subjects') !!}
-                    <select name="other_must_subjects[]" class="form-control ss-select-tags" multiple="multiple">
+                    <select name="other_must_subjects[]" class="form-control ss-select-tags" style="width: 100%; multiple="multiple">
                        @foreach($subjects as $sub)
                        <option value="{{ $sub->subject_name }}">{{ $sub->subject_name }}</option>
                        @endforeach
@@ -571,7 +571,7 @@
                   </div>
                   <div class="form-group col-3">
                     {!! Form::label('','Form IV Exclude Subjects') !!}
-                    <select name="exclude_subjects[]" class="form-control ss-select-tags" multiple="multiple">
+                    <select name="exclude_subjects[]" class="form-control ss-select-tags" style="width: 100%; multiple="multiple">
                        @foreach($subjects as $sub)
                        <option value="{{ $sub->subject_name }}">{{ $sub->subject_name }}</option>
                        @endforeach
@@ -579,7 +579,7 @@
                   </div>
                   <div class="form-group col-3">
                     {!! Form::label('','Form VI Must Subjects') !!}
-                    <select name="advance_must_subjects[]" class="form-control ss-select-tags" multiple="multiple">
+                    <select name="advance_must_subjects[]" class="form-control ss-select-tags" style="width: 100%; multiple="multiple">
                        @foreach($high_subjects as $sub)
                        <option value="{{ $sub->subject_name }}">{{ $sub->subject_name }}</option>
                        @endforeach
@@ -588,7 +588,7 @@
 
                   <div class="form-group col-3">
                     {!! Form::label('','Form VI Other Must Subjects') !!}
-                    <select name="other_advance_must_subjects[]" class="form-control ss-select-tags" multiple="multiple">
+                    <select name="other_advance_must_subjects[]" class="form-control ss-select-tags" style="width: 100%; multiple="multiple">
                        @foreach($high_subjects as $sub)
                        <option value="{{ $sub->subject_name }}">{{ $sub->subject_name }}</option>
                        @endforeach
@@ -596,7 +596,7 @@
                   </div>
                    <div class="form-group col-3">
                     {!! Form::label('','Form VI Exclude Subjects') !!}
-                    <select name="advance_exclude_subjects[]" class="form-control ss-select-tags" multiple="multiple">
+                    <select name="advance_exclude_subjects[]" class="form-control ss-select-tags" style="width: 100%; multiple="multiple">
                        @foreach($high_subjects as $sub)
                        <option value="{{ $sub->subject_name }}">{{ $sub->subject_name }}</option>
                        @endforeach
@@ -616,41 +616,41 @@
             <div class="tab-pane" id="ss-degree" role="tabpanel">
                @php
                 $equivalent_gpa = [
-                   'placeholder'=>'Equivalent GPA',
+                   'placeholder'=>'Diploma GPA',
                    'class'=>'form-control'
                 ];
 
                 $equivalent_majors = [
-                   'placeholder'=>'Equivalent Majors',
+                   'placeholder'=>'Diploma Equivalent Majors',
                    'class'=>'form-control',
                 ];
 
                 $equivalent_average_grade = [
-                   'placeholder'=>'Equivalent Average Grade',
+                   'placeholder'=>'Diploma Average Grade',
                    'class'=>'form-control',
                    'required'=>true
                 ];
 
                 $min_equivalent_gpa = [
-                   'placeholder'=>'Min Equivalent GPA',
+                   'placeholder'=>'Min Diploma GPA',
                    'class'=>'form-control',
                    'required'=>true
                 ];
 
                 $open_equivalent_gpa = [
-                   'placeholder'=>'Open Equivalent GPA',
+                   'placeholder'=>'OUT GPA',
                    'class'=>'form-control',
                    'required'=>true
                 ];
 
                 $open_equivalent_majors = [
-                   'placeholder'=>'Open Equivalent Majors',
+                   'placeholder'=>'OUT Majors',
                    'class'=>'form-control',
                    'required'=>true
                 ];
 
                 $open_equivalent_average_grade = [
-                   'placeholder'=>'Open Equivalent Average Grade',
+                   'placeholder'=>'OUT Average Grade',
                    'class'=>'form-control',
                    'required'=>true
                 ];
@@ -668,13 +668,13 @@
                 ];
 
                 $principle_pass_subjects = [
-                   'placeholder'=>'Principle Pass Subjects',
+                   'placeholder'=>'No. of Principle Pass Subjects',
                    'class'=>'form-control',
                    'required'=>true
                 ];
 
                 $pass_subjects = [
-                   'placeholder'=>'Pass Subjects',
+                   'placeholder'=>'No. of Form IV Pass Subjects',
                    'class'=>'form-control',
                    'required'=>true
                 ];
@@ -686,7 +686,7 @@
                 ];
 
                 $pass_grade = [
-                   'placeholder'=>'Pass Grade',
+                   'placeholder'=>'Form IV Pass Grade',
                    'class'=>'form-control',
                    'required'=>true
                 ];
@@ -702,12 +702,12 @@
                 ];
 
                 $exclude_subjects = [
-                   'placeholder'=>'Exclude Subjects',
+                   'placeholder'=>'Form IV Exclude Subjects',
                    'class'=>'form-control'
                 ];
 
                 $must_subjects = [
-                   'placeholder'=>'Must Subjects',
+                   'placeholder'=>'Form IV Must Subjects',
                    'class'=>'form-control'
                 ];
 
@@ -733,7 +733,7 @@
                  <div class="row">
                   <div class="form-group col-3">
                     {!! Form::label('','Programme') !!}<br>
-                    <select name="campus_program_ids[]" class="form-control ss-select-tags" required multiple="multiple">
+                    <select name="campus_program_ids[]" class="form-control ss-select-tags" style="width: 100%; required multiple="multiple">
                       <option value="">Select Programme</option>
                       @foreach($degree_campus_programs as $program)
                       <option value="{{ $program->id }}">{{ $program->program->name }}</option>
@@ -741,15 +741,15 @@
                     </select>
                   </div>
                   <div class="form-group col-3">
-                    {!! Form::label('','Equivalent GPA') !!}
+                    {!! Form::label('','Diploma GPA') !!}
                     {!! Form::text('equivalent_gpa',null,$equivalent_gpa) !!}
                   </div>
                   <div class="form-group col-3">
-                    {!! Form::label('','Min Equivalent GPA') !!}
+                    {!! Form::label('','Min Diploma GPA') !!}
                     {!! Form::text('min_equivalent_gpa',null,$min_equivalent_gpa) !!}
                   </div>
                   <div class="form-group col-3">
-                    {!! Form::label('','Equivalent Majors') !!}
+                    {!! Form::label('','Diploma Majors') !!}
                     <select name="equivalent_majors[]" class="form-control ss-select-tags" multiple="multiple" required>
                        {{--
                        @foreach($diploma_programs as $prog)
@@ -792,7 +792,7 @@
                     </select>
                   </div>
                   <div class="form-group col-3">
-                    {!! Form::label('','Equivalent Average Grade') !!}
+                    {!! Form::label('','Diploma Average Grade') !!}
                     <select name="equivalent_average_grade" class="form-control" required>
                        <option value="">Select Pass Grade</option>
                        <option value="A">A</option>
@@ -806,7 +806,7 @@
                   {!! Form::input('hidden','application_window_id',$application_window->id) !!}
                   {!! Form::input('hidden','level','degree') !!}
                   <div class="form-group col-3">
-                    {!! Form::label('','Equivalent Must Subjects') !!}
+                    {!! Form::label('','Diploma Must Subjects') !!}
                     <select name="equivalent_must_subjects[]" class="form-control ss-select-tags" multiple="multiple">
                        <option value="ENGLISH">English</option>
                        <option value="KISWAHILI">Kiswahili</option>
@@ -816,23 +816,24 @@
                   </div>
                  
                    <div class="form-group col-3">
-                    {!! Form::label('','Open Equivalent GPA') !!}
+                    {!! Form::label('','OUT GPA') !!}
                     {!! Form::text('open_equivalent_gpa',null,$open_equivalent_gpa) !!}
                    </div>
 
                    <div class="form-group col-3">
-                    {!! Form::label('','Open Exclude Subjects') !!}
+                    {!! Form::label('','OUT Exclude Subjects') !!}
                     <select name="open_exclude_subjects[]" class="form-control ss-select-tags" multiple="multiple" required>
                        <option value="OFC 017">Communication Skills</option>
                        <option value="OFP 018">Development Studies</option>
                        <option value="OFP 020">Introduction to ICT</option>
                     </select>
                   </div>
+<!--
                   <div class="form-group col-3">
                     {!! Form::label('','Principle Pass Points') !!}
                     {!! Form::text('principle_pass_points',null,$principle_pass_points) !!}
                   </div>
-               
+-->               
                    <div class="form-group col-3">
                     {!! Form::label('','No. of Subsidiary Pass Subjects') !!}
                     {!! Form::text('subsidiary_pass_subjects',null,$min_principle_pass_points) !!}
@@ -842,7 +843,7 @@
                     {!! Form::text('principle_pass_subjects',null,$principle_pass_subjects) !!}
                    </div>
                    <div class="form-group col-3">
-                    {!! Form::label('','No. of Pass Subjects') !!}
+                    {!! Form::label('','No. of Form IV Pass Subjects') !!}
                     {!! Form::text('pass_subjects',null,$pass_subjects) !!}
                   </div>
 
@@ -856,13 +857,13 @@
                   </div>
 -->                 
                    <div class="form-group col-3">
-                    {!! Form::label('','Pass Grade') !!}
+                    {!! Form::label('','Form IV Pass Grade') !!}
                     <select name="pass_grade" class="form-control" required>
                        <option value="">Select Pass Grade</option>
                        <option value="A">A</option>
                        <option value="B">B</option>
                        <option value="C">C</option>
-                       <option value="D">D</option>
+                       <option value="D" selected>D</option>
                        <option value="E">E</option>
                        <option value="F">F</option>
                     </select>
@@ -882,7 +883,7 @@
                   </div>
                   <div class="form-group col-3">
                     {!! Form::label('','Form IV Must Subjects') !!}
-                    <select name="must_subjects[]" class="form-control ss-select-tags" multiple="multiple">
+                    <select name="must_subjects[]" class="form-control ss-select-tags" style="width: 100%; multiple="multiple">
                        @foreach($subjects as $sub)
                        <option value="{{ $sub->subject_name }}">{{ $sub->subject_name }}</option>
                        @endforeach
@@ -890,7 +891,7 @@
                   </div>            
                   <div class="form-group col-3">
                     {!! Form::label('','Form IV Other Must Subjects') !!}
-                    <select name="other_must_subjects[]" class="form-control ss-select-tags" multiple="multiple">
+                    <select name="other_must_subjects[]" class="form-control ss-select-tags" style="width: 100%; multiple="multiple">
                        @foreach($subjects as $sub)
                        <option value="{{ $sub->subject_name }}">{{ $sub->subject_name }}</option>
                        @endforeach
@@ -898,7 +899,7 @@
                   </div>
                   <div class="form-group col-3">
                     {!! Form::label('','Form IV Exclude Subjects') !!}
-                    <select name="exclude_subjects[]" class="form-control ss-select-tags" multiple="multiple">
+                    <select name="exclude_subjects[]" class="form-control ss-select-tags" style="width: 100%; multiple="multiple">
                        @foreach($subjects as $sub)
                        <option value="{{ $sub->subject_name }}">{{ $sub->subject_name }}</option>
                        @endforeach
@@ -906,7 +907,7 @@
                   </div>                  
                   <div class="form-group col-3">
                     {!! Form::label('','Form VI Must Subjects') !!}
-                    <select name="advance_must_subjects[]" class="form-control ss-select-tags" multiple="multiple">
+                    <select name="advance_must_subjects[]" class="form-control ss-select-tags" style="width: 100%; multiple="multiple">
                        @foreach($high_subjects as $sub)
                        <option value="{{ $sub->subject_name }}">{{ $sub->subject_name }}</option>
                        @endforeach
@@ -914,7 +915,7 @@
                   </div>
                   <div class="form-group col-3">
                     {!! Form::label('','Form VI Other Must Subjects') !!}
-                    <select name="other_advance_must_subjects[]" class="form-control ss-select-tags" multiple="multiple">
+                    <select name="other_advance_must_subjects[]" class="form-control ss-select-tags" style="width: 100%; multiple="multiple">
                        @foreach($high_subjects as $sub)
                        <option value="{{ $sub->subject_name }}">{{ $sub->subject_name }}</option>
                        @endforeach
@@ -922,7 +923,7 @@
                   </div>
                   <div class="form-group col-3">
                     {!! Form::label('','Form VI Exclude Subjects') !!}
-                    <select name="advance_exclude_subjects[]" class="form-control ss-select-tags" multiple="multiple">
+                    <select name="advance_exclude_subjects[]" class="form-control ss-select-tags" style="width: 100%; multiple="multiple">
                        @foreach($high_subjects as $sub)
                        <option value="{{ $sub->subject_name }}">{{ $sub->subject_name }}</option>
                        @endforeach
