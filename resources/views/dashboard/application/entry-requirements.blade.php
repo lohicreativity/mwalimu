@@ -409,7 +409,7 @@
                  <div class="row">
                   <div class="form-group col-3">
                     {!! Form::label('','Programme') !!}<br>
-                    <select name="campus_program_ids[]" class="form-control ss-select-tags" style="width: 100%; required multiple="multiple">
+                    <select name="campus_program_ids[]" class="form-control ss-select-tags" multiple="multiple" style="width: 100%;" required>
                       <option value="">Select Programme</option>
                       @foreach($diploma_campus_programs as $program)
                       <option value="{{ $program->id }}">{{ $program->program->name }}</option>
@@ -555,7 +555,7 @@
                   </div>
                   <div class="form-group col-3">
                     {!! Form::label('','Form IV Must Subjects') !!}
-                    <select name="must_subjects[]" class="form-control ss-select-tags" multiple="multiple">
+                    <select name="must_subjects[]" class="form-control ss-select-tags" multiple="multiple" style="width: 100%;">
                        @foreach($subjects as $sub)
                        <option value="{{ $sub->subject_name }}">{{ $sub->subject_name }}</option>
                        @endforeach
@@ -563,7 +563,7 @@
                   </div>
                    <div class="form-group col-3">
                     {!! Form::label('','Form IV Other Must Subjects') !!}
-                    <select name="other_must_subjects[]" class="form-control ss-select-tags" multiple="multiple">
+                    <select name="other_must_subjects[]" class="form-control ss-select-tags" multiple="multiple" style="width: 100%;">
                        @foreach($subjects as $sub)
                        <option value="{{ $sub->subject_name }}">{{ $sub->subject_name }}</option>
                        @endforeach
@@ -571,7 +571,7 @@
                   </div>
                   <div class="form-group col-3">
                     {!! Form::label('','Form IV Exclude Subjects') !!}
-                    <select name="exclude_subjects[]" class="form-control ss-select-tags" multiple="multiple">
+                    <select name="exclude_subjects[]" class="form-control ss-select-tags" multiple="multiple" style="width: 100%;">
                        @foreach($subjects as $sub)
                        <option value="{{ $sub->subject_name }}">{{ $sub->subject_name }}</option>
                        @endforeach
@@ -579,7 +579,7 @@
                   </div>
                   <div class="form-group col-3">
                     {!! Form::label('','Form VI Must Subjects') !!}
-                    <select name="advance_must_subjects[]" class="form-control ss-select-tags" multiple="multiple">
+                    <select name="advance_must_subjects[]" class="form-control ss-select-tags" multiple="multiple" style="width: 100%;">
                        @foreach($high_subjects as $sub)
                        <option value="{{ $sub->subject_name }}">{{ $sub->subject_name }}</option>
                        @endforeach
@@ -588,7 +588,7 @@
 
                   <div class="form-group col-3">
                     {!! Form::label('','Form VI Other Must Subjects') !!}
-                    <select name="other_advance_must_subjects[]" class="form-control ss-select-tags" multiple="multiple">
+                    <select name="other_advance_must_subjects[]" class="form-control ss-select-tags" multiple="multiple" style="width: 100%;">
                        @foreach($high_subjects as $sub)
                        <option value="{{ $sub->subject_name }}">{{ $sub->subject_name }}</option>
                        @endforeach
@@ -596,7 +596,7 @@
                   </div>
                    <div class="form-group col-3">
                     {!! Form::label('','Form VI Exclude Subjects') !!}
-                    <select name="advance_exclude_subjects[]" class="form-control ss-select-tags" multiple="multiple">
+                    <select name="advance_exclude_subjects[]" class="form-control ss-select-tags" multiple="multiple" style="width: 100%;">
                        @foreach($high_subjects as $sub)
                        <option value="{{ $sub->subject_name }}">{{ $sub->subject_name }}</option>
                        @endforeach
@@ -733,7 +733,7 @@
                  <div class="row">
                   <div class="form-group col-3">
                     {!! Form::label('','Programme') !!}<br>
-                    <select name="campus_program_ids[]" class="form-control ss-select-tags" style="width: 100%; required multiple="multiple">
+                    <select name="campus_program_ids[]" class="form-control ss-select-tags" multiple="multiple" style="width: 100%;" required>
                       <option value="">Select Programme</option>
                       @foreach($degree_campus_programs as $program)
                       <option value="{{ $program->id }}">{{ $program->program->name }}</option>
@@ -750,7 +750,7 @@
                   </div>
                   <div class="form-group col-3" style="width: 100%";>
                     {!! Form::label('','Diploma Majors') !!}
-                    <select name="equivalent_majors[]" class="form-control ss-select-tags" multiple="multiple" required> 
+                    <select name="equivalent_majors[]" class="form-control ss-select-tags" multiple="multiple" style="width: 100%;" required> 
                        {{--
                        @foreach($diploma_programs as $prog)
                        <option value="{{ substr($prog->name,20) }}">{{ substr($prog->name,20) }}</option>
@@ -807,7 +807,7 @@
                   {!! Form::input('hidden','level','degree') !!}
                   <div class="form-group col-3">
                     {!! Form::label('','Diploma Must Subjects') !!}
-                    <select name="equivalent_must_subjects[]" class="form-control ss-select-tags" multiple="multiple">
+                    <select name="equivalent_must_subjects[]" class="form-control ss-select-tags" multiple="multiple" style="width: 100%;">
                        <option value="ENGLISH">English</option>
                        <option value="KISWAHILI">Kiswahili</option>
                        <option value="GEOGRAPHY">Geography</option>
@@ -822,7 +822,7 @@
 
                    <div class="form-group col-3">
                     {!! Form::label('','OUT Exclude Subjects') !!}
-                    <select name="open_exclude_subjects[]" class="form-control ss-select-tags" multiple="multiple" required>
+                    <select name="open_exclude_subjects[]" class="form-control ss-select-tags" multiple="multiple" style="width: 100%;" required>
                        <option value="OFC 017">Communication Skills</option>
                        <option value="OFP 018">Development Studies</option>
                        <option value="OFP 020">Introduction to ICT</option>
@@ -883,7 +883,7 @@
                   </div>
                   <div class="form-group col-3">
                     {!! Form::label('','Form IV Must Subjects') !!}
-                    <select name="must_subjects[]" class="form-control ss-select-tags" multiple="multiple">
+                    <select name="must_subjects[]" class="form-control ss-select-tags" multiple="multiple" style="width: 100%;">
                        @foreach($subjects as $sub)
                        <option value="{{ $sub->subject_name }}">{{ $sub->subject_name }}</option>
                        @endforeach
@@ -891,7 +891,7 @@
                   </div>            
                   <div class="form-group col-3">
                     {!! Form::label('','Form IV Other Must Subjects') !!}
-                    <select name="other_must_subjects[]" class="form-control ss-select-tags" multiple="multiple">
+                    <select name="other_must_subjects[]" class="form-control ss-select-tags" multiple="multiple" style="width: 100%;">
                        @foreach($subjects as $sub)
                        <option value="{{ $sub->subject_name }}">{{ $sub->subject_name }}</option>
                        @endforeach
@@ -899,7 +899,7 @@
                   </div>
                   <div class="form-group col-3">
                     {!! Form::label('','Form IV Exclude Subjects') !!}
-                    <select name="exclude_subjects[]" class="form-control ss-select-tags" multiple="multiple">
+                    <select name="exclude_subjects[]" class="form-control ss-select-tags" multiple="multiple" style="width: 100%;">
                        @foreach($subjects as $sub)
                        <option value="{{ $sub->subject_name }}">{{ $sub->subject_name }}</option>
                        @endforeach
@@ -907,7 +907,7 @@
                   </div>                  
                   <div class="form-group col-3">
                     {!! Form::label('','Form VI Must Subjects') !!}
-                    <select name="advance_must_subjects[]" class="form-control ss-select-tags" multiple="multiple">
+                    <select name="advance_must_subjects[]" class="form-control ss-select-tags" multiple="multiple" style="width: 100%;">
                        @foreach($high_subjects as $sub)
                        <option value="{{ $sub->subject_name }}">{{ $sub->subject_name }}</option>
                        @endforeach
@@ -915,7 +915,7 @@
                   </div>
                   <div class="form-group col-3">
                     {!! Form::label('','Form VI Other Must Subjects') !!}
-                    <select name="other_advance_must_subjects[]" class="form-control ss-select-tags" multiple="multiple">
+                    <select name="other_advance_must_subjects[]" class="form-control ss-select-tags" multiple="multiple" style="width: 100%;">
                        @foreach($high_subjects as $sub)
                        <option value="{{ $sub->subject_name }}">{{ $sub->subject_name }}</option>
                        @endforeach
@@ -923,7 +923,7 @@
                   </div>
                   <div class="form-group col-3">
                     {!! Form::label('','Form VI Exclude Subjects') !!}
-                    <select name="advance_exclude_subjects[]" class="form-control ss-select-tags" multiple="multiple">
+                    <select name="advance_exclude_subjects[]" class="form-control ss-select-tags" multiple="multiple" style="width: 100%;">
                        @foreach($high_subjects as $sub)
                        <option value="{{ $sub->subject_name }}">{{ $sub->subject_name }}</option>
                        @endforeach
