@@ -549,6 +549,7 @@ class ApplicantController extends Controller
                    // Diploma
                    if(str_contains($award->name,'Diploma')){
                        $o_level_pass_count = 0;
+					   $$o_level_other_pass_count = 0;
                        $o_level_must_pass_count = 0;
                        $a_level_principle_pass_count = 0;
                        $a_level_subsidiary_pass_count = 0;
@@ -608,12 +609,12 @@ class ApplicantController extends Controller
                                        }
 
                                     }elseif(in_array($result->subject_name, unserialize($program->entryRequirements[0]->must_subjects))){
-                                         $o_level_pass_count += 1;
+                                         $o_level_other_pass_count += 1;
                                     }else{
 										if(unserialize($program->entryRequirements[0]->other_must_subjects) != '' && (count(unserialize($program->entryRequirements[0]->must_subjects)) + count(unserialize($program->entryRequirements[0]->other_must_subjects))) < $program->entryRequirements[0]->pass_subjects){
-										 $o_level_pass_count += 1;	
+										 $o_level_ohter_pass_count += 1;	
 										}elseif(count(unserialize($program->entryRequirements[0]->must_subjects)) < $program->entryRequirements[0]->pass_subjects){
-										 $o_level_pass_count += 1;											
+										 $o_level_other_pass_count += 1;											
 										}
 
 									}
@@ -742,7 +743,7 @@ class ApplicantController extends Controller
                            }
                         } */
 						// lupi changed the code below to ignore checks on form IV must subjects
-					   if($o_level_pass_count >= $program->entryRequirements[0]->pass_subjects && ($a_level_subsidiary_pass_count >= 1 && $a_level_principle_pass_count >= 1)){
+					   if(($o_level_pass_count + $o_level_other_pass_count) >= $program->entryRequirements[0]->pass_subjects && ($a_level_subsidiary_pass_count >= 1 && $a_level_principle_pass_count >= 1)){
                          $programs[] = $program;
                        }
 					   
