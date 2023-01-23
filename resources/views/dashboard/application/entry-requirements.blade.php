@@ -299,11 +299,6 @@
                 </div>
               {!! Form::close() !!}
             </div><!-- /tabpane -->
-			</div>
-			</div>
-			<div class="card-body">
-                 
-            <div class="row">
             <div class="tab-pane" id="ss-diploma" role="tabpanel">
                @php
                 $equivalent_gpa = [
@@ -618,11 +613,6 @@
                 </div>
               {!! Form::close() !!}
             </div><!-- /tabpane -->
-			</div>
-			<div>
-			<div class="card-body">
-                 
-                 <div class="row">
             <div class="tab-pane" id="ss-degree" role="tabpanel">
                @php
                 $equivalent_gpa = [
