@@ -198,7 +198,7 @@
                     </select>
                   </div>
                   <div class="form-group col-3">
-                    {!! Form::label('','Equivalent GPA') !!}
+                    {!! Form::label('','Diploma GPA') !!}
                     {!! Form::text('equivalent_gpa',null,$equivalent_gpa) !!}
                   </div>
                   <div class="form-group col-3">
@@ -515,16 +515,16 @@
                     {!! Form::text('pass_subjects',null,$pass_subjects) !!}
                   </div>
 
-                  <div class="form-group col-3">
+ <!--                 <div class="form-group col-3">
                     {!! Form::label('','Subsidiary Subjects') !!}
                     <select name="subsidiary_subjects[]" class="form-control ss-select-tags" multiple="multiple" required>
                        @foreach($high_subjects as $sub)
                        <option value="{{ $sub->subject_name }}">{{ $sub->subject_name }}</option>
                        @endforeach
                     </select>
-                  </div>
+                  </div> 
                   
-                  <div class="form-group col-3">
+-->                  <div class="form-group col-3">
                     {!! Form::label('','Pass Grade') !!}
                     <select name="pass_grade" class="form-control" required>
                        <option value="">Select Pass Grade</option>
@@ -842,7 +842,7 @@
                     {!! Form::text('pass_subjects',null,$pass_subjects) !!}
                   </div>
 
-                  <div class="form-group col-3">
+<!--                  <div class="form-group col-3">
                     {!! Form::label('','Subsidiary Subjects') !!}
                     <select name="subsidiary_subjects[]" class="form-control ss-select-tags" multiple="multiple" required>
                        @foreach($high_subjects as $sub)
@@ -850,7 +850,7 @@
                        @endforeach
                     </select>
                   </div>
-                 
+-->                 
                    <div class="form-group col-3">
                     {!! Form::label('','Pass Grade') !!}
                     <select name="pass_grade" class="form-control" required>
@@ -1406,7 +1406,7 @@
                                           {!! Form::label('','No. of Pass Subjects') !!}
                                           {!! Form::text('pass_subjects',$requirement->pass_subjects,$pass_subjects) !!}
                                         </div>
-
+<!--
                                         <div class="form-group col-3">
                                             {!! Form::label('','Subsidiary Subjects') !!}
                                             <select name="subsidiary_subjects[]" class="form-control ss-select-tags" multiple="multiple">
@@ -1415,7 +1415,7 @@
                                                @endforeach
                                             </select>
                                           </div>
-                                        
+-->                                        
                                        
                                         <div class="form-group col-3">
                                           {!! Form::label('','Pass Grade') !!}
@@ -1720,7 +1720,7 @@
                                             {!! Form::label('','No. of Pass Subjects') !!}
                                             {!! Form::text('pass_subjects',$requirement->pass_subjects,$pass_subjects) !!}
                                           </div>
-                                          
+<!--                                          
                                           <div class="form-group col-3">
                                             {!! Form::label('','Subsidiary Subjects') !!}
                                             <select name="subsidiary_subjects[]" class="form-control ss-select-tags" multiple="multiple">
@@ -1729,7 +1729,7 @@
                                                @endforeach
                                             </select>
                                           </div>
-                                       
+-->                                       
                                            <div class="form-group col-3">
                                             {!! Form::label('','Pass Grade') !!}
                                             <select name="pass_grade" class="form-control">
