@@ -118,7 +118,7 @@
                 <!-- /.card-body -->
 
                 <div class="card-footer">
-                  <button type="submit" class="btn btn-primary">{{ __('Add Department') }}</button>
+                  <button type="submit" class="btn btn-primary">{{ __('Add Departm') }}</button>
                 </div>
               {!! Form::close() !!}
             </div>
