@@ -619,7 +619,7 @@ class ApplicantController extends Controller
                                  }else{
                                     $o_level_pass_count += 1;
                                  }
-
+								//return $o_level_pass_count;
 						   }
 						   }						   
                            
@@ -759,7 +759,7 @@ class ApplicantController extends Controller
                                 }
                        }
                            
-													return $o_level_pass_count;
+
                        if($o_level_pass_count >= $program->entryRequirements[0]->pass_subjects && $has_btc){
                            $programs[] = $program;
                        }
