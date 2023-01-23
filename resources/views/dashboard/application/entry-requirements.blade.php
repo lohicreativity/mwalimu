@@ -299,6 +299,11 @@
                 </div>
               {!! Form::close() !!}
             </div><!-- /tabpane -->
+			</div>
+			</div>
+			<div class="card-body">
+                 
+            <div class="row">
             <div class="tab-pane" id="ss-diploma" role="tabpanel">
                @php
                 $equivalent_gpa = [
@@ -613,6 +618,11 @@
                 </div>
               {!! Form::close() !!}
             </div><!-- /tabpane -->
+			</div>
+			<div>
+			<div class="card-body">
+                 
+                 <div class="row">
             <div class="tab-pane" id="ss-degree" role="tabpanel">
                @php
                 $equivalent_gpa = [
@@ -741,16 +751,16 @@
                     </select>
                   </div>
                   <div class="form-group col-3" style="width: 100%";>
-                    {!! Form::label('','Diploma GPA') !!}
+                    {!! Form::label('','Max. Diploma GPA') !!}
                     {!! Form::text('equivalent_gpa',null,$equivalent_gpa) !!}
                   </div>
                   <div class="form-group col-3">
-                    {!! Form::label('','Min Diploma GPA') !!}
+                    {!! Form::label('','Min. Diploma GPA') !!}
                     {!! Form::text('min_equivalent_gpa',null,$min_equivalent_gpa) !!}
                   </div>
                   <div class="form-group col-3" style="width: 100%";>
                     {!! Form::label('','Diploma Majors') !!}
-                    <select name="equivalent_majors[]" class="form-control ss-select-tags" multiple="multiple" required>
+                    <select name="equivalent_majors[]" class="form-control ss-select-tags" multiple="multiple" required> 
                        {{--
                        @foreach($diploma_programs as $prog)
                        <option value="{{ substr($prog->name,20) }}">{{ substr($prog->name,20) }}</option>
