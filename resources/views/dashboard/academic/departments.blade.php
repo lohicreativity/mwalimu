@@ -232,7 +232,7 @@
                                     </div>
                                     <div class="form-group col-4">
                                       {!! Form::label('','Campus') !!}<br>
-                                      <select name="campuses[]" class="form-control ss-select-tags" style="width: 100%;" required>
+                                      <select name="campuses[]" class="form-control ss-select-tags" style="width: 100%;" multiple="multiple">
 									  <!-- <select name="campuses[]" class="form-control ss-select-tags" style="width: 100%;" multiple="multiple"> -->
                                          <option value="">Select Parent</option>
                                          @foreach($campuses as $campus)
