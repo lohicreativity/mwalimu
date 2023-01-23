@@ -302,13 +302,13 @@
             <div class="tab-pane" id="ss-diploma" role="tabpanel">
                @php
                 $equivalent_gpa = [
-                   'placeholder'=>'Equivalent GPA',
+                   'placeholder'=>'Certificate GPA',
                    'class'=>'form-control',
                    'readonly'=>true
                 ];
 
                 $equivalent_majors = [
-                   'placeholder'=>'Equivalent Majors',
+                   'placeholder'=>'Certificate Majors',
                    'class'=>'form-control',
                    'readonly'=>true
                 ];
@@ -344,19 +344,19 @@
                 ];
 
                 $principle_pass_subjects = [
-                   'placeholder'=>'Principle Pass Subjects',
+                   'placeholder'=>'No. of Principle Pass Points',
                    'class'=>'form-control',
                    'required'=>true
                 ];
 
                 $subsidiary_pass_subjects = [
-                   'placeholder'=>'Subsidiary Pass Subjects',
+                   'placeholder'=>'No. of Subsidiary Pass Subjects',
                    'class'=>'form-control',
                    'required'=>true
                 ];
 
                 $pass_subjects = [
-                   'placeholder'=>'Pass Subjects',
+                   'placeholder'=>'No. of Pass Subjects',
                    'class'=>'form-control',
                    'required'=>true
                 ];
@@ -535,7 +535,7 @@
                        <option value="A">A</option>
                        <option value="B">B</option>
                        <option value="C">C</option>
-                       <option value="D" selected>D</option>
+                       <option value="D">D</option>
                        <option value="E">E</option>
                        <option value="F">F</option>
                     </select>
@@ -544,7 +544,7 @@
                     {!! Form::label('','NTA Level') !!}
                     <select name="nta_level" class="form-control" required>
                        <option value="">Select NTA Level</option>
-                       <option value="4" selected>4</option>
+                       <option value="4">4</option>
                        <option value="5">5</option>
                        <option value="6">6</option>
                        <option value="7">7</option>
@@ -555,7 +555,7 @@
                   </div>
                   <div class="form-group col-3">
                     {!! Form::label('','Form IV Must Subjects') !!}
-                    <select name="must_subjects[]" class="form-control ss-select-tags" style="width: 100%; multiple="multiple">
+                    <select name="must_subjects[]" class="form-control ss-select-tags" multiple="multiple">
                        @foreach($subjects as $sub)
                        <option value="{{ $sub->subject_name }}">{{ $sub->subject_name }}</option>
                        @endforeach
@@ -563,7 +563,7 @@
                   </div>
                    <div class="form-group col-3">
                     {!! Form::label('','Form IV Other Must Subjects') !!}
-                    <select name="other_must_subjects[]" class="form-control ss-select-tags" style="width: 100%; multiple="multiple">
+                    <select name="other_must_subjects[]" class="form-control ss-select-tags" multiple="multiple">
                        @foreach($subjects as $sub)
                        <option value="{{ $sub->subject_name }}">{{ $sub->subject_name }}</option>
                        @endforeach
@@ -571,7 +571,7 @@
                   </div>
                   <div class="form-group col-3">
                     {!! Form::label('','Form IV Exclude Subjects') !!}
-                    <select name="exclude_subjects[]" class="form-control ss-select-tags" style="width: 100%; multiple="multiple">
+                    <select name="exclude_subjects[]" class="form-control ss-select-tags" multiple="multiple">
                        @foreach($subjects as $sub)
                        <option value="{{ $sub->subject_name }}">{{ $sub->subject_name }}</option>
                        @endforeach
@@ -579,7 +579,7 @@
                   </div>
                   <div class="form-group col-3">
                     {!! Form::label('','Form VI Must Subjects') !!}
-                    <select name="advance_must_subjects[]" class="form-control ss-select-tags" style="width: 100%; multiple="multiple">
+                    <select name="advance_must_subjects[]" class="form-control ss-select-tags" multiple="multiple">
                        @foreach($high_subjects as $sub)
                        <option value="{{ $sub->subject_name }}">{{ $sub->subject_name }}</option>
                        @endforeach
@@ -588,7 +588,7 @@
 
                   <div class="form-group col-3">
                     {!! Form::label('','Form VI Other Must Subjects') !!}
-                    <select name="other_advance_must_subjects[]" class="form-control ss-select-tags" style="width: 100%; multiple="multiple">
+                    <select name="other_advance_must_subjects[]" class="form-control ss-select-tags" multiple="multiple">
                        @foreach($high_subjects as $sub)
                        <option value="{{ $sub->subject_name }}">{{ $sub->subject_name }}</option>
                        @endforeach
@@ -596,7 +596,7 @@
                   </div>
                    <div class="form-group col-3">
                     {!! Form::label('','Form VI Exclude Subjects') !!}
-                    <select name="advance_exclude_subjects[]" class="form-control ss-select-tags" style="width: 100%; multiple="multiple">
+                    <select name="advance_exclude_subjects[]" class="form-control ss-select-tags" multiple="multiple">
                        @foreach($high_subjects as $sub)
                        <option value="{{ $sub->subject_name }}">{{ $sub->subject_name }}</option>
                        @endforeach
@@ -616,12 +616,12 @@
             <div class="tab-pane" id="ss-degree" role="tabpanel">
                @php
                 $equivalent_gpa = [
-                   'placeholder'=>'Diploma GPA',
+                   'placeholder'=>'Max. Diploma GPA',
                    'class'=>'form-control'
                 ];
 
                 $equivalent_majors = [
-                   'placeholder'=>'Diploma Equivalent Majors',
+                   'placeholder'=>'Diploma Majors',
                    'class'=>'form-control',
                 ];
 
@@ -632,7 +632,7 @@
                 ];
 
                 $min_equivalent_gpa = [
-                   'placeholder'=>'Min Diploma GPA',
+                   'placeholder'=>'Min. Diploma GPA',
                    'class'=>'form-control',
                    'required'=>true
                 ];
@@ -662,7 +662,7 @@
                 ];
 
                 $min_principle_pass_points = [
-                   'placeholder'=>'Min Principle Pass Points',
+                   'placeholder'=>'No. of Subsidiary Pass Subjects',
                    'class'=>'form-control',
                    'required'=>true
                 ];
@@ -794,7 +794,7 @@
                   <div class="form-group col-3">
                     {!! Form::label('','Diploma Average Grade') !!}
                     <select name="equivalent_average_grade" class="form-control" required>
-                       <option value="">Select Pass Grade</option>
+                       <option value="">Select Diploma Average Grade</option>
                        <option value="A">A</option>
                        <option value="B">B</option>
                        <option value="C">C</option>
@@ -863,7 +863,7 @@
                        <option value="A">A</option>
                        <option value="B">B</option>
                        <option value="C">C</option>
-                       <option value="D" selected>D</option>
+                       <option value="D">D</option>
                        <option value="E">E</option>
                        <option value="F">F</option>
                     </select>
