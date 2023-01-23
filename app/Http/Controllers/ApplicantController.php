@@ -611,7 +611,7 @@ class ApplicantController extends Controller
                                          $o_level_pass_count += 1;
                                        }
                                     }else{
-										if((count(unserialize($program->entryRequirements[0]->must_subjects) + count(unserialize($program->entryRequirements[0]->other_must_subjects)) < $program->entryRequirements[0]->pass_subjects){
+										if((count(unserialize($program->entryRequirements[0]->must_subjects)) + count(unserialize($program->entryRequirements[0]->other_must_subjects))) < $program->entryRequirements[0]->pass_subjects){
 										 $o_level_pass_count += 1;	
 										}
 									}
