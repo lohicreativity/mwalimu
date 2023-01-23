@@ -55,7 +55,8 @@
 
                   $middle_name = [
                      'placeholder'=>'Middle name',
-                     'class'=>'form-control'
+                     'class'=>'form-control',
+					 'required'=>true
                   ];
 
                   $surname = [
