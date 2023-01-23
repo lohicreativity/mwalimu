@@ -549,7 +549,7 @@ class ApplicantController extends Controller
                    // Diploma
                    if(str_contains($award->name,'Diploma')){
                        $o_level_pass_count = 0;
-					   $$o_level_other_pass_count = 0;
+					   $o_level_other_pass_count = 0;
                        $o_level_must_pass_count = 0;
                        $a_level_principle_pass_count = 0;
                        $a_level_subsidiary_pass_count = 0;
