@@ -851,13 +851,13 @@
                   </div>
 -->               
                    <div class="form-group col-3">
-                    {!! Form::label('','No. of Subsidiary Pass Subjects') !!}
-                    {!! Form::text('subsidiary_pass_subjects',null,$min_principle_pass_points) !!}
-                  </div>
-                   <div class="form-group col-3">
                     {!! Form::label('','No. of Principle Pass Subjects') !!}
                     {!! Form::text('principle_pass_subjects',null,$principle_pass_subjects) !!}
                    </div>
+                   <div class="form-group col-3">
+                    {!! Form::label('','No. of Subsidiary Pass Subjects') !!}
+                    {!! Form::text('subsidiary_pass_subjects',null,$min_principle_pass_points) !!}
+                  </div>
 				   <div class="form-group col-3">
                     {!! Form::label('','Form VI Must Subjects') !!}
                     <select name="advance_must_subjects[]" class="form-control ss-select-tags" multiple="multiple" style="width: 100%;">
