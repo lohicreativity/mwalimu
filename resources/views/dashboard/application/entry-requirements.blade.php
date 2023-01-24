@@ -620,7 +620,7 @@
             <div class="tab-pane" id="ss-degree" role="tabpanel">
                @php
                 $equivalent_gpa = [
-                   'placeholder'=>'Max. Diploma GPA',
+                   'placeholder'=>'Direct Diploma GPA',
                    'class'=>'form-control'
                 ];
 
@@ -636,7 +636,7 @@
                 ];
 
                 $min_equivalent_gpa = [
-                   'placeholder'=>'Min. Diploma GPA',
+                   'placeholder'=>'OUT Diploma GPA',
                    'class'=>'form-control',
                    'required'=>true
                 ];
