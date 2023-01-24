@@ -977,7 +977,7 @@
                   @foreach($entry_requirements as $requirement)
                   <tr>
                     <td>{{ $requirement->campusProgram->program->name }}</td>
-                    <td>{{ $requirement->nta_level }}</td>					
+                    <td>{{ @if ($requirement->nta_level =='') N/A @endif }}</td>					
                     <td>{{ $requirement->pass_subjects }}</td>
                     <td>{{ $requirement->pass_grade }}</td>
                     <td>
