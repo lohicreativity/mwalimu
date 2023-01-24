@@ -756,12 +756,8 @@
                        <option value="F">F</option>
                     </select>
                   </div>
-                  <div class="form-group col-3">
-                    {!! Form::label('','Min. Diploma GPA') !!}
-                    {!! Form::text('min_equivalent_gpa',null,$min_equivalent_gpa) !!}
-                  </div>
 				  <div class="form-group col-3" style="width: 100%";>
-                    {!! Form::label('','Max. Diploma GPA') !!}
+                    {!! Form::label('','Direct Diploma GPA') !!}
                     {!! Form::text('equivalent_gpa',null,$equivalent_gpa) !!}
                   </div>
                   <div class="form-group col-3" style="width: 100%";>
@@ -830,6 +826,10 @@
                        <option value="9">9</option>
                        <option value="10">10</option>
                     </select>
+                  </div>
+                  <div class="form-group col-3">
+                    {!! Form::label('',OUT Diploma GPA') !!}
+                    {!! Form::text('min_equivalent_gpa',null,$min_equivalent_gpa) !!}
                   </div>
                    <div class="form-group col-3">
                     {!! Form::label('','OUT GPA') !!}
@@ -967,6 +967,7 @@
                   <thead>
                   <tr>
                     <th>Programme</th>
+                    <th>NTA Level</th>
                     <th>Pass Subjects</th>
                     <th>Pass Grade</th>
                     <th>Actions</th>
@@ -976,6 +977,7 @@
                   @foreach($entry_requirements as $requirement)
                   <tr>
                     <td>{{ $requirement->campusProgram->program->name }}</td>
+                    <td>{{ $requirement->nta_level }}</td>					
                     <td>{{ $requirement->pass_subjects }}</td>
                     <td>{{ $requirement->pass_grade }}</td>
                     <td>
