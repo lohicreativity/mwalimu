@@ -828,7 +828,7 @@
                     </select>
                   </div>
                   <div class="form-group col-3">
-                    {!! Form::label('',OUT Diploma GPA') !!}
+                    {!! Form::label('','OUT Diploma GPA') !!}
                     {!! Form::text('min_equivalent_gpa',null,$min_equivalent_gpa) !!}
                   </div>
                    <div class="form-group col-3">
