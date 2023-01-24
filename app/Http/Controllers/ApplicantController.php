@@ -863,6 +863,36 @@ class ApplicantController extends Controller
                                  }else{
                                       $o_level_pass_count += 1;
                                  } */
+								 
+								 								 if(unserialize($program->entryRequirements[0]->must_subjects) != ''){
+									
+                                    if(unserialize($program->entryRequirements[0]->other_must_subjects) != ''){
+                                       if(in_array($result->subject_name, unserialize($program->entryRequirements[0]->must_subjects))){
+                                         $o_level_pass_count += 1;
+                                       }
+
+                                       if(in_array($result->subject_name, unserialize($program->entryRequirements[0]->other_must_subjects)) && !$other_must_subject_ready){
+                                         $o_level_pass_count += 1;
+                                         $other_must_subject_ready = true;
+                                       }
+
+                                    }elseif(in_array($result->subject_name, unserialize($program->entryRequirements[0]->must_subjects))){
+                                         $o_level_pass_count += 1;
+                                    }else{
+										if(unserialize($program->entryRequirements[0]->other_must_subjects) != '' && (count(unserialize($program->entryRequirements[0]->must_subjects)) + count(unserialize($program->entryRequirements[0]->other_must_subjects))) < $program->entryRequirements[0]->pass_subjects){
+											$o_level_other_pass_count += 1;	
+										}elseif(count(unserialize($program->entryRequirements[0]->must_subjects)) < $program->entryRequirements[0]->pass_subjects && ($o_level_other_pass_count < ($program->entryRequirements[0]->pass_subjects - count(unserialize($program->entryRequirements[0]->must_subjects))))){
+											$o_level_other_pass_count += 1;											
+										}
+									}
+                                }elseif(unserialize($program->entryRequirements[0]->exclude_subjects) != ''){
+                                    if(!in_array($result->subject_name, unserialize($program->entryRequirements[0]->exclude_subjects))){
+                                        $o_level_pass_count += 1;
+										  
+                                    }
+                                }else{
+                                    $o_level_pass_count += 1;
+                                }
 								 // lupi changed
 								 if(unserialize($program->entryRequirements[0]->must_subjects) != ''){
 									
@@ -1041,7 +1071,7 @@ class ApplicantController extends Controller
                        }
                        
                        if(unserialize($program->entryRequirements[0]->must_subjects) != ''){
-                       if(($o_level_pass_count+$o_level_other_pass_count) >= $program->entryRequirements[0]->pass_subjects && $a_level_principle_pass_count >= 2 && $a_level_principle_pass_points >= $program->entryRequirements[0]->principle_pass_points && $o_level_must_pass_count >= count(unserialize($program->entryRequirements[0]->must_subjects))){
+                       if(($o_level_pass_count+$o_level_other_pass_count) >= $program->entryRequirements[0]->pass_subjects && $a_level_principle_pass_count >= 2 && $a_level_principle_pass_points >= $program->entryRequirements[0]->principle_pass_points){
 
                            $programs[] = $program;
                        }
