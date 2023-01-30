@@ -849,13 +849,13 @@ class ApplicationController extends Controller
               Applicant::where('id',$selection->applicant_id)->update(['programs_complete_status'=>0,'submission_complete_status'=>0]);
           }
           $selection->delete();
-          $selection = '';
-          return $selection;
+          $selection = ApplicantProgramSelection::with('applicant')->findOrFail($id);
+         //return $selection;
 
             foreach ($campus_programs as $program) {
                 if ($program->id == $selection->campus_program_id) {
 
-                    if (unserialize($program->entryRequirements[0]->equivalent_must_subjects) == '' || sizeof($program->entryRequirements[0]->equivalent_must_subjects) == 0) {
+                    if (unserialize($program->entryRequirements[0]->equivalent_must_subjects) == '' || sizeof($selection) == 0) {
                             $applicant->avn_no_results = null;
                             $applicant->save();
                     }
