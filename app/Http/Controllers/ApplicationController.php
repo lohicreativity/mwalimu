@@ -766,8 +766,6 @@ class ApplicationController extends Controller
                     $query->where('application_window_id',$window->id);
             }])->where('campus_id',session('applicant_campus_id'))->get() : [];
 
-            return $campus_programs;
-
             // if(unserialize($program->entryRequirements[0]->equivalent_must_subjects) != ''){
             // }
 
