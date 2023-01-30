@@ -769,20 +769,20 @@ class ApplicationController extends Controller
             // if(unserialize($program->entryRequirements[0]->equivalent_must_subjects) != ''){
             // }
 
-            if (unserialize($campus_programs[2]->entry_requirements[0]->equivalent_must_subjects) == '') {
-                return 'Anything';
-            } else {
-                return 123;
-            }
+            // if (unserialize($campus_programs[2]->entry_requirements[0]->equivalent_must_subjects) == '') {
+            //     return 'Anything';
+            // } else {
+            //     return 123;
+            // }
 
             // return $campus_programs[0]."<br><br><br>".unserialize($campus_programs[2]->entry_requirements->equivalent_must_subjects);
 
 
-            // foreach ($campus_programs as $program) {
-            //     if ($program->id == $request->get('campus_program_id')) {
-            //         return $program->entryRequirements[0]->must_subjects;
-            //     }
-            // }
+            foreach ($campus_programs as $program) {
+                if ($program->id == $request->get('campus_program_id')) {
+                    return unserialize($program->entryRequirements[0]->equivalent_must_subjects);
+                }
+            }
 
             // if ($applicant->avn_no_results == 1) {
                 
