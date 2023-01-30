@@ -766,7 +766,7 @@ class ApplicationController extends Controller
                     $query->where('application_window_id',$window->id);
             }])->where('campus_id',session('applicant_campus_id'))->get() : [];
 
-            return $campus_programs[0]."<br><br><br>".unserialize($campus_programs[2]['program']);
+            return $campus_programs[0]."<br><br><br>".$campus_programs[2]['program'];
 
 
             // foreach ($campus_programs as $program) {
