@@ -768,7 +768,10 @@ class ApplicationController extends Controller
 
             return $campus_programs;
 
-            if (unserialize($campus_programs[2]->entry_requirements->equivalent_must_subjects) == '') {
+            // if(unserialize($program->entryRequirements[0]->equivalent_must_subjects) != ''){
+            // }
+
+            if (unserialize($campus_programs[2]->entry_requirements[0]->equivalent_must_subjects) == '') {
                 return 'Anything';
             } else {
                 return 123;
