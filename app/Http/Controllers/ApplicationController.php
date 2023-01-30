@@ -769,17 +769,13 @@ class ApplicationController extends Controller
                     if (unserialize($program->entryRequirements[0]->equivalent_must_subjects) != '' && sizeof($applicant_has_results) == 0) {
                             $applicant->avn_no_results = 1;
                             $applicant->save();
+
+                            return redirect()->back()->with('message','Programme selected successfully');
                     }
 
                     
                 }
-            }
-
-            // if ($applicant->avn_no_results == 1) {
-                
-            // }
-
-            
+            } 
 
 
         
