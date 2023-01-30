@@ -750,6 +750,8 @@ class ApplicationController extends Controller
      */
     public function selectProgram(Request $request)
     {   
+        return "I have selected this course";
+        
         $count = ApplicantProgramSelection::where('applicant_id',$request->get('applicant_id'))->count();
         
 
