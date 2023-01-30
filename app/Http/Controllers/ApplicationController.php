@@ -849,7 +849,7 @@ class ApplicationController extends Controller
               Applicant::where('id',$selection->applicant_id)->update(['programs_complete_status'=>0,'submission_complete_status'=>0]);
           }
           $selection->delete();
-
+          $selection = '';
           return $selection;
 
             foreach ($campus_programs as $program) {
