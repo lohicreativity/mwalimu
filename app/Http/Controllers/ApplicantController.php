@@ -789,6 +789,9 @@ class ApplicantController extends Controller
                       
 
                        if(unserialize($program->entryRequirements[0]->equivalent_majors) != ''){
+
+                           return 123;
+
                            foreach(unserialize($program->entryRequirements[0]->equivalent_majors) as $sub){
                                 foreach($applicant->nacteResultDetails as $det){
                                    if(str_contains(strtolower($det->programme),strtolower($sub)) && str_contains(strtolower($det->programme),'basic')){
