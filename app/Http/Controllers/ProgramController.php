@@ -24,6 +24,7 @@ class ProgramController extends Controller
     {
       $staff = User::find(Auth::user()->id)->staff;
       if(Auth::user()->hasRole('hod')){
+        return "IM HOD";
         if($request->has('query')){
             $programs = Program::whereHas('departments',function($query) use($staff){
              $query->where('id',$staff->department_id);
@@ -38,6 +39,8 @@ class ProgramController extends Controller
             },])->orderBy('code')->paginate(20);
         }
       }else{
+        return "IM NOT HOD";
+
           if($request->has('query')){
             $programs = Program::whereHas('departments',function($query) use($staff){
 				$query->where('campus_id',$staff->campus_id);

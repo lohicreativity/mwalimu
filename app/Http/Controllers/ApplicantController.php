@@ -799,7 +799,6 @@ class ApplicantController extends Controller
                            }
                        } elseif (unserialize($program->entryRequirements[0]->equivalent_majors) != '' && $program->entryRequirements[0]->nta_level == 5) {
 
-                           return 'NTA LEVEL 5 STUDENT';
 
                        }else{       // lupi added the else part to determine btc status when equivalent majors have not been defined
                             foreach($applicant->nacteResultDetails as $det){
