@@ -779,7 +779,7 @@ class ApplicationController extends Controller
             foreach ($campus_programs as $program) {
                 if ($program->id == $request->get('campus_program_id')) {
 
-                    if (unserialize($program->entryRequirements[0]->equivalent_must_subjects) != '' && empty($applicant_has_results)) {
+                    if (unserialize($program->entryRequirements[0]->equivalent_must_subjects) != '') {
 
                             return "Applicant";
 
