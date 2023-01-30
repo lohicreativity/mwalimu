@@ -13,7 +13,7 @@ use App\Domain\Settings\Models\NTALevel;
 use App\Domain\Academic\Actions\ProgramAction;
 use App\Models\User;
 use App\Utils\Util;
-use Validator, Auth;
+use Validator, Auth, DB;
 
 class ProgramController extends Controller
 {
@@ -117,6 +117,11 @@ class ProgramController extends Controller
            }
         }
 
+        $check_program_department = DB::table('program_department')->where('program_id', $request->get('program_id'))->first();
+
+        return $check_program_department;
+
+        
 
         (new ProgramAction)->update($request);
 
