@@ -817,8 +817,6 @@ class ApplicantController extends Controller
                    // Bachelor
                    if(str_contains($award->name,'Bachelor')){
 
-                        return "Bachelor student";
-
                        $o_level_pass_count = 0;
 					   $o_level_other_pass_count = 0;
                        $o_level_must_pass_count = 0;
