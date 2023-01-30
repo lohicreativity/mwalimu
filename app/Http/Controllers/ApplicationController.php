@@ -756,9 +756,6 @@ class ApplicationController extends Controller
         //     # code...
         // }
 
-            $applicant = Applicant::find();
-
-
             $applicant = User::find($request->get('applicant_id'))->applicants()->with(['selections.campusProgram.program','selections'=>function($query){
                 $query->orderBy('order','asc');
             },'nectaResultDetails'=>function($query){
