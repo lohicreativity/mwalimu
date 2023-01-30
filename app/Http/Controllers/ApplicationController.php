@@ -750,11 +750,7 @@ class ApplicationController extends Controller
      */
     public function selectProgram(Request $request)
     {          
-        // $applicant_has_results = DB::table('nacte_results')->where('applicant_id', $request->get('applicant_id'))->get();
-
-        // if (empty($applicant_has_results)) {
-        //     # code...
-        // }
+        $applicant_has_results = DB::table('nacte_results')->where('applicant_id', $request->get('applicant_id'))->get();
 
             $applicant = Applicant::find($request->get('applicant_id'));
 
@@ -780,7 +776,16 @@ class ApplicationController extends Controller
 
             foreach ($campus_programs as $program) {
                 if ($program->id == $request->get('campus_program_id')) {
-                    return unserialize($program->entryRequirements[0]->equivalent_must_subjects);
+
+                    if (unserialize($program->entryRequirements[0]->equivalent_must_subjects) != '' && empty($applicant_has_results)) {
+
+                            return "Applicant";
+
+                            $applicant->avn_no_results = 1;
+                            $applicant->save();
+                    }
+
+                    
                 }
             }
 
