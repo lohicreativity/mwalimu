@@ -117,7 +117,11 @@ class ProgramController extends Controller
            }
         }
 
-        $check_program_department = DB::table('program_department')->where('program_id', $request->get('program_id'))->first();
+        $check_program_department = DB::table('program_department')
+        ->where('program_id', $request->get('program_id'))
+        ->where('department_id', $request->get('department_id'))
+        ->where('campus_id', $request->get('campus_id'))
+        ->first();
 
         return $check_program_department;
 
