@@ -22,7 +22,7 @@ class ProgramController extends Controller
      */
     public function index(Request $request)
     {
-      $staff = User::find(Auth::user()->id)->staff;
+        $staff = User::find(Auth::user()->id)->staff;
 
         if(Auth::user()->hasRole('hod')){
 

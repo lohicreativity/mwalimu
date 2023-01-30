@@ -798,7 +798,7 @@ class ApplicantController extends Controller
                                 }
                            }
                        } elseif (unserialize($program->entryRequirements[0]->equivalent_majors) != '' && $program->entryRequirements[0]->nta_level == 5) {
-
+                        // salim added elseif part to check nta level 5 for diploma students
 
                        }else{       // lupi added the else part to determine btc status when equivalent majors have not been defined
                             foreach($applicant->nacteResultDetails as $det){
@@ -816,6 +816,9 @@ class ApplicantController extends Controller
                    
                    // Bachelor
                    if(str_contains($award->name,'Bachelor')){
+
+                        return "Bachelor student";
+
                        $o_level_pass_count = 0;
 					   $o_level_other_pass_count = 0;
                        $o_level_must_pass_count = 0;
