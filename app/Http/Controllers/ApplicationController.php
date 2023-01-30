@@ -766,13 +766,13 @@ class ApplicationController extends Controller
                     $query->where('application_window_id',$window->id);
             }])->where('campus_id',session('applicant_campus_id'))->get() : [];
 
-            return $campus_programs[0]->program_id;
+            return $campus_programs[2]->program_id."<br>".$request->get('campus_program_id');
 
-            // foreach ($campus_programs as $program) {
-            //     if ($program->program_id == $request->get('campus_program_id')) {
-            //         return $program;
-            //     }
-            // }
+            foreach ($campus_programs as $program) {
+                if ($program->program_id == $request->get('campus_program_id')) {
+                    return $program;
+                }
+            }
 
             // if ($applicant->avn_no_results == 1) {
                 
