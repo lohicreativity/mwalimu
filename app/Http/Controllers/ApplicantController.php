@@ -790,7 +790,7 @@ class ApplicantController extends Controller
 
                        if(unserialize($program->entryRequirements[0]->equivalent_majors) != '' && $program->entryRequirements[0]->nta_level == 4){
             
-                           // return $program;
+                           return $program;
 
                            foreach(unserialize($program->entryRequirements[0]->equivalent_majors) as $sub){
                                 foreach($applicant->nacteResultDetails as $det){
