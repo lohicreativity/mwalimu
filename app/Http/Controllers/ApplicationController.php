@@ -823,8 +823,9 @@ class ApplicationController extends Controller
     public function resetProgramSelection($id)
     {
         try{
-            $applicant_has_results = DB::table('nacte_results')->where('applicant_id', $request->get('applicant_id'))->get();
           $selection = ApplicantProgramSelection::with('applicant')->findOrFail($id);
+          $applicant_has_results = DB::table('nacte_results')->where('applicant_id', $selection->applicant_id)->get();
+
 
             if (sizeof($applicant_has_results) == 0) {
                 $applicant = Applicant::find($selection->applicant_id);
