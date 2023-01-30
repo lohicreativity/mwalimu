@@ -762,25 +762,11 @@ class ApplicationController extends Controller
                     $query->where('application_window_id',$window->id);
             }])->where('campus_id',session('applicant_campus_id'))->get() : [];
 
-            // if(unserialize($program->entryRequirements[0]->equivalent_must_subjects) != ''){
-            // }
-
-            // if (unserialize($campus_programs[2]->entry_requirements[0]->equivalent_must_subjects) == '') {
-            //     return 'Anything';
-            // } else {
-            //     return 123;
-            // }
-
-            // return $campus_programs[0]."<br><br><br>".unserialize($campus_programs[2]->entry_requirements->equivalent_must_subjects);
-
 
             foreach ($campus_programs as $program) {
                 if ($program->id == $request->get('campus_program_id')) {
 
                     if (unserialize($program->entryRequirements[0]->equivalent_must_subjects) != '' && sizeof($applicant_has_results) == 0) {
-
-                            return "Applicant";
-
                             $applicant->avn_no_results = 1;
                             $applicant->save();
                     }
