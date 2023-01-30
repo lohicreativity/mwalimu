@@ -750,9 +750,17 @@ class ApplicationController extends Controller
      */
     public function selectProgram(Request $request)
     {          
-        $applicant_has_results = DB::table('nacte_results')->where('applicant_id', $request->get('applicant_id'))->get();
+        // $applicant_has_results = DB::table('nacte_results')->where('applicant_id', $request->get('applicant_id'))->get();
 
-        return $applicant_has_results."<br>".$request->get('applicant_id');
+        // if (empty($applicant_has_results)) {
+        //     # code...
+        // }
+
+            $applicant = Applicant::find($request->get('applicant_id'));
+
+            return $applicant->avn_no_results;
+
+
         
         // $count = ApplicantProgramSelection::where('applicant_id',$request->get('applicant_id'))->count();
         
