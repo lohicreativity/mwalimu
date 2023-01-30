@@ -41,11 +41,6 @@ class ProgramController extends Controller
                 },])->orderBy('code')->paginate(20);
         }
     
-        }elseif(Auth::user()->hasRole('admission-officer')){
-
-            return "IM ADMISSION OFFICER";
-
-    
         }else{
 
           if($request->has('query')){
@@ -66,6 +61,7 @@ class ProgramController extends Controller
 			}])->orderBy('code')->paginate(20);
           }
         }
+        
     	$data = [
            'programs'=>$programs,
            'departments'=>Department::whereHas('campuses',function($query) use($staff){
