@@ -65,6 +65,6 @@ class ProgramAction implements ProgramInterface{
 				
 				
 
-                $program->departments()->attach([$request->get('department_id')=>['campus_id'=>$request->get('campus_id')]]);
+                // $program->departments()->attach([$request->get('department_id')=>['campus_id'=>$request->get('campus_id')]]);
 	}
 }
