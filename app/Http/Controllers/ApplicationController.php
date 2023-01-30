@@ -767,7 +767,7 @@ class ApplicationController extends Controller
             }])->where('campus_id',session('applicant_campus_id'))->get() : [];
 
             foreach ($campus_programs as $program) {
-                return $program;
+                return $program->entryRequirements;
             }
 
             if ($applicant->avn_no_results == 1) {
