@@ -799,7 +799,7 @@ class ApplicationController extends Controller
                 }
 
 
-                //  $select_count = ApplicantProgramSelection::where('applicant_id',$request->get('applicant_id'))->count();
+                 $select_count = ApplicantProgramSelection::where('applicant_id',$request->get('applicant_id'))->count();
 
                  if($request->get('choice') == 1){
                     $applicant = Applicant::find($request->get('applicant_id'));
@@ -823,7 +823,15 @@ class ApplicationController extends Controller
     public function resetProgramSelection($id)
     {
         try{
+            $applicant_has_results = DB::table('nacte_results')->where('applicant_id', $request->get('applicant_id'))->get();
           $selection = ApplicantProgramSelection::with('applicant')->findOrFail($id);
+
+            if (sizeof($applicant_has_results) == 0) {
+                $applicant = Applicant::find($selection->applicant_id);
+                $applicant->avn_no_results = 1;
+                $applicant->save();
+            }
+
           if($selection->applicant->is_continue ==1){
             $applicant = Applicant::find($selection->applicant_id);
             $applicant->status = null;
