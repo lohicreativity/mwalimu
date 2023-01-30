@@ -26,20 +26,19 @@ class ProgramController extends Controller
 
         if(Auth::user()->hasRole('hod')){
 
-            return "IM HOD";
             if($request->has('query')){
                 $programs = Program::whereHas('departments',function($query) use($staff){
                 $query->where('id',$staff->department_id);
-            })->with(['departments','ntaLevel','award'])->where('name','LIKE','%'.$request->get('query').'%')->OrWhere('code','LIKE','%'.$request->get('query').'%')->orderBy('code')->orderBy('nta_level_id',$request->get('nta_level'))->paginate(20);
+                })->with(['departments','ntaLevel','award'])->where('name','LIKE','%'.$request->get('query').'%')->OrWhere('code','LIKE','%'.$request->get('query').'%')->orderBy('code')->orderBy('nta_level_id',$request->get('nta_level'))->paginate(20);
             }else{
-            $programs = Program::whereHas('departments',function($query) use($staff){
-                $query->where('id',$staff->department_id);
-            })->with(['departments'=>function($query) use($staff){
-                    $query->where('campus_id',$staff->campus_id);
-                },'ntaLevel','award','campusPrograms'=>function($query) use($staff){
-                    $query->where('campus_id',$staff->campus_id);
-                },])->orderBy('code')->paginate(20);
-        }
+                $programs = Program::whereHas('departments',function($query) use($staff){
+                    $query->where('id',$staff->department_id);
+                })->with(['departments'=>function($query) use($staff){
+                        $query->where('campus_id',$staff->campus_id);
+                    },'ntaLevel','award','campusPrograms'=>function($query) use($staff){
+                        $query->where('campus_id',$staff->campus_id);
+                    },])->orderBy('code')->paginate(20);
+            }
     
         }else{
 
@@ -61,7 +60,7 @@ class ProgramController extends Controller
 			}])->orderBy('code')->paginate(20);
           }
         }
-        
+
     	$data = [
            'programs'=>$programs,
            'departments'=>Department::whereHas('campuses',function($query) use($staff){
