@@ -26,8 +26,6 @@ class ProgramController extends Controller
 
         if(Auth::user()->hasRole('hod')){
 
-            return "hod";
-
             if($request->has('query')){
                 $programs = Program::whereHas('departments',function($query) use($staff){
                 $query->where('id',$staff->department_id);
@@ -43,8 +41,6 @@ class ProgramController extends Controller
             }
     
         }else{
-
-            return "campus";
 
           if($request->has('query')){
             $programs = Program::whereHas('departments',function($query) use($staff){
