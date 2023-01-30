@@ -850,10 +850,12 @@ class ApplicationController extends Controller
           }
           $selection->delete();
 
+          
+
             foreach ($campus_programs as $program) {
                 if ($program->id == $selection->campus_program_id) {
 
-                    if (unserialize($program->entryRequirements[0]->equivalent_must_subjects) == '' || sizeof($program->entryRequirements[0]->equivalent_must_subjects) == 0) {
+                    if (unserialize($program->entryRequirements[0]->equivalent_must_subjects) == '' || sizeof(unserialize($program->entryRequirements[0]->equivalent_must_subjects) == 0)) {
                             $applicant->avn_no_results = null;
                             $applicant->save();
                     }
