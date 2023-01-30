@@ -790,8 +790,6 @@ class ApplicantController extends Controller
 
                        if(unserialize($program->entryRequirements[0]->equivalent_majors) != '' && $program->entryRequirements[0]->nta_level == 4){
             
-                           return $program;
-
                            foreach(unserialize($program->entryRequirements[0]->equivalent_majors) as $sub){
                                 foreach($applicant->nacteResultDetails as $det){
                                    if(str_contains(strtolower($det->programme),strtolower($sub)) && str_contains(strtolower($det->programme),'basic')){
@@ -800,6 +798,8 @@ class ApplicantController extends Controller
                                 }
                            }
                        } elseif (unserialize($program->entryRequirements[0]->equivalent_majors) != '' && $program->entryRequirements[0]->nta_level == 5) {
+
+                           return 'NTA LEVEL 5 STUDENT';
 
                        }else{       // lupi added the else part to determine btc status when equivalent majors have not been defined
                             foreach($applicant->nacteResultDetails as $det){
@@ -1197,7 +1197,7 @@ class ApplicantController extends Controller
            'applicant'=>$applicant,
            'campus'=>Campus::find(session('applicant_campus_id')),
            'application_window'=>$window,
-           'campus_programs'=>$window? $programs : []
+           'campus_programs'=>$window ? $programs : []
         ];
         return view('dashboard.application.select-programs',$data)->withTitle('Select Programmes');
     }
