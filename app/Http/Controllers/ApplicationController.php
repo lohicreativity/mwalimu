@@ -752,7 +752,7 @@ class ApplicationController extends Controller
     {          
         $applicant_has_results = DB::table('nacte_results')->where('applicant_id', $request->get('application_id'))->get();
 
-        return $applicant_has_results;
+        return $applicant_has_results."<br>".$request->get('application_id');
         
         // $count = ApplicantProgramSelection::where('applicant_id',$request->get('applicant_id'))->count();
         
