@@ -824,9 +824,34 @@ class ApplicationController extends Controller
     {
         try{
           $selection = ApplicantProgramSelection::with('applicant')->findOrFail($id);
+
+
+          
+          $applicant = Applicant::find($selection->applicant_id);
+
+          $window = $applicant->applicationWindow;
+
+          $campus_programs = $window? $window->campusPrograms()->whereHas('program',function($query) use($applicant){
+                  $query->where('award_id',$applicant->program_level_id);
+          })->with(['program','campus','entryRequirements'=>function($query) use($window){
+                  $query->where('application_window_id',$window->id);
+          }])->where('campus_id',session('applicant_campus_id'))->get() : [];
+
+
           $applicant_has_results = DB::table('nacte_results')->where('applicant_id', $selection->applicant_id)->get();
 
-          return $selection;
+        //   foreach ($campus_programs as $program) {
+        //     if ($program->id == $selection->campus_program_id) {
+
+        //         if (unserialize($program->entryRequirements[0]->equivalent_must_subjects) != '' && sizeof($applicant_has_results) == 0) {
+        //                 $applicant->avn_no_results = 1;
+        //                 $applicant->save();
+        //         }
+        //     }
+        // }
+          
+          
+          return $selection->campus_program_id;
 
 
             // if (sizeof($applicant_has_results) == 0) {
