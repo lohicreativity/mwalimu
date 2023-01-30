@@ -790,7 +790,7 @@ class ApplicantController extends Controller
 
                        if(unserialize($program->entryRequirements[0]->equivalent_majors) != ''){
 
-                           return $program;
+                           return $program->enryRequirements[0]->nta_level;
 
             
 
