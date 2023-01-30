@@ -767,13 +767,11 @@ class ApplicationController extends Controller
             }])->where('campus_id',session('applicant_campus_id'))->get() : [];
 
 
-            return $campus_programs[2]->id."<br>".$request->get('campus_program_id');
-
-            // foreach ($campus_programs as $program) {
-            //     if ($program->program_id == $request->get('campus_program_id')) {
-            //         return $program;
-            //     }
-            // }
+            foreach ($campus_programs as $program) {
+                if ($program->id == $request->get('campus_program_id')) {
+                    return $program;
+                }
+            }
 
             // if ($applicant->avn_no_results == 1) {
                 
