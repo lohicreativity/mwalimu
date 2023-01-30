@@ -851,7 +851,7 @@ class ApplicationController extends Controller
           $selection->delete();
           $selection = ApplicantProgramSelection::with('applicant')->findOrFail($id);
           //return sizeof($selection);
-         //return $selection;
+         return $selection;
 
             foreach ($campus_programs as $program) {
                 if ($program->id == $selection->campus_program_id) {
