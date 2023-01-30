@@ -44,6 +44,9 @@ class ProgramAction implements ProgramInterface{
 	}
 
 	public function update(Request $request){
+
+                return $request->get('program_id');
+                
 		        $program = Program::find($request->get('program_id'));
                 $program->name = $request->get('name');
                 $program->code = $request->get('code');

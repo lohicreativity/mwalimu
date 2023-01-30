@@ -206,12 +206,14 @@
                   <tr>
                     <td>@if(count($program->campusPrograms) != 0) {{ $program->campusPrograms[0]->regulator_code }} @endif</td>
                     <td>{{ $program->code }}</td>
-					<td>@foreach($program->departments as $dept) <p>{{ $dept->name }}</p> @endforeach</td>
-					<td>@foreach($program->departments as $dept) 
-					         @foreach($dept->staffs as $stf) 
-							    @if($stf->user->hasRole('hod') && $stf->campus_id == $staff->campus_id) <p class="ss-font-xs ss-no-margin">{{ $stf->title}} {{ $stf->first_name }} {{ $stf->surname }}</p> @endif 
-							 @endforeach 
-					    @endforeach</td>
+					          <td>@foreach($program->departments as $dept) <p>{{ $dept->name }}</p> @endforeach</td>
+					          <td>
+                      @foreach($program->departments as $dept) 
+					              @foreach($dept->staffs as $stf) 
+							            @if($stf->user->hasRole('hod') && $stf->campus_id == $staff->campus_id) <p class="ss-font-xs ss-no-margin">{{ $stf->title}} {{ $stf->first_name }} {{ $stf->surname }}</p> @endif 
+							          @endforeach 
+					            @endforeach
+                    </td>
                     <td>
                       @can('edit-programme')
                       <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-edit-program-{{ $program->id }}">
