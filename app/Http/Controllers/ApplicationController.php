@@ -768,9 +768,11 @@ class ApplicationController extends Controller
 
             return $campus_programs;
 
-            // foreach ($campus_programs as $program) {
-                
-            // }
+            foreach ($campus_programs as $program) {
+                if ($program->program_id == $request->get('campus_program_id')) {
+                    return $program;
+                }
+            }
 
             // if ($applicant->avn_no_results == 1) {
                 
