@@ -788,10 +788,7 @@ class ApplicantController extends Controller
                        $has_btc = false;
                       
 
-                       if(unserialize($program->entryRequirements[0]->equivalent_majors) != ''){
-
-                           return $program->entryRequirements[0]->nta_level;
-
+                       if(unserialize($program->entryRequirements[0]->equivalent_majors) != '' && $program->entryRequirements[0]->nta_level == 4){
             
 
                            foreach(unserialize($program->entryRequirements[0]->equivalent_majors) as $sub){
@@ -801,6 +798,8 @@ class ApplicantController extends Controller
                                    }
                                 }
                            }
+                       } elseif (unserialize($program->entryRequirements[0]->equivalent_majors) != '' && $program->entryRequirements[0]->nta_level == 5) {
+
                        }else{       // lupi added the else part to determine btc status when equivalent majors have not been defined
                             foreach($applicant->nacteResultDetails as $det){
                                    if(str_contains(strtolower($det->programme),'basic')){
