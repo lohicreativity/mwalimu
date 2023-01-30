@@ -825,8 +825,6 @@ class ApplicationController extends Controller
         try{
           $selection = ApplicantProgramSelection::with('applicant')->findOrFail($id);
 
-
-          
           $applicant = Applicant::find($selection->applicant_id);
 
           $window = $applicant->applicationWindow;
@@ -849,9 +847,9 @@ class ApplicationController extends Controller
               Applicant::where('id',$selection->applicant_id)->update(['programs_complete_status'=>0,'submission_complete_status'=>0]);
           }
           $selection->delete();
-          $selection = ApplicantProgramSelection::with('applicant')->findOrFail($id);
+        //   $selection = ApplicantProgramSelection::with('applicant')->findOrFail($id);
           //return sizeof($selection);
-         return $selection;
+          return $selection;
 
             foreach ($campus_programs as $program) {
                 if ($program->id == $selection->campus_program_id) {
