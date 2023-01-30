@@ -826,14 +826,16 @@ class ApplicationController extends Controller
           $selection = ApplicantProgramSelection::with('applicant')->findOrFail($id);
           $applicant_has_results = DB::table('nacte_results')->where('applicant_id', $selection->applicant_id)->get();
 
+          return $selection;
 
-            if (sizeof($applicant_has_results) == 0) {
-                $applicant = Applicant::find($selection->applicant_id);
-                $applicant->avn_no_results = 1;
-                $applicant->save();
-            }
 
-          if($selection->applicant->is_continue ==1){
+            // if (sizeof($applicant_has_results) == 0) {
+            //     $applicant = Applicant::find($selection->applicant_id);
+            //     $applicant->avn_no_results = 1;
+            //     $applicant->save();
+            // }
+
+          if($selection->applicant->is_continue == 1){
             $applicant = Applicant::find($selection->applicant_id);
             $applicant->status = null;
             $applicant->save();
