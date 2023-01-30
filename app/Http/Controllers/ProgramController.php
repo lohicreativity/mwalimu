@@ -38,6 +38,12 @@ class ProgramController extends Controller
                 $query->where('campus_id',$staff->campus_id);
             },])->orderBy('code')->paginate(20);
         }
+    
+    }elseif(Auth::user()->hasRole('admission-officer')){
+
+        return "IM ADMISSION OFFICER";
+
+    
       }else{
         return "IM NOT HOD";
 
