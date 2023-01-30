@@ -761,63 +761,60 @@ class ApplicationController extends Controller
             })->with(['program','campus','entryRequirements'=>function($query) use($window){
                     $query->where('application_window_id',$window->id);
             }])->where('campus_id',session('applicant_campus_id'))->get() : [];
+        
+        $count = ApplicantProgramSelection::where('applicant_id',$request->get('applicant_id'))->count();
+        
 
+        $applicant = Applicant::find($request->get('applicant_id'));
+        if($applicant->is_continue == 1){
+            $applicant->status = 'ADMITTED';
+            $applicant->save();
+        }
 
-            foreach ($campus_programs as $program) {
-                if ($program->id == $request->get('campus_program_id')) {
+        $similar_count = ApplicantProgramSelection::where('applicant_id',$request->get('applicant_id'))->where('campus_program_id',$request->get('campus_program_id'))->count();
+        if($similar_count == 0){
+             if($count >= 4){
+                return redirect()->back()->with('error','You cannot select more than 4 programmes');
+             }else{
 
-                    if (unserialize($program->entryRequirements[0]->equivalent_must_subjects) != '' && sizeof($applicant_has_results) == 0) {
-                            $applicant->avn_no_results = 1;
-                            $applicant->save();
+                 $selection = new ApplicantProgramSelection;
+                 $selection->applicant_id = $request->get('applicant_id');
+                 $selection->campus_program_id = $request->campus_program_id;
+                 $selection->application_window_id = $request->get('application_window_id');
+                 $selection->order = $request->get('choice');
+                 if($applicant->is_continue == 1){
+                    $selection->status = 'SELECTED';
+                 }
+                 $selection->save();
 
-                            return redirect()->back()->with('message','Programme selected successfully');
+                // salim added avn results check on 1/30/2023
+                foreach ($campus_programs as $program) {
+                    if ($program->id == $request->get('campus_program_id')) {
+    
+                        if (unserialize($program->entryRequirements[0]->equivalent_must_subjects) != '' && sizeof($applicant_has_results) == 0) {
+                                $applicant->avn_no_results = 1;
+                                $applicant->save();
+                        }
                     }
-
-                    
                 }
-            } 
 
 
-        
-        // $count = ApplicantProgramSelection::where('applicant_id',$request->get('applicant_id'))->count();
-        
+                //  $select_count = ApplicantProgramSelection::where('applicant_id',$request->get('applicant_id'))->count();
 
-        // $applicant = Applicant::find($request->get('applicant_id'));
-        // if($applicant->is_continue == 1){
-        //     $applicant->status = 'ADMITTED';
-        //     $applicant->save();
-        // }
+                 if($request->get('choice') == 1){
+                    $applicant = Applicant::find($request->get('applicant_id'));
+                    $applicant->programs_complete_status = 1;
+                    if($applicant->entry_mode == 'DIRECT'){
+                        $applicant->documents_complete_status = 1;
+                    }
+                    $applicant->save();
+                 }
 
-        // $similar_count = ApplicantProgramSelection::where('applicant_id',$request->get('applicant_id'))->where('campus_program_id',$request->get('campus_program_id'))->count();
-        // if($similar_count == 0){
-        //      if($count >= 4){
-        //         return redirect()->back()->with('error','You cannot select more than 4 programmes');
-        //      }else{
-        //          $selection = new ApplicantProgramSelection;
-        //          $selection->applicant_id = $request->get('applicant_id');
-        //          $selection->campus_program_id = $request->campus_program_id;
-        //          $selection->application_window_id = $request->get('application_window_id');
-        //          $selection->order = $request->get('choice');
-        //          if($applicant->is_continue == 1){
-        //             $selection->status = 'SELECTED';
-        //          }
-        //          $selection->save();
-
-        //          $select_count = ApplicantProgramSelection::where('applicant_id',$request->get('applicant_id'))->count();
-        //          if($request->get('choice') == 1){
-        //             $applicant = Applicant::find($request->get('applicant_id'));
-        //             $applicant->programs_complete_status = 1;
-        //             if($applicant->entry_mode == 'DIRECT'){
-        //                 $applicant->documents_complete_status = 1;
-        //             }
-        //             $applicant->save();
-        //          }
-
-        //          return redirect()->back()->with('message','Programme selected successfully');
-        //      }
-        // }else{
-        //    return redirect()->back()->with('error','Programme already selected');
-        // }
+                 return redirect()->back()->with('message','Programme selected successfully');
+             }
+        }else{
+           return redirect()->back()->with('error','Programme already selected');
+        }
     }
 
     /**
