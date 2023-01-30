@@ -117,8 +117,6 @@ class ProgramController extends Controller
            }
         }
 
-        return $request->get('program_id');
-
 
         (new ProgramAction)->update($request);
 
