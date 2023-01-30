@@ -769,7 +769,7 @@ class ApplicationController extends Controller
 
             foreach ($campus_programs as $program) {
                 if ($program->id == $request->get('campus_program_id')) {
-                    return unserialize($program->entryRequirements[0]->must_subjects);
+                    return unserialize($program->entryRequirements->must_subjects);
                 }
             }
 
