@@ -117,17 +117,22 @@ class ProgramController extends Controller
            }
         }
 
+        // added by salim, check if program department exists to avoid duplicates in table program department
+
         $check_program_department = DB::table('program_department')
         ->where('program_id', $request->get('program_id'))
         ->where('department_id', $request->get('department_id'))
         ->where('campus_id', $request->get('campus_id'))
         ->first();
 
-        return $check_program_department;
+        if ($check_program_department) {
+            return redirect()->back()->with('error','Program department already exists');
+        } else {
+            (new ProgramAction)->update($request);
+        }
 
         
 
-        (new ProgramAction)->update($request);
 
         return Util::requestResponse($request,'Program updated successfully');
     }
