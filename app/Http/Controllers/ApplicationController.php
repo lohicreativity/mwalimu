@@ -1057,6 +1057,7 @@ class ApplicationController extends Controller
        //    return redirect()->back()->with('error','Upload documents section not completed');
        // }
        $applicant->submission_complete_status = 1;
+       $applicant->documents_complete_status = 0;
        $applicant->submitted_at = now();
        $applicant->save();
 	   

@@ -1242,7 +1242,7 @@ class ApplicantController extends Controller
      * Application submission
      */
     public function submission(Request $request)
-    {
+      {
         $applicant = User::find(Auth::user()->id)->applicants()->with('programLevel')->where('campus_id',session('applicant_campus_id'))->first();
         if(ApplicationWindow::where('campus_id',session('applicant_campus_id'))->where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('status','ACTIVE')->first()){
             if($applicant->programs_complete_status != 1){
@@ -1259,7 +1259,7 @@ class ApplicantController extends Controller
             'selected_status'=>$selection_status
         ];
         return view('dashboard.application.submission',$data)->withTitle('Submission');
-    }
+      }
 
     /**
      * Store applicant into database
