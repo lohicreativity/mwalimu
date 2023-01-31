@@ -6665,8 +6665,28 @@ class ApplicationController extends Controller
         return redirect()->back()->with('message','Teacher certificate status updated successfully');
     }
 
-    public function updateVetaCertificate()
+    /**
+     * Update veta certificate status
+     */
+
+    public function updateVetaCertificate(Request $request)
     {
-        return 'Veta certificate';
+        $validation = Validator::make($request->all(),[
+            'veta_certificate_status'=>'required',
+        ]);
+
+        if($validation->fails()){
+           if($request->ajax()){
+              return response()->json(array('error_messages'=>$validation->messages()));
+           }else{
+              return redirect()->back()->withInput()->withErrors($validation->messages());
+           }
+        }
+
+        $applicant = Applicant::find($request->get('applicant_id'));
+        $applicant->veta_status = $request->get('veta_certificate_status');
+        $applicant->save();
+
+        return redirect()->back()->with('message','Veta certificate status updated successfully');
     }
 }
