@@ -848,26 +848,24 @@ class ApplicationController extends Controller
           }
           $selection->delete();
 
+          // retrieved all sections of applicant by salim on 1/31/2023
           $applicant_selections = ApplicantProgramSelection::where('applicant_id', $applicant->id)->get();
 
+          // declared selection flag to check if equivalent must subjects exists by salim on 1/31/2023
           $selection_flag = null;
 
-          foreach ($campus_programs as $program) {
-
+          // check for equivalent musts subjects on selections by salim on 1/31/2023
+        foreach ($campus_programs as $program) {
             foreach ($applicant_selections as $selection) {
-
                 if ($program->id == $selection->campus_program_id) {
-
                     if (unserialize($program->entryRequirements[0]->equivalent_must_subjects) != null) {
-
                         $selection_flag = true;
-
-                    }
-                    
+                    }   
                 }   
             }
         }
 
+        // check flag if true to update avn no results by salim on 1/31/2023
         if ($selection_flag) {
             $applicant->avn_no_results = 1;
             $applicant->save();
