@@ -276,49 +276,6 @@
             </div>
             <!-- /.card -->
 
-            <div class="card card-default">
-              <div class="card-header">
-                <h3 class="card-title">{{ __('Diploma in Teacher Education') }}</h3>
-              </div>
-              <!-- /.card-header -->
-              {!! Form::open(['url'=>'application/update-teacher-certificate-status','class'=>'ss-form-processing']) !!}
-              <div class="card-body">
-                  {!! Form::input('hidden','applicant_id',$applicant->id) !!}
-
-                  <label class="radio-inline">
-                    <input type="radio" name="teacher_certificate_status" id="inlineRadio1" value="1" @if($applicant->teacher_certificate_status === 1) checked="checked" @endif> I have Diploma in Teacher Education
-                  </label>
-                  <label class="radio-inline">
-                    <input type="radio" name="teacher_certificate_status" id="inlineRadio2" value="0" @if($applicant->teacher_certificate_status === 0) checked="checked" @endif> I do not have Diploma in Teacher Education
-                  </label>
-              </div>
-              <div class="card-footer">
-             <button type="submit" class="btn btn-primary">{{ __('Update Status') }}</button>
-            </div>
-
-            <div class="card card-default">
-              <div class="card-header">
-                <h3 class="card-title">{{ __('VETA (NVA)') }}</h3>
-              </div>
-              <!-- /.card-header -->
-              {!! Form::open(['url'=>'application/update-veta-nva','class'=>'ss-form-processing']) !!}
-              <div class="card-body">
-                  {!! Form::input('hidden','applicant_id',$applicant->id) !!}
-
-                  <label class="radio-inline">
-                    <input type="radio" name="veta_nva" id="inlineRadio1" value="1" @if($applicant->teacher_certificate_status === 1) checked="checked" @endif> I have Veta NVA
-                  </label>
-                  <label class="radio-inline">
-                    <input type="radio" name="veta_nva" id="inlineRadio2" value="0" @if($applicant->teacher_certificate_status === 0) checked="checked" @endif> I do not have Veta NVA
-                  </label>
-              </div>
-              <div class="card-footer">
-             <button type="submit" class="btn btn-primary">{{ __('Update Status') }}</button>
-            </div>
-            {!! Form::close() !!}
-            </div>
-            @endif
-             
             @if(str_contains($applicant->programLevel->name,'Degree') && (( $gpa_less || count($a_level_necta_results) != 0) || ($applicant->teacher_certificate_status === 1)))
             <div class="card card-default">
               <div class="card-header">
@@ -361,6 +318,53 @@
             {!! Form::close() !!}
             </div>
             @endif
+
+            <div class="card card-default">
+              <div class="card-header">
+                <h3 class="card-title">{{ __('Diploma in Teacher Education') }}</h3>
+              </div>
+              <!-- /.card-header -->
+              {!! Form::open(['url'=>'application/update-teacher-certificate-status','class'=>'ss-form-processing']) !!}
+              <div class="card-body">
+                  {!! Form::input('hidden','applicant_id',$applicant->id) !!}
+
+                  <label class="radio-inline">
+                    <input type="radio" name="teacher_certificate_status" id="inlineRadio1" value="1" @if($applicant->teacher_certificate_status === 1) checked="checked" @endif> I have Diploma in Teacher Education
+                  </label>
+                  <label class="radio-inline">
+                    <input type="radio" name="teacher_certificate_status" id="inlineRadio2" value="0" @if($applicant->teacher_certificate_status === 0) checked="checked" @endif> I do not have Diploma in Teacher Education
+                  </label>
+              </div>
+              <div class="card-footer">
+             <button type="submit" class="btn btn-primary">{{ __('Update Status') }}</button>
+            </div>
+
+            <div class="card card-default">
+              <div class="card-header">
+                <h3 class="card-title">{{ __('VETA Certificate') }}</h3>
+              </div>
+              <!-- /.card-header -->
+              {!! Form::open(['url'=>'application/update-veta-certificate','class'=>'ss-form-processing']) !!}
+              <div class="card-body">
+                  {!! Form::input('hidden','applicant_id',$applicant->id) !!}
+
+                  <label class="radio-inline">
+                    <input type="radio" name="veta_certificate_status" id="inlineRadio1" value="1" @if($applicant->teacher_certificate_status === 1) checked="checked" @endif> I have Veta NVA
+                  </label>
+                  <label class="radio-inline">
+                    <input type="radio" name="veta_certificate_status" id="inlineRadio2" value="0" @if($applicant->teacher_certificate_status === 0) checked="checked" @endif> I do not have Veta NVA
+                  </label>
+              </div>
+              <div class="card-footer">
+             <button type="submit" class="btn btn-primary">{{ __('Update Status') }}</button>
+            </div>
+
+
+            {!! Form::close() !!}
+            </div>
+            @endif
+             
+            
 
             
 
