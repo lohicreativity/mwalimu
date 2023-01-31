@@ -356,7 +356,7 @@
                   </label>
               </div>
               <div class="card-footer">
-             <button type="submit" class="btn btn-primary">{{ __('Update Status') }}</button>
+             <button type="submit" class="btn btn-primary">{{ __('Update Veta') }}</button>
             </div>
 
 
