@@ -295,6 +295,26 @@
               <div class="card-footer">
              <button type="submit" class="btn btn-primary">{{ __('Update Status') }}</button>
             </div>
+
+            <div class="card card-default">
+              <div class="card-header">
+                <h3 class="card-title">{{ __('VETA (NVA)') }}</h3>
+              </div>
+              <!-- /.card-header -->
+              {!! Form::open(['url'=>'application/update-veta-nva','class'=>'ss-form-processing']) !!}
+              <div class="card-body">
+                  {!! Form::input('hidden','applicant_id',$applicant->id) !!}
+
+                  <label class="radio-inline">
+                    <input type="radio" name="veta_nva" id="inlineRadio1" value="1" @if($applicant->teacher_certificate_status === 1) checked="checked" @endif> I have Veta NVA
+                  </label>
+                  <label class="radio-inline">
+                    <input type="radio" name="veta_nva" id="inlineRadio2" value="0" @if($applicant->teacher_certificate_status === 0) checked="checked" @endif> I do not have Veta NVA
+                  </label>
+              </div>
+              <div class="card-footer">
+             <button type="submit" class="btn btn-primary">{{ __('Update Status') }}</button>
+            </div>
             {!! Form::close() !!}
             </div>
             @endif
