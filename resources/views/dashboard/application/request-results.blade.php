@@ -339,7 +339,7 @@
              <button type="submit" class="btn btn-primary">{{ __('Update Status') }}</button>
             </div>
             {!! Form::close() !!}
-
+            </div>
 
             <div class="card card-default">
               <div class="card-header">
@@ -361,9 +361,8 @@
                 <button type="submit" class="btn btn-primary">{{ __('Update Veta') }}</button>
               </div>
 
-            </div>
             {!! Form::close() !!}
-            
+            </div>
             @endif
              
             
