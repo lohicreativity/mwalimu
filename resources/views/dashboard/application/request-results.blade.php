@@ -338,6 +338,8 @@
               <div class="card-footer">
              <button type="submit" class="btn btn-primary">{{ __('Update Status') }}</button>
             </div>
+            {!! Form::close() !!}
+
 
             <div class="card card-default">
               <div class="card-header">
