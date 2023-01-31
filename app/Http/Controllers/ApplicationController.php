@@ -847,7 +847,8 @@ class ApplicationController extends Controller
               Applicant::where('id',$selection->applicant_id)->update(['programs_complete_status'=>0,'submission_complete_status'=>0]);
           }
           $selection->delete();
-          $selection = null;
+
+          // didn't succeed to reset selection of program that has must equivalent subjects by salim on 1/30/2023
           $selection = ApplicantProgramSelection::with('applicant')->findOrFail($id);
           //return sizeof($selection);
           return $selection;
