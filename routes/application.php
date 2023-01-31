@@ -43,14 +43,14 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 	Route::get('payments',[ApplicantController::class,'payments']);
 	Route::get('results',[ApplicantController::class,'requestResults']);
 	Route::get('select-programs',[ApplicantController::class,'selectPrograms']);
-	// Route::get('upload-documents',[ApplicantController::class,'uploadDocuments']);
+	Route::get('upload-documents',[ApplicantController::class,'uploadDocuments']);
 	Route::get('upload-avn-documents',[ApplicantController::class,'uploadAvnDocuments']);
 	Route::get('submission',[ApplicantController::class,'submission']);
 
 	Route::post('update-basic-info',[ApplicantController::class,'updateBasicInfo']);
 	Route::post('next-of-kin/store',[NextOfKinController::class,'store']);
 	Route::post('next-of-kin/update',[NextOfKinController::class,'update']);
-	// Route::post('upload-documents',[ApplicationController::class,'uploadDocuments']);
+	Route::post('upload-documents',[ApplicationController::class,'uploadDocuments']);
 	Route::get('delete-document',[ApplicationController::class,'deleteDocument']);
 	Route::post('store-program-selection',[ApplicantController::class,'storeProgramSelection']);
 	Route::get('reset-program-selection/{id}',[ApplicationController::class,'resetProgramSelection']);
