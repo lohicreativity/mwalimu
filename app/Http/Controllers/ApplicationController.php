@@ -856,7 +856,7 @@ class ApplicationController extends Controller
 
                 if ($program->id == $selection->campus_program_id) {
 
-                    return unserialize($program->entryRequirements[0]->equivalent_must_subjects);
+                    return unserialize($program);
 
                     // if (unserialize($program->entryRequirements[0]->equivalent_must_subjects) == '') {
                     //     $applicant->avn_no_results = null;
