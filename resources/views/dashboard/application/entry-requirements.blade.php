@@ -844,6 +844,16 @@
                        <option value="OFP 020">Introduction to ICT</option>
                     </select>
                   </div>
+
+                  <div class="form-group col-3">
+                    {!! Form::label('','NVA Level') !!}
+                    <select name="nva_level" class="form-control ss-select-tags" style="width: 100%;" required>
+                       <option value="">Select NVA Level</option>
+                       <option value="1">1</option>
+                       <option value="2">2</option>
+                       <option value="3">3</option>
+                    </select>
+                  </div>
 <!--
                   <div class="form-group col-3">
                     {!! Form::label('','Principle Pass Points') !!}
