@@ -868,9 +868,7 @@ class ApplicationController extends Controller
             }
 
             
-          }
-
-          return $applicant_selections;
+        }
 
 
           // didn't succeed to reset selection of program that has must equivalent subjects by salim on 1/30/2023
