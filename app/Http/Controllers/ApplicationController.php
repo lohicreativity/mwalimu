@@ -849,9 +849,9 @@ class ApplicationController extends Controller
           $selection->delete();
 
           // didn't succeed to reset selection of program that has must equivalent subjects by salim on 1/30/2023
-          $selection = ApplicantProgramSelection::with('applicant')->findOrFail($id);
+        //   $selection = ApplicantProgramSelection::with('applicant')->findOrFail($id);
           //return sizeof($selection);
-          return $selection;
+        //   return $selection;
 
             foreach ($campus_programs as $program) {
                 if ($program->id == $selection->campus_program_id) {
