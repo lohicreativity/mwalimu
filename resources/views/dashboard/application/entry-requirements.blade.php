@@ -854,6 +854,15 @@
                        <option value="3">3</option>
                     </select>
                   </div>
+
+                  <div class="form-group col-3">
+                    {!! Form::label('','Teacher Diploma') !!}
+                    <select name="teacher_diploma" class="form-control" style="width: 100%;" required>
+                       <option value="">Select option</option>
+                       <option value="Yes">Yes</option>
+                       <option value="No">No</option>
+                    </select>
+                  </div>
 <!--
                   <div class="form-group col-3">
                     {!! Form::label('','Principle Pass Points') !!}
