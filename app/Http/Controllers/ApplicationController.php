@@ -825,6 +825,8 @@ class ApplicationController extends Controller
         try{
           $selection = ApplicantProgramSelection::with('applicant')->findOrFail($id);
 
+          return $selection;
+
           $applicant = Applicant::find($selection->applicant_id);
 
           $window = $applicant->applicationWindow;
@@ -857,8 +859,8 @@ class ApplicationController extends Controller
                 if ($program->id == $selection->campus_program_id) {
 
                     if (unserialize($program->entryRequirements[0]->equivalent_must_subjects) == '') {
-                            $applicant->avn_no_results = null;
-                            $applicant->save();
+                        $applicant->avn_no_results = null;
+                        $applicant->save();
                     }
                 }
             }
