@@ -847,10 +847,28 @@ class ApplicationController extends Controller
               Applicant::where('id',$selection->applicant_id)->update(['programs_complete_status'=>0,'submission_complete_status'=>0]);
           }
           $selection->delete();
-          
+
           $applicant_selections = ApplicantProgramSelection::where('applicant_id', $applicant->id)->get();
 
+          foreach ($campus_programs as $program) {
 
+            foreach ($applicant_selections as $selection) {
+
+                if ($program->id == $selection->campus_program_id) {
+
+                    return unserialize($program->entryRequirements[0]->equivalent_must_subjects);
+
+                    // if (unserialize($program->entryRequirements[0]->equivalent_must_subjects) == '') {
+                    //     $applicant->avn_no_results = null;
+                    //     $applicant->save();
+                    // }
+                    
+                }
+                
+            }
+
+            
+          }
 
           return $applicant_selections;
 
@@ -860,17 +878,17 @@ class ApplicationController extends Controller
           //return sizeof($selection);
         //   return $selection;
 
-            foreach ($campus_programs as $program) {
-                if ($program->id == $selection->campus_program_id) {
+            // foreach ($campus_programs as $program) {
+            //     if ($program->id == $selection->campus_program_id) {
 
-                    if (unserialize($program->entryRequirements[0]->equivalent_must_subjects) == '') {
-                        $applicant->avn_no_results = null;
-                        $applicant->save();
-                    }
-                }
-            }
+            //         if (unserialize($program->entryRequirements[0]->equivalent_must_subjects) == '') {
+            //             $applicant->avn_no_results = null;
+            //             $applicant->save();
+            //         }
+            //     }
+            // }
 
-            $selection = null;
+            // $selection = null;
         
           return redirect()->back()->with('message','Selection reset successfully');
         }catch(\Exception $e){
