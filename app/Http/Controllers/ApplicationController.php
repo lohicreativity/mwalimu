@@ -921,8 +921,6 @@ class ApplicationController extends Controller
            }
         }
 
-        return 'AVN DOCS';
-
         (new ApplicantAction)->uploadDocuments($request);
 
         return redirect()->back()->with('message','Document uploaded successfully');
