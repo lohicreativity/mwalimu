@@ -106,6 +106,10 @@ class ApplicantAction implements ApplicantInterface{
                     $applicant->teacher_diploma_certificate = $file_name; //$request->file('document')->getClientOriginalName(); 
                 }
 
+                if($request->get('document_name') == 'veta_certificate'){
+                    $applicant->veta_certificate = $file_name; //$request->file('document')->getClientOriginalName(); 
+                }
+
             }
 
             if($applicant->entry_mode == 'DIRECT'){
