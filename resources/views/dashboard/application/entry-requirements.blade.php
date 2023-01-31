@@ -757,7 +757,7 @@
                     </select>
                   </div>
 				  <div class="form-group col-3" style="width: 100%";>
-                    {!! Form::label('','Direct Diploma GPA') !!}
+                    {!! Form::label('','Max Diploma GPA') !!}
                     {!! Form::text('equivalent_gpa',null,$equivalent_gpa) !!}
                   </div>
                   <div class="form-group col-3" style="width: 100%";>
@@ -828,7 +828,7 @@
                     </select>
                   </div>
                   <div class="form-group col-3">
-                    {!! Form::label('','OUT Diploma GPA') !!}
+                    {!! Form::label('','Min Diploma GPA') !!}
                     {!! Form::text('min_equivalent_gpa',null,$min_equivalent_gpa) !!}
                   </div>
                    <div class="form-group col-3">
