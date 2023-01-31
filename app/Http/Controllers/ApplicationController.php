@@ -827,8 +827,6 @@ class ApplicationController extends Controller
 
           $applicant = Applicant::find($selection->applicant_id);
 
-          $applicant_selections = ApplicantProgramSelection::where('applicant_id', $applicant->id)->get();
-
           $window = $applicant->applicationWindow;
 
           $campus_programs = $window? $window->campusPrograms()->whereHas('program',function($query) use($applicant){
@@ -849,7 +847,9 @@ class ApplicationController extends Controller
               Applicant::where('id',$selection->applicant_id)->update(['programs_complete_status'=>0,'submission_complete_status'=>0]);
           }
           $selection->delete();
-          DB::commit();
+          
+          $applicant_selections = ApplicantProgramSelection::where('applicant_id', $applicant->id)->get();
+
 
 
           return $applicant_selections;
