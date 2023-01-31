@@ -957,6 +957,12 @@ class ApplicationController extends Controller
                unlink(public_path().'/uploads/'.$applicant->passport_picture);
                $applicant->passport_picture = null;
             }
+
+            if($request->get('name') == 'teacher_diploma_certificate'){
+                unlink(public_path().'/uploads/'.$applicant->teacher_diploma_certificate);
+                $applicant->teacher_diploma_certificate = null;
+            }
+
         }catch(\Exception $e){
             return redirect()->back()->with('error','Document could not be found');
         }
