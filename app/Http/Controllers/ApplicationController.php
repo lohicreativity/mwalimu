@@ -849,6 +849,8 @@ class ApplicationController extends Controller
               Applicant::where('id',$selection->applicant_id)->update(['programs_complete_status'=>0,'submission_complete_status'=>0]);
           }
           $selection->delete();
+          DB::commit();
+
 
           return $applicant_selections;
 
