@@ -358,7 +358,9 @@
                   </label>
               </div>
               <div class="card-footer">
-             <button type="submit" class="btn btn-primary">{{ __('Update Veta') }}</button>
+                <button type="submit" class="btn btn-primary">{{ __('Update Veta') }}</button>
+              </div>
+
             </div>
             {!! Form::close() !!}
             
