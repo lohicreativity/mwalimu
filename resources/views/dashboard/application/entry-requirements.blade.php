@@ -480,6 +480,16 @@
                        <option value="10">10</option>
                     </select>
                   </div>
+
+                  <div class="form-group col-3">
+                    {!! Form::label('','NVA Level') !!}
+                    <select name="nva_level" class="form-control" style="width: 100%;" required>
+                       <option value="">Select NVA Level</option>
+                       <option value="1">1</option>
+                       <option value="2">2</option>
+                       <option value="3">3</option>
+                    </select>
+                  </div>
 <!--
                   <div class="form-group col-3">
                     {!! Form::label('','Equivalent Average Grade') !!}
@@ -620,7 +630,7 @@
             <div class="tab-pane" id="ss-degree" role="tabpanel">
                @php
                 $equivalent_gpa = [
-                   'placeholder'=>'Direct Diploma GPA',
+                   'placeholder'=>'Max Diploma GPA',
                    'class'=>'form-control'
                 ];
 
@@ -636,7 +646,7 @@
                 ];
 
                 $min_equivalent_gpa = [
-                   'placeholder'=>'OUT Diploma GPA',
+                   'placeholder'=>'Min Diploma GPA',
                    'class'=>'form-control',
                    'required'=>true
                 ];
@@ -756,7 +766,7 @@
                        <option value="F">F</option>
                     </select>
                   </div>
-				  <div class="form-group col-3" style="width: 100%";>
+				      <div class="form-group col-3" style="width: 100%";>
                     {!! Form::label('','Max Diploma GPA') !!}
                     {!! Form::text('equivalent_gpa',null,$equivalent_gpa) !!}
                   </div>
