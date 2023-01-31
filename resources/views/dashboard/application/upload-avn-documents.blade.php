@@ -114,6 +114,13 @@
                         <td><a href="{{ url('application/delete-document?name=teacher_diploma_certificate') }}" class="btn btn-danger"><i class="fa fa-trash"></i> Delete</a></td>
                       </tr>
                       @endif
+
+                      @if($applicant->veta_certificate)
+                      <tr>
+                        <td>Veta Certificate</td>
+                        <td><a href="{{ url('application/delete-document?name=veta_certificate') }}" class="btn btn-danger"><i class="fa fa-trash"></i> Delete</a></td>
+                      </tr>
+                      @endif
                     </tbody>
                   </table>
                 </div>

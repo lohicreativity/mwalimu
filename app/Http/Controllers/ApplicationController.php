@@ -963,6 +963,11 @@ class ApplicationController extends Controller
                 $applicant->teacher_diploma_certificate = null;
             }
 
+            if($request->get('name') == 'veta_certificate'){
+                unlink(public_path().'/uploads/'.$applicant->veta_certificate);
+                $applicant->veta_certificate = null;
+            }
+
         }catch(\Exception $e){
             return redirect()->back()->with('error','Document could not be found');
         }
