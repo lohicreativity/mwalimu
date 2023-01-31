@@ -850,21 +850,30 @@ class ApplicationController extends Controller
 
           $applicant_selections = ApplicantProgramSelection::where('applicant_id', $applicant->id)->get();
 
+          $selection_flag = null;
+
           foreach ($campus_programs as $program) {
 
             foreach ($applicant_selections as $selection) {
 
                 if ($program->id == $selection->campus_program_id) {
 
-                    if (unserialize($program->entryRequirements[0]->equivalent_must_subjects) == null) {
-                        $applicant->avn_no_results = null;
-                        $applicant->save();
+                    if (unserialize($program->entryRequirements[0]->equivalent_must_subjects) != null) {
+
+                        $selection_flag = true;
+
                     }
                     
                 }   
             }
+        }
 
-            
+        if ($selection_flag) {
+            $applicant->avn_no_results = 1;
+            $applicant->save();
+        } else {
+            $applicant->avn_no_results = null;
+            $applicant->save();
         }
 
 
