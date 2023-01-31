@@ -71,7 +71,6 @@ class ApplicantAction implements ApplicantInterface{
          */
         public function uploadDocuments(Request $request)
         {
-            return 123;
             $applicant = Applicant::with('programLevel')->find($request->get('applicant_id'));
             $name = $applicant->first_name.'_'.$applicant->middle_name.'_'.$applicant->surname.'_'.time();
 

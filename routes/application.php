@@ -43,7 +43,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 	Route::get('payments',[ApplicantController::class,'payments']);
 	Route::get('results',[ApplicantController::class,'requestResults']);
 	Route::get('select-programs',[ApplicantController::class,'selectPrograms']);
-	Route::get('upload-documents',[ApplicantController::class,'uploadDocuments']);
+	// Route::get('upload-documents',[ApplicantController::class,'uploadDocuments']);
 	Route::get('upload-avn-documents',[ApplicantController::class,'uploadAvnDocuments']);
 	Route::get('submission',[ApplicantController::class,'submission']);
 
