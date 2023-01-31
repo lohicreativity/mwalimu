@@ -71,6 +71,7 @@ class ApplicantAction implements ApplicantInterface{
          */
         public function uploadDocuments(Request $request)
         {
+            return 123;
             $applicant = Applicant::with('programLevel')->find($request->get('applicant_id'));
             $name = $applicant->first_name.'_'.$applicant->middle_name.'_'.$applicant->surname.'_'.time();
 
@@ -123,8 +124,6 @@ class ApplicantAction implements ApplicantInterface{
                 }
             }
         }else{
-
-            return "Documents";
 
             if(str_contains($applicant->programLevel->name,'Bachelor')){
                 if($applicant->birth_certificate && $applicant->o_level_certificate && $applicant->diploma_certificate){
