@@ -349,10 +349,10 @@
                   {!! Form::input('hidden','applicant_id',$applicant->id) !!}
 
                   <label class="radio-inline">
-                    <input type="radio" name="veta_certificate_status" id="inlineRadio1" value="1" @if($applicant->teacher_certificate_status === 1) checked="checked" @endif> I have Veta Certificate
+                    <input type="radio" name="veta_certificate_status" id="inlineRadio3" value="1" @if($applicant->teacher_certificate_status === 1) checked="checked" @endif> I have Veta Certificate
                   </label>
                   <label class="radio-inline">
-                    <input type="radio" name="veta_certificate_status" id="inlineRadio2" value="0" @if($applicant->teacher_certificate_status === 0) checked="checked" @endif> I do not have Veta Certificate
+                    <input type="radio" name="veta_certificate_status" id="inlineRadio4" value="0" @if($applicant->teacher_certificate_status === 0) checked="checked" @endif> I do not have Veta Certificate
                   </label>
               </div>
               <div class="card-footer">
