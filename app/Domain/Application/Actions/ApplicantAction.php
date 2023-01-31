@@ -124,12 +124,36 @@ class ApplicantAction implements ApplicantInterface{
             }
         }else{
 
+            // if(str_contains($applicant->programLevel->name,'Bachelor')){
+            //     if($applicant->birth_certificate && $applicant->o_level_certificate && $applicant->diploma_certificate){
+            //         $applicant->documents_complete_status = 1;
+            //     }else{
+            //         $applicant->documents_complete_status = 0;
+            //     }
+            // }elseif(str_contains($applicant->programLevel->name,'Diploma') || str_contains($applicant->programLevel->name,'Certificate')){
+            //     if($applicant->birth_certificate && $applicant->o_level_certificate){
+            //         $applicant->documents_complete_status = 1;
+            //     }else{
+            //         $applicant->documents_complete_status = 0;
+            //     }
+            // }
+
+            
             if(str_contains($applicant->programLevel->name,'Bachelor')){
-                if($applicant->diploma_certificate){
-                    $applicant->documents_complete_status = 1;
-                }else{
-                    $applicant->documents_complete_status = 0;
+
+                if ($applicant->status == null) {
+                    if ($applicant->diploma_certificate) {
+                        $applicant->documents_complete_status = 1;
+                    } else {
+                        $applicant->documents_complete_status = 0;
+                    }
                 }
+
+                // if($applicant->birth_certificate && $applicant->o_level_certificate && $applicant->diploma_certificate){
+                //     $applicant->documents_complete_status = 1;
+                // }else{
+                //     $applicant->documents_complete_status = 0;
+                // }
             }elseif(str_contains($applicant->programLevel->name,'Diploma') || str_contains($applicant->programLevel->name,'Certificate')){
                 if($applicant->birth_certificate && $applicant->o_level_certificate){
                     $applicant->documents_complete_status = 1;
