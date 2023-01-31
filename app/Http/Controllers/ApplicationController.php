@@ -857,17 +857,11 @@ class ApplicationController extends Controller
                 if ($program->id == $selection->campus_program_id) {
 
                     if (unserialize($program->entryRequirements[0]->equivalent_must_subjects) == null) {
-                        return "Equivalent must subjects";
+                        $applicant->avn_no_results = null;
+                        $applicant->save();
                     }
-
-
-                    // if (unserialize($program->entryRequirements[0]->equivalent_must_subjects) == '') {
-                    //     $applicant->avn_no_results = null;
-                    //     $applicant->save();
-                    // }
                     
-                }
-                
+                }   
             }
 
             
