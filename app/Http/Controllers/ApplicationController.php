@@ -825,9 +825,11 @@ class ApplicationController extends Controller
         try{
           $selection = ApplicantProgramSelection::with('applicant')->findOrFail($id);
 
-          return $selection;
-
           $applicant = Applicant::find($selection->applicant_id);
+
+          $applicant_selections = ApplicantProgramSelection::where('applicant_id', $applicant->id)->get();
+
+          return $applicant_selections;
 
           $window = $applicant->applicationWindow;
 
