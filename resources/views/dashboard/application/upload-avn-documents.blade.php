@@ -61,7 +61,7 @@
                       <option value="diploma_certificate">Diploma Certificate</option>
                       @endif
                       @if($applicant->teacher_certificate_status === 1)
-                      <option value="diploma_certificate">Diploma Certificate</option>
+                      <option value="teacher_diploma_certficate">Teacher Certificate</option>
                       @endif
                       @endif
                     </select>
