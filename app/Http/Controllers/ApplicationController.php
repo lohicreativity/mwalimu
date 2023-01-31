@@ -6664,4 +6664,9 @@ class ApplicationController extends Controller
 
         return redirect()->back()->with('message','Teacher certificate status updated successfully');
     }
+
+    public function updateVetaCertificate()
+    {
+        return 'Veta certificate';
+    }
 }
