@@ -829,8 +829,6 @@ class ApplicationController extends Controller
 
           $applicant_selections = ApplicantProgramSelection::where('applicant_id', $applicant->id)->get();
 
-          return $applicant_selections;
-
           $window = $applicant->applicationWindow;
 
           $campus_programs = $window? $window->campusPrograms()->whereHas('program',function($query) use($applicant){
@@ -851,6 +849,9 @@ class ApplicationController extends Controller
               Applicant::where('id',$selection->applicant_id)->update(['programs_complete_status'=>0,'submission_complete_status'=>0]);
           }
           $selection->delete();
+
+          return $applicant_selections;
+
 
           // didn't succeed to reset selection of program that has must equivalent subjects by salim on 1/30/2023
         //   $selection = ApplicantProgramSelection::with('applicant')->findOrFail($id);
