@@ -136,6 +136,7 @@
                 <table id="example2" class="table table-bordered table-hover">
                   <thead>
                   <tr>
+                    <th>#</th>
                     <th>Name</th>
                     <th>Abbreviation</th>
                     <th>Type</th>
@@ -146,6 +147,7 @@
                   <tbody>
                   @foreach($departments as $department)
                   <tr>
+                    <td>{{ $loop->iteration }}</td>
                     <td>{{ $department->name }}</td>
                     <td>{{ $department->abbreviation }}</td>
                     <td>{{ $department->unitCategory->name }}</td>
