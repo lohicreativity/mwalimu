@@ -31,9 +31,10 @@ class DepartmentController extends Controller
          })->with('campuses')->get();
 
          foreach($departments as $department) {
-            if ($department->campuses->id == $staff->campus_id) {
-               $dep = $department;
-            }
+            return $department->campuses;
+            // if ($department->campuses->id == $staff->campus_id) {
+            //    $dep = $department;
+            // }
          }
 
          return $dep;
