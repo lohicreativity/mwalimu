@@ -29,7 +29,7 @@ class DepartmentController extends Controller
 
          })->with('campuses')->get();
 
-         return $departments->campuses;
+         return $departments[0]->campuses;
       }
 
     	$data = [
