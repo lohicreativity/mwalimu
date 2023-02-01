@@ -374,7 +374,7 @@
                                      <div class="row">
                                       <div class="form-group col-6">
                                         {!! Form::label('','Region') !!}
-                                        <select name="region_id" class="form-control ss-select-tags" required id="ss-select-regions-{{ $campus->id }}" data-target="#ss-select-districts-{{ $campus->id }}" data-token="{{ session()->token() }}" data-source-url="{{ url('api/v1/get-districts') }}">
+                                        <select name="region_id" class="form-control ss-select-tags" required id="ss-select-regions" data-target="#ss-select-districts" data-token="{{ session()->token() }}" data-source-url="{{ url('api/v1/get-districts') }}">
                                           <option value="">Select Region</option>
                                           @foreach($regions as $region)
                                           <option value="{{ $region->id }}" @if($campus->region_id == $region->id) selected="selected" @endif>{{ $region->name }}</option>
