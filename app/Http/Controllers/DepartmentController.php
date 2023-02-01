@@ -38,8 +38,6 @@ class DepartmentController extends Controller
            ->paginate(20)
     	];
 
-      return $data['departments'];
-
     	return view('dashboard.academic.departments',$data)->withTitle('Departments');
     }
 
