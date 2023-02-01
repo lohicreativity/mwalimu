@@ -30,11 +30,11 @@ class HomeController extends Controller
 
     public function getParents(Request $request)
     {
-        $parents = Department::where('unit_category_id', $request->get('unit_category_id'))->get();
-        if(count($parents) != 0){
-            return response()->json(['status'=>'success','parents'=>$parents]);
+        $all_departments = Department::where('unit_category_id', $request->get('unit_category_id'))->get();
+        if(count($all_departments) != 0){
+            return response()->json(['status'=>'success','all_departments'=>$all_departments]);
     	}else{
-    		return response()->json(['status'=>'failed','parents'=>$parents]);
+    		return response()->json(['status'=>'failed','all_departments'=>$all_departments]);
     	}
     }
 
