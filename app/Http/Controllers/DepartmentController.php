@@ -22,44 +22,20 @@ class DepartmentController extends Controller
     {
       $staff = User::find(Auth::user()->id)->staff;
 
-      // select *, departments.name 
-      // from `campuses` 
-      // inner join `campus_department` 
-      // on `campuses`.`id` = `campus_department`.`campus_id` 
-      // inner join departments 
-      // on campus_department.department_id = departments.id 
-      // where `campuses`.`id` = 1;
-
-
-      // select * from `departments` 
-      // inner join campus_department 
-      // on departments.id = campus_department.department_id 
-      // inner join campuses 
-      // on campus_department.campus_id = campuses.id 
-      // inner join unit_categories 
-      // ON departments.unit_category_id = unit_categories.id 
-      // where campus_department.campus_id = 1;
-
     	$data = [
            'unit_categories'=>UnitCategory::all(),
            'all_departments'=>Department::all(),
            'campuses'=>Campus::all(),
            'staff'=> $staff,
-           'departments' => DB::table('departments')
-           ->select('departments.*', 'campuses.*', 'unit_categories.*')
-           ->join('campus_department', 'departments.id', 'campus_department.department_id')
-           ->join('campuses', 'campus_department.campus_id', 'campuses.id')
-           ->join('unit_categories', 'departments.unit_category_id', 'unit_categories.id')
-           ->where('campuses.id', $staff->campus_id)
-           ->get()
-           
-         //   'departments' => Department::whereHas('campuses',function($query) use($staff){
-         //       $query->where('campuses.ild', $staff->campus_id);
-         //    })
-         //    ->with('campuses')
-         //    ->paginate(20)
-         //   'departments'=>Department::with('unitCategory','campuses')
-         //   ->paginate(20)
+         //   'departments' => DB::table('departments')
+         //   ->select('departments.*', 'campuses.*', 'unit_categories.*')
+         //   ->join('campus_department', 'departments.id', 'campus_department.department_id')
+         //   ->join('campuses', 'campus_department.campus_id', 'campuses.id')
+         //   ->join('unit_categories', 'departments.unit_category_id', 'unit_categories.id')
+         //   ->where('campuses.id', $staff->campus_id)
+         //   ->get()
+           'departments'=>Department::with('unitCategory','campuses')
+           ->paginate(20)
     	];
 
       return $data['departments'];
