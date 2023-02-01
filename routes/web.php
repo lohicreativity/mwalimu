@@ -32,8 +32,7 @@ use App\Domain\Registration\Models\Student;
 */
 
 Route::get('admission-letter', function() {
-     echo "letter";
-     // return view('dashboard.application.reports.admission-letter');
+     return view('dashboard.application.reports.admission-letter');
 });
 
 Route::get('test',function(){
