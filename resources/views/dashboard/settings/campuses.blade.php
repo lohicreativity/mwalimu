@@ -373,7 +373,7 @@
                                      <div class="row">
                                       <div class="form-group col-6">
                                         {!! Form::label('','Region') !!}
-                                        <select name="region_id" class="form-control ss-select-regions" required id="ss-select-regions-{{ $campus->id }}" data-target="#ss-select-districts-{{ $campus->id }}" data-token="{{ session()->token() }}" data-source-url="{{ url('api/v1/get-districts') }}">
+                                        <select name="region_id" class="form-control ss-select-tags ss-select-regions" required id="ss-select-regions-{{ $campus->id }}" data-target="#ss-select-districts-{{ $campus->id }}" data-token="{{ session()->token() }}" data-source-url="{{ url('api/v1/get-districts') }}">
                                           <option value="">Select Region</option>
                                           @foreach($regions as $region)
                                           <option value="{{ $region->id }}" @if($campus->region_id == $region->id) selected="selected" @endif>{{ $region->name }}</option>
@@ -382,7 +382,7 @@
                                       </div>
                                       <div class="form-group col-6">
                                         {!! Form::label('','District') !!}
-                                        <select name="district_id" class="form-control ss-select-districts" required id="ss-select-districts-{{ $campus->id }}" data-target="#ss-select-wards-{{ $campus->id }}" data-token="{{ session()->token() }}" data-source-url="{{ url('api/v1/get-wards') }}">
+                                        <select name="district_id" class="form-control ss-select-tags ss-select-districts" required id="ss-select-districts-{{ $campus->id }}" data-target="#ss-select-wards-{{ $campus->id }}" data-token="{{ session()->token() }}" data-source-url="{{ url('api/v1/get-wards') }}">
                                           <option value="">Select District</option>
                                           @foreach($districts as $district)
                                           <option value="{{ $district->id }}" @if($campus->district_id == $district->id) selected="selected" @endif>{{ $district->name }}</option>
@@ -393,7 +393,7 @@
                                      <div class="row">
                                       <div class="form-group col-6">
                                         {!! Form::label('','Ward') !!}
-                                        <select name="ward_id" class="form-control ss-select-wards" required id="ss-select-wards-{{ $campus->id }}" data-token="{{ session()->token() }}">
+                                        <select name="ward_id" class="form-control ss-select-tags ss-select-wards" required id="ss-select-wards-{{ $campus->id }}" data-token="{{ session()->token() }}">
                                           <option value="">Select Ward</option>
                                           @foreach($wards as $ward)
                                           <option value="{{ $ward->id }}" @if($campus->ward_id == $ward->id) selected="selected" @endif>{{ $ward->name }}</option>
