@@ -105,7 +105,11 @@
 
 
           if ($(e.target).val() == 2) {
-            alert("Department");
+            var element = '<option value="">Select Department</option>';
+            // for(var i=0; i<data.regions.length; i++){
+            //   element += '<option value="'+data.regions[i].id+'">'+data.regions[i].name+'</option>';
+            // }
+            $($(e.target).data('target')).html(element);
           }
 
           // switch ($(e.target).val()) {
