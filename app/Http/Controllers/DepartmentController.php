@@ -29,7 +29,9 @@ class DepartmentController extends Controller
 
          })->with('campuses')->get();
 
-         return $departments;
+         $test = $departments->withPivot('type');
+
+         return $test->pivot->campus_id;
       }
 
     	$data = [
