@@ -26,8 +26,8 @@ class DepartmentController extends Controller
          $departments = Department::with('unitCategory','campuses')->paginate(20);
       } else if (Auth::user()->hasRole('admission-officer')) {
          $departments = Department::whereHas('campuses', function($query) use($staff){
-            $query->where('campuses.name', 'Kivukoni Campus');
-         })->with('campuses')->get();
+            $query->where('campuses.id', 1);
+         })->get();
 
          return $departments;
       }
