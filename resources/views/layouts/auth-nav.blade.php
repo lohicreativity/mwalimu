@@ -1013,6 +1013,14 @@
                 </a>
               </li>
               @endcan
+              @if(Auth::user()->hasRole('admission-officer'))
+              <li class="nav-item">
+                <a href="{{ url('academic/departments') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>{{ __('Departments') }}</p>
+                </a>
+              </li>
+              @endif
              @can('view-roles')
               <li class="nav-item">
                 <a href="{{ url('settings/roles') }}" class="nav-link">
