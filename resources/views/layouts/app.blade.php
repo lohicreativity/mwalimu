@@ -103,16 +103,14 @@
     }).done(function(data, status){
         if(status == 'success'){
 
-          alert("Success");
+          alert($(e.target).val());
 
           //  var element = '<option value="">Select Region</option>';
           //  for(var i=0; i<data.regions.length; i++){
           //    element += '<option value="'+data.regions[i].id+'">'+data.regions[i].name+'</option>';
           //  }
           //  $($(e.target).data('target')).html(element);
-        } else {
-          alert("Failed");
-        }
+        } 
     });
   });
 </script>
