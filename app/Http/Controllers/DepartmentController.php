@@ -31,7 +31,7 @@ class DepartmentController extends Controller
                $query->where('campuses.id', $staff->campus_id);
             })
             // ->with('unitCategory','campuses')
-            ->get()
+            ->paginate(20)
          //   'departments'=>Department::with('unitCategory','campuses')
          //   ->paginate(20)
     	];
