@@ -105,10 +105,11 @@
 
 
           if ($(e.target).val() == 1) {
+
             var element = '<option value="">Select Office</option>';
-            // for(var i=0; i<data.regions.length; i++){
-            //   element += '<option value="'+data.regions[i].id+'">'+data.regions[i].name+'</option>';
-            // }
+            for(var i=0; i<data.all_departments.length; i++){
+              element += '<option value="'+data.all_departments[i].id+'">'+data.all_departments[i].name+'</option>';
+            }
             $($(e.target).data('target')).html(element);
 
           } else if ($(e.target).val() == 2) {
@@ -122,9 +123,9 @@
           } else if ($(e.target).val() == 3) {
 
             var element = '<option value="">Select Faculty</option>';
-            // for(var i=0; i<data.regions.length; i++){
-            //   element += '<option value="'+data.regions[i].id+'">'+data.regions[i].name+'</option>';
-            // }
+            for(var i=0; i<data.all_departments.length; i++){
+              element += '<option value="'+data.all_departments[i].id+'">'+data.all_departments[i].name+'</option>';
+            }
             $($(e.target).data('target')).html(element);
 
           } else if ($(e.target).val() == 4) {
