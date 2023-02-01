@@ -148,7 +148,7 @@
                   <tr>
                     <td>{{ $department->name }}</td>
                     <td>{{ $department->abbreviation }}</td>
-                    <td>{{ $department->unitCategory->name }}</td>
+                    <td></td>
                     <td>
                       @foreach($department->campuses as $campus)
                        <p class="ss-no-margin">{{ $campus->name }}</p>
