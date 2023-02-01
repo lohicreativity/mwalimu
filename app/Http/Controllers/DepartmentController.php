@@ -28,7 +28,6 @@ class DepartmentController extends Controller
            'campuses'=>Campus::all(),
            'staff'=> $staff,
            'departments'=>Department::with('unitCategory','campuses')
-           ->with('campuses')
            ->paginate(20)
     	];
 
