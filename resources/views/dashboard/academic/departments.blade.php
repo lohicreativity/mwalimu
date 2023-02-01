@@ -148,7 +148,12 @@
                   <tr>
                     <td>{{ $department->name }}</td>
                     <td>{{ $department->abbreviation }}</td>
-                    
+                    <td>{{ $department->unitCategory->name }}</td>
+                    <td>
+                      @foreach($department->campuses as $campus)
+                       <p class="ss-no-margin">{{ $campus->name }}</p>
+                      @endforeach
+                    </td>
                     <td>
                       @can('edit-department')
                       <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-edit-department-{{ $department->id }}">
