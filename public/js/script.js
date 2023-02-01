@@ -574,29 +574,6 @@ $('.ss-add-to-cart-').keypress(function(e){
 });
 
 
-$('#ss-select-unit-categories').on('change',function(e){
-
-  alert("Unit categories");
-  // $.ajax({
-  //   method:'POST',
-  //   url:$(e.target).data('source-url'),
-  //   data:{
-  //     _token:$(e.target).data('token'),
-  //     unit_category_id:$(e.target).val()
-  //   }      
-  // }).done(function(data, status){
-  //     if(status == 'success'){
-
-  //       alert("Hello World");
-
-  //       //  var element = '<option value="">Select Region</option>';
-  //       //  for(var i=0; i<data.regions.length; i++){
-  //       //    element += '<option value="'+data.regions[i].id+'">'+data.regions[i].name+'</option>';
-  //       //  }
-  //       //  $($(e.target).data('target')).html(element);
-  //     }
-  // });
-});
 
 // Load regions
 $('#ss-select-countries, .ss-select-countries').on('change',function(e){
