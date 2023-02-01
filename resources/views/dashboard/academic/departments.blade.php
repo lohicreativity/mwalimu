@@ -217,7 +217,7 @@
                                     <div class="row">
                                     <div class="form-group col-4">
                                       {!! Form::label('','Type') !!}
-                                      <select name="unit_category_id" class="form-control" required>
+                                      <select name="unit_category_id" class="form-control" id="ss-select-unit-categories" required>
                                          <option value="">Select Type</option>
                                          @foreach($unit_categories as $category)
                                          <option value="{{ $category->id }}" @if($category->id == $department->unit_category_id) selected="selected" @endif>{{ $category->name }}</option>
@@ -226,10 +226,10 @@
                                     </div>
                                     <div class="form-group col-4">
                                       {!! Form::label('','Parent') !!}
-                                      <select name="parent_id" class="form-control" data-token="{{ session()->token() }}" data-source-url="{{ url('api/v1/get-parents') }}" required>
+                                      <select name="parent_id" class="form-control" required>
                                          <option value="">Select Parent</option>
-                                         @foreach($all_departments as $dept)
-                                         <option value="{{ $dept->id }}" @if($dept->id == $department->parent_id) selected="selected" @endif>{{ $dept->name }}</option>
+                                         @foreach($parents as $parent)
+                                         <option value="">{{ $parent->name }}</option>
                                          @endforeach
                                       </select>
                                     </div>
