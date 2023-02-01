@@ -216,11 +216,12 @@
                                     </div>
                                     <div class="row">
                                     <div class="form-group col-4">
-                                      {!! Form::label('','Type123') !!}
+                                      {!! Form::label('','Type') !!}
                                       <select name="unit_category_id" class="form-control" id="ss-select-unit-categories" data-target="#ss-select-parents" data-token="{{ session()->token() }}" data-source-url="{{ url('api/v1/get-parents') }}" required>
                                          <option value="">Select Type</option>
                                          @foreach($unit_categories as $category)
-                                         <option value="{{ $category->id }}" @if($category->id == $department->unit_category_id) selected="selected" @endif>{{ $category->name }}</option>
+                                         <option value="{{ category->id }}">{{ $category->name }}</option>
+                                         <!-- <option value="{{ $category->id }}" @if($category->id == $department->unit_category_id) selected="selected" @endif>{{ $category->name }}</option> -->
                                          @endforeach
                                       </select>
                                     </div>
