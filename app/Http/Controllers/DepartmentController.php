@@ -45,23 +45,24 @@ class DepartmentController extends Controller
            'all_departments'=>Department::all(),
            'campuses'=>Campus::all(),
            'staff'=> $staff,
-         //   'departments' => DB::table('departments')
-         //   ->select('departments.*', 'campuses.*', 'unit_categories.*')
-         //   ->join('campus_department', 'departments.id', 'campus_department.department_id')
-         //   ->join('campuses', 'campus_department.campus_id', 'campuses.id')
-         //   ->join('unit_categories', 'departments.unit_category_id', 'unit_categories.id')
-         //   ->where('campuses.id', $staff->campus_id)
-         //   ->paginate(20)
+           'departments' => DB::table('departments')
+           ->select('departments.*', 'campuses.*', 'unit_categories.*')
+           ->join('campus_department', 'departments.id', 'campus_department.department_id')
+           ->join('campuses', 'campus_department.campus_id', 'campuses.id')
+           ->join('unit_categories', 'departments.unit_category_id', 'unit_categories.id')
+           ->where('campuses.id', $staff->campus_id)
+           ->get()
            
          //   'departments' => Department::whereHas('campuses',function($query) use($staff){
          //       $query->where('campuses.ild', $staff->campus_id);
          //    })
          //    ->with('campuses')
          //    ->paginate(20)
-           'departments'=>Department::with('unitCategory','campuses')
-           ->paginate(20)
+         //   'departments'=>Department::with('unitCategory','campuses')
+         //   ->paginate(20)
     	];
 
+      return $data['departments'];
 
     	return view('dashboard.academic.departments',$data)->withTitle('Departments');
     }
