@@ -136,7 +136,7 @@
                 ];
 
                 $pass_subjects = [
-                   'placeholder'=>'Pass Subjects',
+                   'placeholder'=>'No. of Pass Subjects',
                    'class'=>'form-control'
                 ];
 
@@ -191,7 +191,7 @@
                   <div class="form-group col-3">
                     {!! Form::label('','Programme') !!}
                     <select name="campus_program_ids[]" class="form-control ss-select-tags" required multiple="multiple">
-                      <option value="">Select Programme</option>
+                      <!-- <option value="">Select Programme</option> -->
                       @foreach($cert_campus_programs as $program)
                       <option value="{{ $program->id }}">{{ $program->program->name }}</option>
                       @endforeach
@@ -346,7 +346,7 @@
                 ];
 
                 $principle_pass_subjects = [
-                   'placeholder'=>'No. of Principle Pass Points',
+                   'placeholder'=>'No. of Principle Pass Subjects',
                    'class'=>'form-control',
                    'required'=>true
                 ];
@@ -358,7 +358,7 @@
                 ];
 
                 $pass_subjects = [
-                   'placeholder'=>'No. of Pass Subjects',
+                   'placeholder'=>'No. of Form IV Pass Subjects',
                    'class'=>'form-control',
                    'required'=>true
                 ];
@@ -412,7 +412,7 @@
                   <div class="form-group col-3">
                     {!! Form::label('','Programme') !!}<br>
                     <select name="campus_program_ids[]" class="form-control ss-select-tags" multiple="multiple" style="width: 100%;" required>
-                      <option value="">Select Programme</option>
+                      <!-- <option value="">Select Programme</option> -->
                       @foreach($diploma_campus_programs as $program)
                       <option value="{{ $program->id }}">{{ $program->program->name }}</option>
                       @endforeach
