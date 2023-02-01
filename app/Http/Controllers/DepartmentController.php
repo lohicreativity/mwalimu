@@ -21,7 +21,6 @@ class DepartmentController extends Controller
     public function index()
     {
       $staff = User::find(Auth::user()->id)->staff;
-      $dep = array();
 
       if (Auth::user()->hasRole('administrator')) {
          $departments = Department::with('unitCategory','campuses')->paginate(20);
@@ -30,15 +29,15 @@ class DepartmentController extends Controller
             $query->where('campuses.id', $staff->campus_id);
          })->with('campuses')->get();
 
-         foreach($departments as $department) {
+         // foreach($departments as $department) {
 
-            foreach ($department->campuses as $campus) {
+         //    foreach ($department->campuses as $campus) {
 
-               if ($campus->id == $staff->campus_id) {
-                  $dep = $department;
-               }
-            }
-         }
+         //       if ($campus->id == $staff->campus_id) {
+         //          $dep = $department;
+         //       }
+         //    }
+         // }
 
       }
 
@@ -47,7 +46,7 @@ class DepartmentController extends Controller
            'all_departments'  =>Department::all(),
            'campuses'         =>Campus::all(),
            'staff'            => $staff,
-           'departments'      => $dep
+           'departments'      => $departments
          //   'departments' => DB::table('departments')
          //   ->select('departments.*', 'campuses.*', 'unit_categories.*')
          //   ->join('campus_department', 'departments.id', 'campus_department.department_id')
