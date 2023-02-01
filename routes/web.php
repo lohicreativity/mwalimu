@@ -31,6 +31,10 @@ use App\Domain\Registration\Models\Student;
 |
 */
 
+Route::get('admission-letter', function() {
+     return view('dashboard.application.reports.admission-letter');
+});
+
 Route::get('test',function(){
 	// $payment = App\Domain\Finance\Models\NactePayment::latest()->first();
 	// $result = Illuminate\Support\Facades\Http::get('https://www.nacte.go.tz/nacteapi/index.php/api/payment/'.$payment->reference_no.'/JKb6229cfce105c6.0fb7aaa46fe8bc757813ab7f5391c58d90f891e4c86badb055b90896b8206d33.4160cea2b30cf96a8977d2de8141a655213b737d');
