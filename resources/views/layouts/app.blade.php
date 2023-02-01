@@ -103,7 +103,7 @@
     }).done(function(data, status){
         if(status == 'success'){
 
-          switch (key) {
+          switch ($(e.target).val()) {
             case 2:
             var element = '<option value="">Select Department</option>';
             for(var i=0; i<data.regions.length; i++){
