@@ -34,7 +34,7 @@ class DepartmentController extends Controller
 
             foreach ($department->campuses as $campus) {
 
-               if ($campuses->id == $staff->campus_id) {
+               if ($campus->id == $staff->campus_id) {
                   $dep = $department;
                }
             }
