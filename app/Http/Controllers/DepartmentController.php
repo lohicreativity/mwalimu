@@ -49,6 +49,7 @@ class DepartmentController extends Controller
            ->join('campus_department', 'departments.id', 'campus_department.department_id')
            ->join('campuses', 'campus_department.campus_id', 'campuses.id')
            ->join('unit_categories', 'departments.unit_category_id', 'unit_categories.id')
+           ->where('campuses.id', $staff->campus_id)
            ->get()
            
          //   'departments' => Department::whereHas('campuses',function($query) use($staff){
