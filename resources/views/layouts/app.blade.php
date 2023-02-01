@@ -103,13 +103,22 @@
     }).done(function(data, status){
         if(status == 'success'){
 
-          alert($(e.target).val());
+          switch (key) {
+            case 2:
+            var element = '<option value="">Select Department</option>';
+            for(var i=0; i<data.regions.length; i++){
+              element += '<option value="'+data.departments[i].id+'">'+data.departments[i].name+'</option>';
+            }
+            $($(e.target).data('target')).html(element);
 
-          //  var element = '<option value="">Select Region</option>';
-          //  for(var i=0; i<data.regions.length; i++){
-          //    element += '<option value="'+data.regions[i].id+'">'+data.regions[i].name+'</option>';
-          //  }
-          //  $($(e.target).data('target')).html(element);
+              
+              break;
+            
+          
+            default:
+              break;
+          }
+           
         } 
     });
   });
