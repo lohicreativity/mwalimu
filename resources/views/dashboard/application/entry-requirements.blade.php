@@ -857,7 +857,7 @@
 
                   <div class="form-group col-3">
                     {!! Form::label('','NVA Level') !!}
-                    <select name="nva_level" class="form-control" style="width: 100%;" required>
+                    <select name="nva_level" class="form-control" style="width: 100%;">
                        <option value="">Select NVA Level</option>
                        <option value="1">1</option>
                        <option value="2">2</option>
@@ -867,10 +867,10 @@
 
                   <div class="form-group col-3">
                     {!! Form::label('','Teacher Diploma') !!}
-                    <select name="teacher_diploma" class="form-control" style="width: 100%;" required>
+                    <select name="teacher_diploma" class="form-control" style="width: 100%;">
                        <option value="">Select option</option>
-                       <option value="Yes">Yes</option>
-                       <option value="No">No</option>
+                       <option value="1">Yes</option>
+                       <option value="0">No</option>
                     </select>
                   </div>
 <!--

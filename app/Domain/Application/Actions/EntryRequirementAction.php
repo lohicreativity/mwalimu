@@ -27,6 +27,8 @@ class EntryRequirementAction implements EntryRequirementInterface{
             $requirement->open_equivalent_pass_subjects = $request->get('open_equivalent_pass_subjects');
             $requirement->open_equivalent_average_grade = $request->get('open_equivalent_average_grade');
             $requirement->open_exclude_subjects = serialize($request->get('open_exclude_subjects'));
+            $requirement->nva_level = $request->get('nva_level');
+            $requirement->teacher_diploma = $request->get('teacher_diploma');
             $requirement->principle_pass_points = $request->get('principle_pass_points');
             $requirement->min_equivalent_gpa = $request->get('min_equivalent_gpa');
             $requirement->min_principle_pass_points = $request->get('min_principle_pass_points');
