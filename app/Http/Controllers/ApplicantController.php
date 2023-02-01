@@ -1086,7 +1086,7 @@ class ApplicantController extends Controller
                         
                            $programs[] = $program;
                         
-                       } elseif(($o_level_pass_count+$o_level_other_pass_count) >= $program->entryRequirements[0]->pass_subjects && ($applicant->veta_status == 1 || $applicant->teacher_diploma_status == 1)) {
+                       } elseif(($o_level_pass_count+$o_level_other_pass_count) >= $program->entryRequirements[0]->pass_subjects && ($applicant->veta_status == 1 || $applicant->teacher_certificate_status == 1)) {
                            $programs[] = $program;
                        }
                        // foreach ($applicant->nacteResultDetails as $detailKey=>$detail) {
