@@ -304,9 +304,9 @@
                   
                   </tbody>
                 </table>
-                <!-- <div class="ss-pagination-links">
+                <div class="ss-pagination-links">
                 {!! $departments->render() !!}
-                </div> -->
+                </div>
               </div>
               <!-- /.card-body -->
             </div>
