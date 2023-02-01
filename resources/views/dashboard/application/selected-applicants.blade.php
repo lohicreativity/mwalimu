@@ -274,9 +274,10 @@
                   <table class="table table-bordered ss-margin-top ss-paginated-table">
                     <thead>
                         <tr>
+                          <th>#</th>
                           <th>Name</th>
-						  <th>Form IV Index No.</th>
-						  <th>Form VI Index No./AVN</th>
+						              <th>Form IV Index No.</th>
+						              <th>Form VI Index No./AVN</th>
                           <th>Phone</th>
                           <th>Gender</th>
                           <th>Programme</th>
@@ -286,6 +287,7 @@
                     <tbody>
                  @foreach($applicants as $applicant)
                    <tr>
+                      <td>{{ $loop->iteration }}</td>
                       <td>{{ $applicant->first_name }} {{ $applicant->middle_name }} {{ $applicant->surname }}</td>
                       <td>{{ $applicant->index_number }}</td>
 					  <td>@foreach($applicant->nectaResultDetails as $detail)
