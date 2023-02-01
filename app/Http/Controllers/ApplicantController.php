@@ -811,6 +811,8 @@ class ApplicantController extends Controller
 
                        if(($o_level_pass_count + $o_level_other_pass_count) >= $program->entryRequirements[0]->pass_subjects && $has_btc){
                            $programs[] = $program;
+                       } elseif (($o_level_pass_count + $o_level_other_pass_count) >= $program->entryRequirements[0]->pass_subjects && $applicant->veta_status == 1) {
+                           $programs[] = $program;
                        }
                    }
                    
@@ -1080,11 +1082,12 @@ class ApplicantController extends Controller
 
                            $programs[] = $program;
                        }
-                       }else{
-                           if(($o_level_pass_count+$o_level_other_pass_count) >= $program->entryRequirements[0]->pass_subjects && $a_level_principle_pass_count >= 2 && $a_level_principle_pass_points >= $program->entryRequirements[0]->principle_pass_points){
-
+                       }elseif(($o_level_pass_count+$o_level_other_pass_count) >= $program->entryRequirements[0]->pass_subjects && $a_level_principle_pass_count >= 2 && $a_level_principle_pass_points >= $program->entryRequirements[0]->principle_pass_points){
+                        
                            $programs[] = $program;
-                       }
+                        
+                       } elseif(($o_level_pass_count+$o_level_other_pass_count) >= $program->entryRequirements[0]->pass_subjects && ($applicant->veta_status == 1 || $applicant->teacher_diploma_status == 1)) {
+                           $programs[] = $program;
                        }
                        // foreach ($applicant->nacteResultDetails as $detailKey=>$detail) {
                        //   foreach ($detail->results as $key => $result) {
@@ -1185,7 +1188,7 @@ class ApplicantController extends Controller
                         if(($o_level_pass_count+$o_level_other_pass_count) >= $program->entryRequirements[0]->pass_subjects && $out_pass_subjects_count >= 3 && $out_gpa >= $program->entryRequirements[0]->open_equivalent_gpa && $applicant->teacher_certificate_status === 1){
                               $programs[] = $program;
                         }
-                }
+               }
             if($subject_count != 0){
 			   $app = Applicant::find($applicant->id);
                $app->rank_points = $applicant->rank_points / $subject_count;
