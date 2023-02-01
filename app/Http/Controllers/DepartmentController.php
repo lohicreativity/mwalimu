@@ -27,9 +27,13 @@ class DepartmentController extends Controller
          
       } else if (Auth::user()->hasRole('admission-officer')) {
 
-         $departments = Department::whereHas('campuses', function($query) use($staff){
-            $query->wherePivot('campus_id', '=', $staff->campus_id);
-         })->with(['unitCategory', 'campuses'])->get();
+         // $departments = Department::whereHas('campuses', function($query) use($staff){
+         //    $query->wherePivot('campus_id', '=', $staff->campus_id);
+         // })->with(['unitCategory', 'campuses'])->get();
+
+         $departments = Department::with('campuses')->whereHas('campuses', function ($query) use ($staff) {
+            $query->where('campuses.id', '=', $staff->campus_id);
+         });
 
          return $departments;
 
