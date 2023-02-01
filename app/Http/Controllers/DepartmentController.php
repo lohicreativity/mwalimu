@@ -21,6 +21,7 @@ class DepartmentController extends Controller
     public function index()
     {
       $staff = User::find(Auth::user()->id)->staff;
+      $dep = array();
 
       if (Auth::user()->hasRole('administrator')) {
          $departments = Department::with('unitCategory','campuses')->paginate(20);
@@ -29,7 +30,13 @@ class DepartmentController extends Controller
             $query->where('campuses.id', $staff->campus_id);
          })->with('campuses')->get();
 
-         return $departments;
+         foreach($departments as $department) {
+            if ($department->campuses->id == $staff->campus_id) {
+               $dep = $department;
+            }
+         }
+
+         return $dep;
       }
 
     	$data = [
