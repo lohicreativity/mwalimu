@@ -29,8 +29,10 @@ class DepartmentController extends Controller
            'staff'=> $staff,
            'departments' => Department::whereHas('campuses',function($query) use($staff){
                $query->where('campuses.id', $staff->id);
-            })->paginate(20)
+            })->get()
     	];
+
+      return $data['departments'];
 
     	return view('dashboard.academic.departments',$data)->withTitle('Departments');
     }
