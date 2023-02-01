@@ -33,7 +33,7 @@ class DepartmentController extends Controller
 
          $departments = Department::with('campuses')->whereHas('campuses', function ($query) use ($staff) {
             $query->where('campuses.id', '=', $staff->campus_id);
-         });
+         })->get();
 
          return $departments;
 
