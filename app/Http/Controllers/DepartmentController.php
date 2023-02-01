@@ -26,10 +26,10 @@ class DepartmentController extends Controller
          $departments = Department::with('unitCategory','campuses')->paginate(20);
       } else if (Auth::user()->hasRole('admission-officer')) {
          $departments = Department::whereHas('campuses', function($query) use($staff){
-
+            $query->where('campuses.id', 1);
          })->with('campuses')->get();
 
-         return $departments[0]->campuses;
+         return $departments;
       }
 
     	$data = [
