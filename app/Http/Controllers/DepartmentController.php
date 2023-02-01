@@ -28,9 +28,9 @@ class DepartmentController extends Controller
            'campuses'=>Campus::all(),
            'staff'=> $staff,
            'departments' => Department::whereHas('campuses',function($query) use($staff){
-               $query->where('campuses.id', $staff->campus_id);
+               $query->where('campuses.ild', $staff->campus_id);
             })
-            ->with('unitCategory','campuses')
+            ->with('campuses')
             ->paginate(20)
          //   'departments'=>Department::with('unitCategory','campuses')
          //   ->paginate(20)
