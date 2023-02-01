@@ -40,7 +40,6 @@ class DepartmentController extends Controller
             }
          }
 
-         return $dep;
       }
 
     	$data = [
@@ -48,7 +47,7 @@ class DepartmentController extends Controller
            'all_departments'  =>Department::all(),
            'campuses'         =>Campus::all(),
            'staff'            => $staff,
-           'departments'      => $departments
+           'departments'      => $dep
          //   'departments' => DB::table('departments')
          //   ->select('departments.*', 'campuses.*', 'unit_categories.*')
          //   ->join('campus_department', 'departments.id', 'campus_department.department_id')
