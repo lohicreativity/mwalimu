@@ -103,21 +103,23 @@
     }).done(function(data, status){
         if(status == 'success'){
 
-          switch ($(e.target).val()) {
-            case 2:
-            var element = '<option value="">Select Department</option>';
-            for(var i=0; i<data.regions.length; i++){
-              element += '<option value="'+data.departments[i].id+'">'+data.departments[i].name+'</option>';
-            }
-            $($(e.target).data('target')).html(element);
+          alert($(e.target).val());
+
+          // switch ($(e.target).val()) {
+          //   case 2:
+          //   var element = '<option value="">Select Department</option>';
+          //   for(var i=0; i<data.regions.length; i++){
+          //     element += '<option value="'+data.departments[i].id+'">'+data.departments[i].name+'</option>';
+          //   }
+          //   $($(e.target).data('target')).html(element);
 
               
-              break;
+          //     break;
             
           
-            default:
-              break;
-          }
+          //   default:
+          //     break;
+          // }
            
         } 
     });
