@@ -29,7 +29,7 @@ class DepartmentController extends Controller
            'staff'=> $staff,
            'departments'=>Department::with('unitCategory','campuses')
            ->with('campuses')
-           ->where('campus_id', $staff->campus_id)->paginate(20)
+           ->paginate(20)
     	];
 
       return $data['departments'];
