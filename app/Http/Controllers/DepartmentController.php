@@ -21,11 +21,11 @@ class DepartmentController extends Controller
     public function index()
     {
     	$data = [
-           'departments'=>Department::with('unitCategory','campuses')->paginate(20),
            'unit_categories'=>UnitCategory::all(),
            'all_departments'=>Department::all(),
            'campuses'=>Campus::all(),
-           'staff'=>User::find(Auth::user()->id)->staff
+           'staff'=>User::find(Auth::user()->id)->staff,
+           'departments'=>Department::with('unitCategory','campuses')->where('campus_id', $staff->campus_id)->paginate(20)
     	];
     	return view('dashboard.academic.departments',$data)->withTitle('Departments');
     }
