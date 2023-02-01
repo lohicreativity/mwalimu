@@ -112,7 +112,7 @@
                   </div>
                   <div class="form-group col-6">
                     {!! Form::label('','District') !!}
-                    <select name="district_id" class="form-control" required id="ss-select-districts" data-target="#ss-select-wards" data-token="{{ session()->token() }}" data-source-url="{{ url('api/v1/get-wards') }}">
+                    <select name="district_id" class="form-control ss-select-tags" required id="ss-select-districts" data-target="#ss-select-wards" data-token="{{ session()->token() }}" data-source-url="{{ url('api/v1/get-wards') }}">
                       <option value="">Select District</option>
                       @foreach($districts as $district)
                       <option value="{{ $district->id }}">{{ $district->name }}</option>
@@ -123,7 +123,7 @@
                  <div class="row">
                   <div class="form-group col-6">
                     {!! Form::label('','Ward') !!}
-                    <select name="ward_id" class="form-control" required id="ss-select-wards" data-token="{{ session()->token() }}">
+                    <select name="ward_id" class="form-control ss-select-tags" required id="ss-select-wards" data-token="{{ session()->token() }}">
                       <option value="">Select Ward</option>
                       @foreach($wards as $ward)
                       <option value="{{ $ward->id }}">{{ $ward->name }}</option>
