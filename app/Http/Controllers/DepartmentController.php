@@ -32,7 +32,7 @@ class DepartmentController extends Controller
          // })->with(['unitCategory', 'campuses'])->get();
 
          $departments = Department::with('campuses')->whereHas('campuses', function ($query) use ($staff) {
-            $query->where('campuses.id', '=', $staff->campus_id);
+            $query->where('campuses.i', '=', $staff->campus_id);
          })->get();
 
          return $departments;
