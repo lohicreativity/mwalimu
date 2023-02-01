@@ -33,7 +33,7 @@ class DepartmentController extends Controller
          foreach($departments as $department) {
 
             foreach ($department->campuses as $campus) {
-               return $campus->id
+               return $campus->id;
             }
             // if ($department->campuses->id == $staff->campus_id) {
             //    $dep = $department;
