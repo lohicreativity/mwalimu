@@ -104,29 +104,39 @@
         if(status == 'success'){
 
 
-          if ($(e.target).val() == 2) {
+          if ($(e.target).val() == 1) {
+            var element = '<option value="">Select Office</option>';
+            // for(var i=0; i<data.regions.length; i++){
+            //   element += '<option value="'+data.regions[i].id+'">'+data.regions[i].name+'</option>';
+            // }
+            $($(e.target).data('target')).html(element);
+
+          } else if ($(e.target).val() == 2) {
+
             var element = '<option value="">Select Department</option>';
             // for(var i=0; i<data.regions.length; i++){
             //   element += '<option value="'+data.regions[i].id+'">'+data.regions[i].name+'</option>';
             // }
             $($(e.target).data('target')).html(element);
+
+          } else if ($(e.target).val() == 3) {
+
+            var element = '<option value="">Select Faculty</option>';
+            // for(var i=0; i<data.regions.length; i++){
+            //   element += '<option value="'+data.regions[i].id+'">'+data.regions[i].name+'</option>';
+            // }
+            $($(e.target).data('target')).html(element);
+
+          } else if ($(e.target).val() == 4) {
+
+            var element = '<option value="">Select Unit</option>';
+            // for(var i=0; i<data.regions.length; i++){
+            //   element += '<option value="'+data.regions[i].id+'">'+data.regions[i].name+'</option>';
+            // }
+            $($(e.target).data('target')).html(element);
+
           }
 
-          // switch ($(e.target).val()) {
-          //   case 2:
-          //   var element = '<option value="">Select Department</option>';
-          //   for(var i=0; i<data.regions.length; i++){
-          //     element += '<option value="'+data.departments[i].id+'">'+data.departments[i].name+'</option>';
-          //   }
-          //   $($(e.target).data('target')).html(element);
-
-              
-          //     break;
-            
-          
-          //   default:
-          //     break;
-          // }
            
         } 
     });
