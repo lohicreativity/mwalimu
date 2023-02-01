@@ -11,6 +11,7 @@ use App\Domain\Academic\Models\Module;
 use App\Domain\Academic\Models\ModuleAssignment;
 use App\Domain\Settings\Models\NTALevel;
 use App\Domain\Finance\Models\FeeType;
+use App\Domain\Academic\Models\Department;
 
 class HomeController extends Controller
 {
@@ -24,6 +25,16 @@ class HomeController extends Controller
             return response()->json(['status'=>'success','regions'=>$regions]);
     	}else{
     		return response()->json(['status'=>'failed','regions'=>$regions]);
+    	}
+    }
+
+    public function getParents(Request $request)
+    {
+        $parents = Department::where('unit_category_id', $request->get('unit_category_id'))->get();
+        if(count($parents) != 0){
+            return response()->json(['status'=>'success','parents'=>$parents]);
+    	}else{
+    		return response()->json(['status'=>'failed','parents'=>$parents]);
     	}
     }
 
