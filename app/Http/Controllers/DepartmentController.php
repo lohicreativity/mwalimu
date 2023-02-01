@@ -22,11 +22,18 @@ class DepartmentController extends Controller
     {
       $staff = User::find(Auth::user()->id)->staff;
 
+      if (Auth::user()->hasRole('administrator')) {
+         $departments = Department::with('unitCategory','campuses')->paginate(20);
+      } else if (Auth::user()->hasRole('admission-officer')) {
+         $departments = null;
+      }
+
     	$data = [
-           'unit_categories'=>UnitCategory::all(),
-           'all_departments'=>Department::all(),
-           'campuses'=>Campus::all(),
-           'staff'=> $staff,
+           'unit_categories'  =>UnitCategory::all(),
+           'all_departments'  =>Department::all(),
+           'campuses'         =>Campus::all(),
+           'staff'            => $staff,
+           'departments'      => $departments
          //   'departments' => DB::table('departments')
          //   ->select('departments.*', 'campuses.*', 'unit_categories.*')
          //   ->join('campus_department', 'departments.id', 'campus_department.department_id')
@@ -34,8 +41,7 @@ class DepartmentController extends Controller
          //   ->join('unit_categories', 'departments.unit_category_id', 'unit_categories.id')
          //   ->where('campuses.id', $staff->campus_id)
          //   ->get()
-           'departments'=>Department::with('unitCategory','campuses')
-           ->paginate(20)
+           
     	];
 
     	return view('dashboard.academic.departments',$data)->withTitle('Departments');
