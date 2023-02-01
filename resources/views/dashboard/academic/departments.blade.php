@@ -228,8 +228,8 @@
                                       {!! Form::label('','Parent') !!}
                                       <select name="parent_id" class="form-control" data-token="{{ session()->token() }}" data-source-url="{{ url('api/v1/get-parents') }}" required>
                                          <option value="">Select Parent</option>
-                                         @foreach($parents as $parent)
-                                         <option value="">{{ $parent->name }}</option>
+                                         @foreach($all_departments as $dept)
+                                         <option value="{{ $dept->id }}" @if($dept->id == $department->parent_id) selected="selected" @endif>{{ $dept->name }}</option>
                                          @endforeach
                                       </select>
                                     </div>
