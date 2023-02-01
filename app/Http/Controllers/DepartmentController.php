@@ -36,7 +36,7 @@ class DepartmentController extends Controller
          //   ->paginate(20)
     	];
 
-      return $staff->campus_id;
+      return $data['departments'];
 
     	// return view('dashboard.academic.departments',$data)->withTitle('Departments');
     }
