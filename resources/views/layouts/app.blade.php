@@ -103,7 +103,10 @@
     }).done(function(data, status){
         if(status == 'success'){
 
-          alert($(e.target).val());
+
+          if ($(e.target).val() == 2) {
+            alert("Department");
+          }
 
           // switch ($(e.target).val()) {
           //   case 2:
