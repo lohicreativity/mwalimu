@@ -90,6 +90,13 @@
 <script src="https://unpkg.com/cropperjs"></script>
 <!-- Custom script -->
 <script src="{{ asset('js/script.js?version='.config('constants.VERSION')) }}"></script>
+
+<script>
+  $('#unit-categories').on('change',function(e){
+    alert("Unit categories");
+  });
+</script>
+
 <script>
   @if(session()->has('message'))
   toastr.options =
