@@ -306,7 +306,7 @@
                   </tbody>
                 </table>
                 @elseif(Auth::user()->hasRole('admission-officer'))
-                  <table id="example2" class="table table-bordered table-hover ss-admission-officer-table">
+                  <table id="" class="table table-bordered table-hover ss-admission-officer-table">
                     <thead>
                       <tr>
                         <th>#</th>
