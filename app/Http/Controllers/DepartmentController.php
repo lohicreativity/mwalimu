@@ -33,7 +33,8 @@ class DepartmentController extends Controller
          ->join('campuses', 'campus_department.campus_id', 'campuses.id')
          ->join('unit_categories', 'departments.unit_category_id', 'unit_categories.id')
          ->where('campuses.id', $staff->campus_id)
-         ->paginate(20);    
+         ->paginate(20);   
+          
 
       }
 

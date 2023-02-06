@@ -133,26 +133,19 @@
               </div>
               <!-- /.card-header -->
               <div class="card-body">
+                @if(Auth::user()->hasRole('administrator'))
                 <table id="example2" class="table table-bordered table-hover ss-paginated-table">
                   <thead>
-                  <tr>
-                    @if(Auth::user()->hasRole('administrator'))
-                    <th>#</th>
-                    <th>Name</th>
-                    <th>Abbreviation</th>
-                    <th>Type</th>
-                    <th>Campus</th>
-                    <th>Actions</th>
-                    @elseif(Auth::user()->hasRole('admission-officer'))
-                    <th>#</th>
-                    <th>Name</th>
-                    <th>Abbreviation</th>
-                    <th>Actions</th>
-                    @endif
-                  </tr>
+                    <tr>
+                      <th>#</th>
+                      <th>Name</th>
+                      <th>Abbreviation</th>
+                      <th>Type</th>
+                      <th>Campus</th>
+                      <th>Actions</th>
+                    </tr>
                   </thead>
                   <tbody>
-                    @if(Auth::user()->hasRole('administrator'))
                       @foreach($departments as $department)
                         <tr>
                           <td>{{ $loop->iteration }}</td>
@@ -310,7 +303,21 @@
                           </td>
                         </tr>
                       @endforeach
-                    @elseif(Auth::user()->hasRole('admission-officer'))
+                  </tbody>
+                </table>
+                @elseif(Auth::user()->hasRole('admission-officer'))
+                  <table id="example2" class="table table-bordered table-hover ss-paginated-table">
+                    <thead>
+                      <tr>
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Abbreviation</th>
+                        <th>Type</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+
                       @foreach($departments as $department)
                         <tr>
                           <td>{{ $loop->iteration }}</td>
@@ -327,11 +334,12 @@
                           </td>
                         <tr>
                       @endforeach
-                    @endif
-                  
-                  
-                  </tbody>
-                </table>
+
+                    </tbody>
+                  </table>
+                @endif
+                
+                
                 <!-- <div class="ss-pagination-links">
                 {!! $departments->render() !!}
                 </div> -->
