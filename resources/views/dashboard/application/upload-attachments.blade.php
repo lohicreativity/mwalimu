@@ -112,7 +112,7 @@
                         <td><a href="{{ url('application/download-attachment?id='.$attachment->id) }}">{{ $attachment->name }}</a></td>
                         <td>
                           @if(Auth::user()->hasRole('administrator'))
-                          {{ $attachment->campus->name }}
+                          {{ $attachment->campus['name'] }}
                           @endif
                         </td>
                         <td><a href="{{ url('application/delete-attachment?id='.$attachment->id) }}" class="btn btn-danger"><i class="fa fa-trash"></i> Delete</a></td>
