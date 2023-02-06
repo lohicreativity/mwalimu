@@ -99,7 +99,18 @@ $('.ss-admission-officer-table').DataTable();
 </script>
 
 <script>
-
+function check_uncheck_checkbox(isChecked) {
+  alert("Check all");
+	// if(isChecked) {
+	// 	$('input[name="language"]').each(function() { 
+	// 		this.checked = true; 
+	// 	});
+	// } else {
+	// 	$('input[name="language"]').each(function() {
+	// 		this.checked = false;
+	// 	});
+	// }
+}
 
 </script>
 
