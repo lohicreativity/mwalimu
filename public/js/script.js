@@ -809,7 +809,9 @@ $('#ss-select-program-module-assignments').on('change',function(e){
 
 // Display form processing necta
 $('.ss-form-processing-necta').submit(function(e){
-      alert('Necta');
+
+  alert("Necta");
+    
     //  e.preventDefault();
     //  var resultsContainer = $(e.target).data('results-container');
     //  var submitText = $(e.target).find('button[type=submit]').text();
@@ -833,9 +835,7 @@ $('.ss-form-processing-necta').submit(function(e){
     //  }
 
     //  $.ajax({
-    //     url:'/application/fetch-necta-results/'+$(e.target).find('input[name=index_number]').val(),
-
-    //     // url:'/application/fetch-necta-results/'+$(e.target).find('input[name=index_number]').val().replace(/\//g,'-')+'/'+$(e.target).find('input[name=exam_id]').val()+'?applicant_id='+$(e.target).find('input[name=applicant_id]').val(),
+    //     url:'/application/fetch-necta-results/'+$(e.target).find('input[name=index_number]').val().replace(/\//g,'-')+'/'+$(e.target).find('input[name=exam_id]').val()+'?applicant_id='+$(e.target).find('input[name=applicant_id]').val(),
     //     method:'GET',
     //  }).done(function(data,success){
     //      if(data.error){
@@ -868,7 +868,7 @@ $('.ss-form-processing-necta').submit(function(e){
     //      $($(e.target).find('input[name=display_modal]').val()+' input[name=exam_id]').val($(e.target).find('input[name=exam_id]').val());
     //      $($(e.target).find('input[name=display_modal]').val()+' input[name=necta_result_detail_id]').val(data.details.id);
     //      }
-    //  });
+    // });
 });
 
 // Display form processing necta
