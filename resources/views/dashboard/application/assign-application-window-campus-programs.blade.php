@@ -134,7 +134,7 @@
                             <div class="modal-body">
 
                                 <div>
-                                    <button class="btn btn-primary assign-btn">Select All</button>
+                                    <button id="assign-btn" class="btn btn-primary">Select All</button>
                                 </div><br>
 
                                 {!! Form::open(['url'=>'application/application-window-campus-programs/update','class'=>'ss-form-processing']) !!}
