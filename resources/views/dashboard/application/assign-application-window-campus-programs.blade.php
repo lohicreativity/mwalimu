@@ -140,7 +140,7 @@
 
                                 {!! Form::open(['url'=>'application/application-window-campus-programs/update','class'=>'ss-form-processing']) !!}
 
-                                <table class="table table-bordered assign-table">
+                                <table class="table table-bordered assign-table mt-3">
                                 <thead>
                                   <tr>
                                     <th>Program</th>
