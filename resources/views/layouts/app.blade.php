@@ -99,17 +99,17 @@ $('.ss-admission-officer-table').DataTable();
 </script>
 
 <script>
-// $("#check-all-btn").click(function(){
-//   $('.assign-checkbox').each(function() { 
-// 		this.checked = true; 
-// 	});
-// });
+$("#check-all-btn").click(function(){
+  $('.assign-checkbox').each(function() { 
+		this.checked = true; 
+	});
+});
 
-// $("#uncheck-all-btn").click(function(){
-//   $('.assign-checkbox').each(function() { 
-// 		this.checked = false; 
-// 	});
-// });
+$("#uncheck-all-btn").click(function(){
+  $('.assign-checkbox').each(function() { 
+		this.checked = false; 
+	});
+});
 </script>
 
 <script>
