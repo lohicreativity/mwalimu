@@ -136,7 +136,7 @@
                                 <div>
                                     <button class="btn btn-primary">Select All</button>
                                     <button class="btn btn-danger">Unselect All</button>
-                                </div><br><br>
+                                </div><br>
 
                                 {!! Form::open(['url'=>'application/application-window-campus-programs/update','class'=>'ss-form-processing']) !!}
 
