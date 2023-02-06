@@ -416,11 +416,6 @@ class ApplicationController extends Controller
         $staff = User::find(Auth::user()->id)->staff;
         $award = Award::find($request->get('program_level_id'));
 
-
-        $payment = NactePayment::where('campus_id', $staff->campus_id)->first();
-
-        return $payment;
-
         $applicants = Applicant::with(['nextOfKin.region','region','district','intake','selections.campusProgram.program.ntaLevel','nectaResultDetails','intake'])->where('program_level_id',$request->get('program_level_id'))->where('campus_id',$staff->campus_id)->where('application_window_id',$request->get('application_window_id'))->get();
 
         if(ApplicantProgramSelection::whereHas('applicant',function($query) use($request,$staff){
@@ -538,7 +533,7 @@ class ApplicationController extends Controller
             }elseif(str_contains($award->name,'Diploma') || str_contains($award->name,'Basic')){
                   
           
-                  $payment = NactePayment::where('campus_id', $staff->campus_id)->first();
+                  $payment = NactePayment::latest()->where('campus_id', $staff->campus_id)->first();
 
                   return $payment;
 
