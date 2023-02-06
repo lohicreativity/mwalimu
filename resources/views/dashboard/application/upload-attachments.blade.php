@@ -72,12 +72,6 @@
                     @endif
                     
                   </div>
-                  <div class="row">
-                    <div class="form-group col-4">
-                     {!! Form::label('','Upload attachment') !!}
-                     {!! Form::file('attachment',['class'=>'form-control','required'=>true]) !!}
-                    </div>
-                  </div>
                 </div>
                 <div class="card-footer">
                   <button type="submit" class="btn btn-primary">{{ __('Upload Attachment') }}</button>
