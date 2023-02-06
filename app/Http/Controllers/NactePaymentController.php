@@ -19,12 +19,10 @@ class NactePaymentController extends Controller
     public function index(Request $request)
     {        
 
-      $staff = User::find(Auth::user()->id)->staff;
-
-      return $staff->campus_id;
+         $staff = User::find(Auth::user()->id)->staff;
 
          $data = [
-            'staff' => User::find(Auth::user()->id)->staff,
+            'campus_id' => $staff->campus_id,
             'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
             'campuses'=>Campus::all(),
             'payments'=>NactePayment::with(['campus','studyAcademicYear.academicYear'])->paginate(20),
