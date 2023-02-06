@@ -89,7 +89,7 @@
 <script src="https://unpkg.com/dropzone"></script>
 <script src="https://unpkg.com/cropperjs"></script>
 <!-- Custom script -->
-<script src="{{ asset('js/script.js?version='.config('constants.VERSION')) }}"></script>
+<script src="{{ asset('js/script.js}}"></script>
 
 <script>
 $('.assign-table').DataTable({

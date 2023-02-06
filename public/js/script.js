@@ -809,7 +809,7 @@ $('#ss-select-program-module-assignments').on('change',function(e){
 
 // Display form processing necta
 $('.ss-form-processing-necta').submit(function(e){
-    alert("Necta");
+      alert('Necta');
     //  e.preventDefault();
     //  var resultsContainer = $(e.target).data('results-container');
     //  var submitText = $(e.target).find('button[type=submit]').text();
