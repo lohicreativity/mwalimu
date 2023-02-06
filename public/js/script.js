@@ -27,6 +27,9 @@ $('document').ready(function(){
 
     $('.ss-paginated-table').DataTable();
 
+    $('.ss-admission-officer-table').DataTable();
+
+
     // Pop signup modal
     // if(localStorage.getItem('signup-modal-set') != '1'){
     //     $('#ss-signup-popup-modal').modal('show');
