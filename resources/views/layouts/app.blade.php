@@ -110,20 +110,9 @@ $('.ss-form-processing-nacte-reg-number').submit(function(e){
   $.ajax({
         url:'/application/update-nacte-reg-no/'+$(e.target).find('input[name=nacte_reg_no]').val(),
         method:'GET',
-     }).done(function(data,status){
-
-        if (status == 'success') {
-          alert('Success');
-        } else {
-          alert('Failure');
-        }
-
-        //  if(data.error){
-        //     alert(data.error);
-        //  }else{
-        //     alert('Success');
-        //  }
-     });
+  }).done(function(data,status){
+    alert(status);
+  });
 });
 
 </script>
