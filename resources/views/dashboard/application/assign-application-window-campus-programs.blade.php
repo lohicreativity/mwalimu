@@ -134,7 +134,7 @@
                             <div class="modal-body">
 
                                 <div>
-                                <input type="checkbox" class="btn btn-primary" name="checkall" id="checkall"
+                                <input type="checkbox" class="btn btn-primary"
 		                              onClick="check_uncheck_checkbox(this.checked);" /><span class="check-text">Check All</span>
                                 </div><br>
 
