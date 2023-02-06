@@ -382,11 +382,12 @@
                      'required'=>true
                   ];
               @endphp
-              {!! Form::open(['url'=>'','class'=>'ss-form-processing-nacte-reg-number']) !!}
+              {!! Form::open(['url'=>'application/update-nacte-reg-no','class'=>'ss-form-processing-nacte-reg-number']) !!}
               <div class="card-body">
                   {!! Form::input('hidden','applicant_id',$applicant->id) !!}
 
-                  <h1 class="hello">Hello World</h1>
+
+                  <h1 class="hello">Hello World!</h1>
 
                   <div class="row">
                   <div class="form-group col-4">
