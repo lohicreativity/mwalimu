@@ -323,6 +323,7 @@
                           <td>{{ $loop->iteration }}</td>
                           <td>{{ $department->name }}</td>
                           <td>{{ $department->abbreviation }}</td>
+                          <td>{{ $department->categoryName }}</td>
                           <td>
                             @can('edit-department')
                             <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-edit-department-{{ $department->id }}">
