@@ -92,11 +92,18 @@
 <script src="{{ asset('js/script.js?version='.config('constants.VERSION')) }}"></script>
 
 <script>
-  
 $('.assign-table').DataTable({
   "paging": false
 });
-$('.ss-admission-officer-table').DataTable();
+</script>
+
+<script>
+  // Display form processing nacte registration number
+$('.ss-form-processing-nacte-reg-number').submit(function(e){
+  e.preventDefault();
+  $('.hello').text('NACTEEEEEE');
+  alert('Submitting nacte reg number');
+});
 
 </script>
 
