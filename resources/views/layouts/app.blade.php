@@ -109,14 +109,11 @@ $('.ss-form-processing-nacte-reg-number').submit(function(e){
 
   let nacte_reg_no = $('input[name=nacte_reg_no]').val();
 
-  alert(nacte_reg_no);
-
-
   $.ajax({
-        url:'/application/update-nacte-reg-no/'+$(e.target).find('').val(),
+        url:'/application/update-nacte-reg-no/'+$(e.target).find('input[name=nacte_reg_no]').val(),
         method:'GET',
   }).done(function(data,status){
-      alert(status);
+      alert(this.url);
   });
 });
 
