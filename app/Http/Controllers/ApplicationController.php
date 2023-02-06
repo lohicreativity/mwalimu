@@ -2881,11 +2881,12 @@ class ApplicationController extends Controller
     {
          $staff = User::find(Auth::user()->id)->staff;
          $data = [
-            'staff'=>$staff,
+            'staff' => $staff,
             'attachments'=>AdmissionAttachment::paginate(20),
             'application_windows'=>ApplicationWindow::where('campus_id',$staff->campus_id)->get(),
             'application_window'=>ApplicationWindow::find($request->get('application_window_id')),
             'awards'=>Award::all(),
+            'campuses' => Campus::all(),
             'request'=>$request
          ];
          return view('dashboard.application.upload-attachments',$data)->withTitle('Upload Attachments');

@@ -50,16 +50,33 @@
               {!! Form::open(['url'=>'application/upload-attachment-file','files'=>true,'class'=>'ss-form-processing']) !!}
                 <div class="card-body">
                   <div class="row">
+                    @if(Auth::user()->hasRole('administrator'))
                     <div class="form-group col-4">
-                    {!! Form::label('','Attachment name') !!}
-                    {!! Form::text('name',null,['class'=>'form-control','placeholder'=>'Attachment name','required'=>true]) !!}
+                      {!! Form::label('','Attachment name') !!}
+                      {!! Form::text('name',null,['class'=>'form-control','placeholder'=>'Attachment name','required'=>true]) !!}
                     </div>
+                    <div class="form-group col-4">
+                      {!! Form::label('','Upload attachment') !!}
+                      {!! Form::file('attachment',['class'=>'form-control','required'=>true]) !!}
+                    </div>
+                    <div class="form-group col-4">
+                     {!! Form::label('','Campus') !!}
+                     <select name="campus_id" class="form-control" required>
+                        <option value="">Select campus</option>
+                        @foreach($campuses as $campus)
+                        <option value="{{ $campus->id }}">{{ $campus->name }}</option>
+                        @endforeach
+                     </select>
+                    </div>
+                    @elseif(Auth::user()->hasRole('admission-officer'))
+                    @endif
+                    
                   </div>
                   <div class="row">
-                     <div class="form-group col-4">
+                    <div class="form-group col-4">
                      {!! Form::label('','Upload attachment') !!}
                      {!! Form::file('attachment',['class'=>'form-control','required'=>true]) !!}
-                   </div>
+                    </div>
                   </div>
                 </div>
                 <div class="card-footer">
