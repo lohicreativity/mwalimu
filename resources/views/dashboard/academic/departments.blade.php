@@ -97,23 +97,26 @@
                   </div>
                   <div class="form-group col-4">
                     {!! Form::label('','Parent') !!}
-                    <select name="parent_id" class="form-control" required>
+                    <select name="parent_id" class="form-control">
                        <option value="">Select Parent</option>
                        @foreach($departments as $department)
                        <option value="{{ $department->id }}">{{ $department->name }}</option>
                        @endforeach
                     </select>
                   </div>
+                  @if(Auth::user()->hasRole('administrator'))
                   <div class="form-group col-4">
                     {!! Form::label('','Campus') !!}
                     <!-- <select name="campuses[]" class="form-control ss-select-tags" multiple="multiple"> -->
-					 <select name="campuses" class="form-control" required>
-                         <option value="">Select Campus</option>
-                           @foreach($campuses as $campus)
-                           <option value="{{ $campus->id }}">{{ $campus->name }}</option>
-                           @endforeach
-                        </select>
+					            <select name="campuses" class="form-control" required>
+                        <option value="">Select Campus</option>
+                        @foreach($campuses as $campus)
+                          <option value="{{ $campus->id }}">{{ $campus->name }}</option>
+                        @endforeach
+                      </select>
                   </div>
+                  @endif
+                  
                   </div>
                 </div>
                 <!-- /.card-body -->
@@ -230,7 +233,7 @@
                                             <select name="parent_id" class="form-control" id="parents" required>
                                               <option value="">Select one</option>
                                               @foreach($all_departments as $dept)
-                                              <option value="{{ $dept->id }}" @if($dept->id == $department->id) selected="selected" @endif>{{ $dept->name }}</option>
+                                              <option value="{{ $dept->id }}" @if($dept->id == $department->parent_id) selected="selected" @endif>{{ $dept->name }}</option>
                                               @endforeach
                                             </select>
                                           </div>
@@ -368,8 +371,6 @@
                                             {!! Form::text('name',$department->name,$name) !!}
 
                                             {!! Form::input('hidden','department_id',$department->id) !!}
-                                            {!! Form::input('hidden','campuses',$department->campusId) !!}
-
                                           </div>
                                           <div class="form-group col-4">
                                             {!! Form::label('','Abbreviation') !!}
@@ -397,7 +398,7 @@
                                             <select name="parent_id" class="form-control" id="parents" required>
                                               <option value="">Select one</option>
                                               @foreach($all_departments as $dept)
-                                              <option value="{{ $dept->id }}" @if($dept->id == $department->id) selected="selected" @endif>{{ $dept->name }}</option>
+                                              <option value="{{ $dept->id }}" @if($dept->id == $department->parent_id) selected="selected" @endif>{{ $dept->name }}</option>
                                               @endforeach
                                             </select>
                                           </div>
