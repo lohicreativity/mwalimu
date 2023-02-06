@@ -222,7 +222,7 @@
                                               <option value="">Select Type</option>
                                               @foreach($unit_categories as $category)
                                               <option value="{{ $category->id }}">{{ $category->name }}</option>
-                                              <!-- <option value="{{ $category->id }}" @if($category->id == $department->unit_category_id) selected="selected" @endif>{{ $category->name }}</option> -->
+                                              <option value="{{ $category->id }}" @if($category->id == $department->unit_category_id) selected="selected" @endif>{{ $category->name }}</option>
                                               @endforeach
                                             </select>
                                           </div>
@@ -230,9 +230,9 @@
                                             {!! Form::label('','Parent') !!}
                                             <select name="parent_id" class="form-control" id="parents" required>
                                               <option value="">Select one</option>
-                                              <!-- @foreach($all_departments as $dept)
+                                              @foreach($all_departments as $dept)
                                               <option value="{{ $dept->id }}" @if($dept->id == $department->parent_id) selected="selected" @endif>{{ $dept->name }}</option>
-                                              @endforeach -->
+                                              @endforeach
                                             </select>
                                           </div>
                                           <div class="form-group col-4">
