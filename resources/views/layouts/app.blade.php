@@ -101,15 +101,13 @@ $('.ss-admission-officer-table').DataTable();
 <script>
 function check_uncheck_checkbox(isChecked) {
 	if(isChecked) {
-    alert("Check all");
-		// $('.assign-checkbox').each(function() { 
-		// 	this.checked = true; 
-		// });
+		$('.assign-checkbox').each(function() { 
+			this.checked = true; 
+		});
 	} else {
-    alert("Uncheck all");
-		// $('.assign-checkbox').each(function() {
-		// 	this.checked = false;
-		// });
+		$('.assign-checkbox').each(function() {
+			this.checked = false;
+		});
 	}
 }
 

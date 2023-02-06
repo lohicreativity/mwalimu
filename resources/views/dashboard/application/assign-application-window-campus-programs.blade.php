@@ -135,7 +135,7 @@
 
                                 <div>
                                 <input type="checkbox" class="btn btn-primary" name="checkall" id="checkall"
-		                              onClick="check_uncheck_checkbox(this.checked);" />Check All
+		                              onClick="check_uncheck_checkbox(this.checked);" /><span class="check-text">Check All</span>
                                 </div><br>
 
                                 {!! Form::open(['url'=>'application/application-window-campus-programs/update','class'=>'ss-form-processing']) !!}
