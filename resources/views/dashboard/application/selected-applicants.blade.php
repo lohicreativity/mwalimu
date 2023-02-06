@@ -82,6 +82,8 @@
                <div class="card-header">
                  <h3 class="card-title">{{ __('Selected Applicants') }}</h3><br>
                  <a href="{{ url('application/selected-applicants/download?application_window_id='.$request->get('application_window_id').'&program_level_id='.$request->get('program_level_id').'&campus_program_id='.$request->get('campus_program_id').'&nta_level_id='.$request->get('nta_level_id').'&gender='.$request->get('gender')) }}" class="btn btn-primary">Download Selected Applicants</a>
+                 <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#ss-submit-applicants">Submit Selected Applicants to NACTE</a>
+
                  <!-- <a href="{{ url('application/submit-selected-applicants?application_window_id='.$request->get('application_window_id').'&program_level_id='.$request->get('program_level_id')) }}" class="btn btn-primary">Submit Selected Students</a> -->
                  @if($request->get('program_level_id') == 4 && $application_window->enrollment_report_download_status == 1) 
                  <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#ss-submit-applicants">Submit Applicants to TCU</a>

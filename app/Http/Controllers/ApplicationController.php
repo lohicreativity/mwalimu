@@ -533,7 +533,10 @@ class ApplicationController extends Controller
             }elseif(str_contains($award->name,'Diploma') || str_contains($award->name,'Basic')){
                   
           
-                  $payment = NactePayment::latest()->first();
+                  $payment = NactePayment::where('campus_id', $staff->campus_id)->first();
+
+                  return $payment;
+
                   $result = Http::get('https://www.nacte.go.tz/nacteapi/index.php/api/payment/'.$payment->reference_no.'/'.config('constants.NACTE_API_SECRET'));
                  //return json_decode($result)['params'][0]['balance']/5000
                   if((json_decode($result)->params[0]->balance/5000) < count($applicants)){
