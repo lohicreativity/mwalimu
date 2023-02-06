@@ -147,7 +147,6 @@
                     <th>#</th>
                     <th>Name</th>
                     <th>Abbreviation</th>
-                    <th>Type</th>
                     <th>Actions</th>
                     @endif
                   </tr>
@@ -317,6 +316,15 @@
                           <td>{{ $loop->iteration }}</td>
                           <td>{{ $department->name }}</td>
                           <td>{{ $department->abbreviation }}</td>
+                          <td>
+                            @can('edit-department')
+                            <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-edit-department-{{ $department->id }}">
+                                    <i class="fas fa-pencil-alt">
+                                    </i>
+                                    Edit
+                            </a>
+                            @endcan
+                          </td>
                         <tr>
                       @endforeach
                     @endif
