@@ -100,6 +100,9 @@
                     <thead>
                        <tr>
                          <th>Document</th>
+                         @if(Auth::user()->hasRole('administrator'))
+                         <th>Campus</th>
+                         @endif
                          <th>Action</th>
                        </tr>
                     </thead>
@@ -107,6 +110,11 @@
                       @foreach($attachments as $attachment)
                       <tr>
                         <td><a href="{{ url('application/download-attachment?id='.$attachment->id) }}">{{ $attachment->name }}</a></td>
+                        <td>
+                          @if(Auth::user()->hasRole('administrator'))
+                          
+                          @endif
+                        </td>
                         <td><a href="{{ url('application/delete-attachment?id='.$attachment->id) }}" class="btn btn-danger"><i class="fa fa-trash"></i> Delete</a></td>
                       </tr>
                       @endforeach
