@@ -2891,7 +2891,7 @@ class ApplicationController extends Controller
             'request'=>$request
          ];
 
-         return $data['attachments'][3]->campuses;
+         return $data['attachments'][2]->campuses;
 
          return view('dashboard.application.upload-attachments',$data)->withTitle('Upload Attachments');
     }
