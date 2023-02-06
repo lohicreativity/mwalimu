@@ -95,7 +95,7 @@
                  </span>
                 </div>
                 {!! Form::close() !!} --}}
-                <table id="example2" class="table table-bordered table-hover ss-margin-top assign-table">
+                <table id="example2" class="table table-bordered table-hover ss-margin-top">
                   <thead>
                   <tr>
                     <th>Year</th>
@@ -134,7 +134,7 @@
                             <div class="modal-body">
                                 {!! Form::open(['url'=>'application/application-window-campus-programs/update','class'=>'ss-form-processing']) !!}
 
-                                <table class="table table-bordered">
+                                <table class="table table-bordered assign-table">
                                 <thead>
                                   <tr>
                                     <th>Program</th>
