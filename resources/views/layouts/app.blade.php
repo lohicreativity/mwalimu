@@ -101,6 +101,11 @@ $('.assign-table').DataTable({
   // Display form processing nacte registration number
 $('.ss-form-processing-nacte-reg-number').submit(function(e){
   e.preventDefault();
+  var resultsContainer = $(e.target).data('results-container');
+  var submitText = $(e.target).find('button[type=submit]').text();
+  var id = $(e.target).attr('id');
+  $(e.target).find('button[type=submit]').text('Processing...');
+  $(e.target).find('button[type=submit]').addClass('disabled');
 
   $.ajax({
         url:'/application/update-nacte-reg-no/'+$(e.target).find('input[name=nacte_reg_no]').val(),
