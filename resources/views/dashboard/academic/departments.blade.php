@@ -221,7 +221,6 @@
                                             <select name="unit_category_id" class="form-control" id="unit-categories" data-target="#parents" data-token="{{ session()->token() }}" data-source-url="{{ url('api/v1/get-parents') }}" required>
                                               <option value="">Select Type</option>
                                               @foreach($unit_categories as $category)
-                                              <option value="{{ $category->id }}">{{ $category->name }}</option>
                                               <option value="{{ $category->id }}" @if($category->id == $department->unit_category_id) selected="selected" @endif>{{ $category->name }}</option>
                                               @endforeach
                                             </select>
@@ -387,7 +386,6 @@
                                             <select name="unit_category_id" class="form-control" id="unit-categories" data-target="#parents" data-token="{{ session()->token() }}" data-source-url="{{ url('api/v1/get-parents') }}" required>
                                               <option value="">Select Type</option>
                                               @foreach($unit_categories as $category)
-                                              <option value="{{ $category->id }}">{{ $category->name }}</option>
                                               <option value="{{ $category->id }}" @if($category->id == $department->categoryId) selected="selected" @endif>{{ $category->name }}</option>
                                               @endforeach
                                             </select>
