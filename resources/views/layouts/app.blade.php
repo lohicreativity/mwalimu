@@ -89,7 +89,7 @@
 <script src="https://unpkg.com/dropzone"></script>
 <script src="https://unpkg.com/cropperjs"></script>
 <!-- Custom script -->
-<script src="{{ asset('js/script.js}}"></script>
+<script src="{{ asset('js/script.js') }}"></script>
 
 <script>
 $('.assign-table').DataTable({
@@ -100,21 +100,21 @@ $('.assign-table').DataTable({
 <script>
   // Display form processing nacte registration number
 $('.ss-form-processing-nacte-reg-number').submit(function(e){
-  // e.preventDefault();
-  // // var resultsContainer = $(e.target).data('results-container');
-  // // var submitText = $(e.target).find('button[type=submit]').text();
-  // // var id = $(e.target).attr('id');
-  // // $(e.target).find('button[type=submit]').text('Processing...');
-  // // $(e.target).find('button[type=submit]').addClass('disabled');
+  e.preventDefault();
+  // var resultsContainer = $(e.target).data('results-container');
+  // var submitText = $(e.target).find('button[type=submit]').text();
+  // var id = $(e.target).attr('id');
+  // $(e.target).find('button[type=submit]').text('Processing...');
+  // $(e.target).find('button[type=submit]').addClass('disabled');
 
-  // let nacte_reg_no = $('input[name=nacte_reg_no]').val();
+  let nacte_reg_no = $('input[name=nacte_reg_no]').val();
 
-  // $.ajax({
-  //       url:'/application/update-nacte-reg-no/'+$(e.target).find('input[name=nacte_reg_no]').val(),
-  //       method:'GET',
-  // }).done(function(data,status){
-  //     alert(this.url);
-  // });
+  $.ajax({
+        url:'/application/update-nacte-reg-no/'+$(e.target).find('input[name=nacte_reg_no]').val(),
+        method:'GET',
+  }).done(function(data,status){
+      alert(this.url);
+  });
 });
 
 </script>
