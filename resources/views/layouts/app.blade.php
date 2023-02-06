@@ -100,9 +100,7 @@ $('.ss-admission-officer-table').DataTable();
 
 <script>
 
-$('#assign-btn').toggle(function(){
-  alert("Checking all");
-});
+
 </script>
 
 <script>
