@@ -136,8 +136,6 @@
                                 <div>
                                   <button id="check-all-btn" class="btn btn-primary">Check All</button>
                                   <button id="uncheck-all-btn" class="btn btn-danger">Uncheck All</button>
-                                <!-- <input type="checkbox" class="btn btn-primary"
-		                              onClick="check_uncheck_checkbox(this.checked);" /><span class="check-text">Check All</span> -->
                                 </div>
                                 <br>
 
