@@ -101,8 +101,22 @@ $('.assign-table').DataTable({
   // Display form processing nacte registration number
 $('.ss-form-processing-nacte-reg-number').submit(function(e){
   e.preventDefault();
-  $('.hello').text('NACTEEEEEE');
-  alert('Submitting nacte reg number');
+
+  let reg = $('input[name=nacte_reg_no]').val();
+
+  alert(reg)
+
+  // $.ajax({
+  //       url:'/application/update-nacte-reg-no/'+$(e.target).find('input[name=nacte_reg_no]').val()',
+  //       method:'GET',
+  //    }).done(function(data,success){
+
+  //        if(data.error){
+  //           alert(data.error);
+  //        }else{
+  //           alert('Success');
+  //        }
+  //    });
 });
 
 </script>

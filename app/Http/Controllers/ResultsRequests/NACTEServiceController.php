@@ -61,7 +61,7 @@ class NACTEServiceController extends Controller
                      $res->save();
                      }
                 }
-             }
+            }
 
         // $applicant = Applicant::with('programLevel')->find($request->get('applicant_id'));
         // if(str_contains($applicant->programLevel->name,'Bachelor') && $applicant->entry_mode == 'EQUIVALENT' && $detail->diploma_gpa >= 3){
