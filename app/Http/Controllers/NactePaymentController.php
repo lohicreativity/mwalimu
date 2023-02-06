@@ -9,7 +9,7 @@ use App\Domain\Settings\Models\Campus;
 use App\Domain\Academic\Models\StudyAcademicYear;
 use App\Utils\Util;
 use App\Models\User;
-use Validator;
+use Validator, Auth;
 
 class NactePaymentController extends Controller
 {
