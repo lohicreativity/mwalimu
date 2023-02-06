@@ -931,7 +931,7 @@ $('.ss-form-processing-nacte').submit(function(e){
 
 
 // Display form processing nacte registration number
-$('.ss-form-processing-nacte').submit(function(e){
+$('.ss-form-processing-nacte-reg-number').submit(function(e){
   alert('Submitting nacte reg number');
 });
 
