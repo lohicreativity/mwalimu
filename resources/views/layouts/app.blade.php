@@ -100,7 +100,7 @@ $('.ss-admission-officer-table').DataTable();
 
 <script>
 $(document).ready(function(){
-  $('.check:button').toggle(function(){
+  $('.assign-btn').toggle(function(){
       alert('Checking all');
       // $('input:checkbox').attr('checked','checked');
       // $(this).val('uncheck all')
