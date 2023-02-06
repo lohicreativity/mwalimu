@@ -28,12 +28,14 @@ class DepartmentController extends Controller
       } else if (Auth::user()->hasRole('admission-officer')) {
 
          $departments = DB::table('departments')
-         ->select('departments.*')
+         ->select('departments.*', 'unit_categories.name')
          ->join('campus_department', 'departments.id', 'campus_department.department_id')
          ->join('campuses', 'campus_department.campus_id', 'campuses.id')
          ->join('unit_categories', 'departments.unit_category_id', 'unit_categories.id')
          ->where('campuses.id', $staff->campus_id)
          ->paginate(20);   
+
+         return $departments;
           
 
       }
