@@ -136,11 +136,11 @@
                                 <div>
                                     <button class="btn btn-primary">Select All</button>
                                     <button class="btn btn-danger">Unselect All</button>
-                                </div>
+                                </div><br><br>
 
                                 {!! Form::open(['url'=>'application/application-window-campus-programs/update','class'=>'ss-form-processing']) !!}
 
-                                <table class="table table-bordered assign-table mt-3">
+                                <table class="table table-bordered assign-table">
                                 <thead>
                                   <tr>
                                     <th>Program</th>
