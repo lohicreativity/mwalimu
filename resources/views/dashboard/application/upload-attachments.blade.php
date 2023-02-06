@@ -69,11 +69,11 @@
                      </select>
                     </div>
                     @elseif(Auth::user()->hasRole('admission-officer'))
-                    <div class="form-group col-4">
+                    <div class="form-group col-6">
                       {!! Form::label('','Attachment name') !!}
                       {!! Form::text('name',null,['class'=>'form-control','placeholder'=>'Attachment name','required'=>true]) !!}
                     </div>
-                    <div class="form-group col-4">
+                    <div class="form-group col-6">
                       {!! Form::label('','Upload attachment') !!}
                       {!! Form::file('attachment',['class'=>'form-control','required'=>true]) !!}
                     </div>
