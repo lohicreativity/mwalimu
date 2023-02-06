@@ -105,11 +105,11 @@ $("#check-all-btn").click(function(){
 	});
 });
 
-// $("#uncheck-all-btn").click(function(){
-//   $('.assign-checkbox').each(function() { 
-// 		this.checked = false; 
-// 	});
-// });
+$("#uncheck-all-btn").click(function(){
+  $('.assign-checkbox').each(function() { 
+		this.checked = false; 
+	});
+});
 </script>
 
 <script>
