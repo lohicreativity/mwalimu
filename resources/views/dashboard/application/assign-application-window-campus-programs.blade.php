@@ -159,7 +159,7 @@
 
                                          @else
                                           
-                                          {!! Form::checkbox('window_'.$window->id.'_program_'.$program->id,$program->id, 'false', 'false', ['class' => 'assign-checkbox']) !!}
+                                          {!! Form::checkbox('window_'.$window->id.'_program_'.$program->id,$program->id, false, false, ['class' => 'assign-checkbox']) !!}
 
                                          @endif
                                       </td>
