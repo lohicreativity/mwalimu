@@ -102,21 +102,17 @@ $('.assign-table').DataTable({
 $('.ss-form-processing-nacte-reg-number').submit(function(e){
   e.preventDefault();
 
-  let reg = $('input[name=nacte_reg_no]').val();
+  $.ajax({
+        url:'/application/update-nacte-reg-no/'+$(e.target).find('input[name=nacte_reg_no]').val(),
+        method:'GET',
+     }).done(function(data,success){
 
-  alert(reg)
-
-  // $.ajax({
-  //       url:'/application/update-nacte-reg-no/'+$(e.target).find('input[name=nacte_reg_no]').val()',
-  //       method:'GET',
-  //    }).done(function(data,success){
-
-  //        if(data.error){
-  //           alert(data.error);
-  //        }else{
-  //           alert('Success');
-  //        }
-  //    });
+         if(data.error){
+            alert(data.error);
+         }else{
+            alert('Success');
+         }
+     });
 });
 
 </script>
