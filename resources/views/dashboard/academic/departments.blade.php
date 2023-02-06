@@ -121,7 +121,7 @@
                   <div class="row">
                     <div class="form-group col-6">
                       {!! Form::label('','Type') !!}
-                      <select name="unit_category_id" class="form-control" required>
+                      <select name="unit_category_id" class="form-control" id="unit-categories" data-target="#parents" data-token="{{ session()->token() }}" data-source-url="{{ url('api/v1/get-parents') }}" required>
                         <option value="">Select Type</option>
                         @foreach($unit_categories as $category)
                         <option value="{{ $category->id }}">{{ $category->name }}</option>
@@ -130,7 +130,7 @@
                     </div>
                     <div class="form-group col-6">
                       {!! Form::label('','Parent') !!}
-                      <select name="parent_id" class="form-control">
+                      <select name="parent_id" id="parents" class="form-control">
                         <option value="">Select Parent</option>
                         @foreach($departments as $department)
                         <option value="{{ $department->id }}">{{ $department->name }}</option>
