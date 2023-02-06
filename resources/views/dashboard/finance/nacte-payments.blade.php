@@ -169,7 +169,7 @@
                                       </div>
 
                                       <div class="form-group col-3">
-                                        {!! Form::label('','Campus') !!}
+                                        {!! Form::label('','123Campus') !!}
                                         <select name="campus_id" class="form-control">
                                           <option value="">Select Campus</option>
                                           @foreach($campuses as $campus)
