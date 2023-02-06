@@ -89,15 +89,15 @@
                     </select>
                   </div>
                     @elseif(Auth::user()->hasRole('admission-officer'))
-                    <div class="form-group col-6">
+                    <div class="form-group col-4">
                     {!! Form::label('','Amount') !!}
                     {!! Form::text('amount',null,$amount) !!}
                   </div>
-                  <div class="form-group col-6">
+                  <div class="form-group col-4">
                     {!! Form::label('','Reference number') !!}
                     {!! Form::text('reference_number',null,$reference_number) !!}
                   </div>
-                  <div class="form-group col-6">
+                  <div class="form-group col-4">
                     {!! Form::label('','Study academic year') !!}
                     <select name="study_academic_year_id" class="form-control">
                       <option value="">Select Study Academic Year</option>
