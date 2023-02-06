@@ -50,7 +50,10 @@ class SpecialDateController extends Controller
    */
   public function showOrientationDate(Request $request)
   {
+      $staff = User::find(Auth::user()->id)->staff;
+
       $data = [
+           'campus_id'  => $staff->campus_id,
            'campuses'=>Campus::all(),
            'study_academic_years'=>StudyAcademicYear::with('academicYear')->latest()->get(),
            'campus'=>Campus::find($request->get('campus_id')),
