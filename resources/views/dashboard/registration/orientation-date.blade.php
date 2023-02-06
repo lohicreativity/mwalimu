@@ -76,7 +76,7 @@
                        @endforeach
                     </select>
                   </div>
-                  <input type="hidden" name="campus_id" value="">
+                  <input type="hidden" name="campus_id" value="{{ $campus_id }}">
                   @endif
                    
                   </div>
