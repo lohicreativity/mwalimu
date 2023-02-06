@@ -832,39 +832,42 @@ $('.ss-form-processing-necta').submit(function(e){
      }
 
      $.ajax({
-        url:'/application/fetch-necta-results/'+$(e.target).find('input[name=index_number]').val().replace(/\//g,'-')+'/'+$(e.target).find('input[name=exam_id]').val()+'?applicant_id='+$(e.target).find('input[name=applicant_id]').val(),
+        url:'/application/fetch-necta-results/'+$(e.target).find('input[name=index_number]').val(),
+
+        // url:'/application/fetch-necta-results/'+$(e.target).find('input[name=index_number]').val().replace(/\//g,'-')+'/'+$(e.target).find('input[name=exam_id]').val()+'?applicant_id='+$(e.target).find('input[name=applicant_id]').val(),
         method:'GET',
      }).done(function(data,success){
-         if(data.error){
-             alert(data.error);
-         }else{
-          console.log(data);
-         $(e.target).find('button[type=submit]').text(submitText);
-         $(e.target).find('button[type=submit]').removeClass('disabled');
+        alert(this.url);
+        //  if(data.error){
+        //      alert(data.error);
+        //  }else{
+        //   console.log(data);
+        //  $(e.target).find('button[type=submit]').text(submitText);
+        //  $(e.target).find('button[type=submit]').removeClass('disabled');
 
-         var element = '<table class="table table-bordered">';
-         element += '<tr><td>Center Name:</td><td>'+data.details.center_name+'</td></tr>';
-         element += '<tr><td>Center Number:</td><td>'+data.details.center_number+'</td></tr>';
-         element += '<tr><td>First Name:</td><td>'+data.details.first_name+'</td></tr>';
-         element += '<tr><td>Middle Name:</td><td>'+data.details.middle_name+'</td></tr>';
-         element += '<tr><td>Last Name:</td><td>'+data.details.last_name+'</td></tr>';
-         element += '<tr><td>Sex:</td><td>'+data.details.sex+'</td></tr>';
-         element += '<tr><td>Index Number:</td><td>'+data.details.index_number+'</td></tr>'
-         element += '<tr><td>Division:</td><td>'+data.details.division+'</td></tr>';
-         element += '<tr><td>Points:</td><td>'+data.details.points+'</td></tr>';
-         for(var i=0; i<data.details.results.length; i++){
-            element += '<tr><td>'+data.details.results[i].subject_name+'</td><td>'+data.details.results[i].grade+'</td></tr>'
-         }
-         element += '</table>';
+        //  var element = '<table class="table table-bordered">';
+        //  element += '<tr><td>Center Name:</td><td>'+data.details.center_name+'</td></tr>';
+        //  element += '<tr><td>Center Number:</td><td>'+data.details.center_number+'</td></tr>';
+        //  element += '<tr><td>First Name:</td><td>'+data.details.first_name+'</td></tr>';
+        //  element += '<tr><td>Middle Name:</td><td>'+data.details.middle_name+'</td></tr>';
+        //  element += '<tr><td>Last Name:</td><td>'+data.details.last_name+'</td></tr>';
+        //  element += '<tr><td>Sex:</td><td>'+data.details.sex+'</td></tr>';
+        //  element += '<tr><td>Index Number:</td><td>'+data.details.index_number+'</td></tr>'
+        //  element += '<tr><td>Division:</td><td>'+data.details.division+'</td></tr>';
+        //  element += '<tr><td>Points:</td><td>'+data.details.points+'</td></tr>';
+        //  for(var i=0; i<data.details.results.length; i++){
+        //     element += '<tr><td>'+data.details.results[i].subject_name+'</td><td>'+data.details.results[i].grade+'</td></tr>'
+        //  }
+        //  element += '</table>';
 
-         $($(e.target).find('input[name=results_container]').val()).html(element);
-         $($(e.target).find('input[name=display_modal]').val()).modal('show');
+        //  $($(e.target).find('input[name=results_container]').val()).html(element);
+        //  $($(e.target).find('input[name=display_modal]').val()).modal('show');
          
-         $($(e.target).find('input[name=display_modal]').val()+' input[name=index_number]').val($(e.target).find('input[name=index_number]').val());
-         $($(e.target).find('input[name=display_modal]').val()+' input[name=year]').val($(e.target).find('input[name=year]').val());
-         $($(e.target).find('input[name=display_modal]').val()+' input[name=exam_id]').val($(e.target).find('input[name=exam_id]').val());
-         $($(e.target).find('input[name=display_modal]').val()+' input[name=necta_result_detail_id]').val(data.details.id);
-         }
+        //  $($(e.target).find('input[name=display_modal]').val()+' input[name=index_number]').val($(e.target).find('input[name=index_number]').val());
+        //  $($(e.target).find('input[name=display_modal]').val()+' input[name=year]').val($(e.target).find('input[name=year]').val());
+        //  $($(e.target).find('input[name=display_modal]').val()+' input[name=exam_id]').val($(e.target).find('input[name=exam_id]').val());
+        //  $($(e.target).find('input[name=display_modal]').val()+' input[name=necta_result_detail_id]').val(data.details.id);
+        //  }
      });
 });
 
