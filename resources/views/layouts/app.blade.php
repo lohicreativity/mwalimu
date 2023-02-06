@@ -93,7 +93,9 @@
 
 <script>
   
-$('.assign-table').DataTable();
+$('.assign-table').DataTable({
+  "paging": false
+});
 $('.ss-admission-officer-table').DataTable();
 
 </script>
