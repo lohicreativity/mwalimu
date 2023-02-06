@@ -35,6 +35,9 @@ class DepartmentController extends Controller
          ->where('campuses.id', $staff->campus_id)
          ->paginate(20);    
 
+
+         return $departments;
+
       }
 
     	$data = [
