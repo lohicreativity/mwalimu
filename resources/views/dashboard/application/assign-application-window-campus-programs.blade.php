@@ -154,11 +154,11 @@
                                       <td>
                                         @if(App\Utils\Util::collectionContains($window->campusPrograms,$program))
                                          
-                                         {!! Form::checkbox('window_'.$window->id.'_program_'.$program->id,$program->id,true, ['class' => 'assign-checkbox']) !!} 
+                                         {!! Form::checkbox('window_'.$window->id.'_program_'.$program->id,$program->id,true) !!} 
 
                                          @else
                                           
-                                          {!! Form::checkbox('window_'.$window->id.'_program_'.$program->id,$program->id, ['class' => 'assign-checkbox']) !!}
+                                          {!! Form::checkbox('window_'.$window->id.'_program_'.$program->id,$program->id) !!}
 
                                          @endif
                                       </td>
