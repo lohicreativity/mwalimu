@@ -27,7 +27,7 @@ $('document').ready(function(){
 
     $('.ss-paginated-table').DataTable();
 
-    $('.ss-admission-officer-table').DataTable();
+    $('.assign-table').DataTable();
 
 
     // Pop signup modal

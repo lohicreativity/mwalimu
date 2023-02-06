@@ -134,7 +134,7 @@
                             <div class="modal-body">
                                 {!! Form::open(['url'=>'application/application-window-campus-programs/update','class'=>'ss-form-processing']) !!}
 
-                                <table class="table table-bordered">
+                                <table class="table table-bordered assign-table">
                                 <thead>
                                   <tr>
                                     <th>Program</th>
