@@ -415,6 +415,10 @@ class ApplicationController extends Controller
     {
         $staff = User::find(Auth::user()->id)->staff;
         $award = Award::find($request->get('program_level_id'));
+        
+        $payment = NactePayment::latest()->where('campus_id', $staff->campus_id)->first();
+
+                  return $payment;
 
         $applicants = Applicant::with(['nextOfKin.region','region','district','intake','selections.campusProgram.program.ntaLevel','nectaResultDetails','intake'])->where('program_level_id',$request->get('program_level_id'))->where('campus_id',$staff->campus_id)->where('application_window_id',$request->get('application_window_id'))->get();
 
@@ -533,9 +537,7 @@ class ApplicationController extends Controller
             }elseif(str_contains($award->name,'Diploma') || str_contains($award->name,'Basic')){
                   
           
-                  $payment = NactePayment::latest()->where('campus_id', $staff->campus_id)->first();
-
-                  return $payment;
+                  
 
                   $result = Http::get('https://www.nacte.go.tz/nacteapi/index.php/api/payment/'.$payment->reference_no.'/'.config('constants.NACTE_API_SECRET'));
                  //return json_decode($result)['params'][0]['balance']/5000
