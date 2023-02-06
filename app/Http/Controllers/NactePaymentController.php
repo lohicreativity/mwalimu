@@ -8,6 +8,7 @@ use App\Domain\Finance\Models\NactePayment;
 use App\Domain\Settings\Models\Campus;
 use App\Domain\Academic\Models\StudyAcademicYear;
 use App\Utils\Util;
+use App\Models\User;
 use Validator;
 
 class NactePaymentController extends Controller
