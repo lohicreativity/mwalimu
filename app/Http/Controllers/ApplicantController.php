@@ -1743,7 +1743,7 @@ class ApplicantController extends Controller
            }
         }
 
-        return 123;
+      
         
       //   try{
       //   $response = Http::get('https://www.nacte.go.tz/nacteapi/index.php/api/particulars/'.str_replace('/', '.', $request->get('nacte_reg_no')).'-4/'.config('constants.NACTE_API_KEY'));
