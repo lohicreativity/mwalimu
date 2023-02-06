@@ -100,10 +100,9 @@ $('.ss-admission-officer-table').DataTable();
 
 <script>
 $("#check-all-btn").click(function(){
-    alert("Checking");
-  // $('.assign-checkbox').each(function() { 
-	// 	this.checked = true; 
-	// });
+  $('.assign-checkbox').each(function() { 
+		this.checked = true; 
+	});
 });
 
 // $("#uncheck-all-btn").click(function(){
