@@ -27,7 +27,6 @@ $('document').ready(function(){
 
     $('.ss-paginated-table').DataTable();
 
-    $('.assign-table').DataTable();
 
 
     // Pop signup modal

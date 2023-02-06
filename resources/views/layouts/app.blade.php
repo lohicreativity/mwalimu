@@ -92,6 +92,12 @@
 <script src="{{ asset('js/script.js?version='.config('constants.VERSION')) }}"></script>
 
 <script>
+  
+$('.assign-table').DataTable();
+
+</script>
+
+<script>
   $('#unit-categories').on('change',function(e){
     $.ajax({
     method:'POST',
