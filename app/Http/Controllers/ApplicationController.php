@@ -2882,6 +2882,7 @@ class ApplicationController extends Controller
          $staff = User::find(Auth::user()->id)->staff;
          $data = [
             'staff' => $staff,
+            'campus_id' => $staff->campus_id,
             'attachments'=>AdmissionAttachment::paginate(20),
             'application_windows'=>ApplicationWindow::where('campus_id',$staff->campus_id)->get(),
             'application_window'=>ApplicationWindow::find($request->get('application_window_id')),
@@ -2945,6 +2946,7 @@ class ApplicationController extends Controller
             $attachment = new AdmissionAttachment;
             $attachment->name = $request->get('name');
             $attachment->file_name = $request->file('attachment')->getClientOriginalName();
+            $attachment->campus_id = $request->get('campus_id');
             $attachment->save();
         }
 

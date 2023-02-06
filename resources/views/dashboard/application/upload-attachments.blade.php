@@ -69,6 +69,15 @@
                      </select>
                     </div>
                     @elseif(Auth::user()->hasRole('admission-officer'))
+                    <div class="form-group col-4">
+                      {!! Form::label('','Attachment name') !!}
+                      {!! Form::text('name',null,['class'=>'form-control','placeholder'=>'Attachment name','required'=>true]) !!}
+                    </div>
+                    <div class="form-group col-4">
+                      {!! Form::label('','Upload attachment') !!}
+                      {!! Form::file('attachment',['class'=>'form-control','required'=>true]) !!}
+                    </div>
+                    <input type="hidden" name="campus_id" value="{{ $campus_id }}">
                     @endif
                     
                   </div>
