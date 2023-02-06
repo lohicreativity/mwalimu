@@ -104,10 +104,12 @@ function check_uncheck_checkbox(isChecked) {
 		$('.assign-checkbox').each(function() { 
 			this.checked = true; 
 		});
+    $('.check-text').text('Check All');
 	} else {
 		$('.assign-checkbox').each(function() {
 			this.checked = false;
 		});
+    $('.check-text').text('Uncheck All');
 	}
 }
 
