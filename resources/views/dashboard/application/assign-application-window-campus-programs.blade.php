@@ -134,9 +134,12 @@
                             <div class="modal-body">
 
                                 <div>
-                                <input type="checkbox" class="btn btn-primary"
-		                              onClick="check_uncheck_checkbox(this.checked);" /><span class="check-text">Check All</span>
-                                </div><br>
+                                  <button id="check-all-btn" class="btn btn-primary">Check All</button>
+                                  <button id="uncheck-all-btn" class="btn btn-danger">Uncheck All</button>
+                                <!-- <input type="checkbox" class="btn btn-primary"
+		                              onClick="check_uncheck_checkbox(this.checked);" /><span class="check-text">Check All</span> -->
+                                </div>
+                                <br>
 
                                 {!! Form::open(['url'=>'application/application-window-campus-programs/update','class'=>'ss-form-processing']) !!}
 
@@ -154,7 +157,7 @@
                                       <td>
                                         @if(App\Utils\Util::collectionContains($window->campusPrograms,$program))
                                          
-                                         {!! Form::checkbox('window_'.$window->id.'_program_'.$program->id,$program->id, ['class' => 'assign-checkbox']) !!} 
+                                         {!! Form::checkbox('window_'.$window->id.'_program_'.$program->id,$program->id,true, ['class' => 'assign-checkbox']) !!} 
 
                                          @else
                                           
