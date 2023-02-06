@@ -401,16 +401,6 @@
                                               @endforeach -->
                                             </select>
                                           </div>
-                                          <div class="form-group col-4">
-                                            {!! Form::label('','Campus') !!}<br>
-                                            <select name="campuses" class="form-control" style="width: 100%;">
-                          <!-- <select name="campuses[]" class="form-control ss-select-tags" style="width: 100%;" multiple="multiple"> -->
-                                              <option value="">Select Campus</option>
-                                              @foreach($campuses as $campus)
-                                              <option value="{{ $campus->id }}" @if(App\Utils\Util::collectionContains($department->campuses,$campus)) selected="selected" @endif>{{ $campus->name }}</option>
-                                              @endforeach
-                                            </select>
-                                          </div>
                                           </div>
                                             <div class="ss-form-actions">
                                             <button type="submit" class="btn btn-primary">{{ __('Save Changes') }}</button>

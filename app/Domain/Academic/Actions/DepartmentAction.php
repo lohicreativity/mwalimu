@@ -5,6 +5,7 @@ namespace App\Domain\Academic\Actions;
 use Illuminate\Http\Request;
 use App\Domain\Academic\Models\Department;
 use App\Domain\Academic\Repositories\Interfaces\DepartmentInterface;
+use Auth;
 
 class DepartmentAction implements DepartmentInterface{
 	
@@ -17,7 +18,10 @@ class DepartmentAction implements DepartmentInterface{
         $department->parent_id = $request->get('parent_id');
         $department->save();
 
-        $department->campuses()->sync($request->get('campuses'));
+        if (Auth::user()->hasRole('administrator')) {
+            $department->campuses()->sync($request->get('campuses'));
+        } 
+
 	}
 
 	public function update(Request $request){
