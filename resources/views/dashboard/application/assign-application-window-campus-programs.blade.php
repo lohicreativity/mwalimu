@@ -134,8 +134,8 @@
                             <div class="modal-body">
 
                                 <div>
-                                <input type="button" class="btn btn-primary" value="Check All" name="checkall" id="checkall"
-		                              onClick="check_uncheck_checkbox(this.checked);" />
+                                <input type="checkbox" class="btn btn-primary" name="checkall" id="checkall"
+		                              onClick="check_uncheck_checkbox(this.checked);" />Check All
                                 </div><br>
 
                                 {!! Form::open(['url'=>'application/application-window-campus-programs/update','class'=>'ss-form-processing']) !!}
