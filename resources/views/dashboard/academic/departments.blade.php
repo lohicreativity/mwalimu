@@ -395,7 +395,7 @@
                                             <select name="parent_id" class="form-control" id="parents" required>
                                               <option value="">Select one</option>
                                               @foreach($all_departments as $dept)
-                                              <option value="{{ $dept->id }}" @if($dept->id == $department->parent_id) selected="selected" @endif>{{ $dept->name }}</option>
+                                              <option value="{{ $dept->id }}" @if($dept->id == $department->id) selected="selected" @endif>{{ $dept->name }}</option>
                                               @endforeach
                                             </select>
                                           </div>
