@@ -929,6 +929,13 @@ $('.ss-form-processing-nacte').submit(function(e){
      });
 });
 
+
+// Display form processing nacte registration number
+$('.ss-form-processing-nacte').submit(function(e){
+  alert('Submitting nacte reg number');
+});
+
+
 // Display form processing necta
 $('.ss-form-processing-out').submit(function(e){
      e.preventDefault();

@@ -1753,6 +1753,9 @@ class ApplicantController extends Controller
             return redirect()->back()->with('error','Invalid NACTE Registration number');
         }
 
+        
+         
+
         $applicant = Applicant::find($request->get('applicant_id'));
         $applicant->nacte_reg_no = $request->get('nacte_reg_no');
         if(NectaResultDetail::where('applicant_id',$applicant->id)->where('verified',1)->count() != 0){
@@ -1765,6 +1768,8 @@ class ApplicantController extends Controller
         }else{
             $detail = new NacteResultDetail;
         }
+
+
         $detail->institution = json_decode($response)->params[0]->institution_name;
         $detail->firstname = json_decode($response)->params[0]->firstname;
         $detail->middlename = json_decode($response)->params[0]->middle_name;
