@@ -94,6 +94,7 @@
 <script>
   
 $('.assign-table').DataTable();
+$('.ss-admission-officer-table').DataTable();
 
 </script>
 
