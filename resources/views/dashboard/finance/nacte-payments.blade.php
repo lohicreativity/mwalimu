@@ -154,7 +154,9 @@
                                   @endphp
                                   {!! Form::open(['url'=>'finance/nacte-payment/update','class'=>'ss-form-processing']) !!}
 
+                                      
                                     <div class="row">
+                                      @if(Auth::user()->hasRole('administrator'))
                                       <div class="form-group col-3">
                                         {!! Form::label('','Amount') !!}
                                         {!! Form::text('amount',$payment->amount,$amount) !!}
@@ -165,6 +167,7 @@
                                         {!! Form::label('','Reference number') !!}
                                         {!! Form::text('reference_number',$payment->reference_no,$reference_number) !!}
                                       </div>
+
                                       <div class="form-group col-3">
                                         {!! Form::label('','Campus') !!}
                                         <select name="campus_id" class="form-control">
@@ -183,6 +186,30 @@
                                           @endforeach
                                         </select>
                                       </div>
+                                      @elseif(Auth::user()->hasRole('admission-officer'))
+                                      <div class="form-group col-4">
+                                        {!! Form::label('','Amount') !!}
+                                        {!! Form::text('amount',$payment->amount,$amount) !!}
+
+                                        {!! Form::input('hidden','nacte_payment_id',$payment->id) !!}
+                                      </div>
+                                      <div class="form-group col-4">
+                                        {!! Form::label('','Reference number') !!}
+                                        {!! Form::text('reference_number',$payment->reference_no,$reference_number) !!}
+                                      </div>
+
+                                      
+                                      <div class="form-group col-4">
+                                        {!! Form::label('','Study academic year') !!}
+                                        <select name="study_academic_year_id" class="form-control">
+                                          <option value="">Select Study Academic Year</option>
+                                          @foreach($study_academic_years as $year)
+                                            <option value="{{ $year->id }}" @if($year->id == $payment->study_academic_year_id) selected="selected" @endif>{{ $year->academicYear->year }}</option>
+                                          @endforeach
+                                        </select>
+                                      </div>
+                                      @endif
+                                      
                                     </div>
                                       <div class="ss-form-actions">
                                        <button amount="submit" class="btn btn-primary">{{ __('Save Changes') }}</button>
