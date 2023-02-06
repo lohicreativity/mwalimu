@@ -9,7 +9,8 @@ use App\Domain\Settings\Models\Campus;
 use App\Domain\Settings\Models\SpecialDate;
 use App\Utils\DateMaker;
 use Carbon\Carbon;
-use Validator;
+use App\Models\User;
+use Validator, Auth;
 
 class SpecialDateController extends Controller
 {
