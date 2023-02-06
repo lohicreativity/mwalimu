@@ -61,7 +61,8 @@
               {!! Form::open(['url'=>'finance/nacte-payment/store','class'=>'ss-form-processing']) !!}
                 <div class="card-body">
                   <div class="row">
-                  <div class="form-group col-3">
+                    @if(Auth::user()->hasRole('administrator'))
+                    <div class="form-group col-3">
                     {!! Form::label('','Amount') !!}
                     {!! Form::text('amount',null,$amount) !!}
                   </div>
@@ -87,7 +88,27 @@
                       @endforeach
                     </select>
                   </div>
-                </div>
+                    @elseif(Auth::user()->hasRole('admission-officer'))
+                    <div class="form-group col-3">
+                    {!! Form::label('','Amount') !!}
+                    {!! Form::text('amount',null,$amount) !!}
+                  </div>
+                  <div class="form-group col-3">
+                    {!! Form::label('','Reference number') !!}
+                    {!! Form::text('reference_number',null,$reference_number) !!}
+                  </div>
+                  <div class="form-group col-3">
+                    {!! Form::label('','Study academic year') !!}
+                    <select name="study_academic_year_id" class="form-control">
+                      <option value="">Select Study Academic Year</option>
+                      @foreach($study_academic_years as $year)
+                        <option value="{{ $year->id }}">{{ $year->academicYear->year }}</option>
+                      @endforeach
+                    </select>
+                  </div>
+                    @endif
+                  
+                  </div>
                 </div>
                 <!-- /.card-body -->
 

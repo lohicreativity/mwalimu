@@ -17,7 +17,6 @@ class NactePaymentController extends Controller
      */
     public function index(Request $request)
     {
-         return 'Nacte payments';
          $data = [
             'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
             'campuses'=>Campus::all(),
