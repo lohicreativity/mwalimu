@@ -1784,6 +1784,8 @@ class ApplicantController extends Controller
       //   $detail->applicant_id = $request->get('applicant_id');
       //   $detail->save();
 
+      return redirect()->back();
+
       //   return redirect()->back()->with('message','NACTE registration number updated successfully');
     }
 	
