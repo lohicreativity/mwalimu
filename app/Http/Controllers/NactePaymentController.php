@@ -16,8 +16,14 @@ class NactePaymentController extends Controller
      * Show NACTE payments
      */
     public function index(Request $request)
-    {
+    {        
+
+      $staff = User::find(Auth::user()->id)->staff;
+
+      return $staff->campus_id;
+
          $data = [
+            'staff' => User::find(Auth::user()->id)->staff,
             'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
             'campuses'=>Campus::all(),
             'payments'=>NactePayment::with(['campus','studyAcademicYear.academicYear'])->paginate(20),

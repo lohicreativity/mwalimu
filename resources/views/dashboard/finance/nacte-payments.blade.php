@@ -89,6 +89,7 @@
                     </select>
                   </div>
                     @elseif(Auth::user()->hasRole('admission-officer'))
+                    <input type="hidden" name="campus_id" value="">
                     <div class="form-group col-4">
                     {!! Form::label('','Amount') !!}
                     {!! Form::text('amount',null,$amount) !!}
