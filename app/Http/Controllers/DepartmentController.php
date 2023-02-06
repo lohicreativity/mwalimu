@@ -27,25 +27,17 @@ class DepartmentController extends Controller
          
       } else if (Auth::user()->hasRole('admission-officer')) {
 
-         // $departments = Department::whereHas('campuses', function($query) use($staff){
-         //    $query->wherePivot('campus_id', '=', $staff->campus_id);
-         // })->with(['unitCategory', 'campuses'])->get();
-
-         $departments = Department::with('campuses')->whereHas('campuses', function ($query) use ($staff) {
-            $query->where('campuses.id', '=', $staff->campus_id);
-         })->get();
+         $departments = DB::table('departments')
+         ->select('departments.*', 'campus_department.*', 'campuses.*', 'unit_categories.*')
+         ->join('campus_department', 'departments.id', 'campus_department.department_id')
+         ->join('campuses', 'campus_department.campus_id', 'campuses.id')
+         ->join('unit_categories', 'departments.unit_category_id', 'unit_categories.id')
+         ->where('campuses.id', $staff->campus_id)
+         ->get();
 
          return $departments;
 
-         // foreach($departments as $department) {
-
-         //    foreach ($department->campuses as $campus) {
-
-         //       if ($campus->id == $staff->campus_id) {
-         //          $dep = $department;
-         //       }
-         //    }
-         // }
+         
 
       }
 
@@ -54,15 +46,7 @@ class DepartmentController extends Controller
            'all_departments'  =>Department::all(),
            'campuses'         =>Campus::all(),
            'staff'            => $staff,
-           'departments'      => $departments
-         //   'departments' => DB::table('departments')
-         //   ->select('departments.*', 'campuses.*', 'unit_categories.*')
-         //   ->join('campus_department', 'departments.id', 'campus_department.department_id')
-         //   ->join('campuses', 'campus_department.campus_id', 'campuses.id')
-         //   ->join('unit_categories', 'departments.unit_category_id', 'unit_categories.id')
-         //   ->where('campuses.id', $staff->campus_id)
-         //   ->get()
-           
+           'departments'      => $departments     
     	];
 
     	return view('dashboard.academic.departments',$data)->withTitle('Departments');
