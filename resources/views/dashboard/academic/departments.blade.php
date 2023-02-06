@@ -368,7 +368,7 @@
                                             {!! Form::text('name',$department->name,$name) !!}
 
                                             {!! Form::input('hidden','department_id',$department->id) !!}
-                                            {!! Form::input('hidden','campuses',$department->id) !!}
+                                            {!! Form::input('hidden','campuses',$department->campusId) !!}
 
                                           </div>
                                           <div class="form-group col-4">
