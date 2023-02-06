@@ -85,39 +85,62 @@
                     {!! Form::textarea('description',null,$description) !!}
                   </div>
                   </div>
-                  <div class="row">
-                  <div class="form-group col-4">
-                    {!! Form::label('','Type') !!}
-                    <select name="unit_category_id" class="form-control" required>
-                       <option value="">Select Type</option>
-                       @foreach($unit_categories as $category)
-                       <option value="{{ $category->id }}">{{ $category->name }}</option>
-                       @endforeach
-                    </select>
-                  </div>
-                  <div class="form-group col-4">
-                    {!! Form::label('','Parent') !!}
-                    <select name="parent_id" class="form-control">
-                       <option value="">Select Parent</option>
-                       @foreach($departments as $department)
-                       <option value="{{ $department->id }}">{{ $department->name }}</option>
-                       @endforeach
-                    </select>
-                  </div>
+
                   @if(Auth::user()->hasRole('administrator'))
-                  <div class="form-group col-4">
-                    {!! Form::label('','Campus') !!}
-                    <!-- <select name="campuses[]" class="form-control ss-select-tags" multiple="multiple"> -->
-					            <select name="campuses" class="form-control" required>
-                        <option value="">Select Campus</option>
-                        @foreach($campuses as $campus)
-                          <option value="{{ $campus->id }}">{{ $campus->name }}</option>
+                  <div class="row">
+                    <div class="form-group col-4">
+                      {!! Form::label('','Type') !!}
+                      <select name="unit_category_id" class="form-control" required>
+                        <option value="">Select Type</option>
+                        @foreach($unit_categories as $category)
+                        <option value="{{ $category->id }}">{{ $category->name }}</option>
                         @endforeach
                       </select>
+                    </div>
+                    <div class="form-group col-4">
+                      {!! Form::label('','Parent') !!}
+                      <select name="parent_id" class="form-control">
+                        <option value="">Select Parent</option>
+                        @foreach($departments as $department)
+                        <option value="{{ $department->id }}">{{ $department->name }}</option>
+                        @endforeach
+                      </select>
+                    </div>
+                    <div class="form-group col-4">
+                      {!! Form::label('','Campus') !!}
+                      <!-- <select name="campuses[]" class="form-control ss-select-tags" multiple="multiple"> -->
+                        <select name="campuses" class="form-control" required>
+                          <option value="">Select Campus</option>
+                          @foreach($campuses as $campus)
+                            <option value="{{ $campus->id }}">{{ $campus->name }}</option>
+                          @endforeach
+                        </select>
+                    </div>
+                  </div>
+                  @elseif(Auth::user()->hasRole('admission-officer'))
+                  <div class="row">
+                    <div class="form-group col-6">
+                      {!! Form::label('','Type') !!}
+                      <select name="unit_category_id" class="form-control" required>
+                        <option value="">Select Type</option>
+                        @foreach($unit_categories as $category)
+                        <option value="{{ $category->id }}">{{ $category->name }}</option>
+                        @endforeach
+                      </select>
+                    </div>
+                    <div class="form-group col-6">
+                      {!! Form::label('','Parent') !!}
+                      <select name="parent_id" class="form-control">
+                        <option value="">Select Parent</option>
+                        @foreach($departments as $department)
+                        <option value="{{ $department->id }}">{{ $department->name }}</option>
+                        @endforeach
+                      </select>
+                    </div>
                   </div>
                   @endif
                   
-                  </div>
+                  
                 </div>
                 <!-- /.card-body -->
 
