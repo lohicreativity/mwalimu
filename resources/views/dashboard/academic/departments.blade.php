@@ -382,7 +382,7 @@
                                           </div>
                                           </div>
                                           <div class="row">
-                                          <div class="form-group col-4">
+                                          <div class="form-group col-6">
                                             {!! Form::label('','Type') !!}
                                             <select name="unit_category_id" class="form-control" id="unit-categories" data-target="#parents" data-token="{{ session()->token() }}" data-source-url="{{ url('api/v1/get-parents') }}" required>
                                               <option value="">Select Type</option>
@@ -392,7 +392,7 @@
                                               @endforeach
                                             </select>
                                           </div>
-                                          <div class="form-group col-4">
+                                          <div class="form-group col-6">
                                             {!! Form::label('','Parent') !!}
                                             <select name="parent_id" class="form-control" id="parents" required>
                                               <option value="">Select one</option>
