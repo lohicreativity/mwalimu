@@ -134,8 +134,7 @@
                             <div class="modal-body">
 
                                 <div>
-                                    <button class="btn btn-primary">Select All</button>
-                                    <button class="btn btn-danger">Unselect All</button>
+                                    <button class="btn btn-primary check">Select All</button>
                                 </div><br>
 
                                 {!! Form::open(['url'=>'application/application-window-campus-programs/update','class'=>'ss-form-processing']) !!}

@@ -99,6 +99,21 @@ $('.ss-admission-officer-table').DataTable();
 </script>
 
 <script>
+$(document).ready(function(){
+  $('.check:button').toggle(function(){
+      alert('Checking all');
+      // $('input:checkbox').attr('checked','checked');
+      // $(this).val('uncheck all')
+  },function(){
+      $('input:checkbox').removeAttr('checked');
+      $(this).val('check all');        
+  });
+})
+
+
+</script>
+
+<script>
   $('#unit-categories').on('change',function(e){
     $.ajax({
     method:'POST',
