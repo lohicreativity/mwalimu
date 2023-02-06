@@ -82,12 +82,27 @@ class DepartmentController extends Controller
      */
     public function update(Request $request)
     {
-    	$validation = Validator::make($request->all(),[
+
+      if (Auth::user()->hasRole('administrator')) {
+
+         $validation = Validator::make($request->all(),[
             'name'=>'required',
             'abbreviation'=>'required',
             'description'=>'required',
             'campuses'=>'required',
-        ]);
+         ]);
+
+      } else if (Auth::user()->hasRole('admission-officer')) {
+
+         $validation = Validator::make($request->all(),[
+            'name'=>'required',
+            'abbreviation'=>'required',
+            'description'=>'required'
+         ]);
+
+      }
+
+    	   
 
         if($validation->fails()){
            if($request->ajax()){
