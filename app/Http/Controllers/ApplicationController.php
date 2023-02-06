@@ -2883,7 +2883,7 @@ class ApplicationController extends Controller
          $data = [
             'staff' => $staff,
             'campus_id' => $staff->campus_id,
-            'attachments'=>AdmissionAttachment::with('campus')->get(),
+            'attachments'=>AdmissionAttachment::with('campus')->paginate(20),
             'application_windows'=>ApplicationWindow::where('campus_id',$staff->campus_id)->get(),
             'application_window'=>ApplicationWindow::find($request->get('application_window_id')),
             'awards'=>Award::all(),
