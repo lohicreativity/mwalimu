@@ -1730,7 +1730,7 @@ class ApplicantController extends Controller
      * Update NACTE registration number
      */
     public function updateNacteRegNumber(Request $request)
-    {
+      {
         $validation = Validator::make($request->all(),[
             'nacte_reg_no'=>'required',
         ]);
@@ -1743,11 +1743,14 @@ class ApplicantController extends Controller
            }
          }
 
-         if($details = NacteResultDetail::with('results')->where('registration_number', $request->get('nacte_reg_no'))->where('applicant_id',$request->get('applicant_id'))->first()){
-            return response()->json(['details'=>$details,'exists'=>1]);
-         } else {
-            
-         }
+         return response()->json(['status'=>'success']);
+
+
+         // if($details = NacteResultDetail::with('results')->where('registration_number', $request->get('nacte_reg_no'))->where('applicant_id',$request->get('applicant_id'))->first()){
+         //    return response()->json(['details'=>$details,'exists'=>1]);
+         // } else {
+
+         // }
         
       //   try{
       //   $response = Http::get('https://www.nacte.go.tz/nacteapi/index.php/api/particulars/'.str_replace('/', '.', $request->get('nacte_reg_no')).'-4/'.config('constants.NACTE_API_KEY'));
