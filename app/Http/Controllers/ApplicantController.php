@@ -1688,8 +1688,6 @@ class ApplicantController extends Controller
            })->first() : null;
 
         }
-
-        return $applicant->nextOfKin;
         
         $data = [
             'applicant'=> $applicant,
