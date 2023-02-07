@@ -173,6 +173,12 @@
                     <td>Form IV Index Number</td>
                     <td>{{ $applicant->index_number }}</td>
                   </tr>
+                  @if($applicant->nacte_reg_no)
+                  <tr>
+                    <td>Nacte Reg No</td>
+                    <td>{{ $applicant->nacte_reg_no }}</td>
+                  </tr>
+                  @endif
                   @if($avn)
                   <tr>
                     <td>AVN</td>
