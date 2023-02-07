@@ -92,7 +92,7 @@
                      </tr>
                      <tr>
                        <td>Gender: </td>
-                       <td>123</td>
+                       <td>{{ $applicant->gender }}</td>
                      </tr>
                      <tr>
                        <td>Phone: </td>
