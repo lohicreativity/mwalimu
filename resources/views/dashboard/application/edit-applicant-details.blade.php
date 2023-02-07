@@ -115,7 +115,7 @@
                 <table class="table table-bordered table-condensed">
                   <tr>
                     <td>First name: </td>
-                    <td>{{ $applicant->next_of_kin->first_name }}</td>
+                    <td>{{ $applicant->first_name }}</td>
                   </tr>
                 </table>
               </div>

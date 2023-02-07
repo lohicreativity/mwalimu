@@ -1688,6 +1688,8 @@ class ApplicantController extends Controller
            })->first() : null;
 
         }
+
+        return $applicant;
         
         $data = [
             'applicant'=> $applicant,
