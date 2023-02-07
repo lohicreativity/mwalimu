@@ -141,6 +141,11 @@
                          'readonly'=>App\Domain\Application\Models\Applicant::hasRequestedControlNumber($applicant)? true : null,
                          'required'=>true
                       ];
+                      $gender = [
+                         'class'=>'form-control',
+                         'readonly'=>App\Domain\Application\Models\Applicant::hasRequestedControlNumber($applicant)? true : null,
+                         'required'=>true
+                      ];
                   }
 
                   $street = [
