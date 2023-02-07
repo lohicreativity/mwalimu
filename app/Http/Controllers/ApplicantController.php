@@ -1688,10 +1688,6 @@ class ApplicantController extends Controller
            })->first() : null;
 
         }
-
-        $payment = Invoice::where('payable_id',158)->where('payable_type','applicant')->get();
-
-        return $payment;
         
         $data = [
             'applicant'=> $applicant,
