@@ -1736,8 +1736,6 @@ class ApplicantController extends Controller
 
         }
 
-        return $applicant;
-
          $data = [
          'applicant'=> $applicant,
          'awards'=>Award::all(),
