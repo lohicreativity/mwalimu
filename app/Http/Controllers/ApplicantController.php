@@ -1675,38 +1675,41 @@ class ApplicantController extends Controller
      public function applicantDetails(Request $request)
      {
 
-      $staff = User::find(Auth::user()->id)->staff;
+      // $staff = User::find(Auth::user()->id)->staff;
 
-        if (Auth::user()->hasRole('admission-officer')) {
+      //   if (Auth::user()->hasRole('admission-officer')) {
 
-            $applicant = $request->get('index_number')? Applicant::with('nextOfKin')->where('index_number',$request->get('index_number'))->where(function($query) use($staff){
-               $query->where('campus_id',$staff->campus_id)->orWhere('campus_id',0);
-           })->first() : null;
+      //       $applicant = $request->get('index_number')? Applicant::with('nextOfKin')->where('index_number',$request->get('index_number'))->where(function($query) use($staff){
+      //          $query->where('campus_id',$staff->campus_id)->orWhere('campus_id',0);
+      //      })->first() : null;
 
-        } else {
+      //   } else {
 
-            $applicant = $request->get('index_number')? Applicant::with(['nextOfKin', 'payment'])->where('index_number',$request->get('index_number'))->where(function($query) use($staff){
-               $query->orWhere('campus_id',0);
-           })->first() : null;
+      //       $applicant = $request->get('index_number')? Applicant::with(['nextOfKin', 'payment'])->where('index_number',$request->get('index_number'))->where(function($query) use($staff){
+      //          $query->orWhere('campus_id',0);
+      //      })->first() : null;
 
-        }
+      //   }
 
-        $a_level = NectaResultDetail::where('applicant_id', $applicant->id)->where('exam_id', 2)->where('verified', 1)->first();
+      //   $a_level = NectaResultDetail::where('applicant_id', $applicant->id)->where('exam_id', 2)->where('verified', 1)->first();
 
-        $avn = NacteResultDetail::where('applicant_id', $applicant->id)->where('verified', 1)->first();
+      //   $avn = NacteResultDetail::where('applicant_id', $applicant->id)->where('verified', 1)->first();
         
-        $out = OutResultDetail::where('applicant_id', $applicant->id)->where('verified', 1)->first();
+      //   $out = OutResultDetail::where('applicant_id', $applicant->id)->where('verified', 1)->first();
 
         
-        $data = [
-            'applicant'=> $applicant,
-            'a_level' => $a_level,
-            'avn' => $avn,
-            'out' => $out,
-            'awards'=>Award::all(),
-        ];
+      //   $data = [
+      //       'applicant'=> $applicant,
+      //       'a_level' => $a_level,
+      //       'avn' => $avn,
+      //       'out' => $out,
+      //       'awards'=>Award::all(),
+      //   ];
 
-        return view('dashboard.application.edit-applicant-details',$data)->withTitle('Edit Applicant Details');
+        return view('dashboard.application.applicant-details')->withTitle('Edit Applicant Details');
+
+
+      //   return view('dashboard.application.edit-applicant-details',$data)->withTitle('Edit Applicant Details');
 
      }
 
