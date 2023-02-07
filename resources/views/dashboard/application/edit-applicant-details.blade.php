@@ -169,7 +169,10 @@
               <!-- /.card-header -->
               <div class="card-body">
                 <table class="table table-bordered table-condensed">
-                  
+                  <tr>
+                    <td>Form IV Index Number</td>
+                    <td>{{ $applicant->index_number }}</td>
+                  </tr>
                 </table>
               </div>
             </div>
