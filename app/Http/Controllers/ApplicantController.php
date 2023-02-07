@@ -1674,15 +1674,26 @@ class ApplicantController extends Controller
     public function editApplicantDetails(Request $request)
     {
         $staff = User::find(Auth::user()->id)->staff;
+
+        if (Auth::user()->hasRole('admission-officer')) {
+
+            $applicant = $request->get('index_number')? Applicant::where('index_number',$request->get('index_number'))->where(function($query) use($staff){
+               $query->where('campus_id',$staff->campus_id)->orWhere('campus_id',0);
+           })->first() : null;
+
+        } else {
+
+            $applicant = $request->get('index_number')? Applicant::where('index_number',$request->get('index_number'))->where(function($query) use($staff){
+               $query->orWhere('campus_id',0);
+           })->first() : null;
+
+        }
         
         $data = [
-            'applicant'=>$request->get('index_number')? Applicant::where('index_number',$request->get('index_number'))->where(function($query) use($staff){
-			 $query->where('campus_id',$staff->campus_id)->orWhere('campus_id',0);
-		})->first() : null,
+            'applicant'=> $applicant,
             'awards'=>Award::all(),
         ];
 
-        return $data['applicant'];
         return view('dashboard.application.edit-applicant-details',$data)->withTitle('Edit Applicant Details');
     }
 
