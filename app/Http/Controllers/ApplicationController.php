@@ -3002,7 +3002,7 @@ class ApplicationController extends Controller
              $query->where('status','SELECTED');
         })->with(['nextOfKin','intake','selections'=>function($query){
              $query->where('status','SELECTED');
-        },'selections.campusProgram.program','applicationWindow','country','selections.campusProgram.campus'])->where('program_level_id',$request->get('program_level_id'))->where('status','SELECTED')->where('campus_id', $campus_id)->where('application_window_id',$request->get('application_window_id'))->get();  
+        },'selections.campusProgram.program','applicationWindow','country','selections.campusProgram.campus'])->where('program_level_id',$request->get('program_level_id'))->where('status','SELECTED')->where('application_window_id',$request->get('application_window_id'))->get();  
         
 
         return $applicants;
