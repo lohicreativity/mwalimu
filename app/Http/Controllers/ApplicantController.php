@@ -1298,11 +1298,6 @@ class ApplicantController extends Controller
             return redirect()->back()->withInput()->with('error','Birth date cannot be the date after today');
         }
 
-        $phone = substr($request->get('phone'), 1);
-        $phone = '255'.$phone;
-        return $phone;
-
-
         (new ApplicantAction)->update($request);
          
         $applicant = Applicant::find($request->get('applicant_id'));

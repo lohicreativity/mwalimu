@@ -24,12 +24,16 @@ class ApplicantAction implements ApplicantInterface{
 
 	public function update(Request $request){
 
+        $phone = substr($request->get('phone'), 1);
+        $phone = '255'.$phone;
+
 		$applicant = Applicant::find($request->get('applicant_id'));
         $applicant->first_name = $request->get('first_name');
         $applicant->middle_name = $request->get('middle_name');
         $applicant->surname = $request->get('surname');
         $applicant->email = $request->get('email');
-        $applicant->phone = str_replace('+','',$request->get('phone'));
+        $applicant->phone = $phone;
+        // $applicant->phone = str_replace('+','',$request->get('phone'));
         $applicant->birth_date = $request->get('year').'-'.$request->get('month').'-'.$request->get('date');
         $applicant->nationality = $request->get('nationality');
         $applicant->gender = $request->get('gender');
