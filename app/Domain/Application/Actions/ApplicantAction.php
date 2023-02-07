@@ -23,6 +23,11 @@ class ApplicantAction implements ApplicantInterface{
 	}
 
 	public function update(Request $request){
+
+
+        $phone = substr($request->get('phone'), 1)
+        return $phone;
+
 		$applicant = Applicant::find($request->get('applicant_id'));
         $applicant->first_name = $request->get('first_name');
         $applicant->middle_name = $request->get('middle_name');
