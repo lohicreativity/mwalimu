@@ -1690,14 +1690,12 @@ class ApplicantController extends Controller
            })->first() : null;
 
         }
-        
 
         $a_level = $request->get('index_number') ? NectaResultDetail::where('applicant_id', $applicant->id)->where('exam_id', 2)->where('verified', 1)->first() : null;
 
         $avn = $request->get('index_number') ? NacteResultDetail::where('applicant_id', $applicant->id)->where('verified', 1)->first() : null;
         
         $out = $request->get('index_number') ? OutResultDetail::where('applicant_id', $applicant->id)->where('verified', 1)->first() : null;
-
         
         $data = [
             'applicant'=> $applicant,
@@ -1707,7 +1705,7 @@ class ApplicantController extends Controller
             'awards'=>Award::all(),
         ];
 
-        return view('dashboard.application.applicant-details')->withTitle('Edit Applicant Details');
+        return view('dashboard.application.applicant-details', $data)->withTitle('Edit Applicant Details');
 
 
       //   return view('dashboard.application.edit-applicant-details',$data)->withTitle('Edit Applicant Details');
