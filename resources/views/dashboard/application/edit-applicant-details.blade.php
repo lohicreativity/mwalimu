@@ -70,6 +70,66 @@
             <!-- /.card -->
 
 
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Edit Applicant</h3>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+
+              @if($applicant)
+              {!! Form::open(['url'=>'application/update-applicant-details','class'=>'ss-form-processing']) !!}
+
+                   <div class="row">
+                    <div class="form-group col-6">
+                       {!! Form::label('','Email') !!}
+                       {!! Form::email('email',$applicant->email,$email) !!}
+                    </div>
+                    <div class="form-group col-6">
+                       {!! Form::label('','Phone') !!}
+                       {!! Form::text('phone',$applicant->phone,$phone) !!}
+                    </div>
+                  </div>
+                  <div class="row">
+                     <div class="form-group col-6">
+                      {!! Form::label('','Programme level') !!}
+                      <select name="program_level_id" class="form-control" required>
+                         <option value="">Select Program Level</option>
+                         @foreach($awards as $award)
+                         @if(str_contains($award->name,'Basic') || str_contains($award->name,'Ordinary') || str_contains($award->name,'Bachelor') || str_contains($award->name,'Masters'))
+                         <option value="{{ $award->id }}" @if($applicant->program_level_id == $award->id) selected="selected" @endif>{{ $award->name }}</option>
+                         @endif
+                         @endforeach
+                      </select>
+                    </div>
+                    <div class="form-group col-6">
+                      {!! Form::label('','Entry mode') !!}
+                      <select name="entry_mode" class="form-control" required>
+                         <option value="">Select Highest Qualification</option>
+                         <option value="DIRECT" @if($applicant->entry_mode == 'DIRECT') selected="selected" @endif>Form IV or VI (Direct)</option>
+                         <option value="EQUIVALENT" @if($applicant->entry_mode == 'EQUIVALENT') selected="selected" @endif>Certificate or Diploma (Equivalent)</option>
+                      </select>
+                    </div>
+                  </div>
+                  {!! Form::input('hidden','applicant_id',$applicant->id) !!}
+                  <div class="ss-form-actions">
+                   @if($applicant->campus_id != 0)
+                   <button type="submit" class="btn btn-primary">{{ __('Save Changes') }}</button>
+                   @endif
+                   <a href="{{ url('application/reset-applicant-password-default?user_id='.$applicant->user_id.'&applicant_id='.$applicant->id) }}" class="btn btn-primary">Reset Password</a>
+
+                   <a href="#" id="ss-reset-control-number" data-token="{{ session()->token() }}" data-applicant-id="{{ $applicant->id }}" class="btn btn-primary">Reset Control Number</a>
+                  </div>
+
+                   {!! Form::close() !!}
+              @endif
+
+              </div>
+            </div>
+
+            
+
+
 
           </div>
           <!-- /.col -->
