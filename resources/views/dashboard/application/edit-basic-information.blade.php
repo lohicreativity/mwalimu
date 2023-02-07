@@ -111,7 +111,7 @@
                          'required'=>true
                       ];
                       $phone = [
-                         'placeholder'=>'255788010102',
+                         'placeholder'=>'0789000000',
                          'class'=>'form-control',
                          'required'=>true
                       ];
@@ -137,7 +137,7 @@
                          'required'=>true
                       ];
                       $phone = [
-                         'placeholder'=>'255788010102',
+                         'placeholder'=>'0789000000',
                          'class'=>'form-control',
                          'readonly'=>App\Domain\Application\Models\Applicant::hasRequestedControlNumber($applicant)? true : null,
                          'required'=>true
