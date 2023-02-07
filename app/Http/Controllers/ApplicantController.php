@@ -1689,7 +1689,7 @@ class ApplicantController extends Controller
 
         }
 
-        return $applicant;
+        return $applicant->next_of_kin;
         
         $data = [
             'applicant'=> $applicant,
