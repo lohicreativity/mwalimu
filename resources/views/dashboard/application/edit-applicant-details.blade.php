@@ -175,6 +175,7 @@
                   </tr>
                   @if($avn)
                   <tr>
+                    <td>AVN</td>
                     <td>{{ $avn->avn }}</td>
                   </tr>
                   @endif
