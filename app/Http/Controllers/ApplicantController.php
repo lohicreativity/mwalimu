@@ -1689,7 +1689,9 @@ class ApplicantController extends Controller
 
         }
 
-        return $applicant;
+        $payment = Invoice::where('payable_id',$applicant->id)->where('payable_type','applicant')->get();
+
+        return $payment;
         
         $data = [
             'applicant'=> $applicant,
