@@ -91,7 +91,7 @@
                        <td>{{ $applicant->surname }}</td>
                      </tr>
                      <tr>
-                       <td>Gender123: </td>
+                       <td>Gender: </td>
                        <td>{{ $applicant->gender }}</td>
                      </tr>
                      <tr>
