@@ -88,8 +88,7 @@
                       $phone = [
                          'placeholder'=>'255788010102',
                          'class'=>'form-control',
-                         'required'=>true,
-                         'readonly'=>App\Domain\Application\Models\Applicant::hasRequestedControlNumber($applicant)? true : null
+                         'required'=>true
                       ];
                    @endphp
 
