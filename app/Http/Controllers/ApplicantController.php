@@ -1669,11 +1669,13 @@ class ApplicantController extends Controller
     }
 
     /**
-     * Edit applicant details
+     * Applicant details
      */
-    public function editApplicantDetails(Request $request)
-    {
-        $staff = User::find(Auth::user()->id)->staff;
+
+     public function applicantDetails(Request $request)
+     {
+
+      $staff = User::find(Auth::user()->id)->staff;
 
         if (Auth::user()->hasRole('admission-officer')) {
 
@@ -1705,7 +1707,18 @@ class ApplicantController extends Controller
         ];
 
         return view('dashboard.application.edit-applicant-details',$data)->withTitle('Edit Applicant Details');
-    }
+
+     }
+
+
+
+    /**
+     * Edit applicant details
+     */
+    public function editApplicantDetails(Request $request)
+      {
+        
+      }
 
     /**
      * Update applicant details

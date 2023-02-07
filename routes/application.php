@@ -184,6 +184,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
     Route::post('upload-camera-img',[ApplicantController::class,'uploadCameraImage']);
     Route::post('upload-signature',[ApplicantController::class, 'uploadSignature']);
 
+    Route::get('applicant-details', [ApplicantController::class, 'applicantDetails']);
     Route::get('edit-applicant-details',[ApplicantController::class,'editApplicantDetails']);
     Route::post('update-applicant-details',[ApplicantController::class,'updateApplicantDetails']);
 

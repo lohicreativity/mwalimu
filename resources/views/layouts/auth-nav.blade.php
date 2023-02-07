@@ -319,6 +319,14 @@
               @endcan
               @can('view-edit-applicant-details')
               <li class="nav-item">
+                <a href="{{ url('application/applicant-details') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Applicant Details</p>
+                </a>
+              </li>
+              @endcan
+              @can('view-edit-applicant-details')
+              <li class="nav-item">
                 <a href="{{ url('application/edit-applicant-details') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Edit Applicant Details</p>
