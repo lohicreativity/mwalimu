@@ -1683,7 +1683,7 @@ class ApplicantController extends Controller
 
         } else {
 
-            $applicant = $request->get('index_number')? Applicant::with('nextOfKin')->where('index_number',$request->get('index_number'))->where(function($query) use($staff){
+            $applicant = $request->get('index_number')? Applicant::with(['nextOfKin', 'payment'])->where('index_number',$request->get('index_number'))->where(function($query) use($staff){
                $query->orWhere('campus_id',0);
            })->first() : null;
 

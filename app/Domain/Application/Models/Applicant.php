@@ -128,6 +128,14 @@ class Applicant extends Model
     }
 
     /**
+     * Establish one to many relationship with payment
+     */
+    public function payment()
+    {
+        return $this->hasMany(Invoice::class,'payable_id');
+    }
+
+    /**
      * Establish one to many relationship with health insurances
      */
     public function insurances()
