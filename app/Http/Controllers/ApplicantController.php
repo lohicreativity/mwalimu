@@ -1708,7 +1708,6 @@ class ApplicantController extends Controller
         return view('dashboard.application.applicant-details', $data)->withTitle('Edit Applicant Details');
 
 
-      //   return view('dashboard.application.edit-applicant-details',$data)->withTitle('Edit Applicant Details');
 
      }
 
@@ -1719,7 +1718,10 @@ class ApplicantController extends Controller
      */
     public function editApplicantDetails(Request $request)
       {
-        
+
+         return view('dashboard.application.edit-applicant-details')->withTitle('Edit Applicant Details');
+
+         // return view('dashboard.application.edit-applicant-details',$data)->withTitle('Edit Applicant Details');
       }
 
     /**
