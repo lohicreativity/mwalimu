@@ -1675,6 +1675,8 @@ class ApplicantController extends Controller
      public function applicantDetails(Request $request)
      {
 
+      return $request->get('index_number');
+
       // $staff = User::find(Auth::user()->id)->staff;
 
       //   if (Auth::user()->hasRole('admission-officer')) {
