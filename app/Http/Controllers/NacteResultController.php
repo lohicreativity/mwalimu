@@ -32,6 +32,8 @@ class NacteResultController extends Controller
         $applicant->first_name = $detail->firstname;
         $applicant->middle_name =  $detail->middlename;
         $applicant->surname = $detail->surname;
+        return $detail->gender;
+        $applicant->gender = $detail->gender;
         if($applicant->entry_mode == 'EQUIVALENT'){
            $applicant->avn_no_results = $results_count == 0? 1 : 0;
         }
