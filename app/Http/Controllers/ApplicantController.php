@@ -1674,15 +1674,15 @@ class ApplicantController extends Controller
     public function editApplicantDetails(Request $request)
     {
         $staff = User::find(Auth::user()->id)->staff;
-
-         return $staff;
-
+        
         $data = [
             'applicant'=>$request->get('index_number')? Applicant::where('index_number',$request->get('index_number'))->where(function($query) use($staff){
 			 $query->where('campus_id',$staff->campus_id)->orWhere('campus_id',0);
 		})->first() : null,
             'awards'=>Award::all(),
         ];
+
+        return $data['applicant'];
         return view('dashboard.application.edit-applicant-details',$data)->withTitle('Edit Applicant Details');
     }
 
