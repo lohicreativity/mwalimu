@@ -231,8 +231,8 @@
                        {!! Form::label('','Gender') !!}
                        <select name="gender" class="form-control" @if($applicant->status == 'ADMITTED') readonly @else @if(App\Domain\Application\Models\Applicant::hasConfirmedResults($applicant)) readonly @endif  @endif  required>
                          <option value="">Select Gender</option>
-                         <option value="M" @if($applicant->gender == 'M') selected="selected" @else @if($applicant->status == 'ADMITTED') disabled="disabled" @endif @endif>Male</option>
-                         <option value="F" @if($applicant->gender == 'F') selected="selected" @else @if($applicant->status == 'ADMITTED') disabled="disabled" @endif @endif>Female</option>
+                         <option value="M" @if($applicant->gender == 'M') selected="selected" @endif>Male</option>
+                         <option value="F" @if($applicant->gender == 'F') selected="selected" @endif>Female</option>
                        </select>
                     </div>
                     <div class="form-group col-6">
