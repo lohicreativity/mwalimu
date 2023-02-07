@@ -188,18 +188,31 @@ class ApplicationController extends Controller
               
 */
         ApplicantProgramSelection::whereHas('applicant',function($query) use($staff, $request){
-             $query->where('campus_id',$staff->campus_id)
+            $query->where('campus_id',$staff->campus_id)
                    ->where('application_window_id',$request->get('application_window_id'))
                    ->where('program_level_id',$request->get('program_level_id'))
                    ->whereNotIn('status', ['ADMITTED', 'SUBMITTED', 'NULL']);
 
               })->update(['status'=>'ELIGIBLE']);
 
-		 Applicant::where('application_window_id',$request->get('application_window_id'))
-         ->where('campus_id',$staff->campus_id)
-         ->where('program_level_id',$request->get('program_level_id'))
-        ->whereNotIn('status', ['ADMITTED', 'SUBMITTED', 'NULL'])
-        ->update(['status'=>null]);
+        if (Auth::user()->hasRole('admission-officer')) {
+
+            Applicant::where('application_window_id',$request->get('application_window_id'))
+            ->where('campus_id',$staff->campus_id)
+            ->where('program_level_id',$request->get('program_level_id'))
+            ->whereNotIn('status', ['ADMITTED', 'SUBMITTED', 'NULL'])
+            ->update(['status'=>null]);
+
+        } else {
+
+            Applicant::where('application_window_id',$request->get('application_window_id'))
+            ->where('program_level_id',$request->get('program_level_id'))
+            ->whereNotIn('status', ['ADMITTED', 'SUBMITTED', 'NULL'])
+            ->update(['status'=>null]);
+
+        }
+
+		
 
 
 		 return redirect()->back()->with('message','Selections reset successfully');
@@ -1898,9 +1911,21 @@ class ApplicationController extends Controller
 
         $award = Award::find($request->get('award_id'));
 
-        $applicants = Applicant::whereHas('selections',function($query) use($request){
-            $query->where('application_window_id',$request->get('application_window_id'));
-        })->with(['selections','nectaResultDetails.results','nacteResultDetails.results'])->where('program_level_id',$request->get('award_id'))->whereNull('is_tamisemi')->get();
+        if (Auth::user()->hasRole('admission-officer')) {
+            
+            $applicants = Applicant::whereHas('selections',function($query) use($request){
+                $query->where('application_window_id',$request->get('application_window_id'))->where('campus_id', $staff->campus_id);
+            })->with(['selections','nectaResultDetails.results','nacteResultDetails.results'])->where('program_level_id',$request->get('award_id'))->whereNull('is_tamisemi')->get();
+
+        } else {
+
+            $applicants = Applicant::whereHas('selections',function($query) use($request){
+                $query->where('application_window_id',$request->get('application_window_id'));
+            })->with(['selections','nectaResultDetails.results','nacteResultDetails.results'])->where('program_level_id',$request->get('award_id'))->whereNull('is_tamisemi')->get();
+
+        }
+
+        
 
         // Phase II
         $choices = array(1,2,3,4);
@@ -2011,10 +2036,23 @@ class ApplicationController extends Controller
 
         $award = Award::find($request->get('award_id'));
 
-        $applicants = Applicant::whereHas('selections',function($query) use($request){
-            $query->where('application_window_id',$request->get('application_window_id'));
-        })->with(['selections','nectaResultDetails.results','nacteResultDetails.results'])->where('program_level_id',$request->get('award_id'))->whereNull('is_tamisemi')->get();
+        if (Auth::user()->hasRole('admission-officer')) {
+            
+            $applicants = Applicant::whereHas('selections',function($query) use($request){
+                $query->where('application_window_id',$request->get('application_window_id'))->where('campus_id', $staff->campus_id);
+            })->with(['selections','nectaResultDetails.results','nacteResultDetails.results'])->where('program_level_id',$request->get('award_id'))->whereNull('is_tamisemi')->get();
 
+            
+        } else {
+
+            $applicants = Applicant::whereHas('selections',function($query) use($request){
+                $query->where('application_window_id',$request->get('application_window_id'));
+            })->with(['selections','nectaResultDetails.results','nacteResultDetails.results'])->where('program_level_id',$request->get('award_id'))->whereNull('is_tamisemi')->get();
+    
+
+        }
+
+        
         // Phase II
         $choices = array(1,2,3,4);
         $applicants = Applicant::with(['selections','nectaResultDetails.results','nacteResultDetails.results'])->where('program_level_id',$request->get('award_id'))->whereHas('selections',function($query) use($request){
