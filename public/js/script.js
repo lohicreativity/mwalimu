@@ -846,7 +846,7 @@ $('.ss-form-processing-necta').submit(function(e){
          $(e.target).find('button[type=submit]').removeClass('disabled');
 
          var element = '<table class="table table-bordered">';
-         element += '<tr><td>Center Name:</td><td>'+'IFM'+'</td></tr>';
+         element += '<tr><td>Center Name:</td><td>'+data.details.center_name+'</td></tr>';
          element += '<tr><td>Center Number:</td><td>'+data.details.center_number+'</td></tr>';
          element += '<tr><td>First Name:</td><td>'+data.details.first_name+'</td></tr>';
          element += '<tr><td>Middle Name:</td><td>'+data.details.middle_name+'</td></tr>';
