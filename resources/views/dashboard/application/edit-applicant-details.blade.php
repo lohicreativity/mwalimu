@@ -149,8 +149,14 @@
               <div class="card-body">
                 <table class="table table-bordered table-condensed">
                   <tr>
-                    <td>First name: </td>
-                    <td>{{ $applicant->first_name }}</td>
+                    <td>Status: </td>
+                    <td>
+                      @if($applicant->payment_complete_status == 1)
+                        <button class="btn btn-success">PAID</button>
+                      @else 
+                        <button class="btn btn-danger">NOT PAID</button>
+                      @endif
+                    </td>
                   </tr>
                 </table>
               </div>
