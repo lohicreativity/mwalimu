@@ -70,6 +70,7 @@
             <!-- /.card -->
 
 
+            @if($applicant)
             <div class="card">
               <div class="card-header">
                 <h3 class="card-title">Edit Applicant</h3>
@@ -77,7 +78,21 @@
               <!-- /.card-header -->
               <div class="card-body">
 
-              @if($applicant)
+                    @php
+                      $email = [
+                         'placeholder'=>'Email',
+                         'class'=>'form-control',
+                         'required'=>true
+                      ];
+
+                      $phone = [
+                         'placeholder'=>'255788010102',
+                         'class'=>'form-control',
+                         'required'=>true,
+                         'readonly'=>App\Domain\Application\Models\Applicant::hasRequestedControlNumber($applicant)? true : null
+                      ];
+                   @endphp
+
               {!! Form::open(['url'=>'application/update-applicant-details','class'=>'ss-form-processing']) !!}
 
                    <div class="row">
