@@ -257,12 +257,30 @@ class ApplicationController extends Controller
     public function admittedApplicants(Request $request)
     {
          $staff = User::find(Auth::user()->id)->staff;
+
+         $campus_id = $staff->campus_id;
+
+         if (Auth::user()->hasRole('administrator')) {
+
+            $applicants = Applicant::doesntHave('student')->whereHas('selections',function($query) use($request){
+                $query->where('status','SELECTED');
+           })->with(['intake','selections.campusProgram.program','nectaResultDetails','nacteResultDetails'])->where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$request->get('program_level_id'))->where(function($query){
+               $query->where('confirmation_status','!=','CANCELLED')->orWhere('confirmation_status','!=','TRANSFERED')->orWhereNull('confirmation_status');
+           })->where('status','ADMITTED')->get();
+
+         } else if (Auth::user()->hasRole('admission-officer')) {
+
+            $applicants = Applicant::doesntHave('student')->whereHas('selections',function($query) use($request){
+                $query->where('status','SELECTED');
+           })->with(['intake','selections.campusProgram.program','nectaResultDetails','nacteResultDetails'])->where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$request->get('program_level_id'))->where(function($query){
+               $query->where('confirmation_status','!=','CANCELLED')->orWhere('confirmation_status','!=','TRANSFERED')->orWhereNull('confirmation_status');
+           })->where('campus_id', $campus_id)->where('status','ADMITTED')->get();
+
+         }
+
+         return $applicants;
          
-         $applicants = Applicant::doesntHave('student')->whereHas('selections',function($query) use($request){
-                 $query->where('status','SELECTED');
-            })->with(['intake','selections.campusProgram.program','nectaResultDetails','nacteResultDetails'])->where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$request->get('program_level_id'))->where(function($query){
-				$query->where('confirmation_status','!=','CANCELLED')->orWhere('confirmation_status','!=','TRANSFERED')->orWhereNull('confirmation_status');
-			})->where('status','ADMITTED')->get();
+         
 
          $data = [
             'staff'=>$staff,
