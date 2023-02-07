@@ -91,6 +91,7 @@
 <!-- Custom script -->
 <script src="{{ asset('js/script.js?version='.config('constants.VERSION')) }}"></script>
 
+
 <script>
 $('.assign-table').DataTable({
   "paging": false
