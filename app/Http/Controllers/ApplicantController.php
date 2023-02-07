@@ -1299,6 +1299,7 @@ class ApplicantController extends Controller
         }
 
         $phone = substr($request->get('phone'), 1);
+        $phone = '255'.$phone;
         return $phone;
 
 
