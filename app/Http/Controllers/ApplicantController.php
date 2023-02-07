@@ -1677,17 +1677,19 @@ class ApplicantController extends Controller
 
         if (Auth::user()->hasRole('admission-officer')) {
 
-            $applicant = $request->get('index_number')? Applicant::where('index_number',$request->get('index_number'))->where(function($query) use($staff){
+            $applicant = $request->get('index_number')? Applicant::with('nextOfKin')->where('index_number',$request->get('index_number'))->where(function($query) use($staff){
                $query->where('campus_id',$staff->campus_id)->orWhere('campus_id',0);
            })->first() : null;
 
         } else {
 
-            $applicant = $request->get('index_number')? Applicant::where('index_number',$request->get('index_number'))->where(function($query) use($staff){
+            $applicant = $request->get('index_number')? Applicant::with('nextOfKin')->where('index_number',$request->get('index_number'))->where(function($query) use($staff){
                $query->orWhere('campus_id',0);
            })->first() : null;
 
         }
+
+        return $applicant;
         
         $data = [
             'applicant'=> $applicant,

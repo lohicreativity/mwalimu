@@ -82,6 +82,26 @@
                     <td>First name: </td>
                     <td>{{ $applicant->first_name }}</td>
                   </tr>
+                  <tr>
+                    <td>Middle name: </td>
+                    <td>{{ $applicant->middle_name }}</td>
+                  </tr>
+                  <tr>
+                    <td>Surname: </td>
+                    <td>{{ $applicant->surname }}</td>
+                  </tr>
+                  <tr>
+                    <td>Gender: </td>
+                    <td>{{ $applicant->gender }}</td>
+                  </tr>
+                  <tr>
+                    <td>Phone: </td>
+                    <td>{{ $applicant->phone }}</td>
+                  </tr>
+                  <tr>
+                    <td>Address: </td>
+                    <td>{{ $applicant->address }}</td>
+                  </tr>
                 </table>
               </div>
             </div>
@@ -123,10 +143,7 @@
               <!-- /.card-header -->
               <div class="card-body">
                 <table class="table table-bordered table-condensed">
-                  <tr>
-                    <td>First name: </td>
-                    <td>{{ $applicant->first_name }}</td>
-                  </tr>
+                  
                 </table>
               </div>
             </div>
