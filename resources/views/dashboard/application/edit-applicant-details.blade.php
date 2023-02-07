@@ -173,6 +173,11 @@
                     <td>Form IV Index Number</td>
                     <td>{{ $applicant->index_number }}</td>
                   </tr>
+                  @if($avn)
+                  <tr>
+                    <td>{{ $avn->avn }}</td>
+                  </tr>
+                  @endif
                 </table>
               </div>
             </div>
