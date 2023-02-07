@@ -92,7 +92,7 @@
 <script src="{{ asset('js/script.js?version='.config('constants.VERSION')) }}"></script>
 
 <script>
-$('.ss-form-processing-necta').submit(function(e){
+$('.ss-form-processing-nacte-reg-number').submit(function(e){
     
   e.preventDefault();
   alert("Submit form");
