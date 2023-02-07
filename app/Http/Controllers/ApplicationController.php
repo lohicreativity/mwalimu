@@ -2990,7 +2990,11 @@ class ApplicationController extends Controller
 
         $campus_id = $staff->campus_id;
 
-        $applicants = Applicant::where('campus_id', $campus_id)->get();
+        $applicants = Applicant::where('campus_id', $campus_id)
+        ->whereHas('selections',function($query) use($request){
+            $query->where('status','SELECTED');
+        })
+        ->get();
         
 
         // $applicants = Applicant::whereHas('selections',function($query) use($request){
