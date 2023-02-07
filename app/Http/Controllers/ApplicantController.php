@@ -1689,6 +1689,8 @@ class ApplicantController extends Controller
 
         }
 
+        $a_level = NectaResultDetail::where('applicant_id', $applicant->id)->where('exam_id', 2)->where('verified', 1)->first();
+
         $avn = NacteResultDetail::where('applicant_id', $applicant->id)->where('verified', 1)->first();
         
         $out = OutResultDetail::where('applicant_id', $applicant->id)->where('verified', 1)->first();
@@ -1696,6 +1698,7 @@ class ApplicantController extends Controller
         
         $data = [
             'applicant'=> $applicant,
+            'a_level' => $a_level,
             'avn' => $avn,
             'out' => $out,
             'awards'=>Award::all(),
