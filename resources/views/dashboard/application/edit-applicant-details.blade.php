@@ -73,7 +73,7 @@
             @if($applicant)
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">Edit Applicant</h3>
+                <h3 class="card-title">Edit Applicant - {{ $applicant->first_name }} {{ $applicant->middle_name }} {{ $applicant->surname }}</h3>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
