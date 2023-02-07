@@ -23,7 +23,7 @@ class NECTAServiceController extends Controller
         $exam_year = explode('-',$index_number)[2];
 
         if($details = NectaResultDetail::with('results')->where('index_number',str_replace('-','/',$index_number))->where('exam_id',$exam_id)->where('applicant_id',$request->get('applicant_id'))->first()){
-            // return response()->json(['details'=>$details,'exists'=>1]);
+            return response()->json(['details'=>$details,'exists'=>1]);
         }else{
             try{
             // $token = $this->getToken(config('constants.NECTA_API_KEY'));
