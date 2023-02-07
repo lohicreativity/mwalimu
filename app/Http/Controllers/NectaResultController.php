@@ -34,7 +34,7 @@ class NectaResultController extends Controller
         $applicant->first_name = $detail->first_name;
         $applicant->middle_name =  $detail->middle_name;
         $applicant->surname = $detail->last_name;
-        return $detail;
+        $applicant->gender = $detail->sex;
         if(str_contains($applicant->programLevel->name,'Bachelor') && $applicant->entry_mode == 'DIRECT' && $detail->exam_id == 2){
             $applicant->results_complete_status = 1;
         }elseif(str_contains($applicant->programLevel->name,'Diploma') && $applicant->entry_mode == 'DIRECT' && $detail->exam_id == 1){
