@@ -3237,16 +3237,33 @@ class ApplicationController extends Controller
     public function showInsuranceStatus(Request $request)
     {
         $staff = User::find(Auth::user()->id)->staff;
+
+        if (Auth::user()->hasRole('dean-of-students')) {
+
+            $applicants = $request->get('query') ? Applicant::whereHas('insurances',function($query){
+                $query->where('insurance_name','!=','NHIF');
+                })->with('insurances')->where('campus_id', $staff->campus_id)->where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$request->get('program_level_id'))->whereNotNull('insurance_status')->where(function($query) use($request){
+                      $query->where('first_name','LIKE','%'.$request->get('query').'%')->orWhere('middle_name','LIKE','%'.$request->get('query').'%')->orWhere('surname','LIKE','%'.$request->get('query').'%');
+                })->get() : Applicant::whereHas('insurances',function($query){
+                $query->where('insurance_name','!=','NHIF');
+                })->with('insurances')->where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$request->get('program_level_id'))->whereNotNull('insurance_status')->get();
+
+        } else {
+
+            $applicants = $request->get('query') ? Applicant::whereHas('insurances',function($query){
+                $query->where('insurance_name','!=','NHIF');
+                })->with('insurances')->where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$request->get('program_level_id'))->whereNotNull('insurance_status')->where(function($query) use($request){
+                      $query->where('first_name','LIKE','%'.$request->get('query').'%')->orWhere('middle_name','LIKE','%'.$request->get('query').'%')->orWhere('surname','LIKE','%'.$request->get('query').'%');
+                })->get() : Applicant::whereHas('insurances',function($query){
+                $query->where('insurance_name','!=','NHIF');
+                })->with('insurances')->where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$request->get('program_level_id'))->whereNotNull('insurance_status')->get();
+
+        }
+
         $data = [
            'application_windows'=>ApplicationWindow::where('campus_id',$staff->campus_id)->get(),
            'awards'=>Award::all(),
-           'applicants'=>$request->get('query')? Applicant::whereHas('insurances',function($query){
-            $query->where('insurance_name','!=','NHIF');
-            })->with('insurances')->where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$request->get('program_level_id'))->whereNotNull('insurance_status')->where(function($query) use($request){
-                  $query->where('first_name','LIKE','%'.$request->get('query').'%')->orWhere('middle_name','LIKE','%'.$request->get('query').'%')->orWhere('surname','LIKE','%'.$request->get('query').'%');
-            })->get() : Applicant::whereHas('insurances',function($query){
-            $query->where('insurance_name','!=','NHIF');
-            })->with('insurances')->where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$request->get('program_level_id'))->whereNotNull('insurance_status')->get(),
+           'applicants'=> $applicants,
            'request'=>$request
         ];
         return view('dashboard.application.insurance-statuses',$data)->withTitle('Applicant Insurance Status');
@@ -3338,24 +3355,47 @@ class ApplicationController extends Controller
     public function showHostelStatus(Request $request)
     {
         $staff = User::find(Auth::user()->id)->staff;
+
+        if (Auth::user()->hasRole('dean-of-students')) {
+            $applicants = $request->get('query')? Applicant::whereHas('selections',function($query){
+                $query->where('status','SELECTED')->where('campus_id', $staff->campus_id);
+            })->with(['selections'=>function($query){
+                $query->where('status','SELECTED');
+            },'selections.campusProgram.program'])->where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$request->get('program_level_id'))->where(function($query){
+             $query->where('hostel_status',1)->orWhere('hostel_status',2)->orWhere('hostel_status',3);
+         })->where(function($query) use($request){
+                   $query->where('first_name','LIKE','%'.$request->get('query').'%')->orWhere('middle_name','LIKE','%'.$request->get('query').'%')->orWhere('surname','LIKE','%'.$request->get('query').'%');
+             })->get() : Applicant::whereHas('selections',function($query){
+                $query->where('status','SELECTED');
+            })->with(['selections'=>function($query){
+                $query->where('status','SELECTED');
+            },'selections.campusProgram.program'])->where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$request->get('program_level_id'))->where(function($query){
+             $query->where('hostel_status',1)->orWhere('hostel_status',2)->orWhere('hostel_status',3);
+         })->get();
+
+        } else {
+            
+            $applicants = $request->get('query')? Applicant::whereHas('selections',function($query){
+                $query->where('status','SELECTED');
+            })->with(['selections'=>function($query){
+                $query->where('status','SELECTED');
+            },'selections.campusProgram.program'])->where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$request->get('program_level_id'))->where(function($query){
+             $query->where('hostel_status',1)->orWhere('hostel_status',2)->orWhere('hostel_status',3);
+         })->where(function($query) use($request){
+                   $query->where('first_name','LIKE','%'.$request->get('query').'%')->orWhere('middle_name','LIKE','%'.$request->get('query').'%')->orWhere('surname','LIKE','%'.$request->get('query').'%');
+             })->get() : Applicant::whereHas('selections',function($query){
+                $query->where('status','SELECTED');
+            })->with(['selections'=>function($query){
+                $query->where('status','SELECTED');
+            },'selections.campusProgram.program'])->where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$request->get('program_level_id'))->where(function($query){
+             $query->where('hostel_status',1)->orWhere('hostel_status',2)->orWhere('hostel_status',3);
+         })->get();
+        }
+
         $data = [
            'application_windows'=>ApplicationWindow::where('campus_id',$staff->campus_id)->get(),
            'awards'=>Award::all(),
-           'applicants'=>$request->get('query')? Applicant::whereHas('selections',function($query){
-               $query->where('status','SELECTED');
-           })->with(['selections'=>function($query){
-               $query->where('status','SELECTED');
-           },'selections.campusProgram.program'])->where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$request->get('program_level_id'))->where(function($query){
-			$query->where('hostel_status',1)->orWhere('hostel_status',2)->orWhere('hostel_status',3);
-		})->where(function($query) use($request){
-                  $query->where('first_name','LIKE','%'.$request->get('query').'%')->orWhere('middle_name','LIKE','%'.$request->get('query').'%')->orWhere('surname','LIKE','%'.$request->get('query').'%');
-            })->get() : Applicant::whereHas('selections',function($query){
-               $query->where('status','SELECTED');
-           })->with(['selections'=>function($query){
-               $query->where('status','SELECTED');
-           },'selections.campusProgram.program'])->where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$request->get('program_level_id'))->where(function($query){
-			$query->where('hostel_status',1)->orWhere('hostel_status',2)->orWhere('hostel_status',3);
-		})->get(),
+           'applicants'=> $applicants,
            'request'=>$request
         ];
         return view('dashboard.application.hostel-statuses',$data)->withTitle('Applicant Insurance Status');
