@@ -1689,7 +1689,6 @@ class ApplicantController extends Controller
 
         }
 
-        return $applicant->nextOfKin;
         
         $data = [
             'applicant'=> $applicant,
