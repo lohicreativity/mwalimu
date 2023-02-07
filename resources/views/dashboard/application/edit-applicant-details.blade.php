@@ -199,6 +199,18 @@
                     <td>{{ $out->reg_no }}</td>
                   </tr>
                   @endif
+                  @if($applicant->veta_status == 1)
+                  <tr>
+                    <td>Veta Certificate</td>
+                    <td>Yes</td>
+                  </tr>
+                  @endif
+                  @if($applicant->teacher_certificate_status == 1)
+                  <tr>
+                    <td>Teacher Diploma Certificate</td>
+                    <td>Yes</td>
+                  </tr>
+                  @endif
                 </table>
               </div>
             </div>
