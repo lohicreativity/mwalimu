@@ -185,6 +185,12 @@
                     <td>{{ $avn->avn }}</td>
                   </tr>
                   @endif
+                  @if($out)
+                  <tr>
+                    <td>OUT Number</td>
+                    <td>{{ $out->reg_no }}</td>
+                  </tr>
+                  @endif
                 </table>
               </div>
             </div>

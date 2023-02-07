@@ -1690,11 +1690,14 @@ class ApplicantController extends Controller
         }
 
         $avn = NacteResultDetail::where('applicant_id', $applicant->id)->where('verified', 1)->first();
+        
+        $out = OutResultDetail::where('applicant_id', $applicant->id)->where('verified', 1)->first();
 
         
         $data = [
             'applicant'=> $applicant,
             'avn' => $avn,
+            'out' => $out,
             'awards'=>Award::all(),
         ];
 
