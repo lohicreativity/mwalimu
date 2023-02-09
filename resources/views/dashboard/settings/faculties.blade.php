@@ -39,6 +39,34 @@
             <div class="row">
                 <div class="col-12">
 
+                <div class="card card-default">
+                    <div class="card-header">
+                        <h3 class="card-title">{{ __('Add Faculty') }}</h3>
+                    </div>
+
+                    {!! Form::open(['url'=>'settings/campus/store','class'=>'ss-form-processing']) !!}
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="">Faculty Name</label>
+                                    <input type="text" required class="form-control" name="faculty_name" placeholder="Enter Faculty Name">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="">Campus</label>
+                                    <select name="campuses" required class="form-control">
+                                        <option value="">Select campus</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {!! Form::close() !!}
+
+                </div>
+
                 </div>
             </div>
         </div>
