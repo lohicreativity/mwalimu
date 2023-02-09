@@ -65,7 +65,6 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 	Route::post('department/update', [DepartmentController::class,'update']);
 	Route::get('department/{id}/destroy', [DepartmentController::class,'destroy']);
 
-
 	Route::get('programs', [ProgramController::class,'index']);
 	Route::post('program/store', [ProgramController::class,'store']);
 	Route::post('program/update', [ProgramController::class,'update']);

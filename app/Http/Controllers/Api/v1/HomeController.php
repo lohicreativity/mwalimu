@@ -10,8 +10,11 @@ use App\Domain\Settings\Models\Ward;
 use App\Domain\Academic\Models\Module;
 use App\Domain\Academic\Models\ModuleAssignment;
 use App\Domain\Settings\Models\NTALevel;
+use App\Domain\Settings\Models\Faculty;
 use App\Domain\Finance\Models\FeeType;
 use App\Domain\Academic\Models\Department;
+use App\Models\User;
+use Auth;
 
 class HomeController extends Controller
 {
@@ -35,6 +38,18 @@ class HomeController extends Controller
             return response()->json(['status'=>'success','all_departments'=>$all_departments]);
     	}else{
     		return response()->json(['status'=>'failed','all_departments'=>$all_departments]);
+    	}
+    }
+
+    public function getFacultyParents(Request $request)
+    {
+        $staff = User::find(Auth::user()->id)->staff;
+
+        $faculty = Faculty::where('campus_id', $staff->campus_id)->get();
+        if(count($faculty) != 0){
+            return response()->json(['status'=>'success','faculties'=>$faculties]);
+    	}else{
+    		return response()->json(['status'=>'failed','faculties'=>$faculties]);
     	}
     }
 
