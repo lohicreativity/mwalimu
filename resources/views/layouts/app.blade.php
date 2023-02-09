@@ -145,7 +145,8 @@ $("#uncheck-all-btn").click(function(){
       method:'POST',
       url:$(e.target).data('source-url'),
       data:{
-        _token:$(e.target).data('token')
+        _token:$(e.target).data('token'),
+        campus_id:$(e.target).val()
       }      
       }).done(function(data, status){
           if (status == "success") {
