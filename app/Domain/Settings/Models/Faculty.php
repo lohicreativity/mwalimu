@@ -17,7 +17,7 @@ class Faculty extends Model
      */
     public function campuses()
     {
-    	return $this->hasMany(Campus::class,'campus_id');
+    	return $this->hasMany(Campus::class);
     }
 
 
