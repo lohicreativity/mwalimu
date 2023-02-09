@@ -15,6 +15,7 @@ use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\SystemModuleController;
 use App\Http\Controllers\GPAClassificationController;
 use App\Http\Controllers\SpecialDateController;
+use App\Http\Controllers\FacultyController;
 
 /*
 |--------------------------------------------------------------------------
@@ -79,6 +80,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 	Route::post('campus/store', [CampusController::class,'store']);
 	Route::post('campus/update', [CampusController::class,'update']);
 	Route::get('campus/{id}/destroy', [CampusController::class,'destroy']);
+
+	Route::get('faculties', [FacultyController::class, 'index'])->name('faculties');
 
 
 	Route::get('roles', [RoleController::class,'index'])->name('roles');
