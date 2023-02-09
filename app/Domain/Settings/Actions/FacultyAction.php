@@ -4,6 +4,7 @@ namespace App\Domain\Settings\Actions;
 
 use Illuminate\Http\Request;
 use App\Domain\Settings\Models\Faculty;
+use App\Domain\Settings\Models\CampusFaculty;
 use App\Domain\Settings\Repositories\Interfaces\FacultyInterface;
 
 class FacultyAction implements FacultyInterface{
@@ -31,7 +32,6 @@ class FacultyAction implements FacultyInterface{
                 $campus_faculty = CampusFaculty::where('campus_id', $request->get('campus'))
                 ->where('faculty_id', $request->get('faculty_id'))
                 ->update('campus_id', $request->get('campus'));
-
 	    
 	}
 }
