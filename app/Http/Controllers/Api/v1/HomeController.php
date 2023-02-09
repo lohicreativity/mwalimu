@@ -40,7 +40,7 @@ class HomeController extends Controller
             return response()->json(['status'=>'success','faculties'=>$faculties]);
     	} else if (count($faculties) == 0) {
 
-            $campus = Campus::where($request->get('campus_id'))->first();
+            $campus = Campus::find($request->get('campus_id'));
             return response()->json(['status'=>'success','campus'=>$campus]);
 
         }else{
