@@ -8,6 +8,7 @@ use App\Domain\Settings\Models\UnitCategory;
 use App\Domain\Academic\Models\Module;
 use App\Domain\Academic\Models\Program;
 use App\Domain\Settings\Models\Campus;
+use App\Domain\Settings\Models\Faculty;
 use App\Domain\Academic\Actions\DepartmentAction;
 use App\Models\User;
 use App\Utils\Util;
@@ -34,16 +35,20 @@ class DepartmentController extends Controller
          ->join('unit_categories', 'departments.unit_category_id', 'unit_categories.id')
          ->where('campuses.id', $staff->campus_id)
          ->paginate(20); 
-         
-
       }
+
+      // if (Auth::user()->hasRole('administrator')) {
+      //    $faculties = Faculty::all();
+      // } else if (Auth::user()->hasRole('admission-officer')) {
+      //    $faculties = Faculty::where('campus_id', $staff->campus_id)
+      // }
 
     	$data = [
            'unit_categories'  =>UnitCategory::all(),
            'all_departments'  =>Department::all(),
            'campuses'         =>Campus::all(),
            'staff'            => $staff,
-           'departments'      => $departments     
+           'departments'      => $departments,
     	];
 
     	return view('dashboard.academic.departments',$data)->withTitle('Departments');

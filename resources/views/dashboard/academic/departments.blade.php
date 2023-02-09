@@ -90,7 +90,7 @@
                   <div class="row">
                     <div class="form-group col-4">
                       {!! Form::label('','Type') !!}
-                      <select name="unit_category_id" class="form-control" required>
+                      <select name="unit_category_id" class="form-control ss-select-category" required>
                         <option value="">Select Type</option>
                         @foreach($unit_categories as $category)
                         <option value="{{ $category->id }}">{{ $category->name }}</option>
