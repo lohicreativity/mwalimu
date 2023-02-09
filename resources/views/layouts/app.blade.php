@@ -111,7 +111,7 @@ $("#uncheck-all-btn").click(function(){
 });
 </script>
 
-<script>
+<!-- <script>
   $('#ss-reset-control-number').on('click',function(e){
     $.ajax({
       url:'/application/delete-applicant-invoice',
@@ -131,7 +131,7 @@ $("#uncheck-all-btn").click(function(){
     });
 
 });
-</script>
+</script> -->
 
 <script>
   $('#unit-categories').on('change',function(e){
