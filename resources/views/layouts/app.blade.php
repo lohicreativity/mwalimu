@@ -136,9 +136,7 @@ $("#uncheck-all-btn").click(function(){
 <script>
   $('#unit-categories').on('change',function(e){
 
-    if ($(e.target).val() == 1) {
-
-    } else if ($(e.target).val() == 2) {
+    if ($(e.target).val() == 2 || $(e.target).val() == 1) {
 
 
       $.ajax({
