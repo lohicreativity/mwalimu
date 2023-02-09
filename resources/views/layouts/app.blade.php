@@ -140,22 +140,21 @@ $("#uncheck-all-btn").click(function(){
 
     } else if ($(e.target).val() == 2) {
 
-      alert('Department');
 
-      // $.ajax({
-      // method:'POST',
-      // url:$(e.target).data('source-url'),
-      // data:{
-      //   _token:$(e.target).data('token')
-      //   // unit_category_id:$(e.target).val()
-      // }      
-      // }).done(function(data, status){
-      //     if(status == 'success'){
-      //       alert('Yooo');
-      //     } else {
-      //       alert('Noooo');
-      //     }
-      // });
+      $.ajax({
+      method:'POST',
+      url:$(e.target).data('source-url'),
+      data:{
+        _token:$(e.target).data('token')
+        // unit_category_id:$(e.target).val()
+      }      
+      }).done(function(data, status){
+          if(status == 'success'){
+            alert('Yooo');
+          } else {
+            alert('Noooo');
+          }
+      });
 
       
 
