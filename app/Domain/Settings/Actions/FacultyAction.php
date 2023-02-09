@@ -11,8 +11,8 @@ class FacultyAction implements FacultyInterface{
 	public function store(Request $request){
 
                 $faculty = new Faculty;
-                $faculty->name          = $request->get('faculty_name');
-                $faculty->abbreviation  = $request->get('faculty_abbreviation');
+                $faculty->name          = $request->get('name');
+                $faculty->abbreviation  = $request->get('abbreviation');
                 $faculty->campus_id     = $request->get('campuses');
                 $faculty->save();
 	    

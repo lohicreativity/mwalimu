@@ -50,13 +50,13 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="">Faculty Name</label>
-                                        <input type="text" required class="form-control" name="faculty_name" placeholder="Faculty Name">
+                                        <input type="text" required class="form-control" name="name" placeholder="Faculty Name">
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="">Faculty Abbreviation</label>
-                                        <input type="text" required class="form-control" name="faculty_abbreviation" placeholder="Faculty Abbreviation">
+                                        <input type="text" required class="form-control" name="abbreviation" placeholder="Faculty Abbreviation">
                                     </div>
                                 </div>
                                 <div class="col-md-4">
