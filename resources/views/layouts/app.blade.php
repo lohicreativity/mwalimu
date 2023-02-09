@@ -153,6 +153,12 @@ $("#uncheck-all-btn").click(function(){
 
             console.log(data);
 
+            if ('campus' in data) {
+              alert('Campus')
+            } else {
+              alert('No campus');
+            }
+
             // if (data.faculties.length > 0) {
 
             //   var element = '<option value="">Select Faculty</option>';
