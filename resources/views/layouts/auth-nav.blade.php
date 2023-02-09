@@ -1011,6 +1011,14 @@
                 </a>
               </li>
               @endcan
+              @can('view-faculty')
+              <li class="nav-item">
+                <a href="{{ url('settings/faculties') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Faculties</p>
+                </a>
+              </li>
+              @endcan
               @can('view-departments')
               <li class="nav-item">
                 <a href="{{ url('academic/departments') }}" class="nav-link">
