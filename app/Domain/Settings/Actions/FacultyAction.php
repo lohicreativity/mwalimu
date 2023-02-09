@@ -4,7 +4,7 @@ namespace App\Domain\Settings\Actions;
 
 use Illuminate\Http\Request;
 use App\Domain\Settings\Models\Faculty;
-use App\Domain\Settings\Repositories\Interfaces\CampusInterface;
+use App\Domain\Settings\Repositories\Interfaces\FacultyInterface;
 
 class FacutltyAction implements FacultyInterface{
 	
