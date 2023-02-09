@@ -151,7 +151,7 @@ $("#uncheck-all-btn").click(function(){
       }).done(function(data, status){
           if (status == "success") {
 
-            alert(data);
+            console.log(data);
 
             // if (data.faculties.length > 0) {
 
