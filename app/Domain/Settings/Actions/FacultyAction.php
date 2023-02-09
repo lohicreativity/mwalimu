@@ -15,6 +15,8 @@ class FacultyAction implements FacultyInterface{
                 $faculty->abbreviation  = $request->get('abbreviation');
                 $faculty->campus_id     = $request->get('campuses');
                 $faculty->save();
+
+                $faculty->campuses()->sync($request->get('campuses'));
 	    
 	}
 

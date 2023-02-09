@@ -107,7 +107,11 @@
                                     <tr>
                                         <td>{{ $faculty->name }}</td>
                                         <td>{{ $faculty->abbreviation }}</td>
-                                        <td></td>
+                                        <td>
+                                            @foreach($faculty->campuses as $campus)
+                                                <p class="ss-no-margin">{{ $campus->name }}</p>
+                                            @endforeach
+                                        </td>
                                         <td>
                                             <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-edit-faculty-{{ $faculty->id }}">
                                                 <i class="fas fa-pencil-alt"></i>
