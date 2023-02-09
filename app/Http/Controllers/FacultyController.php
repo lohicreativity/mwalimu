@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Domain\Settings\Models\Campus;
 use App\Domain\Settings\Models\Faculty;
+use App\Domain\Settings\Models\CampusFaculty;
 use App\Domain\Settings\Actions\FacultyAction;
 use App\Utils\Util;
 use Validator;
@@ -73,6 +74,7 @@ class FacultyController extends Controller
 
 
         (new FacultyAction)->update($request);
+
 
         return Util::requestResponse($request,'Faculty updated successfully');
     }
