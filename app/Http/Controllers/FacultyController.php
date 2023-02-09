@@ -8,7 +8,7 @@ use App\Domain\Settings\Models\Faculty;
 use App\Domain\Settings\Models\CampusFaculty;
 use App\Domain\Settings\Actions\FacultyAction;
 use App\Utils\Util;
-use Validator;
+use Validator, Auth;
 
 
 class FacultyController extends Controller
