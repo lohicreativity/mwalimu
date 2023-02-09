@@ -157,6 +157,7 @@ $("#uncheck-all-btn").click(function(){
 
               var element = '<option selected value="'+data.campus.id+'">'+data.campus.name+'</option>';
               $($(e.target).data('target')).html(element);
+              $('#unit_categories').prop('disabled', true);
 
             } else if('faculties' in data) {
               var element = '<option value="">Select Faculty</option>';
