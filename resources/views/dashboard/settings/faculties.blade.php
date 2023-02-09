@@ -118,7 +118,7 @@
                                                     Edit Faculty
                                             </a>
 
-                                            <a class="btn btn-danger btn-sm" href="#" data-toggle="modal" data-target="#ss-delete-campus-{{ $campus->id }}">
+                                            <a class="btn btn-danger btn-sm" href="#" data-toggle="modal" data-target="#ss-delete-campus-{{ $faculty->id }}">
                                                 <i class="fas fa-trash"></i>
                                                     Delete Faculty
                                             </a>
@@ -193,7 +193,7 @@
                                             </div>
                                             <!-- /.modal -->
 
-                                            <div class="modal fade" id="ss-delete-campus-{{ $campus->id }}">
+                                            <div class="modal fade" id="ss-delete-campus-{{ $faculty->id }}">
                                                 <div class="modal-dialog modal-lg">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
