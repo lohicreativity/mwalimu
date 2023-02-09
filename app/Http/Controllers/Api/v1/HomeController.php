@@ -12,6 +12,7 @@ use App\Domain\Academic\Models\ModuleAssignment;
 use App\Domain\Settings\Models\NTALevel;
 use App\Domain\Settings\Models\Faculty;
 use App\Domain\Settings\Models\Campus;
+use App\Domain\Settings\Models\CampusDepartment;
 use App\Domain\Finance\Models\FeeType;
 use App\Domain\Academic\Models\Department;
 use App\Models\User;
@@ -36,16 +37,30 @@ class HomeController extends Controller
     {
         $faculties = Faculty::where('campus_id', $request->get('campus_id'))->get();
 
-        if(count($faculties) > 0){
-            return response()->json(['status'=>'success','faculties'=>$faculties]);
-    	} else if (count($faculties) == 0) {
+        if ($request->get('unit_category_id') == 1 || $request->get('unit_category_id') == 2) {
 
-            $campus = Campus::find($request->get('campus_id'));
-            return response()->json(['status'=>'success','campus'=>$campus]);
+            if(count($faculties) > 0){
+                return response()->json(['status'=>'success','faculties'=>$faculties]);
+            } else if (count($faculties) == 0) {
+                $campus = Campus::find($request->get('campus_id'));
+                return response()->json(['status'=>'success','campus'=>$campus]);
+            }else{
+                return response()->json(['status'=>'failed','faculties'=>$faculties]);
+            }
 
-        }else{
-    		return response()->json(['status'=>'failed','faculties'=>$faculties]);
-    	}
+        } else if ($request->get('unit_category_id') == 4) {
+
+            $departments = CampusDepartment::where('campus_id', $request->get('campus_id'));
+
+            if (count($departments) > 0) {
+                return response()->json(['status'=>'success','departments'=>$departments]);
+            } else {
+                return response()->json(['status'=>'success','departments'=>$departments]);
+            }
+
+        }
+
+        
     }
 
     public function getFacultyParents(Request $request)

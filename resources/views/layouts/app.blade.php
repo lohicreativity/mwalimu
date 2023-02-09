@@ -145,7 +145,8 @@ $("#uncheck-all-btn").click(function(){
       url:$(e.target).data('source-url'),
       data:{
         _token:$(e.target).data('token'),
-        campus_id: $('#campus_id').val()
+        campus_id: $('#campus_id').val(),
+        unit_category_id:$(e.target).val()
       }      
       }).done(function(data, status){
           if (status == "success") {
@@ -153,25 +154,40 @@ $("#uncheck-all-btn").click(function(){
             if ('campus' in data) {
 
               $("#parents").remove();
-              $("#parent_input").append('<input type="text" class="form-control" readonly value="'+data.campus.name+'"></input>')
-              $("#parent_input").append('<input type="hidden" name="parent_id" value="'+data.campus.id+'"></input>')
+              $("#parent_input").append('<input type="text" class="form-control" readonly value="'+data.campus.name+'"></input>');
+              $("#parent_input").append('<input type="hidden" name="parent_id" value="'+data.campus.id+'"></input>');
               
             } else if('faculties' in data) {
+
               var element = '<option value="">Select Faculty</option>';
               for(var i=0; i<data.faculties.length; i++){
                 element += '<option value="'+data.faculties[i].id+'">'+data.faculties[i].name+'</option>';
               }
               $($(e.target).data('target')).html(element);
+
             }
       
           }
       });
 
+    }  else if ($(e.target).val() == 4) {
+
+      $.ajax({
+      method:'POST',
+      url:$(e.target).data('source-url'),
+      data:{
+        _token:$(e.target).data('token'),
+        campus_id: $('#campus_id').val(),
+        unit_category_id:$(e.target).val()
+      }      
+      }).done(function(data, status){
+          alert(status);
+          // if (status == "success") {
+
       
+          // }
+      });
 
-    } else if ($(e.target).val() == 3) {
-
-    } else if ($(e.target).val() == 4) {
 
     } 
 
