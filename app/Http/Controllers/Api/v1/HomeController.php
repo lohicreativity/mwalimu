@@ -33,9 +33,9 @@ class HomeController extends Controller
 
     public function getParents(Request $request)
     {
-        $staff = User::find(Auth::user()->id)->staff;
+        // $staff = User::find(Auth::user()->id)->staff;
 
-        $faculty = Faculty::where('campus_id', $staff->campus_id)->get();
+        $faculty = Faculty::all();
 
         if(count($faculties) != 0){
             return response()->json(['status'=>'success','faculties'=>$faculties]);
@@ -43,6 +43,7 @@ class HomeController extends Controller
     		return response()->json(['status'=>'failed','faculties'=>$faculties]);
     	}
     }
+
 
     /**
      * Return a list of regions given country id

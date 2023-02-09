@@ -145,8 +145,7 @@ $("#uncheck-all-btn").click(function(){
       method:'POST',
       url:$(e.target).data('source-url'),
       data:{
-        _token:$(e.target).data('token'),
-        unit_category_id:$(e.target).val()
+        _token:$(e.target).data('token')
 
       }      
       }).done(function(data, status){
