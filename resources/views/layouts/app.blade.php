@@ -149,11 +149,7 @@ $("#uncheck-all-btn").click(function(){
         // unit_category_id:$(e.target).val()
       }      
       }).done(function(data, status){
-          if(status == 'success'){
-            alert('Yooo');
-          } else {
-            alert('Noooo');
-          }
+          alert(status);
       });
 
       
