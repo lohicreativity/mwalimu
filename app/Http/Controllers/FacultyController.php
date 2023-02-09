@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Domain\Settings\Models\Campus;
 
 
 class FacultyController extends Controller
@@ -13,7 +14,11 @@ class FacultyController extends Controller
 
     public function index()
     {
-    	return view('dashboard.settings.faculties')->withTitle('faculties');
+        $data = [
+            'campuses' => Campus::all()
+        ];
+
+    	return view('dashboard.settings.faculties', $data)->withTitle('faculties');
     }
 
 }

@@ -58,10 +58,16 @@
                                     <label for="">Campus</label>
                                     <select name="campuses" required class="form-control">
                                         <option value="">Select campus</option>
+                                        @foreach($campuses as $campus)
+                                        <option value="{{ $campus->id }}">{{ $campus->name }}</option>
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-primary">{{ __('Add Faculty') }}</button>
                     </div>
                     {!! Form::close() !!}
 
