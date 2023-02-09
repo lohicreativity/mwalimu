@@ -20,7 +20,7 @@ class FacultyController extends Controller
     {
         $data = [
             'campuses'  => Campus::all(),
-            'faculties' => Faculty::get()
+            'faculties' => Faculty::all()
         ];
 
     	return view('dashboard.settings.faculties', $data)->withTitle('faculties');

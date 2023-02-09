@@ -15,10 +15,10 @@ class Faculty extends Model
     /**
      * Establish one to many relationship with campuses
      */
-    public function campuses()
-    {
-    	return $this->hasOne(Campus::class);
-    }
+    // public function campuses()
+    // {
+    // 	return $this->hasOne(Campus::class);
+    // }
 
 
 }

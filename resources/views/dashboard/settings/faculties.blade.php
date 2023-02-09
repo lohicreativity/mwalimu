@@ -98,7 +98,6 @@
                                     <tr>
                                         <th>Name</th>
                                         <th>Abbreviation</th>
-                                        <th>Campus</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
@@ -107,7 +106,6 @@
                                     <tr>
                                         <td>{{ $faculty->facuty_name }}</td>
                                         <td>{{ $faculty->faculty_abbreviation }}</td>
-                                        <!-- <td>{{ $faculty->campuses->name }}</td> -->
                                         <td>
                                             <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-edit-faculty-{{ $faculty->id }}">
                                                 <i class="fas fa-list-alt"></i>
