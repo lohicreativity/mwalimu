@@ -108,7 +108,7 @@
                                         <td>{{ $faculty->name }}</td>
                                         <td>{{ $faculty->abbreviation }}</td>
                                         <td>
-                                            
+                                            {{ $faculty->campus->name }}
                                         </td>
                                         <td>
                                             <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-edit-faculty-{{ $faculty->id }}">
