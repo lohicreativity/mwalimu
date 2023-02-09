@@ -127,11 +127,11 @@
                                     <tr>
                                         <td>{{ $faculty->name }}</td>
                                         <td>{{ $faculty->abbreviation }}</td>
+                                        @if(Auth::user()->hasRole('administrator'))
                                         <td>
-                                            @if(Auth::user()->hasRole('administrator'))
                                             {{ $faculty->campus->name }}
-                                            @endif
                                         </td>
+                                        @endif
                                         <td>
                                             <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-edit-faculty-{{ $faculty->id }}">
                                                 <i class="fas fa-pencil-alt"></i>
