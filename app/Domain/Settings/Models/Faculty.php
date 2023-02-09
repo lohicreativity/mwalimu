@@ -4,7 +4,7 @@ namespace App\Domain\Settings\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Domain\Academic\Models\Campus;
+use App\Domain\Settings\Models\Campus;
 
 class Faculty extends Model
 {
