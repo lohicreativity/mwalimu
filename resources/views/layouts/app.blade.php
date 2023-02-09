@@ -146,7 +146,6 @@ $("#uncheck-all-btn").click(function(){
       url:$(e.target).data('source-url'),
       data:{
         _token:$(e.target).data('token')
-
       }      
       }).done(function(data, status){
           if (status == "success") {

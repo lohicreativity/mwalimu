@@ -33,9 +33,9 @@ class HomeController extends Controller
 
     public function getParents(Request $request)
     {
-        // $staff = User::find(Auth::user()->id)->staff;
+        $staff = User::find(Auth::user()->id)->staff;
 
-        $faculty = Faculty::all();
+        $faculties = Faculty::where('campus_id', $staff->campus_id)->get();
 
         if(count($faculties) != 0){
             return response()->json(['status'=>'success','faculties'=>$faculties]);
