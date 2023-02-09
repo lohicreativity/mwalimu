@@ -15,18 +15,18 @@ class Faculty extends Model
     /**
      * Establish many to many relationship with campuses
      */
-    public function campuses()
-    {
-        return $this->belongsToMany(Campus::class,'campus_faculty','faculty_id','campus_id');
-    }
+    // public function campuses()
+    // {
+    //     return $this->belongsToMany(Campus::class,'campus_faculty','faculty_id','campus_id');
+    // }
 
     /**
      * Establish one to many relationship with campuses
      */
-    // public function campuses()
-    // {
-    // 	return $this->hasOne(Campus::class);
-    // }
+    public function campus()
+    {
+    	return $this->belongsTo(Campus::class);
+    }
 
 
 }

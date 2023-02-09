@@ -21,7 +21,7 @@ class FacultyController extends Controller
     {
         $data = [
             'campuses'  => Campus::all(),
-            'faculties' => Faculty::with(['campuses'])->get()
+            'faculties' => Faculty::with(['campus'])->get()
         ];
 
     	return view('dashboard.settings.faculties', $data)->withTitle('faculties');
