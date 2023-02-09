@@ -83,9 +83,6 @@ class DepartmentController extends Controller
            }
         }
 
-        return $request->get('parent_id');
-
-
         (new DepartmentAction)->store($request);
 
         return Util::requestResponse($request,'Department created successfully');
