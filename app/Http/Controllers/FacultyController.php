@@ -73,9 +73,9 @@ class FacultyController extends Controller
         }
 
 
-        (new CampusAction)->update($request);
+        (new FacultyAction)->update($request);
 
-        return Util::requestResponse($request,'Campus updated successfully');
+        return Util::requestResponse($request,'Faculty updated successfully');
     }
 
     /**

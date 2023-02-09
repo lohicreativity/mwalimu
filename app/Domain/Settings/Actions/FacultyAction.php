@@ -21,6 +21,12 @@ class FacultyAction implements FacultyInterface{
 	}
 
 	public function update(Request $request){
+
+                $faculty = Faculty::find($request->get('faculty_id'));
+                $faculty->name          = $request->get('name');
+                $faculty->abbreviation  = $request->get('abbreviation');
+                $faculty->campus_id     = $request->get('campus');
+                $faculty->save();
 	    
 	}
 }
