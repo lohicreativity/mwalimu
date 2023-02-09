@@ -38,11 +38,19 @@ class FacultyController extends Controller
      */
     public function store(Request $request)
     {
-    	$validation = Validator::make($request->all(),[
-            'name'              =>  'required|unique:faculty',
-            'abbreviation'      =>  'required',
-            'campuses'          =>  'required',
-        ]);
+        if (Auth::user()->hasRole('administrator')) {
+            $validation = Validator::make($request->all(),[
+                'name'              =>  'required|unique:faculty',
+                'abbreviation'      =>  'required',
+                'campuses'          =>  'required',
+            ]);
+        } else if (Auth::user()->hasRole('admission-officer')) {
+            $validation = Validator::make($request->all(),[
+                'name'              =>  'required|unique:faculty',
+                'abbreviation'      =>  'required'
+            ]);
+        }
+    	
 
         if($validation->fails()){
            if($request->ajax()){
