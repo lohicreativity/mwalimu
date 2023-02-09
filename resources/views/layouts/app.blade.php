@@ -136,78 +136,80 @@ $("#uncheck-all-btn").click(function(){
 <script>
   $('#unit-categories').on('change',function(e){
 
-    // if ($(e.target).val() == 1) {
+    if ($(e.target).val() == 1) {
 
-    // } else if ($(e.target).val() == 2) {
+    } else if ($(e.target).val() == 2) {
 
 
-    //   $.ajax({
-    //   method:'POST',
-    //   url:$(e.target).data('source-url'),
-    //   data:{
-    //     _token:$(e.target).data('token')
-    //   }      
-    //   }).done(function(data, status){
-    //       alert(status);
-    //   });
+      $.ajax({
+      method:'POST',
+      url:$(e.target).data('source-url'),
+      data:{
+        _token:$(e.target).data('token'),
+        unit_category_id:$(e.target).val()
+
+      }      
+      }).done(function(data, status){
+          alert(status);
+      });
 
       
 
-    // } else if ($(e.target).val() == 3) {
+    } else if ($(e.target).val() == 3) {
 
-    // } else if ($(e.target).val() == 4) {
+    } else if ($(e.target).val() == 4) {
 
-    // } 
-
-
-    $.ajax({
-    method:'POST',
-    url:$(e.target).data('source-url'),
-    data:{
-      _token:$(e.target).data('token'),
-      unit_category_id:$(e.target).val()
-    }      
-    }).done(function(data, status){
-        if(status == 'success'){
+    } 
 
 
-          if ($(e.target).val() == 1) {
+    // $.ajax({
+    // method:'POST',
+    // url:$(e.target).data('source-url'),
+    // data:{
+    //   _token:$(e.target).data('token'),
+    //   unit_category_id:$(e.target).val()
+    // }      
+    // }).done(function(data, status){
+    //     if(status == 'success'){
 
-            var element = '<option value="">Select Office</option>';
-            for(var i=0; i<data.all_departments.length; i++){
-              element += '<option value="'+data.all_departments[i].id+'">'+data.all_departments[i].name+'</option>';
-            }
-            $($(e.target).data('target')).html(element);
 
-          } else if ($(e.target).val() == 2) {
+    //       if ($(e.target).val() == 1) {
 
-            var element = '<option value="">Select Department</option>';
-            for(var i=0; i<data.all_departments.length; i++){
-              element += '<option value="'+data.all_departments[i].id+'">'+data.all_departments[i].name+'</option>';
-            }
-            $($(e.target).data('target')).html(element);
+    //         var element = '<option value="">Select Office</option>';
+    //         for(var i=0; i<data.all_departments.length; i++){
+    //           element += '<option value="'+data.all_departments[i].id+'">'+data.all_departments[i].name+'</option>';
+    //         }
+    //         $($(e.target).data('target')).html(element);
 
-          } else if ($(e.target).val() == 3) {
+    //       } else if ($(e.target).val() == 2) {
 
-            var element = '<option value="">Select Faculty</option>';
-            for(var i=0; i<data.all_departments.length; i++){
-              element += '<option value="'+data.all_departments[i].id+'">'+data.all_departments[i].name+'</option>';
-            }
-            $($(e.target).data('target')).html(element);
+    //         var element = '<option value="">Select Department</option>';
+    //         for(var i=0; i<data.all_departments.length; i++){
+    //           element += '<option value="'+data.all_departments[i].id+'">'+data.all_departments[i].name+'</option>';
+    //         }
+    //         $($(e.target).data('target')).html(element);
 
-          } else if ($(e.target).val() == 4) {
+    //       } else if ($(e.target).val() == 3) {
 
-            var element = '<option value="">Select Unit</option>';
-            for(var i=0; i<data.all_departments.length; i++){
-              element += '<option value="'+data.all_departments[i].id+'">'+data.all_departments[i].name+'</option>';
-            }
-            $($(e.target).data('target')).html(element);
+    //         var element = '<option value="">Select Faculty</option>';
+    //         for(var i=0; i<data.all_departments.length; i++){
+    //           element += '<option value="'+data.all_departments[i].id+'">'+data.all_departments[i].name+'</option>';
+    //         }
+    //         $($(e.target).data('target')).html(element);
 
-          }
+    //       } else if ($(e.target).val() == 4) {
+
+    //         var element = '<option value="">Select Unit</option>';
+    //         for(var i=0; i<data.all_departments.length; i++){
+    //           element += '<option value="'+data.all_departments[i].id+'">'+data.all_departments[i].name+'</option>';
+    //         }
+    //         $($(e.target).data('target')).html(element);
+
+    //       }
 
            
-        } 
-    });
+    //     } 
+    // });
 
   });
 </script>
