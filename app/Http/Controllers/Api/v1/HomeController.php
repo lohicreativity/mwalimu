@@ -11,6 +11,7 @@ use App\Domain\Academic\Models\Module;
 use App\Domain\Academic\Models\ModuleAssignment;
 use App\Domain\Settings\Models\NTALevel;
 use App\Domain\Settings\Models\Faculty;
+use App\Domain\Settings\Models\Campus;
 use App\Domain\Finance\Models\FeeType;
 use App\Domain\Academic\Models\Department;
 use App\Models\User;
@@ -35,9 +36,14 @@ class HomeController extends Controller
     {
         $faculties = Faculty::where('campus_id', $request->get('campus_id'))->get();
 
-        if(count($faculties) != 0){
+        if(count($faculties) > 0){
             return response()->json(['status'=>'success','faculties'=>$faculties]);
-    	}else{
+    	} else if (count($faculties) == 0) {
+
+            $campus = Campus::where($request->get('campus_id'))->first();
+            return response()->json(['status'=>'success','campus'=>$campus]);
+
+        }else{
     		return response()->json(['status'=>'failed','faculties'=>$faculties]);
     	}
     }
