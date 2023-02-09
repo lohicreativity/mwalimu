@@ -140,7 +140,7 @@
                                                                 <div class="col-md-4">
                                                                     <div class="form-group">
                                                                         {!! Form::label('','Faculty Name') !!}
-                                                                        {!! Form::text('name', $campus->name, $name) !!}
+                                                                        {!! Form::text('name', $faculty->name, $name) !!}
 
                                                                         {!! Form::input('hidden','faculty_id', $faculty->id) !!}
                                                                     </div>
