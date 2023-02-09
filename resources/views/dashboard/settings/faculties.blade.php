@@ -104,8 +104,8 @@
                                 <tbody>
                                     @foreach($faculties as $faculty)
                                     <tr>
-                                        <td>{{ $faculty->facuty_name }}</td>
-                                        <td>{{ $faculty->faculty_abbreviation }}</td>
+                                        <td>{{ $faculty->name }}</td>
+                                        <td>{{ $faculty->abbreviation }}</td>
                                         <td>
                                             <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-edit-faculty-{{ $faculty->id }}">
                                                 <i class="fas fa-list-alt"></i>
