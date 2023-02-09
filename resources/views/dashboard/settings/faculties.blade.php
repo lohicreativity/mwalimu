@@ -39,42 +39,82 @@
             <div class="row">
                 <div class="col-12">
 
-                <div class="card card-default">
-                    <div class="card-header">
-                        <h3 class="card-title">{{ __('Add Faculty') }}</h3>
-                    </div>
+                    <div class="card card-default">
+                        <div class="card-header">
+                            <h3 class="card-title">{{ __('Add Faculty') }}</h3>
+                        </div>
 
-                    {!! Form::open(['url'=>'settings/faculty/store','class'=>'ss-form-processing']) !!}
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="">Faculty Name</label>
-                                    <input type="text" required class="form-control" name="faculty_name" placeholder="Enter Faculty Name">
+                        {!! Form::open(['url'=>'settings/faculty/store','class'=>'ss-form-processing']) !!}
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6=4">
+                                    <div class="form-group">
+                                        <label for="">Faculty Name</label>
+                                        <input type="text" required class="form-control" name="faculty_name" placeholder="Faculty Name">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="">Campus</label>
-                                    <select name="campuses" required class="form-control">
-                                        <option value="">Select campus</option>
-                                        @foreach($campuses as $campus)
-                                        <option value="{{ $campus->id }}">{{ $campus->name }}</option>
-                                        @endforeach
-                                    </select>
+                                <div class="col-md-6=4">
+                                    <div class="form-group">
+                                        <label for="">Faculty Abbreviation</label>
+                                        <input type="text" required class="form-control" name="faculty_abbreviation" placeholder="Faculty Abbreviation">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="">Campus</label>
+                                        <select name="campuses" required class="form-control">
+                                            <option value="">Select campus</option>
+                                            @foreach($campuses as $campus)
+                                            <option value="{{ $campus->id }}">{{ $campus->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="card-footer">
-                        <button type="submit" class="btn btn-primary">{{ __('Add Faculty') }}</button>
-                    </div>
-                    {!! Form::close() !!}
+                        <div class="card-footer">
+                            <button type="submit" class="btn btn-primary">{{ __('Add Faculty') }}</button>
+                        </div>
+                        {!! Form::close() !!}
 
-                </div>
+                    </div>
 
                 </div>
             </div>
+
+            <div class="row">
+                <div class="col-12">
+
+                    @if(count($faculties) != 0)
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">{{ __('List of Faculties') }}</h3>
+                        </div>
+
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                            <table id="example2" class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Abbreviation</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($campuses as $campus)
+                                    <tr>
+                                        <td>{{ $campus->name }}</td>
+                                    <tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    @endif
+
+                </div>
+            </div>
+
         </div>
     </section>
             

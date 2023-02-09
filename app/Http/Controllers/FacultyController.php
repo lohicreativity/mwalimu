@@ -19,7 +19,8 @@ class FacultyController extends Controller
     public function index()
     {
         $data = [
-            'campuses' => Campus::all()
+            'campuses'  => Campus::all(),
+            'faculties' => Faculty::all()
         ];
 
     	return view('dashboard.settings.faculties', $data)->withTitle('faculties');
