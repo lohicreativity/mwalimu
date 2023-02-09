@@ -60,8 +60,7 @@ class FacultyController extends Controller
     	$validation = Validator::make($request->all(),[
             'name'=>'required',
             'abbreviation'=>'required',
-            'email'=>'required|email',
-            'phone'=>'required|regex:/^([0-9\s\-\+\(\)]*)$/|max:18'
+            'campus'=>'required',
         ]);
 
         if($validation->fails()){
