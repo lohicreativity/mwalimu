@@ -146,7 +146,6 @@ $("#uncheck-all-btn").click(function(){
       url:$(e.target).data('source-url'),
       data:{
         _token:$(e.target).data('token')
-        // unit_category_id:$(e.target).val()
       }      
       }).done(function(data, status){
           alert(status);
@@ -209,6 +208,7 @@ $("#uncheck-all-btn").click(function(){
            
     //     } 
     // });
+
   });
 </script>
 
