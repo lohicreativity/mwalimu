@@ -153,17 +153,18 @@ $("#uncheck-all-btn").click(function(){
 
             console.log(data);
 
-            // if (data.faculties.length > 0) {
+            if (data.faculties.length > 0) {
 
-            //   var element = '<option value="">Select Faculty</option>';
-            //   for(var i=0; i<data.faculties.length; i++){
-            //     element += '<option value="'+data.faculties[i].id+'">'+data.faculties[i].name+'</option>';
-            //   }
-            //   $($(e.target).data('target')).html(element);
+              var element = '<option value="">Select Faculty</option>';
+              for(var i=0; i<data.faculties.length; i++){
+                element += '<option value="'+data.faculties[i].id+'">'+data.faculties[i].name+'</option>';
+              }
+              $($(e.target).data('target')).html(element);
               
-            // } else if (data.campus.length > 0) {
-            //     alert('Campus yayy');
-            // }
+            } else if (data.campus.length > 0) {
+              
+                alert('Campus yayy');
+            }
 
             
             
