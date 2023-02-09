@@ -153,7 +153,7 @@ $("#uncheck-all-btn").click(function(){
 
             console.log(data);
 
-            if (!arrayIsEmpty(data.campus)) {
+            if (data.campus.length != 0)) {
 
               alert('Not empty');
               
