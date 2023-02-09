@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Domain\Settings\Models\Campus;
 use App\Domain\Settings\Models\Faculty;
-
+use Validator;
 
 
 class FacultyController extends Controller
