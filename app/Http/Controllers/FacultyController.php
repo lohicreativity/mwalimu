@@ -19,10 +19,12 @@ class FacultyController extends Controller
 
     public function index()
     {
+        $staff = User::find(Auth::user()->id)->staff;
+
         if (Auth::user()->hasRole('administrator')) {
             $faculties = Faculty::with(['campus'])->get();
         } else if (Auth::user()->hasRole('admission-officer')) {
-            $faculties = Faculty::all();
+            $faculties = Faculty::where('campus_id', $staff->campus_id)->get();
         }
 
         $data = [
