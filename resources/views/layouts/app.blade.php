@@ -153,6 +153,9 @@ $("#uncheck-all-btn").click(function(){
 
             if ('campus' in data) {
 
+              $("#parents").remove();
+              $("#parent_input").append('<input type="text" class="form-control" readonly value="'+data.campus.name+'"></input>')
+
               var element = '<option selected value="'+data.campus.id+'">'+data.campus.name+'</option>';
               $($(e.target).data('target')).html(element);
               // $('#parents').prop('disabled', true);

@@ -129,7 +129,7 @@
                         @endforeach
                       </select>
                     </div>
-                    <div class="form-group col-6">
+                    <div class="form-group col-6" id="parent_input">
                       {!! Form::label('','Parent') !!}
                       <select name="parent_id" id="parents" class="form-control">
                         <option value="">Select Parent</option>
