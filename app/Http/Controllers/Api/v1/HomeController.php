@@ -33,27 +33,9 @@ class HomeController extends Controller
 
     public function getParents(Request $request)
     {
-        // $all_departments = Department::where('unit_category_id', $request->get('unit_category_id'))->get();
-        // if(count($all_departments) != 0){
-        //     return response()->json(['status'=>'success','all_departments'=>$all_departments]);
-    	// }else{
-    	// 	return response()->json(['status'=>'failed','all_departments'=>$all_departments]);
-    	// }
-        $faculties = Faculty::all();
-
-        if(count($faculties) != 0){
-            return response()->json(['status'=>'success','faculties'=>$faculties]);
-    	}else{
-    		return response()->json(['status'=>'failed','faculties'=>$faculties]);
-    	}
-    }
-
-    public function getFacultyParents(Request $request)
-    {
         $staff = User::find(Auth::user()->id)->staff;
 
-        // $faculty = Faculty::where('campus_id', $staff->campus_id)->get();
-        $faculties = Faculty::all();
+        $faculty = Faculty::where('campus_id', $staff->campus_id)->get();
 
         if(count($faculties) != 0){
             return response()->json(['status'=>'success','faculties'=>$faculties]);
