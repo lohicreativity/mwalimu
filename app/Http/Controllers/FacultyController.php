@@ -19,9 +19,15 @@ class FacultyController extends Controller
 
     public function index()
     {
+        if (Auth::user()->hasRole('administrator')) {
+            $faculties = Faculty::with(['campus'])->get();
+        } else if (Auth::user()->hasRole('admission-officer')) {
+            $faculties = Faculty::all();
+        }
+
         $data = [
             'campuses'  => Campus::all(),
-            'faculties' => Faculty::with(['campus'])->get()
+            'faculties' => $faculties
         ];
 
     	return view('dashboard.settings.faculties', $data)->withTitle('faculties');

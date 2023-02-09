@@ -116,7 +116,9 @@
                                     <tr>
                                         <th>Name</th>
                                         <th>Abbreviation</th>
+                                        @if(Auth::user()->hasRole('administrator'))
                                         <th>Campus</th>
+                                        @endif
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
@@ -126,7 +128,9 @@
                                         <td>{{ $faculty->name }}</td>
                                         <td>{{ $faculty->abbreviation }}</td>
                                         <td>
+                                            @if(Auth::user()->hasRole('administrator'))
                                             {{ $faculty->campus->name }}
+                                            @endif
                                         </td>
                                         <td>
                                             <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-edit-faculty-{{ $faculty->id }}">
