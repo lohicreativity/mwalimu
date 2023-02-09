@@ -1011,7 +1011,7 @@
                 </a>
               </li>
               @endcan
-              @if(Auth::user()->hasRole('administrator'))
+              @if(Auth::user()->hasRole('administrator') || Auth::user()->hasRole('admission-officer'))
               <li class="nav-item">
                 <a href="{{ url('settings/faculties') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>

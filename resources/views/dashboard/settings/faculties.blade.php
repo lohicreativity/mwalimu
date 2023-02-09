@@ -46,6 +46,7 @@
 
                         {!! Form::open(['url'=>'settings/faculty/store','class'=>'ss-form-processing']) !!}
                         <div class="card-body">
+                            @if(Auth::user()->hasRole('administrator'))
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="form-group">
@@ -71,6 +72,23 @@
                                     </div>
                                 </div>
                             </div>
+                            @elseif(Auth::user()->hasRole('admission-officer'))
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="">Faculty Name</label>
+                                        <input type="text" required class="form-control" name="name" placeholder="Faculty Name">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="">Faculty Abbreviation</label>
+                                        <input type="text" required class="form-control" name="abbreviation" placeholder="Faculty Abbreviation">
+                                    </div>
+                                </div>
+                            </div>
+                            @endif
+                            
                         </div>
                         <div class="card-footer">
                             <button type="submit" class="btn btn-primary">{{ __('Add Faculty') }}</button>
