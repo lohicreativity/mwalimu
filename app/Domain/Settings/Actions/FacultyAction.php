@@ -12,7 +12,7 @@ class FacultyAction implements FacultyInterface{
 
                 $faculty = new Faculty;
                 $faculty->faculty_name  = $request->get('faculty_name');
-                $faculty->campus_id     = $request->get('campus');
+                $faculty->campus_id     = $request->get('campuses');
                 $faculty->save();
 	    
 	}
