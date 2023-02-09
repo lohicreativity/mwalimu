@@ -29,9 +29,9 @@ class FacultyAction implements FacultyInterface{
                 $faculty->campus_id     = $request->get('campus');
                 $faculty->save();
 
-                $campus_faculty = CampusFaculty::where('campus_id', $request->get('campus'))
-                ->where('faculty_id', $request->get('faculty_id'))
-                ->update(['campus_id' => $request->get('campus')]);
+                // $campus_faculty = CampusFaculty::where('campus_id', $request->get('campus'))
+                // ->where('faculty_id', $request->get('faculty_id'))
+                // ->update(['campus_id' => $request->get('campus')]);
 	    
 	}
 }
