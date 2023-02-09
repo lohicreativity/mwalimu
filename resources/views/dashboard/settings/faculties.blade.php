@@ -169,7 +169,7 @@
                                                                         <select name="campus" class="form-control">
                                                                             <option value="">Select campus</option>
                                                                             @foreach($campuses as $campus)
-                                                                            <option value="{{ $campus->id }}">{{ $campus->name }}</option>
+                                                                            <option value="{{ $campus->id }}" @if($campus->id == $campus->id) selected="selected" @endif>{{ $campus->name }}</option>
                                                                             @endforeach
                                                                         </select>
                                                                         {!! Form::input('hidden','faculty_id', $faculty->id) !!}
