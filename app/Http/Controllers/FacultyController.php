@@ -7,6 +7,7 @@ use App\Domain\Settings\Models\Campus;
 use App\Domain\Settings\Models\Faculty;
 use App\Domain\Settings\Models\CampusFaculty;
 use App\Domain\Settings\Actions\FacultyAction;
+use App\Models\User;
 use App\Utils\Util;
 use Validator, Auth;
 
