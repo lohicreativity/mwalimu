@@ -44,7 +44,7 @@
                         <h3 class="card-title">{{ __('Add Faculty') }}</h3>
                     </div>
 
-                    {!! Form::open(['url'=>'settings/campus/store','class'=>'ss-form-processing']) !!}
+                    {!! Form::open(['url'=>'settings/faculty/store','class'=>'ss-form-processing']) !!}
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-6">

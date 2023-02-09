@@ -82,6 +82,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 	Route::get('campus/{id}/destroy', [CampusController::class,'destroy']);
 
 	Route::get('faculties', [FacultyController::class, 'index'])->name('faculties');
+	Route::post('faculty/store', [FacultyController::class,'store']);
 
 
 	Route::get('roles', [RoleController::class,'index'])->name('roles');
