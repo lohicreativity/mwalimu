@@ -118,7 +118,7 @@
                     </div>
                   </div>
                   @elseif(Auth::user()->hasRole('admission-officer'))
-                  <input type="text" id="campus_id" value="{{ $staff->campus_id }}">
+                  <input type="hidden" id="campus_id" value="{{ $staff->campus_id }}">
                   <div class="row">
                     <div class="form-group col-6">
                       {!! Form::label('','Type') !!}

@@ -140,28 +140,29 @@ $("#uncheck-all-btn").click(function(){
 
     } else if ($(e.target).val() == 2) {
 
+      alert($('#campus_id').val());
 
-      $.ajax({
-      method:'POST',
-      url:$(e.target).data('source-url'),
-      data:{
-        _token:$(e.target).data('token'),
-        campus_id:$(e.target).val()
-      }      
-      }).done(function(data, status){
-          if (status == "success") {
+      // $.ajax({
+      // method:'POST',
+      // url:$(e.target).data('source-url'),
+      // data:{
+      //   _token:$(e.target).data('token'),
+      //   campus_id: $('#campus_id').val()
+      // }      
+      // }).done(function(data, status){
+      //     if (status == "success") {
 
 
-            var element = '<option value="">Select Faculty</option>';
-            for(var i=0; i<data.faculties.length; i++){
-              element += '<option value="'+data.faculties[i].id+'">'+data.faculties[i].name+'</option>';
-            }
-            $($(e.target).data('target')).html(element);
+      //       var element = '<option value="">Select Faculty</option>';
+      //       for(var i=0; i<data.faculties.length; i++){
+      //         element += '<option value="'+data.faculties[i].id+'">'+data.faculties[i].name+'</option>';
+      //       }
+      //       $($(e.target).data('target')).html(element);
 
 
             
-          }
-      });
+      //     }
+      // });
 
       
 
