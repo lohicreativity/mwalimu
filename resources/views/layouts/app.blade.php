@@ -183,7 +183,7 @@ $("#uncheck-all-btn").click(function(){
       }).done(function(data, status){
           if (status == "success") {
 
-            console.log(data);
+            console.log(data.departments.name);
 
             // var element = '<option value="">Select Department</option>';
             // for(var i=0; i<data..length; i++){
