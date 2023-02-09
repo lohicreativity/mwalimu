@@ -133,6 +133,12 @@
                                                                     'class'=>'form-control',
                                                                     'required'=>true
                                                                 ];
+
+                                                                $abbreviation = [
+                                                                    'placeholder'=>'Abbreviation',
+                                                                    'class'=>'form-control',
+                                                                    'required'=>true
+                                                                ];
                                                             @endphp
 
                                                             {!! Form::open(['url'=>'settings/faculty/update','class'=>'ss-form-processing']) !!}
@@ -142,6 +148,21 @@
                                                                         {!! Form::label('','Faculty Name') !!}
                                                                         {!! Form::text('name', $faculty->name, $name) !!}
 
+                                                                        {!! Form::input('hidden','faculty_id', $faculty->id) !!}
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <div class="form-group">
+                                                                        {!! Form::label('','Faculty Abbreviation') !!}
+                                                                        {!! Form::text('abbreviation', $faculty->abbreviation, $abbreviation) !!}
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <div class="form-group">
+                                                                        {!! Form::label('','Campus') !!}
+                                                                        <select name="campus" class="form-control">
+                                                                            <option value="">Select campus</option>
+                                                                        </select>
                                                                         {!! Form::input('hidden','faculty_id', $faculty->id) !!}
                                                                     </div>
                                                                 </div>
