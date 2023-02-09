@@ -37,12 +37,6 @@ class DepartmentController extends Controller
          ->paginate(20); 
       }
 
-      // if (Auth::user()->hasRole('administrator')) {
-      //    $faculties = Faculty::all();
-      // } else if (Auth::user()->hasRole('admission-officer')) {
-      //    $faculties = Faculty::where('campus_id', $staff->campus_id)
-      // }
-
     	$data = [
            'unit_categories'  =>UnitCategory::all(),
            'all_departments'  =>Department::all(),

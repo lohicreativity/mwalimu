@@ -92,12 +92,6 @@
 <script src="{{ asset('js/script.js?version='.config('constants.VERSION')) }}"></script>
 
 <script>
-$('#ss-select-category').on('change',function(e){
-  alert('Categories');
-});
-</script>
-
-<script>
 $('.assign-table').DataTable({
   "paging": false
 });

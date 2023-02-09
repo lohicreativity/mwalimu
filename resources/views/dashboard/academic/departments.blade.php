@@ -90,7 +90,7 @@
                   <div class="row">
                     <div class="form-group col-4">
                       {!! Form::label('','Type') !!}
-                      <select name="unit_category_id" class="form-control ss-select-category" required>
+                      <select name="unit_category_id" class="form-control" required>
                         <option value="">Select Type</option>
                         @foreach($unit_categories as $category)
                         <option value="{{ $category->id }}">{{ $category->name }}</option>
@@ -132,9 +132,9 @@
                       {!! Form::label('','Parent') !!}
                       <select name="parent_id" id="parents" class="form-control">
                         <option value="">Select Parent</option>
-                        @foreach($departments as $department)
+                        <!-- @foreach($departments as $department)
                         <option value="{{ $department->id }}">{{ $department->name }}</option>
-                        @endforeach
+                        @endforeach -->
                       </select>
                     </div>
                   </div>
