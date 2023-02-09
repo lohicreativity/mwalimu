@@ -50,7 +50,7 @@ class HomeController extends Controller
 
         } else if ($request->get('unit_category_id') == 4) {
 
-            $departments = Department::where('campus_id', $request->get('campus_id'))->get();
+            $departments = CampusDepartment::where('campus_id', $request->get('campus_id'))->with('department')->get();
 
             if (count($departments) > 0) {
                 return response()->json(['status'=>'success','departments'=>$departments]);
