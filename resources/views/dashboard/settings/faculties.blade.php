@@ -47,7 +47,7 @@
                         {!! Form::open(['url'=>'settings/faculty/store','class'=>'ss-form-processing']) !!}
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-md-6=4">
+                                <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="">Faculty Name</label>
                                         <input type="text" required class="form-control" name="faculty_name" placeholder="Faculty Name">
