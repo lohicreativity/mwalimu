@@ -154,26 +154,17 @@ $("#uncheck-all-btn").click(function(){
             console.log(data);
 
             if ('campus' in data) {
-              alert('Campus')
-            } else {
-              alert('No campus');
-            }
 
-            // if (data.faculties.length > 0) {
-
-            //   var element = '<option value="">Select Faculty</option>';
-            //   for(var i=0; i<data.faculties.length; i++){
-            //     element += '<option value="'+data.faculties[i].id+'">'+data.faculties[i].name+'</option>';
-            //   }
-            //   $($(e.target).data('target')).html(element);
+              var element = '<option selected value="'+data.campus.id+'">'+data.campus.name+'</option>';
               
-            // } else if (data.campus.length > 0) {
-
-            //     alert('Campus yayy');
-            // }
-
-            
-            
+            } else if('faculties' in data) {
+              var element = '<option value="">Select Faculty</option>';
+              for(var i=0; i<data.faculties.length; i++){
+                element += '<option value="'+data.faculties[i].id+'">'+data.faculties[i].name+'</option>';
+              }
+              $($(e.target).data('target')).html(element);
+            }
+      
           }
       });
 
