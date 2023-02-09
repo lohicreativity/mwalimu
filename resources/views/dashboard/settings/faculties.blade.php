@@ -162,6 +162,9 @@
                                                                         {!! Form::label('','Campus') !!}
                                                                         <select name="campus" class="form-control">
                                                                             <option value="">Select campus</option>
+                                                                            @foreach($campuses as $campus)
+                                                                            <option value="{{ $campus->id }}">{{ $campus->name }}</option>
+                                                                            @endforeach
                                                                         </select>
                                                                         {!! Form::input('hidden','faculty_id', $faculty->id) !!}
                                                                     </div>
