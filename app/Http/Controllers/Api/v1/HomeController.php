@@ -52,7 +52,7 @@ class HomeController extends Controller
 
             $departments = Department::whereHas('campuses',function($query) use($request){
                 $query->where('campuses.id', $request->get('campus_id'));
-            })->get();
+            })->with('campuses')->get();
             
             // ::with(['campuses'])->where('campuses.id', $request->get('campus_id'))->get();
 
