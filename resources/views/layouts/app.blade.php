@@ -156,7 +156,8 @@ $("#uncheck-all-btn").click(function(){
             if ('campus' in data) {
 
               var element = '<option selected value="'+data.campus.id+'">'+data.campus.name+'</option>';
-              
+              $($(e.target).data('target')).html(element);
+
             } else if('faculties' in data) {
               var element = '<option value="">Select Faculty</option>';
               for(var i=0; i<data.faculties.length; i++){
