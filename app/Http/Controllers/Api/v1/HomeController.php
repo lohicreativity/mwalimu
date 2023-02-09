@@ -51,7 +51,7 @@ class HomeController extends Controller
         } else if ($request->get('unit_category_id') == 4) {
 
             $departments = Department::whereHas('campuses',function($query) use($request){
-                $query->where('campuses.id', $request->get('campus_id'))->where('campuses.unit_category_id', 2);
+                $query->where('campuses.id', $request->get('campus_id'))->where('unit_category_id', 2);
             })->with('campuses')->get();
             
             if (count($departments) > 0) {
