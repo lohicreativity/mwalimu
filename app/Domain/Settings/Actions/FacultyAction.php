@@ -6,13 +6,14 @@ use Illuminate\Http\Request;
 use App\Domain\Settings\Models\Faculty;
 use App\Domain\Settings\Repositories\Interfaces\FacultyInterface;
 
-class FacutltyAction implements FacultyInterface{
+class FacultyAction implements FacultyInterface{
 	
 	public function store(Request $request){
-        $faculty = new Faculty;
-        $faculty->faculty_name  = $request->get('faculty_name');
-        $faculty->campus_id     = $request->get('campus');
-        $faculty->save();
+
+                $faculty = new Faculty;
+                $faculty->faculty_name  = $request->get('faculty_name');
+                $faculty->campus_id     = $request->get('campus');
+                $faculty->save();
 	    
 	}
 
