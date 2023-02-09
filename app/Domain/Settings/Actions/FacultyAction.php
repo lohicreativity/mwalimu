@@ -13,18 +13,24 @@ class FacultyAction implements FacultyInterface{
 	
 	public function store(Request $request){
 
+                $staff = User::find(Auth::user()->id)->staff;
+
                 $faculty = new Faculty;
                 $faculty->name          = $request->get('name');
                 $faculty->abbreviation  = $request->get('abbreviation');
                 if (Auth::user()->hasRole('administrator')) {
                         $faculty->campus_id     = $request->get('campuses');
                 } else if (Auth::user()->hasRole('admission-officer')) {
-                        $staff = User::find(Auth::user()->id)->staff;
                         $faculty->campus_id = $staff->campus_id;      
                 }
                 $faculty->save();
 
-                $faculty->campuses()->sync($request->get('campuses'));
+                if (Auth::user()->hasRole('administrator')) {
+                        $faculty->campuses()->sync($request->get('campuses'));
+                } else if (Auth::user()->hasRole('admission-officer')) {
+                        $faculty->campuses()->sync($staff->campus_id);
+                }
+                
 	    
 	}
 
