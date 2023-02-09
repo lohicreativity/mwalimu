@@ -43,7 +43,7 @@ class FacultyController extends Controller
         }
 
 
-        (new CampusAction)->store($request);
+        (new FacultyAction)->store($request);
 
         return Util::requestResponse($request,'Faculty created successfully');
     }
