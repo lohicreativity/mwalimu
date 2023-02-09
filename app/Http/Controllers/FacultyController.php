@@ -32,7 +32,7 @@ class FacultyController extends Controller
     public function store(Request $request)
     {
     	$validation = Validator::make($request->all(),[
-            'faculty_name'=>'required|unique:faculty',
+            'name'=>'required|unique:faculty',
             'campuses'=>'required',
         ]);
 
