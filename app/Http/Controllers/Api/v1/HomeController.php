@@ -45,7 +45,9 @@ class HomeController extends Controller
     {
         $staff = User::find(Auth::user()->id)->staff;
 
-        $faculty = Faculty::where('campus_id', $staff->campus_id)->get();
+        // $faculty = Faculty::where('campus_id', $staff->campus_id)->get();
+        $faculty = Faculty::all();
+
         if(count($faculty) != 0){
             return response()->json(['status'=>'success','faculties'=>$faculties]);
     	}else{

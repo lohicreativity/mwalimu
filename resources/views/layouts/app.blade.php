@@ -150,7 +150,7 @@ $("#uncheck-all-btn").click(function(){
       }).done(function(data, status){
           if(status == 'success'){
             alert('Yooo');
-          }  else {
+          } else {
             alert('Noooo');
           }
       });
