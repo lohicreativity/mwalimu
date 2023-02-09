@@ -54,8 +54,6 @@ class HomeController extends Controller
                 $query->where('campuses.id', $request->get('campus_id'));
             })->with('campuses')->get();
             
-            // ::with(['campuses'])->where('campuses.id', $request->get('campus_id'))->get();
-
             if (count($departments) > 0) {
                 return response()->json(['status'=>'success','departments'=>$departments]);
             } else {
