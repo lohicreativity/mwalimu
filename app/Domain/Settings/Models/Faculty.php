@@ -13,6 +13,14 @@ class Faculty extends Model
     protected $table = 'faculty';
 
     /**
+     * Establish many to many relationship with campuses
+     */
+    public function campuses()
+    {
+        return $this->belongsToMany(Campus::class,'campus_faculty','faculty_id','campus_id');
+    }
+
+    /**
      * Establish one to many relationship with campuses
      */
     // public function campuses()

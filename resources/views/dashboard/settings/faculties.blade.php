@@ -98,6 +98,7 @@
                                     <tr>
                                         <th>Name</th>
                                         <th>Abbreviation</th>
+                                        <th>Campus</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
@@ -106,6 +107,7 @@
                                     <tr>
                                         <td>{{ $faculty->name }}</td>
                                         <td>{{ $faculty->abbreviation }}</td>
+                                        <td></td>
                                         <td>
                                             <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-edit-faculty-{{ $faculty->id }}">
                                                 <i class="fas fa-pencil-alt"></i>
