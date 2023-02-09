@@ -31,7 +31,7 @@ class FacultyAction implements FacultyInterface{
 
                 $campus_faculty = CampusFaculty::where('campus_id', $request->get('campus'))
                 ->where('faculty_id', $request->get('faculty_id'))
-                ->update('campus_id', $request->get('campus'));
+                ->update(['campus_id' => $request->get('campus')]);
 	    
 	}
 }
