@@ -183,8 +183,6 @@ $("#uncheck-all-btn").click(function(){
       }).done(function(data, status){
           if (status == "success") {
 
-            console.log(data);
-
             var element = '<option value="">Select Department</option>';
             for(var i=0; i<data.departments.length; i++){
               element += '<option value="'+data.departments[i].id+'">'+data.departments[i].name+'</option>';
