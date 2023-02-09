@@ -83,6 +83,8 @@ class DepartmentController extends Controller
            }
         }
 
+        return $request->get('parent_id');
+
 
         (new DepartmentAction)->store($request);
 
