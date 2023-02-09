@@ -127,6 +127,30 @@
                                                             </button>
                                                         </div>
                                                         <div class="modal-body">
+                                                            @php
+                                                                $name = [
+                                                                    'placeholder'=>'Faculty Name',
+                                                                    'class'=>'form-control',
+                                                                    'required'=>true
+                                                                ];
+                                                            @endphp
+
+                                                            {!! Form::open(['url'=>'settings/faculty/update','class'=>'ss-form-processing']) !!}
+                                                            <div class="row">
+                                                                <div class="col-md-4">
+                                                                    <div class="form-group">
+                                                                        {!! Form::label('','Faculty Name') !!}
+                                                                        {!! Form::text('name', $campus->name, $name) !!}
+
+                                                                        {!! Form::input('hidden','faculty_id', $faculty->id) !!}
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="ss-form-actions">
+                                                                <button type="submit" class="btn btn-primary">{{ __('Save Changes') }}</button>
+                                                            </div>
+                                                            {!! Form::close() !!}
+
                                                             
                                                         </div>
                                                         <div class="modal-footer justify-content-between">
