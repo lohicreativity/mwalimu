@@ -154,8 +154,8 @@ $("#uncheck-all-btn").click(function(){
             if ('campus' in data) {
 
               $("#parents").remove();
-              // $("#parent_input").append('<input type="text" class="form-control" readonly value="'+data.campus.name+'"></input>')
-              $("$parent_input").append('<input text="hidden" name="parent_id" value="'+data.campus.id+'"></input>')
+              $("#parent_input").append('<input type="text" class="form-control" readonly value="'+data.campus.name+'"></input>')
+              $("#parent_input").append('<input text="hidden" name="parent_id" value="'+data.campus.id+'"></input>')
               // var element = '<option selected value="'+data.campus.id+'">'+data.campus.name+'</option>';
               // $($(e.target).data('target')).html(element);
               // $('#parents').prop('disabled', true);
