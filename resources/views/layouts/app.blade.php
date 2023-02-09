@@ -181,11 +181,17 @@ $("#uncheck-all-btn").click(function(){
         unit_category_id:$(e.target).val()
       }      
       }).done(function(data, status){
-          alert(status);
-          // if (status == "success") {
+          if (status == "success") {
 
+            console.log(data);
+
+            // var element = '<option value="">Select Department</option>';
+            // for(var i=0; i<data..length; i++){
+            //   element += '<option value="'+data.all_departments[i].id+'">'+data.all_departments[i].name+'</option>';
+            // }
+            // $($(e.target).data('target')).html(element);
       
-          // }
+          }
       });
 
 
