@@ -316,6 +316,17 @@ class ApplicationController extends Controller
          return view('dashboard.admission.admitted-applicants',$data)->withTitle('Admitted Applicants');
     }
 
+
+    /**
+     * Other applicants
+     */
+
+    public function otherApplicants(Request $request)
+    {
+        
+        return view('dashboard.admission.other-applicants')->withTitle('Other Applicants');
+    }
+
     /**
      * Download selected applicants list
      */

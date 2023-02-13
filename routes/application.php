@@ -172,6 +172,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
     
     Route::get('admitted-applicants',[ApplicationController::class,'admittedApplicants']);
 
+    Route::get('other-applicants',[ApplicationController::class,'otherApplicants']);
+
     Route::get('get-nacte-applicants',[ApplicationController::class,'getVerifiedApplicantsNACTE']);
 
     Route::get('tamisemi-applicants',[ApplicationController::class,'tamisemiApplicants']);
