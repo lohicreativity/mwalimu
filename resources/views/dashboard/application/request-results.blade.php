@@ -487,7 +487,6 @@
                           <div class="col-6">
                                {!! Form::open(['url'=>'application/nacte-reg-result/decline','class'=>'ss-form-processing']) !!}
                                
-                               {!! Form::input('hidden','avn',null) !!}
                                {!! Form::input('hidden','applicant_id',$applicant->id) !!}
                                {!! Form::input('hidden','nacte_result_detail_id',null) !!}
                                <div class="ss-form-controls">

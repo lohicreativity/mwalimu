@@ -54,9 +54,23 @@ class NacteResultController extends Controller
         return redirect()->back()->with('message','NACTE results confirmed successfully');
     }
 
-    public function confirmNacteRegNumber()
+    public function confirmNacteRegNumber(Request $request)
     {
-        return 'Confirm Nacte Reg';
+        return $request->get('nacte_result_detail_id');
+        // $applicant = Applicant::find($request->get('applicant_id'));
+        // $applicant->nacte_reg_no = $request->get('nacte_reg_no');
+        // if(NectaResultDetail::where('applicant_id',$applicant->id)->where('verified',1)->count() != 0){
+        //    $applicant->results_complete_status = 1;
+        // }
+        // $applicant->save();
+
+        // $nacte_detail = NacteResultDetail::find($request->get('nacte_result_detail_id'));
+
+        // if($applicant->nacte_reg_no != $nacte_detail->registration_number){
+        //     if(strtoupper($applicant->first_name) != strtoupper($detail->first_name) || strtoupper($applicant->surname) != strtoupper($detail->last_name)){
+        //         return redirect()->to('application/nullify-necta-results?detail_id='.$request->get('necta_result_detail_id'));
+        //     }
+        // }
     }
 
     public function declineNacteRegNumber()

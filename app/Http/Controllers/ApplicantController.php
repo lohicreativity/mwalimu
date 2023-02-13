@@ -1847,33 +1847,33 @@ class ApplicantController extends Controller
 
 
 
-        $applicant = Applicant::find($request->get('applicant_id'));
-        $applicant->nacte_reg_no = $request->get('nacte_reg_no');
-        if(NectaResultDetail::where('applicant_id',$applicant->id)->where('verified',1)->count() != 0){
-           $applicant->results_complete_status = 1;
-        }
-        $applicant->save();
+      //   $applicant = Applicant::find($request->get('applicant_id'));
+      //   $applicant->nacte_reg_no = $request->get('nacte_reg_no');
+      //   if(NectaResultDetail::where('applicant_id',$applicant->id)->where('verified',1)->count() != 0){
+      //      $applicant->results_complete_status = 1;
+      //   }
+      //   $applicant->save();
 
-        if($det = NacteResultDetail::where('registration_number',json_decode($response)->params[0]->registration_number)->where('applicant_id',$request->get('applicant_id'))->first()){
-            $detail = $det;
-        }else{
-            $detail = new NacteResultDetail;
-        }
-        $detail->institution = json_decode($response)->params[0]->institution_name;
-        $detail->firstname = json_decode($response)->params[0]->firstname;
-        $detail->middlename = json_decode($response)->params[0]->middle_name;
-        $detail->surname = json_decode($response)->params[0]->surname;
-        $detail->registration_number = json_decode($response)->params[0]->registration_number;
-        $detail->gender = json_decode($response)->params[0]->sex;
-        $detail->diploma_gpa = json_decode($response)->params[0]->GPA;
-        $detail->date_birth = json_decode($response)->params[0]->DOB;
-        $detail->programme = json_decode($response)->params[0]->programme_name;
-        $detail->diploma_graduation_year = json_decode($response)->params[0]->accademic_year;
-        $detail->verified = 1;
-        $detail->applicant_id = $request->get('applicant_id');
-        $detail->save();
+      //   if($det = NacteResultDetail::where('registration_number',json_decode($response)->params[0]->registration_number)->where('applicant_id',$request->get('applicant_id'))->first()){
+      //       $detail = $det;
+      //   }else{
+      //       $detail = new NacteResultDetail;
+      //   }
+      //   $detail->institution = json_decode($response)->params[0]->institution_name;
+      //   $detail->firstname = json_decode($response)->params[0]->firstname;
+      //   $detail->middlename = json_decode($response)->params[0]->middle_name;
+      //   $detail->surname = json_decode($response)->params[0]->surname;
+      //   $detail->registration_number = json_decode($response)->params[0]->registration_number;
+      //   $detail->gender = json_decode($response)->params[0]->sex;
+      //   $detail->diploma_gpa = json_decode($response)->params[0]->GPA;
+      //   $detail->date_birth = json_decode($response)->params[0]->DOB;
+      //   $detail->programme = json_decode($response)->params[0]->programme_name;
+      //   $detail->diploma_graduation_year = json_decode($response)->params[0]->accademic_year;
+      //   $detail->verified = 1;
+      //   $detail->applicant_id = $request->get('applicant_id');
+      //   $detail->save();
 
-        return redirect()->back()->with('message','NACTE registration number updated successfully');
+      //   return redirect()->back()->with('message','NACTE registration number updated successfully');
     }
 	
 	/**
