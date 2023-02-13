@@ -111,6 +111,15 @@ $("#uncheck-all-btn").click(function(){
 });
 </script>
 
+<script>
+// Nacte Registration Number
+$('.ss-form-processing-nacte').submit(function(e){
+
+  alert('Nacte Registration Number');
+
+});
+</script>
+
 <!-- <script>
   $('#ss-reset-control-number').on('click',function(e){
     $.ajax({
