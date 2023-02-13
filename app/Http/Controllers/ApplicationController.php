@@ -347,10 +347,12 @@ class ApplicationController extends Controller
                       ->orWhere('veta_status', 1);
             })
             ->with(['intake','selections.campusProgram.program','nectaResultDetails','nacteResultDetails'])
-            ->where('nacteResultDetails.verified', 1)
+            // ->where('nacteResultDetails.verified', 1)
             ->get();
 
         }
+
+        return $applicants;
 
 
         $data = [
