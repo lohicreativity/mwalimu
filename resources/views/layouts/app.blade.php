@@ -113,7 +113,7 @@ $("#uncheck-all-btn").click(function(){
 
 <script>
 // Nacte Registration Number
-$('.ss-form-processing-nacte').submit(function(e){
+$('.ss-form-processing-nacte-reg-number').submit(function(e){
 
   alert('Nacte Registration Number');
 
