@@ -56,22 +56,27 @@ class NacteResultController extends Controller
 
     public function confirmNacteRegNumber(Request $request)
     {
-        // $applicant->nacte_reg_no = $request->get('nacte_reg_no');
-        // if(NectaResultDetail::where('applicant_id',$applicant->id)->where('verified',1)->count() != 0){
-        //    $applicant->results_complete_status = 1;
-        // }
-        // $applicant->save();
+        
 
         $nacte_detail = NacteResultDetail::find($request->get('nacte_result_detail_id'));
         $applicant = Applicant::find($request->get('applicant_id'));
 
-        return $applicant;
 
-        // if($applicant->nacte_reg_no != $nacte_detail->registration_number){
-        //     if(strtoupper($applicant->first_name) != strtoupper($nacte_detail->first_name) || strtoupper($applicant->surname) != strtoupper($nacte_detail->last_name)){
-        //         return redirect()->to('application/nullify-nacte-reg-results?detail_id='.$request->get('necta_result_detail_id'));
-        //     }
-        // }
+        if($applicant->nacte_reg_no != $nacte_detail->registration_number){
+            if(strtoupper($applicant->first_name) != strtoupper($nacte_detail->first_name) || strtoupper($applicant->surname) != strtoupper($nacte_detail->last_name)){
+                return redirect()->to('application/nullify-nacte-reg-results?detail_id='.$request->get('necta_result_detail_id'));
+            }
+        } else {
+
+            $applicant->nacte_reg_no = $request->get('nacte_reg_no');
+            
+            if(NectaResultDetail::where('applicant_id',$applicant->id)->where('verified',1)->count() != 0){
+               $applicant->results_complete_status = 1;
+            }
+            
+            $applicant->save();
+
+        }
     }
 
     public function declineNacteRegNumber()
