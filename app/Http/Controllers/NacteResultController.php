@@ -61,7 +61,7 @@ class NacteResultController extends Controller
         $nacte_detail = NacteResultDetail::find($request->get('nacte_result_detail_id'));
         $applicant = Applicant::find($request->get('applicant_id'));
 
-        return $request->get('nacte_result_detail_id');
+        return $request->get('nacte_reg_no');
 
 
         if($applicant->nacte_reg_no != $nacte_detail->registration_number){
