@@ -1792,7 +1792,7 @@ class ApplicantController extends Controller
     /**
      * Update NACTE registration number
      */
-    public function updateNacteRegNumber(Request $request)
+    public function updateNacteRegNumber(Request $request, $nacte_reg_no)
     {
       //   $validation = Validator::make($request->all(),[
       //       'nacte_reg_no'=>'required',
@@ -1806,7 +1806,7 @@ class ApplicantController extends Controller
       //      }
       //   }
 
-        return response()->json(['nacte_reg_no'=> $request->get('nacte_reg_no'), 'exists' => 1]);
+        return response()->json(['nacte_reg_no'=> $nacte_reg_no, 'exists' => 1]);
 
       
         
