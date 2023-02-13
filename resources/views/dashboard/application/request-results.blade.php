@@ -379,10 +379,11 @@
                   $nacte_reg_number = [
                      'placeholder'=>'NS0001/0002/2001',
                      'class'=>'form-control',
-                     'required'=>true
+                     'required'=>true,
+                     'id' => 'nacte_registration_number'
                   ];
               @endphp
-              {!! Form::open(['class'=>'ss-form-processing-nacte-reg-number', 'id' => 'nacte']) !!}
+              {!! Form::open(['class'=>'ss-form-processing-nacte-reg-number']) !!}
               <div class="card-body">
                   {!! Form::input('hidden','applicant_id',$applicant->id) !!}
 

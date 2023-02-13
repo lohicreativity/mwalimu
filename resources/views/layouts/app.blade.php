@@ -118,12 +118,19 @@ $('.ss-form-processing-nacte-reg-number').submit(function(e){
     e.preventDefault();
     var resultsContainer = $(e.target).data('results-container');
     var submitText = $(e.target).find('button[type=submit]').text();
-    var id = $(e.target).attr('id');
+    var nacte_registration_number = $('#nacte_registration_number').val();
     $(e.target).find('button[type=submit]').text('Processing...');
     $(e.target).find('button[type=submit]').addClass('disabled');
 
-    alert(id);
+    alert(nacte_registration_number);
 
+
+    // $.ajax({
+    //     url:'/application/update-nacte-reg-no/',
+    //     method:'GET',
+    //  }).done(function(data,success){
+         
+    //  });
 });
 </script>
 
