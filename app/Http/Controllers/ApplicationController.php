@@ -349,14 +349,9 @@ class ApplicationController extends Controller
             ->with(['intake','selections.campusProgram.program','nectaResultDetails','nacteResultDetails' => function($query) {
                 $query->where('verified', 1);
             }])
-            // ->whereHas('nacteResultDetails', function($query){
-            //     $query->where('verified', 1);
-            // })
             ->get();
 
         }
-
-        return $applicants;
 
         $data = [
             'applicants' => $applicants
