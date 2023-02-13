@@ -1795,7 +1795,7 @@ class ApplicantController extends Controller
     public function updateNacteRegNumber(Request $request, $nacte_reg_no)
     {
 
-      $sample = str_replace('-', '.', $request->get('nacte_reg_no'));
+         $sample = str_replace('-', '.', $nacte_reg_no);
 
         return response()->json(['nacte_reg_no'=> $sample, 'exists' => 1]);
 
