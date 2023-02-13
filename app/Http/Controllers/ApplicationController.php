@@ -341,6 +341,7 @@ class ApplicationController extends Controller
         //    })->where('campus_id', $campus_id)->get();
 
             $applicants = Applicant::where('campus_id', $campus_id)
+            ->where('programs_complete_status', 1)
             ->where(function($query) {
                 $query->where('teacher_certificate_status', 1)
                       ->orWhere('veta_status', 1);
