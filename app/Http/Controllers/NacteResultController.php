@@ -73,7 +73,7 @@ class NacteResultController extends Controller
             if(NectaResultDetail::where('applicant_id',$applicant->id)->where('verified',1)->count() != 0){
                $applicant->results_complete_status = 1;
             }
-            
+
             $applicant->save();
 
         }
@@ -89,9 +89,10 @@ class NacteResultController extends Controller
      */
     public function nullifyNacteReg(Request $request)
     {
-        $detail = NacteResultDetail::find($request->get('detail_id'));
-        $detail->delete();
-        return redirect()->back()->with('error','NECTA results names do not match your application names');
+        return $request->get('detail_id');
+        // $detail = NacteResultDetail::find($request->get('detail_id'));
+        // $detail->delete();
+        // return redirect()->back()->with('error','NECTA results names do not match your application names');
     }
 
     /**
