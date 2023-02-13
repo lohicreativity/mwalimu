@@ -89,7 +89,7 @@ class NacteResultController extends Controller
     public function nullifyNacteReg(Request $request)
     {
         $detail = NacteResultDetail::find($request->get('detail_id'));
-        return $detail;
+        return 123;
         // $detail->delete();
         // return redirect()->back()->with('error','NECTA results names do not match your application names');
     }
