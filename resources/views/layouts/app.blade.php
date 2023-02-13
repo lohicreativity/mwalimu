@@ -115,7 +115,14 @@ $("#uncheck-all-btn").click(function(){
 // Nacte Registration Number
 $('.ss-form-processing-nacte-reg-number').submit(function(e){
 
-  alert('Nacte Registration Number');
+    e.preventDefault();
+    var resultsContainer = $(e.target).data('results-container');
+    var submitText = $(e.target).find('button[type=submit]').text();
+    var id = $(e.target).attr('id');
+    $(e.target).find('button[type=submit]').text('Processing...');
+    $(e.target).find('button[type=submit]').addClass('disabled');
+
+    alert(id);
 
 });
 </script>
