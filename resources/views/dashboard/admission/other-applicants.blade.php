@@ -42,7 +42,7 @@
              
             <div class="card">
                <div class="card-header">
-                 <h3 class="card-title">{{ __('Admitted Applicants') }}</h3><br>
+                 <h3 class="card-title">{{ __('Other Applicants') }}</h3><br>
                </div>
                <!-- /.card-header -->
                <div class="card-body">
