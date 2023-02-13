@@ -109,6 +109,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 
     Route::post('nacte-reg-result/confirm',[NacteResultController::class,'confirmNacteRegNumber']);
     Route::post('nacte-reg-result/decline',[NacteResultController::class,'declineNacteRegNumber']);
+    Route::get('nullify-nacte-reg-results',[NacteResultController::class,'nullify']);
 
     Route::get('application-window-campus-programs', [ApplicationWindowController::class,'showPrograms']);
 	Route::post('application-window-campus-programs/update', [ApplicationWindowController::class,'updatePrograms']);

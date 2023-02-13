@@ -67,7 +67,7 @@ class NacteResultController extends Controller
 
         if($applicant->nacte_reg_no != $nacte_detail->registration_number){
             if(strtoupper($applicant->first_name) != strtoupper($nacte_detail->first_name) || strtoupper($applicant->surname) != strtoupper($nacte_detail->last_name)){
-                return redirect()->to('application/nullify-necta-results?detail_id='.$request->get('necta_result_detail_id'));
+                return redirect()->to('application/nullify-nacte-reg-results?detail_id='.$request->get('necta_result_detail_id'));
             }
         }
     }
@@ -75,6 +75,16 @@ class NacteResultController extends Controller
     public function declineNacteRegNumber()
     {
         return 'Decline Nacte Reg';
+    }
+
+    /**
+     * Nullify NACTE results
+     */
+    public function nullify(Request $request)
+    {
+        $detail = NacteResultDetail::find($request->get('detail_id'));
+        $detail->delete();
+        return redirect()->back()->with('error','NECTA results names do not match your application names');
     }
 
     /**
