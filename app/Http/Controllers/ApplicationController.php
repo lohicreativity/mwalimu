@@ -346,10 +346,12 @@ class ApplicationController extends Controller
                 $query->where('teacher_certificate_status', 1)
                       ->orWhere('veta_status', 1);
             })
-            ->with(['intake','selections.campusProgram.program','nectaResultDetails','nacteResultDetails'])
-            ->whereHas('nacteResultDetails', function($query){
+            ->with(['intake','selections.campusProgram.program','nectaResultDetails','nacteResultDetails' => function($query) {
                 $query->where('verified', 1);
-            })
+            }])
+            // ->whereHas('nacteResultDetails', function($query){
+            //     $query->where('verified', 1);
+            // })
             ->get();
 
         }
