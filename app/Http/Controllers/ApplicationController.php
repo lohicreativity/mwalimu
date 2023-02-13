@@ -323,8 +323,15 @@ class ApplicationController extends Controller
 
     public function otherApplicants(Request $request)
     {
+        $applicants = Applicant::where('teacher_certificate_status', 1)->orwhere('veta_status', 1)->get();
+
+        return $applicants;
+
+        $data = [
+            'applicants' => $applicants
+        ];
         
-        return view('dashboard.admission.other-applicants')->withTitle('Other Applicants');
+        return view('dashboard.admission.other-applicants', $data)->withTitle('Other Applicants');
     }
 
     /**
