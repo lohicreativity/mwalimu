@@ -126,7 +126,37 @@ $('.ss-form-processing-nacte-reg-number').submit(function(e){
         method:'GET',
      }).done(function(data,success){
 
-      console.log(data);
+        if(data.error){
+          alert(data.error);
+        } else {
+
+         $(e.target).find('button[type=submit]').text(submitText);
+         $(e.target).find('button[type=submit]').removeClass('disabled');
+
+        //  var element = '<table class="table table-bordered">';
+        //  element += '<tr><td>Institution:</td><td>'+data.details.institution+'</td></tr>';
+        //  element += '<tr><td>Programme:</td><td>'+data.details.programme+'</td></tr>'
+        //  element += '<tr><td>First Name:</td><td>'+data.details.firstname+'</td></tr>';
+        //  element += '<tr><td>Middle Name:</td><td>'+data.details.middlename+'</td></tr>';
+        //  element += '<tr><td>Surname:</td><td>'+data.details.surname+'</td></tr>';
+        //  element += '<tr><td>Gender:</td><td>'+data.details.gender+'</td></tr>';
+        //  element += '<tr><td>Birth Date:</td><td>'+data.details.date_birth+'</td></tr>';
+        //  element += '<tr><td>AVN:</td><td>'+data.details.avn+'</td></tr>';
+        //  element += '<tr><td>Graduation Year:</td><td>'+data.details.diploma_graduation_year+'</td></tr>';
+        //  element += '<tr><td>Username:</td><td>'+data.details.username+'</td></tr>';
+        //  element += '<tr><td>Diploma Code:</td><td>'+data.details.diploma_code+'</td></tr>';
+        //  element += '<tr><td>Registration Number:</td><td>'+data.details.registration_number+'</td></tr>';
+        //  element += '<tr><td>Diploma GPA:</td><td>'+data.details.diploma_gpa+'</td></tr>';
+        //  for(var i=0; i<data.details.results.length; i++){
+        //     element += '<tr><td>'+data.details.results[i].subject+'</td><td>'+data.details.results[i].grade+'</td></tr>'
+        //  }
+        //  element += '</table>';
+
+         $($(e.target).find('input[name=results_container]').val()).html(element);
+         $($(e.target).find('input[name=display_modal]').val()).modal('show');
+         
+        //  $($(e.target).find('input[name=display_modal]').val()+' input[name=nacte_result_detail_id]').val(data.details.id);
+         }
          
      });
 });

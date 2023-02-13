@@ -385,6 +385,9 @@
               {!! Form::open(['class'=>'ss-form-processing-nacte-reg-number', 'method' => 'GET']) !!}
               <div class="card-body">
                   {!! Form::input('hidden','applicant_id',$applicant->id) !!}
+                  {!! Form::input('hidden','display_modal','#ss-confirm-nacte-results') !!}
+                  {!! Form::input('hidden','results_container','#ss-nacte-results-container') !!}
+                  {!! Form::input('hidden','results_link','#ss-nacte-results-confirmation-link') !!}
 
                   <div class="row">
                   <div class="form-group col-4">
