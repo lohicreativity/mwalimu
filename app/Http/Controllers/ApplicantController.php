@@ -1803,23 +1803,46 @@ class ApplicantController extends Controller
 
       
         
-      //   try{
-      //    $response = Http::get('https://www.nacte.go.tz/nacteapi/index.php/api/particulars/'.str_replace('-', '.', $nacte_reg_no).'-4/'.config('constants.NACTE_API_KEY'));
-      //   }catch(\Exception $e){
-      //       return response()->json(['error'=>'Unexpected network error occured. Please try again']);
-      //   }
-
-      //   if(json_decode($response)->code != 200){
-      //       return response()->json(['error'=>'Invalid NACTE Registration number']);
-      //   } 
+      
 
             // $applicant = Applicant::find($request->get('applicant_id'));
             // $applicant->nacte_reg_no = str_replace('-', '/', $nacte_reg_no);
 
             if ($nacte_details = NacteResultDetail::where('registration_number',str_replace('-', '/', $nacte_reg_no))->where('applicant_id',$request->get('applicant_id'))->first()) {
-               return response()->json(['nacte_details' => $nacte_details]);
+               return response()->json(['nacte_details' => $nacte_details, 'exists' => 1]);
             } else {
-               return response()->json(['error' => 'No nacte details present']);
+
+               try{
+                  $response = Http::get('https://www.nacte.go.tz/nacteapi/index.php/api/particulars/'.str_replace('-', '.', $nacte_reg_no).'-4/'.config('constants.NACTE_API_KEY'));
+               }catch(\Exception $e){
+                  return response()->json(['error'=>'Unexpected network error occured. Please try again']);
+               }
+
+               if(json_decode($response)->code != 200){
+                  return response()->json(['error'=>'Invalid NACTE Registration number']);
+               } else if (json_decode($response)->code == 200) {
+
+                  $nacte_details = new NacteResultDetail;
+
+                  $nacte_details->institution = json_decode($response)->params[0]->institution_name;
+                  $nacte_details->firstname = json_decode($response)->params[0]->firstname;
+                  $nacte_details->middlename = json_decode($response)->params[0]->middle_name;
+                  $nacte_details->surname = json_decode($response)->params[0]->surname;
+                  $nacte_details->registration_number = json_decode($response)->params[0]->registration_number;
+                  $nacte_details->gender = json_decode($response)->params[0]->sex;
+                  $nacte_details->diploma_gpa = json_decode($response)->params[0]->GPA;
+                  $nacte_details->date_birth = json_decode($response)->params[0]->DOB;
+                  $nacte_details->programme = json_decode($response)->params[0]->programme_name;
+                  $nacte_details->diploma_graduation_year = json_decode($response)->params[0]->accademic_year;
+                  $nacte_details->verified = 1;
+                  $nacte_details->applicant_id = $request->get('applicant_id');
+                  $nacte_details->save();
+
+                  return response()->json(['nacte_details' => $nacte_details, 'exists' => 0]);
+
+               }
+
+               
             }
 
 
