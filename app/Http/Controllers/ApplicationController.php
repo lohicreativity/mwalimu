@@ -289,10 +289,7 @@ class ApplicationController extends Controller
                $query->where('confirmation_status','!=','CANCELLED')->orWhere('confirmation_status','!=','TRANSFERED')->orWhereNull('confirmation_status');
            })->where('campus_id', $campus_id)->where('status','ADMITTED')->get();
 
-         }
-
-        //  return $applicants;
-         
+         }         
          
 
          $data = [
@@ -323,7 +320,27 @@ class ApplicationController extends Controller
 
     public function otherApplicants(Request $request)
     {
-        $applicants = Applicant::where('teacher_certificate_status', 1)->orwhere('veta_status', 1)->get();
+        $staff = User::find(Auth::user()->id)->staff;
+
+        $campus_id = $staff->campus_id;
+
+        if (Auth::user()->hasRole('administrator')) {
+
+            $applicants = Applicant::doesntHave('student')->whereHas('selections',function($query) use($request){
+                $query->where('status','SELECTED')->orWhere('teacher_certificate_status', 1)->orwhere('veta_status', 1);
+           })->with(['intake','selections.campusProgram.program','nectaResultDetails','nacteResultDetails'])->where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$request->get('program_level_id'))->where(function($query){
+               $query->where('confirmation_status','!=','CANCELLED')->orWhere('confirmation_status','!=','TRANSFERED')->orWhereNull('confirmation_status');
+           })->where('status','ADMITTED')->get();
+
+        } else if (Auth::user()->hasRole('admission-officer')) {
+
+            $applicants = Applicant::doesntHave('student')->whereHas('selections',function($query) use($request){
+                $query->where('status','SELECTED')->orWhere('teacher_certificate_status', 1)->orwhere('veta_status', 1);
+           })->with(['intake','selections.campusProgram.program','nectaResultDetails','nacteResultDetails'])->where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$request->get('program_level_id'))->where(function($query){
+               $query->where('confirmation_status','!=','CANCELLED')->orWhere('confirmation_status','!=','TRANSFERED')->orWhereNull('confirmation_status');
+           })->where('campus_id', $campus_id)->where('status','ADMITTED')->get();
+
+        }
 
         return $applicants;
 

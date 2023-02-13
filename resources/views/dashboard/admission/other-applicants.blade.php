@@ -46,8 +46,33 @@
                </div>
                <!-- /.card-header -->
                <div class="card-body">
-                
-                  
+
+                    <table class="table table-bordered ss-margin-top ss-paginated-table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Name</th>
+                                <th>Form IV Index No.</th>
+                                <th>Form VI Index No./AVN</th>
+                                <th>Gender</th>
+                                <th>Programme</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($applicants as $applicant)
+                            <tr>
+                                <td>{{ $loop->iteration }}</td>
+                                <td>{{ $applicant->first_name }}</td>
+                                <td>{{ $applicant->index_number }}</td>
+                                <td>{{ $applicant->nacte_reg_no }}</td>
+                                <td>{{ $applicant->gender }}</td>
+                                <td></td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                 
                </div>
             </div>
 
