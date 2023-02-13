@@ -354,9 +354,6 @@ class ApplicationController extends Controller
 
         }
 
-        return $applicants;
-
-
         $data = [
             'applicants' => $applicants
         ];
