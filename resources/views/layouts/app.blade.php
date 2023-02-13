@@ -122,7 +122,7 @@ $('.ss-form-processing-nacte-reg-number').submit(function(e){
     $(e.target).find('button[type=submit]').addClass('disabled');
 
     $.ajax({
-        url:'/application/fetch-nacte-results/'+$(e.target).find('input[name=avn]').val()+'?applicant_id='+$(e.target).find('input[name=applicant_id]').val(),
+        url:'/application/fetch-nacte-results/'+$(e.target).find('input[name=nacte_reg_no]').val()+'?applicant_id='+$(e.target).find('input[name=applicant_id]').val(),
         method:'GET',
      }).done(function(data,success){
 
