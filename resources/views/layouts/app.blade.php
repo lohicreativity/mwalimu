@@ -150,6 +150,8 @@ $('.ss-form-processing-nacte-reg-number').submit(function(e){
          $($(e.target).find('input[name=display_modal]').val()).modal('show');
          
          $($(e.target).find('input[name=display_modal]').val()+' input[name=nacte_result_detail_id]').val(data.nacte_details.id);
+         $($(e.target).find('input[name=display_modal]').val()+' input[name=nacte_reg_no]').val(data.nacte_details.registration_number);
+
          }
          
      });

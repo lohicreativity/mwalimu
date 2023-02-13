@@ -489,6 +489,7 @@
                                
                                {!! Form::input('hidden','applicant_id',$applicant->id) !!}
                                {!! Form::input('hidden','nacte_result_detail_id',null) !!}
+                               
                                <div class="ss-form-controls">
                                  <button class="btn btn-danger" id="ss-result-confirmation-link" type="submit">Decline Results</button>
                             
@@ -504,6 +505,7 @@
                                {!! Form::input('hidden','avn',null) !!}
                                {!! Form::input('hidden','applicant_id',$applicant->id) !!}
                                {!! Form::input('hidden','nacte_result_detail_id',null) !!}
+                               {!! Form::input('hidden','nacte_reg_no',null) !!}
                                <div class="ss-form-controls">
                                  <button class="btn btn-primary" type="submit">Confirm Results</button>
                                </div><!-- end of ss-form-controls -->
