@@ -385,7 +385,7 @@
               {!! Form::open(['class'=>'ss-form-processing-nacte-reg-number', 'method' => 'GET']) !!}
               <div class="card-body">
                   {!! Form::input('hidden','applicant_id',$applicant->id) !!}
-                  {!! Form::input('hidden','display_modal','#ss-confirm-nacte-results') !!}
+                  {!! Form::input('hidden','display_modal','#ss-confirm-nacte-reg-results') !!}
                   {!! Form::input('hidden','results_container','#ss-nacte-results-container') !!}
                   {!! Form::input('hidden','results_link','#ss-nacte-results-confirmation-link') !!}
 
@@ -465,6 +465,63 @@
                 <!-- /.modal-dialog -->
               </div>
               <!-- /.modal -->
+
+
+              <div class="modal fade" id="ss-confirm-nacte-reg-results" data-backdrop="static" data-keyboard="false">
+                <div class="modal-dialog modal-lg">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h4 class="modal-title"><i class="fa fa-exclamation-sign"></i> Confirmation Alert</h4>
+                      <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button> -->
+                    </div>
+                    <div class="modal-body">
+                      <div class="row">
+                        <div class="col-12">
+                            <div id="ss-nacte-results-container"></div>
+                          </div>
+                        </div>
+                        <div id="ss-nacte-confirmation-container">
+                        <div class="row">
+                          <div class="col-6">
+                               {!! Form::open(['url'=>'application/nacte-reg-result/decline','class'=>'ss-form-processing']) !!}
+                               
+                               {!! Form::input('hidden','avn',null) !!}
+                               {!! Form::input('hidden','applicant_id',$applicant->id) !!}
+                               {!! Form::input('hidden','nacte_result_detail_id',null) !!}
+                               <div class="ss-form-controls">
+                                 <button class="btn btn-danger" id="ss-result-confirmation-link" type="submit">Decline Results</button>
+                            
+                               </div><!-- end of ss-form-controls -->
+                               {!! Form::close() !!}
+
+                              </div>
+                            </div>
+                              <div class="col-6">
+
+                               {!! Form::open(['url'=>'application/nacte-reg-result/confirm','class'=>'ss-form-processing']) !!}
+                               
+                               {!! Form::input('hidden','avn',null) !!}
+                               {!! Form::input('hidden','applicant_id',$applicant->id) !!}
+                               {!! Form::input('hidden','nacte_result_detail_id',null) !!}
+                               <div class="ss-form-controls">
+                                 <button class="btn btn-primary" type="submit">Confirm Results</button>
+                               </div><!-- end of ss-form-controls -->
+                               {!! Form::close() !!}
+                              
+                          </div><!-- end of col-md-12 -->
+                       </div><!-- end of row -->
+                       </div><!-- end of ss-confirmation-container -->
+                    </div>
+                  </div>
+                  <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+              </div>
+              <!-- /.modal -->
+
+
 
               <div class="modal fade" id="ss-confirm-out-results" data-backdrop="static" data-keyboard="false">
                 <div class="modal-dialog modal-lg">

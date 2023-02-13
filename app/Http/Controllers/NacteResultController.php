@@ -54,6 +54,16 @@ class NacteResultController extends Controller
         return redirect()->back()->with('message','NACTE results confirmed successfully');
     }
 
+    public function confirmNacteRegNumber()
+    {
+        return 'Confirm Nacte Reg';
+    }
+
+    public function declineNacteRegNumber()
+    {
+        return 'Decline Nacte Reg';
+    }
+
     /**
      * Delete NACTE results
      */
