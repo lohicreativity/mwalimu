@@ -1806,7 +1806,7 @@ class ApplicantController extends Controller
            }
         }
 
-        return response()->json(['registration_number'=> $request->nacte_registration_number, 'exists' => 1]);
+      //   return response()->json(['registration_number'=> $request->nacte_registration_number, 'exists' => 1]);
 
       
         
