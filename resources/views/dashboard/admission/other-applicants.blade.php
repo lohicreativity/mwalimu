@@ -79,9 +79,7 @@
 					            </td>
                                 <td>
                                     @foreach($applicant->selections as $selection)
-                                        @if($selection->status == 'SELECTED')
-                                            {{ $selection->campusProgram->program->code }}
-                                        @endif
+                                        {{ $selection->campusProgram->program->code }}
                                     @endforeach
                                 </td>
                                 <td>
