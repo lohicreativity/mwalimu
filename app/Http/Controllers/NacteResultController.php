@@ -80,7 +80,7 @@ class NacteResultController extends Controller
         }
     }
 
-    public function declineNacteRegNumber()
+    public function declineNacteRegNumber(Request $request)
     {
         $detail = NacteResultDetail::find($request->get('nacte_result_detail_id'));
         if($detail->verified != 1){
