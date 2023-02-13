@@ -1809,7 +1809,9 @@ class ApplicantController extends Controller
 
         if(json_decode($response)->code != 200){
             return response()->json(['error'=>'Invalid NACTE Registration number']);
-        }
+        } elseif (json_decode($response)->code == 200) {
+            return response()->json(['success'=>'Student found']);
+        } 
 
       //   $applicant = Applicant::find($request->get('applicant_id'));
       //   $applicant->nacte_reg_no = $request->get('nacte_reg_no');
