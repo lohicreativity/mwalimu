@@ -63,7 +63,8 @@ class NacteResultController extends Controller
 
         if($applicant->nacte_reg_no != $nacte_detail->registration_number){
             if(strtoupper($applicant->first_name) != strtoupper($nacte_detail->first_name) || strtoupper($applicant->surname) != strtoupper($nacte_detail->last_name)){
-                return redirect()->to('application/nullify-nacte-reg-results?detail_id='.$request->get('necta_result_detail_id'));
+                return $request->get('necta_result_detail_id');
+                // return redirect()->to('application/nullify-nacte-reg-results?detail_id='.$request->get('necta_result_detail_id'));
             }
         } else {
 
