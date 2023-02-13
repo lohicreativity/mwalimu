@@ -382,7 +382,7 @@
                      'required'=>true
                   ];
               @endphp
-              {!! Form::open(['class'=>'ss-form-processing-nacte-reg-number']) !!}
+              {!! Form::open(['class'=>'ss-form-processing-nacte-reg-number', 'method' => 'GET']) !!}
               <div class="card-body">
                   {!! Form::input('hidden','applicant_id',$applicant->id) !!}
 
