@@ -121,10 +121,8 @@ $('.ss-form-processing-nacte-reg-number').submit(function(e){
     $(e.target).find('button[type=submit]').text('Processing...');
     $(e.target).find('button[type=submit]').addClass('disabled');
 
-    var reg_no = 123;
-
     $.ajax({
-        url:'/application/update-nacte-reg-no/'+reg_no,
+        url:'/application/update-nacte-reg-no/'+$(e.target).find('input[name=nacte_reg_no]').val().replace(/\//g,'-'),
         method:'GET',
      }).done(function(data,success){
 
