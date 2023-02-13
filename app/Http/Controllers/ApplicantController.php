@@ -1794,17 +1794,17 @@ class ApplicantController extends Controller
      */
     public function updateNacteRegNumber(Request $request)
     {
-        $validation = Validator::make($request->all(),[
-            'nacte_reg_no'=>'required',
-        ]);
+      //   $validation = Validator::make($request->all(),[
+      //       'nacte_reg_no'=>'required',
+      //   ]);
 
-        if($validation->fails()){
-           if($request->ajax()){
-              return response()->json(array('error_messages'=>$validation->messages()));
-           }else{
-              return redirect()->back()->withInput()->withErrors($validation->messages());
-           }
-        }
+      //   if($validation->fails()){
+      //      if($request->ajax()){
+      //         return response()->json(array('error_messages'=>$validation->messages()));
+      //      }else{
+      //         return redirect()->back()->withInput()->withErrors($validation->messages());
+      //      }
+      //   }
 
         return response()->json(['nacte_reg_no'=> $request->get('nacte_reg_no'), 'exists' => 1]);
 
