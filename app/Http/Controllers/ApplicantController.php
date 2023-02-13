@@ -1795,19 +1795,6 @@ class ApplicantController extends Controller
     public function updateNacteRegNumber(Request $request, $nacte_reg_no)
     {
 
-      //    $sample = str_replace('-', '.', $nacte_reg_no);
-
-      //   return response()->json(['nacte_reg_no'=> $sample, 'exists' => 1]);
-
-
-
-      
-        
-      
-
-            // $applicant = Applicant::find($request->get('applicant_id'));
-            // $applicant->nacte_reg_no = str_replace('-', '/', $nacte_reg_no);
-
             if ($nacte_details = NacteResultDetail::where('registration_number',str_replace('-', '/', $nacte_reg_no))->where('applicant_id',$request->get('applicant_id'))->first()) {
                return response()->json(['nacte_details' => $nacte_details, 'exists' => 1]);
             } else {
@@ -1834,7 +1821,7 @@ class ApplicantController extends Controller
                   $nacte_details->date_birth = json_decode($response)->params[0]->DOB;
                   $nacte_details->programme = json_decode($response)->params[0]->programme_name;
                   $nacte_details->diploma_graduation_year = json_decode($response)->params[0]->accademic_year;
-                  $nacte_details->verified = 1;
+                  $nacte_details->verified = 0;
                   $nacte_details->applicant_id = $request->get('applicant_id');
                   $nacte_details->save();
 

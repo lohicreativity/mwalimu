@@ -52,9 +52,9 @@
                             <tr>
                                 <th>#</th>
                                 <th>Name</th>
+                                <th>Gender</th>
                                 <th>Form IV Index No.</th>
                                 <th>Form VI Index No./AVN</th>
-                                <th>Gender</th>
                                 <th>Programme</th>
                                 <th>Action</th>
                             </tr>
@@ -64,6 +64,7 @@
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $applicant->first_name }} {{ $applicant->middle_name }} {{ $applicant->surname }}</td>
+                                <td>{{ $applicant->gender }}</td>
                                 <td>{{ $applicant->index_number }}</td>
                                 <td>
                                     @foreach($applicant->nectaResultDetails as $detail)
@@ -71,12 +72,11 @@
                                             {{ $detail->index_number }} 
                                         @endif
 						            @endforeach 
-                                    <br>
+                                    
                                     @foreach($applicant->nacteResultDetails as $detail)
                                         {{ $detail->avn }}
                                     @endforeach
 					            </td>
-                                <td>{{ $applicant->gender }}</td>
                                 <td>
                                     @foreach($applicant->selections as $selection)
                                         @if($selection->status == 'SELECTED')
