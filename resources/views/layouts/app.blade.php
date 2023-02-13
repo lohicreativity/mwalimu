@@ -122,7 +122,7 @@ $('.ss-form-processing-nacte-reg-number').submit(function(e){
     $(e.target).find('button[type=submit]').text('Processing...');
     $(e.target).find('button[type=submit]').addClass('disabled');
 
-    
+    alert(id);
 
 });
 </script>
