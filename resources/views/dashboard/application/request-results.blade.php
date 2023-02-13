@@ -379,8 +379,7 @@
                   $nacte_reg_number = [
                      'placeholder'=>'NS0001/0002/2001',
                      'class'=>'form-control',
-                     'required'=>true,
-                     'id' => 'nacte_registration_number'
+                     'required'=>true
                   ];
               @endphp
               {!! Form::open(['class'=>'ss-form-processing-nacte-reg-number']) !!}

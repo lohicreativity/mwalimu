@@ -118,14 +118,13 @@ $('.ss-form-processing-nacte-reg-number').submit(function(e){
     e.preventDefault();
     var resultsContainer = $(e.target).data('results-container');
     var submitText = $(e.target).find('button[type=submit]').text();
-    var nacte_registration_number = $('#nacte_registration_number').val();
     $(e.target).find('button[type=submit]').text('Processing...');
     $(e.target).find('button[type=submit]').addClass('disabled');
 
 
 
     $.ajax({
-        url:'/application/update-nacte-reg-no/'+nacte_registration_number,
+        url:'/application/update-nacte-reg-no/'+$(e.target).find('input[name=nacte_reg_no]').val(),
         method:'GET',
      }).done(function(data,success){
 
