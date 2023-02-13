@@ -389,7 +389,7 @@
                   <div class="row">
                   <div class="form-group col-4">
                     {!! Form::label('','NACTE Reg mumber') !!}
-                    {!! Form::text('nacte_reg_no',$nacte_reg_number) !!}
+                    {!! Form::text('nacte_reg_no', null, $nacte_reg_number) !!}
                   </div>
                   <div class="col-8">
                     <br><br>
