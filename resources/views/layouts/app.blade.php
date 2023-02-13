@@ -124,7 +124,7 @@ $('.ss-form-processing-nacte-reg-number').submit(function(e){
 
 
     $.ajax({
-        url:'/application/sample',
+        url:'/application/update-nacte-reg-no/'+$(e.target).find('input[name=nacte_reg_no]').val(),
         method:'GET',
      }).done(function(data,success){
 
