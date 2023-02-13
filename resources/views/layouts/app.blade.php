@@ -141,15 +141,9 @@ $('.ss-form-processing-nacte-reg-number').submit(function(e){
          element += '<tr><td>Surname:</td><td>'+data.nacte_details.surname+'</td></tr>';
          element += '<tr><td>Gender:</td><td>'+data.nacte_details.gender+'</td></tr>';
          element += '<tr><td>Birth Date:</td><td>'+data.nacte_details.date_birth+'</td></tr>';
-         element += '<tr><td>AVN:</td><td>'+data.nacte_details.avn+'</td></tr>';
          element += '<tr><td>Graduation Year:</td><td>'+data.nacte_details.diploma_graduation_year+'</td></tr>';
-         element += '<tr><td>Username:</td><td>'+data.nacte_details.username+'</td></tr>';
-         element += '<tr><td>Diploma Code:</td><td>'+data.nacte_details.diploma_code+'</td></tr>';
          element += '<tr><td>Registration Number:</td><td>'+data.nacte_details.registration_number+'</td></tr>';
          element += '<tr><td>Diploma GPA:</td><td>'+data.nacte_details.diploma_gpa+'</td></tr>';
-        //  for(var i=0; i<data.nacte_details.results.length; i++){
-        //     element += '<tr><td>'+data.nacte_details.results[i].subject+'</td><td>'+data.nacte_details.results[i].grade+'</td></tr>'
-        //  }
          element += '</table>';
 
          $($(e.target).find('input[name=results_container]').val()).html(element);
