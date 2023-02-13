@@ -82,7 +82,11 @@ class NacteResultController extends Controller
 
     public function declineNacteRegNumber()
     {
-        return 'Decline Nacte Reg';
+        $detail = NacteResultDetail::find($request->get('nacte_result_detail_id'));
+        if($detail->verified != 1){
+    	    $detail->delete();
+        }
+	    return redirect()->back()->with('message','NACTE results declined successfully');
     }
 
     /**
