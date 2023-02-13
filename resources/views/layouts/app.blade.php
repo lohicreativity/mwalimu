@@ -122,15 +122,16 @@ $('.ss-form-processing-nacte-reg-number').submit(function(e){
     $(e.target).find('button[type=submit]').text('Processing...');
     $(e.target).find('button[type=submit]').addClass('disabled');
 
-    alert(nacte_registration_number);
 
 
-    // $.ajax({
-    //     url:'/application/update-nacte-reg-no/',
-    //     method:'GET',
-    //  }).done(function(data,success){
+    $.ajax({
+        url:'/application/update-nacte-reg-no/'+nacte_registration_number,
+        method:'GET',
+     }).done(function(data,success){
+
+      console.log(success);
          
-    //  });
+     });
 });
 </script>
 
