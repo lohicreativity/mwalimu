@@ -126,7 +126,7 @@ $('.ss-form-processing-nacte-reg-number').submit(function(e){
         method:'GET',
      }).done(function(data,success){
 
-      console.log(success);
+      console.log(data);
          
      });
 });
