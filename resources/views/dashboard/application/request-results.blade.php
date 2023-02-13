@@ -386,7 +386,7 @@
               <div class="card-body">
                   {!! Form::input('hidden','applicant_id',$applicant->id) !!}
                   {!! Form::input('hidden','display_modal','#ss-confirm-nacte-reg-results') !!}
-                  {!! Form::input('hidden','results_container','#ss-nacte-results-container') !!}
+                  {!! Form::input('hidden','results_container','#ss-nacte-reg-results-container') !!}
                   {!! Form::input('hidden','results_link','#ss-nacte-results-confirmation-link') !!}
 
                   <div class="row">
@@ -479,7 +479,7 @@
                     <div class="modal-body">
                       <div class="row">
                         <div class="col-12">
-                            <div id="ss-nacte-results-container"></div>
+                            <div id="ss-nacte-reg-results-container"></div>
                           </div>
                         </div>
                         <div id="ss-nacte-confirmation-container">
