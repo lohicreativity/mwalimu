@@ -65,9 +65,25 @@
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $applicant->first_name }}</td>
                                 <td>{{ $applicant->index_number }}</td>
-                                <td>{{ $applicant->nacte_reg_no }}</td>
+                                <td>
+                                    @foreach($applicant->nectaResultDetails as $detail)
+					                    @if($detail->exam_id == 2) 
+                                            {{ $detail->index_number }} 
+                                        @endif
+						            @endforeach 
+                                    <br>
+                                    @foreach($applicant->nacteResultDetails as $detail)
+                                        {{ $detail->avn }}
+                                    @endforeach
+					            </td>
                                 <td>{{ $applicant->gender }}</td>
-                                <td></td>
+                                <td>
+                                    @foreach($applicant->selections as $selection)
+                                        @if($selection->status == 'SELECTED')
+                                            {{ $selection->campusProgram->program->code }}
+                                        @endif
+                                    @endforeach
+                                </td>
                             </tr>
                             @endforeach
                         </tbody>
