@@ -1795,21 +1795,21 @@ class ApplicantController extends Controller
     public function updateNacteRegNumber(Request $request, $nacte_reg_no)
     {
 
-         $sample = str_replace('-', '.', $nacte_reg_no);
+      //    $sample = str_replace('-', '.', $nacte_reg_no);
 
-        return response()->json(['nacte_reg_no'=> $sample, 'exists' => 1]);
+      //   return response()->json(['nacte_reg_no'=> $sample, 'exists' => 1]);
 
       
         
-      //   try{
-      //   $response = Http::get('https://www.nacte.go.tz/nacteapi/index.php/api/particulars/'.str_replace('/', '.', $request->get('nacte_reg_no')).'-4/'.config('constants.NACTE_API_KEY'));
-      //   }catch(\Exception $e){
-      //       return redirect()->back()->with('error','Unexpected network error occured. Please try again');
-      //   }
+        try{
+        $response = Http::get('https://www.nacte.go.tz/nacteapi/index.php/api/particulars/'.str_replace('-', '.', $nacte_reg_no).'-4/'.config('constants.NACTE_API_KEY'));
+        }catch(\Exception $e){
+            return response()->json(['error'=>'Unexpected network error occured. Please try again']);
+        }
 
-      //   if(json_decode($response)->code != 200){
-      //       return redirect()->back()->with('error','Invalid NACTE Registration number');
-      //   }
+        if(json_decode($response)->code != 200){
+            return response()->json(['error'=>'Invalid NACTE Registration number']);
+        }
 
       //   $applicant = Applicant::find($request->get('applicant_id'));
       //   $applicant->nacte_reg_no = $request->get('nacte_reg_no');
