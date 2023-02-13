@@ -1813,8 +1813,15 @@ class ApplicantController extends Controller
       //       return response()->json(['error'=>'Invalid NACTE Registration number']);
       //   } 
 
-            $applicant = Applicant::find($request->get('applicant_id'));
-            return response()->json(['applicant'=> $applicant]);
+            // $applicant = Applicant::find($request->get('applicant_id'));
+            // $applicant->nacte_reg_no = str_replace('-', '/', $nacte_reg_no);
+
+            if ($nacte_details = NacteResultDetail::where('registration_number',str_replace('-', '/', $nacte_reg_no))->where('applicant_id',$request->get('applicant_id'))->first()) {
+               return response()->json(['nacte_details' => $nacte_details]);
+            } else {
+               return response()->json(['error' => 'No nacte details present']);
+            }
+
 
 
       //   $applicant = Applicant::find($request->get('applicant_id'));
