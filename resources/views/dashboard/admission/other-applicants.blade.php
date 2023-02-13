@@ -79,7 +79,7 @@
 					            </td>
                                 <td>
                                     @foreach($applicant->selections as $selection)
-                                        {{ $selection->campusProgram->program->code }}
+                                        {{ $selection->campusProgram->program->code }};
                                     @endforeach
                                 </td>
                                 <td>
