@@ -63,7 +63,7 @@
                             @foreach($applicants as $applicant)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
-                                <td>{{ $applicant->first_name }}</td>
+                                <td>{{ $applicant->first_name }} {{ $applicant->middle_name }} {{ $applicant->surname }}</td>
                                 <td>{{ $applicant->index_number }}</td>
                                 <td>
                                     @foreach($applicant->nectaResultDetails as $detail)
@@ -83,6 +83,12 @@
                                             {{ $selection->campusProgram->program->code }}
                                         @endif
                                     @endforeach
+                                </td>
+                                <td>
+                                    <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="">
+                                        <i class="fas fa-list-alt"></i>
+                                        View Documents
+                                    </a>
                                 </td>
                             </tr>
                             @endforeach
