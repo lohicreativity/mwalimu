@@ -1789,6 +1789,11 @@ class ApplicantController extends Controller
         return redirect()->back()->with('message','Applicant details updated successfully');
     }
 
+    public function sample()
+    {
+      return response()->json(['status'=>'success','registration_number'=> $request->nacte_registration_number]);
+    }
+
     /**
      * Update NACTE registration number
      */

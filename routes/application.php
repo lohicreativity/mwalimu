@@ -92,6 +92,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
     Route::get('fetch-out-results/{reg_no}',[OUTServiceController::class,'getResults']);
     Route::get('fetch-out-results-admin/{reg_no}',[OUTServiceController::class,'getResultsAdmin']);
     Route::get('update-nacte-reg-no/{nacte_reg_no}',[ApplicantController::class,'updateNacteRegNumber']);
+    Route::get('sample',[ApplicantController::class,'sample']);
 
 
     Route::post('necta-result/decline',[NectaResultController::class,'destroy']);
