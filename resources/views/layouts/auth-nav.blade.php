@@ -431,14 +431,14 @@
                 </a>
               </li>
               @endcan
-              @can('view-document-applicants')
+              @if(Auth::user()->hasRole('administrator') || Auth::user()->hasRole('admission-officer'))
               <li class="nav-item">
-                <a href="{{ url('application/document-applicants?application_window_id='.session('active_window_id')) }}" class="nav-link">
+                <a href="{{ url('application/other-applicants?application_window_id='.session('active_window_id')) }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Document Applicants</p>
+                  <p>Other Applicants</p>
                 </a>
               </li>
-              @endcan
+              @endif
               @can('view-insurance-status')
               <li class="nav-item">
                 <a href="{{ url('application/insurance-statuses?application_window_id='.session('active_window_id')) }}" class="nav-link">
