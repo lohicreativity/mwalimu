@@ -104,12 +104,12 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 
     Route::get('nullify-necta-results',[NectaResultController::class,'nullify']);
     Route::get('nullify-nacte-results',[NacteResultController::class,'nullify']);
+    Route::get('nullify-nacte-reg-results',[NacteResultController::class,'nullifyNacteReg']);
     Route::get('nullify-out-results',[OutResultController::class,'nullify']);
 
 
     Route::post('nacte-reg-result/confirm',[NacteResultController::class,'confirmNacteRegNumber']);
     Route::post('nacte-reg-result/decline',[NacteResultController::class,'declineNacteRegNumber']);
-    Route::get('nullify-nacte-reg-results',[NacteResultController::class,'nullify']);
 
     Route::get('application-window-campus-programs', [ApplicationWindowController::class,'showPrograms']);
 	Route::post('application-window-campus-programs/update', [ApplicationWindowController::class,'updatePrograms']);

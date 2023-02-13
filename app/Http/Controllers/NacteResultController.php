@@ -80,7 +80,7 @@ class NacteResultController extends Controller
     /**
      * Nullify NACTE results
      */
-    public function nullify(Request $request)
+    public function nullifyNacteReg(Request $request)
     {
         $detail = NacteResultDetail::find($request->get('detail_id'));
         $detail->delete();
