@@ -365,6 +365,8 @@ class ApplicationController extends Controller
             })
             ->get();
 
+            return $applicants;
+
             // $applicants = Applicant::where('campus_id', $campus_id)
             // ->where('programs_complete_status', 1)
             // ->where(function($query) {
