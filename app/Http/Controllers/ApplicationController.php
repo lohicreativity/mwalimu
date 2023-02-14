@@ -1935,7 +1935,14 @@ class ApplicationController extends Controller
 
     public function selectApplicant(Request $request)
     {
-        return $request->get('decision_btn');
+        $decision = $request->get('decision_btn');
+        
+        if ($decision == 'Select Applicant') {
+            return 'Selecting applicant';
+        } else if ($decision == 'Decline Applicant') {
+            return 'Declining applicant';
+        }
+        
     }
 
     /**
