@@ -132,6 +132,20 @@
                 {!! Form::open(['url'=>'application/select-applicant','class'=>'ss-form-processing','method'=>'POST']) !!}
                 <input type="hidden" name="applicant_id" value="{{ $request->get('applicant_id') }}">
                 <input type="hidden" name="application_window_id" value="{{ $request->get('application_window_id') }}">
+                
+                <div class="row">
+                  @foreach($progam_codes as $code)
+                  <div class="col-sm-4">
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" value="{{ $code }}" id="defaultCheck1">
+                      <label class="form-check-label" for="defaultCheck1">
+                        {{ $code }}
+                      </label>
+                    </div>
+                  </div>
+                  @endforeach
+                </div>
+
                 <input type="submit" name="decision_btn" class="btn btn-primary" value="Select Applicant">
                 <input type="submit" name="decision_btn" class="btn btn-danger" value="Decline Applicant">
                 {!! Form::close() !!} 

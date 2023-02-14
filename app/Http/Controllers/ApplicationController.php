@@ -405,11 +405,10 @@ class ApplicationController extends Controller
             }
         }
 
-        return $program_codes;
-
         $data = [
-            'applicant' => Applicant::find($request->get('applicant_id')),
-            'request'   => $request
+            'applicant'         => Applicant::find($request->get('applicant_id')),
+            'program_codes'     => $program_codes,
+            'request'           => $request
         ];
 
         return view('dashboard.admission.view-applicant-documents', $data)->withTitle('View Applicant Documents');
