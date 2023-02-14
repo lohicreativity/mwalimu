@@ -1996,7 +1996,7 @@ class ApplicationController extends Controller
             // }
 
             foreach ($entry_requirements as $entry) {
-                return $entry->max_capacity;
+                return $entry->campus_program;
             }
 
 
