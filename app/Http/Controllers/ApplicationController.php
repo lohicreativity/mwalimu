@@ -1978,7 +1978,7 @@ class ApplicationController extends Controller
                 $programs_selected[] = $selection->campus_program_id;
             }
 
-            return $programs_selected
+            return $programs_selected;
 
           
 
