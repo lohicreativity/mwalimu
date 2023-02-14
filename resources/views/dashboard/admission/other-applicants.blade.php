@@ -86,9 +86,9 @@
                                     {{ $selection->campusProgram->program->code }};
                                   @endforeach
                                 </td>
-                                <td>
+                                <td class="text-center">
 
-                                  {!! Form::checkbox('applicant_'.$applicant->id,$applicant->id,true) !!}
+                                  {!! Form::checkbox('applicant_'.$applicant->id,$applicant->id) !!}
 
 
                                   <div class="modal fade" id="ss-view-document-{{ $applicant->id }}">

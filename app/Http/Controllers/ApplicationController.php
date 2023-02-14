@@ -326,19 +326,23 @@ class ApplicationController extends Controller
 
         if (Auth::user()->hasRole('administrator')) {
 
-            $applicants = Applicant::doesntHave('student')->whereHas('selections',function($query) use($request){
-                $query->where('status','SELECTED')->orWhere('teacher_certificate_status', 1)->orwhere('veta_status', 1);
-           })->with(['intake','selections.campusProgram.program','nectaResultDetails','nacteResultDetails'])->where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$request->get('program_level_id'))->where(function($query){
-               $query->where('confirmation_status','!=','CANCELLED')->orWhere('confirmation_status','!=','TRANSFERED')->orWhereNull('confirmation_status');
-           })->where('status','ADMITTED')->get();
+            $applicants = Applicant::where('programs_complete_status', 1)
+            ->where(function($query) {
+                $query->where('teacher_certificate_status', 1)
+                      ->orWhere('veta_status', 1);
+            })
+            ->orWhere(function($query) {
+                $query->where('avn_no_results', 1)
+                ->whereNotNull('diploma_certificate');
+            })
+            ->with(['intake','selections.campusProgram.program','nectaResultDetails','nacteResultDetails' => function($query) {
+                $query->where('verified', 1);
+            }])
+            ->get();
+
+            
 
         } else if (Auth::user()->hasRole('admission-officer')) {
-
-        //     $applicants = Applicant::doesntHave('student')->whereHas('selections',function($query) use($request){
-        //         $query->where('status','SELECTED');
-        //    })->with(['intake','selections.campusProgram.program','nectaResultDetails','nacteResultDetails'])->where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$request->get('program_level_id'))->where(function($query){
-        //        $query->where('confirmation_status','!=','CANCELLED')->orWhere('confirmation_status','!=','TRANSFERED')->orWhereNull('confirmation_status');
-        //    })->where('campus_id', $campus_id)->get();
 
             $applicants = Applicant::where('campus_id', $campus_id)
             ->where('programs_complete_status', 1)
@@ -369,7 +373,7 @@ class ApplicationController extends Controller
         $data = [
             'applicant' => Applicant::find($request->get('applicant_id'))
         ];
-        
+
         return view('dashboard.admission.view-applicant-documents', $data)->withTitle('View Applicant Documents');
     }
 
