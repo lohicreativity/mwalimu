@@ -371,6 +371,40 @@ class ApplicationController extends Controller
 
     public function viewApplicantDocuments(Request $request)
     {
+        $applicant = DB::table('applicants')
+        ->select('applicant_program_selections.*')
+        ->join('applicant_program_selections', 'applicants.id', 'applicant_program_selections.applicant_id')
+        ->where('applicant_program_selections.applicant_id', $request->get('applicant_id'))
+        ->where(function($query) {
+            $query->where('applicant_program_selections.status', 'SELECTED')
+                  ->orWhere('applicant_program_selections.status', 'APPROVING');
+        })
+        ->get();
+
+        $programs_selected = array();
+        $program_codes = array();
+
+        foreach ($applicant as $selection) {
+            $programs_selected[] = $selection->campus_program_id;
+        }
+
+        $entry_requirements = EntryRequirement::where('application_window_id', $request->get('application_window_id'))
+        ->with(['campusProgram.program']) 
+        ->get();
+
+        foreach($programs_selected as $ps) {
+            foreach($entry_requirements as $er) {
+
+                if ($ps == $er->campus_program_id) {
+                    $count_applicants_per_program = ApplicantProgramSelection::where('campus_program_id', $ps)->count();
+
+                    if ($count_applicants_per_program < $er->max_capacity) {
+                        $program_codes[] = $er->campusProgram->program->code;
+                    }
+                }   
+            }
+        }
+
         $data = [
             'applicant' => Applicant::find($request->get('applicant_id')),
             'request'   => $request
@@ -1960,46 +1994,7 @@ class ApplicationController extends Controller
                 return redirect()->back()->with('error','Application window is not active');
             }
 
-            $applicant = DB::table('applicants')
-            ->select('applicant_program_selections.*')
-            ->join('applicant_program_selections', 'applicants.id', 'applicant_program_selections.applicant_id')
-            ->where('applicant_program_selections.applicant_id', $applicant_id)
-            ->where(function($query) {
-                $query->where('applicant_program_selections.status', 'SELECTED')
-                      ->orWhere('applicant_program_selections.status', 'APPROVING');
-            })
-            ->get();
-
-            $programs_selected = array();
-            $program_codes = array();
-
-            foreach ($applicant as $selection) {
-                $programs_selected[] = $selection->campus_program_id;
-            }
-
-            $entry_requirements = EntryRequirement::where('application_window_id', $application_window_id)
-            ->with(['campusProgram.program']) 
-            ->get();
-
-            foreach ($entry_requirements as $er) {
-                return $er->campusProgram->program->code;
-            }
-
-
-            foreach($programs_selected as $ps) {
-                foreach($entry_requirements as $er) {
-
-                    if ($ps == $er->campus_program_id) {
-                        $count_applicants_per_program = ApplicantProgramSelection::where('campus_program_id', $ps)->count();
-
-                        if ($count_applicants_per_program < $er->max_capacity) {
-                            $program_codes[] = $er->campusProgram->program->code;
-                        }
-                    }   
-                }
-            }
-
-            // return $program_codes;
+           
         
         } else if ($decision == 'Decline Applicant') {
            
