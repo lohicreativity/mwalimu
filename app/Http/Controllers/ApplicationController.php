@@ -357,7 +357,7 @@ class ApplicationController extends Controller
                 ->whereNotNull('diploma_certificate');
             })
             ->with(['intake','selections.campusProgram.program','nectaResultDetails','nacteResultDetails' => function($query) {
-                $query->where('verified', 1);
+                $query->where('verifie', 1);
             }])
             ->get();
 
