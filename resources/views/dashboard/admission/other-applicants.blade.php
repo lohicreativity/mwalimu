@@ -64,36 +64,40 @@
                         </thead>
                         <tbody>
                             @foreach($applicants as $applicant)
-                              @if($applicant->selections->status == "ELIGIBLE")
-                              <tr>
-                                <td>{{ $loop->iteration }}</td>
-                                <td>{{ $applicant->first_name }} {{ $applicant->middle_name }} {{ $applicant->surname }}</td>
-                                <td>{{ $applicant->gender }}</td>
-                                <td>{{ $applicant->index_number }}</td>
-                                <td>
-                                  @foreach($applicant->nectaResultDetails as $detail)
-					                          @if($detail->exam_id == 2) 
-                                      {{ $detail->index_number }} 
-                                    @endif
-						                      @endforeach 
-                                    
-                                  @foreach($applicant->nacteResultDetails as $detail)
-                                    {{ $detail->avn }}
-                                  @endforeach
-					                      </td>
-                                <td>
-                                  @foreach($applicant->selections as $selection)
-                                    {{ $selection->campusProgram->program->code }};
-                                  @endforeach
-                                </td>
-                                <td>
-                                  <a target="_blank" class="btn btn-primary" href="{{ url('application/view-applicant-documents?applicant_id='.$applicant->id.'&application_window_id='.session('active_window_id')) }}">
-                                    <i class="fas fa-list"></i>
-                                    View Documents
-                                  </a>
-                                </td>
-                              </tr>
-                              @endif
+                              @foreach($applicant->selections as $select)
+                                @if($select->status == "ELIGIBLE")
+
+                                <tr>
+                                  <td>{{ $loop->iteration }}</td>
+                                  <td>{{ $applicant->first_name }} {{ $applicant->middle_name }} {{ $applicant->surname }}</td>
+                                  <td>{{ $applicant->gender }}</td>
+                                  <td>{{ $applicant->index_number }}</td>
+                                  <td>
+                                    @foreach($applicant->nectaResultDetails as $detail)
+                                      @if($detail->exam_id == 2) 
+                                        {{ $detail->index_number }} 
+                                      @endif
+                                    @endforeach 
+                                      
+                                    @foreach($applicant->nacteResultDetails as $detail)
+                                      {{ $detail->avn }}
+                                    @endforeach
+                                  </td>
+                                  <td>
+                                    @foreach($applicant->selections as $selection)
+                                      {{ $selection->campusProgram->program->code }};
+                                    @endforeach
+                                  </td>
+                                  <td>
+                                    <a target="_blank" class="btn btn-primary" href="{{ url('application/view-applicant-documents?applicant_id='.$applicant->id.'&application_window_id='.session('active_window_id')) }}">
+                                      <i class="fas fa-list"></i>
+                                      View Documents
+                                    </a>
+                                  </td>
+                                </tr>
+
+                                @endif
+                              @endforeach
                             @endforeach
                         </tbody>
                     </table>
