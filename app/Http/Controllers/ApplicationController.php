@@ -1942,6 +1942,8 @@ class ApplicationController extends Controller
         $application_window_id  = $request->get('application_window_id');
         $staff                  = User::find(Auth::user()->id)->staff;
 
+        return $application_window_id;
+
 
         
         if ($decision == 'Select Applicant') {
