@@ -98,7 +98,7 @@
 
                     <div>
                       <input type="submit" class="btn btn-primary" name="action" value="Accept Selected"> 
-                      <input type="submit" class="btn btn-primary" name="action" value="Decline Selected">
+                      <input type="submit" class="btn btn-danger" name="action" value="Decline Selected">
                     </div>
 
                     {!! Form::close() !!}
