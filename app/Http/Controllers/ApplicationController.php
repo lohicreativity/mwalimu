@@ -1969,9 +1969,7 @@ class ApplicationController extends Controller
             ->with(['selections.campusProgram.entryRequirements'])
             ->get();
 
-            foreach ($applicant['selections'] as $selection) {
-                return $selection;
-            }
+            return $applicant;
 
             
         } else if ($decision == 'Decline Applicant') {
