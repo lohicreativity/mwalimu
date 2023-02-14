@@ -375,7 +375,7 @@ class ApplicationController extends Controller
                 $query->where('avn_no_results', 1)
                 ->whereNotNull('diploma_certificate');
             })
-            ->with(['intake','selections.campusProgram.program','nacteResultDetails' => function($query) {
+            ->with(['intake','selections.campusProgram.program', 'nacteResultDetails', 'nacteResultDetails' => function($query) {
                 $query->where('verified', 1);
             }])
             // ->whereHas('selections', function($query) {
@@ -384,7 +384,7 @@ class ApplicationController extends Controller
             // })
             ->get();
 
-            // return $applicants;
+            return $applicants;
 
         }
 
