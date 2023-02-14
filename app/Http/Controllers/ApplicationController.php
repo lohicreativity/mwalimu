@@ -366,7 +366,11 @@ class ApplicationController extends Controller
 
     public function viewApplicantDocuments(Request $request)
     {
-        return view('dashboard.admission.view-applicant-documents')->withTitle('View Applicant Documents');
+        $data = [
+            'applicant' => Applicant::find($request->get('applicant_id'))
+        ];
+        
+        return view('dashboard.admission.view-applicant-documents', $data)->withTitle('View Applicant Documents');
     }
 
     /**

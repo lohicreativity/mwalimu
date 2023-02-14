@@ -20,7 +20,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">View Applicant Documents - </h1>
+            <h1 class="m-0">View Applicant Documents - {{ $applicant->first_name }} {{ $applicant->middle_name }} {{ $applicant->surname }}</h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -41,10 +41,6 @@
            <div class="col-12">
              
             <div class="card">
-               <div class="card-header">
-                 <h3 class="card-title">{{ __('Other Applicants') }}</h3><br>
-               </div>
-               <!-- /.card-header -->
                <div class="card-body">
 
                     
