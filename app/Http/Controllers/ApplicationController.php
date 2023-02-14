@@ -1981,7 +1981,7 @@ class ApplicationController extends Controller
             ->with(['campusProgram.program']) 
             ->get();
 
-            return $entry_requirements;
+            return $entry_requirements[0];
 
             // foreach($programs_selected as $ps) {
             //     foreach($entry_requirements as $er) {
