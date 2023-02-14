@@ -148,9 +148,8 @@
 
 
                 <div class="mt-3">
-                  <input type="submit" name="decision_btn" class="btn btn-primary" value="Select Applicant">
-                  <a href="{{ url('application/other-applicants') }}"></a>
-                  <input type="submit" name="decision_btn" class="btn btn-danger" value="Decline Applicant">
+                  <button type="submit" class="btn btn-primary">Select Applicant</button>
+                  <a href="{{ url('application/other-applicants') }}" class="btn btn-danger">Decline Applicant</a>
                 </div>
 
                 

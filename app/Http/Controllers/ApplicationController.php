@@ -1981,42 +1981,34 @@ class ApplicationController extends Controller
         $program_code           = $request->get('program_code');
         $staff                  = User::find(Auth::user()->id)->staff;
         
-        if ($decision == 'Select Applicant') {
-
-            $closed_window = ApplicationWindow::where('campus_id', $staff->campus_id)
-            ->where('end_date','>=', implode('-', explode('-', now()->format('Y-m-d'))))
-            ->where('status','INACTIVE')->latest()->first();
+        $closed_window = ApplicationWindow::where('campus_id', $staff->campus_id)
+        ->where('end_date','>=', implode('-', explode('-', now()->format('Y-m-d'))))
+        ->where('status','INACTIVE')->latest()->first();
             
-            if($closed_window){
-                return redirect()->back()->with('error','Application window is not active');
-            }
-
-            // if(ApplicationWindow::where('campus_id', $staff->campus_id)->where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('status','ACTIVE')->first()){
-            //     return redirect()->back()->with('error','Application window not closed yet');
-            // }
-
-            if(ApplicationWindow::where('campus_id',$staff->campus_id)->where('end_date','>=',implode('-', explode('-', now()->format('Y-m-d'))))->where('status','INACTIVE')->first()){
-                return redirect()->back()->with('error','Application window is not active');
-            }
-
-            $program = Program::where('code', $program_code)->first();
-
-            $campus_program = CampusProgram::where('campus_id', $staff->campus_id)
-            ->where('program_id', $program->id)
-            ->first();
-
-            $update_applicant_selection = ApplicantProgramSelection::where('applicant_id', $applicant_id)
-            ->where('campus_program_id', $campus_program->id)
-            ->where('application_window_id', $application_window_id)
-            ->update(['status' => 'APPROVING']);
-
-
-            return redirect()->to('application/other-applicants')->with('message','Applicant selected successfully');
-           
-        
-        } else if ($decision == 'Decline Applicant') {
-           
+        if($closed_window){
+            return redirect()->back()->with('error','Application window is not active');
         }
+
+        // if(ApplicationWindow::where('campus_id', $staff->campus_id)->where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('status','ACTIVE')->first()){
+        //     return redirect()->back()->with('error','Application window not closed yet');
+        // }
+
+        if(ApplicationWindow::where('campus_id',$staff->campus_id)->where('end_date','>=',implode('-', explode('-', now()->format('Y-m-d'))))->where('status','INACTIVE')->first()){
+            return redirect()->back()->with('error','Application window is not active');
+        }
+
+        $program = Program::where('code', $program_code)->first();
+
+        $campus_program = CampusProgram::where('campus_id', $staff->campus_id)
+        ->where('program_id', $program->id)
+        ->first();
+
+        $update_applicant_selection = ApplicantProgramSelection::where('applicant_id', $applicant_id)
+        ->where('campus_program_id', $campus_program->id)
+        ->where('application_window_id', $application_window_id)
+        ->update(['status' => 'APPROVING']);
+
+        return redirect()->to('application/other-applicants')->with('message','Applicant selected successfully');
 
     }
 
