@@ -48,27 +48,25 @@
                     <div class="card">
                       <div class="card-header" id="ss-diploma-certificate">
                         <h2 class="mb-0">
-                          <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseDiplomaCertificate" aria-expanded="true" aria-controls="collapseDiplomaCertificate">
+                          <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseDiploma" aria-expanded="true" aria-controls="collapseDiploma">
                             Diploma Certificate
                           </button>
                         </h2>
                       </div>
 
-                      <div id="collapseDiplomaCertificate" class="collapse" aria-labelledby="ss-diploma-certificate" data-parent="#accordionExample-2">
+                      <div id="collapseDiploma" class="collapse" aria-labelledby="ss-diploma-certificate" data-parent="#accordionExample-2">
                         <div class="card-body">
-
                           @if(explode('.',$applicant->diploma_certificate)[1] == 'pdf')
-                          <iframe
-                                src="https://drive.google.com/viewerng/viewer?embedded=true&url={{ asset('uploads/'.$applicant->diploma_certificate) }}#toolbar=0&scrollbar=0"
-                                frameBorder="0"
-                                scrolling="auto"
-                                height="400px"
-                                width="100%"
-                            ></iframe>
+                            <iframe
+                                  src="https://drive.google.com/viewerng/viewer?embedded=true&url={{ asset('uploads/'.$applicant->diploma_certificate) }}#toolbar=0&scrollbar=0"
+                                  frameBorder="0"
+                                  scrolling="auto"
+                                  height="400px"
+                                  width="100%"
+                              ></iframe>
                           @else
                             <img src="{{ asset('uploads/'.$applicant->diploma_certificate) }}" height="400px" width="100%">
                           @endif
-                          
                         </div>
                       </div>
                     </div>
