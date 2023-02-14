@@ -1973,10 +1973,11 @@ class ApplicationController extends Controller
             // ->get();
 
             $applicant = Applicant::where('id', $applicant_id)
-            ->whereHas('selections', function($query) {
-                $query->where('status', 'SELECTED');
-            })
-            ->with(['selections.campusProgram.entryRequirements'])
+            ->with(['selections.campusProgram.entryRequirements' => function($query) {
+                $query->where('status', 'SELECTED')
+                      ->orWhere('status', 'APPROVING');
+            }])
+            // ->with(['selections.campusProgram.entryRequirements'])
             ->get();
 
             $programs_selected = array();
