@@ -1982,7 +1982,7 @@ class ApplicationController extends Controller
             ->get();
 
             foreach ($entry_requirements as $er) {
-                return $er->program;
+                return $er->campusProgram->program;
             }
 
 
