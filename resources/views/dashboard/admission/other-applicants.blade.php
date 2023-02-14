@@ -49,7 +49,6 @@
 
                     {!! Form::open(['url'=>'academic/accept-postponements','class'=>'ss-form-processing']) !!}
 
-                    <button class="btn btn-primary">Check All</button>
 
                     <table class="table table-bordered ss-margin-top ss-paginated-table">
                         <thead>
@@ -101,6 +100,7 @@
                     <div>
                       <input type="submit" class="btn btn-primary" name="action" value="Accept Selected"> 
                       <input type="submit" class="btn btn-danger" name="action" value="Decline Selected">
+                      <button type="button" class="btn btn-primary float-right">Check All</button>
                     </div>
 
                     {!! Form::close() !!}
