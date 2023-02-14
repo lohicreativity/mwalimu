@@ -92,12 +92,16 @@
                                     <div class="modal-dialog modal-lg">
                                       <div class="modal-content">
                                         <div class="modal-header">
-                                          <h4 class="modal-title">{{ __('View Document') }} - {{ $applicant->first_name }} {{ $applicant->middle_name }} {{ $applicant->last_name }}</h4>
+                                          <h4 class="modal-title">{{ __('View Document') }} - {{ $applicant->first_name }} {{ $applicant->middle_name }} {{ $applicant->surname }}</h4>
                                           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                           </button>
                                         </div>
                                         <div class="modal-body">
+
+                                          @if($applicant->diploma_certificate)
+                                          <button class="btn btn-primary">View Diploma Certificate</button>
+                                          @endif
 
 
                                           @if($applicant->teacher_diploma_certificate)
