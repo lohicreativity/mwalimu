@@ -117,12 +117,12 @@
                                 </td>
                             </tr>
                             @endforeach
-                            <tr>
+                            <!-- <tr>
                             <td colspan="9">
                               <input type="submit" class="btn btn-primary" name="action" value="Accept Selected"> 
                               <input type="submit" class="btn btn-primary" name="action" value="Decline Selected">
                             </td>
-                          </tr>
+                            </tr> -->
                         </tbody>
                     </table>
 
