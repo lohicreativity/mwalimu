@@ -1987,13 +1987,13 @@ class ApplicationController extends Controller
             ->where('applicant_program_selections.applicant_id', $applicant_id)
             ->get();
 
-            // $programs_selected = array();
+            $programs_selected = array();
 
-            // foreach ($applicant[0]->selections as $selection) {
-            //     $programs_selected[] = $selection->campus_program_id;
-            // }
+            foreach ($applicant as $selection) {
+                $programs_selected[] = $selection->campus_program_id;
+            }
 
-            return $applicant;
+            return $programs_selected;
 
           
 
