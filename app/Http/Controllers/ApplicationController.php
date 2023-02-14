@@ -1981,7 +1981,7 @@ class ApplicationController extends Controller
             $entry_requirements = EntryRequirement::where('application_window_id', $application_window_id) 
             ->get();
 
-            return $entry_requirements;
+            return $application_window_id;
 
             // foreach($programs_selected as $ps) {
 
