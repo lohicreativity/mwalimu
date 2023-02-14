@@ -137,19 +137,15 @@
                   <label for="">Select Program</label>
                 </div>
 
-                <div class="row">
-                  @foreach($program_codes as $code)
-                  <div class="col-sm-2">
-                    <div class="form-check">
+                @foreach($program_codes as $code)
+                    <div class="form-check form-check-inline">
                       <input class="form-check-input" type="radio" name="exampleRadios" id="program-radio-{{ $code }}" value="{{ $code }}">
                       <label class="form-check-label" for="program-radio-{{ $code }}">
                         {{ $code }}
                       </label>
                     </div>
-                  </div>
-                  @endforeach
+                @endforeach
 
-                </div>
 
                 <div class="mt-3">
                   <input type="submit" name="decision_btn" class="btn btn-primary" value="Select Applicant">
