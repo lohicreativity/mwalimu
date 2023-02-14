@@ -375,10 +375,7 @@ class ApplicationController extends Controller
         ->select('applicant_program_selections.*')
         ->join('applicant_program_selections', 'applicants.id', 'applicant_program_selections.applicant_id')
         ->where('applicant_program_selections.applicant_id', $request->get('applicant_id'))
-        ->where(function($query) {
-            $query->where('applicant_program_selections.status', 'SELECTED')
-                  ->orWhere('applicant_program_selections.status', 'APPROVING');
-        })
+        ->where('applicant_program_selections.status', 'ELIGIBLE')
         ->get();
 
         $programs_selected = array();
@@ -396,7 +393,12 @@ class ApplicationController extends Controller
             foreach($entry_requirements as $er) {
 
                 if ($ps == $er->campus_program_id) {
-                    $count_applicants_per_program = ApplicantProgramSelection::where('campus_program_id', $ps)->count();
+                    $count_applicants_per_program = ApplicantProgramSelection::where('campus_program_id', $ps)
+                    ->where(function($query) {
+                        $query->where('applicant_program_selections.status', 'SELECTED')
+                              ->orWhere('applicant_program_selections.status', 'APPROVING');
+                    })
+                    ->count();
 
                     if ($count_applicants_per_program < $er->max_capacity) {
                         $program_codes[] = $er->campusProgram->program->code;
