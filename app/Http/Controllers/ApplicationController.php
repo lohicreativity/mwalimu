@@ -1971,6 +1971,7 @@ class ApplicationController extends Controller
             ->get();
 
             $programs_selected = array();
+            $program_codes = array();
 
             foreach ($applicant as $selection) {
                 $programs_selected[] = $selection->campus_program_id;
@@ -1988,13 +1989,13 @@ class ApplicationController extends Controller
                         $count_applicants_per_program = ApplicantProgramSelection::where('campus_program_id', $ps)->count();
 
                         if ($count_applicants_per_program < $er->max_capacity) {
-                            
+                            $program_codes[] = $er->campus_program->regulator_code;
                         }
                     }   
                 }
             }
 
-            return $entry_requirements;
+            return $program_codes;
 
             
         } else if ($decision == 'Decline Applicant') {
