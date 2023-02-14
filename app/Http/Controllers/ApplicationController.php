@@ -1979,13 +1979,18 @@ class ApplicationController extends Controller
             $entry_requirements = EntryRequirement::where('application_window_id', $application_window_id) 
             ->get();
 
-            return $entry_requirements;
 
-            // foreach($programs_selected as $ps) {
+            foreach($programs_selected as $ps) {
+                foreach($entry_requirements as $er) {
 
+                    if ($ps == $er->campus_program_id) {
+                        
+                        $count_applicants_per_program = ApplicantProgramSelection::where('campus_program_id', $ps)->count();
+                    }   
+                }
+            }
 
-
-            // }
+            return $count_applicants_per_program;
 
             
         } else if ($decision == 'Decline Applicant') {
