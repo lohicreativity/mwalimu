@@ -405,6 +405,8 @@ class ApplicationController extends Controller
             }
         }
 
+        return $program_codes;
+
         $data = [
             'applicant' => Applicant::find($request->get('applicant_id')),
             'request'   => $request
