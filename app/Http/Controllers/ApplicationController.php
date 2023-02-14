@@ -1966,7 +1966,9 @@ class ApplicationController extends Controller
             ->get();
 
             $applicant = Applicant::where('id', $applicant_id)
-            ->with(['selections.campusProgram.entryRequirements'])
+            ->with(['selections.campusProgram.entryRequirements' => function ($query) {
+                $query->where('status', 'SELECTED');
+            }])
             ->get();
 
             $programs_selected = array();
@@ -1976,6 +1978,10 @@ class ApplicationController extends Controller
             }
 
             return $programs_selected;
+
+          
+
+
 
             
         } else if ($decision == 'Decline Applicant') {
