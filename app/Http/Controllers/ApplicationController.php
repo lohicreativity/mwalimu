@@ -1966,7 +1966,7 @@ class ApplicationController extends Controller
             ->get();
 
             $applicant = Applicant::where('id', $applicant_id)
-            ->with(['selections.campusProgram.program'])
+            ->with(['selections.campusProgram.entryRequirements'])
             ->get();
 
             return $applicant;
