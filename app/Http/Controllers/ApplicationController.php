@@ -2186,7 +2186,8 @@ class ApplicationController extends Controller
         }])->where('id',$request->get('campus_program_id'))->get();
 
         foreach($campus_programs as $program){
-           $count[$program->id] = 0;
+            $count_selections = ApplicantProgramSelection::where('campus_program_id', $program->id)->where('status', 'APPROVING')->count();
+            $count[$program->id] = $count_selections;
         }
 
         $award = Award::find($request->get('award_id'));
