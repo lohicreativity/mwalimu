@@ -1978,9 +1978,10 @@ class ApplicationController extends Controller
             }
 
             $entry_requirements = EntryRequirement::where('application_window_id', $application_window_id)
-            ->with(['campusProgram']) 
+            ->with(['campusProgram.program']) 
             ->get();
 
+            return $entry_requirements;
 
             // foreach($programs_selected as $ps) {
             //     foreach($entry_requirements as $er) {
@@ -1994,13 +1995,7 @@ class ApplicationController extends Controller
             //         }   
             //     }
             // }
-
-            foreach ($entry_requirements as $entry) {
-                return $entry->campus_program;
-            }
-
-
-            
+        
         } else if ($decision == 'Decline Applicant') {
            
         }
