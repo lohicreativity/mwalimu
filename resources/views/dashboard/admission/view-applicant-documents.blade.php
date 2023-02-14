@@ -129,6 +129,12 @@
                   @endif
                 </div>
 
+                {!! Form::open(['url'=>'application/admitted-applicants','class'=>'ss-form-processing','method'=>'POST']) !!}
+                <button type="submit" class="btn btn-primary">Accept</button>
+                <button class="btn btn-danger">Decline</button>
+                {!! Form::close() !!} 
+
+
 
                     
                  
