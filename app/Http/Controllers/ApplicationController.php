@@ -1995,7 +1995,10 @@ class ApplicationController extends Controller
             //     }
             // }
 
-            return $entry_requirements;
+            foreach ($entry_requirements as $entry) {
+                return $entry;
+            }
+
 
             
         } else if ($decision == 'Decline Applicant') {
