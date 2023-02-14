@@ -138,12 +138,12 @@
                 </div>
 
                 @foreach($program_codes as $code)
-                    <div class="form-check form-check-inline">
-                      <input class="form-check-input" type="radio" name="exampleRadios" id="program-radio-{{ $code }}" value="{{ $code }}">
-                      <label class="form-check-label" for="program-radio-{{ $code }}">
-                        {{ $code }}
-                      </label>
-                    </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="program_code" id="program-radio-{{ $code }}" value="{{ $code }}">
+                    <label class="form-check-label" for="program-radio-{{ $code }}">
+                      {{ $code }}
+                    </label>
+                  </div>
                 @endforeach
 
 

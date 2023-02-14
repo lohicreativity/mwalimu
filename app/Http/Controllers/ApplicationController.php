@@ -1997,6 +1997,8 @@ class ApplicationController extends Controller
                 return redirect()->back()->with('error','Application window is not active');
             }
 
+            return $request->get('program_code');
+
            
         
         } else if ($decision == 'Decline Applicant') {
