@@ -2000,9 +2000,17 @@ class ApplicationController extends Controller
             }
 
             $program = Program::where('code', $program_code)->first();
-            $campus_program = CampusProgram::where('campus_id', $staff->campus_id)->where('program_id', $program->id)->first();
-            
-            return $campus_program;
+
+            $campus_program = CampusProgram::where('campus_id', $staff->campus_id)
+            ->where('program_id', $program->id)
+            ->first();
+
+            $update_applicant_selection = ApplicantProgramSelection::where('applicant_id', $applicant_id)
+            ->where('campus_program_id', $campus_program->id)
+            ->where('application_window_id', $application_window_id)
+            ->get();
+
+            return $update_applicant_selection;
            
         
         } else if ($decision == 'Decline Applicant') {
