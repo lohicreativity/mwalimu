@@ -1986,18 +1986,20 @@ class ApplicationController extends Controller
             }
 
 
-            // foreach($programs_selected as $ps) {
-            //     foreach($entry_requirements as $er) {
+            foreach($programs_selected as $ps) {
+                foreach($entry_requirements as $er) {
 
-            //         if ($ps == $er->campus_program_id) {
-            //             $count_applicants_per_program = ApplicantProgramSelection::where('campus_program_id', $ps)->count();
+                    if ($ps == $er->campus_program_id) {
+                        $count_applicants_per_program = ApplicantProgramSelection::where('campus_program_id', $ps)->count();
 
-            //             if ($count_applicants_per_program < $er->max_capacity) {
-            //                 $program_codes[] = $er->campus_program->regulator_code;
-            //             }
-            //         }   
-            //     }
-            // }
+                        if ($count_applicants_per_program < $er->max_capacity) {
+                            $program_codes[] = $er->campusProgram->program->code;
+                        }
+                    }   
+                }
+            }
+
+            return $program_codes;
         
         } else if ($decision == 'Decline Applicant') {
            
