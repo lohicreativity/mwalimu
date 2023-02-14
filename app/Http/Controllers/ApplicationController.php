@@ -2017,6 +2017,8 @@ class ApplicationController extends Controller
         ->where('application_window_id', $application_window_id)
         ->update(['status' => 'APPROVING']);
 
+        Applicant::where('id',$applicant_id)->update(['status'=>'SELECTED']);
+
         return redirect()->to('application/other-applicants')->with('message','Applicant selected successfully');
 
     }
