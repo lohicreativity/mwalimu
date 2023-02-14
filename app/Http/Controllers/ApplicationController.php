@@ -356,8 +356,8 @@ class ApplicationController extends Controller
                 $query->where('avn_no_results', 1)
                 ->whereNotNull('diploma_certificate');
             })
-            ->with(['intake','selections.campusProgram.program','nectaResultDetails','nacteResultDetails' => function($query) {
-                $query->where('verifie', 1);
+            ->with(['intake','selections.campusProgram.program','nacteResultDetails' => function($query) {
+                $query->where('verified', 1);
             }])
             ->get();
 
@@ -2011,7 +2011,7 @@ class ApplicationController extends Controller
             ->update(['status' => 'APPROVING']);
 
 
-            return redirect()->back()->with('message','Applicant selected successfully');
+            return redirect()->to('application/other-applicants')->with('message','Applicant selected successfully');
            
         
         } else if ($decision == 'Decline Applicant') {
