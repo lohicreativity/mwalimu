@@ -375,12 +375,15 @@ class ApplicationController extends Controller
                 $query->where('avn_no_results', 1)
                 ->whereNotNull('diploma_certificate');
             })
-            ->with(['intake','selections.campusProgram.program', 'nacteResultDetails', 'nacteResultDetails' => function($query) {
+            ->with(['intake','selections.campusProgram.program' => function($query) {
+                $query->where('status', '!=', 'SELECTED')
+                      ->where('status', '!=', 'APPROVING');
+            } , 'nacteResultDetails', 'nacteResultDetails' => function($query) {
                 $query->where('verified', 1);
             }])
             // ->whereHas('selections', function($query) {
             //     $query->where('status', '!=', 'SELECTED')
-            //           ->where('statu', '!=', 'APPROVING');
+            //           ->where('status', '!=', 'APPROVING');
             // })
             ->get();
 
