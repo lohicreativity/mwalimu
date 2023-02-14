@@ -64,7 +64,8 @@
                         </thead>
                         <tbody>
                             @foreach($applicants as $applicant)
-                            <tr>
+                              @if($applicant->selections->status == "ELIGIBLE")
+                              <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $applicant->first_name }} {{ $applicant->middle_name }} {{ $applicant->surname }}</td>
                                 <td>{{ $applicant->gender }}</td>
@@ -91,7 +92,8 @@
                                     View Documents
                                   </a>
                                 </td>
-                            </tr>
+                              </tr>
+                              @endif
                             @endforeach
                         </tbody>
                     </table>
