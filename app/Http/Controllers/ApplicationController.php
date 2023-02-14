@@ -1936,12 +1936,16 @@ class ApplicationController extends Controller
 
     public function selectApplicant(Request $request)
     {
-        $decision = $request->get('decision_btn');
+        $decision       = $request->get('decision_btn');
+        $applicant_id   = $request->get('applicant_id');
 
         
         if ($decision == 'Select Applicant') {
 
-            return $request->get('applicant_id');
+            $applicant_program_selection = ApplicantProgramSelection::where('applicant_id', $applicant_id)->get();
+
+            return $applicant_program_selection;
+
             
         } else if ($decision == 'Decline Applicant') {
            
