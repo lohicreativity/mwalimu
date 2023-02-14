@@ -90,39 +90,15 @@
 
                                   {!! Form::checkbox('applicant_'.$applicant->id,$applicant->id) !!}
 
-
-                                  <div class="modal fade" id="ss-view-document-{{ $applicant->id }}">
-                                    <div class="modal-dialog modal-lg">
-                                      <div class="modal-content">
-                                        <div class="modal-header">
-                                          <h4 class="modal-title">{{ __('View Document') }} - {{ $applicant->first_name }} {{ $applicant->middle_name }} {{ $applicant->surname }}</h4>
-                                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                          </button>
-                                        </div>
-                                        <div class="modal-body">
-
-                                          
-                                        </div>
-                                        <div class="modal-footer justify-content-between">
-                                          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                        </div>
-                                      </div>
-                                      <!-- /.modal-content -->
-                                    </div>
-                                    <!-- /.modal-dialog -->
-                                  </div>
-                                  <!-- /.modal -->
-
                                 </td>
                             </tr>
                             @endforeach
-                            <!-- <tr>
-                            <td colspan="9">
-                              <input type="submit" class="btn btn-primary" name="action" value="Accept Selected"> 
-                              <input type="submit" class="btn btn-primary" name="action" value="Decline Selected">
-                            </td>
-                            </tr> -->
+                            <tr>
+                              <td colspan="9">
+                                <input type="submit" class="btn btn-primary" name="action" value="Accept Selected"> 
+                                <input type="submit" class="btn btn-primary" name="action" value="Decline Selected">
+                              </td>
+                            </tr>
                         </tbody>
                     </table>
 
