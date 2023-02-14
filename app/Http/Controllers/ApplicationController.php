@@ -1965,12 +1965,12 @@ class ApplicationController extends Controller
             ->with(['campusProgram.entryRequirements'])
             ->get();
 
-            $applicant = Applicant::where('id', $applicant_id)
-            ->with(['selections.campusProgram.entryRequirements'])
-            ->whereHas('selections', function($query) {
-                $query->where('status', 'SELECTED');
-            })
-            ->get();
+            // $applicant = Applicant::where('id', $applicant_id)
+            // ->with(['selections.campusProgram.entryRequirements'])
+            // ->whereHas('selections', function($query) {
+            //     $query->where('status', 'SELECTED');
+            // })
+            // ->get();
 
             // $applicant = Applicant::where('id', $applicant_id)
             // ->with(['selections.campusProgram.entryRequirements' => function($query) {
@@ -1980,13 +1980,19 @@ class ApplicationController extends Controller
             // // ->with(['selections.campusProgram.entryRequirements'])
             // ->get();
 
-            $programs_selected = array();
+            $applicant = DB::table('applicant')
+            ->join('applicant_program_selections', 'applicant.id', 'applicant_program_selections.applicant_id')
+            ->where('applicant_program_selections.status', 'SELECTED')
+            ->where('applicant_program_selections.applicant_id', $applicant_id)
+            ->get();
 
-            foreach ($applicant[0]->selections as $selection) {
-                $programs_selected[] = $selection->campus_program_id;
-            }
+            // $programs_selected = array();
 
-            return $programs_selected;
+            // foreach ($applicant[0]->selections as $selection) {
+            //     $programs_selected[] = $selection->campus_program_id;
+            // }
+
+            return $applicant;
 
           
 
