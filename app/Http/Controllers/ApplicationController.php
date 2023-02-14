@@ -1999,7 +1999,11 @@ class ApplicationController extends Controller
                 }
             }
 
-            return $program_codes;
+            foreach($entry_requirements as $er) {
+                return $er->campusProgram->program->code;
+            }
+
+            // return $program_codes;
         
         } else if ($decision == 'Decline Applicant') {
            
