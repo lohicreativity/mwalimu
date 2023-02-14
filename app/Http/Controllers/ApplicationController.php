@@ -1965,11 +1965,18 @@ class ApplicationController extends Controller
             ->with(['campusProgram.entryRequirements'])
             ->get();
 
+            // $applicant = Applicant::where('id', $applicant_id)
+            // ->with(['selections.campusProgram.entryRequirements'])
+            // ->whereHas('selections', function($query) {
+            //     $query->where('status', 'SELECTED');
+            // })
+            // ->get();
+
             $applicant = Applicant::where('id', $applicant_id)
-            ->with(['selections.campusProgram.entryRequirements'])
             ->whereHas('selections', function($query) {
                 $query->where('status', 'SELECTED');
             })
+            ->with(['selections.campusProgram.entryRequirements'])
             ->get();
 
             $programs_selected = array();
