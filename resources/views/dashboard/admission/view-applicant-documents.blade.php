@@ -129,9 +129,11 @@
                   @endif
                 </div>
 
-                {!! Form::open(['url'=>'application/admitted-applicants','class'=>'ss-form-processing','method'=>'POST']) !!}
-                <button type="submit" class="btn btn-primary">Accept Applicant</button>
-                <button class="btn btn-danger">Decline Applicant</button>
+                {!! Form::open(['url'=>'application/select-applicant','class'=>'ss-form-processing','method'=>'POST']) !!}
+                <input type="submit" name="decision_btn" class="btn btn-primary" value="select-applicant">
+                <input type="submit" name="decision_btn" class="btn btn-danger" value="decline-applicant">
+                <!-- <button type="submit" class="btn btn-primary">Select Applicant</button>
+                <button class="btn btn-danger">Decline Applicant</button> -->
                 {!! Form::close() !!} 
 
 
