@@ -346,45 +346,43 @@ class ApplicationController extends Controller
 
         } else if (Auth::user()->hasRole('admission-officer')) {
 
-            $applicants = DB::table('applicants')
-            ->join('applicant_program_selections', 'applicants.id', 'applicant_program_selections.applicant_id')
-            ->join('nacte_result_details', 'applicants.id', 'nacte_result_details.applicant_id')
-            ->where('campus_id', $campus_id)
-            ->where('programs_complete_status', 1)
-            ->where(function($query) {
-                $query->where('teacher_certificate_status', 1)
-                      ->orWhere('veta_status', 1);
-            })
-            // ->where(function($query) {
-            //     $query->where('applicant_program_selections.status', 'SELECTED')
-            //           ->orWhere('applicant_program_selections.status', 'APPROVING');
-            // })
-            ->orWhere(function($query) {
-                $query->where('avn_no_results', 1)
-                ->whereNotNull('diploma_certificate');
-            })
-            ->get();
-
-            return $applicants;
-
-            // $applicants = Applicant::where('campus_id', $campus_id)
+            // $applicants = DB::table('applicants')
+            // ->join('applicant_program_selections', 'applicants.id', 'applicant_program_selections.applicant_id')
+            // ->join('nacte_result_details', 'applicants.id', 'nacte_result_details.applicant_id')
+            // ->where('campus_id', $campus_id)
             // ->where('programs_complete_status', 1)
             // ->where(function($query) {
             //     $query->where('teacher_certificate_status', 1)
             //           ->orWhere('veta_status', 1);
             // })
+            // ->where(function($query) {
+            //     $query->where('applicant_program_selections.status', 'SELECTED')
+            //           ->orWhere('applicant_program_selections.status', 'APPROVING');
+            // })
             // ->orWhere(function($query) {
             //     $query->where('avn_no_results', 1)
             //     ->whereNotNull('diploma_certificate');
             // })
-            // ->with(['intake','selections.campusProgram.program','nacteResultDetails' => function($query) {
-            //     $query->where('verified', 1);
-            // }])
-            // ->whereHas('selections', function($query) {
-            //     $query->where('status', '!=', 'SELECTED')
-            //           ->where('statu', '!=', 'APPROVING');
-            // })
             // ->get();
+
+            $applicants = Applicant::where('campus_id', $campus_id)
+            ->where('programs_complete_status', 1)
+            ->where(function($query) {
+                $query->where('teacher_certificate_status', 1)
+                      ->orWhere('veta_status', 1);
+            })
+            ->orWhere(function($query) {
+                $query->where('avn_no_results', 1)
+                ->whereNotNull('diploma_certificate');
+            })
+            ->with(['intake','selections.campusProgram.program','nacteResultDetails' => function($query) {
+                $query->where('verified', 1);
+            }])
+            ->whereHas('selections', function($query) {
+                $query->where('status', '!=', 'SELECTED')
+                      ->where('statu', '!=', 'APPROVING');
+            })
+            ->get();
 
         }
 
