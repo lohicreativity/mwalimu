@@ -1933,7 +1933,10 @@ class ApplicationController extends Controller
      * Select Applicant
      */
 
-    public function selectApplicant
+    public function selectApplicant(Request $request)
+    {
+        return $request->get('decision_btn');
+    }
 
     /**
      * Run application selection
