@@ -93,14 +93,13 @@
                                 </td>
                             </tr>
                             @endforeach
-                            <tr>
-                              <td colspan="9">
-                                <input type="submit" class="btn btn-primary" name="action" value="Accept Selected"> 
-                                <input type="submit" class="btn btn-primary" name="action" value="Decline Selected">
-                              </td>
-                            </tr>
                         </tbody>
                     </table>
+
+                    <div>
+                      <input type="submit" class="btn btn-primary" name="action" value="Accept Selected"> 
+                      <input type="submit" class="btn btn-primary" name="action" value="Decline Selected">
+                    </div>
 
                     {!! Form::close() !!}
 
