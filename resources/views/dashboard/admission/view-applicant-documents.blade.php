@@ -71,6 +71,62 @@
                       </div>
                     </div>
                   @endif
+
+                  @if($applicant->teacher_diploma_certificate)
+                    <div class="card">
+                      <div class="card-header" id="ss-teacher-diploma-certificate">
+                        <h2 class="mb-0">
+                          <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseTeacherDiploma" aria-expanded="true" aria-controls="collapseTeacherDiploma">
+                            Teacher Diploma Certificate
+                          </button>
+                        </h2>
+                      </div>
+
+                      <div id="collapseTeacherDiploma" class="collapse" aria-labelledby="ss-teacher-diploma-certificate" data-parent="#accordionExample-2">
+                        <div class="card-body">
+                          @if(explode('.',$applicant->teacher_diploma_certificate)[1] == 'pdf')
+                            <iframe
+                                  src="https://drive.google.com/viewerng/viewer?embedded=true&url={{ asset('uploads/'.$applicant->teacher_diploma_certificate) }}#toolbar=0&scrollbar=0"
+                                  frameBorder="0"
+                                  scrolling="auto"
+                                  height="400px"
+                                  width="100%"
+                              ></iframe>
+                          @else
+                            <img src="{{ asset('uploads/'.$applicant->teacher_diploma_certificate) }}" height="400px" width="100%">
+                          @endif
+                        </div>
+                      </div>
+                    </div>
+                  @endif
+
+                  @if($applicant->veta_certificate)
+                    <div class="card">
+                      <div class="card-header" id="ss-veta-certificate">
+                        <h2 class="mb-0">
+                          <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseVeta" aria-expanded="true" aria-controls="collapseVeta">
+                            Veta Certificate
+                          </button>
+                        </h2>
+                      </div>
+
+                      <div id="collapseVeta" class="collapse" aria-labelledby="ss-veta-certificate" data-parent="#accordionExample-2">
+                        <div class="card-body">
+                          @if(explode('.',$applicant->veta_certificate)[1] == 'pdf')
+                            <iframe
+                                  src="https://drive.google.com/viewerng/viewer?embedded=true&url={{ asset('uploads/'.$applicant->veta_certificate) }}#toolbar=0&scrollbar=0"
+                                  frameBorder="0"
+                                  scrolling="auto"
+                                  height="400px"
+                                  width="100%"
+                              ></iframe>
+                          @else
+                            <img src="{{ asset('uploads/'.$applicant->veta_certificate) }}" height="400px" width="100%">
+                          @endif
+                        </div>
+                      </div>
+                    </div>
+                  @endif
                 </div>
 
 
