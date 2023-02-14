@@ -68,9 +68,7 @@
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $applicant->first_name }} {{ $applicant->middle_name }} {{ $applicant->surname }}</td>
                                 <td>{{ $applicant->gender }}</td>
-                                <td>
-                                  <a target="_blank" href="{{ url('application/view-applicant-documents?applicant_id='.$applicant->id) }}">{{ $applicant->index_number }}</a>
-                                </td>
+                                <td>{{ $applicant->index_number }}</td>
                                 <td>
                                   @foreach($applicant->nectaResultDetails as $detail)
 					                          @if($detail->exam_id == 2) 
@@ -87,25 +85,16 @@
                                     {{ $selection->campusProgram->program->code }};
                                   @endforeach
                                 </td>
-                                <td class="text-center">
-
-                                  {!! Form::checkbox('applicant_'.$applicant->id, $applicant->id, false, ['class' => 'assign-checkbox']) !!}
-
+                                <td>
+                                  <a target="_blank" href="{{ url('application/view-applicant-documents?applicant_id='.$applicant->id) }}">
+                                    <i class="fas fa-list"></i>
+                                    View Documents
+                                  </a>
                                 </td>
                             </tr>
                             @endforeach
                         </tbody>
                     </table>
-
-                    <div>
-                      <input type="submit" class="btn btn-primary" name="action" value="Accept Selected"> 
-                      <input type="submit" class="btn btn-danger" name="action" value="Decline Selected">
-                    </div>
-
-                    <div class="float-right">
-                      <button type="button" class="btn btn-primary check-all-btn">Check All</button>
-                      <button type="button" class="btn btn-danger uncheck-all-btn">Uncheck All</button>
-                    </div>
 
                     {!! Form::close() !!}
 

@@ -1957,6 +1957,7 @@ class ApplicationController extends Controller
         if(ApplicationWindow::where('campus_id',$staff->campus_id)->where('end_date','>=',implode('-', explode('-', now()->format('Y-m-d'))))->where('status','INACTIVE')->first()){
              return redirect()->back()->with('error','Application window is not active');
         }
+        
         // Phase I
         $campus_programs = CampusProgram::whereHas('applicationWindows',function($query) use($request){
              $query->where('id',$request->get('application_window_id'));
