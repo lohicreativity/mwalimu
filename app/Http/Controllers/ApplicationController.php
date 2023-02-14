@@ -1966,9 +1966,10 @@ class ApplicationController extends Controller
             ->get();
 
             $applicant = Applicant::where('id', $applicant_id)
-            ->with(['selections.campusProgram.entryRequirements' => function ($query) {
+            ->with(['selections.campusProgram.entryRequirements'])
+            ->whereHas('selections', function($query) {
                 $query->where('status', 'SELECTED');
-            }])
+            })
             ->get();
 
             $programs_selected = array();
@@ -1977,7 +1978,7 @@ class ApplicationController extends Controller
                 $programs_selected[] = $selection->campus_program_id;
             }
 
-            return $programs_selected;
+            return $programs_selected
 
           
 
