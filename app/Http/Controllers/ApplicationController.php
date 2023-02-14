@@ -1976,7 +1976,8 @@ class ApplicationController extends Controller
                 $programs_selected[] = $selection->campus_program_id;
             }
 
-            $entry_requirements = EntryRequirement::where('application_window_id', $application_window_id) 
+            $entry_requirements = EntryRequirement::where('application_window_id', $application_window_id)
+            ->with(['campusProgram']) 
             ->get();
 
 
@@ -1984,13 +1985,16 @@ class ApplicationController extends Controller
                 foreach($entry_requirements as $er) {
 
                     if ($ps == $er->campus_program_id) {
-                        
                         $count_applicants_per_program = ApplicantProgramSelection::where('campus_program_id', $ps)->count();
+
+                        if ($count_applicants_per_program < $er->max_capacity) {
+                            
+                        }
                     }   
                 }
             }
 
-            return $count_applicants_per_program;
+            return $entry_requirements;
 
             
         } else if ($decision == 'Decline Applicant') {
