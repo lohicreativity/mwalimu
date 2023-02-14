@@ -66,7 +66,7 @@
                                 <td>{{ $applicant->first_name }} {{ $applicant->middle_name }} {{ $applicant->surname }}</td>
                                 <td>{{ $applicant->gender }}</td>
                                 <td>
-                                  <a href="{{ url('application/view-applicant-document?applicant_id='.$applicant->id) }}">{{ $applicant->index_number }}</a>
+                                  <a target="_blank" href="{{ url('application/view-applicant-documents?applicant_id='.$applicant->id) }}">{{ $applicant->index_number }}</a>
                                 </td>
                                 <td>
                                   @foreach($applicant->nectaResultDetails as $detail)

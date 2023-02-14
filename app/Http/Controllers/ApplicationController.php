@@ -364,6 +364,11 @@ class ApplicationController extends Controller
         return view('dashboard.admission.other-applicants', $data)->withTitle('Other Applicants');
     }
 
+    public function viewApplicantDocuments(Request $request)
+    {
+        return view('dashboard.admission.view-applicant-documents')->withTitle('View Applicant Documents');
+    }
+
     /**
      * Download selected applicants list
      */
