@@ -380,7 +380,7 @@ class ApplicationController extends Controller
             }])
             ->with(['selections' => function($query) {
                 $query->where('status', '!=', 'SELECTED')
-                      ->where('status', '!=', 'APPROVING');
+                      ->orWhere('status', '!=', 'APPROVING');
             }])
             ->get();
 
