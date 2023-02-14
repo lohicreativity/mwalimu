@@ -361,7 +361,7 @@ class ApplicationController extends Controller
             }])
             ->whereHas('selections', function($query) {
                 $query->where('status', '!=', 'SELECTED')
-                      ->where('status', '!=', 'APPROVING');
+                      ->where('statu', '!=', 'APPROVING');
             })
             ->get();
 
