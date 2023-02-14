@@ -1964,7 +1964,6 @@ class ApplicationController extends Controller
             ->with(['campusProgram.entryRequirements'])
             ->get();
 
-            $campus_programs = Campus
 
             
         } else if ($decision == 'Decline Applicant') {
