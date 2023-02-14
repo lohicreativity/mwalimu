@@ -1942,7 +1942,9 @@ class ApplicationController extends Controller
         
         if ($decision == 'Select Applicant') {
 
-            $applicant_program_selection = ApplicantProgramSelection::where('applicant_id', $applicant_id)->get();
+            $applicant_program_selection = ApplicantProgramSelection::where('applicant_id', $applicant_id)
+            ->with(['campusProgram.entryRequirements'])
+            ->get();
 
             return $applicant_program_selection;
 
