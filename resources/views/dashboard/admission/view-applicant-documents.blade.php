@@ -56,6 +56,18 @@
 
                       <div id="collapseDiplomaCertificate" class="collapse" aria-labelledby="ss-diploma-certificate" data-parent="#accordionExample-2">
                         <div class="card-body">
+
+                          @if(explode('.',$applicant->diploma_certificate)[1] == 'pdf')
+                          <iframe
+                                src="https://drive.google.com/viewerng/viewer?embedded=true&url={{ asset('uploads/'.$applicant->diploma_certificate) }}#toolbar=0&scrollbar=0"
+                                frameBorder="0"
+                                scrolling="auto"
+                                height="400px"
+                                width="100%"
+                            ></iframe>
+                          @else
+                            <img src="{{ asset('uploads/'.$applicant->diploma_certificate) }}" height="400px" width="100%">
+                          @endif
                           
                         </div>
                       </div>
