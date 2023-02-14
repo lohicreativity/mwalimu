@@ -1965,20 +1965,20 @@ class ApplicationController extends Controller
             ->with(['campusProgram.entryRequirements'])
             ->get();
 
-            // $applicant = Applicant::where('id', $applicant_id)
-            // ->with(['selections.campusProgram.entryRequirements'])
-            // ->whereHas('selections', function($query) {
-            //     $query->where('status', 'SELECTED');
-            // })
-            // ->get();
-
             $applicant = Applicant::where('id', $applicant_id)
-            ->with(['selections.campusProgram.entryRequirements' => function($query) {
-                $query->where('status', 'SELECTED')
-                      ->orWhere('status', 'APPROVING');
-            }])
-            // ->with(['selections.campusProgram.entryRequirements'])
+            ->with(['selections.campusProgram.entryRequirements'])
+            ->whereHas('selections', function($query) {
+                $query->where('statu', 'SELECTED');
+            })
             ->get();
+
+            // $applicant = Applicant::where('id', $applicant_id)
+            // ->with(['selections.campusProgram.entryRequirements' => function($query) {
+            //     $query->where('status', 'SELECTED')
+            //           ->orWhere('status', 'APPROVING');
+            // }])
+            // // ->with(['selections.campusProgram.entryRequirements'])
+            // ->get();
 
             $programs_selected = array();
 
