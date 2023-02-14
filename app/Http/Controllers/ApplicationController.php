@@ -371,7 +371,8 @@ class ApplicationController extends Controller
     public function viewApplicantDocuments(Request $request)
     {
         $data = [
-            'applicant' => Applicant::find($request->get('applicant_id'))
+            'applicant' => Applicant::find($request->get('applicant_id')),
+            'request'   => $request
         ];
 
         return view('dashboard.admission.view-applicant-documents', $data)->withTitle('View Applicant Documents');
@@ -1936,7 +1937,7 @@ class ApplicationController extends Controller
     public function selectApplicant(Request $request)
     {
         $decision = $request->get('decision_btn');
-        
+
         
         if ($decision == 'Select Applicant') {
 
