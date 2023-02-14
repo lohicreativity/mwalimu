@@ -1971,8 +1971,8 @@ class ApplicationController extends Controller
 
             $programs_selected = array();
 
-            foreach ($applicant[0]->selections as $selection) {
-                $programs_selected[$loop->index] = $selection->campus_program_id;
+            for ($i = 0; $i < count($applicant[0]->selections); $i++) { 
+                $program_selected[$i] = $selection->campus_program_id;
             }
 
             return $programs_selected;
