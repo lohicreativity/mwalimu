@@ -1980,7 +1980,7 @@ class ApplicationController extends Controller
             // // ->with(['selections.campusProgram.entryRequirements'])
             // ->get();
 
-            $applicant = DB::table('applicant')
+            $applicant = DB::table('applicants')
             ->join('applicant_program_selections', 'applicant.id', 'applicant_program_selections.applicant_id')
             ->where('applicant_program_selections.status', 'SELECTED')
             ->where('applicant_program_selections.applicant_id', $applicant_id)
