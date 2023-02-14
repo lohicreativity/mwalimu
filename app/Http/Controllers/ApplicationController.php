@@ -1936,9 +1936,10 @@ class ApplicationController extends Controller
 
     public function selectApplicant(Request $request)
     {
-        $decision       = $request->get('decision_btn');
-        $applicant_id   = $request->get('applicant_id');
-        $staff          = User::find(Auth::user()->id)->staff;
+        $decision               = $request->get('decision_btn');
+        $applicant_id           = $request->get('applicant_id');
+        $application_window_id  = $request->get('applicant_window_id');
+        $staff                  = User::find(Auth::user()->id)->staff;
 
 
         
@@ -1963,6 +1964,12 @@ class ApplicationController extends Controller
             $applicant_program_selection = ApplicantProgramSelection::where('applicant_id', $applicant_id)
             ->with(['campusProgram.entryRequirements'])
             ->get();
+
+            $applicant = Applicant::where('id', $applicant_id)
+            ->with(['selections.campusProgram.program'])
+            ->get();
+
+            return $applicant;
 
 
             
