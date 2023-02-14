@@ -67,26 +67,49 @@
                                 <td>{{ $applicant->gender }}</td>
                                 <td>{{ $applicant->index_number }}</td>
                                 <td>
-                                    @foreach($applicant->nectaResultDetails as $detail)
-					                    @if($detail->exam_id == 2) 
-                                            {{ $detail->index_number }} 
-                                        @endif
-						            @endforeach 
+                                  @foreach($applicant->nectaResultDetails as $detail)
+					                          @if($detail->exam_id == 2) 
+                                      {{ $detail->index_number }} 
+                                    @endif
+						                      @endforeach 
                                     
-                                    @foreach($applicant->nacteResultDetails as $detail)
-                                        {{ $detail->avn }}
-                                    @endforeach
-					            </td>
+                                  @foreach($applicant->nacteResultDetails as $detail)
+                                    {{ $detail->avn }}
+                                  @endforeach
+					                      </td>
                                 <td>
-                                    @foreach($applicant->selections as $selection)
-                                        {{ $selection->campusProgram->program->code }};
-                                    @endforeach
+                                  @foreach($applicant->selections as $selection)
+                                    {{ $selection->campusProgram->program->code }};
+                                  @endforeach
                                 </td>
                                 <td>
-                                    <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="">
-                                        <i class="fas fa-list-alt"></i>
-                                        View Documents
-                                    </a>
+                                  <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-view-document-{{ $applicant->id }}">
+                                    <i class="fas fa-list-alt"></i>
+                                    View Documents
+                                  </a>
+
+                                  <div class="modal fade" id="ss-view-document-{{ $applicant->id }}">
+                                    <div class="modal-dialog modal-lg">
+                                      <div class="modal-content">
+                                        <div class="modal-header">
+                                          <h4 class="modal-title">{{ __('View Document') }} - {{ $applicant->first_name }}</h4>
+                                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                          </button>
+                                        </div>
+                                        <div class="modal-body">
+
+                                        </div>
+                                        <div class="modal-footer justify-content-between">
+                                          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                        </div>
+                                      </div>
+                                      <!-- /.modal-content -->
+                                    </div>
+                                    <!-- /.modal-dialog -->
+                                  </div>
+                                  <!-- /.modal -->
+                                  
                                 </td>
                             </tr>
                             @endforeach
