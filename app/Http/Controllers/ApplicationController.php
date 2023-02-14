@@ -360,8 +360,8 @@ class ApplicationController extends Controller
                 $query->where('verified', 1);
             }])
             ->whereHas('selections', function($query) {
-                $query->whereNot('status', 'SELECTED')
-                      ->whereNot('status', 'APPROVING');
+                $query->where('status', '!=', 'SELECTED')
+                      ->where('status', '!=', 'APPROVING');
             })
             ->get();
 
