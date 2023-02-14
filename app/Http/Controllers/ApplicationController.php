@@ -384,7 +384,7 @@ class ApplicationController extends Controller
             // })
             ->get();
 
-            return $applicants;
+            // return $applicants;
 
         }
 
