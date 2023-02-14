@@ -1981,7 +1981,7 @@ class ApplicationController extends Controller
             // ->get();
 
             $applicant = DB::table('applicants')
-            ->select('applicants.*', 'applicant_program_selections.*')
+            ->select('applicant_program_selections.*')
             ->join('applicant_program_selections', 'applicants.id', 'applicant_program_selections.applicant_id')
             ->where('applicant_program_selections.status', 'SELECTED')
             ->where('applicant_program_selections.applicant_id', $applicant_id)
