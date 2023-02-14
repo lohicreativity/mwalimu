@@ -39,6 +39,7 @@ use App\Domain\Application\Models\ApplicantProgramSelection;
 use App\Domain\Application\Actions\ApplicantAction;
 use App\Domain\Application\Models\NectaResultDetail;
 use App\Domain\Application\Models\NectaResult;
+use App\Domain\Application\Models\EntryRequirement;
 use App\Domain\Finance\Models\LoanAllocation;
 use App\Domain\Settings\Models\Currency;
 use App\Domain\Application\Models\HealthInsurance;
@@ -1961,25 +1962,6 @@ class ApplicationController extends Controller
                 return redirect()->back()->with('error','Application window is not active');
             }
 
-            $applicant_program_selection = ApplicantProgramSelection::where('applicant_id', $applicant_id)
-            ->with(['campusProgram.entryRequirements'])
-            ->get();
-
-            // $applicant = Applicant::where('id', $applicant_id)
-            // ->with(['selections.campusProgram.entryRequirements'])
-            // ->whereHas('selections', function($query) {
-            //     $query->where('status', 'SELECTED');
-            // })
-            // ->get();
-
-            // $applicant = Applicant::where('id', $applicant_id)
-            // ->with(['selections.campusProgram.entryRequirements' => function($query) {
-            //     $query->where('status', 'SELECTED')
-            //           ->orWhere('status', 'APPROVING');
-            // }])
-            // // ->with(['selections.campusProgram.entryRequirements'])
-            // ->get();
-
             $applicant = DB::table('applicants')
             ->select('applicant_program_selections.*')
             ->join('applicant_program_selections', 'applicants.id', 'applicant_program_selections.applicant_id')
@@ -1996,11 +1978,16 @@ class ApplicationController extends Controller
                 $programs_selected[] = $selection->campus_program_id;
             }
 
-            return $programs_selected;
+            $entry_requirements = EntryRequirement::where('application_window_id', $application_window_id) 
+            ->get();
 
-          
+            return $entry_requirements;
+
+            // foreach($programs_selected as $ps) {
 
 
+
+            // }
 
             
         } else if ($decision == 'Decline Applicant') {
