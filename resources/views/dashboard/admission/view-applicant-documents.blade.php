@@ -130,10 +130,9 @@
                 </div>
 
                 {!! Form::open(['url'=>'application/select-applicant','class'=>'ss-form-processing','method'=>'POST']) !!}
+                <input type="hidden" name="applicant_id" value="{{ $request->get('applicant_id') }}">
                 <input type="submit" name="decision_btn" class="btn btn-primary" value="Select Applicant">
                 <input type="submit" name="decision_btn" class="btn btn-danger" value="Decline Applicant">
-                <!-- <button type="submit" class="btn btn-primary">Select Applicant</button>
-                <button class="btn btn-danger">Decline Applicant</button> -->
                 {!! Form::close() !!} 
 
 

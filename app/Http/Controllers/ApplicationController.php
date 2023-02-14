@@ -1937,12 +1937,15 @@ class ApplicationController extends Controller
     {
         $decision = $request->get('decision_btn');
         
-        if ($decision == 'Select Applicant') {
-            return 'Selecting applicant';
-        } else if ($decision == 'Decline Applicant') {
-            return 'Declining applicant';
-        }
         
+        if ($decision == 'Select Applicant') {
+
+            return $request->get('applicant_id');
+            
+        } else if ($decision == 'Decline Applicant') {
+           
+        }
+
     }
 
     /**
