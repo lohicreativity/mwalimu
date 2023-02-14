@@ -43,6 +43,27 @@
             <div class="card">
                <div class="card-body">
 
+                <div class="accordion" id="accordionExample-2">
+                  @if($applicant->diploma_certificate)
+                    <div class="card">
+                      <div class="card-header" id="ss-diploma-certificate">
+                        <h2 class="mb-0">
+                          <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseDiplomaCertificate" aria-expanded="true" aria-controls="collapseDiplomaCertificate">
+                            Diploma Certificate
+                          </button>
+                        </h2>
+                      </div>
+
+                      <div id="collapseDiplomaCertificate" class="collapse" aria-labelledby="ss-diploma-certificate" data-parent="#accordionExample-2">
+                        <div class="card-body">
+                          
+                        </div>
+                      </div>
+                    </div>
+                  @endif
+                </div>
+
+
                     
                  
                </div>
