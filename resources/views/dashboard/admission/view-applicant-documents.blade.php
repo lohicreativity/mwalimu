@@ -134,7 +134,10 @@
                 <input type="hidden" name="application_window_id" value="{{ $request->get('application_window_id') }}">
                 
                 <div class="row">
-                  <label for="">Select Program</label>
+                  <div>
+                    <label for="">Select Program</label>
+                  </div>
+
                   @foreach($program_codes as $code)
                   <div class="col-sm-4">
                     <div class="form-check">
@@ -145,6 +148,7 @@
                     </div>
                   </div>
                   @endforeach
+                  
                 </div>
 
                 <div class="mt-3">
