@@ -359,6 +359,10 @@ class ApplicationController extends Controller
             ->with(['intake','selections.campusProgram.program','nacteResultDetails' => function($query) {
                 $query->where('verified', 1);
             }])
+            ->whereHas('selections', function($query) {
+                $query->whereNot('status', 'SELECTED')
+                      ->whereNot('status', 'APPROVING');
+            })
             ->get();
 
         }
