@@ -130,8 +130,8 @@
                 </div>
 
                 {!! Form::open(['url'=>'application/select-applicant','class'=>'ss-form-processing','method'=>'POST']) !!}
-                <input type="submit" name="decision_btn" class="btn btn-primary" value="select-applicant">
-                <input type="submit" name="decision_btn" class="btn btn-danger" value="decline-applicant">
+                <input type="submit" name="decision_btn" class="btn btn-primary" value="Select Applicant">
+                <input type="submit" name="decision_btn" class="btn btn-danger" value="Decline Applicant">
                 <!-- <button type="submit" class="btn btn-primary">Select Applicant</button>
                 <button class="btn btn-danger">Decline Applicant</button> -->
                 {!! Form::close() !!} 
