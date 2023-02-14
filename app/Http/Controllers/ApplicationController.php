@@ -384,12 +384,13 @@ class ApplicationController extends Controller
             // }])
             ->get();
 
-            foreach ($applicants->selections as $select) {
-                if ($select->status == "SELECTED" || $select->status == "APPROVING") {
-                    $applicants = null;
-                }
+            foreach ($applicants as $applicant) {
+                foreach ($applicant->selections as $select) {
+                    if ($select->status == "SELECTED" || $select->status == "APPROVING") {
+                        $applicants = null;
+                    }
+                }  
             }
-
         }
 
         $data = [
