@@ -86,7 +86,7 @@
                                   @endforeach
                                 </td>
                                 <td>
-                                  <a target="_blank" class="btn btn-primary" href="{{ url('application/view-applicant-documents?applicant_id='.$applicant->id) }}">
+                                  <a target="_blank" class="btn btn-primary" href="{{ url('application/view-applicant-documents?applicant_id='.$applicant->id.'&application_window_id='.session('active_window_id')) }}">
                                     <i class="fas fa-list"></i>
                                     View Documents
                                   </a>
