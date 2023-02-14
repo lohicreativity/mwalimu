@@ -1982,7 +1982,7 @@ class ApplicationController extends Controller
             ->get();
 
             foreach ($entry_requirements as $er) {
-                return $er->campusProgram->program;
+                return $er->campusProgram->program->code;
             }
 
 
@@ -1997,10 +1997,6 @@ class ApplicationController extends Controller
                         }
                     }   
                 }
-            }
-
-            foreach($entry_requirements as $er) {
-                return $er->campusProgram->program->code;
             }
 
             // return $program_codes;
