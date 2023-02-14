@@ -49,6 +49,8 @@
 
                     {!! Form::open(['url'=>'academic/accept-postponements','class'=>'ss-form-processing']) !!}
 
+                    <button class="btn btn-primary">Check All</button>
+
                     <table class="table table-bordered ss-margin-top ss-paginated-table">
                         <thead>
                             <tr>
