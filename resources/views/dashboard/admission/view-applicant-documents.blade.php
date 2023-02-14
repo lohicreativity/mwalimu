@@ -131,6 +131,7 @@
 
                 {!! Form::open(['url'=>'application/select-applicant','class'=>'ss-form-processing','method'=>'POST']) !!}
                 <input type="hidden" name="applicant_id" value="{{ $request->get('applicant_id') }}">
+                <input type="hidden" name="application_window_id" value="{{ $request->get('application_window_id') }}">
                 <input type="submit" name="decision_btn" class="btn btn-primary" value="Select Applicant">
                 <input type="submit" name="decision_btn" class="btn btn-danger" value="Decline Applicant">
                 {!! Form::close() !!} 
