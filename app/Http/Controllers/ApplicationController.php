@@ -1983,8 +1983,11 @@ class ApplicationController extends Controller
             $applicant = DB::table('applicants')
             ->select('applicant_program_selections.*')
             ->join('applicant_program_selections', 'applicants.id', 'applicant_program_selections.applicant_id')
-            ->where('applicant_program_selections.status', 'SELECTED')
             ->where('applicant_program_selections.applicant_id', $applicant_id)
+            ->where(function($query) {
+                $query->where('applicant_program_selections.status', 'SELECTED')
+                      ->orWhere('applicant_program_selections.status', 'APPROVING');
+            })
             ->get();
 
             $programs_selected = array();
