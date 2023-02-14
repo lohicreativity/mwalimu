@@ -63,7 +63,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @if(count($applicants) > 0)
+                            @if($applicants != null)
                               @foreach($applicants as $applicant)
                               <tr>
                                   <td>{{ $loop->iteration }}</td>
