@@ -134,11 +134,12 @@
                 <input type="hidden" name="application_window_id" value="{{ $request->get('application_window_id') }}">
                 
                 <div class="row">
+                  <label for="">Select Program</label>
                   @foreach($program_codes as $code)
                   <div class="col-sm-4">
                     <div class="form-check">
-                      <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
-                      <label class="form-check-label" for="exampleRadios1">
+                      <input class="form-check-input" type="radio" name="exampleRadios" id="program-radio-{{ $code }}" value="{{ $code }}">
+                      <label class="form-check-label" for="program-radio-{{ $code }}">
                         {{ $code }}
                       </label>
                     </div>
@@ -146,8 +147,12 @@
                   @endforeach
                 </div>
 
-                <input type="submit" name="decision_btn" class="btn btn-primary" value="Select Applicant">
-                <input type="submit" name="decision_btn" class="btn btn-danger" value="Decline Applicant">
+                <div class="mt-3">
+                  <input type="submit" name="decision_btn" class="btn btn-primary" value="Select Applicant">
+                  <input type="submit" name="decision_btn" class="btn btn-danger" value="Decline Applicant">
+                </div>
+
+                
                 {!! Form::close() !!} 
 
 
