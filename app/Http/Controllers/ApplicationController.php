@@ -2008,9 +2008,10 @@ class ApplicationController extends Controller
             $update_applicant_selection = ApplicantProgramSelection::where('applicant_id', $applicant_id)
             ->where('campus_program_id', $campus_program->id)
             ->where('application_window_id', $application_window_id)
-            ->get();
+            ->update(['status' => 'APPROVING']);
 
-            return $update_applicant_selection;
+
+            return redirect()->back()->with('message','Applicant selected successfully');
            
         
         } else if ($decision == 'Decline Applicant') {
