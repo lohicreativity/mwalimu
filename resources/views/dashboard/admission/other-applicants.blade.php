@@ -100,6 +100,9 @@
                     <div>
                       <input type="submit" class="btn btn-primary" name="action" value="Accept Selected"> 
                       <input type="submit" class="btn btn-danger" name="action" value="Decline Selected">
+                    </div>
+
+                    <div>
                       <button type="button" class="btn btn-primary float-right">Check All</button>
                     </div>
 
