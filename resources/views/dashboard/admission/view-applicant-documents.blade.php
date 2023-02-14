@@ -134,7 +134,7 @@
                 <input type="hidden" name="application_window_id" value="{{ $request->get('application_window_id') }}">
                 
                 <div class="row">
-                  @foreach($progam_codes as $code)
+                  @foreach($program_codes as $code)
                   <div class="col-sm-4">
                     <div class="form-check">
                       <input class="form-check-input" type="checkbox" value="{{ $code }}" id="defaultCheck1">
