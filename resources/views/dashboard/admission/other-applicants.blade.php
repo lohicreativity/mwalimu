@@ -47,6 +47,8 @@
                <!-- /.card-header -->
                <div class="card-body">
 
+                    {!! Form::open(['url'=>'academic/accept-postponements','class'=>'ss-form-processing']) !!}
+
                     <table class="table table-bordered ss-margin-top ss-paginated-table">
                         <thead>
                             <tr>
@@ -85,10 +87,9 @@
                                   @endforeach
                                 </td>
                                 <td>
-                                  <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-view-document-{{ $applicant->id }}">
-                                    <i class="fas fa-list-alt"></i>
-                                    View Documents
-                                  </a>
+
+                                  {!! Form::checkbox('post_'.$post->id,$post->id,true) !!}
+
 
                                   <div class="modal fade" id="ss-view-document-{{ $applicant->id }}">
                                     <div class="modal-dialog modal-lg">
@@ -101,19 +102,7 @@
                                         </div>
                                         <div class="modal-body">
 
-                                          @if($applicant->diploma_certificate)
-                                          <button class="btn btn-primary">View Diploma Certificate</button>
-                                          @endif
-
-
-                                          @if($applicant->teacher_diploma_certificate)
-                                          <button class="btn btn-primary">View Teacher Diploma Certificate</button>
-                                          @endif
-
-                                          @if($applicant->veta_certificate)
-                                          <button class="btn btn-primary">View Veta Certificate</button>
-                                          @endif
-
+                                          
                                         </div>
                                         <div class="modal-footer justify-content-between">
                                           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -128,8 +117,17 @@
                                 </td>
                             </tr>
                             @endforeach
+                            <tr>
+                            <td colspan="9">
+                              <input type="submit" class="btn btn-primary" name="action" value="Accept Selected"> 
+                              <input type="submit" class="btn btn-primary" name="action" value="Decline Selected">
+                            </td>
+                          </tr>
                         </tbody>
                     </table>
+
+                    {!! Form::close() !!}
+
                  
                </div>
             </div>
