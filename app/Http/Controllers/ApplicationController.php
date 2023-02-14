@@ -382,13 +382,7 @@ class ApplicationController extends Controller
                 $query->where('status', '!=', 'SELECTED')
                       ->where('status', '!=', 'APPROVING');
             }])
-            // ->whereHas('selections', function($query) {
-            //     $query->where('status', '!=', 'SELECTED')
-            //           ->where('status', '!=', 'APPROVING');
-            // })
             ->get();
-
-            return $applicants;
 
         }
 
