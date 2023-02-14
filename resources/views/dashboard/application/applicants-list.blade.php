@@ -123,7 +123,8 @@
                         <tr>
                           <th>Name</th>
                           <th>Gender</th>
-                          <th>Programmes</th>
+                          <th>Phone</th>
+                          <th>Award</th>
                           <th>Submission Status</th>
                         </tr>
                     </thead>
@@ -132,14 +133,8 @@
                    <tr>
                       <td><a href="#" data-toggle="modal" data-target="#ss-progress-{{ $applicant->id }}">{{ $applicant->first_name }} {{ $applicant->middle_name }} {{ $applicant->surname }}</a></td>
                       <td>{{ $applicant->gender }}</td>
-                      <td>@if($applicant->programs_complete_status == 1)
-                            @foreach($applicant->selections as $selection)
-                            <p class="ss-font-xs">{{ $selection->campusProgram->program->code }}</p>
-                            @endforeach
-                          @else
-                            Program Not Selected
-                          @endif
-                      </td>
+                      <td>{{ $applicant->phone }}</td>
+                      <td>{{ $applicant->programLevel->name }}</td>
                       <td>@if($applicant->submission_complete_status == 1)
                            <span class="badge badge-success">Submitted</span>
                           @elseif($applicant->programs_complete_status == 1 && $applicant->submission_complete_status == 0)
