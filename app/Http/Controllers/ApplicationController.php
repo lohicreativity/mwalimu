@@ -1995,7 +1995,7 @@ class ApplicationController extends Controller
             //     }
             // }
 
-            return $entry_requirements[0]->campus_program->regulator_code;
+            return $entry_requirements[0]->campus_program;
 
             
         } else if ($decision == 'Decline Applicant') {
