@@ -1939,7 +1939,7 @@ class ApplicationController extends Controller
     {
         $decision               = $request->get('decision_btn');
         $applicant_id           = $request->get('applicant_id');
-        $application_window_id  = $request->get('applicant_window_id');
+        $application_window_id  = $request->get('application_window_id');
         $staff                  = User::find(Auth::user()->id)->staff;
 
 
@@ -1981,7 +1981,7 @@ class ApplicationController extends Controller
             $entry_requirements = EntryRequirement::where('application_window_id', $application_window_id) 
             ->get();
 
-            return $application_window_id;
+            return $entry_requirements;
 
             // foreach($programs_selected as $ps) {
 
