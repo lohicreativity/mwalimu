@@ -89,7 +89,7 @@
                                 </td>
                                 <td class="text-center">
 
-                                  {!! Form::checkbox('applicant_'.$applicant->id,$applicant->id) !!}
+                                  {!! Form::checkbox('applicant_'.$applicant->id, $applicant->id, ['class' => 'assign-checkbox']) !!}
 
                                 </td>
                             </tr>
@@ -103,7 +103,8 @@
                     </div>
 
                     <div>
-                      <button type="button" class="btn btn-primary float-right">Check All</button>
+                      <button type="button" class="btn btn-primary float-right check-all-btn">Check All</button>
+                      <button type="button" class="btn btn-primary float-right uncheck-all-btn">Check All</button>
                     </div>
 
                     {!! Form::close() !!}

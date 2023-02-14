@@ -98,13 +98,13 @@ $('.assign-table').DataTable({
 </script>
 
 <script>
-$("#check-all-btn").click(function(){
+$(".check-all-btn").click(function(){
   $('.assign-checkbox').each(function() { 
 		this.checked = true; 
 	});
 });
 
-$("#uncheck-all-btn").click(function(){
+$(".uncheck-all-btn").click(function(){
   $('.assign-checkbox').each(function() { 
 		this.checked = false; 
 	});

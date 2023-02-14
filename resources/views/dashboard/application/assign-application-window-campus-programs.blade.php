@@ -134,8 +134,8 @@
                             <div class="modal-body">
 
                                 <div>
-                                  <button id="check-all-btn" class="btn btn-primary">Check All</button>
-                                  <button id="uncheck-all-btn" class="btn btn-danger">Uncheck All</button>
+                                  <button class="btn btn-primary check-all-btn">Check All</button>
+                                  <button class="btn btn-danger uncheck-all-btn">Uncheck All</button>
                                 </div>
                                 <br>
 
