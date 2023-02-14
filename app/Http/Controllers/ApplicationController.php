@@ -12,6 +12,7 @@ use App\Domain\Academic\Models\Semester;
 use App\Domain\Academic\Models\Stream;
 use App\Domain\Academic\Models\Group;
 use App\Domain\Academic\Models\Department;
+use App\Domain\Academic\Models\Program;
 use App\Domain\Finance\Models\FeeAmount;
 use App\Domain\Finance\Models\ProgramFee;
 use App\Domain\Finance\Models\Invoice;
@@ -1977,6 +1978,7 @@ class ApplicationController extends Controller
         $decision               = $request->get('decision_btn');
         $applicant_id           = $request->get('applicant_id');
         $application_window_id  = $request->get('application_window_id');
+        $program_code           = $request->get('program_code');
         $staff                  = User::find(Auth::user()->id)->staff;
         
         if ($decision == 'Select Applicant') {
@@ -1997,8 +1999,9 @@ class ApplicationController extends Controller
                 return redirect()->back()->with('error','Application window is not active');
             }
 
-            return $request->get('program_code');
+            $program = Program::where('code', $program_code)->first();
 
+            return $program;
            
         
         } else if ($decision == 'Decline Applicant') {
