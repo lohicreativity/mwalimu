@@ -346,25 +346,6 @@ class ApplicationController extends Controller
 
         } else if (Auth::user()->hasRole('admission-officer')) {
 
-            // $applicants = DB::table('applicants')
-            // ->join('applicant_program_selections', 'applicants.id', 'applicant_program_selections.applicant_id')
-            // ->join('nacte_result_details', 'applicants.id', 'nacte_result_details.applicant_id')
-            // ->where('campus_id', $campus_id)
-            // ->where('programs_complete_status', 1)
-            // ->where(function($query) {
-            //     $query->where('teacher_certificate_status', 1)
-            //           ->orWhere('veta_status', 1);
-            // })
-            // ->where(function($query) {
-            //     $query->where('applicant_program_selections.status', 'SELECTED')
-            //           ->orWhere('applicant_program_selections.status', 'APPROVING');
-            // })
-            // ->orWhere(function($query) {
-            //     $query->where('avn_no_results', 1)
-            //     ->whereNotNull('diploma_certificate');
-            // })
-            // ->get();
-
             $applicants = Applicant::where('campus_id', $campus_id)
             ->where('programs_complete_status', 1)
             ->where(function($query) {
@@ -378,19 +359,17 @@ class ApplicationController extends Controller
             ->with(['intake','selections.campusProgram.program', 'nacteResultDetails', 'nacteResultDetails' => function($query) {
                 $query->where('verified', 1);
             }])
-            // ->with(['selections' => function($query) {
-            //     $query->where('status', '!=', 'SELECTED')
-            //           ->orWhere('status', '!=', 'APPROVING');
-            // }])
+            
             ->get();
 
-            foreach ($applicants as $applicant) {
-                foreach ($applicant->selections as $select) {
-                    if ($select->status == "SELECTED" || $select->status == "APPROVING") {
-                        $applicants = null;
-                    }
-                }  
-            }
+        }
+
+        foreach ($applicants as $applicant) {
+            foreach ($applicant->selections as $select) {
+                if ($select->status == "SELECTED" || $select->status == "APPROVING") {
+                    $applicants = null;
+                }
+            }  
         }
 
         $data = [
@@ -2084,9 +2063,6 @@ class ApplicationController extends Controller
             $count_selections = ApplicantProgramSelection::where('campus_program_id', $program->id)->where('status', 'APPROVING')->count();
             $count[$program->id] = $count_selections;
         }
-
-        return $count;
-
 
         $award = Award::find($request->get('award_id'));
 
