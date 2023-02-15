@@ -40,7 +40,7 @@
           <div class="col-12">
 
             @if($applicant->confirmation_status != 'CANCELLED')
-            <div class="alert alert-success" style="font-size: 16px;">
+            <div class="alert alert-success" style="font-size: 16px!important;">
               <h3 class="text-white"><i class="fa fa-check-circle"></i> 
               Congratulations! You have been successfully selected for {{ $applicant->selections[0]->campusProgram->program->name }} program</h3>
             </div>
