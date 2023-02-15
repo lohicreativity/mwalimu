@@ -213,6 +213,9 @@
      .text-right {
       text-align: right;
      }
+     .footer-text {
+      font-size: 10px;
+     }
      p, li{
         text-align: justify;
         margin-bottom: 10px;
@@ -251,7 +254,7 @@
           </div><!-- end of col-md-3 -->
         </div><!-- end of row -->
 
-        <P class="text-right">{{ now()->format('jS F Y') }}</P>
+        <p class="text-right">{{ now()->format('jS F Y') }}</p>
         
         <div class="row">
             <div class="col-md-6">
@@ -303,7 +306,9 @@
       </div><!-- end of container -->
 
 <htmlpagefooter name="page-footer" class="ss-center">
-  Kigamboni, Ferry Street, MNMA P. O. Box 9193, Dar Es Salaam. Tel: +255 (22) 2820041/47, Fax: +255 (22) 2820816. Email: rector@mnma.ac.tz Website: www.mnma.ac.tz
+  <p class="footer-text">
+    Kigamboni, Ferry Street, MNMA P. O. Box 9193, Dar Es Salaam. Tel: +255 (22) 2820041/47, Fax: +255 (22) 2820816. Email: rector@mnma.ac.tz Website: www.mnma.ac.tz
+  </p>
 </htmlpagefooter>
 
 </body>
