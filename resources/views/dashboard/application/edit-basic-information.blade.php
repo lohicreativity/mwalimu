@@ -116,7 +116,21 @@
                          'required'=>true
                       ];
                       
-                  }else{
+                  } else if ($applicant->status == 'SELECTED') {
+
+                    $phone = [
+                         'placeholder'=>'0789000000',
+                         'class'=>'form-control',
+                         'required'=>true
+                      ];
+
+                    $nationality = [
+                     'placeholder'=>'Nationality',
+                     'class'=>'form-control',
+                     'disabled' => true
+                    ];
+
+                  } else {
                       $first_name = [
                          'placeholder'=>'First name',
                          'class'=>'form-control',
