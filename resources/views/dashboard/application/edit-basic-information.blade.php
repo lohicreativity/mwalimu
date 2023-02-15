@@ -127,7 +127,7 @@
                     $nationality = [
                      'placeholder'=>'Nationality',
                      'class'=>'form-control',
-                     'disabled' => true
+                     'disabled' => disabled
                     ];
 
                   } else {
