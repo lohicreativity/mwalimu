@@ -256,7 +256,7 @@
             </div>
             
             <div class="col-md-4">
-              <p style="display:none!important;">Mwalimu</p>
+              <p class="d-none">Mwalimu</p>
             </div>
 
             <div class="col-md-4">
