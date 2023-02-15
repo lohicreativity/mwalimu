@@ -247,10 +247,6 @@
           </div><!-- end of col-md-3 -->
         </div><!-- end of row -->
 
-        <div>
-          <p style="text-align: right!important;">}</p>
-        </div>
-
         
         <div class="row">
             <div class="col-md-4">
@@ -260,7 +256,7 @@
             </div>
             
             <div class="col-md-4">
-
+              <p>Mwalimu</p>
             </div>
 
             <div class="col-md-4">
