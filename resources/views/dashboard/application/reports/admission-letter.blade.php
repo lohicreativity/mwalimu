@@ -254,8 +254,8 @@
                <p>.............................................</p>              
             </div>
             
-            <div class="col-md-6" style="text-align: right!important;">
-              <p>{{ now()->format('jS F Y') }}</p>
+            <div class="col-md-6">
+              <p class="position: relative; left: 100px;">{{ now()->format('jS F Y') }}</p>
             </div>
         </div><!-- end of row -->
         
