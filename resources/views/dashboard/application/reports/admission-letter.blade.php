@@ -210,6 +210,9 @@
      .ss-color-blue{
         color: #371261;
      }
+     .text-right {
+      text-align: right;
+     }
      p, li{
         text-align: justify;
         margin-bottom: 10px;
@@ -248,19 +251,19 @@
           </div><!-- end of col-md-3 -->
         </div><!-- end of row -->
 
-        <p>Hello World</p>
-
         
-        <!-- <div class="row">
-            <div class="col-md-4">
-                     
+        <div class="row">
+            <div class="col-md-6">
+              <p>Our Ref: {{ strtoupper($reference_number) }}</p>
+              <p>.............................................</p>
+              <p>.............................................</p>    
             </div>
           
 
-            <div class="col-md-4">
-              
+            <div class="col-md-6">
+              <span class="text-right">{{ now()->format('jS F Y') }}</span>
             </div>
-        </div> -->
+        </div>
         <!-- end of row -->
         
         <div class="row">
