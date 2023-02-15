@@ -39,6 +39,13 @@
         <div class="row">
           <div class="col-12">
 
+            @if($applicant->confirmation_status != 'CANCELLED')
+            <div class="alert alert-success">
+              <h3 class="ss-color-success"><i class="fa fa-check-circle"></i> 
+              Congratulations! You have been successfully selected.</h3>
+            </div>
+            @endif
+
             <!-- general form elements -->
             <div class="card card-default">
               <div class="card-header">
