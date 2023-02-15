@@ -216,6 +216,7 @@
      .footer-text {
       font-size: 14px;
       border-top: 2px solid #000;
+      margin-bottom: 30px;
      }
      p, li{
         text-align: justify;
