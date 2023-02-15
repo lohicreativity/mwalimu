@@ -262,7 +262,7 @@ class ApplicantController extends Controller
         }])
         ->where('campus_id',session('applicant_campus_id'))->first();
 
-        return $applicant->selections[0];
+        return $applicant->selections[0]->campusProgram->program->name;
 
         if($applicant->is_tamisemi !== 1 && $applicant->is_transfered != 1){
             if(!ApplicationWindow::where('campus_id',session('applicant_campus_id'))->where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('status','ACTIVE')->first()){
