@@ -214,8 +214,9 @@
       text-align: right;
      }
      .footer-text {
-      font-size: 10px;
+      font-size: 14px;
       border-top: 2px solid #000;
+      margin-bottom: 10px!important;
      }
      p, li{
         text-align: justify;
