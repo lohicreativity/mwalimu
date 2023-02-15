@@ -248,16 +248,16 @@
 
         
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-6">
                <p>Our Ref: {{ strtoupper($reference_number) }}</p>
                <p>.............................................</p>
                <p>.............................................</p>   
-               <p style="position: relative; left: 100px;">{{ now()->format('jS F Y') }}</p>       
+                          
             </div>
             
-            <!-- <div class="col-md-6">
-              <span class=></span>
-            </div> -->
+            <div class="col-md-6">
+              <span class="text-right">{{ now()->format('jS F Y') }}</span>
+            </div>
         </div><!-- end of row -->
         
         <div class="row">
