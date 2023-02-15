@@ -256,7 +256,7 @@
             <div class="col-md-5">
           
             </div>
-            <div class="col-md-3">
+            <div class="col-md-3 float-right">
               <p>{{ now()->format('jS F Y') }}</p>
             </div>
         </div><!-- end of row -->
