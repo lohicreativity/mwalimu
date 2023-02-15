@@ -247,18 +247,15 @@
           </div><!-- end of col-md-3 -->
         </div><!-- end of row -->
 
-        <div class="row">
-          <div class="col-12">
-              <p>Our Ref: {{ strtoupper($reference_number) }}</p>
-              <p>.............................................</p>
-              <p>.............................................</p>   
-
-              <span class="float-right"></span>
-          </div>
-        </div>
+        
 
         <div class="justify-content-end">
           {{ now()->format('jS F Y') }}
+        </div>
+
+        <div class="d-flex justify-content-between">
+            <div>Our Ref: {{ strtoupper($reference_number) }}</div>
+            <div>{{ now()->format('jS F Y') }}</div>
         </div>
         
         <!-- <div class="row">
