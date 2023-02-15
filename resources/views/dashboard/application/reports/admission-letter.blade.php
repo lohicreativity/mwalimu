@@ -221,6 +221,9 @@
         border-top: 2px solid #000;
         font-size: 10px!important;
       }
+      .d-none {
+        display: none;
+      }
   </style>
 </head>
 
