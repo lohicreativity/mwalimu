@@ -198,13 +198,6 @@
         height: 120px;
         width: auto;
      }
-
-     .place-right {
-      text-align: right;
-      font-size: 20px;
-     }
-
-
      .ss-line-bottom{
        border-bottom: 2px solid #000;
      }
@@ -255,7 +248,7 @@
           </div><!-- end of col-md-3 -->
         </div><!-- end of row -->
 
-        <p class="place-right">Hello World</p>
+        <p>Hello World</p>
 
         
         <!-- <div class="row">
