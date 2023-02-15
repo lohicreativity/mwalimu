@@ -23,7 +23,7 @@
                      <p style="font-size: 18px;">Dear 123333 {!! ucwords(strtolower($name)) !!},</p>
                      <p style="font-size: 18px;">{!! $notification_message !!}</p><br>
               
-                     <p style="font-weight: bold; font-size: 18px; margin-top:30px;">{{ config('constants.SITE_NAME') }}.</p>
+                     <p style="font-weight: bold; font-size: 18px; margin-top:30px;">The Mwalimu Nyerere .</p>
                    </td>
                  </tr>
 
