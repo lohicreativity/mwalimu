@@ -308,7 +308,8 @@
 
       </div><!-- end of container -->
 
-<htmlpagefooter name="page-footer" class="ss-center">
+<hr>
+<htmlpagefooter name="page-footer" class="ss-center" style="font-size: 15px!important">
   Kigamboni, Ferry Street, MNMA P. O. Box 9193, Dar Es Salaam. Tel: +255 (22) 2820041/47, Fax: +255 (22) 2820816. Email: rector@mnma.ac.tz Website: www.mnma.ac.tz
 </htmlpagefooter>
 </body>
