@@ -42,7 +42,7 @@
             @if($applicant->confirmation_status != 'CANCELLED')
             <div class="alert alert-success">
               <h3 class="text-white"><i class="fa fa-check-circle"></i> 
-              Congratulations! You have been successfully selected for {{ $applicant->selections->campusProgram->program->name }} program</h3>
+              Congratulations! You have been successfully selected for  program</h3>
             </div>
             @endif
 
