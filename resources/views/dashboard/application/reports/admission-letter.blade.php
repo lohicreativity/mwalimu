@@ -252,10 +252,11 @@
                <p>Our Ref: {{ strtoupper($reference_number) }}</p>
                <p>.............................................</p>
                <p>.............................................</p>   
-               <p class="position: relative; left: 100px;">{{ now()->format('jS F Y') }}</p>
+               <p style="position: relative; left: 100px;">{{ now()->format('jS F Y') }}</p>       
             </div>
             
             <!-- <div class="col-md-6">
+              <span class=></span>
             </div> -->
         </div><!-- end of row -->
         
