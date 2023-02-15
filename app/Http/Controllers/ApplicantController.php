@@ -255,7 +255,12 @@ class ApplicantController extends Controller
      */
     public function editBasicInfo(Request $request)
     {
-        $applicant = User::find(Auth::user()->id)->applicants()->with(['programLevel'])->where('campus_id',session('applicant_campus_id'))->first();
+        $applicant = User::find(Auth::user()->id)
+        ->applicants()
+        ->with(['programLevel', 'selections.campusProgram.program', 'selections' => function ($query) {
+            $query->where('status', 'APPROVING');
+        }])
+        ->where('campus_id',session('applicant_campus_id'))->first();
 
         if($applicant->is_tamisemi !== 1 && $applicant->is_transfered != 1){
             if(!ApplicationWindow::where('campus_id',session('applicant_campus_id'))->where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('status','ACTIVE')->first()){
