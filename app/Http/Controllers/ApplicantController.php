@@ -262,10 +262,10 @@ class ApplicantController extends Controller
                  if($applicant->status == null){
                      return redirect()->to('application/submission')->with('error','Application window already closed');
                  }
-                 if($applicant->multiple_admissions !== null && $applicant->status == 'SELECTED'){
-                     // return redirect()->back();
-                    return redirect()->to('application/admission-confirmation')->with('error','Application window already closed');
-                 }
+               //   if($applicant->multiple_admissions !== null && $applicant->status == 'SELECTED'){
+               //       // return redirect()->back();
+               //      return redirect()->to('application/admission-confirmation')->with('error','Application window already closed');
+               //   }
             }
         }
         
