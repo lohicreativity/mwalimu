@@ -245,11 +245,6 @@
              <img src="{{ public_path('/dist/img/logo.png') }}" alt="Config::get('constants.SITE_NAME') }}" class="ss-logo">
           </div><!-- end of col-md-3 -->
         </div><!-- end of row -->
-
-        <div>
-          <span class="float-left"></span>
-        </div>
-
         
         <div class="row">
             <div class="col-md-6">
