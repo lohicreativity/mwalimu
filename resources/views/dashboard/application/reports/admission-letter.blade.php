@@ -216,8 +216,7 @@
      .footer-text {
       font-size: 14px;
       border-top: 2px solid #000;
-      position: relative;
-      top: 30px;
+      padding-bottom: 20px;
      }
      p, li{
         text-align: justify;
@@ -227,8 +226,8 @@
      @page {
         header: page-header;
         footer: page-footer;
-        position: relative;
-        top: 30px;
+        padding-bottom: 20px;
+        
       }
      
   </style>
