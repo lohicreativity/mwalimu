@@ -216,18 +216,15 @@
      .footer-text {
       font-size: 14px;
       border-top: 2px solid #000;
-      margin-bottom: 200px!important;
+     }
+     .footer-margin {
+      margin-bottom: 100px;
      }
      p, li{
         text-align: justify;
         margin-bottom: 10px;
      }
-     @page {
-        header: page-header;
-        footer: page-footer;
-        text-align: center;
-        border-top: 2px solid #000;
-      }
+     
   </style>
 </head>
 
@@ -307,7 +304,7 @@
 
       </div><!-- end of container -->
 
-<htmlpagefooter name="page-footer" class="ss-center">
+<htmlpagefooter name="page-footer" class="ss-center footer-margin">
   <p class="footer-text">
     Kigamboni, Ferry Street, MNMA P. O. Box 9193, Dar Es Salaam. Tel: +255 (22) 2820041/47, Fax: +255 (22) 2820816. Email: rector@mnma.ac.tz Website: www.mnma.ac.tz
   </p>
