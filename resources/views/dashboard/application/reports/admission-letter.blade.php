@@ -221,6 +221,10 @@
         border-top: 2px solid #000;
         font-size: 10px!important;
       }
+
+      .text-align {
+        text-align: right;
+      }
   </style>
 </head>
 
@@ -256,9 +260,11 @@
               <p>.............................................</p> 
             </div>
             <div>
-              <span>{{ now()->format('jS F Y') }}</span>
+              <span class="text-right">{{ now()->format('jS F Y') }}</span>
             </div>
         </div>
+
+        <span class="text-right">{{ now()->format('jS F Y') }}</span>
 
         
         <!-- <div class="row">
