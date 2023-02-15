@@ -246,6 +246,7 @@
           </div><!-- end of col-md-3 -->
         </div><!-- end of row -->
 
+        <p class="float-right">{{ now()->format('jS F Y') }}</p>
         
         <div class="row">
             <div class="col-md-6">
@@ -255,9 +256,9 @@
                           
             </div>
             
-            <div class="col-md-6">
-              <span class="text-right">{{ now()->format('jS F Y') }}</span>
-            </div>
+            <!-- <div class="col-md-6">
+              <span class="text-right"></span>
+            </div> -->
         </div><!-- end of row -->
         
         <div class="row">
