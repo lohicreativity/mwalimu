@@ -245,6 +245,7 @@
              <img src="{{ public_path('/dist/img/logo.png') }}" alt="Config::get('constants.SITE_NAME') }}" class="ss-logo">
           </div><!-- end of col-md-3 -->
         </div><!-- end of row -->
+
         
         <div class="row">
             <div class="col-md-6">
@@ -253,8 +254,8 @@
                <p>.............................................</p>              
             </div>
             
-            <div class="col-md-6 float-right">
-              <p class="float-right">{{ now()->format('jS F Y') }}</p>
+            <div class="col-md-6" style="text-align: right!important;">
+              <p>{{ now()->format('jS F Y') }}</p>
             </div>
         </div><!-- end of row -->
         
