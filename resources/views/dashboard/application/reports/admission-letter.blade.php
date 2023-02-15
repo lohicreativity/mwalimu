@@ -247,22 +247,26 @@
           </div><!-- end of col-md-3 -->
         </div><!-- end of row -->
 
-        
-
         <div>
-          <p style="text-align: right!important;">{{ now()->format('jS F Y') }}</p>
+          <p style="text-align: right!important;">}</p>
         </div>
+
         
-        <!-- <div class="row">
-            <div class="col-md-6">
-               
-                          
+        <div class="row">
+            <div class="col-md-4">
+              <p>Our Ref: {{ strtoupper($reference_number) }}</p>
+              <p>.............................................</p>
+              <p>.............................................</p>        
             </div>
             
-            <div class="col-md-6">
-              <span class="text-right"></span>
+            <div class="col-md-4">
+
             </div>
-        </div> -->
+            
+            <div class="col-md-4">
+              <span>{{ now()->format('jS F Y') }</span>
+            </div>
+        </div>
         <!-- end of row -->
         
         <div class="row">
