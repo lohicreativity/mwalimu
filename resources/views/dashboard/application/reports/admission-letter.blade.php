@@ -227,7 +227,6 @@
         header: page-header;
         footer: page-footer;
         padding-bottom: 20px;
-        
       }
      
   </style>
