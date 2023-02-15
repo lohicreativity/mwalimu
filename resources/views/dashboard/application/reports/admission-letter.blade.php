@@ -262,9 +262,9 @@
             <div class="col-md-4">
 
             </div>
-            
+
             <div class="col-md-4">
-              <span>{{ now()->format('jS F Y') }</span>
+              <span>{{ now()->format('jS F Y') }}</span>
             </div>
         </div>
         <!-- end of row -->
