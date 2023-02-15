@@ -218,7 +218,7 @@
       border-top: 2px solid #000;
      }
      .footer-margin {
-      margin-bottom: 10px;
+      margin-bottom: 1px;
      }
      p, li{
         text-align: justify;
