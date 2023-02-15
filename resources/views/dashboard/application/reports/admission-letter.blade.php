@@ -3,6 +3,9 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
   <title></title>
+  <head>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+  </head>
   <style type="text/css">
       
       body{
@@ -221,9 +224,6 @@
         border-top: 2px solid #000;
         font-size: 10px!important;
       }
-      .d-none {
-        display: none;
-      }
   </style>
 </head>
 
@@ -250,22 +250,28 @@
           </div><!-- end of col-md-3 -->
         </div><!-- end of row -->
 
-        
-        <div class="row">
-            <div class="col-md-4">
+        <div class="d-flex justify-content-between">
+            <div>
               <p>Our Ref: {{ strtoupper($reference_number) }}</p>
               <p>.............................................</p>
-              <p>.............................................</p>        
+              <p>.............................................</p> 
             </div>
-            
-            <div class="col-md-4">
-              <p class="d-none">Mwalimu</p>
-            </div>
-
-            <div class="col-md-4">
+            <div>
               <span>{{ now()->format('jS F Y') }}</span>
             </div>
         </div>
+
+        
+        <!-- <div class="row">
+            <div class="col-md-4">
+                     
+            </div>
+          
+
+            <div class="col-md-4">
+              
+            </div>
+        </div> -->
         <!-- end of row -->
         
         <div class="row">
@@ -312,5 +318,9 @@
 <htmlpagefooter name="page-footer" class="ss-center">
   Kigamboni, Ferry Street, MNMA P. O. Box 9193, Dar Es Salaam. Tel: +255 (22) 2820041/47, Fax: +255 (22) 2820816. Email: rector@mnma.ac.tz Website: www.mnma.ac.tz
 </htmlpagefooter>
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
 </body>
 </html>
