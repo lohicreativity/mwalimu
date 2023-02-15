@@ -246,18 +246,20 @@
           </div><!-- end of col-md-3 -->
         </div><!-- end of row -->
 
+        <div>
+          <span class="float-left"></span>
+        </div>
+
         
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-6">
                <p>Our Ref: {{ strtoupper($reference_number) }}</p>
                <p>.............................................</p>
                <p>.............................................</p>              
             </div>
-            <div class="col-md-5">
-          
-            </div>
-            <div class="col-md-3 float-right">
-              <p>{{ now()->format('jS F Y') }}</p>
+            
+            <div class="col-md-6">
+              <p class="float-right">{{ now()->format('jS F Y') }}</p>
             </div>
         </div><!-- end of row -->
         
