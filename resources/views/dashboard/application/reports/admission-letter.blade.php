@@ -221,6 +221,11 @@
         text-align: justify;
         margin-bottom: 10px;
      }
+
+     @page {
+        header: page-header;
+        footer: page-footer;
+      }
      
   </style>
 </head>
