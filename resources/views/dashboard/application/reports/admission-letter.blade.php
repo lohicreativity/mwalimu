@@ -219,6 +219,7 @@
         footer: page-footer;
         text-align: center;
         border-top: 2px solid #000;
+        font-size: 10px!important;
       }
   </style>
 </head>
@@ -252,8 +253,12 @@
               <p>.............................................</p>
               <p>.............................................</p>   
 
-              <span class="float-right">{{ now()->format('jS F Y') }}</span>
+              <span class="float-right"></span>
           </div>
+        </div>
+
+        <div class="justify-content-end">
+          {{ now()->format('jS F Y') }}
         </div>
         
         <!-- <div class="row">
@@ -309,7 +314,7 @@
       </div><!-- end of container -->
 
 <hr>
-<htmlpagefooter name="page-footer" class="ss-center" style="font-size: 15px!important">
+<htmlpagefooter name="page-footer" class="ss-center" style="font-size: 10px!important">
   Kigamboni, Ferry Street, MNMA P. O. Box 9193, Dar Es Salaam. Tel: +255 (22) 2820041/47, Fax: +255 (22) 2820816. Email: rector@mnma.ac.tz Website: www.mnma.ac.tz
 </htmlpagefooter>
 </body>

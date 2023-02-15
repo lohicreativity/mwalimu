@@ -1,7 +1,7 @@
 <?php
 
 return [
-   'SITE_NAME'=>'Mwalimu Nyerere Memorial Academy',
+   'SITE_NAME'=>'The Mwalimu Nyerere Memorial Academy',
 
    'SITE_SHORT_NAME'=>'MNMA',
 
