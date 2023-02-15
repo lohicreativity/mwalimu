@@ -249,13 +249,8 @@
 
         
 
-        <div class="justify-content-end">
-          {{ now()->format('jS F Y') }}
-        </div>
-
-        <div class="d-flex justify-content-between">
-            <div>Our Ref: {{ strtoupper($reference_number) }}</div>
-            <div>{{ now()->format('jS F Y') }}</div>
+        <div>
+          <p style="text-align: right!important;">{{ now()->format('jS F Y') }}</p>
         </div>
         
         <!-- <div class="row">
@@ -311,7 +306,7 @@
       </div><!-- end of container -->
 
 <hr>
-<htmlpagefooter name="page-footer" class="ss-center" style="font-size: 10px!important">
+<htmlpagefooter name="page-footer" class="ss-center">
   Kigamboni, Ferry Street, MNMA P. O. Box 9193, Dar Es Salaam. Tel: +255 (22) 2820041/47, Fax: +255 (22) 2820816. Email: rector@mnma.ac.tz Website: www.mnma.ac.tz
 </htmlpagefooter>
 </body>
