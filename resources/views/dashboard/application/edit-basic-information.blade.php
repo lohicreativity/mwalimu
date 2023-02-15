@@ -39,12 +39,15 @@
         <div class="row">
           <div class="col-12">
 
-            @if($applicant->confirmation_status != 'CANCELLED')
-            <div class="alert alert-success">
-              <h3 class="text-white" style="font-size: 20px!important;"><i class="fa fa-check-circle"></i> 
-              Congratulations! You have been successfully selected for {{ $applicant->selections[0]->campusProgram->program->name }} program</h3>
-            </div>
+            @if($applicant->status != 'ADMITTED')
+              @if($applicant->confirmation_status != 'CANCELLED')
+                <div class="alert alert-success">
+                  <h3 class="text-white" style="font-size: 20px!important;"><i class="fa fa-check-circle"></i> 
+                  Congratulations! You have been successfully selected for {{ $applicant->selections[0]->campusProgram->program->name }} program</h3>
+                </div>
+              @endif
             @endif
+           
 
             <!-- general form elements -->
             <div class="card card-default">
