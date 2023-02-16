@@ -549,14 +549,14 @@ class ApplicationController extends Controller
 
                         }
 
-                        foreach ($applicant->nacteResultDetails as $nacte_results) {
-                            if ($nacte_results->verified == 1) {
-                                $diploma_gpa            = $nacte_results->diploma_gpa;
-                                $diploma_institution    = $nacte_results->institution;
-                                $programme              = $nacte_results->programme;
-                                $avn                    = $nacte_results->avn;
-                            }
-                        }
+                        // foreach ($applicant->nacteResultDetails as $nacte_results) {
+                        //     if ($nacte_results->verified == 1) {
+                        //         $diploma_gpa            = $nacte_results->diploma_gpa;
+                        //         $diploma_institution    = $nacte_results->institution;
+                        //         $programme              = $nacte_results->programme;
+                        //         $avn                    = $nacte_results->avn;
+                        //     }
+                        // }
 
             
 
