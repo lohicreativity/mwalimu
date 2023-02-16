@@ -609,7 +609,7 @@ class ApplicationController extends Controller
                                 $a_level_index  = $out_results->reg_no;
 
                                 foreach($out_results->results as $result){ 
-                                    $out_results[] = $result->subject_name.'-'.$result->grade;
+                                    // $out_results[] = $result->subject_name.'-'.$result->grade;
                                 }
                             }
                         }
