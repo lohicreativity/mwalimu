@@ -531,9 +531,9 @@ class ApplicationController extends Controller
               {
                   $file_handle = fopen('php://output', 'w');
                   fputcsv($file_handle,['S/N', 'FIRST NAME','MIDDLE NAME','SURNAME','GENDER', 'NATIONALITY', 'DISABILITY', 'DATEOFBIRTH', 'F4INDEXNO', 'F6INDEXNO', 'AVN NO', 'CHOICE1', 'CHOICE2', 'CHOICE3', 'CHOICE4', 'INSTITUTION CODE', 'ENTRY CATEGORY', 'OPTS', 'O-LEVEL RESULTS', 'APTS/GPA', 'A-LEVEL RESULTS/DIPLOMA', 'OPEN GPA', 'OPEN RESULTS', 'DATE REGISTERED', 'PHONE NUMBER', 'EMAIL ADDRESS', 'KIN PHONE NUMBER', 'DISTRICT', 'REGION', 'CLEARANCE', 'CLEARANCE STATUS', 'TCU ADMISSION STATUS', 'TCU VERIFICATION STATUS', 'CONFIRM STATUS', 'BATCH NO', 'DIPLOMA INSTITUTE', 'PROGRAM COURSE', 'DIPLOMA GPA', 'DIPLOMA RESULTS', 'O-LEVEL SCHOOL', 'CSEE PTS', 'A-LEVEL SCHOOL', 'ACSEE PTS', 'PROGRESS']);
-                  foreach ($list as $applicant) { 
+                  foreach ($list as $key => $applicant) { 
 
-                    return $loop->index;
+                    return $key;
 
                       foreach ($applicant->selections as $select) {
                          if($select->status == 'APPROVING' || $select->status == 'SELECTED'){
