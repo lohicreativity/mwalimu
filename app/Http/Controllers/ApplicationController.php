@@ -497,6 +497,19 @@ class ApplicationController extends Controller
             ->get();
 
          }       
+
+         foreach ($list as $applicant) {
+            foreach ($applicant->nacteResultDetails as $nacte_results) {
+                if ($nacte_results->verified == 1) {
+                    $diploma_gpa        = $nacte_results->diploma_gpa;
+                    $diploma_institution = $nacte_results->institution;
+                    $programme          = $nacte_results->programme;
+                    $avn                = $nacte_results->avn;
+                }
+            }
+         }
+
+         return $diploma_gpa."<br>".$diploma_institution."<br>".$programme."<br>".$avn;
          
 
 
