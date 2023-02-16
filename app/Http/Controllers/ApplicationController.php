@@ -483,7 +483,7 @@ class ApplicationController extends Controller
             ->where('application_window_id', $request->get('application_window_id'))
             ->where('campus_id', $staff->campus_id)
             ->where('status', 'SELECTED')
-            ->with(['nextOfKin', 'region', 'district', 'disabilityStatus', 'selections' => function ($query) {
+            ->with(['nextOfKin', 'region', 'district', 'disabilityStatus', 'nectaResultDetails', 'selections' => function ($query) {
                 $query->where('status', 'SELECTED');
             }])
             ->get();
@@ -568,8 +568,10 @@ class ApplicationController extends Controller
                       'FORM 6 INDEX', 'AVN NO', 'CHOICE 1', 'CHOICE 2', 'CHOICE 3', 'CHOICE 4', 'REGULATOR CODE', 
                       $applicant->entry_mode, 'OPTS', implode(',', $o_level_results), 'APTS / GPA', implode(',',$a_level_results), 
                       'OPEN GPA', 'OPEN RESULTS', 'SELECTED', $applicant->created_at, $applicant->phone, $applicant->email, $applicant->nextOfKin->phone, 
-                      $applicant->district->name, $applicant->region->name, 'CLEARANCE', 'CLEARANCE STATUS', 'TCU ADMISSION STATUS', 'TCU VERIFICATION STATUS', $confirm, 'BATCH NO', 
-                      'DIPLOMA INSTITUTE', 'PROGRAM COURSE', 'DIPLOMA GPA', 'DIPLOMA RESULTS', 'O-LEVEL SCHOOL', 
+                      $applicant->district->name, $applicant->region->name, 
+                      'CLEARANCE', 'CLEARANCE STATUS', 'TCU ADMISSION STATUS', 
+                      'TCU VERIFICATION STATUS', $confirm, 'BATCH NO', 
+                      'DIPLOMA INSTITUTE', 'PROGRAM COURSE', 'DIPLOMA GPA', 'DIPLOMA RESULTS', $applicant->nectaResultDetails->center_name, 
                       'CSEE PTS', 'A-LEVEL SCHOOL', 'ACSEE PTS', $applicant->status
                         ]);
                   }
