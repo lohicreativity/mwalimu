@@ -497,6 +497,8 @@ class ApplicationController extends Controller
             ->get();
          }       
 
+         $out_results = [];
+
          foreach ($list as $applicant) {
             foreach ($applicant->outResultDetails as $out_results) {
                 foreach($out_results->results as $result){
