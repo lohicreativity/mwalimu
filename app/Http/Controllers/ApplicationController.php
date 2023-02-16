@@ -496,7 +496,6 @@ class ApplicationController extends Controller
             ->with(['nextOfKin', 'region', 'district', 'disabilityStatus', 'nectaResultDetails', 'selections.campusProgram.program', 'selections'])
             ->get();
 
-            return $list;
          }
 
          // if($request->get('query')){
