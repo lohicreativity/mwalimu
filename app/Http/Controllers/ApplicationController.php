@@ -499,67 +499,16 @@ class ApplicationController extends Controller
          }
 
 
-         foreach ($list as $applicant) {
-            foreach($applicant->selections as $option){
-            
-                if($option->order == 1){
-                    $firstChoice = $option->campusProgram->program->code;
-                }elseif($option->order == 2){
-                    $secondChoice = $option->campusProgram->program->code;
-                }elseif($option->order == 3){
-                    $thirdChoice = $option->campusProgram->program->code;
-                }elseif($option->order == 4){
-                    $fourthChoice = $option->campusProgram->program->code;
-                }
-            }
-         }
-
-         return $firstChoice."<br>".$secondChoice."<br>".$thirdChoice."<br>".$fourthChoice;
-
-         
-         
-
-         
-
-         // if($request->get('query')){
-         //    $list = Applicant::whereHas('intake.applicationWindows',function($query) use($request){
-         //         $query->where('id',$request->get('application_window_id'));
-         //    })->whereHas('selections',function($query) use($request){
-         //         $query->where('status','APPROVING')->orWhere('status','SELECTED')->orWhere('status','PENDING');
-         //    })->with(['nextOfKin','intake','selections.campusProgram.program','nectaResultDetails.results','nacteResultDetails.results'])->where('program_level_id',$request->get('program_level_id'))->where('first_name','LIKE','%'.$request->get('query').'%')->orWhere('middle_name','LIKE','%'.$request->get('query').'%')->orWhere('surname','LIKE','%'.$request->get('query').'%')->get();
-         // }elseif($request->get('gender')){
-         //    $list = Applicant::whereHas('intake.applicationWindows',function($query) use($request){
-         //         $query->where('id',$request->get('application_window_id'));
-         //    })->whereHas('selections',function($query) use($request){
-         //         $query->where('status','APPROVING')->orWhere('status','SELECTED')->orWhere('status','PENDING');
-         //    })->with(['nextOfKin','intake','selections.campusProgram.program','nectaResultDetails.results','nacteResultDetails.results'])->where('program_level_id',$request->get('program_level_id'))->where('gender',$request->get('gender'))->get();
-         // }elseif($request->get('campus_program_id')){
-         //    $list = Applicant::whereHas('intake.applicationWindows',function($query) use($request){
-         //         $query->where('id',$request->get('application_window_id'));
-         //    })->whereHas('selections',function($query) use($request){
-         //         $query->where('status','APPROVING')->orWhere('status','SELECTED')->orWhere('status','PENDING')->where('campus_program_id',$request->get('campus_program_id'));
-         //    })->with(['nextOfKin','intake','selections.campusProgram.program','nectaResultDetails.results','nacteResultDetails.results'])->where('program_level_id',$request->get('program_level_id'))->get();
-         // }elseif($request->get('nta_level_id')){
-         //     $list = Applicant::whereHas('intake.applicationWindows',function($query) use($request){
-         //         $query->where('id',$request->get('application_window_id'));
-         //    })->whereHas('selections.campusProgram.program',function($query) use($request){
-         //         $query->where('nta_level_id',$request->get('nta_level_id'));
-         //    })->whereHas('selections',function($query) use($request){
-         //         $query->where('status','APPROVING')->orWhere('status','SELECTED')->orWhere('status','PENDING');
-         //    })->with(['nextOfKin','intake','selections.campusProgram.program','nectaResultDetails.results','nacteResultDetails.results'])->where('program_level_id',$request->get('program_level_id'))->get();
-         // }else{
-         //    $list = Applicant::whereHas('intake.applicationWindows',function($query) use($request){
-         //         $query->where('id',$request->get('application_window_id'));
-         //    })->whereHas('selections',function($query) use($request){
-         //         $query->where('status','APPROVING')->orWhere('status','SELECTED')->orWhere('status','PENDING');
-         //    })->with(['nextOfKin','intake','selections.campusProgram.program','nectaResultDetails.results','nacteResultDetails.results'])->where('program_level_id',$request->get('program_level_id'))->get();
-         // }
-
               # add headers for each column in the CSV download
               // array_unshift($list, array_keys($list[0]));
 
              $callback = function() use ($list) 
               {
+                $firstChoice    = null; 
+                $secondChoice   = null;
+                $thirdChoice    = null; 
+                $fourthChoice   = null;
+                
                   $file_handle = fopen('php://output', 'w');
                   fputcsv($file_handle,['S/N', 'FIRST NAME','MIDDLE NAME','SURNAME','GENDER', 'NATIONALITY', 'DISABILITY', 'DATEOFBIRTH', 'F4INDEXNO', 'F6INDEXNO', 'AVN NO', 'CHOICE1', 'CHOICE2', 'CHOICE3', 'CHOICE4', 'INSTITUTION CODE', 'ENTRY CATEGORY', 'OPTS', 'O-LEVEL RESULTS', 'APTS/GPA', 'A-LEVEL RESULTS/DIPLOMA', 'OPEN GPA', 'OPEN RESULTS', 'SELECTED', 'DATE REGISTERED', 'PHONE NUMBER', 'EMAIL ADDRESS', 'KIN PHONE NUMBER', 'DISTRICT', 'REGION', 'CLEARANCE', 'CLEARANCE STATUS', 'TCU ADMISSION STATUS', 'TCU VERIFICATION STATUS', 'CONFIRM STATUS', 'BATCH NO', 'DIPLOMA INSTITUTE', 'PROGRAM COURSE', 'DIPLOMA GPA', 'DIPLOMA RESULTS', 'O-LEVEL SCHOOL', 'CSEE PTS', 'A-LEVEL SCHOOL', 'ACSEE PTS', 'PROGRESS']);
                   foreach ($list as $key => $applicant) { 
