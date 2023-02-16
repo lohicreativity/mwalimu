@@ -496,23 +496,8 @@ class ApplicationController extends Controller
             ->with(['nextOfKin', 'region', 'district', 'disabilityStatus', 'nectaResultDetails', 'nacteResultDetails', 'selections.campusProgram.program'])
             ->get();
 
-         }       
-
-         foreach ($list as $applicant) {
-            foreach ($applicant->nacteResultDetails as $nacte_results) {
-                if ($nacte_results->verified == 1) {
-                    $diploma_gpa        = $nacte_results->diploma_gpa;
-                    $diploma_institution = $nacte_results->institution;
-                    $programme          = $nacte_results->programme;
-                    $avn                = $nacte_results->avn;
-                }
-            }
-         }
-
-         return $diploma_gpa."<br>".$diploma_institution."<br>".$programme."<br>".$avn;
+         }      
          
-
-
               # add headers for each column in the CSV download
               // array_unshift($list, array_keys($list[0]));
 
@@ -566,10 +551,10 @@ class ApplicationController extends Controller
 
                         foreach ($applicant->nacteResultDetails as $nacte_results) {
                             if ($nacte_results->verified == 1) {
-                                $diploma_gpa        = $nacte_results->diploma_gpa;
-                                $diploma_instituion = $nacte_results->institution;
-                                $programme          = $nacte_results->programme;
-                                $avn                = $nacte_results->avn;
+                                $diploma_gpa            = $nacte_results->diploma_gpa;
+                                $diploma_institution    = $nacte_results->institution;
+                                $programme              = $nacte_results->programme;
+                                $avn                    = $nacte_results->avn;
                             }
                         }
 
@@ -615,7 +600,7 @@ class ApplicationController extends Controller
                       $applicant->entry_mode, 'OPTS', implode(',', $o_level_results), 'APTS / GPA', implode(',',$a_level_results), 
                       'OPEN GPA', 'OPEN RESULTS', $status, $applicant->created_at, $applicant->phone, $applicant->email, $applicant->nextOfKin->phone, 
                       $applicant->district->name, $applicant->region->name, 'CLEARANCE', 'CLEARANCE STATUS', 'TCU ADMISSION STATUS', 'TCU VERIFICATION STATUS', $confirm, 'BATCH NO', 
-                      $diploma_instituion, $programme, $diploma_gpa, 'DIPLOMA RESULTS', $o_level_schools, 
+                      $diploma_institution, $programme, $diploma_gpa, 'DIPLOMA RESULTS', $o_level_schools, 
                       'CSEE PTS', $a_level_schools, 'ACSEE PTS', $applicant->status
                         ]);
                   }
