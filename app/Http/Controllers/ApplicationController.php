@@ -530,9 +530,15 @@ class ApplicationController extends Controller
              $callback = function() use ($list) 
               {
                   $file_handle = fopen('php://output', 'w');
-                  fputcsv($file_handle,['S/N', 'FIRST NAME','MIDDLE NAME','SURNAME','GENDER', 'NATIONALITY', 'DISABILITY', 'DATEOFBIRTH', 'F4INDEXNO', 'F6INDEXNO', 'AVN NO', 'CHOICE1', 'CHOICE2', 'CHOICE3', 'CHOICE4', 'INSTITUTION CODE', 'ENTRY CATEGORY', 'OPTS', 'O-LEVEL RESULTS', 'APTS/GPA', 'A-LEVEL RESULTS/DIPLOMA', 'OPEN GPA', 'OPEN RESULTS', 'DATE REGISTERED', 'PHONE NUMBER', 'EMAIL ADDRESS', 'KIN PHONE NUMBER', 'DISTRICT', 'REGION', 'CLEARANCE', 'CLEARANCE STATUS', 'TCU ADMISSION STATUS', 'TCU VERIFICATION STATUS', 'CONFIRM STATUS', 'BATCH NO', 'DIPLOMA INSTITUTE', 'PROGRAM COURSE', 'DIPLOMA GPA', 'DIPLOMA RESULTS', 'O-LEVEL SCHOOL', 'CSEE PTS', 'A-LEVEL SCHOOL', 'ACSEE PTS', 'PROGRESS']);
+                  fputcsv($file_handle,['S/N', 'FIRST NAME','MIDDLE NAME','SURNAME','GENDER', 'NATIONALITY', 'DISABILITY', 'DATEOFBIRTH', 'F4INDEXNO', 'F6INDEXNO', 'AVN NO', 'CHOICE1', 'CHOICE2', 'CHOICE3', 'CHOICE4', 'INSTITUTION CODE', 'ENTRY CATEGORY', 'OPTS', 'O-LEVEL RESULTS', 'APTS/GPA', 'A-LEVEL RESULTS/DIPLOMA', 'OPEN GPA', 'OPEN RESULTS', 'SELECTED', 'DATE REGISTERED', 'PHONE NUMBER', 'EMAIL ADDRESS', 'KIN PHONE NUMBER', 'DISTRICT', 'REGION', 'CLEARANCE', 'CLEARANCE STATUS', 'TCU ADMISSION STATUS', 'TCU VERIFICATION STATUS', 'CONFIRM STATUS', 'BATCH NO', 'DIPLOMA INSTITUTE', 'PROGRAM COURSE', 'DIPLOMA GPA', 'DIPLOMA RESULTS', 'O-LEVEL SCHOOL', 'CSEE PTS', 'A-LEVEL SCHOOL', 'ACSEE PTS', 'PROGRESS']);
                   
                   foreach ($list as $key => $applicant) { 
+
+                        if ($applicant->confirmation_status == 1) {
+                            $confirm = 'Confirmed';
+                        } else {
+                            $confirm = 'Not Confirmed';
+                        }
 
                         foreach ($applicant->selections as $select) {
                             if($select->status == 'APPROVING' || $select->status == 'SELECTED'){
@@ -556,7 +562,15 @@ class ApplicationController extends Controller
                           }
                       }
 
-                      fputcsv($file_handle, [++$key, $applicant->first_name,$applicant->middle_name,$applicant->surname,$applicant->gender,$selection->campusProgram->program->name, $selection->status,implode(',', $o_level_results),implode(',',$a_level_results)
+                      fputcsv($file_handle, 
+                      [++$key, $applicant->first_name, $applicant->middle_name, $applicant->surname, 
+                      $applicant->gender , $applicant->nationality, 'none', $applicant->birth_date, $applicant->index_number, 
+                      'FORM 6 INDEX', 'AVN NO', 'CHOICE 1', 'CHOICE 2', 'CHOICE 3', 'CHOICE 4', 'REGULATOR CODE', 
+                      $applicant->entry_mode, 'OPTS', implode(',', $o_level_results), 'APTS / GPA', implode(',',$a_level_results), 
+                      'OPEN GPA', 'OPEN RESULTS', 'SELECTED', $applicant->created_at, $applicant->phone, $applicant->email, 'KIN PHONE NUMBER', 
+                      'DISTRICT', 'REGION', 'CLEARANCE', 'CLEARANCE STATUS', 'TCU ADMISSION STATUS', 'TCU VERIFICATION STATUS', $confirm, 'BATCH NO', 
+                      'DIPLOMA INSTITUTE', 'PROGRAM COURSE', 'DIPLOMA GPA', 'DIPLOMA RESULTS', 'O-LEVEL SCHOOL', 
+                      'CSEE PTS', 'A-LEVEL SCHOOL', 'ACSEE PTS', $applicant->status
                         ]);
                   }
                   fclose($file_handle);
