@@ -299,7 +299,6 @@ class ApplicantController extends Controller
             }
         }
 
-        return $applicant->selections[0]->status;
         
         $data = [
            'applicant'=>$applicant,

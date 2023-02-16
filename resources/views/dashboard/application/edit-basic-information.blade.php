@@ -39,7 +39,7 @@
         <div class="row">
           <div class="col-12">
 
-            @if($applicant->status == 'SELECTED' && $applicant->selection->status == 'SELECTED')
+            @if($applicant->status == 'SELECTED' && $applicant->selections[0]->status == 'SELECTED')
               @if($applicant->confirmation_status != 'CANCELLED')
                 <div class="alert alert-success">
                   <h3 class="text-white" style="font-size: 20px!important;"><i class="fa fa-check-circle"></i> 
