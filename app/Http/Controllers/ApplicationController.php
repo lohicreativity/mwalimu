@@ -498,6 +498,20 @@ class ApplicationController extends Controller
 
          }
 
+         foreach ($list as $applicant) {
+            foreach ($applicant->nectaResultDetails as $necta_results) {
+
+                $o_level_schools = $necta_results->exam_id == 1 ? array($necta_results->center_name) : null;
+
+                
+            }
+         }
+
+         return $o_level_schools;
+
+
+
+
 
               # add headers for each column in the CSV download
               // array_unshift($list, array_keys($list[0]));
@@ -545,6 +559,9 @@ class ApplicationController extends Controller
 
 
                           if($detail->exam_id == 1){
+
+                                $o_level_schools = $detail->center_name;
+
                                 foreach($detail->results as $result){
                                     $o_level_results[] = $result->subject_name.'-'.$result->grade;
                                 }
