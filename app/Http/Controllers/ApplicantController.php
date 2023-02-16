@@ -298,6 +298,8 @@ class ApplicantController extends Controller
               $applicant->save();
             }
         }
+
+        return $applicant->selection->status;
         
         $data = [
            'applicant'=>$applicant,
