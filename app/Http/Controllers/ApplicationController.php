@@ -498,15 +498,15 @@ class ApplicationController extends Controller
 
          }
 
-         foreach ($list as $applicant) {
-            foreach ($applicant->selections as $select) {
-                if($select->status == 'APPROVING' || $select->status == 'SELECTED'){
-                    $selection = $select;
-                }  
-            } 
-         }
+        //  foreach ($list as $applicant) {
+        //     foreach ($applicant->selections as $select) {
+        //         if($select->status == 'APPROVING' || $select->status == 'SELECTED'){
+        //             $selection = $select;
+        //         }  
+        //     } 
+        //  }
 
-         return $selection;
+        //  return $selection;
 
 
          
@@ -551,11 +551,6 @@ class ApplicationController extends Controller
                             $confirm = 'Not Confirmed';
                         }
 
-                        foreach ($applicant->selections as $select) {
-                            if($select->status == 'APPROVING' || $select->status == 'SELECTED'){
-                                $selection = $select;
-                            }  
-                        } 
                         
                         foreach ($applicant->selections as $selection) {
  
@@ -566,6 +561,13 @@ class ApplicationController extends Controller
                             }
 
                         }
+
+                        
+                        foreach ($applicant->selections as $select) {
+                            if($select->status == 'APPROVING' || $select->status == 'SELECTED'){
+                                $selection = $select;
+                            }  
+                        } 
 
                         
 
