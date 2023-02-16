@@ -493,10 +493,11 @@ class ApplicationController extends Controller
             ->where('application_window_id', $request->get('application_window_id'))
             ->where('campus_id', $staff->campus_id)
             ->where('status', 'SELECTED')
-            ->with(['nextOfKin', 'region', 'district', 'disabilityStatus', 'nectaResultDetails.results', 'nacteResultDetails', 'selections.campusProgram.program'])
+            ->with(['nextOfKin', 'region', 'district', 'disabilityStatus', 'nectaResultDetails.results', 'nacteResultDetails', 'outResultDetails.results', 'selections.campusProgram.program'])
             ->get();
-
          }       
+
+         return $list;
         
 
               # add headers for each column in the CSV download
