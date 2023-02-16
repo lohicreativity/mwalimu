@@ -287,7 +287,8 @@
                     </thead>
                     <tbody>
                  @foreach($applicants as $applicant)
-                   <tr>
+                  @if($applicant->status == 'SELECTED' || $applicant->status == null)
+                  <tr>
                       <td>{{ $loop->iteration }}</td>
                       <td>{{ $applicant->first_name }} {{ $applicant->middle_name }} {{ $applicant->surname }}</td>
                       <td>{{ $applicant->index_number }}</td>
@@ -320,6 +321,7 @@
                         @endif
                       </td>
                    </tr>
+                  @endif
                  @endforeach
                    </tbody>
                   </table>
