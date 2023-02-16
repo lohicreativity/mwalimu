@@ -545,9 +545,6 @@ class ApplicationController extends Controller
 
 
                           if($detail->exam_id == 1){
-
-                                $o_level_schools = $detail->center_name;
-
                                 foreach($detail->results as $result){
                                     $o_level_results[] = $result->subject_name.'-'.$result->grade;
                                 }
