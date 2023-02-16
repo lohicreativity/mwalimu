@@ -501,10 +501,10 @@ class ApplicationController extends Controller
 
          foreach ($list as $applicant) {
             foreach ($applicant->outResultDetails as $out_results) {
-                return $out_results;
-                // foreach($out_results->results as $result){
-                //     $out_results[] = $result->subject_name.'-'.$result->grade;
-                // }
+                foreach($out_results->results as $result){
+
+                    return $result->subject_name.'-'.$result->grade;
+                }
             }
          }
 
