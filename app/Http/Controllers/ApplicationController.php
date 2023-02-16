@@ -500,8 +500,12 @@ class ApplicationController extends Controller
          
          foreach ($list as $applicant) {
             foreach ($applicant->nacteResultDetails as $nacte_results) {
-                return $nacte_results;
+
+                if ($nacte_results->verified == 1) {
+                    return $nacte_results;
+                }
             }
+                
          }
 
 
