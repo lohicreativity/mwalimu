@@ -475,7 +475,7 @@ class ApplicationController extends Controller
 
             $list = Applicant::whereHas('intake.applicationWindows',function($query) use($request){
                  $query->where('id',$request->get('application_window_id'));
-            })->with(['nextOfKin','intake', 'selections' => function ($query) { $query->where('status', 'APPROVING')->orWhere('status', 'SELECTED'); }, 'selections.campusProgram.program','nectaResultDetails.results','nacteResultDetails.results'])->where('program_level_id',$request->get('program_level_id'))->where('campus_id',$staff->campus_id)->get();
+            })->with(['nextOfKin','intake','selections.campusProgram.program','nectaResultDetails.results','nacteResultDetails.results'])->where('status', 'SELECTED')->where('program_level_id',$request->get('program_level_id'))->where('campus_id',$staff->campus_id)->get();
          }
 
          // if($request->get('query')){
