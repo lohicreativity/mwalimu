@@ -480,10 +480,10 @@ class ApplicationController extends Controller
             // })->with(['nextOfKin','intake','selections.campusProgram.program','nectaResultDetails.results','nacteResultDetails.results'])->where('program_level_id',$request->get('program_level_id'))->where('campus_id',$staff->campus_id)->get();
 
             $list = Applicant::where('program_level_id', $request->get('program_level_id'))
+            ->where('campus_id', $staff->campus_id)
             ->with(['selections' => function ($query) {
                 $query->where('status', 'SELECTED');
-            }])
-            ->where('campus_id',$staff->campus_id);
+            }]);
 
             return $list;
          }
