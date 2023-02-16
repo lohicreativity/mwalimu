@@ -496,23 +496,7 @@ class ApplicationController extends Controller
             ->with(['nextOfKin', 'region', 'district', 'disabilityStatus', 'nectaResultDetails', 'selections.campusProgram.program'])
             ->get();
 
-         }
-
-        //  foreach ($list as $applicant) {
-        //     foreach ($applicant->selections as $select) {
-        //         if($select->status == 'APPROVING' || $select->status == 'SELECTED'){
-        //             $selection = $select;
-        //         }  
-        //     } 
-        //  }
-
-        //  return $selection;
-
-
-         
-         
-
-            
+         }            
 
 
               # add headers for each column in the CSV download
@@ -560,16 +544,13 @@ class ApplicationController extends Controller
                                 $institution_code = substr($selection->campusProgram->regulator_code, 0, 3);
                             }
 
+                            if($selection->status == 'APPROVING' || $selection->status == 'SELECTED'){
+                                $status = $selection->status;
+                            }  
+
                         }
 
-                        
-                        foreach ($applicant->selections as $select) {
-                            if($select->status == 'APPROVING' || $select->status == 'SELECTED'){
-                                $selection = $select;
-                            }  
-                        } 
-
-                        
+            
 
                       $o_level_results = [];
                       $o_level_schools = [];
@@ -609,7 +590,7 @@ class ApplicationController extends Controller
                       $applicant->gender , $applicant->nationality, $applicant->disabilityStatus->name, $applicant->birth_date, $applicant->index_number, 
                       $a_level_index, 'AVN NO', $firstChoice, $secondChoice, $thirdChoice, $fourthChoice, $institution_code, 
                       $applicant->entry_mode, 'OPTS', implode(',', $o_level_results), 'APTS / GPA', implode(',',$a_level_results), 
-                      'OPEN GPA', 'OPEN RESULTS', $selection->status, $applicant->created_at, $applicant->phone, $applicant->email, $applicant->nextOfKin->phone, 
+                      'OPEN GPA', 'OPEN RESULTS', $status, $applicant->created_at, $applicant->phone, $applicant->email, $applicant->nextOfKin->phone, 
                       $applicant->district->name, $applicant->region->name, 'CLEARANCE', 'CLEARANCE STATUS', 'TCU ADMISSION STATUS', 'TCU VERIFICATION STATUS', $confirm, 'BATCH NO', 
                       'DIPLOMA INSTITUTE', 'PROGRAM COURSE', 'DIPLOMA GPA', 'DIPLOMA RESULTS', $o_level_schools, 
                       'CSEE PTS', $a_level_schools, 'ACSEE PTS', $applicant->status
