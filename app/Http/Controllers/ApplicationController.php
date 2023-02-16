@@ -580,7 +580,7 @@ class ApplicationController extends Controller
                               }
                           }
                       }
-                      return $firstChoice.$secondChoice.$thirdChoice.$fourthChoice;
+                      return 2345;//$firstChoice.$secondChoice.$thirdChoice.$fourthChoice;
 
                       fputcsv($file_handle, 
                       [++$key, $applicant->first_name, $applicant->middle_name, $applicant->surname, 
