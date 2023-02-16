@@ -496,6 +496,16 @@ class ApplicationController extends Controller
             ->with(['nextOfKin', 'region', 'district', 'disabilityStatus', 'nectaResultDetails.results', 'nacteResultDetails', 'outResultDetails.results', 'selections.campusProgram.program'])
             ->get();
          }       
+
+         foreach ($list as $applicant) {
+            foreach ($applicant->outResultDetails as $out_results) {
+                foreach($out_results->results as $result){
+                    $out_results[] = $result->subject_name.'-'.$result->grade;
+                }
+            }
+         }
+
+         return $out_results;
         
 
               # add headers for each column in the CSV download
@@ -583,15 +593,18 @@ class ApplicationController extends Controller
 
                         foreach ($applicant->nacteResultDetails as $nacte_results) {
                             if ($nacte_results->verified == 1) {
+
                                 $diploma_gpa            = $nacte_results->diploma_gpa;
                                 $diploma_institution    = $nacte_results->institution;
                                 $programme              = $nacte_results->programme;
                                 $avn                    = $nacte_results->avn;
-                            }
 
-                            foreach ($nacte_results->results as $result) {
-                                $diploma_results[] = $result->subject.'-'.$result->grade;
+                                foreach ($nacte_results->results as $result) {
+                                    $diploma_results[] = $result->subject.'-'.$result->grade;
+                                }
+
                             }
+                            
                         }
 
                         foreach ($applicant->outResultDetails as $out_results) {
@@ -600,9 +613,9 @@ class ApplicationController extends Controller
                                 $a_level_index  = $out_results->reg_no;
                             }
 
-                            foreach($out_results->results as $result){
-                                $out_results[] = $result->subject_name.'-'.$result->grade;
-                            }
+                            // foreach($out_results->results as $result){
+                            //     $out_results[] = $result->subject_name.'-'.$result->grade;
+                            // }
                         }
 
                       fputcsv($file_handle, 
