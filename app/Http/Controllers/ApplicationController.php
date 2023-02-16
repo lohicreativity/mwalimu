@@ -482,6 +482,7 @@ class ApplicationController extends Controller
             $list = Applicant::where('program_level_id', $request->get('program_level_id'))
             ->where('application_window_id', $request->get('application_window_id'))
             ->where('campus_id', $staff->campus_id)
+            ->where('status', 'SELECTED')
             ->with(['selections' => function ($query) {
                 $query->where('status', 'SELECTED');
             }])
