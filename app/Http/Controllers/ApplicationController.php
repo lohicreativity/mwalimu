@@ -499,23 +499,11 @@ class ApplicationController extends Controller
          }
 
          foreach ($list as $applicant) {
-            foreach($applicant->selections as $option){
-
-                // $firstChoice = 0; $secondChoice = 0; $thirdChoice = 0; $fourthChoice = 0;
-                if($option->order === 1){
-                    $firstChoice = $option->campusProgram->program->code;
-                }elseif($option->order === 2){
-                    $secondChoice = 2;
-                }elseif($option->order === 3){
-                    $thirdChoice = 3;
-                }elseif($option->order === 4){
-                    $fourthChoice = 4;
-                }
+            foreach ($applicant->nectaResultDetails as $necta_result) {
+                return $necta_result;
             }
          }
-
-         return $firstChoice;
-
+         
 
          
 
@@ -562,6 +550,20 @@ class ApplicationController extends Controller
                   fputcsv($file_handle,['S/N', 'FIRST NAME','MIDDLE NAME','SURNAME','GENDER', 'NATIONALITY', 'DISABILITY', 'DATEOFBIRTH', 'F4INDEXNO', 'F6INDEXNO', 'AVN NO', 'CHOICE1', 'CHOICE2', 'CHOICE3', 'CHOICE4', 'INSTITUTION CODE', 'ENTRY CATEGORY', 'OPTS', 'O-LEVEL RESULTS', 'APTS/GPA', 'A-LEVEL RESULTS/DIPLOMA', 'OPEN GPA', 'OPEN RESULTS', 'SELECTED', 'DATE REGISTERED', 'PHONE NUMBER', 'EMAIL ADDRESS', 'KIN PHONE NUMBER', 'DISTRICT', 'REGION', 'CLEARANCE', 'CLEARANCE STATUS', 'TCU ADMISSION STATUS', 'TCU VERIFICATION STATUS', 'CONFIRM STATUS', 'BATCH NO', 'DIPLOMA INSTITUTE', 'PROGRAM COURSE', 'DIPLOMA GPA', 'DIPLOMA RESULTS', 'O-LEVEL SCHOOL', 'CSEE PTS', 'A-LEVEL SCHOOL', 'ACSEE PTS', 'PROGRESS']);
                   foreach ($list as $key => $applicant) { 
 
+                    foreach($applicant->selections as $option){
+            
+                        if($option->order == 1){
+                            $firstChoice = $option->campusProgram->program->code;
+                        }elseif($option->order == 2){
+                            $secondChoice = $option->campusProgram->program->code;
+                        }elseif($option->order == 3){
+                            $thirdChoice = $option->campusProgram->program->code;
+                        }elseif($option->order == 4){
+                            $fourthChoice = $option->campusProgram->program->code;
+                        }
+                    }
+            
+
                         if ($applicant->confirmation_status == 1) {
                             $confirm = 'Confirmed';
                         } else {
@@ -594,7 +596,7 @@ class ApplicationController extends Controller
                       fputcsv($file_handle, 
                       [++$key, $applicant->first_name, $applicant->middle_name, $applicant->surname, 
                       $applicant->gender , $applicant->nationality, $applicant->disabilityStatus->name, $applicant->birth_date, $applicant->index_number, 
-                      'FORM 6 INDEX', 'AVN NO', 'CHOICE 1', 'CHOICE 2', 'CHOICE 3', 'CHOICE 4', 'REGULATOR CODE', 
+                      'FORM 6 INDEX', 'AVN NO', $firstChoice, $secondChoice, $thirdChoice, $fourthChoice, 'REGULATOR CODE', 
                       $applicant->entry_mode, 'OPTS', implode(',', $o_level_results), 'APTS / GPA', implode(',',$a_level_results), 
                       'OPEN GPA', 'OPEN RESULTS', 'SELECTED', $applicant->created_at, $applicant->phone, $applicant->email, $applicant->nextOfKin->phone, 
                       $applicant->district->name, $applicant->region->name, 'CLEARANCE', 'CLEARANCE STATUS', 'TCU ADMISSION STATUS', 'TCU VERIFICATION STATUS', $confirm, 'BATCH NO', 
