@@ -497,16 +497,10 @@ class ApplicationController extends Controller
             ->get();
          }       
 
-        //  $out_results = [];
 
-         foreach ($list as $applicant) {
-            foreach ($applicant->outResultDetails as $out_results) {
-                foreach($out_results->results as $result){
-
-                    return $result->subject_name.'-'.$result->grade;
-                }
-            }
-         }
+        //  foreach ($list as $applicant) {
+            
+        //  }
 
         
 
@@ -613,11 +607,11 @@ class ApplicationController extends Controller
                             if ($out_results->verified == 1) {
                                 $out_gpa        = $out_results->gpa;
                                 $a_level_index  = $out_results->reg_no;
-                            }
 
-                            // foreach($out_results->results as $result){
-                            //     $out_results[] = $result->subject_name.'-'.$result->grade;
-                            // }
+                                foreach($out_results->results as $result){ 
+                                    $out_results[] = $result->subject_name.'-'.$result->grade;
+                                }
+                            }
                         }
 
                       fputcsv($file_handle, 
