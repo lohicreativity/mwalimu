@@ -504,17 +504,17 @@ class ApplicationController extends Controller
 
              $callback = function() use ($list) 
               {
-                $firstChoice    = null;
-                $secondChoice   = null;
-                $thirdChoice    = null;
-                $fourthChoice   = null;
-
+                $firstChoice        = null; 
+                $secondChoice       = null;
+                $thirdChoice        = null; 
+                $fourthChoice       = null;
+                $o_level_schools    = null;
+                
                   $file_handle = fopen('php://output', 'w');
                   fputcsv($file_handle,['S/N', 'FIRST NAME','MIDDLE NAME','SURNAME','GENDER', 'NATIONALITY', 'DISABILITY', 'DATEOFBIRTH', 'F4INDEXNO', 'F6INDEXNO', 'AVN NO', 'CHOICE1', 'CHOICE2', 'CHOICE3', 'CHOICE4', 'INSTITUTION CODE', 'ENTRY CATEGORY', 'OPTS', 'O-LEVEL RESULTS', 'APTS/GPA', 'A-LEVEL RESULTS/DIPLOMA', 'OPEN GPA', 'OPEN RESULTS', 'SELECTED', 'DATE REGISTERED', 'PHONE NUMBER', 'EMAIL ADDRESS', 'KIN PHONE NUMBER', 'DISTRICT', 'REGION', 'CLEARANCE', 'CLEARANCE STATUS', 'TCU ADMISSION STATUS', 'TCU VERIFICATION STATUS', 'CONFIRM STATUS', 'BATCH NO', 'DIPLOMA INSTITUTE', 'PROGRAM COURSE', 'DIPLOMA GPA', 'DIPLOMA RESULTS', 'O-LEVEL SCHOOL', 'CSEE PTS', 'A-LEVEL SCHOOL', 'ACSEE PTS', 'PROGRESS']);
                   foreach ($list as $key => $applicant) { 
 
                     foreach($applicant->selections as $option){
-                        
             
                         if($option->order == 1){
                             $firstChoice = $option->campusProgram->program->code;
@@ -542,10 +542,10 @@ class ApplicationController extends Controller
                       $o_level_results = [];
                       $o_level_schools = [];
                       foreach($applicant->nectaResultDetails as $detail){
-
-                        $o_level_schools = $detail->exam_id == 1 ? array($detail->center_name) : null;
-
                           if($detail->exam_id == 1){
+
+                                $o_level_schools = $detail->center_name;
+
                                 foreach($detail->results as $result){
                                     $o_level_results[] = $result->subject_name.'-'.$result->grade;
                                 }
