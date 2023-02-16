@@ -488,7 +488,6 @@ class ApplicationController extends Controller
             }])
             ->get();
 
-            return $list;
          }
 
          // if($request->get('query')){
