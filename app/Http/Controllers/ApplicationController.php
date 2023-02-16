@@ -483,6 +483,8 @@ class ApplicationController extends Controller
             ->where('program_level_id',$request->get('program_level_id'))
             ->where('campus_id',$staff->campus_id)
             ->get();
+
+            return $list;
          }
 
          // if($request->get('query')){
