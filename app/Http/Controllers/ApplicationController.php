@@ -498,11 +498,7 @@ class ApplicationController extends Controller
 
          }
 
-         foreach ($list as $applicant) {
-            foreach ($applicant->nectaResultDetails as $necta_result) {
-                return $necta_result->center_name;
-            }
-         }
+         
          
 
          
@@ -592,6 +588,12 @@ class ApplicationController extends Controller
                               }
                           }
                       }
+
+                    //   foreach ($list as $applicant) {
+                    //     foreach ($applicant->nectaResultDetails as $necta_result) {
+                    //         return $necta_result->center_name;
+                    //     }
+                    //  }
 
                       fputcsv($file_handle, 
                       [++$key, $applicant->first_name, $applicant->middle_name, $applicant->surname, 
