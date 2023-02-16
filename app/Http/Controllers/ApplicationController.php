@@ -500,6 +500,9 @@ class ApplicationController extends Controller
 
          foreach ($list as $applicant) {
             foreach($applicant->nectaResultDetails as $option){
+
+                return $option;
+
                 $firstChoice = 0; $secondChoice = 0; $thirdChoice = 0; $fourthChoice = 0;
                 if($option->order == 1){
                     $firstChoice = 1;
@@ -512,8 +515,6 @@ class ApplicationController extends Controller
                 }
             }
          }
-
-         return $firstChoice;
 
          
 
