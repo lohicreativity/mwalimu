@@ -498,7 +498,11 @@ class ApplicationController extends Controller
 
          }       
          
-         return $list;
+         foreach ($list as $applicant) {
+            foreach ($applicant->nacteResultDetails as $nacte_results) {
+                return $nacte_results;
+            }
+         }
 
 
               # add headers for each column in the CSV download
@@ -557,7 +561,7 @@ class ApplicationController extends Controller
                       $o_level_results = [];
                       $o_level_schools = [];
                       foreach($applicant->nectaResultDetails as $detail){
-                          if($detail->exam_id == 1){
+                          if($detail->exam_id == 1 && $detail->verified == 1){
 
                                 $o_level_schools = $detail->center_name;
 
@@ -570,7 +574,7 @@ class ApplicationController extends Controller
                       $a_level_results = [];
                       $a_level_schools = [];
                         foreach($applicant->nectaResultDetails as $detail){
-                            if($detail->exam_id == 2){
+                            if($detail->exam_id == 2 && $detail->verified == 1){
                                 $a_level_schools    =  $detail->center_name;
                                 $a_level_index      =  $detail->index_number;
                                 foreach($detail->results as $result){
