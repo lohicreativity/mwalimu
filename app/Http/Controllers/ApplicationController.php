@@ -504,16 +504,27 @@ class ApplicationController extends Controller
 
              $callback = function() use ($list) 
               {
-                
+                $firstChoice    = null;
+                $secondChoice   = null;
+                $thirdChoice    = null;
+                $fourthChoice   = null;
+
                   $file_handle = fopen('php://output', 'w');
                   fputcsv($file_handle,['S/N', 'FIRST NAME','MIDDLE NAME','SURNAME','GENDER', 'NATIONALITY', 'DISABILITY', 'DATEOFBIRTH', 'F4INDEXNO', 'F6INDEXNO', 'AVN NO', 'CHOICE1', 'CHOICE2', 'CHOICE3', 'CHOICE4', 'INSTITUTION CODE', 'ENTRY CATEGORY', 'OPTS', 'O-LEVEL RESULTS', 'APTS/GPA', 'A-LEVEL RESULTS/DIPLOMA', 'OPEN GPA', 'OPEN RESULTS', 'SELECTED', 'DATE REGISTERED', 'PHONE NUMBER', 'EMAIL ADDRESS', 'KIN PHONE NUMBER', 'DISTRICT', 'REGION', 'CLEARANCE', 'CLEARANCE STATUS', 'TCU ADMISSION STATUS', 'TCU VERIFICATION STATUS', 'CONFIRM STATUS', 'BATCH NO', 'DIPLOMA INSTITUTE', 'PROGRAM COURSE', 'DIPLOMA GPA', 'DIPLOMA RESULTS', 'O-LEVEL SCHOOL', 'CSEE PTS', 'A-LEVEL SCHOOL', 'ACSEE PTS', 'PROGRESS']);
                   foreach ($list as $key => $applicant) { 
 
                     foreach($applicant->selections as $option){
-                        $firstChoice    = $option->order == 1 ? $option->campusProgram->program->code : null;
-                        $secondChoice   = $option->order == 2 ? $option->campusProgram->program->code : null;
-                        $thirdChoice    = $option->order == 3 ? $option->campusProgram->program->code : null;
-                        $fourthChoice   = $option->order == 4 ? $option->campusProgram->program->code : null;
+                        
+            
+                        if($option->order == 1){
+                            $firstChoice = $option->campusProgram->program->code;
+                        }elseif($option->order == 2){
+                            $secondChoice = $option->campusProgram->program->code;
+                        }elseif($option->order == 3){
+                            $thirdChoice = $option->campusProgram->program->code;
+                        }elseif($option->order == 4){
+                            $fourthChoice = $option->campusProgram->program->code;
+                        }
                     }
             
 
