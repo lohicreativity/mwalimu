@@ -530,7 +530,7 @@ class ApplicationController extends Controller
              $callback = function() use ($list) 
               {
                   $file_handle = fopen('php://output', 'w');
-                  fputcsv($file_handle,['First Name','Middle Name','Surname','Gender','Programme','Status','O-Level Results','A-Level Results']);
+                  fputcsv($file_handle,['S/N', 'FIRST NAME','MIDDLE NAME','SURNAME','GENDER','Programme','Status','O-Level Results','A-Level Results']);
                   foreach ($list as $applicant) { 
 
                       foreach ($applicant->selections as $select) {
