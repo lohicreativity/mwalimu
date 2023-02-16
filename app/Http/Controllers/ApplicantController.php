@@ -299,7 +299,7 @@ class ApplicantController extends Controller
             }
         }
 
-        return $applicant->selection;
+        return $applicant;
         
         $data = [
            'applicant'=>$applicant,
