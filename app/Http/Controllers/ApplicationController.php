@@ -485,7 +485,7 @@ class ApplicationController extends Controller
             }])
             ->where('campus_id',$staff->campus_id);
 
-            return $list
+            return $list;
          }
 
          // if($request->get('query')){
