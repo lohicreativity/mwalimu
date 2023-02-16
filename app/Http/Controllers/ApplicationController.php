@@ -499,14 +499,14 @@ class ApplicationController extends Controller
          }
 
 
-         foreach ($list as $applicant) {
-            foreach ($applicant->nectaResultDetails as $necta_results) {
-                $o_level_schools = $necta_results->exam_id == 1 ? array($necta_results->center_name) : null;
-                $a_level_schools = $necta_results->exam_id == 2 ? array($necta_results->center_name) : null;    
-            }
-         }
+        //  foreach ($list as $applicant) {
+        //     foreach ($applicant->nectaResultDetails as $necta_results) {
+        //         $o_level_schools = $necta_results->exam_id == 1 ? array($necta_results->center_name) : null;
+        //         $a_level_schools = $necta_results->exam_id == 2 ? array($necta_results->center_name) : null;    
+        //     }
+        //  }
 
-         return $a_level_schools;
+        //  return $a_level_schools;
 
 
 
@@ -559,9 +559,6 @@ class ApplicationController extends Controller
 
 
                           if($detail->exam_id == 1){
-
-                                $o_level_schools = $detail->center_name;
-
                                 foreach($detail->results as $result){
                                     $o_level_results[] = $result->subject_name.'-'.$result->grade;
                                 }
