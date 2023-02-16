@@ -497,17 +497,17 @@ class ApplicationController extends Controller
             ->get();
          }       
 
-         $out_results = [];
+        //  $out_results = [];
 
          foreach ($list as $applicant) {
             foreach ($applicant->outResultDetails as $out_results) {
-                foreach($out_results->results as $result){
-                    $out_results[] = $result->subject_name.'-'.$result->grade;
-                }
+                return $out_results;
+                // foreach($out_results->results as $result){
+                //     $out_results[] = $result->subject_name.'-'.$result->grade;
+                // }
             }
          }
 
-         return $out_results;
         
 
               # add headers for each column in the CSV download
