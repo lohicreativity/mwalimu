@@ -493,9 +493,15 @@ class ApplicationController extends Controller
             ->where('application_window_id', $request->get('application_window_id'))
             ->where('campus_id', $staff->campus_id)
             ->where('status', 'SELECTED')
-            ->with(['nextOfKin', 'region', 'district', 'disabilityStatus', 'nectaResultDetails', 'selections.campusProgram.program', 'selections'])
+            ->with(['nextOfKin', 'region', 'district', 'disabilityStatus', 'nectaResultDetails', 'selections.campusProgram.program'])
             ->get();
 
+         }
+
+         foreach ($list as $applicant) {
+            foreach ($applicant->selections->campusProgram as $cp) {
+                return $cp;
+            }
          }
 
 
@@ -578,7 +584,7 @@ class ApplicationController extends Controller
                       $applicant->gender , $applicant->nationality, $applicant->disabilityStatus->name, $applicant->birth_date, $applicant->index_number, 
                       $a_level_index, 'AVN NO', $firstChoice, $secondChoice, $thirdChoice, $fourthChoice, 'REGULATOR CODE', 
                       $applicant->entry_mode, 'OPTS', implode(',', $o_level_results), 'APTS / GPA', implode(',',$a_level_results), 
-                      'OPEN GPA', 'OPEN RESULTS', $selection, $applicant->created_at, $applicant->phone, $applicant->email, $applicant->nextOfKin->phone, 
+                      'OPEN GPA', 'OPEN RESULTS', $selection->status, $applicant->created_at, $applicant->phone, $applicant->email, $applicant->nextOfKin->phone, 
                       $applicant->district->name, $applicant->region->name, 'CLEARANCE', 'CLEARANCE STATUS', 'TCU ADMISSION STATUS', 'TCU VERIFICATION STATUS', $confirm, 'BATCH NO', 
                       'DIPLOMA INSTITUTE', 'PROGRAM COURSE', 'DIPLOMA GPA', 'DIPLOMA RESULTS', $o_level_schools, 
                       'CSEE PTS', $a_level_schools, 'ACSEE PTS', $applicant->status
