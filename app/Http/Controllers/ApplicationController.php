@@ -498,6 +498,24 @@ class ApplicationController extends Controller
 
          }
 
+
+         foreach ($list as $applicant) {
+            foreach($applicant->selections as $option){
+            
+                if($option->order == 1){
+                    $firstChoice = $option->campusProgram->program->code;
+                }elseif($option->order == 2){
+                    $secondChoice = $option->campusProgram->program->code;
+                }elseif($option->order == 3){
+                    $thirdChoice = $option->campusProgram->program->code;
+                }elseif($option->order == 4){
+                    $fourthChoice = $option->campusProgram->program->code;
+                }
+            }
+         }
+
+         return $firstChoice."<br>".$secondChoice."<br>".$thirdChoice."<br>".$fourthChoice;
+
          
          
 
