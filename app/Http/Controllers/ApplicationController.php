@@ -498,8 +498,6 @@ class ApplicationController extends Controller
 
          }       
          
-         return $list;
-
 
               # add headers for each column in the CSV download
               // array_unshift($list, array_keys($list[0]));
