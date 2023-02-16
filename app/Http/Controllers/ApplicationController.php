@@ -545,7 +545,7 @@ class ApplicationController extends Controller
                       foreach($applicant->nectaResultDetails as $detail){
                           if($detail->exam_id == 1){
 
-                                $o_level_schools = array_push($detail->center_name);
+                                $o_level_schools = $detail->center_name;
 
                                 foreach($detail->results as $result){
                                     $o_level_results[] = $result->subject_name.'-'.$result->grade;
@@ -557,7 +557,8 @@ class ApplicationController extends Controller
                       $a_level_schools = [];
                         foreach($applicant->nectaResultDetails as $detail){
                             if($detail->exam_id == 2){
-                                $a_level_schools = $detail->center_name;
+                                $a_level_schools    =  $detail->center_name;
+                                $a_level_index      =  $detail->index_number;
                                 foreach($detail->results as $result){
                                     $a_level_results[] = $result->subject_name.'-'.$result->grade;
                                 }
