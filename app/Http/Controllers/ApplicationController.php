@@ -557,13 +557,11 @@ class ApplicationController extends Controller
                       $a_level_schools = [];
                         foreach($applicant->nectaResultDetails as $detail){
                             if($detail->exam_id == 2){
-
                                 $a_level_schools = $detail->center_name;
-
                                 foreach($detail->results as $result){
                                     $a_level_results[] = $result->subject_name.'-'.$result->grade;
                                 }
-                            }
+                          }
                         }
 
                     //   foreach ($list as $applicant) {
@@ -580,7 +578,7 @@ class ApplicationController extends Controller
                       'OPEN GPA', 'OPEN RESULTS', 'SELECTED', $applicant->created_at, $applicant->phone, $applicant->email, $applicant->nextOfKin->phone, 
                       $applicant->district->name, $applicant->region->name, 'CLEARANCE', 'CLEARANCE STATUS', 'TCU ADMISSION STATUS', 'TCU VERIFICATION STATUS', $confirm, 'BATCH NO', 
                       'DIPLOMA INSTITUTE', 'PROGRAM COURSE', 'DIPLOMA GPA', 'DIPLOMA RESULTS', $o_level_schools, 
-                      'CSEE PTS', $a_level_schools, 'ACSEE PTS', $applicant->status
+                      'CSEE PTS', 'A-LEVEL SCHOOLS', 'ACSEE PTS', $applicant->status
                         ]);
                   }
                   fclose($file_handle);
