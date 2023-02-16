@@ -498,19 +498,7 @@ class ApplicationController extends Controller
 
          }
 
-         foreach ($list as $applicant) {
-            foreach ($applicant->selections as $selection) {
-
-                if ($selection->campusProgram->campus_id == 1) {
-                    $institution_code = substr($selection->campusProgram->regulator_code, 0, 2);
-                } else if ($selection->campusProgram->campus_id == 2) {
-                    $institution_code = substr($selection->campusProgram->regulator_code, 0, 3);
-                }
-
-            }
-         }
-
-         return $institution_code;
+            
 
 
               # add headers for each column in the CSV download
@@ -552,8 +540,21 @@ class ApplicationController extends Controller
                         foreach ($applicant->selections as $select) {
                             if($select->status == 'APPROVING' || $select->status == 'SELECTED'){
                                 $selection = $select;
+                            }  
+                        } 
+                        
+                        foreach ($applicant->selections as $selection) {
+ 
+                            if ($selection->campusProgram->campus_id == 1) {
+                                $institution_code = substr($selection->campusProgram->regulator_code, 0, 2);
+                            } else if ($selection->campusProgram->campus_id == 2) {
+                                $institution_code = substr($selection->campusProgram->regulator_code, 0, 3);
                             }
+
                         }
+
+                        
+
                       $o_level_results = [];
                       $o_level_schools = [];
                       foreach($applicant->nectaResultDetails as $detail){
@@ -590,7 +591,7 @@ class ApplicationController extends Controller
                       fputcsv($file_handle, 
                       [++$key, $applicant->first_name, $applicant->middle_name, $applicant->surname, 
                       $applicant->gender , $applicant->nationality, $applicant->disabilityStatus->name, $applicant->birth_date, $applicant->index_number, 
-                      $a_level_index, 'AVN NO', $firstChoice, $secondChoice, $thirdChoice, $fourthChoice, 'REGULATOR CODE', 
+                      $a_level_index, 'AVN NO', $firstChoice, $secondChoice, $thirdChoice, $fourthChoice, $institution_code, 
                       $applicant->entry_mode, 'OPTS', implode(',', $o_level_results), 'APTS / GPA', implode(',',$a_level_results), 
                       'OPEN GPA', 'OPEN RESULTS', $selection->status, $applicant->created_at, $applicant->phone, $applicant->email, $applicant->nextOfKin->phone, 
                       $applicant->district->name, $applicant->region->name, 'CLEARANCE', 'CLEARANCE STATUS', 'TCU ADMISSION STATUS', 'TCU VERIFICATION STATUS', $confirm, 'BATCH NO', 
