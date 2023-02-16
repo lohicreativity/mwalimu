@@ -496,8 +496,11 @@ class ApplicationController extends Controller
             ->with(['nextOfKin', 'region', 'district', 'disabilityStatus', 'nectaResultDetails', 'nacteResultDetails', 'selections.campusProgram.program'])
             ->get();
 
-         }      
+         }       
          
+         return $list;
+
+
               # add headers for each column in the CSV download
               // array_unshift($list, array_keys($list[0]));
 
@@ -549,15 +552,6 @@ class ApplicationController extends Controller
 
                         }
 
-                        // foreach ($applicant->nacteResultDetails as $nacte_results) {
-                        //     if ($nacte_results->verified == 1) {
-                        //         $diploma_gpa            = $nacte_results->diploma_gpa;
-                        //         $diploma_institution    = $nacte_results->institution;
-                        //         $programme              = $nacte_results->programme;
-                        //         $avn                    = $nacte_results->avn;
-                        //     }
-                        // }
-
             
 
                       $o_level_results = [];
@@ -600,7 +594,7 @@ class ApplicationController extends Controller
                       $applicant->entry_mode, 'OPTS', implode(',', $o_level_results), 'APTS / GPA', implode(',',$a_level_results), 
                       'OPEN GPA', 'OPEN RESULTS', $status, $applicant->created_at, $applicant->phone, $applicant->email, $applicant->nextOfKin->phone, 
                       $applicant->district->name, $applicant->region->name, 'CLEARANCE', 'CLEARANCE STATUS', 'TCU ADMISSION STATUS', 'TCU VERIFICATION STATUS', $confirm, 'BATCH NO', 
-                      'INSTUTION', 'PROGRAMME', 'DIPLOMA GPA', 'DIPLOMA RESULTS', $o_level_schools, 
+                      'DIPLOMA INSTITUTE', 'PROGRAM COURSE', 'DIPLOMA GPA', 'DIPLOMA RESULTS', $o_level_schools, 
                       'CSEE PTS', $a_level_schools, 'ACSEE PTS', $applicant->status
                         ]);
                   }
