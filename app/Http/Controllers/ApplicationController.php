@@ -242,7 +242,10 @@ class ApplicationController extends Controller
             })->whereHas('selections',function($query) use($request){
                  $query->where('status','APPROVING')->orWhere('status','SELECTED')->orWhere('status','ELIGIBLE');
             })->with(['nextOfKin','intake','selections.campusProgram.program','nectaResultDetails','nacteResultDetails'])->where('program_level_id',$request->get('program_level_id'))->where('campus_id',$staff->campus_id)
-            ->get();
+            ->where(function($query) {
+                $query->where('status','SELECTED')
+                      ->orWhereNull('status');
+            })->get();
          
 
          $data = [
