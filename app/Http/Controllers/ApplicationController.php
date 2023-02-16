@@ -572,7 +572,7 @@ class ApplicationController extends Controller
 
                       $a_level_results = [];
                       $diploma_results = [];
-                      $out_results     = [];
+                      $open_results    = [];
                       $a_level_schools = [];
 
                         foreach($applicant->nectaResultDetails as $detail){
@@ -609,7 +609,7 @@ class ApplicationController extends Controller
                                 $a_level_index  = $out_results->reg_no;
 
                                 foreach($out_results->results as $result){ 
-                                    // $out_results[] = $result->subject_name.'-'.$result->grade;
+                                    $open_results[] = $result->subject_name.'-'.$result->grade;
                                 }
                             }
                         }
