@@ -498,15 +498,6 @@ class ApplicationController extends Controller
 
          }       
          
-         foreach ($list as $applicant) {
-            foreach ($applicant->nacteResultDetails as $nacte_results) {
-
-                if ($nacte_results->verified == 1) {
-                    return $nacte_results;
-                }
-            }
-                
-         }
 
 
               # add headers for each column in the CSV download
@@ -560,6 +551,15 @@ class ApplicationController extends Controller
 
                         }
 
+                        foreach ($applicant->nacteResultDetails as $nacte_results) {
+                            if ($nacte_results->verified == 1) {
+                                $diploma_gpa        = $nacte_results->diploma_gpa;
+                                $diploma_instituion = $nacte_results->institution;
+                                $programme          = $nacte_results->programme;
+                                $avn                = $nacte_results->avn;
+                            }
+                        }
+
             
 
                       $o_level_results = [];
@@ -598,11 +598,11 @@ class ApplicationController extends Controller
                       fputcsv($file_handle, 
                       [++$key, $applicant->first_name, $applicant->middle_name, $applicant->surname, 
                       $applicant->gender , $applicant->nationality, $applicant->disabilityStatus->name, $applicant->birth_date, $applicant->index_number, 
-                      $a_level_index, 'AVN NO', $firstChoice, $secondChoice, $thirdChoice, $fourthChoice, $institution_code, 
+                      $a_level_index, $avn, $firstChoice, $secondChoice, $thirdChoice, $fourthChoice, $institution_code, 
                       $applicant->entry_mode, 'OPTS', implode(',', $o_level_results), 'APTS / GPA', implode(',',$a_level_results), 
                       'OPEN GPA', 'OPEN RESULTS', $status, $applicant->created_at, $applicant->phone, $applicant->email, $applicant->nextOfKin->phone, 
                       $applicant->district->name, $applicant->region->name, 'CLEARANCE', 'CLEARANCE STATUS', 'TCU ADMISSION STATUS', 'TCU VERIFICATION STATUS', $confirm, 'BATCH NO', 
-                      'DIPLOMA INSTITUTE', 'PROGRAM COURSE', 'DIPLOMA GPA', 'DIPLOMA RESULTS', $o_level_schools, 
+                      $diploma_instituion, $programme, $diploma_gpa, 'DIPLOMA RESULTS', $o_level_schools, 
                       'CSEE PTS', $a_level_schools, 'ACSEE PTS', $applicant->status
                         ]);
                   }
