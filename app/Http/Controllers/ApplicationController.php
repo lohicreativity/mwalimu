@@ -499,8 +499,8 @@ class ApplicationController extends Controller
          }
 
          foreach ($list as $applicant) {
-            foreach ($applicant->selections->campusProgram as $cp) {
-                return $cp;
+            foreach ($applicant->selections as $selection) {
+                return $selection;
             }
          }
 
