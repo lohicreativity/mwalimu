@@ -499,20 +499,6 @@ class ApplicationController extends Controller
          }
 
 
-        //  foreach ($list as $applicant) {
-        //     foreach ($applicant->nectaResultDetails as $necta_results) {
-        //         $o_level_schools = $necta_results->exam_id == 1 ? array($necta_results->center_name) : null;
-        //         $a_level_schools = $necta_results->exam_id == 2 ? array($necta_results->center_name) : null;    
-        //     }
-        //  }
-
-        //  return $a_level_schools;
-
-
-
-
-
-
               # add headers for each column in the CSV download
               // array_unshift($list, array_keys($list[0]));
 
@@ -522,6 +508,7 @@ class ApplicationController extends Controller
                 $secondChoice       = null;
                 $thirdChoice        = null; 
                 $fourthChoice       = null;
+                $o_level_schools    = null;
                 $a_level_schools    = null;
                 
                   $file_handle = fopen('php://output', 'w');
@@ -554,12 +541,12 @@ class ApplicationController extends Controller
                             }
                         }
                       $o_level_results = [];
+                      $o_level_schools = [];
                       foreach($applicant->nectaResultDetails as $detail){
-
-                            $o_level_schools = $detail->exam_id == 1 ? array($detail->center_name) : null;
-
-
                           if($detail->exam_id == 1){
+
+                                $o_level_schools = $detail->center_name;
+
                                 foreach($detail->results as $result){
                                     $o_level_results[] = $result->subject_name.'-'.$result->grade;
                                 }
@@ -567,18 +554,21 @@ class ApplicationController extends Controller
                       }
 
                       $a_level_results = [];
+                      $a_level_schools = [];
                         foreach($applicant->nectaResultDetails as $detail){
-
-                            $a_level_schools = $detail->exam_id == 2 ? array($detail->center_name) : null;
-
                             if($detail->exam_id == 2){
+                                $a_level_schools = $detail->center_name;
                                 foreach($detail->results as $result){
                                     $a_level_results[] = $result->subject_name.'-'.$result->grade;
                                 }
                           }
                         }
 
-    
+                    //   foreach ($list as $applicant) {
+                    //     foreach ($applicant->nectaResultDetails as $necta_result) {
+                    //         return $necta_result->center_name;
+                    //     }
+                    //  }
 
                       fputcsv($file_handle, 
                       [++$key, $applicant->first_name, $applicant->middle_name, $applicant->surname, 
@@ -587,8 +577,8 @@ class ApplicationController extends Controller
                       $applicant->entry_mode, 'OPTS', implode(',', $o_level_results), 'APTS / GPA', implode(',',$a_level_results), 
                       'OPEN GPA', 'OPEN RESULTS', 'SELECTED', $applicant->created_at, $applicant->phone, $applicant->email, $applicant->nextOfKin->phone, 
                       $applicant->district->name, $applicant->region->name, 'CLEARANCE', 'CLEARANCE STATUS', 'TCU ADMISSION STATUS', 'TCU VERIFICATION STATUS', $confirm, 'BATCH NO', 
-                      'DIPLOMA INSTITUTE', 'PROGRAM COURSE', 'DIPLOMA GPA', 'DIPLOMA RESULTS', 'O-LEVEL SCHOOLS', 
-                      'CSEE PTS', $a_level_schools, 'ACSEE PTS', $applicant->status
+                      'DIPLOMA INSTITUTE', 'PROGRAM COURSE', 'DIPLOMA GPA', 'DIPLOMA RESULTS', $o_level_schools, 
+                      'CSEE PTS', 'A-LEVEL SCHOOLS', 'ACSEE PTS', $applicant->status
                         ]);
                   }
                   fclose($file_handle);
