@@ -487,9 +487,6 @@ class ApplicationController extends Controller
                 $query->where('status', 'SELECTED');
             }])
             ->get();
-
-            return $list[0]->nectaResultDetails;
-
          }
 
          // if($request->get('query')){
