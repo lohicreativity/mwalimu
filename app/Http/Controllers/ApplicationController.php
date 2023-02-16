@@ -501,11 +501,16 @@ class ApplicationController extends Controller
          foreach ($list as $applicant) {
             foreach ($applicant->selections as $selection) {
 
-            
+                if ($selection->campusProgram->campus_id == 1) {
+                    $institution_code = substr($selection->campusProgram->regulator_code, 0, 2);
+                } else if ($selection->campusProgram->campus_id == 2) {
+                    $institution_code = substr($selection->campusProgram->regulator_code, 0, 3);
+                }
 
-                return $selection->campusProgram->regulator_code;
             }
          }
+
+         return $institution_code;
 
 
               # add headers for each column in the CSV download
