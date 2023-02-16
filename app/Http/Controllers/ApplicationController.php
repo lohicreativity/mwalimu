@@ -498,6 +498,20 @@ class ApplicationController extends Controller
 
          }
 
+         foreach ($list as $applicant) {
+            foreach ($applicant->selections as $select) {
+                if($select->status == 'APPROVING' || $select->status == 'SELECTED'){
+                    $selection = $select;
+                }  
+            } 
+         }
+
+         return $selection;
+
+
+         
+         
+
             
 
 
