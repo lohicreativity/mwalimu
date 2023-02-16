@@ -500,7 +500,7 @@ class ApplicationController extends Controller
 
          foreach ($list as $applicant) {
             foreach ($applicant->selections as $selection) {
-                return $selection;
+                return $selection->campusProgram;
             }
          }
 
