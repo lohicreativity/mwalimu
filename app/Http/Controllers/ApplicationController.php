@@ -568,9 +568,7 @@ class ApplicationController extends Controller
                       'FORM 6 INDEX', 'AVN NO', 'CHOICE 1', 'CHOICE 2', 'CHOICE 3', 'CHOICE 4', 'REGULATOR CODE', 
                       $applicant->entry_mode, 'OPTS', implode(',', $o_level_results), 'APTS / GPA', implode(',',$a_level_results), 
                       'OPEN GPA', 'OPEN RESULTS', 'SELECTED', $applicant->created_at, $applicant->phone, $applicant->email, $applicant->nextOfKin->phone, 
-                      $applicant->district->name, $applicant->region->name, 
-                      'CLEARANCE', 'CLEARANCE STATUS', 'TCU ADMISSION STATUS', 
-                      'TCU VERIFICATION STATUS', $confirm, 'BATCH NO', 
+                      $applicant->district->name, $applicant->region->name, 'CLEARANCE', 'CLEARANCE STATUS', 'TCU ADMISSION STATUS', 'TCU VERIFICATION STATUS', $confirm, 'BATCH NO', 
                       'DIPLOMA INSTITUTE', 'PROGRAM COURSE', 'DIPLOMA GPA', 'DIPLOMA RESULTS', $applicant->nectaResultDetails->center_name, 
                       'CSEE PTS', 'A-LEVEL SCHOOL', 'ACSEE PTS', $applicant->status
                         ]);
