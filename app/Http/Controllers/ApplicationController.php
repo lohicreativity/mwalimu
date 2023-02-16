@@ -493,7 +493,7 @@ class ApplicationController extends Controller
             ->where('application_window_id', $request->get('application_window_id'))
             ->where('campus_id', $staff->campus_id)
             ->where('status', 'SELECTED')
-            ->with(['nextOfKin', 'region', 'district', 'disabilityStatus', 'nectaResultDetails', 'nacteResultDetails', 'selections.campusProgram.program'])
+            ->with(['nextOfKin', 'region', 'district', 'disabilityStatus', 'nectaResultDetails.results', 'nacteResultDetails', 'selections.campusProgram.program'])
             ->get();
 
          }       
@@ -566,11 +566,12 @@ class ApplicationController extends Controller
                       }
 
                       $a_level_results = [];
+                      $diploma_results = [];
                       $a_level_schools = [];
                         foreach($applicant->nectaResultDetails as $detail){
                             if($detail->exam_id == 2 && $detail->verified == 1){
                                 $a_level_schools    =  $detail->center_name;
-                                // $a_level_index      =  $detail->index_number;
+                                $a_level_index      =  $detail->index_number;
                                 foreach($detail->results as $result){
                                     $a_level_results[] = $result->subject_name.'-'.$result->grade;
                                 }
@@ -586,16 +587,20 @@ class ApplicationController extends Controller
                                 $programme              = $nacte_results->programme;
                                 $avn                    = $nacte_results->avn;
                             }
+
+                            foreach ($nacte_results->results as $result) {
+                                $diploma_results[] = $result->subject.'-'.$result->grade;
+                            }
                         }
 
                       fputcsv($file_handle, 
                       [++$key, $applicant->first_name, $applicant->middle_name, $applicant->surname, 
                       $applicant->gender , $applicant->nationality, $applicant->disabilityStatus->name, $applicant->birth_date, $applicant->index_number, 
-                      'A LEVEL INDEX', $avn, $firstChoice, $secondChoice, $thirdChoice, $fourthChoice, $institution_code, 
+                      $a_level_index, $avn, $firstChoice, $secondChoice, $thirdChoice, $fourthChoice, $institution_code, 
                       $applicant->entry_mode, 'OPTS', implode(',', $o_level_results), 'APTS / GPA', implode(',',$a_level_results), 
                       'OPEN GPA', 'OPEN RESULTS', $status, $applicant->created_at, $applicant->phone, $applicant->email, $applicant->nextOfKin->phone, 
                       $applicant->district->name, $applicant->region->name, 'CLEARANCE', 'CLEARANCE STATUS', 'TCU ADMISSION STATUS', 'TCU VERIFICATION STATUS', $confirm, 'BATCH NO', 
-                      $diploma_institution, $programme, $diploma_gpa, 'DIPLOMA RESULTS', $o_level_schools, 
+                      $diploma_institution, $programme, $diploma_gpa, implode(',', $diploma_results), $o_level_schools, 
                       'CSEE PTS', $a_level_schools, 'ACSEE PTS', $applicant->status
                         ]);
                   }
