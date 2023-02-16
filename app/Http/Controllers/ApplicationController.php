@@ -472,11 +472,20 @@ class ApplicationController extends Controller
                  $query->where('status','APPROVING');
             })->with(['nextOfKin','intake','selections.campusProgram.program','nectaResultDetails.results','nacteResultDetails.results'])->where('program_level_id',$request->get('program_level_id'))->where('campus_id',$staff->campus_id)->get();
          }else{
-            $list = Applicant::whereHas('intake.applicationWindows',function($query) use($request){
-                 $query->where('id',$request->get('application_window_id'));
-            })->whereHas('selections',function($query) use($request){
-                 $query->where('status','ELIGIBLE');
-            })->with(['nextOfKin','intake','selections.campusProgram.program','nectaResultDetails.results','nacteResultDetails.results'])->where('program_level_id',$request->get('program_level_id'))->where('campus_id',$staff->campus_id)->get();
+
+            // $list = Applicant::whereHas('intake.applicationWindows',function($query) use($request){
+            //      $query->where('id',$request->get('application_window_id'));
+            // })->whereHas('selections',function($query) use($request){
+            //      $query->where('status','ELIGIBLE');
+            // })->with(['nextOfKin','intake','selections.campusProgram.program','nectaResultDetails.results','nacteResultDetails.results'])->where('program_level_id',$request->get('program_level_id'))->where('campus_id',$staff->campus_id)->get();
+
+            $list = Applicant::where('program_level_id', $request->get('program_level_id'))
+            ->with(['selections' => function ($query) {
+                $query->where('status', 'SELECTED');
+            }])
+            ->where('campus_id',$staff->campus_id);
+
+            return $list
          }
 
          // if($request->get('query')){
