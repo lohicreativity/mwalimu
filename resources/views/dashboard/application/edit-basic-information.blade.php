@@ -39,7 +39,7 @@
         <div class="row">
           <div class="col-12">
 
-            @if(count($applicant->selections[0]) > 0)
+            @if(count($applicant->selections) > 0)
               @if($applicant->confirmation_status != 'CANCELLED')
                 <div class="alert alert-success">
                   <h3 class="text-white" style="font-size: 20px!important;"><i class="fa fa-check-circle"></i> 
