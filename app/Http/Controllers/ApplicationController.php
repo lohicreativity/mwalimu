@@ -488,6 +488,8 @@ class ApplicationController extends Controller
             }])
             ->get();
 
+            return $list->nectaResultDetails;
+
          }
 
          // if($request->get('query')){
