@@ -522,6 +522,7 @@ class ApplicationController extends Controller
                 $secondChoice       = null;
                 $thirdChoice        = null; 
                 $fourthChoice       = null;
+                $a_level_schools    = null;
                 
                   $file_handle = fopen('php://output', 'w');
                   fputcsv($file_handle,['S/N', 'FIRST NAME','MIDDLE NAME','SURNAME','GENDER', 'NATIONALITY', 'DISABILITY', 'DATEOFBIRTH', 'F4INDEXNO', 'F6INDEXNO', 'AVN NO', 'CHOICE1', 'CHOICE2', 'CHOICE3', 'CHOICE4', 'INSTITUTION CODE', 'ENTRY CATEGORY', 'OPTS', 'O-LEVEL RESULTS', 'APTS/GPA', 'A-LEVEL RESULTS/DIPLOMA', 'OPEN GPA', 'OPEN RESULTS', 'SELECTED', 'DATE REGISTERED', 'PHONE NUMBER', 'EMAIL ADDRESS', 'KIN PHONE NUMBER', 'DISTRICT', 'REGION', 'CLEARANCE', 'CLEARANCE STATUS', 'TCU ADMISSION STATUS', 'TCU VERIFICATION STATUS', 'CONFIRM STATUS', 'BATCH NO', 'DIPLOMA INSTITUTE', 'PROGRAM COURSE', 'DIPLOMA GPA', 'DIPLOMA RESULTS', 'O-LEVEL SCHOOL', 'CSEE PTS', 'A-LEVEL SCHOOL', 'ACSEE PTS', 'PROGRESS']);
@@ -583,7 +584,7 @@ class ApplicationController extends Controller
                       [++$key, $applicant->first_name, $applicant->middle_name, $applicant->surname, 
                       $applicant->gender , $applicant->nationality, $applicant->disabilityStatus->name, $applicant->birth_date, $applicant->index_number, 
                       'FORM 6 INDEX', 'AVN NO', $firstChoice, $secondChoice, $thirdChoice, $fourthChoice, 'REGULATOR CODE', 
-                      $applicant->entry_mode, 'OPTS', 'RESULTS', 'APTS / GPA', implode(',',$a_level_results), 
+                      $applicant->entry_mode, 'OPTS', implode(',', $o_level_results), 'APTS / GPA', implode(',',$a_level_results), 
                       'OPEN GPA', 'OPEN RESULTS', 'SELECTED', $applicant->created_at, $applicant->phone, $applicant->email, $applicant->nextOfKin->phone, 
                       $applicant->district->name, $applicant->region->name, 'CLEARANCE', 'CLEARANCE STATUS', 'TCU ADMISSION STATUS', 'TCU VERIFICATION STATUS', $confirm, 'BATCH NO', 
                       'DIPLOMA INSTITUTE', 'PROGRAM COURSE', 'DIPLOMA GPA', 'DIPLOMA RESULTS', 'O-LEVEL SCHOOLS', 
