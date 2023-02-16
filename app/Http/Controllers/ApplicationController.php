@@ -498,6 +498,25 @@ class ApplicationController extends Controller
 
          }
 
+         foreach ($list as $applicant) {
+            foreach($applicant->nectaResultDetails as $option){
+                $firstChoice = 0; $secondChoice = 0; $thirdChoice = 0; $fourthChoice = 0;
+                if($option->order == 1){
+                    $firstChoice = 1;
+                }elseif($option->order == 2){
+                    $secondChoice = 2;
+                }elseif($option->order == 3){
+                    $thirdChoice = 3;
+                }elseif($option->order == 4){
+                    $fourthChoice = 4;
+                }
+            }
+         }
+
+         return $firstChoice;
+
+         
+
          // if($request->get('query')){
          //    $list = Applicant::whereHas('intake.applicationWindows',function($query) use($request){
          //         $query->where('id',$request->get('application_window_id'));
@@ -540,19 +559,6 @@ class ApplicationController extends Controller
                   $file_handle = fopen('php://output', 'w');
                   fputcsv($file_handle,['S/N', 'FIRST NAME','MIDDLE NAME','SURNAME','GENDER', 'NATIONALITY', 'DISABILITY', 'DATEOFBIRTH', 'F4INDEXNO', 'F6INDEXNO', 'AVN NO', 'CHOICE1', 'CHOICE2', 'CHOICE3', 'CHOICE4', 'INSTITUTION CODE', 'ENTRY CATEGORY', 'OPTS', 'O-LEVEL RESULTS', 'APTS/GPA', 'A-LEVEL RESULTS/DIPLOMA', 'OPEN GPA', 'OPEN RESULTS', 'SELECTED', 'DATE REGISTERED', 'PHONE NUMBER', 'EMAIL ADDRESS', 'KIN PHONE NUMBER', 'DISTRICT', 'REGION', 'CLEARANCE', 'CLEARANCE STATUS', 'TCU ADMISSION STATUS', 'TCU VERIFICATION STATUS', 'CONFIRM STATUS', 'BATCH NO', 'DIPLOMA INSTITUTE', 'PROGRAM COURSE', 'DIPLOMA GPA', 'DIPLOMA RESULTS', 'O-LEVEL SCHOOL', 'CSEE PTS', 'A-LEVEL SCHOOL', 'ACSEE PTS', 'PROGRESS']);
                   foreach ($list as $key => $applicant) { 
-
-                        // foreach($applicant->nectaResultDetails as $option){
-                        //     $firstChoice = 0; $secondChoice = 0; $thirdChoice = 0; $fourthChoice = 0;
-                        //     if($option->order == 1){
-                        //         $firstChoice = 1;
-                        //     }elseif($option->order == 2){
-                        //         $secondChoice = 2;
-                        //     }elseif($option->order == 3){
-                        //         $thirdChoice = 3;
-                        //     }elseif($option->order == 4){
-                        //         $fourthChoice = 4;
-                        //     }
-                        // }
 
                         if ($applicant->confirmation_status == 1) {
                             $confirm = 'Confirmed';
