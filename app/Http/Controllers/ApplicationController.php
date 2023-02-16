@@ -498,16 +498,18 @@ class ApplicationController extends Controller
 
          }
 
-         foreach ($list as $applicant) {
-            foreach ($applicant->nectaResultDetails as $necta_results) {
+         return $list;
 
-                $o_level_schools = $necta_results->exam_id == 1 ? array($necta_results->center_name) : null;
+        //  foreach ($list as $applicant) {
+        //     foreach ($applicant->nectaResultDetails as $necta_results) {
+
+        //         $o_level_schools = $necta_results->exam_id == 2 ? array($necta_results->center_name) : null;
 
                 
-            }
-         }
+        //     }
+        //  }
 
-         return $o_level_schools;
+        //  return $o_level_schools;
 
 
 
