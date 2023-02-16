@@ -488,7 +488,7 @@ class ApplicationController extends Controller
             }])
             ->get();
 
-            return $list->nectaResultDetails[0];
+            return $list;
 
          }
 
