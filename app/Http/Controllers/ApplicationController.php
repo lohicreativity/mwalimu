@@ -554,7 +554,6 @@ class ApplicationController extends Controller
                       }
 
                       $a_level_results = [];
-                      $a_level_schools = [];
                         foreach($applicant->nectaResultDetails as $detail){
                             if($detail->exam_id == 2){
                                 $a_level_schools = $detail->center_name;
