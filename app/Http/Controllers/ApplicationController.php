@@ -578,7 +578,7 @@ class ApplicationController extends Controller
                       'OPEN GPA', 'OPEN RESULTS', 'SELECTED', $applicant->created_at, $applicant->phone, $applicant->email, $applicant->nextOfKin->phone, 
                       $applicant->district->name, $applicant->region->name, 'CLEARANCE', 'CLEARANCE STATUS', 'TCU ADMISSION STATUS', 'TCU VERIFICATION STATUS', $confirm, 'BATCH NO', 
                       'DIPLOMA INSTITUTE', 'PROGRAM COURSE', 'DIPLOMA GPA', 'DIPLOMA RESULTS', $o_level_schools, 
-                      'CSEE PTS', 'A-LEVEL SCHOOLS', 'ACSEE PTS', $applicant->status
+                      'CSEE PTS', $a_level_schools, 'ACSEE PTS', $applicant->status
                         ]);
                   }
                   fclose($file_handle);
