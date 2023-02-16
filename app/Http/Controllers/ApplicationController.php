@@ -501,7 +501,7 @@ class ApplicationController extends Controller
          foreach ($list as $applicant) {
             foreach($applicant->selections as $option){
 
-                $firstChoice = 0; $secondChoice = 0; $thirdChoice = 0; $fourthChoice = 0;
+                // $firstChoice = 0; $secondChoice = 0; $thirdChoice = 0; $fourthChoice = 0;
                 if($option->order === 1){
                     $firstChoice = $option->campusProgram->program->code;
                 }elseif($option->order === 2){
