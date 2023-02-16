@@ -499,7 +499,7 @@ class ApplicationController extends Controller
          }
 
          foreach ($list as $applicant) {
-            foreach($applicant->nectaResultDetails as $option){
+            foreach($applicant->selections as $option){
 
                 return $option;
 
