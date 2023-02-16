@@ -483,7 +483,7 @@ class ApplicationController extends Controller
             ->where('application_window_id', $request->get('application_window_id'))
             ->where('campus_id', $staff->campus_id)
             ->with(['selections' => function ($query) {
-                $query->where('status', 'SELECTED');
+                $query->where('status', 'ELIGIBLE');
             }])
             ->get();
 
