@@ -539,22 +539,28 @@ class ApplicationController extends Controller
                             }
                         }
                       $o_level_results = [];
+                      $o_level_schools = [];
                       foreach($applicant->nectaResultDetails as $detail){
                           if($detail->exam_id = 1){
-                              foreach($detail->results as $result){
-                                 $o_level_results[] = $result->subject_name.'-'.$result->grade;
-                              }
+
+                                $o_level_schools = $detail->center_name;
+
+                                foreach($detail->results as $result){
+                                    $o_level_results[] = $result->subject_name.'-'.$result->grade;
+                                }
                           }
                       }
 
                       $a_level_results = [];
-                      foreach($applicant->nectaResultDetails as $detail){
-                          if($detail->exam_id = 2){
-                              foreach($detail->results as $result){
-                                 $a_level_results[] = $result->subject_name.'-'.$result->grade;
-                              }
+                      $a_level_schools = [];
+                        foreach($applicant->nectaResultDetails as $detail){
+                            if($detail->exam_id = 2){
+                                $a_level_schools = $detail->center_name;
+                                foreach($detail->results as $result){
+                                    $a_level_results[] = $result->subject_name.'-'.$result->grade;
+                                }
                           }
-                      }
+                        }
 
                     //   foreach ($list as $applicant) {
                     //     foreach ($applicant->nectaResultDetails as $necta_result) {
@@ -569,7 +575,7 @@ class ApplicationController extends Controller
                       $applicant->entry_mode, 'OPTS', implode(',', $o_level_results), 'APTS / GPA', implode(',',$a_level_results), 
                       'OPEN GPA', 'OPEN RESULTS', 'SELECTED', $applicant->created_at, $applicant->phone, $applicant->email, $applicant->nextOfKin->phone, 
                       $applicant->district->name, $applicant->region->name, 'CLEARANCE', 'CLEARANCE STATUS', 'TCU ADMISSION STATUS', 'TCU VERIFICATION STATUS', $confirm, 'BATCH NO', 
-                      'DIPLOMA INSTITUTE', 'PROGRAM COURSE', 'DIPLOMA GPA', 'DIPLOMA RESULTS', 'O-LEVEL SCHOOL', 
+                      'DIPLOMA INSTITUTE', 'PROGRAM COURSE', 'DIPLOMA GPA', 'DIPLOMA RESULTS', $o_level_schools, 
                       'CSEE PTS', 'A-LEVEL SCHOOL', 'ACSEE PTS', $applicant->status
                         ]);
                   }
