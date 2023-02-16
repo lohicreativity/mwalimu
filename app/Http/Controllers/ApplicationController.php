@@ -495,8 +495,6 @@ class ApplicationController extends Controller
             ->where('status', 'SELECTED')
             ->with(['nextOfKin', 'region', 'district', 'disabilityStatus', 'selections.campusProgram.program', 'selections'])
             ->get();
-
-            return $list;
          }
 
          // if($request->get('query')){
@@ -583,7 +581,7 @@ class ApplicationController extends Controller
                           }
                       }
                       return $firstChoice.$secondChoice.$thirdChoice.$fourthChoice;
-                      
+
                       fputcsv($file_handle, 
                       [++$key, $applicant->first_name, $applicant->middle_name, $applicant->surname, 
                       $applicant->gender , $applicant->nationality, $applicant->disabilityStatus->name, $applicant->birth_date, $applicant->index_number, 
