@@ -500,7 +500,7 @@ class ApplicationController extends Controller
 
          foreach ($list as $applicant) {
             foreach ($applicant->nectaResultDetails as $necta_result) {
-                return $necta_result;
+                return $necta_result->center_name;
             }
          }
          
