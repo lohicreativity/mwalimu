@@ -496,8 +496,6 @@ class ApplicationController extends Controller
             ->with(['nextOfKin', 'region', 'district', 'disabilityStatus', 'nectaResultDetails.results', 'nacteResultDetails', 'outResultDetails.results', 'selections.campusProgram.program'])
             ->get();
          }       
-
-         return $list;
         
 
               # add headers for each column in the CSV download
@@ -568,7 +566,9 @@ class ApplicationController extends Controller
 
                       $a_level_results = [];
                       $diploma_results = [];
+                      $out_results     = [];
                       $a_level_schools = [];
+
                         foreach($applicant->nectaResultDetails as $detail){
                             if($detail->exam_id == 2 && $detail->verified == 1){
                                 $a_level_schools    =  $detail->center_name;
@@ -591,6 +591,17 @@ class ApplicationController extends Controller
 
                             foreach ($nacte_results->results as $result) {
                                 $diploma_results[] = $result->subject.'-'.$result->grade;
+                            }
+                        }
+
+                        foreach ($applicant->outResultDetails as $out_results) {
+                            if ($out_results->verified == 1) {
+                                $out_gpa        = $out_results->gpa;
+                                $a_level_index  = $out_results->reg_no;
+                            }
+
+                            foreach($out_results->results as $result){
+                                $out_results[] = $result->subject_name.'-'.$result->grade;
                             }
                         }
 
