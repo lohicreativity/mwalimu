@@ -561,7 +561,9 @@ class ApplicationController extends Controller
                                 foreach($detail->results as $result){
                                     $a_level_results[] = $result->subject_name.'-'.$result->grade;
                                 }
-                          }
+                            } else {
+                                $a_level_schools = null;
+                            }
                         }
 
                     //   foreach ($list as $applicant) {
