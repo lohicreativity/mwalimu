@@ -508,7 +508,7 @@ class ApplicationController extends Controller
             }
          }
 
-         return $o_level_schools;
+         return $a_level_schools;
 
 
 
