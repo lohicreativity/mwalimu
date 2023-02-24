@@ -2152,7 +2152,7 @@ class ApplicationController extends Controller
 
         if (Auth::user()->hasRole('admission-officer')) {
             
-            $applicants = Applicant::whereHas('selections',function($query) use($request, $staff){
+            $applicants = Applicant::whereHas('selections',function($query) use($request){
                 $query->where('application_window_id',$request->get('application_window_id'))->where('campus_id', $staff->campus_id);
             })->with(['selections','nectaResultDetails.results','nacteResultDetails.results'])->where('program_level_id',$request->get('award_id'))->whereNull('is_tamisemi')->get();
 
