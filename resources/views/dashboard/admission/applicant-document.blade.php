@@ -1,9 +1,9 @@
-@if($applicant->passport_picture)
+@if($request->get('name') == 'passport_picture')
     <iframe
     src="https://drive.google.com/viewerng/viewer?embedded=true&url={{ asset('uploads/'.$applicant->passport_picture) }}#toolbar=0&scrollbar=0"
     frameBorder="0"
     scrolling="auto"
-    height="400px"
+    height="100%"
     width="100%">
     </iframe>
 @endif
@@ -18,7 +18,7 @@
     </iframe>
 @endif
 
-@if($applicant->o_level_certificate)
+@if($request->get('name') == 'o_level_certificate')
     <iframe
     src="https://drive.google.com/viewerng/viewer?embedded=true&url={{ asset('uploads/'.$applicant->o_level_certificate) }}#toolbar=0&scrollbar=0"
     frameBorder="0"
@@ -28,12 +28,12 @@
     </iframe>
 @endif
 
-@if($applicant->diploma_certificate)
+@if($request->get('name') == 'diploma_certificate')
     <iframe
     src="https://drive.google.com/viewerng/viewer?embedded=true&url={{ asset('uploads/'.$applicant->diploma_certificate) }}#toolbar=0&scrollbar=0"
     frameBorder="0"
     scrolling="auto"
-    height="400px"
+    height="100%"
     width="100%">
     </iframe>
 @endif
