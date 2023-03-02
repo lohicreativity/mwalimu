@@ -103,8 +103,11 @@
                     <tbody>
                       @if($applicant->passport_picture)
                       <tr>
-                        <td>Passport Picture</td>
-                        <td><a href="{{ url('application/delete-document?name=passport_picture') }}" class="btn btn-danger"><i class="fa fa-trash"></i> Delete</a></td>
+                        <td>Passport Picture</td>   
+                        <td>
+                          <a href="{{ url('application/view-document?name=passport_picture') }}" class="btn btn-primary"><i class="fa fa-eye"></i> View</a>
+                          <a href="{{ url('application/delete-document?name=passport_picture') }}" class="btn btn-danger"><i class="fa fa-trash"></i> Delete</a>
+                        </td>
                       </tr>
                       @endif
                       @if($applicant->birth_certificate)
