@@ -8,7 +8,7 @@
         width="100%">
         </iframe>
     @else
-    <img src="{{ asset('uploads/'.$applicant->passport_picture) }}" height="100%" width="100%" alt="">
+    <img src="{{ asset('uploads/'.$applicant->passport_picture) }}" height="600px" width="600px" alt="">
     @endif
 @endif
 
