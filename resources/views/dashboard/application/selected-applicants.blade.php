@@ -325,7 +325,7 @@
 								@endif
 								@break
 							@else
-								@if(!$applicant->selections[count($applicant->selections) - 1])
+								@if(!$applicant->selections[count($applicant->selections) - 1]->order)
 									{{ $applicant->selections[count($applicant->selections) - 1] }}
 								@else
 									{{ $selection->campusProgram->program->code }},
