@@ -1155,6 +1155,15 @@ class ApplicationController extends Controller
     /**
      * Delete uploaded document
      */
+
+    public function viewDocument(Request $request)
+    {
+        
+    }
+
+    /**
+     * Delete uploaded document
+     */
     public function deleteDocument(Request $request)
     {
         $applicant = Applicant::with('programLevel')->where('user_id',Auth::user()->id)->where('campus_id',session('applicant_campus_id'))->first();

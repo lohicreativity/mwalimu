@@ -51,6 +51,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 	Route::post('next-of-kin/store',[NextOfKinController::class,'store']);
 	Route::post('next-of-kin/update',[NextOfKinController::class,'update']);
 	Route::post('upload-documents',[ApplicationController::class,'uploadDocuments']);
+    Route::get('view-document',[ApplicationController::class,'viewDocument']);
 	Route::get('delete-document',[ApplicationController::class,'deleteDocument']);
 	Route::post('store-program-selection',[ApplicantController::class,'storeProgramSelection']);
 	Route::get('reset-program-selection/{id}',[ApplicationController::class,'resetProgramSelection']);
