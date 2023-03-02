@@ -1152,6 +1152,11 @@ class ApplicationController extends Controller
         return redirect()->back()->with('message','Document uploaded successfully');
     }
 
+    public function viewDocument()
+    {
+        
+    }
+
     /**
      * Delete uploaded document
      */
