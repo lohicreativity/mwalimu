@@ -118,7 +118,7 @@
                     </div>
                   </div>
                   @elseif(Auth::user()->hasRole('admission-officer'))
-                  <input type="hidden" id="campus_id" value="{{ $staff->campus_id }}">
+                  <input type="hidden" name="staff_campus" value="{{ $staff->campus_id }}">
                   <div class="row">
                     <div class="form-group col-6">
                       {!! Form::label('','Type') !!}
@@ -389,6 +389,8 @@
                                           ];
                                       @endphp
                                       {!! Form::open(['url'=>'academic/department/update','class'=>'ss-form-processing']) !!}
+
+                                          <input type="hidden" name="staff_campus" value="{{ $staff->campus_id }}">
 
                                           <div class="row">
                                           <div class="form-group col-8">

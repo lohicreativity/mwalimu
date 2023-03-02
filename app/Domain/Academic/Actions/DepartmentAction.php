@@ -18,7 +18,13 @@ class DepartmentAction implements DepartmentInterface{
         $department->parent_id = $request->get('parent_id');
         $department->save();
 
-        $department->campuses()->sync($request->get('campuses'));
+        if (Auth::user()->hasRole('administrator')) {
+            $department->campuses()->sync($request->get('campuses'));
+
+        } else if (Auth::user()->hasRole('admission-officer')) {
+            $department->campuses()->sync($request->get('staff_campus'));
+        }
+
 	}
 
 	public function update(Request $request){
@@ -30,6 +36,12 @@ class DepartmentAction implements DepartmentInterface{
         $department->parent_id = $request->get('parent_id');
         $department->save();
 
-        $department->campuses()->sync($request->get('campuses'));
+        if (Auth::user()->hasRole('administrator')) {
+            $department->campuses()->sync($request->get('campuses'));
+
+        } else if (Auth::user()->hasRole('admission-officer')) {
+            $department->campuses()->sync($request->get('staff_campus'));
+        }
+
 	}
 }
