@@ -83,21 +83,21 @@
                   <div class="row">
                   <div class="form-group col-8">
                     {!! Form::label('','Name') !!}
-                    {!! Form::text('name',null) !!}
+                    {!! Form::text('',null,$name) !!}
                   </div>
                   <div class="form-group col-4">
                     {!! Form::label('','Abbreviation') !!}
-                    {!! Form::text('abbreviation',null) !!}
+                    {!! Form::text('',null,$abbreviation) !!}
                   </div>
                  </div>
                  <div class="row">
                   <div class="form-group col-6">
                     {!! Form::label('','Phone') !!}
-                    {!! Form::text('phone',null) !!}
+                    {!! Form::text('',null,$phone) !!}
                   </div>
                   <div class="form-group col-6">
                     {!! Form::label('','Email') !!}
-                    {!! Form::email('email',null) !!}
+                    {!! Form::email('',null,$email) !!}
                   </div>
                  </div>
                  <div class="row">
