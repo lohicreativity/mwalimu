@@ -1512,6 +1512,7 @@
                                           <select name="advance_exclude_subjects[]" class="form-control ss-select-tags" multiple="multiple">
                                              @foreach($high_subjects as $sub)
                                              <option value="{{ $sub->subject_name }}" @if(unserialize($requirement->advance_exclude_subjects) != '') @if(in_array($sub->subject_name,unserialize($requirement->advance_exclude_subjects))) selected="selected" @endif @endif>{{ $sub->subject_name }}</option>
+                                             
                                              @endforeach
                                           </select>
                                         </div>
@@ -1528,7 +1529,7 @@
                                           {!! Form::label('','Form VI Other Must Subjects') !!}
                                           <select name="other_advance_must_subjects[]" class="form-control ss-select-tags" multiple="multiple">
                                              @foreach($high_subjects as $sub)
-                                             <option value="{{ $sub->subject_name }}" @if(unserialize($requirement->other_advance_must_subjects) != '') @if(in_array($sub->subject_name, $subjects)) selected="selected" @endif @endif>{{ $sub->subject_name }}</option>
+                                             <option value="{{ $sub->subject_name }}" @if(unserialize($requirement->other_advance_must_subjects) != '') @if(in_array($sub->subject_name, unserialize($requirement->other_advance_must_subjects))) selected="selected" @endif @endif>{{ $sub->subject_name }}</option>
                                              @endforeach
                                           </select>
                                         </div>
