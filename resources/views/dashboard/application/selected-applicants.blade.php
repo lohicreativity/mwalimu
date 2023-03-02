@@ -326,7 +326,7 @@
 								@break
 							@elseif($applicant->status == null)
 								@if($applicant->selections[count($applicant->selections) - 1]->order != null)
-									{{ $applicant->selections[count($applicant->selections) - 1] }}
+									{{ $selection->campusProgram->program->code }}
 								@else
 									{{ $selection->campusProgram->program->code }},
 								@endif
