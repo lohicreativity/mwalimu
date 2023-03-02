@@ -61,7 +61,7 @@
                   ];
 
                   $phone = [
-                     'placeholder'=>'+255754505050',
+                     'placeholder'=>'0754505050',
                      'class'=>'form-control',
                      'required'=>true
                   ];
