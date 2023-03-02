@@ -123,9 +123,19 @@ class DepartmentController extends Controller
            }
         }
 
-        (new DepartmentAction)->update($request);
+        try {
 
-        return Util::requestResponse($request,'Department updated successfully');
+         (new DepartmentAction)->update($request);
+
+         return Util::requestResponse($request,'Department updated successfully');
+
+        } catch (Exception $e) {
+
+         return redirect()->back()->with('error','Invalid update');
+         
+        }
+
+        
     }
 
     /**
