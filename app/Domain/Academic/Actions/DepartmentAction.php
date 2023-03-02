@@ -28,8 +28,7 @@ class DepartmentAction implements DepartmentInterface{
 	}
 
 	public function update(Request $request){
-		// $department = Department::find($request->get('department_id'));
-        $department = Department::where('id', $request->get('department_id'))->first();
+		$department = Department::find($request->get('department_id'));
         $department->name = $request->get('name');
         $department->description = $request->get('description');
         $department->abbreviation = $request->get('abbreviation');
