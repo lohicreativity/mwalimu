@@ -353,7 +353,7 @@
                                         {!! Form::label('','Name') !!}
                                         {!! Form::text('name',$campus->name,$edit_name) !!}
 
-                                        {!! Form::input('hidden','campus_id',$edit_campus->id) !!}
+                                        {!! Form::input('hidden','campus_id',$campus->id) !!}
                                       </div>
                                       <div class="form-group col-4">
                                         {!! Form::label('','Abbreviation') !!}
