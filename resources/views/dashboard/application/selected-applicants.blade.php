@@ -326,7 +326,7 @@
 								@break
 							@else
 								@if($applicant->selections[count($applicant->selections) - 1])
-									{{ $selection->campusProgram->program->code }}
+									{{ $selection->campusProgram->program->code }} hh
 								@else
 									{{ $selection->campusProgram->program->code }},
 								@endif
