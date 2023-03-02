@@ -324,7 +324,7 @@
 									(4th Choice)
 								@endif
 								@break
-							@elseif($applicant->status == '')
+							@else
 								@if(!$applicant->selections[count($applicant->selections) - 1]->order)
 									{{ $applicant->selections[count($applicant->selections) - 1] }}
 								@else
