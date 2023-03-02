@@ -65,6 +65,9 @@ class EntryRequirementController extends Controller
            'selection_run'=>$approving_status == 0? false : true,
            'request'=>$request
     	];
+
+      return $data['subjects'];
+      
     	return view('dashboard.application.entry-requirements',$data)->withTitle('Entry Requirements');
     }
 
