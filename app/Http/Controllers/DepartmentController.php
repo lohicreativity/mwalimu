@@ -12,7 +12,7 @@ use App\Domain\Settings\Models\Faculty;
 use App\Domain\Academic\Actions\DepartmentAction;
 use App\Models\User;
 use App\Utils\Util;
-use Validator, Auth, DB;
+use Validator, Auth, DB, Exception;
 
 class DepartmentController extends Controller
 {
