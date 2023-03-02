@@ -66,8 +66,8 @@ class EntryRequirementController extends Controller
            'request'=>$request
     	];
 
-      return $data['subjects'];
-      
+      return $data['campus_programs'];
+
     	return view('dashboard.application.entry-requirements',$data)->withTitle('Entry Requirements');
     }
 
