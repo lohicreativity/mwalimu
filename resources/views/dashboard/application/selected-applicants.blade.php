@@ -277,8 +277,14 @@
                         <tr>
                           <th>#</th>
                           <th>Name</th>
-						              <th>Form IV Index No.</th>
-						              <th>Form VI Index No./AVN</th>
+						  <th>Form IV Index No.</th>
+						    @if($request->get('program_level_id') != 1)
+								@if($request->get('program_level_id') == 2)
+									<th>Form VI Index No./Reg. No.</th>
+								@else
+									<th>Form VI Index No./AVN</th>
+								@endif
+							@endif
                           <th>Phone</th>
                           <th>Gender</th>
                           <th>Programme</th>
@@ -291,30 +297,62 @@
                       <td>{{ $loop->iteration }}</td>
                       <td>{{ $applicant->first_name }} {{ $applicant->middle_name }} {{ $applicant->surname }}</td>
                       <td>{{ $applicant->index_number }}</td>
-					  <td>@foreach($applicant->nectaResultDetails as $detail)
-					        @if($detail->exam_id == 2) {{ $detail->index_number }} @endif
-						  @endforeach <br>
-						  @foreach($applicant->nacteResultDetails as $detail)
-					        {{ $detail->avn }}
-						  @endforeach
-					  </td>
+					  @if($request->get('program_level_id') != 1)
+						<td>@foreach($applicant->nectaResultDetails as $detail)
+								@if($detail->exam_id == 2) 
+									{{ $detail->index_number }} 
+								@endif
+							@endforeach <br>
+							@foreach($applicant->nacteResultDetails as $detail)
+								{{ $detail->avn }}
+							@endforeach
+						</td>
+					  @endif
 					  <td>{{ $applicant->phone }}</td>
                       <td>{{ $applicant->gender }}</td>
                       <td>@foreach($applicant->selections as $selection)
-                           {{ $selection->campusProgram->program->code }};
+							@if($selection->status == 'SELECTED' || $selection->status == 'APPROVING')
+								{{ $selection->campusProgram->program->code }}
+								@if($selection->order == 1)
+									(1st Choice)
+								@elseif($selection->order == 2)
+									(2nd Choice)
+								@elseif($selection->order == 3)
+									(3rd Choice)
+								@elseif($selection->order == 4)
+									(4th Choice)
+								@endif
+								@break
+							@else
+								@if($applicant->selections[$applicant->selections.length - 1])
+									{{ $selection->campusProgram->program->code }}
+								@else
+									{{ $selection->campusProgram->program->code }},
+								@endif
+							@endif
                           @endforeach
                       </td>
                       <td>
                         @if($applicant->status == 'SELECTED')
-                        @foreach($applicant->selections as $selection)
-                          @if($selection->status == 'SELECTED' || $selection->status == 'APPROVING' || $selection->status == 'PENDING')
-                           @if($selection->status == 'SELECTED')
-                            <span class="badge badge-success">@if($selection->status == 'APPROVING') PRE-SELECTED @else {{ $selection->status }} @endif @if($applicant->multiple_admissions == 1)*@endif</span>
-                           @else
-                            <span class="badge badge-warning">@if($selection->status == 'APPROVING') PRE-SELECTED @else {{ $selection->status }} @endif</span>
-                           @endif
-                          @endif
-                        @endforeach
+							@foreach($applicant->selections as $selection)
+								@if($selection->status == 'SELECTED' || $selection->status == 'APPROVING')
+									@if($selection->status == 'SELECTED')
+									<span class="badge badge-success">
+										@if($selection->status == 'APPROVING') PRE-SELECTED 
+										@else {{ $selection->status }} 
+										@endif 
+										@if($applicant->multiple_admissions == 1)*
+										@endif
+									</span>
+									@else
+									<span class="badge badge-warning">
+										@if($selection->status == 'APPROVING') PRE-SELECTED 
+										@else {{ $selection->status }} 
+										@endif
+									</span>
+									@endif
+								@endif
+							@endforeach
                         @elseif($applicant->status == null)
                         <span class="badge badge-danger">NOT SELECTED</span>
                         @endif
