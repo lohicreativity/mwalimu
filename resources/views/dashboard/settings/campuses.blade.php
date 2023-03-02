@@ -83,21 +83,21 @@
                   <div class="row">
                   <div class="form-group col-8">
                     {!! Form::label('','Name') !!}
-                    {!! Form::text('name',null,$name) !!}
+                    {!! Form::text('name',null) !!}
                   </div>
                   <div class="form-group col-4">
                     {!! Form::label('','Abbreviation') !!}
-                    {!! Form::text('abbreviation',null,$abbreviation) !!}
+                    {!! Form::text('abbreviation',null) !!}
                   </div>
                  </div>
                  <div class="row">
                   <div class="form-group col-6">
                     {!! Form::label('','Phone') !!}
-                    {!! Form::text('phone',null,$phone) !!}
+                    {!! Form::text('phone',null) !!}
                   </div>
                   <div class="form-group col-6">
                     {!! Form::label('','Email') !!}
-                    {!! Form::email('email',null,$email) !!}
+                    {!! Form::email('email',null) !!}
                   </div>
                  </div>
                  <div class="row">
@@ -315,31 +315,31 @@
                             </div>
                             <div class="modal-body">
                                @php
-                                  $edit_name = [
+                                  $name = [
                                      'placeholder'=>'Name',
                                      'class'=>'form-control',
                                      'required'=>true
                                   ];
 
-                                  $edit_abbreviation = [
+                                  $abbreviation = [
                                      'placeholder'=>'Abbreviation',
                                      'class'=>'form-control',
                                      'required'=>true
                                   ];
 
-                                  $edit_phone = [
+                                  $phone = [
                                      'placeholder'=>'+255754505050',
                                      'class'=>'form-control',
                                      'required'=>true
                                   ];
 
-                                  $edit_email = [
+                                  $email = [
                                      'placeholder'=>'Email',
                                      'class'=>'form-control',
                                      'required'=>true
                                   ];
 
-                                  $edit_street = [
+                                  $street = [
                                      'placeholder'=>'Street',
                                      'class'=>'form-control',
                                      'required'=>true
@@ -351,23 +351,23 @@
                                      <div class="row">
                                       <div class="form-group col-8">
                                         {!! Form::label('','Name') !!}
-                                        {!! Form::text('name',$campus->name,$edit_name) !!}
+                                        {!! Form::text('name',$campus->name,$name) !!}
 
                                         {!! Form::input('hidden','campus_id',$campus->id) !!}
                                       </div>
                                       <div class="form-group col-4">
                                         {!! Form::label('','Abbreviation') !!}
-                                        {!! Form::text('abbreviation',$campus->abbreviation,$edit_abbreviation) !!}
+                                        {!! Form::text('abbreviation',$campus->abbreviation,$abbreviation) !!}
                                       </div>
                                      </div>
                                      <div class="row">
                                       <div class="form-group col-6">
                                         {!! Form::label('','Phone') !!}
-                                        {!! Form::text('phone',$campus->phone,$edit_phone) !!}
+                                        {!! Form::text('phone',$campus->phone,$phone) !!}
                                       </div>
                                       <div class="form-group col-6">
                                         {!! Form::label('','Email') !!}
-                                        {!! Form::email('email',$campus->email,$edit_email) !!}
+                                        {!! Form::email('email',$campus->email,$email) !!}
                                       </div>
                                      </div>
                                      <div class="row">
