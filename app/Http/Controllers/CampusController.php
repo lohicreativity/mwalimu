@@ -66,7 +66,13 @@ class CampusController extends Controller
             'update-abbreviation'=>'required',
             'update-email'=>'required|email',
             'update-phone'=>'required|digits:10|regex:/(0)[0-9]/'
-        ]);
+      ], 
+      $messages = [
+         'update-name.required'           => 'The campus name field is required.',
+         'update-abbreviation.required'   => 'The campus abbreviation field is required.',
+         'update-email.required'          => 'The campus email field is required.',
+         'update-phone.required'          => 'The campus phone field is required.',
+      ]);
 
         if($validation->fails()){
            if($request->ajax()){
