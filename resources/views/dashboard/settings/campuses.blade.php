@@ -315,31 +315,31 @@
                             </div>
                             <div class="modal-body">
                                @php
-                                  $name = [
+                                  $edit_name = [
                                      'placeholder'=>'Name',
                                      'class'=>'form-control',
                                      'required'=>true
                                   ];
 
-                                  $abbreviation = [
+                                  $edit_abbreviation = [
                                      'placeholder'=>'Abbreviation',
                                      'class'=>'form-control',
                                      'required'=>true
                                   ];
 
-                                  $phone = [
+                                  $edit_phone = [
                                      'placeholder'=>'+255754505050',
                                      'class'=>'form-control',
                                      'required'=>true
                                   ];
 
-                                  $email = [
+                                  $edit_email = [
                                      'placeholder'=>'Email',
                                      'class'=>'form-control',
                                      'required'=>true
                                   ];
 
-                                  $street = [
+                                  $edit_street = [
                                      'placeholder'=>'Street',
                                      'class'=>'form-control',
                                      'required'=>true
@@ -351,23 +351,23 @@
                                      <div class="row">
                                       <div class="form-group col-8">
                                         {!! Form::label('','Name') !!}
-                                        {!! Form::text('name',$campus->name,$name) !!}
+                                        {!! Form::text('name',$campus->name,$edit_name) !!}
 
-                                        {!! Form::input('hidden','campus_id',$campus->id) !!}
+                                        {!! Form::input('hidden','campus_id',$edit_campus->id) !!}
                                       </div>
                                       <div class="form-group col-4">
                                         {!! Form::label('','Abbreviation') !!}
-                                        {!! Form::text('abbreviation',$campus->abbreviation,$abbreviation) !!}
+                                        {!! Form::text('abbreviation',$campus->abbreviation,$edit_abbreviation) !!}
                                       </div>
                                      </div>
                                      <div class="row">
                                       <div class="form-group col-6">
                                         {!! Form::label('','Phone') !!}
-                                        {!! Form::text('phone',$campus->phone,$phone) !!}
+                                        {!! Form::text('phone',$campus->phone,$edit_phone) !!}
                                       </div>
                                       <div class="form-group col-6">
                                         {!! Form::label('','Email') !!}
-                                        {!! Form::email('email',$campus->email,$email) !!}
+                                        {!! Form::email('email',$campus->email,$edit_email) !!}
                                       </div>
                                      </div>
                                      <div class="row">
