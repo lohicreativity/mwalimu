@@ -1,11 +1,15 @@
 @if($request->get('name') == 'passport_picture')
-    <iframe
-    src="https://drive.google.com/viewerng/viewer?embedded=true&url={{ asset('uploads/'.$applicant->passport_picture) }}#toolbar=0&scrollbar=0"
-    frameBorder="0"
-    scrolling="auto"
-    height="100%"
-    width="100%">
-    </iframe>
+    @if(explode('.',$applicant->veta_certificate)[1] == 'pdf')
+        <iframe
+        src="https://drive.google.com/viewerng/viewer?embedded=true&url={{ asset('uploads/'.$applicant->passport_picture) }}#toolbar=0&scrollbar=0"
+        frameBorder="0"
+        scrolling="auto"
+        height="100%"
+        width="100%">
+        </iframe>
+    @else
+    <img src="{{ asset('uploads/'.$applicant->passport_picture) }}" height="100%" width="100%" alt="">
+    @endif
 @endif
 
 @if($request->get('name') == 'birth_certificate')
