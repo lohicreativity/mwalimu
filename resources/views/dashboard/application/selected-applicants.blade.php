@@ -280,9 +280,9 @@
 						  <th>Form IV Index No.</th>
 						    @if($request->get('program_level_id') != 1)
 								@if($request->get('program_level_id') == 2)
-									<th>Form VI Index No./Reg. No.</th>
+									<th>NACTE Reg. No./F4 Index No.</th>
 								@else
-									<th>Form VI Index No./AVN</th>
+									<th>F6 Index No./AVN</th>
 								@endif
 							@endif
                           <th>Phone</th>
@@ -298,6 +298,7 @@
                       <td>{{ $applicant->first_name }} {{ $applicant->middle_name }} {{ $applicant->surname }}</td>
                       <td>{{ $applicant->index_number }}</td>
 					  @if($request->get('program_level_id') != 1)
+						@if($request->get('program_level_id') == 2)
 						<td>@foreach($applicant->nectaResultDetails as $detail)
 								@if($detail->exam_id == 2) 
 									{{ $detail->index_number }} 
@@ -324,7 +325,7 @@
 								@endif
 								@break
 							@else
-								@if($applicant->selections[$applicant->selections.length - 1])
+								@if($applicant->selections[$applicant->selections.count() - 1])
 									{{ $selection->campusProgram->program->code }}
 								@else
 									{{ $selection->campusProgram->program->code }},
