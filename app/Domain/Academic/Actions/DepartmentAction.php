@@ -30,6 +30,7 @@ class DepartmentAction implements DepartmentInterface{
 	public function update(Request $request){
 		$department = Department::find($request->get('department_id'));
         $department->name = $request->get('name');
+        // right place
         $department->description = $request->get('description');
         $department->abbreviation = $request->get('abbreviation');
         $department->unit_category_id = $request->get('unit_category_id');
