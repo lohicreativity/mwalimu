@@ -1,5 +1,5 @@
 @if($request->get('name') == 'passport_picture')
-    @if(explode('.',$applicant->veta_certificate)[1] == 'pdf')
+    @if(explode('.',$applicant->passport_picture)[1] == 'pdf')
         <iframe
         src="https://drive.google.com/viewerng/viewer?embedded=true&url={{ asset('uploads/'.$applicant->passport_picture) }}#toolbar=0&scrollbar=0"
         frameBorder="0"
