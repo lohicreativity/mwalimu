@@ -312,7 +312,7 @@
 					  <td>{{ $applicant->phone }}</td>
                       <td>{{ $applicant->gender }}</td>
                       <td>@foreach($applicant->selections as $selection)
-							@if(!$selection->status == 'ELIGIBLE')
+							@if($selection->status != 'ELIGIBLE')
 								{{ $selection->campusProgram->program->code }}
 								@if($selection->order == 1)
 									(1st Choice)
