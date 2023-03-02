@@ -324,7 +324,7 @@
 									(4th Choice)
 								@endif
 								@break
-							@else
+							@elseif($applicant->status != 'SELECTED' || $applicant->status != 'ADMITTED')
 								@if(!$applicant->selections[count($applicant->selections) - 1]->order)
 									{{ $applicant->selections[count($applicant->selections) - 1] }}
 								@else
