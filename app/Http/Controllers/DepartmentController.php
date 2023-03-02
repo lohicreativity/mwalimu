@@ -123,6 +123,8 @@ class DepartmentController extends Controller
            }
         }
 
+        return $request->get('name');
+
 
         (new DepartmentAction)->update($request);
 
