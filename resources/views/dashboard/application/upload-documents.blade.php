@@ -105,7 +105,7 @@
                       <tr>
                         <td>Passport Picture</td>   
                         <td>
-                          <a href="{{ url('application/view-document?name=passport_picture') }}" target="_blank" class="btn btn-primary"><i class="fa fa-eye"></i> View</a>
+                          <a href="{{ url('application/view-document?name=passport_picture') }}" class="btn btn-primary"><i class="fa fa-eye"></i> View</a>
                           <a href="{{ url('application/delete-document?name=passport_picture') }}" class="btn btn-danger"><i class="fa fa-trash"></i> Delete</a>
                         </td>
                       </tr>
