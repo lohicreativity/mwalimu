@@ -1153,6 +1153,15 @@ class ApplicationController extends Controller
     }
 
     /**
+     * View uploaded document
+     */
+
+    public function viewDocument(Request $request)
+    {
+        return 'View document';
+    }
+
+    /**
      * Delete uploaded document
      */
     public function deleteDocument(Request $request)
