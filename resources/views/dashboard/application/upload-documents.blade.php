@@ -113,25 +113,37 @@
                       @if($applicant->birth_certificate)
                       <tr>
                         <td>Birth Certificate</td>
-                        <td><a href="{{ url('application/delete-document?name=birth_certificate') }}" class="btn btn-danger"><i class="fa fa-trash"></i> Delete</a></td>
+                        <td>
+                          <a href="{{ url('application/view-document?name=birth_certificate') }}" class="btn btn-primary"><i class="fa fa-eye"></i> View</a>
+                          <a href="{{ url('application/delete-document?name=birth_certificate') }}" class="btn btn-danger"><i class="fa fa-trash"></i> Delete</a>
+                        </td>
                       </tr>
                       @endif
                       @if($applicant->o_level_certificate)
                       <tr>
                         <td>O-Level Certificate</td>
-                        <td><a href="{{ url('application/delete-document?name=o_level_certificate') }}" class="btn btn-danger"><i class="fa fa-trash"></i> Delete</a></td>
+                        <td>
+                          <a href="{{ url('application/view-document?name=o_level_certificate') }}" class="btn btn-primary"><i class="fa fa-eye"></i> View</a>
+                          <a href="{{ url('application/delete-document?name=o_level_certificate') }}" class="btn btn-danger"><i class="fa fa-trash"></i> Delete</a>
+                        </td>
                       </tr>
                       @endif
                       @if($applicant->a_level_certificate)
                       <tr>
                         <td>A-Level Certificate</td>
-                        <td><a href="{{ url('application/delete-document?name=a_level_certificate') }}" class="btn btn-danger"><i class="fa fa-trash"></i> Delete</a></td>
+                        <td>
+                          <a href="{{ url('application/view-document?name=a_level_certificate') }}" class="btn btn-primary"><i class="fa fa-eye"></i> View</a>
+                          <a href="{{ url('application/delete-document?name=a_level_certificate') }}" class="btn btn-danger"><i class="fa fa-trash"></i> Delete</a>
+                        </td>
                       </tr>
                       @endif
                       @if($applicant->diploma_certificate)
                       <tr>
                         <td>Diploma Certificate</td>
-                        <td><a href="{{ url('application/delete-document?name=diploma_certificate') }}" class="btn btn-danger"><i class="fa fa-trash"></i> Delete</a></td>
+                        <td>
+                          <a href="{{ url('application/view-document?name=diploma_certificate') }}" class="btn btn-primary"><i class="fa fa-eye"></i> View</a>
+                          <a href="{{ url('application/delete-document?name=diploma_certificate') }}" class="btn btn-danger"><i class="fa fa-trash"></i> Delete</a>
+                        </td>
                       </tr>
                       @endif
                     </tbody>
