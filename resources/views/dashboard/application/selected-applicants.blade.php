@@ -298,7 +298,7 @@
                       <td>{{ $applicant->first_name }} {{ $applicant->middle_name }} {{ $applicant->surname }}</td>
                       <td>{{ $applicant->index_number }}</td>
 					  @if($request->get('program_level_id') != 1)
-						@if($request->get('program_level_id') == 2)
+						
 						<td>@foreach($applicant->nectaResultDetails as $detail)
 								@if($detail->exam_id == 2) 
 									{{ $detail->index_number }} 
