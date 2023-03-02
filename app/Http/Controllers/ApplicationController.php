@@ -1152,9 +1152,10 @@ class ApplicationController extends Controller
         return redirect()->back()->with('message','Document uploaded successfully');
     }
 
-    public function viewDocument()
+    public function viewDocument(Request $request)
     {
         $data = [
+            'request' => $request,
             'applicant' => Applicant::with('programLevel')->where('user_id',Auth::user()->id)->where('campus_id',session('applicant_campus_id'))->first()
         ];
 
