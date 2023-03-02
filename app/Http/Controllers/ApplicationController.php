@@ -1154,7 +1154,7 @@ class ApplicationController extends Controller
 
     public function viewDocument()
     {
-        
+        return 'View document';
     }
 
     /**
