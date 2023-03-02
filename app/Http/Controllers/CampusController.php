@@ -68,10 +68,13 @@ class CampusController extends Controller
             'update-phone'=>'required|digits:10|regex:/(0)[0-9]/'
       ], 
       $messages = [
-         'update-name.required'           => 'The campus name field is required.',
-         'update-abbreviation.required'   => 'The campus abbreviation field is required.',
-         'update-email.required'          => 'The campus email field is required.',
-         'update-phone.required'          => 'The campus phone field is required.',
+         'update-name.required'           => 'The campus name field is required',
+         'update-abbreviation.required'   => 'The campus abbreviation field is required',
+         'update-email.required'          => 'The campus email field is required',
+         'update-email.email'             => 'The campus email field is invalid',
+         'update-phone.required'          => 'The campus phone field is required',
+         'update-phone.digits'            => 'The campus phone field must be 10 digits',
+         'update-phone.regex'             => 'The campus phone field is invalid'
       ]);
 
         if($validation->fails()){
