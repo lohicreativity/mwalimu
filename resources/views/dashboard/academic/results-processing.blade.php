@@ -109,9 +109,19 @@
               <!-- /.card-header -->
               {!! Form::open(['url'=>'academic/results/process','class'=>'ss-form-processing']) !!}
               <div class="card-body">
-                   
-                   <div class="row">
-                   <div class="form-group col-6">
+
+                <div class="row">
+                  <div class="form-group col-6">
+                    <select name="programme_level" class="form-control" required>
+                       <option value="">Select Programme Level</option>
+                       <option value="Certificate">Basic Technician Certificate</option>
+                       <option value="Diploma">Ordinary Diploma</option>
+                       <option value="Bachelor">Bachelor Degree</option>
+                       <option value="Masters">Masters Degree</option>
+                    </select>
+                  </div>
+
+                  <div class="form-group col-6">
                     {!! Form::label('','Programme') !!}
                     <select name="campus_program_id" class="form-control" required>
                        <option value="">Select Programme</option>
@@ -125,6 +135,8 @@
                     </select>
                   </div>
                 </div>
+                   
+                 
                 <div class="row">
                   <div class="form-group col-6">
                     {!! Form::label('','Semester') !!}

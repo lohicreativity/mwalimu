@@ -59,7 +59,7 @@ class ExaminationResultController extends Controller
     	$data = [
     	    'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
             'study_academic_year'=>$request->has('study_academic_year_id')? StudyAcademicYear::with('academicYear')->find($request->get('study_academic_year_id')) : null,
-            'campus_programs'=>$request->has('campus_id')? CampusProgram::with(['program.departments'])->where('campus_id',$request->get('campus_id'))->get() : [],
+            'campus_programs'=>$request->has('campus_id') ? CampusProgram::with(['program.departments'])->where('campus_id',$request->get('campus_id'))->get() : [],
             'campus'=>Campus::find($request->get('campus_id')),
             'semesters'=>Semester::all(),
             'campuses'=>Campus::all(),
