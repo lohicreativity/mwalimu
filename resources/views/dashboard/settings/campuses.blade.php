@@ -351,23 +351,23 @@
                                      <div class="row">
                                       <div class="form-group col-8">
                                         {!! Form::label('','Name') !!}
-                                        {!! Form::text('name',$campus->name,$name) !!}
+                                        {!! Form::text('update-name',$campus->name,$name) !!}
 
                                         {!! Form::input('hidden','campus_id',$campus->id) !!}
                                       </div>
                                       <div class="form-group col-4">
                                         {!! Form::label('','Abbreviation') !!}
-                                        {!! Form::text('abbreviation',$campus->abbreviation,$abbreviation) !!}
+                                        {!! Form::text('update-abbreviation',$campus->abbreviation,$abbreviation) !!}
                                       </div>
                                      </div>
                                      <div class="row">
                                       <div class="form-group col-6">
                                         {!! Form::label('','Phone') !!}
-                                        {!! Form::text('phone',$campus->phone,$phone) !!}
+                                        {!! Form::text('update-phone',$campus->phone,$phone) !!}
                                       </div>
                                       <div class="form-group col-6">
                                         {!! Form::label('','Email') !!}
-                                        {!! Form::email('email',$campus->email,$email) !!}
+                                        {!! Form::email('update-email',$campus->email,$email) !!}
                                       </div>
                                      </div>
                                      <div class="row">
@@ -402,7 +402,7 @@
                                       </div>
                                       <div class="form-group col-6">
                                         {!! Form::label('','Street') !!}
-                                        {!! Form::text('street',$campus->street,$street) !!}
+                                        {!! Form::text('update-street',$campus->street,$street) !!}
                                       </div>
                                      </div>
                                       <div class="ss-form-actions">

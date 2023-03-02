@@ -62,10 +62,10 @@ class CampusController extends Controller
     public function update(Request $request)
     {
     	$validation = Validator::make($request->all(),[
-            'name'=>'required',
-            'abbreviation'=>'required',
-            'email'=>'required|email',
-            'phone'=>'required|digits:10|regex:/(0)[0-9]/'
+            'update-name'=>'required',
+            'update-abbreviation'=>'required',
+            'update-email'=>'required|email',
+            'update-phone'=>'required|digits:10|regex:/(0)[0-9]/'
         ]);
 
         if($validation->fails()){
