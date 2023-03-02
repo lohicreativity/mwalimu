@@ -175,15 +175,19 @@ class ApplicationWindowController extends Controller
     {
         try{
             $window = ApplicationWindow::with('campusPrograms')->findOrFail($id);
+
             $campus_programs_count = CampusProgram::whereHas('entryRequirements',function($query) use($window){
                 $query->where('application_window_id',$window->id);
             })->count();
+
             if($campus_programs_count < count($window->campusPrograms)){
                 return redirect()->back()->with('error','You cannot activate this application window because some offered programmes are missing entry requirements');
             }
+
             if($window->campus_id != session('staff_campus_id')){
                 return redirect()->back()->with('error','You cannot activate this application window because it does not belong to your campus');
             }
+
             if(count($window->campusPrograms) == 0){
                 return redirect()->back()->with('error','You cannot activate this application window because no offered programmes have been set');
             }
@@ -194,15 +198,18 @@ class ApplicationWindowController extends Controller
             $amount = FeeAmount::whereHas('feeItem.feeType',function($query){
                   $query->where('name','LIKE','%Application Fee%');
             })->with(['feeItem.feeType'])->where('study_academic_year_id',$study_academic_year->id)->first();
+
             if(!$amount){
                 return redirect()->back()->with('error','You cannot activate this application window because application fee has not been set');
             }
+
             $window->status = 'ACTIVE';
             $window->save();
 
-            ApplicationWindow::where('campus_id',$window->campus_id)->where('intake_id',$window->intake_id)->where('id','!=',$id)->update(['status'=>'INACTIVE']);
+            ApplicationWindow::where('campus_id',$window->campus_id)->where('id','!=',$id)->update(['status'=>'INACTIVE']);
 
             return redirect()->back()->with('message','Application window activated successfully');
+
         }catch(Exception $e){
             return redirect()->back()->with('error','Unable to get the resource specified in this request');
         }
