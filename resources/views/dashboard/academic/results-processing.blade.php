@@ -112,6 +112,7 @@
 
                 <div class="row">
                   <div class="form-group col-6">
+                    {!! Form::label('','Programme Level') !!}
                     <select name="programme_level" class="form-control" required>
                        <option value="">Select Programme Level</option>
                        <option value="Certificate">Basic Technician Certificate</option>
