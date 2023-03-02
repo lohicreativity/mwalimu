@@ -111,7 +111,7 @@
               <div class="card-body">
 
                 <div class="row">
-                  <div class="form-group col-6">
+                  <!-- <div class="form-group col-6">
                     {!! Form::label('','Programme Level') !!}
                     <select name="programme_level" class="form-control" required>
                        <option value="">Select Programme Level</option>
@@ -120,7 +120,7 @@
                        <option value="Bachelor">Bachelor Degree</option>
                        <option value="Masters">Masters Degree</option>
                     </select>
-                  </div>
+                  </div> -->
 
                   <div class="form-group col-6">
                     {!! Form::label('','Programme') !!}
@@ -136,6 +136,14 @@
                     </select>
                   </div>
                 </div>
+
+                <!-- <div class="row">
+                  <div class="form-group col-6">
+                    {!! Form::label('','Year Of Study') !!}
+                    <select name="semester_id" class="form-control" required>
+                      <option value="">Select Semester</option>
+                  </div>
+                </div> -->
                    
                  
                 <div class="row">
