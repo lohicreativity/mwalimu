@@ -39,7 +39,7 @@ class CampusController extends Controller
             'name'=>'required|unique:campuses',
             'abbreviation'=>'required',
             'email'=>'required|email',
-            'phone'=>'required|regex:/^([0-9\s\-\+\(\)]*)$/|max:18'
+            'phone'=>'required|digits:10|regex:/(0)[0-9]/'
         ]);
 
         if($validation->fails()){
@@ -65,7 +65,7 @@ class CampusController extends Controller
             'name'=>'required',
             'abbreviation'=>'required',
             'email'=>'required|email',
-            'phone'=>'required|regex:/^([0-9\s\-\+\(\)]*)$/|max:18'
+            'phone'=>'required|digits:10|regex:/(0)[0-9]/'
         ]);
 
         if($validation->fails()){
