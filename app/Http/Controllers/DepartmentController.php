@@ -123,6 +123,8 @@ class DepartmentController extends Controller
            }
         }
 
+        return $request->get('department_id');
+
         (new DepartmentAction)->update($request);
 
         return Util::requestResponse($request,'Department updated successfully');
