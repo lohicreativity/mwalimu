@@ -8,7 +8,7 @@
     </iframe>
 @endif
 
-@if($applicant->birth_certificate)
+@if($request->get('name') == 'birth_certificate')
     <iframe
     src="https://drive.google.com/viewerng/viewer?embedded=true&url={{ asset('uploads/'.$applicant->birth_certificate) }}#toolbar=0&scrollbar=0"
     frameBorder="0"

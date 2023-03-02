@@ -114,7 +114,7 @@
                       <tr>
                         <td>Birth Certificate</td>
                         <td>
-                          <a href="{{ url('application/view-document') }}" target="_blank" class="btn btn-primary"><i class="fa fa-eye"></i> View</a>
+                          <a href="{{ url('application/view-document?name=birth_certificate') }}" target="_blank" class="btn btn-primary"><i class="fa fa-eye"></i> View</a>
                           <a href="{{ url('application/delete-document?name=birth_certificate') }}" class="btn btn-danger"><i class="fa fa-trash"></i> Delete</a>
                         </td>
                       </tr>
