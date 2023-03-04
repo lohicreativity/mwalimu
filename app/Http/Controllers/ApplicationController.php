@@ -1453,6 +1453,7 @@ class ApplicationController extends Controller
                               }
                            }
                          }elseif($detail->exam_id === 2){
+							 return 'sfadfdsfds';
                            $other_advance_must_subject_ready = false;
                            $other_advance_subsidiary_ready = false;
                            foreach ($detail->results as $key => $result) {
