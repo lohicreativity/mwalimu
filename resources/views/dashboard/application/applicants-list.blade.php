@@ -163,12 +163,10 @@
                               <div class="accordion" id="accordionExample-2">
                                 <div class="card">
                                   <div class="card-header" id="ss-diploma-certificate">
-                                    <h2 class="mb-0">
-                                      <button class="btn btn-link btn-block text-left btn-success" type="button" data-toggle="collapse" data-target="#collapseDiploma" aria-expanded="true" aria-controls="collapseDiploma">
+                                      <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseDiploma" aria-expanded="true" aria-controls="collapseDiploma">
                                         Basic Information
+                                        @if($applicant->basic_info_complete_status == 1) <i class="fa fa-check float-right"></i> @endif
                                       </button>
-                                      @if($applicant->basic_info_complete_status == 1) <i class="fa fa-check float-right"></i> @endif
-                                    </h2>
                                   </div>
 
                                   <div id="collapseDiploma" class="collapse" aria-labelledby="ss-diploma-certificate" data-parent="#accordionExample-2">
