@@ -300,8 +300,28 @@
                                   <div id="collapseResults" class="collapse" aria-labelledby="ss-results-complete" data-parent="#accordionExample-2">
                                     <div class="card-body">
 
-                                      @if($applicant->nectaResultDetails->exam_id == 1)
+                                      @if($applicant->nectaResultDetails->exam_id == 1 && $applicant->nectaResultDetails->verified == 1)
                                         <h4>Form IV Results</h4>
+                                        <table class="table table-bordered table-condensed">
+                                          <tbody>
+                                            @foreach($applicant->nectaResultDetails as $necta_details)
+                                              @foreach($necta_details->results as $results)
+                                              <tr>
+                                                <td>
+                                                  {{ $results->subject_name }}
+                                                </td>
+                                                <td>
+                                                  {{ $results->grade }}
+                                                </td>
+                                              </tr>
+                                              @endforeach
+                                            @endforeach
+                                          </tbody>
+                                        </table>
+                                      @endif
+
+                                      @if($applicant->nectaResultDetails->exam_id == 2 && $applicant->nectaResultDetails->verified == 1)
+                                        <h4>Form VI Results</h4>
                                         <table class="table table-bordered table-condensed">
                                           <tbody>
                                             @foreach($applicant->nectaResultDetails as $necta_details)
