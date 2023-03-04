@@ -237,7 +237,7 @@
                                       <table class="table table-bordered table-condensed">
                                         <tr>
                                           <td>Control No</td>
-                                          <td>{{ $applicant->payment[0]->control_no }}</td>
+                                          <td>{{ $applicant->payment->control_no }}</td>
                                         </tr>
                                         <tr>
                                           <td>Status</td>
