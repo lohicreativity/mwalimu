@@ -302,7 +302,9 @@
 
                                       @if($applicant->nectaResultDetails)
                                         @foreach($applicant->nectaResultDetails as $necta_details)
-                                        {{ $necta_details }}
+                                          @foreach($necta_details->results as $results)
+                                          {{ $results }}
+                                          @endforeach
                                         @endforeach
                                       @endif
 
