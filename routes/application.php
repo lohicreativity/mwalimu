@@ -47,7 +47,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 	Route::get('upload-avn-documents',[ApplicantController::class,'uploadAvnDocuments']);
 	Route::get('submission',[ApplicantController::class,'submission']);
 
-    Route::get('select-new-programmes', [ApplicantController::class, 'selectNewProgrammes']);
+    Route::get('select-new-programmes', [ApplicantController::class, 'selectPrograms']);
 
 	Route::post('update-basic-info',[ApplicantController::class,'updateBasicInfo']);
 	Route::post('next-of-kin/store',[NextOfKinController::class,'store']);

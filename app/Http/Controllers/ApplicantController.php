@@ -1294,20 +1294,6 @@ class ApplicantController extends Controller
         return view('dashboard.application.submission',$data)->withTitle('Submission');
       }
 
-      /**
-     * Select new programmes
-     */
-    public function selectNewProgrammes(Request $request)
-    {
-
-      $applicant = User::find(Auth::user()->id)->applicants()->with('programLevel')->where('campus_id',session('applicant_campus_id'))->first();
-      $updateApplicant = Applicant::where('id', $applicant->id)
-      ->update(['submission_complete_status' => 0]);
-
-      $this->selectPrograms($request);
-
-    }
-
     /**
      * Store applicant into database
      */
