@@ -293,32 +293,15 @@
                                           <td>Form IV Index Number</td>
                                           <td>{{ $applicant->index_number }}</td>
                                         </tr>
-                                        @if($a_level)
-                                        <tr>
-                                          <td>
-                                            Form VI Index Number
-                                          </td>
-                                          <td>{{ $a_level->index_number }}</td>
-                                        </tr>
-                                        @endif
+                                        
                                         @if($applicant->nacte_reg_no)
                                         <tr>
                                           <td>Nacte Reg No</td>
                                           <td>{{ $applicant->nacte_reg_no }}</td>
                                         </tr>
                                         @endif
-                                        @if($avn)
-                                        <tr>
-                                          <td>AVN</td>
-                                          <td>{{ $avn->avn }}</td>
-                                        </tr>
-                                        @endif
-                                        @if($out)
-                                        <tr>
-                                          <td>OUT Number</td>
-                                          <td>{{ $out->reg_no }}</td>
-                                        </tr>
-                                        @endif
+                                        
+                                        
                                         @if($applicant->veta_status == 1)
                                         <tr>
                                           <td>Veta Certificate</td>
