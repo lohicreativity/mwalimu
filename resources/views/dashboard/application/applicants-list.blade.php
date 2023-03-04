@@ -239,7 +239,9 @@
                                           <td>Control No</td>
                                           <td>
                                             @if($applicant->payment)
-                                            {{ $applicant->payment }}
+                                              @foreach($applicant->payment as $payment)
+                                              {{ $payment->control_no }}
+                                              @endforeach
                                             @endif
                                           </td> 
                                         </tr>
