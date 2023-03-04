@@ -3321,6 +3321,9 @@ class ApplicationController extends Controller
         // },'selections.campusProgram.program.award','applicationWindow','country'])->where('program_level_id',$request->program_level_id)->update(['admission_reference_no'=>$request->reference_number]);
 
         foreach($applicants as $key=>$applicant){
+
+                return $applicant->applicationWindow->begin_date;
+
                $ac_year = date('Y',strtotime($applicant->applicationWindow->end_date));
                $ac_year += 1;
                $study_academic_year = StudyAcademicYear::whereHas('academicYear',function($query) use($ac_year){
