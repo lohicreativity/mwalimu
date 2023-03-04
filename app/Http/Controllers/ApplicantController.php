@@ -1293,6 +1293,7 @@ class ApplicantController extends Controller
         ];
         return view('dashboard.application.submission',$data)->withTitle('Submission');
       }
+      
 
     /**
      * Store applicant into database

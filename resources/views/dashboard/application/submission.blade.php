@@ -85,7 +85,7 @@
                           <div class="col-12">
 					                  @if($applicant->is_transfered != 1)
                               <div class="alert alert-danger" role="alert">
-                                <h5><i class="fa fa-times-circle"></i> We are sorry to inform you that you have not been selected. Please <a href="{{ url('application/select-new-programmes') }}">click here</a> to select new programmes</h5>
+                                <h5><i class="fa fa-times-circle"></i> We are sorry to inform you that you have not been selected.</h5>
                               </div>
 				                    @else
                               <div class="alert alert-danger" role="alert">
