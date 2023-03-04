@@ -216,32 +216,7 @@
                                   <div id="collapseNextOfKin" class="collapse" aria-labelledby="ss-next-of-kin" data-parent="#accordionExample-2">
                                     <div class="card-body">
                                       
-                                    <table class="table table-bordered table-condensed">
-                  <tr>
-                    <td>First name: </td>
-                    <td>{{ $applicant->nextOfKin->first_name }}</td>
-                  </tr>
-                  <tr>
-                    <td>Middle name: </td>
-                    <td>{{ $applicant->nextOfKin->middle_name }}</td>
-                  </tr>
-                  <tr>
-                    <td>Surname: </td>
-                    <td>{{ $applicant->nextOfKin->surname }}</td>
-                  </tr>
-                  <tr>
-                    <td>Gender: </td>
-                    <td>{{ $applicant->nextOfKin->gender }}</td>
-                  </tr>
-                  <tr>
-                    <td>Phone: </td>
-                    <td>{{ $applicant->nextOfKin->phone }}</td>
-                  </tr>
-                  <tr>
-                    <td>Address: </td>
-                    <td>{{ $applicant->nextOfKin->address }}</td>
-                  </tr>
-                </table>
+                                      
 
                                     </div>
                                   </div>
