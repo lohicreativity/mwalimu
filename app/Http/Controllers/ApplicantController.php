@@ -805,8 +805,8 @@ class ApplicantController extends Controller
                          $programs[] = $program;
                        }
 					    */
-					   if(($o_level_pass_count + $o_level_other_pass_count) >= $program->entryRequirements[0]->pass_subjects && ($a_level_principle_pass_count > 0 
-						&& ($a_level_subsidiary_pass_count + $a_level_principle_pass_count >= 2) || $a_level_principle_pass_count >= 2))
+					   if(($o_level_pass_count + $o_level_other_pass_count) >= $program->entryRequirements[0]->pass_subjects && (($a_level_principle_pass_count > 0 
+						&& ($a_level_subsidiary_pass_count + $a_level_principle_pass_count >= 2)) || $a_level_principle_pass_count >= 2)){
 							$programs[] = $program;
 						}
                        $has_btc = false;
