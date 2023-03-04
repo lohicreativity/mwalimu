@@ -99,6 +99,8 @@ class ApplicantController extends Controller
              $query->where('status','SELECTED')->orWhere('status','ADMITTED')->orWhere('status',null);
         })->first();
 
+        return $appl;
+
         $tamisemi_applicant = Applicant::where('index_number',$request->get('index_number'))->where('is_tamisemi',1)->first();
         
         $window = ApplicationWindow::where('end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))
