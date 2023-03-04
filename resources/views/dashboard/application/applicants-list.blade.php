@@ -225,7 +225,7 @@
                                       </tr>
                                       
                                     </table>
-                                    @endif
+                                    @endforeach
                                     
                                       
                                       
