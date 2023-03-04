@@ -237,7 +237,11 @@
                                       <table class="table table-bordered table-condensed">
                                         <tr>
                                           <td>Control No</td>
-                                          <td>{{ $applicant->payment[0]->control_no }}</td>
+                                          <td>
+                                            @if($applicant->payment)
+                                              Control no
+                                            @endif
+                                          </td>
                                         </tr>
                                         <tr>
                                           <td>Status</td>
