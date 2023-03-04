@@ -1304,7 +1304,8 @@ class ApplicantController extends Controller
       $updateApplicant = Applicant::where('id', $applicant->id)
       ->update(['submission_complete_status' => 0]);
 
-      return view('dashboard.application.select-programs');
+      $this->selectPrograms();
+
     }
 
     /**
