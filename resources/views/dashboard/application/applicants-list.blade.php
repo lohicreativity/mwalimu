@@ -239,7 +239,7 @@
                                           <td>Control No</td>
                                           <td>
                                             @if($applicant->payment)
-                                            {{ $applicant->payment }}
+                                            {{ $applicant->payment[0] }}
                                             @endif
                                           </td> 
                                         </tr>
