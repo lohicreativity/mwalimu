@@ -21,13 +21,26 @@ class NactePaymentController extends Controller
 
          $staff = User::find(Auth::user()->id)->staff;
 
-         $data = [
-            'campus_id' => $staff->campus_id,
-            'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
-            'campuses'=>Campus::all(),
-            'payments'=>NactePayment::with(['campus','studyAcademicYear.academicYear'])->paginate(20),
-            'request'=>$request
-         ];
+         if (Auth::user()->hasRole('administrator')) {
+            $data = [
+               'campus_id' => $staff->campus_id,
+               'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
+               'campuses'=>Campus::all(),
+               'payments'=>NactePayment::with(['campus','studyAcademicYear.academicYear'])->paginate(20),
+               'request'=>$request
+            ];
+         } else if (Auth::user()->hasRole('admission-officer')) {
+
+            $data = [
+               'campus_id' => $staff->campus_id,
+               'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
+               'payments'=>NactePayment::with(['campus','studyAcademicYear.academicYear'])->where('campus_id', $staff->campus_id)->paginate(20),
+               'request'=>$request
+            ];
+
+         }
+
+         
          return view('dashboard.finance.nacte-payments',$data)->withTitle('NACTE Payments');
     }
 

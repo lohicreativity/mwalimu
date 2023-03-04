@@ -132,7 +132,9 @@
                   <tr>
                     <th>Reference Number</th>
                     <th>Amount</th>
+                    @if(Auth::user()->hasRole('administrator'))
                     <th>Campus</th>
+                    @endif
                     <th>Academic Year</th>
                     <th>Actions</th>
                   </tr>
@@ -142,7 +144,9 @@
                   <tr>
                     <td>{{ $payment->reference_no }}</td>
                     <td>{{ number_format($payment->amount,2) }}</td>
+                    @if(Auth::user()->hasRole('administrator'))
                     <td>{{ $payment->campus->name }}</td>
+                    @endif
                     <td>{{ $payment->studyAcademicYear->academicYear->year }}</td>
                     <td>
                       <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-edit-payment-{{ $payment->id }}">
