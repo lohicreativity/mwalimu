@@ -161,21 +161,88 @@
                             <div class="modal-body">
 
                               <div class="accordion" id="accordionExample-2">
+
                                 <div class="card">
-                                  <div class="card-header" id="ss-diploma-certificate">
-                                      <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseDiploma" aria-expanded="true" aria-controls="collapseDiploma">
-                                        Basic Information
+                                  <div class="card-header" id="ss-basic-information">
+                                      <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseBasicInformation" aria-expanded="true" aria-controls="collapseBasicInformation">
+                                        1. Basic Information
                                         @if($applicant->basic_info_complete_status == 1) <i class="fa fa-check float-right"></i> @endif
                                       </button>
                                   </div>
 
-                                  <div id="collapseDiploma" class="collapse" aria-labelledby="ss-diploma-certificate" data-parent="#accordionExample-2">
+                                  <div id="collapseBasicInformation" class="collapse" aria-labelledby="ss-basic-information" data-parent="#accordionExample-2">
                                     <div class="card-body">
                                       <h1>Basic Information</h1>
                                     </div>
                                   </div>
 
                                 </div>
+
+                                <div class="card">
+                                  <div class="card-header" id="ss-next-of-kin">
+                                      <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseNextOfKin" aria-expanded="true" aria-controls="collapseNextOfKin">
+                                        2. Next Of Kin
+                                        @if($applicant->next_of_kin_complete_status == 1) <i class="fa fa-check float-right"></i> @endif
+                                      </button>
+                                  </div>
+
+                                  <div id="collapseNextOfKin" class="collapse" aria-labelledby="ss-next-of-kin" data-parent="#accordionExample-2">
+                                    <div class="card-body">
+                                      <h1>Basic Information</h1>
+                                    </div>
+                                  </div>
+                                  
+                                </div>
+                                
+                                <div class="card">
+                                  <div class="card-header" id="ss-payments-complete">
+                                      <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapsePayments" aria-expanded="true" aria-controls="collapsePayments">
+                                        3. Payments
+                                        @if($applicant->payments_complete_status == 1) <i class="fa fa-check float-right"></i> @endif
+                                      </button>
+                                  </div>
+
+                                  <div id="collapsePayments" class="collapse" aria-labelledby="ss-payments-complete" data-parent="#accordionExample-2">
+                                    <div class="card-body">
+                                      <h1>Basic Information</h1>
+                                    </div>
+                                  </div>
+                                  
+                                </div>
+
+                                <div class="card">
+                                  <div class="card-header" id="ss-results-complete">
+                                      <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseResults" aria-expanded="true" aria-controls="collapseResults">
+                                        4. Results
+                                        @if($applicant->results_complete_status == 1) <i class="fa fa-check float-right"></i> @endif
+                                      </button>
+                                  </div>
+
+                                  <div id="collapseResults" class="collapse" aria-labelledby="ss-results-complete" data-parent="#accordionExample-2">
+                                    <div class="card-body">
+                                      <h1>Basic Information</h1>
+                                    </div>
+                                  </div>
+                                  
+                                </div>
+
+                                <div class="card">
+                                  <div class="card-header" id="ss-programmes-selections">
+                                      <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseProgrammeSelection" aria-expanded="true" aria-controls="collapseProgrammeSelection">
+                                        5. Programmes Selection
+                                        @if($applicant->programs_complete_status == 1) <i class="fa fa-check float-right"></i> @endif
+                                      </button>
+                                  </div>
+
+                                  <div id="collapseProgrammeSelection" class="collapse" aria-labelledby="ss-programmes-selection" data-parent="#accordionExample-2">
+                                    <div class="card-body">
+                                      <h1>Basic Information</h1>
+                                    </div>
+                                  </div>
+                                  
+                                </div>
+
+                                
                               </div>
 
                             </div>
