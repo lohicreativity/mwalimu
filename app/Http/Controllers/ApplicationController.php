@@ -1495,6 +1495,7 @@ class ApplicationController extends Controller
                                        }
                                  } */
 								 //lupi changed to properly count subsidiary points 
+								 return $a_level_grades[$subsidiary_pass_grade];
 								 if(unserialize($program->entryRequirements[0]->advance_must_subjects) != ''){
                                     if(unserialize($program->entryRequirements[0]->other_advance_must_subjects) != ''){
                                        if(in_array($result->subject_name, unserialize($program->entryRequirements[0]->advance_must_subjects))){
