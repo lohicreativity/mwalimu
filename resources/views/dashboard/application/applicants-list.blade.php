@@ -409,7 +409,12 @@
 
                                   <div id="collapseProgrammeSelection" class="collapse" aria-labelledby="ss-programmes-selection" data-parent="#accordionExample-2">
                                     <div class="card-body">
-                                      <h1>Basic Information</h1>
+                                      
+                                    @if($applicant->selections)
+                                    {{ $applicant->selections }}
+                                    @endif
+
+
                                     </div>
                                   </div>
                                   
