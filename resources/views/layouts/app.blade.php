@@ -98,7 +98,7 @@ $('#applicant_status').on('change',function(e){
   const urlStatus   = pageUrl.searchParams.get('status');
 
   pageUrl.searchParams.set('status', status);
-  window.location.reload();
+  window.location.href = pageUrl;
 
 });
 </script>
