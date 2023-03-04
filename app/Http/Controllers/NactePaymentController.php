@@ -35,6 +35,7 @@ class NactePaymentController extends Controller
                'campus_id' => $staff->campus_id,
                'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
                'payments'=>NactePayment::with(['campus','studyAcademicYear.academicYear'])->where('campus_id', $staff->campus_id)->paginate(20),
+               'campuses'=>Campus::all(),
                'request'=>$request
             ];
 
