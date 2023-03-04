@@ -343,6 +343,54 @@
                                           @endforeach 
 
                                         @endif
+
+                                        @if($applicant->nacteResultDetails)
+
+                                          @foreach($applicant->nacteResultDetails as $nacte_details)
+                                            @if($nacte_details->verified == 1)
+                                            <h4>Diploma Results</h4>
+                                            <table class="table table-bordered table-condensed">
+                                              <tbody>
+                                                @if($applicant->avn_no_results == null)
+                                                  @foreach($nacte_details->results as $results)
+                                                    <tr>
+                                                      <td>
+                                                        {{ $results->subject_name }}
+                                                      </td>
+                                                      <td>
+                                                        {{ $results->grade }}
+                                                      </td>
+                                                    </tr>
+                                                  @endforeach
+                                                @endif
+                                              </tbody>
+                                            </table>
+                                            @endif
+                                          @endforeach 
+
+                                        @endif
+
+                                        @if($applicant->outResultDetails)
+                                          @foreach($applicant->outResultDetails as $out_details)
+                                            @if($out_details->verified == 1)
+                                            <h4>Out Results</h4>
+                                            <table class="table table-bordered table-condensed">
+                                              <tbody>
+                                                @foreach($out_details->results as $results)
+                                                  <tr>
+                                                    <td>
+                                                      {{ $results->subject_name }}
+                                                    </td>
+                                                    <td>
+                                                      {{ $results->grade }}
+                                                    </td>
+                                                  </tr>
+                                                @endforeach
+                                              </tbody>
+                                            </table>
+                                            @endif
+                                          @endforeach
+                                        @endif
                                       
 
                                       
