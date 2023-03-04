@@ -92,6 +92,12 @@
 <script src="{{ asset('js/script.js?version='.config('constants.VERSION')) }}"></script>
 
 <script>
+$('#applicant_status').on('change',function(e){
+  alert($(e.target).val());
+});
+</script>
+
+<script>
 $('.assign-table').DataTable({
   "paging": false
 });
