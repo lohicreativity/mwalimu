@@ -1277,8 +1277,6 @@ class ApplicantController extends Controller
 
          $applicants = Applicant::where('program_level_id', $applicant->program_level_id)->where('submission_complete_status', 1)->where('application_window_id', $applicant->application_window_id)->whereNotNull('status')->first();
 
-         return $applicants;
-
         if(ApplicationWindow::where('campus_id',session('applicant_campus_id'))->where('intake_id', $applicant->intake_id)->where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('status','ACTIVE')->first()){
             if($applicant->programs_complete_status != 1){
                 return redirect()->back()->with('error','You must first select programmes');
@@ -1286,7 +1284,7 @@ class ApplicantController extends Controller
         }
         $selection_status = true;
         if(!ApplicationWindow::where('campus_id',session('applicant_campus_id'))->where('intake_id', $applicant->intake_id)->where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('status','ACTIVE')->first()){
-           $selection_status = $applicant->status == null ? false : true;
+           $selection_status = $applicants == null ? false : true;
         }
         $data = [
             'applicant'=>$applicant,
