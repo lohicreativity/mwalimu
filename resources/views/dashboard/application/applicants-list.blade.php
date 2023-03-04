@@ -253,6 +253,8 @@
                                           </td>
                                         </tr>
                                       </table>
+                                      @else 
+                                      No payment record available
                                       @endif
                                       
                                     </div>
