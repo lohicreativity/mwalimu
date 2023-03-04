@@ -82,7 +82,7 @@
                     <div class="card-body ss-center">
                       <div class="row">
                         <div class="col-8">
-                        <h3 class="ss-color-success"><i class="fa fa-check-circle"></i> Your application has been submitted successfully.</h3>
+                        <h3 class="ss-color-success"><i class="fa fa-check-circle"></i> Your application is in progress.</h3>
                         </div>
                         <div class="col-4">
                             <a href="{{ url('application/summary') }}" class="btn btn-primary">Download Application Preview</a>
