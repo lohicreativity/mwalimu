@@ -238,7 +238,9 @@
                                         <tr>
                                           <td>Control No</td>
                                           <td>
-                                            {{ $applicant->payment->control_no }}
+                                            @if($applicant->payment)
+                                            Control no
+                                            @endif
                                           </td> 
                                         </tr>
                                         <tr>
