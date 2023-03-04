@@ -238,8 +238,8 @@
                                         <tr>
                                           <td>Control No</td>
                                           <td>
-                                            
-                                          </td>
+                                            {{ $applicant->payment[0]->control_no }}
+                                          </td> 
                                         </tr>
                                         <tr>
                                           <td>Status</td>
