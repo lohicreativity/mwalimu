@@ -93,7 +93,13 @@
 
 <script>
 $('#applicant_status').on('change',function(e){
-  alert($(e.target).val());
+  const status      = $(e.target).val()
+  const pageUrl     = new URL(window.location.toLocaleString());
+  const urlStatus   = pageUrl.searchParams.get('status');
+
+  pageUrl.searchParams.set('status', status);
+  window.location.reload();
+
 });
 </script>
 
