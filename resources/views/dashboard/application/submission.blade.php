@@ -106,9 +106,13 @@
                         <div class="row">
                           <div class="col-12">
 					                  @if($applicant->is_transfered != 1)
-                              <h3 class="ss-color-danger"><i class="fa fa-check-circle"></i> We are sorry to inform you that you have not been selected for this academic year.</h3>
+                              <div class="alert alert-danger" role="alert">
+                                <h5><i class="fa fa-times"></i> We are sorry to inform you that you have not been selected for this academic year.</h5>
+                              </div>
 				                    @else
-					                    <h3 class="ss-color-danger"><i class="fa fa-check-circle"></i> We are sorry to inform you that your transfer have not been successful.</h3>
+                              <div class="alert alert-danger" role="alert">
+                                <h5><i class="fa fa-times"></i> We are sorry to inform you that your transfer have not been successful.</h5>
+                              </div>
 					                  @endif
                           </div>
                         </div>
