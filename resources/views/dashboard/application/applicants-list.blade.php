@@ -301,18 +301,7 @@
                                     <div class="card-body">
 
                                       @if($applicant->nectaResultDetails)
-                                        <table class="table table-bordered table-condensed">
-                                        @foreach($applicant->nectaResultDetails->results as $result)
-                                        <tr>
-                                          <td>
-                                            {{ $result->subject_name }}
-                                          </td>
-                                          <td>
-                                            {{ $result->subject_grade }}
-                                          </td>
-                                        </tr>
-                                        @endforeach
-                                        </table>
+                                        {{ $applicant->nectaResultDetails }}
                                       @endif
 
                                       
