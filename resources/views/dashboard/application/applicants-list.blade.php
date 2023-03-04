@@ -411,7 +411,11 @@
                                     <div class="card-body">
                                       
                                     @if($applicant->selections)
-                                    {{ $applicant->selections }}
+                                      @foreach($applicant->selections as $selection)
+
+                                      {{ $selection->campusProgram->program->code }}
+
+                                      @endforeach
                                     @endif
 
 
