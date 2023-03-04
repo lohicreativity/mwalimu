@@ -300,7 +300,28 @@
                                   <div id="collapseResults" class="collapse" aria-labelledby="ss-results-complete" data-parent="#accordionExample-2">
                                     <div class="card-body">
 
-                                      {{ $applicant->nectaResultDetails }}
+                                        @if($applicant->nectaResultDetails)
+                                          @foreach($applicant->nectaResultDetails as $necta_details)
+                                            @if($necta_details->exam_id == 1 && $necta_details->verified == 1)
+                                            <h4>Form IV Results</h4>
+                                            <table class="table table-bordered table-condensed">
+                                              <tbody>
+                                                @foreach($necta_details->results as $results)
+                                                  <tr>
+                                                    <td>
+                                                      {{ $results->subject_name }}
+                                                    </td>
+                                                    <td>
+                                                      {{ $results->grade }}
+                                                    </td>
+                                                  </tr>
+                                                @endforeach
+                                              </tbody>
+                                            </table>
+                                            @endif
+                                          @endforeach   
+                                        @endif
+                                      
 
                                       
                                     </div>
