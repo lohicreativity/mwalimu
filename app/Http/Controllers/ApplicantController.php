@@ -1297,7 +1297,7 @@ class ApplicantController extends Controller
       /**
      * Select new programmes
      */
-    public function selectNewProgammes()
+    public function selectNewProgrammes()
     {
 
       $applicant = User::find(Auth::user()->id)->applicants()->with('programLevel')->where('campus_id',session('applicant_campus_id'))->first();
