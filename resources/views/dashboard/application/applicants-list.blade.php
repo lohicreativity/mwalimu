@@ -77,7 +77,7 @@
                       <label class="float-right mt-2">Status</label>
                     </div>
                     <div class="col-md-4">
-                      <select name="status" class="form-control w-50">
+                      <select name="status" class="form-control">
                         <option value="Progress">Progress</option>
                         <option value="Completed">Completed</option>
                         <option value="Submitted">Submitted</option>
