@@ -153,7 +153,7 @@
                         <div class="modal-dialog modal-lg">
                           <div class="modal-content modal-lg">
                             <div class="modal-header">
-                              <h4 class="modal-title"><i class="fa fa-exclamation-sign"></i> Progress</h4>
+                              <h4 class="modal-title"><i class="fa fa-exclamation-sign"></i>Progress for {{ $applicant->first_name }} {{ $applicant->last_name }} ({{ $applicant->index_number }})</h4>
                               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                               </button>
@@ -300,42 +300,21 @@
                                   <div id="collapseResults" class="collapse" aria-labelledby="ss-results-complete" data-parent="#accordionExample-2">
                                     <div class="card-body">
 
-                                      <table class="table table-bordered table-condensed">
+                                      @if($applicant->nectaResultDetails)
+                                        <table class="table table-bordered table-condensed">
+                                        @foreach($applicant->nectaResultDetails->results as $result)
                                         <tr>
-                                          <td>Form IV Index Number</td>
-                                          <td>{{ $applicant->index_number }}</td>
+                                          <td>
+                                            {{ $result->subject_name }}
+                                          </td>
+                                          <td>
+                                            {{ $result->subject_grade }}
+                                          </td>
                                         </tr>
+                                        @endforeach
+                                        </table>
+                                      @endif
 
-                                        @if($applicant->nectaResultDetails)
-                                          @foreach($applicant->nectaResultDetails as $necta_results)
-                                            @if($necta_results->exam_id == 2 && $necta_results->verified == 1)
-                                            {{ $necta_results->index_number }}
-                                            @endif
-                                          @endforeach
-                                        @endif
-                                        
-                                        @if($applicant->nacte_reg_no)
-                                        <tr>
-                                          <td>Nacte Reg No</td>
-                                          <td>{{ $applicant->nacte_reg_no }}</td>
-                                        </tr>
-                                        @endif
-                                        
-                                        
-                                        @if($applicant->veta_status == 1)
-                                        <tr>
-                                          <td>Veta Certificate</td>
-                                          <td>Yes</td>
-                                        </tr>
-                                        @endif
-
-                                        @if($applicant->teacher_certificate_status == 1)
-                                        <tr>
-                                          <td>Teacher Diploma Certificate</td>
-                                          <td>Yes</td>
-                                        </tr>
-                                        @endif
-                                      </table>
                                       
                                     </div>
                                   </div>

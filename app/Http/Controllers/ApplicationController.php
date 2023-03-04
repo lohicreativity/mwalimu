@@ -105,7 +105,7 @@ class ApplicationController extends Controller
         }
 
         if($request->get('status') == 'progress'){
-           $applicants = Applicant::with(['selections.campusProgram.program', 'programLevel', 'payment', 'nextOfKin', 'nectaResultDetails'])->where('programs_complete_status',0)->where('submission_complete_status',0)->where('application_window_id',$request->get('application_window_id'))->where('campus_id',$application_window->campus_id)->paginate(20);
+           $applicants = Applicant::with(['selections.campusProgram.program', 'programLevel', 'payment', 'nextOfKin', 'nectaResultDetails.results'])->where('programs_complete_status',0)->where('submission_complete_status',0)->where('application_window_id',$request->get('application_window_id'))->where('campus_id',$application_window->campus_id)->paginate(20);
         }elseif($request->get('status') == 'completed'){
            $applicants = Applicant::with(['selections.campusProgram.program'])->where('programs_complete_status',1)->where('submission_complete_status',0)->where('application_window_id',$request->get('application_window_id'))->where('campus_id',$application_window->campus_id)->paginate(20);
         }elseif($request->get('status') == 'submitted'){
