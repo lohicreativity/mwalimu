@@ -78,10 +78,10 @@
                     </div>
                     <div class="col-md-4">
                       <select id="applicant_status" class="form-control">
-                        <option value="Progress">Progress</option>
-                        <option value="Completed">Completed</option>
-                        <option value="Submitted">Submitted</option>
-                        <option value="Total">Total</option>
+                        <option value="progress" @if($request->get('status') == 'progress') selected @endif>Progress</option>
+                        <option value="completed" @if($request->get('status') == 'completed') selected @endif>Completed</option>
+                        <option value="submitted" @if($request->get('status') == 'submitted') selected @endif>Submitted</option>
+                        <option value="total" @if($request->get('status') == 'total') selected @endif>Total</option>
                       </select>
                     </div>
                   </div>
