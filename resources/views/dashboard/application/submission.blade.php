@@ -36,84 +36,85 @@
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
-        <!-- Small boxes (Stat box) -->
+          <!-- Small boxes (Stat box) -->
           @if($applicant->payment_complete_status == 0 && $applicant->is_transfered != 1)
             <div class="alert alert-warning">Payment section not completed</div>
             @else
-          <div class="row">
-          <div class="col-12">
+              <div class="row">
+                <div class="col-12">
             
-            <!-- general form elements -->
-            @if($applicant->submission_complete_status == 0)
-            <div class="card card-default">
-              <div class="card-header">
-                <h3 class="card-title">{{ __('Application Submission') }}</h3>
-              </div>
-              <!-- /.card-header -->
-              <!-- form start -->
-
-              {!! Form::open(['url'=>'application/submit-application','files'=>true,'class'=>'ss-form-processing']) !!}
-                <div class="card-body">
-
-                  <p><a href="{{ url('application/summary') }}">Download Application Preview</a></p>
-
-                  {!! Form::input('hidden','applicant_id',$applicant->id) !!}
-                  <div class="form-group col-12">
-                    <div class="custom-control custom-checkbox">
-                          <input class="custom-control-input" type="checkbox" id="customCheckbox2" name="agreement_check" value="1" required>
-                          <label for="customCheckbox2" class="custom-control-label">I have read and agreed to the terms of MNMA admission and that the information I have provided is true.</label>
-                        </div>
-                  </div>
-
+              <!-- general form elements -->
+              @if($applicant->submission_complete_status == 0)
+              <div class="card card-default">
+                <div class="card-header">
+                  <h3 class="card-title">{{ __('Application Submission') }}</h3>
                 </div>
-                <div class="card-footer">
-                  <button type="submit" class="btn btn-primary">{{ __('Submit Application') }}</button>
-                </div>
-              {!! Form::close() !!}
+                <!-- /.card-header -->
+                <!-- form start -->
+
+                  {!! Form::open(['url'=>'application/submit-application','files'=>true,'class'=>'ss-form-processing']) !!}
+                    <div class="card-body">
+
+                      <p><a href="{{ url('application/summary') }}">Download Application Preview</a></p>
+
+                      {!! Form::input('hidden','applicant_id',$applicant->id) !!}
+                      <div class="form-group col-12">
+                        <div class="custom-control custom-checkbox">
+                              <input class="custom-control-input" type="checkbox" id="customCheckbox2" name="agreement_check" value="1" required>
+                              <label for="customCheckbox2" class="custom-control-label">I have read and agreed to the terms of MNMA admission and that the information I have provided is true.</label>
+                            </div>
+                      </div>
+
+                    </div>
+                    <div class="card-footer">
+                      <button type="submit" class="btn btn-primary">{{ __('Submit Application') }}</button>
+                    </div>
+                  {!! Form::close() !!}
               </div>
               @else
-              @if($applicant->status === null)
-              <div class="card card-default">
-              <div class="card-header">
-                <h3 class="card-title">{{ __('Application Submission') }}</h3>
-              </div>
-              <!-- /.card-header -->
-              <!-- form start -->
-                <div class="card-body ss-center">
-                  <div class="row">
-                    <div class="col-8">
-                    <h3 class="ss-color-success"><i class="fa fa-check-circle"></i> Your application has been submitted successfully.</h3>
+                @if($applicant->status === null)
+                  <div class="card card-default">
+                    <div class="card-header">
+                      <h3 class="card-title">{{ __('Application Submission') }}</h3>
                     </div>
-                    <div class="col-4">
-                        <a href="{{ url('application/summary') }}" class="btn btn-primary">Download Application Preview</a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              @endif
-              @if($applicant->status == 'REJECTED' || $selected_status == false)
-                <div class="card card-default">
-              <div class="card-header">
-                <h3 class="card-title">{{ __('Application Feedback') }}</h3>
-              </div>
-              <!-- /.card-header -->
-              <!-- form start -->
-                <div class="card-body ss-center">
-                  <div class="row">
-                    <div class="col-12">
-					@if($applicant->is_transfered != 1)
-                    <h3 class="ss-color-danger"><i class="fa fa-check-circle"></i> We are sorry to inform you that you have not been selected for this academic year.</h3>
-				    @else
-					<h3 class="ss-color-danger"><i class="fa fa-check-circle"></i> We are sorry to inform you that your transfer have not been successful.</h3>
-					@endif
+                    <!-- /.card-header -->
+                    <!-- form start -->
+                    <div class="card-body ss-center">
+                      <div class="row">
+                        <div class="col-8">
+                        <h3 class="ss-color-success"><i class="fa fa-check-circle"></i> Your application has been submitted successfully.</h3>
+                        </div>
+                        <div class="col-4">
+                            <a href="{{ url('application/summary') }}" class="btn btn-primary">Download Application Preview</a>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </div>
+                @endif
+
+                @if($applicant->status == 'REJECTED' || $selected_status == false)
+                  <div class="card card-default">
+                    <div class="card-header">
+                      <h3 class="card-title">{{ __('Application Feedback') }}</h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <!-- form start -->
+                      <div class="card-body ss-center">
+                        <div class="row">
+                          <div class="col-12">
+					                  @if($applicant->is_transfered != 1)
+                              <h3 class="ss-color-danger"><i class="fa fa-check-circle"></i> We are sorry to inform you that you have not been selected for this academic year.</h3>
+				                    @else
+					                    <h3 class="ss-color-danger"><i class="fa fa-check-circle"></i> We are sorry to inform you that your transfer have not been successful.</h3>
+					                  @endif
+                          </div>
+                        </div>
+                      </div>
+                  </div>
+                @endif
               @endif
-            @endif
+            </div>
           </div>
-        </div>
         @endif
       </div><!-- /.container-fluid -->
     </section>
