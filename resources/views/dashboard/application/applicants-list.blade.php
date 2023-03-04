@@ -300,7 +300,8 @@
                                   <div id="collapseResults" class="collapse" aria-labelledby="ss-results-complete" data-parent="#accordionExample-2">
                                     <div class="card-body">
 
-                                      @if($applicant->nectaResultDetails)
+                                      @if($applicant->nectaResultDetails->exam_id == 1)
+                                        <h4>Form IV Results</h4>
                                         <table class="table table-bordered table-condensed">
                                           <tbody>
                                             @foreach($applicant->nectaResultDetails as $necta_details)
