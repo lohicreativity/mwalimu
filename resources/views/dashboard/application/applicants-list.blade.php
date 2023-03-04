@@ -227,7 +227,7 @@
                                   <div class="card-header" id="ss-payments-complete">
                                       <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapsePayments" aria-expanded="true" aria-controls="collapsePayments">
                                         3. Payments
-                                        @if($applicant->payments_complete_status == 1) <i class="fa fa-check float-right"></i> @endif
+                                        @if($applicant->payment_complete_status == 1) <i class="fa fa-check float-right"></i> @endif
                                       </button>
                                   </div>
 
@@ -236,7 +236,11 @@
 
                                       <table class="table table-bordered table-condensed">
                                         <tr>
-                                          <td>Status: </td>
+                                          <td>Control No</td>
+                                          <td>{{ $applicant->payment->control_no }}</td>
+                                        </tr>
+                                        <tr>
+                                          <td>Status</td>
                                           <td>
                                             @if($applicant->payment_complete_status == 1)
                                               <button class="btn btn-success">PAID</button>
