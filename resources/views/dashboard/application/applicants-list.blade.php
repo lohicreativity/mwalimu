@@ -234,16 +234,23 @@
                                   <div id="collapsePayments" class="collapse" aria-labelledby="ss-payments-complete" data-parent="#accordionExample-2">
                                     <div class="card-body">
 
+                                      @if($applicant->payment)
                                       <table class="table table-bordered table-condensed">
                                         <tr>
                                           <td>Control No</td>
                                           <td>
-                                            @if($applicant->payment)
                                               @foreach($applicant->payment as $payment)
                                               {{ $payment->control_no }}
                                               @endforeach
-                                            @endif
                                           </td> 
+                                        </tr>
+                                        <tr>
+                                          <td>Amount</td>
+                                          <td>
+                                            @foreach($applicant->payment as $payment)
+                                              {{ $payment->amount }} {{ $payment->currency }}
+                                            @endforeach
+                                          </td>
                                         </tr>
                                         <tr>
                                           <td>Status</td>
@@ -256,6 +263,7 @@
                                           </td>
                                         </tr>
                                       </table>
+                                      @endif
                                       
                                     </div>
                                   </div>
