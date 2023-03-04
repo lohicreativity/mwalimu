@@ -325,7 +325,7 @@
                                           @foreach($applicant->nectaResultDetails as $necta_details)
                                             @if($necta_details->exam_id == 2 && $necta_details->verified == 1)
                                             <h4>Form VI Results</h4>
-                                            <table class="table table-bordered table-condensed">
+                                            <table class="table table-bordered table-condensed mt-2">
                                               <tbody>
                                                 @foreach($necta_details->results as $results)
                                                   <tr>
@@ -349,7 +349,7 @@
                                           @foreach($applicant->nacteResultDetails as $nacte_details)
                                             @if($nacte_details->verified == 1)
                                             <h4>Diploma Results</h4>
-                                            <table class="table table-bordered table-condensed">
+                                            <table class="table table-bordered table-condensed mt-2">
                                               <tbody>
                                                 @if($applicant->avn_no_results == null)
                                                   @foreach($nacte_details->results as $results)
@@ -374,7 +374,7 @@
                                           @foreach($applicant->outResultDetails as $out_details)
                                             @if($out_details->verified == 1)
                                             <h4>Out Results</h4>
-                                            <table class="table table-bordered table-condensed">
+                                            <table class="table table-bordered table-condensed mt-2">
                                               <tbody>
                                                 @foreach($out_details->results as $results)
                                                   <tr>
