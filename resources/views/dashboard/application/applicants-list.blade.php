@@ -153,7 +153,7 @@
                         <div class="modal-dialog modal-lg">
                           <div class="modal-content modal-lg">
                             <div class="modal-header">
-                              <h4 class="modal-title"><i class="fa fa-exclamation-sign"></i>Progress for {{ $applicant->first_name }} {{ $applicant->surname }} ({{ $applicant->index_number }})</h4>
+                              <h5 class="modal-title"><i class="fa fa-exclamation-sign"></i>{{ $applicant->first_name }} {{ $applicant->surname }} | {{ $applicant->index_number }} | {{ $applicant->programLevel->name }} | {{ $applicant->entry_mode }}</h5>
                               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                               </button>
