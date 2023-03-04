@@ -301,7 +301,7 @@
                                     <div class="card-body">
 
                                       @if($applicant->nectaResultDetails)
-                                        <table class="table table-bordered table-condensed">
+                                        <table class="table table-bordered">
                                           <tbody>
                                             @foreach($applicant->nectaResultDetails as $necta_details)
                                               @foreach($necta_details->results as $results)
