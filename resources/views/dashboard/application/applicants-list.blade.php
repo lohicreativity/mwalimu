@@ -301,7 +301,9 @@
                                     <div class="card-body">
 
                                       @if($applicant->nectaResultDetails)
-                                        {{ $applicant->nectaResultDetails }}
+                                        @foreach($applicant->nectaResultDetails as $necta_details)
+                                        {{ $necta_details }}
+                                        @endforeach
                                       @endif
 
                                       
