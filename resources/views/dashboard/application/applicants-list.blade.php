@@ -215,6 +215,18 @@
 
                                   <div id="collapseNextOfKin" class="collapse" aria-labelledby="ss-next-of-kin" data-parent="#accordionExample-2">
                                     <div class="card-body">
+
+
+                                    @foreach($applicant->nextOfKin as $nextofkin)
+                                    <table class="table table-bordered table-condensed">
+                                      <tr>
+                                        <td>First name: </td>
+                                        <td>{{ $nextofkin->first_name }}</td>
+                                      </tr>
+                                      
+                                    </table>
+                                    @endif
+                                    
                                       
                                       
 
@@ -253,8 +265,6 @@
                                           </td>
                                         </tr>
                                       </table>
-                                      @else 
-                                      No payment record available
                                       @endif
                                       
                                     </div>

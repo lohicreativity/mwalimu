@@ -114,10 +114,6 @@ class ApplicationController extends Controller
             $applicants = Applicant::with(['selections.campusProgram.program'])->where('application_window_id',$request->get('application_window_id'))->where('campus_id',$application_window->campus_id)->paginate(20);
         }
 
-        // foreach ($applicants as $applicant) {
-        //     return $applicant->payment[0]->control_no;
-        // }
-
         $data = [
             'staff'=>$staff,
             'application_windows'=>ApplicationWindow::with(['campus','intake'])->get(),
