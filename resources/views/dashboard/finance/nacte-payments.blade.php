@@ -169,7 +169,8 @@
                                       $amount = [
                                          'placeholder'=>'Amount',
                                          'class'=>'form-control',
-                                         'required'=>true
+                                         'required'=>true,
+                                         'readonly' => true
                                       ];
 
                                       $reference_number = [
