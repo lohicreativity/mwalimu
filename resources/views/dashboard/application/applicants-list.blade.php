@@ -150,7 +150,7 @@
 
                 @foreach($applicants as $applicant)
                     <div class="modal fade" id="ss-progress-{{ $applicant->id }}">
-                        <div class="modal-dialog">
+                        <div class="modal-dialog modal-lg">
                           <div class="modal-content modal-lg">
                             <div class="modal-header">
                               <h4 class="modal-title"><i class="fa fa-exclamation-sign"></i> Progress</h4>
