@@ -105,7 +105,7 @@ class ApplicationController extends Controller
         }
 
         if($request->get('status') == 'progress'){
-           $applicants = Applicant::with(['selections.campusProgram.program', 'programLevel', 'payment', 'nextOfKin'])->where('programs_complete_status',0)->where('submission_complete_status',0)->where('application_window_id',$request->get('application_window_id'))->where('campus_id',$application_window->campus_id)->paginate(20);
+           $applicants = Applicant::with(['selections.campusProgram.program', 'programLevel', 'payment', 'nextOfKin', 'nectaResultDetails'])->where('programs_complete_status',0)->where('submission_complete_status',0)->where('application_window_id',$request->get('application_window_id'))->where('campus_id',$application_window->campus_id)->paginate(20);
         }elseif($request->get('status') == 'completed'){
            $applicants = Applicant::with(['selections.campusProgram.program'])->where('programs_complete_status',1)->where('submission_complete_status',0)->where('application_window_id',$request->get('application_window_id'))->where('campus_id',$application_window->campus_id)->paginate(20);
         }elseif($request->get('status') == 'submitted'){
@@ -113,6 +113,12 @@ class ApplicationController extends Controller
         }elseif($request->get('status') == 'total'){
             $applicants = Applicant::with(['selections.campusProgram.program'])->where('application_window_id',$request->get('application_window_id'))->where('campus_id',$application_window->campus_id)->paginate(20);
         }
+
+        // $a_level = NectaResultDetail::where('applicant_id', $applicant->id)->where('exam_id', 2)->where('verified', 1)->first();
+
+        // $avn = $request->get('index_number') ? NacteResultDetail::where('applicant_id', $applicant->id)->where('verified', 1)->first() : null;
+        
+        // $out = $request->get('index_number') ? OutResultDetail::where('applicant_id', $applicant->id)->where('verified', 1)->first() : null;
 
         $data = [
             'staff'=>$staff,

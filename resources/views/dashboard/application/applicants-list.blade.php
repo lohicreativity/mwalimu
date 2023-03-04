@@ -305,6 +305,14 @@
                                           <td>Form IV Index Number</td>
                                           <td>{{ $applicant->index_number }}</td>
                                         </tr>
+
+                                        @if($applicant->nectaResultDetails)
+                                          @foreach($applicant->nectaResultDetails as $necta_results)
+                                            @if($necta_results->exam_id == 2 && $necta_results->verified == 1)
+                                            {{ $necta_results->index_number }}
+                                            @endif
+                                          @endforeach
+                                        @endif
                                         
                                         @if($applicant->nacte_reg_no)
                                         <tr>
@@ -320,6 +328,7 @@
                                           <td>Yes</td>
                                         </tr>
                                         @endif
+
                                         @if($applicant->teacher_certificate_status == 1)
                                         <tr>
                                           <td>Teacher Diploma Certificate</td>
