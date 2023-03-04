@@ -252,16 +252,6 @@
                                             @endforeach
                                           </td>
                                         </tr>
-                                        <tr>
-                                          <td>Status</td>
-                                          <td>
-                                            @if($applicant->payment_complete_status == 1)
-                                              <button class="btn btn-success">PAID</button>
-                                            @else 
-                                              <button class="btn btn-danger">NOT PAID</button>
-                                            @endif
-                                          </td>
-                                        </tr>
                                       </table>
                                       @endif
                                       
