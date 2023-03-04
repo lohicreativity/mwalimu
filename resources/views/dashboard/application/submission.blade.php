@@ -107,7 +107,7 @@
                           <div class="col-12">
 					                  @if($applicant->is_transfered != 1)
                               <div class="alert alert-danger" role="alert">
-                                <h5><i class="fa fa-times"></i> We are sorry to inform you that you have not been selected for this academic year.</h5>
+                                <h5><i class="fa fa-times-circle"></i> We are sorry to inform you that you have not been selected for this academic year.</h5>
                               </div>
 				                    @else
                               <div class="alert alert-danger" role="alert">
