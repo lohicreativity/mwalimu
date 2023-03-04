@@ -73,7 +73,7 @@
                     <div class="col-md-4">
                       <a href="{{ url('application/download-applicants-list?duration='.$request->get('duration').'&status='.$request->get('status').'&department_id='.$request->get('department_id').'&gender='.$request->get('gender').'&nta_level_id='.$request->get('nta_level_id').'&campus_program_id='.$request->get('campus_program_id').'&application_window_id='.$request->get('application_window_id')) }}" class="btn btn-primary">Download Applicants List</a>
                     </div>
-                    <div class="col-md-5">
+                    <div class="col-md-4">
                       <span class="float-right">Status</span>
                     </div>
                     <div class="col-md-4">
