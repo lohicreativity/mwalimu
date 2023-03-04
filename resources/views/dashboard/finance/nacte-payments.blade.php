@@ -193,6 +193,7 @@
                                         {!! Form::text('reference_number',$payment->reference_no,$reference_number) !!}
                                       </div>
 
+                                      @if(Auth::user()->hasRole('administrator'))
                                       <div class="form-group col-3">
                                         {!! Form::label('','Campus') !!}
                                         <select name="campus_id" class="form-control">
@@ -202,6 +203,7 @@
                                           @endforeach
                                         </select>
                                       </div>
+                                      @endif
                                       <div class="form-group col-3">
                                         {!! Form::label('','Study academic year') !!}
                                         <select name="study_academic_year_id" class="form-control">
