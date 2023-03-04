@@ -1453,7 +1453,6 @@ class ApplicationController extends Controller
                               }
                            }
                          }elseif($detail->exam_id === 2){
-							 return 'sfadfdsfds';
                            $other_advance_must_subject_ready = false;
                            $other_advance_subsidiary_ready = false;
                            foreach ($detail->results as $key => $result) {
@@ -1487,7 +1486,6 @@ class ApplicationController extends Controller
                                     $a_level_principle_pass_count += 1;
                                  }
                               }
-							  return $a_level_grades[$result->grade].' '.$a_level_grades[$subsidiary_pass_grade];
                               if($a_level_grades[$result->grade] >= $a_level_grades[$subsidiary_pass_grade]){   
                               // if($a_level_grades[$result->grade] >= $a_level_grades[$subsidiary_pass_grade]){
 

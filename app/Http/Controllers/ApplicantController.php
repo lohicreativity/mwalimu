@@ -746,7 +746,7 @@ class ApplicantController extends Controller
                                  }
 								}
 						   
-                              if($a_level_grades[$result->grade] == $a_level_grades[$subsidiary_pass_grade]){
+                              if($a_level_grades[$result->grade] >= $a_level_grades[$subsidiary_pass_grade]){
 // Original
 /*                                  if(unserialize($program->entryRequirements[0]->subsidiary_subjects) != ''){
                                        if(Util::arrayIsContainedInKey($result->subject_name, unserialize($program->entryRequirements[0]->subsidiary_subjects))){
