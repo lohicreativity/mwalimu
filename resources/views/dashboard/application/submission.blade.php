@@ -81,10 +81,13 @@
                     <!-- form start -->
                     <div class="card-body ss-center">
                       <div class="row">
-                        <div class="col-8">
-                        <h3 class="ss-color-success"><i class="fa fa-check-circle"></i> Your application is in progress.</h3>
+                        <div class="col-12">
+                          <div class="alert alert-success" role="alert">
+                            <i class="fa fa-check-circle"></i> Your application is in progress.
+                          </div>
                         </div>
-                        <div class="col-4">
+                        
+                        <div class="col-12">
                             <a href="{{ url('application/summary') }}" class="btn btn-primary">Download Application Preview</a>
                         </div>
                       </div>
