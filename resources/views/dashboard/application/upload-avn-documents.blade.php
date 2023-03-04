@@ -114,14 +114,20 @@
                       @if($applicant->teacher_diploma_certificate)
                       <tr>
                         <td>Teacher Diploma Certificate</td>
-                        <td><a href="{{ url('application/delete-document?name=teacher_diploma_certificate') }}" class="btn btn-danger"><i class="fa fa-trash"></i> Delete</a></td>
+                        <td>
+                          <a href="{{ url('application/view-document?name=teacher_diploma_certificate') }}" target="_blank" class="btn btn-primary"><i class="fa fa-eye"></i> View</a>
+                          <a href="{{ url('application/delete-document?name=teacher_diploma_certificate') }}" class="btn btn-danger"><i class="fa fa-trash"></i> Delete</a>
+                        </td>
                       </tr>
                       @endif
 
                       @if($applicant->veta_certificate)
                       <tr>
                         <td>Veta Certificate</td>
-                        <td><a href="{{ url('application/delete-document?name=veta_certificate') }}" class="btn btn-danger"><i class="fa fa-trash"></i> Delete</a></td>
+                        <td>
+                          <a href="{{ url('application/view-document?name=veta_certificate') }}" target="_blank" class="btn btn-primary"><i class="fa fa-eye"></i> View</a>
+                          <a href="{{ url('application/delete-document?name=veta_certificate') }}" class="btn btn-danger"><i class="fa fa-trash"></i> Delete</a>
+                        </td>
                       </tr>
                       @endif
                     </tbody>

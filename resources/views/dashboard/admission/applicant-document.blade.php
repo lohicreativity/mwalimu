@@ -67,3 +67,31 @@
     <img src="{{ asset('uploads/'.$applicant->diploma_certificate) }}" height="1200px" width="1200px" alt="" style="display: block; margin-left: auto; margin-right: auto;">
     @endif
 @endif
+
+@if($request->get('name') == 'teacher_diploma_certificate')
+    @if(explode('.',$applicant->teacher_diploma_certificate)[1] == 'pdf')
+        <iframe
+        src="https://drive.google.com/viewerng/viewer?embedded=true&url={{ asset('uploads/'.$applicant->teacher_diploma_certificate) }}#toolbar=0&scrollbar=0"
+        frameBorder="0"
+        scrolling="auto"
+        height="100%"
+        width="100%">
+        </iframe>
+    @else
+    <img src="{{ asset('uploads/'.$applicant->teacher_diploma_certificate) }}" height="1200px" width="1200px" alt="" style="display: block; margin-left: auto; margin-right: auto;">
+    @endif
+@endif
+
+@if($request->get('name') == 'veta_certificate')
+    @if(explode('.',$applicant->veta_certificate)[1] == 'pdf')
+        <iframe
+        src="https://drive.google.com/viewerng/viewer?embedded=true&url={{ asset('uploads/'.$applicant->veta_certificate) }}#toolbar=0&scrollbar=0"
+        frameBorder="0"
+        scrolling="auto"
+        height="100%"
+        width="100%">
+        </iframe>
+    @else
+    <img src="{{ asset('uploads/'.$applicant->veta_certificate) }}" height="1200px" width="1200px" alt="" style="display: block; margin-left: auto; margin-right: auto;">
+    @endif
+@endif
