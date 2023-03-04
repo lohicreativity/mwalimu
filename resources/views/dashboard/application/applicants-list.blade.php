@@ -217,7 +217,7 @@
                                     <div class="card-body">
 
 
-                                    {{ $applicant->nextOfKin->first_name }}
+                                    {{ $applicant->nextOfKin }}
                                     
                                       
                                       
