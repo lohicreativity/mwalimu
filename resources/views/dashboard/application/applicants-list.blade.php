@@ -238,7 +238,7 @@
                                         <tr>
                                           <td>Control No</td>
                                           <td>
-                                            {{ $applicant->payment[0]->control_no }}
+                                            {{ $applicant->payment->control_no }}
                                           </td> 
                                         </tr>
                                         <tr>
