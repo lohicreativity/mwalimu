@@ -3310,6 +3310,8 @@ class ApplicationController extends Controller
                 $query->where('status','SELECTED');
            },'selections.campusProgram.program','applicationWindow','country','selections.campusProgram.campus'])->where('program_level_id',$request->get('program_level_id'))->where('status','SELECTED')->where('campus_id', $campus_id)->where('application_window_id',$request->get('application_window_id'))->get();  
         }
+
+        return $applicants;
                 
 
    	   // Applicant::whereHas('intake.applicationWindows',function($query) use($request){
@@ -3321,8 +3323,6 @@ class ApplicationController extends Controller
         // },'selections.campusProgram.program.award','applicationWindow','country'])->where('program_level_id',$request->program_level_id)->update(['admission_reference_no'=>$request->reference_number]);
 
         foreach($applicants as $key=>$applicant){
-
-                return $applicant->applicationWindow->begin_date;
 
                $ac_year = date('Y',strtotime($applicant->applicationWindow->end_date));
                $ac_year += 1;
