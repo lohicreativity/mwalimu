@@ -115,7 +115,7 @@ class ApplicationController extends Controller
         }
 
         foreach ($applicants as $applicant) {
-            return $applicant->payment;
+            return $applicant->payment->control_no;
         }
 
         $data = [
