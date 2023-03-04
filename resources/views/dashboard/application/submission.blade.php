@@ -111,7 +111,7 @@
                               </div>
 				                    @else
                               <div class="alert alert-danger" role="alert">
-                                <h5><i class="fa fa-times"></i> We are sorry to inform you that your transfer have not been successful.</h5>
+                                <h5><i class="fa fa-times-circle"></i> We are sorry to inform you that your transfer have not been successful.</h5>
                               </div>
 					                  @endif
                           </div>
