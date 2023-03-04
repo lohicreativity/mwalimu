@@ -159,10 +159,8 @@
                               </button>
                             </div>
                             <div class="modal-body">
-                               <table class="table table-bordered">
-                                  <tr>
-                                    <td>
-                                      <div class="accordion" id="accordionExample-2">
+
+                              <div class="accordion" id="accordionExample-2">
                                         <div class="card">
                                           <div class="card-header" id="ss-diploma-certificate">
                                             <h2 class="mb-0">
@@ -178,28 +176,8 @@
                                             </div>
                                           </div>
                                         </div>
-                                      </div>
-                                    </td>
-                                    <!-- <td>1. Basic Information</td>
-                                    <td>@if($applicant->basic_info_complete_status == 1) <i class="fa fa-check"></i> @endif</td> -->
-                                  </tr>
-                                  <tr>
-                                    <td>2. Next of Kin</td>
-                                    <td>@if($applicant->next_of_kin_complete_status == 1) <i class="fa fa-check"></i> @endif</td>
-                                  </tr>
-                                  <tr>
-                                    <td>3. Payments</td>
-                                    <td>@if($applicant->payments_complete_status == 1) <i class="fa fa-check"></i> @endif</td>
-                                  </tr>
-                                  <tr>
-                                    <td>4. Results</td>
-                                    <td>@if($applicant->results_complete_status == 1) <i class="fa fa-check"></i> @endif</td>
-                                  </tr>
-                                  <tr>
-                                    <td>5. Programmes Selection</td>
-                                    <td>@if($applicant->programs_complete_status == 1) <i class="fa fa-check"></i> @endif</td>
-                                  </tr>
-                               </table>
+                              </div>
+
                             </div>
                             <div class="modal-footer justify-content-between">
                               <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
