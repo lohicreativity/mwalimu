@@ -88,7 +88,7 @@ class ApplicantController extends Controller
         $credentials = [
             'username'=>$request->get('index_number'),
             'password'=>$request->get('password'),
-			   'status'=>'ACTIVE'
+			'status'=>'ACTIVE'
         ];
 
         $campus = Campus::find($request->get('campus_id'));
@@ -107,10 +107,10 @@ class ApplicantController extends Controller
 
         $closed_window = ApplicationWindow::where('campus_id',$request->get('campus_id'))
         ->where('end_date','>=', implode('-', explode('-', now()->format('Y-m-d'))))
+        //->where('intake_id', $appl->intake_id)
         ->where('status','INACTIVE')->latest()->first();
 
-
-        if($closed_window){
+        if($closed_window && !$window){
             return redirect()->back()->with('error','Application window is not active');
         }
 
