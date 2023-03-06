@@ -175,6 +175,8 @@
                      'required'=>true
                   ];
 
+                  $mobile_phone = 0.substr($applicant->phone, 3);
+
               @endphp
               {!! Form::open(['url'=>'application/update-basic-info','class'=>'ss-form-processing','files'=>true]) !!}
                 <div class="card-body">
@@ -213,7 +215,7 @@
                     </div>
                     <div class="form-group col-3">
                        {!! Form::label('','Phone') !!}
-                       {!! Form::text('phone', substr($applicant->phone, 3),$phone) !!}
+                       {!! Form::text('phone', $mobile_phone,$phone) !!}
                     </div>
                     <div class="form-group col-3">
                        {!! Form::label('','Birth date') !!}
