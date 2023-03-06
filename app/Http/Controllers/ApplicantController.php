@@ -1286,7 +1286,7 @@ class ApplicantController extends Controller
            $selection_status = $applicants != null ? true : false;
         }
 
-        $program_selection = ApplicantProgramSelection::where('applicant_id', $applicant->id)->where('application_window_id', $$applicant->application_window_id)->where('status', 'SELECTED')->first();
+        $program_selection = ApplicantProgramSelection::where('applicant_id', $applicant->id)->where('application_window_id', $applicant->application_window_id)->where('status', 'SELECTED')->first();
 
         $data = [
             'applicant'=>$applicant,
