@@ -73,7 +73,7 @@
               </div>
               @else
 
-                @if($applicant->status == 'REJECTED' || $selected_status == true)
+                @if($applicant->status == 'REJECTED' || $selected_status == false)
                 <div class="card card-default">
                     <div class="card-header">
                       <h3 class="card-title">{{ __('Application Feedback') }}</h3>
@@ -83,7 +83,7 @@
                       <div class="card-body ss-center">
                         <div class="row">
                           <div class="col-12">
-					                  @if($applicant->is_transfered == 1 && empty($program_selection))
+					                  @if($applicant->is_transfered != 1)
                               <div class="alert alert-danger" role="alert">
                                 <h5><i class="fa fa-times-circle"></i> We are sorry to inform you that you have not been selected.</h5>
                               </div>
