@@ -84,7 +84,7 @@
                         <div class="row">
                           <div class="col-12">
 					                  @if($applicant->is_transfered != 1)
-                              123
+                             
 				                    @elseif($applicant->is_transfered != 1)
                               <div class="alert alert-danger" role="alert">
                                 <h5><i class="fa fa-times-circle"></i> We are sorry to inform you that your transfer have not been successful.</h5>
@@ -100,6 +100,10 @@
                     @if(!$program_selection)
                     <div class="alert alert-danger" role="alert">
                       <h5><i class="fa fa-times-circle"></i> We are sorry to inform you that you have not been selected.</h5>
+                    </div>
+                    @else
+                    <div class="alert alert-success" role="alert">
+                      <h5><i class="fa fa-check-circle"></i> Congratulations.</h5>
                     </div>
                     @endif
                   @else
