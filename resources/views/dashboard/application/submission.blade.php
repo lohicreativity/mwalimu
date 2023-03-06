@@ -73,7 +73,7 @@
               </div>
               @else
 
-                @if($applicant->status == 'REJECTED' || $selected_status == true)
+                @if($applicant->status == 'REJECTED')
                 <div class="card card-default">
                     <div class="card-header">
                       <h3 class="card-title">{{ __('Application Feedback') }}</h3>
@@ -83,10 +83,8 @@
                       <div class="card-body ss-center">
                         <div class="row">
                           <div class="col-12">
-					                  @if($applicant->is_transfered != 1 && !$program_selection)
-                              <div class="alert alert-danger" role="alert">
-                                <h5><i class="fa fa-times-circle"></i> We are sorry to inform you that you have not been selected.</h5>
-                              </div>
+					                  @if($applicant->is_transfered != 1)
+                              
 				                    @elseif($applicant->is_transfered != 1)
                               <div class="alert alert-danger" role="alert">
                                 <h5><i class="fa fa-times-circle"></i> We are sorry to inform you that your transfer have not been successful.</h5>
@@ -97,26 +95,36 @@
                       </div>
                 </div>
                 @else
-                <div class="card card-default">
-                    <div class="card-header">
-                      <h3 class="card-title">{{ __('Application Submission') }}</h3>
+
+                  @if($selected_status == true)
+                    @if(!$program_selection)
+                    <div class="alert alert-danger" role="alert">
+                      <h5><i class="fa fa-times-circle"></i> We are sorry to inform you that you have not been selected.</h5>
                     </div>
-                    <!-- /.card-header -->
-                    <!-- form start -->
-                    <div class="card-body ss-center">
-                      <div class="row">
-                        <div class="col-12">
-                          <div class="alert alert-success" role="alert">
-                            <h5><i class="fa fa-check-circle"></i> Your application is in progress.</h5>
+                    @endif
+                  @else
+                  <div class="card card-default">
+                      <div class="card-header">
+                        <h3 class="card-title">{{ __('Application Submission') }}</h3>
+                      </div>
+                      <!-- /.card-header -->
+                      <!-- form start -->
+                      <div class="card-body ss-center">
+                        <div class="row">
+                          <div class="col-12">
+                            <div class="alert alert-success" role="alert">
+                              <h5><i class="fa fa-check-circle"></i> Your application is in progress.</h5>
+                            </div>
+                          </div>
+                          
+                          <div class="col-12">
+                              <a href="{{ url('application/summary') }}" class="btn btn-primary">Download Application Preview</a>
                           </div>
                         </div>
-                        
-                        <div class="col-12">
-                            <a href="{{ url('application/summary') }}" class="btn btn-primary">Download Application Preview</a>
-                        </div>
                       </div>
-                    </div>
-                </div>
+                  </div>
+                  @endif
+                
                 @endif
 
 
