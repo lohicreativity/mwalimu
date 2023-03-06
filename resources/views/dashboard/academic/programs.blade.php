@@ -191,7 +191,7 @@
                 </div>
               </div>
                 {!! Form::close() !!}
-                <table id="example2" class="table table-bordered table-hover">
+                <table id="example2" class="table table-bordered table-hover ss-paginated-table">
                   <thead>
                   <tr>
                     <th>Regulator Code</th>
