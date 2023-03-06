@@ -3727,10 +3727,9 @@ class ApplicationController extends Controller
                 $applicant = Applicant::where('index_number',$data['f4indexno'])->where('application_window_id', $request->get('application_window_id'))->first();
                 if($applicant){
                    $applicant->multiple_admissions = $data['AdmissionStatusCode'] == 225 ? 1 : 0;
-                   $applicant->batch_no = 1;
                    $applicant->save();
 
-                   $selection = ApplicantProgramSelection::where('applicant_id',$applicant)->where('status','APPROVING')->update(['status'=>'SELECTED', 'batch_no' => 1]);
+                   $selection = ApplicantProgramSelection::where('applicant_id',$applicant)->where('status','APPROVING')->update(['status'=>'SELECTED']);
                 }
             }
         }else{
