@@ -87,7 +87,7 @@
                               <div class="alert alert-danger" role="alert">
                                 <h5><i class="fa fa-times-circle"></i> We are sorry to inform you that you have not been selected.</h5>
                               </div>
-				                    @else
+				                    @elseif($applicant->is_transfered != 1)
                               <div class="alert alert-danger" role="alert">
                                 <h5><i class="fa fa-times-circle"></i> We are sorry to inform you that your transfer have not been successful.</h5>
                               </div>
