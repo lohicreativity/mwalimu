@@ -1283,7 +1283,7 @@ class ApplicantController extends Controller
         }
         $selection_status = true;
         if(!ApplicationWindow::where('campus_id',session('applicant_campus_id'))->where('intake_id', $applicant->intake_id)->where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('status','ACTIVE')->first()){
-           $selection_status = $applicants != null ? false : true;
+           $selection_status = $applicant != null ? false : true;
         }
         $data = [
             'applicant'=>$applicant,
