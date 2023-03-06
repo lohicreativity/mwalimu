@@ -267,7 +267,7 @@ class ApplicantController extends Controller
         if($applicant->is_tamisemi !== 1 && $applicant->is_transfered != 1){
             if(!ApplicationWindow::where('campus_id',session('applicant_campus_id'))->where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('status','ACTIVE')->first()){
                  if($applicant->status == null && $applicant->submission_complete_status == 0){
-                     return redirect()->to('application/submission')->with('error','Application window already closed');
+                     return redirect()->to('application/submission')->with('error','Application window already closed123');
                  }
                //   if($applicant->multiple_admissions !== null && $applicant->status == 'SELECTED'){
                //       // return redirect()->back();
