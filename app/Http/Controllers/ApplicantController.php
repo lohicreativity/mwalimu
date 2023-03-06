@@ -1287,8 +1287,8 @@ class ApplicantController extends Controller
         }
 
         $program_selection = ApplicantProgramSelection::where('applicant_id', $applicant->id)->where('application_window_id', $applicant->application_window_id)->where('status', 'SELECTED')->first();
-        return $program_selection;
-        
+      //   return $program_selection;
+
         $data = [
             'applicant'=>$applicant,
             'campus'=>Campus::find(session('applicant_campus_id')),
