@@ -267,7 +267,7 @@ class ApplicantController extends Controller
         if($applicant->is_tamisemi !== 1 && $applicant->is_transfered != 1){
             if(!ApplicationWindow::where('campus_id',session('applicant_campus_id'))->where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('status','ACTIVE')->first()){
                  if($applicant->status == null && $applicant->submission_complete_status == 0){
-                     return redirect()->to('application/submission')->with('error','Application window already closed1');
+                     return redirect()->to('application/submission')->with('error','Application window already closed');
                  }
                //   if($applicant->multiple_admissions !== null && $applicant->status == 'SELECTED'){
                //       // return redirect()->back();
@@ -354,7 +354,7 @@ class ApplicantController extends Controller
         $applicant = User::find(Auth::user()->id)->applicants()->with('programLevel')->where('campus_id',session('applicant_campus_id'))->first();
         if($applicant->is_tamisemi != 1 && $applicant->is_transfered != 1){
             if(!ApplicationWindow::where('campus_id',session('applicant_campus_id'))->where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('status','ACTIVE')->first()){
-                 return redirect()->to('application/submission')->with('error','Application window already closed3');
+                 return redirect()->to('application/submission')->with('error','Application window already closed');
             }
         }
         $data = [
@@ -379,7 +379,7 @@ class ApplicantController extends Controller
         $applicant = User::find(Auth::user()->id)->applicants()->with(['country','applicationWindow','programLevel'])->where('campus_id',session('applicant_campus_id'))->first();
         if($applicant->is_tamisemi != 1){
             if(!ApplicationWindow::where('campus_id',session('applicant_campus_id'))->where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('status','ACTIVE')->first()){
-                 return redirect()->to('application/submission')->with('error','Application window already closed4');
+                 return redirect()->to('application/submission')->with('error','Application window already closed');
             }
         }
         $study_academic_year = StudyAcademicYear::whereHas('academicYear',function($query) use ($applicant){
@@ -412,7 +412,7 @@ class ApplicantController extends Controller
 		$applicant = User::find(Auth::user()->id)->applicants()->with('programLevel')->where('campus_id',session('applicant_campus_id'))->first();
 		if($applicant->is_transfered != 1){
         if(!ApplicationWindow::where('campus_id',session('applicant_campus_id'))->where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('status','ACTIVE')->first()){
-             return redirect()->to('application/submission')->with('error','Application window already closed5');
+             return redirect()->to('application/submission')->with('error','Application window already closed');
         }
 		}
         
@@ -433,7 +433,7 @@ class ApplicantController extends Controller
     public function selectPrograms(Request $request)
     {
         if(!ApplicationWindow::where('campus_id',session('applicant_campus_id'))->where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('status','ACTIVE')->first()){
-             return redirect()->to('application/submission')->with('error','Application window already closed6');
+             return redirect()->to('application/submission')->with('error','Application window already closed');
         }
         // $window = ApplicationWindow::where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('campus_id',session('applicant_campus_id'))->first();
 
@@ -1256,7 +1256,7 @@ class ApplicantController extends Controller
        $applicant = User::find(Auth::user()->id)->applicants()->with('programLevel')->where('campus_id',session('applicant_campus_id'))->first();
        if($applicant->is_tamisemi != 1 && $applicant->is_transfered != 1){
          if(!ApplicationWindow::where('campus_id',session('applicant_campus_id'))->where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('status','ACTIVE')->first()){
-               return redirect()->to('application/submission')->with('error','Application window already closed7');
+               return redirect()->to('application/submission')->with('error','Application window already closed');
           }
        }
        $data = [
@@ -1803,7 +1803,7 @@ class ApplicantController extends Controller
 
         $applicant = Applicant::find($request->get('applicant_id'));
         if(!ApplicationWindow::where('campus_id',$applicant->campus_id)->where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('status','ACTIVE')->first()){
-               return redirect()->back()->with('error','Application window already closed8');
+               return redirect()->back()->with('error','Application window already closed');
         }
         if($applicant->submission_complete_status == 1){
             return redirect()->back()->with('error','Applicant details cannot be modified because the application is already submitted');
