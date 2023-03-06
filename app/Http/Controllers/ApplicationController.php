@@ -657,300 +657,235 @@ class ApplicationController extends Controller
         foreach($applicants as $applicant){
 
             if($request->get('applicant_'.$applicant->id) == $applicant->id){
-                if(str_contains($award->name,'Bachelor')){
-                 //$url='https://api.tcu.go.tz/applicants/submitProgramme';
-                  
-                  if(ApplicantSubmissionLog::where('applicant_id',$applicant->id)->where('program_level_id',$request->get('program_level_id'))->count() == 0){
-
-                   $url='http://41.59.90.200/applicants/submitProgramme';
-                   
-                   $selected_programs = array();
-                   $approving_selection = null;
-                   foreach($applicant->selections as $selection){
-                       $selected_programs[] = $selection->campusProgram->regulator_code;
-                       if($selection->status == 'APPROVING'){
-                           $approving_selection = $selection;
-                       }
-                   }
-
-                   $f6indexno = null;
-                   foreach ($applicant->nectaResultDetails as $detail) {
-                       if($detail->exam_id == 2){
-                          $f6indexno = $detail->index_number;
-                       }
-                   }
-
-                   if($f6indexno){
-                     if($approving_selection){
-                        $xml_request = '<?xml version="1.0" encoding="UTF-8"?>
-                        <Request>
-                        <UsernameToken>
-                        <Username>'.config('constants.TCU_USERNAME').'</Username>
-                        <SessionToken>'.config('constants.TCU_TOKEN').'</SessionToken>
-                        </UsernameToken>
-                        <RequestParameters>
-                        <f4indexno>'.$applicant->index_number.'</f4indexno >
-                        <f6indexno>'.$f6indexno.'</f6indexno>
-                        <Gender>'.$applicant->gender.'</Gender>
-                        <SelectedProgrammes>'.implode(',', $selected_programs).'</SelectedProgrammes>
-                        <MobileNumber>'.str_replace('-', '', $applicant->phone).'</MobileNumber>
-                        <OtherMobileNumber></OtherMobileNumber>
-                        <EmailAddress>'.$applicant->email.'</EmailAddress>
-                        <Category>A</Category>
-                        <AdmissionStatus>provisional admission</AdmissionStatus>
-                        <ProgrammeAdmitted>'.$approving_selection->campusProgram->regulator_code.'</ProgrammeAdmitted>
-                        <Reason>eligible</Reason>
-                        <Nationality >'.$applicant->nationality.'</Nationality>
-                        <Impairment>'.$applicant->disabilityStatus->name.'</Impairment>
-                        <DateOfBirth>'.$applicant->birth_date.'</DateOfBirth>
-                        <NationalIdNumber>'.$applicant->nin.'</NationalIdNumber>
-                        <Otherf4indexno></Otherf4indexno>
-                        <Otherf6indexno></Otherf6indexno>
-                        </RequestParameters>
-                        </Request>';
-                     }else{
-                        $xml_request = '<?xml version="1.0" encoding="UTF-8"?>
-                        <Request>
-                        <UsernameToken>
-                        <Username>'.config('constants.TCU_USERNAME').'</Username>
-                        <SessionToken>'.config('constants.TCU_TOKEN').'</SessionToken>
-                        </UsernameToken>
-                        <RequestParameters>
-                        <f4indexno>'.$applicant->index_number.'</f4indexno >
-                        <f6indexno>'.$f6indexno.'</f6indexno>
-                        <Gender>'.$applicant->gender.'</Gender>
-                        <SelectedProgrammes>'.implode(',', $selected_programs).'</SelectedProgrammes>
-                        <MobileNumber>'.str_replace('-', '', $applicant->phone).'</MobileNumber>
-                        <OtherMobileNumber></OtherMobileNumber>
-                        <EmailAddress>'.$applicant->email.'</EmailAddress>
-                        <Category>A</Category>
-                        <AdmissionStatus>not selected</AdmissionStatus>
-                        <ProgrammeAdmitted>'.null.'</ProgrammeAdmitted>
-                        <Reason>max capacity</Reason>
-                        <Nationality >'.$applicant->nationality.'</Nationality>
-                        <Impairment>'.$applicant->disabilityStatus->name.'</Impairment>
-                        <DateOfBirth>'.$applicant->birth_date.'</DateOfBirth>
-                        <NationalIdNumber>'.$applicant->nin.'</NationalIdNumber>
-                        <Otherf4indexno></Otherf4indexno>
-                        <Otherf6indexno></Otherf6indexno>
-                        </RequestParameters>
-                        </Request>';
-                     }
-                    $xml_response=simplexml_load_string($this->sendXmlOverPost($url,$xml_request));
-                    $json = json_encode($xml_response);
-                    $array = json_decode($json,TRUE);
-
-              
-
-            // return dd($array);
                 
-                  if($array['Response']['ResponseParameters']['StatusCode'] == 200){
-                    // $select = ApplicantProgramSelection::find($approving_selection->id);
-                    // $select->status = 'SELECTED';
-                    // $select->save();
-                    Applicant::where('id',$applicant->id)->update(['status'=>'SUBMITTED']);
+                if (str_contains($award->name,'Bachelor')) {
 
-                    $log = new ApplicantSubmissionLog;
-                    $log->applicant_id = $applicant->id;
-                    $log->program_level_id = $request->get('program_level_id');
-                    $log->application_window_id = $request->get('application_window_id');
-                    $log->submitted = 1;
-                    $log->save();
-                  }
-                }
-              }
-            }elseif(str_contains($award->name,'Diploma') || str_contains($award->name,'Basic')){
+                    //$url='https://api.tcu.go.tz/applicants/submitProgramme';
                   
-          
-                  $payment = NactePayment::latest()->where('campus_id', $staff->campus_id)->first();
+                    if (ApplicantSubmissionLog::where('applicant_id',$applicant->id)->where('program_level_id',$request->get('program_level_id'))->count() == 0) {
 
-                  return $payment;
+                        $url='http://41.59.90.200/applicants/submitProgramme';
+                   
+                        $selected_programs = array();
+                        $approving_selection = null;
 
-                  $result = Http::get('https://www.nacte.go.tz/nacteapi/index.php/api/payment/'.$payment->reference_no.'/'.config('constants.NACTE_API_SECRET'));
-                 //return json_decode($result)['params'][0]['balance']/5000
-                  if((json_decode($result)->params[0]->balance/5000) < count($applicants)){
+                        foreach($applicant->selections as $selection){
+                            $selected_programs[] = $selection->campusProgram->regulator_code;
+                            if($selection->status == 'APPROVING'){
+                                $approving_selection = $selection;
+                            }
+                        }
+
+                        $f6indexno = null;
+                        foreach ($applicant->nectaResultDetails as $detail) {
+                            if($detail->exam_id == 2){
+                                $f6indexno = $detail->index_number;
+                            }
+                        }
+
+                        if($f6indexno){
+
+                            if($approving_selection){
+
+                                $xml_request = '<?xml version="1.0" encoding="UTF-8"?>
+                                <Request>
+                                <UsernameToken>
+                                <Username>'.config('constants.TCU_USERNAME').'</Username>
+                                <SessionToken>'.config('constants.TCU_TOKEN').'</SessionToken>
+                                </UsernameToken>
+                                <RequestParameters>
+                                <f4indexno>'.$applicant->index_number.'</f4indexno >
+                                <f6indexno>'.$f6indexno.'</f6indexno>
+                                <Gender>'.$applicant->gender.'</Gender>
+                                <SelectedProgrammes>'.implode(',', $selected_programs).'</SelectedProgrammes>
+                                <MobileNumber>'.str_replace('-', '', $applicant->phone).'</MobileNumber>
+                                <OtherMobileNumber></OtherMobileNumber>
+                                <EmailAddress>'.$applicant->email.'</EmailAddress>
+                                <Category>A</Category>
+                                <AdmissionStatus>provisional admission</AdmissionStatus>
+                                <ProgrammeAdmitted>'.$approving_selection->campusProgram->regulator_code.'</ProgrammeAdmitted>
+                                <Reason>eligible</Reason>
+                                <Nationality >'.$applicant->nationality.'</Nationality>
+                                <Impairment>'.$applicant->disabilityStatus->name.'</Impairment>
+                                <DateOfBirth>'.$applicant->birth_date.'</DateOfBirth>
+                                <NationalIdNumber>'.$applicant->nin.'</NationalIdNumber>
+                                <Otherf4indexno></Otherf4indexno>
+                                <Otherf6indexno></Otherf6indexno>
+                                </RequestParameters>
+                                </Request>';
+
+                            } else {
+
+                                $xml_request = '<?xml version="1.0" encoding="UTF-8"?>
+                                <Request>
+                                <UsernameToken>
+                                <Username>'.config('constants.TCU_USERNAME').'</Username>
+                                <SessionToken>'.config('constants.TCU_TOKEN').'</SessionToken>
+                                </UsernameToken>
+                                <RequestParameters>
+                                <f4indexno>'.$applicant->index_number.'</f4indexno >
+                                <f6indexno>'.$f6indexno.'</f6indexno>
+                                <Gender>'.$applicant->gender.'</Gender>
+                                <SelectedProgrammes>'.implode(',', $selected_programs).'</SelectedProgrammes>
+                                <MobileNumber>'.str_replace('-', '', $applicant->phone).'</MobileNumber>
+                                <OtherMobileNumber></OtherMobileNumber>
+                                <EmailAddress>'.$applicant->email.'</EmailAddress>
+                                <Category>A</Category>
+                                <AdmissionStatus>not selected</AdmissionStatus>
+                                <ProgrammeAdmitted>'.null.'</ProgrammeAdmitted>
+                                <Reason>max capacity</Reason>
+                                <Nationality >'.$applicant->nationality.'</Nationality>
+                                <Impairment>'.$applicant->disabilityStatus->name.'</Impairment>
+                                <DateOfBirth>'.$applicant->birth_date.'</DateOfBirth>
+                                <NationalIdNumber>'.$applicant->nin.'</NationalIdNumber>
+                                <Otherf4indexno></Otherf4indexno>
+                                <Otherf6indexno></Otherf6indexno>
+                                </RequestParameters>
+                                </Request>';
+                            }
+
+                            $xml_response=simplexml_load_string($this->sendXmlOverPost($url,$xml_request));
+                            $json = json_encode($xml_response);
+                            $array = json_decode($json,TRUE);           
+                
+                            if ($array['Response']['ResponseParameters']['StatusCode'] == 200) {
+                                
+                                Applicant::where('id',$applicant->id)->update(['status'=>'SUBMITTED']);
+
+                                $log = new ApplicantSubmissionLog;
+                                $log->applicant_id = $applicant->id;
+                                $log->program_level_id = $request->get('program_level_id');
+                                $log->application_window_id = $request->get('application_window_id');
+                                $log->submitted = 1;
+                                $log->save();
+
+                            }
+                        }
+                    }
+
+                } elseif (str_contains($award->name,'Diploma') || str_contains($award->name,'Basic')) {
+
+
+                    $payment = NactePayment::latest()->where('campus_id', $staff->campus_id)->first();
+
+                    $result = Http::get('https://www.nacte.go.tz/nacteapi/index.php/api/payment/'.$payment->reference_no.'/'.config('constants.NACTE_API_SECRET'));
+                  
+                    if ((json_decode($result)->params[0]->balance/5000) < count($applicants)) {
                       return redirect()->back()->with('error','No sufficient NACTE payment balance');
-                  }
+                    }
 
-                  if(ApplicantSubmissionLog::where('applicant_id',$applicant->id)->where('program_level_id',$request->get('program_level_id'))->count() == 0){
+                    if(ApplicantSubmissionLog::where('applicant_id',$applicant->id)->where('program_level_id',$request->get('program_level_id'))->count() == 0) {
 
-                  $f6indexno = null;
-                   foreach ($applicant->nectaResultDetails as $detail) {
-                       if($detail->exam_id == 2){
-                          $f6indexno = $detail->index_number;
-                       }
-                   }
+                        $f6indexno = null;
+                        foreach ($applicant->nectaResultDetails as $detail) {
+                            if($detail->exam_id == 2){
+                            $f6indexno = $detail->index_number;
+                            }
+                        }
 
-                   $approving_selection = null;
-                   foreach($applicant->selections as $selection){
-                       if($selection->status == 'APPROVING'){
-                           $approving_selection = $selection;
-                       }
-                   }
+                        $approving_selection = null;
+                        foreach($applicant->selections as $selection){
+                            if($selection->status == 'APPROVING'){
+                            $approving_selection = $selection;
+                            }
+                        }
 
-                   //return $approving_selection;
-
-                  // $params = [
-                  //      'firstname'=>$applicant->first_name,
-                  //      'secondname'=>$applicant->middle_name,
-                  //      'surname'=>$applicant->surname,
-                  //      'DOB'=>DateMaker::toStandardDate($applicant->birth_date),
-                  //      'gender'=>$applicant->gender == 'M'? 'Male' : 'Female',
-                  //      'impairement'=>$applicant->disabilityStatus->name,
-                  //      'form_four_indexnumber'=>$applicant->index_number,
-                  //      'form_four_year'=>explode('/',$applicant->index_number)[2],
-                  //      'form_six_indexnumber'=>$f6indexno? $f6indexno : '',
-                  //      'form_six_year'=>$f6indexno? explode('/', $f6indexno) : '',
-                  //      'NTA4_reg'=>'',
-                  //      'NTA4_grad_year'=>'',
-                  //      'NTA5_reg'=>'',
-                  //      'NTA5_grad_year'=>'',
-                  //      'email_address'=>$applicant->email,
-                  //      'mobile_number'=>str_replace('-', '',$applicant->phone),
-                  //      'address'=>$applicant->address,
-                  //      'region'=>$applicant->region->name,
-                  //      'district'=>$applicant->district->name,
-                  //      'nationality'=>$applicant->nationality,
-                  //      'next_kin_name'=>$applicant->nextOfKin->first_name.' '.$applicant->nextOfKin->first_name,
-                  //      'next_kin_phone'=>$applicant->nextOfKin->phone,
-                  //      'next_kin_address'=>$applicant->nextOfKin->address,
-                  //      'next_kin_region'=>$applicant->nextOfKin->region->name,
-                  //      'next_kin_relation'=>$applicant->nextOfKin->relationship,
-                  //      // 'programme_id'=>'13f781c5dbe25cf387f708eaf40a7a0eae6291e7',//$applicant->selections[0]->campusProgram->regulator_code,
-                  //      // 'payment_reference_number'=>'APITEST1003',//$payment->reference_no,
-                  //      // 'application_year'=>date('Y'),
-                  //      // 'intake'=>$applicant->intake->name
-                  //   ];
-
-                  //   $data = [
-                  //     'heading' => [
-                  //     'authorization' => 'e52ab037dc82d24960d9b9c678b5a6147a1ba6ea',
-                  //     'intake' => 'SEPT',
-                  //     'programme_id' => '13f781c5dbe25cf387f708eaf40a7a0eae6291e7',
-                  //     'application_year' => date('Y'),
-                  //     'level' => '5',
-                  //     'payment_reference_number' => 'APITEST1003',
-                  //     ],
-                  //     'students'=>[
-                  //         ['particulars'=>$params]
-                  //     ]
-                  //  ];
-                 if(ApplicantSubmissionLog::where('applicant_id',$applicant->id)->where('program_level_id',$request->get('program_level_id'))->count() == 0 && $approving_selection != null){
-                   //API URL
-                  $url = 'https://www.nacte.go.tz/nacteapi/index.php/api/upload';
+                 
+                        if(ApplicantSubmissionLog::where('applicant_id',$applicant->id)->where('program_level_id',$request->get('program_level_id'))->count() == 0 && $approving_selection != null){
+                   
+                            //API URL
+                            $url = 'https://www.nacte.go.tz/nacteapi/index.php/api/upload';
 
 
-                  $ch = curl_init($url);
+                            $ch = curl_init($url);
 
-                  $string = $approving_selection->campusProgram->program->ntaLevel->name;
-                  $last_character = (strlen($string) - 1);
+                            $string = $approving_selection->campusProgram->program->ntaLevel->name;
+                            $last_character = (strlen($string) - 1);
 
-                  $data = array(
-                      'heading' => array(
-                          'authorization' => 'e52ab037dc82d24960d9b9c678b5a6147a1ba6ea',
-                          'intake' => strtoupper($applicant->intake->name),
-                          'programme_id' => '13f781c5dbe25cf387f708eaf40a7a0eae6291e7',
-                          'application_year' => date('Y'),
-                          'level' => substr($string, $last_character),
-                          'payment_reference_number' => $payment->reference_no,
-                      ),
-                      'students' => array(
-                          ['particulars' => array(
-                                  'firstname' => $applicant->first_name,
-                                  'secondname' => $applicant->middle_name != null? $applicant->middle_name : '',
-                                  'surname' => $applicant->surname,
-                                  'DOB' => DateMaker::toStandardDate($applicant->birth_date),
-                                  'gender' => $applicant->gender == 'M'? 'Male' : 'Female',
-                                  'impairement' => $applicant->disabilityStatus->name,
-                                  'form_four_indexnumber' => $applicant->index_number,
-                                  'form_four_year' => explode('/',$applicant->index_number)[2],
-                                  'form_six_indexnumber' => $f6indexno? $f6indexno : '',
-                                  'form_six_year' => $f6indexno? explode('/', $f6indexno) : '',
-                                  'NTA4_reg' => $applicant->nacte_reg_no != null? $applicant->nacte_reg_no : '',
-                                  'NTA4_grad_year' => '',
-                                  'NTA5_reg' => '',
-                                  'NTA5_grad_year' => '',
-                                  'email_address' => $applicant->email,
-                                  'mobile_number' => str_replace('-', '',$applicant->phone),
-                                  'address' => $applicant->address,
-                                  'region' => $applicant->region->name,
-                                  'district' => $applicant->district->name,
-                                  'nationality' => $applicant->nationality,
-                                  'next_kin_name' => $applicant->nextOfKin->first_name.' '.$applicant->nextOfKin->surname,
-                                  'next_kin_address' => $applicant->nextOfKin->address,
-                                  'next_kin_email_address' => '',
-                                  'next_kin_phone' => $applicant->nextOfKin->phone,
-                                  'next_kin_region' => $applicant->nextOfKin->region->name,
-                                  'next_kin_relation' => $applicant->nextOfKin->relationship
-                              
-                              )
-                          ],
-                          
-                      )
-                  );
+                            $data = array(
+                                'heading' => array(
+                                    'authorization' => 'e52ab037dc82d24960d9b9c678b5a6147a1ba6ea',
+                                    'intake' => strtoupper($applicant->intake->name),
+                                    'programme_id' => '13f781c5dbe25cf387f708eaf40a7a0eae6291e7',
+                                    'application_year' => date('Y'),
+                                    'level' => substr($string, $last_character),
+                                    'payment_reference_number' => $payment->reference_no,
+                                ),
+                                'students' => array(
+                                    ['particulars' => array(
+                                            'firstname' => $applicant->first_name,
+                                            'secondname' => $applicant->middle_name != null? $applicant->middle_name : '',
+                                            'surname' => $applicant->surname,
+                                            'DOB' => DateMaker::toStandardDate($applicant->birth_date),
+                                            'gender' => $applicant->gender == 'M'? 'Male' : 'Female',
+                                            'impairement' => $applicant->disabilityStatus->name,
+                                            'form_four_indexnumber' => $applicant->index_number,
+                                            'form_four_year' => explode('/',$applicant->index_number)[2],
+                                            'form_six_indexnumber' => $f6indexno? $f6indexno : '',
+                                            'form_six_year' => $f6indexno? explode('/', $f6indexno) : '',
+                                            'NTA4_reg' => $applicant->nacte_reg_no != null? $applicant->nacte_reg_no : '',
+                                            'NTA4_grad_year' => '',
+                                            'NTA5_reg' => '',
+                                            'NTA5_grad_year' => '',
+                                            'email_address' => $applicant->email,
+                                            'mobile_number' => str_replace('-', '',$applicant->phone),
+                                            'address' => $applicant->address,
+                                            'region' => $applicant->region->name,
+                                            'district' => $applicant->district->name,
+                                            'nationality' => $applicant->nationality,
+                                            'next_kin_name' => $applicant->nextOfKin->first_name.' '.$applicant->nextOfKin->surname,
+                                            'next_kin_address' => $applicant->nextOfKin->address,
+                                            'next_kin_email_address' => '',
+                                            'next_kin_phone' => $applicant->nextOfKin->phone,
+                                            'next_kin_region' => $applicant->nextOfKin->region->name,
+                                            'next_kin_relation' => $applicant->nextOfKin->relationship
+                                        
+                                        )
+                                    ],
+                                    
+                                )
+                            );
 
                       
 
-                  $payload = json_encode(array($data));
+                            $payload = json_encode(array($data));
 
+                            //attach encoded JSON string to the POST fields
+                            curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
 
+                            //set the content type to application/json
+                            curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:application/json'));
 
-                  //attach encoded JSON string to the POST fields
-                  curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
+                            //return response instead of outputting
+                            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
-                  //set the content type to application/json
-                  curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:application/json'));
+                            //execute the POST request
+                            $result = curl_exec($ch);
 
-                  //return response instead of outputting
-                  curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                            //close cURL resource
+                            curl_close($ch);
 
-                  //execute the POST request
-                  $result = curl_exec($ch);
+                  
+                            if(isset(json_decode($result)->code)){
 
-                  //close cURL resource
-                  curl_close($ch);
+                                if(json_decode($result)->code == 200){
 
-                  //echo message
-                  //return $result;
+                                    Applicant::where('id',$applicant->id)->update(['status'=>'SUBMITTED']);
 
-                    // $url = 'http://41.93.40.137/nacteapi/index.php/api/upload';
+                                    $log = new ApplicantSubmissionLog;
+                                    $log->applicant_id = $applicant->id;
+                                    $log->program_level_id = $request->get('program_level_id');
+                                    $log->application_window_id = $request->get('application_window_id');
+                                    $log->submitted = 1;
+                                    $log->save();
+                                }
+                            }
 
-                    // $url = 'https://www.nacte.go.tz/nacteapi/index.php/api/upload';
-
-                    // $data = json_encode([$data]);
-
-                    // // return dd($data);
-
-                    // $ch = curl_init();
-                    // curl_setopt($ch, CURLOPT_URL, $url);
-                    // // For xml, change the content-type.
-                    // curl_setopt ($ch, CURLOPT_HTTPHEADER, Array("Content-Type: application/json"));
-                    // curl_setopt($ch, CURLOPT_POST, 1);
-                    // curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-                    // curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); // ask for results to be returned
-                    // // Send to remote and return data to caller.
-                    // $result = curl_exec($ch);
-                    // curl_close($ch);
-                    // return dd($result);
-                      if(isset(json_decode($result)->code)){
-                        if(json_decode($result)->code == 200){
-
-                            Applicant::where('id',$applicant->id)->update(['status'=>'SUBMITTED']);
-
-                            $log = new ApplicantSubmissionLog;
-                            $log->applicant_id = $applicant->id;
-                            $log->program_level_id = $request->get('program_level_id');
-                            $log->application_window_id = $request->get('application_window_id');
-                            $log->submitted = 1;
-                            $log->save();
                         }
-                     }
 
-                    }
+                    }                  
 
-                  }
-
-              }
+                }
 
             }  
 
@@ -3766,7 +3701,9 @@ class ApplicationController extends Controller
     public function getApplicantsFromTCU(Request $request)
     {
         if(ApplicantSubmissionLog::where('program_level_id',$request->get('program_level_id'))->where('application_window_id',$request->get('application_window_id'))->count() == 0){
-             return redirect()->back()->with('error','Applicants were not sent to TCU');
+            return redirect()->back()->with('error','Applicants were not sent to TCU');
+        } else {
+            $batch_no = 'a certain batch no';
         }
         $url = 'http://41.59.90.200/applicants/getStatus';
         $campus_program = CampusProgram::find($request->get('campus_program_id'));
@@ -3787,12 +3724,13 @@ class ApplicationController extends Controller
 
         if($array['Response']['ResponseParameters']['StatusCode'] == 200){
             foreach($array['Response']['ResponseParameters']['Applicant'] as $data){
-                $applicant = Applicant::where('index_number',$data['f4indexno'])->first();
+                $applicant = Applicant::where('index_number',$data['f4indexno'])->where('application_window_id', $request->get('application_window_id'))->first();
                 if($applicant){
-                   $applicant->multiple_admissions = $data['AdmissionStatusCode'] == 225? 1 : 0;
+                   $applicant->multiple_admissions = $data['AdmissionStatusCode'] == 225 ? 1 : 0;
+                   $applicant->batch_no = 1;
                    $applicant->save();
 
-                   $selection = ApplicantProgramSelection::where('applicant_id',$applicant)->where('status','APPROVING')->update(['status'=>'SELECTED']);
+                   $selection = ApplicantProgramSelection::where('applicant_id',$applicant)->where('status','APPROVING')->update(['status'=>'SELECTED', 'batch_no' => 1]);
                 }
             }
         }else{
@@ -3813,10 +3751,10 @@ class ApplicationController extends Controller
     public function getConfirmedFromTCU(Request $request)
     {
         if(ApplicantSubmissionLog::where('program_level_id',$request->get('program_level_id'))->where('application_window_id',$request->get('application_window_id'))->count() == 0){
-             return redirect()->back()->with('error','Applicants were not sent to TCU');
+            return redirect()->back()->with('error','Applicants were not sent to TCU');
         }
         if(ApplicantProgramSelection::where('application_window_id',$request->get('application_window_id'))->where('status','SELECTED')->count() == 0){
-             return redirect()->back()->with('error','No applicants not retrieved from TCU');
+            return redirect()->back()->with('error','No applicants not retrieved from TCU');
         }
         $url = 'http://41.59.90.200/applicants/getConfirmed';
         $campus_program = CampusProgram::find($request->get('campus_program_id'));
@@ -3831,6 +3769,7 @@ class ApplicationController extends Controller
                         </RequestParameters>
                         </Request>
                         ';
+
         $xml_response=simplexml_load_string($this->sendXmlOverPost($url,$xml_request));
         $json = json_encode($xml_response);
         $array = json_decode($json,TRUE);

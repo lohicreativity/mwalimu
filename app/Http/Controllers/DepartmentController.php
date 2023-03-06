@@ -24,7 +24,7 @@ class DepartmentController extends Controller
       $staff = User::find(Auth::user()->id)->staff;
 
       if (Auth::user()->hasRole('administrator')) {
-         $departments = Department::with('unitCategory','campuses')->paginate(20);
+         $departments = Department::with('unitCategory','campuses')->get();
          
       } else if (Auth::user()->hasRole('admission-officer')) {
 
@@ -34,7 +34,7 @@ class DepartmentController extends Controller
          ->join('campuses', 'campus_department.campus_id', 'campuses.id')
          ->join('unit_categories', 'departments.unit_category_id', 'unit_categories.id')
          ->where('campuses.id', $staff->campus_id)
-         ->paginate(20); 
+         ->get(); 
       }
 
     	$data = [
