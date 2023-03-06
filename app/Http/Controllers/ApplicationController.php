@@ -3252,7 +3252,7 @@ class ApplicationController extends Controller
            },'selections.campusProgram.program','applicationWindow','country','selections.campusProgram.campus'])->where('program_level_id',$request->get('program_level_id'))->where('status','SELECTED')->where('campus_id', $campus_id)->where('application_window_id',$request->get('application_window_id'))->get();  
         }  
         
-        return $request->get('application_window_id');
+        return $applicants;
 
    	   // Applicant::whereHas('intake.applicationWindows',function($query) use($request){
         //      $query->where('id',$request->application_window_id);
