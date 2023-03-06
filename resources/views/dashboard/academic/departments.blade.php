@@ -492,9 +492,7 @@
                 @endif
                 
                 
-                <!-- <div class="ss-pagination-links">
-                {!! $departments->render() !!}
-                </div> -->
+                
               </div>
               <!-- /.card-body -->
             </div>
