@@ -175,7 +175,7 @@
                      'required'=>true
                   ];
 
-                  $mobile_phone = 0.substr($applicant->phone, 3);
+                  $mobile_phone = substr($applicant->phone, 3);
 
               @endphp
               {!! Form::open(['url'=>'application/update-basic-info','class'=>'ss-form-processing','files'=>true]) !!}
