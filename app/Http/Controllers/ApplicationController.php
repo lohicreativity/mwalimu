@@ -873,9 +873,17 @@ class ApplicationController extends Controller
                                     Applicant::where('id',$applicant->id)->update(['status'=>'SUBMITTED']);
 
                                     $log = new ApplicantSubmissionLog;
-                                    $log->applicant_id = $applicant->id;
-                                    $log->program_level_id = $request->get('program_level_id');
+                                    $log->applicant_id          = $applicant->id;
+                                    $log->program_level_id      = $request->get('program_level_id');
                                     $log->application_window_id = $request->get('application_window_id');
+                                    if ($applicant->batch_no == null) {
+                                        if (!ApplicantSubmissionLog::where('program_level_id', $request->get('program_level_id'))->where('application_window_id', $request->get('application_window_id'))->latest()) {
+                                            $log->batch_no = 1;
+                                        } else {
+                                            // $log->batch_no = $latest_log->batch_no + 1;
+                                            $log->batch_no = ApplicantSubmissionLog::where('program_level_id', $request->get('program_level_id'))->where('application_window_id', $request->get('application_window_id'))->latest()->pluck('batch_no') + 1;
+                                        }
+                                    }
                                     $log->submitted = 1;
                                     $log->save();
                                 }
