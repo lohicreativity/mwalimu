@@ -29,7 +29,7 @@ class ProgramController extends Controller
             if($request->has('query')){
                 $programs = Program::whereHas('departments',function($query) use($staff){
                 $query->where('id',$staff->department_id);
-                })->with(['departments','ntaLevel','award'])->where('name','LIKE','%'.$request->get('query').'%')->OrWhere('code','LIKE','%'.$request->get('query').'%')->orderBy('code')->orderBy('nta_level_id',$request->get('nta_level'))->paginate(20);
+                })->with(['departments','ntaLevel','award'])->where('name','LIKE','%'.$request->get('query').'%')->OrWhere('code','LIKE','%'.$request->get('query').'%')->orderBy('code')->orderBy('nta_level_id',$request->get('nta_level'))->get();
             }else{
                 $programs = Program::whereHas('departments',function($query) use($staff){
                     $query->where('id',$staff->department_id);
@@ -37,7 +37,7 @@ class ProgramController extends Controller
                         $query->where('campus_id',$staff->campus_id);
                     },'ntaLevel','award','campusPrograms'=>function($query) use($staff){
                         $query->where('campus_id',$staff->campus_id);
-                    },])->orderBy('code')->paginate(20);
+                    },])->orderBy('code')->get();
             }
     
         }else{
@@ -49,7 +49,7 @@ class ProgramController extends Controller
 				$query->where('campus_id',$staff->campus_id);
 			},'departments'=>function($query) use($staff){
 				$query->where('campus_id',$staff->campus_id);
-			}])->where('name','LIKE','%'.$request->get('query').'%')->OrWhere('code','LIKE','%'.$request->get('query').'%')->orderBy('nta_level_id',$request->get('nta_level'))->paginate(20);
+			}])->where('name','LIKE','%'.$request->get('query').'%')->OrWhere('code','LIKE','%'.$request->get('query').'%')->orderBy('nta_level_id',$request->get('nta_level'))->get();
           }else{
              $programs = Program::whereHas('departments',function($query) use($staff){
 				$query->where('campus_id',$staff->campus_id);
@@ -57,7 +57,7 @@ class ProgramController extends Controller
 				$query->where('campus_id',$staff->campus_id);
 			},'departments'=>function($query) use($staff){
 				$query->where('campus_id',$staff->campus_id);
-			}])->orderBy('code')->paginate(20);
+			}])->orderBy('code')->get();
           }
         }
 
