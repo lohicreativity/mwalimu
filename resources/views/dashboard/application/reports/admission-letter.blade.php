@@ -262,8 +262,8 @@
         <div class="row">
             <div class="col-md-6">
               <p>Our Ref: {{ strtoupper($reference_number) }}</p>
-              <p>.............................................</p>
-              <p>.............................................</p>    
+              <p>{{ $applicant->address }}</p>
+              <p>{{ $applicant->region->name }}</p>    
             </div>
         </div>
         <!-- end of row -->
