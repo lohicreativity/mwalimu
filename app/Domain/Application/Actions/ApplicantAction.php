@@ -38,7 +38,7 @@ class ApplicantAction implements ApplicantInterface{
         $applicant->nationality = $request->get('nationality');
         $applicant->gender = $request->get('gender');
         $applicant->disability_status_id = $request->get('disability_status_id');
-        $applicant->address = 'P.O. Box '.$request->get('address');
+        $applicant->address = 'P. O. Box '.$request->get('address');
         $applicant->country_id = $request->get('country_id');
         $applicant->region_id = $request->get('region_id');
         $applicant->district_id = $request->get('district_id');

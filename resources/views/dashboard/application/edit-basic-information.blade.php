@@ -285,7 +285,7 @@
                   <div class="row">
                      <div class="form-group col-6">
                        {!! Form::label('','Mailing Address') !!}
-                       {!! Form::text('address',$applicant->address,$address) !!}
+                       {!! Form::text('address', substr($applicant->address, 9),$address) !!}
                     </div>
                     <div class="form-group col-6">
                        {!! Form::label('','Country') !!}
