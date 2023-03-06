@@ -42,8 +42,8 @@
             @if(count($applicant->selections) > 0)
               @if($applicant->confirmation_status != 'CANCELLED')
                 <div class="alert alert-success">
-                  <h3 class="text-white" style="font-size: 20px!important;"><i class="fa fa-check-circle"></i> 
-                  Congratulations! You have been successfully selected for {{ $applicant->selections[0]->campusProgram->program->name }} program</h3>
+                  <h3 class="text-white" style="font-size: 16px!important;"><i class="fa fa-check-circle"></i> 
+                  Congratulations! You have been successfully selected for {{ $applicant->selections[0]->campusProgram->program->name }} program. @if($applicant->multiple_admissions == null) Please wait for admission package @else Please <a href="{{ url('application/admission-confirmation') }}">click here</a> to confirm with us.@endif</h3>
                 </div>
               @endif
             @endif

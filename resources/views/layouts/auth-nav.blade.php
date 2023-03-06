@@ -72,20 +72,20 @@
               @endif
               @endif
               @if($applicant->status === 'SELECTED')
-              <li class="nav-item">
-                <a href="{{ url('application/basic-information') }}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Basic Information123</p>
-                </a>
-              </li>
-              @if($applicant->multiple_admissions != null)
-              <li class="nav-item">
-                <a href="{{ url('application/admission-confirmation') }}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Selection Confirmation</p>
-                </a>
-              </li>
-              @endif
+                <li class="nav-item">
+                  <a href="{{ url('application/basic-information') }}" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Basic Information</p>
+                  </a>
+                </li>
+                @if($applicant->multiple_admissions != null)
+                <li class="nav-item">
+                  <a href="{{ url('application/admission-confirmation') }}" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Selection Confirmation</p>
+                  </a>
+                </li>
+                @endif
               @endif
               @if($applicant->status === 'ADMITTED')
               @if($applicant->is_continue != 1)
