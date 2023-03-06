@@ -263,7 +263,7 @@
             <div class="col-md-6">
               <p>Our Ref: {{ strtoupper($reference_number) }}</p>
               <p>{{ $applicant->address }}</p>
-              <p>{{ $applicant->region->name }}</p>    
+              <p>{{ ucwords(strtolower($applicant->region->name)) }}</p>    
             </div>
         </div>
         <!-- end of row -->
