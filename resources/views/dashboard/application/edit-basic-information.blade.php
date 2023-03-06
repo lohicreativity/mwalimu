@@ -213,7 +213,7 @@
                     </div>
                     <div class="form-group col-3">
                        {!! Form::label('','Phone') !!}
-                       {!! Form::text('phone', 0substr($applicant->phone, 3),$phone) !!}
+                       {!! Form::text('phone', substr($applicant->phone, 3),$phone) !!}
                     </div>
                     <div class="form-group col-3">
                        {!! Form::label('','Birth date') !!}
