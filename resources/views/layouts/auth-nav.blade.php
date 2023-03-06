@@ -75,7 +75,7 @@
               <li class="nav-item">
                 <a href="{{ url('application/basic-information') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Basic Information</p>
+                  <p>Basic Information123</p>
                 </a>
               </li>
               @if($applicant->multiple_admissions != null)
