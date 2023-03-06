@@ -1283,12 +1283,16 @@ class ApplicantController extends Controller
         }
         $selection_status = true;
         if(!ApplicationWindow::where('campus_id',session('applicant_campus_id'))->where('intake_id', $applicant->intake_id)->where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('status','ACTIVE')->first()){
-           $selection_status = $applicant != null ? false : true;
+           $selection_status = $applicants != null ? true : false;
         }
+
+        $program_selection = ApplicantProgramSelection::where('applicant_id', $applicant->id)->where('application_window_id', $$applicant->application_window_id)->where('status', 'SELECTED')->first();
+
         $data = [
             'applicant'=>$applicant,
             'campus'=>Campus::find(session('applicant_campus_id')),
-            'selected_status'=>$selection_status
+            'selected_status'=>$selection_status,
+            'program_selection' => $program_selection
         ];
         return view('dashboard.application.submission',$data)->withTitle('Submission');
       }
