@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Domain\Academic\Models\Module;
 use App\Domain\Academic\Repositories\Interfaces\ModuleInterface;
 use App\Utils\SystemLocation;
+use DB;
 
 class ModuleAction implements ModuleInterface{
 	
@@ -31,7 +32,15 @@ class ModuleAction implements ModuleInterface{
                 $module->save();
             }
 
-                $module->departments()->attach([$request->get('department_id')=>['campus_id'=>$request->get('campus_id')]]);
+                $existing_module_record = DB::table('module_department')
+                ->where('module_id', $module->id)
+                ->where('campus_id', $request->get('campus_id'))
+                ->count();
+
+                if ($existing_module_record == 0) {
+                  $module->departments()->attach([$request->get('department_id')=>['campus_id'=>$request->get('campus_id')]]);
+                }
+
 	}
 
 	public function update(Request $request){
