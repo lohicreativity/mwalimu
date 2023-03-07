@@ -49,7 +49,7 @@ class SessionController extends Controller
 
 				$user = User::find(Auth::user()->id);
 				$user->username = $student->registration_number;
-				$user->password = Hash::make($student->birth_date);
+				$user->password = Hash::make($request->get('password'));
 
 				$role = Role::where('name','student')->first();
         		$user->roles()->sync([$role->id]);
