@@ -1601,7 +1601,7 @@ class StudentController extends Controller
     {
     	Auth::logout();
     	$request->session()->invalidate();
-        $request->session()->regenerateToken();
+      $request->session()->regenerateToken();
     	return redirect()->to('student/login');
     }
 }
