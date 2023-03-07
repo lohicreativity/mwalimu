@@ -2641,9 +2641,9 @@ class ApplicationController extends Controller
          }       
 
          if(str_contains($student->applicant->nationality,'Tanzania')){
-            return 'Amount TZS';
              $amount = $fee_amount->amount_in_tzs * $days * (-1);
              $currency = 'TZS';
+             return $amount;
          }else{
              $amount = $fee_amount->amount_in_usd * $days * (-1);
              $currency = 'USD';
