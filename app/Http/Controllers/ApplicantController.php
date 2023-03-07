@@ -246,11 +246,12 @@ class ApplicantController extends Controller
           }
         }else{
 
+
             if ($student) {
                return redirect()->to('application/basic-information');
+            } else {
+               return redirect()->to('application/basic-information');
             }
-
-            return redirect()->to('application/basic-information');
 
         }
         $data = [
