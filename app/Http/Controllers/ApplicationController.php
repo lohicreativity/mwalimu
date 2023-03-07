@@ -3156,12 +3156,18 @@ class ApplicationController extends Controller
     public function admissionPackage(Request $request)
     {    
          $applicant = User::find(Auth::user()->id)->applicants()->where('campus_id',session('applicant_campus_id'))->first();
+         $student = Student::where('applicant_id', $applicant->id)->first();
          $data = [
             'attachments'=>AdmissionAttachment::paginate(20),
             'applicant'=>$applicant,
             'request'=>$request
          ];
-         return view('dashboard.application.admission-package',$data)->withTitle('Admission Package');
+
+         if ($student) {
+            return redirect()->back()->with('error', 'Unable to view page');
+         } else {
+            return view('dashboard.application.admission-package',$data)->withTitle('Admission Package');
+         }
     }
 
     /**
