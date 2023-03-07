@@ -378,11 +378,7 @@ class ApplicantController extends Controller
     public function payments(Request $request)
     {
         $applicant = User::find(Auth::user()->id)->applicants()->with(['country','applicationWindow','programLevel'])->where('campus_id',session('applicant_campus_id'))->first();
-        $student = Student::where('applicant_id', $applicant->id)->first();
-
-        return $student;
-
-
+        return $applicant;
         if($applicant->is_tamisemi != 1){
             if(!ApplicationWindow::where('campus_id',session('applicant_campus_id'))->where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('status','ACTIVE')->first()){
                  return redirect()->to('application/submission')->with('error','Application window already closed');
@@ -407,11 +403,7 @@ class ApplicantController extends Controller
            'gateway_payment'=>$invoice? GatewayPayment::where('control_no',$invoice->control_no)->first() : null
         ];
 
-        if ($student) {
-            return redirect()->back()->with('error', 'Unable to view page');
-        } else {
-            return view('dashboard.application.payments',$data)->withTitle('Payments');
-        }
+        return view('dashboard.application.payments',$data)->withTitle('Payments');
     }
 
     /**
