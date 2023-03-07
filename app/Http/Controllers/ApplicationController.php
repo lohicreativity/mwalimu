@@ -3101,7 +3101,7 @@ class ApplicationController extends Controller
             'staff'=>$staff,
             'application_windows'=>ApplicationWindow::where('campus_id',$staff->campus_id)->get(),
             'awards'=>Award::all(),
-            'applicants'=>$applicants,
+            // 'applicants'=>$applicants,
             'request'=>$request
          ];
 
