@@ -2643,7 +2643,6 @@ class ApplicationController extends Controller
          if(str_contains($student->applicant->nationality,'Tanzania')){
              $amount = $fee_amount->amount_in_tzs * $days * (-1);
              $currency = 'TZS';
-             return $amount;
          }else{
              $amount = $fee_amount->amount_in_usd * $days * (-1);
              $currency = 'USD';
@@ -2910,6 +2909,8 @@ class ApplicationController extends Controller
         }catch(\Exception $e){}
         DB::commit();
         if($days < 0){
+            return $amount;
+
           return redirect()->to('application/applicants-registration')->with('error','Student successfully registered with registration number '.$student->registration_number.', but has a penalty of '.$amount.' '.$currency);
         }else{
            return redirect()->to('application/applicants-registration')->with('message','Student registered successfully with registration number '.$student->registration_number);
