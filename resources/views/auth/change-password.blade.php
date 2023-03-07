@@ -73,6 +73,10 @@
 
                  {!! Form::open(['url'=>'update-password','class'=>'ss-form-processing']) !!}
 
+                 @if($student)
+                 <input type="hidden" name="applicant_id" value="{{ $student->applicant_id }}">
+                 @endif
+
                  <div class="form-group col-6">
                    {!! Form::label('','Old password') !!}
                    {!! Form::password('old_password', $old_password) !!}
