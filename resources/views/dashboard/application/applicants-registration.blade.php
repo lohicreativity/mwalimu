@@ -71,10 +71,8 @@
                         </select>
                       </div>
                     </div>
-
-                    <span class="input-group-btn">
-                      <button class="btn btn-default" type="submit"><span class="fa fa-search"></span></button>
-                    </span>
+                    
+                    <button type="submit" class="btn btn-primary">Retrieve Applicants</button>
 
                   {!! Form::close() !!}
 
