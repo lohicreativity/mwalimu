@@ -266,7 +266,7 @@ class ApplicantController extends Controller
         $student = Student::where('applicant_id', $applicant->id)->first();
 
         if ($student) {
-            return redirect()->back();
+            return redirect()->to('application/basic-information');
         }
 
 
