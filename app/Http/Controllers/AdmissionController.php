@@ -14,6 +14,7 @@ use App\Domain\Application\Models\Applicant;
 use App\Domain\Finance\Models\GatewayPayment;
 use App\Domain\Settings\Models\Campus;
 use App\Domain\Settings\Models\Currency;
+use App\Domain\Registration\Models\Student;
 use App\Http\Controllers\NHIFService;
 use Illuminate\Support\Facades\Http;
 use App\Models\User;
@@ -29,6 +30,9 @@ class AdmissionController extends Controller
     	$applicant = User::find(Auth::user()->id)->applicants()->with(['applicationWindow','selections'=>function($query){
     		  $query->where('status','SELECTED');
     	}])->where('campus_id',session('applicant_campus_id'))->first();
+
+        $student = Student::where('applicant_id', $applicant->id)->first();
+
     	$ac_year = date('Y',strtotime($applicant->applicationWindow->end_date));
     	$study_academic_year = StudyAcademicYear::whereHas('academicYear',function($query) use($ac_year){
     		   $query->where('year','LIKE','%'.$ac_year.'/%');
@@ -135,7 +139,12 @@ class AdmissionController extends Controller
            'usd_currency'=>Currency::where('code','USD')->first(),
            'campus'=>Campus::find(session('applicant_campus_id'))
     	];
-    	return view('dashboard.admission.payments',$data)->withTitle('Payments');
+
+        if ($student) {
+            return redirect()->back()->with('error', 'Unable to view page');
+        } else {
+            return view('dashboard.admission.payments',$data)->withTitle('Payments');
+        }
     }
 
         /**
