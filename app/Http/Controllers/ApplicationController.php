@@ -3069,6 +3069,8 @@ class ApplicationController extends Controller
              return redirect()->back()->with('error','No corresponding application window');
          }
 
+         return $request->get('query');
+
         //  if($request->get('query')){
         //     $applicants = Applicant::doesntHave('student')->whereHas('selections',function($query) use($request){
         //          $query->where('status','SELECTED');
