@@ -3070,6 +3070,7 @@ class ApplicationController extends Controller
          }
 
          if ($request->get('program_level_id')) {
+
             $applicants = Applicant::doesntHave('student')->whereDoesntHave('student')->whereHas('selections',function($query) use($request){
                 $query->where('status','SELECTED');
            })->with(['intake','selections.campusProgram.program'])->where('program_level_id', $request->get('program_level_id'))->where('application_window_id',$application_window->id)->where(function($query){
@@ -3077,13 +3078,14 @@ class ApplicationController extends Controller
                   })->where(function($query){
                     $query->where('admission_confirmation_status','!==','NOT CONFIRMED')->orWhereNull('admission_confirmation_status');
                   })->where('status','ADMITTED')->get();
-           if(count($applicants) == 0){
-                 return redirect()->back()->with('error','No applicant registered within this program level');
-             }
-         } else {
-            $applicants = [];
-         }
 
+            if(count($applicants) == 0){
+                return redirect()->back()->with('error','No applicant registered within this program level');
+            } else {
+                $applicants = [];
+            }
+         }
+         
         //  if($request->get('query')){
         //     $applicants = Applicant::doesntHave('student')->whereHas('selections',function($query) use($request){
         //          $query->where('status','SELECTED');

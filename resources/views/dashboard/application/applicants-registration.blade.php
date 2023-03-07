@@ -85,6 +85,28 @@
                </div>
             </div>
 
+            @if(count($applicants) > 0)
+            <div class="card">
+              <div class="card-body">
+
+                <table class="table table-bordered ss-paginated-table">
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Sex</th>
+                      <th>Programme</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    
+                  </tbody>
+                </table>
+
+              </div>
+            </div>
+            @endif
+
            </div>
           </div>
       </div><!-- /.container-fluid -->
