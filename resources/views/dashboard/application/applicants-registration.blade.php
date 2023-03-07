@@ -46,15 +46,31 @@
                </div>
                <!-- /.card-header -->
                <div class="card-body">
-                  {!! Form::open(['url'=>'application/applicants-registration','method'=>'GET']) !!}
-                  <div class="input-group">
-                   <input type="text" name="query" placeholder="Search for applicant name or index number" class="form-control">
-                   <span class="input-group-btn">
-                     <button class="btn btn-default" type="submit"><span class="fa fa-search"></span></button>
-                   </span>
+
+                  <div class="row">
+                    <div class="col-md-6">
+                      {!! Form::label('','Application Window') !!}
+                      <select name="application_window_id" class="form-control" required>
+                        <option value="">Select Application Window</option>
+                        @foreach($application_windows as $window)
+                        <option value="{{ $window->id }}" @if($request->get('application_window_id') == $window->id) selected="selected" @endif>{{ $window->begin_date }} - {{ $window->end_date }} </option>
+                        @endforeach
+                      </select>
+                    </div>
+                    <div class="col-md-6">
+                      {!! Form::label('','Programme Level') !!}
+                      <select name="program_level_id" class="form-control" required>
+                        <option value="">Select Programme Level</option>
+                        @foreach($awards as $award)
+                        @if(str_contains($award->name,'Basic') || str_contains($award->name,'Ordinary') || str_contains($award->name,'Bachelor') || str_contains($award->name,'Masters'))
+                        <option value="{{ $award->id }}" @if($request->get('program_level_id') == $award->id) selected="selected" @endif>{{ $award->name }}</option>
+                        @endif
+                        @endforeach
+                      </select>
+                    </div>
                   </div>
-                  {!! Form::close() !!}
-                  <br>
+
+                  
                 
                  @if(count($applicants) != 0)
                   <table class="table table-bordered ss-margin-top">
@@ -80,7 +96,7 @@
                       <td>@foreach($applicant->selections as $selection)
                            @if($selection->status == 'SELECTED')
                             @if($applicant->documents_complete_status == 1 && $applicant->tuition_payment_check == 1 && $applicant->other_payment_check == 1)
-                            <a href="{{ url('application/admit-applicant/'.$applicant->id.'/'.$selection->id) }}" class="btn btn-primary">Register</a>
+                            <a href="{{ url('application/admit-applicant/'.$applicant->id.'/'.$selection->id) }}" class="btn btn-primary">Preview Registration</a>
                             @endif
                            @endif
                           @endforeach
