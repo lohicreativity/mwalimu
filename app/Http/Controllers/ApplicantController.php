@@ -224,8 +224,6 @@ class ApplicantController extends Controller
     public function dashboard(Request $request)
     {
         $applicant = User::find(Auth::user()->id)->applicants()->with('programLevel')->where('campus_id',session('applicant_campus_id'))->first();
-        $student = Student::where('applicant_id', $applicant->id)->first();
-
         if($applicant->basic_info_complete_status == 1 && $applicant->status == null){
           if($applicant->next_of_kin_complete_status == 1){
               if($applicant->payment_complete_status == 1){
@@ -245,17 +243,10 @@ class ApplicantController extends Controller
               return redirect()->to('application/next-of-kin');
           }
         }else{
-
-
-            if ($student) {
-               return redirect()->to('application/basic-information');
-            } else {
-               return redirect()->to('application/basic-information');
-            }
-
+            return redirect()->to('application/basic-information');
         }
         $data = [
-           'applicant'=>$applicant
+           'appliant'=>$applicant
         ];
         return view('dashboard.application.dashboard',$data)->withTitle('Dashboard');
     }
