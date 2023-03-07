@@ -3069,7 +3069,20 @@ class ApplicationController extends Controller
              return redirect()->back()->with('error','No corresponding application window');
          }
 
-         return $request->get('query');
+         if ($request->get('program_level_id')) {
+            $applicants = Applicant::doesntHave('student')->whereDoesntHave('student')->whereHas('selections',function($query) use($request){
+                $query->where('status','SELECTED');
+           })->with(['intake','selections.campusProgram.program'])->where('program_level_id', $request->get('program_level_id'))->where('application_window_id',$application_window->id)->where(function($query){
+                    $query->where('confirmation_status','!==','CANCELLED')->orWhere('confirmation_status','!==','TRANSFERED')->orWhereNull('confirmation_status');
+                  })->where(function($query){
+                    $query->where('admission_confirmation_status','!==','NOT CONFIRMED')->orWhereNull('admission_confirmation_status');
+                  })->where('status','ADMITTED')->get();
+           if(count($applicants) == 0){
+                 return redirect()->back()->with('error','No applicant registered within this program level');
+             }
+         } else {
+            $applicants = [];
+         }
 
         //  if($request->get('query')){
         //     $applicants = Applicant::doesntHave('student')->whereHas('selections',function($query) use($request){
@@ -3084,7 +3097,7 @@ class ApplicationController extends Controller
         //       if(count($applicants) == 0){
         //           return redirect()->back()->with('error','No applicant with searched name or index number or already registered');
         //       }
-        //  }elseif($request->get('index_number')){
+        //  }elseif($request->get('')){
         //     $applicants = Applicant::doesntHave('student')->whereDoesntHave('student')->whereHas('selections',function($query) use($request){
         //          $query->where('status','SELECTED');
         //     })->with(['intake','selections.campusProgram.program'])->where('index_number','LIKE','%'.$request->get('index_number').'%')->where('application_window_id',$application_window->id)->where(function($query){
@@ -3097,13 +3110,13 @@ class ApplicationController extends Controller
         //       }
         //  }else{
         //     $applicants = [];
-        //  }
+        // //  }
 
          $data = [
             'staff'=>$staff,
             'application_windows'=>ApplicationWindow::where('campus_id',$staff->campus_id)->get(),
             'awards'=>Award::all(),
-            // 'applicants'=>$applicants,
+            'applicants'=>$applicants,
             'request'=>$request
          ];
 
