@@ -85,7 +85,7 @@
                </div>
             </div>
 
-            @if(count($applicants) > 0)
+            @if(count($applicants) != 0)
             <div class="card">
               <div class="card-body">
 
