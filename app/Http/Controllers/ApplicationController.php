@@ -3081,7 +3081,7 @@ class ApplicationController extends Controller
 
             if(count($applicants) == 0){
                 $applicants = [];
-                return redirect()->back()->with('error','No applicant registered within this program level');
+                return redirect('application/applicants-registration?application_window_id=.$application_window->id')->with('error','No applicant registered within this program level');
             }
          } else {
             $applicants = [];
