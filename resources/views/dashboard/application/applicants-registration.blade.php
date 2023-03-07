@@ -72,7 +72,7 @@
                       </div>
                     </div>
                     
-                    <div>
+                    <div class="mt-2">
                       <button type="submit" class="btn btn-primary">Retrieve Applicants</button>
                     </div>
 
