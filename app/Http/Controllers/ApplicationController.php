@@ -2558,7 +2558,7 @@ class ApplicationController extends Controller
         $user->email = $student->email;
         // $password = strtoupper(Util::randString(8));
         // $user->password = Hash::make($password);
-        $user->must_update_password = 1;
+        // $user->must_update_password = 1;
         $user->save();
 
         // $role = Role::where('name','student')->first();
