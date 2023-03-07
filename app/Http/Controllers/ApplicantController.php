@@ -246,7 +246,7 @@ class ApplicantController extends Controller
             return redirect()->to('application/basic-information');
         }
         $data = [
-           'appliant'=>$applicant
+           'applicant'=>$applicant
         ];
         return view('dashboard.application.dashboard',$data)->withTitle('Dashboard');
     }
@@ -262,6 +262,12 @@ class ApplicantController extends Controller
             $query->where('status', 'SELECTED');
         }])
         ->where('campus_id',session('applicant_campus_id'))->first();
+
+        $student = Student::where('applicant_id', $applicant->id)->first();
+
+        if ($student) {
+            return redirect()->back();
+        }
 
 
         if($applicant->is_tamisemi !== 1 && $applicant->is_transfered != 1){
