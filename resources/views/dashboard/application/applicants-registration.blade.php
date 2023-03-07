@@ -93,8 +93,10 @@
                   <thead>
                     <tr>
                       <th>Name</th>
+                      <th>Index Number</th>
                       <th>Sex</th>
                       <th>Programme</th>
+                      <th>Status</th>
                       <th>Action</th>
                     </tr>
                   </thead>
@@ -102,6 +104,7 @@
                     @foreach($applicants as $applicant)
                       <tr>
                           <td>{{ $applicant->first_name }} {{ $applicant->middle_name }} {{ $applicant->surname }}</td>
+                          <td>{{ $applicant->index_number }}</td>
                           <td>{{ $applicant->gender }}</td>
                           <td>@foreach($applicant->selections as $selection)
                               @if($selection->status == 'SELECTED')
@@ -109,6 +112,7 @@
                               @endif
                               @endforeach
                           </td>
+                          <td><button class="btn btn-success">{{ $applicant->status }}</button></td>
                           <td>@foreach($applicant->selections as $selection)
                               @if($selection->status == 'SELECTED')
                                 @if($applicant->documents_complete_status == 1 && $applicant->tuition_payment_check == 1 && $applicant->other_payment_check == 1)
