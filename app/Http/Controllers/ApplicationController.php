@@ -2447,7 +2447,7 @@ class ApplicationController extends Controller
 
                 } elseif (str_contains(strtolower($selection->campusProgram->program->name), 'certificate')) {
 
-                    return 123;
+                    return $selection->campusProgram->program->name;
 
                     $stud_group = 'C'.$stud_group[1].'P3';
 
