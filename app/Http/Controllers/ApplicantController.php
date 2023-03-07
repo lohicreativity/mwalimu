@@ -378,6 +378,8 @@ class ApplicantController extends Controller
     public function payments(Request $request)
     {
         $applicant = User::find(Auth::user()->id)->applicants()->with(['country','applicationWindow','programLevel'])->where('campus_id',session('applicant_campus_id'))->first();
+        $student = Student::where('applicant_id', $applicant->id)->first();
+
         if($applicant->is_tamisemi != 1){
             if(!ApplicationWindow::where('campus_id',session('applicant_campus_id'))->where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('status','ACTIVE')->first()){
                  return redirect()->to('application/submission')->with('error','Application window already closed');
@@ -402,7 +404,11 @@ class ApplicantController extends Controller
            'gateway_payment'=>$invoice? GatewayPayment::where('control_no',$invoice->control_no)->first() : null
         ];
 
-        return view('dashboard.application.payments',$data)->withTitle('Payments');
+        if ($student) {
+            return redirect()->back()->with('error', 'Unable to view page');
+        } else {
+            return view('dashboard.application.payments',$data)->withTitle('Payments');
+        }
     }
 
     /**
@@ -1237,6 +1243,7 @@ class ApplicantController extends Controller
     public function uploadDocuments(Request $request)
     {
        $applicant = User::find(Auth::user()->id)->applicants()->with('programLevel')->where('campus_id',session('applicant_campus_id'))->first();
+       $student = Student::where('applicant_id', $applicant->id)->first();
        // if($applicant->is_tamisemi != 1){
        //   if(!ApplicationWindow::where('campus_id',session('applicant_campus_id'))->where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('status','ACTIVE')->first()){
        //         return redirect()->to('application/submission')->with('error','Application window already closed');
@@ -1246,7 +1253,12 @@ class ApplicantController extends Controller
           'applicant'=>$applicant,
           'campus'=>Campus::find(session('applicant_campus_id')),
        ];
-       return view('dashboard.application.upload-documents',$data)->withTitle('Upload Documents');
+
+       if ($student) {
+         return redirect()->back()->with('error', 'Unable to view page');
+       } else {
+         return view('dashboard.application.upload-documents',$data)->withTitle('Upload Documents');
+       }
     }
 
     /**
@@ -1495,6 +1507,8 @@ class ApplicantController extends Controller
     public function showOtherInformation(Request $request)
     {
         $applicant = User::find(Auth::user()->id)->applicants()->with(['insurances','programLevel'])->where('campus_id',session('applicant_campus_id'))->first();
+        $student = Student::where('applicant_id', $applicant->id)->first();
+
         $program_fee_invoice = Invoice::whereHas('feeType',function($query){
                    $query->where('name','LIKE','%Tuition%');
         })->with('gatewayPayment')->where('payable_id',$applicant->id)->where('payable_type','applicant')->first();
@@ -1502,7 +1516,12 @@ class ApplicantController extends Controller
            'applicant'=>$applicant,
            'program_fee_invoice'=>$program_fee_invoice
         ];
-        return view('dashboard.application.other-information',$data)->withTitle('Other Information');
+
+        if ($student) {
+            return redirect()->back()->with('error', 'Unable to view page');
+        } else {
+            return view('dashboard.application.other-information',$data)->withTitle('Other Information');
+        }
     }
 
     /**
@@ -1534,6 +1553,8 @@ class ApplicantController extends Controller
     public function showPostponementRequest(Request $request)
     {
          $applicant = User::find(Auth::user()->id)->applicants()->where('campus_id',session('applicant_campus_id'))->first();
+         $student = Student::where('applicant_id', $applicant->id)->first();
+
          $program_fee_invoice = Invoice::whereHas('feeType',function($query){
                    $query->where('name','LIKE','%Tuition%');
          })->with('gatewayPayment')->where('payable_id',$applicant->id)->where('payable_type','applicant')->first();
@@ -1541,7 +1562,12 @@ class ApplicantController extends Controller
            'applicant'=>$applicant,
            'program_fee_invoice'=>$program_fee_invoice
          ];
-         return view('dashboard.application.other-info-postponement',$data)->withTitle('Postponement Request');
+
+         if ($student) {
+            return redirect()->back()->with('error', 'Unable to view page');
+         } else {
+            return view('dashboard.application.other-info-postponement',$data)->withTitle('Postponement Request');
+         }
     }
 
     /**
