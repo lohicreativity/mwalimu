@@ -2439,8 +2439,6 @@ class ApplicationController extends Controller
             //    $stud_group =  $applicant->programLevel->code.'Z'.str_replace('.','',$selection->campusProgram->program->code);
             }  elseif (str_contains($applicant->campus->name,'Pemba')) {
 
-                return 123;
-
                 $program_code = $prog_code[0].'P3.'.$prog_code[1];
 
                 if (str_contains(strtolower($selection->campusProgram->program->name), 'diploma')) {
@@ -2448,6 +2446,8 @@ class ApplicationController extends Controller
                     $stud_group = substr($stud_group[0], 1, 1).$stud_group[1].'P3';
 
                 } elseif (str_contains(strtolower($selection->campusProgram->program->name), 'certificate')) {
+
+                    return 123;
 
                     $stud_group = 'C'.$stud_group[1].'P3';
 
