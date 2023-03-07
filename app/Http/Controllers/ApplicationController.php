@@ -2404,6 +2404,8 @@ class ApplicationController extends Controller
 
         $stud_group = explode('.', $selection->campusProgram->program->code);
 
+        return $selection->campusProgram->program->name;
+
 
         if(str_contains($applicant->intake->name,'March')){
 
@@ -2446,8 +2448,6 @@ class ApplicationController extends Controller
                     $stud_group = substr($stud_group[0], 1, 1).$stud_group[1].'P3';
 
                 } elseif (str_contains(strtolower($selection->campusProgram->program->name), 'certificate')) {
-
-                    return $selection->campusProgram->program->name;
 
                     $stud_group = 'C'.$stud_group[1].'P3';
 
