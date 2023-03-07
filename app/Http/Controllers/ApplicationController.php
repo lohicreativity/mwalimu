@@ -2820,7 +2820,7 @@ class ApplicationController extends Controller
         // $acpac->query("INSERT INTO receipts (BANK,BANKNAME,RCPNUMBER,RCPDATE,RCPDESC,IDCUST,NAMECUST,INVOICE,AMTAPPLIED,IMPORTED,IMPDATE) VALUES ('B','CRDB','REC02','10','TF','MNMA002','TEST','INV002','100.0','B','10')");
         $next_of_kin_email = $applicant->nextOfKin->email? $applicant->nextOfKin->email : 'UNKNOWN';
 
-        return $stud_reg;
+        return $stud_group;
 
         // return $stud_reg."<br>".$stud_group."<br>".$stud_name."<br>".$applicant->address."<br>".$applcant->district->name;
         
