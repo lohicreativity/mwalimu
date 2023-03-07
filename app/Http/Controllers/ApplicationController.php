@@ -2404,8 +2404,6 @@ class ApplicationController extends Controller
 
         $stud_group = explode('.', $selection->campusProgram->program->code);
 
-        return $stud_group;
-
 
         if(str_contains($applicant->intake->name,'March')){
 
@@ -2440,6 +2438,8 @@ class ApplicationController extends Controller
             //    //$stud_group =  $applicant->program_level_id.$selection->campusProgram->id.$year;
             //    $stud_group =  $applicant->programLevel->code.'Z'.str_replace('.','',$selection->campusProgram->program->code);
             }  elseif (str_contains($applicant->campus->name,'Pemba')) {
+
+                return 123;
 
                 $program_code = $prog_code[0].'P3.'.$prog_code[1];
 
