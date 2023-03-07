@@ -89,7 +89,7 @@
             <div class="card">
               <div class="card-body">
 
-                <table class="table table-bordered ss-paginated-table">
+                <table class="table table-bordered ss-margin-top">
                   <thead>
                     <tr>
                       <th>Name</th>
