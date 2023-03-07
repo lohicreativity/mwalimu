@@ -72,7 +72,9 @@
                       </div>
                     </div>
                     
-                    <button type="submit" class="btn btn-primary">Retrieve Applicants</button>
+                    <div>
+                      <button type="submit" class="btn btn-primary">Retrieve Applicants</button>
+                    </div>
 
                   {!! Form::close() !!}
 
