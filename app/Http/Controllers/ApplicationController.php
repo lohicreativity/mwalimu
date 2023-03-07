@@ -3237,8 +3237,6 @@ class ApplicationController extends Controller
 
         $campus_id = $staff->campus_id;
 
-        return $request->get('application_window_id');
-
         if (Auth::user()->hasRole('administrator')) {
             $applicants = Applicant::whereHas('selections',function($query) use($request){
                 $query->where('status','SELECTED');
