@@ -53,7 +53,7 @@
               @elseif($student)
                 <div class="alert alert-success">
                   <h3 class="text-white" style="font-size: 18px!important;"><i class="fa fa-check-circle"></i> 
-                  Congratulations! You have been successfully registered. Your registration number is {{ $student->registration_number }} and <a href="{{ url('application/change-password') }}">click here</a> to change your password</h3>
+                  Congratulations! You have been successfully registered. Your registration number is {{ $student->registration_number }} and <a href="{{ url('change-password') }}">click here</a> to change your password</h3>
                 </div>
               @endif
             @endif
