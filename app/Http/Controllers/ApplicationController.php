@@ -3080,6 +3080,7 @@ class ApplicationController extends Controller
                   })->where('status','ADMITTED')->get();
 
             if(count($applicants) == 0){
+                $applicants = [];
                 return redirect()->back()->with('error','No applicant registered within this program level');
             }
          } else {
