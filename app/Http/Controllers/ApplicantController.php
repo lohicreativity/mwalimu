@@ -122,9 +122,8 @@ class ApplicantController extends Controller
 
         if(Auth::attempt($credentials)){
 
-            if ($applicant || $appl) {
-               
-               session(['applicant_campus_id'=>$request->get('campus_id')]);
+
+            session(['applicant_campus_id'=>$request->get('campus_id')]);
             
             if(!Applicant::where('user_id',Auth::user()->id)->where('campus_id',$request->get('campus_id'))->first()){
                 $app = Applicant::where('user_id',Auth::user()->id)->where('campus_id',0)->first();
@@ -210,14 +209,13 @@ class ApplicantController extends Controller
                     }
             }
           }
-            }
-
-
-            
             
             
             session(['applicant_campus_id'=>$request->get('campus_id')]);
-            return redirect()->to('application/dashboard')->with('message','Logged in successfully');
+
+            if ($applicant || $appl) {
+               return redirect()->to('application/dashboard')->with('message','Logged in successfully');
+            }
         }else{
            return redirect()->back()->with('error','Incorrect index number or password');
         }
