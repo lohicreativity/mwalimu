@@ -99,7 +99,26 @@
                     </tr>
                   </thead>
                   <tbody>
-                    
+                    @foreach($applicants as $applicant)
+                      <tr>
+                          <td>{{ $applicant->first_name }} {{ $applicant->middle_name }} {{ $applicant->surname }}</td>
+                          <td>{{ $applicant->gender }}</td>
+                          <td>@foreach($applicant->selections as $selection)
+                              @if($selection->status == 'SELECTED')
+                              {{ $selection->campusProgram->program->name }}
+                              @endif
+                              @endforeach
+                          </td>
+                          <td>@foreach($applicant->selections as $selection)
+                              @if($selection->status == 'SELECTED')
+                                @if($applicant->documents_complete_status == 1 && $applicant->tuition_payment_check == 1 && $applicant->other_payment_check == 1)
+                                <a href="{{ url('application/admit-applicant/'.$applicant->id.'/'.$selection->id) }}" class="btn btn-primary">Preview Registration</a>
+                                @endif
+                              @endif
+                              @endforeach
+                          </td>
+                      </tr>
+                    @endforeach
                   </tbody>
                 </table>
 
