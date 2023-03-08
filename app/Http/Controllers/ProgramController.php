@@ -58,6 +58,8 @@ class ProgramController extends Controller
 			},'departments'=>function($query) use($staff){
 				$query->where('campus_id',$staff->campus_id);
 			}])->orderBy('code')->get();
+
+            return $programs;
           }
         }
 
