@@ -37,8 +37,9 @@ Route::get('batch-processing', function () {
 
      $batch = ApplicantProgramSelection::where('application_window_id', 1)->where('status', 'SELECTED')->first();
 
-     return $batch->batch_no;
+     $current_batch = $batch->batch_no + 1;
 
+     $update_selections_batch = ApplicantProgramSelection::where('application_window_id', 1)->update(['batch_no' => $current_batch]);
 
 });
 
