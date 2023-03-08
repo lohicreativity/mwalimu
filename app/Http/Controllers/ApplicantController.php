@@ -258,7 +258,9 @@ class ApplicantController extends Controller
     {
         $applicant = User::find(Auth::user()->id)
         ->applicants()
-        ->with(['programLevel', 'selections.campusProgram.program'])
+        ->with(['programLevel', 'selections.campusProgram.program', 'selections' => function ($query) {
+            $query->where('status', 'SELECTED');
+        }])
         ->where('campus_id',session('applicant_campus_id'))->first();
 
 
