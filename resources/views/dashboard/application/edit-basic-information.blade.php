@@ -43,7 +43,7 @@
             <div class="alert alert-danger">
               <h3 class="text-white" style="font-size: 18px!important;">
                 <i class="fa fa-times-circle"></i> 
-                Sorry you have not been selected. Please <a href="#">click here</a> to select a new program.
+                Sorry you have not been selected. Please <a href="#">click here</a> to select a new program123.
               </h3>
             </div>      
             
