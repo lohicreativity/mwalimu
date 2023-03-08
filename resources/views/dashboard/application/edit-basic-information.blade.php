@@ -47,31 +47,37 @@
               </h3>
             </div>      
             
-            @if(count($applicant->selections) > 0)
-              @if($applicant->selections[0]->status == 'PENDING')
-              <div class="alert alert-danger">
-                <h3 class="text-white" style="font-size: 18px!important;">
-                  <i class="fa fa-times-circle"></i> 
-                  Sorry you have not been selected. Please <a href="#">click here</a> to select a new program.
-                </h3>
-              </div>
-              @elseif($applicant->confirmation_status != 'CANCELLED' && $applicant->status != 'ADMITTED')
-                <div class="alert alert-success">
-                  <h3 class="text-white" style="font-size: 18px!important;"><i class="fa fa-check-circle"></i> 
-                  Congratulations! You have been successfully selected for {{ $applicant->selections[0]->campusProgram->program->name }} program. @if($applicant->multiple_admissions == null) Please wait for admission package. @else Please <a href="{{ url('application/admission-confirmation') }}">click here</a> to confirm with us.@endif</h3>
+              @if(count($applicant->selections) > 0)
+                @if($applicant->selections[0]->status == 'PENDING')
+                <div class="alert alert-danger">
+                  <h3 class="text-white" style="font-size: 18px!important;">
+                    <i class="fa fa-times-circle"></i> 
+                    Sorry you have not been selected. Please <a href="#">click here</a> to select a new program.
+                  </h3>
                 </div>
-              @elseif($applicant->status == 'ADMITTED' && !$student)
-                <div class="alert alert-success">
-                  <h3 class="text-white" style="font-size: 18px!important;"><i class="fa fa-check-circle"></i> 
-                  Congratulations! You have been successfully admitted to {{ $applicant->selections[0]->campusProgram->program->name }} program.</h3>
-                </div>
-              @elseif($student)
-                <div class="alert alert-success">
-                  <h3 class="text-white" style="font-size: 18px!important;"><i class="fa fa-check-circle"></i> 
-                  Congratulations! You have been successfully registered. Your registration number is <strong>{{ $student->registration_number }}</strong>. <a href="{{ url('change-password') }}">Click here</a> to change your password</h3>
-                </div>                
+                @elseif($applicant->confirmation_status != 'CANCELLED' && $applicant->status != 'ADMITTED')
+                  <div class="alert alert-success">
+                    <h3 class="text-white" style="font-size: 18px!important;"><i class="fa fa-check-circle"></i> 
+                    Congratulations! You have been successfully selected for {{ $applicant->selections[0]->campusProgram->program->name }} program. @if($applicant->multiple_admissions == null) Please wait for admission package. @else Please <a href="{{ url('application/admission-confirmation') }}">click here</a> to confirm with us.@endif</h3>
+                  </div>
+                @elseif($applicant->status == 'ADMITTED' && !$student)
+                  <div class="alert alert-success">
+                    <h3 class="text-white" style="font-size: 18px!important;"><i class="fa fa-check-circle"></i> 
+                    Congratulations! You have been successfully admitted to {{ $applicant->selections[0]->campusProgram->program->name }} program.</h3>
+                  </div>
+                @elseif($student)
+                  <div class="alert alert-success">
+                    <h3 class="text-white" style="font-size: 18px!important;"><i class="fa fa-check-circle"></i> 
+                    Congratulations! You have been successfully registered. Your registration number is <strong>{{ $student->registration_number }}</strong>. <a href="{{ url('change-password') }}">Click here</a> to change your password</h3>
+                  </div>                
+                @endif
               @endif
-            @endif
+            @else 
+            <div class="alert alert-success">
+              <h3 class="text-white" style="font-size: 18px!important;"><i class="fa fa-check-circle"></i> 
+                Your application is still in progress.
+              </h3>
+            </div>
             @endif
 
             
