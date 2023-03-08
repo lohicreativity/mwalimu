@@ -43,7 +43,7 @@ Route::get('batch-processing', function () {
      $update_selections_batch = ApplicantProgramSelection::where('application_window_id', 1)->update(['batch_no' => $current_batch]);
      
      $update_applicant = Applicant::where('application_window_id', 1)
-     ->where(function(Builder $query) {
+     ->where(function($query) {
           $query->where('status', null)
                 ->orWhere('status', 'SELECTED');
      })
