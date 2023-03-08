@@ -35,9 +35,9 @@ use App\Domain\Application\Models\ApplicantProgramSelection;
 
 Route::get('batch-processing', function () {
 
-     $max_batch = ApplicantProgramSelection::where('application_window_id', 1)->where('status', 'SELECTED')->pluck('batch_no');
+     $batch = ApplicantProgramSelection::where('application_window_id', 1)->where('status', 'SELECTED')->first();
 
-     return $max_batch;
+     return $batch->batch_no;
 
 
 });
