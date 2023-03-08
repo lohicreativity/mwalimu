@@ -21,6 +21,8 @@ use App\Domain\Finance\Models\LoanAllocation;
 use App\Domain\Finance\Models\PaymentReconciliation;
 use App\Domain\Registration\Models\Student;
 use App\Domain\Application\Models\ApplicantProgramSelection;
+use App\Domain\Application\Models\Applicant;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -35,12 +37,19 @@ use App\Domain\Application\Models\ApplicantProgramSelection;
 
 Route::get('batch-processing', function () {
 
-     $batch = ApplicantProgramSelection::where('application_window_id', 1)->first();
+     $batch = ApplicantProgramSelection::where('application_window_id', 1)->where('status', 'SELECTED')->first();
 
      $current_batch = $batch->batch_no + 1;
 
      $update_selections_batch = ApplicantProgramSelection::where('application_window_id', 1)->update(['batch_no' => $current_batch]);
      
+     $update_applicant = Applicant::where('application_window_id', 1)
+     ->where(function(Builder $query) {
+          $query->where('status', null)
+                ->orWhere('status', 'SELECTED');
+     })
+     ->where('batch_no', 0)
+     ->update(['batch_no' => $current_batch]);
 
 
 });
