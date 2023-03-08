@@ -312,6 +312,11 @@ class ApplicantController extends Controller
 
 
 
+         $check_selected_applicant = ApplicantProgramSelections::where('application_window_id', $applicant->application_window_id)
+         ->where(function($query) {
+            $query->where('status', 'SELECTED')
+                  ->orWhere('status', 'PENDING');
+        });
 
 
 
@@ -320,6 +325,7 @@ class ApplicantController extends Controller
            'applicant'=>$applicant,
            'student' => Student::where('applicant_id', $applicant->id)->first(),
            'selection_status' => $selection_status,
+           'check_selected_applicant' => $check_selected_applicant,
            'application_window'=>ApplicationWindow::where('campus_id',session('applicant_campus_id'))->where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->first(),
            'campus'=>Campus::find(session('applicant_campus_id')),
            'countries'=>Country::all(),

@@ -40,12 +40,6 @@
           <div class="col-12">
 
             @if($selection_status)
-            <div class="alert alert-danger">
-              <h3 class="text-white" style="font-size: 18px!important;">
-                <i class="fa fa-times-circle"></i> 
-                Sorry you have not been selected. Please <a href="#">click here</a> to select a new program123.
-              </h3>
-            </div>      
             
               @if(count($applicant->selections) > 0)
                 @if($applicant->selections[0]->status == 'PENDING')
