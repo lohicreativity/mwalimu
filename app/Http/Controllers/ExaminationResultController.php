@@ -581,6 +581,7 @@ class ExaminationResultController extends Controller
                         }else{
                           $remark->class = null;
                         }
+						return $gpa_class->name;
                         $remark->serialized = count($supp_exams) != 0? serialize(['supp_exams'=>$supp_exams,'carry_exams'=>$carry_exams,'retake_exams'=>$retake_exams]) : null;
                         $remark->save();
                  }
