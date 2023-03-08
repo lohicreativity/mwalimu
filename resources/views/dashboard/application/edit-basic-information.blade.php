@@ -63,6 +63,13 @@
                   Congratulations! You have been successfully registered. Your registration number is <strong>{{ $student->registration_number }}</strong>. <a href="{{ url('change-password') }}">Click here</a> to change your password</h3>
                 </div>                
               @endif
+            @else 
+            <div class="alert alert-danger">
+              <h3 class="text-white" style="font-size: 18px!important;">
+                <i class="fa fa-times-circle"></i> 
+                Sorry you have not been selected. Please <a href="#">click here</a> to select a new program.
+              </h3>
+            </div>
             @endif
             
            
