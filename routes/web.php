@@ -35,16 +35,14 @@ use App\Domain\Application\Models\ApplicantProgramSelection;
 
 Route::get('batch-processing', function () {
 
-     $batch = ApplicantProgramSelection::where('application_window_id', 1)->get();
+     $batch = ApplicantProgramSelection::where('application_window_id', 1)->first();
 
-     return $batch;
+     if ($batch->batch_no == 0) {
+          
+          $current_batch = $batch->batch_no + 1;
 
-     // if ($batch->batch_no == 0) {
-
-     //      $current_batch = $batch->batch_no + 1;
-
-     //      $update_selections_batch = ApplicantProgramSelection::where('application_window_id', 1)->update(['batch_no' => $current_batch]);
-     // }
+          $update_selections_batch = ApplicantProgramSelection::where('application_window_id', 1)->update(['batch_no' => $current_batch]);
+     }
 
      
 
