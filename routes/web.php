@@ -20,6 +20,8 @@ use App\Domain\Finance\Models\GatewayPayment;
 use App\Domain\Finance\Models\LoanAllocation;
 use App\Domain\Finance\Models\PaymentReconciliation;
 use App\Domain\Registration\Models\Student;
+use App\Domain\Application\Models\ApplicantProgramSelection;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -30,6 +32,15 @@ use App\Domain\Registration\Models\Student;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+Route::get('batch-processing', function () {
+
+     $max_batch = ApplicantProgramSelection::where('application_window_id', 1)->where('status', 'SELECTED')->first()->pluck('batch_no');
+
+     return $max_batch;
+
+
+});
 
 Route::get('test',function(){
 	// $payment = App\Domain\Finance\Models\NactePayment::latest()->first();

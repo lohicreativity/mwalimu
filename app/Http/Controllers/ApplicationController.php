@@ -3739,11 +3739,12 @@ class ApplicationController extends Controller
     {
         if(ApplicantSubmissionLog::where('program_level_id',$request->get('program_level_id'))->where('application_window_id',$request->get('application_window_id'))->count() == 0){
             return redirect()->back()->with('error','Applicants were not sent to TCU');
-        } else {
-            $batch_no = 'a certain batch no';
-        }
+        } 
+
         $url = 'http://41.59.90.200/applicants/getStatus';
+
         $campus_program = CampusProgram::find($request->get('campus_program_id'));
+
         $xml_request = '<?xml version="1.0" encoding="UTF-8"?>
                         <Request>
                         <UsernameToken>
@@ -3767,6 +3768,7 @@ class ApplicationController extends Controller
                    $applicant->save();
 
                    $selection = ApplicantProgramSelection::where('applicant_id',$applicant)->where('status','APPROVING')->update(['status'=>'SELECTED']);
+
                 }
             }
         }else{
