@@ -62,8 +62,6 @@ class ProgramController extends Controller
           }
         }
 
-        // return $programs[0]->departments[0];
-
     	$data = [
            'programs'=>$programs,
            'departments'=>Department::whereHas('campuses',function($query) use($staff){
