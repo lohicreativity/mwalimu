@@ -40,7 +40,7 @@
           <div class="col-12">
 
             @if(count($applicant->selections) > 0)
-              @if($applicant->selections->status == 'PENDING')
+              @if($applicant->selections[0]->status == 'PENDING')
               <div class="alert alert-danger">
                 <h3 class="text-white" style="font-size: 18px!important;">
                   <i class="fa fa-times-circle"></i> 
