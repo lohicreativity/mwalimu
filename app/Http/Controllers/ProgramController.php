@@ -59,9 +59,10 @@ class ProgramController extends Controller
 				$query->where('campus_id',$staff->campus_id);
 			}])->orderBy('code')->get();
 
-            return $programs;
           }
         }
+
+        return $programs;
 
     	$data = [
            'programs'=>$programs,
