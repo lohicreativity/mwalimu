@@ -21,7 +21,6 @@ use App\Domain\Finance\Models\LoanAllocation;
 use App\Domain\Finance\Models\PaymentReconciliation;
 use App\Domain\Registration\Models\Student;
 use App\Domain\Application\Models\ApplicantProgramSelection;
-use App\Domain\Application\Models\Applicant;
 
 
 /*
