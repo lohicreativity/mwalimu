@@ -312,7 +312,7 @@ class ApplicantController extends Controller
 
 
 
-         $check_selected_applicant = ApplicationProgramSelections::where('application_window_id', $applicant->application_window_id)
+         $check_selected_applicant = ApplicantProgramSelection::where('application_window_id', $applicant->application_window_id)
          ->where(function($query) {
             $query->where('status', 'SELECTED')
                   ->orWhere('status', 'PENDING');
