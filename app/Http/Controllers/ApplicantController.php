@@ -320,7 +320,7 @@ class ApplicantController extends Controller
         $data = [
            'applicant'=>$applicant,
            'student' => Student::where('applicant_id', $applicant->id)->first(),
-           'selections_status' => $selection_status,
+           'selection_status' => $selection_status,
            'application_window'=>ApplicationWindow::where('campus_id',session('applicant_campus_id'))->where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->first(),
            'campus'=>Campus::find(session('applicant_campus_id')),
            'countries'=>Country::all(),
