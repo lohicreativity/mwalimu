@@ -300,10 +300,27 @@ class ApplicantController extends Controller
             }
         }
 
+
+
+        $selected_applicants = Applicant::where('program_level_id', $applicant->program_level_id)->where('submission_complete_status', 1)->where('application_window_id', $applicant->application_window_id)->whereNotNull('status')->first();
+
+        
+        $selection_status = true;
+
+        if(!ApplicationWindow::where('campus_id',session('applicant_campus_id'))->where('intake_id', $applicant->intake_id)->where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('status','ACTIVE')->first()){
+           $selection_status = $applicants != null ? true : false;
+         }
+
+
+
+
+
+
         
         $data = [
            'applicant'=>$applicant,
            'student' => Student::where('applicant_id', $applicant->id)->first(),
+           'selections_status' => $selection_status,
            'application_window'=>ApplicationWindow::where('campus_id',session('applicant_campus_id'))->where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->first(),
            'campus'=>Campus::find(session('applicant_campus_id')),
            'countries'=>Country::all(),
