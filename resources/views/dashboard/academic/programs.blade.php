@@ -174,7 +174,7 @@
                 <h3 class="card-title">{{ __('List of Programmes') }}</h3>
               </div>
               <!-- /.card-header -->
-              <div class="card-body">
+<!--               <div class="card-body">
                 {!! Form::open(['url'=>'academic/programs','method'=>'GET']) !!}
                 <div class="row">
                 <div class="form-group col-3">
@@ -190,7 +190,7 @@
                  </span>
                 </div>
               </div>
-                {!! Form::close() !!}
+                {!! Form::close() !!} -->
                 <table id="example2" class="table table-bordered table-hover ss-paginated-table">
                   <thead>
                   <tr>
