@@ -174,8 +174,8 @@
                 <h3 class="card-title">{{ __('List of Programmes') }}</h3>
               </div>
               <!-- /.card-header -->
-<!--               <div class="card-body">
-                {!! Form::open(['url'=>'academic/programs','method'=>'GET']) !!}
+              <div class="card-body">
+<!--                 {!! Form::open(['url'=>'academic/programs','method'=>'GET']) !!}
                 <div class="row">
                 <div class="form-group col-3">
                   <select name="nta_level" class="form-control" required>
