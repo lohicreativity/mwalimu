@@ -43,7 +43,7 @@ class ProgramController extends Controller
 			$departments = Department::whereHas('campuses',function($query) use($staff){
                  $query->where('id',$staff->campus_id);
             })->where('id', $staff->department_id)->get();
-			return $departments;
+			
         }else{
 		$departments = Department::whereHas('campuses',function($query) use($staff){
             $query->where('id',$staff->campus_id);
