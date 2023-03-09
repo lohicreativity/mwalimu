@@ -31,6 +31,8 @@ class ModuleAssignmentRequestController extends Controller
            'request'=>$request,
            'staff'=>$staff
     	];
+		
+		return $requests;
     	return view('dashboard.academic.module-assignment-requests',$data)->withTitle('Module Assignments Requests');
     }
 
