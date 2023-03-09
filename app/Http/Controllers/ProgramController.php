@@ -50,7 +50,12 @@ class ProgramController extends Controller
 			},'departments'=>function($query) use($staff){
 				$query->where('campus_id',$staff->campus_id);
 			}])->where('name','LIKE','%'.$request->get('query').'%')->OrWhere('code','LIKE','%'.$request->get('query').'%')->orderBy('nta_level_id',$request->get('nta_level'))->get();
-          }else{
+          
+		  	$departments = Department::whereHas('campuses',function($query) use($staff){
+                 $query->where('id',$staff->campus_id);
+            })->where('id', $staff->department_id)->get();
+			
+		  }else{
              $programs = Program::whereHas('departments',function($query) use($staff){
 				$query->where('campus_id',$staff->campus_id);
 			})->with(['departments.staffs.user','ntaLevel','award','campusPrograms'=>function($query) use($staff){
@@ -58,7 +63,10 @@ class ProgramController extends Controller
 			},'departments'=>function($query) use($staff){
 				$query->where('campus_id',$staff->campus_id);
 			}])->orderBy('code')->get();
-
+			
+			$departments = Department::whereHas('campuses',function($query) use($staff){
+                 $query->where('id',$staff->campus_id);
+            })->get();
           }
         }
 
