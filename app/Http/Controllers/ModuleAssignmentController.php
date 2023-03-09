@@ -65,7 +65,7 @@ class ModuleAssignmentController extends Controller
            'semesters'=>Semester::all(),
            'staff'=>$staff,
 		   'module_assignment_requets'=>ModuleAssignmentRequest::whereHas('programModuleAssignment.module.departments',function($query) use ($staff){
-                    $query->where('department_id',$staff->department_id)
+                    $query->where('department_id',$staff->department_id)->get()
       ];
 	  return $data->module_assignment_requets;
 		return view('dashboard.academic.assign-staff-modules',$data)->withTitle('Staff Module Assignment');
