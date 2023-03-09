@@ -130,7 +130,7 @@
                             <th>Code</th>
                             <th>Year</th>
                             <th>Semester</th>
-                            <th>Prev Facilitator</th>
+                            <th>Previous Facilitator</th>
                             <th>Action</th>
                           </tr>
                           </thead>

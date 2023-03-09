@@ -66,10 +66,9 @@ class ModuleAssignmentController extends Controller
            'semesters'=>Semester::all(),
            'staff'=>$staff,
 		   'module_assignment_requets'=>ModuleAssignmentRequest::with(['programModuleAssignment.moduleAssignments.staff','campusProgram.program','studyAcademicYear.academicYear','user.staff.campus'])
-			   ->where('study_academic_year_id',$request->get('study_academic_year_id'))->latest()
+			   ->latest()->where('study_academic_year_id',$request->get('study_academic_year_id'))->latest()
       ];
-	  
-		return $data;
+	  //return $data;
 	  //whereHas('programModuleAssignment.module.departments',function($query) use ($staff){
      //               $query->where('d',$staff->department_id);
        //        })->
