@@ -72,9 +72,7 @@ class ProgramController extends Controller
 
     	$data = [
            'programs'=>$programs,
-           'departments'=>Department::whereHas('campuses',function($query) use($staff){
-                 $query->where('id',$staff->campus_id);
-            })->get(),
+           'departments'=>$departments,
            'nta_levels'=>NTALevel::where('name','!=','NTA Level 7')->get(),
            'awards'=>Award::all(),
            'request'=>$request,
