@@ -69,7 +69,7 @@ class ModuleAssignmentController extends Controller
                     $query->where('id',$staff->department_id);
                })->with(['programModuleAssignment.moduleAssignments.staff','campusProgram.program','studyAcademicYear.academicYear','user.staff.campus'])->latest()->where('study_academic_year_id',$request->get('study_academic_year_id'))->latest()
       ];
-	  return $data->module_assignment_requets;
+	  return $data;
 		return view('dashboard.academic.assign-staff-modules',$data)->withTitle('Staff Module Assignment');
 	}
 
