@@ -30,6 +30,7 @@ use App\Domain\Academic\Models\ResultPublication;
 use App\Domain\Academic\Models\ProgramModuleAssignment;
 use App\Domain\Registration\Models\Registration;
 use App\Domain\Academic\Actions\ModuleAssignmentAction;
+use App\Domain\Academic\Models\ModuleAssignmentRequest;
 use App\Mail\StaffModuleAssigned;
 use App\Models\User;
 use App\Utils\Util;
