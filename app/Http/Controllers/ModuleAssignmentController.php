@@ -525,10 +525,10 @@ class ModuleAssignmentController extends Controller
     public function totalStudentsFormattedCSV(Request $request, $id)
     {
         try{
-			return $id;
             $module_assignment = ModuleAssignment::with(['programModuleAssignment.campusProgram.program.department','programModuleAssignment.campusProgram.campus',
 														 'studyAcademicYear.academicYear','programModuleAssignment.module','programModuleAssignment.students','module'])->findOrFail($id);
             if($module_assignment->programModuleAssignment->category == 'OPTIONAL'){
+				return 1234;
                 $data = [
                     'program'=>$module_assignment->programModuleAssignment->campusProgram->program,
                     'campus'=>$module_assignment->programModuleAssignment->campusProgram->campus,
