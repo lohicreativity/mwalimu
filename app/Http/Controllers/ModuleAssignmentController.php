@@ -548,7 +548,9 @@ class ModuleAssignmentController extends Controller
                     'study_academic_year'=>$module_assignment->studyAcademicYear,
                     'staff'=>$module_assignment->staff,
                     'module'=>$module_assignment->module,
-                    'students' =>$module_assignment->programModuleAssignment->students
+                    'students' =>$module_assignment->programModuleAssignment->students()->whereHas('studentshipStatus',function($query){
+                        $query->where('name','ACTIVE')->orWhere('name','RESUMED');
+                     })->get()
                 ];
 
                 
@@ -566,7 +568,9 @@ class ModuleAssignmentController extends Controller
                     'department'=>$module_assignment->programModuleAssignment->campusProgram->program->department,
                     'module'=>$module_assignment->module,
                     'study_academic_year'=>$module_assignment->studyAcademicYear,
-                    'students'=>$module_assignment->programModuleAssignment->students
+                    'students'=>$module_assignment->programModuleAssignment->students()->whereHas('studentshipStatus',function($query){
+                        $query->where('name','ACTIVE')->orWhere('name','RESUMED');
+                     })->get()
                 ];
             }
               $headers = [
@@ -586,9 +590,7 @@ class ModuleAssignmentController extends Controller
               {
                   $file_handle = fopen('php://output', 'w');
                   foreach ($list as $row) {
-					if($row->studentship_status_id == 1 || $row->studentship_status_id == 4){
-						fputcsv($file_handle, [$row->registration_number]);
-					}
+					fputcsv($file_handle, [$row->registration_number]);
                   }
                   fclose($file_handle);
               };
@@ -628,9 +630,8 @@ class ModuleAssignmentController extends Controller
                 ];
                 
             }else{
-                
                 $data = [
-                   'program'=>$module_assignment->programModuleAssignment->campusProgram->program,
+                    'program'=>$module_assignment->programModuleAssignment->campusProgram->program,
                     'campus'=>$module_assignment->programModuleAssignment->campusProgram->campus,
                     'department'=>$department,
                     'module'=>$module_assignment->module,
