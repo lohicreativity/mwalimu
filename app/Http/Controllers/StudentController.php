@@ -118,7 +118,8 @@ class StudentController extends Controller
 		return Semester::with(['electivePolicies'=>function($query) use ($student,$study_academic_year){
                     $query->where('campus_program_id',$student->campus_program_id)->where('study_academic_year_id',$study_academic_year->id);
                 },'electiveDeadlines'=>function($query) use ($study_academic_year,$campus,$program){
-                    $query->where('campus_id',$campus->id)->where('study_academic_year_id',$study_academic_year->id)->where('award_id',$program->award_id);
+                    $query->where('campus_id',$campus->id)->where('study_academic_year_id',$study_academic_year->id)->where('award_id',$program->award_id)
+					->where('semester_id', $study_academic_year->moduleAssignments->semester_id);
                 }])->get();
     	$data = [
             'student'=>$student,
