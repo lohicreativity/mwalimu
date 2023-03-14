@@ -692,7 +692,8 @@ class ModuleAssignmentController extends Controller
                     'study_academic_year'=>$module_assignment->studyAcademicYear,
                     'course_work_processed'=> $module_assignment->course_work_process_status == 'PROCESSED'? true : false,
                     'assessment_plans'=>AssessmentPlan::where('module_assignment_id',$module_assignment->id)->get(),
-                    'registrations'=>$registrations
+                    'registrations'=>$registrations,
+					'semester'=>$module_assignment->programModuleAssignment->semester_id
                 ];
 
                 return view('dashboard.academic.reports.students-with-course-work',$data);
