@@ -195,12 +195,13 @@
         <div class="row">
           <div class="col-md-12">
               <div class="ss-letter-head  ss-center">
-               <h3>MWALIMU NYERERE MEMORIAL ACADEMY</h3>
+               <div class="ss-letter-head  ss-center">
+               <h3>THE MWALIMU NYERERE MEMORIAL ACADEMY</h3>
                <h3>{{ $campus->name }}</h3>
                <h3>{{ $department->name }}</h3>
-               <h3>{{ $program->name }} ({{ $study_academic_year->academicYear->year }})</h3>
+               <h3>{{ $program->name }} - YEAR {{ $year_of_study }}</h3>
+			   <h3>ACADEMIC YEAR {{ $study_academic_year->academicYear->year }} - SEMESTER {{$semester}}</h3>
                <h3>{{ $module->name }} - {{ $module->code }}</h3>
-               <h3>STUDENTS LIST</h3>
               </div>
                <div class="table-responsive ss-margin-bottom">
                   <table class="table table-condensed table-bordered">

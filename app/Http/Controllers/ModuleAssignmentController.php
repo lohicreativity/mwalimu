@@ -755,13 +755,15 @@ class ModuleAssignmentController extends Controller
                 'campus'=>$module_assignment->programModuleAssignment->campusProgram->campus,
                 'department'=>$department,
                 'module'=>$module_assignment->module,
+				'year_of_study'=>$module_assignment->programModuleAssignment->year_of_study,
                 'study_academic_year'=>$module_assignment->studyAcademicYear,
                 'results'=>ExaminationResult::whereHas('student.studentshipStatus',function($query){
-                    $query->where('name','ACTIVE');
+                    $query->where('name','ACTIVE')->orWhere('name','RESUMED');
                 })->whereHas('student.registrations',
                         function($query){
                     $query->where('status','REGISTERED');
-                })->with('student')->where('module_assignment_id',$module_assignment->id)->whereNotNull('final_uploaded_at')->get()
+                })->with('student')->where('module_assignment_id',$module_assignment->id)->whereNotNull('final_uploaded_at')->get(),
+				'semester'=>$module_assignment->programModuleAssignment->semester_id
             ];
             return view('dashboard.academic.reports.students-with-final',$data);
 
