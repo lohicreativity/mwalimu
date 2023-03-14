@@ -169,9 +169,9 @@ class StudentController extends Controller
                 $query->where('campus_program_id',$student->campus_program_id)->where('year_of_study',$student->year_of_study);
             },'moduleAssignments.campusProgram','moduleAssignments.module','moduleAssignments.semester','academicYear'])->where('status','ACTIVE')->first();
            $elective_policy = ElectivePolicy::where('study_academic_year_id',$study_academic_year->id)->where('semester_id',$assignment->semester_id)->where('campus_program_id',$assignment->campus_program_id)->first();
-			return $elective_policy;
-           $elective_module_limit = ElectiveModuleLimit::where('study_academic_year_id',$study_academic_year->id)->where('semester_id',$assignment->semester_id)->where('campus_id',$assignment->campusProgram->campus->id)->first();
 
+           $elective_module_limit = ElectiveModuleLimit::where('study_academic_year_id',$study_academic_year->id)->where('semester_id',$assignment->semester_id)->where('campus_id',$assignment->campusProgram->campus->id)->first();
+			return $elective_module_limit;
            if($elective_module_limit){
            	   if(strtotime($elective_module_limit->deadline) < strtotime(now()->format('Y-m-d'))){
            	   	  return redirect()->back()->with('error','Options selection deadline already passed');
