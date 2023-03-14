@@ -183,7 +183,7 @@ class StudentController extends Controller
            if($elective_policy->number_of_options <= count($options)){
               return redirect()->back()->with('error','Options cannot exceed '.$elective_policy->number_of_options);
            }else{
-              $assignment->students()->sync([$student->id]);
+              $assignment->students()->attach([$student->id]);
               return redirect()->back()->with('message','Module opted successfully');
 	       }
     	}catch(\Exception $e){
