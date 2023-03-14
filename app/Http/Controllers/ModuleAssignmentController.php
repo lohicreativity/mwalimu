@@ -539,14 +539,7 @@ class ModuleAssignmentController extends Controller
                     ->orderBy('students.registration_number')
                     ->get();
 					 */
-				/* $students = Student::with(['studentshipStatus' => function($query){
-                      $query->where('name','ACTIVE');
-                }])->whereHas('studentProgramModuleAssignment',function($query) use($id){
-				$query->where('program_module_assignment_id', $id);})->get(); */
-				
-				return $module_assignment->programModuleAssignment->students;
-             
-					
+
                 $data = [
                     'program'=>$module_assignment->programModuleAssignment->campusProgram->program,
                     'campus'=>$module_assignment->programModuleAssignment->campusProgram->campus,
@@ -555,26 +548,17 @@ class ModuleAssignmentController extends Controller
                     'study_academic_year'=>$module_assignment->studyAcademicYear,
                     'staff'=>$module_assignment->staff,
                     'module'=>$module_assignment->module,
-                    'students' => DB::table('module_assignments')
-                    ->join('program_module_assignments', 'module_assignments.program_module_assignment_id', '=', 'program_module_assignments.id')
-                    ->join('student_program_module_assignment', 'program_module_assignments.id', '=', 'student_program_module_assignment.program_module_assignment_id')
-                    ->join('students', 'student_program_module_assignment.student_id', '=', 'students.id')
-                    ->join('studentship_statuses', 'students.studentship_status_id', '=', 'studentship_statuses.id')
-                    ->where('studentship_statuses.name', 'ACTIVE')
-                    ->select('students.registration_number')
-                    ->orderBy('students.registration_number')
-                    ->get()
-                    // 'students'=>$module_assignment->programModuleAssignment->students()->orderBy('registration_number')->get()
-					
-					
-					                    /* 'students'=>$module_assignment->programModuleAssignment->students()->whereHas('studentshipStatus',function($query){
-                        $query->where('name','ACTIVE');
-                     })->whereHas('registrations',function($query) use($module_assignment) {
-                          $query->where('status','REGISTERED');})->get() */
+                    'students' =>$module_assignment->programModuleAssignment->students
                 ];
 
                 
             }else{
+				
+/* 				Student::whereHas('studentshipStatus',function($query){
+                          $query->where('name','ACTIVE');
+                    })->whereHas('registrations',function($query) use($module_assignment){
+                          $query->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)->where('semester_id',$module_assignment->programModuleAssignment->semester_id)->where('study_academic_year_id',$module_assignment->programModuleAssignment->study_academic_year_id);
+                      })->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id)->orderBy('registration_number')->get() */
                 
                 $data = [
                    'program'=>$module_assignment->programModuleAssignment->campusProgram->program,
@@ -582,11 +566,7 @@ class ModuleAssignmentController extends Controller
                     'department'=>$module_assignment->programModuleAssignment->campusProgram->program->department,
                     'module'=>$module_assignment->module,
                     'study_academic_year'=>$module_assignment->studyAcademicYear,
-                    'students'=>Student::whereHas('studentshipStatus',function($query){
-                          $query->where('name','ACTIVE');
-                    })->whereHas('registrations',function($query) use($module_assignment){
-                          $query->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)->where('semester_id',$module_assignment->programModuleAssignment->semester_id)->where('study_academic_year_id',$module_assignment->programModuleAssignment->study_academic_year_id);
-                      })->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id)->orderBy('registration_number')->get()
+                    'students'=>$module_assignment->programModuleAssignment->students
                 ];
             }
               $headers = [
