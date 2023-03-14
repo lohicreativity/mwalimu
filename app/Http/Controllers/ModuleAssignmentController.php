@@ -531,7 +531,7 @@ class ModuleAssignmentController extends Controller
 				return DB::table('module_assignments')
                     ->join('program_module_assignments', 'module_assignments.program_module_assignment_id', '=', 'program_module_assignments.id')
                     ->join('student_program_module_assignment', 'program_module_assignments.id', '=', 'student_program_module_assignment.program_module_assignment_id')
-                    ->join('students', 'student_program_module_assignment.student_id', '=', 'students.id')
+                    ->join('students', 'student_program_module_assignment.student_id', '=', 'tudents.id')
                     ->join('studentship_statuses', 'students.studentship_status_id', '=', 'studentship_statuses.id')
                     ->where('studentship_statuses.name', 'ACTIVE')
                     ->select('students.registration_number')
