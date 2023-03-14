@@ -544,7 +544,7 @@ class ModuleAssignmentController extends Controller
                 }])->whereHas('studentProgramModuleAssignment',function($query) use($id){
 				$query->where('program_module_assignment_id', $id);})->get(); */
 				
-				return $module_assignment->programModuleAssignment;
+				return $module_assignment->programModuleAssignment->students;
              
 					
                 $data = [
