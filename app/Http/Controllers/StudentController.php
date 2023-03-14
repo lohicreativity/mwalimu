@@ -172,14 +172,14 @@ class StudentController extends Controller
 
            $elective_module_limit = ElectiveModuleLimit::where('study_academic_year_id',$study_academic_year->id)->where('semester_id',$assignment->semester_id)
 		   ->where('campus_id',$assignment->campusProgram->campus->id)->where('award_id', $assignment->campusProgram->program->award_id)->first();
-			return $elective_module_limit;
+
            if($elective_module_limit){
            	   if(strtotime($elective_module_limit->deadline) < strtotime(now()->format('Y-m-d'))){
            	   	  return redirect()->back()->with('error','Options selection deadline already passed');
            	   }
            }
            $options = Student::find($student->id)->options()->where('semester_id',$assignment->semester_id)->get();
-
+return $options;
            if($elective_policy->number_of_options <= count($options)){
               return redirect()->back()->with('error','Options cannot exceed '.$elective_policy->number_of_options);
            }else{
