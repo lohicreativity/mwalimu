@@ -195,7 +195,7 @@
         <div class="row">
           <div class="col-md-12">
               <div class="ss-letter-head  ss-center">
-               <h3>MWALIMU NYERERE MEMORIAL ACADEMY</h3>
+               <h3>THE MWALIMU NYERERE MEMORIAL ACADEMY</h3>
                <h3>{{ $campus->name }}</h3>
                <h3>{{ $department->name }}</h3>
                <h3>{{ $program->name }} - YEAR {{ $year_of_study }} ({{ $study_academic_year->academicYear->year }})</h3>
@@ -205,7 +205,7 @@
                   <table class="table table-condensed table-bordered">
                     <tr>
                       <td class="ss-bold" colspan="3"></td>
-                      <td class="ss-bold ss-center" colspan="{{ count($assessment_plans) }}">ASSESSMENTS</td>
+                      <td class="ss-bold ss-center" colspan="{{ count($assessment_plans) }}">COURSEWORK</td>
                       <td class="ss-bold"></td>
                       <td class="ss-bold"></td>
                     </tr>
@@ -214,9 +214,9 @@
                       <td class="ss-bold">NAME</td>
                       <td class="ss-bold">REG. NO.</td>
                       @foreach($assessment_plans as $plan)
-                      <td>{{ $plan->name }}</td>
+                      <td class="ss-bold">{{ $plan->name }}</td>
                       @endforeach
-                      <td class="ss-bold">COURSEWORK</td>
+                      <td class="ss-bold">TOTAL</td>
                       <td class="ss-bold ss-center">SIGNATURE</td>
                     </tr>
                     @foreach($registrations as $key=>$reg)

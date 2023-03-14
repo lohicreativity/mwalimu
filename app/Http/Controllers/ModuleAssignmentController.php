@@ -331,10 +331,11 @@ class ModuleAssignmentController extends Controller
              }else{
                 $total_students_count = Student::whereHas('studentshipStatus',function($query){
                     $query->where('name','ACTIVE')->orWhere('name','RESUMED');
-                })->whereHas('registrations',function($query) use($module_assignment){
-                     $query->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)->where('semester_id',$module_assignment->programModuleAssignment->semester_id)->where('study_academic_year_id',$module_assignment->programModuleAssignment->study_academic_year_id);
-                })->where('campus_program_id',$module_assignment->programModuleAssignment->campusProgram->id)->count();
+                })->count();
                 
+/* 				->whereHas('registrations',function($query) use($module_assignment){
+                     $query->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)->where('semester_id',$module_assignment->programModuleAssignment->semester_id)->where('study_academic_year_id',$module_assignment->programModuleAssignment->study_academic_year_id);
+                })->where('campus_program_id',$module_assignment->programModuleAssignment->campusProgram->id) */
              }
 
              $students_with_coursework_count = CourseWorkResult::whereHas('student.studentshipStatus',function($query){
@@ -385,7 +386,6 @@ class ModuleAssignmentController extends Controller
              if(ExaminationResult::where('module_assignment_id',$module_assignment->id)->whereNotNull('final_processed_at')->count() != 0){
                 $program_results_process_status = true;
              }
-
 
              $data = [
                 'module_assignment'=>$module_assignment,
@@ -667,16 +667,16 @@ class ModuleAssignmentController extends Controller
            if($module_assignment->programModuleAssignment->category == 'OPTIONAL'){
                 $students = $module_assignment->programModuleAssignment->students()->get(); 
                 $registrations = Registration::whereHas('student.studentshipStatus',function($query){
-                    $query->where('name','ACTIVE')->where('status','REGISTERED');
-                })->whereHas('student.options.moduleAssignments',function($query) use($module_assignment){
+                    $query->where('name','ACTIVE')->OrWhere('name', 'RESUMED');
+                })->where('status','REGISTERED')->whereHas('student.options.moduleAssignments',function($query) use($module_assignment){
                      $query->where('id',$module_assignment->id);
                 })->with(['student.courseWorkResults.assessmentPlan','student.courseWorkResults'=>function($query) use($module_assignment){
 					    $query->where('module_assignment_id',$module_assignment->id);
 				  }])->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)->where('study_academic_year_id',$module_assignment->programModuleAssignment->study_academic_year_id)->where('semester_id',$module_assignment->programModuleAssignment->semester_id)->get();
             }else{
                 $registrations = Registration::whereHas('student.studentshipStatus',function($query){
-                    $query->where('name','ACTIVE')->where('status','REGISTERED');
-                })->whereHas('student',function($query) use ($module_assignment){
+                    $query->where('name','ACTIVE')->OrWhere('name', 'RESUMED');
+                })->where('status','REGISTERED')->whereHas('student',function($query) use ($module_assignment){
                         $query->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id);
                   })->with(['student.courseWorkResults.assessmentPlan','student.courseWorkResults'=>function($query) use($module_assignment){
 					    $query->where('module_assignment_id',$module_assignment->id);
