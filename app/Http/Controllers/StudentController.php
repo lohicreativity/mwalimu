@@ -115,11 +115,7 @@ class StudentController extends Controller
     	if(!$study_academic_year){
     		return redirect()->back()->with('error','No active academic year');
     	}
-		return Semester::with(['electivePolicies'=>function($query) use ($student,$study_academic_year){
-                    $query->where('campus_program_id',$student->campus_program_id)->where('study_academic_year_id',$study_academic_year->id);
-                },'electiveDeadlines'=>function($query) use ($study_academic_year,$campus,$program){
-                    $query->where('campus_id',$campus->id)->where('study_academic_year_id',$study_academic_year->id)->where('award_id',$program->award_id);
-                }])->where('status', 'ACTIVE')->get();
+
     	$data = [
             'student'=>$student,
             'study_academic_year'=>$study_academic_year,
@@ -127,7 +123,7 @@ class StudentController extends Controller
                     $query->where('campus_program_id',$student->campus_program_id)->where('study_academic_year_id',$study_academic_year->id);
                 },'electiveDeadlines'=>function($query) use ($study_academic_year,$campus,$program){
                     $query->where('campus_id',$campus->id)->where('study_academic_year_id',$study_academic_year->id)->where('award_id',$program->award_id);
-                }])->get(),
+                }])->where('status', 'ACTIVE')->get(),
             'options'=>Student::find($student->id)->options
     	];
 

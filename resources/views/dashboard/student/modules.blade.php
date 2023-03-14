@@ -99,7 +99,9 @@
                             @endif
                             @endif
                           @else
-                            <p class="ss-no-margin"><span class="badge badge-info">OPTED</span> @if(count($semester->electiveDeadlines) != 0) @if(strtotime(now()->format('Y-m-d')) <= strtotime($semester->electiveDeadlines[0]->deadline))<a href="{{ url('student/module/'.$assignment->id.'/reset-option') }}" class="ss-color-danger ss-right ss-font-xs">Reset Option</a> @endif
+                            <p class="ss-no-margin"><span class="badge badge-info">OPTED</span> 
+							@if(count($semester->electiveDeadlines) != 0) @if(strtotime(now()->format('Y-m-d')) <= strtotime($semester->electiveDeadlines[0]->deadline))
+								<a href="{{ url('student/module/'.$assignment->id.'/reset-option') }}" class="ss-color-danger ss-right ss-font-xs">Reset Option</a> @endif
                             @endif</p>
                           @endif
                           @else
