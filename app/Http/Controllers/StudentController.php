@@ -161,16 +161,15 @@ class StudentController extends Controller
      * Opt elective
      */
     public function optModule(Request $request, $id)
-    {
+    {	// $id is a program_module_assignment id
     	try{
     	   $student = User::find(Auth::user()->id)->student;
-		   return $id;
            $assignment = ProgramModuleAssignment::with('campusProgram.campus')->findOrFail($id);
            $study_academic_year = StudyAcademicYear::with(['moduleAssignments'=>function($query) use($student){
                 $query->where('campus_program_id',$student->campus_program_id)->where('year_of_study',$student->year_of_study);
             },'moduleAssignments.campusProgram','moduleAssignments.module','moduleAssignments.semester','academicYear'])->where('status','ACTIVE')->first();
            $elective_policy = ElectivePolicy::where('study_academic_year_id',$study_academic_year->id)->where('semester_id',$assignment->semester_id)->where('campus_program_id',$assignment->campus_program_id)->first();
-
+			return $elective_policy;
            $elective_module_limit = ElectiveModuleLimit::where('study_academic_year_id',$study_academic_year->id)->where('semester_id',$assignment->semester_id)->where('campus_id',$assignment->campusProgram->campus->id)->first();
 
            if($elective_module_limit){
