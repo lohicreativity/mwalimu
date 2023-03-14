@@ -115,7 +115,7 @@ class StudentController extends Controller
     	if(!$study_academic_year){
     		return redirect()->back()->with('error','No active academic year');
     	}
-return Semester::where('status', 'ACTIVE')->get();
+return Semester::('id')->where('status', 'ACTIVE')->get();
     	$data = [
             'student'=>$student,
             'study_academic_year'=>$study_academic_year,
