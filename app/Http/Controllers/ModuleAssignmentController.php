@@ -540,8 +540,10 @@ class ModuleAssignmentController extends Controller
 					 */
 				$students = Student::whereHas('studentshipStatus',function($query){
                       $query->where('name','ACTIVE');
-                })->whereHas('StudentProgramModuleAssignment',function($query) use($module_assignment){
-				$query->where('program_module_assignment_id', $module_assignment->programModuleAssignment->id);})->get();
+                })->get();
+				
+				//->whereHas('StudentProgramModuleAssignment',function($query) use($id){
+				//$query->where('program_module_assignment_id', $id);})->get();
 				
 				return $students;
              
