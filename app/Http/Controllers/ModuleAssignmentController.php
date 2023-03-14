@@ -624,7 +624,7 @@ class ModuleAssignmentController extends Controller
                     'staff'=>$module_assignment->staff,
                     'module'=>$module_assignment->module,
                     'students'=>$module_assignment->programModuleAssignment->students()->whereHas('studentshipStatus',function($query){
-                        $query->where('name','ACTIVE');
+                        $query->where('name','ACTIVE')->orWhere('name','RESUMED');
                      })->whereHas('registrations',function($query) use($module_assignment) {
                           $query->where('status','REGISTERED');})->get()
                 ];
@@ -637,7 +637,7 @@ class ModuleAssignmentController extends Controller
                     'module'=>$module_assignment->module,
                     'study_academic_year'=>$module_assignment->studyAcademicYear,
                     'students'=>Student::whereHas('studentshipStatus',function($query){
-                          $query->where('name','ACTIVE');
+                          $query->where('name','ACTIVE')->orWhere('name','RESUMED');
                       })->whereHas('registrations',function($query) use($module_assignment) {
                           $query->where('status','REGISTERED'); 
                           $query->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)->where('semester_id',$module_assignment->programModuleAssignment->semester_id)->where('study_academic_year_id',$module_assignment->programModuleAssignment->study_academic_year_id);
@@ -663,7 +663,7 @@ class ModuleAssignmentController extends Controller
                 if($dpt->pivot->campus_id == $module_assignment->programModuleAssignment->campusProgram->campus_id){
                     $department = $dpt;
                 }
-             }
+            }
            if($module_assignment->programModuleAssignment->category == 'OPTIONAL'){
                 $students = $module_assignment->programModuleAssignment->students()->get(); 
                 $registrations = Registration::whereHas('student.studentshipStatus',function($query){
