@@ -164,6 +164,7 @@ class StudentController extends Controller
     {
     	try{
     	   $student = User::find(Auth::user()->id)->student;
+		   return $id;
            $assignment = ProgramModuleAssignment::with('campusProgram.campus')->findOrFail($id);
            $study_academic_year = StudyAcademicYear::with(['moduleAssignments'=>function($query) use($student){
                 $query->where('campus_program_id',$student->campus_program_id)->where('year_of_study',$student->year_of_study);
