@@ -199,7 +199,7 @@
                <h3>{{ $campus->name }}</h3>
                <h3>{{ $department->name }}</h3>
                <h3>{{ $program->name }} - YEAR {{ $year_of_study }}</h3>
-			   <h3>{{ $study_academic_year->academicYear->year }} - SEMESTER {{$semester}}</h3>
+			   <h3>ACADEMIC YEAR {{ $study_academic_year->academicYear->year }} - SEMESTER {{$semester}}</h3>
                <h3>{{ $module->name }} - {{ $module->code }}</h3>
               </div>
                <div class="table-responsive ss-margin-bottom">
