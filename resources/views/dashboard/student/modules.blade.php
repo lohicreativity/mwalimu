@@ -57,7 +57,7 @@
 
             <div class="card" @if($student->academicStatus->name == 'RETAKE' && !$sem_reg[$semester->id]) style="display: none;" @endif>
               <div class="card-header">
-                <h3 class="card-title">{{ __('List of Modules') }} - Year {{ $student->year_of_study }} - {{ $semester->name }} - @if(count($semester->electivePolicies) != 0) ({{ $semester->electivePolicies[0]->number_of_options }} Options Maximum) @endif
+                <h3 class="card-title">{{ __('List of Modules') }} - Year {{ $student->year_of_study }} - {{ $semester->name }} @if(count($semester->electivePolicies) != 0) - ({{ $semester->electivePolicies[0]->number_of_options }} Options Maximum) @endif
 
                  @if(count($semester->electiveDeadlines) != 0) - <span class="ss-color-danger">Option Deadline {{ $semester->electiveDeadlines[0]->deadline }} </span> @endif</h3>
               </div>
