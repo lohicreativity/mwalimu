@@ -326,11 +326,11 @@ class ModuleAssignmentController extends Controller
              
              if($module_assignment->programModuleAssignment->category == 'OPTIONAL'){
                 $total_students_count = $module_assignment->programModuleAssignment->students()->whereHas('studentshipStatus',function($query){
-                    $query->where('name','ACTIVE');
+                    $query->where('name','ACTIVE')->orWhere('name','RESUMED');
                 })->count();
              }else{
                 $total_students_count = Student::whereHas('studentshipStatus',function($query){
-                    $query->where('name','ACTIVE');
+                    $query->where('name','ACTIVE')->orWhere('name','RESUMED');
                 })->whereHas('registrations',function($query) use($module_assignment){
                      $query->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)->where('semester_id',$module_assignment->programModuleAssignment->semester_id)->where('study_academic_year_id',$module_assignment->programModuleAssignment->study_academic_year_id);
                 })->where('campus_program_id',$module_assignment->programModuleAssignment->campusProgram->id)->count();
@@ -338,30 +338,30 @@ class ModuleAssignmentController extends Controller
              }
 
              $students_with_coursework_count = CourseWorkResult::whereHas('student.studentshipStatus',function($query){
-                    $query->where('name','ACTIVE');
+                    $query->where('name','ACTIVE')->orWhere('name','RESUMED');
                 })->groupBy('student_id')->selectRaw('COUNT(*) as total, student_id')->where('module_assignment_id',$module_assignment->id)->get();
 
              $students_with_no_coursework_count = $total_students_count - count($students_with_coursework_count);
              $students_with_final_marks_count = ExaminationResult::whereHas('student.studentshipStatus',function($query){
-                    $query->where('name','ACTIVE');
+                    $query->where('name','ACTIVE')->orWhere('name','RESUMED');
                 })->where('module_assignment_id',$module_assignment->id)->where('exam_type','FINAL')->whereNotNull('final_uploaded_at')->count();
              $students_with_no_final_marks_count = $total_students_count - $students_with_final_marks_count;
 
              $students_with_supplemetary_count = ExaminationResult::whereHas('student.studentshipStatus',function($query){
-                    $query->where('name','ACTIVE');
+                    $query->where('name','ACTIVE')->orWhere('name','RESUMED');
                 })->where('module_assignment_id',$module_assignment->id)->whereNotNull('supp_score')->count();
 
              $students_passed_count = ExaminationResult::whereHas('student.studentshipStatus',function($query){
-                    $query->where('name','ACTIVE');
+                    $query->where('name','ACTIVE')->orWhere('name','RESUMED');
                 })->where('module_assignment_id',$module_assignment->id)->where('final_remark','!=','FAIL')->where('exam_type','FINAL')->count();
              $supp_cases_count = ExaminationResult::whereHas('student.studentshipStatus',function($query){
-                    $query->where('name','ACTIVE');
+                    $query->where('name','ACTIVE')->orWhere('name','RESUMED');
                 })->where('module_assignment_id',$module_assignment->id)->whereNotNull('final_uploaded_at')->where('final_exam_remark','FAIL')->count();
              $students_with_no_supplementary_count = ExaminationResult::whereHas('student.studentshipStatus',function($query){
-                    $query->where('name','ACTIVE');
+                    $query->where('name','ACTIVE')->orWhere('name','RESUMED');
                 })->where('module_assignment_id',$module_assignment->id)->where('final_remark','!=','PASS')->where('exam_type','PASS')->count();
              $students_with_abscond_count = ExaminationResult::whereHas('student.studentshipStatus',function($query){
-                    $query->where('name','ACTIVE');
+                    $query->where('name','ACTIVE')->orWhere('name','RESUMED');
                 })->where('module_assignment_id',$module_assignment->id)->where('final_uploaded_at','!=',null)->where('course_work_remark','INCOMPLETE')->orWhere('final_remark','INCOMPLETE')->count();
              $final_upload_status = false;
              if($module_assignment->final_upload_status == 'UPLOADED'){
