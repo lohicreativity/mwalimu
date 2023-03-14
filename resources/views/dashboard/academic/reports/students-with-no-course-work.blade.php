@@ -218,7 +218,6 @@
                       <td class="ss-bold">{{ $plan->name }}</td>
                       @endforeach
                       <td class="ss-bold">TOTAL</td>
-                      <td class="ss-bold ss-center">SIGNATURE</td>
                     </tr>
                     @foreach($results as $key=>$result)
                     <tr>
@@ -249,9 +248,9 @@
 
                         
                       @endforeach
-                      @for($i = 0; $i < $empty_columns; $i++)
-                        <td>-</td>
-                      @endfor
+                                               @if(!$cw_available)
+                            <td>-</td>
+                         @endif
                       <td>@if(count($result->student->courseWorkResults) != 0 && $course_work_processed) {{ $cw_total }} @else - @endif</td>
                       <td></td>
                     </tr>
