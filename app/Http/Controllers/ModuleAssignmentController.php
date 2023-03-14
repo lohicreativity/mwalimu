@@ -585,8 +585,10 @@ class ModuleAssignmentController extends Controller
              $callback = function() use ($list) 
               {
                   $file_handle = fopen('php://output', 'w');
-                  foreach ($list as $row) { 
-                      fputcsv($file_handle, [$row->registration_number]);
+                  foreach ($list as $row) {
+					if($row->studentship_status_id == 1 || $row->studentship_status_id == 4){
+						fputcsv($file_handle, [$row->registration_number]);
+					}
                   }
                   fclose($file_handle);
               };
