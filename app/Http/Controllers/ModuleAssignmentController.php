@@ -539,12 +539,12 @@ class ModuleAssignmentController extends Controller
                     ->orderBy('students.registration_number')
                     ->get();
 					 */
-				$students = Student::with(['studentshipStatus' => function($query){
+				/* $students = Student::with(['studentshipStatus' => function($query){
                       $query->where('name','ACTIVE');
                 }])->whereHas('studentProgramModuleAssignment',function($query) use($id){
-				$query->where('program_module_assignment_id', $id);})->get();
+				$query->where('program_module_assignment_id', $id);})->get(); */
 				
-				return $students;
+				return $module_assignment->programModuleAssignment->students();
              
 					
                 $data = [
