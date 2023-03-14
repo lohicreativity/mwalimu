@@ -720,6 +720,7 @@ class ModuleAssignmentController extends Controller
                     'campus'=>$module_assignment->programModuleAssignment->campusProgram->campus,
                     'department'=>$department,
                     'module'=>$module_assignment->module,
+					'year_of_study'=>$module_assignment->programModuleAssignment->year_of_study,
                     'study_academic_year'=>$module_assignment->studyAcademicYear,
                     'course_work_processed'=> $module_assignment->course_work_process_status == 'PROCESSED'? true : false,
                     'assessment_plans'=>AssessmentPlan::where('module_assignment_id',$module_assignment->id)->get(),
