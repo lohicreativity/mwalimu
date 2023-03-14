@@ -179,7 +179,7 @@ class StudentController extends Controller
            	   }
            }
            $options = Student::find($student->id)->options()->where('semester_id',$assignment->semester_id)->get();
-return $options;
+//return $options;
            if($elective_policy->number_of_options <= count($options)){
               return redirect()->back()->with('error','Options cannot exceed '.$elective_policy->number_of_options);
            }else{
