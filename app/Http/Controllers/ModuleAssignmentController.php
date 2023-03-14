@@ -528,7 +528,16 @@ class ModuleAssignmentController extends Controller
             $module_assignment = ModuleAssignment::with(['programModuleAssignment.campusProgram.program.department','programModuleAssignment.campusProgram.campus',
 														 'studyAcademicYear.academicYear','programModuleAssignment.module','programModuleAssignment.students','module'])->findOrFail($id);
             if($module_assignment->programModuleAssignment->category == 'OPTIONAL'){
-				return 1234;
+				return DB::table('module_assignments')
+                    ->join('program_module_assignments', 'module_assignments.program_module_assignment_id', '=', 'program_module_assignments.id')
+                    ->join('student_program_module_assignment', 'program_module_assignments.id', '=', 'student_program_module_assignment.program_module_assignment_id')
+                    ->join('students', 'student_program_module_assignment.student_id', '=', 'students.id')
+                    ->join('studentship_statuses', 'students.studentship_status_id', '=', 'studentship_statuses.id')
+                    ->where('studentship_statuses.name', 'ACTIVE')
+                    ->select('students.registration_number')
+                    ->orderBy('students.registration_number')
+                    ->get();
+					
                 $data = [
                     'program'=>$module_assignment->programModuleAssignment->campusProgram->program,
                     'campus'=>$module_assignment->programModuleAssignment->campusProgram->campus,
@@ -547,6 +556,12 @@ class ModuleAssignmentController extends Controller
                     ->orderBy('students.registration_number')
                     ->get()
                     // 'students'=>$module_assignment->programModuleAssignment->students()->orderBy('registration_number')->get()
+					
+					
+					                    /* 'students'=>$module_assignment->programModuleAssignment->students()->whereHas('studentshipStatus',function($query){
+                        $query->where('name','ACTIVE');
+                     })->whereHas('registrations',function($query) use($module_assignment) {
+                          $query->where('status','REGISTERED');})->get() */
                 ];
 
                 
