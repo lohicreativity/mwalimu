@@ -724,11 +724,9 @@ class ModuleAssignmentController extends Controller
                     'course_work_processed'=> $module_assignment->course_work_process_status == 'PROCESSED'? true : false,
                     'assessment_plans'=>AssessmentPlan::where('module_assignment_id',$module_assignment->id)->get(),
                     'results'=>ExaminationResult::whereHas('student.studentshipStatus',function($query){
-                    $query->where('name','ACTIVE');
-                })->whereHas('student.registrations',
-                        function($query){
-                    $query->where('status','REGISTERED');
-                })->with('student.courseWorkResults')->where('module_assignment_id',$module_assignment->id)->where('course_work_remark','INCOMPLETE')->get()
+                    $query->where('name','ACTIVE')->OrWhere('name','RESUMED');
+                })->with('student.courseWorkResults')->where('module_assignment_id',$module_assignment->id)->where('course_work_remark','INCOMPLETE')->get(),
+				'semester'=>$module_assignment->programModuleAssignment->semester_id
                 ];
 
                 return view('dashboard.academic.reports.students-with-no-course-work',$data);
