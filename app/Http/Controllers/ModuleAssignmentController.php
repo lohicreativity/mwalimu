@@ -913,7 +913,7 @@ class ModuleAssignmentController extends Controller
                 })->whereHas('student.registrations',
                         function($query){
                     $query->where('status','REGISTERED');
-                })->with('student')->where('module_assignment_id',$module_assignment->id)->whereNotNull('final_uploaded_at')->where('final_exam_remark','FAIL')->get(),
+                })->whereHas('student.annualRemarks', function($query){$query->where('remark','SUPP');})->with('student')->where('module_assignment_id',$module_assignment->id)->whereNotNull('final_uploaded_at')->where('final_exam_remark','FAIL')->get(),
 				'semester'=>$module_assignment->programModuleAssignment->semester_id
             ];
             return view('dashboard.academic.reports.students-with-supplementary',$data);
