@@ -547,7 +547,7 @@ class ModuleAssignmentController extends Controller
                 })->whereHas('student.registrations',
                         function($query){
                     $query->where('status','REGISTERED');
-                })->with('student')->where('module_assignment_id',$module_assignment->id)->whereNotNull('supp_score')->get(),
+                })->with('student')->where('module_assignment_id',$module_assignment->id)->whereNotNull('supp_score')->get();
 
                 $data = [
                     'program'=>$module_assignment->programModuleAssignment->campusProgram->program,
