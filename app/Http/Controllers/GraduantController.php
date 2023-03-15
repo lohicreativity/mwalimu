@@ -56,8 +56,8 @@ class GraduantController extends Controller
                 $query->where('name','GRADUANT');
       })->whereHas('annualRemarks',function($query) use($request){
                 $query->where('study_academic_year_id','!=',$request->get('study_academic_year_id'));
-            })->get();
-		 return $past_graduants;
+            })->whereHas('overallRemark', function($query){$query->where('remark', 'PASS');})->get();
+			
       foreach($past_graduants as $grad){
           $user = User::find($grad->user_id);
           $user->status = 'INACTIVE';
@@ -76,6 +76,7 @@ class GraduantController extends Controller
       $nta_level = NTALevel::with(['programs'])->find($request->get('nta_level_id'));
       $excluded_list = [];
       $graduant_list = [];
+	  return $request;
       foreach($nta_level->programs as $program){
           	$campus_program = CampusProgram::with('program')->find($request->get('campus_program_id'));
           	$students = Student::whereHas('annualRemarks',function($query) use($request){
