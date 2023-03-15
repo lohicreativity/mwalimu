@@ -560,7 +560,7 @@ class ModuleAssignmentController extends Controller
                 
             }else{
 				
-				return ExaminationResult::select('id','module_assignment_id','final_uploaded_at','final_exam_remark')->whereHas('student.studentshipStatus',function($query){
+				return ExaminationResult::whereHas('student.studentshipStatus',function($query){
                     $query->where('name','ACTIVE')->OrWhere('name','RESUMED');
                 })->whereHas('student.registrations',
                         function($query){
