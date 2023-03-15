@@ -565,13 +565,15 @@ class ModuleAssignmentController extends Controller
 
                 
             }else{
-return Student::whereHas('studentshipStatus',function($query){
+			return Student::whereHas('studentshipStatus',function($query){
                     $query->where('name','ACTIVE')->OrWhere('name','RESUMED');
                 })->whereHas('registrations',
                         function($query){
                     $query->where('status','REGISTERED');
-                })->whereHas('examinationResult', function($query){ $query->where('module_assignment_id',$module_assignment->id)->whereNotNull('final_uploaded_at')
-				->where('final_exam_remark','FAIL');})->get();
+                })->get();
+				
+			//	->whereHas('examinationResult', function($query){ $query->where('module_assignment_id',$module_assignment->id)->whereNotNull('final_uploaded_at')
+			//	->where('final_exam_remark','FAIL');})
 				
 				
 				
