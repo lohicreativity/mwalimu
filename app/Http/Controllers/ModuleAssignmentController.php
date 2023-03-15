@@ -593,8 +593,8 @@ class ModuleAssignmentController extends Controller
                       'Pragma'              => 'public'
               ];
 			  
-			  return count($data['students_with_supp']);
-              $list = $data['students'];
+			  count($data['students_with_supp'])? $list = $data['students_with_supp'] : $list = $data['students'];;
+              return $list;
 
               # add headers for each column in the CSV download
               // array_unshift($list, array_keys($list[0]));
