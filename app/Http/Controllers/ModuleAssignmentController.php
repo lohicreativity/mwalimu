@@ -555,29 +555,18 @@ class ModuleAssignmentController extends Controller
                     'students' =>$module_assignment->programModuleAssignment->students()->whereHas('studentshipStatus',function($query){
                         $query->where('name','ACTIVE')->orWhere('name','RESUMED');
                      })->get(),
-					'students_with_supp'=>ExaminationResult::whereHas('student.studentshipStatus',function($query){
-                    $query->where('name','ACTIVE')->OrWhere('name','RESUMED');
-                })->whereHas('student.registrations',
-                        function($query){
-                    $query->where('status','REGISTERED');
-                })->with('student')->where('module_assignment_id',$module_assignment->id)->whereNotNull('final_uploaded_at')->where('final_exam_remark','FAIL')->get()
-                ];
-
-                
-            }else{
-			return Student::whereHas('studentshipStatus',function($query){
+					'students_with_supp'=>Student::whereHas('studentshipStatus',function($query){
                     $query->where('name','ACTIVE')->OrWhere('name','RESUMED');
                 })->whereHas('registrations',
                         function($query){
                     $query->where('status','REGISTERED');
                 })->whereHas('examinationResults', function($query) use($module_assignment){$query->where('module_assignment_id',$module_assignment->id)->whereNotNull('final_uploaded_at')
-				->where('final_exam_remark','FAIL');})->get();
-				
-				
-				
-				
-				
-				
+				->where('final_exam_remark','FAIL');})->get()
+                ];
+
+                
+            }else{
+			
                 $data = [
                    'program'=>$module_assignment->programModuleAssignment->campusProgram->program,
                     'campus'=>$module_assignment->programModuleAssignment->campusProgram->campus,
@@ -589,12 +578,13 @@ class ModuleAssignmentController extends Controller
                     })->whereHas('registrations',function($query) use($module_assignment){
                           $query->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)->where('semester_id',$module_assignment->programModuleAssignment->semester_id)->where('study_academic_year_id',$module_assignment->programModuleAssignment->study_academic_year_id);
                       })->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id)->orderBy('registration_number')->get(),
-					'students_with_supp'=>ExaminationResult::whereHas('student.studentshipStatus',function($query){
+					'students_with_supp'=>Student::whereHas('studentshipStatus',function($query){
                     $query->where('name','ACTIVE')->OrWhere('name','RESUMED');
-                })->whereHas('student.registrations',
+                })->whereHas('registrations',
                         function($query){
                     $query->where('status','REGISTERED');
-                })->with('student')->where('module_assignment_id',$module_assignment->id)->whereNotNull('final_uploaded_at')->where('final_exam_remark','FAIL')->get()
+                })->whereHas('examinationResults', function($query) use($module_assignment){$query->where('module_assignment_id',$module_assignment->id)->whereNotNull('final_uploaded_at')
+				->where('final_exam_remark','FAIL');})->get()
                 ];
             }
               $headers = [
@@ -604,9 +594,7 @@ class ModuleAssignmentController extends Controller
                       'Expires'             => '0',
                       'Pragma'              => 'public'
               ];
-			  return $data['students_with_supp']->student;
 			  count($data['students_with_supp'])? $list = $data['students_with_supp'] : $list = $data['students'];;
-              return $list;
 
               # add headers for each column in the CSV download
               // array_unshift($list, array_keys($list[0]));
