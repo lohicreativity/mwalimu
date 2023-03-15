@@ -632,6 +632,7 @@ class ExaminationResultController extends Controller
                           }
 
                             foreach($results as $resKey=>$result){
+								return $result;
                             $std = Student::with(['campusProgram.program.ntaLevel'])->find($result->student_id);
                                   
                             
