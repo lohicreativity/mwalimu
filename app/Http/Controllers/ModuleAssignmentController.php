@@ -537,6 +537,17 @@ class ModuleAssignmentController extends Controller
                     ->orderBy('students.registration_number')
                     ->get();
 					 */
+					 
+/* 					$students_with_supplemetary_count = ExaminationResult::whereHas('student.studentshipStatus',function($query){
+                    $query->where('name','ACTIVE')->orWhere('name','RESUMED');
+                })->where('module_assignment_id',$module_assignment->id)->whereNotNull('supp_score')->count();
+				 */
+				return ExaminationResult::whereHas('student.studentshipStatus',function($query){
+                    $query->where('name','ACTIVE')->OrWhere('name','RESUMED');
+                })->whereHas('student.registrations',
+                        function($query){
+                    $query->where('status','REGISTERED');
+                })->with('student')->where('module_assignment_id',$module_assignment->id)->whereNotNull('supp_score')->get(),
 
                 $data = [
                     'program'=>$module_assignment->programModuleAssignment->campusProgram->program,

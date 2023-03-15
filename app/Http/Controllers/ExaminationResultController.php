@@ -3031,8 +3031,6 @@ class ExaminationResultController extends Controller
               },'examinationResults'=>function($query) use($assignmentIds){
                 $query->whereIn('module_assignment_id',$assignmentIds);
               },'specialExams','examinationResults.changes','examinationResults.moduleAssignment.specialExams'])->where('campus_program_id',$campus_program->id)->get();
-			  
-			  return $students;
         }
 
 
