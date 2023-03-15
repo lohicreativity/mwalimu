@@ -561,7 +561,7 @@ class ModuleAssignmentController extends Controller
                         function($query){
                     $query->where('status','REGISTERED');
                 })->whereHas('examinationResults', function($query) use($module_assignment){$query->where('module_assignment_id',$module_assignment->id)->whereNotNull('final_uploaded_at')
-				->where('final_exam_remark','FAIL');})->get()
+				->where('final_exam_remark','FAIL');})->whereHas('annualRemarks', function($query){$query->where('remark','SUPP');})->get()
                 ];
 
                 
@@ -584,7 +584,7 @@ class ModuleAssignmentController extends Controller
                         function($query){
                     $query->where('status','REGISTERED');
                 })->whereHas('examinationResults', function($query) use($module_assignment){$query->where('module_assignment_id',$module_assignment->id)->whereNotNull('final_uploaded_at')
-				->where('final_exam_remark','FAIL');})->get()
+				->where('final_exam_remark','FAIL');})->whereHas('annualRemarks', function($query){$query->where('remark','SUPP');})->get()
                 ];
             }
               $headers = [
