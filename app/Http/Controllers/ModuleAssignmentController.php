@@ -570,10 +570,8 @@ class ModuleAssignmentController extends Controller
                 })->whereHas('registrations',
                         function($query){
                     $query->where('status','REGISTERED');
-                })->get();
-				
-			//	->whereHas('examinationResult', function($query){ $query->where('module_assignment_id',$module_assignment->id)->whereNotNull('final_uploaded_at')
-			//	->where('final_exam_remark','FAIL');})
+                })->whereHas('examinationResults', function($query){ $query->where('module_assignment_id',$module_assignment->id)->whereNotNull('final_uploaded_at')
+				->where('final_exam_remark','FAIL');})->get();
 				
 				
 				
