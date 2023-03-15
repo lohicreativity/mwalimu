@@ -542,12 +542,6 @@ class ModuleAssignmentController extends Controller
                     $query->where('name','ACTIVE')->orWhere('name','RESUMED');
                 })->where('module_assignment_id',$module_assignment->id)->whereNotNull('supp_score')->count();
 				 */
-				return ExaminationResult::whereHas('student.studentshipStatus',function($query){
-                    $query->where('name','ACTIVE')->OrWhere('name','RESUMED');
-                })->whereHas('student.registrations',
-                        function($query){
-                    $query->where('status','REGISTERED');
-                })->with('student')->where('module_assignment_id',$module_assignment->id)->whereNotNull('supp_score')->get();
 
                 $data = [
                     'program'=>$module_assignment->programModuleAssignment->campusProgram->program,
@@ -564,7 +558,13 @@ class ModuleAssignmentController extends Controller
 
                 
             }else{
-			
+							return ExaminationResult::whereHas('student.studentshipStatus',function($query){
+                    $query->where('name','ACTIVE')->OrWhere('name','RESUMED');
+                })->whereHas('student.registrations',
+                        function($query){
+                    $query->where('status','REGISTERED');
+                })->with('student')->where('module_assignment_id',$module_assignment->id)->whereNotNull('supp_score')->get();
+
                 $data = [
                    'program'=>$module_assignment->programModuleAssignment->campusProgram->program,
                     'campus'=>$module_assignment->programModuleAssignment->campusProgram->campus,
