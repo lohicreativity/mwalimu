@@ -334,10 +334,6 @@ class ModuleAssignmentController extends Controller
                 })->whereHas('registrations',function($query) use($module_assignment){
                      $query->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)->where('semester_id',$module_assignment->programModuleAssignment->semester_id)->where('study_academic_year_id',$module_assignment->programModuleAssignment->study_academic_year_id);
                 })->where('campus_program_id',$module_assignment->programModuleAssignment->campusProgram->id)->count();
-                
-/* 				->whereHas('registrations',function($query) use($module_assignment){
-                     $query->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)->where('semester_id',$module_assignment->programModuleAssignment->semester_id)->where('study_academic_year_id',$module_assignment->programModuleAssignment->study_academic_year_id);
-                })->where('campus_program_id',$module_assignment->programModuleAssignment->campusProgram->id) */
              }
 
              $students_with_coursework_count = CourseWorkResult::whereHas('student.studentshipStatus',function($query){
@@ -557,13 +553,7 @@ class ModuleAssignmentController extends Controller
 
                 
             }else{
-				
-/* 				Student::whereHas('studentshipStatus',function($query){
-                          $query->where('name','ACTIVE');
-                    })->whereHas('registrations',function($query) use($module_assignment){
-                          $query->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)->where('semester_id',$module_assignment->programModuleAssignment->semester_id)->where('study_academic_year_id',$module_assignment->programModuleAssignment->study_academic_year_id);
-                      })->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id)->orderBy('registration_number')->get() */
-                
+			
                 $data = [
                    'program'=>$module_assignment->programModuleAssignment->campusProgram->program,
                     'campus'=>$module_assignment->programModuleAssignment->campusProgram->campus,

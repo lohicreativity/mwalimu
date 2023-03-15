@@ -2990,7 +2990,7 @@ class ExaminationResultController extends Controller
         if($request->get('semester_id') != 'SUPPLEMENTARY'){
            if(Util::stripSpacesUpper($semester->name) == Util::stripSpacesUpper('Semester 1')){
               $students = Student::whereHas('studentshipStatus',function($query){
-                  $query->where('name','ACTIVE');
+                  $query->where('name','ACTIVE')->orWhere('name','RESUMED');
               })->whereHas('applicant',function($query) use($request){
                   $query->where('intake_id',$request->get('intake_id'));
               })->whereHas('registrations',function($query) use($request){
@@ -3002,7 +3002,7 @@ class ExaminationResultController extends Controller
               },'examinationResults.changes'])->where('campus_program_id',$campus_program->id)->get();
            }else{
               $students = Student::whereHas('studentshipStatus',function($query){
-                  $query->where('name','ACTIVE');
+                  $query->where('name','ACTIVE')->orWhere('name','RESUMED');
               })->whereHas('applicant',function($query) use($request){
                   $query->where('intake_id',$request->get('intake_id'));
               })->whereHas('registrations',function($query) use($request){
@@ -3017,7 +3017,7 @@ class ExaminationResultController extends Controller
           }
         }else{
             $students = Student::whereHas('studentshipStatus',function($query){
-                  $query->where('name','ACTIVE');
+                  $query->where('name','ACTIVE')->orWhere('name','RESUMED');
               })->whereHas('applicant',function($query) use($request){
                   $query->where('intake_id',$request->get('intake_id'));
               })->whereHas('registrations',function($query) use($request){
@@ -3031,6 +3031,8 @@ class ExaminationResultController extends Controller
               },'examinationResults'=>function($query) use($assignmentIds){
                 $query->whereIn('module_assignment_id',$assignmentIds);
               },'specialExams','examinationResults.changes','examinationResults.moduleAssignment.specialExams'])->where('campus_program_id',$campus_program->id)->get();
+			  
+			  return $students;
         }
 
 
