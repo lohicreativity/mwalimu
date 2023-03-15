@@ -630,6 +630,15 @@ class ModuleAssignmentController extends Controller
                 ];
                 
             }else{
+				return Student::whereHas('studentshipStatus',function($query){
+                          $query->where('name','ACTIVE')->orWhere('name','RESUMED');
+                      })->whereHas('registrations',function($query) use($module_assignment) {
+                          $query->where('status','REGISTERED'); 
+                          $query->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)
+						  ->where('semester_id',$module_assignment->programModuleAssignment->semester_id)
+						  ->where('study_academic_year_id',$module_assignment->programModuleAssignment->study_academic_year_id);
+                      })->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id)->get();
+					  
                 $data = [
                     'program'=>$module_assignment->programModuleAssignment->campusProgram->program,
                     'campus'=>$module_assignment->programModuleAssignment->campusProgram->campus,
@@ -640,7 +649,9 @@ class ModuleAssignmentController extends Controller
                           $query->where('name','ACTIVE')->orWhere('name','RESUMED');
                       })->whereHas('registrations',function($query) use($module_assignment) {
                           $query->where('status','REGISTERED'); 
-                          $query->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)->where('semester_id',$module_assignment->programModuleAssignment->semester_id)->where('study_academic_year_id',$module_assignment->programModuleAssignment->study_academic_year_id);
+                          $query->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)
+						  ->where('semester_id',$module_assignment->programModuleAssignment->semester_id)
+						  ->where('study_academic_year_id',$module_assignment->programModuleAssignment->study_academic_year_id);
                       })->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id)->get()
                 ];
             }
@@ -680,7 +691,9 @@ class ModuleAssignmentController extends Controller
                         $query->where('campus_program_id',$module_assignment->programModuleAssignment->campus_program_id);
                   })->with(['student.courseWorkResults.assessmentPlan','student.courseWorkResults'=>function($query) use($module_assignment){
 					    $query->where('module_assignment_id',$module_assignment->id);
-				  }])->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)->where('study_academic_year_id',$module_assignment->programModuleAssignment->study_academic_year_id)->where('semester_id',$module_assignment->programModuleAssignment->semester_id)->get();
+				  }])->where('year_of_study',$module_assignment->programModuleAssignment->year_of_study)
+				  ->where('study_academic_year_id',$module_assignment->programModuleAssignment->study_academic_year_id)
+				  ->where('semester_id',$module_assignment->programModuleAssignment->semester_id)->get();
             }
 
                 $data = [
