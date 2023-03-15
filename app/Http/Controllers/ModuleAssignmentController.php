@@ -526,6 +526,7 @@ class ModuleAssignmentController extends Controller
         try{
             $module_assignment = ModuleAssignment::with(['programModuleAssignment.campusProgram.program.department','programModuleAssignment.campusProgram.campus',
 														 'studyAcademicYear.academicYear','programModuleAssignment.module','programModuleAssignment.students','module'])->findOrFail($id);
+
             if($module_assignment->programModuleAssignment->category == 'OPTIONAL'){
 /* 				return DB::table('module_assignments')
                     ->join('program_module_assignments', 'module_assignments.program_module_assignment_id', '=', 'program_module_assignments.id')
@@ -558,12 +559,13 @@ class ModuleAssignmentController extends Controller
 
                 
             }else{
-							return ExaminationResult::whereHas('student.studentshipStatus',function($query){
+				
+				return ExaminationResult::whereHas('student.studentshipStatus',function($query){
                     $query->where('name','ACTIVE')->OrWhere('name','RESUMED');
                 })->whereHas('student.registrations',
                         function($query){
                     $query->where('status','REGISTERED');
-                })->with('student')->where('module_assignment_id',$module_assignment->id)->whereNotNull('supp_score')->get();
+                })->with('student')->where('module_assignment_id',$module_assignment->id)->get();
 
                 $data = [
                    'program'=>$module_assignment->programModuleAssignment->campusProgram->program,
