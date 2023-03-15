@@ -54,10 +54,10 @@ class GraduantController extends Controller
 
       $past_graduants = Student::whereHas('studentshipStatus',function($query){
                 $query->where('name','GRADUANT');
-	 return $past_graduants;
       })->whereHas('annualRemarks',function($query) use($request){
                 $query->where('study_academic_year_id','!=',$request->get('study_academic_year_id'));
             })->get();
+		 return $past_graduants;
       foreach($past_graduants as $grad){
           $user = User::find($grad->user_id);
           $user->status = 'INACTIVE';
