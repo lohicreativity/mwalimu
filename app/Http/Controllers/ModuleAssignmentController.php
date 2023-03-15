@@ -592,7 +592,7 @@ class ModuleAssignmentController extends Controller
                       'Expires'             => '0',
                       'Pragma'              => 'public'
               ];
-			  return $data['students_with_supp->student'];
+			  return $data['students_with_supp'->'student'];
 			  count($data['students_with_supp'])? $list = $data['students_with_supp'] : $list = $data['students'];;
               return $list;
 
