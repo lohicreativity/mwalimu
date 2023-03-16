@@ -120,7 +120,7 @@
                       <th>Clearance</th>
                       @endif
                       @if(Auth::user()->hasRole('hod'))
-                      <th>Clearance</th>
+                      <th colspan='2'>Clearance</th>
                       @endif
                     </tr>
                    </thead>
