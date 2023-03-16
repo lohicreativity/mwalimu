@@ -251,15 +251,15 @@
 
                     @foreach($students as $key=>$student)
                     <tr>
-                      <td class="ss-font-xs">{{ $key+1 }}</td>
+                      <td class="ss-font-sm">{{ $key+1 }}</td>
                       @if($request->get('reg_display_type') == 'SHOW')
-                      <td class="ss-font-xs">{{ $student->registration_number }}</td>
+                      <td class="ss-font-sm">{{ $student->registration_number }}</td>
                       @endif
                       @if($request->get('name_display_type') == 'SHOW')
-                      <td class="ss-font-xs">{{ $student->surname }}, {{ ucwords(strtolower($student->first_name))  }} {{ substr($student->middle_name, 1, 1)}}</td>
+                      <td class="ss-font-sm">{{ $student->surname }}, {{ ucwords(strtolower($student->first_name))  }} {{ substr($student->middle_name, 1, 1)}}</td>
                       @endif
                       @if($request->get('gender_display_type') == 'SHOW')
-                      <td class="ss-font-xs">{{ $student->gender }}</td>
+                      <td class="ss-font-sm">{{ $student->gender }}</td>
                       @endif
                          
 
@@ -366,7 +366,7 @@
                           @endforeach
                           
                           @if(!$results_present)
-                            <td></td>
+                            <td ></td>
                             <td></td>
                             <td></td>
                             <td></td>
