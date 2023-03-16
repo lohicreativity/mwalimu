@@ -124,7 +124,7 @@
                 <h3 class="card-title">List of Graduants - {{ $study_academic_year->academicYear->year }}</h3><br>
 				@foreach($graduants as $graduant)
 					@if($graduant->status == 'GRADUATING')
-						<a href="{{ url('academic/download-graduant-list?study_academic_year_id='.$study_academic_year->id) }}" class="btn btn-primary">Download Book List</a>
+						<a href="{{ url('academic/download-graduant-list?study_academic_year_id='.$study_academic_year->id.'?program_level_id='.$request->get('program_level_id').'?campus_id='.$request->get('campus_id')) }}" class="btn btn-primary">Download Book List</a>
 						<a href="{{ url('academic/download-graduant-list-cert?study_academic_year_id='.$study_academic_year->id) }}" class="btn btn-primary">Download Certificates List</a>
 					@endif
 					@break
