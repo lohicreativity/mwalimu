@@ -5,6 +5,7 @@ namespace App\Exports;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 use App\Domain\Academic\Models\CampusProgram;
+use App\Domain\Registration\Models\Student;
 use App\Exports\Sheets\GraduantsPerProgramSheet;
 
 class GraduantsExport implements WithMultipleSheets
