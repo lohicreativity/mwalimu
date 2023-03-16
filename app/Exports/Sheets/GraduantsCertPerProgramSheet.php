@@ -7,6 +7,7 @@ use Maatwebsite\Excel\Concerns\WithTitle;
 use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use App\Domain\Academic\Models\Graduant;
+use App\Domain\Settings\Models\SpecialDate;
 
 class GraduantsCertPerProgramSheet implements FromQuery, WithTitle, WithMapping, WithHeadings
 {
