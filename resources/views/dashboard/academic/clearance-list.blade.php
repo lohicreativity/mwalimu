@@ -250,7 +250,7 @@
 						   @endif</td>
 
                        <td>
-                        {!! Form::checkbox('clearance_'.$clearance->id,$clearance->id) !!}
+                        {!! Form::checkbox('clearance_'.$clearance->id,$clearance->id, true) !!}
                         {!! Form::input('hidden','clear_'.$clearance->id,$clearance->id) !!}
                         {!! Form::input('hidden','group','dean-of-students') !!}
                        </td>
@@ -308,7 +308,7 @@
                       <!-- /.modal -->
                        </td>--}}
                        <td>
-                        {!! Form::checkbox('clearance_'.$clearance->id,$clearance->id) !!}
+                        {!! Form::checkbox('clearance_'.$clearance->id,$clearance->id, true) !!}
                         {!! Form::input('hidden','clear_'.$clearance->id,$clearance->id) !!}
                         {!! Form::input('hidden','group','hod') !!}
                        </td>
