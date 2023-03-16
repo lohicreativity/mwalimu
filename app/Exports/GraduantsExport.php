@@ -29,8 +29,8 @@ class GraduantsExport implements WithMultipleSheets
     {
         $sheets = [];
 
-        $programs = CampusProgram::whereHas('program', function($query) use($this->program_level_id)
-		{$query->where('award_id', $this->program_level_id);})->whereHas('student.registrations',function($query) use($this->study_academic_year_id){
+        $programs = CampusProgram::whereHas('program', function($query) use($program_level_id)
+		{$query->where('award-id', $this->program_level_id);})->whereHas('student.registrations',function($query){
 		$query->where('study_academic_year_id',$this->study_academic_year_id);})->whereHas('student.studentshipStatus',function($query){
 		$query->where('name','GRADUANT');})->with(['program.departments','campus'])->where('campus_id', $this->campus_id)->get();
 
