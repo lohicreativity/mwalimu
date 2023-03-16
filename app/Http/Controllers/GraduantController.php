@@ -242,7 +242,7 @@ class GraduantController extends Controller
      * Approve graduants
      */
     public function approveGraduants(Request $request)
-    {
+    { return $request;
         $graduants = Graduant::whereHas('student.campusProgram.program',function($query) use($request){
                $query->where('award_id',$request->get('program_level_id'));
            })->get();
