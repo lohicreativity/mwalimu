@@ -66,6 +66,9 @@ class GraduantsCertPerProgramSheet implements FromQuery, WithTitle, WithMapping,
     public function map($graduant): array
     {   
         $date = SpecialDate::where('study_academic_year_id',$this->study_academic_year_id)->where('campus_id',$this->campus_id)->where('name','Graduation')->first();
+		if(!$date){
+            return redirect()->back()->with('error','Graduation date has not been set');
+        }
         return [
             $graduant->student->first_name.' '.$graduant->student->middle_name.' '.$graduant->student->surname,
             $graduant->student->registration_number,
