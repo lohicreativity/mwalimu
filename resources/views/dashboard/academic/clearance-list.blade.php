@@ -105,7 +105,12 @@
                     <tr>
                       <th>Student</th>
                       <th>Reg. No.</th>
+                      <th>Mobile Phone </th>
                       <th>Programme</th>
+                      @if(Auth::user()->hasRole('examination_officer'))
+                      <th></th>
+                      <th>Status</th>
+                      @endif
                       @if(Auth::user()->hasRole('finance-officer'))
                       <th></th>
                       <th>Clearance</th>
@@ -129,8 +134,22 @@
                      <tr>
                        <td>{{ $clearance->student->first_name }} {{ $clearance->student->middle_name }} {{ $clearance->student->surname }}</td>
                        <td>{{ $clearance->student->registration_number }}</td>
-                       <td>{{ $clearance->student->campusProgram->program->name }}</td>
+					   <td>{{ $clearance->student->phone }}</td>
+                       <td>{{ $clearance->student->campusProgram->program->code }}</td>
 
+                       @if(Auth::user()->hasRole('examination_officer'))
+                       <td>@if($clearance->library_status === 1 && $clearance->hostel_status === 1 && $clearance->finance_status === 1 && $clearance->hod_status === 1 ) 
+						   	<span class="badge badge-success">
+								Cleared
+							</span>
+							@else
+													   	<span class="badge badge-danger">
+								Pending
+							</span>
+                       
+                       @endif </td>
+					   
+					   
                        @if(Auth::user()->hasRole('finance-officer'))
                        <td>@if($clearance->finance_status === 0) <i class="fa fa-ban"></i> @else <i class="fa fa-check"></i> @endif</td>
                       {{--<td><a href="#" class="btn btn-primary" data-toggle="modal" data-target="#ss-stage-finance-{{ $clearance->id }}">Clear</a>
@@ -331,8 +350,10 @@
                     @endforeach
                       <tr>
                       <td colspan="8">
+					  @if(Auth::user()->hasRole(!'examination_officer'))
                         <button type="submit" class="btn btn-primary">Clear All Selected</button>
                       </td>
+					  @endif
                     </tr> 
                    </tbody>
                  </table>
