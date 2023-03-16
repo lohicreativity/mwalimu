@@ -242,24 +242,20 @@ class GraduantController extends Controller
      * Approve graduants
      */
     public function approveGraduants(Request $request)
-    { return $request;
+    {
         $graduants = Graduant::whereHas('student.campusProgram.program',function($query) use($request){
                $query->where('award_id',$request->get('program_level_id'));
-           })->get();
-		   
-		  /*  ->whereHas('student.campusProgram',function($query) use($request){
+           })->whereHas('student.campusProgram',function($query) use($request){
                $query->where('campus_id',$request->get('campus_id'));
-           })->with(['student.campusProgram.program'])->where('study_academic_year_id',$request->get('study_academic_year_id')) */
-return $graduants;
+           })->with(['student.campusProgram.program'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->get();
+
         foreach ($graduants as $graduant) {
-			return $graduant;
            if($request->get('grad_'.$graduant->id) == $graduant->id){
-			   return 1;
               if($request->get('graduant_'.$graduant->id) == $graduant->id){
                   $grad = Graduant::find($graduant->id);
                   $grad->status = 'GRADUATING';
                   $grad->save();
-return 2;
+
                   try{
                      $user = new User;
                      $user->email = $graduant->student->email;
@@ -267,7 +263,6 @@ return 2;
                      Mail::to($user)->queue(new GraduationAlert($graduant));
                   }catch(\Exception $e){}
               }else{
-				  return 3;
                   $grad = Graduant::find($graduant->id);
                   $grad->status = 'EXCLUDED';
                   $grad->reason = 'Disapproved';
