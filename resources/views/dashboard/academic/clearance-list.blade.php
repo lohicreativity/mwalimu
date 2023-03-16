@@ -137,7 +137,7 @@
 					   <td>{{ $clearance->student->phone }}</td>
                        <td>{{ $clearance->student->campusProgram->program->code }}</td>
 
-                       @if(Auth::user()->hasRole('examination_officer'))
+                       @if(Auth::user()->hasRole('examination-officer'))
                        <td>@if($clearance->library_status === 1 && $clearance->hostel_status === 1 && $clearance->finance_status === 1 && $clearance->hod_status === 1 ) 
 						   	<span class="badge badge-success">
 								Cleared
@@ -350,7 +350,7 @@
                     @endforeach
                       <tr>
                       <td colspan="8">
-					  @if(Auth::user()->hasRole(!'examination_officer'))
+					  @if(Auth::user()->hasRole(!'examination-officer'))
                         <button type="submit" class="btn btn-primary">Clear All Selected</button>
                       </td>
 					  @endif
