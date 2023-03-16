@@ -107,7 +107,7 @@
                       <th>Reg. No.</th>
                       <th>Mobile Phone </th>
                       <th>Programme</th>
-                      @if(Auth::user()->hasRole('examination_officer'))
+                      @if(Auth::user()->hasRole('examination-officer'))
                       <th></th>
                       <th>Status</th>
                       @endif
@@ -350,7 +350,7 @@
                     @endforeach
                       <tr>
                       <td colspan="8">
-					  @if(Auth::user()->hasRole(!'examination-officer'))
+					  @if(!Auth::user()->hasRole('examination-officer'))
                         <button type="submit" class="btn btn-primary">Clear All Selected</button>
                       </td>
 					  @endif
