@@ -34,9 +34,11 @@ class GraduantsExport implements WithMultipleSheets
         $sheets = [];
 
         $programs = CampusProgram::whereHas('program', function($query) use($program_level_id)
-		{$query->where('award-id', $program_level_id);})->whereHas('student.registrations',function($query) use($study_academic_year_id){
+		{$query->where('award_id', $program_level_id);})->with(['program.departments','campus'])->where('campus_id', $campus_id)->get();
+		
+		$graduant_exist = Student::whereHas('student.registrations',function($query) use($study_academic_year_id){
 		$query->where('study_academic_year_id',$study_academic_year_id);})->whereHas('student.studentshipStatus',function($query){
-		$query->where('name','GRADUANT');})->with(['program.departments','campus'])->where('campus_id', $campus_id)->get();
+		$query->where('name','GRADUANT');})->whereHas('applicant', function($query) use($program_level_id){$query->where('program_level_id', $program_level_id);})->first();
 
         foreach ($programs as $key => $program) {
             foreach($program->program->departments as $dpt){
@@ -44,7 +46,9 @@ class GraduantsExport implements WithMultipleSheets
                     $department = $dpt;
                 }
              }
-            $sheets[] = new GraduantsPerProgramSheet($program->program->id, $program->program->code, $program->program->name, $department->name, $program->campus->name,$study_academic_year_id);
+			 if($graduant_exist){
+				$sheets[] = new GraduantsPerProgramSheet($program->program->id, $program->program->code, $program->program->name, $department->name, $program->campus->name,$study_academic_year_id);				 
+			 }
         }
 
         return $sheets;
