@@ -2309,10 +2309,11 @@ class ExaminationResultController extends Controller
                        $student_buffer[$student->id]['opt_credit'] += $prog->module->credit;
                        $student_buffer[$student->id]['opt_prog'] += 1;
                    }
-
-                   if($student_buffer[$student->id]['opt_prog'] < $elective_policy->number_of_options){
-                       $student_buffer[$student->id]['opt_prog_status'] = false;
-                   }
+					if($elective_policy){
+						if($student_buffer[$student->id]['opt_prog'] < $elective_policy->number_of_options){
+						$student_buffer[$student->id]['opt_prog_status'] = false;
+						}	
+					}
 
                    $student_buffer[$student->id]['total_credit'] = $student_buffer[$student->id]['opt_credit'] + $total_credit;
                    
