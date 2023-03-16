@@ -132,13 +132,13 @@
 
                        @if(Auth::user()->hasRole('examination-officer'))
                        <td>@if($clearance->library_status === 1 && $clearance->hostel_status === 1 && $clearance->finance_status === 1 && $clearance->hod_status === 1 ) 
-						   	<span class="badge badge-success">
-								Cleared
-							</span>
+								<span class="badge badge-success">
+									Cleared
+								</span>
 							@else
-													   	<span class="badge badge-danger">
-								Pending
-							</span>
+								<span class="badge badge-danger">
+									Pending
+								</span>
                        
                        @endif </td>
 					   @endif
@@ -290,7 +290,15 @@
                        @endif
                       @if(Auth::user()->hasRole('hod'))
 
-                       <td>@if($clearance->hod_status === 0) <i class="fa fa-ban"></i> @else <i class="fa fa-check"></i> @endif</td>
+                       <td>@if($clearance->hod_status === 0) 
+						   	<span class="badge badge-danger">
+								Not Cleared
+							</span>
+						   @elseif($clearance->hod_status === null)
+								<span class="badge badge-success">
+									Pending
+								</span>
+						  <!-- <i class="fa fa-ban"></i> @else <i class="fa fa-check"></i> --> @endif</td>
                        {{--<td>
                            
                            <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#ss-stage-hod-{{ $clearance->id }}">Clear</a>
