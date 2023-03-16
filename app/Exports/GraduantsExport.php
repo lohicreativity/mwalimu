@@ -27,6 +27,10 @@ class GraduantsExport implements WithMultipleSheets
      */
     public function sheets(): array
     {
+		$this->study_academic_year_id = $study_academic_year_id;
+		$this->program_level_id = $program_level_id;
+		$this->campus_id = $campus_id;
+		
         $sheets = [];
 
         $programs = CampusProgram::whereHas('program', function($query) use($program_level_id)
