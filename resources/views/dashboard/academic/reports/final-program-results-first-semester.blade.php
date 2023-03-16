@@ -251,15 +251,15 @@
 
                     @foreach($students as $key=>$student)
                     <tr>
-                      <td class="ss-font-sm">{{ $key+1 }}</td>
+                      <td class="ss-font-xs">{{ $key+1 }}</td>
                       @if($request->get('reg_display_type') == 'SHOW')
-                      <td class="ss-font-sm">{{ $student->registration_number }}</td>
+                      <td class="ss-font-xs">{{ $student->registration_number }}</td>
                       @endif
                       @if($request->get('name_display_type') == 'SHOW')
-                      <td class="ss-font-sm">{{ $student->surname }}, {{ ucwords(strtolower($student->first_name))  }} {{ substr($student->middle_name, 1, 1)}}</td>
+                      <td class="ss-font-xs">{{ $student->surname }}, {{ ucwords(strtolower($student->first_name))  }} {{ substr($student->middle_name, 1, 1)}}</td>
                       @endif
                       @if($request->get('gender_display_type') == 'SHOW')
-                      <td class="ss-font-sm">{{ $student->gender }}</td>
+                      <td class="ss-font-xs">{{ $student->gender }}</td>
                       @endif
                          
 
@@ -285,9 +285,9 @@
 
                             <td 
                               @if($result->course_work_remark == 'FAIL' && !$result->supp_processed_at) 
-                              class="ss-custom-grey ss-center ss-font-sm" 
+                              class="ss-custom-grey ss-center ss-font-xs" 
                               @else 
-                              class="ss-center ss-font-sm" 
+                              class="ss-center ss-font-xs" 
                               @endif>
 
                               @if($result->supp_processed_at)
@@ -304,11 +304,11 @@
                             </td>
                             <td 
                               @if($result->final_remark == 'FAIL' && !$result->supp_processed_at) 
-                              class="ss-custom-grey ss-center ss-font-sm" 
+                              class="ss-custom-grey ss-center ss-font-xs" 
                               @elseif(count($result->changes) != 0) 
-                              class="ss-center ss-custom-lightblue ss-font-sm" 
+                              class="ss-center ss-custom-lightblue ss-font-xs" 
                               @else 
-                              class="ss-center ss-font-sm" 
+                              class="ss-center ss-font-xs" 
                               @endif>
 
                               @if($result->supp_processed_at)
@@ -322,11 +322,11 @@
                             </td>
                             <td 
                               @if($result->course_work_remark == 'FAIL' || $result->final_remark == 'FAIL') 
-                                class="ss-custom-grey-- ss-center ss-font-sm" 
+                                class="ss-custom-grey-- ss-center ss-font-xs" 
                               @elseif($result->supp_processed_at)
-                                class="ss-center ss-font-sm" 
+                                class="ss-center ss-font-xs" 
                               @else 
-                                class="ss-center ss-font-sm" 
+                                class="ss-center ss-font-xs" 
                               @endif>
 
                               @if($result->supp_processed_at)
@@ -342,8 +342,8 @@
                           </td>
                             <td 
                               @if($result->course_work_remark == 'FAIL' || $result->final_remark == 'FAIL') 
-                                class="ss-custom-grey-- ss-center ss-font-sm" 
-                              @else class="ss-center ss-font-sm" 
+                                class="ss-custom-grey-- ss-center ss-font-xs" 
+                              @else class="ss-center ss-font-xs" 
                               @endif>
                               
                                 @if($result->supp_processed_at)
@@ -366,27 +366,27 @@
                           @endforeach
                           
                           @if(!$results_present)
-                            <td class="ss-font-sm"></td>
-                            <td class="ss-font-sm"></td>
-                            <td class="ss-font-sm"></td>
-                            <td class="ss-font-sm"></td>
+                            <td class="ss-font-xs"></td>
+                            <td class="ss-font-xs"></td>
+                            <td class="ss-font-xs"></td>
+                            <td class="ss-font-xs"></td>
                           @endif
                       
                       @endforeach
                       
-                      <td class="ss-font-sm">@if(count($student->semesterRemarks) != 0)   
+                      <td class="ss-font-xs">@if(count($student->semesterRemarks) != 0)   
                         @if($student->semesterRemarks[0]->gpa) {{ bcdiv($student->semesterRemarks[0]->gpa,1,1) }} @else N/A @endif 
                       @endif</td>
-                      <td class="ss-font-sm">@if(count($student->semesterRemarks) != 0)   
+                      <td class="ss-font-xs">@if(count($student->semesterRemarks) != 0)   
                         @if($student->semesterRemarks[0]->gpa) {{ $student->semesterRemarks[0]->point }} @else N/A @endif 
                       @endif</td>
-                      <td class="ss-font-sm">@if(count($student->semesterRemarks) != 0)   
+                      <td class="ss-font-xs">@if(count($student->semesterRemarks) != 0)   
                         @if($student->semesterRemarks[0]->gpa) {{ $student->semesterRemarks[0]->credit }} @else N/A @endif 
                       @endif</td>
-                      <td class="ss-font-sm">@if(count($student->semesterRemarks) != 0)   
+                      <td class="ss-font-xs">@if(count($student->semesterRemarks) != 0)   
                         @if($student->semesterRemarks[0]->remark) {{ ucwords(strtolower($student->semesterRemarks[0]->remark)) }} @else N/A @endif 
                       @endif</td>
-                      <td class="ss-font-sm">@if(count($student->semesterRemarks) != 0)   
+                      <td class="ss-font-xs">@if(count($student->semesterRemarks) != 0)   
                         @if($student->semesterRemarks[0]->class) {{ $student->semesterRemarks[0]->class }} @else N/A @endif 
                       @endif</td>
                     </tr>
