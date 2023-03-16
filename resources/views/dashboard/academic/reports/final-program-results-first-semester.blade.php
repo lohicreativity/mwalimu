@@ -166,10 +166,10 @@
          margin-bottom: 20px;
      }
      .ss-font-sm{
-        font-size: 14px;
+        font-size: 13px;
      }
      .ss-font-xs{
-        font-size: 11px;
+        font-size: 12px;
      }
      .ss-letter-head{
         /*margin-bottom: 20px;*/
@@ -215,19 +215,19 @@
                <div class="table-responsive ss-margin-bottom">
                   <table class="table table-condensed table-bordered">
                     <tr>
-                      <td class="ss-bold" rowspan="2">SN</td>
+                      <td class="ss-bold ss-font-sm" rowspan="2">SN</td>
                       @if($request->get('reg_display_type') == 'SHOW')
-                      <td class="ss-bold" rowspan="2">REG. NO.</td>
+                      <td class="ss-bold ss-font-sm" rowspan="2">REG. NO.</td>
                       @endif
                       @if($request->get('name_display_type') == 'SHOW')
-                      <td class="ss-bold" rowspan="2">NAME</td>
+                      <td class="ss-bold ss-font-sm" rowspan="2">NAME</td>
                       @endif
                       @if($request->get('gender_display_type') == 'SHOW')
-                      <td class="ss-bold" rowspan="2">SEX</td>
+                      <td class="ss-bold ss-font-sm" rowspan="2">SEX</td>
                       @endif
                       <!-- <td class="ss-bold" rowspan="2">CLASS MODE</td> -->
                       @foreach($module_assignments as $assignment)
-                      <td class="ss-bold" colspan="4">{{ $assignment->module->code }} ({{ $assignment->module->credit }})</td>
+                      <td class="ss-bold ss-font-sm" colspan="4">{{ $assignment->module->code }} ({{ $assignment->module->credit }})</td>
                       @endforeach
                       <td colspan="5"></td>
                     </tr>
