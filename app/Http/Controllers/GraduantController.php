@@ -278,7 +278,7 @@ class GraduantController extends Controller
      * Download list
      */
     public function downloadList(Request $request)
-    {	return $request;
+    {	
           return (new GraduantsExport($request->get('study_academic_year_id'), $request->get('program_level_id'), $request->get('campus_id')))->download('graduants.xlsx');
     }
 
