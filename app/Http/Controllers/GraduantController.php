@@ -289,7 +289,7 @@ class GraduantController extends Controller
     {
 /*           return (new GraduantsCertExport($request->get('study_academic_year_id')))->download('graduants-certificates.xlsx');
  */          $sheet = new GraduantsCertExport($request->get('study_academic_year_id'));
-			if(!$sheet){
+			if(count($sheet) == 0){
 				return redirect()->back()->with('error','Graduation date is not set');
 			}else{
 				return $sheet->download('graduants-certificates.xlsx');
