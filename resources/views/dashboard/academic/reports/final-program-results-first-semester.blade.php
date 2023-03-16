@@ -206,7 +206,7 @@
         <div class="row">
           <div class="col-md-12">
               <div class="ss-letter-head  ss-center">
-               <h3>MWALIMU NYERERE MEMORIAL ACADEMY</h3>
+               <h3>THE MWALIMU NYERERE MEMORIAL ACADEMY</h3>
                <h3>{{ $campus->name }}</h3>
                <h3>{{ $department->name }}</h3>
                <h3>{{ $program->name }} (YEAR {{ $year_of_study }} - {{ strtoupper(substr($intake->name,0,3)) }}) - {{ $study_academic_year->academicYear->year }}</h3>
@@ -251,15 +251,15 @@
 
                     @foreach($students as $key=>$student)
                     <tr>
-                      <td>{{ $key+1 }}</td>
+                      <td class="ss-font-xs">{{ $key+1 }}</td>
                       @if($request->get('reg_display_type') == 'SHOW')
-                      <td>{{ $student->registration_number }}</td>
+                      <td class="ss-font-xs">{{ $student->registration_number }}</td>
                       @endif
                       @if($request->get('name_display_type') == 'SHOW')
-                      <td>{{ $student->surname }}, {{ ucwords(strtolower($student->first_name))  }} {{ substr($student->middle_name, 1, 1)}}</td>
+                      <td class="ss-font-xs">{{ $student->surname }}, {{ ucwords(strtolower($student->first_name))  }} {{ substr($student->middle_name, 1, 1)}}</td>
                       @endif
                       @if($request->get('gender_display_type') == 'SHOW')
-                      <td>{{ $student->gender }}</td>
+                      <td class="ss-font-xs">{{ $student->gender }}</td>
                       @endif
                          
 
