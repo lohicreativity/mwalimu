@@ -240,7 +240,15 @@
                        @endif
                        @if(Auth::user()->hasRole('dean-of-students'))
 
-                       <td>@if($clearance->hostel_status === 0) <i class="fa fa-ban"></i> @else <i class="fa fa-check"></i> @endif</td>
+                        <td>@if($clearance->hostel_status === 0) 
+						   	<span class="badge badge-danger">
+								Not Cleared
+							</span>
+						   @elseif($clearance->hostel_status === null)
+								<span class="badge badge-success">
+									Pending
+								</span>
+						  <!-- <i class="fa fa-ban"></i> @else <i class="fa fa-check"></i> --> @endif</td>
                        {{--<td>
                          
                          <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#ss-stage-hostel-{{ $clearance->id }}">Clear</a>
