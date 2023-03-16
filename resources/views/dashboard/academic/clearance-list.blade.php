@@ -239,8 +239,7 @@
                        </td>
                        @endif
                        @if(Auth::user()->hasRole('dean-of-students'))
-
-                        <td>@if($clearance->hostel_status === 0) 
+                      <td>@if($clearance->hostel_status === 0) 
 						   	<span class="badge badge-danger">
 								Not Cleared
 							</span>
@@ -248,50 +247,10 @@
 								<span class="badge badge-success">
 									Pending
 								</span>
-						  <!-- <i class="fa fa-ban"></i> @else <i class="fa fa-check"></i> --> @endif</td>
-                       {{--<td>
-                         
-                         <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#ss-stage-hostel-{{ $clearance->id }}">Clear</a>
-                            <div class="modal fade" id="ss-stage-hostel-{{ $clearance->id }}">
-                        <div class="modal-dialog modal-lg">
-                          <div class="modal-content">
-                            <div class="modal-header">
-                              <h4 class="modal-title"><i class="fa fa-exclamation-sign"></i> Confirmation Alert</h4>
-                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                              </button>
-                            </div>
-                            <div class="modal-body">
-                              {!! Form::open(['url'=>'academic/clearance/update','class'=>'ss-form-processing']) !!}
-                                 <select name="status" class="form-control" required>
-                                     <option value="">Select Status</option>
-                                     <option value="1">Cleared</option>
-                                     <option value="0">Not Cleared</option>
-                                 </select>
+						   @endif</td>
 
-                                 {!! Form::input('hidden','clearance_id',$clearance->id) !!}
-                                 {!! Form::input('hidden','stage','hostel') !!}
-
-                                 {!! Form::label('','Comment') !!}
-                                 {!! Form::textarea('comment',null,['class'=>'form-control','rows'=>2,'placehoder'=>'Comment']) !!}
-
-                                  <div class="ss-form-actions">
-                                     <button type="submit" class="btn btn-primary">{{ __('Submit') }}</button>
-                                  </div>
-                              {!! Form::close() !!}
-                            </div>
-                            <div class="modal-footer justify-content-between">
-                              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                            </div>
-                          </div>
-                          <!-- /.modal-content -->
-                        </div>
-                        <!-- /.modal-dialog -->
-                      </div>
-                      <!-- /.modal -->
-                       </td> --}}
                        <td>
-                        {!! Form::checkbox('clearance_'.$clearance->id,$clearance->id,true) !!}
+                        {!! Form::checkbox('clearance_'.$clearance->id,$clearance->id) !!}
                         {!! Form::input('hidden','clear_'.$clearance->id,$clearance->id) !!}
                         {!! Form::input('hidden','group','dean-of-students') !!}
                        </td>
