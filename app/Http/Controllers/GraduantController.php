@@ -250,6 +250,7 @@ class GraduantController extends Controller
            })->with(['student.campusProgram.program'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->get();
 
         foreach ($graduants as $graduant) {
+			return $graduant;
            if($request->get('grad_'.$graduant->id) == $graduant->id){
 			   return 1;
               if($request->get('graduant_'.$graduant->id) == $graduant->id){
