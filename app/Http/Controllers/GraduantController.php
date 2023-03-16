@@ -287,7 +287,15 @@ class GraduantController extends Controller
      */
     public function downloadCertList(Request $request)
     {
-          return (new GraduantsCertExport($request->get('study_academic_year_id')))->download('graduants-certificates.xlsx');
+/*           return (new GraduantsCertExport($request->get('study_academic_year_id')))->download('graduants-certificates.xlsx');
+ */          $sheet = new GraduantsCertExport($request->get('study_academic_year_id'));
+			if(!sheet){
+				return redirect()->back()->with('error','Graduation date is not set');
+			}else{
+				return $sheet->download('graduants-certificates.xlsx');
+
+			}
+				
     }
 
     /**
