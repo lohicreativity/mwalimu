@@ -248,14 +248,15 @@ class GraduantController extends Controller
            })->whereHas('student.campusProgram',function($query) use($request){
                $query->where('campus_id',$request->get('campus_id'));
            })->with(['student.campusProgram.program'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->get();
-return 1234;
+
         foreach ($graduants as $graduant) {
            if($request->get('grad_'.$graduant->id) == $graduant->id){
+			   return 1;
               if($request->get('graduant_'.$graduant->id) == $graduant->id){
                   $grad = Graduant::find($graduant->id);
                   $grad->status = 'GRADUATING';
                   $grad->save();
-
+return 2;
                   try{
                      $user = new User;
                      $user->email = $graduant->student->email;
@@ -263,6 +264,7 @@ return 1234;
                      Mail::to($user)->queue(new GraduationAlert($graduant));
                   }catch(\Exception $e){}
               }else{
+				  return 3;
                   $grad = Graduant::find($graduant->id);
                   $grad->status = 'EXCLUDED';
                   $grad->reason = 'Disapproved';
