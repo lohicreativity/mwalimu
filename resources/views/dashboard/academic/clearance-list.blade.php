@@ -148,7 +148,7 @@
 							</span>
                        
                        @endif </td>
-					   
+					   @endif
 					   
                        @if(Auth::user()->hasRole('finance-officer'))
                        <td>@if($clearance->finance_status === 0) <i class="fa fa-ban"></i> @else <i class="fa fa-check"></i> @endif</td>
