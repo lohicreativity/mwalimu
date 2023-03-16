@@ -107,20 +107,18 @@
                       <th>Reg. No.</th>
                       <th>Mobile Phone </th>
                       <th>Programme</th>
-                      @if(Auth::user()->hasRole('examination-officer'))
                       <th>Status</th>
-                      @endif
                       @if(Auth::user()->hasRole('finance-officer'))
-                      <th>Clearance</th>
+                      <th>Action</th>
                       @endif
                       @if(Auth::user()->hasRole('librarian'))
-                      <th>Clearance</th>
+                      <th>Action</th>
                       @endif
                       @if(Auth::user()->hasRole('dean-of-students'))
-                      <th>Clearance</th>
+                      <th>Action</th>
                       @endif
                       @if(Auth::user()->hasRole('hod'))
-                      <th colspan='2'>Clearance</th>
+                      <th>Action</th>
                       @endif
                     </tr>
                    </thead>
