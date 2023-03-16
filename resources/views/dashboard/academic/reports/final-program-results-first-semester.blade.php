@@ -169,7 +169,7 @@
         font-size: 14px;
      }
      .ss-font-xs{
-        font-size: 12px;
+        font-size: 11px;
      }
      .ss-letter-head{
         /*margin-bottom: 20px;*/
@@ -234,17 +234,17 @@
                     <tr>
                       
                       @foreach($module_assignments as $assignment)
-                      <td class="ss-bold">CA</td>
-                      <td class="ss-bold">FE</td>
-                      <td class="ss-bold">TT</td>
-                      <td class="ss-bold">GD</td>
+                      <td class="ss-bold ss-font-sm">CA</td>
+                      <td class="ss-bold ss-font-sm">FE</td>
+                      <td class="ss-bold ss-font-sm">TT</td>
+                      <td class="ss-bold ss-font-sm">GD</td>
                       @endforeach
                       
-                      <td class="ss-bold">GPA</td>
-                      <td class="ss-bold">POINTS</td>
-                      <td class="ss-bold">CREDITS</td>
-                      <td class="ss-bold">REMARK</td>
-                      <td class="ss-bold">CLASS</td>
+                      <td class="ss-bold ss-font-sm">GPA</td>
+                      <td class="ss-bold ss-font-sm">POINTS</td>
+                      <td class="ss-bold ss-font-sm">CREDITS</td>
+                      <td class="ss-bold ss-font-sm">REMARK</td>
+                      <td class="ss-bold ss-font-sm">CLASS</td>
                     </tr>
                     
                     
