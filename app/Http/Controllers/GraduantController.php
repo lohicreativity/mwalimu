@@ -248,7 +248,7 @@ class GraduantController extends Controller
            })->whereHas('student.campusProgram',function($query) use($request){
                $query->where('campus_id',$request->get('campus_id'));
            })->with(['student.campusProgram.program'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->get();
-
+return $graduants;
         foreach ($graduants as $graduant) {
 			return $graduant;
            if($request->get('grad_'.$graduant->id) == $graduant->id){
