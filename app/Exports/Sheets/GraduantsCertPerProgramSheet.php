@@ -18,12 +18,13 @@ class GraduantsCertPerProgramSheet implements FromQuery, WithTitle, WithMapping,
     private $program_id;
     private $study_academic_year_id;
 
-    public function __construct(int $program_id, string $program_code, string $program_name, string $department_name, string $campus_name, int $study_academic_year_id)
+    public function __construct(int $program_id, string $program_code, string $program_name, string $department_name, string $campus_name, int $campus_id, int $study_academic_year_id)
     {
         $this->program_code = $program_code;
         $this->program_name = $program_name;
         $this->department_name = $department_name;
         $this->campus_name = $campus_name;
+		$this->campus_id = $campus_id;
         $this->program_id = $program_id;
         $this->study_academic_year_id = $study_academic_year_id;
     }
