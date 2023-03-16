@@ -333,7 +333,7 @@
                       <!-- /.modal -->
                        </td>--}}
                        <td>
-                        {!! Form::checkbox('clearance_'.$clearance->id,$clearance->id,true) !!}
+                        {!! Form::checkbox('clearance_'.$clearance->id,$clearance->id) !!}
                         {!! Form::input('hidden','clear_'.$clearance->id,$clearance->id) !!}
                         {!! Form::input('hidden','group','hod') !!}
                        </td>
