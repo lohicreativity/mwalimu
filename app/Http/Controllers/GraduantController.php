@@ -245,9 +245,11 @@ class GraduantController extends Controller
     {
         $graduants = Graduant::whereHas('student.campusProgram.program',function($query) use($request){
                $query->where('award_id',$request->get('program_level_id'));
-           })->whereHas('student.campusProgram',function($query) use($request){
+           })->get();
+		   
+		  /*  ->whereHas('student.campusProgram',function($query) use($request){
                $query->where('campus_id',$request->get('campus_id'));
-           })->with(['student.campusProgram.program'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->get();
+           })->with(['student.campusProgram.program'])->where('study_academic_year_id',$request->get('study_academic_year_id')) */
 return $graduants;
         foreach ($graduants as $graduant) {
 			return $graduant;
