@@ -28,15 +28,15 @@ class GraduantsExport implements WithMultipleSheets
     public function sheets(): array
     {
 		$study_academic_year_id = $this->study_academic_year_id;
-		$this->program_level_id = $program_level_id;
-		$this->campus_id = $campus_id;
+		$program_level_id = $this->program_level_id;
+		$campus_id = $this->campus_id;
 		
         $sheets = [];
 
         $programs = CampusProgram::whereHas('program', function($query) use($program_level_id)
-		{$query->where('award-id', $this->program_level_id);})->whereHas('student.registrations',function($query){
-		$query->where('study_academic_year_id',$this->study_academic_year_id);})->whereHas('student.studentshipStatus',function($query){
-		$query->where('name','GRADUANT');})->with(['program.departments','campus'])->where('campus_id', $this->campus_id)->get();
+		{$query->where('award-id', $program_level_id);})->whereHas('student.registrations',function($query) use($study_academic_year_id){
+		$query->where('study_academic_year_id',$study_academic_year_id);})->whereHas('student.studentshipStatus',function($query){
+		$query->where('name','GRADUANT');})->with(['program.departments','campus'])->where('campus_id', $campus_id)->get();
 
         foreach ($programs as $key => $program) {
             foreach($program->program->departments as $dpt){
@@ -44,7 +44,7 @@ class GraduantsExport implements WithMultipleSheets
                     $department = $dpt;
                 }
              }
-            $sheets[] = new GraduantsPerProgramSheet($program->program->id, $program->program->code, $program->program->name, $department->name, $program->campus->name,$this->study_academic_year_id);
+            $sheets[] = new GraduantsPerProgramSheet($program->program->id, $program->program->code, $program->program->name, $department->name, $program->campus->name,$study_academic_year_id);
         }
 
         return $sheets;
