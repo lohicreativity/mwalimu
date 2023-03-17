@@ -138,7 +138,7 @@ class TranscriptRequestController extends Controller
                         
         }
 		
-	public function issueTranscript(Request $request){
-		return $request;
+	public function issueTranscript($student_id){
+		return $student_id;
 	}
 }
