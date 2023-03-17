@@ -21,7 +21,7 @@ class TranscriptRequestController extends Controller
     public function index(Request $request)
     {
     	$data = [
-           'transcript_requests'=>TranscriptRequest::where('payment_status','PAID')->latest()->paginate(20)
+           'transcript_requests'=>TranscriptRequest::where('payment_status','PAID')->where('status', null)->latest()->paginate(20)
     	];
     	return view('dashboard.academic.transcript-requests',$data)->withTitle('Transcript Requests');
     }
