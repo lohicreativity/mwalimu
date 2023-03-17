@@ -60,18 +60,23 @@
                   @foreach($transcript_requests as $req)
                   <tr>
                     <td>{{ $req->student->first_name }} {{ $req->student->middle_name }} {{ $req->student->surname }}</td>
-                    <td>@if($req->payment_status == 'COMPLETE') 
+                    <td>@if($req->payment_status == 'PAID') 
                            <span class="badge badge-success">Complete</span>
                         @else 
                            <span class="badge badge-warning">Pending</span>
                         @endif
                     </td>
-                    <td>{{ $req->status }}</td>
+                    <td>@if($req->status != null)
+							<span class="badge badge-success">Issued</span>
+						@else
+							<span class="badge badge-danger">Pending</span>
+						@endif
+					</td>
                     <td>
                       <a class="btn btn-info btn-sm" href="{{ url('academic/transcript/'.$req->student->id) }}" target="_blank">
                               <i class="fas fa-eye-open">
                               </i>
-                              View
+                              Preview
                        </a>
                     </td>
                   </tr>
