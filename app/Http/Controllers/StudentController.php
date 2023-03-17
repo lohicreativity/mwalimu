@@ -18,6 +18,7 @@ use App\Domain\Registration\Models\StudentshipStatus;
 use App\Domain\Academic\Models\ModuleAssignment;
 use App\Domain\Registration\Models\Student;
 use App\Domain\Academic\Models\ResultPublication;
+use App\Domain\Academic\Models\TranscriptRequest;
 use App\Domain\Academic\Models\Postponement;
 use App\Domain\Registration\Models\Registration;
 use App\Domain\Registration\Models\IdCardRequest;
