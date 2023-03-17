@@ -63,7 +63,7 @@ class ApplicantController extends Controller
         $data = [
            'campuses'=>Campus::all()
         ];
-        return view('auth.applicant-login',$data)->withTitle('Student Login');
+        return view('auth.applicant-login',$data)->withTitle('Applicant Login');
     }
 
     /**
