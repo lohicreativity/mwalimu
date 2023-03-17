@@ -82,9 +82,9 @@
                               Preview
                        </a>
 					   
-                 <span class="input-group-btn">
-                   <button class="btn btn-info btn-sm" type="submit" value="Issue"></button>
-                 </span>
+						
+						   <button class="btn btn-info btn-sm" type="submit" value="Issue"></button>
+						 
                    </td>
                   </tr>
 				  {!! Form::close() !!}
