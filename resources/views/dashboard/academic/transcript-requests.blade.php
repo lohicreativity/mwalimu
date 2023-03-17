@@ -82,8 +82,13 @@
                               Preview
                        </a>
 					   
+					   <a class="btn btn-info btn-sm" href="{{ url('academic/transcript-issuance/'.$req->student->id) }}">
+                              <i class="fas fa-check-circle">
+                              </i>
+                              Issue Transcript
+                       </a>
 						
-						   <button class="btn btn-primary" type="submit"> {{ __('Issue Transcript') }}</button>
+						<!--   <button class="btn btn-info btn-sm" type="submit"> {{ __('Issue Transcript') }}</button> -->
 						 
                    </td>
                   </tr>
