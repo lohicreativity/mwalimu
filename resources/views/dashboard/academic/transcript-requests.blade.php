@@ -83,9 +83,8 @@
                        </a>
 					   
                  <span class="input-group-btn">
-                   <button class="btn btn-default" type="submit" value="Issue"><span class="fa fa-search"></span></button>
+                   <button class="btn btn-info btn-sm" type="submit" value="Issue"></button>
                  </span>
-					  
                    </td>
                   </tr>
 				  {!! Form::close() !!}
