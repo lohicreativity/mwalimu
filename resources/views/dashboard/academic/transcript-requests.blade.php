@@ -79,11 +79,12 @@
                               Preview
                        </a>
 					   
-					   <a class="btn btn-info btn-sm" href="{{ url('academic/transcript/'.$req->student->id) }}" target="_blank">
+					   <a class="btn btn-info btn-sm" href="{{ url('academic/transcript-issuance/'.$req->student->id) }}">
                               <i class="fas fa-eye-open">
                               </i>
                               Issue
                        </a>
+					   href="{{ url('academic/graduants?study_academic_year_id='.session('active_academic_year_id').'&campus_id='.session('staff_campus_id')) }}">{{ __('Graduants List') }}
                     </td>
                   </tr>
                   @endforeach

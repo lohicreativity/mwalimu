@@ -137,4 +137,8 @@ class TranscriptRequestController extends Controller
        // return redirect()->back()->with('message','The bill with id '.$billno.' has been queued.', 200);
                         
         }
+		
+	public function issueTranscript(Request $request){
+		return $request;
+	}
 }
