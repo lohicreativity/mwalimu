@@ -69,6 +69,7 @@ class TranscriptRequestController extends Controller
 
         $invoice = new Invoice;
         $invoice->reference_no = 'MNMA-'.time();
+		$invoice->actual_amount = $amount;
         $invoice->amount = $amount;
         $invoice->currency = $currency;
         $invoice->payable_id = $student->id;
