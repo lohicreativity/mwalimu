@@ -45,8 +45,11 @@ class StudentController extends Controller
 	 * Display student dashboard 
 	 */
 	public function index()
-	{
+	{ 
     $student = User::find(Auth::user()->id)->student()->with('applicant')->first();
+	return Student::whereHas('TranscriptRequest', function($query) use($student)
+		{$query->where('student_id', $student->id);})->latest()->first()->get();
+		
 		$data = [
             'student'=>$student,
             'loan_allocation'=>LoanAllocation::where('index_number',$student->applicant->index_number)->where('loan_amount','!=',0.00)->where('study_academic_year_id',session('active_academic_year_id'))->first(),
