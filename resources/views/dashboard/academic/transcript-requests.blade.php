@@ -60,8 +60,7 @@
 
                   @foreach($transcript_requests as $req)
                   <tr>
-				 {!! Form::open(['url'=>'academic/transcript-requests/', 'class'=>'ss-form-processing', 'method'=>'GET']) !!}
-				 {!! Form::input('hidden','academic/transcript-issuance/', $req->student->id) !!}
+
                     <td>{{ $req->student->first_name }} {{ $req->student->middle_name }} {{ $req->student->surname }}</td>
                     <td>@if($req->payment_status == 'PAID') 
                            <span class="badge badge-success">Complete</span>
@@ -82,12 +81,13 @@
                               Preview
                        </a>
 					   
-						
+									 {!! Form::open(['url'=>'academic/transcript-requests/', 'class'=>'ss-form-processing', 'method'=>'GET']) !!}
+				 {!! Form::input('hidden','academic/transcript-issuance/', $req->student->id) !!}	
 						   <button class="btn btn-info btn-sm" type="submit"> {{ __('Issue Transcript') }}</button>
-						 
+					{!! Form::close() !!}	 
                    </td>
                   </tr>
-				  {!! Form::close() !!}
+				  
                   @endforeach
                   
                   </tbody>
