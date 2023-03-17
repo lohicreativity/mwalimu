@@ -69,7 +69,7 @@
                     <td>@if($req->status != null)
 							<span class="badge badge-success">Issued</span>
 						@else
-							<span class="badge badge-danger">Pending</span>
+							<span class="badge badge-warning">Pending</span>
 						@endif
 					</td>
                     <td>
@@ -77,6 +77,12 @@
                               <i class="fas fa-eye-open">
                               </i>
                               Preview
+                       </a>
+					   
+					   <a class="btn btn-info btn-sm" href="{{ url('academic/transcript/'.$req->student->id) }}" target="_blank">
+                              <i class="fas fa-eye-open">
+                              </i>
+                              Issue
                        </a>
                     </td>
                   </tr>
