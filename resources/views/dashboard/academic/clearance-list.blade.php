@@ -103,7 +103,7 @@
                  <table class="table table-bordered ss-paginated-table">
                    <thead>
                     <tr>
-                      <th>Student</th>
+                      <th>Name</th>
                       <th>Reg. No.</th>
                       <th>Mobile Phone </th>
                       <th>Programme</th>
