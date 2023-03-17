@@ -434,7 +434,7 @@ class StudentController extends Controller
 		   })->latest()->get()
         ];
 		//return redirect()->back()->with('error','Some modules are missing final marks ('.implode(',', $missing_programs).')');
-		return $data['invoices'];
+		//return $data['invoices'];
         return view('dashboard.student.request-control-number',$data)->withTItle('Request Control Number');
     }
 
