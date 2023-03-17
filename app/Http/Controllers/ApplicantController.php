@@ -311,12 +311,12 @@ class ApplicantController extends Controller
          }
 
 
-return $applicant->application_window_id;
+
          $check_selected_applicant = ApplicantProgramSelection::where('application_window_id', $applicant->application_window_id)
          ->where(function($query) {
             $query->where('status', 'SELECTED')
                   ->orWhere('status', 'PENDING');
-        })->with(['applicant' => function ($query) { $query->where('program_level_id', $applicant->program_level_id); }])->first();
+        })->with(['applicant' => function ($query) use($applicant){ $query->where('program_level_id', $applicant->program_level_id); }])->first();
 
 
 
