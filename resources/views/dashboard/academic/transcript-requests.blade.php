@@ -60,7 +60,7 @@
 
                   @foreach($transcript_requests as $req)
                   <tr>
-				 {!! Form::open(['url'=>'academic/transcript-requests/','method'=>'GET']) !!}
+				 {!! Form::open(['url'=>'academic/transcript-requests/', 'class'=>'ss-form-processing', 'method'=>'GET']) !!}
 				 {!! Form::input('hidden','academic/transcript-issuance/', $req->student->id) !!}
                     <td>{{ $req->student->first_name }} {{ $req->student->middle_name }} {{ $req->student->surname }}</td>
                     <td>@if($req->payment_status == 'PAID') 
@@ -83,7 +83,7 @@
                        </a>
 					   
 						
-						   <button class="btn btn-info btn-sm" type="submit"> {{ __('Issue') }}</button>
+						   <button class="btn btn-info btn-sm" type="submit"> {{ __('Issue Transcript') }}</button>
 						 
                    </td>
                   </tr>
