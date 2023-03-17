@@ -140,7 +140,7 @@ class TranscriptRequestController extends Controller
 		
 	public function issueTranscript($student_id){
 		
-		TranscriptRequest::where('student_id',$student->id)->latest()->update(['status'=>'Issued']);
+		TranscriptRequest::where('student_id',$student_id)->latest()->update(['status'=>'Issued']);
 		
 		return redirect()->to('academic/transcript-requests')->with('message','Transcript issued successfully');
 	}
