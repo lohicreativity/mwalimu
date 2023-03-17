@@ -48,8 +48,8 @@ class StudentController extends Controller
 	public function index()
 	{ 
     $student = User::find(Auth::user()->id)->student()->with('applicant')->first();
-	return Student::whereHas('TranscriptRequest', function($query) use($student)
-		{$query->where('student_id', $student->id);})->latest()->first()->get();
+	/* return Student::whereHas('TranscriptRequest', function($query) use($student)
+		{$query->where('student_id', $student->id);})->latest()->first()->get(); */
 		
 		$data = [
             'student'=>$student,
