@@ -82,7 +82,7 @@
                               Preview
                        </a>
 					   
-					   <a class="btn btn-info btn-sm" href="{{ url('academic/transcript-issuance/'.$req->student->id) }}">
+					   <a class="btn btn-info btn-sm" href="{{ url('academic/transcript-issuance/'.$req->student->id) }}" disabled>
                               <i class="fas fa-check-circle">
                               </i>
                               Issue Transcript
