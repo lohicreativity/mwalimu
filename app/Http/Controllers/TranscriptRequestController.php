@@ -73,6 +73,8 @@ class TranscriptRequestController extends Controller
         $invoice->currency = $currency;
         $invoice->payable_id = $student->id;
         $invoice->payable_type = 'student';
+		$invoice->applicable_id = $study_academic_year->id;
+        $invoice->applicable_type = 'academic_year';
         $invoice->fee_type_id = $fee_amount->feeItem->feeType->id;
         $invoice->save();
 
