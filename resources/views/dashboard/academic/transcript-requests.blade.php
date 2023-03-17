@@ -83,7 +83,7 @@
                        </a>
 					   
 						
-						   <button class="btn btn-info btn-sm" type="submit" value="Issue"></button>
+						   <button class="btn btn-info btn-sm" type="submit"> {{ __('Issue') }}</button>
 						 
                    </td>
                   </tr>
