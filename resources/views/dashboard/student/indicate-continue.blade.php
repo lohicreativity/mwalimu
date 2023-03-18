@@ -22,7 +22,7 @@
 		  			@if($student->continue_status == 1)
 		
 		              <div class="alert alert-success col-12">
-                      <h3 class="text-white" style="font-size:12pt!important;"><i class="fa fa-check-circle"></i> 
+                      <h3 class="text-white" style="font-size:13pt!important;"><i class="fa fa-check-circle"></i> 
                       You have already indicated to continue to {{ $programme->name}}. <a href="{{ url('application/login') }}"> Click here </a> and log in using your Form IV index and date of birth to indicate your programme selections. </h3>
                     </div>
 		

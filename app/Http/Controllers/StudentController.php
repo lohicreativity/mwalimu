@@ -1366,7 +1366,7 @@ class StudentController extends Controller
 		} */
 	
         $data = [
-           'applicant'=>$applicant,
+//           'applicant'=>$applicant,
 		   'programme'=>Award::where('id', $applicant->program_level_id)->first(),
            //'campus'=>Campus::find($student->campus_id),
            //'application_window'=>$window,
