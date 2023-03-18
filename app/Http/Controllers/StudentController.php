@@ -31,6 +31,7 @@ use App\Domain\Finance\Models\LoanAllocation;
 use App\Domain\Application\Models\NacteResultDetail;
 use App\Domain\Application\Models\NectaResultDetail;
 use App\Domain\Application\Models\NacteResult;
+use App\Domain\Application\Models\NectaResult;
 use App\Domain\Application\Models\ApplicationWindow;
 use App\Domain\Application\Models\Applicant;
 use App\Domain\Settings\Models\Currency;
