@@ -1368,6 +1368,7 @@ class StudentController extends Controller
 			
 		$data = [
 //           'applicant'=>$applicant,
+		   'selected_campus'=>$applicant->campus_id,
 		   'programme'=>Award::where('id', $applicant->program_level_id)->first(),
            //'campus'=>Campus::find($student->campus_id),
            //'application_window'=>$window,
@@ -1380,6 +1381,7 @@ class StudentController extends Controller
 			
 		}else{
 		$data = [
+		   'selected_campus'=>[],
 		   'programme'=>[],
            'campuses'=>Campus::all(),
 		   'student'=>$student
