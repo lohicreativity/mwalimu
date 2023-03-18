@@ -859,8 +859,10 @@ class StudentController extends Controller
 	 {
 		 $student = User::find(Auth::user()->id)->student()->with('applicant')->first();
 		 
-		 if($student->continue_status == 1){
-		 $applicant = Applicant::where('index_number',$student->applicant->index_number)->with(['selections.campusProgram.program','selections'=>function($query){
+	//	 if($student->continue_status == 1){
+			$applicant = Applicant::where('index_number',$student->applicant->index_number)->with('applicant.programLevel')->where('campus_id',$student->applicant->campus_id)->latest()->first();
+
+/* 		 $applicant = Applicant::where('index_number',$student->applicant->index_number)->with(['selections.campusProgram.program','selections'=>function($query){
                 $query->orderBy('order','asc');
             },'nectaResultDetails'=>function($query){
                  $query->where('verified',1);
@@ -869,8 +871,8 @@ class StudentController extends Controller
             },'outResultDetails'=>function($query){
                  $query->where('verified',1);
             },'selections.campusProgram.campus','nectaResultDetails.results','nacteResultDetails.results','outResultDetails.results','programLevel','applicationWindow'])->where('campus_id',$student->applicant->campus_id)->latest()->first();
-
-        $window = $applicant->applicationWindow;
+ */
+/*         $window = $applicant->applicationWindow;
 
         $campus_programs = $window? $window->campusPrograms()->whereHas('program',function($query) use($applicant){
                    $query->where('award_id',$applicant->program_level_id);
@@ -1361,7 +1363,8 @@ class StudentController extends Controller
 			$window = null;
 			$programs = [];
 			$applicant = null;
-		}
+		} */
+		return $applicant;
         $data = [
            'applicant'=>$applicant,
            //'campus'=>Campus::find($student->campus_id),
