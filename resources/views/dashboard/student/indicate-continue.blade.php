@@ -61,14 +61,13 @@
                         <select name="campus_id" class="form-control" required>
                              <option value="">Select Campus</option>
                           @foreach($campuses as $campus)
-                             <option value="{{ $campus->id }}" 
-							 @if($student->continue_status == 1 && $selected_campus == $campus->id)
-								 selected="selected" disabled>{{ $campus->name }}
-							 @break
-							 @else
-								 @if($campus->id == $student->applicant->campus_id) selected="selected" @endif>{{ $campus->name }}
-							 @endif
-							 </option>
+							@if($student->continue_status == 1 && $selected_campus == $campus->id)
+                             <option value="{{ $campus->id }}" selected="selected" disabled>{{ $campus->name }} </option>
+							@break
+							@else
+							 <option value="{{ $campus->id }}" @if($campus->id == $student->applicant->campus_id) selected="selected" @endif>{{ $campus->name }} </option>
+							@endif
+
                           @endforeach
                         </select>
                      </div>
