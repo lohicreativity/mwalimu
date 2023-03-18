@@ -397,7 +397,7 @@
                   <div class="col-8">
                     <br><br>
                     @foreach($nacte_results as $result)
-                     <p class="ss-font-xs">Reg No: {{ $result->registration_number }} <br>GPA: {{ $result->gpa }} <i class="fa fa-check"></i></p>
+                     <p class="ss-font-xs">Reg No: {{ $result->registration_number }} <br>GPA: {{ $result->diploma_gpa }} <i class="fa fa-check"></i></p>
                     @endforeach
                   </div>
                  </div>
