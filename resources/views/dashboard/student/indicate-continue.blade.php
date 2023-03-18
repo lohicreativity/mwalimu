@@ -19,9 +19,6 @@
     <div class="content-header">
       <div class="container-fluid">
         <div class="row mb-2">
-
-		
-          <div class="col-sm-6">
 		  			@if($student->continue_status == 1)
 		
 		              <div class="alert alert-success col-12">
@@ -30,6 +27,9 @@
                     </div>
 		
 			@endif
+		
+          <div class="col-sm-6">
+
             <h1 class="m-0">Indicate Continueing</h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
