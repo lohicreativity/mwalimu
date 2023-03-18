@@ -1364,13 +1364,13 @@ class StudentController extends Controller
 		}
         $data = [
            'applicant'=>$applicant,
-           'campus'=>Campus::find($student->campus_id),
-           'application_window'=>$window,
-           'campus_programs'=>$window? $programs : [],
+           //'campus'=>Campus::find($student->campus_id),
+           //'application_window'=>$window,
+           //'campus_programs'=>$window? $programs : [],
            'campuses'=>Campus::all(),
 		   'student'=>$student,
-           'program_fee_invoice'=>Invoice::where('payable_id',$student->id)->where('payable_type','student')->first(),
-           'request'=>$request
+          // 'program_fee_invoice'=>Invoice::where('payable_id',$student->id)->where('payable_type','student')->first(),
+          // 'request'=>$request
         ];
 		 return view('dashboard.student.indicate-continue',$data)->withTitle('Indicate Continue');
 	 }
