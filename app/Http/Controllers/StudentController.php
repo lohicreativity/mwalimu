@@ -1419,7 +1419,7 @@ class StudentController extends Controller
 			return redirect()->back()->with('error','Selected campus does not have programmes');
 		  } */
 		  
-		  return SpecialDate::select('date')->where('name', 'Graduation')->where('campus_id', $student->applicant->campus_id)->latest()->first();
+		  return SpecialDate::select(DB::raw('YEAR(date)'))->where('name', 'Graduation')->where('campus_id', $student->applicant->campus_id)->latest()->first();
 		  
 		  $applicant = new Applicant;
 		  $applicant->first_name = $student->applicant->first_name;
