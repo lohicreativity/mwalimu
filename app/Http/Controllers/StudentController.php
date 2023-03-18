@@ -1386,35 +1386,39 @@ class StudentController extends Controller
 		  if(!$student){
 			  return redirect()->back()->with('error','You cannot indicate to continue with upper level');
 		  }
-		  $application_window = ApplicationWindow::where('campus_id',$student->applicant->campus_id)->where('status','ACTIVE')->latest()->first();
+/* 		  $application_window = ApplicationWindow::where('campus_id',$student->applicant->campus_id)->where('status','ACTIVE')->latest()->first();
 		  if(!$application_window){
 			  return redirect()->back()->with('error','Application window not defined');
-		  }
+		  } */
 
                  
 		  
 		  $past_level = $student->applicant->programLevel;
-		  if(str_contains($past_level->code,'BTC')){
+		  if(str_contains($past_level->code,'HD'){
+			  return redirect()->back()->with('error','You do not have to indicate, proceed with registration.');
+		  }elseif(str_contains($past_level->code,'BTC')){
 			  $level = Award::where('code','OD')->first();
 		  }elseif(str_contains($past_level->code,'OD')){
 			  $level = Award::where('code','HD')->first();
-		  }elseif(str_contains($past_level->code,'HD')){
-			  $level = Award::where('code','BD')->first();
+		 /*  }elseif(str_contains($past_level->code,'HD')){
+			  $level = Award::where('code','BD')->first(); */
 		  }elseif(str_contains($past_level->code,'BD')){
 			  $level = Award::where('code','MD')->first();
 		  }
 
-                  $window = $application_window;
+/*           $window = $application_window;
 
-                  $campus_programs = $window? $window->campusPrograms()->whereHas('program',function($query) use($level){
-                   $query->where('award_id',$level->id);
-                  })->with(['program','campus','entryRequirements'=>function($query) use($window){
-                 $query->where('application_window_id',$window->id);
-                  }])->where('campus_id',$request->get('campus_id'))->get() : [];
+		  $campus_programs = $window? $window->campusPrograms()->whereHas('program',function($query) use($level){
+		   $query->where('award_id',$level->id);
+		  })->with(['program','campus','entryRequirements'=>function($query) use($window){
+			$query->where('application_window_id',$window->id);
+		  }])->where('campus_id',$request->get('campus_id'))->get() : [];
 
-                  if(count($campus_programs) == 0){
-			  return redirect()->back()->with('error','Selected campus does not have programmes');
-		  }
+		  if(count($campus_programs) == 0){
+			return redirect()->back()->with('error','Selected campus does not have programmes');
+		  } */
+		  
+		  return SpecialDates::select('date')->where('name', 'Graduation')->where('campus_id', $student->applicant->campus_id)->latest()->first();
 		  
 		  $applicant = new Applicant;
 		  $applicant->first_name = $student->applicant->first_name;
@@ -1423,8 +1427,8 @@ class StudentController extends Controller
 		  $applicant->index_number = $student->applicant->index_number;
 		  $applicant->entry_mode = 'EQUIVALENT';
 		  $applicant->campus_id = $student->applicant->campus_id;
-		  $applicant->intake_id = $student->applicant->intake_id;
-		  $applicant->application_window_id = $application_window->id;
+//		  $applicant->intake_id = $student->applicant->intake_id;
+//		  $applicant->application_window_id = $application_window->id;
 		  $applicant->birth_date = $student->applicant->birth_date;
 		  $applicant->nationality = $student->applicant->nationality;
 		  $applicant->next_of_kin_id = $student->applicant->next_of_kin_id;
@@ -1438,22 +1442,30 @@ class StudentController extends Controller
 		  $applicant->phone = $student->applicant->phone;
 		  $applicant->gender = $student->applicant->gender;
 		  $applicant->address = $student->applicant->address;
-                  $applicant->o_level_certificate = $student->applicant->o_level_certificate;
-                  $applicant->birth_certificate = $student->applicant->birth_certificate;
-                  $applicant->a_level_certificate = $student->applicant->a_level_certificate;
-                  $applicant->diploma_certificate = $student->applicant->diploma_certificate;
-                  $applicant->passport_picture = $student->applicant->passport_picture;
-                  $applicant->teacher_diploma_certificate = $student->applicant->teacher_diploma_certificate;
+		  $applicant->o_level_certificate = $student->applicant->o_level_certificate;
+		  $applicant->birth_certificate = $student->applicant->birth_certificate;
+		  $applicant->a_level_certificate = $student->applicant->a_level_certificate;
+		  $applicant->diploma_certificate = $student->applicant->diploma_certificate;
+		  $applicant->passport_picture = $student->applicant->passport_picture;
+		  $applicant->teacher_diploma_certificate = $student->applicant->teacher_diploma_certificate;
 		  $applicant->disability_status_id = $student->applicant->disability_status_id;
-		  $applicant->documents_complete_status = 1;
+		  $applicant->veta_certificate = $student->applicant->veta_certificate;
+		  $applicant->veta_status = $student->applicant->veta_status;
+		  $applicant->avn_no_results = $student->applicant->avn_no_results;
+		  $applicant->teacher_certificate_status = $student->applicant->teacher_certificate_status;
+		  $applicant->basic_info_complete_status = 1;	
+		  $applicant->documents_complete_status = 1;		  
+		  $applicant->next_of_kin_complete_status = 1;
+		  $applicant->results_complete_status = 1;
 		  $applicant->program_level_id = $level->id;
 		  $applicant->is_continue = 1;
+		  $applicant->created_at = now();		  
 		  
 		  
 		  
 		  $user = new User;
 		  $user->username = $applicant->index_number;
-		  $user->password = Hash::make('123456');
+		  $user->password = Hash::make($student->applicant->birth_date);
 		  $user->save();
 		  
 		  //$old_user = User::find($student->user_id);
@@ -1473,6 +1485,7 @@ class StudentController extends Controller
 		        $query->where('year_of_study',$student->year_of_study);
 	      })->where('student_id',$student->id)->get();
 		  
+			
 		    $detail = new NacteResultDetail;
 		    $detail->institution = 'MNMA';
 			$detail->programme = $student->campusProgram->program->name;
@@ -1484,12 +1497,13 @@ class StudentController extends Controller
 			$detail->registration_number = $student->registration_number;
 			$detail->diploma_gpa = $student->overallRemark->gpa;
 			$detail->diploma_code = $student->campusProgram->program->code;
-			$detail->diploma_category = 'Category';
-			$detail->diploma_graduation_year = date('Y');
+			//$detail->diploma_category = 'Category';
+			$detail->diploma_graduation_year = date('Y'); 
 			$detail->username = $student->surname;
 			$detail->date_birth = $student->birth_date;
 			$detail->applicant_id = $applicant->id;
 			$detail->verified = 1;
+			$detail->created_at = now();
 			$detail->save();
 			
 			
@@ -1503,7 +1517,7 @@ class StudentController extends Controller
 			}
 		  Student::where('id',$student->id)->update(['continue_status'=>1]);
 		  DB::commit();
-		  return redirect()->to('student/show-indicate-continue?campus_id='.$request->get('campus_id'))->with('message','You have indicated to continue with upper level successfully');
+		  return redirect()->to('student/show-indicate-continue')->with('message','You have indicated to continue with upper level successfully');
 	  }
 
     /**
