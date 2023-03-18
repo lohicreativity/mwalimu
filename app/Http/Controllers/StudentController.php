@@ -36,6 +36,7 @@ use App\Domain\Application\Models\ApplicationWindow;
 use App\Domain\Application\Models\Applicant;
 use App\Domain\Settings\Models\Currency;
 use App\Domain\Academic\Models\Graduant;
+use App\Domain\Settings\Models\Campus;
 use App\Domain\Settings\Models\SpecialDate;
 use Illuminate\Support\Facades\Http;
 use App\Models\User;
