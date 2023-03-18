@@ -860,7 +860,7 @@ class StudentController extends Controller
 		 $student = User::find(Auth::user()->id)->student()->with('applicant')->first();
 		 
 	//	 if($student->continue_status == 1){
-			$applicant = Applicant::where('index_number',$student->applicant->index_number)->with('applicant.programLevel')->where('campus_id',$student->applicant->campus_id)->latest()->first();
+			$applicant = Applicant::where('index_number',$student->applicant->index_number)->with('award')->where('campus_id',$student->applicant->campus_id)->latest()->first();
 
 /* 		 $applicant = Applicant::where('index_number',$student->applicant->index_number)->with(['selections.campusProgram.program','selections'=>function($query){
                 $query->orderBy('order','asc');
