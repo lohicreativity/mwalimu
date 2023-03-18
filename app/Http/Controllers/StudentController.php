@@ -1489,6 +1489,7 @@ class StudentController extends Controller
 		  //$old_user->save();
 		  
 		  $role = Role::where('name','applicant')->get();
+		  return $role;
 		  $user->roles()->attach([$role->id]);
 		  
 		  $applicant->user_id = $user->id;
