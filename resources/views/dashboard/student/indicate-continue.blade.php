@@ -64,6 +64,7 @@
                              <option value="{{ $campus->id }}" 
 							 @if($student->continue_status == 1 && $selected_campus == $campus->id)
 								 selected="selected" disabled>{{ $campus->name }}
+							 @break
 							 @else
 								 @if($campus->id == $student->applicant->campus_id) selected="selected" @endif>{{ $campus->name }}
 							 @endif
