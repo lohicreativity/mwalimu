@@ -1488,8 +1488,8 @@ class StudentController extends Controller
 		  //$old_user->status = 'INACTIVE';
 		  //$old_user->save();
 		  
-		  $role = Role::where('name','applicant')->first();
-		  $user->roles()->sync([$role->id]);
+		  $role = Role::where('name','applicant')->get();
+		  $user->roles()->attach([$role->id]);
 		  
 		  $applicant->user_id = $user->id;
 		  $applicant->save();
