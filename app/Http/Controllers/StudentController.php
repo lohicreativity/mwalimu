@@ -1364,8 +1364,9 @@ class StudentController extends Controller
 			$programs = [];
 			$applicant = null;
 		} */
-	
-        $data = [
+		if($applicant){
+			
+		$data = [
 //           'applicant'=>$applicant,
 		   'programme'=>Award::where('id', $applicant->program_level_id)->first(),
            //'campus'=>Campus::find($student->campus_id),
@@ -1376,6 +1377,15 @@ class StudentController extends Controller
           // 'program_fee_invoice'=>Invoice::where('payable_id',$student->id)->where('payable_type','student')->first(),
           // 'request'=>$request
         ];
+			
+		}else{
+		$data = [
+		   'programme'=>[],
+           'campuses'=>Campus::all(),
+		   'student'=>$student
+        ];
+		}
+
 		 return view('dashboard.student.indicate-continue',$data)->withTitle('Indicate Continue');
 	 }
 	 
