@@ -1364,7 +1364,7 @@ class StudentController extends Controller
 			$programs = [];
 			$applicant = null;
 		} */
-		return Award::where('id', $applicant->program_level_id)->get();
+		return Award::where('id', $applicant->program_level_id)->first()->get();
         $data = [
            'applicant'=>$applicant,
 		   'programme'=>Award::where('id', $applicant->program_level_id),
