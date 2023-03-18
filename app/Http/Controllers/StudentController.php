@@ -1419,8 +1419,6 @@ class StudentController extends Controller
 			return redirect()->back()->with('error','Selected campus does not have programmes');
 		  } */
 		  
-		  $x= SpecialDate::select(DB::raw('YEAR(date) year'))->where('name', 'Graduation')->where('campus_id', $student->applicant->campus_id)->latest()->first();
-		  return $x->year;
 		  $applicant = new Applicant;
 		  $applicant->first_name = $student->applicant->first_name;
 		  $applicant->middle_name = $student->applicant->middle_name;
@@ -1486,7 +1484,8 @@ class StudentController extends Controller
 		        $query->where('year_of_study',$student->year_of_study);
 	      })->where('student_id',$student->id)->get();
 		  
-			
+			$graduation_date = SpecialDate::select(DB::raw('YEAR(date) year'))->where('name', 'Graduation')->where('campus_id', $student->applicant->campus_id)->latest()->first();
+
 		    $detail = new NacteResultDetail;
 		    $detail->institution = 'MNMA';
 			$detail->programme = $student->campusProgram->program->name;
@@ -1499,7 +1498,7 @@ class StudentController extends Controller
 			$detail->diploma_gpa = $student->overallRemark->gpa;
 			$detail->diploma_code = $student->campusProgram->program->code;
 			//$detail->diploma_category = 'Category';
-			$detail->diploma_graduation_year = date('Y'); 
+			$detail->diploma_graduation_year = $graduation_date->year; 
 			$detail->username = $student->surname;
 			$detail->date_birth = $student->birth_date;
 			$detail->applicant_id = $applicant->id;
