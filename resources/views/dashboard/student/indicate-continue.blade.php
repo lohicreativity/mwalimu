@@ -23,7 +23,7 @@
 		
 		              <div class="alert alert-success col-12">
                       <h3 class="text-white" style="font-size:17pt!important;"><i class="fa fa-check-circle"></i> 
-                      You have already indicated to continue to {{ $applicant->program_level_id}}. Please <a href="{{ url('application/login') }}"> click here </a> and log in using your Form IV index number and date of birth to indicate your programme selections. </h3>
+                      You have already indicated to continue to {{ $programme->code}}. Please <a href="{{ url('application/login') }}"> click here </a> and log in using your Form IV index number and date of birth to indicate your programme selections. </h3>
                     </div>
 		
 			@endif
