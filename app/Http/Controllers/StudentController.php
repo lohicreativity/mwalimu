@@ -35,6 +35,7 @@ use App\Domain\Application\Models\NectaResult;
 use App\Domain\Application\Models\ApplicationWindow;
 use App\Domain\Application\Models\Applicant;
 use App\Domain\Settings\Models\Currency;
+use App\Domain\Academic\Models\SpecialDate;
 use App\Domain\Settings\Models\Campus;
 use Illuminate\Support\Facades\Http;
 use App\Models\User;
@@ -1418,7 +1419,7 @@ class StudentController extends Controller
 			return redirect()->back()->with('error','Selected campus does not have programmes');
 		  } */
 		  
-		  return SpecialDates::select('date')->where('name', 'Graduation')->where('campus_id', $student->applicant->campus_id)->latest()->first();
+		  return SpecialDate::select('date')->where('name', 'Graduation')->where('campus_id', $student->applicant->campus_id)->latest()->first();
 		  
 		  $applicant = new Applicant;
 		  $applicant->first_name = $student->applicant->first_name;
