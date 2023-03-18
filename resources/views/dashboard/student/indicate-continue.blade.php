@@ -19,7 +19,10 @@
     <div class="content-header">
       <div class="container-fluid">
         <div class="row mb-2">
-			@if($student->continue_status == 1)
+
+		
+          <div class="col-sm-6">
+		  			@if($student->continue_status == 1)
 		
 		              <div class="alert alert-success">
                       <h3 class="text-white" style="font-size: 18px!important;"><i class="fa fa-check-circle"></i> 
@@ -27,8 +30,6 @@
                     </div>
 		
 			@endif
-		
-          <div class="col-sm-6">
             <h1 class="m-0">Indicate Continueing</h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
