@@ -1430,7 +1430,7 @@ class StudentController extends Controller
 		  $applicant->surname = $student->applicant->surname;
 		  $applicant->index_number = $student->applicant->index_number;
 		  $applicant->entry_mode = 'EQUIVALENT';
-		  $applicant->campus_id = $student->applicant->campus_id;
+		  $applicant->campus_id = $request->get('campus_id');
 //		  $applicant->intake_id = $student->applicant->intake_id;
 //		  $applicant->application_window_id = $application_window->id;
 		  $applicant->birth_date = $student->applicant->birth_date;
