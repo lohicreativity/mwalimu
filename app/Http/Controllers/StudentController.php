@@ -1394,7 +1394,7 @@ class StudentController extends Controller
                  
 		  
 		  $past_level = $student->applicant->programLevel;
-		  if(str_contains($past_level->code,'HD'){
+		  if(str_contains($past_level->code,'HD')){
 			  return redirect()->back()->with('error','You do not have to indicate, proceed with registration.');
 		  }elseif(str_contains($past_level->code,'BTC')){
 			  $level = Award::where('code','OD')->first();
