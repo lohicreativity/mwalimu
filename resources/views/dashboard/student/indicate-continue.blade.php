@@ -24,9 +24,9 @@
           <div class="col-sm-6">
 		  			@if($student->continue_status == 1)
 		
-		              <div class="alert alert-success">
+		              <div class="alert alert-success col-12">
                       <h3 class="text-white" style="font-size: 18px!important;"><i class="fa fa-check-circle"></i> 
-                      You have already indicated to continue to  </h3>
+                      You have already indicated to continue to {{ $applicant->program_level_id}}. Please use your applicant account to indicate your program selections. </h3>
                     </div>
 		
 			@endif
