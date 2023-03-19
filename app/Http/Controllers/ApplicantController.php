@@ -211,7 +211,7 @@ class ApplicantController extends Controller
                         $applicant->documents_complete_status = $app->documents_complete_status;
                         $applicant->save();
                     }
-            }
+				}
           }elseif(!Applicant::where('user_id',Auth::user()->id)->where('campus_id',$request->get('campus_id'))->first() && $continue_applicant){
 			  return redirect()->back()->with('error','Incorrect campus. Please log in to '.$campus->name);
 		  
