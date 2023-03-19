@@ -124,8 +124,10 @@ class ApplicantController extends Controller
 
 
             session(['applicant_campus_id'=>$request->get('campus_id')]);
-            
-            if(!Applicant::where('user_id',Auth::user()->id)->where('campus_id',$request->get('campus_id'))->first()){
+            $continue_applicant = Applicant::where('user_id',Auth::user()->id)->where('campus_id',$request->get('campus_id'))->where('is_continue', 1)->first();
+			$campus_name = Campus::where('id', $continue_applicant->campus_id)->first();
+			
+            if(!Applicant::where('user_id',Auth::user()->id)->where('campus_id',$request->get('campus_id'))->first() && !$continue_applicant){
                 $app = Applicant::where('user_id',Auth::user()->id)->where('campus_id',0)->first();
                 if($app){
                     $applicant = $app;
@@ -208,7 +210,20 @@ class ApplicantController extends Controller
                         $applicant->save();
                     }
             }
-          }
+          }elseif(!Applicant::where('user_id',Auth::user()->id)->where('campus_id',$request->get('campus_id'))->first() && $continue_applicant){
+			  return redirect()->back()->with('error','Incorrect campus. Please log in to '.$campus_name);
+		  }elseif(Applicant::where('user_id',Auth::user()->id)->where('campus_id',$request->get('campus_id'))->first() && $continue_applicant && $continue_applicant->application_window = null){
+			 $continue_applicant->application_window_id = $window->id;
+             $continue_applicant->intake_id = $window->intake_id;
+			 $continue_applicant-save();
+		  }
+		  
+		  
+		  /* else{
+			if($continue_applicant->application_window = null){
+				
+			} */
+		  }
             
             
             session(['applicant_campus_id'=>$request->get('campus_id')]);

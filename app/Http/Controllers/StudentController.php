@@ -1492,7 +1492,6 @@ class StudentController extends Controller
 		  $user->roles()->attach([$role->id]);
 		  
 		  $applicant->user_id = $user->id;
-		  $applicant->save();
 		  
 		  NectaResultDetail::where('applicant_id',$student->applicant_id)->update(['applicant_id'=>$applicant->id]);
 		  NectaResult::where('applicant_id',$student->applicant_id)->update(['applicant_id'=>$applicant->id]);
@@ -1522,6 +1521,9 @@ class StudentController extends Controller
 			$detail->verified = 1;
 			$detail->created_at = now();
 			$detail->save();
+			
+			$applicant->nacte_reg_no = $student->registration_number;
+			$applicant->save();			
 			
 			
 			foreach($results as $result){
