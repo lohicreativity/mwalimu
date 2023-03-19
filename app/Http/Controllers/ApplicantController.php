@@ -122,10 +122,13 @@ class ApplicantController extends Controller
 
         if(Auth::attempt($credentials)){
 
-
+			$campus_name = null;
+			
             session(['applicant_campus_id'=>$request->get('campus_id')]);
             $continue_applicant = Applicant::where('user_id',Auth::user()->id)->where('campus_id',$request->get('campus_id'))->where('is_continue', 1)->first();
-			$campus_name = Campus::where('id', $continue_applicant->campus_id)->first();
+			if($continue_applicant){
+				$campus_name = Campus::where('id', $continue_applicant->campus_id)->first();
+			}
 			
             if(!Applicant::where('user_id',Auth::user()->id)->where('campus_id',$request->get('campus_id'))->first() && !$continue_applicant){
                 $app = Applicant::where('user_id',Auth::user()->id)->where('campus_id',0)->first();
