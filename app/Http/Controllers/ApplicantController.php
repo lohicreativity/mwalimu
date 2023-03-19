@@ -223,7 +223,7 @@ class ApplicantController extends Controller
 			if($continue_applicant->application_window = null){
 				
 			} */
-		  }
+		  
             
             
             session(['applicant_campus_id'=>$request->get('campus_id')]);
