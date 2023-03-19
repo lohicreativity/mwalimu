@@ -105,6 +105,7 @@ class ApplicantController extends Controller
         ->where('campus_id',$request->get('campus_id'))
         ->where('status','ACTIVE')->latest()->first();
 
+return $window;
         $closed_window = ApplicationWindow::where('campus_id',$request->get('campus_id'))
         ->where('end_date','>=', implode('-', explode('-', now()->format('Y-m-d'))))
         //->where('intake_id', $appl->intake_id)
