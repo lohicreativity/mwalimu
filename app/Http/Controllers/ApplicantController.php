@@ -215,7 +215,7 @@ class ApplicantController extends Controller
 		  }elseif(Applicant::where('user_id',Auth::user()->id)->where('campus_id',$request->get('campus_id'))->first() && $continue_applicant && $continue_applicant->application_window = null){
 			 $continue_applicant->application_window_id = $window->id;
              $continue_applicant->intake_id = $window->intake_id;
-			 $continue_applicant-save();
+			 $continue_applicant->save();
 		  }
 		  
 		  
