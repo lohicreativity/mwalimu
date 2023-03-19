@@ -125,7 +125,8 @@ class ApplicantController extends Controller
             session(['applicant_campus_id'=>$request->get('campus_id')]);
             $continue_applicant = Applicant::where('user_id',Auth::user()->id)->where('is_continue', 1)->first();
 			if($continue_applicant){
-				$campus = Campus::where('id', $continue_applicant->campus_id)->get();
+				$campus = Campus::where('id', $continue_applicant->campus_id)->first();
+				
 			}
 			
             if(!Applicant::where('user_id',Auth::user()->id)->where('campus_id',$request->get('campus_id'))->first() && !$continue_applicant){
