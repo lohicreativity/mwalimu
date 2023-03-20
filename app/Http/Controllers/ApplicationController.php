@@ -1218,8 +1218,8 @@ class ApplicationController extends Controller
         }
 
        $applicant = Applicant::with(['programLevel'])->find($request->get('applicant_id'));
-	   		  	    $previous_studied_programme = Applicant::whereHas('selections', function($query) {$query->where('status', 'SELECTED');})->with(['selections.campusProgram.program'])
-												->where('index_number', $applicant->index_number)->where('program_level_id', $applicant->program_level_id - 1); 
+	   		  	    $previous_studied_programme = Applicant::whereHas('selections', function($query) {$query->where('status', 'SELECTED');})->whereHas('selections.campusProgram.program')
+												->where('index_number', $applicant->index_number)->where('program_level_id', $applicant->program_level_id - 1)->first(); 
 		return $previous_studied_programme;
        if($applicant->basic_info_complete_status == 0){
           return redirect()->back()->with('error','Basic information section not completed');
