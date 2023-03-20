@@ -302,7 +302,7 @@ class GraduantController extends Controller
         if(!$graduant){
              return redirect()->back()->with('error','You are not in the graduants list, please check with the Examination Office');
         }
-		$x = Invoice::whereHas('feeType',function($query){$query->where('name','LIKE','%Graduation Gown%');})->with('GatewayPayment')->where('payable_id', $student->id)
+		$x = Invoice::whereHas('feeType',function($query){$query->where('name','LIKE','%Graduation Gown%');})->whereHas('GatewayPayment')->where('payable_id', $student->id)
 			 ->where('applicable_id', $graduant->study_academic_year_id)->get();
 		return $x;
 /* 		$x = DB::table('gateway_payments')->join('invoices','gateway_payments.control_no','=','invoices.control_no')->join('fee_types','invoices.fee_type_id','=','fee_types.id')
