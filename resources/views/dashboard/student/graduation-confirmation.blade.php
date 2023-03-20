@@ -47,12 +47,12 @@
               
               {!! Form::open(['url'=>'student/confirm-graduation']) !!}
               <div class="card-body">
-                  @if($graduant->status == 'GRADUATING')
+ <!--                 @if($graduant->status == 'GRADUATING')
                    <span class="badge-success">Approved for Graduation</span>
                   @else
                    <span class="badge badge-warning">Disapproved for Graduation</span>
                   @endif
-
+-->
                   @if($graduant->attendance_status === 1)
                    <span class="badge-success">Attendance Confirmed</span>
                   @elseif($graduant->attendance_status === 0)

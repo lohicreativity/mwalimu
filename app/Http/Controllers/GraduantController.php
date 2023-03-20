@@ -14,6 +14,7 @@ use App\Domain\Academic\Models\Award;
 use App\Domain\Settings\Models\NTALevel;
 use App\Domain\Settings\Models\Currency;
 use App\Domain\Finance\Models\Invoice;
+use App\Domain\Finance\Models\GatewayPayment;
 use App\Domain\Finance\Models\FeeType;
 use App\Domain\Finance\Models\FeeAmount;
 use App\Domain\Registration\Models\Student;
@@ -299,8 +300,18 @@ class GraduantController extends Controller
         $student = User::find(Auth::user()->id)->student;
         $graduant = Graduant::where('student_id',$student->id)->where('status','GRADUATING')->first();
         if(!$graduant){
-             return redirect()->back()->with('error','You are not in the graduants list');
+             return redirect()->back()->with('error','You are not in the graduants list, please check with the Examination Office');
         }
+		$x = Invoice::whereHas('feeType',function($query){$query->where('name','LIKE','%Graduation Gown%');})->with('GatewayPayment')->get();
+		return $x;
+/* 		$x = DB::table('gateway_payments')->join('invoices','gateway_payments.control_no','=','invoices.control_no')->join('fee_types','invoices.fee_type_id','=','fee_types.id')
+			->join('study_academic_years','invoices.applicable_id','=','study_academic_years.id')->join('academic_years','study_academic_years.academic_year_id','=','academic_years.id')
+			->select(DB::raw('gateway_payments.*, fee_types.name as fee_name, academic_years.year as academic_year'))->where(function($query) use($student){
+			$query->where('invoices.payable_id',$student->id)->where('invoices.payable_type','student')->where('invoices.applicable_type','academic_year');
+			})->orWhere(function($query) use($student){
+				$query->where('invoices.payable_id',$student->applicant_id)->where('invoices.payable_type','applicant')->where('invoices.applicable_type','academic_year');
+			})->latest()->get(); */
+			
         $data = [
            'student'=>$student,
            'graduant'=>$graduant,
@@ -376,7 +387,7 @@ class GraduantController extends Controller
                                               $invoice->currency);
         }
 		$graduant->save();
-        return redirect()->back()->with('message','Graduation attendance confirmed successfully');
+        return redirect()->back()->with('message','Please pay for graduation gown to complete your confirmation');
     }
 
     public function requestControlNumber(Request $request,$billno,$inst_id,$amount,$description,$gfs_code,$payment_option,$payerid,$payer_name,$payer_cell,$payer_email,$generated_by,$approved_by,$days,$currency){
