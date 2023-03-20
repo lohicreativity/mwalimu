@@ -130,7 +130,7 @@
 					   <td>{{ $clearance->student->phone }}</td>
                        <td>{{ $clearance->student->campusProgram->program->code }}</td>
 
-                       @if(Auth::user()->hasRole('examination-officer'))
+                       @if(Auth::user()->hasRole('examination-officer') || Auth::user()->hasRole('arc') || Auth::user()->hasRole('administrator'))
                        <td>@if($clearance->library_status === 1 && $clearance->hostel_status === 1 && $clearance->finance_status === 1 && $clearance->hod_status === 1 ) 
 								<span class="badge badge-success">
 									Cleared
