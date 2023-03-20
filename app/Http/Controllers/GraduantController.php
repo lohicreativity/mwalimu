@@ -90,11 +90,58 @@ class GraduantController extends Controller
           	$status = StudentshipStatus::where('name','GRADUANT')->first();
           	foreach($students as $student){
           		if($student->overallRemark){
-      	    		if($grad = Graduant::where('student_id',$student->id)->first()){
-      	               $graduant = $grad;
+      	    		$grad = Graduant::where('student_id',$student->id)->first()){
+      	            if($grad){
+						if($grad->overall_remark_id != $student->overallRemark->id){
+							$graduant = $grad;
+							$graduant->overall_remark_id = $student->overallRemark->id;
+							
+								if($student->academicStatus->name == 'PASS'){
+									   $graduant->status = 'PENDING';
+								}else{
+								   $graduant->status = 'EXCLUDED';
+								}
+								$count = 0;
+									foreach($student->annualRemarks as $remark){
+										if($remark->remark != 'PASS'){
+										   $graduant->status = 'EXCLUDED';
+									   $excluded_list[] = $student;
+									 if($remark->remark == 'POSTPONED'){
+									   $graduant->reason = 'Postponed';
+									   break;
+									 }else{
+									   if(str_contains($student->academicStatus->name,'DISCO')){
+										   $graduant->reason = 'Failed & Disco';
+										   break;
+									   }else{
+										   $graduant->reason = 'Incomplete Results';
+										   break;
+									   }
+									 }
+									   break;
+										}
+								  $count++;
+									}
+								if($graduant->status != 'EXCLUDED'){
+									$graduant_list[] = $student;
+									if($count >= $program->min_duration){
+									   if($student->academicStatus->name == 'PASS'){
+										   if($cls = Clearance::where('student_id',$student->id)->first()){
+											  $clearance = $cls;
+										   }else{
+											  $clearance = new Clearance;
+										   }
+										   $clearance->student_id = $student->id;
+										   $clearance->study_academic_year_id = $request->get('study_academic_year_id');
+										   $clearance->save();
+									   }
+									}
+								}
+						}
       	    		}else{
       	               $graduant = new Graduant;
       	    		}
+					
       	    		$graduant->student_id = $student->id;
       	    		$graduant->overall_remark_id = $student->overallRemark->id;
       	    		$graduant->study_academic_year_id = $request->get('study_academic_year_id');
@@ -149,10 +196,10 @@ class GraduantController extends Controller
         }
     	}
       if(count($graduant_list) == 0 && count($excluded_list) == 0){
-          return redirect()->back()->with('error','No students in the graduants list');
+          return redirect()->back()->with('error','No student qualifies to be in the graduants list');
       }
 
-    	return redirect()->back()->with('message','Graduants sorted successfully');
+    	return redirect()->back()->with('message','Graduants list created successfully');
 
     }
 
