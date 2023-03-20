@@ -38,6 +38,7 @@ use App\Domain\Settings\Models\Currency;
 use App\Domain\Academic\Models\Graduant;
 use App\Domain\Settings\Models\Campus;
 use App\Domain\Settings\Models\SpecialDate;
+use App\Domain\Academic\Models\Clearance;
 use Illuminate\Support\Facades\Http;
 use App\Models\User;
 use App\Models\Role;
@@ -53,7 +54,7 @@ class StudentController extends Controller
     $student = User::find(Auth::user()->id)->student()->with('applicant')->first();
 	/* return Student::whereHas('TranscriptRequest', function($query) use($student)
 		{$query->where('student_id', $student->id);})->latest()->first()->get(); */
-
+return Clearance::where('student_id', $student->id)->latest()->first();
 		$data = [
             'student'=>$student,
             'loan_allocation'=>LoanAllocation::where('index_number',$student->applicant->index_number)->where('loan_amount','!=',0.00)->where('study_academic_year_id',session('active_academic_year_id'))->first(),
