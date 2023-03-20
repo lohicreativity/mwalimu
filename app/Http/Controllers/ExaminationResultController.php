@@ -2992,9 +2992,7 @@ class ExaminationResultController extends Controller
 
         if($request->get('semester_id') != 'SUPPLEMENTARY'){
            if(Util::stripSpacesUpper($semester->name) == Util::stripSpacesUpper('Semester 1')){
-              $students = Student::whereHas('studentshipStatus',function($query){
-                  $query->where('name','ACTIVE')->orWhere('name','RESUMED');
-              })->whereHas('applicant',function($query) use($request){
+              $students = Student::whereHas('applicant',function($query) use($request){
                   $query->where('intake_id',$request->get('intake_id'));
               })->whereHas('registrations',function($query) use($request){
                  $query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',explode('_',$request->get('campus_program_id'))[2]);
@@ -3004,9 +3002,7 @@ class ExaminationResultController extends Controller
                 $query->whereIn('module_assignment_id',$assignmentIds);
               },'examinationResults.changes'])->where('campus_program_id',$campus_program->id)->get();
            }else{
-              $students = Student::whereHas('studentshipStatus',function($query){
-                  $query->where('name','ACTIVE')->orWhere('name','RESUMED');
-              })->whereHas('applicant',function($query) use($request){
+              $students = Student::whereHas('applicant',function($query) use($request){
                   $query->where('intake_id',$request->get('intake_id'));
               })->whereHas('registrations',function($query) use($request){
                  $query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',explode('_',$request->get('campus_program_id'))[2]);
@@ -3019,9 +3015,10 @@ class ExaminationResultController extends Controller
               },'examinationResults.changes'])->where('campus_program_id',$campus_program->id)->get();
           }
         }else{
-            $students = Student::whereHas('studentshipStatus',function($query){
-                  $query->where('name','ACTIVE')->orWhere('name','RESUMED');
-              })->whereHas('applicant',function($query) use($request){
+/* 			whereHas('studentshipStatus',function($query){
+                  $query->where('name','ACTIVE')->orWhere('name','RESUMED')->orWhere('name','GRADUATING');
+              })-> */
+            $students = Student::whereHas('applicant',function($query) use($request){
                   $query->where('intake_id',$request->get('intake_id'));
               })->whereHas('registrations',function($query) use($request){
                  $query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',explode('_',$request->get('campus_program_id'))[2]);
