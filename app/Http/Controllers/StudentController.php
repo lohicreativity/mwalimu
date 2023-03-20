@@ -53,12 +53,13 @@ class StudentController extends Controller
     $student = User::find(Auth::user()->id)->student()->with('applicant')->first();
 	/* return Student::whereHas('TranscriptRequest', function($query) use($student)
 		{$query->where('student_id', $student->id);})->latest()->first()->get(); */
-		return TranscriptRequest::where('student_id', $student->id)->where('status', 'ISSUED')->latest()->first();
+		return TranscriptRequest::select('status')->where('student_id', $student->id)->where('status', 'ISSUED')->latest()->first();
 		$data = [
             'student'=>$student,
             'loan_allocation'=>LoanAllocation::where('index_number',$student->applicant->index_number)->where('loan_amount','!=',0.00)->where('study_academic_year_id',session('active_academic_year_id'))->first(),
             'registration'=>Registration::where('student_id',$student->id)->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->where('status','REGISTERED')->first(),
-            'performance_report'=>PerformanceReportRequest::where('student_id',$student->id)->where('status','ATTENDED')->latest()->first()
+            'performance_report'=>PerformanceReportRequest::where('student_id',$student->id)->where('status','ATTENDED')->latest()->first(),
+			'transcript_request_status'=> TranscriptRequest::where('student_id', $student->id)->where('status', 'ISSUED')->latest()->first()
 		];
 		return view('dashboard.student.home',$data)->withTitle('Dashboard');
 	}
