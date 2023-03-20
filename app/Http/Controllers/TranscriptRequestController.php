@@ -42,7 +42,7 @@ class TranscriptRequestController extends Controller
     	 }
          
 
-         $tranx = TranscriptRequest::where('student_id',$student->id)->where('payment_status', 'PENDING')->whereDate('created_at','=',date('Y-m-d'))->first();
+         $tranx = TranscriptRequest::where('student_id',$student->id)->where('status', null)->whereDate('created_at','=',date('Y-m-d'))->first();
          if(!$tranx){
           
          $study_academic_year = StudyAcademicYear::where('status','ACTIVE')->first();
@@ -98,9 +98,11 @@ class TranscriptRequestController extends Controller
                                     $approved_by,
                                     $fee_amount->feeItem->feeType->duration,
                                     $invoice->currency);
+									
+		return redirect()->to('student/request-control-number')->with('message','Transcript requested successfully');
         }
 
-        return redirect()->to('student/request-control-number')->with('message','Transcript requested successfully');
+        return redirect()->to('student/request-control-number')->with('message','You have already requested a transcript');
     }
 
     /**
