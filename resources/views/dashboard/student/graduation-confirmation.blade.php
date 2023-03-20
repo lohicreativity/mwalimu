@@ -74,7 +74,7 @@
               <button class="btn btn-primary" @if($graduant->attendance_status === null) type="submit" @else disabled="disabled" @endif>{{ __('Confirm') }}</button>
             </div>
 			
-								   <a class="btn btn-info btn-sm" href="{{ url('academic/transcript-issuance/'.$req->student->id) }}">
+								   <a class="btn btn-info btn-sm" href="{{ url('academic/transcript-issuance/' }}">
                               <i class="fas fa-check-circle">
                               </i>
                               Reset
