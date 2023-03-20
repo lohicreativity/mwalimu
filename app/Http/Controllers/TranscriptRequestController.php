@@ -51,7 +51,7 @@ class TranscriptRequestController extends Controller
             })->with(['feeItem.feeType'])->where('study_academic_year_id',$study_academic_year->id)->first();
 
          if(!$fee_amount){
-            return redirect()->back()->with('error','No fee amount set for transcript request');
+            return redirect()->back()->with('error','No fee amount set for transcript');
          }
 
           $transcript = new TranscriptRequest;

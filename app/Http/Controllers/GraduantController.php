@@ -315,7 +315,7 @@ class GraduantController extends Controller
     {
         $graduant = Graduant::with(['student.applicant'])->find($request->get('graduant_id'));
         $graduant->attendance_status = $request->get('status');
-        $graduant->save();
+
 
         $student = $graduant->student;
 
@@ -327,8 +327,9 @@ class GraduantController extends Controller
                })->where('study_academic_year_id',$graduant->study_academic_year_id)->first();
 
                if(!$graduation_fee){
-                      return redirect()->back()->with('error','Graduation gown fee amount has not been set');
-                  }
+				   $graduant->attendance_status = null;
+                   return redirect()->back()->with('error','Graduation gown fee amount has not been set');
+               }
 
                 if(str_contains($student->applicant->nationality,'Tanzania')){
                   $amount = round($graduation_fee->amount_in_tzs);
@@ -338,10 +339,6 @@ class GraduantController extends Controller
                   $currency = 'TZS';//'USD';
                 }
                   $feeType = FeeType::where('name','LIKE','%Graduation Gown%')->first();
-
-                  if(!$feeType){
-                      return redirect()->back()->with('error','Graduation gown fee type has not been set');
-                  }
 
                   $invoice = new Invoice;
                   $invoice->reference_no = 'MNMA-GF-'.time();
@@ -378,7 +375,7 @@ class GraduantController extends Controller
                                               $feeType->duration,
                                               $invoice->currency);
         }
-
+		$graduant->save();
         return redirect()->back()->with('message','Graduation attendance confirmed successfully');
     }
 
