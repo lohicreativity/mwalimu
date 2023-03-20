@@ -90,7 +90,7 @@ class GraduantController extends Controller
           	$status = StudentshipStatus::where('name','GRADUANT')->first();
           	foreach($students as $student){
           		if($student->overallRemark){
-      	    		$grad = Graduant::where('student_id',$student->id)->first()){
+      	    		$grad = Graduant::where('student_id',$student->id)->first();
       	            if($grad){
 						if($grad->overall_remark_id != $student->overallRemark->id){
 							$graduant = $grad;
