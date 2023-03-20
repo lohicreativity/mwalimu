@@ -37,11 +37,11 @@
       <div class="container-fluid">
         <!-- Small boxes (Stat box) -->
 		
-				  			@if(transcript_request_status != null)
+				  			@if($transcript_request_status != null)
 		
 		              <div class="alert alert-success col-12">
                       <h3 class="text-white" style="font-size:13pt!important;"><i class="fa fa-check-circle"></i> 
-                      Your transcript has been issued, please collect it 5 days from {{ transcript_request_status->issued_date}}. </h3>
+                      Your transcript has been issued, please collect it 5 days from {{ $transcript_request_status->updated_at}}. </h3>
                     </div>
 		
 			@endif
