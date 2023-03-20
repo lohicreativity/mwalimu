@@ -214,10 +214,11 @@
                     @endforeach
                       <tr>
                       <td colspan="8">
-					  @if(!Auth::user()->hasRole('examination-officer') || !Auth::user()->hasRole('arc') || !Auth::user()->hasRole('administrator'))
+					  @if(Auth::user()->hasRole('hod') || Auth::user()->hasRole('dean-of-students') || Auth::user()->hasRole('librarian') || Auth::user()->hasRole('finance-officer'))
                         <button type="submit" class="btn btn-primary">Clear All Selected</button>
-                      </td>
+
 					  @endif
+					  </td>
                     </tr> 
                    </tbody>
                  </table>
