@@ -214,7 +214,7 @@
                     @endforeach
                       <tr>
                       <td colspan="8">
-					  @if(!Auth::user()->hasRole('examination-officer'))
+					  @if(!Auth::user()->hasRole('examination-officer') || !Auth::user()->hasRole('arc') || !Auth::user()->hasRole('administrator'))
                         <button type="submit" class="btn btn-primary">Clear All Selected</button>
                       </td>
 					  @endif
