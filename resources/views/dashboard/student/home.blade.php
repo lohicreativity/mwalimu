@@ -37,7 +37,7 @@
       <div class="container-fluid">
         <!-- Small boxes (Stat box) -->
 		
-			@if($clearance_status->library_status == 0)
+			@if($clearance_status->library_status == 0 && $clearance_status->hostel_status != null)
 		
 			  <div class="alert alert-warning col-12">
 			  <h3 class="text-white" style="font-size:13pt!important;"><i class="fa fa-check-circle"></i> 
@@ -57,7 +57,7 @@
 			  Your clearance is unsuccessful, please contact the Finance Office. </h3>
 			  </div>
 			
-			@elseif($clearance_status->hod_status == 0)
+			@elseif($clearance_status->hod_status == 0 && $clearance_status->hostel_status != null)
 		
 			  <div class="alert alert-warning col-12">
 			  <h3 class="text-white" style="font-size:13pt!important;"><i class="fa fa-check-circle"></i> 
