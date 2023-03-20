@@ -932,12 +932,15 @@ class ApplicationController extends Controller
         $count = ApplicantProgramSelection::where('applicant_id',$request->get('applicant_id'))->count();
         
 
-        $applicant = Applicant::find($request->get('applicant_id'));
+        //$applicant = Applicant::find($request->get('applicant_id'));
 /*         if($applicant->is_continue == 1){
             $applicant->status = 'ADMITTED';
             $applicant->save();
         }
  */
+	    $previous_studied_programme = Applicant::whereHas('selections', function($query) {$query->where('status', 'SELECTED');})->whereHas('selections.campusProgram.program')
+												->where('index_number', $applicant->index_number)->where('program_level_id', $applicant->program_level_id - 1); 
+		return $previous_studied_programme;
         $similar_count = ApplicantProgramSelection::where('applicant_id',$request->get('applicant_id'))->where('campus_program_id',$request->get('campus_program_id'))->count();
         if($similar_count == 0){
              if($count >= 4){
