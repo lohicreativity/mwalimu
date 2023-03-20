@@ -144,7 +144,6 @@
 					   @endif
 					   
                        @if(Auth::user()->hasRole('finance-officer'))
-                       @if(Auth::user()->hasRole('librarian'))
                        <td>@if($clearance->finance_status === 0) 
 						   	<span class="badge badge-danger">
 								Not Cleared
