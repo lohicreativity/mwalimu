@@ -41,27 +41,27 @@
 		
 			  <div class="alert alert-warning col-12">
 			  <h3 class="text-white" style="font-size:13pt!important;"><i class="fa fa-check-circle"></i> 
-			  Your clearance is unsuccessful, it seems you have a pending issue in the Library. </h3>
+			  Your clearance is unsuccessful, please contact the Library. </h3>
 			  </div>
 			@elseif($clearance_status->hostel_status == 0)
 		
 			  <div class="alert alert-warning col-12">
 			  <h3 class="text-white" style="font-size:13pt!important;"><i class="fa fa-check-circle"></i> 
-			  Your clearance is unsuccessful, it seems you have a pending issue with the Dean of Students. </h3>
+			  Your clearance is unsuccessful, please contact the Dean of Students' Office. </h3>
 			  </div>
 
-			@elseif($clearance_status->finance_status == 0)
+			@elseif($clearance_status->finance_status == 0 && $clearance_status->finance_status !=== null)
 		
 			  <div class="alert alert-warning col-12">
 			  <h3 class="text-white" style="font-size:13pt!important;"><i class="fa fa-check-circle"></i> 
-			  Your clearance is unsuccessful, it seems you have a pending issue in the Finance Office. </h3>
+			  Your clearance is unsuccessful, please contact the Finance Office. </h3>
 			  </div>
 			
 			@elseif($clearance_status->hod_status == 0)
 		
 			  <div class="alert alert-warning col-12">
 			  <h3 class="text-white" style="font-size:13pt!important;"><i class="fa fa-check-circle"></i> 
-			  Your clearance is unsuccessful, it seems you have a pending issue with your Head of Department. </h3>
+			  Your clearance is unsuccessful, please contact your Head of Department. </h3>
 			  </div>
 			  
 			@elseif($transcript_request_status != null)
