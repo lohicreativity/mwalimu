@@ -73,7 +73,7 @@
               <div class="card-footer">
               <button class="btn btn-primary" @if($graduant->attendance_status === null) type="submit" @else disabled="disabled" @endif>{{ __('Confirm') }}</button>
 			  
-				   <a class="btn btn-info btn-sm" href="dsdsdf" disabled="disabled">
+<!--				   <a class="btn btn-info btn-sm" href="dsdsdf" disabled="disabled">
                       <i class="fas fa-check-circle" ></i>
                         Confirm
                    </a>
@@ -82,6 +82,7 @@
                       <i class="fas fa-check-circle"></i>
                         Reset
                    </a>
+-->
             </div>
 			
 							
