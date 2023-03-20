@@ -53,8 +53,8 @@ class GraduantController extends Controller
     {
       $staff = User::find(Auth::user()->id)->staff;
 
-      $past_graduants = Student::whereHas('studentshipStatus',function($query){
-                $query->where('name','GRADUANT');
+      $past_graduants = Student::whereHas('applicant', function($query) use($request){$query->where('campus_id', $request->get('campus_id'));})
+						->whereHas('studentshipStatus',function($query){$query->where('name','GRADUANT');
       })->whereHas('annualRemarks',function($query) use($request){
                 $query->where('study_academic_year_id','!=',$request->get('study_academic_year_id'));
             })->whereHas('overallRemark', function($query){$query->where('remark', 'PASS');})->get();
