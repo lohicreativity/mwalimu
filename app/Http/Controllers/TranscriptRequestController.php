@@ -42,7 +42,7 @@ class TranscriptRequestController extends Controller
     	 }
          
 
-         $tranx = TranscriptRequest::where('student_id',$student->id)->whereDate('created_at','=',date('Y-m-d'))->first();
+         $tranx = TranscriptRequest::where('student_id',$student->id)->where('payment_status', 'PENDING')->whereDate('created_at','=',date('Y-m-d'))->first();
          if(!$tranx){
           
          $study_academic_year = StudyAcademicYear::where('status','ACTIVE')->first();
