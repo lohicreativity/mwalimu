@@ -56,7 +56,7 @@
                   @if($graduant->attendance_status === 1 && $payment_status == 1)
                    <span class="badge-success">Attendance Confirmed</span>
 				  @elseif($graduant->attendance_status === 1 && $payment_status == 0)
-				   <span class="badge-warning">Pending Graduation Gown Payment</span>
+				   <span class="badge-danger">Pending Graduation Gown Payment</span>
                   @elseif($graduant->attendance_status === 0)
                    <span class="badge badge-warning">Not Attending</span>
                   @endif
