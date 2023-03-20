@@ -56,7 +56,7 @@
                   @if($graduant->attendance_status === 1 && $payment_status == 1)
                    <span class="badge-success">Attendance Confirmed</span>
 				  @elseif($graduant->attendance_status === 1 && $payment_status == 0)
-				   <span class="badge-danger">Pending Graduation Gown Payment</span>
+				   <span class="badge-warning">Pending Graduation Gown Payment</span>
                   @elseif($graduant->attendance_status === 0)
                    <span class="badge badge-warning">Not Attending</span>
                   @endif
@@ -73,6 +73,12 @@
               <div class="card-footer">
               <button class="btn btn-primary" @if($graduant->attendance_status === null) type="submit" @else disabled="disabled" @endif>{{ __('Confirm') }}</button>
             </div>
+			
+								   <a class="btn btn-info btn-sm" href="{{ url('academic/transcript-issuance/'.$req->student->id) }}">
+                              <i class="fas fa-check-circle">
+                              </i>
+                              Reset
+                       </a>
             {!! Form::close() !!}
             </div>
 
