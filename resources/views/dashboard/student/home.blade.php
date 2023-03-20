@@ -50,7 +50,7 @@
 			  Your clearance is unsuccessful, please contact the Dean of Students' Office. </h3>
 			  </div>
 
-			@elseif($clearance_status->finance_status == 0 && $clearance_status->finance_status !=== null)
+			@elseif($clearance_status->finance_status == 0 && $clearance_status->finance_status != null)
 		
 			  <div class="alert alert-warning col-12">
 			  <h3 class="text-white" style="font-size:13pt!important;"><i class="fa fa-check-circle"></i> 
