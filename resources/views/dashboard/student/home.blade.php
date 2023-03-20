@@ -37,16 +37,41 @@
       <div class="container-fluid">
         <!-- Small boxes (Stat box) -->
 		
-			@if($transcript_request_status != null)
+			@if($clearance_status->library_status != 1)
 		
+			  <div class="alert alert-warning col-12">
+			  <h3 class="text-white" style="font-size:13pt!important;"><i class="fa fa-check-circle"></i> 
+			  Your clearance is unsuccessful, it seems you have a pending issue in the Library. </h3>
+			  </div>
+			@elseif($clearance_status->hostel_status != 1)
+		
+			  <div class="alert alert-warning col-12">
+			  <h3 class="text-white" style="font-size:13pt!important;"><i class="fa fa-check-circle"></i> 
+			  Your clearance is unsuccessful, it seems you have a pending issue with the Dean of Students. </h3>
+			  </div>
+
+			@elseif($clearance_status->finance_status != 1)
+		
+			  <div class="alert alert-warning col-12">
+			  <h3 class="text-white" style="font-size:13pt!important;"><i class="fa fa-check-circle"></i> 
+			  Your clearance is unsuccessful, it seems you have a pending issue in the Finance Office. </h3>
+			  </div>
+			
+			@elseif($clearance_status->hod_status != 1)
+		
+			  <div class="alert alert-warning col-12">
+			  <h3 class="text-white" style="font-size:13pt!important;"><i class="fa fa-check-circle"></i> 
+			  Your clearance is unsuccessful, it seems you have a pending issue with your Head of Department. </h3>
+			  </div>
+			  
+			@elseif($transcript_request_status != null)
+			  
 			  <div class="alert alert-success col-12">
 			  <h3 class="text-white" style="font-size:13pt!important;"><i class="fa fa-check-circle"></i> 
 			  Your transcript is in final stages of completion, please collect it 5 days from {{ $transcript_request_status->updated_at->format('d/m/Y')}}. </h3>
-			  </div>
+			  </div>				
 		
-			@endif
-		
-		
+			@endif		
 		
 		
           @if($loan_allocation)
