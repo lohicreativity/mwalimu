@@ -316,6 +316,8 @@ class GraduantController extends Controller
         $data = [
            'student'=>$student,
            'graduant'=>$graduant,
+		   'payment_status'=> Invoice::whereHas('feeType',function($query){$query->where('name','LIKE','%Graduation Gown%');})->whereHas('GatewayPayment')->where('payable_id', $student->id)
+			 ->where('applicable_id', $graduant->study_academic_year_id)->count()
         ];
         return view('dashboard.student.graduation-confirmation',$data)->withTitle('Graduation Confirmation');
     }
