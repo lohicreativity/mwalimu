@@ -53,7 +53,7 @@ class StudentController extends Controller
     $student = User::find(Auth::user()->id)->student()->with('applicant')->first();
 	/* return Student::whereHas('TranscriptRequest', function($query) use($student)
 		{$query->where('student_id', $student->id);})->latest()->first()->get(); */
-		
+		return TranscriptRequest::where('student_id', $student->id)->where('status', 'ISSUED')->latest()->first();
 		$data = [
             'student'=>$student,
             'loan_allocation'=>LoanAllocation::where('index_number',$student->applicant->index_number)->where('loan_amount','!=',0.00)->where('study_academic_year_id',session('active_academic_year_id'))->first(),
@@ -96,7 +96,7 @@ class StudentController extends Controller
         ];
         if(Auth::attempt($credentials)){
           if(Auth::user()->must_update_password == 1){
-              return redirect()->to('change-password')->with('message','Logged in successfully');
+              return redirect()->to('change-password')->with('message','Change password');
           }else{
               return redirect()->to('student/dashboard')->with('message','Logged in successfully');
           } 	

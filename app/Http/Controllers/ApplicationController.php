@@ -938,7 +938,9 @@ class ApplicationController extends Controller
             $applicant->save();
         }
  */
-
+		$previous_studied_programme = Applicant::whereHas('selections', function($query) {$query->where('status', 'SELECTED');})->with('selections.campusProgram.program')
+									->where('index_number', $applicant->index_number)->where('program_level_id', $applicant->program_level_id - 1)->first(); 
+		//return $previous_studied_programme->selections[0];
         $similar_count = ApplicantProgramSelection::where('applicant_id',$request->get('applicant_id'))->where('campus_program_id',$request->get('campus_program_id'))->count();
         if($similar_count == 0){
              if($count >= 4){
@@ -1218,9 +1220,7 @@ class ApplicationController extends Controller
         }
 
        $applicant = Applicant::with(['programLevel'])->find($request->get('applicant_id'));
-	   		  	    $previous_studied_programme = Applicant::whereHas('selections', function($query) {$query->where('status', 'SELECTED');})->with('selections.campusProgram.program')
-												->where('index_number', $applicant->index_number)->where('program_level_id', $applicant->program_level_id - 1)->first(); 
-		return $previous_studied_programme->selections[0]->campus_program[0];
+
        if($applicant->basic_info_complete_status == 0){
           return redirect()->back()->with('error','Basic information section not completed');
        }
