@@ -86,64 +86,15 @@ class GraduantController extends Controller
             })->with(['annualRemarks','overallRemark','academicStatus'])->whereHas('campusProgram',function($query) use ($program, $request){
                  $query->where('program_id',$program->id)->where('campus_id',$request->get('campus_id'));
             })->where('year_of_study',$program->min_duration)->get();
-			
-			return $students;
           	
           	$status = StudentshipStatus::where('name','GRADUANT')->first();
           	foreach($students as $student){
           		if($student->overallRemark){
-      	    		$grad = Graduant::where('student_id',$student->id)->first();
-      	            if($grad){
-						if($grad->overall_remark_id != $student->overallRemark->id){
-							$graduant = $grad;
-							$graduant->overall_remark_id = $student->overallRemark->id;
-							
-								if($student->academicStatus->name == 'PASS'){
-									   $graduant->status = 'PENDING';
-								}else{
-								   $graduant->status = 'EXCLUDED';
-								}
-								$count = 0;
-									foreach($student->annualRemarks as $remark){
-										if($remark->remark != 'PASS'){
-										   $graduant->status = 'EXCLUDED';
-									   $excluded_list[] = $student;
-									 if($remark->remark == 'POSTPONED'){
-									   $graduant->reason = 'Postponed';
-									   break;
-									 }else{
-									   if(str_contains($student->academicStatus->name,'DISCO')){
-										   $graduant->reason = 'Failed & Disco';
-										   break;
-									   }else{
-										   $graduant->reason = 'Incomplete Results';
-										   break;
-									   }
-									 }
-									   break;
-										}
-								  $count++;
-									}
-								if($graduant->status != 'EXCLUDED'){
-									$graduant_list[] = $student;
-									if($count >= $program->min_duration){
-									   if($student->academicStatus->name == 'PASS'){
-										   if($cls = Clearance::where('student_id',$student->id)->first()){
-											  $clearance = $cls;
-										   }else{
-											  $clearance = new Clearance;
-										   }
-										   $clearance->student_id = $student->id;
-										   $clearance->study_academic_year_id = $request->get('study_academic_year_id');
-										   $clearance->save();
-									   }
-									}
-								}
-						}
+      	    		if($grad = Graduant::where('student_id',$student->id)->first()){
+      	               $graduant = $grad;
       	    		}else{
       	               $graduant = new Graduant;
       	    		}
-					
       	    		$graduant->student_id = $student->id;
       	    		$graduant->overall_remark_id = $student->overallRemark->id;
       	    		$graduant->study_academic_year_id = $request->get('study_academic_year_id');
