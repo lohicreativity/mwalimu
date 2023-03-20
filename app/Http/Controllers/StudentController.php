@@ -38,6 +38,7 @@ use App\Domain\Settings\Models\Currency;
 use App\Domain\Academic\Models\Graduant;
 use App\Domain\Settings\Models\Campus;
 use App\Domain\Settings\Models\SpecialDate;
+use App\Domain\Academic\Models\TranscriptRequest;
 use Illuminate\Support\Facades\Http;
 use App\Models\User;
 use App\Models\Role;
