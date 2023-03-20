@@ -65,14 +65,14 @@ class GraduantController extends Controller
           $user->save();
       }
       
-      if(ResultPublication::where('study_academic_year_id',session('active_academic_year_id'))->where('type','SUPP')->where('campus_id',$staff->campus_id)->count() == 0){
+/*       if(ResultPublication::where('study_academic_year_id',session('active_academic_year_id'))->where('type','SUPP')->where('campus_id',$staff->campus_id)->count() == 0){
           return redirect()->back()->with('error','Supplementary results not published');
       }
       if(Appeal::whereHas('moduleAssignment',function($query){
            $query->where('study_academic_year_id',session('active_academic_year_id'));
       })->where('is_attended',0)->where('is_paid',1)->count() != 0){
          return redirect()->back()->with('error','Appeals not attended completely');
-      }
+      } */
 
       $nta_level = NTALevel::with(['programs'])->find($request->get('nta_level_id'));
       $excluded_list = [];
