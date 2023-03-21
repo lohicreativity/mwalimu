@@ -80,15 +80,16 @@ class GraduantController extends Controller
 
       foreach($nta_level->programs as $program){
           	$campus_program = CampusProgram::with('program')->find($request->get('campus_program_id'));
-			return $program;
+			
           	$students = Student::whereHas('annualRemarks',function($query) use($request){
                 $query->where('study_academic_year_id',$request->get('study_academic_year_id'));
-            })->with(['annualRemarks','overallRemark','academicStatus'])->get();/* whereHas('campusProgram',function($query) use ($program, $request){
+            })->with(['annualRemarks','overallRemark','academicStatus'])->whereHas('campusProgram',function($query) use ($program, $request){
                  $query->where('program_id',$program->id)->where('campus_id',$request->get('campus_id'));
-            })->where('year_of_study',$program->min_duration)->get(); */
+            })->where('year_of_study',$program->min_duration)->get();
           	
-			return $students;
           	$status = StudentshipStatus::where('name','GRADUANT')->first();
+			if($students){
+				return $students;
           	foreach($students as $student){
           		if($student->overallRemark){
       	    		if($grad = Graduant::where('student_id',$student->id)->first()){
@@ -148,6 +149,7 @@ class GraduantController extends Controller
           }
     	    $student->save();
         }
+			}
     	}
       if(count($graduant_list) == 0 && count($excluded_list) == 0){
           return redirect()->back()->with('error','No student qualifies to be in the graduants list');
