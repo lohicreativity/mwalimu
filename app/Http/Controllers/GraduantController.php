@@ -130,64 +130,63 @@ class GraduantController extends Controller
 								$student->save();
 							return redirect()->back()->with('message','Graduants list created successfully');
 							}
-						
 						}else{
 							$graduant = new Graduant;
 						
 							$graduant->student_id = $student->id;
 							$graduant->overall_remark_id = $student->overallRemark->id;
 							$graduant->study_academic_year_id = $request->get('study_academic_year_id');
-					if($student->academicStatus->name == 'PASS'){
-						   $graduant->status = 'PENDING';
-					}else{
-					   $graduant->status = 'EXCLUDED';
-					}
-					$count = 0;
-						foreach($student->annualRemarks as $remark){
-							if($remark->remark != 'PASS'){
+							if($student->academicStatus->name == 'PASS'){
+								   $graduant->status = 'PENDING';
+							}else{
 							   $graduant->status = 'EXCLUDED';
-						   $excluded_list[] = $student;
-						 if($remark->remark == 'POSTPONED'){
-						   $graduant->reason = 'Postponed';
-						   break;
-						 }else{
-						   if(str_contains($student->academicStatus->name,'DISCO')){
-							   $graduant->reason = 'Failed & Disco';
-							   break;
-						   }else{
-							   $graduant->reason = 'Incomplete Results';
-							   break;
-						   }
-						 }
-						   break;
 							}
-					  $count++;
+							$count = 0;
+							foreach($student->annualRemarks as $remark){
+								if($remark->remark != 'PASS'){
+								   $graduant->status = 'EXCLUDED';
+								   $excluded_list[] = $student;
+									if($remark->remark == 'POSTPONED'){
+										$graduant->reason = 'Postponed';
+										break;
+									}else{
+										if(str_contains($student->academicStatus->name,'DISCO')){
+											$graduant->reason = 'Failed & Disco';
+											break;
+										}else{
+											$graduant->reason = 'Incomplete Results';
+											break;
+										}
+									}
+							    break;
+								}
+								$count++;
+							}
+							if($graduant->status != 'EXCLUDED'){
+								$graduant_list[] = $student;
+								if($count >= $program->min_duration){
+									if($student->academicStatus->name == 'PASS'){
+										if($cls = Clearance::where('student_id',$student->id)->first()){
+											$clearance = $cls;
+										}else{
+											$clearance = new Clearance;
+										}
+									   $clearance->student_id = $student->id;
+									   $clearance->study_academic_year_id = $request->get('study_academic_year_id');
+									   $clearance->save();
+									}
+								}
+							}
+							$graduant->save();
+							$student = Student::find($student->id);
+							if($student->academicStatus->name == 'PASS'){
+								$student->studentship_status_id = $status->id;
+							}
+							$student->save();
+							return redirect()->back()->with('message','Graduants list created successfully');
 						}
-					if($graduant->status != 'EXCLUDED'){
-						$graduant_list[] = $student;
-						if($count >= $program->min_duration){
-						   if($student->academicStatus->name == 'PASS'){
-							   if($cls = Clearance::where('student_id',$student->id)->first()){
-								  $clearance = $cls;
-							   }else{
-								  $clearance = new Clearance;
-							   }
-							   $clearance->student_id = $student->id;
-							   $clearance->study_academic_year_id = $request->get('study_academic_year_id');
-							   $clearance->save();
-						   }
 						}
 					}
-											$graduant->save();
-															$student = Student::find($student->id);
-				  if($student->academicStatus->name == 'PASS'){
-					$student->studentship_status_id = $status->id;
-				  }
-				$student->save();
-				return redirect()->back()->with('message','Graduants list created successfully');
-				}
-						}
-				  }
 
 			}
     	}
