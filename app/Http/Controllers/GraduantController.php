@@ -120,8 +120,9 @@ class GraduantController extends Controller
 										break;
 									}
 								}
+								$graduant->save();
 							}
-						$graduant->save();
+						
 						}elseif(!Graduant::where('student_id',$student->id)->first()){
 						   $graduant = new Graduant;
 						
