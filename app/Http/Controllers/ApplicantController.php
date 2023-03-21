@@ -216,13 +216,13 @@ class ApplicantController extends Controller
 			  return redirect()->back()->with('error','Incorrect campus. Please log in to '.$campus->name);
 		  
 		  }elseif(Applicant::where('user_id',Auth::user()->id)->where('campus_id',$request->get('campus_id'))->where('submission_complete_status', 0)->first() && $continue_applicant->application_window_id == null){
-			 return 123;
+
 			 $app = Applicant::where('user_id',Auth::user()->id)->where('is_continue', 1)->where('application_window_id', null)->first();
 			 $continue_applicant = $app;
 			 $continue_applicant->application_window_id = $window->id;
              $continue_applicant->intake_id = $window->intake_id;
 			 $continue_applicant->save();
-		  }
+		  }else{
 		  
 		  
 		  /* else{
