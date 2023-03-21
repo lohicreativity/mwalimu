@@ -94,9 +94,7 @@ class GraduantController extends Controller
 						if($grad = Graduant::where('student_id',$student->id)->first()){
 
 						   if($grad->overall_remark_id != $student->overallRemark->id){
-							   							if($student->registration_number == 'MNMA/BTC.COD/0912/18'){
-								return 1234;
-							}
+
 								$graduant = $grad;
 								$graduant->overall_remark_id = $student->overallRemark->id;
 								if($student->academicStatus->name == 'PASS'){
@@ -125,20 +123,20 @@ class GraduantController extends Controller
 									}
 								}
 								$graduant->save();
-																							$student = Student::find($student->id);
-				  if($student->academicStatus->name == 'PASS'){
-					$student->studentship_status_id = $status->id;
-				  }
-				$student->save();
-				return redirect()->back()->with('message','Graduants list created successfully');
+								$student = Student::find($student->id);
+								  if($student->academicStatus->name == 'PASS'){
+									$student->studentship_status_id = $status->id;
+								  }
+								$student->save();
+							return redirect()->back()->with('message','Graduants list created successfully');
 							}
 						
-						}elseif(!Graduant::where('student_id',$student->id)->first()){
-						   $graduant = new Graduant;
+						}else{
+							$graduant = new Graduant;
 						
-						$graduant->student_id = $student->id;
-						$graduant->overall_remark_id = $student->overallRemark->id;
-						$graduant->study_academic_year_id = $request->get('study_academic_year_id');
+							$graduant->student_id = $student->id;
+							$graduant->overall_remark_id = $student->overallRemark->id;
+							$graduant->study_academic_year_id = $request->get('study_academic_year_id');
 					if($student->academicStatus->name == 'PASS'){
 						   $graduant->status = 'PENDING';
 					}else{
