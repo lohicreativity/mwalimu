@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Domain\Academic\Models\StudyAcademicYear;
+use App\Domain\Academic\Models\OverallRemark;
 use App\Domain\Settings\Models\Campus;
 use App\Domain\Academic\Models\Graduant;
 use App\Domain\Academic\Models\CampusProgram;
@@ -92,8 +93,12 @@ class GraduantController extends Controller
 				foreach($students as $student){
 					if($student->overallRemark){
 						if($grad = Graduant::where('student_id',$student->id)->first()){
+							
+							$previous_academic_status = OverallRemark::where('student_id', $grad->student_id)->first();
+							
+							//return $previous_academic_status->status;
 
-						   if($grad->overall_remark_id != $student->overallRemark->id){
+						   if(previous_academic_status->status != $student->overallRemark->status){
 
 								$graduant = $grad;
 								$graduant->overall_remark_id = $student->overallRemark->id;
