@@ -124,7 +124,7 @@ class GraduantController extends Controller
 
 						}elseif(!Graduant::where('student_id',$student->id)->first()){
 						   $graduant = new Graduant;
-						}
+						
 						$graduant->student_id = $student->id;
 						$graduant->overall_remark_id = $student->overallRemark->id;
 						$graduant->study_academic_year_id = $request->get('study_academic_year_id');
@@ -169,6 +169,7 @@ class GraduantController extends Controller
 						   }
 						}
 					}
+						}
 						$graduant->save();
 				  }
 				$student = Student::find($student->id);
