@@ -88,7 +88,7 @@ class GraduantController extends Controller
             })->where('year_of_study',$program->min_duration)->get();
           	
           	$status = StudentshipStatus::where('name','GRADUANT')->first();
-			if($students){
+			if(count($students) > 0){
 				return $students;
           	foreach($students as $student){
           		if($student->overallRemark){
