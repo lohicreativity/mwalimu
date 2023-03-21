@@ -95,7 +95,7 @@ class GraduantController extends Controller
 
 						   if($grad->overall_remark_id != $student->overallRemark->id){
 							   							if($student->registration_number == 'MNMA/BTC.COD/0912/18'){
-								return 1234
+								return 1234;
 							}
 								$graduant = $grad;
 								$graduant->overall_remark_id = $student->overallRemark->id;
