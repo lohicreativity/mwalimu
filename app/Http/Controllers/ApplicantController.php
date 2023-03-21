@@ -222,7 +222,7 @@ class ApplicantController extends Controller
 			 $continue_applicant->application_window_id = $window->id;
              $continue_applicant->intake_id = $window->intake_id;
 			 $continue_applicant->save();
-		  }
+		  }else{
 		  
 		  
 		  /* else{
@@ -233,7 +233,7 @@ class ApplicantController extends Controller
             
             
             session(['applicant_campus_id'=>$request->get('campus_id')]);
-            return redirect()->to('application/dashboard')->with('message','Logged in successfully');
+		  return redirect()->to('application/dashboard')->with('message','Logged in successfully');}
         }else{
            return redirect()->back()->with('error','Incorrect index number or password');
         }
