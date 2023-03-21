@@ -92,9 +92,7 @@ class GraduantController extends Controller
 				foreach($students as $student){
 					if($student->overallRemark){
 						if($grad = Graduant::where('student_id',$student->id)->first()){
-							if($student->registration_number == 'MNMA/BTC.COD/0912/18'){
-								return 1234;
-							}
+
 						   if($grad->overall_remark_id != $student->overallRemark->id){
 								$graduant = $grad;
 								$graduant->overall_remark_id = $student->overallRemark->id;
@@ -133,6 +131,9 @@ class GraduantController extends Controller
 							}
 						
 						}elseif(!Graduant::where('student_id',$student->id)->first()){
+														if($student->registration_number == 'MNMA/BTC.COD/0912/18'){
+								return 1234;
+							}
 						   $graduant = new Graduant;
 						
 						$graduant->student_id = $student->id;
