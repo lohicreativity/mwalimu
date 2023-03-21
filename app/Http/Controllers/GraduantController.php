@@ -96,7 +96,7 @@ class GraduantController extends Controller
 							
 							$previous_academic_status = OverallRemark::where('student_id', $grad->student_id)->first();
 							
-							//return $previous_academic_status->status;
+							return $previous_academic_status->status;
 
 						   if($previous_academic_status->status != $student->overallRemark->status){
 
