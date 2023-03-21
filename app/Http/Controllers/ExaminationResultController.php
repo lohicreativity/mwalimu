@@ -914,10 +914,8 @@ class ExaminationResultController extends Controller
 
                  if($pub = ResultPublication::where('study_academic_year_id',$request->get('study_academic_year_id'))->where('semester_id',$request->get('semester_id'))
 						   ->where('nta_level_id',$campus_program->program->nta_level_id)->where('campus_id', $campus_program->campus_id)->first()){
-                    return 1;
 					$publication = $pub;
                  }else{
-					 return 2;
                     $publication = new ResultPublication;
                  }
 				$publication->study_academic_year_id = $request->get('study_academic_year_id');
