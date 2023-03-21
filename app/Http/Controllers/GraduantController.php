@@ -122,6 +122,12 @@ class GraduantController extends Controller
 									}
 								}
 								$graduant->save();
+																							$student = Student::find($student->id);
+				  if($student->academicStatus->name == 'PASS'){
+					$student->studentship_status_id = $status->id;
+				  }
+				$student->save();
+				return redirect()->back()->with('message','Graduants list created successfully');
 							}
 						
 						}elseif(!Graduant::where('student_id',$student->id)->first()){
@@ -172,21 +178,23 @@ class GraduantController extends Controller
 						}
 					}
 											$graduant->save();
-						}
-				  }
-				$student = Student::find($student->id);
+															$student = Student::find($student->id);
 				  if($student->academicStatus->name == 'PASS'){
 					$student->studentship_status_id = $status->id;
 				  }
 				$student->save();
+				return redirect()->back()->with('message','Graduants list created successfully');
 				}
+						}
+				  }
+
 			}
     	}
         if(count($graduant_list) == 0 && count($excluded_list) == 0){
           return redirect()->back()->with('error','No student qualifies to be in the graduants list');
         }
 
-    	return redirect()->back()->with('message','Graduants list created successfully');
+    	//return redirect()->back()->with('message','Graduants list created successfully');
 
     }
 
