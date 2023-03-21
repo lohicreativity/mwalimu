@@ -277,7 +277,7 @@ class ApplicantController extends Controller
      */
     public function editBasicInfo(Request $request)
     {
-		return $request;
+		return session('application_window_id');
         $new_applicant = User::find(Auth::user()->id)
         ->applicants()
         ->with(['programLevel'])
