@@ -277,8 +277,7 @@ class ApplicantController extends Controller
      */
     public function editBasicInfo(Request $request)
     {
-		return session('application_window_id');
-        $new_applicant = User::find(Auth::user()->id)
+        $applicant = User::find(Auth::user()->id)
         ->applicants()
         ->with(['programLevel'])
         ->where('campus_id',session('applicant_campus_id'))->first();
@@ -288,23 +287,23 @@ class ApplicantController extends Controller
 		->orWhere('status', 'PENDING');}])
         ->where('campus_id',session('applicant_campus_id'))->first();
 		
-        if($new_applicant->is_tamisemi !== 1 && $new_applicant->is_transfered != 1){
+        if($applicant->is_tamisemi !== 1 && $applicant->is_transfered != 1){
             if(!ApplicationWindow::where('campus_id',session('applicant_campus_id'))
 				->where('begin_date','<=',now()->format('Y-m-d'))
 				->where('end_date','>=',now()->format('Y-m-d'))
 				->where('status','ACTIVE')->first()){
                  
-				 if($new_applicant->status == null){
+				 if($applicant->status == null){
                      return redirect()->to('application/submission')->with('error','Application window already closed');
                  }
-                 if($new_applicant->multiple_admissions !== null && $new_applicant->status == 'SELECTED'){
+                 if($applicant->multiple_admissions !== null && $applicant->status == 'SELECTED'){
                      return redirect()->to('application/admission-confirmation')->with('error','Application window already closed');
                  }
             }
         }
         
 		
-        if($new_applicant->is_tcu_verified === null && str_contains($new_applicant->programLevel->name,'Degree')){
+        if($applicant->is_tcu_verified === null && str_contains($applicant->programLevel->name,'Degree')){
             $url='http://api.tcu.go.tz/applicants/checkStatus';
             $fullindex=str_replace('-','/',Auth::user()->username);
             $xml_request='<?xml version="1.0" encoding="UTF-8"?> 
@@ -322,16 +321,16 @@ class ApplicantController extends Controller
               $array = json_decode($json,TRUE);
              
             if(isset($array['Response'])){
-              $new_applicant->is_tcu_verified = $array['Response']['ResponseParameters']['StatusCode'] == 202? 1 : 0;
-              $new_applicant->save();
+              $applicant->is_tcu_verified = $array['Response']['ResponseParameters']['StatusCode'] == 202? 1 : 0;
+              $applicant->save();
             }
         }
 
-        $selected_applicants = Applicant::where('program_level_id', $applicant->program_level_id)->where('application_window_id', $applicant->application_window_id)->whereNotNull('status')->first();
-        		$existing_applicant = User::find(Auth::user()->id)->applicants()
-		->with(['programLevel', 'selections.campusProgram.program', 'selections' => function ($query) {$query->where('status', 'SELECTED')
-		->orWhere('status', 'PENDING');}])
-        ->where('campus_id',session('applicant_campus_id'))->first();
+        $selected_applicants = Applicant::where('program_level_id', $applicant->program_level_id)
+								->with(['programLevel', 'selections.campusProgram.program', 'selections' => function ($query) {$query->where('status', 'SELECTED')
+								->orWhere('status', 'PENDING');}])->where('application_window_id', $applicant->application_window_id)->whereNotNull('status')->first();
+								
+								return $selected_applicants;
 		
         $selection_status = false;
 
