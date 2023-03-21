@@ -241,6 +241,7 @@ class GraduantController extends Controller
     public function showExcludedGraduants(Request $request)
     {
       if($request->get('query')){
+		  return 1234;
          $non_graduants = $request->get('campus_id')? Graduant::whereHas('student',function($query) use($request){
                  $query->where('first_name','LIKE','%'.$request->get('query').'%')->orWhere('middle_name','LIKE','%'.$request->get('query').'%')->orWhere('surname','LIKE','%'.$request->get('query').'%')->orWhere('registration_number','LIKE','%'.$request->get('query').'%');
            })->whereHas('student.campusProgram.program',function($query) use($request){
