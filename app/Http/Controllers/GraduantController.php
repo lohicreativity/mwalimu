@@ -79,7 +79,6 @@ class GraduantController extends Controller
       $graduant_list = [];
 
       foreach($nta_level->programs as $program){
-		  return $programs;
           	$campus_program = CampusProgram::with('program')->find($request->get('campus_program_id'));
 			
           	$students = Student::whereHas('annualRemarks',function($query) use($request){
@@ -88,7 +87,7 @@ class GraduantController extends Controller
                  $query->where('program_id',$program->id)->where('campus_id',$request->get('campus_id'));
             })->where('year_of_study',$program->min_duration)->get();
           	
-			return $student;
+			return $students;
           	$status = StudentshipStatus::where('name','GRADUANT')->first();
           	foreach($students as $student){
           		if($student->overallRemark){
