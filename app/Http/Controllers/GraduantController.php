@@ -123,7 +123,7 @@ class GraduantController extends Controller
 								$graduant->save();
 							}
 						
-						}elseif(!Graduant::where('student_id',$student->id)->first()){
+						}else{
 						   $graduant = new Graduant;
 						
 						$graduant->student_id = $student->id;
