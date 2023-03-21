@@ -142,6 +142,8 @@
                 {!! Form::input('hidden','study_academic_year_id',$request->get('study_academic_year_id')) !!}
 
                 {!! Form::input('hidden','campus_id',$request->get('campus_id')) !!}
+				
+				{!! Form::input('hidden','program_level_id',$request->get('program_level_id')) !!}
 
                 <table id="example2" class="table table-bordered table-hover ss-paginated-table ss-margin-top">
                   <thead>

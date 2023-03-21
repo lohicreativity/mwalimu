@@ -240,8 +240,7 @@ class GraduantController extends Controller
      */
     public function showExcludedGraduants(Request $request)
     {
-      if($request->get('query')){
-		  return 1234;
+/*       if($request->get('query')){
          $non_graduants = $request->get('campus_id')? Graduant::whereHas('student',function($query) use($request){
                  $query->where('first_name','LIKE','%'.$request->get('query').'%')->orWhere('middle_name','LIKE','%'.$request->get('query').'%')->orWhere('surname','LIKE','%'.$request->get('query').'%')->orWhere('registration_number','LIKE','%'.$request->get('query').'%');
            })->whereHas('student.campusProgram.program',function($query) use($request){
@@ -253,9 +252,12 @@ class GraduantController extends Controller
            })->whereHas('student.campusProgram.program',function($query) use($request){
                $query->where('award_id',$request->get('program_level_id'));
            })->with(['student.campusProgram.program'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('status','EXCLUDED')->paginate(50);
+		   
       }else{
-
-         $non_graduants = Graduant::whereHas('student.campusProgram',function($query) use($request){
+ */
+         $non_graduants = Graduant::whereHas('student.campusProgram.program',function($query) use($request){
+               $query->where('award_id',$request->get('program_level_id'));
+           })->whereHas('student.campusProgram',function($query) use($request){
                $query->where('campus_id',$request->get('campus_id'));
            })->with(['student.campusProgram.program'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('status','EXCLUDED')->paginate(50);
 		   
@@ -267,7 +269,7 @@ class GraduantController extends Controller
 		   Graduant::whereHas('student.campusProgram.program',function($query) use($request){
                $query->where('award_id',$request->get('program_level_id'));
            })->with(['student.campusProgram.program'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('status','EXCLUDED')->paginate(50); */
-      }
+      
     	$data = [
            'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
            'study_academic_year'=>$request->has('study_academic_year_id')? StudyAcademicYear::with('academicYear')->find($request->get('study_academic_year_id')) : null,
