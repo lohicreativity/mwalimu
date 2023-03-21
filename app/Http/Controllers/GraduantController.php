@@ -91,7 +91,7 @@ class GraduantController extends Controller
 			if(count($students) > 0){
 				foreach($students as $student){
 					if($student->overallRemark){
-						return $student->overallRemark-remark;
+						return $student->overallRemark->remark;
 						if($grad = Graduant::where('student_id',$student->id)->first()){
 
 						   if($grad->overall_remark_id != $student->overallRemark->id){
