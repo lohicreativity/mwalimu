@@ -16,7 +16,7 @@ class ResultPublicationController extends Controller
      * Display a list of publications
      */
     public function index()
-    {
+    {return ResultPublication::with(['semester','StudyAcademicYear.academicYear','ntaLevel','campus'])->get();
     	$data = [
     	   'semesters'=>Semester::all(),
     	   'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
