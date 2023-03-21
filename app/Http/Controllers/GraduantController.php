@@ -94,7 +94,7 @@ class GraduantController extends Controller
 					if($student->overallRemark){
 						if($grad = Graduant::where('student_id',$student->id)->first()){
 							if($student->registration_number == 'MNMA/BTC.COD/0912/18'){
-							$previous_academic_status = OverallRemark::where('student_id', $grad->student_id)->first();
+							return OverallRemark::where('student_id', $grad->student_id)->first();
 							
 							return $previous_academic_status->status;}
 
