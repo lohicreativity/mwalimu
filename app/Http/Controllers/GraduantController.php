@@ -98,7 +98,7 @@ class GraduantController extends Controller
 							
 							//return $previous_academic_status->status;
 
-						   if(previous_academic_status->status != $student->overallRemark->status){
+						   if($previous_academic_status->status != $student->overallRemark->status){
 
 								$graduant = $grad;
 								$graduant->overall_remark_id = $student->overallRemark->id;
