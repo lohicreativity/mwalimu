@@ -92,7 +92,7 @@ class GraduantController extends Controller
 			if(count($students) > 0){
 				foreach($students as $student){
 					if($student->overallRemark){
-						$grad = Graduant::where('student_id',$student->id)->first();
+						$grad = Graduant::where('student_id',$student->id)->get();
 						if(count($grad) > 0){
 							
 							$previous_academic_status = OverallRemark::where('student_id', $grad->student_id)->first();
