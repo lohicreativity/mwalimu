@@ -83,7 +83,7 @@ class GraduantController extends Controller
 			
           	$students = Student::whereHas('annualRemarks',function($query) use($request){
                 $query->where('study_academic_year_id',$request->get('study_academic_year_id'));
-            })->with(['annualRemarks','overallRemark','academicStatus'])->whereHas('studentshipStatus', function($query){$query->where('name', 'ACTIVE');})->whereHas('campusProgram',function($query) use ($program, $request){
+            })->whereHas('overallRemark')->with(['annualRemarks','overallRemark','academicStatus'])->whereHas('studentshipStatus', function($query){$query->where('name', 'ACTIVE');})->whereHas('campusProgram',function($query) use ($program, $request){
                  $query->where('program_id',$program->id)->where('campus_id',$request->get('campus_id'));
             })->where('year_of_study',$program->min_duration)->get();
           	
@@ -91,9 +91,8 @@ class GraduantController extends Controller
 			if(count($students) > 0){
 				foreach($students as $student){
 					if($student->overallRemark){
-						return $student->overallRemark->remark;
 						if($grad = Graduant::where('student_id',$student->id)->first()){
-
+							return 123;
 						   if($grad->overall_remark_id != $student->overallRemark->id){
 
 								$graduant = $grad;
