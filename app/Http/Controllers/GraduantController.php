@@ -90,7 +90,6 @@ class GraduantController extends Controller
           	$status = StudentshipStatus::where('name','GRADUANT')->first();
 			if(count($students) > 0){
 				foreach($students as $student){
-					$graduant = null;
 					if($student->overallRemark){
 						if($grad = Graduant::where('student_id',$student->id)->first()){
 						   if($grad->overall_remark_id != $student->overallRemark->id){
@@ -122,7 +121,7 @@ class GraduantController extends Controller
 									}
 								}
 							}
-
+						$graduant->save();
 						}elseif(!Graduant::where('student_id',$student->id)->first()){
 						   $graduant = new Graduant;
 						
@@ -170,8 +169,8 @@ class GraduantController extends Controller
 						   }
 						}
 					}
+											$graduant->save();
 						}
-						$graduant->save();
 				  }
 				$student = Student::find($student->id);
 				  if($student->academicStatus->name == 'PASS'){
