@@ -96,7 +96,7 @@ class ExaminationResultController extends Controller
     	DB::beginTransaction();
 
     	$campus_program = CampusProgram::with('program')->find(explode('_',$request->get('campus_program_id'))[0]);
-
+		return $campus_program;
       if(ResultPublication::where('study_academic_year_id',$request->get('study_academic_year_id'))->where('semester_id',$request->get('semester_id'))->where('nta_level_id',$campus_program->program->nta_level_id)->where('status','PUBLISHED')->count() != 0){
                   return redirect()->back()->with('error','Unable to process because results already published');
               }
@@ -912,19 +912,18 @@ class ExaminationResultController extends Controller
 
                   
 
-                 if($pub = ResultPublication::where('study_academic_year_id',$request->get('study_academic_year_id'))->where('semester_id',$request->get('semester_id'))
+                 if(!ResultPublication::where('study_academic_year_id',$request->get('study_academic_year_id'))->where('semester_id',$request->get('semester_id'))
 						   ->where('nta_level_id',$campus_program->program->nta_level_id)->where('campus_id', $campus_program->campus_id)->first()){
-					$publication = $pub;
-                 }else{
+					
                     $publication = new ResultPublication;
+					$publication->study_academic_year_id = $request->get('study_academic_year_id');
+					$publication->semester_id = $request->get('semester_id') == 'SUPPLEMENTARY'? 0 : $request->get('semester_id');
+					$publication->type = $request->get('semester_id') == 'SUPPLEMENTARY'? 'SUPP' : 'FINAL';
+					$publication->campus_id = $campus_program->campus_id;
+					$publication->nta_level_id = $campus_program->program->nta_level_id;
+					$publication->published_by_user_id = Auth::user()->id;
+					$publication->save();
                  }
-				$publication->study_academic_year_id = $request->get('study_academic_year_id');
-				$publication->semester_id = $request->get('semester_id') == 'SUPPLEMENTARY'? 0 : $request->get('semester_id');
-				$publication->type = $request->get('semester_id') == 'SUPPLEMENTARY'? 'SUPP' : 'FINAL';
-				$publication->campus_id = $campus_program->campus_id;
-				$publication->nta_level_id = $campus_program->program->nta_level_id;
-				$publication->published_by_user_id = Auth::user()->id;
-				$publication->save();
             }
 
 
