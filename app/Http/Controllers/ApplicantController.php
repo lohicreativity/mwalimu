@@ -277,28 +277,34 @@ class ApplicantController extends Controller
      */
     public function editBasicInfo(Request $request)
     {
-        $applicant = User::find(Auth::user()->id)
+		return $request;
+        $new_applicant = User::find(Auth::user()->id)
         ->applicants()
-        ->with(['programLevel', 'selections.campusProgram.program', 'selections' => function ($query) {
-            $query->where('status', 'SELECTED')->orWhere('status', 'PENDING');
-        }])
+        ->with(['programLevel'])
         ->where('campus_id',session('applicant_campus_id'))->first();
-
-
-        if($applicant->is_tamisemi !== 1 && $applicant->is_transfered != 1){
-            if(!ApplicationWindow::where('campus_id',session('applicant_campus_id'))->where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('status','ACTIVE')->first()){
-                 if($applicant->status == null && $applicant->submission_complete_status == 0){
+		
+		$existing_applicant = User::find(Auth::user()->id)->applicants()
+		->with(['programLevel', 'selections.campusProgram.program', 'selections' => function ($query) {$query->where('status', 'SELECTED')
+		->orWhere('status', 'PENDING');}])
+        ->where('campus_id',session('applicant_campus_id'))->first();
+		
+        if($new_applicant->is_tamisemi !== 1 && $new_applicant->is_transfered != 1){
+            if(!ApplicationWindow::where('campus_id',session('applicant_campus_id'))
+				->where('begin_date','<=',now()->format('Y-m-d'))
+				->where('end_date','>=',now()->format('Y-m-d'))
+				->where('status','ACTIVE')->first()){
+                 
+				 if($new_applicant->status == null){
                      return redirect()->to('application/submission')->with('error','Application window already closed');
                  }
-               //   if($applicant->multiple_admissions !== null && $applicant->status == 'SELECTED'){
-               //       // return redirect()->back();
-               //      return redirect()->to('application/admission-confirmation')->with('error','Application window already closed');
-               //   }
+                 if($new_applicant->multiple_admissions !== null && $new_applicant->status == 'SELECTED'){
+                     return redirect()->to('application/admission-confirmation')->with('error','Application window already closed');
+                 }
             }
         }
         
 		
-        if($applicant->is_tcu_verified === null && str_contains($applicant->programLevel->name,'Degree')){
+        if($new_applicant->is_tcu_verified === null && str_contains($new_applicant->programLevel->name,'Degree')){
             $url='http://api.tcu.go.tz/applicants/checkStatus';
             $fullindex=str_replace('-','/',Auth::user()->username);
             $xml_request='<?xml version="1.0" encoding="UTF-8"?> 
@@ -316,15 +322,17 @@ class ApplicantController extends Controller
               $array = json_decode($json,TRUE);
              
             if(isset($array['Response'])){
-              $applicant->is_tcu_verified = $array['Response']['ResponseParameters']['StatusCode'] == 202? 1 : 0;
-              $applicant->save();
+              $new_applicant->is_tcu_verified = $array['Response']['ResponseParameters']['StatusCode'] == 202? 1 : 0;
+              $new_applicant->save();
             }
         }
 
-
-
-        $selected_applicants = Applicant::where('program_level_id', $applicant->program_level_id)->where('submission_complete_status', 1)->where('application_window_id', $applicant->application_window_id)->whereNotNull('status')->first();
-        
+        $selected_applicants = Applicant::where('program_level_id', $applicant->program_level_id)->where('application_window_id', $applicant->application_window_id)->whereNotNull('status')->first();
+        		$existing_applicant = User::find(Auth::user()->id)->applicants()
+		->with(['programLevel', 'selections.campusProgram.program', 'selections' => function ($query) {$query->where('status', 'SELECTED')
+		->orWhere('status', 'PENDING');}])
+        ->where('campus_id',session('applicant_campus_id'))->first();
+		
         $selection_status = false;
 
         if(ApplicationWindow::where('campus_id',session('applicant_campus_id'))->where('intake_id', $applicant->intake_id)->where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('status','ACTIVE')->first()){
