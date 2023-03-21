@@ -122,7 +122,7 @@ class GraduantController extends Controller
 								}
 							}
 
-						}else{
+						}elseif(!Graduant::where('student_id',$student->id)->first()){
 						   $graduant = new Graduant;
 						}
 						$graduant->student_id = $student->id;
@@ -179,9 +179,9 @@ class GraduantController extends Controller
 				}
 			}
     	}
-      if(count($graduant_list) == 0 && count($excluded_list) == 0){
+        if(count($graduant_list) == 0 && count($excluded_list) == 0){
           return redirect()->back()->with('error','No student qualifies to be in the graduants list');
-      }
+        }
 
     	return redirect()->back()->with('message','Graduants list created successfully');
 
