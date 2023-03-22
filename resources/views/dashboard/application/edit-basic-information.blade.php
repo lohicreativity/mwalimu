@@ -20,8 +20,8 @@
     <section class="content-header">
       <div class="container-fluid">
         <div class="row mb-2">
-          <div class="col-sm-8">
-            <h1>{{ __('Basic Information') }} - {{ $campus->name }} - {{ $applicant->index_number }}</h1>
+          <div class="col-sm-6">
+            <h2>{{ __('Basic Information') }} - {{ $campus->name }} - {{ $applicant->index_number }}</h2>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
