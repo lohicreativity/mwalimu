@@ -89,7 +89,7 @@
                    @else
                    <div class="row">
                    <div class="form-group col-6">
-
+				    {!! Form::input('hidden','campus_id',$request->get('campus_id')) !!}
                     {!! Form::label('','Study academic year') !!}
                     <select name="study_academic_year_id" class="form-control" required>
                        <option value="">Select Study Academic Year</option>
@@ -114,7 +114,7 @@
                   <div class="ss-form-actions">
                    <button type="submit" class="btn btn-primary">{{ __('Search') }}</button>
                   </div>
-
+				  
                  {!! Form::close() !!}
               </div>
             </div>
