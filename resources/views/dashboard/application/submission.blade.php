@@ -113,7 +113,7 @@
                         <div class="row">
                           <div class="col-12">
                             <div class="alert alert-success" role="alert">
-                              <h5><i class="fa fa-check-circle"></i> Your application is in progress.</h5>
+                              <h5><i class="fa fa-check-circle"></i> Please wait, your application is still in progress.</h5>
                             </div>
                           </div>
                           
