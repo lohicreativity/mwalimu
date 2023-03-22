@@ -20,10 +20,10 @@
     <section class="content-header">
       <div class="container-fluid">
         <div class="row mb-2">
-          <div class="col-sm-6">
+          <div class="col-sm-8">
             <h3>{{ __('Basic Information') }} - {{ $campus->name }} - {{ $applicant->index_number }}</h3>
           </div>
-          <div class="col-sm-6">
+          <div class="col-sm-2">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
               <li class="breadcrumb-item active">{{ __('Basic Information') }}</li>
@@ -62,7 +62,7 @@
                 @elseif($student)
                     <div class="alert alert-success">
                       <h3 class="text-white" style="font-size: 18px!important;"><i class="fa fa-check-circle"></i> 
-                      Congratulations! You have been successfully registered. Your registration number is <strong>{{ $student->registration_number }}</strong>. <a href="{{ url('change-password') }}">Click here</a> to change your password</h3>
+                      Congratulations! You have been successfully registered. Your registration number is <strong>{{ $student->registration_number }}</strong>. To log in to your student account you MUST change your password by <a href="{{ url('change-password') }}">clicking here.</a> </h3>
                     </div>                
                 @endif
 			  @else
