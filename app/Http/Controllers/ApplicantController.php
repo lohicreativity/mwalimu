@@ -355,7 +355,7 @@ class ApplicantController extends Controller
             $query->where('status', 'SELECTED')
                   ->orWhere('status', 'PENDING');
         })->with(['applicant' => function ($query) use($applicant){ $query->where('program_level_id', $applicant->program_level_id); }])->first();
-return $check_selected_applicant->selections[0]->campusProgram->program->name;
+
         $data = [
            'applicant'=>$applicant,
            'student' => Student::where('applicant_id', $applicant->id)->first(),

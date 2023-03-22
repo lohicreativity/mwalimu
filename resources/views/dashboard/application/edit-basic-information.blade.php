@@ -42,23 +42,22 @@
             @if($selection_status)
 
               @if($check_selected_applicant)
-                @if(count($applicant->selections) > 0)
-                  @if($applicant->selections[0]->status == 'PENDING')
+				@if($check_selected_applicant->selections[0]->status == 'PENDING')
                   <div class="alert alert-danger">
                     <h3 class="text-white" style="font-size: 18px!important;">
                       <i class="fa fa-times-circle"></i> 
                       Sorry you have not been selected. Please <a href="#">click here</a> to select a new program.
                     </h3>
                   </div>
-                  @elseif($applicant->confirmation_status != 'CANCELLED' && $applicant->status != 'ADMITTED')
+                @elseif($applicant->confirmation_status != 'CANCELLED' && $applicant->status == 'SELECTED')
                     <div class="alert alert-success">
                       <h3 class="text-white" style="font-size: 18px!important;"><i class="fa fa-check-circle"></i> 
-                      Congratulations! You have been successfully selected for {{ $applicant->selections[0]->campusProgram->program->name }} program. @if($applicant->multiple_admissions == null) Please wait for admission package. @else Please <a href="{{ url('application/admission-confirmation') }}">click here</a> to confirm with us.@endif</h3>
+                      Congratulations! You have been successfully selected for {{ $check_selected_applicant->selections[0]->campusProgram->program->name }} program. @if($applicant->multiple_admissions == null) Please wait for admission package. @else Please <a href="{{ url('application/admission-confirmation') }}">click here</a> to confirm with us.@endif</h3>
                     </div>
                   @elseif($applicant->status == 'ADMITTED' && !$student)
                     <div class="alert alert-success">
                       <h3 class="text-white" style="font-size: 18px!important;"><i class="fa fa-check-circle"></i> 
-                      Congratulations! You have been successfully admitted to {{ $applicant->selections[0]->campusProgram->program->name }} program.</h3>
+                      Congratulations! You have been successfully admitted to {{ $check_selected_applicant->selections[0]->campusProgram->program->name }} program.</h3>
                     </div>
                   @elseif($student)
                     <div class="alert alert-success">
@@ -72,7 +71,7 @@
             @else 
             <div class="alert alert-success">
               <h3 class="text-white" style="font-size: 18px!important;"><i class="fa fa-check-circle"></i> 
-                Your application is still in progress.
+                Please wait, your application is still in progress.
               </h3>
             </div>
             @endif
