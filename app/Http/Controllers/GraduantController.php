@@ -237,11 +237,10 @@ class GraduantController extends Controller
            })->first();
 		
 		if (Auth::user()->hasRole('arc') && !$for_approval) {
-			return redirect()->back()->with('message','No graduants awaiting for approval');
+			return redirect()->back()->with('error','No graduants awaiting for approval');
 		}		
     	$data = [
            'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
-		   'for_approval'=>$for_approval,
            'study_academic_year'=>$request->has('study_academic_year_id')? StudyAcademicYear::with('academicYear')->find($request->get('study_academic_year_id')) : null,
            'graduants'=>$graduants,
            'awards'=>Award::all(),

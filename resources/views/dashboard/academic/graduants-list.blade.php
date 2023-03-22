@@ -197,13 +197,12 @@
 							</tr>
 						@endif
                     @endforeach 
-					@if($for_approval) > 0)
                     <tr>
                       <td colspan="9">
                         <button type="submit" class="btn btn-primary">Save Approvals</button>
                       </td>
                     </tr>
-					@endif
+
 				@else
 					@foreach($graduants as $key=>$graduant)
 						<tr>
