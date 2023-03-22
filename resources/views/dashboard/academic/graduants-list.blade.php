@@ -196,11 +196,13 @@
 							</tr>
 						@endif
                     @endforeach 
+					@if(count($graduants) > 0)
                     <tr>
                       <td colspan="8">
                         <button type="submit" class="btn btn-primary">Save Approvals</button>
                       </td>
                     </tr>
+					@endif
 				@else
 					@foreach($graduants as $key=>$graduant)
 						<tr>
