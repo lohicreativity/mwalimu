@@ -89,7 +89,7 @@
                    @else
                    <div class="row">
                    <div class="form-group col-6">
-				    {!! Form::input('hidden','campus_id',$request->get('campus_id') !!}
+				  {!! Form::input('hidden','campus_id',$request->get('campus_id') !!}
                     {!! Form::label('','Study academic year') !!}
                     <select name="study_academic_year_id" class="form-control" required>
                        <option value="">Select Study Academic Year</option>
@@ -160,15 +160,14 @@
                   <thead>
                   <tr>
                     <th>SN</th>
-                    <th>Reg. No.</th>
                     <th>Student</th>
+                    <th>Reg. No.</th>
                     <th>Sex</th>
-                    <th>Phone</th>
                     <th>Programme</th>
                     <th>Status</th>
                     <th>GPA</th>
                     @if(Auth::user()->hasRole('arc'))
-                    <th>Status</th>
+                    <th>Approval</th>
                     @endif
                   </tr>
                   </thead>
@@ -176,11 +175,10 @@
                     @foreach($graduants as $key=>$graduant)
                     <tr>
                       <td>{{ ($key+1) }}</td>
-                      <td>{{ $graduant->student->registration_number }}</td>
                       <td>{{ $graduant->student->first_name }} {{ $graduant->student->middle_name }} {{ $graduant->student->surname }}</td>
+                      <td>{{ $graduant->student->registration_number }}</td>
                       <td>{{ $graduant->student->gender }}</td>
-                      <td>{{ $graduant->student->phone }}</td>
-                      <td>{{ $graduant->student->campusProgram->program->code }}</td>
+                      <td>{{ $graduant->student->campusProgram->program->name }}</td>
                       <td>@if($graduant->status == 'GRADUATING') APPROVED @elseif($graduant->status == 'PENDING') PENDING @else DISAPPROVED @endif</td>
                       <td>{{ bcdiv($graduant->student->overallRemark->gpa,1,1) }}</td>
                       @if(Auth::user()->hasRole('arc'))
