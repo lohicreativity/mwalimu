@@ -235,10 +235,13 @@ class GraduantController extends Controller
            })->with(['student.campusProgram.program'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->where(function($query){
                   $query->where('status','PENDING')->orWhere('reason', 'Disapproved');
            })->first();
-		   
-		   return $for_approval;
+		
+		if (Auth::user()->hasRole('arc') && !$for_approval) {
+			return redirect()->back()->with('message','No graduants awaiting for approval');
+		}		
     	$data = [
            'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
+		   'for_approval'=>$for_approval,
            'study_academic_year'=>$request->has('study_academic_year_id')? StudyAcademicYear::with('academicYear')->find($request->get('study_academic_year_id')) : null,
            'graduants'=>$graduants,
            'awards'=>Award::all(),

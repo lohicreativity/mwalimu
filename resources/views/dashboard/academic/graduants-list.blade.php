@@ -197,7 +197,7 @@
 							</tr>
 						@endif
                     @endforeach 
-					@if(count($graduants) > 0)
+					@if($for_approval) > 0)
                     <tr>
                       <td colspan="9">
                         <button type="submit" class="btn btn-primary">Save Approvals</button>
