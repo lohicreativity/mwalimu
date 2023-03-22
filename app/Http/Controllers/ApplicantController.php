@@ -121,7 +121,7 @@ class ApplicantController extends Controller
         }
 
         if(Auth::attempt($credentials)){
-return 1234;
+
             session(['applicant_campus_id'=>$request->get('campus_id')]);
             $continue_applicant = Applicant::where('user_id',Auth::user()->id)->where('is_continue', 1)->first();
 			if($continue_applicant){
@@ -222,6 +222,7 @@ return 1234;
 			  return redirect()->back()->with('error','Incorrect campus. Please log in to '.$campus->name);
 		  
 		  }elseif(Applicant::where('user_id',Auth::user()->id)->where('campus_id',$request->get('campus_id'))->where('submission_complete_status', 0)->first() && $continue_applicant){
+			  return 1234;
 			if($continue_applicant->application_window_id == null){
 				 $app = Applicant::where('user_id',Auth::user()->id)->where('is_continue', 1)->where('application_window_id', null)->first();
 				 $continue_applicant = $app;
