@@ -168,7 +168,7 @@
                     <th>Status</th>
                     <th>GPA</th>
                     @if(Auth::user()->hasRole('arc'))
-                    <th>Status</th>
+                    <th>Action</th>
                     @endif
                   </tr>
                   </thead>
@@ -198,7 +198,7 @@
                     @endforeach 
 					@if(count($graduants) > 0)
                     <tr>
-                      <td colspan="8">
+                      <td colspan="9">
                         <button type="submit" class="btn btn-primary">Save Approvals</button>
                       </td>
                     </tr>
