@@ -39,7 +39,7 @@
         <div class="row">
           <div class="col-12">
 
-            @if($selection_status)
+            @if($regulator_selection)
 
               @if($check_selected_applicant)
 				@if($check_selected_applicant->selections[0]->status == 'PENDING')
@@ -66,6 +66,13 @@
                     </div>                
                 @endif
 			  @else
+				@if($applicant->submission_complete_status == 1)		
+					<div class="alert alert-success">
+					  <h3 class="text-white" style="font-size: 18px!important;"><i class="fa fa-check-circle"></i> 
+						Please wait, your application is still in progress.
+					  </h3>
+					</div>
+				 @endif
 				  <div class="alert alert-danger">
                     <h3 class="text-white" style="font-size: 18px!important;">
                       <i class="fa fa-times-circle"></i> 
@@ -75,7 +82,7 @@
               @endif
           
             @else 
-			  @if($applicant->submission_complete_status == 1)		
+			  @if($applicant->submission_complete_status == 1 || $selection_status)		
 				<div class="alert alert-success">
 				  <h3 class="text-white" style="font-size: 18px!important;"><i class="fa fa-check-circle"></i> 
 					Please wait, your application is still in progress.

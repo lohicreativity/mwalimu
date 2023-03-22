@@ -331,14 +331,20 @@ class ApplicantController extends Controller
             }
         }
 
-        $selected_applicants = Applicant::where('program_level_id', $applicant->program_level_id)
+        $regulator_status = Applicant::where('program_level_id', $applicant->program_level_id)
 								->whereHas('selections', function ($query) {$query->where('status', 'SELECTED')
 								->orWhere('status', 'PENDING');})
 								->where('application_window_id', $applicant->application_window_id)
 								->where('intake_id', $applicant->intake_id)->count();
+								
+		$selected_applicants = Applicant::where('program_level_id', $applicant->program_level_id)
+						->whereHas('selections')
+						->where('application_window_id', $applicant->application_window_id)
+						->where('intake_id', $applicant->intake_id)->where('status', 'SELECTED')->first();
 	
 //        $selection_status = false;
-		$selection_status = $selected_applicants != 0 ? true : false;
+		$selection_status = $selected_applicants != null ? true : false;
+		$regulator_selection = $regulator_status != 0 ? true : false;
 		
 /*         if(ApplicationWindow::where('campus_id',session('applicant_campus_id'))->where('intake_id', $applicant->intake_id)
 			->where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('status','ACTIVE')->first()){
@@ -362,6 +368,7 @@ class ApplicantController extends Controller
            'applicant'=>$applicant,
            'student' => Student::where('applicant_id', $applicant->id)->first(),
            'selection_status' => $selection_status,
+		   'regulator_selection' => $regulator_selection,
            'check_selected_applicant' => $check_selected_applicant,
            'application_window'=>ApplicationWindow::where('campus_id',session('applicant_campus_id'))->where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->first(),
            'campus'=>Campus::find(session('applicant_campus_id')),
