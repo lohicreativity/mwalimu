@@ -350,7 +350,7 @@ class ApplicantController extends Controller
         ->with(['selections' => function($query) {$query->where('status', 'SELECTED')->orWhere('status', 'PENDING')->first();}])
 		->where('campus_id',session('applicant_campus_id'))->first();
 		
-return $check_selected_applicant;
+return $check_selected_applicant->selections[0];
 		ApplicantProgramSelection::where('application_window_id', $applicant->application_window_id)
          ->where(function($query) {
             $query->where('status', 'SELECTED')
