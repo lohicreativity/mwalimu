@@ -1484,6 +1484,7 @@ class StudentController extends Controller
 		  
 		  $user = new User;
 		  $user->username = $applicant->index_number;
+		  $user->email = $applicant->email;
 		  $user->password = Hash::make($student->applicant->index_number);
 		  $user->save();
 		  

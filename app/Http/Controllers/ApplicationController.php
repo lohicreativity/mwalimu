@@ -2559,7 +2559,7 @@ class ApplicationController extends Controller
 		
 		$user = User::find($applicant->user_id);
         // $user->username = $student->registration_number;
-        $user->email = $student->email;
+        $user->status = $student->email;
         // $password = strtoupper(Util::randString(8));
         // $user->password = Hash::make($password);
         // $user->must_update_password = 1;
