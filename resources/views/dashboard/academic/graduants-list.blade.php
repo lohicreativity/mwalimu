@@ -53,6 +53,9 @@
             <div class="card">
                  <div class="card-body">
                  {!! Form::open(['url'=>'academic/graduants','class'=>'ss-form-processing','method'=>'GET']) !!}
+				 {!! Form::input('hidden','study_academic_year_id',$request->get('study_academic_year_id') !!}
+				 {!! Form::input('hidden','program_level_id',$request->get('program_level_id') !!}
+				 {!! Form::input('hidden','campus_id',$request->get('campus_id') !!}
                   @if(Auth::user()->hasRole('arc'))
                    <div class="row">
                    <div class="form-group col-4">
