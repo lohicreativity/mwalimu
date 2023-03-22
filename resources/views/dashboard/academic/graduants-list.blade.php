@@ -168,7 +168,7 @@
                     <th>Status</th>
                     <th>GPA</th>
                     @if(Auth::user()->hasRole('arc'))
-                    <th>Approval</th>
+                    <th>Status</th>
                     @endif
                   </tr>
                   </thead>

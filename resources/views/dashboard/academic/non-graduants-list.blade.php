@@ -155,11 +155,7 @@
                     <th>Sex</th>
                     <th>Phone</th>
                     <th>Programme</th>
-                    <th>Status</th>
-                    <th>GPA</th>
-                    @if(Auth::user()->hasRole('arc'))
-                    <th>Approval</th>
-                    @endif
+                    <th>Reason</th>
                   </tr>
                   </thead>
                   <tbody>
@@ -172,7 +168,6 @@
                       <td>{{ $graduant->student->phone }}</td>
                       <td>{{ $graduant->student->campusProgram->program->code }}</td>
                       <td><a href="{{ url('academic/results/show-student-report?registration_number='.$graduant->student->registration_number) }}">{{ $graduant->reason }}</a></td>
-                      @endif
                     </tr>
                     @endforeach                
                   </tbody>
