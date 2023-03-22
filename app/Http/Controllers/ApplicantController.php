@@ -243,7 +243,7 @@ class ApplicantController extends Controller
             
             
             session(['applicant_campus_id'=>$request->get('campus_id')]);
-		  return redirect()->to('application/dashboard')->with('message','Logged in successfully');
+		  return redirect()->to('application/dashboard')->with('message','Logged in successfully');}
         }else{
            return redirect()->back()->with('error','Incorrect index number or password');
         }
