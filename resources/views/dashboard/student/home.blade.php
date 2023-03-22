@@ -36,7 +36,7 @@
     <section class="content">
       <div class="container-fluid">
         <!-- Small boxes (Stat box) -->
-		
+		@if($clearance_status)
 			@if($clearance_status->library_status == 0 && $clearance_status->hostel_status != null)
 		
 			  <div class="alert alert-warning col-12">
@@ -63,8 +63,11 @@
 			  <h3 class="text-white" style="font-size:13pt!important;"><i class="fa fa-check-circle"></i> 
 			  Your clearance is unsuccessful, please contact your Head of Department. </h3>
 			  </div>
-			  
-			@elseif($transcript_request_status != null)
+			@endif
+		@endif
+				
+		@if($transcript_request_status)		
+			@if($transcript_request_status != null)
 			  
 			  <div class="alert alert-success col-12">
 			  <h3 class="text-white" style="font-size:13pt!important;"><i class="fa fa-check-circle"></i> 
@@ -72,7 +75,7 @@
 			  </div>				
 		
 			@endif		
-		
+		@endif
 		
           @if($loan_allocation)
             @if($student->account_number == null)
