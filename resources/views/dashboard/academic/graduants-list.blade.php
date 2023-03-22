@@ -174,7 +174,7 @@
                   </thead>
                   <tbody>
 				  @if(Auth::user()->hasRole('arc'))
-					{{ $key = 0 }}
+					{ $key = 1 }
 					@foreach($graduants as $graduant)
 						@if($graduant->status != 'GRADUATING')
 							<tr>
