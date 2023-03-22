@@ -332,7 +332,7 @@ class ApplicantController extends Controller
         $selected_applicants = Applicant::where('program_level_id', $applicant->program_level_id)
 								->with(['programLevel', 'selections.campusProgram.program', 'selections' => function ($query) {$query->where('status', 'SELECTED')
 								->orWhere('status', 'PENDING');}])->where('application_window_id', $applicant->application_window_id)
-								->where('intake_id', $application_window->intake_id)->whereNotNull('status')->count();
+								->where('intake_id', $applicant->intake_id)->whereNotNull('status')->count();
 								
 								return $selected_applicants;
 		
