@@ -88,6 +88,12 @@
                 @endif
               @endif
               @if($applicant->status === 'ADMITTED')
+			    <li class="nav-item">
+                  <a href="{{ url('application/basic-information') }}" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Basic Information</p>
+                  </a>
+                </li>
               @if($applicant->is_continue != 1)
               <li class="nav-item">
                 <a href="{{ url('application/admission-package') }}" class="nav-link">
