@@ -345,21 +345,18 @@ class ApplicantController extends Controller
 
 
 
-         $check_selected_applicant = User::find(Auth::user()->id)
-        ->applicants()
+         $check_selected_applicant = User::find(Auth::user()->id)->applicants()
         ->whereHas('selections', function ($query) {$query->where('status', 'SELECTED')->orWhere('status', 'PENDING');})
-        ->where('campus_id',session('applicant_campus_id'))->first();
+        ->with(['selections' => function($query) {$query->where('status', 'SELECTED')->orWhere('status', 'PENDING')->first();}])
+		->where('campus_id',session('applicant_campus_id'))->first();
 		
-
+return $check_selected_applicant;
 		ApplicantProgramSelection::where('application_window_id', $applicant->application_window_id)
          ->where(function($query) {
             $query->where('status', 'SELECTED')
                   ->orWhere('status', 'PENDING');
         })->with(['applicant' => function ($query) use($applicant){ $query->where('program_level_id', $applicant->program_level_id); }])->first();
 
-return $check_selected_applicant;
-
-        
         $data = [
            'applicant'=>$applicant,
            'student' => Student::where('applicant_id', $applicant->id)->first(),
@@ -375,7 +372,7 @@ return $check_selected_applicant;
            'disabilities'=>DisabilityStatus::all(),
         ];
 
-        if($applicant->is_tamisemi !== 1 && $applicant->is_transfered != 1){
+/*         if($applicant->is_tamisemi !== 1 && $applicant->is_transfered != 1){
          if(!ApplicationWindow::where('campus_id',session('applicant_campus_id'))->where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('status','ACTIVE')->first()){
             //   if($applicant->status == null){
             //       return redirect()->to('application/submission')->with('error','Application window already closed2');
@@ -385,7 +382,7 @@ return $check_selected_applicant;
               }
          }
      }
-     
+      */
 
         return view('dashboard.application.edit-basic-information',$data)->withTitle('Edit Basic Information');
     }
