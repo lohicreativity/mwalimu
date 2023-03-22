@@ -291,7 +291,7 @@ class ApplicantController extends Controller
 		->where('intake_id', $applicant->intake_id)
 		->where('begin_date','<=',now()->format('Y-m-d'))
 		->where('end_date','>=',now()->format('Y-m-d'))
-		->where('status','ACTIVE')->first());
+		->where('status','ACTIVE')->first();
 				
         if($applicant->is_tamisemi !== 1 && $applicant->is_transfered != 1){
             if(!$application_window){
