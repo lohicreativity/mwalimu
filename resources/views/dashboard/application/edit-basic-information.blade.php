@@ -62,7 +62,7 @@
                 @elseif($student)
                     <div class="alert alert-success">
                       <h3 class="text-white" style="font-size: 18px!important;"><i class="fa fa-check-circle"></i> 
-                      Congratulations! You have been successfully registered. Your registration number is <strong>{{ $student->registration_number }}</strong>. To log in to your student account you MUST change your password by <a href="{{ url('change-password') }}">clicking here.</a> </h3>
+                      Congratulations for a successful registration. Your registration number is <strong>{{ $student->registration_number }}</strong>. You MUST change your password by <a href="{{ url('change-password') }}">clicking here to access your student account.</a> </h3>
                     </div>                
                 @endif
 			  @else
