@@ -281,7 +281,7 @@ class ApplicantController extends Controller
         ->applicants()
         ->with(['programLevel'])
         ->where('campus_id',session('applicant_campus_id'))->first();
-		return $applicant;
+
 		$existing_applicant = User::find(Auth::user()->id)->applicants()
 		->with(['programLevel', 'selections.campusProgram.program', 'selections' => function ($query) {$query->where('status', 'SELECTED')
 		->orWhere('status', 'PENDING');}])
@@ -345,7 +345,13 @@ class ApplicantController extends Controller
 
 
 
-         $check_selected_applicant = ApplicantProgramSelection::where('application_window_id', $applicant->application_window_id)
+         $check_selected_applicant = User::find(Auth::user()->id)
+        ->applicants()
+        ->whereHas('selections', function ($query) {$query->where('status', 'SELECTED')->orWhere('status', 'PENDING');})
+        ->where('campus_id',session('applicant_campus_id'))->first();
+		
+
+		ApplicantProgramSelection::where('application_window_id', $applicant->application_window_id)
          ->where(function($query) {
             $query->where('status', 'SELECTED')
                   ->orWhere('status', 'PENDING');
