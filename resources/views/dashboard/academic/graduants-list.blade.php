@@ -193,7 +193,6 @@
 								@endif
 								{!! Form::input('hidden','grad_'.$graduant->id,$graduant->id) !!}
 							  </td>
-							  @endif
 							</tr>
 						@endif
                     @endforeach 
