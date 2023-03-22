@@ -298,9 +298,9 @@ class ApplicantController extends Controller
         if($applicant->is_tamisemi !== 1 && $applicant->is_transfered != 1){
             if(!$application_window){
                  
-				 if($applicant->status == null){
+/* 				 if($applicant->status == null){
                      return redirect()->to('application/submission')->with('error','Application window already closed');
-                 }
+                 } */
                  if($applicant->multiple_admissions !== null && $applicant->status == 'SELECTED'){
                      return redirect()->to('application/admission-confirmation')->with('error','Application window already closed');
                  }
