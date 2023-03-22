@@ -161,7 +161,7 @@
                   <tr>
                     <th>SN</th>
                     <th>Reg. No.</th>
-                    <th>Student</th>
+                    <th>Names</th>
                     <th>Sex</th>
                     <th>Phone</th>
                     <th>Programme</th>
@@ -173,35 +173,49 @@
                   </tr>
                   </thead>
                   <tbody>
+				  @if(Auth::user()->hasRole('arc'))
                     @foreach($graduants as $key=>$graduant)
-                    <tr>
-                      <td>{{ ($key+1) }}</td>
-                      <td>{{ $graduant->student->registration_number }}</td>
-                      <td>{{ $graduant->student->first_name }} {{ $graduant->student->middle_name }} {{ $graduant->student->surname }}</td>
-                      <td>{{ $graduant->student->gender }}</td>
-                      <td>{{ $graduant->student->phone }}</td>
-                      <td>{{ $graduant->student->campusProgram->program->code }}</td>
-                      <td>@if($graduant->status == 'GRADUATING') APPROVED @elseif($graduant->status == 'PENDING') PENDING @else DISAPPROVED @endif</td>
-                      <td>{{ bcdiv($graduant->student->overallRemark->gpa,1,1) }}</td>
-                      @if(Auth::user()->hasRole('arc'))
-                      <td>
-                        @if($graduant->status == 'GRADUATING')
-                           {!! Form::checkbox('graduant_'.$graduant->id,$graduant->id,true) !!}
-                        @else
-                           {!! Form::checkbox('graduant_'.$graduant->id,$graduant->id,true) !!}
-                        @endif
-                        {!! Form::input('hidden','grad_'.$graduant->id,$graduant->id) !!}
-                      </td>
-                      @endif
-                    </tr>
-                    @endforeach  
-                    @if(Auth::user()->hasRole('arc'))
+						@if($graduant->status != 'GRADUATING')
+							<tr>
+							  <td>{{ ($key+1) }}</td>
+							  <td>{{ $graduant->student->registration_number }}</td>
+							  <td>{{ $graduant->student->first_name }} {{ $graduant->student->middle_name }} {{ $graduant->student->surname }}</td>
+							  <td>{{ $graduant->student->gender }}</td>
+							  <td>{{ $graduant->student->phone }}</td>
+							  <td>{{ $graduant->student->campusProgram->program->code }}</td>
+							  <td>@if($graduant->reason == 'Disapproved') Disapproved @elseif($graduant->status == 'PENDING') Pending @endif</td>
+							  <td>{{ bcdiv($graduant->student->overallRemark->gpa,1,1) }}</td>
+							  <td>
+								@if($graduant->status == 'PENDING')
+								   {!! Form::checkbox('graduant_'.$graduant->id,$graduant->id,true) !!}
+								@elseif($graduant->reason == 'Disapproved')
+								   {!! Form::checkbox('graduant_'.$graduant->id,$graduant->id,false) !!}
+								@endif
+								{!! Form::input('hidden','grad_'.$graduant->id,$graduant->id) !!}
+							  </td>
+							  @endif
+							</tr>
+						@endif
+                    @endforeach 
                     <tr>
                       <td colspan="8">
                         <button type="submit" class="btn btn-primary">Save Approvals</button>
                       </td>
-                    </tr>       
-                    @endif         
+                    </tr>
+				@else
+					@foreach($graduants as $key=>$graduant)
+						<tr>
+						  <td>{{ ($key+1) }}</td>
+						  <td>{{ $graduant->student->registration_number }}</td>
+						  <td>{{ $graduant->student->first_name }} {{ $graduant->student->middle_name }} {{ $graduant->student->surname }}</td>
+						  <td>{{ $graduant->student->gender }}</td>
+						  <td>{{ $graduant->student->phone }}</td>
+						  <td>{{ $graduant->student->campusProgram->program->code }}</td>
+						  <td>@if($graduant->status == 'GRADUATING') Approved @elseif($graduant->status == 'PENDING') Pending @elseif($graduant->status == 'Disapproved') Disapproved @endif</td>
+						  <td>{{ bcdiv($graduant->student->overallRemark->gpa,1,1) }}</td>
+						</tr>
+					@endforeach 
+                @endif         
                   </tbody>
                 </table>
                 {!! Form::close()!!}

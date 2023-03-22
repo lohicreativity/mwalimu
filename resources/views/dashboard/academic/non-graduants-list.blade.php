@@ -151,7 +151,7 @@
                   <tr>
                     <th>SN</th>
                     <th>Reg. No.</th>
-                    <th>Student</th>
+                    <th>Names</th>
                     <th>Sex</th>
                     <th>Phone</th>
                     <th>Programme</th>
