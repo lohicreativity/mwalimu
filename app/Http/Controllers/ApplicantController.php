@@ -334,15 +334,14 @@ class ApplicantController extends Controller
 								->orWhere('status', 'PENDING');})
 								->where('application_window_id', $applicant->application_window_id)
 								->where('intake_id', $applicant->intake_id)->count();
-								
-								return $selected_applicants;
+	
+//        $selection_status = false;
+		$selection_status = $selected_applicants != 0 ? true : false;
 		
-        $selection_status = false;
-
-        if(ApplicationWindow::where('campus_id',session('applicant_campus_id'))->where('intake_id', $applicant->intake_id)
+/*         if(ApplicationWindow::where('campus_id',session('applicant_campus_id'))->where('intake_id', $applicant->intake_id)
 			->where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('status','ACTIVE')->first()){
            $selection_status = $selected_applicants != null ? true : false;
-         }
+         } */
 
 
 
@@ -352,7 +351,7 @@ class ApplicantController extends Controller
                   ->orWhere('status', 'PENDING');
         })->with(['applicant' => function ($query) use($applicant){ $query->where('program_level_id', $applicant->program_level_id); }])->first();
 
-
+return $check_selected_applicant;
 
         
         $data = [
