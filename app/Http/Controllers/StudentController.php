@@ -1484,7 +1484,7 @@ class StudentController extends Controller
 		  
 		  $user = new User;
 		  $user->username = $applicant->index_number;
-		  $user->password = Hash::make($student->applicant->birth_date);
+		  $user->password = Hash::make($student->applicant->index_number);
 		  $user->save();
 		  
 		  //$old_user = User::find($student->user_id);
