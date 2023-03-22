@@ -150,20 +150,29 @@
                   <thead>
                   <tr>
                     <th>SN</th>
-                    <th>Student</th>
                     <th>Reg. No.</th>
-                    <th>Programmes</th>
-                    <th>Reason</th>
+                    <th>Student</th>
+                    <th>Sex</th>
+                    <th>Phone</th>
+                    <th>Programme</th>
+                    <th>Status</th>
+                    <th>GPA</th>
+                    @if(Auth::user()->hasRole('arc'))
+                    <th>Approval</th>
+                    @endif
                   </tr>
                   </thead>
                   <tbody>
                     @foreach($non_graduants as $key=>$graduant)
                     <tr>
                       <td>{{ ($key+1) }}</td>
-                      <td>{{ $graduant->student->first_name }} {{ $graduant->student->middle_name }} {{ $graduant->student->surname }}</td>
                       <td>{{ $graduant->student->registration_number }}</td>
-                      <td>{{ $graduant->student->campusProgram->program->name }}</td>
+                      <td>{{ $graduant->student->first_name }} {{ $graduant->student->middle_name }} {{ $graduant->student->surname }}</td>
+                      <td>{{ $graduant->student->gender }}</td>
+                      <td>{{ $graduant->student->phone }}</td>
+                      <td>{{ $graduant->student->campusProgram->program->code }}</td>
                       <td><a href="{{ url('academic/results/show-student-report?registration_number='.$graduant->student->registration_number) }}">{{ $graduant->reason }}</a></td>
+                      @endif
                     </tr>
                     @endforeach                
                   </tbody>
