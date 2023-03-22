@@ -121,7 +121,7 @@ class ApplicantController extends Controller
         }
 
         if(Auth::attempt($credentials)){
-return 1234;
+
             session(['applicant_campus_id'=>$request->get('campus_id')]);
             $continue_applicant = Applicant::where('user_id',Auth::user()->id)->where('is_continue', 1)->first();
 			if($continue_applicant){
@@ -169,6 +169,9 @@ return 1234;
 
                     $applicant->documents_complete_status = $app->documents_complete_status;
                     $applicant->save();
+					
+					session(['applicant_campus_id'=>$request->get('campus_id')]);
+					return redirect()->to('application/dashboard')->with('message','Logged in successfully');
 
                 }elseif($app = Applicant::where('user_id',Auth::user()->id)->where('campus_id','!=',$request->get('campus_id'))->first()){
                     if($app){
@@ -210,6 +213,9 @@ return 1234;
 
                         $applicant->documents_complete_status = $app->documents_complete_status;
                         $applicant->save();
+						
+						session(['applicant_campus_id'=>$request->get('campus_id')]);
+						return redirect()->to('application/dashboard')->with('message','Logged in successfully');
                     }
 				}
           }elseif(!Applicant::where('user_id',Auth::user()->id)->where('campus_id',$request->get('campus_id'))->first() && $continue_applicant){
@@ -222,7 +228,9 @@ return 1234;
 				 $continue_applicant->application_window_id = $window->id;
 				 $continue_applicant->intake_id = $window->intake_id;
 				 $continue_applicant->save();
-				
+				 
+				 session(['applicant_campus_id'=>$request->get('campus_id')]);
+				return redirect()->to('application/dashboard')->with('message','Logged in successfully');	
 			}
 		  }else{
 		  
@@ -235,7 +243,7 @@ return 1234;
             
             
             session(['applicant_campus_id'=>$request->get('campus_id')]);
-		  return redirect()->to('application/dashboard')->with('message','Logged in successfully');}
+		  return redirect()->to('application/dashboard')->with('message','Logged in successfully');
         }else{
            return redirect()->back()->with('error','Incorrect index number or password');
         }
