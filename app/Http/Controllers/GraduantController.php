@@ -224,20 +224,10 @@ class GraduantController extends Controller
                   $query->where('status','GRADUATING')->orWhere('status','PENDING')->orWhere('reason', 'Disapproved');
            })->paginate(50);
       }
-	       $for_approval = $request->get('campus_id')? Graduant::whereHas('student.campusProgram.program',function($query) use($request){
-               $query->where('award_id',$request->get('program_level_id'));
-           })->whereHas('student.campusProgram',function($query) use($request){
-               $query->where('campus_id',$request->get('campus_id'));
-           })->with(['student.campusProgram.program'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->where(function($query){
-                  $query->where('status','PENDING')->orWhere('reason', 'Disapproved');
-           })->first() : Graduant::whereHas('student.campusProgram.program',function($query) use($request){
-               $query->where('award_id',$request->get('program_level_id'));
-           })->with(['student.campusProgram.program'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->where(function($query){
-                  $query->where('status','PENDING')->orWhere('reason', 'Disapproved');
-           })->first();
+	       $for_approval = Graduant::where('study_academic_year_id', $request->get('study_academic_year_id'))->where('status','PENDING')->orWhere('reason', 'Disapproved')->first();
 		
 		if (Auth::user()->hasRole('arc') && !$for_approval) {
-			return redirect()->back()->with('error','No graduants awaiting for approval');
+			return redirect()->back()->with('error','No graduants list waiting for approval');
 		}		
     	$data = [
            'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
