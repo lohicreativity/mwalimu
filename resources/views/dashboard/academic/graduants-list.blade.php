@@ -174,11 +174,11 @@
                   </thead>
                   <tbody>
 				  @if(Auth::user()->hasRole('arc'))
-					{ $key = 1 }
+					@var key = 1;
 					@foreach($graduants as $graduant)
 						@if($graduant->status != 'GRADUATING')
 							<tr>
-							  <td>{{ ($key++) }}</td>
+							  <td>key++</td>
 							  <td>{{ $graduant->student->registration_number }}</td>
 							  <td>{{ $graduant->student->first_name }} {{ $graduant->student->middle_name }} {{ $graduant->student->surname }}</td>
 							  <td>{{ $graduant->student->gender }}</td>
