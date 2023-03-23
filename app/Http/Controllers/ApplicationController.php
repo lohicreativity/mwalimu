@@ -2557,7 +2557,7 @@ class ApplicationController extends Controller
         $student->studentship_status_id = $studentship_status->id;
         $student->academic_status_id = $academic_status->id;
 		
-		//$user = User::find($applicant->user_id);
+		$user = User::find($applicant->user_id);
         // $user->username = $student->registration_number;
         //$user->status = $student->email;
         // $password = strtoupper(Util::randString(8));
