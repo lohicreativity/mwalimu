@@ -4855,7 +4855,7 @@ return $applicant;
             }
             
         }
-
+					   }
         $data = [
             'student'=>$student,
             'admitted_program_id'=>$student? $student->applicant->selections[0]->campusProgram->id : null,
