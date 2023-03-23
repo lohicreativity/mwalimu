@@ -5997,10 +5997,11 @@ class ApplicationController extends Controller
 				return redirect()->back()->with('error','Programme does not have capacity to accomodate the transfer');
 			}
 		
-			$last_student = DB::table('students')->select(DB::raw('MAX(SUBSTRING(REVERSE(registration_number),1,7)) AS last_number'))->where('campus_program_id',$transfer_program->id)->first();
+			$last_student = DB::table('students')->select(DB::raw('MAX(REVERSE(SUBSTRING(REVERSE(registration_number),1,7))) AS last_number'))->where('campus_program_id',$transfer_program->id)->first();
 			//Student::where('campus_program_id',$selection->campusProgram->id)->max();
 			if(!empty($last_student->last_number)){
-			   $code = sprintf('%04d',strrev(explode('/', $last_student->last_number)[1]) + 1);
+				$code = sprintf('%04d', substr($last_student->last_number, 0, 4) + 1);
+
 			}else{
 			   $code = sprintf('%04d',1);
 			}
@@ -6035,13 +6036,13 @@ class ApplicationController extends Controller
 			$student->registration_number = 'MNMA/'.$program_code.'/'.$code.'/'.$year;
 			$student->campus_program_id = $transfer_program->id;
 			
+			$last_user = User::find($applicant->user_id);
 			
 			$user = new User;
 			$user->username = $student->registration_number;
 			$user->email = $student->email;
 			$password = strtoupper(Util::randString(8));
-			$user->password = Hash::make($password);
-			$user->must_update_password = 1;
+			$user->password = $last_user->password;
 			$user->save();
 			
 			$last_user = User::find($applicant->user_id);
