@@ -6026,7 +6026,6 @@ class ApplicationController extends Controller
 				}  
 			}
 			
-			return 'MNMA/'.$program_code.'/'.$code.'/'.$year;
             $transfer = new InternalTransfer;
             $transfer->student_id = $student->id;
             $transfer->previous_campus_program_id = $admitted_program->id;
@@ -6037,11 +6036,11 @@ class ApplicationController extends Controller
 			$student->registration_number = 'MNMA/'.$program_code.'/'.$code.'/'.$year;
 			$student->campus_program_id = $transfer_program->id;
 			
-			$last_user = User::find($applicant->user_id);
+			//$last_user = User::find($applicant->user_id);
 			$user = new User;
 			$user->username = $student->registration_number;
 			$user->email = $student->email;
-			$user->password = $last_user->password;
+			$user->password = 1234;
 			$user->save();
 			
 			$last_user = User::find($applicant->user_id);
