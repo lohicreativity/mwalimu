@@ -65,7 +65,7 @@
 					 
                      $index_number = [
                          'class'=>'form-control',
-                         'placeholder'=>'Index number',
+                         'placeholder'=>'Form IV index number',
                          'required'=>true
                      ];
                  @endphp 
@@ -122,6 +122,7 @@
                    <table class="table table-bordered" id="ss-transfers">
                      <thead>
                        <tr>
+					     <th>SN</th>
                          <th>Name</th>
                          <th>Index Number</th>
 						 <th>Previous Programme</th>
@@ -132,8 +133,9 @@
                        </tr>
                      </thead>
                      <tbody>
-                      @foreach($transfers as $transfer)
+                      @foreach($transfers as $key=>$transfer)
                        <tr>
+					     <td>{{ ($key+1) }} </td>
                          <td>@if($transfer->status == 'SUBMITTED') {{ $transfer->applicant->first_name }} {{ $transfer->applicant->middle_name }} {{ $transfer->applicant->surname }} @else <a href="{{ url('application/external-transfer/'.$transfer->id.'/edit') }}">{{ $transfer->applicant->first_name }} {{ $transfer->applicant->middle_name }} {{ $transfer->applicant->surname }}</a>@endif</td>
                          <td>{{ $transfer->applicant->index_number }}</td>
 						 <td>{{ $transfer->previous_program }}</td>
