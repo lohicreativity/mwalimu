@@ -48,9 +48,9 @@
                 </ul>
               </div>
               <!-- /.card-header -->
-            </div>
 
-            <div class="card">
+
+
                  <div class="card-body">
                  {!! Form::open(['url'=>'academic/graduants','class'=>'ss-form-processing','method'=>'GET']) !!}
 
@@ -219,7 +219,7 @@
                 @endif         
                   </tbody>
                 </table>
-                {!! Form::close()!!}
+               
                 <div class="ss-pagination-links">
                     {!! $graduants->appends($request->except('page'))->render() !!}
                 </div>
