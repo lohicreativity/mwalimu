@@ -4708,7 +4708,7 @@ class ApplicationController extends Controller
         }else{
             $user = new User;
             $user->username = $request->get('index_number');
-            $user->password = Hash::make('123456');
+            $user->password = Hash::make($request->get('index_number'));
             $user->save();
         }
 
