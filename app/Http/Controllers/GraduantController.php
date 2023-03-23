@@ -131,15 +131,6 @@ class GraduantController extends Controller
 							if($student->academicStatus->name == 'PASS'){
 								$graduant->status = 'PENDING';
 								$graduant_list[] = $student;
-								
-								if($cls = Clearance::where('student_id',$student->id)->first()){
-								  $clearance = $cls;
-							    }else{
-								  $clearance = new Clearance;
-							    }
-							    $clearance->student_id = $student->id;
-							    $clearance->study_academic_year_id = $request->get('study_academic_year_id');
-							    $clearance->save();
 							}else{
 							   $graduant->status = 'EXCLUDED';
 							}
@@ -161,28 +152,20 @@ class GraduantController extends Controller
 									break;
 								}
 							}
-							if($graduant->status != 'EXCLUDED'){
-								if($count >= $program->min_duration){
-								   if($student->academicStatus->name == 'PASS'){
-									   if($cls = Clearance::where('student_id',$student->id)->first()){
-										  $clearance = $cls;
-									   }else{
-										  $clearance = new Clearance;
-									   }
-									   $clearance->student_id = $student->id;
-									   $clearance->study_academic_year_id = $request->get('study_academic_year_id');
-									   $clearance->save();
-								   }
-								}
-							}
 							$graduant->save();
 						}
+						$student = Student::find($student->id);
+						if($student->academicStatus->name == 'PASS'){
+							$student->studentship_status_id = $status->id;
+							$student->save();
+				
+							$clearance = new Clearance;
+
+						    $clearance->student_id = $student->id;
+						    $clearance->study_academic_year_id = $request->get('study_academic_year_id');
+						    $clearance->save();
+						}	
 					}
-				$student = Student::find($student->id);
-			    if($student->academicStatus->name == 'PASS'){
-					$student->studentship_status_id = $status->id;
-			    }
-				$student->save();
 				}
 			}
 		}
