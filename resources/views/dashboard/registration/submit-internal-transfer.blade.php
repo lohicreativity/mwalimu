@@ -73,7 +73,7 @@
             @if($student)
               <div class="card">
               <div class="card-header">
-                <h3 class="card-title">Submit Internal Transfer</h3>
+                <h3 class="card-title">Students' Internal Transfer</h3>
               </div>
               <!-- /.card-header -->
               {!! Form::open(['url'=>'registration/submit-internal-transfer','class'=>'ss-form-processing']) !!}
@@ -108,7 +108,7 @@
                  {!! Form::input('hidden','student_id',$student->id) !!}
               </div>
               <div class="card-footer">
-                  <button type="submit" class="btn btn-primary">{{ __('Submit Internal Transfer') }}</button>
+                  <button type="submit" class="btn btn-primary">{{ __('Transfer the Student') }}</button>
               </div>
               {!! Form::close() !!}
             </div>
@@ -146,7 +146,7 @@
                        </tr>
                        @endforeach
 					   <tr>
-					     <td colspan="7"><button type="submit" class="btn btn-primary">Submit Transfers</button></td>
+					     <td colspan="7"><button type="submit" class="btn btn-primary">Submit Transfers to Regulators</button></td>
 					   </tr>
 					   {!! Form::close() !!}
                      </tbody>

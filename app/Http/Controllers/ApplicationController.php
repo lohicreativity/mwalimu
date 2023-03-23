@@ -6035,13 +6035,11 @@ class ApplicationController extends Controller
 			$student->registration_number = 'MNMA/'.$program_code.'/'.$code.'/'.$year;
 			$student->campus_program_id = $transfer_program->id;
 			
-			
+			$last_user = User::find($applicant->user_id);
 			$user = new User;
 			$user->username = $student->registration_number;
 			$user->email = $student->email;
-			$password = strtoupper(Util::randString(8));
-			$user->password = Hash::make($password);
-			$user->must_update_password = 1;
+			$user->password = $last_user->password;
 			$user->save();
 			
 			$last_user = User::find($applicant->user_id);

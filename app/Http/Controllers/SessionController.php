@@ -49,6 +49,7 @@ class SessionController extends Controller
 
 				$user = User::find(Auth::user()->id);
 				$user->username = $student->registration_number;
+				$user->email = $student->email;
 				$user->password = Hash::make($request->get('password'));
 
 				$role = Role::where('name','student')->first();
