@@ -5999,6 +5999,7 @@ class ApplicationController extends Controller
 		
 			$last_student = DB::table('students')->select(DB::raw('MAX(SUBSTRING(REVERSE(registration_number),1,7)) AS last_number'))->where('campus_program_id',$transfer_program->id)->first();
 			//Student::where('campus_program_id',$selection->campusProgram->id)->max();
+			return $last_student;
 			if(!empty($last_student->last_number)){
 			   $code = sprintf('%04d',strrev(explode('/', $last_student->last_number)[1]) + 1);
 			}else{
