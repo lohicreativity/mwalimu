@@ -124,6 +124,7 @@
                    <table class="table table-bordered" id="ss-transfers">
                      <thead>
                        <tr>
+					     <th>SN</th>
                          <th>Name</th>
                          <th>Previous Reg Number</th>
                          <th>Previous Programme</th>
@@ -134,8 +135,9 @@
                        </tr>
                      </thead>
                      <tbody>
-                      @foreach($transfers as $transfer)
+                      @foreach($transfers as $key=>$transfer)
                        <tr>
+					     <td>{{ ($key+1) }} </td>
                          <td>{{ $transfer->student->first_name }} {{ $transfer->student->middle_name }} {{ $transfer->student->surname }}</td>
                          <td>{{ $transfer->student->applicant->user->username }}</td>
                          <td>{{ $transfer->previousProgram->program->name }}</td>
