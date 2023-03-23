@@ -6026,6 +6026,7 @@ class ApplicationController extends Controller
 				}  
 			}
 			
+			return 'MNMA/'.$program_code.'/'.$code.'/'.$year;
             $transfer = new InternalTransfer;
             $transfer->student_id = $student->id;
             $transfer->previous_campus_program_id = $admitted_program->id;
