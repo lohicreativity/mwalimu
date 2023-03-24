@@ -4681,6 +4681,12 @@ class ApplicationController extends Controller
             
         }
 					   }
+		if(count($programs) == 1){
+			if($programs->id == $student-campus_program_id){
+				return redirect()->back()->with('error','The student does not qualify to any other programme');
+			}
+			
+		}
         $data = [
             'student'=>$student,
             'admitted_program_id'=>$student? $student->applicant->selections[0]->campusProgram->id : null,
