@@ -4056,7 +4056,13 @@ class ApplicationController extends Controller
               $query->where('status','SELECTED');
         },'applicant.selections.campusProgram.program'])->where('registration_number',$request->get('registration_number'))->first();
 		
+		$has_student_role = User::find($student->user_id)->student;
+		
 		if($student){
+			if(!$has_student_role){
+			   return redirect()->back()->with('error','Student account has not been activated');				
+			}
+
 			if(InternalTransfer::where('student_id',$student->id)->count() != 0){
 			   return redirect()->back()->with('error','Student already transfered');
 		    }
@@ -4080,9 +4086,11 @@ class ApplicationController extends Controller
                  $query->where('verified',1);
             },'outResultDetails'=>function($query){
                  $query->where('verified',1);
-            },'selections.campusProgram.campus','nectaResultDetails.results','nacteResultDetails.results','outResultDetails.results','programLevel','applicationWindow'])
-			->whereHas('user.role', function($query){$query->where('name', 'student');})->first();
+            },'selections.campusProgram.campus','nectaResultDetails.results','nacteResultDetails.results','outResultDetails.results','programLevel','applicationWindow'])->first();
 
+		if($applicant Auth::user()->hasRole('arc')){
+			
+		}
         $window = $applicant->applicationWindow;
 
         $campus_programs = $window? $window->campusPrograms()->whereHas('program',function($query) use($applicant){
