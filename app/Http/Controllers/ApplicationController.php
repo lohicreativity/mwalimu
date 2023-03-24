@@ -4080,8 +4080,8 @@ class ApplicationController extends Controller
                  $query->where('verified',1);
             },'outResultDetails'=>function($query){
                  $query->where('verified',1);
-            },'selections.campusProgram.campus','nectaResultDetails.results','nacteResultDetails.results','outResultDetails.results','programLevel','applicationWindow'])->first();
-
+            },'selections.campusProgram.campus','nectaResultDetails.results','nacteResultDetails.results','outResultDetails.results','programLevel','applicationWindow'])
+			->whereHas('user.role', function($query){$query->('name', 'student');})->first();
 
         $window = $applicant->applicationWindow;
 
