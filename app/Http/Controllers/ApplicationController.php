@@ -4088,9 +4088,6 @@ class ApplicationController extends Controller
                  $query->where('verified',1);
             },'selections.campusProgram.campus','nectaResultDetails.results','nacteResultDetails.results','outResultDetails.results','programLevel','applicationWindow'])->first();
 
-		if($applicant Auth::user()->hasRole('arc')){
-			
-		}
         $window = $applicant->applicationWindow;
 
         $campus_programs = $window? $window->campusPrograms()->whereHas('program',function($query) use($applicant){
