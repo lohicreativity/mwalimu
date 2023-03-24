@@ -6050,8 +6050,7 @@ class ApplicationController extends Controller
 			$student = Student::find($student->id);
 			$student->registration_number = 'MNMA/'.$program_code.'/'.$code.'/'.$year;
 			$student->campus_program_id = $transfer_program->id;
-			$student->user_id = $user->id;
-			$student->save();
+
 			
 			$last_user = User::find($applicant->user_id);
 			
@@ -6060,6 +6059,9 @@ class ApplicationController extends Controller
 			$user->email = $student->email;
 			$user->password = $last_user->password;
 			$user->save();
+			
+			$student->user_id = $user->id;
+			$student->save();
 			
 			$last_user = User::find($applicant->user_id);
 			$last_user->status = 'INACTIVE';
