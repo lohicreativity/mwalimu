@@ -6051,16 +6051,13 @@ class ApplicationController extends Controller
 			$student->registration_number = 'MNMA/'.$program_code.'/'.$code.'/'.$year;
 			$student->campus_program_id = $transfer_program->id;
 
-			
-			$last_user = User::find($applicant->user_id);
-			
 			$user = new User;
 			$user->username = $student->registration_number;
 			$user->email = $student->email;
-			$user->password = $last_user->password;
+			$user->password = User::find($applicant->user_id)->password;
 			$user->save();
 			
-			//$last_user = User::find($applicant->user_id);
+			$last_user = User::find($applicant->user_id);
 			$last_user->status = 'INACTIVE';
 			$last_user->save();
 
