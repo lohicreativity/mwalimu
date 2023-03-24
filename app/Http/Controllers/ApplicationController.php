@@ -4056,9 +4056,11 @@ class ApplicationController extends Controller
               $query->where('status','SELECTED');
         },'applicant.selections.campusProgram.program'])->where('registration_number',$request->get('registration_number'))->first();
 		
-		$has_student_role = User::find($student->user_id)->student;
+		$has_student_role = null;
 		
 		if($student){
+			//(Auth::user()->hasRole('dean-of-students'))
+			$has_student_role = User::find($student->user_id)->hasRole('student');
 			if(!$has_student_role){
 			   return redirect()->back()->with('error','Student account has not been activated');				
 			}
