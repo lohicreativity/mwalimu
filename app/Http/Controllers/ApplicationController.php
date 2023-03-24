@@ -6045,6 +6045,7 @@ class ApplicationController extends Controller
             $transfer->previous_campus_program_id = $admitted_program->id;
             $transfer->current_campus_program_id = $transfer_program->id;
             $transfer->transfered_by_user_id = Auth::user()->id;
+			$transfer->save();
 			
 			$student = Student::find($student->id);
 			$student->registration_number = 'MNMA/'.$program_code.'/'.$code.'/'.$year;
@@ -6055,7 +6056,6 @@ class ApplicationController extends Controller
 			$user = new User;
 			$user->username = $student->registration_number;
 			$user->email = $student->email;
-			$password = strtoupper(Util::randString(8));
 			$user->password = $last_user->password;
 			$user->save();
 			
@@ -6068,7 +6068,7 @@ class ApplicationController extends Controller
 		    
 			$student->user_id = $user->id;
 			$student->save();
-            $transfer->save();
+            
 			
 			$old_program_fee = ProgramFee::with(['feeItem.feeType'])->where('study_academic_year_id',$ac_year->id)->where('campus_program_id',$admitted_program->id)->first();
             if(!$old_program_fee){
