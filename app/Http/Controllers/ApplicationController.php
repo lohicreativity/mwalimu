@@ -4081,7 +4081,7 @@ class ApplicationController extends Controller
             },'outResultDetails'=>function($query){
                  $query->where('verified',1);
             },'selections.campusProgram.campus','nectaResultDetails.results','nacteResultDetails.results','outResultDetails.results','programLevel','applicationWindow'])
-			->whereHas('user.role', function($query){$query->('name', 'student');})->first();
+			->whereHas('user.role', function($query){$query->where('name', 'student');})->first();
 
         $window = $applicant->applicationWindow;
 
