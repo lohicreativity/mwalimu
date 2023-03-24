@@ -6050,6 +6050,8 @@ class ApplicationController extends Controller
 			$student = Student::find($student->id);
 			$student->registration_number = 'MNMA/'.$program_code.'/'.$code.'/'.$year;
 			$student->campus_program_id = $transfer_program->id;
+			$student->user_id = $user->id;
+			$student->save();
 			
 			$last_user = User::find($applicant->user_id);
 			
@@ -6066,8 +6068,7 @@ class ApplicationController extends Controller
 			$role = Role::where('name','student')->first();
 			$user->roles()->sync([$role->id]);
 		    
-			$student->user_id = $user->id;
-			$student->save();
+
             
 			
 			$old_program_fee = ProgramFee::with(['feeItem.feeType'])->where('study_academic_year_id',$ac_year->id)->where('campus_program_id',$admitted_program->id)->first();
