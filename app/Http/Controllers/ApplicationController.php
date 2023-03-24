@@ -6039,6 +6039,8 @@ class ApplicationController extends Controller
 				   $stud_group =  $applicant->program_level_id.$transfer_program->id.$year;
 				}  
 			}
+			$password = User::find($applicant->user_id)->password;
+			return $password;
 			
             $transfer = new InternalTransfer;
             $transfer->student_id = $student->id;
@@ -6051,10 +6053,13 @@ class ApplicationController extends Controller
 			$student->registration_number = 'MNMA/'.$program_code.'/'.$code.'/'.$year;
 			$student->campus_program_id = $transfer_program->id;
 
+			
+
+			
 			$user = new User;
 			$user->username = $student->registration_number;
 			$user->email = $student->email;
-			$user->password = User::find($applicant->user_id)->password;
+			$user->password = $last_user->password;
 			$user->save();
 			
 			$last_user = User::find($applicant->user_id);
