@@ -6045,7 +6045,7 @@ class ApplicationController extends Controller
             $transfer->previous_campus_program_id = $admitted_program->id;
             $transfer->current_campus_program_id = $transfer_program->id;
             $transfer->transfered_by_user_id = Auth::user()->id;
-			$transfer->save();
+
 			
 			$student = Student::find($student->id);
 			$student->registration_number = 'MNMA/'.$program_code.'/'.$code.'/'.$year;
@@ -6060,17 +6060,17 @@ class ApplicationController extends Controller
 			$user->password = $last_user->password;
 			$user->save();
 			
-			$student->user_id = $user->id;
-			$student->save();
-			
-			$last_user = User::find($applicant->user_id);
+			//$last_user = User::find($applicant->user_id);
 			$last_user->status = 'INACTIVE';
 			$last_user->save();
 
 			$role = Role::where('name','student')->first();
 			$user->roles()->sync([$role->id]);
 		    
-
+			
+			$student->user_id = $user->id;
+			$student->save();
+			$transfer->save();
             
 			
 			$old_program_fee = ProgramFee::with(['feeItem.feeType'])->where('study_academic_year_id',$ac_year->id)->where('campus_program_id',$admitted_program->id)->first();
