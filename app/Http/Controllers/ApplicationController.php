@@ -4686,7 +4686,7 @@ class ApplicationController extends Controller
 				return redirect()->back()->with('error','The student does not qualify to any other programme');
 			}	
 		}
-					   
+					   }
 
         $data = [
             'student'=>$student,
@@ -4698,7 +4698,6 @@ class ApplicationController extends Controller
             'staff'=>$staff
         ];
         return view('dashboard.registration.submit-internal-transfer',$data)->withTitle('Internal Transfer');
-		}
     }
 	
 	/**
