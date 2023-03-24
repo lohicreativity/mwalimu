@@ -6040,26 +6040,21 @@ class ApplicationController extends Controller
 				}  
 			}
 			$password = User::find($applicant->user_id)->password;
-			return $password;
 			
             $transfer = new InternalTransfer;
             $transfer->student_id = $student->id;
             $transfer->previous_campus_program_id = $admitted_program->id;
             $transfer->current_campus_program_id = $transfer_program->id;
             $transfer->transfered_by_user_id = Auth::user()->id;
-
 			
 			$student = Student::find($student->id);
 			$student->registration_number = 'MNMA/'.$program_code.'/'.$code.'/'.$year;
 			$student->campus_program_id = $transfer_program->id;
-
-			
-
-			
+		
 			$user = new User;
 			$user->username = $student->registration_number;
 			$user->email = $student->email;
-			$user->password = $last_user->password;
+			$user->password = $password;
 			$user->save();
 			
 			$last_user = User::find($applicant->user_id);
