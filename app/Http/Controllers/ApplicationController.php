@@ -2367,7 +2367,6 @@ class ApplicationController extends Controller
         $reg_date_time = strtotime($reg_date->date);
         $datediff = $reg_date_time - $now;
 		
-		return $now.'/'.$reg_date_time.'/'.$datediff;
         if(round($datediff / (60 * 60 * 24)) < 0 && round($datediff / (60 * 60 * 24)) < -7){
             return redirect()->back()->with('error','Applicant cannot register. Registration period is over');
         }
@@ -2631,29 +2630,26 @@ class ApplicationController extends Controller
             }
         }
 
-
-        $days = round($datediff / (60 * 60 * 24)) - 7;
-		
-		return $days.'-'.round($datediff / (60 * 60 * 24));
-
+		return round($datediff / (60 * 60 * 24));
         if(round($datediff / (60 * 60 * 24)) < 0 && round($datediff / (60 * 60 * 24)) > -7){
+			$days = round($datediff / (60 * 60 * 24));
             $fee_amount = FeeAmount::whereHas('feeItem',function($query){
                    return $query->where('name','LIKE','%Late Registration%');
             })->with(['feeItem.feeType'])->where('study_academic_year_id',$ac_year->id)->first();
 
             $student = Student::with(['applicant.country'])->find($student->id);
 
-         if(!$fee_amount){
-            return redirect()->back()->with('error','No fee amount set for late registration');
-         }       
+			 if(!$fee_amount){
+				return redirect()->back()->with('error','No fee amount set for late registration');
+			 }       
 
-         if(str_contains($student->applicant->nationality,'Tanzania')){
-             $amount = $fee_amount->amount_in_tzs * $days * (-1);
-             $currency = 'TZS';
-         }else{
-             $amount = $fee_amount->amount_in_usd * $days * (-1);
-             $currency = 'USD';
-         }
+			 if(str_contains($student->applicant->nationality,'Tanzania')){
+				 $amount = $fee_amount->amount_in_tzs * $days * (-1);
+				 $currency = 'TZS';
+			 }else{
+				 $amount = $fee_amount->amount_in_usd * $days * (-1);
+				 $currency = 'USD';
+			 }
 
         $invoice = new Invoice;
         $invoice->reference_no = 'MNMA-LR-'.time();
@@ -2916,7 +2912,7 @@ class ApplicationController extends Controller
            Mail::to($user)->send(new StudentAccountCreated($student, $selection->campusProgram->program->name,$ac_year->academicYear->year, $transfered_status));
         }catch(Exception $e){}
         DB::commit();
-        if($days < 0){
+        if(round($datediff / (60 * 60 * 24)) < 0 && round($datediff / (60 * 60 * 24)) > -7){
           return redirect()->to('application/applicants-registration')->with('error','Student successfully registered with registration number '.$student->registration_number.', but has a penalty of '.$amount.' '.$currency);
         }else{
            return redirect()->to('application/applicants-registration')->with('message','Student registered successfully with registration number '.$student->registration_number);
