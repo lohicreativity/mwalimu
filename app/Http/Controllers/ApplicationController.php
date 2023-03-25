@@ -2687,14 +2687,13 @@ class ApplicationController extends Controller
         $payable = Invoice::find($invoice->id)->payable;
         $fee_type = $fee_amount->feeItem->feeType;
 
-return $fee_type;
         $generated_by = 'SP';
         $approved_by = 'SP';
         $inst_id = Config::get('constants.SUBSPCODE');
 
         $email = $payable->email? $payable->email : 'application@mnma.ac.tz';
 
-        return $this->requestControlNumber($request,
+        $result = $this->requestControlNumber($request,
                                   $invoice->reference_no,
                                   $inst_id,
                                   $invoice->amount,
