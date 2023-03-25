@@ -2630,9 +2630,9 @@ class ApplicationController extends Controller
             }
         }
 
-		return round($datediff / (60 * 60 * 24));
+		$days = round($datediff / (60 * 60 * 24));
+
         if(round($datediff / (60 * 60 * 24)) < 0 && round($datediff / (60 * 60 * 24)) > -7){
-			$days = round($datediff / (60 * 60 * 24));
             $fee_amount = FeeAmount::whereHas('feeItem',function($query){
                    return $query->where('name','LIKE','%Late Registration%');
             })->with(['feeItem.feeType'])->where('study_academic_year_id',$ac_year->id)->first();
@@ -2912,7 +2912,7 @@ class ApplicationController extends Controller
            Mail::to($user)->send(new StudentAccountCreated($student, $selection->campusProgram->program->name,$ac_year->academicYear->year, $transfered_status));
         }catch(Exception $e){}
         DB::commit();
-        if(round($datediff / (60 * 60 * 24)) < 0 && round($datediff / (60 * 60 * 24)) > -7){
+        if($days < 0){
           return redirect()->to('application/applicants-registration')->with('error','Student successfully registered with registration number '.$student->registration_number.', but has a penalty of '.$amount.' '.$currency);
         }else{
            return redirect()->to('application/applicants-registration')->with('message','Student registered successfully with registration number '.$student->registration_number);
