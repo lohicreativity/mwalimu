@@ -2351,7 +2351,7 @@ class ApplicationController extends Controller
               return redirect()->back()->withInput()->withErrors($validation->messages());
            }
         }
-        return $request;
+
         DB::beginTransaction();
         $staff = User::find(Auth::user()->id)->staff;
 
@@ -2935,16 +2935,16 @@ class ApplicationController extends Controller
         Invoice::whereHas('feeType',function($query){
                $query->where('name','LIKE','%Miscellaneous%');
         })->with(['gatewayPayment','feeType'])->where('payable_type','applicant')->where('payable_id',$applicant->id)->update(['payable_type'=>'student','payable_id'=>$student->id,'applicable_id'=>$ac_year->id,'applicable_type'=>'academic_year']);
-
+		return $applicant->application_window_id;
 		$transfered_status = false;
         try{
            Mail::to($user)->send(new StudentAccountCreated($student, $selection->campusProgram->program->name,$ac_year->academicYear->year, $transfered_status));
         }catch(Exception $e){}
         DB::commit();
         if($days < 0){
-          return redirect()->to('application/applicants-registration?application_window_id='.$application_window->id)->with('error','Student successfully registered with registration number '.$student->registration_number.', but has a penalty of '.$amount.' '.$currency);
+          return redirect()->to('application/applicants-registration?application_window_id='.$applicant->application_window_id)->with('error','Student successfully registered with registration number '.$student->registration_number.', but has a penalty of '.$amount.' '.$currency);
         }else{
-           return redirect()->to('application/applicants-registration?application_window_id='.$application_window->id)->with('message','Student registered successfully with registration number '.$student->registration_number);
+           return redirect()->to('application/applicants-registration?application_window_id='.$applicant->application_window_id)->with('message','Student registered successfully with registration number '.$student->registration_number);
         }
     }
 
