@@ -92,8 +92,10 @@
                 <table class="table table-bordered ss-paginated-table">
                   <thead>
                     <tr>
+                      <th>SN</th>
                       <th>Name</th>
                       <th>Index Number</th>
+                      <th>Phone</th>
                       <th>Sex</th>
                       <th>Programme</th>
                       <th>Status</th>
@@ -101,14 +103,16 @@
                     </tr>
                   </thead>
                   <tbody>
-                    @foreach($applicants as $applicant)
+                    @foreach($applicants as $key=>$applicant)
                       <tr>
+						  <td>{{ ($key+1) }}</td>
                           <td>{{ $applicant->first_name }} {{ $applicant->middle_name }} {{ $applicant->surname }}</td>
                           <td>{{ $applicant->index_number }}</td>
+                          <td>{{ $applicant->phone }}</td>						  
                           <td>{{ $applicant->gender }}</td>
                           <td>@foreach($applicant->selections as $selection)
                               @if($selection->status == 'SELECTED')
-                              {{ $selection->campusProgram->program->name }}
+                              {{ $selection->campusProgram->program->code }}
                               @endif
                               @endforeach
                           </td>
