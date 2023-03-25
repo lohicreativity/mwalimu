@@ -2654,15 +2654,19 @@ class ApplicationController extends Controller
         $invoice = new Invoice;
         $invoice->reference_no = 'MNMA-LR-'.time();
         $invoice->amount = $amount;
+        $invoice->actual_amount = $amount;		
         $invoice->currency = $currency;
         $invoice->payable_id = $student->id;
+        $invoice->applicable_id = $ac_year->id;		
+        $invoice->applicable_type = 'academic_year';				
         $invoice->payable_type = 'student';
         $invoice->fee_type_id = $fee_amount->feeItem->feeType->id;
         $invoice->save();
 
-        $generated_by = 'SP';
+/*         $generated_by = 'SP';
         $approved_by = 'SP';
         $inst_id = config('constants.SUBSPCODE');
+		
 
         $result = $this->requestControlNumber($request,
                                     $invoice->reference_no,
@@ -2679,6 +2683,31 @@ class ApplicationController extends Controller
                                     $approved_by,
                                     $fee_amount->feeItem->feeType->duration,
                                     $invoice->currency);
+ */
+        $payable = Invoice::find($invoice->id)->payable;
+        $fee_type = $fee_amount->feeItem->feeType;
+
+        $generated_by = 'SP';
+        $approved_by = 'SP';
+        $inst_id = Config::get('constants.SUBSPCODE');
+
+        $email = $payable->email? $payable->email : 'application@mnma.ac.tz';
+
+        return $this->requestControlNumber($request,
+                                  $invoice->reference_no,
+                                  $inst_id,
+                                  $invoice->amount,
+                                  $fee_type->description,
+                                  $fee_type->gfs_code,
+                                  $fee_type->payment_option,
+                                  $payable->id,
+                                  $payable->first_name.' '.$payable->surname,
+                                  $payable->phone,
+                                  $email,
+                                  $generated_by,
+                                  $approved_by,
+                                  $fee_type->duration,
+                                  $invoice->currency);
         }
 
         $check_insurance = false;
