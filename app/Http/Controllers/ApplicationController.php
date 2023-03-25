@@ -2364,6 +2364,7 @@ class ApplicationController extends Controller
             return redirect()->back()->with('error','Registration period has not been set');
         }
         $now = time();
+		return $now;
         $reg_date_time = strtotime($reg_date->date);
         $datediff = $reg_date_time - $now;
 		
