@@ -2687,6 +2687,7 @@ class ApplicationController extends Controller
         $payable = Invoice::find($invoice->id)->payable;
         $fee_type = $fee_amount->feeItem->feeType;
 
+return $payable;
         $generated_by = 'SP';
         $approved_by = 'SP';
         $inst_id = Config::get('constants.SUBSPCODE');
