@@ -2942,9 +2942,9 @@ class ApplicationController extends Controller
         }catch(Exception $e){}
         DB::commit();
         if($days < 0){
-          return redirect()->to('application/applicants-registration')->with('error','Student successfully registered with registration number '.$student->registration_number.', but has a penalty of '.$amount.' '.$currency);
+          return redirect()->to('application/applicants-registration?application_window_id='.$application_window->id)->with('error','Student successfully registered with registration number '.$student->registration_number.', but has a penalty of '.$amount.' '.$currency);
         }else{
-           return redirect()->to('application/applicants-registration')->with('message','Student registered successfully with registration number '.$student->registration_number);
+           return redirect()->to('application/applicants-registration?application_window_id='.$application_window->id)->with('message','Student registered successfully with registration number '.$student->registration_number);
         }
     }
 
