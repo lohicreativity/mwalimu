@@ -116,7 +116,7 @@
                               @endif
                               @endforeach
                           </td>
-                          <td><button class="btn btn-success">{{ $applicant->status }}</button></td>
+                          <td>{{ $applicant->status }}</td>
                           <td>@foreach($applicant->selections as $selection)
                               @if($selection->status == 'SELECTED')
                                 @if($applicant->documents_complete_status == 1 && $applicant->tuition_payment_check == 1 && $applicant->other_payment_check == 1)
