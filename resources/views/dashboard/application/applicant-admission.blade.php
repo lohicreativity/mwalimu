@@ -75,7 +75,7 @@
                     <b>Campus</b> <a class="float-right">{{ $applicant->campus->name }}</a>
                   </li>
                   <li class="list-group-item">
-                    <b>Programme</b> <a class="float-right">{{ $selection->campusProgram->program->name }}</a>
+                    <b>Programme</b> <a class="float-right">{{ $selection->campusProgram->program->code }}</a>
                   </li>
                 </ul>
                 

@@ -2328,7 +2328,7 @@ class ApplicationController extends Controller
            'applicant'=>Applicant::with(['selections','nectaResultDetails.results','nacteResultDetails.results','disabilityStatus','campus'])->find($applicant_id),
            'selection'=>ApplicantProgramSelection::with(['campusProgram.program'])->find($selection_id)
         ];
-        return view('dashboard.application.applicant-admission',$data)->withTitle('Applicant Admission');
+        return view('dashboard.application.applicant-admission',$data)->withTitle('Applicant Registration');
     }
 
     /**
