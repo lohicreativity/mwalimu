@@ -2351,7 +2351,7 @@ class ApplicationController extends Controller
               return redirect()->back()->withInput()->withErrors($validation->messages());
            }
         }
-        
+        return $request;
         DB::beginTransaction();
         $staff = User::find(Auth::user()->id)->staff;
 
@@ -2368,7 +2368,7 @@ class ApplicationController extends Controller
         $datediff = $reg_date_time - $now;
 		
         if(round($datediff / (60 * 60 * 24)) < 0 && round($datediff / (60 * 60 * 24)) < -7){
-            return redirect()->back()->with('error','Applicant cannot register. Registration period is over');
+            return redirect()->back()->with('error','Applicant cannot be registered. Registration period is over');
         }
 
         $applicant = Applicant::with(['intake','campus','nextOfKin','country','region','district','ward','insurances','programLevel'])->find($request->get('applicant_id'));
