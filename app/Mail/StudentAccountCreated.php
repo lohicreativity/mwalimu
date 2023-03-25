@@ -46,7 +46,7 @@ class StudentAccountCreated extends Mailable
                     ->with([
                         'heading'=>$this->transfered_status? 'Successful Transfer': 'Successful Registration',
                         'name'=>$this->student->first_name.' '.$this->student->surname,
-                        'notification_message'=> $this->transfered_status? 'I am pleased to inform you that you have been successfully transfered to '.$this->program_name.'. Your new registration number is <strong>'.$this->student->registration_number.'</strong>. Please visit '.config('constants.SITE_URL').'/student/login and use the same password to access your student account.' :
+                        'notification_message'=> $this->transfered_status? 'I am pleased to inform you that you have been successfully transfered to '.$this->program_name.'. Your new registration number is <strong>'.$this->student->registration_number.'</strong>. Please visit '.config('constants.SITE_URL').'/student/login and use the same password to access your new student account.' :
 
 						'I am pleased to inform you that you have been registered for '.$this->program_name.' in academic year '.$this->year.'. Your registration number is <strong>'.$this->student->registration_number.'</strong>. Please visit '.config('constants.SITE_URL').'/application/login, using your application username and password, to create your student account.',
 						'transfered_status'=>$this->transfered_status

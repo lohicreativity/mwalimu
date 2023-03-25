@@ -148,7 +148,7 @@
                        </tr>
                        @endforeach
 					   <tr>
-					     <td colspan="7"><button type="submit" class="btn btn-primary">Submit Transfers to Regulators</button></td>
+					     <td colspan="8"><button type="submit" class="btn btn-primary">Submit Transfers to Regulators</button></td>
 					   </tr>
 					   {!! Form::close() !!}
                      </tbody>

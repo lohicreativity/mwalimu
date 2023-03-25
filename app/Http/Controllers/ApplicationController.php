@@ -2908,8 +2908,9 @@ class ApplicationController extends Controller
                $query->where('name','LIKE','%Miscellaneous%');
         })->with(['gatewayPayment','feeType'])->where('payable_type','applicant')->where('payable_id',$applicant->id)->update(['payable_type'=>'student','payable_id'=>$student->id,'applicable_id'=>$ac_year->id,'applicable_type'=>'academic_year']);
 
+		$transfered_status = false;
         try{
-           Mail::to($user)->send(new StudentAccountCreated($student, $selection->campusProgram->program->name,$ac_year->academicYear->year, $password));
+           Mail::to($user)->send(new StudentAccountCreated($student, $selection->campusProgram->program->name,$ac_year->academicYear->year, $transfered_status));
         }catch(\Exception $e){}
         DB::commit();
         if($days < 0){
