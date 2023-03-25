@@ -4055,7 +4055,6 @@ class ApplicationController extends Controller
               $query->where('status','SELECTED');
         },'applicant.selections.campusProgram.program'])->where('registration_number',$request->get('registration_number'))->first();
 		
-		return $student;
 		$has_student_role = null;
 		
 		if($student){
