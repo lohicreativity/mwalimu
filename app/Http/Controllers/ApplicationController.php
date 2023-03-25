@@ -4070,7 +4070,7 @@ class ApplicationController extends Controller
 		}
 
         if(!$student && $request->get('registration_number')){
-            return redirect()->back()->with('error','Student either does not belong to this campus or does not qualify for transfer');
+            return redirect()->back()->with('error','Student  does not either belong to this campus or qualify for transfer');
         }
         // $programs = [];
         // $campus_programs = $student? CampusProgram::whereHas('program',function($query) use($student){
@@ -6229,8 +6229,9 @@ class ApplicationController extends Controller
 			}
 
 			$acpac->close();
+			$transfered_status = true;
 			try{
-                Mail::to($user)->send(new StudentAccountCreated($student, $selection->campusProgram->program->name,$ac_year->academicYear->year, $password));
+                Mail::to($user)->send(new StudentAccountCreated($student, $selection->campusProgram->program->name,$ac_year->academicYear->year, $transfered_status));
                 DB::commit();
 			}catch(\Exception $e){}
             return redirect()->to('registration/internal-transfer')->with('message','Transfer completed successfully');

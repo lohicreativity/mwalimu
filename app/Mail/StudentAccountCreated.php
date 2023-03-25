@@ -19,7 +19,7 @@ class StudentAccountCreated extends Mailable
 
     protected $year;
 
-    protected $password;
+    protected $transfered_status;
 
     /**
      * Create a new message instance.
@@ -31,7 +31,7 @@ class StudentAccountCreated extends Mailable
         $this->student = $student;
         $this->program_name = $program_name;
         $this->year = $year;
-        $this->password = $transfered_status;
+        $this->transfered_status = $transfered_status;
     }
 
     /**
