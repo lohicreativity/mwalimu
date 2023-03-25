@@ -26,12 +26,12 @@ class StudentAccountCreated extends Mailable
      *
      * @return void
      */
-    public function __construct(Student $student, $program_name, $year, $password)
+    public function __construct(Student $student, $program_name, $year, $transfered_status)
     {
         $this->student = $student;
         $this->program_name = $program_name;
         $this->year = $year;
-        $this->password = $password;
+        $this->password = $transfered_status;
     }
 
     /**
@@ -46,7 +46,9 @@ class StudentAccountCreated extends Mailable
                     ->with([
                         'heading'=>'Successful Registration',
                         'name'=>$this->student->first_name.' '.$this->student->surname,
-                        'notification_message'=>'I am pleased to inform you that you have been registered for '.$this->program_name.' in academic year '.$this->year.'. Your registration number is <strong>'.$this->student->registration_number.'</strong>. Please visit '.config('constants.SITE_URL').'/application/login, using your application username and password, to create your student account.',
+                        'notification_message'=> $this->transfered_status? 'I am pleased to inform you that you have been successfully transfered to '.$this->program_name.'. Your new registration number is <strong>'.$this->student->registration_number.'</strong>. Please visit '.config('constants.SITE_URL').'/student/login and use the same password to access your student account.' :
+
+						'I am pleased to inform you that you have been registered for '.$this->program_name.' in academic year '.$this->year.'. Your registration number is <strong>'.$this->student->registration_number.'</strong>. Please visit '.config('constants.SITE_URL').'/application/login, using your application username and password, to create your student account.',
                     ]);
     }
 }

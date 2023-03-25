@@ -4048,14 +4048,14 @@ class ApplicationController extends Controller
     public function showInternalTransfer(Request $request)
     {
         $staff = User::find(Auth::user()->id)->staff;
-        $student = Student::whereHas('applicant',function($query) use($staff){
-                     $query->where('campus_id',$staff->campus_id);
-        })->whereHas('academicStatus',function($query){
-                     $query->where('name','FRESHER');
-        })->with(['applicant.selections'=>function($query){
+        $student = Student::whereHas('applicant',function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
+		->whereHas('academicStatus',function($query){$query->where('name','FRESHER');})
+		->whereHas('studentshipStatus', function($query){$query->where('name', 'ACTIVE');})
+		->with(['applicant.selections'=>function($query){
               $query->where('status','SELECTED');
         },'applicant.selections.campusProgram.program'])->where('registration_number',$request->get('registration_number'))->first();
 		
+		return $student;
 		$has_student_role = null;
 		
 		if($student){
