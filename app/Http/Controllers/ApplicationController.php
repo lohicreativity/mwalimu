@@ -2631,6 +2631,8 @@ class ApplicationController extends Controller
 
 
         $days = round($datediff / (60 * 60 * 24)) - 7;
+		
+		return $days.'-'.round($datediff / (60 * 60 * 24));
 
         if(round($datediff / (60 * 60 * 24)) < 0 && round($datediff / (60 * 60 * 24)) > -7){
             $fee_amount = FeeAmount::whereHas('feeItem',function($query){
@@ -2910,7 +2912,7 @@ class ApplicationController extends Controller
 		$transfered_status = false;
         try{
            Mail::to($user)->send(new StudentAccountCreated($student, $selection->campusProgram->program->name,$ac_year->academicYear->year, $transfered_status));
-        }catch(\Exception $e){}
+        }catch(Exception $e){}
         DB::commit();
         if($days < 0){
           return redirect()->to('application/applicants-registration')->with('error','Student successfully registered with registration number '.$student->registration_number.', but has a penalty of '.$amount.' '.$currency);
