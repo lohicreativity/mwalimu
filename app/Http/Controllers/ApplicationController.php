@@ -2370,10 +2370,8 @@ class ApplicationController extends Controller
             return redirect()->back()->with('error','Applicant cannot register. Registration period is over');
         }
 
-        
-
         $applicant = Applicant::with(['intake','campus','nextOfKin','country','region','district','ward','insurances','programLevel'])->find($request->get('applicant_id'));
-		return $applicant;
+
         $applicant->results_check = $request->get('results_check')? 1 : 0;
         $applicant->insurance_check = $request->get('insurance_check')? 1 : 0;
         $applicant->personal_info_check = $request->get('personal_info_check')? 1 : 0;
@@ -2806,7 +2804,7 @@ class ApplicationController extends Controller
         $misc_invoice = Invoice::whereHas('feeType',function($query){
                $query->where('name','LIKE','%Miscellaneous%');
         })->with(['gatewayPayment','feeType'])->where('payable_type','applicant')->where('payable_id',$applicant->id)->first();
-		return $misc_invoice;
+
         $usd_currency = Currency::where('code','USD')->first();
 
         $acpac = new ACPACService;
