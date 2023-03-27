@@ -52,19 +52,22 @@
                   <table class="table table-bordered ss-margin-top ss-paginated-table">
                     <thead>
                         <tr>
+                          <th>SN</th>
                           <th>Name</th>
                           <th>Gender</th>
+						  
                           <th>Registration Number</th>
                           <th>Programme</th>
                         </tr>
                     </thead>
                     <tbody>
-                 @foreach($active_students as $reg)
+                 @foreach($active_students as $key=>$reg)
                    <tr>
+					  <td>{{($key++)}} </td>
                       <td>{{ $reg->student->first_name }} {{ $reg->student->middle_name }} {{ $reg->student->surname }}</td>
                       <td>{{ $reg->student->gender }}</td>
                       <td>{{ $reg->student->registration_number }}</td>
-                      <td>{{ $reg->student->campusProgram->program->name }}</td>
+                      <td>{{ $reg->student->campusProgram->program->code }}</td>
                    </tr>
                  @endforeach
                    </tbody>

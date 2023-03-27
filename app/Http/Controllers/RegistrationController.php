@@ -15,6 +15,8 @@ use App\Domain\Registration\Models\Student;
 use App\Domain\Registration\Models\Registration;
 use App\Domain\Registration\Models\IdCardRequest;
 use App\Domain\Application\Models\InternalTransfer;
+use App\Domain\Application\Models\NectaResultDetail;
+use App\Domain\Application\Models\NacteResultDetail;
 use App\Domain\Settings\Models\Currency;
 use App\Models\User;
 use Illuminate\Support\Facades\Http;
@@ -375,11 +377,12 @@ class RegistrationController extends Controller
 				  $query->where('id',$staff->department_id);
 			})->whereHas('student.studentshipStatus',function($query){
 				  $query->where('name','ACTIVE');
-			})->with(['student.campusProgram.program'])->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->get() : Registration::whereHas('student.studentshipStatus',function($query){
+			})->with(['applicant.nacteResultDetails','applicant.nectaResultDetails','student.campusProgram.program'])->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->get() : Registration::whereHas('student.studentshipStatus',function($query){
 				  $query->where('name','ACTIVE');
 			})->with(['student.campusProgram.program'])->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->get(),
 			'semester'=>Semester::find(session('active_semester_id'))
 		   ];
+		   return $data->applicant->nectaResultDetails;
 		   return view('dashboard.registration.active-students',$data)->withTitle('Active Students');
 	  }
 	  
