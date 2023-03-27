@@ -377,9 +377,9 @@ class RegistrationController extends Controller
 				  $query->where('id',$staff->department_id);
 			})->whereHas('student.studentshipStatus',function($query){
 				  $query->where('name','ACTIVE');
-			})->with(['applicant','applicant.nacteResultDetails','applicant.nectaResultDetails','student.campusProgram.program'])->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->get() : Registration::whereHas('student.studentshipStatus',function($query){
+			})->with(['applicant.nacteResultDetails','applicant.nectaResultDetails','student.campusProgram.program'])->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->get() : Registration::whereHas('student.studentshipStatus',function($query){
 				  $query->where('name','ACTIVE');
-			})->with(['student.campusProgram.program'])->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->get(),
+			})->with(['applicant.nacteResultDetails','applicant.nectaResultDetails','student.campusProgram.program'])->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->get(),
 			'semester'=>Semester::find(session('active_semester_id'))
 		   ];
 		   return $data;
