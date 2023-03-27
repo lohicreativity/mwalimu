@@ -382,7 +382,7 @@ class RegistrationController extends Controller
 			})->with(['student.applicant.nacteResultDetails','student.applicant.nectaResultDetails','student.campusProgram.program'])->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->get(),
 			'semester'=>Semester::find(session('active_semester_id'))
 		   ];
-		   return $data['active_students']->selections[0];
+		   
 		   return view('dashboard.registration.active-students',$data)->withTitle('Active Students');
 	  }
 	  

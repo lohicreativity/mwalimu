@@ -68,10 +68,10 @@
                       <td>{{ $reg->student->first_name }} {{ $reg->student->middle_name }} {{ $reg->student->surname }}</td>
                       <td>{{ $reg->student->gender }}</td>
 					  <td>{{ $reg->student->applicant->index_number }}</td>
-					  @if($reg->student->applicant->nectaResultDetails)@if($reg->student->applicant->nectaResultDetails->exam_id == 2 && $reg->student->applicant->nectaResultDetails->verified == 1)
+					  @if(count($reg->student->applicant->nectaResultDetails) > 0)@if($reg->student->applicant->nectaResultDetails->exam_id == 2 && $reg->student->applicant->nectaResultDetails->verified == 1)
 						  <td>{{ $reg->student->applicant->nectaResultDetails->index_number }}</td>
 					  @endif
-					  @elseif($reg->student->applicant->nactaResultDetails)
+					  @elseif(count($reg->student->applicant->nactaResultDetails) > 0)
 						@if($reg->student->applicant->nactaResultDetails->verified == 1)
 						  <td>{{ $reg->student->applicant->nacteResultDetails->avn }}</td>
 						@endif
