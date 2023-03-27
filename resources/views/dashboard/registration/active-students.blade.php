@@ -55,7 +55,6 @@
                           <th>SN</th>
                           <th>Name</th>
                           <th>Gender</th>
-						  
                           <th>Registration Number</th>
                           <th>Programme</th>
                         </tr>
