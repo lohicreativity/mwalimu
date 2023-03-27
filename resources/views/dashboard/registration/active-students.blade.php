@@ -70,7 +70,7 @@
 					  <td>{{ $reg->student->applicant->index_number }}</td>
 					  <td>
 						@php($fiv_index = null;  $avn = null;)
-						
+
 						@foreach($reg->student->applicant->nectaResultDetails as $detail)
 							@if($detail->exam_id == 2) {{ $fiv_index = $detail->index_number }} @endif
 						@endforeach
