@@ -78,7 +78,7 @@
 						@foreach($reg->student->applicant->nacteResultDetails as $detail)
 							 {{ $avn = $detail->avn }}
 						@endforeach 
-						@if($fiv_index && $avn) {{ $fiv_index; $avn}}
+						@if($fiv_index && $avn) {{ $fiv_index}}; {{ $avn}}
 						@elseif($fiv_index) {{ $fiv_index }}
 						@elseif($avn) {{ $avn }}
 						@endif
