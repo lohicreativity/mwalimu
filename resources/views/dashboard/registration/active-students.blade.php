@@ -68,17 +68,13 @@
                       <td>{{ $reg->student->first_name }} {{ $reg->student->middle_name }} {{ $reg->student->surname }}</td>
                       <td>{{ $reg->student->gender }}</td>
 					  <td>{{ $reg->student->applicant->index_number }}</td>
-					  @if($reg->nectaResultDetails)
-						  @if($reg->nectaResultDetails->exam_id == 2 && $reg->nectaResultDetails->verified == 1)
-						  <td>{{ $reg->nectaResultDetails->index_number }}</td>
-						  @endif
-					  @elseif($reg->nactaResultDetails)
-						@if($reg->nactaResultDetails->verified == 1)
-						  <td>{{ $reg->nacteResultDetails->avn }}</td>
-						@endif
-					  @else
-						  <td> N/A </td>						  
-					  @endif
+					  <td>
+						@foreach($reg->nectaResultDetails as $detail)
+							@if($detail->exam_id == 2) {{ $detail->index_number }} @endif
+						@endforeach <br>
+						@foreach($reg->nacteResultDetails as $detail)
+							{{ $detail->avn }}
+						@endforeach
                       <td>{{ $reg->student->registration_number }}</td>
                       <td>{{ $reg->student->campusProgram->program->code }}</td>
                    </tr>
