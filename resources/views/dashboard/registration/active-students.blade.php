@@ -62,7 +62,7 @@
                     <tbody>
                  @foreach($active_students as $key=>$reg)
                    <tr>
-					  <td>{{($key++)}} </td>
+					  <td>{{($key+1)}} </td>
                       <td>{{ $reg->student->first_name }} {{ $reg->student->middle_name }} {{ $reg->student->surname }}</td>
                       <td>{{ $reg->student->gender }}</td>
                       <td>{{ $reg->student->registration_number }}</td>
