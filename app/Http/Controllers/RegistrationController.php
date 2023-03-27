@@ -15,6 +15,7 @@ use App\Domain\Registration\Models\Student;
 use App\Domain\Registration\Models\Registration;
 use App\Domain\Registration\Models\IdCardRequest;
 use App\Domain\Application\Models\InternalTransfer;
+use App\Domain\Application\Models\Applicant;
 use App\Domain\Application\Models\NectaResultDetail;
 use App\Domain\Application\Models\NacteResultDetail;
 use App\Domain\Settings\Models\Currency;
