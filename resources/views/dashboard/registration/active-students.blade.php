@@ -79,9 +79,9 @@
 							 {{ $avn = $detail->avn }}
 						@endforeach 
 						
-						@if(!empty($fiv_index) && empty($avn)) {{ $fiv_index }}
-						@elseif(empty($fiv_index) && !empty($avn)) {{ $avn }}
-						@elseif(!empty($fiv_index) && !empty($avn)) {{ $fiv_index}}; {{ $avn}}
+						@if(!empty($fiv_index) && empty($avn)) {{ $fiv_index }} 1
+						@elseif(empty($fiv_index) && !empty($avn)) {{ $avn }} 2
+						@elseif(!empty($fiv_index) && !empty($avn)) {{ $fiv_index}}; {{ $avn}} 3
 						@endif
 					  </td>
                       <td>{{ $reg->student->registration_number }}</td>
