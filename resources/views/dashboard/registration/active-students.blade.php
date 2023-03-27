@@ -55,8 +55,8 @@
                           <th>SN</th>
                           <th>Name</th>
                           <th>Gender</th>
-						  <th>Form IV Index No. <th>
-						  <th>Form VI Index No./AVN <th>						  
+						  <th>Form IV Index No. </th>
+						  <th>Form VI Index No./AVN </th>						  
                           <th>Registration Number</th>
                           <th>Programme</th>
                         </tr>
