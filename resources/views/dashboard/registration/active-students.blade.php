@@ -73,8 +73,8 @@
 							@if($detail->exam_id == 2) {{ $detail->index_number }} @endif
 						@endforeach
 						@foreach($reg->student->applicant->nacteResultDetails as $detail)
-							/<br>{{ $detail->avn }}
-						@endforeach
+							/ {{ $detail->avn }}
+						@endforeach </td>
                       <td>{{ $reg->student->registration_number }}</td>
                       <td>{{ $reg->student->campusProgram->program->code }}</td>
                    </tr>
