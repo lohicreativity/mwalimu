@@ -56,6 +56,7 @@
                           <th>Name</th>
                           <th>Gender</th>
 						  <th>Form IV Index No. <th>
+						  <th>Form VI Index No./AVN <th>						  
                           <th>Registration Number</th>
                           <th>Programme</th>
                         </tr>
@@ -67,6 +68,11 @@
                       <td>{{ $reg->student->first_name }} {{ $reg->student->middle_name }} {{ $reg->student->surname }}</td>
                       <td>{{ $reg->student->gender }}</td>
 					  <td>{{ $reg->student->applicant->index_number }}</td>
+					  @if($reg->student->applicant->nectaResultDetails->exam_id == 2 && $reg->student->applicant->nectaResultDetails->verified == 1)
+						  <td>{{ $reg->student->applicant->nectaResultDetails->index_number }}</td>
+					  @elseif($reg->student->applicant->nactaResultDetails->verified == 1)
+						  <td>{{ $reg->student->applicant->nacteResultDetails->avn }}</td>
+					  @endif
                       <td>{{ $reg->student->registration_number }}</td>
                       <td>{{ $reg->student->campusProgram->program->code }}</td>
                    </tr>
