@@ -71,9 +71,9 @@
 					  <td>
 						@foreach($reg->student->nectaResultDetails as $detail)
 							@if($detail->exam_id == 2) {{ $detail->index_number }} @endif
-						@endforeach <br>
-						@foreach($reg->nacteResultDetails as $detail)
-							{{ $detail->avn }}
+						@endforeach
+						@foreach($reg->student->nacteResultDetails as $detail)
+							/<br>{{ $detail->avn }}
 						@endforeach
                       <td>{{ $reg->student->registration_number }}</td>
                       <td>{{ $reg->student->campusProgram->program->code }}</td>
