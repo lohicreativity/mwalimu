@@ -384,7 +384,7 @@ class RegistrationController extends Controller
 		   ];
 		   
 		   foreach($data as $dd){
-			   return $dd->nectaResultDetails;
+			   return $dd->active_students->nectaResultDetails;
 		   }
 		   return view('dashboard.registration.active-students',$data)->withTitle('Active Students');
 	  }
