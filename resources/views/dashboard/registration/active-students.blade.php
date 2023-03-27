@@ -69,12 +69,19 @@
                       <td>{{ $reg->student->gender }}</td>
 					  <td>{{ $reg->student->applicant->index_number }}</td>
 					  <td>
+						@php($fiv_index = null;  $avn = null;)
+						
 						@foreach($reg->student->applicant->nectaResultDetails as $detail)
-							@if($detail->exam_id == 2) {{ $detail->index_number }} @endif
+							@if($detail->exam_id == 2) {{ $fiv_index = $detail->index_number }} @endif
 						@endforeach
 						@foreach($reg->student->applicant->nacteResultDetails as $detail)
-							/ {{ $detail->avn }}
-						@endforeach </td>
+							 {{ $avn = $detail->avn }}
+						@endforeach 
+						@if($fiv_index && $avn) {{ $fiv_index; $avn}}
+						@elseif($fiv_index) {{ $fiv_index }}
+						@elseif($avn) {{ $avn }}
+						@endif
+					  </td>
                       <td>{{ $reg->student->registration_number }}</td>
                       <td>{{ $reg->student->campusProgram->program->code }}</td>
                    </tr>
