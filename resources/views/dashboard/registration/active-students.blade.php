@@ -73,15 +73,15 @@
 						@php($avn = null)
 						
 						@foreach($reg->student->applicant->nectaResultDetails as $detail)
-							@if($detail->exam_id == 2) {{ $fiv_index = $detail->index_number }} @endif
+							@if($detail->exam_id == 2) {{ ($fiv_index = $detail->index_number) }} @endif
 						@endforeach
 						@foreach($reg->student->applicant->nacteResultDetails as $detail)
-							 {{ $avn = $detail->avn }}
+							 {{ ($avn = $detail->avn) }}
 						@endforeach 
 						
-						@if(!empty($fiv_index) && empty($avn)) {{ $fiv_index }} 1
-						@elseif(empty($fiv_index) && !empty($avn)) {{ $avn }} 2
-						@elseif(!empty($fiv_index) && !empty($avn)) {{ $fiv_index}}; {{ $avn}} 3
+						@if(!empty($fiv_index) && empty($avn)) {{ $fiv_index }}
+						@elseif(empty($fiv_index) && !empty($avn)) {{ $avn }}
+						@elseif(!empty($fiv_index) && !empty($avn)) {{ $fiv_index}}; {{ $avn}}
 						@endif
 					  </td>
                       <td>{{ $reg->student->registration_number }}</td>
