@@ -69,10 +69,10 @@
                       <td>{{ $reg->student->gender }}</td>
 					  <td>{{ $reg->student->applicant->index_number }}</td>
 					  <td>
-						@foreach($reg->student->nectaResultDetails as $detail)
+						@foreach($reg->student->applicant->nectaResultDetails as $detail)
 							@if($detail->exam_id == 2) {{ $detail->index_number }} @endif
 						@endforeach
-						@foreach($reg->student->nacteResultDetails as $detail)
+						@foreach($reg->student->applicant->nacteResultDetails as $detail)
 							/<br>{{ $detail->avn }}
 						@endforeach
                       <td>{{ $reg->student->registration_number }}</td>
