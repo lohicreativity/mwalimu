@@ -55,6 +55,7 @@
                           <th>SN</th>
                           <th>Name</th>
                           <th>Gender</th>
+						  <th>Form IV Index No. <th>
                           <th>Registration Number</th>
                           <th>Programme</th>
                         </tr>
@@ -65,6 +66,7 @@
 					  <td>{{($key+1)}} </td>
                       <td>{{ $reg->student->first_name }} {{ $reg->student->middle_name }} {{ $reg->student->surname }}</td>
                       <td>{{ $reg->student->gender }}</td>
+					  <td>{{ $reg->student->applicant->index_number }}</td>
                       <td>{{ $reg->student->registration_number }}</td>
                       <td>{{ $reg->student->campusProgram->program->code }}</td>
                    </tr>

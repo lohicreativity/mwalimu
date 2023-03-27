@@ -383,9 +383,6 @@ class RegistrationController extends Controller
 			'semester'=>Semester::find(session('active_semester_id'))
 		   ];
 		   
-		   foreach($data as $dd){
-			   return $dd->active_students->nectaResultDetails;
-		   }
 		   return view('dashboard.registration.active-students',$data)->withTitle('Active Students');
 	  }
 	  
