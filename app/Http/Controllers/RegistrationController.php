@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Domain\Academic\Models\Award;
 use App\Domain\Academic\Models\SemesterRemark;
 use App\Domain\Academic\Models\AnnualRemark;
 use App\Domain\Academic\Models\Semester;
