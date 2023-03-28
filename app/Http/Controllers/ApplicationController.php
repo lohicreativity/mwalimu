@@ -2537,7 +2537,7 @@ class ApplicationController extends Controller
         }else{
             $student = new Student;
         }
-		return 'MNMA/'.$program_code.'/'.$code.'/'.$year;
+		
         $student->applicant_id = $applicant->id;
         $student->first_name = $applicant->first_name;
         $student->middle_name = $applicant->middle_name;
