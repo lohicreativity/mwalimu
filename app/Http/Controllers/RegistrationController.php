@@ -388,11 +388,11 @@ class RegistrationController extends Controller
 		   }else{
 			   $active_students = Registration::whereHas('student.studentshipStatus',function($query){
 				  $query->where('name','ACTIVE')->orWhere('name','RESUMED');
-			})->with(['student.applicant.nacteResultDetails','student.applicant.nectaResultDetails','student.campusProgram.program'])->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->get(),
-			'semester'=>Semester::find(session('active_semester_id'));
+			})->with(['student.applicant.nacteResultDetails','student.applicant.nectaResultDetails','student.campusProgram.program'])->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->get();
 		   }
 		   $data = [
-		    'active_students'=>$active_students
+		    'active_students'=>$active_students,
+			'semester'=>Semester::find(session('active_semester_id'))
 		   ];
 		   return view('dashboard.registration.active-students',$data)->withTitle('Active Students');
 	  }
