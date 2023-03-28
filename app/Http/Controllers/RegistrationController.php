@@ -370,7 +370,7 @@ class RegistrationController extends Controller
 	  * Show active students
 	  */
 	  public function showActiveStudents(Request $request)
-	  {
+	  {return $request;
 		   $staff = User::find(Auth::user()->id)->staff;
 		   $active_students = null;
 		   if(Auth::user()->hasRole('hod')){
@@ -393,7 +393,10 @@ class RegistrationController extends Controller
 		   }
 		   $data = [
 		    'active_students'=>$active_students,
-			'semester'=>Semester::find(session('active_semester_id'))
+			'semester'=>Semester::find(session('active_semester_id')),
+			'awards'=>Award::all(),
+			'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
+            'study_academic_year'=>$request->has('study_academic_year_id')? StudyAcademicYear::with('academicYear')->find($request->get('study_academic_year_id')) : null,
 		   ];
 		   return view('dashboard.registration.active-students',$data)->withTitle('Active Students');
 	  }
