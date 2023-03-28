@@ -370,7 +370,7 @@ class RegistrationController extends Controller
 	  * Show active students
 	  */
 	  public function showActiveStudents(Request $request)
-	  {return $request;
+	  {return $request->get('study_academic_year_id');
 		   $staff = User::find(Auth::user()->id)->staff;
 		   $active_students = null;
 		   if(Auth::user()->hasRole('hod')){
