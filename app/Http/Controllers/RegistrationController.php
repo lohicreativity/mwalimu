@@ -372,15 +372,27 @@ class RegistrationController extends Controller
 	  public function showActiveStudents(Request $request)
 	  {
 		   $staff = User::find(Auth::user()->id)->staff;
-		   $data = [
-		    'active_students'=>Auth::user()->hasRole('hod')? Registration::whereHas('student.campusProgram.program.departments',function($query) use($staff){
+		   $active_students = null;
+		   if(Auth::user()->hasRole('hod')){
+			  $active_students = Registration::whereHas('student.campusProgram.program.departments',function($query) use($staff){
 				  $query->where('id',$staff->department_id);
 			})->whereHas('student.studentshipStatus',function($query){
-				  $query->where('name','ACTIVE');
-			})->with(['student.applicant.nacteResultDetails','student.applicant.nectaResultDetails','student.campusProgram.program'])->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->get() : Registration::whereHas('student.studentshipStatus',function($query){
-				  $query->where('name','ACTIVE');
+				  $query->where('name','ACTIVE')->orWhere('name','RESUMED');
+			})->with(['student.applicant.nacteResultDetails','student.applicant.nectaResultDetails','student.campusProgram.program'])->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->get();
+		   }elseif(Auth::user()->hasRole('admission-officer') || Auth::user()->hasRole('examin-officer')){
+			   $active_students = Registration::whereHas('student.campusProgram',function($query) use($staff){
+				  $query->where('campus_id',$staff->campus_id);
+			})->whereHas('student.studentshipStatus',function($query){
+				  $query->where('name','ACTIVE')->orWhere('name','RESUMED');
+			})->with(['student.applicant.nacteResultDetails','student.applicant.nectaResultDetails','student.campusProgram.program'])->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->get();
+		   }else{
+			   $active_students = Registration::whereHas('student.studentshipStatus',function($query){
+				  $query->where('name','ACTIVE')->orWhere('name','RESUMED');
 			})->with(['student.applicant.nacteResultDetails','student.applicant.nectaResultDetails','student.campusProgram.program'])->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->get(),
-			'semester'=>Semester::find(session('active_semester_id'))
+			'semester'=>Semester::find(session('active_semester_id'));
+		   }
+		   $data = [
+		    'active_students'=>$active_students
 		   ];
 		   return view('dashboard.registration.active-students',$data)->withTitle('Active Students');
 	  }

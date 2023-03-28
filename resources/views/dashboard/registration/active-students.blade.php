@@ -81,7 +81,7 @@
 						
 						@if(!empty($fiv_index) && empty($avn)) {{ $fiv_index }}
 						@elseif(empty($fiv_index) && !empty($avn)) {{ $avn }}
-						@elseif(!empty($fiv_index) && !empty($avn)) {{ $fiv_index}}; {{ $avn}}
+						@elseif(!empty($fiv_index) && !empty($avn)) {{ $fiv_index}}; <br>{{ $avn}}
 						@endif
 					  </td>
                       <td>{{ $reg->student->registration_number }}</td>
