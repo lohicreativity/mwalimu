@@ -376,7 +376,8 @@ class RegistrationController extends Controller
 		   if(Auth::user()->hasRole('hod')){
 			  $active_students = Registration::whereHas('student.campusProgram.program.departments',function($query) use($staff){
 				  $query->where('id',$staff->department_id);
-			})->whereHas('student.studentshipStatus',function($query){
+			})->whereHas('student.campusProgram', function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
+			->whereHas('student.studentshipStatus',function($query){
 				  $query->where('name','ACTIVE')->orWhere('name','RESUMED');
 			})->with(['student.applicant.nacteResultDetails','student.applicant.nectaResultDetails','student.campusProgram.program'])->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->get();
 		   }elseif(Auth::user()->hasRole('admission-officer') || Auth::user()->hasRole('examination-officer')){
