@@ -481,7 +481,7 @@
                     </select>
                   </div>
 
-                  <div class="form-group col-3">
+<!--                  <div class="form-group col-3">
                     {!! Form::label('','NVA Level') !!}
                     <select name="nva_level" class="form-control" style="width: 100%;" required>
                        <option value="">Select NVA Level</option>
@@ -490,7 +490,7 @@
                        <option value="3">3</option>
                     </select>
                   </div>
-<!--
+
                   <div class="form-group col-3">
                     {!! Form::label('','Equivalent Average Grade') !!}
                     <select name="equivalent_average_grade" class="form-control" disabled="disabled">
@@ -855,7 +855,7 @@
                     </select>
                   </div>
 
-                  <div class="form-group col-3">
+ <!--                 <div class="form-group col-3">
                     {!! Form::label('','NVA Level') !!}
                     <select name="nva_level" class="form-control" style="width: 100%;">
                        <option value="">Select NVA Level</option>
@@ -873,7 +873,7 @@
                        <option value="0">No</option>
                     </select>
                   </div>
-<!--
+
                   <div class="form-group col-3">
                     {!! Form::label('','Principle Pass Points') !!}
                     {!! Form::text('principle_pass_points',null,$principle_pass_points) !!}
