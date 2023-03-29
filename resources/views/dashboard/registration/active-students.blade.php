@@ -102,7 +102,7 @@
                  @foreach($active_students as $key=>$reg)
                    <tr>
 					  <td>{{($key+1)}} </td>
-                      <td>{{ $reg->student->first_name }} {{ $reg->student->middle_name }} {{ $reg->student->surname }}</td>
+					  <td><a href="#" data-toggle="modal" data-target="#ss-progress-{{ $applicant->id }}">{{ $reg->student->first_name }} {{ $reg->student->middle_name }} {{ $reg->student->surname }}</a></td>
                       <td>{{ $reg->student->gender }}</td>
 					  <td>{{ $reg->student->applicant->index_number }}</td>
 					  <td>
@@ -130,6 +130,123 @@
                   
                </div>
             </div>
+			
+			     @foreach($active_students as $reg)
+                    <div class="modal fade" id="ss-progress-{{ $applicant->id }}">
+                        <div class="modal-dialog modal-lg">
+                          <div class="modal-content modal-lg">
+                            <div class="modal-header">
+                              <h5 class="modal-title"><i class="fa fa-exclamation-sign"></i>{{ $reg->student->first_name }} {{ $reg->student->surname }} | {{ $reg->student->registration_number }} ({{ $reg->student->applicant->index_number }}) | {{ $reg->student->campusProgram->program->code }} </h5>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+                            <div class="modal-body">
+
+                              <div class="accordion" id="accordionExample-2">
+
+                                <div class="card">
+                                  <div class="card-header" id="ss-basic-information">
+                                      <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseBasicInformation" aria-expanded="true" aria-controls="collapseBasicInformation">
+                                        1. Basic Information
+                                        
+                                      </button>
+                                  </div>
+
+                                  <div id="collapseBasicInformation" class="collapse" aria-labelledby="ss-basic-information" data-parent="#accordionExample-2">
+                                    <div class="card-body">
+
+                                      <table class="table table-bordered table-condensed">
+                                        <tr>
+                                          <td>First name: </td>
+                                          <td>{{ $reg->student->first_name }}</td>
+                                        </tr>
+                                        <tr>
+                                          <td>Middle name: </td>
+                                          <td>{{ $reg->student->middle_name }}</td>
+                                        </tr>
+                                        <tr>
+                                          <td>Surname: </td>
+                                          <td>{{ $reg->student->surname }}</td>
+                                        </tr>
+                                        <tr>
+                                          <td>Gender: </td>
+                                          <td>{{ $reg->student->gender }}</td>
+                                        </tr>
+                                        <tr>
+                                          <td>Phone: </td>
+                                          <td>{{ $reg->student->phone }}</td>
+                                        </tr>
+                                        <tr>
+                                          <td>Address: </td>
+                                          <td>{{ $reg->student->applicant->address }}</td>
+                                        </tr>
+                                      </table>
+
+                                    </div>
+                                  </div>
+
+                                </div>
+
+                                <div class="card">
+                                  <div class="card-header" id="ss-next-of-kin">
+                                      <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseNextOfKin" aria-expanded="true" aria-controls="collapseNextOfKin">
+                                        2. Next Of Kin
+                                        
+                                      </button>
+                                  </div>
+
+                                  <div id="collapseNextOfKin" class="collapse" aria-labelledby="ss-next-of-kin" data-parent="#accordionExample-2">
+                                    <div class="card-body">
+
+                                      @if($reg->student->applicant->nextOfKin)
+                                      <table class="table table-bordered table-condensed">
+                                        <tr>
+                                          <td>First name: </td>
+                                          <td>{{ $reg->student->applicant->nextOfKin->first_name }}</td>
+                                        </tr>
+                                        <tr>
+                                          <td>Middle name: </td>
+                                          <td>{{ $reg->student->applicant->nextOfKin->middle_name }}</td>
+                                        </tr>
+                                        <tr>
+                                          <td>Surname: </td>
+                                          <td>{{ $reg->student->applicant->nextOfKin->surname }}</td>
+                                        </tr>
+                                        <tr>
+                                          <td>Gender: </td>
+                                          <td>{{ $reg->student->applicant->nextOfKin->gender }}</td>
+                                        </tr>
+                                        <tr>
+                                          <td>Phone: </td>
+                                          <td>{{ $reg->student->applicant->nextOfKin->phone }}</td>
+                                        </tr>
+                                        <tr>
+                                          <td>Address: </td>
+                                          <td>{{ $reg->student->applicant->nextOfKin->address }}</td>
+                                        </tr>
+                                      </table>
+                                      @endif       
+                                    </div>
+                                  </div>
+                                  
+                                </div>
+
+                                
+                              </div>
+
+                            </div>
+                            <div class="modal-footer justify-content-between">
+                              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
+                          </div>
+                          <!-- /.modal-content -->
+                        </div>
+                        <!-- /.modal-dialog -->
+                      </div>
+                      <!-- /.modal -->
+                    @endforeach
+
             @endif
            </div>
           </div>
