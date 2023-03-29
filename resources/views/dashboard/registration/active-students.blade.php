@@ -102,7 +102,7 @@
                  @foreach($active_students as $key=>$reg)
                    <tr>
 					  <td>{{($key+1)}} </td>
-					  <td><a href="#" data-toggle="modal" data-target="#ss-progress-{{ $applicant->id }}">{{ $reg->student->first_name }} {{ $reg->student->middle_name }} {{ $reg->student->surname }}</a></td>
+					  <td><a href="#" data-toggle="modal" data-target="#ss-progress-{{ $reg->student->id }}">{{ $reg->student->first_name }} {{ $reg->student->middle_name }} {{ $reg->student->surname }}</a></td>
                       <td>{{ $reg->student->gender }}</td>
 					  <td>{{ $reg->student->applicant->index_number }}</td>
 					  <td>
@@ -132,7 +132,7 @@
             </div>
 			
 			     @foreach($active_students as $reg)
-                    <div class="modal fade" id="ss-progress-{{ $applicant->id }}">
+                    <div class="modal fade" id="ss-progress-{{ $reg->student->id }}">
                         <div class="modal-dialog modal-lg">
                           <div class="modal-content modal-lg">
                             <div class="modal-header">
