@@ -48,7 +48,7 @@
                   {!! Form::open(['url'=>'registration/active-students','class'=>'ss-form-processing','method'=>'GET']) !!}
                     <div class="row">
                    <div class="form-group col-6">
-                    {!! Form::label('','Select study academic year') !!}
+                    {!! Form::label('','Select academic year') !!}
                     <select name="study_academic_year_id" class="form-control" required>
                        <option value="">Select Academic Year</option>
                        @foreach($study_academic_years as $year)
