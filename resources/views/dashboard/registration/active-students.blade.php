@@ -146,12 +146,6 @@
                               <div class="accordion" id="accordionExample-2">
 
                                 <div class="card">
-                                  <div class="card-header" id="ss-basic-information">
-                                      <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseBasicInformation" aria-expanded="true" aria-controls="collapseBasicInformation">
-                                        1. Basic Information
-                                        
-                                      </button>
-                                  </div>
 
                                   <div id="collapseBasicInformation" class="collapse" aria-labelledby="ss-basic-information" data-parent="#accordionExample-2">
                                     <div class="card-body">
@@ -189,12 +183,6 @@
                                 </div>
 
                                 <div class="card">
-                                  <div class="card-header" id="ss-next-of-kin">
-                                      <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseNextOfKin" aria-expanded="true" aria-controls="collapseNextOfKin">
-                                        2. Next Of Kin
-                                        
-                                      </button>
-                                  </div>
 
                                   <div id="collapseNextOfKin" class="collapse" aria-labelledby="ss-next-of-kin" data-parent="#accordionExample-2">
                                     <div class="card-body">
@@ -231,6 +219,7 @@
                                   </div>
                                   
                                 </div>
+                                
 
                                 
                               </div>
