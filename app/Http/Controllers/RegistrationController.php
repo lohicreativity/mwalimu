@@ -19,6 +19,7 @@ use App\Domain\Application\Models\InternalTransfer;
 use App\Domain\Application\Models\NectaResultDetail;
 use App\Domain\Application\Models\NacteResultDetail;
 use App\Domain\Settings\Models\Currency;
+use App\Domain\Settings\Models\DisabilityStatus;
 use App\Models\User;
 use Illuminate\Support\Facades\Http;
 use Intervention\Image\ImageManagerStatic as Image;
@@ -379,7 +380,8 @@ class RegistrationController extends Controller
 			  ->whereHas('student.campusProgram.program',function($query) use($request){$query->where('award_id',$request->get('program_level_id'));})
 			  ->whereHas('student.campusProgram', function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
 			  ->whereHas('student.studentshipStatus',function($query){$query->where('name','ACTIVE')->orWhere('name','RESUMED');})
-			  ->with(['student.applicant.nextOfKin','student.applicant.nacteResultDetails','student.applicant.nectaResultDetails','student.campusProgram.program'])
+			  ->with(['student.applicant.nextOfKin','student.applicant.nacteResultDetails','student.applicant.nectaResultDetails','student.campusProgram.program',
+			          'student.applicant.disabilityStatus'])
 			  ->where('study_academic_year_id', $request->get('study_academic_year_id'))
 			  ->where('semester_id',session('active_semester_id'))->get();
 		   }elseif(Auth::user()->hasRole('administrator') || Auth::user()->hasRole('arc')){

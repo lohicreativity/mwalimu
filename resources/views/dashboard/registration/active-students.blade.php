@@ -188,7 +188,30 @@
 													<i class="fa fa-chevron-right list-group-chevron"></i>
 												</a> 
 										</div> <!-- /.list-group -->
-								<div class="accordion" id="accordionExample-2">
+								<div class="accordion" id="student-accordion">
+									<div class="card">
+									  <div class="card-header" id="ss-address">
+										  <button class="btn text-left" data-toggle="collapse" data-target="#collapse-address" aria-expanded="true" aria-controls="collapse-address">
+											&nbsp; More Details &nbsp; <i class="fa fa-chevron-right list-group-chevron"></i>
+										  </button>
+									  </div>
+
+									  <div id="collapse-address" class="collapse" aria-labelledby="ss-address" data-parent="#student-accordion">
+										<div class="card-body">
+
+										  @if($reg->student->applicant)
+											  &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Gender:</span> &nbsp; @if($reg->student->applicant->gender == 'M') Male @elseif($reg->student->applicant->nextOfKin->gender == 'F') Female @endif
+											  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Date of Birth:</span> &nbsp; {{ $reg->student->applicant->birth_date }}
+											  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Nationality:</span> &nbsp; {{ $reg->student->applicant->nationality }}											  
+											  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Disability:</span> &nbsp; {{ $reg->student->applicant->disabilityStatus->name }}
+											  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Entry Mode:</span> &nbsp; {{ $reg->student->applicant->entry_mode }}	 												  
+											  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Postal Address:</span> &nbsp; {{ $reg->student->applicant->address }}	 	
+											  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Physical Address:</span> &nbsp; {{ $reg->student->applicant->nextOfKin->address }}	 	
+										  @endif
+										</div>
+									  </div>
+									</div>
+									
 									<div class="card">
 									  <div class="card-header" id="ss-next-of-kin">
 										  <button class="btn text-left" data-toggle="collapse" data-target="#collapseNextOfKin" aria-expanded="true" aria-controls="collapseNextOfKin">
@@ -196,16 +219,16 @@
 										  </button>
 									  </div>
 
-									  <div id="collapseNextOfKin" class="collapse" aria-labelledby="ss-next-of-kin" data-parent="#accordionExample-2">
+									  <div id="collapseNextOfKin" class="collapse" aria-labelledby="ss-next-of-kin" data-parent="#student-accordion">
 										<div class="card-body">
 
 										  @if($reg->student->applicant->nextOfKin)
 											  &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Names:</span> &nbsp; {{ $reg->student->applicant->nextOfKin->first_name }} {{ $reg->student->applicant->nextOfKin->middle_name }} {{ $reg->student->applicant->nextOfKin->surname }}
-											  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Gender:</span> &nbsp; {{ $reg->student->applicant->nextOfKin->gender }}
+											  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Gender:</span> &nbsp; @if($reg->student->applicant->nextOfKin->gender == 'M') Male @elseif($reg->student->applicant->nextOfKin->gender == 'F') Female @endif
 											  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Relationship:</span> &nbsp; {{ $reg->student->applicant->nextOfKin->relationship }}
 											  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Nationality:</span> &nbsp; {{ $reg->student->applicant->nextOfKin->nationality }}											  
 											  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Phone:</span> &nbsp; {{ $reg->student->applicant->nextOfKin->phone }}	
-											  &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Address:</span> &nbsp; {{ $reg->student->applicant->nextOfKin->address }}	 	
+											  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Address:</span> &nbsp; {{ $reg->student->applicant->nextOfKin->address }}	 	
 										   @endif
 										</div>
 									  </div>
