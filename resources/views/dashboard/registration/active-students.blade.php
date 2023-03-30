@@ -140,7 +140,7 @@
                                 <span aria-hidden="true">&times;</span>
                               </button>
                             </div>
-                            <div class="modal-body">
+
 
 								<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 								<!-- <div class="container bootstrap snippets bootdey"> -->
@@ -191,7 +191,7 @@
 										</div>
 									</div>
 								</div>
-							</div>                                                            
+                                                           
 						  </div>
                         </div>
                           <!-- /.modal-content -->
