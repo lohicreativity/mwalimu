@@ -144,7 +144,7 @@
 
  <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
  <!-- <div class="container bootstrap snippets bootdey"> -->
-    <div class="col-md-7">
+    <div class="col-md-9">
 		<div class="row">
 			<div class="col-md-4 col-sm-5">
 				<div class="thumbnail">
@@ -180,7 +180,7 @@
 
 			<div class="col-md-8 col-sm-7">
 				<h2>{{ $reg->student->first_name }} {{ $reg->student->middle_name }} {{ $reg->student->surname }}</h2>
-				<h4>{{ $reg->student->registration_number }} | {{ $reg->student->campusProgram->program->code}} | Year {{ $reg->student->year_of_study }} - <span style="color:red">{{ $reg->student->studentshipStatus->name }} </span></h4>
+				<h5>{{ $reg->student->registration_number }} | {{ $reg->student->campusProgram->program->code}} | Year {{ $reg->student->year_of_study }} - <span style="color:red">{{ $reg->student->studentshipStatus->name }} </span></h5>
 				<ul style="list-style-type: none">
 					<li><i class="icon-li fa fa-envelope"></i> $reg->student->mail</li>
 					<li><i class="icon-li fa fa-phone"></i> $reg->student->phone</li>
