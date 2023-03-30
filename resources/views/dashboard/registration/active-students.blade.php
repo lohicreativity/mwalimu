@@ -164,30 +164,27 @@
 				</ul>
 				<hr>
 
-				<div class="list-group">  
-					<a href="#" class="list-group-item" >
-						<i class="fa fa-asterisk"></i> &nbsp;&nbsp;Postal & Physical Address
-						<i class="fa fa-chevron-right list-group-chevron"></i>
-					</a> 
-					<a href="#" class="list-group-item">
-						<i class="fa fa-book"></i> &nbsp;&nbsp;Next of Kin Details
-						<i class="fa fa-chevron-right list-group-chevron"></i>
-						<span class="badge">3</span>
-					</a> 
-<!--					<a href="#" class="list-group-item">
-						<i class="fa fa-envelope"></i> &nbsp;&nbsp;Messages
-						<i class="fa fa-chevron-right list-group-chevron"></i>
-					</a> 
-					<a href="#" class="list-group-item">
-						<i class="fa fa-group"></i> &nbsp;&nbsp;Friends
-						<i class="fa fa-chevron-right list-group-chevron"></i>
-						<span class="badge">7</span>
-					</a> 
-					<a href="#" class="list-group-item">
-						<i class="fa fa-cog"></i> &nbsp;&nbsp;Settings
-						<i class="fa fa-chevron-right list-group-chevron"></i>
-					</a> 
--->				</div> <!-- /.list-group -->
+                                <div class="card">
+                                  <div class="card-header" id="ss-next-of-kin">
+                                      <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseNextOfKin" aria-expanded="true" aria-controls="collapseNextOfKin">
+                                        Next Of Kin Details <i class="fa fa-chevron-right list-group-chevron"></i>
+                                      </button>
+                                  </div>
+
+                                  <div id="collapseNextOfKin" class="collapse" aria-labelledby="ss-next-of-kin" data-parent="#accordionExample-2">
+                                    <div class="card-body">
+
+                                      @if($reg->student->applicant->nextOfKin)
+                                      <table class="table table-bordered table-condensed">
+                                        <tr>
+                                          <td>First name: </td>
+                                          <td>{{ $reg->student->applicant->nextOfKin->first_name }}</td>
+                                        </tr>
+									  </table>
+									  </div>
+									  </div>
+									  </div>
+
 			</div>
 		</div>
 	</div>
