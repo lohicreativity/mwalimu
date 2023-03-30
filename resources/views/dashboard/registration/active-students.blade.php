@@ -144,7 +144,7 @@
 
  <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
  <!-- <div class="container bootstrap snippets bootdey"> -->
-    <div class="col-md-9">
+    <div class="col-md-12">
 		<div class="row">
 			<div class="col-md-4 col-sm-5">
 				<div class="thumbnail">
@@ -154,7 +154,7 @@
 			</div> <!-- /.col -->
 
 
-			<div class="col-md-8 col-sm-9">
+			<div class="col-md-8 col-sm-12">
 				<h2>{{ $reg->student->first_name }} {{ $reg->student->middle_name }} {{ $reg->student->surname }}</h2>
 				<h6>{{ $reg->student->registration_number }} &nbsp; | &nbsp; {{ $reg->student->campusProgram->program->code}} &nbsp; | &nbsp; Year {{ $reg->student->year_of_study }} &nbsp; | &nbsp; <span style="color:red">{{ $reg->student->studentshipStatus->name }} </span></h6>
 				<hr>
