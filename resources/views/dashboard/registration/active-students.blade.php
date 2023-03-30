@@ -197,18 +197,17 @@
                                   <div class="card-header" id="ss-next-of-kin">
                                       <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseNextOfKin" aria-expanded="true" aria-controls="collapseNextOfKin">
                                         2. Next Of Kin
-                                        @if($applicant->next_of_kin_complete_status == 1) <i class="fa fa-check float-right"></i> @endif
                                       </button>
                                   </div>
 
                                   <div id="collapseNextOfKin" class="collapse" aria-labelledby="ss-next-of-kin" data-parent="#accordionExample-2">
                                     <div class="card-body">
 
-                                      @if($applicant->nextOfKin)
+                                      @if($reg->student->applicant->nextOfKin)
                                       <table class="table table-bordered table-condensed">
                                         <tr>
                                           <td>First name: </td>
-                                          <td>{{ $applicant->nextOfKin->first_name }}</td>
+                                          <td>{{ $reg->student->applicant->nextOfKin->first_name }}</td>
                                         </tr>
 										</table>
 									   @endif
