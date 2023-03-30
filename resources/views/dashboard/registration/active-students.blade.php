@@ -148,7 +148,7 @@
 		<div class="row">
 			<div class="col-md-4 col-sm-5">
 				<div class="thumbnail">
-					<img src="https://bootdey.com/img/Content/User_for_snippets.png" alt="Profile Picture">
+					<img src="https://bootdey.com/img/Content/User_for_snippets.png" width="5%" alt="Profile Picture">
 				</div> <!-- /.thumbnail -->
 				<br>
 				<div class="list-group">  
@@ -183,8 +183,8 @@
 				<h6>{{ $reg->student->registration_number }} | {{ $reg->student->campusProgram->program->code}} | Year {{ $reg->student->year_of_study }} | <span style="color:red">{{ $reg->student->studentshipStatus->name }} </span></h6>
 				<hr>
 				<ul style="list-style-type: none">
-					<li><i class="icon-li fa fa-envelope"></i> $reg->student->mail</li>
-					<li><i class="icon-li fa fa-phone"></i> $reg->student->phone</li>
+					<li><i class="icon-li fa fa-envelope"></i> {{ $reg->student->mail }}</li>
+					<li><i class="icon-li fa fa-phone"></i> {{ $reg->student->phone }}</li>
 				</ul>
 				<hr>
 			</div>
