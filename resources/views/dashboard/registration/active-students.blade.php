@@ -156,7 +156,7 @@
 
 			<div class="col-md-8 col-sm-9">
 				<h2>{{ $reg->student->first_name }} {{ $reg->student->middle_name }} {{ $reg->student->surname }}</h2>
-				<h6>{{ $reg->student->registration_number }}  |  {{ $reg->student->campusProgram->program->code}}  |  Year {{ $reg->student->year_of_study }}  |  <span style="color:red">{{ $reg->student->studentshipStatus->name }} </span></h6>
+				<h6>{{ $reg->student->registration_number }} &nbsp; | &nbsp; {{ $reg->student->campusProgram->program->code}} &nbsp; | &nbsp; Year {{ $reg->student->year_of_study }} &nbsp; | &nbsp; <span style="color:red">{{ $reg->student->studentshipStatus->name }} </span></h6>
 				<hr>
 				<ul style="list-style-type: none; inline">
 					<li><i class="icon-li fa fa-envelope"></i> {{ $reg->student->mail }}</li>
@@ -166,11 +166,11 @@
 								<br>
 				<div class="list-group">  
 					<a href="#" class="list-group-item" >
-						<i class="fa fa-asterisk"></i> &nbsp;&nbsp;Contact Details
+						<i class="fa fa-asterisk"></i> &nbsp;&nbsp;Postal & Physical Address
 						<i class="fa fa-chevron-right list-group-chevron"></i>
 					</a> 
 					<a href="#" class="list-group-item">
-						<i class="fa fa-book"></i> &nbsp;&nbsp;Next of Kin
+						<i class="fa fa-book"></i> &nbsp;&nbsp;Next of Kin Details
 						<i class="fa fa-chevron-right list-group-chevron"></i>
 						<span class="badge">3</span>
 					</a> 
