@@ -158,12 +158,33 @@
 				<h2>{{ $reg->student->first_name }} {{ $reg->student->middle_name }} {{ $reg->student->surname }}</h2>
 				<h6>{{ $reg->student->registration_number }} &nbsp; | &nbsp; {{ $reg->student->campusProgram->program->code}} &nbsp; | &nbsp; Year {{ $reg->student->year_of_study }} &nbsp; | &nbsp; <span style="color:red">{{ $reg->student->studentshipStatus->name }} </span></h6>
 				<hr>
-				<ul style="list-style-type: none; inline">
-					<li><i class="icon-li fa fa-envelope"></i> {{ $reg->student->mail }}</li>
+				<ul style="list-style-type: none; float:right">
+					<li><i class="icon-li fa fa-envelope"></i> {{ $reg->student->email }}</li>
 					<li><i class="icon-li fa fa-phone"></i> {{ $reg->student->phone }}</li>
 				</ul>
 				<hr>
-								<br>
+
+                                <div class="card">
+                                  <div class="card-header" id="ss-next-of-kin">
+                                      <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseNextOfKin" aria-expanded="true" aria-controls="collapseNextOfKin">
+                                        Next Of Kin Details <i class="fa fa-chevron-right list-group-chevron"></i>
+                                      </button>
+                                  </div>
+
+                                  <div id="collapseNextOfKin" class="collapse" aria-labelledby="ss-next-of-kin" data-parent="#accordionExample-2">
+                                    <div class="card-body">
+
+                                      @if($reg->student->applicant->nextOfKin)
+                                      <table class="table table-bordered table-condensed">
+                                        <tr>
+                                          <td>First name: </td>
+                                          <td>{{ $reg->student->applicant->nextOfKin->first_name }}</td>
+                                        </tr>
+                                        <tr>
+									  </table>
+									  </div>
+									  </div>
+<!--
 				<div class="list-group">  
 					<a href="#" class="list-group-item" >
 						<i class="fa fa-asterisk"></i> &nbsp;&nbsp;Postal & Physical Address
@@ -174,7 +195,7 @@
 						<i class="fa fa-chevron-right list-group-chevron"></i>
 						<span class="badge">3</span>
 					</a> 
-<!--					<a href="#" class="list-group-item">
+					<a href="#" class="list-group-item">
 						<i class="fa fa-envelope"></i> &nbsp;&nbsp;Messages
 						<i class="fa fa-chevron-right list-group-chevron"></i>
 					</a> 
