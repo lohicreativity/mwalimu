@@ -131,11 +131,11 @@
                </div>
             </div>
 			
-<!--			     @foreach($active_students as $reg)
+			     @foreach($active_students as $reg)
                     <div class="modal fade" id="ss-progress-{{ $reg->student->id }}">
                         <div class="modal-dialog modal-lg">
                           <div class="modal-content modal-lg">
-                            <div class="modal-header">
+ <!--                           <div class="modal-header">
                               <h5 class="modal-title"><i class="fa fa-exclamation-sign"></i>{{ $reg->student->first_name }} {{ $reg->student->surname }} | {{ $reg->student->registration_number }} ({{ $reg->student->applicant->index_number }}) | {{ $reg->student->campusProgram->program->code }} </h5>
                               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
@@ -297,6 +297,13 @@
 	</div>
 </div>                                                            
 
+                         </div>
+                          <!-- /.modal-content -->
+                        </div> 
+                        <!-- /.modal-dialog -->
+                     </div>
+                      <!-- /.modal -->
+                    @endforeach
 
 
             @endif
