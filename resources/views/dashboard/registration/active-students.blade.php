@@ -164,26 +164,7 @@
 							</ul>
 							<hr>
 
-							<div class="card">
-							  <div class="card-header" id="ss-next-of-kin">
-								  <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseNextOfKin" aria-expanded="true" aria-controls="collapseNextOfKin">
-									Next Of Kin Details <i class="fa fa-chevron-right list-group-chevron"></i>
-								  </button>
-							  </div>
 
-							  <div id="collapseNextOfKin" class="collapse" aria-labelledby="ss-next-of-kin" data-parent="#accordionExample-2">
-								<div class="card-body">
-
-								  @if($reg->student->applicant->nextOfKin)
-								  <table class="table table-bordered table-condensed">
-									<tr>
-									  <td>First name: </td>
-									  <td>{{ $reg->student->applicant->nextOfKin->first_name }}</td>
-									</tr>
-								  </table>
-								</div>
-							  </div>
-							</div>
 						</div>
 					</div>
 				</div>
