@@ -208,8 +208,8 @@
 						<i class="fa fa-cog"></i> &nbsp;&nbsp;Settings
 						<i class="fa fa-chevron-right list-group-chevron"></i>
 					</a> 
--->				</div> <!-- /.list-group -->
-			</div>
+			</div> <!-- /.list-group -->
+-->				</div>
 		</div>
 	</div>
 </div>                                                            
