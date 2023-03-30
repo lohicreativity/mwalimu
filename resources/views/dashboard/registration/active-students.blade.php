@@ -162,32 +162,7 @@
 												<li><i class="icon-li fa fa-envelope"></i> &nbsp; &nbsp;{{ $reg->student->email }}</li>
 												<li><i class="icon-li fa fa-phone"></i> &nbsp; &nbsp;{{ $reg->student->phone }}</li>
 											</ul>
-											<hr>
-
-								<!--			<div class="list-group">  
-												<a href="#" class="list-group-item btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseBasicInformation" aria-expanded="true" aria-controls="collapseBasicInformation">
-												&nbsp;&nbsp;Postal & Physical Address
-													<i class="fa fa-chevron-right list-group-chevron"></i>
-												</a> 
-												<a href="#" class="list-group-item">
-												 &nbsp;&nbsp;Next of Kin Details
-													<i class="fa fa-chevron-right list-group-chevron"></i>
-													<span class="badge">3</span>
-												</a> 
-												<a href="#" class="list-group-item">
-													<i class="fa fa-envelope"></i> &nbsp;&nbsp;Messages
-													<i class="fa fa-chevron-right list-group-chevron"></i>
-												</a> 
-												<a href="#" class="list-group-item">
-													<i class="fa fa-group"></i> &nbsp;&nbsp;Friends
-													<i class="fa fa-chevron-right list-group-chevron"></i>
-													<span class="badge">7</span>
-												</a> 
-												<a href="#" class="list-group-item">
-													<i class="fa fa-cog"></i> &nbsp;&nbsp;Settings
-													<i class="fa fa-chevron-right list-group-chevron"></i>
-												</a> 
-										</div> <!-- /.list-group -->
+											
 											<div class="accordion" id="student-accordion">
 												<div class="card">
 												  <div class="card-header" id="ss-address">
