@@ -181,9 +181,9 @@
                                           <td>{{ $reg->student->applicant->nextOfKin->first_name }}</td>
                                         </tr>
 									  </table>
-									  </div>
-									  </div>
-									  </div>
+									</div>
+								  </div>
+								</div>
 
 			</div>
 		</div>
@@ -194,7 +194,7 @@
                           <!-- /.modal-content -->
                         </div> 
                         <!-- /.modal-dialog -->
-                     </div>
+
                       <!-- /.modal -->
                     @endforeach
 
