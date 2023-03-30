@@ -164,7 +164,7 @@
 											</ul>
 											<hr>
 
-											<div class="list-group">  
+							<!--				<div class="list-group">  
 												<a href="#" class="list-group-item btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseBasicInformation" aria-expanded="true" aria-controls="collapseBasicInformation">
 												&nbsp;&nbsp;Postal & Physical Address
 													<i class="fa fa-chevron-right list-group-chevron"></i>
@@ -174,7 +174,7 @@
 													<i class="fa fa-chevron-right list-group-chevron"></i>
 													<span class="badge">3</span>
 												</a> 
-							<!--					<a href="#" class="list-group-item">
+												<a href="#" class="list-group-item">
 													<i class="fa fa-envelope"></i> &nbsp;&nbsp;Messages
 													<i class="fa fa-chevron-right list-group-chevron"></i>
 												</a> 
@@ -187,8 +187,8 @@
 													<i class="fa fa-cog"></i> &nbsp;&nbsp;Settings
 													<i class="fa fa-chevron-right list-group-chevron"></i>
 												</a> 
-							-->				</div> <!-- /.list-group -->
-										</div>
+										</div> <!-- /.list-group -->
+							-->				</div>
 									</div>
 								</div>
 								
