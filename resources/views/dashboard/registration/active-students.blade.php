@@ -191,7 +191,7 @@
 								<div class="accordion" id="accordionExample-2">
 									<div class="card">
 									  <div class="card-header" id="ss-next-of-kin">
-										  <button data-toggle="collapse" data-target="#collapseNextOfKin" aria-expanded="true" aria-controls="collapseNextOfKin">
+										  <button class="btn btn-link text-left" data-toggle="collapse" data-target="#collapseNextOfKin" aria-controls="collapseNextOfKin">
 											Next Of Kin Details &nbsp; <i class="fa fa-chevron-right list-group-chevron"></i>
 										  </button>
 									  </div>
