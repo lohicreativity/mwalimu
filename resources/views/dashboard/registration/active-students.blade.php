@@ -142,56 +142,56 @@
                             </div>
                             <div class="modal-body">
 
- <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
- <!-- <div class="container bootstrap snippets bootdey"> -->
-    <div class="col-md-12">
-		<div class="row">
-			<div class="col-md-4 col-sm-5">
-				<div class="thumbnail">
-					<img src="https://bootdey.com/img/Content/User_for_snippets.png" width="90%" alt="Student Picture">
-				</div> <!-- /.thumbnail -->
+								<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+								<!-- <div class="container bootstrap snippets bootdey"> -->
+								<div class="col-md-12">
+									<div class="row">
+										<div class="col-md-4 col-sm-5">
+											<div class="thumbnail">
+												<img src="https://bootdey.com/img/Content/User_for_snippets.png" width="90%" alt="Student Picture">
+											</div> <!-- /.thumbnail -->
 
-			</div> <!-- /.col -->
+										</div> <!-- /.col -->
 
 
-			<div class="col-md-8 col-sm-12">
-				<h2>{{ $reg->student->first_name }} {{ $reg->student->middle_name }} {{ $reg->student->surname }}</h2>
-				<h6>{{ $reg->student->registration_number }} &nbsp; | &nbsp; {{ $reg->student->campusProgram->program->code}} &nbsp; | &nbsp; Year {{ $reg->student->year_of_study }} &nbsp; | &nbsp; <span style="color:red">{{ $reg->student->studentshipStatus->name }} </span></h6>
-				<hr>
-				<ul style="list-style-type: none; inline">
-					<li><i class="icon-li fa fa-envelope"></i> &nbsp;{{ $reg->student->email }}</li>
-					<li><i class="icon-li fa fa-phone"></i> &nbsp;{{ $reg->student->phone }}</li>
-				</ul>
-				<hr>
+										<div class="col-md-8 col-sm-12">
+											<h2>{{ $reg->student->first_name }} {{ $reg->student->middle_name }} {{ $reg->student->surname }}</h2>
+											<h6>{{ $reg->student->registration_number }} &nbsp; | &nbsp; {{ $reg->student->campusProgram->program->code}} &nbsp; | &nbsp; Year {{ $reg->student->year_of_study }} &nbsp; | &nbsp; <span style="color:red">{{ $reg->student->studentshipStatus->name }} </span></h6>
+											<hr>
+											<ul style="list-style-type: none; inline">
+												<li><i class="icon-li fa fa-envelope"></i> &nbsp; &nbsp;{{ $reg->student->email }}</li>
+												<li><i class="icon-li fa fa-phone"></i> &nbsp; &nbsp;{{ $reg->student->phone }}</li>
+											</ul>
+											<hr>
 
-				<div class="list-group">  
-					<a href="#" class="list-group-item btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseBasicInformation" aria-expanded="true" aria-controls="collapseBasicInformation">
-					&nbsp;&nbsp;Postal & Physical Address
-						<i class="fa fa-chevron-right list-group-chevron"></i>
-					</a> 
-					<a href="#" class="list-group-item">
-					 &nbsp;&nbsp;Next of Kin Details
-						<i class="fa fa-chevron-right list-group-chevron"></i>
-						<span class="badge">3</span>
-					</a> 
-<!--					<a href="#" class="list-group-item">
-						<i class="fa fa-envelope"></i> &nbsp;&nbsp;Messages
-						<i class="fa fa-chevron-right list-group-chevron"></i>
-					</a> 
-					<a href="#" class="list-group-item">
-						<i class="fa fa-group"></i> &nbsp;&nbsp;Friends
-						<i class="fa fa-chevron-right list-group-chevron"></i>
-						<span class="badge">7</span>
-					</a> 
-					<a href="#" class="list-group-item">
-						<i class="fa fa-cog"></i> &nbsp;&nbsp;Settings
-						<i class="fa fa-chevron-right list-group-chevron"></i>
-					</a> 
--->				</div> <!-- /.list-group -->
-			</div>
-		</div>
-	</div>
-</div>                                                            
+											<div class="list-group">  
+												<a href="#" class="list-group-item btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseBasicInformation" aria-expanded="true" aria-controls="collapseBasicInformation">
+												&nbsp;&nbsp;Postal & Physical Address
+													<i class="fa fa-chevron-right list-group-chevron"></i>
+												</a> 
+												<a href="#" class="list-group-item">
+												 &nbsp;&nbsp;Next of Kin Details
+													<i class="fa fa-chevron-right list-group-chevron"></i>
+													<span class="badge">3</span>
+												</a> 
+							<!--					<a href="#" class="list-group-item">
+													<i class="fa fa-envelope"></i> &nbsp;&nbsp;Messages
+													<i class="fa fa-chevron-right list-group-chevron"></i>
+												</a> 
+												<a href="#" class="list-group-item">
+													<i class="fa fa-group"></i> &nbsp;&nbsp;Friends
+													<i class="fa fa-chevron-right list-group-chevron"></i>
+													<span class="badge">7</span>
+												</a> 
+												<a href="#" class="list-group-item">
+													<i class="fa fa-cog"></i> &nbsp;&nbsp;Settings
+													<i class="fa fa-chevron-right list-group-chevron"></i>
+												</a> 
+							-->				</div> <!-- /.list-group -->
+										</div>
+									</div>
+								</div>
+							</div>                                                            
 </div>
                          </div>
                           <!-- /.modal-content -->
