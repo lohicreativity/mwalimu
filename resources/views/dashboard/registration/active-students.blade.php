@@ -167,12 +167,12 @@
 											<div class="accordion" id="student-accordion">
 												<div class="card">
 												  <div class="card-header" id="ss-address">
-													  <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapse-address" aria-expanded="true" aria-controls="collapse-address">
+													  <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseAddress" aria-expanded="true" aria-controls="collapseAddress">
 														&nbsp; More Details &nbsp; <i class="fa fa-chevron-right list-group-chevron"></i>
 													  </button>
 												  </div>
 
-												  <div id="collapse-address" class="collapse" aria-labelledby="ss-address" data-parent="#student-accordion">
+												  <div id="collapseAddress" class="collapse" aria-labelledby="ss-address" data-parent="#student-accordion">
 													<div class="card-body">
 
 													  @if($reg->student->applicant)
