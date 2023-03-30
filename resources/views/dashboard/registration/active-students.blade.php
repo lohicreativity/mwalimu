@@ -148,13 +148,13 @@
 		<div class="row">
 			<div class="col-md-4 col-sm-5">
 				<div class="thumbnail">
-					<img src="https://bootdey.com/img/Content/User_for_snippets.png" width="70%" alt="Profile Picture">
+					<img src="https://bootdey.com/img/Content/User_for_snippets.png" width="90%" alt="Student Picture">
 				</div> <!-- /.thumbnail -->
 
 			</div> <!-- /.col -->
 
 
-			<div class="col-md-8 col-sm-7">
+			<div class="col-md-8 col-sm-9">
 				<h2>{{ $reg->student->first_name }} {{ $reg->student->middle_name }} {{ $reg->student->surname }}</h2>
 				<h6>{{ $reg->student->registration_number }}  |  {{ $reg->student->campusProgram->program->code}}  |  Year {{ $reg->student->year_of_study }}  |  <span style="color:red">{{ $reg->student->studentshipStatus->name }} </span></h6>
 				<hr>
@@ -165,7 +165,7 @@
 				<hr>
 								<br>
 				<div class="list-group">  
-					<a href="#" class="list-group-item">
+					<a href="#" class="list-group-item" data-toggle="collapse" data-target="#collapseNextOfKin" aria-expanded="true" aria-controls="collapseNextOfKin">
 						<i class="fa fa-asterisk"></i> &nbsp;&nbsp;Contact Details
 						<i class="fa fa-chevron-right list-group-chevron"></i>
 					</a> 
@@ -188,6 +188,20 @@
 						<i class="fa fa-chevron-right list-group-chevron"></i>
 					</a> 
 -->				</div> <!-- /.list-group -->
+
+                                  <div id="collapseNextOfKin" class="collapse" aria-labelledby="ss-next-of-kin" data-parent="#accordionExample-2">
+                                    <div class="card-body">
+
+                                      @if($applicant->nextOfKin)
+                                      <table class="table table-bordered table-condensed">
+                                        <tr>
+                                          <td>First name: </td>
+                                          <td>{{ $applicant->nextOfKin->first_name }}</td>
+                                        </tr>
+                                        <tr>
+										</table>
+										</div>
+										</div>
 			</div>
 		</div>
 	</div>
