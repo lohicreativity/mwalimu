@@ -192,7 +192,7 @@
 									<div class="card">
 									  <div class="card-header" id="ss-next-of-kin">
 										  <button class="btn text-left" data-toggle="collapse" data-target="#collapseNextOfKin" aria-expanded="true" aria-controls="collapseNextOfKin">
-											&nbsp; &nbsp; Next Of Kin Details &nbsp; <i class="fa fa-chevron-right list-group-chevron"></i>
+											&nbsp; Next Of Kin Details &nbsp; <i class="fa fa-chevron-right list-group-chevron"></i>
 										  </button>
 									  </div>
 
@@ -200,6 +200,12 @@
 										<div class="card-body">
 
 										  @if($reg->student->applicant->nextOfKin)
+											  Names: &nbsp; {{ $reg->student->applicant->nextOfKin->first_name }} {{ $reg->student->applicant->nextOfKin->middle_name }} {{ $reg->student->applicant->nextOfKin->surname }}
+											  <p> Gender: &nbsp; {{ $reg->student->applicant->nextOfKin->gender }}</p>	
+											  <p> Relationship: &nbsp; {{ $reg->student->applicant->nextOfKin->relationship }}</p>	
+											  <p> Nationality: &nbsp; {{ $reg->student->applicant->nextOfKin->nationality }}</p>												  
+											  <p> Phone: &nbsp; {{ $reg->student->applicant->nextOfKin->phone }}</p>	
+											  Address: &nbsp; {{ $reg->student->applicant->nextOfKin->address }}	
 										  <table class="table table-bordered table-condensed">
 											<tr>
 											  <td>First name: </td>
