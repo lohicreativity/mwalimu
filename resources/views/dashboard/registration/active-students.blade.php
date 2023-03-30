@@ -192,7 +192,7 @@
 									</div>
 								</div>
 								
-								<div class="accordion col-md-8 col-sm-12" id="accordionExample-2">
+								<div class="list-group accordion col-md-8 col-sm-12" id="accordionExample-2">
 									<div class="card">
 									  <div class="card-header" id="ss-next-of-kin">
 										  <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseNextOfKin" aria-expanded="true" aria-controls="collapseNextOfKin">
