@@ -148,7 +148,7 @@
 									<div class="row">
 										<div class="col-md-4 col-sm-5">
 											<div class="thumbnail">
-												<img class="profile-user-img img-fluid" src="{{ asset('uploads/'.$reg->student->image) }}" onerror="this.src='{{ asset("img/user-avatar.png") }}'" width="90%" alt="Student Picture">
+												<img class="profile-user-img img-fluid" src="{{ asset('uploads/'.$reg->student->image) }}" onerror="this.src='{{ asset("img/user-avatar.png") }}'" alt="Student Picture">
 												                 
 											</div> <!-- /.thumbnail -->
 
