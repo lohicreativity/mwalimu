@@ -141,9 +141,7 @@
                               </button>
                             </div>
              
-                            <div class="modal-body">
-
-                              <div class="accordion" id="accordionExample-2">
+   
 
 			 <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 			 <!-- <div class="container bootstrap snippets bootdey"> -->
@@ -165,7 +163,9 @@
 								<li><i class="icon-li fa fa-phone"></i> {{ $reg->student->phone }}</li>
 							</ul>
 							<hr>
+                         <div class="modal-body">
 
+                              <div class="accordion" id="accordionExample-2">
 							<div class="card">
 							  <div class="card-header" id="ss-next-of-kin">
 								  <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseNextOfKin" aria-expanded="true" aria-controls="collapseNextOfKin">
