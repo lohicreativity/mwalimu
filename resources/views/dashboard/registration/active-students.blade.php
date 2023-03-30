@@ -188,10 +188,10 @@
 													<i class="fa fa-chevron-right list-group-chevron"></i>
 												</a> 
 										</div> <!-- /.list-group -->
-																		<div class="accordion" id="accordionExample-2">
+								<div class="accordion" id="accordionExample-2">
 									<div class="card">
 									  <div class="card-header" id="ss-next-of-kin">
-										  <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseNextOfKin" aria-expanded="true" aria-controls="collapseNextOfKin">
+										  <button class="btn btn-link text-left" type="button" data-toggle="collapse" data-target="#collapseNextOfKin" aria-expanded="true" aria-controls="collapseNextOfKin">
 											Next Of Kin Details &nbsp; <i class="fa fa-chevron-right list-group-chevron"></i>
 										  </button>
 									  </div>
