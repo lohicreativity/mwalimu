@@ -150,31 +150,7 @@
 				<div class="thumbnail">
 					<img src="https://bootdey.com/img/Content/User_for_snippets.png" width="70%" alt="Profile Picture">
 				</div> <!-- /.thumbnail -->
-				<br>
-				<div class="list-group">  
-					<a href="#" class="list-group-item">
-						<i class="fa fa-asterisk"></i> &nbsp;&nbsp;Activity Feed
-						<i class="fa fa-chevron-right list-group-chevron"></i>
-					</a> 
-					<a href="#" class="list-group-item">
-						<i class="fa fa-book"></i> &nbsp;&nbsp;Projects
-						<i class="fa fa-chevron-right list-group-chevron"></i>
-						<span class="badge">3</span>
-					</a> 
-					<a href="#" class="list-group-item">
-						<i class="fa fa-envelope"></i> &nbsp;&nbsp;Messages
-						<i class="fa fa-chevron-right list-group-chevron"></i>
-					</a> 
-					<a href="#" class="list-group-item">
-						<i class="fa fa-group"></i> &nbsp;&nbsp;Friends
-						<i class="fa fa-chevron-right list-group-chevron"></i>
-						<span class="badge">7</span>
-					</a> 
-					<a href="#" class="list-group-item">
-						<i class="fa fa-cog"></i> &nbsp;&nbsp;Settings
-						<i class="fa fa-chevron-right list-group-chevron"></i>
-					</a> 
-				</div> <!-- /.list-group -->
+
 			</div> <!-- /.col -->
 
 
@@ -187,6 +163,31 @@
 					<li><i class="icon-li fa fa-phone"></i> {{ $reg->student->phone }}</li>
 				</ul>
 				<hr>
+								<br>
+				<div class="list-group">  
+					<a href="#" class="list-group-item">
+						<i class="fa fa-asterisk"></i> &nbsp;&nbsp;Contact Details
+						<i class="fa fa-chevron-right list-group-chevron"></i>
+					</a> 
+					<a href="#" class="list-group-item">
+						<i class="fa fa-book"></i> &nbsp;&nbsp;Next of Kin
+						<i class="fa fa-chevron-right list-group-chevron"></i>
+						<span class="badge">3</span>
+					</a> 
+<!--					<a href="#" class="list-group-item">
+						<i class="fa fa-envelope"></i> &nbsp;&nbsp;Messages
+						<i class="fa fa-chevron-right list-group-chevron"></i>
+					</a> 
+					<a href="#" class="list-group-item">
+						<i class="fa fa-group"></i> &nbsp;&nbsp;Friends
+						<i class="fa fa-chevron-right list-group-chevron"></i>
+						<span class="badge">7</span>
+					</a> 
+					<a href="#" class="list-group-item">
+						<i class="fa fa-cog"></i> &nbsp;&nbsp;Settings
+						<i class="fa fa-chevron-right list-group-chevron"></i>
+					</a> 
+-->				</div> <!-- /.list-group -->
 			</div>
 		</div>
 	</div>
