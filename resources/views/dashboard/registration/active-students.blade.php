@@ -180,11 +180,13 @@
 
 			<div class="col-md-8 col-sm-7">
 				<h2>{{ $reg->student->first_name }} {{ $reg->student->middle_name }} {{ $reg->student->surname }}</h2>
-				<h5>{{ $reg->student->registration_number }} | {{ $reg->student->campusProgram->program->code}} | Year {{ $reg->student->year_of_study }} - <span style="color:red">{{ $reg->student->studentshipStatus->name }} </span></h5>
+				<h6>{{ $reg->student->registration_number }} | {{ $reg->student->campusProgram->program->code}} | Year {{ $reg->student->year_of_study }} | <span style="color:red">{{ $reg->student->studentshipStatus->name }} </span></h6>
+				<hr>
 				<ul style="list-style-type: none">
 					<li><i class="icon-li fa fa-envelope"></i> $reg->student->mail</li>
 					<li><i class="icon-li fa fa-phone"></i> $reg->student->phone</li>
 				</ul>
+				<hr>
 			</div>
 		</div>
 	</div>
