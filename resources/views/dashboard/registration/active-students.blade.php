@@ -206,7 +206,7 @@
 											  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Disability:</span> &nbsp; {{ $reg->student->applicant->disabilityStatus->name }}
 											  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Entry Mode:</span> &nbsp; {{ $reg->student->applicant->entry_mode }}	 												  
 											  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Postal Address:</span> &nbsp; {{ $reg->student->applicant->address }}	 	
-											  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Physical Address:</span> &nbsp; {{ $reg->student->applicant->nextOfKin->address }}	 	
+											  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Physical Address:</span> &nbsp; {{ $reg->student->applicant->ward->name }},&nbsp; {{ $reg->student->applicant->ward->name }},&nbsp; {{ $reg->student->applicant->country->name }}	 	 
 										  @endif
 										</div>
 									  </div>
