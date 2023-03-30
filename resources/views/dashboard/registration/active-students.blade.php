@@ -200,12 +200,12 @@
 										<div class="card-body">
 
 										  @if($reg->student->applicant->nextOfKin)
-											  Names: &nbsp; {{ $reg->student->applicant->nextOfKin->first_name }} {{ $reg->student->applicant->nextOfKin->middle_name }} {{ $reg->student->applicant->nextOfKin->surname }}
-											  <p> Gender: &nbsp; {{ $reg->student->applicant->nextOfKin->gender }}</p>	
-											  <p> Relationship: &nbsp; {{ $reg->student->applicant->nextOfKin->relationship }}</p>	
-											  <p> Nationality: &nbsp; {{ $reg->student->applicant->nextOfKin->nationality }}</p>												  
-											  <p> Phone: &nbsp; {{ $reg->student->applicant->nextOfKin->phone }}</p>	
-											  Address: &nbsp; {{ $reg->student->applicant->nextOfKin->address }}	
+											  &nbsp; &nbsp; <span style="font-style:italic">Names:</span> &nbsp; {{ $reg->student->applicant->nextOfKin->first_name }} {{ $reg->student->applicant->nextOfKin->middle_name }} {{ $reg->student->applicant->nextOfKin->surname }}
+											  <br> &nbsp; &nbsp; Gender: &nbsp; {{ $reg->student->applicant->nextOfKin->gender }}
+											  <br> &nbsp; &nbsp; Relationship: &nbsp; {{ $reg->student->applicant->nextOfKin->relationship }}<
+											  <br> &nbsp; &nbsp; Nationality: &nbsp; {{ $reg->student->applicant->nextOfKin->nationality }}											  
+											  <br> &nbsp; &nbsp; Phone: &nbsp; {{ $reg->student->applicant->nextOfKin->phone }}	
+											  &nbsp; &nbsp; Address: &nbsp; {{ $reg->student->applicant->nextOfKin->address }}	
 										  <table class="table table-bordered table-condensed">
 											<tr>
 											  <td>First name: </td>
