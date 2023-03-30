@@ -146,7 +146,7 @@
 								<!-- <div class="container bootstrap snippets bootdey"> -->
 								<div class="col-md-12">
 									<div class="row">
-										<div class="col-md-4 col-sm-4">
+										<div class="col-md-3 col-sm-3">
 											<div class="text-center">
 												<img class="profile-user-img img-fluid" src="{{ asset('uploads/'.$reg->student->image) }}" onerror="this.src='{{ asset("img/user-avatar.png") }}'" alt="Student Picture">
 												                 
@@ -155,7 +155,7 @@
 										</div> <!-- /.col -->
 
 
-										<div class="col-md-8 col-sm-8">
+										<div class="col-md-9 col-sm-9">
 											<h2>{{ $reg->student->first_name }} {{ $reg->student->middle_name }} {{ $reg->student->surname }}</h2>
 											<h6>{{ $reg->student->registration_number }} &nbsp; | &nbsp; {{ $reg->student->campusProgram->program->code}} &nbsp; | &nbsp; Year {{ $reg->student->year_of_study }} &nbsp; | &nbsp; <span style="color:red">{{ $reg->student->studentshipStatus->name }} </span></h6>
 											<hr>
