@@ -240,8 +240,9 @@
 							</div>
                           </div>
                           <!-- /.modal-content -->
-                    </div> 
+						</div> 
                       <!-- /.modal -->
+					 </div>
                  @endforeach
             @endif
            </div>
