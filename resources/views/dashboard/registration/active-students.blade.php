@@ -132,7 +132,7 @@
             </div>
 			
 			     @foreach($active_students as $reg)
-                    <div class="modal fade" id="ss-progress-{{ $reg->student->id }}">
+                    <div style="margin-top:20px;" class="modal fade" id="ss-progress-{{ $reg->student->id }}">
                         <div class="modal-dialog modal-lg">
                           <div class="modal-content modal-lg">
 							<div class="modal-header">
@@ -144,7 +144,7 @@
 
  <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
  <!-- <div class="container bootstrap snippets bootdey"> -->
-    <div class="col-md-9">
+    <div class="col-md-7">
 		<div class="row">
 			<div class="col-md-4 col-sm-5">
 				<div class="thumbnail">
@@ -180,22 +180,11 @@
 
 			<div class="col-md-8 col-sm-7">
 				<h2>{{ $reg->student->first_name }} {{ $reg->student->middle_name }} {{ $reg->student->surname }}</h2>
-				<h4>Visual, UI, UX Designer</h4>
-				<hr>
-				<p>
-					<a href="#" class="btn btn-success">Follow Marktingk</a>
-					&nbsp;&nbsp;
-					<a href="#" class="btn btn-info">Send Message</a>
-				</p>
-				<hr>
-				<ul class="icons-list">
-					<li><i class="icon-li fa fa-envelope"></i> rod@jumpstartui.com</li>
-					<li><i class="icon-li fa fa-globe"></i> jumstartthemes.com</li>
-					<li><i class="icon-li fa fa-map-marker"></i> Las Vegas, NV</li>
+				<h4>{{ $reg->student->registration_number }} | {{ $reg->student->campusProgram->program->code}} | Year {{ $reg->student->year_of_study }} - <span style="color:red">{{ $reg->student->studentshipStatus->name }} </span></h4>
+				<ul style="list-style-type: none">
+					<li><i class="icon-li fa fa-envelope"></i> $reg->student->mail</li>
+					<li><i class="icon-li fa fa-phone"></i> $reg->student->phone</li>
 				</ul>
-				<br>
-				<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec.</p>
-				<hr>
 			</div>
 		</div>
 	</div>
