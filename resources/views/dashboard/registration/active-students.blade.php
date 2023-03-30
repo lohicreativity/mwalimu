@@ -147,7 +147,7 @@
 								<div class="col-md-12">
 									<div class="row">
 										<div class="col-md-4 col-sm-5">
-											<div class="thumbnail">
+											<div class="text-center">
 												<img class="profile-user-img img-fluid" src="{{ asset('uploads/'.$reg->student->image) }}" onerror="this.src='{{ asset("img/user-avatar.png") }}'" alt="Student Picture">
 												                 
 											</div> <!-- /.thumbnail -->
