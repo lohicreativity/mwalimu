@@ -165,7 +165,7 @@
 				<hr>
 								<br>
 				<div class="list-group">  
-					<a href="#" class="list-group-item" data-toggle="collapse" data-target="#collapseNextOfKin" aria-expanded="true" aria-controls="collapseNextOfKin">
+					<a href="#" class="list-group-item" >
 						<i class="fa fa-asterisk"></i> &nbsp;&nbsp;Contact Details
 						<i class="fa fa-chevron-right list-group-chevron"></i>
 					</a> 
@@ -188,20 +188,6 @@
 						<i class="fa fa-chevron-right list-group-chevron"></i>
 					</a> 
 -->				</div> <!-- /.list-group -->
-
-                                  <div id="collapseNextOfKin" class="collapse" aria-labelledby="ss-next-of-kin" data-parent="#accordionExample-2">
-                                    <div class="card-body">
-
-                                      @if($applicant->nextOfKin)
-                                      <table class="table table-bordered table-condensed">
-                                        <tr>
-                                          <td>First name: </td>
-                                          <td>{{ $applicant->nextOfKin->first_name }}</td>
-                                        </tr>
-                                        <tr>
-										</table>
-										</div>
-										</div>
 			</div>
 		</div>
 	</div>
