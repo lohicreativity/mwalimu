@@ -162,11 +162,12 @@
 												<li><i class="icon-li fa fa-envelope"></i> &nbsp; &nbsp;{{ $reg->student->email }}</li>
 												<li><i class="icon-li fa fa-phone"></i> &nbsp; &nbsp;{{ $reg->student->phone }}</li>
 											</ul>
-											
+											<hr>
+
 											<div class="accordion" id="student-accordion">
 												<div class="card">
 												  <div class="card-header" id="ss-address">
-													  <button class="btn text-left" data-toggle="collapse" data-target="#collapse-address" aria-expanded="true" aria-controls="collapse-address">
+													  <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapse-address" aria-expanded="true" aria-controls="collapse-address">
 														&nbsp; More Details &nbsp; <i class="fa fa-chevron-right list-group-chevron"></i>
 													  </button>
 												  </div>
@@ -189,7 +190,7 @@
 												
 												<div class="card">
 												  <div class="card-header" id="ss-next-of-kin">
-													  <button class="btn text-left" data-toggle="collapse" data-target="#collapseNextOfKin" aria-expanded="true" aria-controls="collapseNextOfKin">
+													  <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseNextOfKin" aria-expanded="true" aria-controls="collapseNextOfKin">
 														&nbsp; Next Of Kin Details &nbsp; <i class="fa fa-chevron-right list-group-chevron"></i>
 													  </button>
 												  </div>
