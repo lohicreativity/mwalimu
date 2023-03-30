@@ -196,7 +196,7 @@
 									                                <div class="card">
                                   <div class="card-header" id="ss-next-of-kin">
                                       <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseNextOfKin" aria-expanded="true" aria-controls="collapseNextOfKin">
-                                        2. Next Of Kin
+                                        Next Of Kin Details<i class="fa fa-chevron-right list-group-chevron"></i>
                                       </button>
                                   </div>
 
