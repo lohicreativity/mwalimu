@@ -132,9 +132,6 @@
             </div>
 			
 			     @foreach($active_students as $reg)
-                    <div class="modal fade" id="ss-progress-{{ $reg->student->id }}">
-                        <div class="modal-dialog modal-lg">
-                          <div class="modal-content modal-lg">
 
  <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 <div class="container bootstrap snippets bootdey">
@@ -195,12 +192,6 @@
 	</div>
 </div>                                                            
 
-                         </div>
-                          <!-- /.modal-content -->
-                        </div> 
-                        <!-- /.modal-dialog -->
-                     </div>
-                      <!-- /.modal -->
                     @endforeach
 
 
