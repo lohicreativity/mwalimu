@@ -85,9 +85,10 @@ class ApplicationController extends Controller
 
 
         if($request->get('department_id') != null){
-           $applicants = Applicant::with(['selections.campusProgram.program'])->where('application_window_id',$request->get('application_window_id'))->whereHas('selections.campusProgram.program.departments',function($query) use($request){
-                 $query->where('id',$request->get('department_id'));
-            })->with(['nextOfKin','intake'])->paginate(20);
+           $applicants = Applicant::with(['selections.campusProgram.program'])
+						->where('application_window_id',$request->get('application_window_id'))
+						->whereHas('selections.campusProgram.program.departments',function($query) use($request){$query->where('id',$request->get('department_id'));})
+						->with(['nextOfKin','intake'])->paginate(20);
         }elseif($request->get('duration') == 'today'){
            $applicants = Applicant::with(['selections.campusProgram.program'])->where('application_window_id',$request->get('application_window_id'))->with(['nextOfKin','intake'])->where('created_at','<=',now()->subDays(1))->paginate(20);
         }elseif($request->get('gender') != null){
