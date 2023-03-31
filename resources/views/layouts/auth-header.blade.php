@@ -19,7 +19,7 @@
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
       <!-- User Account Dropdown Menu -->
-	  @if(!Auth::user()->hasRole('student'))
+	  @if(Auth::user()->hasRole('student'))
 		James King | BTC.COD | 2022/2023 | March &nbsp; &nbsp;
       @endif
       <li class="nav-item dropdown">
