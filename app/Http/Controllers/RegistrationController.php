@@ -12,10 +12,8 @@ use App\Domain\Academic\Models\StudyAcademicYear;
 use App\Domain\Finance\Models\ProgramFee;
 use App\Domain\Finance\Models\Invoice;
 use App\Domain\Finance\Models\GatewayPayment;
-use App\Domain\Application\Models\Applicant;
 use App\Domain\Registration\Models\Student;
 use App\Domain\Settings\Models\Campus;
-use App\Domain\Registration\Models\Registration;
 use App\Domain\Registration\Models\IdCardRequest;
 use App\Domain\Application\Models\InternalTransfer;
 use App\Domain\Application\Models\NectaResultDetail;
@@ -646,10 +644,10 @@ class RegistrationController extends Controller
   		$ac_year = StudyAcademicYear::where('id',$request->get('study_academic_year_id'))->first();
         $semester = Semester::where('status','ACTIVE')->first();
 
-        $student = Student::whereHas('student.registrations', function($query) use($request, $semester){$query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('semester_id',$semester->id)->where('id_print_status', 0);})
-		           ->whereHas('student.campusProgram.program',function($query) use($request){$query->where('award_id',$request->get('program_level_id'));})
-				   ->whereHas('student.applicant',function($query) use($request){$query->where('campus_id',$request->get('campus_id'));})
-				   ->with('student.applicant','student.campusProgram.program','student.campusProgram.campus')->get();
+        $student = Student::whereHas('registrations', function($query) use($request, $semester){$query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('semester_id',$semester->id)->where('id_print_status', 0);})
+		           ->whereHas('campusProgram.program',function($query) use($request){$query->where('award_id',$request->get('program_level_id'));})
+				   ->whereHas('applicant',function($query) use($request){$query->where('campus_id',$request->get('campus_id'));})
+				   ->with('applicant','campusProgram.program','campusProgram.campus')->get();
 
         if(!$student){
           return redirect()->back()->with('error','Student has not been registered for this semester');
