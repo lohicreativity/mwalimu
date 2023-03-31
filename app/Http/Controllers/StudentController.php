@@ -1553,6 +1553,30 @@ class StudentController extends Controller
 
         return redirect()->back()->with('message','Student details updated successfully');
     }
+	
+	/**
+     * Update specified staff details
+     */
+    public function editDetails(Request $request)
+    {
+      $validation = Validator::make($request->all(),[
+            'address'=>'required',
+            'phone'=>'required',
+            'email'=>'required'
+        ]);
+
+        if($validation->fails()){
+           if($request->ajax()){
+              return response()->json(array('error_messages'=>$validation->messages()));
+           }else{
+              return redirect()->back()->withInput()->withErrors($validation->messages());
+           }
+        }
+
+        (new StudentAction)->updateDetails($request);
+
+        return Util::requestResponse($request,'Your profile updated successfully');
+    }
 
     /**
      * Display modules
