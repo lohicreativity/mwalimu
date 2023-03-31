@@ -20,7 +20,8 @@
     <ul class="navbar-nav ml-auto">
       <!-- User Account Dropdown Menu -->
 	  @if(Auth::user()->hasRole('student'))
-		<span class="nav-link">James King | BTC.COD | 2022/2023 | March &nbsp; &nbsp; </span>
+		  @php $student = User::find(Auth::user()->id)->student()->first();
+		<span class="nav-link">James King | BTC.COD | 2022/2023 | March &nbsp; </span>
       @endif
       <li class="nav-item dropdown">
         <a class="nav-link" data-toggle="dropdown" href="#">
