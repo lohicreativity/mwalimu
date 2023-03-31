@@ -648,11 +648,11 @@ class RegistrationController extends Controller
 		           ->whereHas('campusProgram.program',function($query) use($request){$query->where('award_id',$request->get('program_level_id'));})
 				   ->whereHas('applicant',function($query) use($request){$query->where('campus_id',$request->get('campus_id'));})
 				   ->with('applicant','campusProgram.program','campusProgram.campus')->get();
-return $student;
-        if(!$student){
+
+        if(count($student) == 0){
           return redirect()->back()->with('error','Student has not been registered for this semester');
         }
-        if($student){
+        if(count($student) > 0){
 		   if($student->applicant->insurance_status == 0 && $ac_year->nhif_enabled == 1){
               return redirect()->back()->with('error','Student does not have insurance');
            }
