@@ -99,6 +99,12 @@
                                 'placeholder'=>'Phone',
                                 'required'=>true
                              ];
+							 
+                             $email = [
+                                'class'=>'form-control',
+                                'placeholder'=>'name@gmail.com',
+                                'required'=>true
+                             ];
 
                           @endphp
 
