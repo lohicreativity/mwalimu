@@ -130,7 +130,7 @@
                 {!! Form::open(['url'=>'registration/show-id-card','class'=>'ss-form-processing']) !!}
 				
 				
-                {!! Form::open(['url'=>'registration/print-id-card','class'=>'ss-form-processing']) !!}				
+			
                 {!! Form::input('hidden','study_academic_year_id',$request->get('study_academic_year_id')) !!}
                 {!! Form::input('hidden','campus_id',$request->get('campus_id')) !!}
                 {!! Form::input('hidden','program_level_id',$request->get('program_level_id')) !!}
@@ -169,18 +169,6 @@
 							@endif
 						  </td>
 						</tr>
-					@endforeach          
-				  </tbody>
-                </table>
-               
-                <div class="ss-pagination-links">
-                    {!! $students->appends($request->except('page'))->render() !!}
-                </div>
-              </div>
-              <!-- /.card-body -->
-            </div>
-            <!-- /.card -->
-            @endif
 
 			<div class="modal fade" id="ss-student-id-{{ $student->id }}">
 				<div class="modal-dialog modal-lg">
@@ -497,6 +485,18 @@
 					  </div>
 					</div>
 
+					@endforeach          
+				  </tbody>
+                </table>
+               
+                <div class="ss-pagination-links">
+                    {!! $students->appends($request->except('page'))->render() !!}
+                </div>
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+            @endif
 
           </div>
 		 </div>
