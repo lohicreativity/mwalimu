@@ -1574,7 +1574,7 @@ class StudentController extends Controller
            }
         }
 
-        (new StudentAction)->store($request);
+        (new StudentAction)->update($request);
 
         return Util::requestResponse($request,'Your profile updated successfully');
     }

@@ -123,8 +123,23 @@
                           <div class="form-group">
                              {!! Form::label('','Email Address') !!}
                              {!! Form::text('email',$student->email,$email) !!}
-
-                             {!! Form::input('hidden','student_id',$student->id) !!}
+							 
+                             {!! Form::input('hidden','student_id',$student->id) !!}	
+                             {!! Form::input('hidden','first_name',$student->first_name) !!}
+                             {!! Form::input('hidden','surname',$student->surname) !!}
+                             {!! Form::input('hidden','gender',$student->gender) !!}
+                             {!! Form::input('hidden','registration_number',$student->registration_number) !!}
+                             {!! Form::input('hidden','study_academic_year_id',$student->study_academic_year_id) !!}
+                             {!! Form::input('hidden','studentship_status_id',$student->studentship_status_id) !!}
+                             {!! Form::input('hidden','academic_status_id',$student->academic_status_id) !!}
+                             {!! Form::input('hidden','campus_program_id',$student->campus_program_id) !!}	
+                             {!! Form::input('hidden','applicant_id',$student->applicant_id) !!}	
+                             {!! Form::input('hidden','disability_status_id',$student->disability_status_id) !!}	
+                             {!! Form::input('hidden','study_mode',$student->study_mode) !!}								 
+                             {!! Form::input('hidden','user_id',$student->user_id) !!}
+							 
+							 
+							 
                           </div>
 
                           <div class="ss-form-controls">
