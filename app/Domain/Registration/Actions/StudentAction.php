@@ -49,11 +49,11 @@ class StudentAction implements studentInterface{
                 $student->user_id = $request->get('user_id');				
                 $student->save();
 				
-/* 		$applicant = Applicant::find($request->get('applicant_id'));
+ 		$applicant = Applicant::find($request->get('applicant_id'));
 				$applicant->address = $request->get('address');
-				$applicant->country_id = $request->get('country_id');
+/* 				$applicant->country_id = $request->get('country_id');
 				$applicant->region_id = $request->get('region_id');
-				$applicant->ward_id = $request->get('ward_id');
-				$applicant->save(); */
+				$applicant->ward_id = $request->get('ward_id'); */
+				$applicant->save(); 
 	}
 }
