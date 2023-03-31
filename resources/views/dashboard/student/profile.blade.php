@@ -115,10 +115,10 @@
                           </div>
 
                           <div class="form-group">
-                             {!! Form::label('','Upload profile picture') !!}
-                             {!! Form::file('image',['class'=>'form-control']) !!}
+                             {!! Form::label('','Email Address') !!}
+                             {!! Form::text('email',$student->email,$email) !!}
 
-                             {!! Form::input('hidden','staff_id',$student->id) !!}
+                             {!! Form::input('hidden','student_id',$student->id) !!}
                           </div>
 
                           <div class="ss-form-controls">
