@@ -127,13 +127,14 @@
                  </span>
                 </div>
 
-                {!! Form::open(['url'=>'registration/show-id-card?registration_number='{{$student->registration_number}},'class'=>'ss-form-processing']) !!}
+                {!! Form::open(['url'=>'registration/show-id-card','class'=>'ss-form-processing']) !!}
 				
 				
                 {!! Form::open(['url'=>'registration/print-id-card','class'=>'ss-form-processing']) !!}				
                 {!! Form::input('hidden','study_academic_year_id',$request->get('study_academic_year_id')) !!}
                 {!! Form::input('hidden','campus_id',$request->get('campus_id')) !!}
                 {!! Form::input('hidden','program_level_id',$request->get('program_level_id')) !!}
+				{!! Form::input('hidden','registration_number',$request->get('registration_number')) !!}
                 <table id="example2" class="table table-bordered table-hover ss-margin-top">
                   <thead>
                   <tr>
