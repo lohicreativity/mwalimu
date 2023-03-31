@@ -643,7 +643,7 @@ class RegistrationController extends Controller
           } */
   		$ac_year = StudyAcademicYear::where('id',$request->get('study_academic_year_id'))->first();
         $semester = Semester::where('status','ACTIVE')->first();
-        $student = Student::whereHas('registration', function($query) use($request, $semester){$query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('semester_id',$semester->id);})
+        $student = Student::whereHas('registrations', function($query) use($request, $semester){$query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('semester_id',$semester->id);})
 		           ->whereHas('campusProgram.program',function($query) use($request){$query->where('award_id',$request->get('program_level_id'));})
 				   ->whereHas('applicant',function($query) use($request){$query->where('campus_id',$request->get('campus_id'));})
 				   ->with('applicant','campusProgram.program','campusProgram.campus')
