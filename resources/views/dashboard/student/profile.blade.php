@@ -129,7 +129,6 @@
                              {!! Form::input('hidden','surname',$student->surname) !!}
                              {!! Form::input('hidden','gender',$student->gender) !!}
                              {!! Form::input('hidden','registration_number',$student->registration_number) !!}
-                             {!! Form::input('hidden','study_academic_year_id',$student->study_academic_year_id) !!}
                              {!! Form::input('hidden','studentship_status_id',$student->studentship_status_id) !!}
                              {!! Form::input('hidden','academic_status_id',$student->academic_status_id) !!}
                              {!! Form::input('hidden','campus_program_id',$student->campus_program_id) !!}	

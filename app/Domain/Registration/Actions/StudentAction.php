@@ -40,7 +40,6 @@ class StudentAction implements studentInterface{
                 $student->phone = $request->get('phone');
                 $student->email = $request->get('email');
                 $student->registration_number = $request->get('registration_number');
-                $student->study_academic_year_id = $request->get('study_academic_year_id');
                 $student->studentship_status_id = $request->get('studentship_status_id');
                 $student->academic_status_id = $request->get('academic_status_id');				
                 $student->campus_program_id = $request->get('campus_program_id');
