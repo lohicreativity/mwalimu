@@ -4,6 +4,7 @@ namespace App\Domain\Registration\Actions;
 
 use Illuminate\Http\Request;
 use App\Domain\Registration\Models\Student;
+use App\Domain\Application\Models\Applicant;
 use App\Domain\Registration\Repositories\Interfaces\StudentInterface;
 
 class StudentAction implements studentInterface{
