@@ -19,11 +19,10 @@
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
       <!-- User Account Dropdown Menu -->
-
-      <li class="nav-item dropdown">
-	  	  @if(Auth::user()->hasRole('student'))
-		James King | BTC.COD | 2022/2023 | March &nbsp; &nbsp;
+	  @if(Auth::user()->hasRole('student'))
+		<span class="nav-item">James King | BTC.COD | 2022/2023 | March &nbsp; &nbsp; </span>
       @endif
+      <li class="nav-item dropdown">
         <a class="nav-link" data-toggle="dropdown" href="#">
           <i class="far fa-user"></i>
         </a>
