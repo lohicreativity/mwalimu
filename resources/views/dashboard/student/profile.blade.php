@@ -102,7 +102,7 @@
 
                           @endphp
 
-                          {!! Form::open(['url'=>'staff/edit-details','class'=>'ss-form-processing','files'=>true]) !!}
+                          {!! Form::open(['url'=>'student/edit-details','class'=>'ss-form-processing','files'=>true]) !!}
 
                           <div class="form-group">
                              {!! Form::label('','Phone') !!}
