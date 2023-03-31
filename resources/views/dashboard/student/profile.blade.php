@@ -72,7 +72,7 @@
                 </ul>
                 
        
-                <a href="#" class="btn btn-primary btn-block" data-toggle="modal" data-target="#ss-edit-student-profile"><b>Edit Profile</b></a>
+                <a href="student/edit-details" class="btn btn-primary btn-block" data-toggle="modal" data-target="#ss-edit-student-profile"><b>Edit Profile</b></a>
 
 
                 <div class="modal fade" id="ss-edit-student-profile">
