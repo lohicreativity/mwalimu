@@ -641,7 +641,20 @@ class RegistrationController extends Controller
                   return redirect()->back()->with('error','Student does not have insurance');
               }
           }
-        
+/*  		$ac_year = StudyAcademicYear::where('status','ACTIVE')->first();
+        $semester = Semester::where('status','ACTIVE')->first();
+        $student = Student::whereHas('registration', function($query) use($ac_yr, $semester){$query->where('study_academic_year_id',$ac_year->id)->where('semester_id',$semester->id);})
+		           ->with('applicant','campusProgram.program','campusProgram.campus')->where('id_print_status', 0)->get();
+            
+        if(!$student){
+          return redirect()->back()->with('error','Student has not been registered for this semester');
+        }
+        if($student){
+		   if($student->applicant->insurance_status == 0 && $ac_year->nhif_enabled == 1){
+              return redirect()->back()->with('error','Student does not have insurance');
+           }
+        }
+		 */
         $data = [
             'student'=>$student,
             'semester'=>$semester,
