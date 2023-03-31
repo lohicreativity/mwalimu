@@ -39,7 +39,7 @@ use App\Domain\Academic\Models\Graduant;
 use App\Domain\Settings\Models\Campus;
 use App\Domain\Settings\Models\SpecialDate;
 use App\Domain\Academic\Models\Clearance;
-use App\Domain\Registration\Actions\StaffAction;
+use App\Domain\Registration\Actions\StudentAction;
 use Illuminate\Support\Facades\Http;
 use App\Models\User;
 use App\Models\Role;
