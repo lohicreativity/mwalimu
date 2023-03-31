@@ -652,11 +652,11 @@ class RegistrationController extends Controller
 /*         if(count($student) == 0){
           return redirect()->back()->with('error','Student has not been registered for this semester');
         } */
-        if(count($student) > 0){
+/*         if(count($student) > 0){
 		   if($student->applicant->insurance_status == 0 && $ac_year->nhif_enabled == 1){
               return redirect()->back()->with('error','Student does not have insurance');
            }
-        }
+        } */
 
         $data = [
             'students'=>$student,
