@@ -646,7 +646,7 @@ class RegistrationController extends Controller
 
         $student = Student::whereHas('registrations', function($query) use($request, $semester){$query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('semester_id',$semester->id)->where('id_print_status', 0);})
 		           ->whereHas('campusProgram.program',function($query) use($request){$query->where('award_id',$request->get('program_level_id'));})
-				   ->whereHas('applicant',function($query) use($request){$query->where('campus_id',$request->get('campus_id'));})
+				   //->whereHas('applicant',function($query) use($request){$query->where('campus_id',$request->get('campus_id'));})
 				   ->with('applicant','campusProgram.program','campusProgram.campus')->get();
 
         if(!$student){
