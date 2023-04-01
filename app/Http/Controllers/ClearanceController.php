@@ -20,6 +20,7 @@ class ClearanceController extends Controller
     {
     	$student = User::find(Auth::user()->id)->student;
     	$data = [
+		   'study_academic_year'=>StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first(),
            'student'=>$student,
            'registration'=>Registration::where('student_id',$student->id)->latest()->first(),
            'clearance'=>Clearance::where('student_id',$student->id)->first()
