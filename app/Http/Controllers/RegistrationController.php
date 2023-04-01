@@ -651,7 +651,7 @@ class RegistrationController extends Controller
 				   ->whereHas('applicant',function($query) use($request){$query->where('campus_id',$request->get('campus_id'));})
 				   ->with('applicant','campusProgram.program','campusProgram.campus')->get();
 		}
-
+return $student;
 
 /*         if(count($student) == 0){
           return redirect()->back()->with('error','Student has not been registered for this semester');
