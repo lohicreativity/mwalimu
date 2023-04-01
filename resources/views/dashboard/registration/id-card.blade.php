@@ -156,7 +156,7 @@
 							  <a class="btn btn-success btn-sm" href="#" data-toggle="modal" data-target="#ss-student-id-{{ $student->id }}">
 									  <i class="fas fa-check">
 									  </i>
-									  Priview ID
+									  Compose ID
 							  </a>
 							  
 							  							  
@@ -477,7 +477,7 @@
 				</div>
 			</div>
 							  
-			<div>				  
+			</div>				  
 							  
 							  
 							  
