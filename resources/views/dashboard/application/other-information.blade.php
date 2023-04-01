@@ -108,9 +108,9 @@
                               {!! Form::input('hidden','applicant_id',$applicant->id) !!}
                             </div>
 							
-							<div class="form-group">
+							
                               {!! Form::label('','Expire Date') !!}		
-							</div>							  
+													  
                             <div class="row">
                        <div class="col-4">
                          <select name="expire_date" class="form-control" required>
