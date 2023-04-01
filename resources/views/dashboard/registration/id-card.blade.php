@@ -160,12 +160,12 @@
 							  </a>
 							  
 							  
-							  			<div class="modal fade" id="ss-student-id-{{ $student->id }}">
+			<div class="modal fade" id="ss-student-id-{{ $student->id }}">
 				<div class="modal-dialog modal-lg">
-				  <div class="modal-content">
+					<div class="modal-content">
 
-					  <div class="card-body">
-						   <table class="table table-bordered">
+						<div class="card-body">
+						    <table class="table table-bordered">
 							 <tr>
 								 <td>
 								   <div id="crop_wrapper">
@@ -205,19 +205,18 @@
 							   </td>
 							 </tr>
 							 <tr>
-							   <td>
+							    <td>
 								 <table border="1" cellpadding="0" width="500">
-							  <tbody><tr>
-								<td height="100" width="500">
-								  <canvas id="cnv" name="cnv" width="500" height="100"></canvas>
-								</td>
-							  </tr>
-							</tbody></table>
+									<tbody><tr>
+										<td height="100" width="500">
+											<canvas id="cnv" name="cnv" width="500" height="100"></canvas>
+										</td>
+									</tbody></tr>
+								 </table>
 
-
-							<br>
-							  <canvas name="SigImg" id="SigImg" width="500" height="100"></canvas>
-							  <p id="sigWebVrsnNote" style="font-family: Arial;">SigWeb 1.7.0 installed</p>
+								<br>
+							    <canvas name="SigImg" id="SigImg" width="500" height="100"></canvas>
+							    <p id="sigWebVrsnNote" style="font-family: Arial;">SigWeb 1.7.0 installed</p>
 
 
 							  <form action="https://www.sigplusweb.com/sigwebtablet_demo.html#" name="FORM1">
@@ -235,7 +234,7 @@
 										  <input name="sigImageData" type="hidden">
 										  <input name="sign_data" type="hidden" id="sign_data">
 										</p>
-									  </form>
+							  </form>
 
 									  <br><br>
 								<p id="SigWebVersion"></p>
@@ -454,10 +453,10 @@
 									evt.preventDefault(); //For Firefox, needed for browser closure
 								  };
 								</script>
-							   </td>
-							   <td>
+							    </td>
+							    <td>
 								   <img src="{{ asset('signatures/'.$student->signature) }}" id="sign_prev">
-							   </td>
+							    </td>
 							 </tr>
 							 <tr>
 								 <td>First name:</td>
@@ -471,20 +470,11 @@
 								 <td>Surname:</td>
 								 <td>{{ $student->surname }}</td>
 							 </tr>
-						   </table>
-					  </div>
+						    </table>
+						</div>
 					</div>
-
-					@endforeach          
-				  </tbody>
-                </table>
-               
-                <div class="ss-pagination-links">
-                    {!! $students->appends($request->except('page'))->render() !!}
-                </div>
-              </div>
-              <!-- /.card-body -->
-            </div>
+				</div>
+			</div>
             <!-- /.card -->
             @endif
 
