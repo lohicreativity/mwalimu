@@ -81,7 +81,7 @@
                    @else
                    <div class="row">
 					   <div class="form-group col-6">
-						{!! Form::input('hidden','campus_id',$request->get('campus_id')) !!}
+						{!! Form::input('hidden','campus_id',$staff->campus_id) !!}
 						{!! Form::label('','Study academic year') !!}
 						<select name="study_academic_year_id" class="form-control" required>
 						   <option value="">Select Academic Year</option>

@@ -668,6 +668,7 @@ class RegistrationController extends Controller
             'study_academic_year'=>$request->has('study_academic_year_id')? StudyAcademicYear::with('academicYear')->find($request->get('study_academic_year_id')) : StudyAcademicYear::where('status', 'ACTIVE')->first(),
             'awards'=>Award::all(),
             'campuses'=>Campus::all(),
+			'staff'=>User::find(Auth::user()->id)->staff,
             'request'=>$request
         ];
         return view('dashboard.registration.id-card',$data)->withTitle('ID Card');
