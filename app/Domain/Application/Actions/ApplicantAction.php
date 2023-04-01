@@ -219,4 +219,22 @@ class ApplicantAction implements ApplicantInterface{
                 $app->save();
             }
         }
+		
+		public function uploadInsurance(Request $request))
+		{		
+			$insurance = new HealthInsurance;
+			$insurance->insurance_name = $request->get('insurance_name');
+			$insurance->applicant_id = $request->get('applicant_id');
+			$insurance->membership_number = $request->get('card_number');
+			$insurance->card_number = $request->get('card_number');
+			$insurance->expire_date = $request->get('expire_year').'-'.$request->get('expire_month').'-'.$request->get('expire_date');
+			if($request->hasFile('insurance_card')){
+				  $destination = SystemLocation::uploadsDirectory();
+				  $request->file('insurance_card')->move($destination, $request->file('insurance_card')->getClientOriginalName());
+
+				  $insurance->card = $request->file('insurance_card')->getClientOriginalName();
+			}
+
+			$insurance->save();
+		}
 }

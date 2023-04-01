@@ -110,7 +110,7 @@
 							
                               {!! Form::label('','Expire Date') !!}		
 													  
-                            <div class="row">
+                            <div class="row form-group">
 							   <div class="col-4">
 								 <select name="expire_date" class="form-control" required>
 								   <option value="">Expire Date</option>
@@ -137,10 +137,11 @@
 							   </div>
 							</div>
 							{!! Form::label('','Upload Insurance Card') !!}
-						    {!! Form::file('document',['class'=>'form-control','required'=>true]) !!}
-							{!! Form::input('hidden','applicant_id',$applicant->id) !!}
-							
-                            <button type="submit" class="btn btn-primary">Save</button>
+						    {!! Form::file('insurance_card',['class'=>'form-control','required'=>true]) !!}
+							<br>
+                            <div class="row form-group">
+							   <div class="col-4">							
+									<button type="submit" class="btn btn-primary">Save</button>
                           {!! Form::close() !!}
                        </div><!-- end of col-md-12 -->
                      </div><!-- end of row -->

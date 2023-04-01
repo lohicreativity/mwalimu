@@ -1670,6 +1670,13 @@ class ApplicantController extends Controller
     {
         $validation = Validator::make($request->all(),[
             'insurance_status'=>'required',
+            'card_number'=>'required',
+            'insurance_name'=>'required',
+            'applicant_id'=>'required',
+            'insurance_card'=>'required',
+            'expire_year'=>'required',
+            'expire_month'=>'required',
+            'expire_date'=>'required'			
         ]);
 
         if($validation->fails()){
@@ -1708,13 +1715,18 @@ class ApplicantController extends Controller
          $applicant->save();
 
          if($request->get('insurance_status') == 1){
+			 
+			 if($request->get('insurance_name') != 'NHIF'){
+				(new ApplicantAction)->store($request); 
+			 }else{
 
-             $insurance = new HealthInsurance;
-             $insurance->insurance_name = $request->get('insurance_name');
-             $insurance->membership_number = $request->get('card_number');
-             $insurance->expire_date = $request->get('expire_year').'-'.$request->get('expire_month').'-'.$request->get('expire_date');
-             $insurance->applicant_id = $applicant->id;
-             $insurance->save();
+				 $insurance = new HealthInsurance;
+				 $insurance->insurance_name = $request->get('insurance_name');
+				 $insurance->membership_number = $request->get('card_number');
+				 $insurance->expire_date = $request->get('expire_year').'-'.$request->get('expire_month').'-'.$request->get('expire_date');
+				 $insurance->applicant_id = $applicant->id;
+				 $insurance->save();
+			 }
          }
 
         return redirect()->back()->with('message','Health insurance status updated successfully');
