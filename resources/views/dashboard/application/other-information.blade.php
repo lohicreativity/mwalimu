@@ -136,9 +136,10 @@
 								 </select>
 							   </div>
 							</div>
-							<br>
 							{!! Form::label('','Upload Insurance Card') !!}
-						
+						    {!! Form::file('document',['class'=>'form-control','required'=>true]) !!}
+							{!! Form::input('hidden','applicant_id',$applicant->id) !!}
+							
                             <button type="submit" class="btn btn-primary">Save</button>
                           {!! Form::close() !!}
                        </div><!-- end of col-md-12 -->
@@ -232,7 +233,6 @@
                          </select>
                        </div>
                      </div>
-					 
                             <button type="submit" class="btn btn-primary">Save</button>
                           {!! Form::close() !!}
                        </div><!-- end of col-md-12 -->
@@ -252,9 +252,7 @@
 
                   </div>
                   <div class="modal-footer justify-content-between">
-				  
-                    <button type="submit" class="btn btn-primary">Save</button>
-					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                   </div>
                 </div>
                 <!-- /.modal-content -->
