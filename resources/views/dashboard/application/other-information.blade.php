@@ -53,17 +53,10 @@
                 <div class="modal-content">
                   <div class="modal-header">
                     <h4 class="modal-title"> Insurance Cards</h4>
-					<div class="row">
-						<div class="col-4">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                       <span aria-hidden="true">&times;</span>
                     </button>
-					</div>
-						<div class="col-4">
-					<button type="submit" class="btn btn-primary">Save</button>
-					</div>
                   </div>
-				  </div>
                   <div class="modal-body">
                     
                      
@@ -115,37 +108,36 @@
                               {!! Form::input('hidden','applicant_id',$applicant->id) !!}
                             </div>
 							
-							
                               {!! Form::label('','Expire Date') !!}		
 													  
                             <div class="row">
-                       <div class="col-4">
-                         <select name="expire_date" class="form-control" required>
-                           <option value="">Expire Date</option>
-                           @for($i = 1; $i <= 31; $i++)
-                           <option value="{{ $i }}">{{ $i }}</option>
-                           @endfor
-                         </select>
-                       </div>
-                       <div class="col-4">
-                         <select name="expire_month" class="form-control" required>
-                           <option value="">Month</option>
-                           @for($i = 1; $i <= 12; $i++)
-                           <option value="{{ $i }}">{{ $i }}</option>
-                           @endfor
-                         </select>
-                       </div>
-                       <div class="col-4">
-                         <select name="expire_year" class="form-control" required>
-                           <option value="">Year</option>
-                           @for($i = date('Y'); $i <= now()->addYears(20)->format('Y'); $i++)
-                           <option value="{{ $i }}">{{ $i }}</option>
-                           @endfor
-                         </select>
-                       </div>
-                     </div>
-					 <br>
-						{!! Form::label('','Upload Insurance Card') !!}
+							   <div class="col-4">
+								 <select name="expire_date" class="form-control" required>
+								   <option value="">Expire Date</option>
+								   @for($i = 1; $i <= 31; $i++)
+								   <option value="{{ $i }}">{{ $i }}</option>
+								   @endfor
+								 </select>
+							   </div>
+							   <div class="col-4">
+								 <select name="expire_month" class="form-control" required>
+								   <option value="">Month</option>
+								   @for($i = 1; $i <= 12; $i++)
+								   <option value="{{ $i }}">{{ $i }}</option>
+								   @endfor
+								 </select>
+							   </div>
+							   <div class="col-4">
+								 <select name="expire_year" class="form-control" required>
+								   <option value="">Year</option>
+								   @for($i = date('Y'); $i <= now()->addYears(20)->format('Y'); $i++)
+								   <option value="{{ $i }}">{{ $i }}</option>
+								   @endfor
+								 </select>
+							   </div>
+							</div>
+							<br>
+							{!! Form::label('','Upload Insurance Card') !!}
 						
                             <button type="submit" class="btn btn-primary">Save</button>
                           {!! Form::close() !!}
@@ -240,6 +232,7 @@
                          </select>
                        </div>
                      </div>
+					 
                             <button type="submit" class="btn btn-primary">Save</button>
                           {!! Form::close() !!}
                        </div><!-- end of col-md-12 -->
@@ -259,7 +252,9 @@
 
                   </div>
                   <div class="modal-footer justify-content-between">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				  
+                    <button type="submit" class="btn btn-primary">Save</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                   </div>
                 </div>
                 <!-- /.modal-content -->
