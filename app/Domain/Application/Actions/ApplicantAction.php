@@ -4,6 +4,7 @@ namespace App\Domain\Application\Actions;
 
 use Illuminate\Http\Request;
 use App\Domain\Application\Models\Applicant;
+use App\Domain\Application\Models\HealthInsurance;
 use App\Domain\Application\Repositories\Interfaces\ApplicantInterface;
 use App\Utils\DateMaker;
 use App\Utils\SystemLocation;
