@@ -1673,7 +1673,7 @@ class ApplicantController extends Controller
             'card_number'=>'required',
             'insurance_name'=>'required',
             'applicant_id'=>'required',
-            'insurance_card'=>'required',
+            'insurance_card'=>'required|mimes:pdf,png,jpeg,jpg',
             'expire_year'=>'required',
             'expire_month'=>'required',
             'expire_date'=>'required'			
