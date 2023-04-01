@@ -107,8 +107,8 @@
                               {!! Form::input('hidden','insurance_status',1) !!}
                               {!! Form::input('hidden','applicant_id',$applicant->id) !!}
                             </div>
-                      <div class="row">
-					    {!! Form::label('','Expire Date') !!}                      
+                      <div class="col-12">
+					  {!! Form::label('','Expire Date') !!}                      
 					  <div class="col-4">
                          <select name="expire_date" class="form-control" required>
                            <option value="">Expire Date</option>
@@ -134,7 +134,7 @@
                          </select>
                        </div>
                      </div>
-					 <div class="row">
+                      <div class="col-12">
 					    {!! Form::label('','Upload Insurance Card') !!}                					 
 					 </div>
                             <button type="submit" class="btn btn-primary">Save</button>
