@@ -21,7 +21,7 @@
       <!-- User Account Dropdown Menu -->
 	  @if(Auth::user()->hasRole('student'))
 		<span class="nav-link">{{ ucwords(strtolower($student->first_name)) }} {{ ucwords(strtolower($student->middle_name)) }} {{ ucwords(strtolower($student->surname)) }}| 
-		{{ $student->campusProgram->program->code }} | {{ $study_academic_year->academicYear->year }} | 
+		{{ $student->campusProgram->program->code }} | 
 		@if($student->applicant->intake_id == 1) September @elseif($student->applicant->intake_id == 2) March @endif &nbsp; </span>
       @endif
 	<li class="nav-item dropdown">
