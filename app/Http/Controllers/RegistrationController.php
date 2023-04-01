@@ -641,6 +641,7 @@ class RegistrationController extends Controller
                   return redirect()->back()->with('error','Student does not have insurance');
               }
           } */
+		  $student = null;
 		$semester = Semester::where('status','ACTIVE')->first();
 		if($request->has('study_academic_year_id')){
 			  		$ac_year = StudyAcademicYear::where('id',$request->get('study_academic_year_id'))->first();
