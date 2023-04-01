@@ -20,7 +20,7 @@
     <ul class="navbar-nav ml-auto">
       <!-- User Account Dropdown Menu -->
 	  @if(Auth::user()->hasRole('student'))
-		<span class="nav-link">{{ $student->first_name}} | BTC.COD | 2022/2023 | March &nbsp; </span>
+		<span class="nav-link">{{ ucwords(strtolower($student->first_name)) }} | BTC.COD | 2022/2023 | March &nbsp; </span>
       @endif
 	<li class="nav-item dropdown">
         <a class="nav-link" data-toggle="dropdown" href="#">
