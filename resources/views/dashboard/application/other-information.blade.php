@@ -43,6 +43,18 @@
               <div class="card-header">
                 <h3 class="card-title">Health Insurance Verification</h3>
               </div>
+			  @if($applicant->insurance_status == 1)
+				  
+			  					<div class="row">
+							   <div class="col-4">
+									<button type="submit" class="btn btn-primary">Preview</button>
+							   </div>
+							   <div class="col-4">
+									<button type="submit" class="btn btn-primary">Reset</button>
+							   </div>
+					</div>
+				  
+			  @endif
               <div class="card-footer">
                  <a href="#" data-toggle="modal" data-target="#ss-insurance-card" class="btn btn-primary">Verify Health Insurance</a>
               </div>
@@ -144,16 +156,9 @@
                           {!! Form::close() !!}
                        </div><!-- end of col-md-12 -->
                      </div><!-- end of row -->
-                     @else
 
-					<div class="row">
-							   <div class="col-4">
-									<button type="submit" class="btn btn-primary">Preview</button>
-							   </div>
-							   <div class="col-4">
-									<button type="submit" class="btn btn-primary">Reset</button>
-							   </div>
-					</div>
+
+
 
 
 
