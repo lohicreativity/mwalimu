@@ -107,10 +107,12 @@
                               {!! Form::input('hidden','insurance_status',1) !!}
                               {!! Form::input('hidden','applicant_id',$applicant->id) !!}
                             </div>
-                            <div class="form-group">
-					    {!! Form::label('','Expire Date') !!}   
-							</div>
-					  <div class="col-4">
+							
+							<div class="form-group">
+                              {!! Form::label('','Expire Date') !!}		
+							</div>							  
+                            <div class="row">
+                       <div class="col-4">
                          <select name="expire_date" class="form-control" required>
                            <option value="">Expire Date</option>
                            @for($i = 1; $i <= 31; $i++)
@@ -134,10 +136,7 @@
                            @endfor
                          </select>
                        </div>
-
-					 <div class="row">
-					    {!! Form::label('','Upload Insurance Card') !!}                					 
-					 </div>
+                     </div>
                             <button type="submit" class="btn btn-primary">Save</button>
                           {!! Form::close() !!}
                        </div><!-- end of col-md-12 -->
