@@ -49,15 +49,16 @@
 							   <div class="col-4">
 									<button type="submit" class="btn btn-primary">Preview</button>
 							   </div>
-							   <div class="col-4">
+							   <div class="col-6">
 									<button type="submit" class="btn btn-primary">Reset</button>
 							   </div>
 					</div>
 				  
-			  @endif
+			  @else
               <div class="card-footer">
                  <a href="#" data-toggle="modal" data-target="#ss-insurance-card" class="btn btn-primary">Verify Health Insurance</a>
               </div>
+			  @endif
             </div>
 
             <div class="modal fade" id="ss-insurance-card">
