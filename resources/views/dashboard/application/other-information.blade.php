@@ -140,103 +140,24 @@
 						    {!! Form::file('insurance_card',['class'=>'form-control','required'=>true]) !!}
 							<br>
 						
-									<button type="submit" class="btn btn-primary">Save</button>
+
                           {!! Form::close() !!}
                        </div><!-- end of col-md-12 -->
                      </div><!-- end of row -->
                      @else
 
-                     <div class="row">
-                      <div class="col-12">
-                        <label class="radio-inline">
-                          <input type="radio" name="insurance_card" value="#ss-card-nhif-form" id="ss-card-nhif" @if($applicant->insurances[0]->insurance_name == 'NHIF') checked="checked" @endif> NHIF
-                        </label>
-                        <label class="radio-inline">
-                          <input type="radio" name="insurance_card" value="#ss-card-other-form" id="ss-card-other" @if($applicant->insurances[0]->insurance_name != 'NHIF') checked="checked" @endif> Other Insurers
-                        </label>
-                        <label class="radio-inline">
-                          <input type="radio" name="insurance_card" value="#ss-card-none-form" id="ss-card-none" @if($applicant->insurance_status === 0) checked="checked" @endif> Don't have Insurance
-                        </label>
-                        </div><!-- end of col-md-12 -->
-                     </div><!-- end of row -->
+					<div class="row">
+							   <div class="col-4">
+									<button type="submit" class="btn btn-primary">Preview</button>
+							   </div>
+							   <div class="col-4">
+									<button type="submit" class="btn btn-primary">Reset</button>
+							   </div>
+					</div>
 
-                      <div class="row" id="ss-card-nhif-form">
-                      <div class="col-12">
-                          @if($applicant->insurances[0]->verification_status == 'VERIFIED' && $applicant->insurances[0]->insurance_name == 'NHIF')
-                           <span class="badge badge-success">VERIFIED</span>
-                          @endif
-                          {!! Form::open(['url'=>'application/update-insurance-status','class'=>'ss-form-processing']) !!}
-                            <div class="form-group">
-                              @if($applicant->insurances[0]->insurance_name == 'NHIF')
 
-                              {!! Form::label('','Card number') !!}
-                              {!! Form::text('card_number',$applicant->insurances[0]->membership_number,['class'=>'form-control','placeholder'=>'Card number']) !!}
 
-                              @else
-                              
-                              {!! Form::label('','Card number') !!}
-                              {!! Form::text('card_number',null,['class'=>'form-control','placeholder'=>'Card number']) !!}
 
-                              @endif
-
-                              {!! Form::input('hidden','insurance_name','NHIF') !!}
-
-                              {!! Form::input('hidden','insurance_status',1) !!}
-                              {!! Form::input('hidden','applicant_id',$applicant->id) !!}
-                            </div>
-                            <button disabled="disabled" class="btn btn-primary">Verify</button>
-                          {!! Form::close() !!}
-                       </div><!-- end of col-md-12 -->
-                     </div><!-- end of row -->
-
-                      <div class="row" id="ss-card-other-form">
-                      <div class="col-12">
-                          @if($applicant->insurances[0]->verification_status == 'VERIFIED')
-                           <span class="badge badge-success">VERIFIED</span>
-                          @endif
-                          {!! Form::open(['url'=>'application/update-insurance','class'=>'ss-form-processing']) !!}
-                            <div class="form-group">
-                              {!! Form::label('','Insurance name') !!}
-                              {!! Form::text('insurance_name',$applicant->insurances[0]->insurance_name,['class'=>'form-control','placeholder'=>'Insurance name','required'=>true]) !!}
-                            </div>
-                            <div class="form-group">
-                              {!! Form::label('','Card number') !!}
-                              {!! Form::text('card_number',$applicant->insurances[0]->membership_number,['class'=>'form-control','placeholder'=>'Card number','required'=>true]) !!}
-
-                              {!! Form::input('hidden','insurance_status',1) !!}
-                              {!! Form::input('hidden','insurance_id',$applicant->insurances[0]->id) !!}
-                              {!! Form::input('hidden','applicant_id',$applicant->id) !!}
-                            </div>
-                            <div class="row">
-                       <div class="col-4">
-                         <select name="expire_date" class="form-control" required>
-                           <option value="">Expire Date</option>
-                           @for($i = 1; $i <= 31; $i++)
-                           <option value="{{ $i }}" @if(Carbon\Carbon::parse($applicant->insurances[0]->expire_date)->format('d') == $i) selected="selected" @endif>{{ $i }}</option>
-                           @endfor
-                         </select>
-                       </div>
-                       <div class="col-4">
-                         <select name="expire_month" class="form-control" required>
-                           <option value="">Month</option>
-                           @for($i = 1; $i <= 12; $i++)
-                           <option value="{{ $i }}" @if(Carbon\Carbon::parse($applicant->insurances[0]->expire_date)->format('m') == $i) selected="selected" @endif>{{ $i }}</option>
-                           @endfor
-                         </select>
-                       </div>
-                       <div class="col-4">
-                         <select name="expire_year" class="form-control" required>
-                           <option value="">Year</option>
-                           @for($i = date('Y'); $i <= now()->addYears(20)->format('Y'); $i++)
-                           <option value="{{ $i }}" @if(Carbon\Carbon::parse($applicant->insurances[0]->expire_date)->format('Y') == $i) selected="selected" @endif>{{ $i }}</option>
-                           @endfor
-                         </select>
-                       </div>
-                     </div>
-                            <button type="submit" class="btn btn-primary">Save</button>
-                          {!! Form::close() !!}
-                       </div><!-- end of col-md-12 -->
-                     </div><!-- end of row -->
                      @endif
 
                      <div class="row" id="ss-card-none-form">
