@@ -158,9 +158,9 @@
 									  </i>
 									  Priview ID
 							  </a>
-
-							</td>
+						  </td>
 						  @endif
+
 						</tr>
 					@endforeach
                   </tbody>
