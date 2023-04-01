@@ -1394,6 +1394,7 @@ class StudentController extends Controller
 			
 		}else{
 		$data = [
+		   'study_academic_year'=>StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first(),			
 		   'selected_campus'=>[],
 		   'programme'=>[],
            'campuses'=>Campus::all(),
