@@ -108,6 +108,7 @@
                               {!! Form::input('hidden','applicant_id',$applicant->id) !!}
                             </div>
                       <div class="col-12">
+					  <div class="form-group">
 					  {!! Form::label('','Expire Date') !!}                      
 					  <div class="col-4">
                          <select name="expire_date" class="form-control" required>
@@ -134,6 +135,7 @@
                          </select>
                        </div>
                      </div>
+					 </div>
                       <div class="col-12">
 					    {!! Form::label('','Upload Insurance Card') !!}                					 
 					 </div>
