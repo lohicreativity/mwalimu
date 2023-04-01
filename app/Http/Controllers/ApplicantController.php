@@ -1717,7 +1717,7 @@ class ApplicantController extends Controller
          if($request->get('insurance_status') == 1){
 			 
 			 if($request->get('insurance_name') != 'NHIF'){
-				(new ApplicantAction)->store($request); 
+				(new ApplicantAction)->uploadInsurance($request); 
 			 }else{
 
 				 $insurance = new HealthInsurance;
