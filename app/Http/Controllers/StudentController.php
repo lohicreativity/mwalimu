@@ -58,6 +58,7 @@ class StudentController extends Controller
 		{$query->where('student_id', $student->id);})->latest()->first()->get(); */
 
 		$data = [
+			'study_academic_year'=>StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first(),
             'student'=>$student,
             'loan_allocation'=>LoanAllocation::where('index_number',$student->applicant->index_number)->where('loan_amount','!=',0.00)->where('study_academic_year_id',session('active_academic_year_id'))->first(),
             'registration'=>Registration::where('student_id',$student->id)->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->where('status','REGISTERED')->first(),
@@ -150,6 +151,7 @@ class StudentController extends Controller
     {
       $student = User::find(Auth::user()->id)->student;
     	$data = [
+			'study_academic_year'=>StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first(),
             'student'=>$student,
             'receipts'=>DB::table('gateway_payments')->join('invoices','gateway_payments.control_no','=','invoices.control_no')->join('fee_types','invoices.fee_type_id','=','fee_types.id')->join('study_academic_years','invoices.applicable_id','=','study_academic_years.id')->join('academic_years','study_academic_years.academic_year_id','=','academic_years.id')->select(DB::raw('gateway_payments.*, fee_types.name as fee_name, academic_years.year as academic_year'))->where(function($query) use($student){
 				$query->where('invoices.payable_id',$student->id)->where('invoices.payable_type','student')->where('invoices.applicable_type','academic_year');
@@ -249,7 +251,8 @@ class StudentController extends Controller
     	}
 
     	$data = [
-    	   'years_of_studies'=>$years_of_studies,
+    	 'study_academic_year'=>StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first(),
+		 'years_of_studies'=>$years_of_studies,
          'results_present_status'=>count($results) != 0? true : false,
          'student'=>$student
     	];
@@ -424,6 +427,7 @@ class StudentController extends Controller
     {
         $student = User::find(Auth::user()->id)->student;
         $data = [
+			'study_academic_year'=>StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first(),
             'student'=>$student,
             'registration'=>Registration::where('student_id',$student->id)->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->where('status','REGISTERED')->first()
         ];
@@ -437,6 +441,7 @@ class StudentController extends Controller
     {
         $student = User::find(Auth::user()->id)->student;
         $data = [
+			'study_academic_year'=>StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first(),
            'fee_types'=>FeeType::all(),
            'student'=>$student,
            'invoices'=>Invoice::with(['applicable','feeType','gatewayPayment'])->where(function($query) use($student){
@@ -796,6 +801,7 @@ class StudentController extends Controller
         $student = User::find(Auth::user()->id)->student()->with('applicant')->first();
         $loan_allocation = LoanAllocation::where('index_number',$student->applicant->index_number)->first();
         $data = [
+			'study_academic_year'=>StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first(),
             'student'=>$student,
             'loan_allocation'=>$loan_allocation
         ];
@@ -835,6 +841,7 @@ class StudentController extends Controller
     {
         $student = User::find(Auth::user()->id)->student;
         $data = [
+		   'study_academic_year'=>StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first(),
            'student'=>$student,
            'loan_allocations'=>LoanAllocation::with(['studyAcademicYear.academicYear'])->where('registration_number',$student->registration_number)->paginate(20)
         ];
@@ -1372,6 +1379,7 @@ class StudentController extends Controller
 		if($applicant){
 			
 		$data = [
+		   'study_academic_year'=>StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first(),
 //           'applicant'=>$applicant,
 		   'selected_campus'=>$applicant->campus_id,
 		   'programme'=>Award::where('id', $applicant->program_level_id)->first(),
