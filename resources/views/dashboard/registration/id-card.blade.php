@@ -43,72 +43,72 @@
             <div class="card">
               <!-- /.card-header -->
 
-                 <div class="card-body">
+                <div class="card-body">
                  {!! Form::open(['url'=>'registration/print-id-card','class'=>'ss-form-processing','method'=>'GET']) !!}
 
                   @if(Auth::user()->hasRole('administrator'))
                    <div class="row">
-                   <div class="form-group col-4">
+                    <div class="form-group col-4">
                     {!! Form::label('','Study academic year') !!}
-                    <select name="study_academic_year_id" class="form-control" required>
-                       <option value="">Select Academic Year</option>
-                       @foreach($study_academic_years as $year)
-                       <option value="{{ $year->id }}" @if($request->get('study_academic_year_id') == $year->id) selected="selected" @endif>{{ $year->academicYear->year }}</option>
-                       @endforeach
-                    </select>
-                  </div>
-                  <div class="form-group col-4">
+						<select name="study_academic_year_id" class="form-control" required>
+						   <option value="">Select Academic Year</option>
+						   @foreach($study_academic_years as $year)
+						   <option value="{{ $year->id }}" @if($request->get('study_academic_year_id') == $year->id) selected="selected" @endif>{{ $year->academicYear->year }}</option>
+						   @endforeach
+						</select>
+                    </div>
+                    <div class="form-group col-4">
                     {!! Form::label('','Programme level') !!}
-                    <select name="program_level_id" class="form-control" required>
-                      <option value="">Select Programme Level</option>
-                      @foreach($awards as $award)
-                      @if(str_contains($award->name,'Basic') || str_contains($award->name,'Ordinary') || str_contains($award->name,'Bachelor') || str_contains($award->name,'Masters'))
-                      <option value="{{ $award->id }}" @if($request->get('program_level_id') == $award->id) selected="selected" @endif>{{ $award->name }}</option>
-                      @endif
-                      @endforeach
-                    </select>
-                  </div>
-                  <div class="form-group col-4">
+						<select name="program_level_id" class="form-control" required>
+						  <option value="">Select Programme Level</option>
+						  @foreach($awards as $award)
+						  @if(str_contains($award->name,'Basic') || str_contains($award->name,'Ordinary') || str_contains($award->name,'Bachelor') || str_contains($award->name,'Masters'))
+						  <option value="{{ $award->id }}" @if($request->get('program_level_id') == $award->id) selected="selected" @endif>{{ $award->name }}</option>
+						  @endif
+						  @endforeach
+						</select>
+                    </div>
+                    <div class="form-group col-4">
                     {!! Form::label('','Select campus') !!}
-                    <select name="campus_id" class="form-control" required>
-                       <option value="">Select Campus</option>
-                       @foreach($campuses as $cp)
-                       <option value="{{ $cp->id }}" @if($request->get('campus_id') == $cp->id) selected="selected" @endif>{{ $cp->name }}</option>
-                       @endforeach
-                    </select>
-                  </div>
-                  </div>
+						<select name="campus_id" class="form-control" required>
+						   <option value="">Select Campus</option>
+						   @foreach($campuses as $cp)
+						   <option value="{{ $cp->id }}" @if($request->get('campus_id') == $cp->id) selected="selected" @endif>{{ $cp->name }}</option>
+						   @endforeach
+						</select>
+                    </div>
+                   </div>
                    @else
                    <div class="row">
-                   <div class="form-group col-6">
-				    {!! Form::input('hidden','campus_id',$request->get('campus_id')) !!}
-                    {!! Form::label('','Study academic year') !!}
-                    <select name="study_academic_year_id" class="form-control" required>
-                       <option value="">Select Academic Year</option>
-                       @foreach($study_academic_years as $year)
-                       <option value="{{ $year->id }}" @if($request->get('study_academic_year_id') == $year->id) selected="selected" @endif>{{ $year->academicYear->year }}</option>
-                       @endforeach
-                    </select>
-                  </div>
-                  <div class="form-group col-6">
-                    {!! Form::label('','Programme level') !!}
-                    <select name="program_level_id" class="form-control" required>
-                      <option value="">Select Programme Level</option>
-                      @foreach($awards as $award)
-                      @if(str_contains($award->name,'Basic') || str_contains($award->name,'Ordinary') || str_contains($award->name,'Bachelor') || str_contains($award->name,'Masters'))
-                      <option value="{{ $award->id }}" @if($request->get('program_level_id') == $award->id) selected="selected" @endif>{{ $award->name }}</option>
-                      @endif
-                      @endforeach
-                    </select>
-                  </div>
-                  </div>
-                  @endif
-                  <div class="ss-form-actions">
-                   <button type="submit" class="btn btn-primary">{{ __('Search') }}</button>
-                  </div>
+					   <div class="form-group col-6">
+						{!! Form::input('hidden','campus_id',$request->get('campus_id')) !!}
+						{!! Form::label('','Study academic year') !!}
+						<select name="study_academic_year_id" class="form-control" required>
+						   <option value="">Select Academic Year</option>
+						   @foreach($study_academic_years as $year)
+						   <option value="{{ $year->id }}" @if($request->get('study_academic_year_id') == $year->id) selected="selected" @endif>{{ $year->academicYear->year }}</option>
+						   @endforeach
+						</select>
+					  </div>
+					  <div class="form-group col-6">
+						{!! Form::label('','Programme level') !!}
+						<select name="program_level_id" class="form-control" required>
+						  <option value="">Select Programme Level</option>
+						  @foreach($awards as $award)
+						  @if(str_contains($award->name,'Basic') || str_contains($award->name,'Ordinary') || str_contains($award->name,'Bachelor') || str_contains($award->name,'Masters'))
+						  <option value="{{ $award->id }}" @if($request->get('program_level_id') == $award->id) selected="selected" @endif>{{ $award->name }}</option>
+						  @endif
+						  @endforeach
+						</select>
+					  </div>
+                    </div>
+                    @endif
+					<div class="ss-form-actions">
+					   <button type="submit" class="btn btn-primary">{{ __('Search') }}</button>
+					</div>
 				  
                  {!! Form::close() !!}
-              </div>
+				</div>
             </div>
             <!-- /.card -->
 
@@ -161,10 +161,11 @@
 							@endif
 						  </td>
 						</tr>
+                  </tbody>
+                </table>
 
-
-		 </div>
-		</div>
+			  </div>
+			</div>
 
           </div>
           <!-- /.col -->
