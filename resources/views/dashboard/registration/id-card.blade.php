@@ -475,10 +475,7 @@
 					</div>
 				</div>
 			</div>
-            <!-- /.card -->
-            @endif
 
-          </div>
 							  
 							  
 							</td>
