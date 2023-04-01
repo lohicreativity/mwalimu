@@ -641,13 +641,16 @@ class RegistrationController extends Controller
                   return redirect()->back()->with('error','Student does not have insurance');
               }
           } */
-  		$ac_year = StudyAcademicYear::where('id',$request->get('study_academic_year_id'))->first();
-        $semester = Semester::where('status','ACTIVE')->first();
+		$semester = Semester::where('status','ACTIVE')->first();
+		if($request->has('study_academic_year_id')){
+			  		$ac_year = StudyAcademicYear::where('id',$request->get('study_academic_year_id'))->first();
 
         $student = Student::whereHas('registrations', function($query) use($request, $semester){$query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('semester_id',$semester->id)->where('id_print_status', 0);})
 		           ->whereHas('campusProgram.program',function($query) use($request){$query->where('award_id',$request->get('program_level_id'));})
 				   ->whereHas('applicant',function($query) use($request){$query->where('campus_id',$request->get('campus_id'));})
 				   ->with('applicant','campusProgram.program','campusProgram.campus')->get();
+		}
+
 
 /*         if(count($student) == 0){
           return redirect()->back()->with('error','Student has not been registered for this semester');
@@ -659,7 +662,7 @@ class RegistrationController extends Controller
         } */
 
         $data = [
-            'students'=>$student,
+            'students'=>$student? $student : [],
             'semester'=>$semester,
 			'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
             'study_academic_year'=>$request->has('study_academic_year_id')? StudyAcademicYear::with('academicYear')->find($request->get('study_academic_year_id')) : StudyAcademicYear::where('status', 'ACTIVE')->first(),
