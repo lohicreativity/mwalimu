@@ -161,12 +161,13 @@
 							@endif
 						  </td>
 						</tr>
+					@endforeach
                   </tbody>
                 </table>
 
 			  </div>
 			</div>
-
+			@endif
           </div>
           <!-- /.col -->
         </div>
