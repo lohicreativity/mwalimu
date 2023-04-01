@@ -107,7 +107,7 @@
                               {!! Form::input('hidden','insurance_status',1) !!}
                               {!! Form::input('hidden','applicant_id',$applicant->id) !!}
                             </div>
-                      <div class="col-12">
+                      <div class="row">
 					  <div class="form-group">
 					  {!! Form::label('','Expire Date') !!}                      
 					  <div class="col-4">
