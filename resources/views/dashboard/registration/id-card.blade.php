@@ -151,15 +151,15 @@
 						  <td>{{ $student->gender }}</td>
 						  <td>{{ $student->phone }}</td>
 						  <td>{{ $student->campusProgram->program->code }}</td>
-						  <td>
-							@if(Auth::user()->hasRole('admission-officer'))
+						  @if(Auth::user()->hasRole('admission-officer'))
+							<td>
 							  <a class="btn btn-success btn-sm" href="#" data-toggle="modal" data-target="#ss-student-id-{{ $student->id }}">
 									  <i class="fas fa-check">
 									  </i>
 									  Priview ID
 							  </a>
-							@endif
-						  </td>
+							</td>
+						  @endif
 						</tr>
 					@endforeach
                   </tbody>
