@@ -95,7 +95,7 @@
 
                      <div class="row" id="ss-card-other-form">
                       <div class="col-12">
-                          {!! Form::open(['url'=>'application/update-insurance-status','class'=>'ss-form-processing']) !!}
+                          {!! Form::open(['url'=>'application/update-insurance-status','files'=>true,'class'=>'ss-form-processing']) !!}
                             <div class="form-group">
                               {!! Form::label('','Insurance name') !!}
                               {!! Form::text('insurance_name',null,['class'=>'form-control','placeholder'=>'Insurance name','required'=>true]) !!}
