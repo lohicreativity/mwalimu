@@ -220,7 +220,7 @@ class ApplicantAction implements ApplicantInterface{
             }
         }
 		
-		public function uploadInsurance(Request $request))
+		public function uploadInsurance(Request $request)
 		{		
 			$insurance = new HealthInsurance;
 			$insurance->insurance_name = $request->get('insurance_name');
