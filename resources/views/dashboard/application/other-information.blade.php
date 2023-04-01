@@ -137,6 +137,8 @@
                          </select>
                        </div>
                      </div>
+					 
+						{!! Form::label('','Upload Insurance Card') !!}		
                             <button type="submit" class="btn btn-primary">Save</button>
                           {!! Form::close() !!}
                        </div><!-- end of col-md-12 -->
