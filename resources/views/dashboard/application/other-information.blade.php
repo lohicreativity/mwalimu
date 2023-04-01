@@ -46,10 +46,10 @@
 			  @if($applicant->insurance_status == 1)
 				  
 			  					<div class="row">
-							   <div class="col-4">
+							   <div class="card-footer col-4">
 									<button type="submit" class="btn btn-primary">Preview</button>
 							   </div>
-							   <div class="col-6">
+							   <div class="card-footer col-8">
 									<button type="submit" class="btn btn-primary">Reset</button>
 							   </div>
 					</div>
