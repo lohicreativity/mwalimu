@@ -42,14 +42,14 @@
             <div class="card">
               <div class="card-header">
                 <h3 class="card-title">Health Insurance Status 
-				  @if($applicant->insurance_status === 1)
-                   <span class="badge badge-success">Done</span>
+				  @if($applicant->insurance_status == null)
+					<span class="badge badge-warning">Pending</span>
                   @else
-                   <span class="badge badge-warning">Pending</span>
+                    <span class="badge badge-success">Done</span>
                   @endif
 				</h3>
               </div>
-			  @if($applicant->insurance_status == 1)
+			  @if($applicant->insurance_status != null)
 			  	<div class="row card-footer">
 				
 				@if(count($applicant->insurances) != 0)

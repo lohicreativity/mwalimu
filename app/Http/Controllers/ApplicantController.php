@@ -1701,15 +1701,18 @@ class ApplicantController extends Controller
            }
         }
          
-         if($request->get('insurance_name') != 'NHIF' && $request->get('insurance_name') != 0){
+         if($request->get('insurance_name') != 'NHIF' && $request->get('insurance_status') != 0){
            if(strtotime($request->get('expire_year').'-'.$request->get('expire_month').'-'.$request->get('expire_date')) <= strtotime(now())){
               return redirect()->back()->with('error','Expire date cannot be less than today\'s date');
-           }
+           }else{
+			  (new ApplicantAction)->uploadInsurance($request); 	
+		   }
          }
-         
-         
-         $applicant = Applicant::find($request->get('applicant_id'));
-         if($request->get('insurance_name') == 'NHIF'){
+
+		
+        $applicant = Applicant::find($request->get('applicant_id'));
+        		
+		if($request->get('insurance_name') == 'NHIF'){
             $status_code = NHIFService::checkCardStatus($request->get('card_number'))->statusCode;
             if($status_code == 406){
                 return redirect()->back()->with('error','Invalid card number. Please resubmit the correct card number or request new NHIF card.');
@@ -1727,21 +1730,6 @@ class ApplicantController extends Controller
             $applicant->insurance_status = $request->get('insurance_status');
          }
          $applicant->save();
-
-         if($request->get('insurance_status') == 1){
-			 
-			 if($request->get('insurance_name') != 'NHIF'){
-				(new ApplicantAction)->uploadInsurance($request); 
-			 }else{
-
-				 $insurance = new HealthInsurance;
-				 $insurance->insurance_name = $request->get('insurance_name');
-				 $insurance->membership_number = $request->get('card_number');
-				 $insurance->expire_date = $request->get('expire_year').'-'.$request->get('expire_month').'-'.$request->get('expire_date');
-				 $insurance->applicant_id = $applicant->id;
-				 $insurance->save();
-			 }
-         }
 
         return redirect()->back()->with('message','Health insurance status updated successfully');
     }
