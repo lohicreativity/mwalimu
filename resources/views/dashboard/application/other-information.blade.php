@@ -240,7 +240,7 @@
             <div class="card card-default">
               <div class="card-header">
                 <h3 class="card-title">{{ __('Hostel Request') }}  
-					@if($applicant->hostel_status >= 1)
+					@if($applicant->hostel_status === 1 || $applicant->hostel_status === 2 || $applicant->hostel_status === 3)
 					  @if($applicant->hostel_available_status === 1)
 					   - <span class="badge badge-success">Room Allocated</span>
 					  @elseif($applicant->hostel_available_status === 0)
