@@ -3597,9 +3597,20 @@ class ApplicationController extends Controller
 
     public function previewInsuranceStatus(Request $request)
 	{
+        $applicant = User::find(Auth::user()->id)->applicants()->with(['insurances','programLevel'])->where('campus_id',session('applicant_campus_id'))->first();
+        $student = Student::where('applicant_id', $applicant->id)->first();
+		$insurance = HealthInsurance::where('applicant_id',$applicant->id)->first();
 
-		
-        return redirect()->back()->with('message','Insurance status updated successfully');		
+        $data = [
+           'applicant'=>$applicant,
+		   'insurance'=>$insurance
+        ];
+
+        if ($student) {
+            return redirect()->back()->with('error', 'Unable to view page');
+        } else {
+            return view('dashboard.application.other-information',$data)->withTitle('Other Information');
+        }	
 	}
 	
 	public function resetInsuranceStatus(Request $request)
