@@ -113,11 +113,17 @@
 											 </select>
 										   </div>
 										</div>
+										@if($applicant->insurances[0]->card == null)
 										{!! Form::label('','Upload Insurance Card') !!}
 										{!! Form::file('insurance_card',['class'=>'form-control','required'=>true]) !!}
 										<br>
-									
 										<button type="submit" class="btn btn-primary">Save</button>
+										
+										@else{
+											<a href="{{ url('application/other-information?card='.$applicant->insurances[0]->card) }}" target="_blank" class="btn btn-primary"><i class="fa fa-eye"></i> View</a>
+											<a href="{{ url('application/other-information?card='.$applicant->insurances[0]->card) }}" class="btn btn-danger"><i class="fa fa-trash"></i> Delete</a>									
+
+										}
 
 									  {!! Form::close() !!}
 								   </div><!-- end of preview -->
