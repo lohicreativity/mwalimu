@@ -107,7 +107,7 @@
                          <th>Programme</th>
                          <th>Category</th>
                          <th>Status</th>
-                         <th>Allocate</th>
+                         <th>Action</th>
                        </tr>
                      </thead>
                      <tbody>
@@ -129,20 +129,15 @@
                          </td>
                          <td>
                              @if($applicant->hostel_available_status === 1)
-                                Allocated
+                                <span style="font-size: 11pt" class="badge badge-success">Allocated</span>
                              @elseif($applicant->hostel_available_status === 0)
-                                Not Allocated
+                                <span style="font-size: 11pt" class="badge badge-danger">Not Allocated</span>
 							 @else
-								Pending
+								<span style="font-size: 11pt" class="badge badge-warning">Pending</span>
                              @endif
                          </td>
                          <td>
-                             @if($applicant->hostel_available_status === 0 || $applicant->hostel_available_status === 1)
-                                {!! Form::checkbox('applicant_'.$applicant->id,$applicant->id,true) !!}
-                             @else
-                                {!! Form::checkbox('applicant_'.$applicant->id,$applicant->id) !!}
-                             @endif
-							 
+                             {!! Form::checkbox('applicant_'.$applicant->id,$applicant->id) !!}
 							 {!! Form::input('hidden','app_'.$applicant->id,$applicant->id) !!}
                          </td>
                        </tr>
