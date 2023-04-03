@@ -41,9 +41,9 @@
 
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">Health Insurance Status 
+                <h3 class="card-title">Health Insurance Status - 
 				  @if($applicant->insurance_status === 0 || $applicant->insurance_status === 1)
-                    <span class="badge badge-success">Done</span>
+                    <span class="badge badge-success">Submitted</span>
                   @else
 					<span class="badge badge-warning">Pending</span>
                   @endif
@@ -110,7 +110,7 @@
 
 			  @else
               <div class="card-footer">
-                 <a href="#" data-toggle="modal" data-target="#ss-insurance-card" class="btn btn-primary">Verify Health Insurance</a>
+                 <a href="#" data-toggle="modal" data-target="#ss-insurance-card" class="btn btn-primary">Health Insurance Status</a>
               </div>
 			  @endif
             </div>
@@ -239,20 +239,26 @@
 
             <div class="card card-default">
               <div class="card-header">
-                <h3 class="card-title">{{ __('Hostel Request') }}</h3>
+                <h3 class="card-title">{{ __('Hostel Request') }}
+					@if($applicant->hostel_status >= 0)
+					  @if($applicant->hostel_available_status === 1)
+					   <span class="badge badge-success">Room Allocated</span>
+					  @elseif($applicant->hostel_available_status === 0)
+					   <span class="badge badge-warning"> No Room Allocated</span>
+					  @else
+					   <span class="badge badge-warning">Waiting Room Allocation</span>
+					  @endif
+					@else
+					  <span class="badge badge-warning">Pending</span>	
+					@endif				
+				
+				</h3>
               </div>
               <!-- /.card-header -->
               
               {!! Form::open(['url'=>'application/update-hostel-status']) !!}
               <div class="card-body">
-                  @if($applicant->hostel_available_status === 1)
-                   <span class="badge badge-success">Available</span>
-                  @elseif($applicant->hostel_available_status === 0)
-                   <span class="badge badge-warning">Unavailable</span>
-                  @else
-                   <span class="badge badge-warning">Pending</span>
-                  @endif
-                  <br><br><br>
+
                   {!! Form::input('hidden','applicant_id',$applicant->id) !!}
 
                   <label class="radio-inline">
