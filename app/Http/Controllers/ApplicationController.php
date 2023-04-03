@@ -3624,7 +3624,7 @@ class ApplicationController extends Controller
 	{
 		HealthInsurance::where('applicant_id',$request->get('applicant_id'))->delete();
 		$applicant = Applicant::where('id',$request->get('applicant_id'))->first();
-		$applicant->insurance_status = 0;
+		$applicant->insurance_status = null;
 		$applicant->save();
 		
         return redirect()->back()->with('message','Insurance status reset is successful');		
