@@ -118,7 +118,7 @@
                          <td>@if(count($applicant->insurances) != 0) {{ $applicant->insurances[0]->insurance_name }} @endif</td>
                          <td>@if(count($applicant->insurances) != 0) {{ $applicant->insurances[0]->membership_number }} @endif</td>
                          <td>@if(count($applicant->insurances) != 0) {{ $applicant->insurances[0]->expire_date }} @endif</td>
-						 <td>@if(count($applicant->insurances) != 0 $$ $applicant->insurances[0]->card != null) 
+						 <td>@if(count($applicant->insurances) != 0 && $applicant->insurances[0]->card != null) 
 								<a href="{{ url('application/view-document?name=insurance') }}" target="_blank" class="btn btn-primary"><i class="fa fa-eye"></i> View Card</a>
 							@endif
 						 </td>
