@@ -120,7 +120,8 @@
 					</div>
 					</div>
 					</div>
-
+					</div>
+					</div>
 					<div class="col-4">
 					  {!! Form::open(['url'=>'application/reset-insurance-status','class'=>'ss-form-processing']) !!}
 					  {!! Form::input('hidden','applicant_id',$applicant->id) !!}
