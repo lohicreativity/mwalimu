@@ -1116,7 +1116,7 @@ class ApplicationController extends Controller
         try{
             if($request->get('name') == 'insurance'){
 			   $insurance = HealthInsurance::where('applicable_id', $applicant->id)->first();
-				
+				return $insurance->card;
                unlink(public_path().'/uploads/'.$insurance->card);
                $insurance->card = null;
 			   $insurance->save();
