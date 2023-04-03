@@ -227,7 +227,7 @@
                             {!! Form::input('hidden','insurance_status',0) !!}
                             {!! Form::input('hidden','insurance_name',0) !!}
                             {!! Form::input('hidden','applicant_id',$applicant->id) !!}
-                            <button class="btn btn-primary" @if($applicant->insurance_status === 0 || count($applicant->insurances) != 0) disabled="disabled" @else type="submit" @endif>Request NHIF</button>
+                            <button class="btn btn-primary" @if($applicant->insurance_status != 0 || count($applicant->insurances) != 0) disabled="disabled" @else type="submit" @endif>Request NHIF</button>
                           {!! Form::close() !!}
                        </div><!-- end of col-md-12 -->
                      </div><!-- end of row -->
