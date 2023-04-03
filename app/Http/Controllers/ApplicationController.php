@@ -1098,7 +1098,7 @@ class ApplicationController extends Controller
     }
 
     public function viewDocument(Request $request)
-    {return $request;
+    {
         $data = [
             'request' => $request,
             'applicant' =>$request->get('applicant_id')? Applicant::with('programLevel','insurances')->where('applicant_id',$request->get('applicant_id'))->first():
