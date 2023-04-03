@@ -3652,11 +3652,16 @@ class ApplicationController extends Controller
                 $app->save();
             } */
             if($request->get('app_'.$applicant->id) == $applicant->id){
+				if($request->get('applicant_'.$applicant->id) == $applicant->id){
+					$app = Applicant::find($applicant->id);
+					$app->hostel_available_status = 1;
+					$app->save();
+				}else{				
 
 					$app = Applicant::find($applicant->id);
 					$app->hostel_available_status = 0;
 					$app->save();
-
+				}
             }elseif($request->get('applicant_'.$applicant->id) == $applicant->id){
                 $app = Applicant::find($applicant->id);
                 $app->hostel_available_status = 1;
