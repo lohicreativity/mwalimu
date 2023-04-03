@@ -52,9 +52,12 @@
 			  @if($applicant->insurance_status == 1)
 			  	<div class="row card-footer">
 			        <div class="card-footer">
-						<a href="{{ url('application/preview-insurance-status') }}" data-toggle="modal" data-target="#ss-card-preview-other-form" class="btn btn-primary">Preview</a>
-					</div>
-
+						
+					  {!! Form::open(['url'=>'application/preview-insurance-status','class'=>'ss-form-processing']) !!}
+					  {!! Form::input('hidden','applicant_id',$applicant->id) !!}
+						<button type="submit" data-toggle="modal" data-target="#ss-card-preview-other-form" class="btn btn-primary">Preview</button>
+					  {!! Form::close() !!}
+										</div>  
 						<div class="modal fade" id="ss-card-preview-other-form">
 						  <div class="modal-dialog modal-lg">
 							<div class="modal-content">
