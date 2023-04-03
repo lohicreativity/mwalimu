@@ -53,7 +53,7 @@
 			  	<div class="row card-footer">
 			        <div class="card-footer">
 						
-					  {!! Form::open(['url'=>'application/preview-insurance-status','class'=>'ss-form-processing']) !!}
+					  {!! Form::open(['url'=>'application/other-information','class'=>'ss-form-processing']) !!}
 					  {!! Form::input('hidden','applicant_id',$applicant->id) !!}
 						<button type="submit" data-toggle="modal" data-target="#ss-card-preview-other-form" class="btn btn-primary">Preview</button>
 					  {!! Form::close() !!}
