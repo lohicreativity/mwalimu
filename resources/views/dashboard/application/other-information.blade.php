@@ -79,38 +79,13 @@
 										</div>
 										<div class="form-group">
 										  {!! Form::label('','Card number') !!}
-										  {!! Form::text('card_number',$applicant->insurances[0]->membership_number,['class'=>'form-control','placeholder'=>'Card number','required'=>true]) !!}
+										  {!! Form::text('card_number',$applicant->insurances[0]->membership_number,['class'=>'form-control','placeholder'=>'Card number','readonly'=>true]) !!}
 
 										</div>
 										
 										  {!! Form::label('','Expire Date') !!}		
-																  
-										<div class="row form-group">
-										   <div class="col-4">
-											 <select name="expire_date" class="form-control" required>
-											   <option value="">Expire Date</option>
-											   @for($i = 1; $i <= 31; $i++)
-											   <option value="{{ $i }}">{{ $i }}</option>
-											   @endfor
-											 </select>
-										   </div>
-										   <div class="col-4">
-											 <select name="expire_month" class="form-control" required>
-											   <option value="">Month</option>
-											   @for($i = 1; $i <= 12; $i++)
-											   <option value="{{ $i }}">{{ $i }}</option>
-											   @endfor
-											 </select>
-										   </div>
-										   <div class="col-4">
-											 <select name="expire_year" class="form-control" required>
-											   <option value="">Year</option>
-											   @for($i = date('Y'); $i <= now()->addYears(20)->format('Y'); $i++)
-											   <option value="{{ $i }}">{{ $i }}</option>
-											   @endfor
-											 </select>
-										   </div>
-										</div>
+										  {!! Form::text('expire_date',$applicant->insurances[0]->expire_date,['class'=>'form-control','readonly'=>true]) !!}																  
+		
 										@if($applicant->insurances[0]->card != null)
 
 											<a href="{{ url('application/view-document?name=insurance') }}" target="_blank" class="btn btn-primary"><i class="fa fa-eye"></i> View</a>
