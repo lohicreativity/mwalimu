@@ -125,7 +125,7 @@
                          <td>@if(count($applicant->insurances) != 0) 
 								@if($applicant->insurances[0]->verification_status == 'VERIFIED') <span class="badge badge-success"> Valid </span> 
 								@elseif($applicant->insurances[0]->verification_status == 'UNVERIFIED') <span class="badge badge-danger"> Invalid </span>
-								@else <span class="badge badge-danger"> Invalid </span>	
+								@else <span style="font-size: 14pt" class="badge badge-warning"> Pending </span>	
 								@endif	
 							 @endif
 						 </td>		
