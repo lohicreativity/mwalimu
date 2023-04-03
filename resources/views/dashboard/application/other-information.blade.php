@@ -52,7 +52,7 @@
 			  @if($applicant->insurance_status == 1)
 			  	<div class="row card-footer">
 			        <div class="card-footer">
-						<a href="#" data-toggle="modal" data-target="#ss-card-preview-other-form" class="btn btn-primary">Preview</a>
+						<a href="{{ url('application/preview-insurance-status') }}" data-toggle="modal" data-target="#ss-card-preview-other-form" class="btn btn-primary">Preview</a>
 					</div>
 
 						<div class="modal fade" id="ss-card-preview-other-form">
