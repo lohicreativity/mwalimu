@@ -137,7 +137,7 @@
                              @endif
                          </td>
                          <td>
-                             @if($applicant->hostel_available_status == 1)
+                             @if($applicant->hostel_available_status === 0 || $applicant->hostel_available_status === 1)
                                 {!! Form::checkbox('applicant_'.$applicant->id,$applicant->id,true) !!}
                              @else
                                 {!! Form::checkbox('applicant_'.$applicant->id,$applicant->id) !!}
