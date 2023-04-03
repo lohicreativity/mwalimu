@@ -43,7 +43,13 @@
               <div class="card-header">
                 <h3 class="card-title">Health Insurance Status 
 				  @if($applicant->insurance_status === 0 || $applicant->insurance_status === 1)
-                    - <span class="badge badge-success">Submitted</span>
+					  @if($applicant->insurances[0]->verification_status == 'VERIFIED')
+						- <span class="badge badge-success">Valid</span>						  
+					  @elseif($applicant->insurances[0]->verification_status == 'UNVERIFIED')
+						- <span class="badge badge-danger">Invalid</span>					  
+					  @else
+						- <span class="badge badge-warning">Awaiting Validation</span>
+					  @endif
                   @else
 					- <span class="badge badge-warning">Pending</span>
                   @endif
@@ -103,7 +109,7 @@
 					<div class="col-4">
 					  {!! Form::open(['url'=>'application/reset-insurance-status','class'=>'ss-form-processing']) !!}
 					  {!! Form::input('hidden','applicant_id',$applicant->id) !!}
-						<button type="submit" class="btn btn-primary">Reset</button>
+						<button type="submit" @if($applicant->insurances[0]->verification_status != null) disabled='false' @endif class="btn btn-primary">Reset</button>
 					  {!! Form::close() !!}
 					</div>
 			  	</div>
