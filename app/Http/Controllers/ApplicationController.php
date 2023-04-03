@@ -1115,6 +1115,7 @@ class ApplicationController extends Controller
         $applicant = Applicant::with('programLevel')->where('user_id',Auth::user()->id)->where('campus_id',session('applicant_campus_id'))->first();
         try{
             if($request->get('name') == 'insurance'){
+				return 123;
 			   $insurance = HealthInsurance::where('applicable_id', $applicant->id)->first();
 				return $insurance->card;
                unlink(public_path().'/uploads/'.$insurance->card);
