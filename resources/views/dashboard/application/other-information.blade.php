@@ -41,11 +41,11 @@
 
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">Health Insurance Status - 
+                <h3 class="card-title">Health Insurance Status 
 				  @if($applicant->insurance_status === 0 || $applicant->insurance_status === 1)
-                    <span class="badge badge-success">Submitted</span>
+                    - <span class="badge badge-success">Submitted</span>
                   @else
-					<span class="badge badge-warning">Pending</span>
+					- <span class="badge badge-warning">Pending</span>
                   @endif
 				</h3>
               </div>
@@ -239,19 +239,19 @@
 
             <div class="card card-default">
               <div class="card-header">
-                <h3 class="card-title">{{ __('Hostel Request') }} - 
+                <h3 class="card-title">{{ __('Hostel Request') }}  
 					@if($applicant->hostel_status >= 1)
 					  @if($applicant->hostel_available_status === 1)
-					   <span class="badge badge-success">Room Allocated</span>
+					   - <span class="badge badge-success">Room Allocated</span>
 					  @elseif($applicant->hostel_available_status === 0)
-					   <span class="badge badge-warning"> No Room Allocated</span>
+					   - <span class="badge badge-warning"> No Room Allocated</span>
 					  @else
-					   <span class="badge badge-warning">Waiting Room Allocation</span>
+					   - <span class="badge badge-warning">Waiting Room Allocation</span>
 					  @endif
 					@elseif($applicant->hostel_status === 0)
-					  <span class="badge badge-success">Submitted</span>	
+					  - <span class="badge badge-success">Submitted</span>	
 					@else
-					  <span class="badge badge-warning">Pending</span>							
+					  - <span class="badge badge-warning">Pending</span>							
 					@endif				
 				
 				</h3>
@@ -277,7 +277,7 @@
                   </label>
               </div>
               <div class="card-footer">
-              <button class="btn btn-primary">Submit Hostel Request</button>
+              <button class="btn btn-primary" @if($applicant->hostel_available_status === 1) disabled="true" @endif>Submit Hostel Request</button>
             </div>
             {!! Form::close() !!}
             </div>
