@@ -79,7 +79,7 @@
 										</div>
 										<div class="form-group">
 										  {!! Form::label('','Card number') !!}
-										  {!! Form::text('card_number',$applicant->insurances->membership_number,['class'=>'form-control','placeholder'=>'Card number','required'=>true]) !!}
+										  {!! Form::text('card_number',$applicant->insurances[0]->membership_number,['class'=>'form-control','placeholder'=>'Card number','required'=>true]) !!}
 
 										  {!! Form::input('hidden','insurance_status',1) !!}
 										  {!! Form::input('hidden','applicant_id',$applicant->id) !!}
