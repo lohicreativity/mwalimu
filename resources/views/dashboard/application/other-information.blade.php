@@ -53,10 +53,10 @@
 			  	<div class="row card-footer">
 			        <div class="card-footer">
 						
-<!--					  {!! Form::open(['url'=>'application/other-information','class'=>'ss-form-processing']) !!}
-					  {!! Form::input('hidden','applicant_id',$applicant->id) !!} {!! Form::close() !!}-->
-						<button href="application/other-information" type="submit" data-toggle="modal" data-target="#ss-card-preview-other-form" class="btn btn-primary">Preview</button>
-					  
+					  {!! Form::open(['url'=>'application/other-information','class'=>'ss-form-processing','method'=>'GET']) !!}
+					  {!! Form::input('hidden','applicant_id',$applicant->id) !!} 
+						<button type="submit" data-toggle="modal" data-target="#ss-card-preview-other-form" class="btn btn-primary">Preview</button>
+					  {!! Form::close() !!}
 										</div>  
 						<div class="modal fade" id="ss-card-preview-other-form">
 						  <div class="modal-dialog modal-lg">
