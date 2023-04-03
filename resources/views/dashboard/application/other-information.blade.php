@@ -41,19 +41,24 @@
 
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">Health Insurance Verification</h3>
+                <h3 class="card-title">Health Insurance Status</h3>
               </div>
 			  @if($applicant->insurance_status == 1)
-				  
-			  					<div class="row card-footer">
-							   <div class="col-4">
-									<button type="submit" class="btn btn-primary">Preview</button>
-							   </div>
-							   <div>
-									<button type="submit" class="btn btn-primary">Reset</button>
-							   </div>
+			  	<div class="row card-footer">
+					<div class="col-4">
+					  {!! Form::open(['url'=>'application/preview-insurance-status','class'=>'ss-form-processing']) !!}
+					  {!! Form::input('hidden','applicant_id',$applicant->id) !!}
+						<button type="submit" class="btn btn-primary">Preview</button>
+					  {!! Form::close() !!}
 					</div>
-				  
+					<div class="col-4">
+					  {!! Form::open(['url'=>'application/reset-insurance-status','class'=>'ss-form-processing']) !!}
+					  {!! Form::input('hidden','applicant_id',$applicant->id) !!}
+						<button type="submit" class="btn btn-primary">Reset</button>
+					  {!! Form::close() !!}
+					</div>
+			  	</div>
+
 			  @else
               <div class="card-footer">
                  <a href="#" data-toggle="modal" data-target="#ss-insurance-card" class="btn btn-primary">Verify Health Insurance</a>

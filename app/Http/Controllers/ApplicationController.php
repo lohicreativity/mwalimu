@@ -3594,6 +3594,23 @@ class ApplicationController extends Controller
         return redirect()->back()->with('message','Insurance status updated successfully');
     }
 
+
+    public function previewInsuranceStatus(Request $request)
+	{
+
+		
+        return redirect()->back()->with('message','Insurance status updated successfully');		
+	}
+	
+	public function resetInsuranceStatus(Request $request)
+	{
+		HealthInsurance::where('applicant_id',$applicant->id)->delete();
+		$applicant = Applicant::where('applicant_id',$applicant->id)->first();
+		$applicant->insurance_status = 0;
+		$applicant->save();
+		
+        return redirect()->back()->with('message','Insurance status reset is successful');		
+	}
     /**
      * Update insurance status
      */
