@@ -42,7 +42,7 @@
             <div class="card">
               <div class="card-header">
                 <h3 class="card-title">Health Insurance Status 
-				  @if($applicant->insurance_status == null)
+				  @if($applicant->insurance_status == 'NULL')
 					<span class="badge badge-warning">Pending</span>
                   @else
                     <span class="badge badge-success">Done</span>
