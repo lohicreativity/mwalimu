@@ -49,7 +49,7 @@
                   @endif
 				</h3>
               </div>
-			  @if($applicant->insurance_status != null)
+			  @if($applicant->insurance_status === 0 || $applicant->insurance_status === 1)
 			  	<div class="row card-footer">
 				
 				@if(count($applicant->insurances) != 0)
