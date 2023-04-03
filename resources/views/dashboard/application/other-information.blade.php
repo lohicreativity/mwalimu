@@ -65,7 +65,7 @@
 								</button>
 							  </div>
 							  <div class="modal-body">					
-					
+								@if($applicant->insurance)
 								<div class="row" id="ss-card-preview-other-form">
 								  <div class="col-12">
 									  {!! Form::open(['url'=>'application/update-insurance-status','files'=>true,'class'=>'ss-form-processing']) !!}
@@ -117,7 +117,8 @@
 
 									  {!! Form::close() !!}
 								   </div><!-- end of preview -->
-					</div>
+								</div>
+								@endif
 					</div>
 					</div>
 					</div>
