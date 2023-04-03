@@ -85,10 +85,10 @@
 										
 										  {!! Form::label('','Expire Date') !!}		
 										  {!! Form::text('expire_date',$applicant->insurances[0]->expire_date,['class'=>'form-control','readonly'=>true]) !!}																  
-		
+										<br>
 										@if($applicant->insurances[0]->card != null)
 
-											<a href="{{ url('application/view-document?name=insurance') }}" target="_blank" class="btn btn-primary"><i class="fa fa-eye"></i> View</a>
+											<a href="{{ url('application/view-document?name=insurance') }}" target="_blank" class="btn btn-primary"><i class="fa fa-eye"></i> View Insurance Card</a>
 <!--											<a href="{{ url('application/delete-document?name=insurance') }}" class="btn btn-danger"><i class="fa fa-trash"></i> Delete</a>		 -->							
 
 										@endif
