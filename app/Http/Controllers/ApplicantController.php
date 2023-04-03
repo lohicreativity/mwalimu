@@ -1581,7 +1581,7 @@ class ApplicantController extends Controller
 
         if ($student) {
             return redirect()->back()->with('error', 'Unable to view page');
-		else {
+		}else {
             return view('dashboard.application.other-information',$data)->withTitle('Other Information');
         }
     }
