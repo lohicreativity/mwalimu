@@ -137,7 +137,7 @@
                              @endif
                          </td>
                          <td>
-                             &nbsp;{!! Form::checkbox('applicant_'.$applicant->id,$applicant->id) !!}&nbsp;
+                             &nbsp; &nbsp; &nbsp;{!! Form::checkbox('applicant_'.$applicant->id,$applicant->id) !!}
 							 {!! Form::input('hidden','app_'.$applicant->id,$applicant->id) !!}
                          </td>
                        </tr>
