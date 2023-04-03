@@ -72,7 +72,7 @@
 								@if(count($applicant->insurances) != 0)
 								<div class="row" id="ss-card-preview-other-form">
 								  <div class="col-12">
-									  {!! Form::open(['url'=>'application/update-insurance-status','files'=>true,'class'=>'ss-form-processing']) !!}
+									
 										<div class="form-group">
 										  {!! Form::label('','Insurance name') !!}
 										  {!! Form::text('insurance_name',$applicant->insurances[0]->insurance_name,['class'=>'form-control','placeholder'=>'Insurance name','required'=>true]) !!}
@@ -81,8 +81,6 @@
 										  {!! Form::label('','Card number') !!}
 										  {!! Form::text('card_number',$applicant->insurances[0]->membership_number,['class'=>'form-control','placeholder'=>'Card number','required'=>true]) !!}
 
-										  {!! Form::input('hidden','insurance_status',1) !!}
-										  {!! Form::input('hidden','applicant_id',$applicant->id) !!}
 										</div>
 										
 										  {!! Form::label('','Expire Date') !!}		
@@ -113,19 +111,13 @@
 											 </select>
 										   </div>
 										</div>
-										@if($applicant->insurances[0]->card == null)
-										{!! Form::label('','Upload Insurance Card') !!}
-										{!! Form::file('insurance_card',['class'=>'form-control','required'=>true]) !!}
-										<br>
-										<button type="submit" class="btn btn-primary">Save</button>
-										
-										@else
+										@if($applicant->insurances[0]->card != null)
+
 											<a href="{{ url('application/view-document?name=insurance') }}" target="_blank" class="btn btn-primary"><i class="fa fa-eye"></i> View</a>
-											<a href="{{ url('application/delete-document?name=insurance') }}" class="btn btn-danger"><i class="fa fa-trash"></i> Delete</a>									
+<!--											<a href="{{ url('application/delete-document?name=insurance') }}" class="btn btn-danger"><i class="fa fa-trash"></i> Delete</a>		 -->							
 
 										@endif
 
-									  {!! Form::close() !!}
 								   </div><!-- end of preview -->
 								</div>
 								@endif

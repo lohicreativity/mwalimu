@@ -1114,12 +1114,12 @@ class ApplicationController extends Controller
     {
         $applicant = Applicant::with('programLevel')->where('user_id',Auth::user()->id)->where('campus_id',session('applicant_campus_id'))->first();
         try{
-            if($request->get('name') == 'insurance'){
+/*             if($request->get('name') == 'insurance'){
 			   $insurance = HealthInsurance::where('applicant_id', $applicant->id)->first();
                unlink(public_path().'/uploads/'.$insurance->card);
                $insurance->card = null;
 			   $insurance->save();
-            }
+            } */
 			
             if($request->get('name') == 'birth_certificate'){
                unlink(public_path().'/uploads/'.$applicant->birth_certificate);
