@@ -158,6 +158,7 @@
 						    {!! Form::file('insurance_card',['class'=>'form-control','required'=>true]) !!}
 							<br>
 						
+							<button type="submit" class="btn btn-primary">Save</button>
 
                           {!! Form::close() !!}
                        </div><!-- end of col-md-12 -->
