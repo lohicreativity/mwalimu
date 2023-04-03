@@ -48,7 +48,7 @@
 					  @elseif($applicant->insurances[0]->verification_status == 'UNVERIFIED')
 						- <span class="badge badge-danger">Invalid</span>					  
 					  @else
-						- <span class="badge badge-warning">Awaiting Validation</span>
+						- <span class="badge badge-warning">Awaiting Verification</span>
 					  @endif
                   @else
 					- <span class="badge badge-warning">Pending</span>
