@@ -277,7 +277,7 @@
                   </label>
               </div>
               <div class="card-footer">
-              <button class="btn btn-primary" @if($applicant->hostel_available_status === 1) disabled="true" @endif>Submit Hostel Request</button>
+              <button class="btn btn-primary" @if($applicant->hostel_available_status === 1 || $applicant->hostel_available_status === 0) disabled="true" @endif>Submit Hostel Request</button>
             </div>
             {!! Form::close() !!}
             </div>
