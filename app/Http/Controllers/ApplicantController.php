@@ -1668,7 +1668,8 @@ class ApplicantController extends Controller
      */
     public function updateInsuranceStatus(Request $request)
     {
-        $validation = Validator::make($request->all(),[
+        if($request->get('insurance_name') != 'NHIF'){
+			$validation = Validator::make($request->all(),[
             'insurance_status'=>'required',
             'card_number'=>'required',
             'insurance_name'=>'required',
@@ -1677,7 +1678,20 @@ class ApplicantController extends Controller
             'expire_year'=>'required',
             'expire_month'=>'required',
             'expire_date'=>'required'			
-        ]);
+			]);
+			
+		}elseif($request->get('insurance_name') == 'NHIF'){
+			$validation = Validator::make($request->all(),[
+            'insurance_status'=>'required',
+            'card_number'=>'required',
+            'insurance_name'=>'required',
+            'applicant_id'=>'required'			
+			]);			
+		}else{
+			$validation = Validator::make($request->all(),[
+            'applicant_id'=>'required'			
+			]);				
+		}
 
         if($validation->fails()){
            if($request->ajax()){
