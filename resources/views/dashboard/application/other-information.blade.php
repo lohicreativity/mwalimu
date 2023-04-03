@@ -51,59 +51,56 @@
               </div>
 			  @if($applicant->insurance_status == 1)
 			  	<div class="row card-footer">
-								@if(count($applicant->insurances) != 0)
-			        <div class="card-footer">
-						
-<!--					  {!! Form::open(['url'=>'application/other-information','class'=>'ss-form-processing','method'=>'GET']) !!}
-					  {!! Form::input('hidden','applicant_id',$applicant->id) !!} 					  {!! Form::close() !!} 
-						<button type="submit" data-toggle="modal" data-target="#ss-card-preview-other-form" class="btn btn-primary">Preview</button>-->
+				
+				@if(count($applicant->insurances) != 0)
+
 						<a href="#" data-toggle="modal" data-target="#ss-insurance-card-preview-{{ $applicant->id }}" class="btn btn-primary">Preview</a>
 
-										</div>  
-						<div class="modal fade" id="ss-insurance-card-preview-{{ $applicant->id }}">
-						  <div class="modal-dialog modal-lg">
-							<div class="modal-content">
-							  <div class="modal-header">
-								<h4 class="modal-title"> Insurance Cards</h4>
-								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-								  <span aria-hidden="true">&times;</span>
-								</button>
-							  </div>
-							  <div class="modal-body">					
+ 
+					<div class="modal fade" id="ss-insurance-card-preview-{{ $applicant->id }}">
+					  <div class="modal-dialog modal-lg">
+						<div class="modal-content">
+						  <div class="modal-header">
+							<h4 class="modal-title"> Insurance Cards</h4>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							  <span aria-hidden="true">&times;</span>
+							</button>
+						  </div>
+						  <div class="modal-body">					
 
-								<div class="row" id="ss-card-preview-other-form">
-								  <div class="col-12">
+							<div class="row" id="ss-card-preview-other-form">
+							  <div class="col-12">
+								
+									<div class="form-group">
+									  {!! Form::label('','Insurance name') !!}
+									  {!! Form::text('insurance_name',$applicant->insurances[0]->insurance_name,['class'=>'form-control','placeholder'=>'Insurance name','readonly'=>true]) !!}
+									</div>
+									<div class="form-group">
+									  {!! Form::label('','Card number') !!}
+									  {!! Form::text('card_number',$applicant->insurances[0]->membership_number,['class'=>'form-control','placeholder'=>'Card number','readonly'=>true]) !!}
+
+									</div>
 									
-										<div class="form-group">
-										  {!! Form::label('','Insurance name') !!}
-										  {!! Form::text('insurance_name',$applicant->insurances[0]->insurance_name,['class'=>'form-control','placeholder'=>'Insurance name','readonly'=>true]) !!}
-										</div>
-										<div class="form-group">
-										  {!! Form::label('','Card number') !!}
-										  {!! Form::text('card_number',$applicant->insurances[0]->membership_number,['class'=>'form-control','placeholder'=>'Card number','readonly'=>true]) !!}
+									  {!! Form::label('','Expire Date') !!}		
+									  {!! Form::text('expire_date',$applicant->insurances[0]->expire_date,['class'=>'form-control','readonly'=>true]) !!}																  
+									<br>
+									@if($applicant->insurances[0]->card != null)
 
-										</div>
-										
-										  {!! Form::label('','Expire Date') !!}		
-										  {!! Form::text('expire_date',$applicant->insurances[0]->expire_date,['class'=>'form-control','readonly'=>true]) !!}																  
-										<br>
-										@if($applicant->insurances[0]->card != null)
-
-											<a href="{{ url('application/view-document?name=insurance') }}" target="_blank" class="btn btn-primary"><i class="fa fa-eye"></i> View Insurance Card</a>
+										<a href="{{ url('application/view-document?name=insurance') }}" target="_blank" class="btn btn-primary"><i class="fa fa-eye"></i> View Insurance Card</a>
 <!--											<a href="{{ url('application/delete-document?name=insurance') }}" class="btn btn-danger"><i class="fa fa-trash"></i> Delete</a>		 -->							
 
-										@endif
+									@endif
 
-								   </div><!-- end of preview -->
-								</div>
+							   </div><!-- end of preview -->
+							</div>
 
-					</div>
-					</div>
-					</div>
+						  </div>
+						</div>
+					  </div>
 					</div>
 
 					@endif
-										<div class="col-4">
+					<div class="col-4">
 					  {!! Form::open(['url'=>'application/reset-insurance-status','class'=>'ss-form-processing']) !!}
 					  {!! Form::input('hidden','applicant_id',$applicant->id) !!}
 						<button type="submit" class="btn btn-primary">Reset</button>
