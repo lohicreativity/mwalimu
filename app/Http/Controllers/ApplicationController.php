@@ -1101,7 +1101,7 @@ class ApplicationController extends Controller
     {
         $data = [
             'request' => $request,
-            'applicant' => Applicant::with('programLevel')->where('user_id',Auth::user()->id)->where('campus_id',session('applicant_campus_id'))->first()
+            'applicant' => Applicant::with('programLevel','insurances')->where('user_id',Auth::user()->id)->where('campus_id',session('applicant_campus_id'))->first()
         ];
 
         return view('dashboard.admission.applicant-document', $data);

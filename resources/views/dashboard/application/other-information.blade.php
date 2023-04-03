@@ -120,8 +120,8 @@
 										<button type="submit" class="btn btn-primary">Save</button>
 										
 										@else
-											<a href="{{ url('application/other-information?card='.$applicant->insurances[0]->card) }}" target="_blank" class="btn btn-primary"><i class="fa fa-eye"></i> View</a>
-											<a href="{{ url('application/other-information?card='.$applicant->insurances[0]->card) }}" class="btn btn-danger"><i class="fa fa-trash"></i> Delete</a>									
+											<a href="{{ url('application/view-document?name=insurance') }}" target="_blank" class="btn btn-primary"><i class="fa fa-eye"></i> View</a>
+											<a href="{{ url('application/delete-document?name=insurance') }}" class="btn btn-danger"><i class="fa fa-trash"></i> Delete</a>									
 
 										@endif
 
