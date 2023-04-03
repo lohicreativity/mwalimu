@@ -52,11 +52,61 @@
 			  @if($applicant->insurance_status == 1)
 			  	<div class="row card-footer">
 					<div class="col-4">
-					  {!! Form::open(['url'=>'application/preview-insurance-status','class'=>'ss-form-processing']) !!}
-					  {!! Form::input('hidden','applicant_id',$applicant->id) !!}
-						<button type="submit" class="btn btn-primary">Preview</button>
-					  {!! Form::close() !!}
+						<button type="submit" value="#ss-card-preview-other-form" id="ss-preview-card-other">Preview</button>
 					</div>
+					
+					<div class="row" id="ss-card-preview-other-form">
+                      <div class="col-12">
+                          {!! Form::open(['url'=>'application/update-insurance-status','files'=>true,'class'=>'ss-form-processing']) !!}
+                            <div class="form-group">
+                              {!! Form::label('','Insurance name') !!}
+                              {!! Form::text('insurance_name',null,['class'=>'form-control','placeholder'=>'Insurance name','required'=>true]) !!}
+                            </div>
+                            <div class="form-group">
+                              {!! Form::label('','Card number') !!}
+                              {!! Form::text('card_number',null,['class'=>'form-control','placeholder'=>'Card number','required'=>true]) !!}
+
+                              {!! Form::input('hidden','insurance_status',1) !!}
+                              {!! Form::input('hidden','applicant_id',$applicant->id) !!}
+                            </div>
+							
+                              {!! Form::label('','Expire Date') !!}		
+													  
+                            <div class="row form-group">
+							   <div class="col-4">
+								 <select name="expire_date" class="form-control" required>
+								   <option value="">Expire Date</option>
+								   @for($i = 1; $i <= 31; $i++)
+								   <option value="{{ $i }}">{{ $i }}</option>
+								   @endfor
+								 </select>
+							   </div>
+							   <div class="col-4">
+								 <select name="expire_month" class="form-control" required>
+								   <option value="">Month</option>
+								   @for($i = 1; $i <= 12; $i++)
+								   <option value="{{ $i }}">{{ $i }}</option>
+								   @endfor
+								 </select>
+							   </div>
+							   <div class="col-4">
+								 <select name="expire_year" class="form-control" required>
+								   <option value="">Year</option>
+								   @for($i = date('Y'); $i <= now()->addYears(20)->format('Y'); $i++)
+								   <option value="{{ $i }}">{{ $i }}</option>
+								   @endfor
+								 </select>
+							   </div>
+							</div>
+							{!! Form::label('','Upload Insurance Card') !!}
+						    {!! Form::file('insurance_card',['class'=>'form-control','required'=>true]) !!}
+							<br>
+						
+							<button type="submit" class="btn btn-primary">Save</button>
+
+                          {!! Form::close() !!}
+                       </div><!-- end of preview -->
+					
 					<div class="col-4">
 					  {!! Form::open(['url'=>'application/reset-insurance-status','class'=>'ss-form-processing']) !!}
 					  {!! Form::input('hidden','applicant_id',$applicant->id) !!}
