@@ -55,7 +55,7 @@
 						<a href="#" data-toggle="modal" data-target="#ss-card-preview-other-form" class="btn btn-primary">Preview</a>
 					</div>
 
-						<div class="modal fade" id="ss-insurance-card">
+						<div class="modal fade" id="ss-card-preview-other-form">
 						  <div class="modal-dialog modal-lg">
 							<div class="modal-content">
 							  <div class="modal-header">
