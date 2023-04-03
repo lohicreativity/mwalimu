@@ -41,7 +41,13 @@
 
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">Health Insurance Status</h3>
+                <h3 class="card-title">Health Insurance Status 
+				  @if($applicant->insurance_status === 1)
+                   <span class="badge-success">Done</span>
+                  @else
+                   <span class="badge badge-warning">Pending</span>
+                  @endif
+				</h3>
               </div>
 			  @if($applicant->insurance_status == 1)
 			  	<div class="row card-footer">
@@ -203,11 +209,11 @@
               {!! Form::open(['url'=>'application/update-hostel-status']) !!}
               <div class="card-body">
                   @if($applicant->hostel_available_status === 1)
-                   <span class="badge-success">AVAILABLE</span>
+                   <span class="badge-success">Available</span>
                   @elseif($applicant->hostel_available_status === 0)
-                   <span class="badge badge-warning">UNAVAILABLE</span>
+                   <span class="badge badge-warning">Unavailable</span>
                   @else
-                   <span class="badge badge-warning">PENDING</span>
+                   <span class="badge badge-warning">Pending</span>
                   @endif
                   <br><br><br>
                   {!! Form::input('hidden','applicant_id',$applicant->id) !!}
