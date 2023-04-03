@@ -75,7 +75,7 @@
 									
 										<div class="form-group">
 										  {!! Form::label('','Insurance name') !!}
-										  {!! Form::text('insurance_name',$applicant->insurances[0]->insurance_name,['class'=>'form-control','placeholder'=>'Insurance name','required'=>true]) !!}
+										  {!! Form::text('insurance_name',$applicant->insurances[0]->insurance_name,['class'=>'form-control','placeholder'=>'Insurance name','readonly'=>true]) !!}
 										</div>
 										<div class="form-group">
 										  {!! Form::label('','Card number') !!}
