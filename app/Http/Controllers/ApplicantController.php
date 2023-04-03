@@ -1570,7 +1570,6 @@ class ApplicantController extends Controller
     {
         $applicant = User::find(Auth::user()->id)->applicants()->with(['insurances','programLevel'])->where('campus_id',session('applicant_campus_id'))->first();
         $student = Student::where('applicant_id', $applicant->id)->first();
-		$insurance = HealthInsurance::where('applicant_id',$applicant->id)->first();
 	
         $program_fee_invoice = Invoice::whereHas('feeType',function($query){
                    $query->where('name','LIKE','%Tuition%');
@@ -1578,14 +1577,10 @@ class ApplicantController extends Controller
         $data = [
            'applicant'=>$applicant,
            'program_fee_invoice'=>$program_fee_invoice,
-		   'insurance'=> $insurance? $insurance : []
         ];
 
         if ($student) {
             return redirect()->back()->with('error', 'Unable to view page');
-        }elseif($insurance) {
-			return 123;
-		}
 		else {
             return view('dashboard.application.other-information',$data)->withTitle('Other Information');
         }

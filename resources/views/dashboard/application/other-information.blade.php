@@ -69,17 +69,17 @@
 								</button>
 							  </div>
 							  <div class="modal-body">					
-								@if($applicant->insurance)
+								@if(count($applicant->insurances) != 0)
 								<div class="row" id="ss-card-preview-other-form">
 								  <div class="col-12">
 									  {!! Form::open(['url'=>'application/update-insurance-status','files'=>true,'class'=>'ss-form-processing']) !!}
 										<div class="form-group">
 										  {!! Form::label('','Insurance name') !!}
-										  {!! Form::text('insurance_name',$applicant->insurance->name,['class'=>'form-control','placeholder'=>'Insurance name','required'=>true]) !!}
+										  {!! Form::text('insurance_name',$applicant->insurances->name,['class'=>'form-control','placeholder'=>'Insurance name','required'=>true]) !!}
 										</div>
 										<div class="form-group">
 										  {!! Form::label('','Card number') !!}
-										  {!! Form::text('card_number',$applicant->insurance->membership_number,['class'=>'form-control','placeholder'=>'Card number','required'=>true]) !!}
+										  {!! Form::text('card_number',$applicant->insurances->membership_number,['class'=>'form-control','placeholder'=>'Card number','required'=>true]) !!}
 
 										  {!! Form::input('hidden','insurance_status',1) !!}
 										  {!! Form::input('hidden','applicant_id',$applicant->id) !!}
