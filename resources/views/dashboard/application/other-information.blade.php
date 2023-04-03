@@ -213,14 +213,6 @@
                        </div><!-- end of col-md-12 -->
                      </div><!-- end of row -->
 
-
-
-
-
-
-
-                     @endif
-
                      <div class="row" id="ss-card-none-form">
                       <div class="col-12">
                           {!! Form::open(['url'=>'application/update-insurance-status','class'=>'ss-form-processing']) !!}
@@ -231,6 +223,8 @@
                           {!! Form::close() !!}
                        </div><!-- end of col-md-12 -->
                      </div><!-- end of row -->
+
+                     @endif
 
                   </div>
                   <div class="modal-footer justify-content-between">
