@@ -114,7 +114,7 @@
                      <tbody>
                        @foreach($applicants as $applicant)
                        <tr>
-                         <td>{{ $applicant->first_name }} {{ $applicant->middle_name }} {{ $applicant->surname }}</td>
+                         <td>{{ ucwords(strtolower($applicant->first_name)) }} {{ ucwords(strtolower($applicant->middle_name)) }} {{ ucwords(strtolower($applicant->surname)) }}</td>
                          <td>@if(count($applicant->insurances) != 0) {{ $applicant->insurances[0]->insurance_name }} @endif</td>
                          <td>@if(count($applicant->insurances) != 0) {{ $applicant->insurances[0]->membership_number }} @endif</td>
                          <td>@if(count($applicant->insurances) != 0) {{ $applicant->insurances[0]->expire_date }} @endif</td>
@@ -122,7 +122,13 @@
 								<a href="{{ url('application/view-document?name=insurance&applicant_id='.$applicant->id) }}" target="_blank" class="btn btn-primary"><i class="fa fa-eye"></i> View Card</a>
 							@endif
 						 </td>
-                         <td>@if(count($applicant->insurances) != 0) {{ $applicant->insurances[0]->verification_status }} @endif</td>
+                         <td>@if(count($applicant->insurances) != 0) 
+								@if($applicant->insurances[0]->verification_status == 'VERIFIED') <span class="badge badge-success"> Valid </span> 
+								@elseif($applicant->insurances[0]->verification_status == 'UNVERIFIED') <span class="badge badge-danger"> Invalid </span>
+								@else <span class="badge badge-danger"> Invalid </span>	
+								@endif	
+							 @endif
+						 </td>		
                          <td>
                              @if(count($applicant->insurances) != 0) 
                                  @if($applicant->insurances[0]->verification_status == 'VERIFIED')
