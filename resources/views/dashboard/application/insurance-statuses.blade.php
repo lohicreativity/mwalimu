@@ -106,6 +106,7 @@
                          <th>Insurance Name</th>
                          <th>Card Number</th>
                          <th>Expiry Date</th>
+                         <th>Insurance Card</th>						 
                          <th>Status</th>
                          <th>Verification</th>
                        </tr>
@@ -117,6 +118,10 @@
                          <td>@if(count($applicant->insurances) != 0) {{ $applicant->insurances[0]->insurance_name }} @endif</td>
                          <td>@if(count($applicant->insurances) != 0) {{ $applicant->insurances[0]->membership_number }} @endif</td>
                          <td>@if(count($applicant->insurances) != 0) {{ $applicant->insurances[0]->expire_date }} @endif</td>
+						 <td>@if(count($applicant->insurances) != 0 $$ $applicant->insurances[0]->card != null) 
+								<a href="{{ url('application/view-document?name=insurance') }}" target="_blank" class="btn btn-primary"><i class="fa fa-eye"></i> View Card</a>
+							@endif
+						 </td>
                          <td>@if(count($applicant->insurances) != 0) {{ $applicant->insurances[0]->verification_status }} @endif</td>
                          <td>
                              @if(count($applicant->insurances) != 0) 
