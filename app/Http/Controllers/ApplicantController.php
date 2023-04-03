@@ -1668,7 +1668,7 @@ class ApplicantController extends Controller
      */
     public function updateInsuranceStatus(Request $request)
     {
-        if($request->get('insurance_name') != 'NHIF'){
+        if($request->get('insurance_name') != 'NHIF' && $request->get('insurance_status') == 0){
 			$validation = Validator::make($request->all(),[
             'insurance_status'=>'required',
             'card_number'=>'required',
