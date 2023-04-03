@@ -75,7 +75,7 @@
 									  {!! Form::open(['url'=>'application/update-insurance-status','files'=>true,'class'=>'ss-form-processing']) !!}
 										<div class="form-group">
 										  {!! Form::label('','Insurance name') !!}
-										  {!! Form::text('insurance_name',$applicant->insurances->name,['class'=>'form-control','placeholder'=>'Insurance name','required'=>true]) !!}
+										  {!! Form::text('insurance_name',$applicant->insurances[0]->name,['class'=>'form-control','placeholder'=>'Insurance name','required'=>true]) !!}
 										</div>
 										<div class="form-group">
 										  {!! Form::label('','Card number') !!}
