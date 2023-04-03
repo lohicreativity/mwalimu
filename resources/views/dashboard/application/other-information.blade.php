@@ -51,6 +51,7 @@
               </div>
 			  @if($applicant->insurance_status == 1)
 			  	<div class="row card-footer">
+								@if(count($applicant->insurances) != 0)
 			        <div class="card-footer">
 						
 <!--					  {!! Form::open(['url'=>'application/other-information','class'=>'ss-form-processing','method'=>'GET']) !!}
@@ -69,7 +70,7 @@
 								</button>
 							  </div>
 							  <div class="modal-body">					
-								@if(count($applicant->insurances) != 0)
+
 								<div class="row" id="ss-card-preview-other-form">
 								  <div class="col-12">
 									
@@ -95,12 +96,14 @@
 
 								   </div><!-- end of preview -->
 								</div>
-								@endif
+
 					</div>
 					</div>
 					</div>
 					</div>
-					<div class="col-4">
+
+					@endif
+										<div class="col-4">
 					  {!! Form::open(['url'=>'application/reset-insurance-status','class'=>'ss-form-processing']) !!}
 					  {!! Form::input('hidden','applicant_id',$applicant->id) !!}
 						<button type="submit" class="btn btn-primary">Reset</button>
