@@ -3600,7 +3600,7 @@ class ApplicationController extends Controller
         $applicant = User::find(Auth::user()->id)->applicants()->with(['insurances','programLevel'])->where('campus_id',session('applicant_campus_id'))->first();
         $student = Student::where('applicant_id', $applicant->id)->first();
 		$insurance = HealthInsurance::where('applicant_id',$applicant->id)->first();
-
+	return $insurance;
         $data = [
            'applicant'=>$applicant,
 		   'insurance'=>$insurance
