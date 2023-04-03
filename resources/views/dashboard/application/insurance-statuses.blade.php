@@ -135,7 +135,7 @@
                        </tr>
                        @endforeach
                        <tr>
-                         <td colspan="6"><button type="submit" class="btn btn-primary">Save</button></td>
+                         <td colspan="7"><button type="submit" class="btn btn-primary">Save</button></td>
                        </tr>
                      </tbody>
                    </table>
