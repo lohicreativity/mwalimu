@@ -124,6 +124,7 @@
 											<a href="{{ url('application/other-information?card='.$applicant->insurances[0]->card) }}" class="btn btn-danger"><i class="fa fa-trash"></i> Delete</a>									
 
 										}
+										@endif
 
 									  {!! Form::close() !!}
 								   </div><!-- end of preview -->
