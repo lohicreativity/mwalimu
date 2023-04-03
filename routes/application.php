@@ -149,7 +149,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
     Route::post('update-applicant-nva',[ApplicantController::class,'updateNVAStatus']);
     Route::get('other-information',[ApplicantController::class,'showOtherInformation']);
     Route::post('update-insurance-status',[ApplicantController::class,'updateInsuranceStatus']);
-    Route::post('reset-insurance-status',[ApplicantController::class,'resetInsuranceStatus']);	
+    Route::post('reset-insurance-status',[ApplicationController::class,'resetInsuranceStatus']);	
     Route::post('update-insurance-status-admin',[ApplicationController::class,'updateInsuranceStatus']);
     Route::post('update-insurance',[ApplicantController::class,'updateInsurance']);
     Route::post('update-hostel-status',[ApplicantController::class,'updateHostelStatus']);
@@ -157,7 +157,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 
     Route::get('hostel-statuses',[ApplicationController::class,'showHostelStatus']);
     Route::get('insurance-statuses',[ApplicationController::class,'showInsuranceStatus']);
-    Route::post('preview-insurance-status',[ApplicantController::class,'previewInsuranceStatus']);
+    Route::post('preview-insurance-status',[ApplicationController::class,'previewInsuranceStatus']);
     Route::get('download-insurance-status',[ApplicationController::class,'downloadInsuranceStatus']);
     Route::get('download-hostel-status',[ApplicationController::class,'downloadHostelStatus']);
     Route::get('out-results',[OUTServiceController::class,'getResults']);
