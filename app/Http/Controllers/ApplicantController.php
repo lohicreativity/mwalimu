@@ -1571,7 +1571,7 @@ class ApplicantController extends Controller
         $applicant = User::find(Auth::user()->id)->applicants()->with(['insurances','programLevel'])->where('campus_id',session('applicant_campus_id'))->first();
         $student = Student::where('applicant_id', $applicant->id)->first();
 		$insurance = HealthInsurance::where('applicant_id',$applicant->id)->first();
-	return $insurance;
+	
         $program_fee_invoice = Invoice::whereHas('feeType',function($query){
                    $query->where('name','LIKE','%Tuition%');
         })->with('gatewayPayment')->where('payable_id',$applicant->id)->where('payable_type','applicant')->first();
@@ -1583,7 +1583,10 @@ class ApplicantController extends Controller
 
         if ($student) {
             return redirect()->back()->with('error', 'Unable to view page');
-        } else {
+        }elseif($insurance) {
+			return 123;
+		}
+		else {
             return view('dashboard.application.other-information',$data)->withTitle('Other Information');
         }
     }
