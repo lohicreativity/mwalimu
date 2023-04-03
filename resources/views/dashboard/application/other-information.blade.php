@@ -51,9 +51,10 @@
               </div>
 			  @if($applicant->insurance_status == 1)
 			  	<div class="row card-footer">
-					<div class="col-4">
-						<button type="submit" value="#ss-card-preview-other-form" id="ss-preview-card-other">Preview</button>
-					</div>
+			              <div class="card-footer">
+                 <a href="#" data-toggle="modal" data-target="#ss-card-preview-other-form" class="btn btn-primary">Preview</a>
+              </div>
+					
 					
 					<div class="row" id="ss-card-preview-other-form">
                       <div class="col-12">
