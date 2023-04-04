@@ -228,7 +228,7 @@ class StaffController extends Controller
 	
     public function viewPayerDetails(Request $request)
     {
-		if(count($request) > 0){
+		if(!empty($request)){
 			$student_payer = Student::where('registration_number', $request->identifier)->orWhere('surname',$request->identifier)->first();
 			$applicant_payer = Applicant::where('index_number', $request->identified)->orWhere('surname',$request->identifier)->first();
 			if(!$student_payer && !$applicant_payer){
