@@ -71,21 +71,7 @@
 			
             <!-- /.card -->
 			@if($payer && $category === 'student')
-							<h2>{{ $payer->first_name }} {{ $payer->middle_name }} {{ $payer->surname }}</h2>
-							<h6>{{ $payer->registration_number }} &nbsp; | &nbsp; {{ $payer->campusProgram->program->code}} &nbsp; | &nbsp; Year {{ $payer->year_of_study }} &nbsp; | &nbsp; <span style="color:red">{{ $payer->studentshipStatus->name }} </span></h6>
 
-			@elseif($payer && $category === 'applicant')
-			hello
-			@endif
-			@if($payer && $category === 'student')
-	<div style="margin-top:20px;" class="modal fade">
-		<div class="modal-dialog modal-lg">
-		  <div class="modal-content modal-lg">
-			<div class="modal-header">
-			  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-				<span aria-hidden="true">&times;</span>
-			  </button>
-			</div>
 			<div class="modal-body">
 
 				<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
@@ -153,12 +139,8 @@
 					</div>
 				</div>
 			</div>
-		  </div>
-		  <!-- /.modal-content -->
-		</div> 
-	  <!-- /.modal -->
-	 </div>
-	 @endif
+
+			@endif
 	 </div>
 	 </div>
 	 </section>
