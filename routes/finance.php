@@ -10,7 +10,7 @@ use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\NactePaymentController;
 use App\Http\Controllers\LoanAllocationController;
 use App\Http\Controllers\ACPACController;
-use App\Domain\HumanResources\Models\Staff;
+use App\Http\Controllers\StaffController;
 
 
 
