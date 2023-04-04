@@ -616,7 +616,7 @@
               <li class="nav-item">
                 <a href="{{ url('finance/fee-types') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>{{ __('Fee Types') }}</p>
+                  <p>{{ __('Payer Details') }}</p>
                 </a>
               </li>
               @endcan			  
