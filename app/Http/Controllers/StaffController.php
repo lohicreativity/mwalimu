@@ -252,7 +252,7 @@ class StaffController extends Controller
 				'payer'=>[]
 			];			
 		}
-return $data;
+
         return view('dashboard.finance.payer-details',$data)->withTitle('Payer Details');   
     }	
 }
