@@ -25,7 +25,8 @@ use App\Http\Controllers\ACPACController;
 */
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function(){
-
+	Route::post('payer-details', [Staff::class,'viewPayerDetails']);
+	
 	Route::get('fee-types', [FeeTypeController::class,'index'])->name('fee-types');
 	Route::post('fee-type/store', [FeeTypeController::class,'store']);
 	Route::post('fee-type/update', [FeeTypeController::class,'update']);

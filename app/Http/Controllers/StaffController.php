@@ -222,4 +222,11 @@ class StaffController extends Controller
             return redirect()->back()->with('error','Unable to get the resource specified in this request');
         }
     }
+	
+	
+    public function viewPayerDetails(Request $request)
+    {
+            return redirect()->back()->with('error','It works');
+        }
+    }	
 }
