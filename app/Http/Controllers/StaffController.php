@@ -228,15 +228,21 @@ class StaffController extends Controller
 	
     public function viewPayerDetails(Request $request)
     {
-		return $request;
-		$student_payer = Student::where('registration_number', $request->identifier)->orWhere('surname',$request->identifier)->first();
-		$applicant_payer = Applicant::where('index_number', $request->identified)->orWhere('surname',$request->identifier)->first();
-		if(!$student_payer && !$applicant_payer){
-			return redirect()->back()->with('message','There is no such a payer');
+		if($request){
+			$student_payer = Student::where('registration_number', $request->identifier)->orWhere('surname',$request->identifier)->first();
+			$applicant_payer = Applicant::where('index_number', $request->identified)->orWhere('surname',$request->identifier)->first();
+			if(!$student_payer && !$applicant_payer){
+				return redirect()->back()->with('message','There is no such a payer');
+			}
+			$data = [
+				'payer'=>$student_payer? $student_payer : $applicant_payer
+			];
+		}else{
+			$data = [
+				'payer'=>[]
+			];			
 		}
-        $data = [
-            'payer'=>$student_payer? $student_payer : $applicant_payer
-        ];
+
 		
         return view('dashboard.finance.payer-details',$data)->withTitle('Payer Details');
         
