@@ -108,8 +108,7 @@
                   <div class="row">
                   <div class="form-group col-3">
                     {!! Form::label('','Programme') !!}
-                    <select name="campus_program_id" class="form-control">
-                      <option value="">Select Program</option>
+                    <select name="campus_program_id[]" class="form-control ss-select-tags" required multiple="multiple">
                       @foreach($campus_programs as $program)
                         <option value="{{ $program->id }}">{{ $program->program->name }}</option>
                       @endforeach
