@@ -16,7 +16,7 @@ class ProgramFeeAction implements ProgramFeeInterface{
                  return redirect()->back()->with('error','Programme fee already exists');
             }		
 			$fee = new ProgramFee;
-                $fee->campus_program_id = $request->get('campus_program_id');
+                $fee->campus_program_id = $id;
                 $fee->amount_in_tzs = $request->get('amount_in_tzs');
                 $fee->amount_in_usd = $request->get('amount_in_usd');
                 $fee->fee_item_id = $request->get('fee_item_id');
