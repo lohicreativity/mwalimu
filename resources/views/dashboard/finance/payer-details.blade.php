@@ -71,7 +71,11 @@
 			
             <!-- /.card -->
 			@if($payer && $category === 'student')
-				hello
+							<h2>{{ $payer->first_name }} {{ $payer->middle_name }} {{ $payer->surname }}</h2>
+							<h6>{{ $payer->registration_number }} &nbsp; | &nbsp; {{ $payer->campusProgram->program->code}} &nbsp; | &nbsp; Year {{ $payer->year_of_study }} &nbsp; | &nbsp; <span style="color:red">{{ $payer->studentshipStatus->name }} </span></h6>
+
+			@elseif($payer && $category === 'applicant')
+			hello
 			@endif
 			@if($payer && $category === 'student')
 	<div style="margin-top:20px;" class="modal fade">
