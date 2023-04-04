@@ -328,7 +328,7 @@
               <li class="nav-item">
                 <a href="{{ url('application/entry-requirements?application_window_id='.session('active_window_id')) }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Entry </p>
+                  <p>Entry Requirements</p>
                 </a>
               </li>
               @endcan
@@ -608,7 +608,7 @@
               <li class="nav-item">
                 <a href="{{ url('finance/fee-types') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>{{ __('Fee Types') }}</p>
+                  <p>{{ __('Fee ') }}</p>
                 </a>
               </li>
               @endcan
