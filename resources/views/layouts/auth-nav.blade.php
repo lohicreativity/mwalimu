@@ -596,14 +596,6 @@
               </p>
             </a>
             <ul class="nav nav-treeview">
-              @can('view-payer-details')
-              <li class="nav-item">
-                <a href="{{ url('finance/payer-details') }}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>{{ __('Payer Details') }}</p>
-                </a>
-              </li>
-              @endcan			
               @can('view-fee-types')
               <li class="nav-item">
                 <a href="{{ url('finance/fee-types') }}" class="nav-link">
