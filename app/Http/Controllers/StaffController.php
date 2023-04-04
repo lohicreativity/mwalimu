@@ -227,6 +227,6 @@ class StaffController extends Controller
     public function viewPayerDetails(Request $request)
     {
             return redirect()->back()->with('error','It works');
-        }
+        
     }	
 }
