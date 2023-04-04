@@ -89,7 +89,7 @@ class ProgramFeeController extends Controller
             return redirect()->back()->with('error','Programme fee already exists');
         }
 
-
+return $request->get('campus_program_id');
         (new ProgramFeeAction)->store($request);
 
         return Util::requestResponse($request,'Program fee created successfully');
