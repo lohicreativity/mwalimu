@@ -71,7 +71,13 @@
 			
             <!-- /.card -->
 			@if($payer && $category === 'student')
-
+	<div style="margin-top:20px;" class="modal fade">
+		  <div class="modal-content modal-lg">
+			<div class="modal-header">
+			  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			  </button>
+			</div>
 			<div class="modal-body">
 
 				<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
@@ -139,8 +145,12 @@
 					</div>
 				</div>
 			</div>
+		  </div>
+		  <!-- /.modal-content -->
+		</div> 
+	  <!-- /.modal -->
 
-			@endif
+	 @endif
 	 </div>
 	 </div>
 	 </section>
