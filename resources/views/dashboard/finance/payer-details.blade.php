@@ -69,7 +69,7 @@
               </div>
             </div>
             <!-- /.card -->
-			@if($buyer)
+			@if($payer)
 	<div style="margin-top:20px;" class="modal fade" id="ss-progress-{{ $reg->student->id }}">
 		<div class="modal-dialog modal-lg">
 		  <div class="modal-content modal-lg">
