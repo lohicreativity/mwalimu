@@ -68,9 +68,9 @@
                  {!! Form::close() !!}
               </div>
             </div>
-
+			
             <!-- /.card -->
-			@if($category === 'student')
+			@if($payer && $category === 'student')
 	<div style="margin-top:20px;" class="modal fade">
 		<div class="modal-dialog modal-lg">
 		  <div class="modal-content modal-lg">
