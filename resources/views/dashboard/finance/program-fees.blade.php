@@ -54,7 +54,7 @@
                     <select name="campus_id" class="form-control" required>
                        <option value="">Select Campus</option>
                        @foreach($campuses as $cp)
-                       <option value="{{ $cp->id }}" @if($staff->campus_id == $cp->id) selected="selected" @else disabled="disabled" @endif>{{ $cp->name }}</option>
+                       <option value="{{ $cp->id }}" @if($staff->campus_id == $cp->id) selected="selected" disabled="true" @endif>{{ $cp->name }}</option>
                        @endforeach
                     </select>
                     @else
