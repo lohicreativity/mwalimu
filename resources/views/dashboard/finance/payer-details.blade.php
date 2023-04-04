@@ -120,8 +120,8 @@
 										  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Nationality:</span> &nbsp; {{ $payer->applicant->nationality }}											  
 										  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Disability:</span> &nbsp; {{ $payer->applicant->disabilityStatus->name }}
 										  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Entry Mode:</span> &nbsp; {{ $payer->applicant->entry_mode }}	 												  
-										  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Postal Address:</span> &nbsp; {{ payer->applicant->address }}	 	
-										  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Physical Address:</span> &nbsp; {{ payer->applicant->ward->name }},&nbsp; {{ $payer->applicant->region->name }},&nbsp; {{ $payer->applicant->country->name }}	 	 
+										  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Postal Address:</span> &nbsp; {{ $payer->applicant->address }}	 	
+										  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Physical Address:</span> &nbsp; {{ $payer->applicant->ward->name }},&nbsp; {{ $payer->applicant->region->name }},&nbsp; {{ $payer->applicant->country->name }}	 	 
 									  @endif
 									</div>
 								  </div>
