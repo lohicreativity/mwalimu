@@ -9,6 +9,7 @@ use App\Domain\Finance\Repositories\Interfaces\ProgramFeeInterface;
 class ProgramFeeAction implements ProgramFeeInterface{
 	
 	public function store(Request $request){
+		return $request->get('campus_program_id');
         foreach($request->get('campus_program_id') as $id){
             if(ProgramFee::where('campus_program_id',$id)
 				->where('study_academic_year_id',$request->get('study_academic_year_id'))
