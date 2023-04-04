@@ -18,6 +18,8 @@ use App\Models\Role;
 use App\Models\User;
 use App\Utils\Util;
 use Validator, Auth;
+use App\Domain\Registration\Models\Student;
+use App\Domain\Application\Models\Applicant;
 
 class StaffController extends Controller
 {
