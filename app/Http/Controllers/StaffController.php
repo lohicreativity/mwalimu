@@ -228,9 +228,9 @@ class StaffController extends Controller
 	
     public function viewPayerDetails(Request $request)
     {
-		if(!empty($request)){
-			$student_payer = Student::where('registration_number', $request->identifier)->orWhere('surname',$request->identifier)->first();
-			$applicant_payer = Applicant::where('index_number', $request->identified)->orWhere('surname',$request->identifier)->first();
+		if(!empty($request->keyword)){
+			$student_payer = Student::where('registration_number', $request->keyword)->orWhere('surname',$request->keyword)->first();
+			$applicant_payer = Applicant::where('index_number', $request->keyword)->orWhere('surname',$request->keyword)->first();
 			if(!$student_payer && !$applicant_payer){
 				return redirect()->back()->with('message','There is no such a payer');
 			}
