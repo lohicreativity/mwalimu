@@ -14,6 +14,7 @@ use App\Domain\Finance\Models\Invoice;
 use App\Domain\Finance\Models\GatewayPayment;
 use App\Domain\Registration\Models\Student;
 use App\Domain\Settings\Models\Campus;
+use App\Domain\Registration\Models\Registration;
 use App\Domain\Registration\Models\IdCardRequest;
 use App\Domain\Application\Models\InternalTransfer;
 use App\Domain\Application\Models\NectaResultDetail;
