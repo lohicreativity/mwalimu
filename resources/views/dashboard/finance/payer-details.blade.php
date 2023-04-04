@@ -68,7 +68,8 @@
                  {!! Form::close() !!}
               </div>
             </div>
-            <!-- /.card -
+            <!-- /.card -->
+			@if($buyer)
 	<div style="margin-top:20px;" class="modal fade" id="ss-progress-{{ $reg->student->id }}">
 		<div class="modal-dialog modal-lg">
 		  <div class="modal-content modal-lg">
@@ -159,3 +160,7 @@
 		</div> 
 	  <!-- /.modal -->
 	 </div>
+	 @endif
+	 </div>
+	 </div>
+	 </section>
