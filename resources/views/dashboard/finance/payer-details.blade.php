@@ -137,16 +137,6 @@
 								  <div id="collapseNextOfKin" class="collapse" aria-labelledby="ss-next-of-kin" data-parent="#student-accordion">
 									<div class="card-body">
 
-<!--									  @if($reg->student->applicant->nextOfKin)
-										  &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Names:</span> &nbsp; {{ $reg->student->applicant->nextOfKin->first_name }} {{ $reg->student->applicant->nextOfKin->middle_name }} {{ $reg->student->applicant->nextOfKin->surname }}
-										  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Gender:</span> &nbsp; @if($reg->student->applicant->nextOfKin->gender == 'M') Male @elseif($reg->student->applicant->nextOfKin->gender == 'F') Female @endif
-										  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Relationship:</span> &nbsp; {{ $reg->student->applicant->nextOfKin->relationship }}
-										  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Nationality:</span> &nbsp; {{ $reg->student->applicant->nextOfKin->nationality }}											  
-										  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Phone:</span> &nbsp; {{ $reg->student->applicant->nextOfKin->phone }}	
-										  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Postal Address:</span> &nbsp; {{ $reg->student->applicant->nextOfKin->address }}
-										  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Physical Address:</span> &nbsp; {{ $reg->student->applicant->nextOfKin->ward->name }},&nbsp; {{ $reg->student->applicant->nextOfKin->region->name }},&nbsp; {{ $reg->student->applicant->nextOfKin->country->name }}	 	 
-																						  
-									   @endif -->
 									</div>
 								  </div>
 								</div>
