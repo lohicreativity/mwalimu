@@ -9,11 +9,10 @@ use App\Domain\Finance\Repositories\Interfaces\ProgramFeeInterface;
 class ProgramFeeAction implements ProgramFeeInterface{
 	
 	public function store(Request $request){
-		return $request->get('campus_program_id');
         foreach($request->get('campus_program_id') as $id){
             if(ProgramFee::where('campus_program_id',$id)
 				->where('study_academic_year_id',$request->get('study_academic_year_id'))
-				->where('year_of_study', $request->get('year_of_study'))->count() != 0){
+				->where('year_of_study',$request->get('year_of_study'))->count() != 0){
                  return redirect()->back()->with('error','Programme fee already exists');
             }		
 			$fee = new ProgramFee;
@@ -25,6 +24,7 @@ class ProgramFeeAction implements ProgramFeeInterface{
                 $fee->study_academic_year_id = $request->get('study_academic_year_id');
                 $fee->save();
 		}
+        return Util::requestResponse($request,'Programme fee entered successfully');		
 	}
 
 	public function update(Request $request){
