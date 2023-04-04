@@ -20,6 +20,13 @@ use App\Utils\Util;
 use Validator, Auth;
 use App\Domain\Registration\Models\Student;
 use App\Domain\Application\Models\Applicant;
+use App\Domain\Academic\Models\CampusProgram;
+use App\Domain\Registration\Models\StudentshipStatus;
+use App\Domain\Academic\Models\Program;
+use App\Domain\Finance\Models\FeeAmount;
+use App\Domain\Finance\Models\ProgramFee;
+use App\Domain\Finance\Models\Invoice;
+use App\Domain\Finance\Models\GatewayPayment;
 
 class StaffController extends Controller
 {
@@ -229,13 +236,16 @@ class StaffController extends Controller
     public function viewPayerDetails(Request $request)
     {
 		if(!empty($request->keyword)){
-			$student_payer = Student::where('registration_number', $request->keyword)->orWhere('surname',$request->keyword)->first();
+			$student_payer = Student::where('registration_number', $request->keyword)
+			->orWhere('surname',$request->keyword)
+			->with(['applicant','campusProgram.program','studentShipStatus'])->first();
 			$applicant_payer = Applicant::where('index_number', $request->keyword)->orWhere('surname',$request->keyword)->first();
 			if(!$student_payer && !$applicant_payer){
-				return redirect()->back()->with('message','There is no such a payer');
+				return redirect()->back()->with('error','There is no such a payer');
 			}
 			$data = [
-				'payer'=>$student_payer? $student_payer : $applicant_payer
+				'payer'=>$student_payer? $student_payer : $applicant_payer,
+				'category'=>$student_payer? 'student' : 'applicant'
 			];
 		}else{
 			$data = [
@@ -243,8 +253,6 @@ class StaffController extends Controller
 			];			
 		}
 
-		
-        return view('dashboard.finance.payer-details',$data)->withTitle('Payer Details');
-        
+        return view('dashboard.finance.payer-details',$data)->withTitle('Payer Details');   
     }	
 }

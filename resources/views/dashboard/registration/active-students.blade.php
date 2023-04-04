@@ -177,7 +177,7 @@
 													<div class="card-body">
 
 													  @if($reg->student->applicant)
-														  &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Gender:</span> &nbsp; @if($reg->student->applicant->gender == 'M') Male @elseif($reg->student->applicant->nextOfKin->gender == 'F') Female @endif
+														  &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Gender:</span> &nbsp; @if($reg->student->applicant->gender == 'M') Male @elseif($reg->student->applicant->gender == 'F') Female @endif
 														  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Date of Birth:</span> &nbsp; {{ $reg->student->applicant->birth_date }}
 														  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Nationality:</span> &nbsp; {{ $reg->student->applicant->nationality }}											  
 														  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Disability:</span> &nbsp; {{ $reg->student->applicant->disabilityStatus->name }}
