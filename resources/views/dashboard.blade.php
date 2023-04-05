@@ -37,37 +37,37 @@
       <div class="container-fluid">
         <!-- Small boxes (Stat box) -->
         @if(Auth::user()->hasRole('hod'))
-        @if($postponements_hod_count != 0 || $special_exams_hod_count != 0)
-        <div class="alert alert-warning">You have pending postponement requests</div>
-        @endif
+			@if($postponements_hod_count != 0 || $special_exams_hod_count != 0)
+				<div class="alert alert-warning">You have pending postponement requests</div>
+			@endif
         @endif
 
         @if(Auth::user()->hasRole('arc'))
-        @if($postponements_arc_count != 0 || $special_exams_arc_count != 0)
-        <div class="alert alert-warning">You have pending postponement requests</div>
-        @endif
-        @if($resumptions_arc_count != 0)
-        <div class="alert alert-warning">You have pending resumptions requests</div>
-        @endif
+			@if($postponements_arc_count != 0 || $special_exams_arc_count != 0)
+				<div class="alert alert-warning">You have pending postponement requests</div>
+			@endif
+			@if($resumptions_arc_count != 0)
+				<div class="alert alert-warning">You have pending resumptions requests</div>
+			@endif
         @endif
 
-        @if(Auth::user()->hasRole('finance-officer'))
-        @if(!$last_session)
-        @if($postponements_count != 0 || $deceased_count != 0)
-        <div class="alert alert-warning">You have new change of status cases</div>
-        @endif
-        @else
-        @if($postponements_count != 0)
-        @if($last_session->last_activity > strtotime($last_postponement->updated_at))
-        <div class="alert alert-warning">You have pending postponement requests</div>
-        @endif
-        @endif
-        @if($deceased_count != 0)
-        @if($last_session->last_activity > strtotime($last_deceased->updated_at))
-        <div class="alert alert-warning">You have deceased cases</div>
-        @endif
-        @endif
-        @endif
+        @if(Auth::user()->hasRole('finance-officer') || Auth::user()->hasRole('loan-officer'))
+			@if(!$last_session)
+				@if($postponements_count != 0 || $deceased_count != 0 || $internal_transfer_count != 0)
+				<div class="alert alert-warning">You have a new change of status case</div>
+				@endif
+			@else
+				@if($postponements_count != 0)
+					@if($last_session->last_activity > strtotime($last_postponement->updated_at))
+					<div class="alert alert-warning">You have pending postponement requests</div>
+					@endif
+				@endif
+				@if($deceased_count != 0)
+					@if($last_session->last_activity > strtotime($last_deceased->updated_at))
+					<div class="alert alert-warning">You have deceased cases</div>
+					@endif
+				@endif
+			@endif
         @endif
         
       </div><!-- /.container-fluid -->

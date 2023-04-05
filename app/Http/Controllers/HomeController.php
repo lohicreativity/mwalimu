@@ -11,6 +11,7 @@ use App\Domain\Registration\Models\Registration;
 use App\Models\User;
 use App\Models\UserSession;
 use Auth;
+use App\Domain\Application\Models\InternalTransfer;
 
 class HomeController extends Controller
 {
@@ -44,7 +45,8 @@ class HomeController extends Controller
            'last_deceased'=>Registration::whereHas('student.studentshipStatus',function($query){
                   $query->where('name','DECEASED');
             })->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->latest()->first(),
-           'last_session'=>UserSession::where('user_id',Auth::user()->id)->orderBy('last_activity','desc')->offset(1)->first()
+           'last_session'=>UserSession::where('user_id',Auth::user()->id)->orderBy('last_activity','desc')->offset(1)->first(),
+		   'internal_transfer_count'=>InternalTransfer::whereNotNull('status')->count()
         ];
     	return view('dashboard',$data)->withTitle('Home');
     }
