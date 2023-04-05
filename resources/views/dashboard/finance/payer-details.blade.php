@@ -140,20 +140,22 @@
 									    <table class="table table-bordered ss-paginated-table">
 											<thead>
 											<tr>
-					
+											   <th>SN</th>					
 											   <th>Date</th>
 											   <th>Fee Type</th>
+											   <th>Invoice#</th>										   
 											   <th>Fee Amount</th>
 											   <th>Paid Amount</th>
 											   <th>Balance</th>
 											</tr>
 										  </thead>
 										  <tbody>
-											@foreach($student_payments as $payments)
+											@foreach($student_payments as $key=>$payments)
 											<tr>
-
+											   <td>{{ ($key+1) }}</td>
 											   <td>{{ date('Y-m-d',strtotime($payments->gatewayPayment->created_at))}}</td>
-											   <td>{{ $payments->feeType->name }}</td> 
+											   <td>{{ $payments->reference_no }}</td> 
+											   <td>{{ $payments->feeType->name }}</td> 											   
 											   <td>{{ number_format($payments->gatewayPayment->bill_amount,2) }} {{ $payments->gatewayPayment->ccy }}</td>
 											   <td>
 												  {{ number_format($payments->gatewayPayment->bill_amount,2) }} {{ $payments->gatewayPayment->ccy }}
