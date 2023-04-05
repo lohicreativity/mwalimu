@@ -71,10 +71,10 @@
 			
             <!-- /.card -->
 			@if($payer && $category === 'student')
-			<div style="margin-top:20px;">
+			<div style="margin-top:20px;" data-toggle="modal">
 			  <div class="modal-content">
 				<div class="modal-header">
-				  <button type="button" class="close" data-dismiss="" aria-label="Close">
+				  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				  </button>
 				</div>
