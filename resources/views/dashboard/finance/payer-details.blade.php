@@ -129,7 +129,7 @@
 									
 									<div class="card">
 									  <div class="card-header" id="ss-payments">
-										  <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseNextOfKin" aria-expanded="true" aria-controls="collapseNextOfKin">
+										  <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapsePayments" aria-expanded="true" aria-controls="collapsePayments">
 											&nbsp; Payment Details &nbsp; <i class="fa fa-chevron-right list-group-chevron"></i>
 										  </button>
 									  </div>
@@ -165,6 +165,12 @@
 											@endforeach
 										  </tbody>
 										 </table>
+									  </div>
+
+									  <div id="collapseNextOfKin" class="collapse" aria-labelledby="ss-next-of-kin" data-parent="#student-accordion">
+										<div class="card-body">
+
+										</div>
 									  </div>
 									</div>
 								</div>                                  
