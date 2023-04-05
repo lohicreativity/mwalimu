@@ -156,7 +156,7 @@
 												  {{ number_format($payments->gatewayPayment->bill_amount,2) }} {{ $payments->gatewayPayment->ccy }}
 											   </td>
 											   <td>
-												  {{ number_format($payments->gatewayPayment->bill_amount-payments->gatewayPayment->paid_amount,2) }} {{ $payments->gatewayPayment->ccy }}
+												  {{ number_format($payments->gatewayPayment->bill_amount-$payments->gatewayPayment->paid_amount,2) }} {{ $payments->gatewayPayment->ccy }}
 											   </td>
 											</tr>
 											@endforeach
