@@ -133,6 +133,35 @@
 											&nbsp; Payment Details &nbsp; <i class="fa fa-chevron-right list-group-chevron"></i>
 										  </button>
 									  </div>
+									  <div class="card-body">			  
+									    <table class="table table-bordered ss-paginated-table">
+											<thead>
+											<tr>
+
+											   <th>Date</th>
+											   <th>Fee Type</th>
+											   <th>Fee Amount</th>
+											   <th>Paid Amount</th>
+											   <th>Balance</th>
+											</tr>
+										  </thead>
+										  <tbody>
+											@foreach($student_payments as $payments)
+											<tr>
+											   <td>{{ $receipt->academic_year }}</td>											   <td>{{ date('Y-m-d',strtotime($payments->gatewayPayment->created_at))}}</td>
+											   <td>{{ $payments->feeType->name }}</td> 
+											   <td>{{ number_format($payments->gatewayPayment->bill_amount,2) }} {{ payments->gatewayPayment->ccy }}</td>
+											   <td>
+												  {{ number_format($payments->gatewayPayment->,2) }} {{ payments->gatewayPayment->ccy }}
+											   </td>
+											   <td>
+												  {{ number_format($payments->gatewayPayment->bill_amount-payments->gatewayPayment->paid_amount,2) }} {{ payments->gatewayPayment->ccy }}
+											   </td>
+											</tr>
+											@endforeach
+										  </tbody>
+										 </table>
+									  </div>
 
 									  <div id="collapseNextOfKin" class="collapse" aria-labelledby="ss-next-of-kin" data-parent="#student-accordion">
 										<div class="card-body">
