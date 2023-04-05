@@ -127,7 +127,7 @@
                  </span>
                 </div>
 
-                <table id="example2" class="table table-bordered table-hover ss-margin-top">
+                <table id="example2" class="table table-bordered table-hover ss-margin-top ss-paginated-table">
                   <thead>
                   <tr>
                     <th>SN</th>
