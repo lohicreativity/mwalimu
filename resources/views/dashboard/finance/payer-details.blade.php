@@ -71,7 +71,7 @@
 			
             <!-- /.card -->
 			@if($payer && $category === 'student')
-			<div style="margin-top:20px;">
+			<div style="margin-top:0px;">
 			  <div class="modal-content modal-lg">
 				<div class="modal-header">
 				  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
