@@ -137,13 +137,13 @@
 									<div id="collapsePayments" class="collapse" aria-labelledby="ss-payments" data-parent="#student-accordion">
 
 									  <div class="card-body">			  
-									    <table class="table table-bordered ss-paginated-table">
+									    <table class="table table-bordered ss-paginated-table" style="font-size:10pt">
 											<thead>
 											<tr>
 											   <th>SN</th>					
 											   <th>Date</th>
-											   <th>Fee Type</th>
-											   <th>Invoice#</th>										   
+											   <th>Invoice#</th>
+											   <th>Fee Type</th>										   
 											   <th>Fee Amount</th>
 											   <th>Paid Amount</th>
 											   <th>Balance</th>
