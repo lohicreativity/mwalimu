@@ -73,7 +73,7 @@
 			@if($payer && $category === 'student')
 			<div style="margin-top:20px;">
 			  <div class="modal-content">
-				<div class="modal-header">
+				<div >
 				  <button type="button" class="close" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				  </button>
