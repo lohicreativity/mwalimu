@@ -128,13 +128,16 @@
 									</div>
 									
 									<div class="card">
-									  <div class="card-header" id="ss-next-of-kin">
+									  <div class="card-header" id="ss-payments">
 										  <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseNextOfKin" aria-expanded="true" aria-controls="collapseNextOfKin">
 											&nbsp; Payment Details &nbsp; <i class="fa fa-chevron-right list-group-chevron"></i>
 										  </button>
 									  </div>
+									  
+									<div id="collapsePayments" class="collapse" aria-labelledby="ss-payments" data-parent="#student-accordion">
+
 									  <div class="card-body">			  
-									    <table>
+									    <table class="table table-bordered ss-paginated-table">
 											<thead>
 											<tr>
 					
@@ -162,12 +165,6 @@
 											@endforeach
 										  </tbody>
 										 </table>
-									  </div>
-
-									  <div id="collapseNextOfKin" class="collapse" aria-labelledby="ss-next-of-kin" data-parent="#student-accordion">
-										<div class="card-body">
-
-										</div>
 									  </div>
 									</div>
 								</div>                                  
