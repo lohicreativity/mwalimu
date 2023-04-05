@@ -137,7 +137,7 @@
 									    <table class="table table-bordered ss-paginated-table">
 											<thead>
 											<tr>
-
+					
 											   <th>Date</th>
 											   <th>Fee Type</th>
 											   <th>Fee Amount</th>
@@ -148,11 +148,12 @@
 										  <tbody>
 											@foreach($student_payments as $payments)
 											<tr>
-											   <td>{{ $receipt->academic_year }}</td>											   <td>{{ date('Y-m-d',strtotime($payments->gatewayPayment->created_at))}}</td>
+
+											   <td>{{ date('Y-m-d',strtotime($payments->gatewayPayment->created_at))}}</td>
 											   <td>{{ $payments->feeType->name }}</td> 
 											   <td>{{ number_format($payments->gatewayPayment->bill_amount,2) }} {{ payments->gatewayPayment->ccy }}</td>
 											   <td>
-												  {{ number_format($payments->gatewayPayment->paid_amount,2) }} {{ payments->gatewayPayment->ccy }}
+												  {{ number_format($payments->gatewayPayment->bill_amount,2) }} {{ payments->gatewayPayment->ccy }}
 											   </td>
 											   <td>
 												  {{ number_format($payments->gatewayPayment->bill_amount-payments->gatewayPayment->paid_amount,2) }} {{ payments->gatewayPayment->ccy }}
