@@ -71,8 +71,8 @@
 			
             <!-- /.card -->
 			@if($payer && $category === 'student')
-			<div style="margin-top:20px;" class="fade">
-			  <div class="modal-content modal-lg">
+			<div style="margin-top:20px;">
+			  <div class="modal-content">
 				<div class="modal-header">
 				  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
