@@ -46,7 +46,7 @@ class HomeController extends Controller
                   $query->where('name','DECEASED');
             })->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->latest()->first(),
            'last_session'=>UserSession::where('user_id',Auth::user()->id)->orderBy('last_activity','desc')->offset(1)->first(),
-		   'internal_transfer_count'=>InternalTransfer::where('status', 'PENDING')->count()
+		   'internal_transfer_count'=>InternalTransfer::whereNotNull('loan_changed')->where('status','SUBMITTED')->count()
         ];
     	return view('dashboard',$data)->withTitle('Home');
     }

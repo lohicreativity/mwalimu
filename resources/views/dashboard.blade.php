@@ -59,14 +59,19 @@
 			@else
 				@if($postponements_count != 0)
 					@if($last_session->last_activity > strtotime($last_postponement->updated_at))
-					<div class="alert alert-warning">You have pending postponement requests</div>
+					<div class="alert alert-warning">You have a postponement case</div>
 					@endif
 				@endif
 				@if($deceased_count != 0)
 					@if($last_session->last_activity > strtotime($last_deceased->updated_at))
-					<div class="alert alert-warning">You have deceased cases</div>
+					<div class="alert alert-warning">You have a deceased case</div>
 					@endif
 				@endif
+				@if($internal_transfer_count != 0)
+					@if($last_session->last_activity > strtotime($last_postponement->updated_at))
+					<div class="alert alert-warning">You have an internal transfer case</div>
+					@endif
+				@endif				
 			@endif
         @endif
         
