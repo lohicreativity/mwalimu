@@ -134,7 +134,7 @@
 										  </button>
 									  </div>
 									  <div class="card-body">			  
-									    <table class="table table-bordered">
+									    <table>
 											<thead>
 											<tr>
 					
