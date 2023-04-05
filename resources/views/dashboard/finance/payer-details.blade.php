@@ -72,7 +72,7 @@
             <!-- /.card -->
 			@if($payer && $category === 'student')
 			<div style="margin-top:20px;" class="modal fade">
-			  <div class="modal-content modal-lg">
+
 
 				<div class="modal-body">
 
@@ -143,7 +143,7 @@
 				</div>
 			  </div>
 			  <!-- /.modal-content -->
-			</div> 
+ 
 		  <!-- /.modal -->
 		@endif
 	   </div>
