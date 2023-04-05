@@ -120,13 +120,6 @@
               </div>
               <!-- /.card-header -->
               <div class="card-body">
-                <div class="input-group ss-stretch">
-                 <input type="text" name="query" class="form-control" placeholder="Search for student name">
-                 <span class="input-group-btn">
-                   <button class="btn btn-default" type="submit"><span class="fa fa-search"></span></button>
-                 </span>
-                </div>
-
                 <table id="example2" class="table table-bordered table-hover ss-margin-top ss-paginated-table">
                   <thead>
                   <tr>
