@@ -72,12 +72,12 @@ class LoanAllocationController extends Controller
 		->whereHas('student.registrations',function($query) use($ac_year){$query->where('study_academic_year_id', $ac_year->id);})->get();
 
         $beneficiaries = array();
-        $transfers = array();		
+        $stud_transfers = array();		
 		foreach($internal_trasnfers as $transfers){
 			$loan_beneficiary = LoanAllocation::where('student_id', $transfers->student_id)->where('study_academic_year_id', $ac_year->id)->first();
 			if($loan_beneficiary){
 				$beneficiaries[] = $loan_beneficiary;
-				$transfers[]= $internal_trasnfers;
+				$stud_transfers[]= $transfers;
 			}
 		}
 
@@ -85,7 +85,7 @@ class LoanAllocationController extends Controller
     	$data = [
     		'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
             'beneficiaries'=>$request->get('transfer_status') == 1? $beneficiaries : LoanAllocation::where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',$request->get('year_of_study'))->paginate(20),
-			'transfers'=>$transfers? $transfers : [],
+			'transfers'=>$stud_transfers? $stud_transfers : [],
             'request'=>$request
     	];
     	if($request->get('year_of_study') && count($data['beneficiaries']) == 0){
