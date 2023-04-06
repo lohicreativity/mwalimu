@@ -28,7 +28,7 @@ class HomeController extends Controller
     /**
      * Display login page
      */
-    public function dashboard()
+    public function dashboard(Request $request)
     {
         $ac_year = StudyAcademicYear::where('status','ACTIVE')->first();
         $semester = Semester::where('status','ACTIVE')->first();
@@ -45,7 +45,8 @@ class HomeController extends Controller
 				$beneficiaries[] = $loan_beneficiary;
 			}
 		}
-		
+		return $request;
+
         $data = [
            'staff'=>User::find(Auth::user()->id)->staff,
            'postponements_arc_count'=>Postponement::whereNull('postponed_by_user_id')->count(),
