@@ -36,12 +36,13 @@ class HomeController extends Controller
 		$internal_trasnfers = InternalTransfer::whereNull('loan_changed')->where('status','SUBMITTED')
 		->whereHas('student.registrations',function($query) use($ac_year){$query->where('study_academic_year_id', $ac_year->id);})->get();
 
+        $beneficiaries = array();
 		$loan_beneficiary_count = 0;
 		foreach($internal_trasnfers as $transfers){
 			$loan_beneficiary = LoanAllocation::where('student_id', $transfers->student_id)->where('study_academic_year_id', $ac_year->id)->first();
 			if($loan_beneficiary){
 				$loan_beneficiary_count = 1;
-				break;
+				$beneficiaries[] = $loan_beneficiary;
 			}
 		}
 		
@@ -62,7 +63,8 @@ class HomeController extends Controller
             })->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->latest()->first(),
            'last_session'=>UserSession::where('user_id',Auth::user()->id)->orderBy('last_activity','desc')->offset(1)->first(),
 		   'internal_transfer_count'=>InternalTransfer::whereNull('loan_changed')->where('status','SUBMITTED')->count(),
-		   'loan_beneficiary_count'=>$loan_beneficiary_count
+		   'loan_beneficiary_count'=>$loan_beneficiary_count,
+		   'beneficiaries'=> $beneficiaries? $beneficiaries : []
         ];
     	return view('dashboard',$data)->withTitle('Home');
     }
