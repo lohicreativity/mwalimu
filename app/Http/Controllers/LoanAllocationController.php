@@ -12,6 +12,7 @@ use App\Utils\SystemLocation;
 use App\Models\User;
 use App\Mail\LoanAllocationCreated;
 use Auth, Mail;
+use App\Domain\Application\Models\InternalTransfer;
 
 class LoanAllocationController extends Controller
 {
