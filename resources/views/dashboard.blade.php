@@ -53,9 +53,16 @@
 
         @if(Auth::user()->hasRole('finance-officer') || Auth::user()->hasRole('loan-officer'))
 			@if(!$last_session)
-				@if($postponements_count != 0 || $deceased_count != 0 || $internal_transfer_count != 0)
+				@if($postponements_count != 0 || $deceased_count != 0)
 				<div class="alert alert-warning">You have a new change of status case</div>
 				@endif
+				@if($internal_transfer_count != 0)
+					@if(Auth::user()->hasRole('loan-officer') && $loan_beneficiary_count !=0)
+						<div class="alert alert-warning">You have a new change of status case</div>
+					@else
+						<div class="alert alert-warning">You have a new change of status case</div>
+					@endif
+				@endif				
 			@else
 				@if($postponements_count != 0)
 					@if($last_session->last_activity > strtotime($last_postponement->updated_at))
@@ -69,7 +76,11 @@
 				@endif
 				@if($internal_transfer_count != 0)
 					@if($last_session->last_activity > strtotime($last_postponement->updated_at))
-					<div class="alert alert-warning">You have an internal transfer case</div>
+						@if(Auth::user()->hasRole('loan-officer') && $loan_beneficiary_count !=0)
+							<div class="alert alert-warning">You have an internal transfer case</div>
+						@else
+							<div class="alert alert-warning">You have an internal transfer case</div>
+						@endif
 					@endif
 				@endif				
 			@endif
