@@ -84,19 +84,19 @@ class LoanAllocationController extends Controller
 
 		foreach($loan_beneficiary as $beneficiary){
 			foreach($postponements as $post){
-				if($beneficiary->sudent_id == $post->student_id){
+				if($beneficiary->student_id == $post->student_id){
 					$stud_postponements[]= $post;
 					$beneficiaries[] = $beneficiary;	
 				}				
 			}
 			foreach($deceased as $death){
-				if($beneficiary->sudent_id == $death->id){
+				if($beneficiary->student_id == $death->id){
 					$stud_deceased[]= $death;
 					$beneficiaries[] = $beneficiary;						
 				}
 			}
 			foreach($internal_trasnfers as $transfers){
-				if($loan_beneficiary->sudent_id == $transfers->student_id){
+				if($loan_beneficiary->student_id == $transfers->student_id){
 					$beneficiaries[] = $beneficiary;
 					$stud_transfers[]= $transfers;
 				}				
