@@ -33,8 +33,16 @@ class HomeController extends Controller
         $ac_year = StudyAcademicYear::where('status','ACTIVE')->first();
         $semester = Semester::where('status','ACTIVE')->first();
 		//$loan_beneficiaries = Student::whereHas('registrations', function($query) use($ac_year){$query->where('study_academic_year_id', $ac_year->id);})
-		$loan_beneficiaries = InternalTransfer::whereNull('loan_changed')->where('status','SUBMITTED')
-		->whereHas('student.registrations',function($query) use($ac_year){$query->where('study_academic_year_id', $ac_year->id);})
+		$internal_trasnfers = InternalTransfer::whereNull('loan_changed')->where('status','SUBMITTED')
+		->whereHas('student.registrations',function($query) use($ac_year){$query->where('study_academic_year_id', $ac_year->id);})->get();
+		return $internal_trasnfers;
+		
+		foreach($internal_trasnfers as $transfers){
+			$loan_beneficiary = LoanAllocation::where('student_id', $transfers->student_id)->where('study_academic_year_id', $ac_year->id)->first();
+			if($loan_beneficiary){
+				$loan_beneficiary_count = 1;
+			}
+		}
 		->whereHas('student.loanAllocation',function($query) use($ac_year){$query->where('study_academic_year_id', $ac_year->id);})->count();
 		return $loan_beneficiaries;
 		
