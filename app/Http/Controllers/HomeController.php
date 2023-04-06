@@ -41,6 +41,7 @@ class HomeController extends Controller
 			$loan_beneficiary = LoanAllocation::where('student_id', $transfers->student_id)->where('study_academic_year_id', $ac_year->id)->first();
 			if($loan_beneficiary){
 				$loan_beneficiary_count = 1;
+				break;
 			}
 		}
 		
