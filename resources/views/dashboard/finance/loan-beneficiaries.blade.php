@@ -93,7 +93,7 @@
                        <th>Name</th>
                        <th>Sex</th>
 					   <th>Phone</th>
-					   @if($request->get('transfer_status') === 1)
+					   @if($request->get('transfer_status') == 1)
                        <th>Total (TZS)</th>
                        <th>Status</th>  
 					   @else
@@ -110,11 +110,11 @@
                      @foreach($beneficiaries as $key=>$stud)
                       <tr>
 						<td>{{ ($key+1) }}</td>
-                        <td>{{ $request->get('transfer_status') }}</td>
+                        <td>{{ $stud->index_number }}</td>
                         <td>{{ $stud->name }}</td>					
                         <td>{{ $stud->sex }}</td>
                         <td>{{ $stud->phone }}</td>
-						@if($request->get('transfer_status') === 1)
+						@if($request->get('transfer_status') == 1)
                         <td>{{ number_format($stud->loan_amount,2) }}</td>
                         <td>Transfer</td>				
 						@else		
