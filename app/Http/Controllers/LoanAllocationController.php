@@ -70,7 +70,7 @@ class LoanAllocationController extends Controller
     {
 		$ac_year = StudyAcademicYear::where('status','ACTIVE')->first();
         $semester = Semester::where('status','ACTIVE')->first();
-		$internal_trasnfers = InternalTransfer::whereNull('loan_changed')->where('status','SUBMITTED')->with('campusProgram.program')
+		$internal_trasnfers = InternalTransfer::whereNull('loan_changed')->where('status','SUBMITTED')->with('previousProgram.program','currentProgram.program')
 		->whereHas('student.registrations',function($query) use($ac_year){$query->where('study_academic_year_id', $ac_year->id);})->get();
 
         $beneficiaries = array();
