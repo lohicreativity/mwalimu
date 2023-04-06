@@ -75,7 +75,7 @@ class LoanAllocationController extends Controller
 		$postponements = Postponement::whereNotNull('recommended_by_user_id')->where('status', '!=', 'DECLINED')
 		->where('category','!=','EXAM')->where('study_academic_year_id', $ac_year->id)->latest()->get();
 		$loan_beneficiary = LoanAllocation::where('study_academic_year_id', $ac_year->id)->get();
-		$deceased = Student::whereHas('studentshipStatuses',function($query){$query->where('name', 'DECEASED');})-?get();
+		$deceased = Student::whereHas('studentshipStatuses',function($query){$query->where('name', 'DECEASED');})->get();
 		
         $beneficiaries = stud_transfers = stud_postponements = stud_deceased = array();	
 
