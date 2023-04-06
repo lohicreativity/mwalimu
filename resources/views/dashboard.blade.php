@@ -58,8 +58,8 @@
 				@endif
 				@if($internal_transfer_count != 0)
 					@if(Auth::user()->hasRole('loan-officer') && $loan_beneficiary_count !=0)
-						<div class="alert alert-warning">You have a new change of status case</div>
-					@else
+						<div class="alert alert-warning">There is an internal transfer case</div>
+					@elseif(Auth::user()->hasRole('finance-officer'))
 						<div class="alert alert-warning">You have a new change of status case</div>
 					@endif
 				@endif				
