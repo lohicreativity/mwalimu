@@ -85,25 +85,28 @@
               <!-- /.card-header -->
               <div class="card-body">
                   
-                <table class="table table-bordered">
+                <table class="table table-bordered ss-paginated-table">
                    <thead>
                      <tr>
-                       <th>Index Number</th>
+					   <th>SN</th>
+                       <th>Index#</th>
                        <th>Name</th>
                        <th>Sex</th>
                        <th>Tuition Fee</th>
-                       <th>Books and Stationaries</th>
-                       <th>Meals and Accomodation</th>
-                       <th>Field Training</th>
+                       <th>Books & Stationaries</th>
+                       <th>Meals & Accomodation</th>
+                       <th>Field</th>
                        <th>Research</th>
-                       <th>Total Amount (TZS)</th>
+                       <th>Total (TZS)</th>
                      </tr>
                    </thead>
                    <tbody>
-                     @foreach($beneficiaries as $stud)
+                     @foreach($beneficiaries as $key=>$stud)
                       <tr>
+						<td>{{ ($key+1) }}</td>
                         <td>{{ $stud->index_number }}</td>
                         <td>{{ $stud->name }}</td>
+                        <td>{{ $stud->phone }}</td>						
                         <td>{{ $stud->sex }}</td>
                         <td>{{ $stud->tuition_fee }}</td>
                         <td>{{ $stud->books_and_stationeries }}</td>

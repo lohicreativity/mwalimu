@@ -47,9 +47,10 @@
               <!-- /.card-header -->
               <div class="card-body">
                   
-                <table class="table table-bordered">
+                <table class="table table-bordered ss-paginated-table">
                    <thead>
                      <tr>
+					   <th>SN</th>
                        <th>Study Academic Year</th>
                        <th>Year of Study</th>
                        <th>Tuition Fee</th>
@@ -61,8 +62,9 @@
                      </tr>
                    </thead>
                    <tbody>
-                     @foreach($loan_allocations as $loan)
+                     @foreach($loan_allocations as $key=>$loan)
                       <tr>
+						<td>{{ ($key+1) }}</td>
                         <td>{{ $loan->studyAcademicYear->academicYear->year }}</td>
                         <td>{{ $loan->year_of_study }}</td>
                         <td>{{ $loan->tuition_fee }}</td>
