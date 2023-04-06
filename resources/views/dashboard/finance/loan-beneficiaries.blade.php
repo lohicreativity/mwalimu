@@ -92,6 +92,7 @@
                        <th>Index#</th>
                        <th>Name</th>
                        <th>Sex</th>
+					   <th>Phone</th>
                        <th>Tuition Fee</th>
                        <th>Books & Stationaries</th>
                        <th>Meals & Accomodation</th>
@@ -105,9 +106,9 @@
                       <tr>
 						<td>{{ ($key+1) }}</td>
                         <td>{{ $stud->index_number }}</td>
-                        <td>{{ $stud->name }}</td>
-                        <td>{{ $stud->phone }}</td>						
+                        <td>{{ $stud->name }}</td>					
                         <td>{{ $stud->sex }}</td>
+                        <td>{{ $stud->phone }}</td>							
                         <td>{{ $stud->tuition_fee }}</td>
                         <td>{{ $stud->books_and_stationeries }}</td>
                         <td>{{ $stud->meals_and_accomodation }}</td>
