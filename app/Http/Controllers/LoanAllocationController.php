@@ -101,7 +101,7 @@ class LoanAllocationController extends Controller
 			}
 			if($internal_trasnfers){
 				foreach($internal_trasnfers as $transfers){
-					if($loan_beneficiary->student_id == $transfers->student_id){
+					if($beneficiary->student_id == $transfers->student_id){
 						$beneficiaries[] = $beneficiary;
 						$stud_transfers[]= $transfers;
 					}				
