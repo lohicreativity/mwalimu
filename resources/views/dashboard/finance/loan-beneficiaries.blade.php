@@ -93,7 +93,7 @@
                        <th>Name</th>
                        <th>Sex</th>
 					   <th>Phone</th>
-					   @if($request->get('transfer_status') == 1)
+					   @if($request->get('loan_status') == 1)
                        <th>Total (TZS)</th>
                        <th>Status</th>  
 					   @else
@@ -114,9 +114,34 @@
                         <td>{{ $stud->name }}</td>					
                         <td>{{ $stud->sex }}</td>
                         <td>{{ $stud->phone }}</td>
-						@if($request->get('transfer_status') == 1)
+						@if($request->get('loan_status') == 1)
                         <td>{{ number_format($stud->loan_amount,2) }}</td>
-                        <td>Transfered ({{ $transfers[$key]->previousProgram->program->code}} to {{ $transfers[$key]->currentProgram->program->code}})</td>				
+                        <td>
+							@if($postponements)
+								@foreach($postponements as $post_stud)
+									@if($post_stud->student_id == $stud->student_id)
+										Postponed({{ $post_stud->category}})
+										@break
+									@endif
+								@endforeach
+							@endif
+							@if($deceased)
+								@foreach($deceased as $dic_stud)
+									@if($dic_stud->student_id == $stud->student_id)
+										Deceased
+										@break
+									@endif
+								@endforeach
+							@endif
+							@if($transfers)
+								@foreach($transfers as $trans_stud)
+									@if($trans_stud->student_id == $stud->student_id)
+										Transfered ({{ $trans_stud->previousProgram->program->code}} to {{ $trans_stud->currentProgram->program->code}})				
+										@break
+									@endif
+								@endforeach
+							@endif
+						</td>				
 						@else		
                         <td>{{ $stud->tuition_fee }}</td>
                         <td>{{ $stud->books_and_stationeries }}</td>

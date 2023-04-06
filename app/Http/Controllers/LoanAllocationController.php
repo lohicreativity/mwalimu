@@ -72,20 +72,54 @@ class LoanAllocationController extends Controller
         $semester = Semester::where('status','ACTIVE')->first();
 		$internal_trasnfers = InternalTransfer::whereNull('loan_changed')->where('status','SUBMITTED')->with('previousProgram.program','currentProgram.program')
 		->whereHas('student.registrations',function($query) use($ac_year){$query->where('study_academic_year_id', $ac_year->id);})->get();
+		$postponements = Postponement::whereNotNull('recommended_by_user_id')->where('status', '!=', 'DECLINED')
+		->where('category','!=','EXAM')->where('study_academic_year_id', $ac_year->id)->latest()->get();
+		$loan_beneficiary = LoanAllocation::where('study_academic_year_id', $ac_year->id)->get();
+		$deceased = Student::whereHas('studentshipStatuses',function($query){$query->where('name', 'DECEASED');})-?get();
+		
+        $beneficiaries = stud_transfers = stud_postponements = stud_deceased = array();	
 
-        $beneficiaries = array();
-        $stud_transfers = array();		
-		foreach($internal_trasnfers as $transfers){
+		foreach($loan_beneficiary as $beneficiary){
+			foreach($postponements as $post){
+				if($beneficiary->sudent_id == $post->student_id){
+					$stud_postponements[]= $post;
+					$beneficiaries[] = $beneficiary;	
+				}				
+			}
+			foreach($deceased as $death){
+				if($beneficiary->sudent_id == $death->id){
+					$stud_deceased[]= $death;
+					$beneficiaries[] = $beneficiary;						
+				}
+			}
+			foreach($internal_trasnfers as $transfers){
+				if($loan_beneficiary->sudent_id == $transfers->student_id){
+					$beneficiaries[] = $beneficiary;
+					$stud_transfers[]= $transfers;
+				}				
+			}
+		}
+/* 		foreach($internal_trasnfers as $transfers){
 			$loan_beneficiary = LoanAllocation::where('student_id', $transfers->student_id)->where('study_academic_year_id', $ac_year->id)->first();
+			$postponements = Postponement::whereNotNull('recommended_by_user_id')->where('student_id', $transfers->student_id)->latest()->first();
+			$deceased = Student::where('id', $transfers->student_id)->first();
 			if($loan_beneficiary){
 				$beneficiaries[] = $loan_beneficiary;
 				$stud_transfers[]= $transfers;
 			}
-		}
+			if($postponements){
+				$stud_postponements[]= $postponements;
+			}
+			if($deceased){
+				$stud_postponements[]= $postponements;
+			}
+		} */
     	$data = [
     		'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
-            'beneficiaries'=>$request->get('transfer_status') == 1? $beneficiaries : LoanAllocation::where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',$request->get('year_of_study'))->paginate(20),
+            'beneficiaries'=>$request->get('loan_status') == 1? $beneficiaries : LoanAllocation::where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',$request->get('year_of_study'))->paginate(20),
 			'transfers'=>$stud_transfers? $stud_transfers : [],
+			'postponements'=>$stud_postponements? $stud_postponements : [],
+			'deceased'=>$stud_deceased? $stud_deceased : [],
             'request'=>$request
     	];
     	if($request->get('year_of_study') && count($data['beneficiaries']) == 0){
