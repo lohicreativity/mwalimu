@@ -110,7 +110,7 @@
                      @foreach($beneficiaries as $key=>$stud)
                       <tr>
 						<td>{{ ($key+1) }}</td>
-                        <td>{{ $stud->index_number }}</td>
+                        <td>{{ $request->get('transfer_status') }}</td>
                         <td>{{ $stud->name }}</td>					
                         <td>{{ $stud->sex }}</td>
                         <td>{{ $stud->phone }}</td>
