@@ -65,10 +65,24 @@ class LoanAllocationController extends Controller
      */
     public function showLoanBeneficiaries(Request $request)
     {
-		return $request->get('loan_status');
+		$ac_year = StudyAcademicYear::where('status','ACTIVE')->first();
+        $semester = Semester::where('status','ACTIVE')->first();
+		$internal_trasnfers = InternalTransfer::whereNull('loan_changed')->where('status','SUBMITTED')
+		->whereHas('student.registrations',function($query) use($ac_year){$query->where('study_academic_year_id', $ac_year->id);})->get();
+
+        $beneficiaries = array();
+		foreach($internal_trasnfers as $transfers){
+			$loan_beneficiary = LoanAllocation::where('student_id', $transfers->student_id)->where('study_academic_year_id', $ac_year->id)->first();
+			if($loan_beneficiary){
+				$beneficiaries[] = $loan_beneficiary;
+			}
+		}
+		
+		return $beneficiaries;
+		
     	$data = [
     		'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
-            'beneficiaries'=>LoanAllocation::where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',$request->get('year_of_study'))->paginate(20),
+            'beneficiaries'=> $request->get('loan_status') = 1? null : LoanAllocation::where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',$request->get('year_of_study'))->paginate(20),
             'request'=>$request
     	];
     	if($request->get('year_of_study') && count($data['beneficiaries']) == 0){
