@@ -83,24 +83,31 @@ class LoanAllocationController extends Controller
         $beneficiaries = $stud_transfers = $stud_postponements = $stud_deceased = array();	
 
 		foreach($loan_beneficiary as $beneficiary){
-			foreach($postponements as $post){
-				if($beneficiary->student_id == $post->student_id){
-					$stud_postponements[]= $post;
-					$beneficiaries[] = $beneficiary;	
+			if($postponements){
+				foreach($postponements as $post){
+					if($beneficiary->student_id == $post->student_id){
+						$stud_postponements[]= $post;
+						$beneficiaries[] = $beneficiary;	
+					}				
 				}				
 			}
-			foreach($deceased as $death){
-				if($beneficiary->student_id == $death->id){
-					$stud_deceased[]= $death;
-					$beneficiaries[] = $beneficiary;						
-				}
-			}
-			foreach($internal_trasnfers as $transfers){
-				if($loan_beneficiary->student_id == $transfers->student_id){
-					$beneficiaries[] = $beneficiary;
-					$stud_transfers[]= $transfers;
+			if($deceased){
+				foreach($deceased as $death){
+					if($beneficiary->student_id == $death->id){
+						$stud_deceased[]= $death;
+						$beneficiaries[] = $beneficiary;						
+					}
 				}				
 			}
+			if($internal_trasnfers){
+				foreach($internal_trasnfers as $transfers){
+					if($loan_beneficiary->student_id == $transfers->student_id){
+						$beneficiaries[] = $beneficiary;
+						$stud_transfers[]= $transfers;
+					}				
+				}				
+			}
+
 		}
 /* 		foreach($internal_trasnfers as $transfers){
 			$loan_beneficiary = LoanAllocation::where('student_id', $transfers->student_id)->where('study_academic_year_id', $ac_year->id)->first();
