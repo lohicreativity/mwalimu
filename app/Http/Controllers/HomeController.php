@@ -45,7 +45,6 @@ class HomeController extends Controller
 				$beneficiaries[] = $loan_beneficiary;
 			}
 		}
-		return $request->get('loan_status');
 
         $data = [
            'staff'=>User::find(Auth::user()->id)->staff,
