@@ -13,6 +13,7 @@ use App\Models\UserSession;
 use Auth;
 use App\Domain\Application\Models\InternalTransfer;
 use App\Domain\Finance\Models\LoanAllocation;
+use App\Domain\Registration\Models\Student;
 
 class HomeController extends Controller
 {
