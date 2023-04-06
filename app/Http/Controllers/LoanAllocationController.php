@@ -65,6 +65,7 @@ class LoanAllocationController extends Controller
      */
     public function showLoanBeneficiaries(Request $request)
     {
+		return $request->get('loan_status');
     	$data = [
     		'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
             'beneficiaries'=>LoanAllocation::where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',$request->get('year_of_study'))->paginate(20),
