@@ -78,7 +78,7 @@ class LoanAllocationController extends Controller
 				$beneficiaries[] = $loan_beneficiary;
 			}
 		}
-		return $request->transfer_status;
+
     	$data = [
     		'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
             'beneficiaries'=> $request->get('transfer_status') == 1? $beneficiaries : LoanAllocation::where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',$request->get('year_of_study'))->paginate(20),
