@@ -85,7 +85,7 @@ class LoanAllocationController extends Controller
     	$data = [
     		'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
             'beneficiaries'=>$request->get('transfer_status') == 1? $beneficiaries : LoanAllocation::where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',$request->get('year_of_study'))->paginate(20),
-			'transfers'=>$internal_trasnfers? $internal_trasnfers : [],
+			'transfers'=>$transfers? $transfers : [],
             'request'=>$request
     	];
     	if($request->get('year_of_study') && count($data['beneficiaries']) == 0){
