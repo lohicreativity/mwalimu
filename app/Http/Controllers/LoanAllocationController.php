@@ -13,6 +13,8 @@ use App\Models\User;
 use App\Mail\LoanAllocationCreated;
 use Auth, Mail;
 use App\Domain\Application\Models\InternalTransfer;
+use App\Domain\Academic\Models\CampusProgram;
+use App\Domain\Academic\Models\Program;
 
 class LoanAllocationController extends Controller
 {
@@ -68,7 +70,7 @@ class LoanAllocationController extends Controller
     {
 		$ac_year = StudyAcademicYear::where('status','ACTIVE')->first();
         $semester = Semester::where('status','ACTIVE')->first();
-		$internal_trasnfers = InternalTransfer::whereNull('loan_changed')->where('status','SUBMITTED')
+		$internal_trasnfers = InternalTransfer::whereNull('loan_changed')->where('status','SUBMITTED')->with('campusProgram.program')
 		->whereHas('student.registrations',function($query) use($ac_year){$query->where('study_academic_year_id', $ac_year->id);})->get();
 
         $beneficiaries = array();
