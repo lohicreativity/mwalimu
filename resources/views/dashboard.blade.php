@@ -54,13 +54,13 @@
         @if(Auth::user()->hasRole('finance-officer') || Auth::user()->hasRole('loan-officer'))
 			@if(!$last_session)
 				@if($postponements_count != 0 || $deceased_count != 0)
-				<div class="alert alert-warning">You have a new change of status case</div>
+				<div class="alert alert-warning">You have a new change of status case1</div>
 				@endif
 				@if($internal_transfer_count != 0)
 					@if(Auth::user()->hasRole('loan-officer') && $loan_beneficiary_count !=0)
 						<div class="alert alert-warning">There is an internal transfer case</div>
 					@elseif(Auth::user()->hasRole('finance-officer'))
-						<div class="alert alert-warning">You have a new change of status case</div>
+						<div class="alert alert-warning">You have a new change of status case2</div>
 					@endif
 				@endif				
 			@else
