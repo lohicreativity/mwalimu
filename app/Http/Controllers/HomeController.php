@@ -50,7 +50,7 @@ class HomeController extends Controller
            'last_session'=>UserSession::where('user_id',Auth::user()->id)->orderBy('last_activity','desc')->offset(1)->first(),
 		   'internal_transfer_count'=>InternalTransfer::whereNull('loan_changed')->where('status','SUBMITTED')->count(),
 		   'loan_beneficiary_count'=>Student::whereHas('registrations', function($query) use($ac_year){$query->where('study_academic_year_id', $ac_year->id);})
-		   ->whereHas('internalTransfer',function($query){$query->whereNull('loan_changed')->where('status','SUBMITTED');})
+		   ->whereHas('internalTransfers',function($query){$query->whereNull('loan_changed')->where('status','SUBMITTED');})
 		   ->whereHas('loanAllocation',function($query) use($ac_year){$query->where('study_academic_year_id', $ac_year->id);})->count()
         ];
     	return view('dashboard',$data)->withTitle('Home');
