@@ -58,7 +58,7 @@
 						<div class="alert alert-warning">You have a new change of status case</div>
 					@elseif(Auth::user()->hasRole('loan-officer'))
 						@if($loan_beneficiary_count !=0)
-							<div class="alert alert-warning">There is an internal transfer case. Please <a href="{{ url('finance/loan-beneficiaries?loan_status='.$loan_beneficiary_count) }}">click here</a> to attend</div>
+							<div class="alert alert-warning">There is an internal transfer case. Please <a href="{{ url('finance/loan-beneficiaries?transfer_status='.$loan_beneficiary_count) }}">click here</a> to attend it.</div>
 						@else
 							<div class="alert alert-warning">You have a new change of status case</div>
 						@endif

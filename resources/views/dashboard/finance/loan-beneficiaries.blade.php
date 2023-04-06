@@ -93,12 +93,17 @@
                        <th>Name</th>
                        <th>Sex</th>
 					   <th>Phone</th>
+					   @if($request->transfer_status === 1)
+                       <th>Total (TZS)</th>
+                       <th>Status</th>  
+					   @else
                        <th>Tuition Fee</th>
                        <th>Books & Stationaries</th>
                        <th>Meals & Accomodation</th>
                        <th>Field</th>
                        <th>Research</th>
                        <th>Total (TZS)</th>
+					   @endif
                      </tr>
                    </thead>
                    <tbody>
@@ -108,13 +113,18 @@
                         <td>{{ $stud->index_number }}</td>
                         <td>{{ $stud->name }}</td>					
                         <td>{{ $stud->sex }}</td>
-                        <td>{{ $stud->phone }}</td>							
+                        <td>{{ $stud->phone }}</td>
+						@if($request->transfer_status === 1)
+                        <td>{{ number_format($stud->loan_amount,2) }}</td>
+                        <td>Transfer</td>				
+						@else		
                         <td>{{ $stud->tuition_fee }}</td>
                         <td>{{ $stud->books_and_stationeries }}</td>
                         <td>{{ $stud->meals_and_accomodation }}</td>
                         <td>{{ $stud->field_training }}</td>
                         <td>{{ $stud->research }}</td>
                         <td>{{ number_format($stud->loan_amount,2) }}</td>
+						@endif
                       </tr>
                      @endforeach
                    </tbody>
