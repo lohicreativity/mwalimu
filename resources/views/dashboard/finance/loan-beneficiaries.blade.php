@@ -116,7 +116,7 @@
                         <td>{{ $stud->phone }}</td>
 						@if($request->get('transfer_status') == 1)
                         <td>{{ number_format($stud->loan_amount,2) }}</td>
-                        <td>Transfered ({{ $stud_transfers[$key]->campusProgram->program->code}}</td>				
+                        <td>Transfered ({{ $stud_transfers[$key]->previousProgram->program->code}} -> {{ $stud_transfers[$key]->currentProgram->program->code}})</td>				
 						@else		
                         <td>{{ $stud->tuition_fee }}</td>
                         <td>{{ $stud->books_and_stationeries }}</td>
