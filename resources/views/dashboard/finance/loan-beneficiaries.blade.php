@@ -95,7 +95,8 @@
 					   <th>Phone</th>
 					   @if($request->get('loan_status') == 1)
                        <th>Total (TZS)</th>
-                       <th>Status</th>  
+                       <th>Status</th>
+                       <th>Action</th> 					   
 					   @else
                        <th>Tuition Fee</th>
                        <th>Books & Stationaries</th>
@@ -141,7 +142,8 @@
 									@endif
 								@endforeach
 							@endif
-						</td>				
+						</td>
+						<td><button type="submit" class="btn btn-primary">Remove</button></td>		
 						@else		
                         <td>{{ $stud->tuition_fee }}</td>
                         <td>{{ $stud->books_and_stationeries }}</td>
