@@ -84,7 +84,7 @@ class HomeController extends Controller
 		}		
 
 return Postponement::whereHas('student.applicant',function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
-					->whereHas('student.campusProgram.programs', function($query) use($user){$query->where('department_id', $user->department_id);})
+					->whereHas('student.campusProgram.programs', function($query) use($user){$query->where('department_id', $staff->department_id);})
 					->whereNull('recommended_by_user_id')->get();
         $data = [
            'staff'=>$staff,
