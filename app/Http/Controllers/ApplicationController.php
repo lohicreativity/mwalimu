@@ -2579,7 +2579,7 @@ class ApplicationController extends Controller
 		
 		$student->user_id = $user->id;
         $student->save();
-
+        $loan_allocation = LoanAllocation::where('index_number',$applicant->index_number)->where('study_academic_year_id',$ac_year->id)->first();
 		// Added 07/04/2023
 		$invoices = Invoice::with('feeType')->where('payable_type','applicant')->where('payable_id',$applicant->id)->whereNotNull('gateway_payment_id')->get();
 		foreach($invoices as $invoice){
@@ -2603,7 +2603,7 @@ class ApplicationController extends Controller
 
        
         
-        $loan_allocation = LoanAllocation::where('index_number',$applicant->index_number)->where('study_academic_year_id',$ac_year->id)->first();
+
 
 		if(fee_payment_percent >= 0.6 && other_fee_payment_status === 1){
 			if($loan_allocation){
