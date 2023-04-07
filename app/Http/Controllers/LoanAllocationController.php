@@ -142,7 +142,7 @@ class LoanAllocationController extends Controller
     {
 		$ac_year = StudyAcademicYear::where('status','ACTIVE')->first();
         $semester = Semester::where('status','ACTIVE')->first();
-		return $request;
+
 		if($request->get('postponement_status') == 1 || $request->get('deceased_status') == 1){
 			LoanAllocation::where('student_id', $request->get('student_id'))->where('study_academic_year_id', $ac_year->id)->latest()->delete();			
 		}elseif($request->get('transfer_status') == 1){
