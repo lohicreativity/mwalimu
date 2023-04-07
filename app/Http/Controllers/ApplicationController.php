@@ -3020,8 +3020,9 @@ class ApplicationController extends Controller
         })->with(['gatewayPayment','feeType'])->where('payable_type','applicant')->where('payable_id',$applicant->id)->update(['payable_type'=>'student','payable_id'=>$student->id,'applicable_id'=>$ac_year->id,'applicable_type'=>'academic_year']);
 
 		$transfered_status = false;
-		
-		if(fee_payment_percent >= 0.6 && other_fee_payment_status == 1){		
+		return 1;
+		if(fee_payment_percent >= 0.6 && other_fee_payment_status == 1){	
+return 2;		
 			try{
 			   Mail::to($user)->send(new StudentAccountCreated($student, $selection->campusProgram->program->name,$ac_year->academicYear->year, $transfered_status));
 			}catch(Exception $e){}
@@ -3033,6 +3034,7 @@ class ApplicationController extends Controller
           return redirect()->to('application/applicants-registration?application_window_id='.$applicant->application_window_id.'&program_level_id='.$applicant->program_level_id)->with('message','Student registered successfully with registration number '.$student->registration_number);
         }
 		}else{
+			return 3;
 		  return redirect()->to('application/applicants-registration?application_window_id='.$applicant->application_window_id.'&program_level_id='.$applicant->program_level_id)->with('error','Student cannot be registered');
 		}
 
