@@ -148,7 +148,8 @@ class LoanAllocationController extends Controller
 		}elseif($request->get('transfer_status') == 1){
 			$transfer = InternalTransfer::where('student_id',$request->get('student_id'))->whereNull('loan_changed')->latest()->first();
 			$transfer->loan_changed = 1;
-			$transfer->save();	
+			$transfer->save();
+			return redirect()->back()->with('message','Successfully changed loan allocations');			
 		}
 		
 		$internal_trasnfers = InternalTransfer::whereNull('loan_changed')->where('status','SUBMITTED')->with('previousProgram.program','currentProgram.program')
