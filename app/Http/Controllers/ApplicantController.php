@@ -366,9 +366,45 @@ class ApplicantController extends Controller
                   ->orWhere('status', 'PENDING');
         })->with(['applicant' => function ($query) use($applicant){ $query->where('program_level_id', $applicant->program_level_id); }])->first();
 
+
+        $study_academic_year = StudyAcademicYear::whereHas('academicYear',function($query) use ($applicant){
+               $query->where('year','LIKE','%'.date('Y',strtotime($application_window->begin_date)).'/%');
+        })->first();
+				
+		$student = Student::where('applicant_id', $applicant->id)->first();
+		$invoices = null;
+		if($student){
+			$invoices = Invoice::with('feeType')->where('payable_type','student')->where('payable_id',$student->id)->whereNotNull('gateway_payment_id')
+								->where('applicable_id',$study_academic_year->id)->get();			
+		}
+		if($invoices){
+			foreach($invoices as $invoice){
+				if(str_contains($invoice->feeType->name,'Tuition Fee')){
+					$paid_amount = GatewayPayment::where('bill_id',$invoice->reference_no)->sum('paid_amount');
+					$fee_payment_percent = $paid_amount/$invoice->amount;         
+
+					if($loan_allocation){
+					   $fee_payment_percent = ($paid_amount+$loan_allocation->tuition_fee)/$invoice->amount;
+					}
+				}
+
+				if(str_contains($invoice->feeType->name,'Miscellaneous')){
+					$paid_amount = GatewayPayment::where('bill_id',$invoice->reference_no)->sum('paid_amount');
+					$other_fee_payment_status = $paid_amount == $invoice->amount? 1 : 0;
+
+				}			
+			}			
+		}
+		$payment_status = false;
+		if($fee_payment_percent >= 0.6 && $other_fee_payment_status == 1){
+			$payment_status = true;
+		}
+		
+
+		
         $data = [
            'applicant'=>$applicant,
-           'student' => Student::where('applicant_id', $applicant->id)->first(),
+           'student' => $payment_status? $student : [],
            'selection_status' => $selection_status,
 		   'regulator_selection' => $regulator_selection,
            'check_selected_applicant' => $check_selected_applicant,

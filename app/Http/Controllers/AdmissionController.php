@@ -240,7 +240,7 @@ class AdmissionController extends Controller
                                     $program_fee->feeItem->feeType->duration,
                                     $invoice->currency);
         }
-
+		// Kama mkopo kiasi cha fee anachopata ni zaidi ya 60%
         if($amount_loan/$amount_without_loan >= 0.6){
             $applicant->tuition_payment_check = 1;
             $applicant->save();

@@ -2580,11 +2580,88 @@ class ApplicationController extends Controller
 		$student->user_id = $user->id;
         $student->save();
 
+		// Added 07/04/2023
+		$invoices = Invoice::with('feeType')->where('payable_type','applicant')->where('payable_id',$applicant->id)->whereNotNull('gateway_payment_id')->get();
+		foreach($invoices as $invoice){
+			if(str_contains($invoice->feeType->name,'Tuition Fee')){
+				$paid_amount = GatewayPayment::where('bill_id',$invoice->reference_no)->sum('paid_amount');
+				$fee_payment_percent = $paid_amount/$invoice->amount;         
+
+				if($loan_allocation){
+				   $fee_payment_percent = ($paid_amount+$loan_allocation->tuition_fee)/$invoice->amount;
+				}
+			}
+
+			if(str_contains($invoice->feeType->name,'Miscellaneous')){
+				$paid_amount = GatewayPayment::where('bill_id',$invoice->reference_no)->sum('paid_amount');
+				$other_fee_payment_status = $paid_amount === $invoice->amount? 1 : 0;
+
+			}			
+		}
+
+
+
        
         
         $loan_allocation = LoanAllocation::where('index_number',$applicant->index_number)->where('study_academic_year_id',$ac_year->id)->first();
 
-        if($loan_allocation){
+		if(fee_payment_percent >= 0.6 && other_fee_payment_status === 1){
+			if($loan_allocation){
+				if($loan_allocation->has_signed == 1 && $applicant->has_postponed != 1){
+					 if($reg = Registration::where('student_id',$student->id)->where('study_academic_year_id',$ac_year->id)->where('semester_id',$semester->id)->first()){
+						$registration = $reg;
+					  }else{
+						$registration = new Registration;
+					  }
+					  $registration->study_academic_year_id = $ac_year->id;
+					  $registration->semester_id = $semester->id;
+					  $registration->student_id = $student->id;
+					  $registration->year_of_study = 1;
+					  $registration->registration_date = date('Y-m-d');
+					  $registration->registered_by_staff_id = $staff->id;
+					  $registration->status = 'REGISTERED';
+					  $registration->save();
+					  }
+				  $loan_allocation->registration_number = $student->registration_number;
+				  $loan_allocation->student_id = $student->id;
+				  $loan_allocation->save();
+			}else{
+				if($ac_year->nhif_enabled == 1){
+					if($applicant->insurance_check == 1 && $applicant->has_postponed != 1){
+						if($reg = Registration::where('student_id',$student->id)->where('study_academic_year_id',$ac_year->id)->where('semester_id',$semester->id)->first()){
+						  $registration = $reg;
+						}else{
+						  $registration = new Registration;
+						}
+						$registration->study_academic_year_id = $ac_year->id;
+						$registration->semester_id = $semester->id;
+						$registration->student_id = $student->id;
+						$registration->year_of_study = 1;
+						$registration->registration_date = date('Y-m-d');
+						$registration->registered_by_staff_id = $staff->id;
+						$registration->status = 'REGISTERED';
+						$registration->save();
+					}
+				}else{
+					if($applicant->has_postponed != 1){
+						if($reg = Registration::where('student_id',$student->id)->where('study_academic_year_id',$ac_year->id)->where('semester_id',$semester->id)->first()){
+						  $registration = $reg;
+						}else{
+						  $registration = new Registration;
+						}
+						$registration->study_academic_year_id = $ac_year->id;
+						$registration->semester_id = $semester->id;
+						$registration->student_id = $student->id;
+						$registration->year_of_study = 1;
+						$registration->registration_date = date('Y-m-d');
+						$registration->registered_by_staff_id = $staff->id;
+						$registration->status = 'REGISTERED';
+						$registration->save();
+					}
+				}
+			}			
+		}
+/*         if($loan_allocation){
             if($loan_allocation->has_signed == 1 && $applicant->has_postponed != 1){
                  if($reg = Registration::where('student_id',$student->id)->where('study_academic_year_id',$ac_year->id)->where('semester_id',$semester->id)->first()){
                     $registration = $reg;
@@ -2637,7 +2714,7 @@ class ApplicationController extends Controller
                     $registration->save();
                 }
             }
-        }
+        } */
 
 		$days = round($datediff / (60 * 60 * 24));
 
@@ -2834,7 +2911,7 @@ class ApplicationController extends Controller
                 }
             }
             
-
+		// Angalia namna ya kutumia taarifa zilizokwisha chukuliwa mwanzo
         $tuition_invoice = Invoice::whereHas('feeType',function($query){
                $query->where('name','LIKE','%Tuition%');
         })->with(['gatewayPayment','feeType'])->where('payable_type','applicant')->where('payable_id',$applicant->id)->first();
@@ -2946,9 +3023,12 @@ class ApplicationController extends Controller
         })->with(['gatewayPayment','feeType'])->where('payable_type','applicant')->where('payable_id',$applicant->id)->update(['payable_type'=>'student','payable_id'=>$student->id,'applicable_id'=>$ac_year->id,'applicable_type'=>'academic_year']);
 
 		$transfered_status = false;
-        try{
-           Mail::to($user)->send(new StudentAccountCreated($student, $selection->campusProgram->program->name,$ac_year->academicYear->year, $transfered_status));
-        }catch(Exception $e){}
+		
+		if(fee_payment_percent >= 0.6 && other_fee_payment_status == 1){		
+			try{
+			   Mail::to($user)->send(new StudentAccountCreated($student, $selection->campusProgram->program->name,$ac_year->academicYear->year, $transfered_status));
+			}catch(Exception $e){}
+		}
         DB::commit();
         if($days < 0){
           return redirect()->to('application/applicants-registration?application_window_id='.$applicant->application_window_id.'&program_level_id='.$applicant->program_level_id)->with('error','Student successfully registered with registration number '.$student->registration_number.', but has a penalty of '.$amount.' '.$currency);

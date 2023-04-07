@@ -134,10 +134,10 @@ class GePGResponseController extends Controller
 
             if(str_contains($invoice->feeType->name,'Tuition Fee')){
                 $paid_amount = GatewayPayment::where('bill_id',$invoice->reference_no)->sum('paid_amount');
-                $percentage = $paid_amount/$invoice->amount;
+                //$percentage = $paid_amount/$invoice->amount;
                 $applicant = Applicant::with('applicationWindow')->find($invoice->payable_id);
 
-                $ac_year = date('Y',strtotime($applicant->applicationWindow->end_date));
+/*                 $ac_year = date('Y',strtotime($applicant->applicationWindow->end_date));
                 $study_academic_year = StudyAcademicYear::whereHas('academicYear',function($query) use($ac_year){
                        $query->where('year','LIKE','%'.$ac_year.'/%');
                 })->first();
@@ -153,13 +153,15 @@ class GePGResponseController extends Controller
                    $applicant->tuition_payment_check = $percentage >= 0.6? 1 : 0;
                 }else{
                    $applicant->tuition_payment_check = $percentage >= 0.6? 1 : 0;
-                }
+                } */
+				$applicant->tuition_payment_check = $paid_amount > 0? 1 : 0;
                 $applicant->save();
             }
 
             if(str_contains($invoice->feeType->name,'Miscellaneous')){
                 $applicant = Applicant::find($invoice->payable_id);
-                $applicant->other_payment_check = $data['paid_amount'] == $invoice->amount? 1 : 0;
+//                $applicant->other_payment_check = $data['paid_amount'] == $invoice->amount? 1 : 0;
+				$applicant->other_payment_check = $data['paid_amount'] >0? 1 : 0;
                 $applicant->save();
             }
             
