@@ -3021,7 +3021,7 @@ class ApplicationController extends Controller
 
 		$transfered_status = false;
 		
-		if(fee_payment_percent >= 0.6 && other_fee_payment_status == 1){		
+		if($fee_payment_percent >= 0.6 && $other_fee_payment_status == 1){		
 			try{
 			   Mail::to($user)->send(new StudentAccountCreated($student, $selection->campusProgram->program->name,$ac_year->academicYear->year, $transfered_status));
 			}catch(Exception $e){}
