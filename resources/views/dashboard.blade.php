@@ -80,7 +80,7 @@
 							<div class="alert alert-warning">There is an internal transfer case. Please <a href="{{ url('registration/internal-transfer') }}">click here</a> to attend it.</div>
 						@endif
 					@endif
-				@elseif(Auth::user()->hasRole('finance-officer' && $loan_beneficiary_count != 0)	
+				@elseif(Auth::user()->hasRole('finance-officer') && $loan_beneficiary_count != 0)	
 					@if($last_session->last_activity > strtotime($last_internal_transfer->updated_at))
 						<div class="alert alert-warning">There is an internal transfer case. Please <a href="{{ url('finance/loan-beneficiaries?loan_status=1') }}">click here</a> to attend it.</div>
 					@endif
