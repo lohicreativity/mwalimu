@@ -126,7 +126,7 @@ class LoanAllocationController extends Controller
 		} */
     	$data = [
     		'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
-            'beneficiaries'=>$request->get('loan_status') == 1? $beneficiaries : LoanAllocation::where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',$request->get('year_of_study'))->paginate(20),
+            'beneficiaries'=>$request->get('loan_status') == 1? $beneficiaries : LoanAllocation::where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',$request->get('year_of_study'))->get(),
 			'transfers'=>$stud_transfers? $stud_transfers : [],
 			'postponements'=>$stud_postponements? $stud_postponements : [],
 			'deceased'=>$stud_deceased? $stud_deceased : [],
@@ -144,9 +144,9 @@ class LoanAllocationController extends Controller
         $semester = Semester::where('status','ACTIVE')->first();
 		return $request;
 		if($request->get('postponement_status') == 1 || $request->get('deceased_status') == 1){
-			LoanAllocation::where('student_id', $request->get('student_id'))->where('study_academic_year_id', $ac_year->id)->where('year_of_study',$request->get('year_of_study'))->latest()->delete();			
+			LoanAllocation::where('student_id', $request->get('student_id'))->where('study_academic_year_id', $ac_year->id)->latest()->delete();			
 		}elseif($request->get('transfer_status') == 1){
-			InternalTransfer::where('student_id',$request->get('student_id'))->where('study_academic_year_id',$ac_year->id)->where('year_of_study',$request->get('year_of_study'))->latest()->update('loan_changed', 1);	
+			InternalTransfer::where('student_id',$request->get('student_id'))->whereNull('loan_changed')->latest()->update('loan_changed', 1);	
 		}
 		
 		$internal_trasnfers = InternalTransfer::whereNull('loan_changed')->where('status','SUBMITTED')->with('previousProgram.program','currentProgram.program')
@@ -188,7 +188,7 @@ class LoanAllocationController extends Controller
 
     	$data = [
     		'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
-            'beneficiaries'=>$request->get('loan_status') == 1? $beneficiaries : LoanAllocation::where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',$request->get('year_of_study'))->paginate(20),
+            'beneficiaries'=>$request->get('loan_status') == 1? $beneficiaries : LoanAllocation::where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',$request->get('year_of_study'))->get(),
 			'transfers'=>$stud_transfers? $stud_transfers : [],
 			'postponements'=>$stud_postponements? $stud_postponements : [],
 			'deceased'=>$stud_deceased? $stud_deceased : [],
