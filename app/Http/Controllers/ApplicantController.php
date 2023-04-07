@@ -367,7 +367,7 @@ class ApplicantController extends Controller
         })->with(['applicant' => function ($query) use($applicant){ $query->where('program_level_id', $applicant->program_level_id); }])->first();
 
 
-        $study_academic_year = StudyAcademicYear::whereHas('academicYear',function($query) use ($applicant){
+        $study_academic_year = StudyAcademicYear::whereHas('academicYear',function($query) use ($applicant, $application_window){
                $query->where('year','LIKE','%'.date('Y',strtotime($application_window->begin_date)).'/%');
         })->first();
 				
