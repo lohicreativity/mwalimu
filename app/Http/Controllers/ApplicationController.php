@@ -2588,9 +2588,8 @@ class ApplicationController extends Controller
 			foreach($invoices as $invoice){
 				if(str_contains($invoice->feeType->name,'Tuition Fee')){
 					$paid_amount = GatewayPayment::where('bill_id',$invoice->reference_no)->sum('paid_amount');
-					return $paid_amount;
 					$fee_payment_percent = $paid_amount/$invoice->amount;         
-
+	return $fee_payment_percent;
 					if($loan_allocation){
 					   $fee_payment_percent = ($paid_amount+$loan_allocation->tuition_fee)/$invoice->amount;
 					}
