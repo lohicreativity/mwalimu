@@ -2597,16 +2597,12 @@ class ApplicationController extends Controller
 
 				if(str_contains($invoice->feeType->name,'Miscellaneous')){
 					$paid_amount = GatewayPayment::where('bill_id',$invoice->reference_no)->sum('paid_amount');
-					return $paid_amount;
-					$other_fee_payment_status = $paid_amount === $invoice->amount? 1 : 0;
-					
-
+					$other_fee_payment_status = $paid_amount >= $invoice->amount? 1 : 0;
 				}			
 			}			
 		}
 
 		if($fee_payment_percent >= 0.6 && $other_fee_payment_status === 1){
-			return 1;
 			if($loan_allocation){
 				if($loan_allocation->has_signed == 1 && $applicant->has_postponed != 1){
 					 if($reg = Registration::where('student_id',$student->id)->where('study_academic_year_id',$ac_year->id)->where('semester_id',$semester->id)->first()){
@@ -2662,7 +2658,6 @@ class ApplicationController extends Controller
 				}
 			}			
 		}elseif(($fee_payment_percent != null || $fee_payment_percent != 0) && ($other_fee_payment_status != null || $other_fee_payment_status != null)){
-			return 2;
 /*         if($loan_allocation){
             if($loan_allocation->has_signed == 1 && $applicant->has_postponed != 1){
                  if($reg = Registration::where('student_id',$student->id)->where('study_academic_year_id',$ac_year->id)->where('semester_id',$semester->id)->first()){
