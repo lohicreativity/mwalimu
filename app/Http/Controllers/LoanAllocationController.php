@@ -71,14 +71,19 @@ class LoanAllocationController extends Controller
      */
     public function showLoanBeneficiaries(Request $request)
     {
+		$staff = User::find(Auth::user()->id)->staff;
 		$ac_year = StudyAcademicYear::where('status','ACTIVE')->first();
         $semester = Semester::where('status','ACTIVE')->first();
-		$internal_trasnfers = InternalTransfer::whereNull('loan_changed')->where('status','SUBMITTED')->with('previousProgram.program','currentProgram.program')
+		$internal_trasnfers = InternalTransfer::whereHas('student.applicant',function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
+		->whereNull('loan_changed')->where('status','SUBMITTED')->with('previousProgram.program','currentProgram.program')
 		->whereHas('student.registrations',function($query) use($ac_year){$query->where('study_academic_year_id', $ac_year->id);})->get();
-		$postponements = Postponement::whereNotNull('recommended_by_user_id')->where('status', '!=', 'DECLINED')
+		$postponements = Postponement::whereHas('student.applicant',function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
+		->whereNotNull('recommended_by_user_id')->where('status', '!=', 'DECLINED')
 		->where('category','!=','EXAM')->where('study_academic_year_id', $ac_year->id)->latest()->get();
-		$loan_beneficiary = LoanAllocation::where('study_academic_year_id', $ac_year->id)->get();
-		$deceased = Student::whereHas('studentshipStatus',function($query){$query->where('name', 'DECEASED');})->get();
+		$loan_beneficiary = LoanAllocation::whereHas('student.applicant',function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
+		->where('study_academic_year_id', $ac_year->id)->get();
+		$deceased = Student::whereHas('applicant',function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
+		->whereHas('studentshipStatus',function($query){$query->where('name', 'DECEASED');})->get();
 		
         $beneficiaries = $stud_transfers = $stud_postponements = $stud_deceased = array();	
 
