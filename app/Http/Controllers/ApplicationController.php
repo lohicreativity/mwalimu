@@ -2582,29 +2582,28 @@ class ApplicationController extends Controller
         $loan_allocation = LoanAllocation::where('index_number',$applicant->index_number)->where('study_academic_year_id',$ac_year->id)->first();
 		// Added 07/04/2023
 		$invoices = Invoice::with('feeType')->where('payable_type','applicant')->where('payable_id',$applicant->id)->whereNotNull('gateway_payment_id')->get();
-		foreach($invoices as $invoice){
-			if(str_contains($invoice->feeType->name,'Tuition Fee')){
-				$paid_amount = GatewayPayment::where('bill_id',$invoice->reference_no)->sum('paid_amount');
-				$fee_payment_percent = $paid_amount/$invoice->amount;         
+		$fee_payment_percent = $other_fee_payment_status = 0;
 
-				if($loan_allocation){
-				   $fee_payment_percent = ($paid_amount+$loan_allocation->tuition_fee)/$invoice->amount;
+		if($invoices){
+			return 1;
+			foreach($invoices as $invoice){
+				if(str_contains($invoice->feeType->name,'Tuition Fee')){
+					$paid_amount = GatewayPayment::where('bill_id',$invoice->reference_no)->sum('paid_amount');
+					$fee_payment_percent = $paid_amount/$invoice->amount;         
+
+					if($loan_allocation){
+					   $fee_payment_percent = ($paid_amount+$loan_allocation->tuition_fee)/$invoice->amount;
+					}
 				}
-			}
 
-			if(str_contains($invoice->feeType->name,'Miscellaneous')){
-				$paid_amount = GatewayPayment::where('bill_id',$invoice->reference_no)->sum('paid_amount');
-				$other_fee_payment_status = $paid_amount === $invoice->amount? 1 : 0;
+				if(str_contains($invoice->feeType->name,'Miscellaneous')){
+					$paid_amount = GatewayPayment::where('bill_id',$invoice->reference_no)->sum('paid_amount');
+					$other_fee_payment_status = $paid_amount === $invoice->amount? 1 : 0;
 
+				}			
 			}			
 		}
-
-
-
-       
-        
-
-
+return 2;
 		if($fee_payment_percent >= 0.6 && $other_fee_payment_status === 1){
 			if($loan_allocation){
 				if($loan_allocation->has_signed == 1 && $applicant->has_postponed != 1){
