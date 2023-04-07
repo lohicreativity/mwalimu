@@ -372,6 +372,7 @@ class ApplicantController extends Controller
         })->first();
 				
 		$student = Student::where('applicant_id', $applicant->id)->first();
+		$loan_allocation = LoanAllocation::where('index_number',$applicant->index_number)->where('study_academic_year_id',$study_academic_year->id)->first();
 		$invoices = null;
 		if($student){
 			$invoices = Invoice::with('feeType')->where('payable_type','student')->where('payable_id',$student->id)->whereNotNull('gateway_payment_id')
