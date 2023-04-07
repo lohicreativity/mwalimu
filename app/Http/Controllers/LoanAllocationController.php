@@ -144,14 +144,15 @@ class LoanAllocationController extends Controller
         $semester = Semester::where('status','ACTIVE')->first();
 
 		if($request->get('postponement_status') == 1 || $request->get('deceased_status') == 1){
-			LoanAllocation::where('student_id', $request->get('student_id'))->where('study_academic_year_id', $ac_year->id)->latest()->delete();			
+			LoanAllocation::where('student_id', $request->get('student_id'))->where('study_academic_year_id', $ac_year->id)->latest()->delete();
+			return redirect()->back()->with('message','Successfully removed loan allocation');					
 		}elseif($request->get('transfer_status') == 1){
 			$transfer = InternalTransfer::where('student_id',$request->get('student_id'))->whereNull('loan_changed')->latest()->first();
 			$transfer->loan_changed = 1;
 			$transfer->save();
-			return redirect()->back()->with('message','Successfully changed loan allocations');			
+			return redirect()->back()->with('message','Successfully changed loan allocation');			
 		}
-		
+/* 		
 		$internal_trasnfers = InternalTransfer::whereNull('loan_changed')->where('status','SUBMITTED')->with('previousProgram.program','currentProgram.program')
 		->whereHas('student.registrations',function($query) use($ac_year){$query->where('study_academic_year_id', $ac_year->id);})->get();
 		$postponements = Postponement::whereNotNull('recommended_by_user_id')->where('status', '!=', 'DECLINED')
@@ -197,7 +198,7 @@ class LoanAllocationController extends Controller
 			'deceased'=>$stud_deceased? $stud_deceased : [],
             'request'=>$request
     	];
-    	return view('dashboard.finance.loan-beneficiaries',$data)->withTitle('Loan Beneficiaries');
+    	return view('dashboard.finance.loan-beneficiaries',$data)->withTitle('Loan Beneficiaries'); */
     }
 
      /**
