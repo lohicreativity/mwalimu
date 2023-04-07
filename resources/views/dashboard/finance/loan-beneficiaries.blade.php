@@ -143,7 +143,42 @@
 								@endforeach
 							@endif
 						</td>
-						<td><button type="submit" class="btn btn-primary">Remove</button></td>		
+						<td>
+							@if($postponements)
+								@foreach($postponements as $post_stud)
+									@if($post_stud->student_id == $stud->student_id)																	
+										<a class="btn btn-info btn-sm" href="{{ url('finance/update-loan-beneficiaries?student_id='.$stud->student_id.'&postponement_status=1&loan_status=1') }}">
+										  <i class="fas fa-eye-open"></i>
+										  Remove
+										</a>	
+										@break
+									@endif
+								@endforeach
+							@endif
+							@if($deceased)
+								@foreach($deceased as $dic_stud)
+									@if($dic_stud->student_id == $stud->student_id)
+										<a class="btn btn-info btn-sm" href="{{ url('finance/update-loan-beneficiaries?student_id='.$stud->student_id.'&deceased_status=1&loan_status=1') }}">
+										  <i class="fas fa-eye-open"></i>
+										  Remove
+										</a>	
+										@break
+									@endif
+								@endforeach
+							@endif
+							@if($transfers)
+								@foreach($transfers as $trans_stud)
+									@if($trans_stud->student_id == $stud->student_id)
+										<a class="btn btn-info btn-sm" href="{{ url('finance/update-loan-beneficiaries?student_id='.$stud->student_id.'&transfer_status=1&loan_status=1') }}">
+										  <i class="fas fa-eye-open"></i>
+										  Change
+										</a>	
+										@break
+									@endif
+								@endforeach
+							@endif
+					
+						</td>		
 						@else		
                         <td>{{ $stud->tuition_fee }}</td>
                         <td>{{ $stud->books_and_stationeries }}</td>

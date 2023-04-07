@@ -7,10 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 use App\Domain\Academic\Models\StudyAcademicYear;
 use App\Domain\Registration\Models\Student;
 use App\Models\User;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class LoanAllocation extends Model
 {
     use HasFactory;
+	use SoftDeletes;
 
     protected $table = 'loan_allocations';
 

@@ -137,6 +137,65 @@ class LoanAllocationController extends Controller
     	}
     	return view('dashboard.finance.loan-beneficiaries',$data)->withTitle('Loan Beneficiaries');
     }
+	
+    public function updateLoanBeneficiaries(Request $request)
+    {
+		$ac_year = StudyAcademicYear::where('status','ACTIVE')->first();
+        $semester = Semester::where('status','ACTIVE')->first();
+		
+		if($request->get('postponement_status') == 1 || $request->get('deceased_status') == 1){
+			LoanAllocation::where('student_id', $request->get('student_id'))->('study_academic_year_id', $ac_year->id)->where('year_of_study',$request->get('year_of_study'))->latest()->delete();			
+		}elseif($request->get('transfer_status') == 1){
+			InternalTransfer::where('student_id',$request->get('student_id'))->where('study_academic_year_id',$ac_year->id)->where('year_of_study',$request->get('year_of_study'))->latest()->update('loan_changed', 1);	
+		}
+		
+		$internal_trasnfers = InternalTransfer::whereNull('loan_changed')->where('status','SUBMITTED')->with('previousProgram.program','currentProgram.program')
+		->whereHas('student.registrations',function($query) use($ac_year){$query->where('study_academic_year_id', $ac_year->id);})->get();
+		$postponements = Postponement::whereNotNull('recommended_by_user_id')->where('status', '!=', 'DECLINED')
+		->where('category','!=','EXAM')->where('study_academic_year_id', $ac_year->id)->latest()->get();
+		$loan_beneficiary = LoanAllocation::where('study_academic_year_id', $ac_year->id)->get();
+		$deceased = Student::whereHas('studentshipStatus',function($query){$query->where('name', 'DECEASED');})->get();
+		
+        $beneficiaries = $stud_transfers = $stud_postponements = $stud_deceased = array();	
+
+		foreach($loan_beneficiary as $beneficiary){
+			if($postponements){
+				foreach($postponements as $post){
+					if($beneficiary->student_id == $post->student_id){
+						$stud_postponements[]= $post;
+						$beneficiaries[] = $beneficiary;	
+					}				
+				}				
+			}
+			if($deceased){
+				foreach($deceased as $death){
+					if($beneficiary->student_id == $death->id){
+						$stud_deceased[]= $death;
+						$beneficiaries[] = $beneficiary;						
+					}
+				}				
+			}
+			if($internal_trasnfers){
+				foreach($internal_trasnfers as $transfers){
+					if($beneficiary->student_id == $transfers->student_id){
+						$beneficiaries[] = $beneficiary;
+						$stud_transfers[]= $transfers;
+					}				
+				}				
+			}
+
+		}
+
+    	$data = [
+    		'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
+            'beneficiaries'=>$request->get('loan_status') == 1? $beneficiaries : LoanAllocation::where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',$request->get('year_of_study'))->paginate(20),
+			'transfers'=>$stud_transfers? $stud_transfers : [],
+			'postponements'=>$stud_postponements? $stud_postponements : [],
+			'deceased'=>$stud_deceased? $stud_deceased : [],
+            'request'=>$request
+    	];
+    	return view('dashboard.finance.loan-beneficiaries',$data)->withTitle('Loan Beneficiaries');
+    }
 
      /**
      * Show loan beneficiaries bank details

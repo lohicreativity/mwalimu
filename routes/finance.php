@@ -62,6 +62,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 	Route::get('loan-allocations',[LoanAllocationController::class,'index']);
 	Route::post('upload-loan-allocation',[LoanAllocationController::class,'uploadAllocations']);
 	Route::get('loan-beneficiaries',[LoanAllocationController::class,'showLoanBeneficiaries']);
+	Route::get('update-loan-beneficiaries',[LoanAllocationController::class,'updateLoanBeneficiaries']);	
 	Route::get('loan-bank-details',[LoanAllocationController::class,'showLoanBankDetails']);
 	Route::post('loan-allocation-update-signatures',[LoanAllocationController::class,'updateSignatures']);
 	Route::get('notify-loan-students',[LoanAllocationController::class,'notifyLoanStudents']);
