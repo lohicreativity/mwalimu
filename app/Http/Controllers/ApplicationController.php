@@ -2589,16 +2589,17 @@ class ApplicationController extends Controller
 				if(str_contains($invoice->feeType->name,'Tuition Fee')){
 					$paid_amount = GatewayPayment::where('bill_id',$invoice->reference_no)->sum('paid_amount');
 					$fee_payment_percent = $paid_amount/$invoice->amount;         
-	return $fee_payment_percent;
+
 					if($loan_allocation){
 					   $fee_payment_percent = ($paid_amount+$loan_allocation->tuition_fee)/$invoice->amount;
 					}
 				}
 
 				if(str_contains($invoice->feeType->name,'Miscellaneous')){
-					return 2;
 					$paid_amount = GatewayPayment::where('bill_id',$invoice->reference_no)->sum('paid_amount');
+					return $paid_amount;
 					$other_fee_payment_status = $paid_amount === $invoice->amount? 1 : 0;
+					
 
 				}			
 			}			
