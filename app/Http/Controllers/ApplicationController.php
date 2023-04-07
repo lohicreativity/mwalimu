@@ -2603,6 +2603,7 @@ class ApplicationController extends Controller
 		}
 
 		if($fee_payment_percent >= 0.6 && $other_fee_payment_status === 1){
+			return 1;
 			if($loan_allocation){
 				if($loan_allocation->has_signed == 1 && $applicant->has_postponed != 1){
 					 if($reg = Registration::where('student_id',$student->id)->where('study_academic_year_id',$ac_year->id)->where('semester_id',$semester->id)->first()){
@@ -2623,6 +2624,7 @@ class ApplicationController extends Controller
 				  $loan_allocation->student_id = $student->id;
 				  $loan_allocation->save();
 			}else{
+				return 2
 				if($ac_year->nhif_enabled == 1){
 					if($applicant->insurance_check == 1 && $applicant->has_postponed != 1){
 						if($reg = Registration::where('student_id',$student->id)->where('study_academic_year_id',$ac_year->id)->where('semester_id',$semester->id)->first()){
@@ -2658,6 +2660,7 @@ class ApplicationController extends Controller
 				}
 			}			
 		}elseif(($fee_payment_percent != null || $fee_payment_percent != 0) && ($other_fee_payment_status != null || $other_fee_payment_status != null)){
+			return 3
 /*         if($loan_allocation){
             if($loan_allocation->has_signed == 1 && $applicant->has_postponed != 1){
                  if($reg = Registration::where('student_id',$student->id)->where('study_academic_year_id',$ac_year->id)->where('semester_id',$semester->id)->first()){
@@ -3020,9 +3023,8 @@ class ApplicationController extends Controller
         })->with(['gatewayPayment','feeType'])->where('payable_type','applicant')->where('payable_id',$applicant->id)->update(['payable_type'=>'student','payable_id'=>$student->id,'applicable_id'=>$ac_year->id,'applicable_type'=>'academic_year']);
 
 		$transfered_status = false;
-		return 1;
-		if(fee_payment_percent >= 0.6 && other_fee_payment_status == 1){	
-return 2;		
+		
+		if(fee_payment_percent >= 0.6 && other_fee_payment_status == 1){		
 			try{
 			   Mail::to($user)->send(new StudentAccountCreated($student, $selection->campusProgram->program->name,$ac_year->academicYear->year, $transfered_status));
 			}catch(Exception $e){}
@@ -3034,7 +3036,6 @@ return 2;
           return redirect()->to('application/applicants-registration?application_window_id='.$applicant->application_window_id.'&program_level_id='.$applicant->program_level_id)->with('message','Student registered successfully with registration number '.$student->registration_number);
         }
 		}else{
-			return 3;
 		  return redirect()->to('application/applicants-registration?application_window_id='.$applicant->application_window_id.'&program_level_id='.$applicant->program_level_id)->with('error','Student cannot be registered');
 		}
 
