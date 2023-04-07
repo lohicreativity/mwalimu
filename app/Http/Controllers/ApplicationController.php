@@ -2660,7 +2660,7 @@ class ApplicationController extends Controller
 					}
 				}
 			}			
-		}elseif($fee_payment_percent != null || $fee_payment_percent != 0 || $other_fee_payment_status != null || $other_fee_payment_status != null){
+		}elseif(($fee_payment_percent != null || $fee_payment_percent != 0) && ($other_fee_payment_status != null || $other_fee_payment_status != null)){
 			return 4;
 		}
 		return 3;
