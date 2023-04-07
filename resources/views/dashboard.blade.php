@@ -53,35 +53,38 @@
 
         @if(Auth::user()->hasRole('finance-officer') || Auth::user()->hasRole('loan-officer'))
 			@if(!$last_session)
-				@if($postponements_count != 0 || $deceased_count != 0 || $internal_transfer_count != 0)
-					@if(Auth::user()->hasRole('finance-officer') && $internal_transfer_count == 0)
+				@if(Auth::user()->hasRole('finance-officer'))
+					@if($postponements_count != 0 || $deceased_count != 0)
 						<div class="alert alert-warning">You have a new change of status case. Please <a href="{{ url('academic/special-case-students') }}">click here</a> to attend it.</div>
-					@elseif(Auth::user()->hasRole('finance-officer') && $internal_transfer_count != 0)
-						<div class="alert alert-warning">You have a new change of status case. Please <a href="{{ url('academic/special-case-students') }}">click here</a> to attend it.</div>					
-					@elseif(Auth::user()->hasRole('loan-officer'))
-							<div class="alert alert-warning">There is an internal transfer case. Please <a href="{{ url('finance/loan-beneficiaries?loan_status=1') }}">click here</a> to attend it.</div>
+					@elseif($internal_transfer_count != 0)
+						<div class="alert alert-warning">You have a new change of status case. Please <a href="{{ url('registration/internal-transfer') }}">click here</a> to attend it.</div>					
 					@endif
-				@endif			
+				@elseif(Auth::user()->hasRole('loan-officer') && $loan_beneficiary_count != 0)
+					<div class="alert alert-warning">There is an internal transfer case. Please <a href="{{ url('finance/loan-beneficiaries?loan_status=1') }}">click here</a> to attend it.</div>
+				@endif
+		
 			@else
-				@if($postponements_count != 0)
-					@if($last_session->last_activity > strtotime($last_postponement->updated_at))
-					<div class="alert alert-warning">There is a postponement case. Please <a href="{{ url('academic/special-case-students') }}">click here</a> to attend it.</div>
-					@endif
-				@endif
-				@if($deceased_count != 0)
-					@if($last_session->last_activity > strtotime($last_deceased->updated_at))
-					<div class="alert alert-warning">There is a deceased case. Please <a href="{{ url('academic/special-case-students') }}">click here</a> to attend it.</div>
-					@endif
-				@endif
-				@if($internal_transfer_count != 0)
-					@if($last_session->last_activity > strtotime($last_postponement->updated_at))
-						@if(Auth::user()->hasRole('loan-officer') && $loan_beneficiary_count !=0)
-							<div class="alert alert-warning">You have an internal transfer case</div>
-						@else
-							<div class="alert alert-warning">You have an internal transfer case</div>
+				@if(Auth::user()->hasRole('finance-officer'))
+					@if($postponements_count != 0)
+						@if($last_session->last_activity > strtotime($last_postponement->updated_at))
+							<div class="alert alert-warning">There is a postponement case. Please <a href="{{ url('academic/special-case-students') }}">click here</a> to attend it.</div>
 						@endif
 					@endif
-				@endif				
+					@if($deceased_count != 0)
+						@if($last_session->last_activity > strtotime($last_deceased->updated_at))
+							<div class="alert alert-warning">There is a deceased case. Please <a href="{{ url('academic/special-case-students') }}">click here</a> to attend it.</div>
+						@endif
+					@endif
+					@if($internal_transfer_count != 0)
+						@if($last_session->last_activity > strtotime($last_internal_transfer->updated_at))
+							<div class="alert alert-warning">There is an internal transfer case. Please <a href="{{ url('registration/internal-transfer') }}">click here</a> to attend it.</div>
+						@endif
+					@endif
+				@elseif(Auth::user()->hasRole('finance-officer' && $loan_beneficiary_count != 0)	
+					@if($last_session->last_activity > strtotime($last_internal_transfer->updated_at))
+						<div class="alert alert-warning">There is an internal transfer case. Please <a href="{{ url('finance/loan-beneficiaries?loan_status=1') }}">click here</a> to attend it.</div>
+					@endif
+				@endif
 			@endif
         @endif
         

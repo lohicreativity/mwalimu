@@ -35,16 +35,46 @@ class HomeController extends Controller
 		//$loan_beneficiaries = Student::whereHas('registrations', function($query) use($ac_year){$query->where('study_academic_year_id', $ac_year->id);})
 		$internal_trasnfers = InternalTransfer::whereNull('loan_changed')->where('status','SUBMITTED')
 		->whereHas('student.registrations',function($query) use($ac_year){$query->where('study_academic_year_id', $ac_year->id);})->get();
+		$postponements = Postponement::whereNotNull('postponed_by_user_id')->where('status', '!=', 'DECLINED')->where('category','!=','EXAM')->where('study_academic_year_id',$ac_year->id)->get();				
+		$loan_beneficiary = LoanAllocation::where('study_academic_year_id', $ac_year->id)->get();
+		$deceased = Student::whereHas('studentshipStatus',function($query){$query->where('name', 'DECEASED');})->get();	
 
         $beneficiaries = array();
 		$loan_beneficiary_count = 0;
-		foreach($internal_trasnfers as $transfers){
+/* 		foreach($internal_trasnfers as $transfers){
 			$loan_beneficiary = LoanAllocation::where('student_id', $transfers->student_id)->where('study_academic_year_id', $ac_year->id)->first();
 			if($loan_beneficiary){
 				$loan_beneficiary_count = 1;
 				$beneficiaries[] = $loan_beneficiary;
 			}
-		}
+		} */
+
+		foreach($loan_beneficiary as $beneficiary){
+			if($postponements){
+				foreach($postponements as $post){
+					if($beneficiary->student_id == $post->student_id){
+						$loan_beneficiary_count = 1;	
+						break;
+					}				
+				}				
+			}
+			if($deceased){
+				foreach($deceased as $death){
+					if($beneficiary->student_id == $death->id){
+						$loan_beneficiary_count = 1;
+						break;						
+					}
+				}				
+			}
+			if($internal_trasnfers){
+				foreach($internal_trasnfers as $transfers){
+					if($beneficiary->student_id == $transfers->student_id){
+						$loan_beneficiary_count = 1;
+						break;	
+					}				
+				}				
+			}			
+		}		
 
         $data = [
            'staff'=>User::find(Auth::user()->id)->staff,
@@ -62,9 +92,9 @@ class HomeController extends Controller
                   $query->where('name','DECEASED');
             })->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->latest()->first(),
            'last_session'=>UserSession::where('user_id',Auth::user()->id)->orderBy('last_activity','desc')->offset(1)->first(),
-		   'internal_transfer_count'=>InternalTransfer::whereNull('loan_changed')->where('status','SUBMITTED')->count(),
-		   'loan_beneficiary_count'=>$loan_beneficiary_count,
-		   'beneficiaries'=> $beneficiaries? $beneficiaries : []
+		   'internal_transfer_count'=>InternalTransfer::where('status','SUBMITTED')->count(),
+		   'last_internal_transfer'=>InternalTransfer::where('status','SUBMITTED')->latest()->first(),
+		   'loan_beneficiary_count'=>$loan_beneficiary_count
         ];
     	return view('dashboard',$data)->withTitle('Home');
     }
