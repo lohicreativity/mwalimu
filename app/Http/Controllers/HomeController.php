@@ -30,6 +30,7 @@ class HomeController extends Controller
      */
     public function dashboard(Request $request)
     {
+		$staff = User::find(Auth::user()->id)->staff;
         $ac_year = StudyAcademicYear::where('status','ACTIVE')->first();
         $semester = Semester::where('status','ACTIVE')->first();
 		//$loan_beneficiaries = Student::whereHas('registrations', function($query) use($ac_year){$query->where('study_academic_year_id', $ac_year->id);})
@@ -77,23 +78,31 @@ class HomeController extends Controller
 		}		
 
         $data = [
-           'staff'=>User::find(Auth::user()->id)->staff,
+           'staff'=>$staff,
            'postponements_arc_count'=>Postponement::whereNull('postponed_by_user_id')->count(),
            'resumptions_arc_count'=>Postponement::whereNotNull('postponed_by_user_id')->whereNull('resumed_by_user_id')->count(),
            'special_exams_arc_count'=>SpecialExamRequest::whereNull('approved_by_user_id')->count(),
-           'postponements_hod_count'=>Postponement::whereNull('recommended_by_user_id')->count(),
-           'special_exams_hod_count'=>SpecialExamRequest::whereNull('recommended_by_user_id')->count(),
-           'postponements_count'=>Postponement::whereNotNull('postponed_by_user_id')->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->count(),
-           'last_postponement'=>Postponement::whereNotNull('postponed_by_user_id')->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->latest()->first(),
-           'deceased_count'=>Registration::whereHas('student.studentshipStatus',function($query){
-                  $query->where('name','DECEASED');
-            })->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->count(),
-           'last_deceased'=>Registration::whereHas('student.studentshipStatus',function($query){
-                  $query->where('name','DECEASED');
-            })->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->latest()->first(),
+           'postponements_hod_count'=>Postponement::whereHas('student.applicant',function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
+									->whereNull('recommended_by_user_id')->count(),
+           'special_exams_hod_count'=>SpecialExamRequest::whereHas('student.applicant',function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
+									->whereNull('recommended_by_user_id')->count(),
+           'postponements_count'=>Postponement::whereHas('student.applicant',function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
+								->whereNotNull('postponed_by_user_id')->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->count(),
+           'last_postponement'=>Postponement::whereHas('student.applicant',function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
+							  ->whereNotNull('postponed_by_user_id')->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->latest()->first(),
+           'deceased_count'=>Registration::whereHas('student.applicant',function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
+						   ->whereHas('student.studentshipStatus',function($query){$query->where('name','DECEASED');})
+						   ->where('study_academic_year_id',session('active_academic_year_id'))
+						   ->where('semester_id',session('active_semester_id'))->count(),
+           'last_deceased'=>Registration::whereHas('student.applicant',function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
+						  ->whereHas('student.studentshipStatus',function($query){$query->where('name','DECEASED');})
+						  ->where('study_academic_year_id',session('active_academic_year_id'))
+						  ->where('semester_id',session('active_semester_id'))->latest()->first(),
            'last_session'=>UserSession::where('user_id',Auth::user()->id)->orderBy('last_activity','desc')->offset(1)->first(),
-		   'internal_transfer_count'=>InternalTransfer::where('status','SUBMITTED')->count(),
-		   'last_internal_transfer'=>InternalTransfer::where('status','SUBMITTED')->latest()->first(),
+		   'internal_transfer_count'=>InternalTransfer::whereHas('student.applicant',function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
+									->where('status','SUBMITTED')->count(),
+		   'last_internal_transfer'=>InternalTransfer::whereHas('student.applicant',function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
+									->where('status','SUBMITTED')->latest()->first(),
 		   'loan_beneficiary_count'=>$loan_beneficiary_count
         ];
     	return view('dashboard',$data)->withTitle('Home');
