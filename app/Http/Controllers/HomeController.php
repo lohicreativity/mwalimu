@@ -34,11 +34,16 @@ class HomeController extends Controller
         $ac_year = StudyAcademicYear::where('status','ACTIVE')->first();
         $semester = Semester::where('status','ACTIVE')->first();
 		//$loan_beneficiaries = Student::whereHas('registrations', function($query) use($ac_year){$query->where('study_academic_year_id', $ac_year->id);})
-		$internal_trasnfers = InternalTransfer::whereNull('loan_changed')->where('status','SUBMITTED')
-		->whereHas('student.registrations',function($query) use($ac_year){$query->where('study_academic_year_id', $ac_year->id);})->get();
-		$postponements = Postponement::whereNotNull('postponed_by_user_id')->where('status', '!=', 'DECLINED')->where('category','!=','EXAM')->where('study_academic_year_id',$ac_year->id)->get();				
-		$loan_beneficiary = LoanAllocation::where('study_academic_year_id', $ac_year->id)->get();
-		$deceased = Student::whereHas('studentshipStatus',function($query){$query->where('name', 'DECEASED');})->get();	
+		$internal_trasnfers = InternalTransfer::whereHas('student.applicant',function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
+												->whereNull('loan_changed')->where('status','SUBMITTED')
+												->whereHas('student.registrations',function($query) use($ac_year){$query->where('study_academic_year_id', $ac_year->id);})->get();
+		$postponements = Postponement::whereHas('student.applicant',function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
+									   ->whereNotNull('postponed_by_user_id')->where('status', '!=', 'DECLINED')
+									   ->where('category','!=','EXAM')->where('study_academic_year_id',$ac_year->id)->get();				
+		$loan_beneficiary = LoanAllocation::whereHas('student.applicant',function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
+											->where('study_academic_year_id', $ac_year->id)->get();
+		$deceased = Student::whereHas('applicant',function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
+							 ->whereHas('studentshipStatus',function($query){$query->where('name', 'DECEASED');})->get();	
 
         $beneficiaries = array();
 		$loan_beneficiary_count = 0;
