@@ -40,6 +40,7 @@ use App\Utils\SystemLocation;
 use Carbon\Carbon;
 use App\Utils\DateMaker;
 use Validator, Auth, Hash;
+use App\Domain\Finance\Models\LoanAllocation;
 
 class ApplicantController extends Controller
 {
