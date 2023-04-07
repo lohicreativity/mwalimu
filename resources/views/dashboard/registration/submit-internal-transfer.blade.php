@@ -69,7 +69,6 @@
             </div>
             <!-- /.card -->
 
-
             @if($student)
               <div class="card">
               <div class="card-header">
@@ -158,6 +157,56 @@
                       {!! $transfers->render() !!}
                    </div> 
               </div>
+			  @else{
+				@if(count($transfers) != 0)
+				<div class="card">
+				  <div class="card-header">
+					<h3 class="card-title">Internal Transfers</h3>
+				  </div>
+				  <!-- /.card-header -->
+				  <div class="card-body">
+					   {!! Form::open(['url'=>'application/internal-transfers-submission','class'=>'ss-form-processing']) !!}
+					   <table class="table table-bordered" id="ss-transfers">
+						 <thead>
+						   <tr>
+							 <th>SN</th>
+							 <th>Name</th>
+							 <th>Previous Reg Number</th>
+							 <th>Previous Programme</th>
+							 <th>Current Reg Number</th>
+							 <th>Current Programme</th>
+							 <th>Date Transfered</th>
+							 <th>Status</th>
+						   </tr>
+						 </thead>
+						 <tbody>
+						  @foreach($transfers as $key=>$transfer)
+						   <tr>
+							 <td>{{ ($key+1) }} </td>
+							 <td>{{ $transfer->student->first_name }} {{ $transfer->student->middle_name }} {{ $transfer->student->surname }}</td>
+							 <td>{{ $transfer->student->applicant->user->username }}</td>
+							 <td>{{ $transfer->previousProgram->program->name }}</td>
+							 <td>{{ $transfer->student->registration_number }}</td>
+							 <td>{{ $transfer->currentProgram->program->name }}</td>
+							 <td>{{ date('Y-m-d',strtotime($transfer->created_at)) }}</td>
+							 <td>{{ $transfer->status }} {!! Form::input('hidden','transfer_'.$transfer->id,$transfer->id) !!}</td>
+						   </tr>
+						   @endforeach
+						   <tr>
+							 <td colspan="8"><button type="submit" class="btn btn-primary">Submit Transfers to Regulators</button></td>
+						   </tr>
+						   {!! Form::close() !!}
+						 </tbody>
+					   </table>
+
+					   <div class="ss-pagination-links">
+						  {!! $transfers->render() !!}
+					   </div> 
+				  </div>
+				</div>
+				@endif
+				  
+			  }
             </div>
             @endif
 

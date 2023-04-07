@@ -4218,7 +4218,7 @@ class ApplicationController extends Controller
            }
            // $selected_program[$applicant->id] = false;
            $subject_count = 0;
-              foreach($campus_programs as $program){
+				foreach($campus_programs as $program){
 
                   if(count($program->entryRequirements) == 0){
                     return redirect()->back()->with('error',$program->program->name.' does not have entry requirements');
@@ -4279,16 +4279,16 @@ class ApplicationController extends Controller
                        }
                    }
 
-                   // Diploma
-                   if(str_contains($award->name,'Diploma')){
-                       $o_level_pass_count = 0;
-					   $o_level_other_pass_count = 0;
-                       $o_level_must_pass_count = 0;
-                       $a_level_principle_pass_count = 0;
-                       $a_level_subsidiary_pass_count = 0;
-                       $diploma_major_pass_count = 0;
-                       foreach ($applicant->nectaResultDetails as $detailKey=>$detail) {
-                         if($detail->exam_id == 1){
+			    // Diploma
+			    if(str_contains($award->name,'Diploma')){
+				   $o_level_pass_count = 0;
+				   $o_level_other_pass_count = 0;
+				   $o_level_must_pass_count = 0;
+				   $a_level_principle_pass_count = 0;
+				   $a_level_subsidiary_pass_count = 0;
+				   $diploma_major_pass_count = 0;
+                    foreach ($applicant->nectaResultDetails as $detailKey=>$detail) {
+                        if($detail->exam_id == 1){
                            $other_must_subject_ready = false;
                            foreach ($detail->results as $key => $result) {
 
@@ -4326,10 +4326,10 @@ class ApplicationController extends Controller
                                 }else{
                                     $o_level_pass_count += 1;
                                 }
-						   }
-						   }						   
+							  }
+						    }						   
                            
-                         }elseif($detail->exam_id === 2){
+                        }elseif($detail->exam_id === 2){
                            $other_advance_must_subject_ready = false;
                            $other_advance_subsidiary_ready = false;
                            foreach ($detail->results as $key => $result) {
@@ -4392,11 +4392,10 @@ class ApplicationController extends Controller
                                  }else{
                                     $a_level_subsidiary_pass_count += 1;
                                  }
-							  }
-                           }
-                         }
-                         
-                       }
+								}
+							}
+						}
+                    }
  
 					   if(($o_level_pass_count + $o_level_other_pass_count) >= $program->entryRequirements[0]->pass_subjects && (($a_level_principle_pass_count > 0 
 						&& ($a_level_subsidiary_pass_count + $a_level_principle_pass_count >= 2)) || $a_level_principle_pass_count >= 2)){
@@ -4430,7 +4429,7 @@ class ApplicationController extends Controller
                        } elseif (($o_level_pass_count + $o_level_other_pass_count) >= $program->entryRequirements[0]->pass_subjects && $applicant->veta_status == 1) {
                            $programs[] = $program;
                        }
-                   }
+                }
                    
                    // Bachelor
                    if(str_contains($award->name,'Bachelor')){
@@ -4753,21 +4752,26 @@ class ApplicationController extends Controller
                         if(($o_level_pass_count+$o_level_other_pass_count) >= $program->entryRequirements[0]->pass_subjects && $out_pass_subjects_count >= 3 && $out_gpa >= $program->entryRequirements[0]->open_equivalent_gpa && $applicant->teacher_certificate_status === 1){
                               $programs[] = $program;
                         }
-               }
-            if($subject_count != 0){
-			   $app = Applicant::find($applicant->id);
-               $app->rank_points = $applicant->rank_points / $subject_count;
-			   $app->save();
-            }
-            
-        }
+					}
+					if($subject_count != 0){
+					   $app = Applicant::find($applicant->id);
+					   $app->rank_points = $applicant->rank_points / $subject_count;
+					   $app->save();
+					}   
+				}
 
-		if(count($programs) <= 1){
-			if($programs->id == $student-campus_program_id){
-				return redirect()->back()->with('error','The student does not qualify to any other programme');
-			}	
-		}
-					   }
+				if(count($programs) <= 1){
+					if($programs->id == $student-campus_program_id){
+						return redirect()->back()->with('error','The student does not qualify to any other programme');
+					}	
+				}
+					}
+        $student = Student::whereHas('applicant',function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
+		->whereHas('academicStatus',function($query){$query->where('name','FRESHER');})
+		->whereHas('studentshipStatus', function($query){$query->where('name', 'ACTIVE');})
+		->with(['applicant.selections'=>function($query){
+              $query->where('status','SELECTED');
+        },'applicant.selections.campusProgram.program'])->where('registration_number',$request->get('registration_number'))->first();		
 
         $data = [
             'student'=>$student,
