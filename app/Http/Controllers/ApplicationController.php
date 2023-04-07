@@ -2624,7 +2624,7 @@ class ApplicationController extends Controller
 				  $loan_allocation->student_id = $student->id;
 				  $loan_allocation->save();
 			}else{
-				return 2
+				return 2;
 				if($ac_year->nhif_enabled == 1){
 					if($applicant->insurance_check == 1 && $applicant->has_postponed != 1){
 						if($reg = Registration::where('student_id',$student->id)->where('study_academic_year_id',$ac_year->id)->where('semester_id',$semester->id)->first()){
@@ -2660,7 +2660,7 @@ class ApplicationController extends Controller
 				}
 			}			
 		}elseif(($fee_payment_percent != null || $fee_payment_percent != 0) && ($other_fee_payment_status != null || $other_fee_payment_status != null)){
-			return 3
+			return 3;
 /*         if($loan_allocation){
             if($loan_allocation->has_signed == 1 && $applicant->has_postponed != 1){
                  if($reg = Registration::where('student_id',$student->id)->where('study_academic_year_id',$ac_year->id)->where('semester_id',$semester->id)->first()){
