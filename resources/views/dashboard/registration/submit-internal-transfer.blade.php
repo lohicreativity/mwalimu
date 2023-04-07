@@ -157,7 +157,7 @@
                       {!! $transfers->render() !!}
                    </div> 
               </div>
-			  @else{
+			  @else
 				@if(count($transfers) != 0)
 				<div class="card">
 				  <div class="card-header">
@@ -205,8 +205,6 @@
 				  </div>
 				</div>
 				@endif
-				  
-			  }
             </div>
             @endif
 
