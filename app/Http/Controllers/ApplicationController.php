@@ -2583,10 +2583,11 @@ class ApplicationController extends Controller
 		// Added 07/04/2023
 		$invoices = Invoice::with('feeType')->where('payable_type','applicant')->where('payable_id',$applicant->id)->whereNotNull('gateway_payment_id')->get();
 		$fee_payment_percent = $other_fee_payment_status = 0;
-
+return $invoices;
 		if($invoices){
 			foreach($invoices as $invoice){
 				if(str_contains($invoice->feeType->name,'Tuition Fee')){
+					return 1;
 					$paid_amount = GatewayPayment::where('bill_id',$invoice->reference_no)->sum('paid_amount');
 					$fee_payment_percent = $paid_amount/$invoice->amount;         
 
@@ -2596,6 +2597,7 @@ class ApplicationController extends Controller
 				}
 
 				if(str_contains($invoice->feeType->name,'Miscellaneous')){
+					return 2;
 					$paid_amount = GatewayPayment::where('bill_id',$invoice->reference_no)->sum('paid_amount');
 					$other_fee_payment_status = $paid_amount === $invoice->amount? 1 : 0;
 
