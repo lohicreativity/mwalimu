@@ -2605,7 +2605,7 @@ class ApplicationController extends Controller
         
 
 
-		if(fee_payment_percent >= 0.6 && other_fee_payment_status === 1){
+		if($fee_payment_percent >= 0.6 && $other_fee_payment_status === 1){
 			if($loan_allocation){
 				if($loan_allocation->has_signed == 1 && $applicant->has_postponed != 1){
 					 if($reg = Registration::where('student_id',$student->id)->where('study_academic_year_id',$ac_year->id)->where('semester_id',$semester->id)->first()){
