@@ -14,6 +14,7 @@ use Auth;
 use App\Domain\Application\Models\InternalTransfer;
 use App\Domain\Finance\Models\LoanAllocation;
 use App\Domain\Registration\Models\Student;
+use App\Domain\Academic\Models\CampusProgram;
 
 class HomeController extends Controller
 {
@@ -82,6 +83,9 @@ class HomeController extends Controller
 			}			
 		}		
 
+return Postponement::whereHas('student.applicant',function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
+					->whereHas('student.campusProgram.programs', function($query) use($user){$query->where('department_id', $user->department_id);})
+					->whereNull('recommended_by_user_id')->get();
         $data = [
            'staff'=>$staff,
            'postponements_arc_count'=>Postponement::whereNull('postponed_by_user_id')->count(),

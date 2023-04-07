@@ -185,9 +185,9 @@
 							 <td>{{ ($key+1) }} </td>
 							 <td>{{ $transfer->student->first_name }} {{ $transfer->student->middle_name }} {{ $transfer->student->surname }}</td>
 							 <td>{{ $transfer->student->applicant->user->username }}</td>
-							 <td>{{ $transfer->previousProgram->program->name }}</td>
+							 <td>{{ $transfer->previousProgram->program->code }}</td>
 							 <td>{{ $transfer->student->registration_number }}</td>
-							 <td>{{ $transfer->currentProgram->program->name }}</td>
+							 <td>{{ $transfer->currentProgram->program->code }}</td>
 							 <td>{{ date('Y-m-d',strtotime($transfer->created_at)) }}</td>
 							 <td>{{ $transfer->status }} {!! Form::input('hidden','transfer_'.$transfer->id,$transfer->id) !!}</td>
 						   </tr>
