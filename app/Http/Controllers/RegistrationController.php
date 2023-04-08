@@ -351,7 +351,7 @@ class RegistrationController extends Controller
 			})->orWhereHas('registrations',function($query){
 			$query->where('status', 'UNREGISTERED')->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'));})->count()
 		 ];
-		 }else{
+		 }elseif(Auth::user()->hasRole('administrator') || Auth::user()->hasRole('arc')){
 			 $data = [
 		    'active_students'=>Registration::whereHas('student.studentshipStatus',function($query){
 				  $query->where('name','ACTIVE')->orWhere('name', 'RESUMED');
@@ -369,6 +369,27 @@ class RegistrationController extends Controller
 			})->orWhereHas('registrations',function($query){
 			$query->where('status', 'UNREGISTERED')->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'));})->count()
 		 ];
+		 }else{
+			 $data = [
+		    'active_students'=>Registration::whereHas('student.studentshipStatus',function($query){
+				  $query->where('name','ACTIVE')->orWhere('name', 'RESUMED');
+			})->whereHas('student.campusProgram', function($query) use($staff){$query->where('campus_id',$staff->campus_id);
+			})->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->where('status','REGISTERED')->count(),
+			'postponed_students'=>Student::whereHas('studentshipStatus',function($query){
+				  $query->where('name','POSTPONED');
+			})->count(),
+			'deceased_students'=>Registration::whereHas('student.studentshipStatus',function($query){
+				  $query->where('name','DECEASED');
+			})->whereHas('student.campusProgram', function($query) use($staff){$query->where('campus_id',$staff->campus_id);
+			})->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->count(),
+			'unregistered_students'=>Student::whereHas('studentshipStatus',function($query){
+				  $query->where('name','!=','GRADUANT');
+			})->whereHas('student.campusProgram', function($query) use($staff){$query->where('campus_id',$staff->campus_id);
+			})->whereDoesntHave('registrations',function($query){
+				  $query->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'));
+			})->orWhereHas('registrations',function($query){
+			$query->where('status', 'UNREGISTERED')->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'));})->count()
+		 ];			 
 		 }
 		 
 		 return view('dashboard.registration.statistics',$data)->withTitle('Registration Statistics');
