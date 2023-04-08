@@ -395,6 +395,7 @@ class ApplicantController extends Controller
  
 					if(str_contains($invoice->feeType->name,'Miscellaneous')){
 						$paid_amount = GatewayPayment::where('bill_id',$invoice->reference_no)->sum('paid_amount');
+						return $paid_amount;
 						$other_fee_payment_status = $paid_amount >= $invoice->amount? 1 : 0;
 
 					}			
