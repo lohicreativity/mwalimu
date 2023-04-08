@@ -42,6 +42,7 @@
             <div class="card">
               <div class="card-header">
                 <h3 class="card-title">Upload Loan Allocations</h3>
+				<a href="{{ url('finance/doanload-loan-allocation-template') }}" class="ss-right">Download Formatted CSV File?</a>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
