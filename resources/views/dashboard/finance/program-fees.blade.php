@@ -183,7 +183,11 @@
                     <th>Amount in USD</th>
                     <th>Academic Year</th>
                     <th>Year of Study</th>
-                    <th>Actions</th>
+					@if(Auth::user()->hasRole('administrator') || Auth::user()->hasRole('arc'))					
+						<th>Campus</th>
+					@else	
+						<th>Actions</th>
+					@endif
                   </tr>
                   </thead>
                   <tbody>
