@@ -207,7 +207,7 @@
 								@endif	
 							@endforeach	
 						</td>
-					@elseif(Auth::user()->hasRole('finance-officer'))											
+					@else											
                     <td>
                       @can('edit-programme-fee')
                       <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-edit-amount-{{ $fee->id }}">
