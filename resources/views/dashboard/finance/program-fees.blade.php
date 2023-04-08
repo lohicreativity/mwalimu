@@ -193,7 +193,7 @@
                   <tbody>
                   @foreach($fees as $fee)
                   <tr>
-                    <td>{{ $fee->campusProgram->program->name }}</td>
+                    <td>{{ $fee->campusProgram->program->code }}</td>
                     <td>{{ number_format($fee->amount_in_tzs,2) }}</td>
                     <td>{{ number_format($fee->amount_in_usd,2) }}</td>
                     <td>{{ $fee->studyAcademicYear->academicYear->year }}</td>
@@ -357,9 +357,6 @@
                   
                   </tbody>
                 </table>
-                <div class="ss-pagination-links">
-                {!! $fees->render() !!}
-                </div>
               </div>
               <!-- /.card-body -->
             </div>
