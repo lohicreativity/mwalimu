@@ -198,7 +198,17 @@
                     <td>{{ number_format($fee->amount_in_usd,2) }}</td>
                     <td>{{ $fee->studyAcademicYear->academicYear->year }}</td>
                     <td>{{ $fee->year_of_study }}</td>
-									
+					@if(Auth::user()->hasRole('administrator') || Auth::user()->hasRole('arc'))					
+						<td>
+							@foreach($campuses as $campus)
+								@if($fee->campusProgram->campus_id == $campus->id)
+									{{ $campus->name }}
+									@break
+								@endif	
+							@endforeach	
+						</td>
+					
+					@endif					
                     <td>
                       @can('edit-programme-fee')
                       <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-edit-amount-{{ $fee->id }}">
@@ -342,7 +352,6 @@
                               Fee Structure
                        </a> -->
                     </td>
-
                   </tr>
                   @endforeach
                   
