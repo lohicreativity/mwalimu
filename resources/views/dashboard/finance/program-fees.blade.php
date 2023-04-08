@@ -199,14 +199,7 @@
                     <td>{{ $fee->studyAcademicYear->academicYear->year }}</td>
                     <td>{{ $fee->year_of_study }}</td>
 					@if(Auth::user()->hasRole('administrator') || Auth::user()->hasRole('arc'))					
-						<td>
-							@foeach($campuses as $campus)
-								@if($fee->campusProgram->campus_id == $campus->id)
-									{{ $campus->name }}
-									@break
-								@endif	
-							@endforeach	
-						</td>
+
 					@elseif(Auth::user()->hasRole('finance-officer'))	
 						<td>
 						  @can('edit-programme-fee')
