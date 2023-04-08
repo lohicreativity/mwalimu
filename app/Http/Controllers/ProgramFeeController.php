@@ -36,15 +36,29 @@ class ProgramFeeController extends Controller
       if(!$study_ac_yr){
             return redirect()->back()->with('error','No corresponding academic year');
       }
-	  
+	  if(Auth::user()->hasRole('administrator') || Auth::user()->hasRole('arc')){
+    	$data = [
+           'fees'=>$request->get('query')? ProgramFee::whereHas('studyAcademicYear.academicYear',function($query) use($request){
+                $query->where('year','LIKE','%'.$request->get('query').'%');
+           })->with('campusProgram.program')->where('study_academic_year_id',$request->get('study_academic_year_id'))->latest()->get() : ProgramFee::with('campusProgram.program')->where('study_academic_year_id',$request->get('study_academic_year_id'))->latest()->paginate(20),
+           'campus_programs'=>CampusProgram::with('program')->get(),
+           'fee_items'=>FeeItem::all(),
+           'ac_year'=>$study_ac_yr,
+           'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
+           'semesters'=>Semester::all(),
+           'campuses'=>Campus::all(),
+           'staff'=>$staff,
+           'request'=>$request
+    	];		  
+	  }else{	  
     	$data = [
            'fees'=>$request->get('query')? ProgramFee::wherehas('campusProgram',function($query) use($request){
                 $query->where('campus_id',$request->get('campus_id'));
            })->whereHas('studyAcademicYear.academicYear',function($query) use($request){
                 $query->where('year','LIKE','%'.$request->get('query').'%');
-           })->with('campusProgram.program')->where('study_academic_year_id',$request->get('study_academic_year_id'))->latest()->paginate(20) : ProgramFee::wherehas('campusProgram',function($query) use($request){
+           })->with('campusProgram.program')->where('study_academic_year_id',$request->get('study_academic_year_id'))->latest()->get() : ProgramFee::wherehas('campusProgram',function($query) use($request){
                 $query->where('campus_id',$request->get('campus_id'));
-           })->with('campusProgram.program')->where('study_academic_year_id',$request->get('study_academic_year_id'))->latest()->paginate(20),
+           })->with('campusProgram.program')->where('study_academic_year_id',$request->get('study_academic_year_id'))->latest()->get(),
            'campus_programs'=>CampusProgram::with('program')->where('campus_id',$request->get('campus_id'))->get(),
            'fee_items'=>FeeItem::all(),
            'ac_year'=>$study_ac_yr,
@@ -54,7 +68,7 @@ class ProgramFeeController extends Controller
            'staff'=>$staff,
            'request'=>$request
     	];
-	  
+	  }
     	return view('dashboard.finance.program-fees',$data)->withTitle('Program Fees');
     }
 
