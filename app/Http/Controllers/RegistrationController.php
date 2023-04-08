@@ -331,7 +331,7 @@ class RegistrationController extends Controller
 				  $query->where('id',$staff->department_id);
 			})->whereHas('student.studentshipStatus',function($query){
 				  $query->where('name','ACTIVE');
-			})->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->count(),
+			})->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->where('status','REGISTERED')->count(),
 			'postponed_students'=>Student::whereHas('campusProgram.program.departments',function($query) use($staff){
 				  $query->where('id',$staff->department_id);
 			})->whereHas('studentshipStatus',function($query){
@@ -354,8 +354,8 @@ class RegistrationController extends Controller
 		 }else{
 			 $data = [
 		    'active_students'=>Registration::whereHas('student.studentshipStatus',function($query){
-				  $query->where('name','ACTIVE');
-			})->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->count(),
+				  $query->where('name','ACTIVE')->orWhere('name', 'RESUMED');
+			})->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->where('status','REGISTERED')->count(),
 			'postponed_students'=>Student::whereHas('studentshipStatus',function($query){
 				  $query->where('name','POSTPONED');
 			})->count(),
@@ -366,7 +366,8 @@ class RegistrationController extends Controller
 				  $query->where('name','!=','GRADUANT');
 			})->whereDoesntHave('registrations',function($query){
 				  $query->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'));
-			})->count()
+			})->orWhereHas('registrations',function($query){
+			$query->where('status', 'UNREGISTERED')->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'));})->count()
 		 ];
 		 }
 		 
