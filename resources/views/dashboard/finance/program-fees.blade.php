@@ -175,16 +175,7 @@
               </div>
               <!-- /.card-header -->
               <div class="card-body">
-                {!! Form::open(['url'=>'finance/program-fees','method'=>'GET']) !!}
-                <div class="input-group ss-stretch">
-                 <input type="text" name="query" class="form-control" placeholder="Search for academic year">
-                 <span class="input-group-btn">
-                   <button class="btn btn-default" type="submit"><span class="fa fa-search"></span></button>
-                 </span>
-                </div>
-                {!! Form::close() !!}
-
-                <table id="example2" class="table table-bordered table-hover ss-margin-top">
+                <table id="example2" class="table table-bordered table-hover ss-margin-top ss-paginated-table">
                   <thead>
                   <tr>
                     <th>Programme</th>
@@ -192,7 +183,11 @@
                     <th>Amount in USD</th>
                     <th>Academic Year</th>
                     <th>Year of Study</th>
-                    <th>Actions</th>
+					@if(Auth::user()->hasRole('administrator') || Auth::user()->hasRole('arc'))					
+						<th>Campus</th>
+					@else	
+						<th>Actions</th>
+					@endif
                   </tr>
                   </thead>
                   <tbody>
@@ -203,6 +198,16 @@
                     <td>{{ number_format($fee->amount_in_usd,2) }}</td>
                     <td>{{ $fee->studyAcademicYear->academicYear->year }}</td>
                     <td>{{ $fee->year_of_study }}</td>
+					@if(Auth::user()->hasRole('administrator') || Auth::user()->hasRole('arc'))					
+						<td>
+							@foreach($campuses as $campus)
+								@if($fee->campusProgram->campus_id == $campus->id)
+									{{ $campus->name }}
+									@break
+								@endif	
+							@endforeach	
+						</td>
+					@elseif(Auth::user()->hasRole('finance-officer'))											
                     <td>
                       @can('edit-programme-fee')
                       <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-edit-amount-{{ $fee->id }}">
@@ -346,6 +351,7 @@
                               Fee Structure
                        </a> -->
                     </td>
+					@endif	
                   </tr>
                   @endforeach
                   
