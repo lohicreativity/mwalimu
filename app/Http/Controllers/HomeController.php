@@ -115,6 +115,8 @@ class HomeController extends Controller
 									->where('status','SUBMITTED')->latest()->first(),
 		   'loan_beneficiary_count'=>$loan_beneficiary_count
         ];
+		return $data->postponements_hod_count.' '.$data->special_exams_hod_count;
+		
     	return view('dashboard',$data)->withTitle('Home');
     }
 }
