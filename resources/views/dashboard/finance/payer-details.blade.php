@@ -184,7 +184,7 @@
 			  <!-- /.modal-content -->
 			</div> 
 		  <!-- /.modal -->
-		@if($payer && $category == 'applicant' && $category != 'student')
+		@elseif($payer && $category == 'applicant' && $category != 'student')
 			<div style="margin-top:20px;" data-toggle="modal">
 			  <div class="modal-content">
 				<div class="modal-header">
