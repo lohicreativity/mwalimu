@@ -49,7 +49,7 @@
                  @php
                      $identifier = [
                          'class'=>'form-control',
-                         'placeholder'=>'Surname or registration number',
+                         'placeholder'=>'index number, registration number, or surname',
                          'required'=>true
                      ];
                  @endphp 
