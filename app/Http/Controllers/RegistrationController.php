@@ -394,6 +394,7 @@ class RegistrationController extends Controller
 			  ->whereHas('student.studentshipStatus',function($query){$query->where('name','ACTIVE')->orWhere('name','RESUMED');})
 			  ->with(['student.applicant.nextOfKin','student.applicant.nextOfKin.country','student.applicant.nextOfKin.region','student.applicant.nextOfKin.ward','student.applicant.nacteResultDetails','student.applicant.nectaResultDetails','student.campusProgram.program',
 			          'student.applicant.disabilityStatus','student.applicant.country','student.applicant.region','student.applicant.ward'])
+			  ->where('status','REGISTERED')
 			  ->where('study_academic_year_id', $request->get('study_academic_year_id'))
 			  ->where('semester_id',session('active_semester_id'))->get();
 			}else{
@@ -402,6 +403,7 @@ class RegistrationController extends Controller
 			  ->whereHas('student.studentshipStatus',function($query){$query->where('name','ACTIVE')->orWhere('name','RESUMED');})
 			  ->with(['student.applicant.nextOfKin','student.applicant.nextOfKin.country','student.applicant.nextOfKin.region','student.applicant.nextOfKin.ward','student.applicant.nacteResultDetails','student.applicant.nectaResultDetails','student.campusProgram.program',
 			          'student.applicant.disabilityStatus','student.applicant.country','student.applicant.region','student.applicant.ward'])
+			  ->where('status','REGISTERED')
 			  ->where('study_academic_year_id', $request->get('study_academic_year_id'))
 			  ->where('semester_id',session('active_semester_id'))->get();			  
 			}
