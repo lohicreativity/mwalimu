@@ -185,7 +185,7 @@
                     <th>Year of Study</th>
 					@if(Auth::user()->hasRole('administrator') || Auth::user()->hasRole('arc'))					
 						<th>Campus</th>
-					@else	
+					@elseif(Auth::user()->hasRole('finance-officer'))	
 						<th>Actions</th>
 					@endif
                   </tr>
@@ -207,7 +207,7 @@
 								@endif	
 							@endforeach	
 						</td>
-					@else					
+					@elseif(Auth::user()->hasRole('finance-officer'))						
                     <td>
                       @can('edit-programme-fee')
                       <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-edit-amount-{{ $fee->id }}">
