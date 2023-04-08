@@ -370,6 +370,7 @@ class RegistrationController extends Controller
 			$query->where('status', 'UNREGISTERED')->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'));})->count()
 		 ];
 		 }else{
+			 return 1;
 			 $data = [
 		    'active_students'=>Registration::whereHas('student.studentshipStatus',function($query){
 				  $query->where('name','ACTIVE')->orWhere('name', 'RESUMED');
