@@ -2568,11 +2568,11 @@ class ApplicationController extends Controller
 		
 		$user = User::find($applicant->user_id);
         // $user->username = $student->registration_number;
-        //$user->status = $student->email;
+        // $user->status = $student->email;
         // $password = strtoupper(Util::randString(8));
         // $user->password = Hash::make($password);
         // $user->must_update_password = 1;
-        //$user->save();
+        // $user->save();
 
         // $role = Role::where('name','student')->first();
         // $user->roles()->sync([$role->id]);
@@ -2601,63 +2601,80 @@ class ApplicationController extends Controller
 				}			
 			}			
 		}
-
-		if($fee_payment_percent >= 0.6 && $other_fee_payment_status === 1){
-			if($loan_allocation){
-				if($loan_allocation->has_signed == 1 && $applicant->has_postponed != 1){
-					 if($reg = Registration::where('student_id',$student->id)->where('study_academic_year_id',$ac_year->id)->where('semester_id',$semester->id)->first()){
-						$registration = $reg;
-					  }else{
-						$registration = new Registration;
-					  }
-					  $registration->study_academic_year_id = $ac_year->id;
-					  $registration->semester_id = $semester->id;
-					  $registration->student_id = $student->id;
-					  $registration->year_of_study = 1;
-					  $registration->registration_date = date('Y-m-d');
-					  $registration->registered_by_staff_id = $staff->id;
-					  $registration->status = 'REGISTERED';
-					  $registration->save();
-					  }
-				  $loan_allocation->registration_number = $student->registration_number;
-				  $loan_allocation->student_id = $student->id;
-				  $loan_allocation->save();
-			}else{
-				if($ac_year->nhif_enabled == 1){
-					if($applicant->insurance_check == 1 && $applicant->has_postponed != 1){
-						if($reg = Registration::where('student_id',$student->id)->where('study_academic_year_id',$ac_year->id)->where('semester_id',$semester->id)->first()){
-						  $registration = $reg;
-						}else{
-						  $registration = new Registration;
-						}
-						$registration->study_academic_year_id = $ac_year->id;
-						$registration->semester_id = $semester->id;
-						$registration->student_id = $student->id;
-						$registration->year_of_study = 1;
-						$registration->registration_date = date('Y-m-d');
-						$registration->registered_by_staff_id = $staff->id;
-						$registration->status = 'REGISTERED';
-						$registration->save();
-					}
-				}else{
-					if($applicant->has_postponed != 1){
-						if($reg = Registration::where('student_id',$student->id)->where('study_academic_year_id',$ac_year->id)->where('semester_id',$semester->id)->first()){
-						  $registration = $reg;
-						}else{
-						  $registration = new Registration;
-						}
-						$registration->study_academic_year_id = $ac_year->id;
-						$registration->semester_id = $semester->id;
-						$registration->student_id = $student->id;
-						$registration->year_of_study = 1;
-						$registration->registration_date = date('Y-m-d');
-						$registration->registered_by_staff_id = $staff->id;
-						$registration->status = 'REGISTERED';
-						$registration->save();
-					}
-				}
-			}			
+		$payment_status = false;
+		if($fee_payment_percent >= 0.6 && $other_fee_payment_status == 1){
+			$payment_status = true;
 		}
+		if($loan_allocation){
+			if($applicant->has_postponed != 1){
+				if($ac_year->nhif_enabled == 1){
+					if($reg = Registration::where('student_id',$student->id)->where('study_academic_year_id',$ac_year->id)->where('semester_id',$semester->id)->first()){
+						$registration = $reg;
+					}else{
+						$registration = new Registration;
+					}
+					$registration->study_academic_year_id = $ac_year->id;
+					$registration->semester_id = $semester->id;
+					$registration->student_id = $student->id;
+					$registration->year_of_study = 1;
+					$registration->registration_date = date('Y-m-d');
+					$registration->registered_by_staff_id = $staff->id;
+					$registration->status = $payment_status && $loan_allocation->has_signed == 1 && $applicant->insurance_check == 1? 'REGISTERED' : 'UNREGISTERED';
+					$registration->save();
+				}else{
+					if($reg = Registration::where('student_id',$student->id)->where('study_academic_year_id',$ac_year->id)->where('semester_id',$semester->id)->first()){
+						$registration = $reg;
+					}else{
+						$registration = new Registration;
+					}
+					$registration->study_academic_year_id = $ac_year->id;
+					$registration->semester_id = $semester->id;
+					$registration->student_id = $student->id;
+					$registration->year_of_study = 1;
+					$registration->registration_date = date('Y-m-d');
+					$registration->registered_by_staff_id = $staff->id;
+					$registration->status = $payment_status && $loan_allocation->has_signed == 1? 'REGISTERED' : 'UNREGISTERED';
+					$registration->save();					
+				}
+			}
+		    $loan_allocation->registration_number = $student->registration_number;
+		    $loan_allocation->student_id = $student->id;
+		    $loan_allocation->save();
+		}else{
+			if($applicant->has_postponed != 1){
+				if($ac_year->nhif_enabled == 1){
+					if($reg = Registration::where('student_id',$student->id)->where('study_academic_year_id',$ac_year->id)->where('semester_id',$semester->id)->first()){
+					  $registration = $reg;
+					}else{
+					  $registration = new Registration;
+					}
+					$registration->study_academic_year_id = $ac_year->id;
+					$registration->semester_id = $semester->id;
+					$registration->student_id = $student->id;
+					$registration->year_of_study = 1;
+					$registration->registration_date = date('Y-m-d');
+					$registration->registered_by_staff_id = $staff->id;
+					$registration->status = $payment_status && $applicant->insurance_check == 1? 'REGISTERED' : 'UNREGISTERED';
+					$registration->save();
+				}else{
+					if($reg = Registration::where('student_id',$student->id)->where('study_academic_year_id',$ac_year->id)->where('semester_id',$semester->id)->first()){
+					  $registration = $reg;
+					}else{
+					  $registration = new Registration;
+					}
+					$registration->study_academic_year_id = $ac_year->id;
+					$registration->semester_id = $semester->id;
+					$registration->student_id = $student->id;
+					$registration->year_of_study = 1;
+					$registration->registration_date = date('Y-m-d');
+					$registration->registered_by_staff_id = $staff->id;
+					$registration->status = $payment_status? 'REGISTERED' : 'UNREGISTERED';
+					$registration->save();
+				}			
+			}
+
+		}			
+
 /*         if($loan_allocation){
             if($loan_allocation->has_signed == 1 && $applicant->has_postponed != 1){
                  if($reg = Registration::where('student_id',$student->id)->where('study_academic_year_id',$ac_year->id)->where('semester_id',$semester->id)->first()){

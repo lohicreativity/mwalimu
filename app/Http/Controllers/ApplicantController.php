@@ -41,6 +41,7 @@ use Carbon\Carbon;
 use App\Utils\DateMaker;
 use Validator, Auth, Hash;
 use App\Domain\Finance\Models\LoanAllocation;
+use App\Domain\Registration\Models\Registration;
 
 class ApplicantController extends Controller
 {
@@ -378,32 +379,34 @@ class ApplicantController extends Controller
 		if($student){
 			$invoices = Invoice::with('feeType')->where('payable_type','student')->where('payable_id',$student->id)->whereNotNull('gateway_payment_id')
 								->where('applicable_id',$study_academic_year->id)->get();			
-		}
-		if($invoices){
-			foreach($invoices as $invoice){
-				if(str_contains($invoice->feeType->name,'Tuition Fee')){
-					$paid_amount = GatewayPayment::where('bill_id',$invoice->reference_no)->sum('paid_amount');
-					$fee_payment_percent = $paid_amount/$invoice->amount;         
+		
+			if($invoices){
+				$fee_payment_percent = $other_fee_payment_status = 0;
+				foreach($invoices as $invoice){
+					if(str_contains($invoice->feeType->name,'Tuition Fee')){
+						$paid_amount = GatewayPayment::where('bill_id',$invoice->reference_no)->sum('paid_amount');
+						$fee_payment_percent = $paid_amount/$invoice->amount;         
 
-					if($loan_allocation){
-					   $fee_payment_percent = ($paid_amount+$loan_allocation->tuition_fee)/$invoice->amount;
+						if($loan_allocation){
+						   $fee_payment_percent = ($paid_amount+$loan_allocation->tuition_fee)/$invoice->amount;
+						}
 					}
+
+					if(str_contains($invoice->feeType->name,'Miscellaneous')){
+						$paid_amount = GatewayPayment::where('bill_id',$invoice->reference_no)->sum('paid_amount');
+						$other_fee_payment_status = $paid_amount >= $invoice->amount? 1 : 0;
+
+					}			
 				}
-
-				if(str_contains($invoice->feeType->name,'Miscellaneous')){
-					$paid_amount = GatewayPayment::where('bill_id',$invoice->reference_no)->sum('paid_amount');
-					$other_fee_payment_status = $paid_amount >= $invoice->amount? 1 : 0;
-
-				}			
-			}			
+				if($fee_payment_percent >= 0.6 && $other_fee_payment_status == 1){
+					$registration = Registration::where('student_id',$student->id)->where('status','UNREGISTERED')->where('study_academic_year',$study_academic_year->id)->where('semester_id', 1)->first();
+					$registration->status = 'REGISTERED';
+					$registration->save();
+					
+				}							
+			}
 		}
-		$payment_status = false;
-		if($fee_payment_percent >= 0.6 && $other_fee_payment_status == 1){
-			$payment_status = true;
-		}
-		
 
-		
         $data = [
            'applicant'=>$applicant,
            'student' => $payment_status? $student : [],
