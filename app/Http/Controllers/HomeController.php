@@ -90,7 +90,6 @@ class HomeController extends Controller
            'special_exams_arc_count'=>SpecialExamRequest::whereNull('approved_by_user_id')->count(),
            'postponements_hod_count'=>Postponement::whereHas('student.applicant',function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
 									->whereHas('student.campusProgram.program.departments', function($query) use($staff){$query->where('department_id', $staff->department_id);})
-									->whereHas('student.campusProgram', function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
 									->whereNull('recommended_by_user_id')->count(),
            'special_exams_hod_count'=>SpecialExamRequest::whereHas('student.applicant',function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
 									->whereHas('student.campusProgram.program.departments', function($query) use($staff){$query->where('department_id', $staff->department_id);})						
