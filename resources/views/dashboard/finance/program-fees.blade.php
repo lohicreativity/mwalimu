@@ -358,7 +358,7 @@
                   </tbody>
                 </table>
                 <div class="ss-pagination-links">
-                {!! $fees->render() !!}
+
                 </div>
               </div>
               <!-- /.card-body -->
