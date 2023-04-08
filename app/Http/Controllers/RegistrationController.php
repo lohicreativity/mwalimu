@@ -370,7 +370,6 @@ class RegistrationController extends Controller
 			$query->where('status', 'UNREGISTERED')->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'));})->count()
 		 ];
 		 }else{
-			 return 1;
 			 $data = [
 		    'active_students'=>Registration::whereHas('student.studentshipStatus',function($query){
 				  $query->where('name','ACTIVE')->orWhere('name', 'RESUMED');
@@ -378,14 +377,14 @@ class RegistrationController extends Controller
 			})->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->where('status','REGISTERED')->count(),
 			'postponed_students'=>Student::whereHas('studentshipStatus',function($query){
 				  $query->where('name','POSTPONED');
-			})->count(),
+			})->whereHas('campusProgram', function($query) use($staff){$query->where('campus_id',$staff->campus_id);})->count(),
 			'deceased_students'=>Registration::whereHas('student.studentshipStatus',function($query){
 				  $query->where('name','DECEASED');
 			})->whereHas('student.campusProgram', function($query) use($staff){$query->where('campus_id',$staff->campus_id);
 			})->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'))->count(),
 			'unregistered_students'=>Student::whereHas('studentshipStatus',function($query){
 				  $query->where('name','!=','GRADUANT');
-			})->whereHas('student.campusProgram', function($query) use($staff){$query->where('campus_id',$staff->campus_id);
+			})->whereHas('campusProgram', function($query) use($staff){$query->where('campus_id',$staff->campus_id);
 			})->whereDoesntHave('registrations',function($query){
 				  $query->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'));
 			})->orWhereHas('registrations',function($query){
