@@ -375,6 +375,7 @@ class ApplicantController extends Controller
 				
 		$student = Student::where('applicant_id', $applicant->id)->first();
 		$loan_allocation = LoanAllocation::where('index_number',$applicant->index_number)->where('study_academic_year_id',$study_academic_year->id)->first();
+		$payment_status = false;
 		$invoices = null;
 		if($student){
 			$invoices = Invoice::with('feeType')->where('payable_type','student')->where('payable_id',$student->id)->whereNotNull('gateway_payment_id')
@@ -399,6 +400,7 @@ class ApplicantController extends Controller
 					}			
 				}
 				if($fee_payment_percent >= 0.6 && $other_fee_payment_status == 1){
+					$payment_status = true;
 					$registration = Registration::where('student_id',$student->id)->where('status','UNREGISTERED')->where('study_academic_year',$study_academic_year->id)->where('semester_id', 1)->first();
 					$registration->status = 'REGISTERED';
 					$registration->save();
