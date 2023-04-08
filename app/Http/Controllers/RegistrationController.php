@@ -348,7 +348,8 @@ class RegistrationController extends Controller
 				  $query->where('name','!=','GRADUANT');
 			})->whereDoesntHave('registrations',function($query){
 				  $query->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'));
-			})->count()
+			})->orWhereHas('registrations',function($query){
+			$query->where('status', 'UNREGISTERED')->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'));})->count()
 		 ];
 		 }else{
 			 $data = [
