@@ -209,7 +209,7 @@
 
 							<div class="col-md-9 col-sm-9">
 								<h2>{{ $payer->first_name }} {{ $payer->middle_name }} {{ $payer->surname }}</h2>
-								<h6>{{ $payer->index_number }} &nbsp; | &nbsp; {{ $payer->programLevel->name}} &nbsp; | &nbsp; {{ $payer->intake->name }} Intake &nbsp; | &nbsp; 
+								<h6>{{ $payer->index_number }} &nbsp; | &nbsp; {{ $payer->programLevel->code}} &nbsp; | &nbsp; {{ $payer->intake->name }} Intake &nbsp; | &nbsp; 
 									<span style="color:red">@if($payer->submission_complete_status == 1) @if($payer->status == null) Submitted @else {{ $payer->status }} @endif @else In progress @endif</span></h6>
 								<hr>
 								<ul style="list-style-type: none; inline">
