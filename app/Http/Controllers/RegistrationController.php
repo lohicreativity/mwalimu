@@ -578,6 +578,8 @@ class RegistrationController extends Controller
 				  $query->where('name','!=','FAIL&DISCO');
 			})->whereDoesntHave('registrations',function($query){
 				  $query->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'));
+			})->orWhereHas('registrations',function($query){
+				  $query->where('status', 'UNREGISTERED')->where('study_academic_year_id',session('active_academic_year_id'))->where('semester_id',session('active_semester_id'));
 			})->with(['campusProgram.program','academicStatus'])->get(),
 			'semester'=>Semester::find(session('active_semester_id'))
 		 ];
