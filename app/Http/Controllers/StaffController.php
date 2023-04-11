@@ -341,7 +341,7 @@ class StaffController extends Controller
 			'student'=>$request->get('registration_number')? $student : [],
 			'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
 			'fee_types'=>FeeType::all(),
-			'invoices'=>get('registration_number')? Invoice::where('payable_id',$student->id)->where('payable_type','student')->latest()->first() :[]
+			'invoices'=>$request->get('registration_number')? Invoice::where('payable_id',$student->id)->where('payable_type','student')->latest()->first() :[]
 		];
 			
         return view('dashboard.finance.create-control-number',$data)->withTItle('Create Control Number');
