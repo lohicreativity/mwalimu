@@ -29,6 +29,7 @@ use App\Domain\Finance\Models\Invoice;
 use App\Domain\Finance\Models\GatewayPayment;
 use App\Domain\Finance\Models\FeeType;
 use App\Domain\Finance\Models\FeeItem;
+use App\Domain\Academic\Models\StudyAcademicYear;
 
 class StaffController extends Controller
 {
@@ -300,7 +301,7 @@ class StaffController extends Controller
 		
 			$data = [
 				'student'=>$student,
-				'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
+				'study_academic_years'=>StudyAcademicYear::with('academicYear')->all(),
 				'fee_types'=>FeeType::all(),
 				'invoices'=>Invoice::whereHas('feeAmout', function($query){$query->where('study_academic_year_id',$request->study_academic_year_id);})
 				->with(['applicable','feeType'])->where('payable_id',$student->id)
@@ -309,7 +310,7 @@ class StaffController extends Controller
 		}else{
 			$data = [
 				'student'=>[],
-				'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
+				'study_academic_years'=>StudyAcademicYear::with('academicYear')->all(),
 				'fee_types'=>FeeType::all(),
 				'invoices'=>[]
 			];
