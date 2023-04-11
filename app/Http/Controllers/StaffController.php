@@ -30,6 +30,7 @@ use App\Domain\Finance\Models\GatewayPayment;
 use App\Domain\Finance\Models\FeeType;
 use App\Domain\Finance\Models\FeeItem;
 use App\Domain\Academic\Models\StudyAcademicYear;
+use Illuminate\Support\Facades\Http;
 
 class StaffController extends Controller
 {
