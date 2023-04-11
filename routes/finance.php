@@ -27,6 +27,7 @@ use App\Http\Controllers\StaffController;
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 	Route::get('payer-details', [StaffController::class,'viewPayerDetails']);
+	Route::get('get-control-number', [StaffController::class,'requestControlNumber']);
 	
 	Route::get('fee-types', [FeeTypeController::class,'index'])->name('fee-types');
 	Route::post('fee-type/store', [FeeTypeController::class,'store']);
