@@ -272,12 +272,12 @@ class StaffController extends Controller
 						  ->where('study_academic_year_id',$request->study_academic_year_id)->first();
 						  
 			if(Auth::user()->hasRole('admission-officer') || Auth::user()->hasRole('arc')) {
-				$student = Student::with('applicant')->where('registration_number', $request->registration_number);
+				$student = Student::with('applicant')->where('registration_number', $request->registration_number)->first();
 			}else{
 				$student = Student::with('applicant')->whereHas('applicant', function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
-						   ->where('registration_number', $request->registration_number);
+						   ->where('registration_number', $request->registration_number)->first();
 			}
-return $student;
+
 			if($student){
 				$invoice = new Invoice;
 				$invoice->reference_no = 'MNMA-'.time();
