@@ -103,6 +103,7 @@
                     <th>Registration#</th>
                     <th>Names</th>
                     <th>Gender</th>
+                    <th>Phone</th>					
                     <th>Status</th>
                     <th>Payment Item</th>
                     <th>Amount</th>
@@ -115,6 +116,7 @@
                     <td>{{ $student->registration_number }}</td>
                     <td>{{ $student->first_name }} {{ $student->middle_name }} {{ $student->surname }}</td>
                     <td>{{ $student->gender }}</td>
+                    <td>{{ $student->phone }}</td>					
                     <td>{{ $student->studentShipStatus->name }}</td>
                     <td>{{ $invoice->feeType->name }}</td>
                     <td>{{ $invoice->currency }} {{$invoice->actual_amount }}</td>
