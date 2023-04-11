@@ -90,7 +90,7 @@
             <!-- /.card -->
             @endcan
 
-            @if(count($amounts) != 0)
+            @if($amounts)
             <div class="card">
               <div class="card-header">
                 <h3 class="card-title">{{ __('List of Control Number Requests') }}</h3><br>
@@ -115,7 +115,7 @@
                   </tbody>
                 </table>
                 <div class="ss-pagination-links">
-                {!! $amounts->render() !!}
+
                 </div>
               </div>
               <!-- /.card-body -->
