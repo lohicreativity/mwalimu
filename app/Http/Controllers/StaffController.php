@@ -283,10 +283,15 @@ class StaffController extends Controller
 		if($student){
 			$email = $student->email? $student->email : 'admission@mnma.ac.tz';
 			$fee_type = Invoice::where('payable_id',$student->id)->where('payable_type','student')->where('fee_type_id',$request->fee_type_id)->latest()->first();
-			$now = strtotime(date('Y-m-d'));
-			$last_invoice = strtotime($fee_type->created_at);
-			$datediff = $last_invoice - $now;
-		return $datediff;
+			$datediff = 1;
+			if($fee_type){
+				$now = strtotime(date('Y-m-d'));
+				$last_invoice = strtotime($fee_type->created_at);
+				//$validity = strtotime($fee_amount->duration
+				$datediff = $last_invoice - $now;
+				return $datediff/(60 * 60 * 24);				
+			}	
+
 			if($datediff){
 				
 			}else{
