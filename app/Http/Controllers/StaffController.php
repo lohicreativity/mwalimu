@@ -17,7 +17,7 @@ use App\Domain\HumanResources\Actions\StaffAction;
 use App\Models\Role;
 use App\Models\User;
 use App\Utils\Util;
-use Validator, Auth;
+use Validator, Auth, DB;
 use App\Domain\Registration\Models\Student;
 use App\Domain\Application\Models\Applicant;
 use App\Domain\Academic\Models\CampusProgram;
