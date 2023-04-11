@@ -113,7 +113,7 @@
                   <tbody>
                   <tr>
                     <td>{{ $student->registration_number }}</td>
-                    <td>{{ $student->first_name }} {{ $student->middle_name }} {{ $student->surname }} }}</td>
+                    <td>{{ $student->first_name }} {{ $student->middle_name }} {{ $student->surname }}</td>
                     <td>{{ $student->gender }}</td>
                     <td>{{ $student->studentShipStatus->name }}</td>
                     <td>{{ $invoice->feeType->name }}</td>
