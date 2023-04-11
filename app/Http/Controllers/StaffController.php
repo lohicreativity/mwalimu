@@ -269,8 +269,8 @@ class StaffController extends Controller
         $staff = User::find(Auth::user()->id)->staff;
 
 		if(!empty($request->registration_number)){
-			$fee_amount = FeeAmount::whereHas('feeItem.feeType', function($query) use($request){$query->where('id',$request->fee_type_id);})
-						  ->where('study_academic_year_id',$request->study_academic_year_id)->first();
+/* 			$fee_amount = FeeAmount::whereHas('feeItem.feeType', function($query) use($request){$query->where('id',$request->fee_type_id);})
+						  ->where('study_academic_year_id',$request->study_academic_year_id)->first(); */
 						  
 			if(Auth::user()->hasRole('admission-officer') || Auth::user()->hasRole('arc')) {
 				$student = Student::with('applicant')->where('registration_number', $request->registration_number)->first();
@@ -279,7 +279,7 @@ class StaffController extends Controller
 						   ->where('registration_number', $request->registration_number)->first();
 			}
 
-			if($student){
+/* 			if($student){
 				$invoice = new Invoice;
 				$invoice->reference_no = 'MNMA-'.time();
 				if(str_contains($student->applicant->nationality,'Tanzania')){
@@ -297,7 +297,7 @@ class StaffController extends Controller
 				$invoice->applicable_type = 'cademic_year';
 				$invoice->fee_type_id = $fee_amount->feeItem->fee_type_id;
 				$invoice->save();	
-			}
+			} */
 		
 			$data = [
 				'student'=>$student,
