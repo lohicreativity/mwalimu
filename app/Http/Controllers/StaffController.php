@@ -295,7 +295,7 @@ class StaffController extends Controller
 			   $invoice->actual_amount = $invoice->amount;
 			   $invoice->currency = 'TZS';//'USD';
 			}
-			$invoice->payable_id = $student->applicant->id;
+			$invoice->payable_id = $student->id;
 			$invoice->payable_type = 'student';
 			$invoice->applicable_id = $request->study_academic_year_id;
 			$invoice->applicable_type = 'academic_year';
@@ -337,7 +337,6 @@ class StaffController extends Controller
 			$student = Student::with(['applicant','studentShipStatus'])->whereHas('applicant', function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
 					   ->where('registration_number', $request->get('registration_number'))->first();
 		}
-		return Invoice::with('feeType')->where('payable_id',$student->id)->where('payable_type','student')->first();
 
 		$data = [
 			'student'=>$request->get('registration_number')? $student : [],
