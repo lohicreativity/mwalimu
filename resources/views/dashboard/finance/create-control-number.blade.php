@@ -117,7 +117,7 @@
                     <td>{{ $student->first_name }} {{ $student->middle_name }} {{ $student->surname }}</td>
                     <td>{{ $student->gender }}</td>
                     <td>{{ $student->phone }}</td>					
-                    <td>{{ $student->studentShipStatus->name }}</td>
+                    <td style="color:red">{{ $student->studentShipStatus->name }}</td>
                     <td>{{ $invoice->feeType->name }}</td>
                     <td>{{ $invoice->currency }} {{$invoice->actual_amount }}</td>
                     <td>{{ $invoice->control_no }}</td>		
