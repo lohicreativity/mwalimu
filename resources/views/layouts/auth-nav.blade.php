@@ -596,11 +596,11 @@
               </p>
             </a>
             <ul class="nav nav-treeview">
-              @can('view-payer-details')
+              @can('view-create-control-number')
               <li class="nav-item">
                 <a href="{{ url('finance/create-control-number') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>{{ __('Payer Details') }}</p>
+                  <p>{{ __('Create Control Number') }}</p>
                 </a>
               </li>
               @endcan			
