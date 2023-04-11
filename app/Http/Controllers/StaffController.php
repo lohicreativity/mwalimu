@@ -271,6 +271,7 @@ class StaffController extends Controller
 
  		$fee_amount = FeeAmount::whereHas('feeItem.feeType', function($query) use($request){$query->where('id',$request->fee_type_id);})
 					  ->where('study_academic_year_id',$request->study_academic_year_id)->first();
+
 					  
 		if(Auth::user()->hasRole('admission-officer') || Auth::user()->hasRole('arc')) {
 			$student = Student::with('applicant')->where('registration_number', $request->registration_number)->first();
@@ -281,6 +282,16 @@ class StaffController extends Controller
 
 		if($student){
 			$email = $student->email? $student->email : 'admission@mnma.ac.tz';
+			$fee_type = Invoice::where('payable_id',$student->id)->where('payable_type','student')->where('fee_type_id',$request->fee_type_id)->latest()->first();
+			$now = strtotime(date('Y-m-d'));
+			$last_invoice = strtotime($fee_type->created_at);
+			$datediff = $last_invoice - $now;
+		return $datediff;
+			if($datediff){
+				
+			}else{
+				
+			}
 
 			DB::beginTransaction();
 					
