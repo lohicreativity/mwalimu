@@ -337,7 +337,8 @@ class StaffController extends Controller
 			$student = Student::with(['applicant','studentShipStatus'])->whereHas('applicant', function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
 					   ->where('registration_number', $request->get('registration_number'))->first();
 		}
-		return $student->id;
+		return Invoice::with('feeType')->where('payable_id',$student->id)->where('payable_type','student')->latest()->first();
+
 		$data = [
 			'student'=>$request->get('registration_number')? $student : [],
 			'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
