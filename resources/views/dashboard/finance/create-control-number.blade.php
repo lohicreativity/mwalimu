@@ -117,9 +117,9 @@
                     <td>{{ $student->gender }}</td>
                     <td>{{ $student->studentShipStatus->name }}</td>
                     <td>{{ $invoice->feeType->name }}</td>
-                    <td>{{ $invoice->carrency }} {{$invoice->actual_amount }}</td>
+                    <td>{{ $invoice->currency }} {{$invoice->actual_amount }}</td>
                     <td>{{ $invoice->control_no }}</td>		
-                    <td>{{ $invoice->feeType->duration }}</td>						
+                    <td>{{ $invoice->feeType->duration }} Days</td>						
                   </tbody>
                 </table>
                 <div class="ss-pagination-links">
