@@ -301,7 +301,7 @@ class StaffController extends Controller
 		
 			$data = [
 				'student'=>$student,
-				'study_academic_years'=>StudyAcademicYear::with('academicYear')->all(),
+				'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
 				'fee_types'=>FeeType::all(),
 				'invoices'=>Invoice::whereHas('feeAmout', function($query){$query->where('study_academic_year_id',$request->study_academic_year_id);})
 				->with(['applicable','feeType'])->where('payable_id',$student->id)
@@ -310,7 +310,7 @@ class StaffController extends Controller
 		}else{
 			$data = [
 				'student'=>[],
-				'study_academic_years'=>StudyAcademicYear::with('academicYear')->all(),
+				'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
 				'fee_types'=>FeeType::all(),
 				'invoices'=>[]
 			];
