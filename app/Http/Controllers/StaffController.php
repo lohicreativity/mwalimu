@@ -274,7 +274,7 @@ class StaffController extends Controller
 			if(Auth::user()->hasRole('admission-officer') || Auth::user()->hasRole('arc')) {
 				$student = Student::where('registration_number', $request->registration_number);
 			}else{
-				$student = Student::whereHas('applicant' function($query) use($staff){$query->where('campus_id',$campus_id);})
+				$student = Student::whereHas('applicant', function($query) use($staff){$query->where('campus_id',$campus_id);})
 						   ->where('registration_number', $request->registration_number);
 			}
 
