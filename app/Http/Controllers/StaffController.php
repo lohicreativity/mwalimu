@@ -264,7 +264,7 @@ class StaffController extends Controller
         return view('dashboard.finance.payer-details',$data)->withTitle('Payer Details');   
     }
 
-    public function requestControlNumber(Request $request)
+    public function initiateControlNumberRequest(Request $request)
     {
         $staff = User::find(Auth::user()->id)->staff;
 
