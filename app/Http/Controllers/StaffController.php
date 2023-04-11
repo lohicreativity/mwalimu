@@ -278,23 +278,25 @@ class StaffController extends Controller
 						   ->where('registration_number', $request->registration_number);
 			}
 
-			$invoice = new Invoice;
-			$invoice->reference_no = 'MNMA-'.time();
-			if(str_contains($student->applicant->nationality,'Tanzania')){
-			   $invoice->amount = round($fee_amount->amount_in_tzs);
-			   $invoice->actual_amount = $invoice->amount;
-			   $invoice->currency = 'TZS';
-			}else{
-			   $invoice->amount = round($fee_amount->amount_in_usd*$usd_currency->factor);
-			   $invoice->actual_amount = $invoice->amount;
-			   $invoice->currency = 'TZS';//'USD';
+			if($student){
+				$invoice = new Invoice;
+				$invoice->reference_no = 'MNMA-'.time();
+				if(str_contains($student->applicant->nationality,'Tanzania')){
+				   $invoice->amount = round($fee_amount->amount_in_tzs);
+				   $invoice->actual_amount = $invoice->amount;
+				   $invoice->currency = 'TZS';
+				}else{
+				   $invoice->amount = round($fee_amount->amount_in_usd*$usd_currency->factor);
+				   $invoice->actual_amount = $invoice->amount;
+				   $invoice->currency = 'TZS';//'USD';
+				}
+				$invoice->payable_id = $student->applicant->id;
+				$invoice->payable_type = 'student';
+				$invoice->applicable_id = $request->study_academic_year_id;
+				$invoice->applicable_type = 'cademic_year';
+				$invoice->fee_type_id = $fee_amount->feeItem->fee_type_id;
+				$invoice->save();	
 			}
-			$invoice->payable_id = $student->applicant->id;
-			$invoice->payable_type = 'student';
-			$invoice->applicable_id = $request->study_academic_year_id;
-			$invoice->applicable_type = 'cademic_year';
-			$invoice->fee_type_id = $fee_amount->feeItem->fee_type_id;
-			$invoice->save();
 		
 			$data = [
 				'student'=>$student,
