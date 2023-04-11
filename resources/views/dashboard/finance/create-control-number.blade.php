@@ -90,7 +90,7 @@
             <!-- /.card -->
             @endcan
 
-            @if($amounts)
+            @if($student)
             <div class="card">
               <div class="card-header">
                 <h3 class="card-title">{{ __('List of Control Number Requests') }}</h3><br>
