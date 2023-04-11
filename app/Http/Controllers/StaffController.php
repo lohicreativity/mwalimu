@@ -268,53 +268,82 @@ class StaffController extends Controller
     {
         $staff = User::find(Auth::user()->id)->staff;
 
-		if(!empty($request->registration_number)){
-/* 			$fee_amount = FeeAmount::whereHas('feeItem.feeType', function($query) use($request){$query->where('id',$request->fee_type_id);})
-						  ->where('study_academic_year_id',$request->study_academic_year_id)->first(); */
-						  
-			if(Auth::user()->hasRole('admission-officer') || Auth::user()->hasRole('arc')) {
-				$student = Student::with('applicant')->where('registration_number', $request->registration_number)->first();
-			}else{
-				$student = Student::with('applicant')->whereHas('applicant', function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
-						   ->where('registration_number', $request->registration_number)->first();
-			}
-
-/* 			if($student){
-				$invoice = new Invoice;
-				$invoice->reference_no = 'MNMA-'.time();
-				if(str_contains($student->applicant->nationality,'Tanzania')){
-				   $invoice->amount = round($fee_amount->amount_in_tzs);
-				   $invoice->actual_amount = $invoice->amount;
-				   $invoice->currency = 'TZS';
-				}else{
-				   $invoice->amount = round($fee_amount->amount_in_usd*$usd_currency->factor);
-				   $invoice->actual_amount = $invoice->amount;
-				   $invoice->currency = 'TZS';//'USD';
-				}
-				$invoice->payable_id = $student->applicant->id;
-				$invoice->payable_type = 'student';
-				$invoice->applicable_id = $request->study_academic_year_id;
-				$invoice->applicable_type = 'cademic_year';
-				$invoice->fee_type_id = $fee_amount->feeItem->fee_type_id;
-				$invoice->save();	
-			} */
-		
-			$data = [
-				'student'=>$student,
-				'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
-				'fee_types'=>FeeType::all(),
-				'invoices'=>Invoice::with(['applicable','feeType'])->where('payable_id',$student->id)
-				->where('fee_type_id',$request->fee_type_id)->latest()->get()
-			];
+ 		$fee_amount = FeeAmount::whereHas('feeItem.feeType', function($query) use($request){$query->where('id',$request->fee_type_id);})
+					  ->where('study_academic_year_id',$request->study_academic_year_id)->first();
+					  
+		if(Auth::user()->hasRole('admission-officer') || Auth::user()->hasRole('arc')) {
+			$student = Student::with('applicant')->where('registration_number', $request->registration_number)->first();
 		}else{
-			$data = [
-				'student'=>[],
-				'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
-				'fee_types'=>FeeType::all(),
-				'invoices'=>[]
-			];
-			
+			$student = Student::with('applicant')->whereHas('applicant', function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
+					   ->where('registration_number', $request->registration_number)->first();
 		}
+
+		if($student){
+			$email = $student->email? $student->email : 'admission@mnma.ac.tz';
+			
+			DB::beginTransaction();
+					
+			$invoice = new Invoice;
+			$invoice->reference_no = 'MNMA-'.time();
+			if(str_contains($student->applicant->nationality,'Tanzania')){
+			   $invoice->amount = round($fee_amount->amount_in_tzs);
+			   $invoice->actual_amount = $invoice->amount;
+			   $invoice->currency = 'TZS';
+			}else{
+			   $invoice->amount = round($fee_amount->amount_in_usd*$usd_currency->factor);
+			   $invoice->actual_amount = $invoice->amount;
+			   $invoice->currency = 'TZS';//'USD';
+			}
+			$invoice->payable_id = $student->applicant->id;
+			$invoice->payable_type = 'student';
+			$invoice->applicable_id = $request->study_academic_year_id;
+			$invoice->applicable_type = 'academic_year';
+			$invoice->fee_type_id = $fee_amount->feeItem->fee_type_id;
+			$invoice->save();
+
+			$generated_by = 'SP';
+			$approved_by = 'SP';
+			$inst_id = config('constants.SUBSPCODE');
+
+			$result = $this->requestControlNumber($request,
+										$invoice->reference_no,
+										$inst_id,
+										$invoice->amount,
+										$fee_amount->feeItem->feeType->description,
+										$fee_amount->feeItem->feeType->gfs_code,
+										$fee_amount->feeItem->feeType->payment_option,
+										$student->id,
+										$student->first_name.' '.$student->surname,
+										$student->phone,
+										$email,
+										$generated_by,
+										$approved_by,
+										$fee_amount->feeItem->feeType->duration,
+										$invoice->currency);
+			DB::commit();
+			
+			return redirect()->to('finance/request-control-number?registration_number='.$student->registration_number)->with('message','Control number created successfully');		
+		}
+    }	
+
+    public function showControlNumber(Request $request)
+    {
+        $staff = User::find(Auth::user()->id)->staff;
+					  
+		if(Auth::user()->hasRole('admission-officer') || Auth::user()->hasRole('arc')) {
+			$student = Student::with('applicant')->where('registration_number', $request->get('registration_number'))->first();
+		}else{
+			$student = Student::with('applicant')->whereHas('applicant', function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
+					   ->where('registration_number', $request->get('registration_number'))->first();
+		}
+		
+		$data = [
+			'student'=>$request->get('registration_number')? $student : [],
+			'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
+			'fee_types'=>FeeType::all(),
+			'invoices'=>get('registration_number')? Invoice::where('payable_id',$student->id)->where('payable_type','student')->latest()->first() :[]
+		];
+			
         return view('dashboard.finance.create-control-number',$data)->withTItle('Create Control Number');
     }	
 }
