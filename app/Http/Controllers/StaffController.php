@@ -277,7 +277,7 @@ class StaffController extends Controller
 				$student = Student::with('applicant')->whereHas('applicant', function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
 						   ->where('registration_number', $request->registration_number);
 			}
-
+return $student;
 			if($student){
 				$invoice = new Invoice;
 				$invoice->reference_no = 'MNMA-'.time();
