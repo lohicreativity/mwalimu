@@ -272,7 +272,7 @@ class StaffController extends Controller
 						  ->where('study_academic_year_id',$request->study_academic_year_id)->first();
 						  
 			if(Auth::user()->hasRole('admission-officer') || Auth::user()->hasRole('arc')) {
-				$student = Student:where('registration_number', $request->registration_number);
+				$student = Student::where('registration_number', $request->registration_number);
 			}else{
 				$student = Student::whereHas('applicant' function($query) use($staff){$query->where('campus_id',$campus_id);})
 						   ->where('registration_number', $request->registration_number)
@@ -298,7 +298,7 @@ class StaffController extends Controller
 		
 			$data = [
 				'student'=>$student,
-				'study_academic_year'=>StudyAcademicYear::with('academicYear')->all(),
+				'study_academic_years'=>StudyAcademicYear::with('academicYear')->all(),
 				'fee_types'=>FeeType::all(),
 				'invoices'=>Invoice::whereHas('feeAmout', function($query){$query->where('study_academic_year_id',$request->study_academic_year_id);})
 				->with(['applicable','feeType'])->where('payable_id',$student->id)
@@ -307,7 +307,7 @@ class StaffController extends Controller
 		}else{
 			$data = [
 				'student'=>[],
-				'study_academic_year'=>StudyAcademicYear::with('academicYear')->all(),
+				'study_academic_years'=>StudyAcademicYear::with('academicYear')->all(),
 				'fee_types'=>FeeType::all(),
 				'invoices'=>[]
 			];
