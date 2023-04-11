@@ -323,7 +323,7 @@ class StaffController extends Controller
 										$invoice->currency);
 			DB::commit();
 			
-			return redirect()->to('finance/request-control-number?registration_number='.$student->registration_number)->with('message','Control number created successfully');		
+			return redirect()->to('finance/show-control-number?registration_number='.$student->registration_number)->with('message','Control number created successfully');		
 		}
     }	
 
