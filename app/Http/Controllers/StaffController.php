@@ -332,9 +332,9 @@ class StaffController extends Controller
         $staff = User::find(Auth::user()->id)->staff;
 					  
 		if(Auth::user()->hasRole('admission-officer') || Auth::user()->hasRole('arc')) {
-			$student = Student::with('applicant')->where('registration_number', $request->get('registration_number'))->first();
+			$student = Student::with(['applicant','studentShipStatus'])->where('registration_number', $request->get('registration_number'))->first();
 		}else{
-			$student = Student::with('applicant')->whereHas('applicant', function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
+			$student = Student::with(['applicant','studentShipStatus'])->whereHas('applicant', function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
 					   ->where('registration_number', $request->get('registration_number'))->first();
 		}
 		
@@ -342,7 +342,7 @@ class StaffController extends Controller
 			'student'=>$request->get('registration_number')? $student : [],
 			'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
 			'fee_types'=>FeeType::all(),
-			'invoices'=>$request->get('registration_number')? Invoice::where('payable_id',$student->id)->where('payable_type','student')->latest()->first() :[]
+			'invoice'=>$request->get('registration_number')? Invoice::with('feeType')->where('payable_id',$student->id)->where('payable_type','student')->latest()->first() :[]
 		];
 			
         return view('dashboard.finance.create-control-number',$data)->withTItle('Create Control Number');

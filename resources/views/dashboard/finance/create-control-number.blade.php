@@ -99,19 +99,27 @@
               <div class="card-body">
                 <table id="example2" class="table table-bordered table-hover">
                   <thead>
-                  <tr>
-                    <th>SN</th>				  
+                  <tr>			  
                     <th>Registration#</th>
                     <th>Names</th>
                     <th>Gender</th>
                     <th>Status</th>
                     <th>Payment Item</th>
                     <th>Amount</th>
-                    <th>Control#</th>					
+                    <th>Control#</th>
+                    <th>Validity</th>					
                   </tr>
                   </thead>
                   <tbody>
-
+                  <tr>
+                    <td>{{ $student->registration_number }}</td>
+                    <td>{{ $student->first_name }} {{ $student->middle_name }} {{ $student->surname }} }}</td>
+                    <td>{{ $student->gender }}</td>
+                    <td>{{ $student->studentShipStatus->name }}</td>
+                    <td>{{ $invoice->feeType->name }}</td>
+                    <td>{{ $invoice->carrency }} {{$invoice->actual_amount }}</td>
+                    <td>{{ $invoice->control_no }}</td>		
+                    <td>{{ $invoice->feeType->duration }}</td>						
                   </tbody>
                 </table>
                 <div class="ss-pagination-links">
