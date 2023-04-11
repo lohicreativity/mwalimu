@@ -280,7 +280,7 @@ class StaffController extends Controller
 
 		if($student){
 			$email = $student->email? $student->email : 'admission@mnma.ac.tz';
-			return $request->registration_number.' '.$request->study_academic_year_id.' '.$request->fee_type_id;
+
 			DB::beginTransaction();
 					
 			$invoice = new Invoice;
@@ -345,5 +345,38 @@ class StaffController extends Controller
 		];
 			
         return view('dashboard.finance.create-control-number',$data)->withTItle('Create Control Number');
+    }
+
+    /**
+     * Request control number
+     */
+    public function requestControlNumber(Request $request,$billno,$inst_id,$amount,$description,$gfs_code,$payment_option,$payerid,$payer_name,$payer_cell,$payer_email,$generated_by,$approved_by,$days,$currency){
+      $data = array(
+        'payment_ref'=>$billno,
+        'sub_sp_code'=>$inst_id,
+        'amount'=> $amount,
+        'desc'=> $description,
+        'gfs_code'=> $gfs_code,
+        'payment_type'=> $payment_option,
+        'payerid'=> $payerid,
+        'payer_name'=> $payer_name,
+        'payer_cell'=> $payer_cell,
+        'payer_email'=> $payer_email,
+        'days_expires_after'=> $days,
+        'generated_by'=>$generated_by,
+        'approved_by'=>$approved_by,
+        'currency'=>$currency
+      );
+
+      //$txt=print_r($data, true);
+      //$myfile = file_put_contents('/var/public_html/ifm/logs/req_bill.txt', $txt.PHP_EOL , FILE_APPEND | LOCK_EX);
+            $url = url('bills/post_bill');
+      $result = Http::withHeaders([
+                        'X-CSRF-TOKEN'=> csrf_token()
+                ])->post($url,$data);
+
+      
+    return redirect()->back()->with('message','The bill with id '.$billno.' has been queued.', 200);
+            
     }	
 }
