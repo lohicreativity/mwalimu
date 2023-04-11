@@ -280,7 +280,7 @@ class StaffController extends Controller
 
 		if($student){
 			$email = $student->email? $student->email : 'admission@mnma.ac.tz';
-			return $request->registration_number;
+			return $request->registration_number.' '.$request->study_academic_year_id.' '.$request->fee_type_id;
 			DB::beginTransaction();
 					
 			$invoice = new Invoice;
