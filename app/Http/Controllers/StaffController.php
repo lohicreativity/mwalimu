@@ -303,8 +303,7 @@ class StaffController extends Controller
 				'student'=>$student,
 				'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
 				'fee_types'=>FeeType::all(),
-				'invoices'=>Invoice::whereHas('feeAmount', function($query){$query->where('study_academic_year_id',$request->study_academic_year_id);})
-				->with(['applicable','feeType'])->where('payable_id',$student->id)
+				'invoices'=>Invoice::with(['applicable','feeType'])->where('payable_id',$student->id)
 				->where('fee_type_id',$request->fee_type_id)->latest()->get()
 			];
 		}else{
