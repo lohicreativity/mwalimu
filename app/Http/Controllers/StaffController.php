@@ -285,11 +285,11 @@ class StaffController extends Controller
 			$fee_type = Invoice::where('payable_id',$student->id)->where('payable_type','student')->where('fee_type_id',$request->fee_type_id)->latest()->first();
 			$datediff = 1;
 			if($fee_type){
-				$now = strtotime(date('Y-m-d'));
-				$last_invoice = strtotime($fee_type->created_at);
+				$now = round((strtotime(date('Y-m-d'))/(60 * 60 * 24)));
+				$last_invoice = round((strtotime($fee_type->created_at))/(60 * 60 * 24));
 				//$validity = strtotime($fee_amount->duration
 				$datediff = $last_invoice - $now;
-				return $datediff/(60 * 60 * 24);				
+				return $datediff;				
 			}	
 
 			if($datediff){
