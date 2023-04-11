@@ -268,7 +268,7 @@ class StaffController extends Controller
     {
         $staff = User::find(Auth::user()->id)->staff;
 
-		if(count($request)==0){
+		if(!empty($request->registration_number){
 			$fee_amount = FeeAmount::whereHas('feeItem.feeType', function($query) use($request){$query->where('id',$request->fee_type_id);})
 						  ->where('study_academic_year_id',$request->study_academic_year_id)->first();
 						  
