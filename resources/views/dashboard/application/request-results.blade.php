@@ -98,6 +98,31 @@
               {!! Form::close() !!}
             </div>
             <!-- /.card -->
+			
+			@if(str_contains($applicant->programLevel->name,'Certificate'))
+            <div class="card card-default">
+              <div class="card-header">
+                <h3 class="card-title">{{ __('VETA Certificate') }}</h3>
+              </div>
+              <!-- /.card-header -->
+              {!! Form::open(['url'=>'application/update-veta-certificate','class'=>'ss-form-processing']) !!}
+              <div class="card-body">
+                  {!! Form::input('hidden','applicant_id',$applicant->id) !!}
+
+                  <label class="radio-inline">
+                    <input type="radio" name="veta_certificate_status" id="inlineRadio3" value="1" @if($applicant->veta_status === 1) checked="checked" @endif> I have Veta Certificate
+                  </label>
+                  <label class="radio-inline">
+                    <input type="radio" name="veta_certificate_status" id="inlineRadio4" value="0" @if($applicant->veta_status === 0) checked="checked" @endif> I do not have Veta Certificate
+                  </label>
+              </div>
+              <div class="card-footer">
+                <button type="submit" class="btn btn-primary">{{ __('Update Veta') }}</button>
+              </div>
+
+            {!! Form::close() !!}
+            </div>
+			@endif
             
             @if(!str_contains($applicant->programLevel->name,'Certificate'))
             <div class="card card-default">
@@ -338,29 +363,6 @@
               <div class="card-footer">
              <button type="submit" class="btn btn-primary">{{ __('Update Status') }}</button>
             </div>
-            {!! Form::close() !!}
-            </div>
-
-            <div class="card card-default">
-              <div class="card-header">
-                <h3 class="card-title">{{ __('VETA Certificate') }}</h3>
-              </div>
-              <!-- /.card-header -->
-              {!! Form::open(['url'=>'application/update-veta-certificate','class'=>'ss-form-processing']) !!}
-              <div class="card-body">
-                  {!! Form::input('hidden','applicant_id',$applicant->id) !!}
-
-                  <label class="radio-inline">
-                    <input type="radio" name="veta_certificate_status" id="inlineRadio3" value="1" @if($applicant->veta_status === 1) checked="checked" @endif> I have Veta Certificate
-                  </label>
-                  <label class="radio-inline">
-                    <input type="radio" name="veta_certificate_status" id="inlineRadio4" value="0" @if($applicant->veta_status === 0) checked="checked" @endif> I do not have Veta Certificate
-                  </label>
-              </div>
-              <div class="card-footer">
-                <button type="submit" class="btn btn-primary">{{ __('Update Veta') }}</button>
-              </div>
-
             {!! Form::close() !!}
             </div>
             @endif
