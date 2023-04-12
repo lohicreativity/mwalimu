@@ -276,7 +276,7 @@ class StaffController extends Controller
 		$applicant? $applicant_payments = Invoice::where('payable_id',$applicant->id)->with('feeType','gatewayPayment')->get() : [];
 		$student? $student_payments = Invoice::where('payable_id', $student->id)->orWhere('payable_id',$student->applicant->id)->with('feeType','gatewayPayment')->get() : [];
 
-		$payments = [];
+		//$payments = [];
 		if($applicant){
 			$payments = $applicant_payments;	
 		}elseif($student){
