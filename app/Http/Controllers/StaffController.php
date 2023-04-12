@@ -291,7 +291,7 @@ class StaffController extends Controller
 				  'Pragma'              => 'public'
 		];
 
-return $payments;
+return date('Y-m-d',strtotime($payments[0]->created_at));
 		$callback = function() use ($payments) 
 		{
 		  $file_handle = fopen('php://output', 'w');
