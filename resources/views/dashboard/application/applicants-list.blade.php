@@ -137,6 +137,8 @@
                   <table class="table table-bordered ss-margin-top ss-paginated-table">
                     <thead>
                         <tr>
+                          <th>SN</th>
+                          <th>Index#</th>						  
                           <th>Name</th>
                           <th>Gender</th>
                           <th>Phone</th>
@@ -145,12 +147,14 @@
                         </tr>
                     </thead>
                     <tbody>
-                 @foreach($applicants as $applicant)
+                 @foreach($applicants as $key=>$applicant)
                    <tr>
+					  <td> {{ ($key+1) }} </td>
+					  <td> {{ $applicant->index_number }}
                       <td><a href="#" data-toggle="modal" data-target="#ss-progress-{{ $applicant->id }}">{{ $applicant->first_name }} {{ $applicant->middle_name }} {{ $applicant->surname }}</a></td>
                       <td>{{ $applicant->gender }}</td>
                       <td>{{ $applicant->phone }}</td>
-                      <td>{{ $applicant->programLevel->name }}</td>
+                      <td>{{ $applicant->programLevel->code }}</td>
                       <td>@if($applicant->submission_complete_status == 1)
                            <span class="badge badge-success">Submitted</span>
                           @elseif($applicant->programs_complete_status == 1 && $applicant->submission_complete_status == 0)
