@@ -137,7 +137,6 @@
                       <select name="program_level_id" class="form-control" 
 					  @if($applicant->status != null) 
 						  disabled="true" 
-						{!! Form::input('hidden','program_level_id',$applicant->program_level_id) !!}
 					  @endif required>
                          <option value="">Select Program Level</option>
                          @foreach($awards as $award)
@@ -152,7 +151,6 @@
                       <select name="entry_mode" class="form-control" 
 					  @if($applicant->status != null) 
 						  disabled="true" 
-						{!! Form::input('hidden','entry_mode',$applicant->entry_mode) !!}
 					  @endif required>
                          <option value="">Select Highest Qualification</option>
                          <option value="DIRECT" @if($applicant->entry_mode == 'DIRECT') selected="selected" @endif>Form IV or VI (Direct)</option>
@@ -161,6 +159,10 @@
                     </div>
                   </div>
                   {!! Form::input('hidden','applicant_id',$applicant->id) !!}
+				  @if($applicant->status != null)
+					{!! Form::input('hidden','entry_mode',$applicant->entry_mode) !!}
+					{!! Form::input('hidden','program_level_id',$applicant->program_level_id) !!}				
+				  @endif
                   <div class="ss-form-actions">
                    @if($applicant->campus_id != 0)
                    <button type="submit" class="btn btn-primary">{{ __('Save Changes') }}</button>
