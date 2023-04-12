@@ -289,7 +289,7 @@ class StaffController extends Controller
 				$last_invoice = strtotime($fee_type->created_at);
 				//$validity = strtotime($fee_amount->duration
 				$datediff = $now - $last_invoice;
-				$datediff = round(($datediff/(60 * 60 * 24)))
+				$datediff = round(($datediff/(60 * 60 * 24)));
 				return $datediff;				
 			}	
 
