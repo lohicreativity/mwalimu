@@ -289,16 +289,15 @@ class StaffController extends Controller
 				$last_invoice = strtotime($fee_type->created_at);
 				//$validity = strtotime($fee_amount->duration
 				$datediff = $now - $last_invoice;
-				$datediff = round(($datediff/(60 * 60 * 24)));
-				return $datediff;				
-			}	
+				$datediff = round(($datediff/(60 * 60 * 24)));				
+				
 
-			if($datediff){
-				
-			}else{
-				
+				if($fee_amount->duration >= $datediff){
+					return $datediff;	
+				}else{
+					return 123;
+				}
 			}
-
 			DB::beginTransaction();
 					
 			$invoice = new Invoice;
