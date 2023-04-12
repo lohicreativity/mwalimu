@@ -134,7 +134,11 @@
                     </div>
                      <div class="form-group col-4">
                       {!! Form::label('','Programme level') !!}
-                      <select name="program_level_id" class="form-control" @if($applicant->status != null) disabled="true" @endif required>
+                      <select name="program_level_id" class="form-control" 
+					  @if($applicant->status != null) 
+						  disabled="true" 
+						{!! Form::input('hidden','program_level_id',$applicant->program_level_id) !!}
+					  @endif required>
                          <option value="">Select Program Level</option>
                          @foreach($awards as $award)
                          @if(str_contains($award->name,'Basic') || str_contains($award->name,'Ordinary') || str_contains($award->name,'Bachelor') || str_contains($award->name,'Masters'))
@@ -145,7 +149,11 @@
                     </div>
                     <div class="form-group col-4">
                       {!! Form::label('','Entry mode') !!}
-                      <select name="entry_mode" class="form-control" @if($applicant->status != null) disabled="true" @endif required>
+                      <select name="entry_mode" class="form-control" 
+					  @if($applicant->status != null) 
+						  disabled="true" 
+						{!! Form::input('hidden','entry_mode',$applicant->entry_mode) !!}
+					  @endif required>
                          <option value="">Select Highest Qualification</option>
                          <option value="DIRECT" @if($applicant->entry_mode == 'DIRECT') selected="selected" @endif>Form IV or VI (Direct)</option>
                          <option value="EQUIVALENT" @if($applicant->entry_mode == 'EQUIVALENT') selected="selected" @endif>Certificate or Diploma (Equivalent)</option>
