@@ -79,12 +79,21 @@
               <div class="card-body">
 
                     @php
+                      $dob = [
+                         'placeholder'=>'Date of Birth',
+                         'class'=>'form-control',
+                         'required'=>true
+                      ];
+                      $nationality = [
+                         'placeholder'=>'Nationality',
+                         'class'=>'form-control',
+                         'required'=>true
+                      ];
                       $email = [
                          'placeholder'=>'Email',
                          'class'=>'form-control',
                          'required'=>true
-                      ];
-
+                      ];					  
                       $phone = [
                          'placeholder'=>'255788010102',
                          'class'=>'form-control',
@@ -95,19 +104,39 @@
               {!! Form::open(['url'=>'application/update-applicant-details','class'=>'ss-form-processing']) !!}
 
                    <div class="row">
-                    <div class="form-group col-6">
+                    <div class="form-group col-4">
+					   {!! Form::label('','Date of Birth') !!}
+					   {!! Form::text('dob',App\Utils\DateMaker::toStandardDate($applicant->birth_date),$dob) !!}					
+                    </div>
+                    <div class="form-group col-4">
+                       {!! Form::label('','Nationality') !!}
+                       <select name="nationality" class="form-control" 									
+						@if($applicant->status == null) 
+							@if(App\Domain\Application\Models\Applicant::hasRequestedControlNumber($applicant) || $applicant->payment_complete_status == 1) 
+								disabled="disabled" 
+							@endif 
+						@endif required>
+                         <option value="">Select Nationality</option>
+                         @foreach($countries as $country)
+							<option value="{{ $country->nationality }}" 
+								@if($applicant->nationality == $country->nationality) selected="selected" @endif> {{ $country->nationality }}
+								</option>
+                         @endforeach
+                       </select>
+                    </div>
+                    <div class="form-group col-4">
                        {!! Form::label('','Email') !!}
                        {!! Form::email('email',$applicant->email,$email) !!}
-                    </div>
-                    <div class="form-group col-6">
+                    </div>					
+                    <div class="form-group col-4">
                        {!! Form::label('','Phone') !!}
                        {!! Form::text('phone',$applicant->phone,$phone) !!}
                     </div>
                   </div>
                   <div class="row">
-                     <div class="form-group col-6">
+                     <div class="form-group col-4">
                       {!! Form::label('','Programme level') !!}
-                      <select name="program_level_id" class="form-control" required>
+                      <select name="program_level_id" class="form-control" @if($applicant->status != null) disabled="true" @endif required>
                          <option value="">Select Program Level</option>
                          @foreach($awards as $award)
                          @if(str_contains($award->name,'Basic') || str_contains($award->name,'Ordinary') || str_contains($award->name,'Bachelor') || str_contains($award->name,'Masters'))
@@ -116,7 +145,7 @@
                          @endforeach
                       </select>
                     </div>
-                    <div class="form-group col-6">
+                    <div class="form-group col-4">
                       {!! Form::label('','Entry mode') !!}
                       <select name="entry_mode" class="form-control" @if($applicant->status != null) disabled="true" @endif required>
                          <option value="">Select Highest Qualification</option>

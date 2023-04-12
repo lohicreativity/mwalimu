@@ -1920,6 +1920,7 @@ class ApplicantController extends Controller
          $data = [
          'applicant'=> $applicant,
          'awards'=>Award::all(),
+		 'countries'=>Country::all(),
          ];
 
          return view('dashboard.application.edit-applicant-details', $data)->withTitle('Edit Applicant Details');
@@ -1956,6 +1957,8 @@ class ApplicantController extends Controller
         }
         $mode_before = $applicant->entry_mode;
         $level_before = $applicant->program_level_id;
+        $applicant->birth_date = $request->get('dob');
+        $applicant->nationality = $request->get('nationality');		
         $applicant->phone = $request->get('phone');
         $applicant->email = $request->get('email');
         $applicant->entry_mode = $request->get('entry_mode');
