@@ -291,7 +291,7 @@ class StaffController extends Controller
 				  'Pragma'              => 'public'
 		];
 
-
+return $payments;
 		$callback = function() use ($payments) 
 		{
 		  $file_handle = fopen('php://output', 'w');
