@@ -120,7 +120,7 @@
                     <td style="color:red">{{ $student->studentShipStatus->name }}</td>
                     <td>{{ $invoice->feeType->name }}</td>
                     <td>{{ $invoice->currency }} {{$invoice->actual_amount }}</td>
-                    <td>{{ $invoice->control_no }} @if($invoice->control_no == null) <a href="#" onclick="window.location.reload();">Refresh</a></td>		
+                    <td>@if($invoice->control_no == null) <a href="#" onclick="window.location.reload();">Refresh</a> @else {{ $invoice->control_no }} @endif</td>		
                     <td>{{ $invoice->feeType->duration }} Days</td>						
                   </tbody>
                 </table>
