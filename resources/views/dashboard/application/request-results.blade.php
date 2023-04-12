@@ -266,7 +266,17 @@
                   <div class="row">
                   <div class="form-group col-4">
                     {!! Form::label('','AVN') !!}
-                    {!! Form::text('avn', @if($nacte_results) $nacte_results[0]->avn @endif,$avn) !!}
+                    @php
+                       $applicant_avn = null;
+                       foreach($nacte_results as $res){
+                           if($res->avn != null){
+							   $applicant_avn = $res->avn;
+							   break;
+						   }
+                        }
+                       }
+                    @endphp					
+                    {!! Form::text('avn', $applicant_avn,$avn) !!}
                   </div>
                   <div class="form-group col-4">
 
