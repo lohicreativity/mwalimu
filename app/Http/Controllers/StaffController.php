@@ -270,13 +270,13 @@ class StaffController extends Controller
 	  */
 	  public function downloadPayments(Request $request)
 	  {
-		$student = Student::where('registration_number', $request->keyword)->first();
+		$student = Student::with('applicant')->where('registration_number', $request->keyword)->first();
 		$applicant = Applicant::with(['programLevel','intake','disabilityStatus'])->where('index_number', $request->keyword)->first();
 		
 		$applicant? $applicant_payments = Invoice::where('payable_id',$applicant->id)->with('feeType','gatewayPayment')->get() : [];
 		$student? $student_payments = Invoice::where('payable_id', $student->id)->orWhere('payable_id',$student->applicant->id)->with('feeType','gatewayPayment')->get() : [];
 
-		//$payments = [];
+		$payments = [];
 		if($applicant){
 			$payments = $applicant_payments;	
 		}elseif($student){
@@ -297,7 +297,7 @@ class StaffController extends Controller
 		  fputcsv($file_handle, ['Invoice Number','Invoice Date','Receipt Date','Control Number','Payment Item','Bill Amount','Paid Amount','Balance']);
 		  foreach ($payments as $row) { 
 			fputcsv($file_handle, [$row->student->reference_no,date('Y-m-d',strtotime($row->created_at)),date('Y-m-d',strtotime($row->gatewayPayment->created_at)),
-			$row->control_no,$row->feeType->name,$row->amount,$row->gatewayPayment->paid_amount,1000]);
+			$row->control_no,$row->feeType->name,$row->amount,$row->gatewayPayment->paid_amount,$row->amount - $row->gatewayPayment->paid_amount]);
 		  }
 		  fclose($file_handle);
 		};			
