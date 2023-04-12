@@ -273,8 +273,8 @@ class StaffController extends Controller
 		$student = Student::where('registration_number', $request->keyword)->first();
 		$applicant = Applicant::with(['programLevel','intake','disabilityStatus'])->where('index_number', $request->keyword)->first();
 		
-		$applicant? $applicant_payments = Invoice::where('payable_id',$applicant->id)->with('feeType','gatewayPayment')->get();
-		$student? $student_payments = Invoice::where('payable_id', $student->id)->orWhere('payable_id',$student->applicant->id)->with('feeType','gatewayPayment')->get();
+		$applicant? $applicant_payments = Invoice::where('payable_id',$applicant->id)->with('feeType','gatewayPayment')->get() : [];
+		$student? $student_payments = Invoice::where('payable_id', $student->id)->orWhere('payable_id',$student->applicant->id)->with('feeType','gatewayPayment')->get() : [];
 
 		$payments = [];
 		if($applicant){
