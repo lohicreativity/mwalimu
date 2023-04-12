@@ -106,7 +106,7 @@
                    <div class="row">
                     <div class="form-group col-4">
 					   {!! Form::label('','Date of Birth') !!}
-					   {!! Form::text('dob',$dob) !!}					
+					   {!! Form::text('dob',$applicant->birth_date,$dob) !!}					
                     </div>
                     <div class="form-group col-4">
                        {!! Form::label('','Nationality') !!}
