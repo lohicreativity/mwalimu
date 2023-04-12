@@ -239,6 +239,7 @@ class StaffController extends Controller
 	
     public function viewPayerDetails(Request $request)
     {
+		return Auth::user()->hasRole('staff');
 		if(!empty($request->keyword)){
 			$student_payer = Student::where('registration_number', $request->keyword)
 			->orWhere('surname',$request->keyword)
