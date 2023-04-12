@@ -265,6 +265,7 @@
             </ul>
           </li>
 		  @endif
+		  @if($student->studentship_status_id == 5)
           <li class="nav-item">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-graduation-cap"></i>
@@ -300,6 +301,7 @@
               </li>
             </ul>
           </li>
+		  @endif
           @else
           <li class="nav-item">
             <a href="#" class="nav-link">
