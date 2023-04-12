@@ -51,6 +51,7 @@
                     <tr>
                        <th>Academic Year</th>
                        <th>Date</th>
+                       <th>Control#</th>					   
                        <th>Fee Type</th>
                        <th>Fee Amount</th>
                        <th>Paid Amount</th>
@@ -62,6 +63,7 @@
                     <tr>
                        <td>{{ $receipt->academic_year }}</td>
                        <td>{{ date('Y-m-d',strtotime($receipt->created_at))}}</td>
+                       <td>{{ $receipt->control_no }}</td> 					   
                        <td>{{ $receipt->fee_name }}</td> 
                        <td>{{ number_format($receipt->bill_amount,2) }} {{ $receipt->ccy }}</td>
                        <td>
