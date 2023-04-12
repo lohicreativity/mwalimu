@@ -264,6 +264,47 @@ class StaffController extends Controller
 
         return view('dashboard.finance.payer-details',$data)->withTitle('Payer Details');   
     }
+	
+	  /**
+	  * Download students' payments
+	  */
+	  public function downloadPayments(Request $request)
+	  {
+		$student = Student::where('registration_number', $request->keyword)->first();
+		$applicant = Applicant::with(['programLevel','intake','disabilityStatus'])->where('index_number', $request->keyword)->first();
+		
+		$applicant? $applicant_payments = Invoice::where('payable_id',$applicant->id)->with('feeType','gatewayPayment')->get();
+		$student? $student_payments = Invoice::where('payable_id', $student->id)->orWhere('payable_id',$student->applicant->id)->with('feeType','gatewayPayment')->get();
+
+		$payments = [];
+		if($applicant){
+			$payments = $applicant_payments;	
+		}elseif($student){
+			$payments = $student_payments;
+		}
+		
+		$headers = [
+				  'Cache-Control'       => 'must-revalidate, post-check=0, pre-check=0',   
+				  'Content-type'        => 'text/csv',
+				  'Content-Disposition' => 'attachment; filename='.$request->keyword.'-Payments.csv',
+				  'Expires'             => '0',
+				  'Pragma'              => 'public'
+		];
+
+
+		$callback = function() use ($payments) 
+		{
+		  $file_handle = fopen('php://output', 'w');
+		  fputcsv($file_handle, ['Invoice Number','Invoice Date','Receipt Date','Control Number','Payment Item','Bill Amount','Paid Amount','Balance']);
+		  foreach ($payments as $row) { 
+			fputcsv($file_handle, [$row->student->reference_no,date('Y-m-d',strtotime($row->created_at)),date('Y-m-d',strtotime($row->gatewayPayment->created_at)),
+			$row->control_no,$row->feeType->name,$row->amount,$row->gatewayPayment->paid_amount,$row->amount - $row->gatewayPayment->paid_amount]);
+		  }
+		  fclose($file_handle);
+		};			
+
+		return response()->stream($callback, 200, $headers);
+	  }	
 
     public function initiateControlNumberRequest(Request $request)
     {

@@ -70,7 +70,7 @@
             </div>
 			
             <!-- /.card -->
-			@if($payer && $category == 'student' && $category != 'applicant')
+			@if($payer && $category == 'student')
 			<div style="margin-top:20px;" data-toggle="modal">
 			  <div class="modal-content">
 				<div class="modal-header">
@@ -136,7 +136,8 @@
 									  
 									<div id="collapsePayments" class="collapse" aria-labelledby="ss-payments" data-parent="#student-accordion">
 
-									  <div class="card-body">			  
+									  <div class="card-body">
+										<a href="{{ url('finance/download-payments?keyword='.$payer->registration_number) }}" class="btn btn-primary">Download Payments</a>									  
 									    <table class="table table-bordered ss-paginated-table" style="font-size:10pt">
 											<thead>
 											<tr>
@@ -158,7 +159,7 @@
 											   <td>{{ $payments->feeType->name }}</td> 											   
 											   <td>{{ number_format($payments->gatewayPayment->bill_amount,2) }} {{ $payments->gatewayPayment->ccy }}</td>
 											   <td>
-												  {{ number_format($payments->gatewayPayment->bill_amount,2) }} {{ $payments->gatewayPayment->ccy }}
+												  {{ number_format($payments->gatewayPayment->paid_amount,2) }} {{ $payments->gatewayPayment->ccy }}
 											   </td>
 											   <td>
 												  {{ number_format($payments->gatewayPayment->bill_amount-$payments->gatewayPayment->paid_amount,2) }} {{ $payments->gatewayPayment->ccy }}
@@ -184,7 +185,7 @@
 			  <!-- /.modal-content -->
 			</div> 
 		  <!-- /.modal -->
-		@elseif($payer && $category == 'applicant' && $category != 'student')
+		@elseif($payer && $category == 'applicant')
 			<div style="margin-top:20px;" data-toggle="modal">
 			  <div class="modal-content">
 				<div class="modal-header">
@@ -250,7 +251,8 @@
 									  
 									<div id="collapsePayments" class="collapse" aria-labelledby="ss-payments" data-parent="#student-accordion">
 
-									  <div class="card-body">			  
+									  <div class="card-body">
+										<a href="{{ url('finance/download-payments?keyword='.$payer->index_number) }}" class="btn btn-primary">Download Payments</a>									  									  
 									    <table class="table table-bordered ss-paginated-table" style="font-size:10pt">
 											<thead>
 											<tr>
