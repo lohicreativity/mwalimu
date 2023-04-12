@@ -234,7 +234,7 @@
               </li>
             </ul>
           </li>
-		  {{ $student->applicant }}		  
+		  @if($student->applicant->program_level_id == 4)		  
           <li class="nav-item">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-coins"></i>
@@ -264,6 +264,7 @@
               </li>
             </ul>
           </li>
+		  @endif
           <li class="nav-item">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-graduation-cap"></i>
