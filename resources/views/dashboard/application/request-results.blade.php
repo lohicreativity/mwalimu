@@ -273,7 +273,6 @@
 							   $applicant_avn = $res->avn;
 							   break;
 						   }
-                        }
                        }
                     @endphp					
                     {!! Form::text('avn', $applicant_avn,$avn) !!}
