@@ -159,6 +159,11 @@
                     </div>
                   </div>
                   {!! Form::input('hidden','applicant_id',$applicant->id) !!}
+				  @if($applicant->status == null) 
+					@if(App\Domain\Application\Models\Applicant::hasRequestedControlNumber($applicant) || $applicant->payment_complete_status == 1) 
+						{!! Form::input('hidden','nationality',$applicant->nationality) !!}
+					@endif 
+				  @endif
 				  @if($applicant->status != null)
 					{!! Form::input('hidden','entry_mode',$applicant->entry_mode) !!}
 					{!! Form::input('hidden','program_level_id',$applicant->program_level_id) !!}				
