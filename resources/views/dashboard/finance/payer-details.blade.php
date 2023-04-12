@@ -43,7 +43,6 @@
             <div class="card">
               <div class="card-header">
                 <h3 class="card-title">Search for Payer</h3>
-														  		<a href="{{ url('finance/download-payments') }}" class="btn btn-primary">Download Payments</a>	
               </div>
               <!-- /.card-header -->
               <div class="card-body">
@@ -133,7 +132,6 @@
 										  <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapsePayments" aria-expanded="true" aria-controls="collapsePayments">
 											&nbsp; Payment Details &nbsp; <i class="fa fa-chevron-right list-group-chevron"></i>
 										  </button>
-										  		<a href="{{ url('finance/download-payments') }}" class="btn btn-primary">Download Payments</a>		
 									  </div>
 									  
 									<div id="collapsePayments" class="collapse" aria-labelledby="ss-payments" data-parent="#student-accordion">

@@ -214,6 +214,10 @@
                                           <td>Address: </td>
                                           <td>{{ $applicant->address }}</td>
                                         </tr>
+                                        <tr>
+                                          <td>Nationality: </td>
+                                          <td>{{ $applicant->nationality }}</td>
+                                        </tr>										
                                       </table>
 
                                     </div>

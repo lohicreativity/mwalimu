@@ -119,7 +119,7 @@
                     <div class="form-group col-6">
                       {!! Form::label('','Entry mode') !!}
                       <select name="entry_mode" class="form-control" required>
-                         <option value="">Select Highest Qualification</option>
+                         <option value="" @if($applicant->status != null) disabled='true'@endif>Select Highest Qualification</option>
                          <option value="DIRECT" @if($applicant->entry_mode == 'DIRECT') selected="selected" @endif>Form IV or VI (Direct)</option>
                          <option value="EQUIVALENT" @if($applicant->entry_mode == 'EQUIVALENT') selected="selected" @endif>Certificate or Diploma (Equivalent)</option>
                       </select>
