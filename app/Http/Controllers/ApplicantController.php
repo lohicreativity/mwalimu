@@ -1957,7 +1957,7 @@ class ApplicantController extends Controller
         }
         $mode_before = $applicant->entry_mode;
         $level_before = $applicant->program_level_id;
-        $applicant->birth_date = $request->get('dob');
+        $applicant->birth_date = DateMaker::toDBDate($request->get('dob'));
         $applicant->nationality = $request->get('nationality');		
         $applicant->phone = $request->get('phone');
         $applicant->email = $request->get('email');
