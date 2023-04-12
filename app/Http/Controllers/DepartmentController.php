@@ -132,7 +132,7 @@ class DepartmentController extends Controller
 
         } catch (Exception $e) {
 
-         return redirect()->back()->with('error','Invalid update');
+         return redirect()->back()->with('error','Department name has already been used');
          
         }
 
