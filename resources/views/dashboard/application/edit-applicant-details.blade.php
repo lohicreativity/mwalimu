@@ -80,9 +80,9 @@
 
                     @php
                       $dob = [
-                         'placeholder'=>'Date of Birth',
-                         'class'=>'form-control',
-                         'required'=>true
+						 'placeholder'=>'Date of Birth',
+						 'class'=>'form-control ss-datepicker',
+						 'required'=>true					  
                       ];
                       $nationality = [
                          'placeholder'=>'Nationality',
@@ -132,8 +132,6 @@
                        {!! Form::label('','Phone') !!}
                        {!! Form::text('phone',$applicant->phone,$phone) !!}
                     </div>
-                  </div>
-                  <div class="row">
                      <div class="form-group col-4">
                       {!! Form::label('','Programme level') !!}
                       <select name="program_level_id" class="form-control" @if($applicant->status != null) disabled="true" @endif required>
