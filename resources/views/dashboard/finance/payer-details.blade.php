@@ -43,6 +43,7 @@
             <div class="card">
               <div class="card-header">
                 <h3 class="card-title">Search for Payer</h3>
+														  		<a href="{{ url('finance/download-payments') }}" class="btn btn-primary">Download Payments</a>	
               </div>
               <!-- /.card-header -->
               <div class="card-body">
