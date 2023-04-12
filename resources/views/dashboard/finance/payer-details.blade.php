@@ -132,7 +132,7 @@
 										  <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapsePayments" aria-expanded="true" aria-controls="collapsePayments">
 											&nbsp; Payment Details &nbsp; <i class="fa fa-chevron-right list-group-chevron"></i>
 										  </button>
-										  		<a href="{{ url('finance/download-payments?keyword='.$payer->registration_number) }}" class="btn btn-primary">Download Payments</a>		
+										  		<a href="{{ url('finance/download-payments') }}" class="btn btn-primary">Download Payments</a>		
 									  </div>
 									  
 									<div id="collapsePayments" class="collapse" aria-labelledby="ss-payments" data-parent="#student-accordion">
