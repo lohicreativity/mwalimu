@@ -282,7 +282,9 @@ class StaffController extends Controller
 
 		if($student){
 			$email = $student->email? $student->email : 'admission@mnma.ac.tz';
-			$fee_type = Invoice::where('payable_id',$student->id)->where('payable_type','student')->where('fee_type_id',$request->fee_type_id)->latest()->first();
+			$fee_type = Invoice::where('payable_id',$student->id)->where('payable_type','student')
+						->where('fee_type_id',$request->fee_type_id)->whereNotNull('control_no')
+						->whereNull('gateway_payment_id')->orWhereHas('gatewayPayment',function($query){$query->where('paid_amount','<','bill_amount');})->latest()->first();
 			//$datediff = 1;
 			if($fee_type){
 				$now = strtotime(date('Y-m-d'));
