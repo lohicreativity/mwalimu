@@ -284,9 +284,10 @@ class StaffController extends Controller
 			$email = $student->email? $student->email : 'admission@mnma.ac.tz';
 			$fee_type = Invoice::where('payable_id',$student->id)->where('payable_type','student')
 						->where('fee_type_id',$request->fee_type_id)->whereNotNull('control_no')
-						->whereNull('gateway_payment_id')->orWhereHas('gatewayPayment',function($query){$query->where('paid_amount','<','bill_amount');})->latest()->first();
+						->with('gatewayPayment')->latest()->first();
 			//$datediff = 1;
 			if($fee_type){
+				
 				$now = strtotime(date('Y-m-d'));
 				$last_invoice = strtotime($fee_type->created_at);
 				//$validity = strtotime($fee_amount->duration
@@ -294,7 +295,12 @@ class StaffController extends Controller
 				$datediff = round(($datediff/(60 * 60 * 24)));				
 
 				if($fee_amount->duration >= $datediff){
-					return redirect()->back()->with('error','The student has an unpaid invoice for '.$fee_amount->feeItem->feeType->name);	
+					if($fee_type->gateway_payment_id == null){
+						return redirect()->back()->with('error','The student has an unpaid invoice for '.$fee_amount->feeItem->feeType->name);	
+					}
+					if($fee_type->gatewayPayment->paid_amount < $fee_type->gatewayPayment->bill_amount){
+						return redirect()->back()->with('error','The student has an unpaid invoice for '.$fee_amount->feeItem->feeType->name);	
+					}
 				}
 			}
 			DB::beginTransaction();
