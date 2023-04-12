@@ -290,12 +290,9 @@ class StaffController extends Controller
 				//$validity = strtotime($fee_amount->duration
 				$datediff = $now - $last_invoice;
 				$datediff = round(($datediff/(60 * 60 * 24)));				
-				
 
 				if($fee_amount->duration >= $datediff){
-					return $datediff;	
-				}else{
-					return 123;
+					return redirect()->back()->with('error','The student has an unpaid invoice for '.$fee_amount->feeItem->feeType->name);	
 				}
 			}
 			DB::beginTransaction();
