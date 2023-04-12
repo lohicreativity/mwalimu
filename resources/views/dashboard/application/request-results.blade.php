@@ -266,7 +266,7 @@
                   <div class="row">
                   <div class="form-group col-4">
                     {!! Form::label('','AVN') !!}
-                    {!! Form::text('avn', @if(nacte_results) nacte_results[0]->avn @endif,$avn) !!}
+                    {!! Form::text('avn', @if($nacte_results) $nacte_results[0]->avn @endif,$avn) !!}
                   </div>
                   <div class="form-group col-4">
 
