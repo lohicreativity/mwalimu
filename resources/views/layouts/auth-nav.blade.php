@@ -47,7 +47,7 @@
                     </li>
                 @endif
 
-                @if($applicant->avn_no_results === 1 || $applicant->teacher_certificate_status === 1 || $applicant->veta_status == 1)
+                @if($applicant->avn_no_results === 1 || $applicant->teacher_certificate_status === 1 || $applicant->veta_status == 1 || (str_contains($applicant->programLevel->name,'Certificate') && $applicant->entry_mode == 'EQUIVALENT'))
                 <li class="nav-item">
                   <a href="{{ url('application/upload-avn-documents') }}" class="nav-link">
                     <i class="far fa-circle nav-icon"></i>

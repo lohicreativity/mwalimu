@@ -18,7 +18,7 @@ class NextOfKinController extends Controller
     	$validation = Validator::make($request->all(),[
             'first_name'=>'required',
             'surname'=>'required',
-            'address'=>'required',
+            'address'=>'required|integer',
             'nationality'=>'required'
         ]);
 
