@@ -183,7 +183,7 @@
 
 										<div class="col-md-9 col-sm-9">
 											<h2>{{ $applicant->first_name }} {{ $applicant->middle_name }} {{ $applicant->surname }}</h2>
-											<h6>{{ $applicant->index_number }} &nbsp; | &nbsp; {{ $applicant->program->code}} &nbsp; | &nbsp; $applicant->intake->name) Intake &nbsp; | &nbsp; <span style="color:red">{{ $applicant->status }} </span></h6>
+											<h6>{{ $applicant->index_number }} &nbsp; | &nbsp; {{ $applicant->campusProgram->program->code}} &nbsp; | &nbsp; $applicant->intake->name) Intake &nbsp; | &nbsp; <span style="color:red">{{ $applicant->status }} </span></h6>
 											<hr>
 											<ul style="list-style-type: none; inline">
 												<li><i class="icon-li fa fa-envelope"></i> &nbsp; &nbsp;{{ $applicant->email }}</li>
