@@ -1430,7 +1430,7 @@ class ApplicantController extends Controller
             'year'=>'required',
             'phone' => 'required|digits:10|regex:/(0)[0-9]/',
             // 'phone'=>'required|regex:/(255)[0-9]{9}/|not_regex:/[a-z]/|min:9',
-            'address'=>'required|integer|between:1,10',
+            'address'=>'required|integer',
             'nationality'=>'required',
         ]);
     	
