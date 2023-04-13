@@ -257,7 +257,7 @@
 							$applicant_phone = "0".substr($applicant->phone,3);  
 						  }
 					   @endphp
-                       {!! Form::text('phone', $applicant_phone, 3),$phone) !!}
+                       {!! Form::text('phone', $applicant_phone,$phone) !!}
                     </div>
                     <div class="form-group col-3">
                        {!! Form::label('','Birth date') !!}
