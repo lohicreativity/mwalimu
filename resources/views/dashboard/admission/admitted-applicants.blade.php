@@ -120,8 +120,8 @@
                         <tr>
                           <th>#</th>
                           <th>Name</th>
-						              <th>Form IV Index No.</th>
-						              <th>Form VI Index No./AVN</th>
+						  <th>Form IV Index No.</th>
+						  <th>Form VI Index No./AVN</th>
                           <th>Phone</th>
                           <th>Gender</th>
                           <th>Programme</th>
@@ -131,9 +131,9 @@
                  @foreach($applicants as $applicant)
                    <tr>
                       <td>{{ $loop->iteration }}</td>
-                      <td>{{ $applicant->first_name }} {{ $applicant->middle_name }} {{ $applicant->surname }}</td>
-					            <td>{{ $applicant->index_number }}</td>
-					            <td>@foreach($applicant->nectaResultDetails as $detail)
+					  <td><a href="#" data-toggle="modal" data-target="#ss-progress-{{ $applicant->id }}">{{ $applicant->first_name }} {{ $applicant->middle_name }} {{ $applicant->surname }}</a></td>					  
+					  <td>{{ $applicant->index_number }}</td>
+					  <td>@foreach($applicant->nectaResultDetails as $detail)
 					              @if($detail->exam_id == 2) {{ $detail->index_number }} @endif
 						  @endforeach <br>
 						  @foreach($applicant->nacteResultDetails as $detail)
@@ -157,6 +157,101 @@
                </div>
             </div>
 
+			     @foreach($applicants as $applicant)
+                    <div style="margin-top:20px;" class="modal fade" id="ss-progress-{{ $applicant->id }}">
+                        <div class="modal-dialog modal-lg">
+                          <div class="modal-content modal-lg">
+							<div class="modal-header">
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+                            <div class="modal-body">
+
+								<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+								<!-- <div class="container bootstrap snippets bootdey"> -->
+								<div class="col-md-12">
+									<div class="row">
+										<div class="col-md-3 col-sm-3">
+											<div class="text-center">
+												<img class="profile-user-img img-fluid" src="{{ asset('uploads/'.$applicant->passport_picture) }}" onerror="this.src='{{ asset("img/user-avatar.png") }}'" alt="Applicant Picture">
+												                 
+											</div> <!-- /.thumbnail -->
+
+										</div> <!-- /.col -->
+
+
+										<div class="col-md-9 col-sm-9">
+											<h2>{{ $applicant->first_name }} {{ $applicant->middle_name }} {{ $applicant->surname }}</h2>
+											<h6>{{ $applicant->index_number }} &nbsp; | &nbsp; {{ $applicant->campusProgram->program->code}} &nbsp; | &nbsp; $applicant->intake->name) Intake &nbsp; | &nbsp; <span style="color:red">{{ $applicant->status }} </span></h6>
+											<hr>
+											<ul style="list-style-type: none; inline">
+												<li><i class="icon-li fa fa-envelope"></i> &nbsp; &nbsp;{{ $applicant->email }}</li>
+												<li><i class="icon-li fa fa-phone"></i> &nbsp; &nbsp;{{ $applicant->phone }}</li>
+											</ul>
+											<hr>
+
+											<div class="accordion" id="applicant-accordion">
+												<div class="card">
+												  <div class="card-header" id="ss-address">
+													  <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseAddress" aria-expanded="true" aria-controls="collapseAddress">
+														&nbsp; More Details &nbsp; <i class="fa fa-chevron-right list-group-chevron"></i>
+													  </button>
+												  </div>
+
+												  <div id="collapseAddress" class="collapse" aria-labelledby="ss-address" data-parent="#applicant-accordion">
+													<div class="card-body">
+
+														  &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Gender:</span> &nbsp; @if($applicant->gender == 'M') Male @elseif($applicant->gender == 'F') Female @endif
+														  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Date of Birth:</span> &nbsp; {{ $applicant->birth_date }}
+														  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Nationality:</span> &nbsp; {{ $applicant->nationality }}											  
+														  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Disability:</span> &nbsp; {{ $applicant->disabilityStatus->name }}
+														  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Entry Mode:</span> &nbsp; {{ $applicant->entry_mode }}	 												  
+														  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Postal Address:</span> &nbsp; {{ $rapplicant->address }}	 	
+														  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Physical Address:</span> &nbsp; {{ $applicant->ward->name }},&nbsp; {{ $applicant->region->name }},&nbsp; {{ $applicant->country->name }}	 	 
+													</div>
+												  </div>
+												</div>
+												
+												<div class="card">
+												  <div class="card-header" id="ss-next-of-kin">
+													  <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseNextOfKin" aria-expanded="true" aria-controls="collapseNextOfKin">
+														&nbsp; Next Of Kin Details &nbsp; <i class="fa fa-chevron-right list-group-chevron"></i>
+													  </button>
+												  </div>
+
+												  <div id="collapseNextOfKin" class="collapse" aria-labelledby="ss-next-of-kin" data-parent="#applicant-accordion">
+													<div class="card-body">
+
+													  @if($applicant->nextOfKin)
+														  &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Names:</span> &nbsp; {{ $applicant->nextOfKin->first_name }} {{ $applicant->nextOfKin->middle_name }} {{ $applicant->nextOfKin->surname }}
+														  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Gender:</span> &nbsp; @if($applicant->nextOfKin->gender == 'M') Male @elseif($applicant->nextOfKin->gender == 'F') Female @endif
+														  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Relationship:</span> &nbsp; {{ $applicant->nextOfKin->relationship }}
+														  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Nationality:</span> &nbsp; {{ $applicant->nextOfKin->nationality }}											  
+														  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Phone:</span> &nbsp; {{ $applicant->nextOfKin->phone }}	
+														  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Postal Address:</span> &nbsp; {{ $applicant->nextOfKin->address }}
+														  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Physical Address:</span> &nbsp; {{ $applicant->nextOfKin->ward->name }},&nbsp; {{ $applicant->nextOfKin->region->name }},&nbsp; {{ $applicant->nextOfKin->country->name }}	 	 
+																										  
+													   @endif
+													</div>
+												  </div>
+												</div>
+											</div>                                  
+										</div>
+									</div>
+								</div>
+							</div>
+                          </div>
+                          <!-- /.modal-content -->
+						</div> 
+                      <!-- /.modal -->
+					 </div>
+                 @endforeach
+
+
+
+
+	
            </div>
           </div>
       </div><!-- /.container-fluid -->
