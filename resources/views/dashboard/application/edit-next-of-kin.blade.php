@@ -283,7 +283,7 @@
                   ];
 
                   $address = [
-                     'placeholder'=>'P. O. Box 3918 Dar Es Salaam',
+                     'placeholder'=>'1234',
                      'class'=>'form-control',
                      'required'=>true
                   ];
@@ -294,7 +294,7 @@
                   ];
 
                   $phone = [
-                     'placeholder'=>'Phone',
+                     'placeholder'=>'0739000000',
                      'class'=>'form-control',
                      'required'=>true
                   ];
@@ -339,7 +339,13 @@
                     </div>
                     <div class="form-group col-6">
                        {!! Form::label('','Phone') !!}
-                       {!! Form::text('phone',null,$phone) !!}
+					   @php
+						  $next_of_kin_phone = null;
+						  if($next_of_kin->phone != null){
+							$next_of_kin_phone = "0".substr($next_of_kin->phone,3);  
+						  }
+					   @endphp					   
+                       {!! Form::text('phone',$next_of_kin_phone,$phone) !!}
                     </div>
                   </div>
                    <div class="row">
@@ -380,7 +386,14 @@
                   <div class="row">
                      <div class="form-group col-6">
                        {!! Form::label('','Mailing Address') !!}
-                       {!! Form::text('address',null,$address) !!}
+                       {!! Form::label('','Address') !!}
+					   @php
+						  $next_of_kin_address = null;
+						  if($next_of_kin->address != null){
+							$next_of_kin_address = substr($next_of_kin->address, 9);  
+						  }
+					   @endphp					   
+                       {!! Form::text('address',$next_of_kin_address,$address) !!}
                     </div>
                     <div class="form-group col-6">
                        {!! Form::label('','Country') !!}
