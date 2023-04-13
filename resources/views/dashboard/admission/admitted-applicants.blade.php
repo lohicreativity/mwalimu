@@ -195,6 +195,8 @@
 												<li><i class="icon-li fa fa-envelope"></i> &nbsp; &nbsp;{{ $applicant->email }}</li>
 												<li><i class="icon-li fa fa-phone"></i> &nbsp; &nbsp;{{ $applicant->phone }}</li>
 											</ul>
+											<a href="{{ url('finance/download-payments?keyword='.$payer->registration_number) }}" class="btn btn-primary">Download Admission Letter </a>									  
+
 											<hr>
 
 											<div class="accordion" id="applicant-accordion">
@@ -236,7 +238,7 @@
 														  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Nationality:</span> &nbsp; {{ $applicant->nextOfKin->nationality }}											  
 														  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Phone:</span> &nbsp; {{ $applicant->nextOfKin->phone }}	
 														  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Postal Address:</span> &nbsp; {{ $applicant->nextOfKin->address }}
-														  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Physical Address:</span> &nbsp; {{ $applicant->nextOfKin->ward->name }},&nbsp; {{ $applicant->nextOfKin->region->name }},&nbsp; {{ $applicant->nextOfKin->country->name }}	 	 
+														  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Physical Address:</span> &nbsp; {{ ucwords(strtolower($applicant->nextOfKin->ward->name)) }},&nbsp; {{ ucwords(strtolower($applicant->nextOfKin->region->name)) }},&nbsp; {{ ucwords(strtolower($applicant->nextOfKin->country->name)) }}	 	 
 																										  
 													   @endif
 													</div>
