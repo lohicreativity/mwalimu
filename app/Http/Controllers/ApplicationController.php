@@ -314,7 +314,6 @@ class ApplicationController extends Controller
 
          }         
          
-return $applicants;
          $data = [
             'staff'=>$staff,
             'application_windows'=>ApplicationWindow::where('campus_id',$staff->campus_id)->get(),
