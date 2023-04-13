@@ -46,7 +46,7 @@
                   <div class="alert alert-danger">
                     <h3 class="text-white" style="font-size: 18px!important;">
                       <i class="fa fa-times-circle"></i> 
-                      Sorry you have not been selected. Please <a href="#">click here</a> to select a new program.
+                      Sorry you have not been selected. Please <a href="#">click here</a> to select a new programme1.
                     </h3>
                   </div>
                 @elseif($applicant->confirmation_status != 'CANCELLED' && $applicant->status == 'SELECTED')
@@ -57,7 +57,7 @@
                 @elseif($applicant->status == 'ADMITTED' && !$student)
                     <div class="alert alert-success">
                       <h3 class="text-white" style="font-size: 18px!important;"><i class="fa fa-check-circle"></i> 
-                      Congratulations! You have been successfully admitted to {{ $check_selected_applicant->selections[0]->campusProgram->program->name }} program.</h3>
+                      Congratulations! You have been successfully admitted to {{ $check_selected_applicant->selections[0]->campusProgram->program->name }} programme.</h3>
                     </div>
                 @elseif($student)
                     <div class="alert alert-success">
@@ -69,7 +69,7 @@
 				  <div class="alert alert-danger">
                     <h3 class="text-white" style="font-size: 18px!important;">
                       <i class="fa fa-times-circle"></i> 
-                      Sorry you have not been selected. Please <a href="#">click here</a> to select a new program.
+                      Sorry you have not been selected. Please <a href="#">click here</a> to select a new programme2.
                     </h3>
                   </div>  
               @endif
