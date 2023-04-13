@@ -702,7 +702,9 @@ class ApplicantController extends Controller
                          //    if(($o_level_pass_count+$o_level_must_pass_count) >= $program->entryRequirements[0]->pass_subjects && $o_level_must_pass_count >= count(unserialize($program->entryRequirements[0]->must_subjects))){
 
                              $programs[] = $program;
-                         }
+                         }elseif($applicant->veta_status === 1){
+                             $programs[] = $program;							 
+						 }
 /*                          if(unserialize($program->entryRequirements[0]->must_subjects) != ''){
                              if(($o_level_pass_count+$o_level_other_pass_count) >= $program->entryRequirements[0]->pass_subjects){
                          //    if(($o_level_pass_count+$o_level_must_pass_count) >= $program->entryRequirements[0]->pass_subjects && $o_level_must_pass_count >= count(unserialize($program->entryRequirements[0]->must_subjects))){
