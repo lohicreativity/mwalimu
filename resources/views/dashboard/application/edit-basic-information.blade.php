@@ -128,7 +128,7 @@
                   ];
 
                   $address = [
-                     'placeholder'=>'P. O. Box 3918 Dar Es Salaam',
+                     'placeholder'=>'3918',
                      'class'=>'form-control',
                      'required'=>true
                   ];
@@ -329,7 +329,13 @@
                   <div class="row">
                      <div class="form-group col-6">
                        {!! Form::label('','Mailing Address') !!}
-                       {!! Form::text('address', substr($applicant->address, 9),$address) !!}
+					   @php
+						  $applicant_address = null;
+						  if($applicant->address != null){
+							$applicant_address = substr($applicant->address, 9);  
+						  }
+					   @endphp					   
+                       {!! Form::text('address', $applicant_address, 9),$address) !!}
                     </div>
                     <div class="form-group col-6">
                        {!! Form::label('','Country') !!}
