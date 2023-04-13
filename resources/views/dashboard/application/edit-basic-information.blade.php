@@ -254,7 +254,7 @@
 					   @php
 						  $applicant_phone = null;
 						  if($applicant->phone != null){
-							$applicant_phone = "0".substr($applicant->phone;  
+							$applicant_phone = "0".substr($applicant->phone);  
 						  }
 					   @endphp
                        {!! Form::text('phone', $applicant_phone, 3),$phone) !!}
