@@ -213,7 +213,7 @@
 														  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Nationality:</span> &nbsp; {{ $applicant->nationality }}											  
 														  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Disability:</span> &nbsp; {{ $applicant->disabilityStatus->name }}
 														  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Entry Mode:</span> &nbsp; {{ $applicant->entry_mode }}	 												  
-														  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Postal Address:</span> &nbsp; {{ $rapplicant->address }}	 	
+														  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Postal Address:</span> &nbsp; {{ $applicant->address }}	 	
 														  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Physical Address:</span> &nbsp; {{ $applicant->ward->name }},&nbsp; {{ $applicant->region->name }},&nbsp; {{ $applicant->country->name }}	 	 
 													</div>
 												  </div>
