@@ -46,7 +46,7 @@
                   <div class="alert alert-danger">
                     <h3 class="text-white" style="font-size: 18px!important;">
                       <i class="fa fa-times-circle"></i> 
-                      Sorry you have not been selected. Please <a href="#">click here</a> to select a new programme1.
+                      Sorry you have not been selected. Please <a href="#">click here</a> to select a new programme.
                     </h3>
                   </div>
                 @elseif($applicant->confirmation_status != 'CANCELLED' && $applicant->status == 'SELECTED')
@@ -69,7 +69,7 @@
 				  <div class="alert alert-danger">
                     <h3 class="text-white" style="font-size: 18px!important;">
                       <i class="fa fa-times-circle"></i> 
-                      Sorry you have not been selected. Please <a href="#">click here</a> to select a new programme2.
+                      Sorry you have not been selected. Please <a href="#">click here</a> to select a new programme.
                     </h3>
                   </div>  
               @endif
@@ -251,7 +251,13 @@
                     </div>
                     <div class="form-group col-3">
                        {!! Form::label('','Phone') !!}
-                       {!! Form::text('phone', "0".substr($applicant->phone, 3),$phone) !!}
+					   @php
+						  $applicant_phone = null;
+						  if($applicant->phone != null){
+							$applicant_phone = "0".substr($applicant->phone;  
+						  }
+					   @endphp
+                       {!! Form::text('phone', $applicant_phone, 3),$phone) !!}
                     </div>
                     <div class="form-group col-3">
                        {!! Form::label('','Birth date') !!}
