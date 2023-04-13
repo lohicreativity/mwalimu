@@ -195,8 +195,6 @@
 												<li><i class="icon-li fa fa-envelope"></i> &nbsp; &nbsp;{{ $applicant->email }}</li>
 												<li><i class="icon-li fa fa-phone"></i> &nbsp; &nbsp;{{ $applicant->phone }}</li>
 											</ul>
-											<a href="{{ url('finance/download-payments?keyword='.$applicant->index_number) }}" class="btn btn-primary">Download Admission Letter </a>									  
-
 											<hr>
 
 											<div class="accordion" id="applicant-accordion">
@@ -232,7 +230,7 @@
 													<div class="card-body">
 
 													  @if($applicant->nextOfKin)
-														  &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Names:</span> &nbsp; {{ $applicant->nextOfKin->first_name }} {{ $applicant->nextOfKin->middle_name }} {{ $applicant->nextOfKin->surname }}
+														  &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Names:</span> &nbsp; {{ ucwords(strtolower($applicant->nextOfKin->first_name)) }} {{ ucwords(strtolower($applicant->nextOfKin->middle_name)) }} {{ ucwords(strtolower($applicant->nextOfKin->surname)) }}
 														  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Gender:</span> &nbsp; @if($applicant->nextOfKin->gender == 'M') Male @elseif($applicant->nextOfKin->gender == 'F') Female @endif
 														  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Relationship:</span> &nbsp; {{ $applicant->nextOfKin->relationship }}
 														  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Nationality:</span> &nbsp; {{ $applicant->nextOfKin->nationality }}											  
@@ -247,7 +245,7 @@
 
 												<div class="card">
 												  <div class="card-header" id="ss-letter">
-													  <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseLetter" aria-expanded="true" aria-controls="collapseLetter" download>
+													  <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseLetter" aria-expanded="true" aria-controls="collapseLetter">
 														&nbsp; Admission Letter &nbsp; <i class="fa fa-chevron-right list-group-chevron"></i>
 													  </button>
 												  </div>
