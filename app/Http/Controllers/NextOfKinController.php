@@ -50,7 +50,9 @@ class NextOfKinController extends Controller
             'first_name'=>'required',
             'surname'=>'required',
             'address'=>'required',
-            'nationality'=>'required'
+            'nationality'=>'required',
+			'phone' => 'required|digits:10|regex:/(0)[0-9]/',
+            'address'=>'required|integer'
         ]);
 
         if($validation->fails()){

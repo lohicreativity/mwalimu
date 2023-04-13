@@ -77,18 +77,18 @@
                   ];
 
                   $address = [
-                     'placeholder'=>'Address',
+                     'placeholder'=>'1234',
                      'class'=>'form-control',
                      'required'=>true
                   ];
 
                   $email = [
-                     'placeholder'=>'Email',
+                     'placeholder'=>'nextofkin@live.com',
                      'class'=>'form-control',
                   ];
 
                   $phone = [
-                     'placeholder'=>'Phone',
+                     'placeholder'=>'0739000000',
                      'class'=>'form-control',
                      'required'=>true
                   ];
@@ -134,7 +134,13 @@
                     </div>
                     <div class="form-group col-6">
                        {!! Form::label('','Phone') !!}
-                       {!! Form::text('phone',$next_of_kin->phone,$phone) !!}
+					   @php
+						  $next_of_kin_phone = null;
+						  if($next_of_kin->phone != null){
+							$next_of_kin_phone = "0".substr($next_of_kin->phone,3);  
+						  }
+					   @endphp					   
+                       {!! Form::text('phone',$next_of_kin_phone,$phone) !!}
                     </div>
                   </div>
                    <div class="row">
@@ -151,8 +157,8 @@
                        <select name="nationality" class="form-control" required>
                          <option value="">Select Nationality</option>
                          @foreach($countries as $country)
-                         <option value="{{ $country->nationality }}" @if($next_of_kin->nationality == $country->name) selected="selected" @endif>{{ $country->nationality }}</option>
-                         @endforeach
+                         <option value="{{ $country->nationality }}" @if($next_of_kin->nationality == $country->nationality) selected="selected" @endif>{{ $country->nationality }}</option>
+                         @endforeach					 
                        </select>
                     </div>
                     <div class="form-group col-4">
@@ -175,7 +181,13 @@
                   <div class="row">
                      <div class="form-group col-6">
                        {!! Form::label('','Address') !!}
-                       {!! Form::text('address',$next_of_kin->address,$address) !!}
+					   @php
+						  $next_of_kin_address = null;
+						  if($next_of_kin->address != null){
+							$next_of_kin_address = substr($next_of_kin->address, 9);  
+						  }
+					   @endphp					   
+                       {!! Form::text('address',$next_of_kin_address,$address) !!}
                     </div>
                     <div class="form-group col-6">
                        {!! Form::label('','Country') !!}
