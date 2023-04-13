@@ -247,7 +247,7 @@
 
 												<div class="card">
 												  <div class="card-header" id="ss-letter">
-													  <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseLetter" aria-expanded="true" aria-controls="collapseLetter">
+													  <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseLetter" aria-expanded="true" aria-controls="collapseLetter" download>
 														&nbsp; Admission Letter &nbsp; <i class="fa fa-chevron-right list-group-chevron"></i>
 													  </button>
 												  </div>
