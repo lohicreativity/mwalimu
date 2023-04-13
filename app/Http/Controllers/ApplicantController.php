@@ -522,6 +522,7 @@ class ApplicantController extends Controller
     public function requestResults(Request $results)
     {
 		$applicant = User::find(Auth::user()->id)->applicants()->with('programLevel')->where('campus_id',session('applicant_campus_id'))->first();
+		$selection_status = ApplicantProgramSelection::where('applicant_id',$applicant->id)->count();
 		if($applicant->is_transfered != 1){
         if(!ApplicationWindow::where('campus_id',session('applicant_campus_id'))->where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('status','ACTIVE')->first()){
              return redirect()->to('application/submission')->with('error','Application window already closed');
@@ -534,7 +535,8 @@ class ApplicantController extends Controller
            'o_level_necta_results'=>NectaResultDetail::with('results')->where('applicant_id',$applicant->id)->where('exam_id','1')->where('verified',1)->get(),
            'a_level_necta_results'=>NectaResultDetail::with('results')->where('applicant_id',$applicant->id)->where('exam_id','2')->where('verified',1)->get(),
            'nacte_results'=>NacteResultDetail::with('results')->where('applicant_id',$applicant->id)->where('verified',1)->get(),
-           'out_results'=>OutResultDetail::with('results')->where('applicant_id',$applicant->id)->where('verified',1)->get()
+           'out_results'=>OutResultDetail::with('results')->where('applicant_id',$applicant->id)->where('verified',1)->get(),
+		   'selection_status'=>$selection_status>0? $selection_status : 0
         ];
         return view('dashboard.application.request-results',$data)->withTitle('Request Results');
     }
