@@ -189,7 +189,7 @@
 													{{ $selection->campusProgram->program->code }}
 												@endif
 											@endforeach											
-											&nbsp; | &nbsp; $applicant->intake->name) Intake &nbsp; | &nbsp; <span style="color:red">{{ $applicant->status }} </span></h6>
+											&nbsp; | &nbsp; {{ (ucwords(strtolower($applicant->intake->name))) }} Intake &nbsp; | &nbsp; <span style="color:red">{{ (ucwords(strtolower($applicant->status))) }} </span></h6>
 											<hr>
 											<ul style="list-style-type: none; inline">
 												<li><i class="icon-li fa fa-envelope"></i> &nbsp; &nbsp;{{ $applicant->email }}</li>
@@ -212,9 +212,9 @@
 														  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Date of Birth:</span> &nbsp; {{ $applicant->birth_date }}
 														  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Nationality:</span> &nbsp; {{ $applicant->nationality }}											  
 														  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Disability:</span> &nbsp; {{ $applicant->disabilityStatus->name }}
-														  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Entry Mode:</span> &nbsp; {{ $applicant->entry_mode }}	 												  
+														  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Entry Mode:</span> &nbsp; {{ ucwords(strtolower($applicant->entry_mode)) }}	 												  
 														  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Postal Address:</span> &nbsp; {{ $applicant->address }}	 	
-														  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Physical Address:</span> &nbsp; {{ $applicant->ward->name }},&nbsp; {{ $applicant->region->name }},&nbsp; {{ $applicant->country->name }}	 	 
+														  <br> &nbsp; &nbsp; &nbsp; <span style="font-style:italic">Physical Address:</span> &nbsp; {{ ucwords(strtolower($applicant->ward->name)) }},&nbsp; {{ ucwords(strtolower($applicant->region->name)) }},&nbsp; {{ ucwords(strtolower($applicant->country->name)) }}	 	 
 													</div>
 												  </div>
 												</div>
