@@ -195,7 +195,7 @@
 												<li><i class="icon-li fa fa-envelope"></i> &nbsp; &nbsp;{{ $applicant->email }}</li>
 												<li><i class="icon-li fa fa-phone"></i> &nbsp; &nbsp;{{ $applicant->phone }}</li>
 											</ul>
-											<a href="{{ url('finance/download-payments?keyword='.$payer->registration_number) }}" class="btn btn-primary">Download Admission Letter </a>									  
+											<a href="{{ url('finance/download-payments?keyword='.$applicant->index_number) }}" class="btn btn-primary">Download Admission Letter </a>									  
 
 											<hr>
 
