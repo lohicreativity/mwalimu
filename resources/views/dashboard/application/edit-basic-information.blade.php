@@ -335,7 +335,7 @@
 							$applicant_address = substr($applicant->address, 9);  
 						  }
 					   @endphp					   
-                       {!! Form::text('address', $applicant_address, 9),$address) !!}
+                       {!! Form::text('address', $applicant_address, $address) !!}
                     </div>
                     <div class="form-group col-6">
                        {!! Form::label('','Country') !!}
