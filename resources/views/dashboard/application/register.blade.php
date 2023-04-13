@@ -130,14 +130,17 @@
               console.log(data);
               if(data.award != null){
                 var text = data.award.name;
-                if(text.includes('Certificate')){
+/*                 if(text.includes('Certificate')){
                   var element = '<option value="">Select Highest Qualification</option>';
                       element += '<option value="DIRECT">Form IV or VI (Direct)</option>';
-                }else{
+                }else{ 
                   var element = '<option value="">Select Highest Qualification</option>';
                       element += '<option value="DIRECT">Form IV or VI (Direct)</option>';
                       element += '<option value="EQUIVALENT">Certificate or Diploma (Equivalent)</option>';
-                }
+                }*/
+				var element = '<option value="">Select Highest Qualification</option>';
+			        element += '<option value="DIRECT">Form IV or VI (Direct)</option>';
+			        element += '<option value="EQUIVALENT">Certificate or Diploma (Equivalent)</option>';
                 $('#ss-entry-mode').html(element);
               }
 
