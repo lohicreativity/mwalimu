@@ -244,6 +244,27 @@
 													</div>
 												  </div>
 												</div>
+
+												<div class="card">
+												  <div class="card-header" id="ss-letter">
+													  <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseLetter" aria-expanded="true" aria-controls="collapseLetter">
+														&nbsp; Admission Letter &nbsp; <i class="fa fa-chevron-right list-group-chevron"></i>
+													  </button>
+												  </div>
+
+												  <div id="collapseLetter" class="collapse" aria-labelledby="ss-letter" data-parent="#applicant-accordion">
+													<div class="card-body">
+														 <iframe
+															  src="https://drive.google.com/viewerng/viewer?embedded=true&url={{ asset('/uploads/Admission-Letter-'.$applicant->first_name.'-'.$applicant->surname.'.pdf') }}#toolbar=0&scrollbar=0"
+															  frameBorder="0"
+															  scrolling="auto"
+															  height="400px"
+															  width="100%"
+														  ></iframe>
+													</div>
+												  </div>												  
+												  
+												</div>												
 											</div>                                  
 										</div>
 									</div>
