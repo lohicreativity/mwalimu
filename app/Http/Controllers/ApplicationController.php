@@ -7409,9 +7409,11 @@ class ApplicationController extends Controller
      */
     public function specialRegister(Request $request)
     {   
-		$staff = User::find(Auth::user()->id)->staff;
         $ac_year = StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first();	
         $semester = Semester::where('status','ACTIVE')->first();
+		$staff = User::find(Auth::user()->id)->staff;       
+	    $studentship_status = StudentshipStatus::where('name','ACTIVE')->first();
+		
 		if(!$ac_year){
 			return redirect()->back()->with('error', 'No active academic year');
 		}
