@@ -7418,6 +7418,7 @@ class ApplicationController extends Controller
 		if(!$semester){
 			return redirect()->back()->with('error', 'No active semester');
 		}
+		return $request->keyword;
 		
 		$application_window = ApplicationWindow::where('campus_id',$staff->campus_id)->whereYear('end_date',explode('/',$ac_year->academicYear->year)[0])->first();
 		$applicant = Applicant::whereDoesntHave('student')->whereHas('selections',function($query) use($application_window){$query->where('status','SELECTED')
