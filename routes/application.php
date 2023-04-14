@@ -29,6 +29,7 @@ Route::get('/', [ApplicationController::class,'index']);
 Route::get('registration', [ApplicationController::class,'index']);
 Route::post('registration/store',[ApplicationController::class,'store']);
 Route::get('special-registration', [ApplicationController::class,'specialRegister']);
+Route::get('manual-registration', [ApplicationController::class,'registerManual']);
 Route::get('login',[ApplicantController::class,'showLogin']);
 Route::get('logout',[ApplicantController::class,'logout']);
 Route::post('authenticate',[ApplicantController::class,'authenticate']);
