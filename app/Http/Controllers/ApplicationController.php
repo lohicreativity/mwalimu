@@ -7423,7 +7423,7 @@ class ApplicationController extends Controller
 		$applicant = Applicant::whereDoesntHave('student')->whereHas('selections',function($query) use($application_window){$query->where('status','SELECTED')
 								->where('application_window_id',$application_window->id);})->with('selections.campusProgram.program')->where('status','ADMITTED')
 								->where('application_window_id',$application_window->id)->where('campus_id', $staff->campus_id)
-								->where('id',$request->keyword)->orWhere('surname',$request->keyword)->first();
+								->where('index_number',$request->keyword)->orWhere('surname',$request->keyword)->first();
          $data = [
             'semester'=>$semester,
             'applicant'=>$applicant,
