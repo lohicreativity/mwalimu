@@ -7403,4 +7403,34 @@ class ApplicationController extends Controller
 
         return redirect()->back()->with('message','Veta certificate status updated successfully');
     }
+	
+    /**
+     * Manual registration
+     */
+    public function specialRegister(Request $request)
+    {   
+		$staff = User::find(Auth::user()->id)->staff;
+        $ac_year = StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first();	
+        $semester = Semester::where('status','ACTIVE')->first();
+		if(!ac_year){
+			return redirect()->back()->with('error', 'No active academic year');
+		}
+		if(!semester){
+			return redirect()->back()->with('error', 'No active semester');
+		}
+		
+		$application_window = ApplicationWindow::where('campus_id',$staff->campus_id)->whereYear('end_date',explode('/',$ac_year->academicYear->year)[0])->first();
+		$applicant = Applicant::whereDoesntHave('student')->whereHas('selections',function($query) use($application_window){$query->where('status','SELECTED')
+								->where('application_window_id',$application_window->id);})->with('selections.campusProgram.program')->where('status','ADMITTED')
+								->where('application_window_id',$application_window->id)->where('campus_id', $staff->campus_id)
+								->where('id',$request->keyword)->orWhere('surname',$request->keyword)->first();
+         $data = [
+            'semester'=>$semester,
+            'applicant'=>$applicant,
+			'student'=>[],
+            'ac_year'=>$ac_year
+         ];
+		 
+        return view('dashboard.application.special-registration',$data)->withTitle('Admission Package');
+    }	
 }
