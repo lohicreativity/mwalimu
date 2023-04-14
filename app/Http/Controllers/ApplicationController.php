@@ -7643,6 +7643,10 @@ class ApplicationController extends Controller
 				$registration->registered_by_staff_id = $staff->id;
 				$registration->status = $loan_allocation->has_signed == 1? 'REGISTERED' : 'UNREGISTERED';
 				$registration->save();
+				
+				$loan_allocation->registration_number = $student->registration_number;
+				$loan_allocation->student_id = $student->id;
+				$loan_allocation->save();				
 			}else{
 				if($reg = Registration::where('student_id',$student->id)->where('study_academic_year_id',$ac_year->id)->where('semester_id',$semester->id)->first()){
 					$registration = $reg;
@@ -7657,10 +7661,7 @@ class ApplicationController extends Controller
 				$registration->registered_by_staff_id = $staff->id;
 				$registration->status = 'REGISTERED';
 				$registration->save();					
-			}
-			$loan_allocation->registration_number = $student->registration_number;
-			$loan_allocation->student_id = $student->id;
-			$loan_allocation->save();			
+			}			
 
         $check_insurance = false;
         if(count($applicant->insurances) != 0){
