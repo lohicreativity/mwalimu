@@ -7412,10 +7412,10 @@ class ApplicationController extends Controller
 		$staff = User::find(Auth::user()->id)->staff;
         $ac_year = StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first();	
         $semester = Semester::where('status','ACTIVE')->first();
-		if(!ac_year){
+		if(!$ac_year){
 			return redirect()->back()->with('error', 'No active academic year');
 		}
-		if(!semester){
+		if(!$semester){
 			return redirect()->back()->with('error', 'No active semester');
 		}
 		
