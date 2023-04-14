@@ -58,7 +58,7 @@
                      ];
                      $keyword = [
                          'class'=>'form-control',
-                         'placeholder'=>'index number, registration number, or surname',
+                         'placeholder'=>'index number, registration number or surname',
                          'required'=>true
                      ];					 
                  @endphp			   
@@ -73,7 +73,7 @@
 						{!! Form::text('semester',$semester->name,$semster) !!}
 					  </div>
 					  <div class="form-group col-4">
-						{!! Form::label('','Search Student') !!}
+						{!! Form::label('','Search Keyword') !!}
 						{!! Form::text('student',null,$keyword) !!}
 					  </div>						  
 					</div>

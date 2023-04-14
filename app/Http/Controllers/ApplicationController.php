@@ -7408,7 +7408,9 @@ class ApplicationController extends Controller
      * Manual registration
      */
     public function specialRegister(Request $request)
-    {   
+    {   if(!empty($request->keyword)){
+		return 1;
+	}
 		$staff = User::find(Auth::user()->id)->staff;
         $ac_year = StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first();	
         $semester = Semester::where('status','ACTIVE')->first();
