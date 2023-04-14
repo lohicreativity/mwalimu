@@ -99,7 +99,7 @@
                           <th>Name</th>
                           <th>Gender</th>
                           <th>Phone</th>						  
-						  <th>Index#. </th>					  
+						  <th>Index# </th>					  
                           <th>Registration#</th>
                           <th>Programme</th>
                           <th>Status</th>						  
