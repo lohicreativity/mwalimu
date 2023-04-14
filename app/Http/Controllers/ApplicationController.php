@@ -7446,4 +7446,16 @@ class ApplicationController extends Controller
 		 
         return view('dashboard.application.special-registration',$data)->withTitle('Admission Package');
     }	
+	
+/**
+     * Manual registration
+     */
+    public function registerManual(Request $request)
+    {
+		if($request->type == "applicant"){
+			return $request->keyword;
+		}elseif($request->type == "student"){
+			return $request->keyword;
+		}
+	}	
 }
