@@ -7437,12 +7437,13 @@ class ApplicationController extends Controller
 				return redirect()->back()->with('error', 'The student cannot be registered');				
 			}
 		}
-         $data = [
-            'semester'=>$semester,
-            'applicant'=>$applicant,
+		
+		$data = [
+			'semester'=>$semester,
+			'applicant'=>$applicant,
 			'student'=>$student,
-            'ac_year'=>$ac_year
-         ];
+			'ac_year'=>$ac_year
+		];
 		 
         return view('dashboard.application.special-registration',$data)->withTitle('Special Registration');
     }	
@@ -7452,8 +7453,434 @@ class ApplicationController extends Controller
      */
     public function registerManual(Request $request)
     {
+        $staff = User::find(Auth::user()->id)->staff;
+        $ac_year = StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first();
+		$semester = Semester::where('status','ACTIVE')->first();
+		DB::beginTransaction();
 		if($request->type == "applicant"){
-			return $request->keyword;
+			if(str_contains($semester->name,'2')){
+				return redirect()->back()->with('error','Active semester must be set to first semester');
+			}
+			
+			$applicant = Applicant::with(['intake','campus','nextOfKin','country','region','district','ward','insurances','programLevel'])->find($request->get('keyword'));
+
+			$applicant->results_check = 1;
+			$applicant->insurance_check = 1;
+			$applicant->personal_info_check = 1;
+			$applicant->medical_form_check = 1;
+			$applicant->registered_by_user_id = Auth::user()->id;
+			$applicant->save();
+
+			$selection = ApplicantProgramSelection::with('campusProgram.program')->where('applicant_id',$request->get('keyword'))->where('status','SELECTED')->first();
+
+			$academic_status = AcademicStatus::where('name','FRESHER')->first();
+
+			$last_student = DB::table('students')->select(DB::raw('MAX(REVERSE(SUBSTRING(REVERSE(registration_number),1,7))) AS last_number'))->where('campus_program_id',$selection->campusProgram->id)->first();
+
+			if(!empty($last_student->last_number)){
+				$code = sprintf('%04d', substr($last_student->last_number, 0, 4) + 1);
+			}else{
+			   $code = sprintf('%04d',1);
+			}
+			$year = substr(date('Y'), 2);
+
+			$prog_code = explode('.', $selection->campusProgram->program->code);
+
+			$program_code = $prog_code[0].'.'.$prog_code[1];    
+
+			$stud_group = explode('.', $selection->campusProgram->program->code);
+			
+			if(str_contains($applicant->intake->name,'March')){
+				if(str_contains($applicant->campus->name,'Kivukoni')){
+					$program_code = $prog_code[0].'3.'.$prog_code[1];
+					if (str_contains(strtolower($selection->campusProgram->program->name), 'diploma')) {
+
+						$stud_group = substr($stud_group[0], 1, 1).$stud_group[1].'3';  
+
+					} elseif (str_contains(strtolower($selection->campusProgram->program->name), 'certificate') || str_contains(strtolower($selection->campusProgram->program->name), 'technician')) {
+
+						$stud_group = 'C'.$stud_group[1].'3';
+					}
+				} elseif (str_contains($applicant->campus->name,'Karume')) {
+
+					$program_code = $prog_code[0].'Z3.'.$prog_code[1];
+
+					if (str_contains(strtolower($selection->campusProgram->program->name), 'diploma')) {
+
+						$stud_group = substr($stud_group[0], 1, 1).$stud_group[1].'Z3';
+
+					} elseif (str_contains(strtolower($selection->campusProgram->program->name), 'certificate') || str_contains(strtolower($selection->campusProgram->program->name), 'technician')) {
+
+						$stud_group = 'C'.$stud_group[1].'Z3';
+
+					}
+				}  elseif (str_contains($applicant->campus->name,'Pemba')) {
+
+					$program_code = $prog_code[0].'P3.'.$prog_code[1];
+
+					if (str_contains(strtolower($selection->campusProgram->program->name), 'diploma')) {
+
+						$stud_group = substr($stud_group[0], 1, 1).$stud_group[1].'P3';
+
+					} elseif (str_contains(strtolower($selection->campusProgram->program->name), 'certificate') || str_contains(strtolower($selection->campusProgram->program->name), 'technician')) {
+
+						$stud_group = 'C'.$stud_group[1].'P3';
+					}
+				}
+
+			}else{
+				// september intake
+				if(str_contains($applicant->campus->name,'Karume')){
+
+					$program_code = $prog_code[0].'Z9.'.$prog_code[1];
+
+					if (str_contains(strtolower($selection->campusProgram->program->name), 'bachelor')) {           
+						$program_code = $prog_code[0].'Z.'.$prog_code[1];
+						if (str_contains($selection->campusProgram->program->name, 'Leadership') && str_contains($selection->campusProgram->program->name, 'Governance')) {
+
+						$stud_group = $stud_group[0].$stud_group[1].'Z';
+
+						} elseif (str_contains($selection->campusProgram->program->name, 'Procurement') && str_contains($selection->campusProgram->program->name, 'Supply')) {
+
+						$stud_group = $stud_group[0].$stud_group[1].'Z';
+
+						} else {
+
+						$stud_group = $stud_group[0].'Z'.$stud_group[1];
+
+						}
+
+					} else if (str_contains(strtolower($selection->campusProgram->program->name), 'diploma')) {
+
+						$stud_group = substr($stud_group[0], 1, 1).$stud_group[1].'Z9';
+
+					} else if (str_contains(strtolower($selection->campusProgram->program->name), 'certificate') || str_contains(strtolower($selection->campusProgram->program->name), 'technician')) {
+
+						$stud_group = 'C'.$stud_group[1].'Z9';
+
+					}
+
+				} elseif (str_contains($applicant->campus->name,'Kivukoni')) {
+
+					if (str_contains(strtolower($selection->campusProgram->program->name), 'bachelor')) {
+						
+						if (str_contains(strtolower($selection->campusProgram->program->name), 'human') && str_contains(strtolower($selection->campusProgram->program->name), 'resource')) {
+
+							$stud_group = substr($stud_group[0], 0, 1).$stud_group[1];
+							
+						} else {
+
+							$stud_group = $stud_group[0].$stud_group[1];
+						}
+					} elseif (str_contains(strtolower($selection->campusProgram->program->name), 'diploma')) {
+						$program_code = $prog_code[0].'9.'.$prog_code[1];
+						$stud_group = substr($stud_group[0], 1, 1).$stud_group[1].'9';
+
+					} elseif (str_contains(strtolower($selection->campusProgram->program->name), 'certificate') || str_contains(strtolower($selection->campusProgram->program->name), 'technician')) {
+						$program_code = $prog_code[0].'9.'.$prog_code[1];
+						$stud_group = 'C'.$stud_group[1];
+					}	
+				} elseif (str_contains($applicant->campus->name,'Pemba')) {
+					$program_code = $prog_code[0].'P9.'.$prog_code[1];
+					
+					if (str_contains(strtolower($selection->campusProgram->program->name), 'bachelor')) {
+						$program_code = $prog_code[0].'P.'.$prog_code[1];
+						$stud_group = $stud_group[0].$stud_group[1].'P';
+
+					} elseif (str_contains(strtolower($selection->campusProgram->program->name), 'diploma')) {
+						$stud_group = substr($stud_group[0], 1, 1).$stud_group[1].'P9';
+
+					} elseif (str_contains(strtolower($selection->campusProgram->program->name), 'certificate') || str_contains(strtolower($selection->campusProgram->program->name), 'technician')) {
+						$stud_group = 'C'.$stud_group[1].'P9';
+					}
+				}  
+			}
+			
+			if($stud = Student::where('applicant_id',$applicant->id)->first()){
+				$student = $stud;
+			}else{
+				$student = new Student;
+			}
+		
+			$student->applicant_id = $applicant->id;
+			$student->first_name = $applicant->first_name;
+			$student->middle_name = $applicant->middle_name;
+			$student->surname = $applicant->surname;
+			$student->user_id = $applicant->user_id;
+			$student->gender = $applicant->gender;
+			$student->phone = $applicant->phone;
+			$student->email = $applicant->email;
+			$student->birth_date = $applicant->birth_date;
+			$student->nationality = $applicant->nationality;
+			$student->registration_year = date('Y');
+			$student->year_of_study = 1;
+			$student->image = $applicant->passport_picture;
+			$student->campus_program_id = $selection->campusProgram->id;
+			$student->registration_number = 'MNMA/'.$program_code.'/'.$code.'/'.$year;
+			$student->disability_status_id = $applicant->disability_status_id;
+			$student->studentship_status_id = $studentship_status->id;
+			$student->academic_status_id = $academic_status->id;
+			
+			$user = User::find($applicant->user_id);
+			$student->user_id = $user->id;
+			$student->save();
+
+			$loan_allocation = LoanAllocation::where('index_number',$applicant->index_number)->where('study_academic_year_id',$ac_year->id)->first();	
+			if($loan_allocation){
+				if($reg = Registration::where('student_id',$student->id)->where('study_academic_year_id',$ac_year->id)->where('semester_id',$semester->id)->first()){
+					$registration = $reg;
+				}else{
+					$registration = new Registration;
+				}
+				$registration->study_academic_year_id = $ac_year->id;
+				$registration->semester_id = $semester->id;
+				$registration->student_id = $student->id;
+				$registration->year_of_study = 1;
+				$registration->registration_date = date('Y-m-d');
+				$registration->registered_by_staff_id = $staff->id;
+				$registration->status = $loan_allocation->has_signed == 1? 'REGISTERED' : 'UNREGISTERED';
+				$registration->save();
+			}else{
+				if($reg = Registration::where('student_id',$student->id)->where('study_academic_year_id',$ac_year->id)->where('semester_id',$semester->id)->first()){
+					$registration = $reg;
+				}else{
+					$registration = new Registration;
+				}
+				$registration->study_academic_year_id = $ac_year->id;
+				$registration->semester_id = $semester->id;
+				$registration->student_id = $student->id;
+				$registration->year_of_study = 1;
+				$registration->registration_date = date('Y-m-d');
+				$registration->registered_by_staff_id = $staff->id;
+				$registration->status = 'REGISTERED';
+				$registration->save();					
+			}
+			$loan_allocation->registration_number = $student->registration_number;
+			$loan_allocation->student_id = $student->id;
+			$loan_allocation->save();			
+
+        $check_insurance = false;
+        if(count($applicant->insurances) != 0){
+            if($applicant->insurances[0]->verification_status != 'VERIFIED'){
+                $check_insurance = true;
+            }
+        }
+        
+        if($ac_year->nhif_enabled == 1){
+            if($applicant->insurance_status == 0 || $check_insurance){
+			 try{
+				 $path = public_path().'/avatars/'.$student->image;
+				 $type = pathinfo($path, PATHINFO_EXTENSION);
+				 $data = file_get_contents($path);
+				 $base64 = base64_encode($data); //'data:image/' . $type . ';base64,' . base64_encode($data);
+				 $data = [
+					  'FormFourIndexNo'=>str_replace('/', '-', $applicant->index_number),
+					  'FirstName'=> $applicant->first_name,
+					  'MiddleName'=> $applicant->middle_name,
+					  'Surname'=> $applicant->surname,
+					  'AdmissionNo'=> $student->registration_number,
+					  'CollageFaculty'=> $applicant->campus->name,
+					  'MobileNo'=> '0'.substr($applicant->phone,3),
+					  'ProgrammeOfStudy'=> $selection->campusProgram->program->name,
+					  'CourseDuration'=> $selection->campusProgram->program->min_duration,
+					  'MaritalStatus'=> "Single",
+					  'DateJoiningEmployer'=> date('Y-m-d'),
+					  'DateOfBirth'=> $applicant->birth_date,
+					  'NationalID'=> $applicant->nin? $applicant->nin : '',
+					  'Gender'=> $applicant->gender == 'M'? 'Male' : 'Female',
+					  'PhotoImage'=>$base64
+				  ];
+					  
+				  $url = 'http://196.13.105.15/OMRS/api/v1/Verification/StudentRegistration';
+				  $token = NHIFService::requestToken();
+
+					  //return $token;
+				  $curl_handle = curl_init();
+
+					 // return json_encode($data);
+		   
+
+				  curl_setopt_array($curl_handle, array(
+				  CURLOPT_URL => $url,
+				  CURLOPT_HTTPHEADER => array('Content-Type: application/json',$token),
+				  CURLOPT_RETURNTRANSFER => true,
+				  CURLOPT_ENCODING => "",
+				  CURLOPT_MAXREDIRS => 10,
+				  CURLOPT_TIMEOUT => 4200,
+				  CURLOPT_FOLLOWLOCATION => false,
+				  CURLOPT_SSL_VERIFYPEER => false,
+				  CURLOPT_CUSTOMREQUEST => "POST",
+				  CURLOPT_POSTFIELDS => json_encode([$data])
+				  ));
+
+				  $response = curl_exec($curl_handle);
+				  $response = json_decode($response);
+				  $StatusCode = curl_getinfo($curl_handle, CURLINFO_HTTP_CODE);
+				  $err = curl_error($curl_handle);
+
+				  curl_close($curl_handle);
+
+				  $data = [
+				  'BatchNo'=>'8002217/'.$ac_year->academicYear->year.'/001',
+				  'Description'=>'Batch submitted on '.date('m d, Y'),
+				  'CardApplications'=>[ 
+					 array(
+					  'CorrelationID'=>$applicant->index_number,
+						'MobileNo'=>'0'.substr($applicant->phone, 3),
+						'AcademicYear'=>$ac_year->academicYear->year,
+						'YearOfStudy'=>1,
+						'CardNo'=>null,
+						'Category'=>1//$response->statusCode == 200? 1 : 2
+					 )      
+				   ]
+				 ];
+				
+				$url = 'http://196.13.105.15/OMRS/api/v1/Verification/SubmitCardApplications';
+				// $token = NHIFService::requestToken();
+
+				//return $token;
+				$curl_handle = curl_init();
+
+						  //  return json_encode($data);
+				 
+
+				  curl_setopt_array($curl_handle, array(
+				  CURLOPT_URL => $url,
+				  CURLOPT_HTTPHEADER => array('Content-Type: application/json',$token),
+				  CURLOPT_RETURNTRANSFER => true,
+				  CURLOPT_ENCODING => "",
+				  CURLOPT_MAXREDIRS => 10,
+				  CURLOPT_TIMEOUT => 4200,
+				  CURLOPT_FOLLOWLOCATION => false,
+				  CURLOPT_SSL_VERIFYPEER => false,
+				  CURLOPT_CUSTOMREQUEST => "POST",
+				  CURLOPT_POSTFIELDS => json_encode($data)
+				));
+
+				$response = curl_exec($curl_handle);
+				$response = json_decode($response);
+				$StatusCode = curl_getinfo($curl_handle, CURLINFO_HTTP_CODE);
+				$err = curl_error($curl_handle);
+
+				curl_close($curl_handle);
+				}catch(\Exception $e){
+					$record = new InsuranceRegistration;
+					$record->applicant_id = $applicant->id;
+					$record->student_id = $student->id;
+					$record->study_academic_year_id = $ac_year->id;
+					$record->is_success = 0;
+					$record->save();
+				}
+			}
+		}			
+        $tuition_invoice = Invoice::whereHas('feeType',function($query){
+               $query->where('name','LIKE','%Tuition%');
+        })->with(['gatewayPayment','feeType'])->where('payable_type','applicant')->where('payable_id',$applicant->id)->first();
+
+        $misc_invoice = Invoice::whereHas('feeType',function($query){
+               $query->where('name','LIKE','%Miscellaneous%');
+        })->with(['gatewayPayment','feeType'])->where('payable_type','applicant')->where('payable_id',$applicant->id)->first();
+
+        $usd_currency = Currency::where('code','USD')->first();
+
+        $acpac = new ACPACService;
+        $stud_name = $student->surname.', '.$student->first_name.' '.$student->middle_name;
+        $stud_reg = substr($student->registration_number, 5);
+        $stud_reg = str_replace('/', '', $stud_reg);
+        $parts = explode('.', $stud_reg);
+        if($parts[0] == 'BTC'){
+            $stud_reg = 'BT'.$parts[1];
+        }else{
+            $stud_reg = $parts[0].$parts[1];
+        }
+        $next_of_kin = $applicant->nextOfKin->surname.', '.$applicant->nextOfKin->first_name.' '.$applicant->nextOfKin->middle_name;
+        $gparts = explode('.', $program_code);			
+
+        $next_of_kin_email = $applicant->nextOfKin->email? $applicant->nextOfKin->email : 'UNKNOWN';
+        
+        if ($tuition_invoice) {
+            $acpac->query("INSERT INTO customer (IDCUST,IDGRP,NAMECUST,TEXTSTRE1,TEXTSTRE2,TEXTSTRE3,TEXTSTRE4,NAMECITY,CODESTTE,CODEPSTL,CODECTRY,NAMECTAC,TEXTPHON1,TEXTPHON2,CODETERR,IDACCTSET,CODECURN,EMAIL1,EMAIL2) VALUES ('".$stud_reg."','".$stud_group."','".$stud_name."','".$applicant->address."','".$applicant->district->name."','".$applicant->ward->name."','".$applicant->street."','".$applicant->region->name."','".$applicant->country->name."','".$applicant->address."','".$applicant->country->name."','".$next_of_kin."','".$applicant->phone."','".$applicant->nextOfKin->phone."','".''."','STD','TSH','".$applicant->email."','".$next_of_kin_email."')");
+            $acpac->query("INSERT INTO invoices (INVNUMBER,INVDATE,INVDESC,IDCUST,NAMECUST,[LINENO],REVACT,REVDESC,REVREF,REVAMT,IMPORTED,IMPDATE) VALUES ('".$tuition_invoice->control_no."','".date('Y',strtotime($tuition_invoice->created_at))."','".$tuition_invoice->feeType->description."','".$stud_reg."','".$stud_name."','1','".$tuition_invoice->feeType->gl_code."','".$tuition_invoice->feeType->name."','".$tuition_invoice->feeType->description."','".$tuition_invoice->amount."','0','".date('Ymd',strtotime(now()))."')");
+        }			
+        if(str_contains($applicant->programLevel->name,'Bachelor')){
+            $quality_assurance_fee = FeeAmount::whereHas('feeItem',function($query){
+                $query->where('name','LIKE','%TCU%');
+            })->where('study_academic_year_id',$ac_year->id)->with(['feeItem.feeType'])->first();
+        }else{
+            $quality_assurance_fee = FeeAmount::whereHas('feeItem',function($query){
+                $query->where('name','LIKE','%NACTE%');
+            })->where('study_academic_year_id',$ac_year->id)->with(['feeItem.feeType'])->first();
+        }
+
+        $other_fees = FeeAmount::whereHas('feeItem',function($query){
+                $query->where('is_mandatory',1)->where('name','NOT LIKE','%NACTE%')->where('name','NOT LIKE','%TCU%');
+            })->with(['feeItem.feeType'])->where('study_academic_year_id',$ac_year->id)->get();
+
+        if(str_contains($applicant->nationality,'Tanzania')){
+            $acpac->query("INSERT INTO invoices (INVNUMBER,INVDATE,INVDESC,IDCUST,NAMECUST,[LINENO],REVACT,REVDESC,REVREF,REVAMT,IMPORTED,IMPDATE) VALUES ('".$misc_invoice->control_no."','".date('Y',strtotime($misc_invoice->created_at))."','".$quality_assurance_fee->feeItem->feeType->description."','".$stud_reg."','".$stud_name."','1','".$quality_assurance_fee->feeItem->feeType->gl_code."','".$quality_assurance_fee->feeItem->feeType->name."','".$quality_assurance_fee->feeItem->feeType->description."','".$quality_assurance_fee->amount_in_tzs."','0','".date('Ymd',strtotime(now()))."')");
+
+            foreach ($other_fees as $fee) {
+                $acpac->query("INSERT INTO invoices (INVNUMBER,INVDATE,INVDESC,IDCUST,NAMECUST,[LINENO],REVACT,REVDESC,REVREF,REVAMT,IMPORTED,IMPDATE) VALUES ('".$misc_invoice->control_no."','".date('Y',strtotime($misc_invoice->created_at))."','".$fee->feeItem->feeType->description."','".$stud_reg."','".$stud_name."','1','".$fee->feeItem->feeType->gl_code."','".$fee->feeItem->feeType->name."','".$fee->feeItem->feeType->description."','".$fee->amount_in_tzs."','0','".date('Y',strtotime(now()))."')");
+            }
+        }else{
+            $acpac->query("INSERT INTO invoices (INVNUMBER,INVDATE,INVDESC,IDCUST,NAMECUST,[LINENO],REVACT,REVDESC,REVREF,REVAMT,IMPORTED,IMPDATE) VALUES ('".$misc_invoice->control_no."','".date('Y',strtotime($misc_invoice->created_at))."','".$quality_assurance_fee->feeItem->feeType->description."','".$stud_reg."','".$stud_name."','1','".$quality_assurance_fee->feeItem->feeType->gl_code."','".$quality_assurance_fee->feeItem->feeType->name."','".$quality_assurance_fee->feeItem->feeType->description."','".($quality_assurance_fee->amount_in_usd*$usd_currency->factor)."','0','".date('Ymd',strtotime(now()))."')");
+
+            foreach ($other_fees as $fee) {
+                $acpac->query("INSERT INTO invoices (INVNUMBER,INVDATE,INVDESC,IDCUST,NAMECUST,[LINENO],REVACT,REVDESC,REVREF,REVAMT,IMPORTED,IMPDATE) VALUES ('".$misc_invoice->control_no."','".date('Y',strtotime($misc_invoice->created_at))."','".$fee->feeItem->feeType->description."','".$stud_reg."','".$stud_name."','1','".$fee->feeItem->feeType->gl_code."','".$fee->feeItem->feeType->name."','".$fee->feeItem->feeType->description."','".($fee->amount_in_usd*$usd_currency->factor)."','0','".date('Ymd',strtotime(now()))."')");
+            }
+        }			
+        if ($tuition_invoice) {
+            $tuition_receipts = GatewayPayment::where('control_no',$tuition_invoice->control_no)->get();
+
+            foreach($tuition_receipts as $receipt){
+                if($receipt->psp_name == 'National Microfinance Bank'){
+                    $bank_code = 619;
+                    $bank_name = 'NMB';
+                }else{
+                    $bank_code = 615;
+                    $bank_name = 'CRDB';
+                }   
+                
+                $acpac->query("INSERT INTO receipts (BANK,BANKNAME,RCPNUMBER,RCPDATE,RCPDESC,IDCUST,NAMECUST,INVOICE,AMTAPPLIED,IMPORTED,IMPDATE) VALUES ('".$bank_code."','".$bank_name."','".substr($receipt->transaction_id,5)."','".date('Ymd',strtotime($receipt->datetime))."','".$tuition_invoice->feeType->description."','".$stud_reg."','".$stud_name."','".$receipt->control_no."','".$receipt->paid_amount."','0','".date('Ymd',strtotime(now()))."')");
+            }
+        }
+
+       
+
+        $misc_receipts = GatewayPayment::where('control_no',$misc_invoice->control_no)->get();
+        
+        foreach ($misc_receipts as $receipt) {
+            if($receipt->psp_name == 'National Microfinance Bank'){
+                $bank_code = 619;
+                $bank_name = 'NMB';
+            }else{
+                $bank_code = 615;
+                $bank_name = 'CRDB';
+            }
+            
+            $acpac->query("INSERT INTO receipts (BANK,BANKNAME,RCPNUMBER,RCPDATE,RCPDESC,IDCUST,NAMECUST,INVOICE,AMTAPPLIED,IMPORTED,IMPDATE) VALUES ('".$bank_code."','".$bank_name."','".substr($receipt->transaction_id,5)."','".date('Ymd',strtotime($receipt->datetime))."','".$misc_invoice->feeType->description."','".$stud_reg."','".$stud_name."','".$receipt->control_no."','".$receipt->paid_amount."','0','".date('Ymd',strtotime(now()))."')");
+        }
+
+        $acpac->close();
+
+        Invoice::whereHas('feeType',function($query){
+               $query->where('name','LIKE','%Tuition%');
+        })->with(['gatewayPayment','feeType'])->where('payable_type','applicant')->where('payable_id',$applicant->id)->update(['payable_type'=>'student','payable_id'=>$student->id,'applicable_id'=>$ac_year->id,'applicable_type'=>'academic_year']);
+
+        Invoice::whereHas('feeType',function($query){
+               $query->where('name','LIKE','%Miscellaneous%');
+        })->with(['gatewayPayment','feeType'])->where('payable_type','applicant')->where('payable_id',$applicant->id)->update(['payable_type'=>'student','payable_id'=>$student->id,'applicable_id'=>$ac_year->id,'applicable_type'=>'academic_year']);
+
+		$transfered_status = false;
+
+		try{
+		   Mail::to($user)->send(new StudentAccountCreated($student, $selection->campusProgram->program->name,$ac_year->academicYear->year, $transfered_status));
+		}catch(Exception $e){}
+
+        DB::commit();
+
+        return redirect()->to('application/applicants-registration?application_window_id='.$applicant->application_window_id.'&program_level_id='.$applicant->program_level_id)->with('message','Student registered successfully with registration number '.$student->registration_number);
+
 		}elseif($request->type == "student"){
 			return $request->keyword;
 		}
