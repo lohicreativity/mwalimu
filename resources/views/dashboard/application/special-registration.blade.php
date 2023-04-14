@@ -102,23 +102,25 @@
 						  <th>Index#. </th>					  
                           <th>Registration#</th>
                           <th>Programme</th>
+                          <th>Status</th>						  
                           <th>Action</th>						  
                         </tr>
                     </thead>
                     <tbody>
 				@if($student)
                    <tr>
-					  <td>{{ $student->first_name }} {{ $student->middle_name }} {{ $student->surname }}</td>
+					  <td>{{ ucwords(strtolower($student->first_name)) }} {{ ucwords(strtolower($student->middle_name)) }} {{ ucwords(strtolower($student->surname)) }}</td>
                       <td>{{ $student->gender }}</td>
                       <td>{{ $student->phone }}</td>					  
 					  <td>{{ $student->applicant->index_number }}</td>
                       <td>{{ $student->registration_number }}</td>					  
                       <td>{{ $student->campusProgram->program->code }}</td>
+                      <td>{{ ucwords(strtolower($student->academicStatus->name)) }}</td>					  
 					  <td><a href="{{ url('application/manual-registration?type=student&keyword='.$student->id) }}" class="btn btn-primary">Register</a></td>
                    </tr>
 				@elseif($applicant)   
                    <tr>
-					  <td>{{ $applicant->first_name }} {{ $applicant->middle_name }} {{ $applicant->surname }}</td>
+					  <td>{{ ucwords(strtolower($applicant->first_name)) }} {{ ucwords(strtolower($applicant->middle_name)) }} {{ ucwords(strtolower($applicant->surname)) }}</td>
                       <td>{{ $applicant->gender }}</td>
                       <td>{{ $applicant->phone }}</td>					  
 					  <td>{{ $applicant->index_number }}</td>
@@ -130,6 +132,7 @@
 							@endif
 						@endforeach
 					  </td>
+					  <td>{{ ucwords(strtolower($applicant->status)) }}</td>					  
 					  <td><a href="{{ url('application/manual-registration?type=applicant&keyword='.$applicant->id) }}" class="btn btn-primary">Register</a></td>					  
                    </tr>
 				@endif

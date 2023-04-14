@@ -7428,7 +7428,7 @@ class ApplicationController extends Controller
 							->orWhereHas('registrations', function($query) use($ac_year, $semester){$query->where('status','UNREGISTERED')->where('semester_id',$semester->id)->where('study_academic_year_id',$ac_year->id);})
 							->whereHas('studentshipStatus', function($query){$query->where('name','ACTIVE')->OrWhere('name','RESUMED');})
 							->whereHas('academicStatus', function($query){$query->where('name','!=','FAIL&DISCO')->orWhere('name','!=','DECEASED');})
-							->where('registration_number', $request->keyword)->with('campusProgram.program')->first();
+							->where('registration_number', $request->keyword)->with(['campusProgram.program','academicStatus'])->first();
 							
 		if($semester->id === 2 && $student->campusProgram->program->min_duration === $student->year_of_study){
 			$finalist_status = SemesterRemarks::where('student_id', $student->id)->where('semester_id', $semester->id)->where('study_academic_year_id',$ac_year->id)
