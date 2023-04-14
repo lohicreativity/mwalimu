@@ -74,7 +74,7 @@
 					  </div>
 					  <div class="form-group col-4">
 						{!! Form::label('','Search Keyword') !!}
-						{!! Form::text('student',null,$keyword) !!}
+						{!! Form::text('keyword',null,$keyword) !!}
 					  </div>						  
 					</div>
                     <div class="ss-form-actions">
