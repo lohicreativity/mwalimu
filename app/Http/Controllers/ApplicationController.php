@@ -7412,8 +7412,6 @@ class ApplicationController extends Controller
 
         $ac_year = StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first();	
         $semester = Semester::where('status','ACTIVE')->first();
-		$staff = User::find(Auth::user()->id)->staff;       
-	    $studentship_status = StudentshipStatus::where('name','ACTIVE')->first();
 		
 		if(!$ac_year){
 			return redirect()->back()->with('error', 'No active academic year');
@@ -7421,7 +7419,7 @@ class ApplicationController extends Controller
 		if(!$semester){
 			return redirect()->back()->with('error', 'No active semester');
 		}
-		
+		$staff = User::find(Auth::user()->id)->staff;       		
 		$application_window = ApplicationWindow::where('campus_id',$staff->campus_id)->whereYear('end_date',explode('/',$ac_year->academicYear->year)[0])->first();
 		$applicant = Applicant::whereDoesntHave('student')->whereHas('selections',function($query) use($application_window){$query->where('status','SELECTED')
 								->where('application_window_id',$application_window->id);})->with('selections.campusProgram.program')->where('status','ADMITTED')
@@ -7459,6 +7457,8 @@ class ApplicationController extends Controller
         $staff = User::find(Auth::user()->id)->staff;
         $ac_year = StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first();
 		$semester = Semester::where('status','ACTIVE')->first();
+	    $studentship_status = StudentshipStatus::where('name','ACTIVE')->first();
+		
 		DB::beginTransaction();
 		if($request->type == "applicant"){
 			if(str_contains($semester->name,'2')){
