@@ -7408,7 +7408,7 @@ class ApplicationController extends Controller
      * Manual registration
      */
     public function specialRegister(Request $request)
-    {   if(!empty($request->keyword)){
+    {   if(!empty($request->student)){
 		return 1;
 	}
 		$staff = User::find(Auth::user()->id)->staff;
