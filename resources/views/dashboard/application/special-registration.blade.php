@@ -114,7 +114,7 @@
 					  <td>{{ $student->applicant->index_number }}</td>
                       <td>{{ $student->registration_number }}</td>					  
                       <td>{{ $student->campusProgram->program->code }}</td>
-					  <td><a href="{{ url('application/manual-registration?type=student&keywork='.$student->id) }}" class="btn btn-primary">Register</a></td>
+					  <td><a href="{{ url('application/manual-registration?type=student&keyword='.$student->id) }}" class="btn btn-primary">Register</a></td>
                    </tr>
 				@elseif($applicant)   
                    <tr>
@@ -130,7 +130,7 @@
 							@endif
 						@endforeach
 					  </td>
-					  <td><a href="{{ url('application/manual-registration?type=applicant&keywork='.$applicant->id) }}" class="btn btn-primary">Register</a></td>					  
+					  <td><a href="{{ url('application/manual-registration?type=applicant&keyword='.$applicant->id) }}" class="btn btn-primary">Register</a></td>					  
                    </tr>
 				@endif
                    </tbody>
