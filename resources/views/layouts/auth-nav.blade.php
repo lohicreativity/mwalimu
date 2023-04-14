@@ -503,7 +503,7 @@
               @endcan
               @can('view-special-registration')
               <li class="nav-item">
-                <a href="{{ url('application/special-registration?study_academic_year_id='.session('active_academic_year_id')) }}" class="nav-link">
+                <a href="{{ url('application/special-registration') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Special Registration</p>
                 </a>
