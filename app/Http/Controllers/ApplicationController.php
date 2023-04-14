@@ -7444,7 +7444,7 @@ class ApplicationController extends Controller
             'ac_year'=>$ac_year
          ];
 		 
-        return view('dashboard.application.special-registration',$data)->withTitle('Admission Package');
+        return view('dashboard.application.special-registration',$data)->withTitle('Special Registration');
     }	
 	
 /**
