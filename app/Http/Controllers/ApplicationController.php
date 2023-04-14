@@ -7853,20 +7853,21 @@ class ApplicationController extends Controller
         }
 
        
-
-        $misc_receipts = GatewayPayment::where('control_no',$misc_invoice->control_no)->get();
-        
-        foreach ($misc_receipts as $receipt) {
-            if($receipt->psp_name == 'National Microfinance Bank'){
-                $bank_code = 619;
-                $bank_name = 'NMB';
-            }else{
-                $bank_code = 615;
-                $bank_name = 'CRDB';
-            }
-            
-            $acpac->query("INSERT INTO receipts (BANK,BANKNAME,RCPNUMBER,RCPDATE,RCPDESC,IDCUST,NAMECUST,INVOICE,AMTAPPLIED,IMPORTED,IMPDATE) VALUES ('".$bank_code."','".$bank_name."','".substr($receipt->transaction_id,5)."','".date('Ymd',strtotime($receipt->datetime))."','".$misc_invoice->feeType->description."','".$stud_reg."','".$stud_name."','".$receipt->control_no."','".$receipt->paid_amount."','0','".date('Ymd',strtotime(now()))."')");
-        }
+		if($misc_invoice){
+			$misc_receipts = GatewayPayment::where('control_no',$misc_invoice->control_no)->get();
+			
+			foreach ($misc_receipts as $receipt) {
+				if($receipt->psp_name == 'National Microfinance Bank'){
+					$bank_code = 619;
+					$bank_name = 'NMB';
+				}else{
+					$bank_code = 615;
+					$bank_name = 'CRDB';
+				}
+				
+				$acpac->query("INSERT INTO receipts (BANK,BANKNAME,RCPNUMBER,RCPDATE,RCPDESC,IDCUST,NAMECUST,INVOICE,AMTAPPLIED,IMPORTED,IMPDATE) VALUES ('".$bank_code."','".$bank_name."','".substr($receipt->transaction_id,5)."','".date('Ymd',strtotime($receipt->datetime))."','".$misc_invoice->feeType->description."','".$stud_reg."','".$stud_name."','".$receipt->control_no."','".$receipt->paid_amount."','0','".date('Ymd',strtotime(now()))."')");
+			}			
+		}
 
         $acpac->close();
 
