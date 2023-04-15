@@ -7438,7 +7438,9 @@ class ApplicationController extends Controller
 				return redirect()->back()->with('error', 'The student cannot be registered');				
 			}
 		}
-		
+		if(!$applicant || !$student){
+			return redirect()->back()->with('error', 'The student cannot be registered');			
+		}
 		$data = [
 			'semester'=>$semester,
 			'applicant'=>$applicant,
@@ -7887,7 +7889,7 @@ class ApplicationController extends Controller
 
         DB::commit();
 
-        return redirect()->to('application/applicants-registration?application_window_id='.$applicant->application_window_id.'&program_level_id='.$applicant->program_level_id)->with('message','Student registered successfully with registration number '.$student->registration_number);
+        return redirect()->to('application/special-registration')->with('message','Student registered successfully with registration number '.$student->registration_number);
 
 		}elseif($request->type == "student"){
 			return $request->keyword;
