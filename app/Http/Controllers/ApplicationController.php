@@ -7438,8 +7438,8 @@ class ApplicationController extends Controller
 				return redirect()->back()->with('error', 'The student cannot be registered');				
 			}
 		}
-		if($request && (!$applicant || !$student)){
-			return redirect()->back()->with('error', 'The student cannot be registered');			
+		if($request->keyword && (!$applicant || !$student)){
+			return redirect()->back()->with('error', 'The student cannot be registered2');			
 		}
 		$data = [
 			'semester'=>$semester,
