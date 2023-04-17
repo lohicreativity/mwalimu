@@ -80,7 +80,7 @@
             @if(count($beneficiaries) != 0)
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">{{ (List of Loan Beneficiaries) }}</h3>
+                <h3 class="card-title">{{ __('List of Loan Beneficiaries') }}</h3><br>
                 <a href="{{ url('finance/download-loan-beneficiaries?study_academic_year_id='.$request->get('study_academic_year_id').'&year_of_study='.$request->get('year_of_study')) }}" class="btn btn-primary">Download Loan Beneficiaries</a>
 				
               </div>
