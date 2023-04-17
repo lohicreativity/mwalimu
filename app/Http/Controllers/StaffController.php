@@ -282,11 +282,11 @@ class StaffController extends Controller
 		}elseif($student){
 			$payments = $student_payments;
 		}
-		$filename = $student? $student->registration_number : $applicant->index_number.'-Payments.csv';
+		$filename = $student? $student->registration_number : $applicant->index_number;
 		$headers = [
 				  'Cache-Control'       => 'must-revalidate, post-check=0, pre-check=0',   
 				  'Content-type'        => 'text/csv',
-				  'Content-Disposition' => 'attachment; filename='.$filename,
+				  'Content-Disposition' => 'attachment; filename='.$filename.'-Payments.csv',
 				  'Expires'             => '0',
 				  'Pragma'              => 'public'
 		];
