@@ -7892,8 +7892,8 @@ class ApplicationController extends Controller
 			return redirect()->to('application/special-registration')->with('message','Student registered successfully with registration number '.$student->registration_number);
 
 			}elseif($request->type == "student"){
-				$student = Student::where('registration_number',$request->keyword)->with(['applicant','studentshipStatus','academicStatus','semesterRemarks','overallRemark'])->first();
-				if(count($student->semesterRemarks)>0){
+				$student = Student::where('id',$request->keyword)->with(['applicant','studentshipStatus','academicStatus','semesterRemarks','overallRemark'])->first();
+				if($semesterRemarks){
 					foreach($student->semesterRemarks as $rem){
 						if($student->academicStatus->name == 'RETAKE'){
 							if($rem->semester_id == session('active_semester_id') && $rem->remark != 'RETAKE'){
@@ -7903,7 +7903,7 @@ class ApplicationController extends Controller
 					}					
 				}
 
-				if(count($student->overallRemark)>0){
+				if($student->overallRemark){
 					if($student->overallRemark){
 						if($student->overallRemark->remark == 'SUPP'){
 							return redirect()->back()->with('error','The student cannot be registered');
