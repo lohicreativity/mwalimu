@@ -277,14 +277,15 @@
                         <tr>
                           <th>#</th>
                           <th>Name</th>
-						  <th>Form IV Index No.</th>
+						  <th>Form IV Index#</th>
 						    @if($request->get('program_level_id') != 1)
 								@if($request->get('program_level_id') == 2)
-									<th>NACTE Reg. No./F4 Index No.</th>
+									<th>NACTE Reg#/Form IV Index#</th>
 								@else
-									<th>F6 Index No./AVN</th>
+									<th>F6 Index#/AVN</th>
 								@endif
 							@endif
+                          <th>Batch#</th>							
                           <th>Phone</th>
                           <th>Gender</th>
                           <th>Programme</th>
@@ -309,6 +310,13 @@
 							@endforeach
 						</td>
 					  @endif
+					  <td>
+					  @if($applicant->batch_no == 0)
+						Batch#1
+					  @else
+						Batch# {{ ($applicant->batch_no) }}  
+					  @endif
+					  </td>
 					  <td>{{ $applicant->phone }}</td>
                       <td>{{ $applicant->gender }}</td>
                       <td>@foreach($applicant->selections as $selection)
