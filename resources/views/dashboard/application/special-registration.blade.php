@@ -49,11 +49,13 @@
                      $ac_yr = [
                          'class'=>'form-control',
                          'placeholder'=>'',
+						 'readonly'=>true,
                          'required'=>true
                      ];
                      $semster = [
                          'class'=>'form-control',
                          'placeholder'=>'',
+						 'readonly'=>true,						 
                          'required'=>true
                      ];
                      $keyword = [
