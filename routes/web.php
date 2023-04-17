@@ -51,7 +51,6 @@ Route::get('batch-processing', function (Request $request) {
 	   $applicant->save();
 
 	   ApplicantProgramSelection::where('applicant_id',$applicant->id)->where('status','APPROVING')->update(['status'=>'SELECTED']);
-		return 1;
 	}
 
     ApplicantProgramSelection::whereHas('applicant',function($query) use($request){$query->where('program_level_id',1);})
