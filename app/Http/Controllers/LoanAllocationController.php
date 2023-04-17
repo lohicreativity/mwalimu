@@ -140,6 +140,56 @@ class LoanAllocationController extends Controller
     	}
     	return view('dashboard.finance.loan-beneficiaries',$data)->withTitle('Loan Beneficiaries');
     }
+
+    /**
+     * Download Loan Beneficiaries
+     */
+    public function downloadLoanBeneficiaries(Request $request)
+    {	return $request;
+        $headers = [
+                      'Cache-Control'       => 'must-revalidate, post-check=0, pre-check=0',   
+                      'Content-type'        => 'text/csv',
+                      'Content-Disposition' => 'attachment; filename=Hostel-Status.csv',
+                      'Expires'             => '0',
+                      'Pragma'              => 'public'
+              ];
+
+        $list = Applicant::whereHas('selections',function($query){
+               $query->where('status','SELECTED');
+           })->with(['selections'=>function($query){
+               $query->where('status','SELECTED');
+           },'selections.campusProgram.program'])->where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$request->get('program_level_id'))->where('hostel_status',1)->get();
+
+        $callback = function() use ($list) 
+              {
+				  
+                  $file_handle = fopen('php://output', 'w');
+                  fputcsv($file_handle,['Index Number','First Name','Middle Name','Surname','Gender','Programme','Category','Status']);
+                  foreach ($list as $row) { 
+				      if($row->hostel_available_status === 1){
+                             $status =   'Allocated';
+					  }elseif($row->hostel_available_status === 0){
+								$status =    'Not Allocated';
+					  }else{
+								$status =	'Pending';
+					  }
+					  
+					  if($row->hostel_status === 1){
+							 $category =  'On Campus';
+					  }elseif($row->hostel_status === 2){
+							   $category =     'Off Campus';
+					  }elseif($row->hostel_status == 3){
+							   $category =     'Any';
+					  }else{
+								$category =    'None';
+					  }
+                      fputcsv($file_handle, [$row->index_number,$row->first_name,$row->middle_name,$row->surname,$row->gender == 'M'? 'Male' : 'Female', $row->selections[0]->campusProgram->program->name,$category,$status]);
+                  }
+                  fclose($file_handle);
+              };
+
+              return response()->stream($callback, 200, $headers);
+    }
 	
     public function updateLoanBeneficiaries(Request $request)
     {
