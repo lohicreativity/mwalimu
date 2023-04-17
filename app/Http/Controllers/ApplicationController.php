@@ -7893,7 +7893,7 @@ class ApplicationController extends Controller
 
 			}elseif($request->type == "student"){
 				$student = Student::where('id',$request->keyword)->with(['applicant','studentshipStatus','academicStatus','semesterRemarks','overallRemark'])->first();
-				if($semesterRemarks){
+				if($student->semesterRemarks){
 					foreach($student->semesterRemarks as $rem){
 						if($student->academicStatus->name == 'RETAKE'){
 							if($rem->semester_id == session('active_semester_id') && $rem->remark != 'RETAKE'){
