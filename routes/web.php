@@ -49,7 +49,7 @@ Route::get('batch-processing', function (Request $request) {
 //	   $applicant->multiple_admissions = $data['AdmissionStatusCode'] == 225 ? 1 : 0; // from API
 	   $applicant->multiple_admissions = 1; //Imitation of the previous statement
 	   $applicant->save();
-
+		return 1;
 	   $selection = ApplicantProgramSelection::where('applicant_id',$applicant)->where('status','APPROVING')->update(['status'=>'SELECTED']);
 
 	}
