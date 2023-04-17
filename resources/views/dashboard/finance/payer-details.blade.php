@@ -137,7 +137,7 @@
 									<div id="collapsePayments" class="collapse" aria-labelledby="ss-payments" data-parent="#student-accordion">
 
 									  <div class="card-body">
-										<a href="{{ url('finance/download-payments?keyword='.$payer->registration_number) }}" class="btn btn-primary">Download Payments</a>									  
+										<a href="{{ url('finance/download-payments?keyword='.$payer->registration_number) }}" class="btn btn-primary">Download Payment Details</a>									  
 									    <table class="table table-bordered ss-paginated-table" style="font-size:10pt">
 											<thead>
 											<tr>
