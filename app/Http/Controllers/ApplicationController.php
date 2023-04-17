@@ -59,6 +59,8 @@ use App\Utils\DateMaker;
 use App\Services\ACPACService;
 use Carbon\Carbon;
 use Validator, Hash, Config, Auth, Mail, PDF, DB;
+use App\Domain\Academic\Models\SemesterRemark;
+use App\Domain\Academic\Models\AnnualRemark;
 
 class ApplicationController extends Controller
 {
