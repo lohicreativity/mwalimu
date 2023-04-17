@@ -312,7 +312,7 @@
 					  @endif
 					  <td>
 					  @if($applicant->batch_no == 0)
-						Batch#1
+						N/A
 					  @else
 						Batch# {{ ($applicant->batch_no) }}  
 					  @endif
