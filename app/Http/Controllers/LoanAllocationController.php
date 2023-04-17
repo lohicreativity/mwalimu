@@ -157,15 +157,16 @@ class LoanAllocationController extends Controller
               ];
 
         $list = LoanAllocation::whereHas('student.applicant',function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
-		->with('student')->where('study_academic_year_id', $request->study_academic_year_id)->where('year_of_study',$request->year_of_study)->get();
+		->with(['student','student.campusProgram.program'])->where('study_academic_year_id', $request->study_academic_year_id)->where('year_of_study',$request->year_of_study)->get();
 
         $callback = function() use ($list) 
               {
 				  
                   $file_handle = fopen('php://output', 'w');
-                  fputcsv($file_handle,['Index Number','First Name','Middle Name','Surname','Gender']);
+                  fputcsv($file_handle,['Form Four Index','Student Name','Sex','Registration Number','Course Code','Year of Study','Bank Account Number','Bank Name','Batch','Remarks']);
                   foreach ($list as $row) { 
-                      fputcsv($file_handle, [$row->student->applicant->index_number,$row->student->first_name,$row->student->middle_name,$row->student->surname,$row->student->gender == 'M'? 'Male' : 'Female']);
+                      fputcsv($file_handle, [$row->student->applicant->index_number,$row->student->surname.', '.$row->student->first_name $row->student->middle_name,$row->student->gender == 'M'? 'Male' : 'Female'
+					  ,$row->student->registration_number,$row->student->campusProgram->program->code,$row->student->year_of_study,$row->bank_name, 1, null]);
                   }
                   fclose($file_handle);
               };
