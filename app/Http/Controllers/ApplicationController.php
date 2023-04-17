@@ -934,7 +934,7 @@ class ApplicationController extends Controller
 				$query->where('application_window_id',$window->id);
 		}])->where('campus_id',session('applicant_campus_id'))->get() : [];
         
-        $count = ApplicantProgramSelection::where('applicant_id',$request->get('applicant_id'))->count();
+        $count = ApplicantProgramSelection::where('applicant_id',$request->get('applicant_id'))->where('batch_no',0)->count();
         
 
         //$applicant = Applicant::find($request->get('applicant_id'));
@@ -943,10 +943,11 @@ class ApplicationController extends Controller
             $applicant->save();
         }
  */
-		$previous_studied_programme = Applicant::whereHas('selections', function($query) {$query->where('status', 'SELECTED');})->with('selections.campusProgram.program')
+/* 		$previous_studied_programme = Applicant::whereHas('selections', function($query) {$query->where('status', 'SELECTED');})->with('selections.campusProgram.program')
 									->where('index_number', $applicant->index_number)->where('program_level_id', $applicant->program_level_id - 1)->first(); 
-		//return $previous_studied_programme->selections[0];
-        $similar_count = ApplicantProgramSelection::where('applicant_id',$request->get('applicant_id'))->where('campus_program_id',$request->get('campus_program_id'))->count();
+		//return $previous_studied_programme->selections[0]; */
+        $similar_count = ApplicantProgramSelection::where('applicant_id',$request->get('applicant_id'))
+												  ->where('campus_program_id',$request->get('campus_program_id'))->where('batch_no',0)->count();
         if($similar_count == 0){
              if($count >= 4){
                 return redirect()->back()->with('error','You cannot select more than 4 programmes');
