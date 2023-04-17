@@ -7430,7 +7430,7 @@ class ApplicationController extends Controller
 							->whereHas('studentshipStatus', function($query){$query->where('name','ACTIVE')->OrWhere('name','RESUMED');})
 							->whereHas('academicStatus', function($query){$query->where('name','!=','FAIL&DISCO')->orWhere('name','!=','DECEASED');})
 							->where('registration_number', $request->keyword)->with(['campusProgram.program','academicStatus'])->first();
-		return $student;					
+					
 		if($semester->id === 2 && $student->campusProgram->program->min_duration === $student->year_of_study){
 			$finalist_status = SemesterRemarks::where('student_id', $student->id)->where('semester_id', $semester->id)->where('study_academic_year_id',$ac_year->id)
 								->where('year_of_study',$student->year_of_study)->count();
@@ -7439,6 +7439,7 @@ class ApplicationController extends Controller
 			}
 		}
 		if($request->keyword && (!$applicant || !$student)){
+					return $student;
 			return redirect()->back()->with('error', 'The student cannot be registered');			
 		}
 		$data = [
