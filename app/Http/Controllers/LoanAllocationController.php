@@ -150,7 +150,7 @@ class LoanAllocationController extends Controller
         $headers = [
                       'Cache-Control'       => 'must-revalidate, post-check=0, pre-check=0',   
                       'Content-type'        => 'text/csv',
-                      'Content-Disposition' => 'attachment; filename=Loans-Beneficiaries.csv',
+                      'Content-Disposition' => 'attachment; filename=Loans-Beneficiaries'.'- Yr-'.$request->year_of_study.'-'.$request->study_academic_year_id.'csv',
                       'Expires'             => '0',
                       'Pragma'              => 'public'
               ];
