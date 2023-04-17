@@ -39,7 +39,7 @@ Route::get('batch-processing', function (Request $request) {
 	//						->where('program_level_id',$request->get('program_level_id'))->first(); // from API
      $batch = ApplicantProgramSelection::whereHas('applicant',function($query) use($request){
 	 $query->where('program_level_id',1);})
-	 ->where('application_window_id', 2)->where('status', 'SELECTED')->max('batch_no');
+	 ->where('application_window_id', 2)->where('status', 'SELECTED')->latest()->first();
 	      
 	$current_batch = $batch->batch_no + 1;
 	
