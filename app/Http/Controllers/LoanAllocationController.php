@@ -146,6 +146,7 @@ class LoanAllocationController extends Controller
      */
     public function downloadLoanBeneficiaries(Request $request)
     {	
+		$staff = User::find(Auth::user()->id)->staff;
         $headers = [
                       'Cache-Control'       => 'must-revalidate, post-check=0, pre-check=0',   
                       'Content-type'        => 'text/csv',
