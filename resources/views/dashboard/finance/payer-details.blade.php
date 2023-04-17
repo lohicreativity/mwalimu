@@ -62,7 +62,7 @@
                   </div>
                   </div>
                   <div class="ss-form-actions">
-                   <button type="submit" class="btn btn-primary">{{ __('Search') }}</button>
+                   <button type="submit" data-target="#ss-payer-details" class="btn btn-primary">{{ __('Search') }}</button>
                   </div>
 
                  {!! Form::close() !!}
@@ -71,7 +71,7 @@
 			
             <!-- /.card -->
 			@if($payer && $category == 'student')
-			<div style="margin-top:20px;" data-toggle="modal">
+			<div style="margin-top:20px;" class="modal fade" id="ss-payer-details">
 			  <div class="modal-content">
 				<div class="modal-header">
 				  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -137,7 +137,7 @@
 									<div id="collapsePayments" class="collapse" aria-labelledby="ss-payments" data-parent="#student-accordion">
 
 									  <div class="card-body">
-										<a href="{{ url('finance/download-payments?keyword='.$payer->registration_number) }}" class="btn btn-primary">Download Payment Details</a><br>									  
+										<a href="{{ url('finance/download-payments?keyword='.$payer->registration_number) }}" class="btn btn-primary">Download Payment Details</a><br><br>									  
 									    <table class="table table-bordered ss-paginated-table" style="font-size:10pt">
 											<thead>
 											<tr>
@@ -252,7 +252,7 @@
 									<div id="collapsePayments" class="collapse" aria-labelledby="ss-payments" data-parent="#student-accordion">
 
 									  <div class="card-body">
-										<a href="{{ url('finance/download-payments?keyword='.$payer->index_number) }}" class="btn btn-primary">Download Payment Details</a> <br>									  									  
+										<a href="{{ url('finance/download-payments?keyword='.$payer->index_number) }}" class="btn btn-primary">Download Payment Details</a> <br><br>									  									  
 									    <table class="table table-bordered ss-paginated-table" style="font-size:10pt">
 											<thead>
 											<tr>
