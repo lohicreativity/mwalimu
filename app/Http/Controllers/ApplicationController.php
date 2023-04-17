@@ -7897,7 +7897,7 @@ class ApplicationController extends Controller
 					foreach($student->semesterRemarks as $rem){
 						if($student->academicStatus->name == 'RETAKE'){
 							if($rem->semester_id == session('active_semester_id') && $rem->remark != 'RETAKE'){
-								return redirect()->back()->with('error','The student cannot be registered');
+								return redirect()->back()->with('error','The student cannot be registered1');
 							}
 						}
 					}					
@@ -7906,7 +7906,7 @@ class ApplicationController extends Controller
 				if($student->overallRemark){
 					if($student->overallRemark){
 						if($student->overallRemark->remark == 'SUPP'){
-							return redirect()->back()->with('error','The student cannot be registered');
+							return redirect()->back()->with('error','The student cannot be registered2');
 						}
 					}						
 				}
@@ -7933,10 +7933,10 @@ class ApplicationController extends Controller
 						}
 					}elseif($last_annual_remark->remark == 'FAIL&DISCO'){
 						$can_register = false;
-						return redirect()->back()->with('error','The student cannot be registered');
+						return redirect()->back()->with('error','The student cannot be registered3');
 					}elseif($last_annual_remark->remark == 'INCOMPLETE'){
 						$can_register = false;
-						return redirect()->back()->with('error','The student cannot be registered');
+						return redirect()->back()->with('error','The student cannot be registered4');
 					}
 				}elseif(count($semester_remarks) == 1){
 					$year_of_study = 1;
