@@ -147,7 +147,7 @@ class LoanAllocationController extends Controller
     public function downloadLoanBeneficiaries(Request $request)
     {	
 		$staff = User::find(Auth::user()->id)->staff;
-		$ac_year = StudyAcademicYear::where('id',$request->study_academic_year_id)->first()
+		$ac_year = StudyAcademicYear::where('id',$request->study_academic_year_id)->first();
         $headers = [
                       'Cache-Control'       => 'must-revalidate, post-check=0, pre-check=0',   
                       'Content-type'        => 'text/csv',
