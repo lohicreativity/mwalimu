@@ -311,10 +311,12 @@
 						</td>
 					  @endif
 					  <td>
-					  @if($applicant->batch_no == 0)
-						N/A
+					  @if($applicant->batch_no == 0 && $batch_no == 0)
+						Batch 1
+					  @elseif($applicant->batch_no == 0 && $batch_no > 0)
+						Batch {{ ($batch_no + 1) }}
 					  @else
-						Batch# {{ ($applicant->batch_no) }}  
+						Batch {{ ($applicant->batch_no) }}
 					  @endif
 					  </td>
 					  <td>{{ $applicant->phone }}</td>

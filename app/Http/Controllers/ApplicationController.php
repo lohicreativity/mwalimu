@@ -255,7 +255,9 @@ class ApplicationController extends Controller
                 $query->where('status','SELECTED')
                       ->orWhereNull('status');
             })->get();
-         
+		
+		$batch = ApplicantProgramSelection::whereHas('applicant',function($query) use($request){$query->where('program_level_id',$request->get('program_level_id'));})
+										  ->where('application_window_id', $request->get('application_window_id'))->where('status', 'SELECTED')->latest()->first();        
 
          $data = [
             'staff'=>$staff,
@@ -283,7 +285,8 @@ class ApplicationController extends Controller
             'application_window'=>ApplicationWindow::find($request->get('application_window_id')),
             'applicants'=>$applicants,
             'submission_logs'=>ApplicantSubmissionLog::where('program_level_id',$request->get('program_level_id'))->where('application_window_id',$request->get('application_window_id'))->get(),
-            'request'=>$request
+            'request'=>$request,
+			'batch_no'=>$batch->batch_no
          ];
          return view('dashboard.application.selected-applicants',$data)->withTitle('Selected Applicants');
     }
