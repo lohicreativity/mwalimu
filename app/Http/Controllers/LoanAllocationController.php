@@ -156,32 +156,15 @@ class LoanAllocationController extends Controller
               ];
 
         $list = LoanAllocation::whereHas('student.applicant',function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
-		->where('study_academic_year_id', $request->study_academic_year_id)->where('year_of_study',$request->year_of_study)->get();
-		return $list;
+		->with('student')->where('study_academic_year_id', $request->study_academic_year_id)->where('year_of_study',$request->year_of_study)->get();
+
         $callback = function() use ($list) 
               {
 				  
                   $file_handle = fopen('php://output', 'w');
-                  fputcsv($file_handle,['Index Number','First Name','Middle Name','Surname','Gender','Programme','Category','Status']);
+                  fputcsv($file_handle,['Index Number','First Name','Middle Name','Surname','Gender']);
                   foreach ($list as $row) { 
-				      if($row->hostel_available_status === 1){
-                             $status =   'Allocated';
-					  }elseif($row->hostel_available_status === 0){
-								$status =    'Not Allocated';
-					  }else{
-								$status =	'Pending';
-					  }
-					  
-					  if($row->hostel_status === 1){
-							 $category =  'On Campus';
-					  }elseif($row->hostel_status === 2){
-							   $category =     'Off Campus';
-					  }elseif($row->hostel_status == 3){
-							   $category =     'Any';
-					  }else{
-								$category =    'None';
-					  }
-                      fputcsv($file_handle, [$row->index_number,$row->first_name,$row->middle_name,$row->surname,$row->gender == 'M'? 'Male' : 'Female', $row->selections[0]->campusProgram->program->name,$category,$status]);
+                      fputcsv($file_handle, [$row->student->applicant->index_number,$row->student->first_name,$row->student->middle_name,$row->student->surname,$row->student->gender == 'M'? 'Male' : 'Female']);
                   }
                   fclose($file_handle);
               };
