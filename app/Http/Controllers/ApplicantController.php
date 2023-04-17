@@ -547,20 +547,23 @@ class ApplicantController extends Controller
      */
     public function selectPrograms(Request $request)
     {
+		$applicant = User::find(Auth::user()->id)->applicants()->where('campus_id',session('applicant_campus_id'))->first();		
+		$second_attempt_applicant = ApplicantProgramSelection::where('applicable_id',$applicant->id)->where('batch_no','>',0)->first();
+		if($second_attempt_applicant){
+			$applicant = Applicant::find($request->get('applicant_id'));
+			$applicant->submission_complete_status = 0;
+			$applicant->programs_complete_status = 0;
+			$applicant->batch_no = 0;
+			$applicant->save();
+		}
+		
         if(!ApplicationWindow::where('campus_id',session('applicant_campus_id'))->where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('status','ACTIVE')->first()){
-             return redirect()->to('application/submission')->with('error','Application window already closed');
+             if($second_attempt_applicant){
+				return redirect()->back()->with('error','Please wait for application window to be openned');				 
+			 }
+			 return redirect()->to('application/submission')->with('error','Application window already closed');
         }
         // $window = ApplicationWindow::where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('campus_id',session('applicant_campus_id'))->first();
-
-        $applicant = User::find(Auth::user()->id)->applicants()->with(['selections.campusProgram.program','selections'=>function($query){
-                $query->orderBy('order','asc');
-            },'nectaResultDetails'=>function($query){
-                 $query->where('verified',1);
-            },'nacteResultDetails'=>function($query){
-                 $query->where('verified',1);
-            },'outResultDetails'=>function($query){
-                 $query->where('verified',1);
-            },'selections.campusProgram.campus','nectaResultDetails.results','nacteResultDetails.results','outResultDetails.results','programLevel','applicationWindow'])->where('campus_id',session('applicant_campus_id'))->first();
 
         if($applicant->results_complete_status == 0){
             return redirect()->to('application/results')->with('error','You must first complete results section');

@@ -926,16 +926,7 @@ class ApplicationController extends Controller
 
 		$applicant = Applicant::find($request->get('applicant_id'));
 
-		$window = $applicant->applicationWindow;
-
-		$second_attempt_applicant = ApplicantProgramSelection::where('applicable_id',$applicant->id)->where('batch_no','>',0)->first();
-		if($second_attempt_applicant){
-			$applicant = Applicant::find($request->get('applicant_id'));
-			$applicant->submission_complete_status = 0;
-			$applicant->programs_complete_status = 0;
-			$applicant->batch_no = 0;
-			$applicant->save();
-		}	
+		$window = $applicant->applicationWindow;	
 
 		$campus_programs = $window? $window->campusPrograms()->whereHas('program',function($query) use($applicant){
 				$query->where('award_id',$applicant->program_level_id);
