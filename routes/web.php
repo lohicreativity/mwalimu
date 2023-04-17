@@ -46,7 +46,8 @@ Route::get('batch-processing', function (Request $request) {
 	$applicant = Applicant::where('index_number','S0836/0008/2019')->where('application_window_id', 1)
 							->where('program_level_id',1)->first(); //Imitation of the previous statement
 	if($applicant){
-	   $applicant->multiple_admissions = $data['AdmissionStatusCode'] == 225 ? 1 : 0;
+//	   $applicant->multiple_admissions = $data['AdmissionStatusCode'] == 225 ? 1 : 0; // from API
+	   $applicant->multiple_admissions = 1; //Imitation of the previous statement
 	   $applicant->save();
 
 	   $selection = ApplicantProgramSelection::where('applicant_id',$applicant)->where('status','APPROVING')->update(['status'=>'SELECTED']);
