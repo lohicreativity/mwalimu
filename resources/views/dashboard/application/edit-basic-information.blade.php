@@ -46,7 +46,7 @@
                   <div class="alert alert-danger">
                     <h3 class="text-white" style="font-size: 18px!important;">
                       <i class="fa fa-times-circle"></i> 
-                      Sorry you have not been selected. Please <a href="#">click here</a> to select a new programme.
+                      Sorry, you have not been selected this round. Please <a href="#">click here</a> to select a new programme for the next round.
                     </h3>
                   </div>
                 @elseif($applicant->confirmation_status != 'CANCELLED' && $applicant->status == 'SELECTED')
@@ -69,7 +69,7 @@
 				  <div class="alert alert-danger">
                     <h3 class="text-white" style="font-size: 18px!important;">
                       <i class="fa fa-times-circle"></i> 
-                      Sorry you have not been selected. Please <a href="#">click here</a> to select a new programme.
+                      Sorry, you have not been selected this round. Please <a href="#">click here</a> to select a new programme for the next round.
                     </h3>
                   </div>  
               @endif

@@ -921,18 +921,27 @@ class ApplicationController extends Controller
      * Select program
      */
     public function selectProgram(Request $request)
-    {          
-            $applicant_has_results = DB::table('nacte_results')->where('applicant_id', $request->get('applicant_id'))->get();
+    {   
+		$applicant_has_results = DB::table('nacte_results')->where('applicant_id', $request->get('applicant_id'))->get();
 
-            $applicant = Applicant::find($request->get('applicant_id'));
+		$applicant = Applicant::find($request->get('applicant_id'));
 
-            $window = $applicant->applicationWindow;
+		$window = $applicant->applicationWindow;
 
-            $campus_programs = $window? $window->campusPrograms()->whereHas('program',function($query) use($applicant){
-                    $query->where('award_id',$applicant->program_level_id);
-            })->with(['program','campus','entryRequirements'=>function($query) use($window){
-                    $query->where('application_window_id',$window->id);
-            }])->where('campus_id',session('applicant_campus_id'))->get() : [];
+		$second_attempt_applicant = ApplicantProgramSelection::where('applicable_id',$applicant->id)->where('batch_no','>',0)->first();
+		if($second_attempt_applicant){
+			$applicant = Applicant::find($request->get('applicant_id'));
+			$applicant->submission_complete_status = 0;
+			$applicant->programs_complete_status = 0;
+			$applicant->batch_no = 0;
+			$applicant->save();
+		}	
+
+		$campus_programs = $window? $window->campusPrograms()->whereHas('program',function($query) use($applicant){
+				$query->where('award_id',$applicant->program_level_id);
+		})->with(['program','campus','entryRequirements'=>function($query) use($window){
+				$query->where('application_window_id',$window->id);
+		}])->where('campus_id',session('applicant_campus_id'))->get() : [];
         
         $count = ApplicantProgramSelection::where('applicant_id',$request->get('applicant_id'))->count();
         
