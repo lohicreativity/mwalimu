@@ -34,21 +34,30 @@ use App\Domain\Application\Models\ApplicantProgramSelection;
 |
 */
 
-Route::get('batch-processing', function () {
+Route::get('batch-processing', function (Request $request) {
+    //$applicant = Applicant::where('index_number',$data['f4indexno'])->where('application_window_id', $request->get('application_window_id'))
+	//						->where('program_level_id',$request->get('program_level_id'))->first(); // from API
+     $batch = ApplicantProgramSelection::whereHas('applicant',function($query) use($request){
+	 $query->where('program_level_id',1);})
+	 ->where('application_window_id', 1)->where('status', 'SELECTED')->first();
+	      
+	$current_batch = $batch->batch_no + 1;
+	
+	$applicant = Applicant::where('index_number','S0836/0008/2019')->where('application_window_id', 1)
+							->where('program_level_id',1)->first(); //Imitation of the previous statement
+	if($applicant){
+	   $applicant->multiple_admissions = $data['AdmissionStatusCode'] == 225 ? 1 : 0;
+	   $applicant->save();
 
-     $batch = ApplicantProgramSelection::where('application_window_id', 1)->where('status', 'SELECTED')->first();
+	   $selection = ApplicantProgramSelection::where('applicant_id',$applicant)->where('status','APPROVING')->update(['status'=>'SELECTED']);
 
-     $current_batch = $batch->batch_no + 1;
+	}
 
-     $update_selections_batch = ApplicantProgramSelection::where('application_window_id', 1)->where('batch_no', 0)->update(['batch_no' => $current_batch]);
+    ApplicantProgramSelection::whereHas('applicant',function($query) use($request){$query->where('program_level_id',1);})
+							 ->where('application_window_id', 1)->where('batch_no', 0)->update(['batch_no' => $current_batch]);
      
-     $update_applicant = Applicant::where('application_window_id', 1)
-     ->where(function($query) {
-          $query->where('status', null)
-                ->orWhere('status', 'SELECTED');
-     })
-     ->where('batch_no', 0)
-     ->update(['batch_no' => $current_batch]);
+	Applicant::where('application_window_id', 1)->where(function($query) {$query->where('status', null)->orWhere('status', 'SELECTED');})
+			 ->where('program_level_id',1)->where('batch_no', 0)->update(['batch_no' => $current_batch]);
 
 
 });

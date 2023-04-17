@@ -3943,7 +3943,8 @@ class ApplicationController extends Controller
 
         if($array['Response']['ResponseParameters']['StatusCode'] == 200){
             foreach($array['Response']['ResponseParameters']['Applicant'] as $data){
-                $applicant = Applicant::where('index_number',$data['f4indexno'])->where('application_window_id', $request->get('application_window_id'))->first();
+                $applicant = Applicant::where('index_number',$data['f4indexno'])->where('application_window_id', $request->get('application_window_id'))
+										->where('program_level_id',$request->get('program_level_id'))->first();
                 if($applicant){
                    $applicant->multiple_admissions = $data['AdmissionStatusCode'] == 225 ? 1 : 0;
                    $applicant->save();
