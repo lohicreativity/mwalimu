@@ -62,7 +62,7 @@
                   </div>
                   </div>
                   <div class="ss-form-actions">
-                   <button type="submit" data-toggle="modal" data-target="#ss-payer-details" class="btn btn-primary">{{ __('Search') }}</button>
+                   <button type="submit" class="btn btn-primary">{{ __('Search') }}</button>
                   </div>
 
                  {!! Form::close() !!}
@@ -71,10 +71,10 @@
 			
             <!-- /.card -->
 			@if($payer && $category == 'student')
-			<div style="margin-top:20px;" class="modal fade" id="ss-payer-details">
+			<div style="margin-top:20px;" data-toggle="modal">
 			  <div class="modal-content">
 				<div class="modal-header">
-				  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				  <button type="button" class="btn-close" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				  </button>
 				</div>
