@@ -551,8 +551,8 @@ class ApplicantController extends Controller
 		$second_attempt_applicant = ApplicantProgramSelection::where('applicant_id',$applicant->id)->where('batch_no','>',0)->first();
 		if($second_attempt_applicant){
 			$applicant = Applicant::find($request->get('applicant_id'));
-			$applicant->submission_complete_status = 0;
-			$applicant->programs_complete_status = 0;
+			$applicant->submission_complete_status = null;
+			$applicant->programs_complete_status = null;
 			$applicant->batch_no = 0;
 			$applicant->save();
 		}
