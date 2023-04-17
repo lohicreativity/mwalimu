@@ -62,7 +62,7 @@
                   </div>
                   </div>
                   <div class="ss-form-actions">
-                   <button type="submit" data-target="#ss-payer-details" class="btn btn-primary">{{ __('Search') }}</button>
+                   <button type="submit" data-toggle="modal" data-target="#ss-payer-details" class="btn btn-primary">{{ __('Search') }}</button>
                   </div>
 
                  {!! Form::close() !!}
