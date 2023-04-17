@@ -1341,6 +1341,7 @@ class ApplicantController extends Controller
             }
             
         }
+		$return $applicant;
         $data = [
            'applicant'=>$applicant,
            'campus'=>Campus::find(session('applicant_campus_id')),
