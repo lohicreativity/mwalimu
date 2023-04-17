@@ -81,7 +81,8 @@
             <div class="card">
               <div class="card-header">
                 <h3 class="card-title">{{ (List of Loan Beneficiaries) }}</h3>
-                <a href="{{ url('finance/download-loan-beneficiaries?study_academic_year_id='.$request->get('study_academic_year_id').'&year_of_study='.$request->get('year_of_study')) }}" class="btn btn-primary">Download Loan Beneficiaries</a>				
+                <a href="{{ url('finance/download-loan-beneficiaries?study_academic_year_id='.$request->get('study_academic_year_id').'&year_of_study='.$request->get('year_of_study')) }}" class="btn btn-primary">Download Loan Beneficiaries</a>
+				
               </div>
               <!-- /.card-header -->
               <div class="card-body">                  
