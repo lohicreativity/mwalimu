@@ -50,7 +50,7 @@ Route::get('batch-processing', function (Request $request) {
 	   $applicant->multiple_admissions = 1; //Imitation of the previous statement
 	   $applicant->save();
 
-	   $selection = ApplicantProgramSelection::where('applicant_id',$applicant)->where('status','APPROVING')->update(['status'=>'SELECTED']);
+	   ApplicantProgramSelection::where('applicant_id',$applicant->id)->where('status','APPROVING')->update(['status'=>'SELECTED']);
 		return 1;
 	}
 
