@@ -296,7 +296,7 @@ class StaffController extends Controller
 		  $file_handle = fopen('php://output', 'w');
 		  fputcsv($file_handle, ['Invoice Number','Invoice Date','Receipt Date','Control Number','Payment Item','Bill Amount','Paid Amount','Balance']);
 		  foreach ($payments as $row) { 
-			fputcsv($file_handle, [$row->student->reference_no,date('Y-m-d',strtotime($row->created_at)),date('Y-m-d',strtotime($row->gatewayPayment->created_at)),
+			fputcsv($file_handle, [$row->reference_no,date('Y-m-d',strtotime($row->created_at)),date('Y-m-d',strtotime($row->gatewayPayment->created_at)),
 			$row->control_no,$row->feeType->name,$row->amount,$row->gatewayPayment->paid_amount,$row->amount - $row->gatewayPayment->paid_amount]);
 		  }
 		  fclose($file_handle);
