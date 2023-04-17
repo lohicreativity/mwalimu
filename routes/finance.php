@@ -63,9 +63,10 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 	Route::get('nacte-payment/{id}/destroy', [NactePaymentController::class,'destroy']);
 
 	Route::get('loan-allocations',[LoanAllocationController::class,'index']);
-	Route::get('doanload-loan-allocation-template',[LoanAllocationController::class,'downloadAllocationTemplate']);	
+	Route::get('download-loan-allocation-template',[LoanAllocationController::class,'downloadAllocationTemplate']);	
 	Route::post('upload-loan-allocation',[LoanAllocationController::class,'uploadAllocations']);
 	Route::get('loan-beneficiaries',[LoanAllocationController::class,'showLoanBeneficiaries']);
+	Route::get('download-loan-beneficiaries',[LoanAllocationController::class,'downloadLoanBeneficiaries']);		
 	Route::get('update-loan-beneficiaries',[LoanAllocationController::class,'updateLoanBeneficiaries']);	
 	Route::get('loan-bank-details',[LoanAllocationController::class,'showLoanBankDetails']);
 	Route::post('loan-allocation-update-signatures',[LoanAllocationController::class,'updateSignatures']);
