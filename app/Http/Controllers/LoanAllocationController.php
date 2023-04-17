@@ -150,7 +150,7 @@ class LoanAllocationController extends Controller
         $headers = [
                       'Cache-Control'       => 'must-revalidate, post-check=0, pre-check=0',   
                       'Content-type'        => 'text/csv',
-                      'Content-Disposition' => 'attachment; filename=Hostel-Status.csv',
+                      'Content-Disposition' => 'attachment; filename=Loans-Beneficiaries.csv',
                       'Expires'             => '0',
                       'Pragma'              => 'public'
               ];
