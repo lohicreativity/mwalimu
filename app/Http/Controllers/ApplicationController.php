@@ -7902,14 +7902,14 @@ class ApplicationController extends Controller
 						}
 					}					
 				}
-
+/* 
 				if($student->overallRemark){
 					if($student->overallRemark){
 						if($student->overallRemark->remark == 'SUPP'){
 							return redirect()->back()->with('error','The student cannot be registered2');
 						}
 					}						
-				}
+				} */
 
 				$annual_remarks = AnnualRemark::where('student_id',$student->id)->latest()->get();
 				$semester_remarks = SemesterRemark::with('semester')->where('student_id',$student->id)->latest()->get();
