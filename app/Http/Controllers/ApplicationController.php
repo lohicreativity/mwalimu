@@ -7425,8 +7425,7 @@ class ApplicationController extends Controller
 								->where('application_window_id',$application_window->id);})->with('selections.campusProgram.program')->where('status','ADMITTED')
 								->where('application_window_id',$application_window->id)->where('campus_id', $staff->campus_id)
 								->where('index_number',$request->keyword)->orWhere('surname',$request->keyword)->first();
-		$student = Student::whereHas('registrations', function($query) use($ac_year, $semester){$query->where('status','UNREGISTERED')->where('semester_id',$semester->id)->where('study_academic_year_id',$ac_year->id);})
-							->whereHas('studentshipStatus', function($query){$query->where('name','ACTIVE')->OrWhere('name','RESUMED');})
+		$student = Student::whereHas('studentshipStatus', function($query){$query->where('name','ACTIVE')->OrWhere('name','RESUMED');})
 							->whereHas('academicStatus', function($query){$query->where('name','!=','FAIL&DISCO')->orWhere('name','!=','DECEASED');})
 							->where('registration_number', $request->keyword)->with(['campusProgram.program','academicStatus'])->first();
 							
