@@ -286,7 +286,7 @@ class StaffController extends Controller
 		$headers = [
 				  'Cache-Control'       => 'must-revalidate, post-check=0, pre-check=0',   
 				  'Content-type'        => 'text/csv',
-				  'Content-Disposition' => 'attachment; filename='.$student? $student->registration_number : $applicant->index_number .'-'.'Payments.csv',
+				  'Content-Disposition' => 'attachment; filename='. $student? $student->registration_number : $applicant->index_number .'-'.'Payments.csv',
 				  'Expires'             => '0',
 				  'Pragma'              => 'public'
 		];
