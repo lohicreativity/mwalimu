@@ -40,7 +40,7 @@ Route::get('batch-processing', function (Request $request) {
      $batch = ApplicantProgramSelection::whereHas('applicant',function($query) use($request){
 	 $query->where('program_level_id',1);})
 	 ->where('application_window_id', 2)->where('status', 'SELECTED')->latest()->first();
-	      
+	  return $batch;    
 	$current_batch = $batch->batch_no + 1;
 	
 	$applicant = Applicant::where('index_number','S0836/0008/2019')->where('application_window_id', 2)
