@@ -7433,11 +7433,11 @@ class ApplicationController extends Controller
 			$finalist_status = SemesterRemarks::where('student_id', $student->id)->where('semester_id', $semester->id)->where('study_academic_year_id',$ac_year->id)
 								->where('year_of_study',$student->year_of_study)->count();
 			if($finalist_status > 0){
-				return redirect()->back()->with('error', 'The student cannot be registered');				
+				return redirect()->back()->with('error', 'The student cannot be registered1');				
 			}
 		}
 		if($request->keyword && (!$applicant || !$student)){
-			return redirect()->back()->with('error', 'The student cannot be registered');			
+			return redirect()->back()->with('error', 'The student cannot be registered2');			
 		}
 		$data = [
 			'semester'=>$semester,
