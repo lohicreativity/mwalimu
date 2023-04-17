@@ -7893,18 +7893,24 @@ class ApplicationController extends Controller
 
 			}elseif($request->type == "student"){
 				$student = Student::where('registration_number',$request->keyword)->with(['applicant','studentshipStatus','academicStatus','semesterRemarks','overallRemark'])->first();
-				foreach($student->semesterRemarks as $rem){
-					if($student->academicStatus->name == 'RETAKE'){
-						if($rem->semester_id == session('active_semester_id') && $rem->remark != 'RETAKE'){
+				if($student->semesterRemarks){
+					foreach($student->semesterRemarks as $rem){
+						if($student->academicStatus->name == 'RETAKE'){
+							if($rem->semester_id == session('active_semester_id') && $rem->remark != 'RETAKE'){
+								return redirect()->back()->with('error','The student cannot be registered');
+							}
+						}
+					}					
+				}
+
+				if($student->overallRemark){
+					if($student->overallRemark){
+						if($student->overallRemark->remark == 'SUPP'){
 							return redirect()->back()->with('error','The student cannot be registered');
 						}
-					}
+					}						
 				}
-				if($student->overallRemark){
-					if($student->overallRemark->remark == 'SUPP'){
-						return redirect()->back()->with('error','The student cannot be registered');
-					}
-				}
+
 				$annual_remarks = AnnualRemark::where('student_id',$student->id)->latest()->get();
 				$semester_remarks = SemesterRemark::with('semester')->where('student_id',$student->id)->latest()->get();
 				$can_register = true;
