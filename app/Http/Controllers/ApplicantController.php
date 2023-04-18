@@ -336,7 +336,7 @@ class ApplicantController extends Controller
         }
 
         $regulator_status = Applicant::where('program_level_id', $applicant->program_level_id)
-								->whereHas('selections', function ($query) {$query->where('batch_no','>',0)->where('status', 'SELECTED')
+								->whereHas('selections', function ($query) {$query->where('status', 'SELECTED')
 								->orWhere('status', 'PENDING');})
 								->where('application_window_id', $applicant->application_window_id)
 								->where('intake_id', $applicant->intake_id)
