@@ -333,7 +333,7 @@
                     </thead>
                     <tbody>
                     @foreach($applicant->selections as $key=>$selection)
-						@if($selection->batch_no == 0)
+
 							<tr>
 							   <td>{{ $selection->order }}</td>
 							   <td>{{ $selection->campusProgram->program->name }}</td>
@@ -344,7 +344,7 @@
 								 @endif
 							  </td>
 							</tr>							
-						@endif
+
                     @endforeach
                   </tbody>
                  </table>
