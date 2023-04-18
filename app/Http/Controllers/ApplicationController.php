@@ -1000,7 +1000,7 @@ class ApplicationController extends Controller
     {
         try{
           $selection = ApplicantProgramSelection::with('applicant')->findOrFail($id);
-
+			return $selection;
           $applicant = Applicant::find($selection->applicant_id);
 
           $window = $applicant->applicationWindow;
