@@ -547,9 +547,8 @@ class ApplicantController extends Controller
      */
     public function selectPrograms(Request $request)
     {
-		$applicant = User::find(Auth::user()->id)->applicants()->where('campus_id',session('applicant_campus_id'))
-					->whereHas('selections', function($query){$query->where('batch_no',0);})->first();
-				
+		$applicant = User::find(Auth::user()->id)->applicants()->where('campus_id',session('applicant_campus_id'))->first();
+		
 		$second_attempt_applicant = ApplicantProgramSelection::where('applicant_id',$applicant->id)->where('batch_no','>',0)->first();
 		if($second_attempt_applicant){
 			$applicant = Applicant::where('id',$applicant->id)->first();

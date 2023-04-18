@@ -61,7 +61,7 @@
                     <tbody>
                     <tr>
                        <td>1</td>
-                       <td>@if(App\Domain\Application\Models\ApplicantProgramSelection::hasSelectedChoice($applicant->selections,1)) 1st Choice Selected @else <a href="#" data-toggle="modal" data-target="#ss-first-choice">Select 1st Choice Programme</a> @endif</td>
+                       <td>@if(App\Domain\Application\Models\ApplicantProgramSelection::hasSelectedChoice($applicant->selections,1)) 1st Choice Selected @else <a href="#" data-toggle="modal" data-target="#ss-first-choice">Select 1st Choice Programme {{ ($applicant->selections) }}</a> @endif</td>
                     </tr>
                     @if(App\Domain\Application\Models\ApplicantProgramSelection::hasSelectedChoice($applicant->selections,1))
                     <tr>
