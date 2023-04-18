@@ -300,8 +300,7 @@ class ApplicantController extends Controller
 		->where('status','ACTIVE')->first();
 				
         if($applicant->is_tamisemi !== 1 && $applicant->is_transfered != 1){
-            if(!$application_window){
-                 
+            if(!$application_window){  
 /* 				 if($applicant->status == null){
                      return redirect()->to('application/submission')->with('error','Application window already closed');
                  } */
@@ -310,8 +309,7 @@ class ApplicantController extends Controller
                  }
             }
         }
-        
-		
+	
         if($applicant->is_tcu_verified === null && str_contains($applicant->programLevel->name,'Degree')){
             $url='http://api.tcu.go.tz/applicants/checkStatus';
             $fullindex=str_replace('-','/',Auth::user()->username);
@@ -334,14 +332,14 @@ class ApplicantController extends Controller
               $applicant->save();
             }
         }
-
+ Return $applicant;
         $regulator_status = Applicant::where('program_level_id', $applicant->program_level_id)
 								->whereHas('selections', function ($query) {$query->where('status', 'SELECTED')
 								->orWhere('status', 'PENDING');})
 								->where('application_window_id', $applicant->application_window_id)
 								->where('intake_id', $applicant->intake_id)
 								->count();
-		return $regulator_status;						
+								
 		$selected_applicants = Applicant::where('program_level_id', $applicant->program_level_id)
 						->whereHas('selections',function($query) use($applicant){$query->where('application_window_id',$applicant->application_window_id);})
 						->where('application_window_id', $applicant->application_window_id)
