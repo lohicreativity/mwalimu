@@ -148,7 +148,7 @@
                 <div class="modal-dialog modal-lg">
                   <div class="modal-content">
                     <div class="modal-header">
-                      <h4 class="modal-title">2nd Choice Programme {{ ($applicant->selections) }}</h4>
+                      <h4 class="modal-title">2nd Choice Programme</h4>
                       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                       </button>
@@ -333,16 +333,18 @@
                     </thead>
                     <tbody>
                     @foreach($applicant->selections as $key=>$selection)
-                    <tr>
-                       <td>{{ $selection->order }}</td>
-                       <td>{{ $selection->campusProgram->program->name }}</td>
-                       <td>{{ $selection->campusProgram->campus->name }}</td>
-                       <td>
-                         @if($key == count($applicant->selections)-1)
-                        <a href="{{ url('application/reset-program-selection/'.$selection->id) }}" class="ss-italic ss-color-danger">Reset Selection</a>
-                         @endif
-                      </td>
-                    </tr>
+						@if($selection->batch_no == 0)
+							<tr>
+							   <td>{{ $selection->order }}</td>
+							   <td>{{ $selection->campusProgram->program->name }}</td>
+							   <td>{{ $selection->campusProgram->campus->name }}</td>
+							   <td>
+								 @if($key == count($applicant->selections)-1)
+								<a href="{{ url('application/reset-program-selection/'.$selection->id) }}" class="ss-italic ss-color-danger">Reset Selection</a>
+								 @endif
+							  </td>
+							</tr>							
+						@endif
                     @endforeach
                   </tbody>
                  </table>
