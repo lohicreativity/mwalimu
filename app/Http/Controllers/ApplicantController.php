@@ -343,7 +343,7 @@ class ApplicantController extends Controller
 								->where('batch_no','>',0)->count();
 								
 		$selected_applicants = Applicant::where('program_level_id', $applicant->program_level_id)
-						->whereHas('selections',function($query) use($applicant){$query->where('application_window_id',$applicant->program_level_id);})
+						->whereHas('selections',function($query) use($applicant){$query->where('application_window_id',$applicant->application_window_id);})
 						->where('application_window_id', $applicant->application_window_id)
 						->where('intake_id', $applicant->intake_id)->where('status', 'SELECTED')->first();
 	

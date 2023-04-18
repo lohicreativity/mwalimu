@@ -974,19 +974,18 @@ class ApplicationController extends Controller
                     }
                 }
 
+                $select_count = ApplicantProgramSelection::where('applicant_id',$request->get('applicant_id'))->where('batch_no',0)->count();
 
-                 $select_count = ApplicantProgramSelection::where('applicant_id',$request->get('applicant_id'))->where('batch_no',0)->count();
-
-                 if($request->get('choice') == 1){
+                if($request->get('choice') == 1){
                     $applicant = Applicant::find($request->get('applicant_id'));
                     $applicant->programs_complete_status = 1;
                     if($applicant->entry_mode == 'DIRECT'){
                         $applicant->documents_complete_status = 1;
                     }
                     $applicant->save();
-                 }
+                }
 
-                 return redirect()->back()->with('message','Programme selected successfully');
+                return redirect()->back()->with('message','Programme selected successfully');
              }
         }else{
            return redirect()->back()->with('error','Programme already selected');
