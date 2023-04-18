@@ -66,7 +66,7 @@
                     @if(App\Domain\Application\Models\ApplicantProgramSelection::hasSelectedChoice($applicant->selections,1))
                     <tr>
                        <td>2</td>
-                       <td>@if(App\Domain\Application\Models\ApplicantProgramSelection::hasSelectedChoice($applicant->selections,2)) 2nd Choice Selected @else <a href="#" data-toggle="modal" data-target="#ss-second-choice">Select 2nd Choice Programme</a>@endif</td>
+                       <td>@if(App\Domain\Application\Models\ApplicantProgramSelection::hasSelectedChoice($applicant->selections,2)) 2nd Choice Selected @else <a href="#" data-toggle="modal" data-target="#ss-second-choice">Select 2nd Choice Programme {{ ($applicant->selections) }} </a>@endif</td>
                     </tr>
                     @endif
                     @if(App\Domain\Application\Models\ApplicantProgramSelection::hasSelectedChoice($applicant->selections,2))
