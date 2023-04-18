@@ -975,7 +975,7 @@ class ApplicationController extends Controller
                 }
 
 
-                 $select_count = ApplicantProgramSelection::where('applicant_id',$request->get('applicant_id'))->count();
+                 $select_count = ApplicantProgramSelection::where('applicant_id',$request->get('applicant_id'))->where('batch_no',0)->count();
 
                  if($request->get('choice') == 1){
                     $applicant = Applicant::find($request->get('applicant_id'));
