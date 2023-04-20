@@ -555,7 +555,6 @@ class ApplicantController extends Controller
 			$applicant->programs_complete_status = 0;
 			$applicant->batch_no = 0;
 			$applicant->save();
-			return $applicant;
 		}
 		
         if(!ApplicationWindow::where('campus_id',session('applicant_campus_id'))->where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('status','ACTIVE')->first()){
