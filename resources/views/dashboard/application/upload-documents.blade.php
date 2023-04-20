@@ -57,14 +57,14 @@
                     {!! Form::label('','Select document') !!}
                     <select name="document_name" class="form-control" required>
                       <option value="">Select Document</option>
-                      <option value="passport">Passport Size Picture (png,jpeg or jpg)</option>
-                      <option value="birth_certificate">Birth Certificate</option>
-                      <option value="o_level_certificate">O-Level Certificate</option>
+                      <option value="passport">Passport Size Picture <span style="font-style: italic;">(png, jpeg or jpg)</span></option>
+                      <option value="birth_certificate">Birth Certificate (pdf, png,jpeg or jpg)</option>
+                      <option value="o_level_certificate">O-Level Certificate (pdf, png,jpeg or jpg)</option>
                       @if(($applicant->entry_mode == 'DIRECT' && str_contains($applicant->programLevel->name,'Bachelor')) || ($applicant->entry_mode == 'DIRECT' && str_contains($applicant->programLevel->name,'Diploma')))
-                      <option value="a_level_certificate">A-Level Certificate</option>
+                      <option value="a_level_certificate">A-Level Certificate (pdf, png,jpeg or jpg)</option>
                       @elseif($applicant->entry_mode == 'EQUIVALENT')
                       @if($applicant->diploma_certificate == null)
-                      <option value="diploma_certificate">Diploma Certificate</option>
+                      <option value="diploma_certificate">Diploma Certificate (pdf, png,jpeg or jpg)</option>
                       @endif
                       @endif
                     </select>
