@@ -42,7 +42,7 @@
                     <li class="nav-item">
                       <a @if($applicant->is_tcu_verified != 1 && str_contains($applicant->programLevel->name,'Degree') && $applicant->is_transfered != 1) disabled="disabled" @elseif($applicant->is_tcu_verified == 1 && str_contains($applicant->programLevel->name,'Degree') && $applicant->is_transfered == 1) disabled="disabled" @else href="{{ url('application/select-programs') }}" @endif class="nav-link">
                         <i class="far fa-circle nav-icon"></i>
-                        <p>Select Programmes @if($applicant->programs_complete_status == 1) <i class="fa fa-check"></i> @endif</p>
+                        <p>Select Programmes {{ ($applicant->programs_complete_status) }} @if($applicant->programs_complete_status === 1) <i class="fa fa-check"></i> @endif</p>
                       </a>
                     </li>
                 @endif
