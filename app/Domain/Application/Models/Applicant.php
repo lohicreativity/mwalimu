@@ -128,6 +128,14 @@ class Applicant extends Model
     }
 
     /**
+     * Establish one to many relationship with selections
+     */
+    public function freshSelections()
+    {
+        return $this->hasMany(ApplicantProgramSelection::class,'applicant_id')->where('batch_no',0);
+    }
+	
+    /**
      * Establish one to many relationship with payment
      */
     public function payment()

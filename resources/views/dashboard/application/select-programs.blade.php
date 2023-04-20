@@ -316,51 +316,40 @@
               <!-- /.modal -->
 
             @if(count($applicant->selections) != 0)
-				@php
-					$hide_selections = false;
-					foreach($applicant->selections as $selection){
-						if($selection->batch_no > 0){
-							$hide_selections = true;
-							$break;
-						}
-					}
-				@endphp
-				@if(!$hide_selections)
-					<div class="card">
-					  <div class="card-header">
-						<h3 class="card-title">Selections</h3>
-					  </div>
-					  <!-- /.card-header -->
-					  <div class="card-body">
-						 <table class="table table-bordered">
-							<thead>
-							   <tr>
-								 <th>Choice</th>
-								 <th>Programme</th>
-								 <th>Campus</th>
-								 <th>Action</th>
-							   </tr>
-							</thead>
-							<tbody>
-							@foreach($applicant->selections as $key=>$selection)
+				<div class="card">
+				  <div class="card-header">
+					<h3 class="card-title">Selections</h3>
+				  </div>
+				  <!-- /.card-header -->
+				  <div class="card-body">
+					 <table class="table table-bordered">
+						<thead>
+						   <tr>
+							 <th>Choice</th>
+							 <th>Programme</th>
+							 <th>Campus</th>
+							 <th>Action</th>
+						   </tr>
+						</thead>
+						<tbody>
+						@foreach($applicant->freshSelections as $key=>$selection)
 
-									<tr>
-									   <td>{{ $selection->order }}</td>
-									   <td>{{ $selection->campusProgram->program->name }}</td>
-									   <td>{{ $selection->campusProgram->campus->name }}</td>
-									   <td>
-										 @if($key == count($applicant->selections)-1)
-										<a href="{{ url('application/reset-program-selection/'.$selection->id) }}" class="ss-italic ss-color-danger">Reset Selection</a>
-										 @endif
-									  </td>
-									</tr>							
+								<tr>
+								   <td>{{ $selection->order }}</td>
+								   <td>{{ $selection->campusProgram->program->name }}</td>
+								   <td>{{ $selection->campusProgram->campus->name }}</td>
+								   <td>
+									 @if($key == count($applicant->freshSelections)-1)
+									<a href="{{ url('application/reset-program-selection/'.$selection->id) }}" class="ss-italic ss-color-danger">Reset Selection</a>
+									 @endif
+								  </td>
+								</tr>							
 
-							@endforeach
-						  </tbody>
-						 </table>
-					  </div>
-					</div>
-				@endif	
+						@endforeach
+					  </tbody>
+					 </table>
+				  </div>
+				</div>
             @endif
 
             @endif
