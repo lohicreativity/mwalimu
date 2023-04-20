@@ -339,7 +339,7 @@ class ApplicantController extends Controller
 								->where('application_window_id', $applicant->application_window_id)
 								->where('intake_id', $applicant->intake_id)
 								->count();
-		return 	$regulator_status					
+		return 	$regulator_status;					
 		$selected_applicants = Applicant::where('program_level_id', $applicant->program_level_id)
 						->whereHas('selections',function($query) use($applicant){$query->where('application_window_id',$applicant->application_window_id);})
 						->where('application_window_id', $applicant->application_window_id)
