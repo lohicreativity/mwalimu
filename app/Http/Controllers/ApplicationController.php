@@ -983,6 +983,7 @@ class ApplicationController extends Controller
                         $applicant->documents_complete_status = 1;
                     }
                     $applicant->save();
+					return 123;
                 }
 
                 return redirect()->back()->with('message','Programme selected successfully');
