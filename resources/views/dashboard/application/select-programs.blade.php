@@ -283,7 +283,7 @@
                               <td>{{ $prog->program->name }}</td>
                               <td>{{ $prog->campus->name }}</td>
                               <td>
-                                @if(App\Domain\Application\Models\ApplicantProgramSelection::hasSelected($applicant->selections,$prog))
+                                @if(App\Domain\Application\Models\ApplicantProgramSelection::hasSelected($applicant->freshSelections,$prog))
                                  <span>SELECTED</span>
                                 @else
                                   {!! Form::open(['url'=>'application/program/select','class'=>'ss-form-processing']) !!}
@@ -315,7 +315,7 @@
               </div>
               <!-- /.modal -->
 
-            @if(count($applicant->selections) != 0)
+            @if(count($applicant->freshSelections) != 0)
 				<div class="card">
 				  <div class="card-header">
 					<h3 class="card-title">Selections</h3>
