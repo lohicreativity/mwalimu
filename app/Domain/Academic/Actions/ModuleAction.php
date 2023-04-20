@@ -14,7 +14,7 @@ class ModuleAction implements ModuleInterface{
             if($mod = Module::where('code',$request->get('code'))->where('name',$request->get('name'))->first()){
                     $module = $mod;
             }else{
-		            $module = new Module;
+		        $module = new Module;
                 $module->name = $request->get('name');
                 $module->code = $request->get('code');
                 $module->credit = $request->get('credit');
