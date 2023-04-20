@@ -66,12 +66,14 @@
                     </div>                
                 @endif
 			  @else
-				  <div class="alert alert-danger">
-                    <h3 class="text-white" style="font-size: 18px!important;">
-                      <i class="fa fa-times-circle"></i> 
-                      Sorry, you have not been selected in this round. Please <a href="{{ url('application/select-programs') }}">click here</a> to select a new programme for the next round.
-                    </h3>
-                  </div>  
+				  @if($applicant->batch_no > 0)
+					  <div class="alert alert-danger">
+						<h3 class="text-white" style="font-size: 18px!important;">
+						  <i class="fa fa-times-circle"></i> 
+						  Sorry, you have not been selected in this round. Please <a href="{{ url('application/select-programs') }}">click here</a> to select a new programme for the next round.
+						</h3>
+					  </div> 					  
+				  @endif 
               @endif
           
             @else 
