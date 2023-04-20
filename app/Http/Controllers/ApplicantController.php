@@ -334,6 +334,8 @@ class ApplicantController extends Controller
         }
 
         $regulator_status = Applicant::where('program_level_id', $applicant->program_level_id)
+								->whereHas('selections', function ($query) {$query->where('status', 'SELECTED')
+								;})
 								->where('application_window_id', $applicant->application_window_id)
 								->where('intake_id', $applicant->intake_id)
 								->get();
