@@ -930,15 +930,17 @@ class ApplicantController extends Controller
 							$programs[] = $program;
 						}
                        $has_btc = false;
+					   $has_diploma = false;
                       
-
-                       if(unserialize($program->entryRequirements[0]->equivalent_majors) != '' && $program->entryRequirements[0]->nta_level == 4){
+                       if(unserialize($program->entryRequirements[0]->equivalent_majors) != '' && $program->entryRequirements[0]->nta_level >= 4){
             
                            foreach(unserialize($program->entryRequirements[0]->equivalent_majors) as $sub){
                                 foreach($applicant->nacteResultDetails as $det){
                                    if(str_contains(strtolower($det->programme),strtolower($sub)) && str_contains(strtolower($det->programme),'basic')){
                                      $has_btc = true;
-                                   }
+                                   }elseif(str_contains(strtolower($det->programme),'diploma')){
+									 $has_diploma = true;  
+								   }
                                 }
                            }
                        } elseif (unserialize($program->entryRequirements[0]->equivalent_majors) != '' && $program->entryRequirements[0]->nta_level == 5) {
@@ -948,16 +950,19 @@ class ApplicantController extends Controller
                             foreach($applicant->nacteResultDetails as $det){
                                    if(str_contains(strtolower($det->programme),'basic')){
                                      $has_btc = true;
-                                   }
-                                }
+                                   }elseif(str_contains(strtolower($det->programme),'diploma')){
+									 $has_diploma = true;  
+								   }
+                            }
                        }
-                           
 
                        if(($o_level_pass_count + $o_level_other_pass_count) >= $program->entryRequirements[0]->pass_subjects && $has_btc){
                            $programs[] = $program;
                        } elseif (($o_level_pass_count + $o_level_other_pass_count) >= $program->entryRequirements[0]->pass_subjects && $applicant->veta_status == 1) {
                            $programs[] = $program;
-                       }
+                       }elseif(($o_level_pass_count + $o_level_other_pass_count) >= $program->entryRequirements[0]->pass_subjects && $has_diploma){
+						   // retrieve campus programmes, with students, offered in the previous application window
+					   }
                    }
                    
                    // Bachelor

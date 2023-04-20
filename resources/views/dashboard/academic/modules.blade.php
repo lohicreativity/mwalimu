@@ -298,7 +298,7 @@
                                       {!! Form::label('','Credit') !!}
                                       <select name="credit" class="form-control" required>
                                          <option value="">Select Credit</option>
-                                         @for($i = 1; $i<= 20; $i++)
+                                         @for($i = 1; $i<= 36; $i++)
                                          <option value="{{ $i }}" @if($module->credit == $i) selected="selected" @endif>{{ $i }}</option>
                                          @endfor
                                       </select>
