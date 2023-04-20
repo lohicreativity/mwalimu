@@ -66,7 +66,7 @@ class ModuleController extends Controller
 		$module = Module::where('code',$request->get('code'))->where('name',$request->get('name'))->first();
 		$existing_module_record = Module::with('departments')->where('id', $module->id)
 										->whereHas('departments', function($query) use($request){$query->where('campus_id',$request->get('campus_id'));})->get();
-        return $existing_module_record->departments->name;
+        return $existing_module_record;
 		if($existing_module_record > 0){
 			return redirect()->back()->with('error','The module is already assigned to ');
 		}
