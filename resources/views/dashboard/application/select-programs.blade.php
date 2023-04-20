@@ -61,24 +61,24 @@
                     <tbody>
                     <tr>
                        <td>1</td>
-                       <td>@if(App\Domain\Application\Models\ApplicantProgramSelection::hasSelectedChoice($applicant->selections,1)) 1st Choice Selected @else <a href="#" data-toggle="modal" data-target="#ss-first-choice">Select 1st Choice Programme</a> @endif</td>
+                       <td>@if(App\Domain\Application\Models\ApplicantProgramSelection::hasSelectedChoice($applicant->freshSelections,1)) 1st Choice Selected @else <a href="#" data-toggle="modal" data-target="#ss-first-choice">Select 1st Choice Programme</a> @endif</td>
                     </tr>
-                    @if(App\Domain\Application\Models\ApplicantProgramSelection::hasSelectedChoice($applicant->selections,1))
+                    @if(App\Domain\Application\Models\ApplicantProgramSelection::hasSelectedChoice($applicant->freshSelections,1))
                     <tr>
                        <td>2</td>
-                       <td>@if(App\Domain\Application\Models\ApplicantProgramSelection::hasSelectedChoice($applicant->selections,2)) 2nd Choice Selected @else <a href="#" data-toggle="modal" data-target="#ss-second-choice">Select 2nd Choice Programme</a>@endif</td>
+                       <td>@if(App\Domain\Application\Models\ApplicantProgramSelection::hasSelectedChoice($applicant->freshSelections,2)) 2nd Choice Selected @else <a href="#" data-toggle="modal" data-target="#ss-second-choice">Select 2nd Choice Programme</a>@endif</td>
                     </tr>
                     @endif
-                    @if(App\Domain\Application\Models\ApplicantProgramSelection::hasSelectedChoice($applicant->selections,2))
+                    @if(App\Domain\Application\Models\ApplicantProgramSelection::hasSelectedChoice($applicant->freshSelections,2))
                     <tr>
                        <td>3</td>
-                       <td>@if(App\Domain\Application\Models\ApplicantProgramSelection::hasSelectedChoice($applicant->selections,3)) 3rd Choice Selected @else <a href="#" data-toggle="modal" data-target="#ss-third-choice">Select 3rd Choice Programme</a>@endif</td>
+                       <td>@if(App\Domain\Application\Models\ApplicantProgramSelection::hasSelectedChoice($applicant->freshSelections,3)) 3rd Choice Selected @else <a href="#" data-toggle="modal" data-target="#ss-third-choice">Select 3rd Choice Programme</a>@endif</td>
                     </tr>
                     @endif
-                    @if(App\Domain\Application\Models\ApplicantProgramSelection::hasSelectedChoice($applicant->selections,3))
+                    @if(App\Domain\Application\Models\ApplicantProgramSelection::hasSelectedChoice($applicant->freshSelections,3))
                     <tr>
                        <td>4</td>
-                       <td>@if(App\Domain\Application\Models\ApplicantProgramSelection::hasSelectedChoice($applicant->selections,4)) 4th Choice Selected @else <a href="#" data-toggle="modal" data-target="#ss-forth-choice">Select 4th Choice Programme</a>@endif</td>
+                       <td>@if(App\Domain\Application\Models\ApplicantProgramSelection::hasSelectedChoice($applicant->freshSelections,4)) 4th Choice Selected @else <a href="#" data-toggle="modal" data-target="#ss-forth-choice">Select 4th Choice Programme</a>@endif</td>
                     </tr>
                     @endif
                   </tbody>
@@ -112,7 +112,7 @@
                               <td>{{ $prog->program->name }}</td>
                               <td>{{ $prog->campus->name }}</td>
                               <td>
-                                @if(App\Domain\Application\Models\ApplicantProgramSelection::hasSelected($applicant->selections,$prog))
+                                @if(App\Domain\Application\Models\ApplicantProgramSelection::hasSelected($applicant->freshSelections,$prog))
                                  <span>SELECTED</span>
                                 @else
                                   {!! Form::open(['url'=>'application/program/select','class'=>'ss-form-processing']) !!}
@@ -169,7 +169,7 @@
                               <td>{{ $prog->program->name }}</td>
                               <td>{{ $prog->campus->name }}</td>
                               <td>
-                                @if(App\Domain\Application\Models\ApplicantProgramSelection::hasSelected($applicant->selections,$prog))
+                                @if(App\Domain\Application\Models\ApplicantProgramSelection::hasSelected($applicant->freshSelections,$prog))
                                  <span>SELECTED</span>
                                 @else
                                   {!! Form::open(['url'=>'application/program/select','class'=>'ss-form-processing']) !!}
@@ -226,7 +226,7 @@
                               <td>{{ $prog->program->name }}</td>
                               <td>{{ $prog->campus->name }}</td>
                               <td>
-                                @if(App\Domain\Application\Models\ApplicantProgramSelection::hasSelected($applicant->selections,$prog))
+                                @if(App\Domain\Application\Models\ApplicantProgramSelection::hasSelected($applicant->freshSelections,$prog))
                                  <span>SELECTED</span>
                                 @else
                                   {!! Form::open(['url'=>'application/program/select','class'=>'ss-form-processing']) !!}
