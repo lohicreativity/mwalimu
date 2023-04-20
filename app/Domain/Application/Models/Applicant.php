@@ -124,7 +124,7 @@ class Applicant extends Model
      */
     public function selections()
     {
-        return $this->hasMany(ApplicantProgramSelection::class,'applicant_id')->where('batch_no',0);
+        return $this->hasMany(ApplicantProgramSelection::class,'applicant_id');
     }
 
     /**
