@@ -62,13 +62,12 @@ class ModuleController extends Controller
            }else{
               return redirect()->back()->withInput()->withErrors($validation->messages());
            }
-		   return 123;
         }
 		$module = Module::where('code',$request->get('code'))->where('name',$request->get('name'))->first();
 		$existing_module_record = Module::with('departments')->where('module_id', $module->id)->get();//->where('campus_id', $request->get('campus_id'))->count();
         return $existing_module_record;
 		if($existing_module_record > 0){
-			return redirect()->back()->with('error','The module is already assigned to '.);
+			return redirect()->back()->with('error','The module is already assigned to ');
 		}
 		
 		(new ModuleAction)->store($request);
