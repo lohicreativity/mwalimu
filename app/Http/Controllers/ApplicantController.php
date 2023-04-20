@@ -548,13 +548,14 @@ class ApplicantController extends Controller
 		$applicant = User::find(Auth::user()->id)->applicants()->where('campus_id',session('applicant_campus_id'))->first();
 		
 		$second_attempt_applicant = ApplicantProgramSelection::where('applicant_id',$applicant->id)->where('batch_no','>',0)->first();
-		return $second_attempt_applicant;
+		
 		if($second_attempt_applicant){
 			$applicant = Applicant::where('id',$applicant->id)->first();
 			$applicant->submission_complete_status = 0;
 			$applicant->programs_complete_status = 0;
 			$applicant->batch_no = 0;
 			$applicant->save();
+			return $applicant;
 		}
 		
         if(!ApplicationWindow::where('campus_id',session('applicant_campus_id'))->where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('status','ACTIVE')->first()){
