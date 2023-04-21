@@ -146,6 +146,11 @@
 							  
                             @foreach($assign->module->moduleAssignments as $modAssign)
 							  @if($module_assignment_requests)
+								  @foreach($module_assignment_requests as $request)
+									@if($request->module_id == $assign->module->id)
+										Hello
+									@endif
+								  @endforeach
 								  hello
 							  @endif
                               @if($modAssign->program_module_assignment_id == $assign->id)
