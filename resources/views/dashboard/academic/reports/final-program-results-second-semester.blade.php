@@ -554,7 +554,7 @@
                         <td>{{ round($mod['inc_rate'],0) }}%</td>
                         <td>{{ round($mod['ic_rate'],0) }}%</td>
                         <td>{{ round($mod['if_rate'],0) }}%</td>
-                        <td>{{($mod[$assignment->module->code]['pst_count']) }}({{ round($mod['pst_rate'],0) }}%)</td>
+                        <td>{{($mod['pst_count']) }}({{ round($mod['pst_rate'],0) }}%)</td>
                         <td>{{ round($mod['ds_rate'],0) }}%</td>
                         <td>{{ round($mod['pass_rate'],0) }}%</td>
                         <td>{{ round($mod['fail_rate'],0) }}%</td>
