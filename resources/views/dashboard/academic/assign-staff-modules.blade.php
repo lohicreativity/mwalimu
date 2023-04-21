@@ -143,9 +143,7 @@
                         <tr>
                         <td>{{ $assign->module->name }}
                           @if(count($assign->module->moduleAssignments) != 0)
-							  
-                            @foreach($assign->module->moduleAssignments as $modAssign)
-							  @if($module_assignment_requests)
+							 							  @if($module_assignment_requests)
 								  @foreach($module_assignment_requests as $request)
 								  {{($request->module_id)}}
 									@if($request->module_id == $assign->module->id)
@@ -153,7 +151,9 @@
 									@endif
 								  @endforeach
 								  
-							  @endif
+							  @endif 
+                            @foreach($assign->module->moduleAssignments as $modAssign)
+
                               @if($modAssign->program_module_assignment_id == $assign->id)
                             <p class="ss-font-xs ss-no-margin ss-bold">Facilitator:</p>
                             <p class="ss-font-xs ss-no-margin ss-italic">{{ $modAssign->staff->title }} {{ $modAssign->staff->first_name }} {{ $modAssign->staff->middle_name }} {{ $modAssign->staff->surname }}
