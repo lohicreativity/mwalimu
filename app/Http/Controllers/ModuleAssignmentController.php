@@ -46,7 +46,7 @@ class ModuleAssignmentController extends Controller
 	public function index(Request $request)
 	{
     $staff = User::find(Auth::user()->id)->staff;
-	return ModuleAssignmentRequest::whereHas('programModuleAssignment.module.departments',function($query) use ($staff){$query->where('id',$staff->department_id);})
+	return ModuleAssignmentRequest::whereHas('programModuleAssignment.module.departments',function($query) use ($staff){$query->where('id','!=',$staff->department_id);})
 																->with('programModuleAssignment.moduleAssignments.staff')
 																->where('study_academic_year_id',session('active_academic_year_id'))->where('staff_id','=',0)->get();
 		$data = [
