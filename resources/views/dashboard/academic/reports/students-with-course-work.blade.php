@@ -251,10 +251,7 @@
                     
                       <td>@if(count($reg->student->courseWorkResults) == count($assessment_plans) && $course_work_processed) {{ $cw_total }} @else - @endif</td>
 					  <td>
-					  @foreach($module_assignment as $assignments)
-						  @if($assignments) @endif
 						@if($cw_total < $cw_pass_mark) Fail @else Pass @endif
-					  @endforeach
 					  </td>
                       <td></td>
                     </tr>
