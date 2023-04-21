@@ -116,7 +116,7 @@ class HomeController extends Controller
 									->where('status','SUBMITTED')->latest()->first(),
 		   'loan_beneficiary_count'=>$loan_beneficiary_count,
 		   'module_assignment_requests'=>ModuleAssignmentRequest::whereHas('programModuleAssignment.module.departments',function($query) use ($staff){
-										$query->where('id',$staff->department_id);})->where('study_academic_year_id',session('active_academic_year_id'))->where('staff_id','=',0)->count();
+										$query->where('id',$staff->department_id);})->where('study_academic_year_id',session('active_academic_year_id'))->where('staff_id','=',0)->count()
         ];
 		
     	return view('dashboard',$data)->withTitle('Home');
