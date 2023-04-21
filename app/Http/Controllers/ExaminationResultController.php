@@ -3043,7 +3043,7 @@ class ExaminationResultController extends Controller
         }
         $grading_policies = GradingPolicy::where('nta_level_id',$campus_program->program->nta_level_id)
         ->where('study_academic_year_id',$request->get('study_academic_year_id'))
-        ->orderBy('max_score')
+        ->orderBy('max_score','DESC')
         ->get();
 		foreach($grading_policies as $policy){
 			return $policy->grade.'br';
