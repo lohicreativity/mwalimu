@@ -147,11 +147,12 @@
                             @foreach($assign->module->moduleAssignments as $modAssign)
 							  @if($module_assignment_requests)
 								  @foreach($module_assignment_requests as $request)
+								  {{($request->module_id)}}
 									@if($request->module_id == $assign->module->id)
 										Hello
 									@endif
 								  @endforeach
-								  hello
+								  
 							  @endif
                               @if($modAssign->program_module_assignment_id == $assign->id)
                             <p class="ss-font-xs ss-no-margin ss-bold">Facilitator:</p>
