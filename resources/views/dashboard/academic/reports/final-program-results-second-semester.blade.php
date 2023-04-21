@@ -549,15 +549,15 @@
                         <td>{{ $modKey }}</td>
                         <td>{{ $mod['name'] }}</td>
                         @foreach($grading_policies as $pol)
-                            <td>{{ round($mod['grades_perc'][$pol->grade],2) }}%</td>
+                            <td>$mod[$assignment->module->code]['grades'][$pol->grade] ({{ round($mod['grades_perc'][$pol->grade],0) }}%)</td>
                         @endforeach
-                        <td>{{ round($mod['inc_rate'],2) }}%</td>
-                        <td>{{ round($mod['ic_rate'],2) }}%</td>
-                        <td>{{ round($mod['if_rate'],2) }}%</td>
-                        <td>{{ round($mod['pst_rate'],2) }}%</td>
-                        <td>{{ round($mod['ds_rate'],2) }}%</td>
-                        <td>{{ round($mod['pass_rate'],2) }}%</td>
-                        <td>{{ round($mod['fail_rate'],2) }}%</td>
+                        <td>{{ round($mod['inc_rate'],0) }}%</td>
+                        <td>{{ round($mod['ic_rate'],0) }}%</td>
+                        <td>{{ round($mod['if_rate'],0) }}%</td>
+                        <td>{{ round($mod['pst_rate'],0) }}%</td>
+                        <td>{{ round($mod['ds_rate'],0) }}%</td>
+                        <td>{{ round($mod['pass_rate'],0) }}%</td>
+                        <td>{{ round($mod['fail_rate'],0) }}%</td>
                       </tr>
                       @endforeach
                    </table>
