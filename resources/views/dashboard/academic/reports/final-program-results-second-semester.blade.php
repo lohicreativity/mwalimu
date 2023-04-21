@@ -211,7 +211,7 @@
                <h3>{{ $campus->name }}</h3>
                <h3>{{ $department->name }}</h3>
                <h3>{{ $program->name }} (YEAR {{ $year_of_study }} - {{ strtoupper(substr($intake->name,0,3)) }}) - {{ $study_academic_year->academicYear->year }}</h3>
-               <h3>@if($semester) {{ strtoupper($semester->name) }} @endif EXAMINATION RESULTS </h3> <span class="ss-bold">(CA Weight {{ (round($module_assignments[0]->programModuleAssignment->course_work_min_mark,0)) }}%, FE {{(round($module_assignments[0]->programModuleAssignment->final_min_mark,0))}}%)</span>
+               <p>@if($semester) {{ strtoupper($semester->name) }} @endif EXAMINATION RESULTS <span class="ss-bold">(CA Weight {{ (round($module_assignments[0]->programModuleAssignment->course_work_min_mark,0)) }}%, FE Weight {{(round($module_assignments[0]->programModuleAssignment->final_min_mark,0))}}%)</span> </p> 
               </div>
                <div class="table-responsive ss-margin-bottom">
                   <table class="table table-condensed table-bordered">
