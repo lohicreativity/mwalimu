@@ -551,13 +551,13 @@
                         @foreach($grading_policies as $pol)
                             <td>{{ ($mod['grades'][$pol->grade]) }}({{ round($mod['grades_perc'][$pol->grade],0) }}%)</td>
                         @endforeach
-                        <td>{{ round($mod['inc_rate'],0) }}%</td>
-                        <td>{{ round($mod['ic_rate'],0) }}%</td>
-                        <td>{{ round($mod['if_rate'],0) }}%</td>
-                        <td>{{($mod['pst_count']) }}({{ round($mod['pst_rate'],0) }}%)</td>
-                        <td>{{ round($mod['ds_rate'],0) }}%</td>
-                        <td>{{ round($mod['pass_rate'],0) }}%</td>
-                        <td>{{ round($mod['fail_rate'],0) }}%</td>
+                        <td>{{ ($mod['inc_count']) }}({{ round($mod['inc_rate'],0) }}%)</td>
+                        <td>{{ ($mod['ic_count']) }}({{ round($mod['ic_rate'],0) }}%)</td>
+                        <td>{{ ($mod['if_count']) }}({{ round($mod['if_rate'],0) }}%)</td>
+                        <td>{{ ($mod['pst_count']) }}({{ round($mod['pst_rate'],0) }}%)</td>
+                        <td>{{ ($mod['ds_count']) }}({{ round($mod['ds_rate'],0) }}%)</td>
+                        <td>{{ ($mod['pass_count']) }}({{ round($mod['pass_rate'],0) }}%)</td>
+                        <td>{{ ($mod['fail_count']) }}({{ round($mod['fail_rate'],0) }}%)</td>
                       </tr>
                       @endforeach
                    </table>
