@@ -105,9 +105,10 @@ class ProgramModuleAssignmentController extends Controller
      * Allocate student options
      */
     public function allocateStudentOptions(Request $request)
-    {return $request;
+    {
         $department = Department::with('programs')->find($request->get('department_id'));
-		$deadline = ElectiveModuleLimit::with(['campus','semester','studyAcademicYear.academicYear','award'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->count();
+		//kwa sababu kuna deadline kwa kila award, inabidi kuallocate kufanyike kwa award pia 
+		//$deadline = ElectiveModuleLimit::with(['campus','semester','studyAcademicYear.academicYear','award'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->count();
         $prog = [];
         foreach($department->programs as $program){
             for($yr = 1; $yr <= $program->min_duration; $yr++){

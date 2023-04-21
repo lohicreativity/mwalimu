@@ -212,13 +212,14 @@
                     </tr>
                     <tr>
                       <td class="ss-bold">SN</td>
-                      <td class="ss-bold">NAME</td>
-                      <td class="ss-bold">REG. NO.</td>
+                      <td class="ss-bold">Name</td>
+                      <td class="ss-bold">Reg. No.</td>
                       @foreach($assessment_plans as $plan)
                       <td class="ss-bold">{{ $plan->name }}</td>
                       @endforeach
-                      <td class="ss-bold">TOTAL</td>
-                      <td class="ss-bold ss-center">SIGNATURE</td>
+                      <td class="ss-bold">Total</td>
+                      <td class="ss-bold">Remarks</td>					  
+                      <td class="ss-bold ss-center">Signature</td>
                     </tr>
                     @foreach($registrations as $key=>$reg)
                     <tr>
@@ -249,6 +250,12 @@
                       @endforeach
                     
                       <td>@if(count($reg->student->courseWorkResults) == count($assessment_plans) && $course_work_processed) {{ $cw_total }} @else - @endif</td>
+					  <td>
+					  @foreach($module_assignment as $assignments)
+						  @if($assignments) @endif
+						@if($cw_total < $cw_pass_mark) Fail @else Pass @endif
+					  @endforeach
+					  </td>
                       <td></td>
                     </tr>
                     @endforeach
