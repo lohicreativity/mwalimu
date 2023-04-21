@@ -40,6 +40,10 @@
 			@if($postponements_hod_count != 0 || $special_exams_hod_count != 0)
 				<div class="alert alert-warning">You have pending postponement requests</div>
 			@endif
+			@if($module_assignment_requests !=0)
+				<div class="alert alert-warning">You have a request for a facilitator. 
+				Please <a href="{{ url('academic/module-assignment-requests?study_academic_year_id='.session('active_academic_year_id')) }}">click here</a> to attend it.</div>
+			@endif			
         @endif
 
         @if(Auth::user()->hasRole('arc'))

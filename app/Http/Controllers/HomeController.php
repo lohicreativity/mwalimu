@@ -15,6 +15,8 @@ use App\Domain\Application\Models\InternalTransfer;
 use App\Domain\Finance\Models\LoanAllocation;
 use App\Domain\Registration\Models\Student;
 use App\Domain\Academic\Models\CampusProgram;
+use App\Domain\Academic\Models\ModuleAssignmentRequest;
+use App\Domain\Academic\Models\ProgramModuleAssignment;
 
 class HomeController extends Controller
 {
@@ -112,7 +114,9 @@ class HomeController extends Controller
 									->where('status','SUBMITTED')->count(),
 		   'last_internal_transfer'=>InternalTransfer::whereHas('student.applicant',function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
 									->where('status','SUBMITTED')->latest()->first(),
-		   'loan_beneficiary_count'=>$loan_beneficiary_count
+		   'loan_beneficiary_count'=>$loan_beneficiary_count,
+		   'module_assignment_requests'=>ModuleAssignmentRequest::whereHas('programModuleAssignment.module.departments',function($query) use ($staff){
+										$query->where('id',$staff->department_id);})->where('study_academic_year_id',session('active_academic_year_id'))->where('staff_id','=',0)->count();
         ];
 		
     	return view('dashboard',$data)->withTitle('Home');
