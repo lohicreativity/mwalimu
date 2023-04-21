@@ -224,7 +224,7 @@
                     @foreach($registrations as $key=>$reg)
                     <tr>
                       <td>{{ $key+1 }}</td>
-                      <td>{{ $reg->student->surname }}, {{ ($reg->student->first_name) }} {{ substr($reg->student->middle_name,0,1) }}</td>
+                      <td>{{ $reg->student->surname }}, {{ (ucwords(strtolower($reg->student->first_name))) }} {{ substr($reg->student->middle_name,0,1) }}</td>
                       <td>{{ $reg->student->registration_number }}</td>
                         @php 
                             $cw_available = true;
