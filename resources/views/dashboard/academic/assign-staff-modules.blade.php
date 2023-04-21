@@ -224,11 +224,21 @@
                         <td>
                           @if(App\Utils\Util::collectionContainsKey($assign->module->departments,$staff->department_id))
                           @can('assign-module-facilitator')
-                          <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-assign-module-{{ $assign->module->id }}">
+					  
+							                          @if(count($assign->module->moduleAssignments) != 0)
+
+                            @foreach($assign->module->moduleAssignments as $modAssign)
+
+                              
+                          <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-assign-module-{{ $assign->module->id }}" 
+						  @if($modAssign->program_module_assignment_id == $assign->id) disabled="true" @endif>
                               <i class="fas fa-plus">
                               </i>
                               Assign Facilitator
                          </a>
+						 @break
+						 @endforeach
+						 @endif
                          @endcan
                          @else
                          {!! Form::open(['url'=>'academic/module-assignment-request/store','class'=>'ss-form-processing']) !!}
