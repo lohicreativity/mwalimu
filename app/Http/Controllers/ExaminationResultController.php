@@ -3045,9 +3045,6 @@ class ExaminationResultController extends Controller
         ->where('study_academic_year_id',$request->get('study_academic_year_id'))
         ->orderBy('max_score','DESC')
         ->get();
-		foreach($grading_policies as $policy){
-			return $policy->grade.'br';
-		}
 
         $modules = [];
 
