@@ -263,15 +263,15 @@
                 </div><!-- end of table-responsive -->
                 
                 
-          <div class="col-md-6">
-             <div class="ss-bold ss-left">
+          <div class="col-md-8">
+             <div class="ss-left">
                  <h3>Name of Head of Department: .................................</h3>
                  <h3>Signature: ..............................</h3>
                  <h3>Date: ..................................</h3>
              </div>
           </div><!--end of col-md-6 -->
-          <div class="col-md-6">
-             <div class="ss-bold ss-right">
+          <div class="col-md-4">
+             <div class="ss-left">
                  <h3>Name of the Lecturer: .................................</h3>
                  <h3>Signature: .............................</h3>
                  <h3>Date: ..................................</h3>
