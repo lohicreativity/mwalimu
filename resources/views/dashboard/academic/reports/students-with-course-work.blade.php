@@ -271,7 +271,7 @@
              </div>
           </div><!--end of col-md-6 -->
           <div class="col-md-6">
-             <div class="ss-bold ss-left">
+             <div class="ss-bold ss-right">
                  <h3>Name of the Lecturer: .................................</h3>
                  <h3>Signature: .............................</h3>
                  <h3>Date: ..................................</h3>
