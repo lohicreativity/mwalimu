@@ -211,20 +211,20 @@
                <h3>{{ $campus->name }}</h3>
                <h3>{{ $department->name }}</h3>
                <h3>{{ $program->name }} (YEAR {{ $year_of_study }} - {{ strtoupper(substr($intake->name,0,3)) }}) - {{ $study_academic_year->academicYear->year }}</h3>
-               <h3>@if($semester) {{ strtoupper($semester->name) }} @endif EXAMINATION RESULTS</h3>
+               <h3>@if($semester) {{ strtoupper($semester->name) }} @endif EXAMINATION RESULTS (CA Weight {{ ($module_assignments[0]->programModuleAssignment->course_work_min_mark) }}%, FE {{$module_assignments[0]->programModuleAssignment->final_min_mark}}%)</h3>
               </div>
                <div class="table-responsive ss-margin-bottom">
                   <table class="table table-condensed table-bordered">
                     <tr>
                       <td class="ss-bold" rowspan="2">SN</td>
                       @if($request->get('reg_display_type') == 'SHOW')
-                      <td class="ss-bold" rowspan="2">REG. NO.</td>
+                      <td class="ss-bold" rowspan="2">Reg. No.</td>
                       @endif
                       @if($request->get('name_display_type') == 'SHOW')
-                      <td class="ss-bold" rowspan="2">NAME</td>
+                      <td class="ss-bold" rowspan="2">Name</td>
                       @endif
                       @if($request->get('gender_display_type') == 'SHOW')
-                      <td class="ss-bold" rowspan="2">SEX</td>
+                      <td class="ss-bold" rowspan="2">Sex</td>
                       @endif
                       <!-- <td class="ss-bold" rowspan="2">CLASS MODE</td> -->
                       @foreach($module_assignments as $assignment)
@@ -244,8 +244,8 @@
                       
                       @if($semester)
                          @if(App\Utils\Util::stripSpacesUpper($semester->name) == App\Utils\Util::stripSpacesUpper('Semester 2'))
-                          <td class="ss-bold">2ND Sem Remark</td>
-                          <td class="ss-bold">1ST Sem Remark</td>
+                          <td class="ss-bold">2nd Sem Remark</td>
+                          <td class="ss-bold">1st Sem Remark</td>
                           <td class="ss-bold">GPA</td>
                           <td class="ss-bold">Points</td>
                           <td class="ss-bold">Credits</td>
