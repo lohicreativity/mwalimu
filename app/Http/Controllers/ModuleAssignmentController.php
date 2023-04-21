@@ -50,7 +50,8 @@ class ModuleAssignmentController extends Controller
 	//								->where('staff_id','=',0)->where('requested_by_user_id',$staff->id)->get();
 	
 	return ModuleAssignmentRequest::with(['programModuleAssignment.moduleAssignments.staff','campusProgram.program','studyAcademicYear.academicYear','user.staff.campus'])
-									->latest()->where('study_academic_year_id',session('active_academic_year_id'))->latest()->get();
+									->latest()->where('study_academic_year_id',session('active_academic_year_id'))->latest()
+									->where('staff_id','=',0)->where('requested_by_user_id',$staff->id)->get();
 
 									
 		$data = [
