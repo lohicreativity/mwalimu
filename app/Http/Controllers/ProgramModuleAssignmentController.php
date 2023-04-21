@@ -18,6 +18,7 @@ use App\Domain\Academic\Models\ResultPublication;
 use App\Models\User;
 use App\Utils\Util;
 use Validator, DB, Auth;
+use App\Domain\Academic\Models\ElectiveModuleLimit;
 
 class ProgramModuleAssignmentController extends Controller
 {
@@ -104,8 +105,9 @@ class ProgramModuleAssignmentController extends Controller
      * Allocate student options
      */
     public function allocateStudentOptions(Request $request)
-    {
+    {return $request;
         $department = Department::with('programs')->find($request->get('department_id'));
+		$deadline = ElectiveModuleLimit::with(['campus','semester','studyAcademicYear.academicYear','award'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->count();
         $prog = [];
         foreach($department->programs as $program){
             for($yr = 1; $yr <= $program->min_duration; $yr++){
