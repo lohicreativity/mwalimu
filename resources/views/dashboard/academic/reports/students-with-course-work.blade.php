@@ -197,7 +197,7 @@
               <div class="ss-letter-head  ss-center">
                <h3>THE MWALIMU NYERERE MEMORIAL ACADEMY</h3>
 
-					  <img src="{{ asset('dist/img/logo.png') }}" alt="Config::get('constants.SITE_NAME') }}" class="ss-logo" width="10%">
+					  <img src="{{ asset('dist/img/logo.png') }}" alt="Config::get('constants.SITE_NAME') }}" class="ss-logo" width="8%">
 			   
                <h3>{{ $campus->name }}</h3>
                <h3>{{ $department->name }}</h3>
