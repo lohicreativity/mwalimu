@@ -231,7 +231,7 @@
 
                               
                           <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-assign-module-{{ $assign->module->id }}" 
-						  @if($modAssign->program_module_assignment_id == $assign->id) disabled="true" @endif>
+						  @if($modAssign->program_module_assignment_id == $assign->id) readonly="true" @endif>
                               <i class="fas fa-plus">
                               </i>
                               Assign Facilitator
