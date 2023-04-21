@@ -145,7 +145,9 @@
                           @if(count($assign->module->moduleAssignments) != 0)
 							  
                             @foreach($assign->module->moduleAssignments as $modAssign)
-							Hello
+							  @if($module_assignment_requests)
+								  hello
+							  @endif
                               @if($modAssign->program_module_assignment_id == $assign->id)
                             <p class="ss-font-xs ss-no-margin ss-bold">Facilitator:</p>
                             <p class="ss-font-xs ss-no-margin ss-italic">{{ $modAssign->staff->title }} {{ $modAssign->staff->first_name }} {{ $modAssign->staff->middle_name }} {{ $modAssign->staff->surname }}
