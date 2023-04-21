@@ -207,6 +207,7 @@
           <div class="col-md-12">
               <div class="ss-letter-head  ss-center">
                <h3>THE MWALIMU NYERERE MEMORIAL ACADEMY</h3>
+			   <img src="{{ asset('dist/img/logo.png') }}" alt="Config::get('constants.SITE_NAME') }}" class="ss-logo" width="10%">			   
                <h3>{{ $campus->name }}</h3>
                <h3>{{ $department->name }}</h3>
                <h3>{{ $program->name }} (YEAR {{ $year_of_study }} - {{ strtoupper(substr($intake->name,0,3)) }}) - {{ $study_academic_year->academicYear->year }}</h3>
@@ -243,19 +244,19 @@
                       
                       @if($semester)
                          @if(App\Utils\Util::stripSpacesUpper($semester->name) == App\Utils\Util::stripSpacesUpper('Semester 2'))
-                          <td class="ss-bold">2ND SEM REMARK</td>
-                          <td class="ss-bold">1ST SEM REMARK</td>
+                          <td class="ss-bold">2ND Sem Remark</td>
+                          <td class="ss-bold">1ST Sem Remark</td>
                           <td class="ss-bold">GPA</td>
-                          <td class="ss-bold">POINTS</td>
-                          <td class="ss-bold">CREDITS</td>
-                          <td class="ss-bold">OVERALL REMARK</td>
-                          <td class="ss-bold">CLASS</td>
+                          <td class="ss-bold">Points</td>
+                          <td class="ss-bold">Credits</td>
+                          <td class="ss-bold">Overall Remark</td>
+                          <td class="ss-bold">Classification</td>
                          @else
-                          <td class="ss-bold">REMARK</td>
+                          <td class="ss-bold">Remark</td>
                           <td class="ss-bold">GPA</td>
-                          <td class="ss-bold">POINTS</td>
-                          <td class="ss-bold">CREDITS</td>
-                          <td class="ss-bold">CLASS</td>
+                          <td class="ss-bold">Points</td>
+                          <td class="ss-bold">Credits</td>
+                          <td class="ss-bold">Classification</td>
                          @endif
                       @endif
                       
@@ -270,7 +271,7 @@
                       <td>{{ $student->registration_number }}</td>
                       @endif
                       @if($request->get('name_display_type') == 'SHOW')
-                      <td>{{ $student->surname }}, {{ $student->first_name }} {{ $student->middle_name}}</td>
+                      <td>{{ $student->surname }}, {{ ucwords(strtolower($student->first_name)) }} {{ substr($student->middle_name,0,1)}}</td>
                       @endif
                       @if($request->get('gender_display_type') == 'SHOW')
                       <td>{{ $student->gender }}</td>
