@@ -142,15 +142,6 @@
 									@if($j == $assign->semester->id)
                         <tr>
                         <td>{{ $assign->module->name }}
-													 							  @if($module_assignment_requests)
-								  @foreach($module_assignment_requests as $request)
-								  {{($request->module_id)}}
-									@if($request->module_id == $assign->module->id)
-										Hello
-									@endif
-								  @endforeach
-								  
-							  @endif 
                           @if(count($assign->module->moduleAssignments) != 0)
 
                             @foreach($assign->module->moduleAssignments as $modAssign)
