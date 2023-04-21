@@ -137,14 +137,15 @@
                           <tbody>  
                       @foreach($campus_program->programModuleAssignments as $assign)
                         @for($i = 1; $i<=3; $i++)
-                        @if($i == $assign->year_of_study)
-
-                        @for($j = 1; $j<=2; $j++)
-                        @if($j == $assign->semester->id)
+							@if($i == $assign->year_of_study)
+								@for($j = 1; $j<=2; $j++)
+									@if($j == $assign->semester->id)
                         <tr>
                         <td>{{ $assign->module->name }}
                           @if(count($assign->module->moduleAssignments) != 0)
+							  
                             @foreach($assign->module->moduleAssignments as $modAssign)
+							Hello
                               @if($modAssign->program_module_assignment_id == $assign->id)
                             <p class="ss-font-xs ss-no-margin ss-bold">Facilitator:</p>
                             <p class="ss-font-xs ss-no-margin ss-italic">{{ $modAssign->staff->title }} {{ $modAssign->staff->first_name }} {{ $modAssign->staff->middle_name }} {{ $modAssign->staff->surname }}
