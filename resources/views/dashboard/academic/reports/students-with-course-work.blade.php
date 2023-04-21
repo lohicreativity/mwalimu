@@ -267,6 +267,20 @@
 
           </div><!-- end of col-md-12 -->
         </div><!-- end of row -->
+                 <div class="row ss-center">
+                   <div class="col-md-4">
+                     <p class="ss-margin-top">...........................</p>
+                     <p class="ss-bold">Head of Department</p>
+                   </div>
+                   <div class="col-md-4">
+                     <p class="ss-margin-top">...........................</p>
+                     <p class="ss-bold">Date</p>
+                   </div>
+                   <div class="col-md-4">
+                     <p class="ss-margin-top">...........................</p>
+                     <p class="ss-bold">Lecturer</p>
+                   </div>
+                </div>
 
       </div><!-- end of container -->
 
