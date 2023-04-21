@@ -197,7 +197,7 @@
               <div class="ss-letter-head  ss-center">
                <h3>THE MWALIMU NYERERE MEMORIAL ACADEMY</h3>
 
-					  <img src="{{ asset('dist/img/logo.png') }}" alt="Config::get('constants.SITE_NAME') }}" class="ss-logo" width="8%">
+					  <img src="{{ asset('dist/img/logo.png') }}" alt="Config::get('constants.SITE_NAME') }}" class="ss-logo" width="10%">
 			   
                <h3>{{ $campus->name }}</h3>
                <h3>{{ $department->name }}</h3>
@@ -267,20 +267,20 @@
 
           </div><!-- end of col-md-12 -->
         </div><!-- end of row -->
-                 <div class="row ss-center">
-                   <div class="col-md-4">
-                     <p class="ss-margin-top">...........................</p>
-                     <p class="ss-bold">Head of Department</p>
-                   </div>
-                   <div class="col-md-4">
-                     <p class="ss-margin-top">...........................</p>
-                     <p class="ss-bold">Date</p>
-                   </div>
-                   <div class="col-md-4">
-                     <p class="ss-margin-top">...........................</p>
-                     <p class="ss-bold">Lecturer</p>
-                   </div>
-                </div>
+          <div class="col-md-6">
+             <div class="ss-bold ss-left">
+                 <h3>Name of Head of Department: .................................</h3>
+                 <h3>Signature of Head of Department: ..............................</h3>
+                 <h3>Date: ..................................</h3>
+             </div>
+          </div><!--end of col-md-6 -->
+          <div class="col-md-6">
+             <div class="ss-bold ss-left">
+                 <h3>Name of Examination Officer: .................................</h3>
+                 <h3>Signature of Examination Officer: .............................</h3>
+                 <h3>Date: ..................................</h3>
+             </div>
+          </div><!--end of col-md-6 -->
 
       </div><!-- end of container -->
 
