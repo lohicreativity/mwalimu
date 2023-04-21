@@ -265,16 +265,16 @@
                 
           <div class="col-md-9">
              <div class="ss-left">
-                 <h3>Name of Head of Department: .................................</h3>
-                 <h3>Signature: ..............................</h3>
-                 <h3>Date: ..................................</h3>
+                 <p class="ss-bold">Name of Head of Department: .................................</p>
+                 <p class="ss-bold">Signature: ..............................</p>
+                 <p class="ss-bold">Date: ..................................</p>
              </div>
           </div><!--end of col-md-6 -->
           <div class="col-md-3">
              <div class="ss-left">
-                 <h3>Name of the Lecturer: .................................</h3>
-                 <h3>Signature: .............................</h3>
-                 <h3>Date: ..................................</h3>
+                 <p class="ss-bold">Name of the Lecturer: .................................</p>
+                 <p class="ss-bold">Signature: .............................</p>
+                 <p class="ss-bold">Date: ..................................</p>
              </div>
           </div><!--end of col-md-6 -->
 
