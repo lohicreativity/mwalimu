@@ -107,7 +107,7 @@ class ProgramModuleAssignmentController extends Controller
     public function allocateStudentOptions(Request $request)
     {
         $user = User::find(Auth::user()->id)->staff()->with('department')->first();
-		$department = Department::with('programs')->find($user->department_id);
+		$department = Department::with(['programs','programs.program'])->find($user->department_id);
 		return $department;
         $ac_year = StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first();
         $semester = Semester::where('status','ACTIVE')->first();		 
