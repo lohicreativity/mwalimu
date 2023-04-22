@@ -67,7 +67,7 @@
 					  </div>
 					  <div class="form-group col-4">
 						{!! Form::label('','Semester') !!}
-						{!! Form::text('semester_id',$semster->id,$semester->name) !!}
+						{!! Form::text('semester_id',$semester->name,$semster->id) !!}
 					  </div>
 					  <div class="form-group col-4">
 						{!! Form::label('','Programme Level') !!}
