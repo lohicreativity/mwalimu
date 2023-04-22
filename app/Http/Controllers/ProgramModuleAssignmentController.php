@@ -107,8 +107,7 @@ class ProgramModuleAssignmentController extends Controller
     public function allocateStudentOptions(Request $request)
     {
         $user = User::find(Auth::user()->id)->staff()->with('department')->first();
-		$department = Department::with('programs')->whereHas('programs',function($query) use($request){$query->where('award_id',$request->get('program_level_id'));})->find($user->department_id);
-		return $department;
+		$department = Department::with('programs')->find($user->department_id);
         $ac_year = StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first();
         $semester = Semester::where('status','ACTIVE')->first();		 
 		$deadline = ElectiveModuleLimit::where('study_academic_year_id',$ac_year->id)->where('semester_id',$semester->id)->where('award_id',$request->get('program_level_id'))
@@ -121,6 +120,11 @@ class ProgramModuleAssignmentController extends Controller
 		
 		$prog = [];
         foreach($department->programs as $program){
+			$i = 0;
+			if($program->award_id == $request->get('program_level_id')){
+				$i++;
+			}
+			return $i;
             for($yr = 1; $yr <= $program->min_duration; $yr++){
               $campus_program = CampusProgram::where('program_id',$program->id)->first();
               if($campus_program){
