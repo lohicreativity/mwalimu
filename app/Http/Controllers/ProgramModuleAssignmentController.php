@@ -111,8 +111,8 @@ class ProgramModuleAssignmentController extends Controller
         $ac_year = StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first();
         $semester = Semester::where('status','ACTIVE')->first();		
 		//kwa sababu kuna deadline kwa kila award, inabidi kuallocate kufanyike kwa award pia 
-		$deadline = ElectiveModuleLimit::with(['campus','semester','studyAcademicYear.academicYear','award'])->where('study_academic_year_id',$ac_year->id)
-										 ->where('semester_id',$semester->id)->where('award_id',$request->get('program_level_id'))->where('campus_id',$user->campus_id)->first();
+		$deadline = ElectiveModuleLimit::where('study_academic_year_id',$ac_year->id)->where('semester_id',$semester->id)->where('award_id',$request->get('program_level_id'))
+									   ->where('campus_id',$user->campus_id)->first();
  return $deadline;
 		$prog = [];
         foreach($department->programs as $program){
