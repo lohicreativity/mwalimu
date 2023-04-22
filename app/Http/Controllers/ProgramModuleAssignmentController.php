@@ -94,7 +94,8 @@ class ProgramModuleAssignmentController extends Controller
         $data = [
             'study_academic_year'=>StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first(),
             'semester'=>Semester::where('status','ACTIVE')->first(),
-			'awards'=>Award::all()
+			'awards'=>Award::all(),
+			'request'=>$request
         ];
         return view('dashboard.academic.allocate-options',$data)->withTitle('Allocate Options');
     }
