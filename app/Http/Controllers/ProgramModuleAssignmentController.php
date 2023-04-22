@@ -141,6 +141,10 @@ class ProgramModuleAssignmentController extends Controller
 							  $query->whereIn('id',$opt_mod_ids);
 						  })->where('year_of_study',$yr)->where('campus_program_id',$campus_program->id)->get();
 
+				  if(!$non_opt_students){
+					return redirect()->back()->with('error','No students to allocate options for');
+				  }
+				  
 				  $opt_students = Student::whereHas('studentshipStatus',function($query){
 					  $query->where('name','ACTIVE');
 				  })->whereHas('registrations',function($query) use($request,$yr){
