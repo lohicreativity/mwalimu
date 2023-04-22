@@ -67,7 +67,7 @@
 					  </div>
 					  <div class="form-group col-4">
 						{!! Form::label('','Semester') !!}
-						{!! Form::text('semester',@if($semester) {{($semster = $semester->id)}} @endif $semester->name,$semster) !!}
+						{!! Form::text('semester',@if($semester) {{$semster = $semester->id}} @endif $semester->name,$semster) !!}
 					  </div>
 					  <div class="form-group col-4">
 						{!! Form::label('','Programme Level') !!}
