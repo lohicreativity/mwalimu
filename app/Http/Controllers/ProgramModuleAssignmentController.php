@@ -119,6 +119,7 @@ class ProgramModuleAssignmentController extends Controller
 		}
 			
 		$prog = [];
+		$students = 0;
         foreach($department->programs as $program){
 			if($program->award_id == $request->get('program_level_id')){
 				for($yr = 1; $yr <= $program->min_duration; $yr++){
@@ -141,8 +142,9 @@ class ProgramModuleAssignmentController extends Controller
 							  $query->whereIn('id',$opt_mod_ids);
 						  })->where('year_of_study',$yr)->where('campus_program_id',$campus_program->id)->get();
 
-				  if(!$non_opt_students){
-					return redirect()->back()->with('error','No students to allocate options for');
+				  // A flag in case there is not student to be allocated
+				  if($non_opt_students){
+					$students++;
 				  }
 				  
 				  $opt_students = Student::whereHas('studentshipStatus',function($query){
@@ -194,8 +196,11 @@ class ProgramModuleAssignmentController extends Controller
 				  } 
 				}
 			}
+
           }
-        
+		if($students == 0){
+			return redirect()->back()->with('error','No students to allocate options for');
+		}
         
         return redirect()->back()->with('message','Options allocated successfully');
         
