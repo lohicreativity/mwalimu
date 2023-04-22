@@ -30,7 +30,9 @@ class CourseWorkComponentController extends Controller
            }
         }
 
-
+		if($request->assignments == 0 && $request->quizes == 0 && $request->portfolios == 0){
+			return redirect()->back()->with('error','You must specify atleast 3 components');
+		}
         (new CourseWorkComponentAction)->store($request);
 
         return Util::requestResponse($request,'Course work components created successfully');
