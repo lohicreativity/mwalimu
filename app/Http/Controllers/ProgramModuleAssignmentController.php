@@ -19,6 +19,7 @@ use App\Models\User;
 use App\Utils\Util;
 use Validator, DB, Auth;
 use App\Domain\Academic\Models\ElectiveModuleLimit;
+use App\Domain\Academic\Models\Award;
 
 class ProgramModuleAssignmentController extends Controller
 {
@@ -92,7 +93,8 @@ class ProgramModuleAssignmentController extends Controller
     {
         $data = [
             'study_academic_year'=>StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first(),
-            'semester'=>Semester::where('status','ACTIVE')->first()
+            'semester'=>Semester::where('status','ACTIVE')->first(),
+			'awards'=>Award::all()
         ];
         return view('dashboard.academic.allocate-options',$data)->withTitle('Allocate Options');
     }
