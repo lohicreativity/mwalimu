@@ -57,22 +57,17 @@
                          'placeholder'=>'',
 						 'readonly'=>true,						 
                          'required'=>true
-                     ];
-                     $keyword = [
-                         'class'=>'form-control',
-                         'placeholder'=>'index number, registration number or surname',
-                         'required'=>true
                      ];					 
                  @endphp				  
                  {!! Form::open(['url'=>'academic/allocate-options','class'=>'ss-form-processing']) !!}				 
                    <div class="row">
 					 <div class="form-group col-4">
 						{!! Form::label('','Academic year') !!}
-						{!! Form::text('study_academic_year_id',$study_academic_year->academicYear->year,$study_academic_year_id) !!}
+						{!! Form::text('study_academic_year_id',$study_academic_year->academicYear->year,$study_academic_year->id) !!}
 					  </div>
 					  <div class="form-group col-4">
 						{!! Form::label('','Semester') !!}
-						{!! Form::text('semester_id',$semester->name,$semster_id) !!}
+						{!! Form::text('semester_id',$semster->id,$semester->name) !!}
 					  </div>
 					  <div class="form-group col-4">
 						{!! Form::label('','Programme Level') !!}
