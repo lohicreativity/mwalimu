@@ -116,7 +116,7 @@ class ProgramModuleAssignmentController extends Controller
         $now = strtotime(date('Y-m-d'));
         $deadline = strtotime($deadline->deadline);
 		if($now <= $deadline){
-			return redirect()->back()->with('message','Options cannot be allocated because selection deadline is not due');
+			return redirect()->back()->with('error','Options cannot be allocated because selection deadline is not due');
 		}else{
 			return 'imeisha';
 		}
