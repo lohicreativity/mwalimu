@@ -74,7 +74,7 @@
 						{!! Form::label('','Semester') !!}
 						{!! Form::text('semester',$semester->name,$semster) !!}
 					  </div>
-					  <div class="form-group col-6">
+					  <div class="form-group col-4">
 						{!! Form::label('','Programme Level') !!}
 						<select name="program_level_id" class="form-control" required>
 						  <option value="">Select Programme Level</option>
