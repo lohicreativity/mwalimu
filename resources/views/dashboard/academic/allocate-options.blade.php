@@ -95,32 +95,6 @@
             </div>
             <!-- /.card -->
 
-            @if($study_academic_year)
-            <div class="card">
-              <div class="card-header">
-                <h3 class="card-title">Allocate Options - {{ $study_academic_year->academicYear->year }} - {{ $staff->department->name }}</h3>
-              </div>
-              <!-- /.card-header -->
-              <div class="card-body">
-                 {!! Form::open(['url'=>'academic/allocate-options','class'=>'ss-form-processing']) !!}
-                   
-                   <div class="form-group">
-                    {!! Form::input('hidden','study_academic_year_id',$study_academic_year->id) !!}
-                     {!! Form::input('hidden','semester_id',$request->get('semester_id')) !!}
-                    {!! Form::input('hidden','department_id',$staff->department_id) !!}
-                  </div>
-                  <div class="ss-form-actions">
-                   <button type="submit" class="btn btn-primary">{{ __('Allocate Options') }}</button>
-                  </div>
-
-                 {!! Form::close() !!}
-
-              </div>
-              <!-- /.card-body -->
-            </div>
-            <!-- /.card -->
-            @endif
-
 
           </div>
           <!-- /.col -->
