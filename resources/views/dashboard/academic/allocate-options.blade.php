@@ -41,31 +41,53 @@
 
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">Select Study Academic Year</h3>
+                <h3 class="card-title">Allocate Options</h3>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
-                 {!! Form::open(['url'=>'academic/options-allocations','class'=>'ss-form-processing','method'=>'GET']) !!}
+                 @php
+                     $study_academic_year_id = [
+                         'class'=>'form-control',
+                         'placeholder'=>'',
+						 'readonly'=>true,
+                         'required'=>true
+                     ];
+                     $semster = [
+                         'class'=>'form-control',
+                         'placeholder'=>'',
+						 'readonly'=>true,						 
+                         'required'=>true
+                     ];
+                     $keyword = [
+                         'class'=>'form-control',
+                         'placeholder'=>'index number, registration number or surname',
+                         'required'=>true
+                     ];					 
+                 @endphp				  
+                 {!! Form::open(['url'=>'academic/allocate-options','class'=>'ss-form-processing']) !!}				 
                    <div class="row">
-                   <div class="form-group col-6">
-                    <select name="study_academic_year_id" class="form-control" required>
-                       <option value="">Select Study Academic Year</option>
-                       @foreach($study_academic_years as $year)
-                       <option value="{{ $year->id }}" @if($request->get('study_academic_year_id') == $year->id) selected="selected" @endif>{{ $year->academicYear->year }}</option>
-                       @endforeach
-                    </select>
-                  </div>
-                  <div class="form-group col-6">
-                    <select name="study_academic_year_id" class="form-control" required>
-                       <option value="">Select Semester</option>
-                       @foreach($semesters as $semester)
-                       <option value="{{ $semester->id }}" @if($request->get('semester_id') == $semester->id) selected="selected" @endif>{{ $semester->name }}</option>
-                       @endforeach
-                    </select>
-                  </div>
-                </div>
+					 <div class="form-group col-4">
+						{!! Form::label('','Academic year') !!}
+						{!! Form::text('study_academic_year_id',$study_academic_year->academicYear->year,$study_academic_year_id) !!}
+					  </div>
+					  <div class="form-group col-4">
+						{!! Form::label('','Semester') !!}
+						{!! Form::text('semester',$semester->name,$semster) !!}
+					  </div>
+					  <div class="form-group col-6">
+						{!! Form::label('','Programme Level') !!}
+						<select name="program_level_id" class="form-control" required>
+						  <option value="">Select Programme Level</option>
+						  @foreach($awards as $award)
+							  @if(str_contains($award->name,'Basic') || str_contains($award->name,'Ordinary') || str_contains($award->name,'Bachelor') || str_contains($award->name,'Masters'))
+							  <option value="{{ $award->id }}" @if($request->get('program_level_id') == $award->id) selected="selected" @endif>{{ $award->name }}</option>
+							  @endif
+						  @endforeach
+						</select>
+					  </div> 
+                   </div>
                   <div class="ss-form-actions">
-                   <button type="submit" class="btn btn-primary">{{ __('Search') }}</button>
+                   <button type="submit" class="btn btn-primary">{{ __('Allocate Options') }}</button>
                   </div>
 
                  {!! Form::close() !!}

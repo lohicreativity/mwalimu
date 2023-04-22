@@ -91,12 +91,8 @@ class ProgramModuleAssignmentController extends Controller
     public function allocateOptions(Request $request)
     {
         $data = [
-            'staff'=>User::find(Auth::user()->id)->staff()->with('department')->first(),
-            'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
-            'study_academic_year'=>$request->has('study_academic_year_id')? StudyAcademicYear::with('academicYear')->find($request->get('study_academic_year_id')) : null,
-            'semesters'=>Semester::all(),
-            'semester'=>Semester::find($request->get('semester_id')),
-            'request'=>$request
+            'study_academic_year'=>StudyAcademicYear::with('academicYear')->where('status','ACTIVE')),
+            'semester'=>Semester::where('status','ACTIVE')
         ];
         return view('dashboard.academic.allocate-options',$data)->withTitle('Allocate Options');
     }
@@ -106,7 +102,8 @@ class ProgramModuleAssignmentController extends Controller
      */
     public function allocateStudentOptions(Request $request)
     {
-        $department = Department::with('programs')->find($request->get('department_id'));
+        $user = User::find(Auth::user()->id)->staff()->with('department')->first();
+		$department = Department::with('programs')->find($user->department_id);
 		//kwa sababu kuna deadline kwa kila award, inabidi kuallocate kufanyike kwa award pia 
 		//$deadline = ElectiveModuleLimit::with(['campus','semester','studyAcademicYear.academicYear','award'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->count();
         $prog = [];
