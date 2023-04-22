@@ -143,7 +143,7 @@ class ProgramModuleAssignmentController extends Controller
 						  })->where('year_of_study',$yr)->where('campus_program_id',$campus_program->id)->get();
 
 				  // A flag in case there is not student to be allocated
-				  if($non_opt_students){
+				  if(count($non_opt_students)>0){
 					$students++;
 				  }
 				  
