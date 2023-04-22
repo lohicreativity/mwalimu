@@ -52,7 +52,7 @@
 						 'readonly'=>true,
                          'required'=>true
                      ];
-                     $semster = [
+                     $semster_id = [
                          'class'=>'form-control',
                          'placeholder'=>'',
 						 'readonly'=>true,						 
@@ -72,7 +72,7 @@
 					  </div>
 					  <div class="form-group col-4">
 						{!! Form::label('','Semester') !!}
-						{!! Form::text('semester',$semester->name,$semster) !!}
+						{!! Form::text('semester_id',$semester->name,$semster_id) !!}
 					  </div>
 					  <div class="form-group col-4">
 						{!! Form::label('','Programme Level') !!}

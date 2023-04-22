@@ -108,8 +108,10 @@ class ProgramModuleAssignmentController extends Controller
         $user = User::find(Auth::user()->id)->staff()->with('department')->first();
 		$department = Department::with('programs')->find($user->department_id);
 		//kwa sababu kuna deadline kwa kila award, inabidi kuallocate kufanyike kwa award pia 
-		//$deadline = ElectiveModuleLimit::with(['campus','semester','studyAcademicYear.academicYear','award'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->count();
-        $prog = [];
+		$deadline = ElectiveModuleLimit::with(['campus','semester','studyAcademicYear.academicYear','award'])->where('study_academic_year_id',$request->get('study_academic_year_id'))
+										 ->where('semester_id',$request->get('semester_id'))->where('award_id',$request->get('program_level_id'))->where('campus_id',$user->campus_id)->count();
+ return $deadline;
+		$prog = [];
         foreach($department->programs as $program){
             for($yr = 1; $yr <= $program->min_duration; $yr++){
               $campus_program = CampusProgram::where('program_id',$program->id)->first();
