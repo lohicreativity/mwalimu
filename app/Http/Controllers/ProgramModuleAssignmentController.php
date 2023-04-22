@@ -108,17 +108,15 @@ class ProgramModuleAssignmentController extends Controller
     {
         $user = User::find(Auth::user()->id)->staff()->with('department')->first();
 		$department = Department::with('programs')->find($user->department_id);
+		return $department;
         $ac_year = StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first();
-        $semester = Semester::where('status','ACTIVE')->first();		
-		//kwa sababu kuna deadline kwa kila award, inabidi kuallocate kufanyike kwa award pia 
+        $semester = Semester::where('status','ACTIVE')->first();		 
 		$deadline = ElectiveModuleLimit::where('study_academic_year_id',$ac_year->id)->where('semester_id',$semester->id)->where('award_id',$request->get('program_level_id'))
 									   ->where('campus_id',$user->campus_id)->first();
         $now = strtotime(date('Y-m-d'));
         $deadline = strtotime($deadline->deadline);
 		if($now <= $deadline){
-			return redirect()->back()->with('error','Options cannot be allocated because selection deadline is not due');
-		}else{
-			return 'imeisha';
+			return redirect()->back()->with('error','Selection deadline is not due');
 		}
 		
 		$prog = [];
