@@ -117,7 +117,15 @@ class ProgramModuleAssignmentController extends Controller
 		if($now <= $deadline){
 			return redirect()->back()->with('error','Selection deadline is not due');
 		}
-		
+
+foreach($department->programs as $program){
+			$i = 0;
+			if($program->award_id == $request->get('program_level_id')){
+				$i++;
+			}
+
+}
+			return $i;			
 		$prog = [];
         foreach($department->programs as $program){
 			$i = 0;
