@@ -46,13 +46,13 @@
               <!-- /.card-header -->
               <div class="card-body">
                  @php
-                     $study_academic_year = [
+                     $study_academic_yr = [
                          'class'=>'form-control',
                          'placeholder'=>'',
 						 'readonly'=>true,
                          'required'=>true
                      ];
-                     $semester = [
+                     $semster = [
                          'class'=>'form-control',
                          'placeholder'=>'',
 						 'readonly'=>true,						 
@@ -63,7 +63,7 @@
                    <div class="row">
 					 <div class="form-group col-4">
 						{!! Form::label('','Academic year') !!}
-						{!! Form::text('study_academic_year',$study_academic_year->academicYear->year,$study_academic_year) !!}
+						{!! Form::text('study_academic_year',$study_academic_year->academicYear->year,$study_academic_yr) !!}
 					  </div>
 					  <div class="form-group col-4">
 						{!! Form::label('','Semester') !!}

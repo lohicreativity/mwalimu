@@ -97,6 +97,7 @@ class ProgramModuleAssignmentController extends Controller
 			'awards'=>Award::all(),
 			'request'=>$request
         ];
+		
         return view('dashboard.academic.allocate-options',$data)->withTitle('Allocate Options');
     }
 
