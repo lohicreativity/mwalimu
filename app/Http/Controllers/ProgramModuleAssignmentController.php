@@ -117,90 +117,79 @@ class ProgramModuleAssignmentController extends Controller
 		if($now <= $deadline){
 			return redirect()->back()->with('error','Selection deadline is not due');
 		}
-
-foreach($department->programs as $program){
-			$i = 0;
-			if($program->award_id == $request->get('program_level_id')){
-				$i++;
-			}
-
-}
-			return $i;			
+			
 		$prog = [];
         foreach($department->programs as $program){
-			$i = 0;
 			if($program->award_id == $request->get('program_level_id')){
-				$i++;
+				for($yr = 1; $yr <= $program->min_duration; $yr++){
+				  $campus_program = CampusProgram::where('program_id',$program->id)->first();
+				  if($campus_program){
+				  $elective_policy = ElectivePolicy::where('study_academic_year_id',$request->get('study_academic_year_id'))->where('campus_program_id',$campus_program->id)->where('year_of_study',$yr)->where('semester_id',$request->get('semester_id'))->first();
+
+				  $optional_modules = ProgramModuleAssignment::where('study_academic_year_id',$request->get('study_academic_year_id'))->where('campus_program_id',$campus_program->id)->where('year_of_study',$yr)->where('semester_id',$request->get('semester_id'))->where('category','OPTIONAL')->get();
+				  
+				  $opt_mod_ids = [];
+				  foreach($optional_modules as $mod){
+					  $opt_mod_ids[] = $mod->id;
+				  }
+
+				  $non_opt_students = Student::whereHas('studentshipStatus',function($query){
+					  $query->where('name','ACTIVE');
+				  })->whereHas('registrations',function($query) use($request,$yr){
+					   $query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',$yr)->where('semester_id',$request->get('semester_id'));
+				  })->whereDoesntHave('options',function($query) use($opt_mod_ids){
+							  $query->whereIn('id',$opt_mod_ids);
+						  })->where('year_of_study',$yr)->where('campus_program_id',$campus_program->id)->get();
+
+				  $opt_students = Student::whereHas('studentshipStatus',function($query){
+					  $query->where('name','ACTIVE');
+				  })->whereHas('registrations',function($query) use($request,$yr){
+					   $query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',$yr)->where('semester_id',$request->get('semester_id'));
+				  })->whereHas('options',function($query) use($opt_mod_ids){
+							  $query->whereIn('id',$opt_mod_ids);
+						  })->where('year_of_study',$yr)->where('campus_program_id',$campus_program->id)->get();
+
+				  $opt_mod_stud = [];
+				  foreach($optional_modules as $mod){
+					  $opt_mod_stud[$mod->id]['count'] = ProgramModuleAssignment::find($mod->id)->students()->count();
+					  $opt_mod_stud[$mod->id]['perc'] = $opt_mod_stud[$mod->id]['count']/(count($opt_students)+count($non_opt_students))*100;
+
+				  }
+
+
+				  $skip = count($optional_modules) != 0? intdiv(count($non_opt_students),count($optional_modules)) : 0;
+				  $remainder = count($optional_modules) != 0? count($non_opt_students)%count($optional_modules) : 0;
+				  $studCount = 0;
+					 
+				  foreach($optional_modules as $key=>$module){
+					  if(($opt_mod_stud[$module->id]['count'] != 0 && $opt_mod_stud[$module->id]['perc'] >= 50) || count($opt_students) == 0){
+						  foreach($non_opt_students as $stKey=>$student){
+							 
+							 if(Student::find($student->id)->options()->whereIn('id',$opt_mod_ids)->count() < $elective_policy->number_of_options){
+									$program_mod_assign = ProgramModuleAssignment::find($module->id);
+									$program_mod_assign->students()->attach([$student->id]);
+							 }
+						  }
+					  }else{
+						  $count = 0;
+						  foreach($non_opt_students as $stKey=>$student){
+							 if($key == (count($optional_modules)-1)){
+								$skip = $skip + $remainder;
+							 }
+							 
+							 if(Student::find($student->id)->options()->whereIn('id',$opt_mod_ids)->count() < $elective_policy->number_of_options){
+								if($count <= $skip){
+									$program_mod_assign = ProgramModuleAssignment::find($module->id);
+									$program_mod_assign->students()->attach([$student->id]);
+									$count += 1;
+								}
+							 }
+						  }
+					  }
+					}
+				  } 
+				}
 			}
-			return $i;
-            for($yr = 1; $yr <= $program->min_duration; $yr++){
-              $campus_program = CampusProgram::where('program_id',$program->id)->first();
-              if($campus_program){
-              $elective_policy = ElectivePolicy::where('study_academic_year_id',$request->get('study_academic_year_id'))->where('campus_program_id',$campus_program->id)->where('year_of_study',$yr)->where('semester_id',$request->get('semester_id'))->first();
-
-              $optional_modules = ProgramModuleAssignment::where('study_academic_year_id',$request->get('study_academic_year_id'))->where('campus_program_id',$campus_program->id)->where('year_of_study',$yr)->where('semester_id',$request->get('semester_id'))->where('category','OPTIONAL')->get();
-              
-              $opt_mod_ids = [];
-              foreach($optional_modules as $mod){
-                  $opt_mod_ids[] = $mod->id;
-              }
-
-              $non_opt_students = Student::whereHas('studentshipStatus',function($query){
-                  $query->where('name','ACTIVE');
-              })->whereHas('registrations',function($query) use($request,$yr){
-                   $query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',$yr)->where('semester_id',$request->get('semester_id'));
-              })->whereDoesntHave('options',function($query) use($opt_mod_ids){
-                          $query->whereIn('id',$opt_mod_ids);
-                      })->where('year_of_study',$yr)->where('campus_program_id',$campus_program->id)->get();
-
-              $opt_students = Student::whereHas('studentshipStatus',function($query){
-                  $query->where('name','ACTIVE');
-              })->whereHas('registrations',function($query) use($request,$yr){
-                   $query->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('year_of_study',$yr)->where('semester_id',$request->get('semester_id'));
-              })->whereHas('options',function($query) use($opt_mod_ids){
-                          $query->whereIn('id',$opt_mod_ids);
-                      })->where('year_of_study',$yr)->where('campus_program_id',$campus_program->id)->get();
-
-              $opt_mod_stud = [];
-              foreach($optional_modules as $mod){
-                  $opt_mod_stud[$mod->id]['count'] = ProgramModuleAssignment::find($mod->id)->students()->count();
-                  $opt_mod_stud[$mod->id]['perc'] = $opt_mod_stud[$mod->id]['count']/(count($opt_students)+count($non_opt_students))*100;
-
-              }
-
-
-              $skip = count($optional_modules) != 0? intdiv(count($non_opt_students),count($optional_modules)) : 0;
-              $remainder = count($optional_modules) != 0? count($non_opt_students)%count($optional_modules) : 0;
-              $studCount = 0;
-                 
-              foreach($optional_modules as $key=>$module){
-                  if(($opt_mod_stud[$module->id]['count'] != 0 && $opt_mod_stud[$module->id]['perc'] >= 50) || count($opt_students) == 0){
-                      foreach($non_opt_students as $stKey=>$student){
-                         
-                         if(Student::find($student->id)->options()->whereIn('id',$opt_mod_ids)->count() < $elective_policy->number_of_options){
-                                $program_mod_assign = ProgramModuleAssignment::find($module->id);
-                                $program_mod_assign->students()->attach([$student->id]);
-                         }
-                      }
-                  }else{
-                      $count = 0;
-                      foreach($non_opt_students as $stKey=>$student){
-                         if($key == (count($optional_modules)-1)){
-                            $skip = $skip + $remainder;
-                         }
-                         
-                         if(Student::find($student->id)->options()->whereIn('id',$opt_mod_ids)->count() < $elective_policy->number_of_options){
-                            if($count <= $skip){
-                                $program_mod_assign = ProgramModuleAssignment::find($module->id);
-                                $program_mod_assign->students()->attach([$student->id]);
-                                $count += 1;
-                            }
-                         }
-                      }
-                  }
-                }
-              } 
-            }
           }
         
         
