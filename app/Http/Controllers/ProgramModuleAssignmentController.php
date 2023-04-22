@@ -116,9 +116,9 @@ class ProgramModuleAssignmentController extends Controller
         $now = strtotime(date('Y-m-d'));
         $deadline = strtotime($deadline->deadline);
 		if($now > $deadline){
-			return 'bado';
+			return 'imeisha';
 		}else{
-			return 'not sure';
+			return 'bado';
 		}
 		
 		$prog = [];
