@@ -113,7 +113,14 @@ class ProgramModuleAssignmentController extends Controller
 		//kwa sababu kuna deadline kwa kila award, inabidi kuallocate kufanyike kwa award pia 
 		$deadline = ElectiveModuleLimit::where('study_academic_year_id',$ac_year->id)->where('semester_id',$semester->id)->where('award_id',$request->get('program_level_id'))
 									   ->where('campus_id',$user->campus_id)->first();
- return $deadline;
+        $now = strtotime(date('Y-m-d'));
+        $deadline = strtotime($deadline->deadline);
+		if($now > $deadline){
+			return 'bado';
+		}else{
+			return 'not sure';
+		}
+		
 		$prog = [];
         foreach($department->programs as $program){
             for($yr = 1; $yr <= $program->min_duration; $yr++){
