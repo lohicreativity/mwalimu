@@ -63,11 +63,11 @@
                    <div class="row">
 					 <div class="form-group col-4">
 						{!! Form::label('','Academic year') !!}
-						{!! Form::text('study_academic_year_id',$study_academic_year->academicYear->year,$study_academic_year->id) !!}
+						{!! Form::text('study_academic_year_id',$study_academic_year->academicYear->year,$study_academic_year) !!}
 					  </div>
 					  <div class="form-group col-4">
 						{!! Form::label('','Semester') !!}
-						{!! Form::text('semester_id',$semester->name,$semster->id) !!}
+						{!! Form::text('semester',$semester->name,$semster) !!}
 					  </div>
 					  <div class="form-group col-4">
 						{!! Form::label('','Programme Level') !!}
