@@ -52,7 +52,7 @@
 						 'readonly'=>true,
                          'required'=>true
                      ];
-                     $semster = [
+                     $semester = [
                          'class'=>'form-control',
                          'placeholder'=>'',
 						 'readonly'=>true,						 
