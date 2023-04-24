@@ -1014,7 +1014,7 @@ class ModuleAssignmentController extends Controller
               $module = Module::with('ntaLevel')->find($module_assignment->module_id);
               $policy = ExaminationPolicy::where('nta_level_id',$module->ntaLevel->id)->where('study_academic_year_id',$module_assignment->study_academic_year_id)->where('type',$module_assignment->programModuleAssignment->campusProgram->program->category)->first();
 
-
+			  DB::beginTransaction();
               if($request->get('assessment_plan_id') == 'FINAL_EXAM'){
                   $plan = null;
                   $assessment = 'FINAL';
@@ -1156,7 +1156,7 @@ class ModuleAssignmentController extends Controller
                       $missing_students[] = $stud;
                   }
               }
-			  DB::beginTransaction();
+
               foreach($missing_students as $student){
                 if($request->get('assessment_plan_id') == 'FINAL_EXAM'){
                   if(ExaminationResult::where('module_assignment_id',$request->get('module_assignment_id'))->where('student_id',$student->id)->whereNotNull('final_score')->count() == 0){
