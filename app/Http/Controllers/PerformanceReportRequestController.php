@@ -49,7 +49,7 @@ class PerformanceReportRequestController extends Controller
      * Store appeals
      */
     public function store(Request $request)
-    {
+    {  return 11;
     	//  $student = User::find(Auth::user()->id)->student()->with(['applicant','registrations'=>function($query) use($request){
 		// 	 $request->get('study_academic_year_id',$request->get('study_academic_year_id'))->where('semester_id', intval(session('active_semester_id')));
 		//  }])->first();
@@ -103,7 +103,6 @@ class PerformanceReportRequestController extends Controller
 		$invoice->applicable_id = $request->get('study_academic_year_id');
 		$invoice->applicable_type = 'academic_year';
         $invoice->fee_type_id = $fee_amount->feeItem->feeType->id;
-        return $invoice;
         $invoice->save();
 
         $generated_by = 'SP';
