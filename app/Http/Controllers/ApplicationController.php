@@ -300,7 +300,7 @@ class ApplicationController extends Controller
          $staff = User::find(Auth::user()->id)->staff;
 
          $campus_id = $staff->campus_id;
-
+		$applicants = null;
          if (Auth::user()->hasRole('administrator')) {
 
             $applicants = Applicant::doesntHave('student')->whereHas('selections',function($query) use($request){
