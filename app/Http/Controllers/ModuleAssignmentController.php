@@ -1156,7 +1156,7 @@ class ModuleAssignmentController extends Controller
                       $missing_students[] = $stud;
                   }
               }
-
+			  DB::beginTransaction();
               foreach($missing_students as $student){
                 if($request->get('assessment_plan_id') == 'FINAL_EXAM'){
                   if(ExaminationResult::where('module_assignment_id',$request->get('module_assignment_id'))->where('student_id',$student->id)->whereNotNull('final_score')->count() == 0){
@@ -1244,14 +1244,14 @@ class ModuleAssignmentController extends Controller
               }
 
               if(!$validationStatus){
-                 return redirect()->back()->with('error','Invalid data. Please check registration number '.implode(', ', $invalidEntries));
+                 return redirect()->back()->with('error','Invalid value. Please check marks for registration number '.implode(', ', $invalidEntries));
               }
 
               if(count($invalid_students_entries) != 0){
                  return redirect()->back()->with('error','Invalid registration number. Please check registration number '.implode(', ', $invalid_students_entries));
               }
               
-              DB::beginTransaction();
+              //DB::beginTransaction();
               $file = new ResultFile;
               $file->file_name = $file_name;
               $file->extension = $request->file('results_file')->guessClientExtension();
