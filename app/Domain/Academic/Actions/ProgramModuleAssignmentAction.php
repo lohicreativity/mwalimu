@@ -30,7 +30,10 @@ class ProgramModuleAssignmentAction implements ProgramModuleAssignmentInterface{
                 $assignment->type = $request->get('type');
 
                 $campus = CampusProgram::find($request->get('campus_program_id'))->campus;
-                $prog = ProgramModuleAssignment::where('module_id',$request->get('module_id'))->where('year_of_study',$request->get('year_of_study'))->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('policy_assigned',1)->whereHas('campusProgram',function($query) use($campus){
+                $prog = ProgramModuleAssignment::where('module_id',$request->get('module_id'))->where('campus_program_id',$request->get('campus_program_id'))
+											   ->where('year_of_study',$request->get('year_of_study'))
+											   ->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('policy_assigned',1)
+											   ->whereHas('campusProgram',function($query) use($campus){
                          $query->where('campus_id',$campus->id);
                      })->first();
                 if($prog){
