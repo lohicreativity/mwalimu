@@ -286,7 +286,7 @@ class ApplicationController extends Controller
             'applicants'=>$applicants,
             'submission_logs'=>ApplicantSubmissionLog::where('program_level_id',$request->get('program_level_id'))->where('application_window_id',$request->get('application_window_id'))->get(),
             'request'=>$request,
-			'batch_no'=>$batch->batch_no
+			'batch_no'=>$batch? $batch->batch_no : 0;
          ];
          return view('dashboard.application.selected-applicants',$data)->withTitle('Selected Applicants');
     }
@@ -301,7 +301,7 @@ class ApplicationController extends Controller
 
          $campus_id = $staff->campus_id;
 		$applicants = null;
-         if (Auth::user()->hasRole('administrator')) {
+         if (Auth::user()->hasRole('administrator')|| Auth::user()->hasRole('arc')) {
 
             $applicants = Applicant::doesntHave('student')->whereHas('selections',function($query) use($request){
                 $query->where('status','SELECTED');
@@ -309,7 +309,15 @@ class ApplicationController extends Controller
                $query->where('confirmation_status','!=','CANCELLED')->orWhere('confirmation_status','!=','TRANSFERED')->orWhereNull('confirmation_status');
            })->where('status','ADMITTED')->get();
 
-         } else if (Auth::user()->hasRole('admission-officer')) {
+         }elseif (Auth::user()->hasRole('admission-officer')) {
+
+            $applicants = Applicant::doesntHave('student')->whereHas('selections',function($query) use($request){
+                $query->where('status','SELECTED');
+           })->with(['disabilityStatus','ward','region','country','nextOfKin','intake','selections.campusProgram.program','nectaResultDetails','nacteResultDetails'])->where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$request->get('program_level_id'))->where(function($query){
+               $query->where('confirmation_status','!=','CANCELLED')->orWhere('confirmation_status','!=','TRANSFERED')->orWhereNull('confirmation_status');
+           })->where('campus_id', $campus_id)->where('status','ADMITTED')->get();
+
+         }elseif (Auth::user()->hasRole('hod')) {
 
             $applicants = Applicant::doesntHave('student')->whereHas('selections',function($query) use($request){
                 $query->where('status','SELECTED');
