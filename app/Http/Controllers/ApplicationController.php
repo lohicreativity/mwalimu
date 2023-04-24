@@ -286,7 +286,7 @@ class ApplicationController extends Controller
             'applicants'=>$applicants,
             'submission_logs'=>ApplicantSubmissionLog::where('program_level_id',$request->get('program_level_id'))->where('application_window_id',$request->get('application_window_id'))->get(),
             'request'=>$request,
-			'batch_no'=>$batch? $batch->batch_no : 0;
+			'batch_no'=>$batch? $batch->batch_no : 0
          ];
          return view('dashboard.application.selected-applicants',$data)->withTitle('Selected Applicants');
     }
