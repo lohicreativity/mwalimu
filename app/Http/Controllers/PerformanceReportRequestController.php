@@ -49,7 +49,7 @@ class PerformanceReportRequestController extends Controller
      * Store appeals
      */
     public function store(Request $request)
-    {  return 11;
+    {  
     	//  $student = User::find(Auth::user()->id)->student()->with(['applicant','registrations'=>function($query) use($request){
 		// 	 $request->get('study_academic_year_id',$request->get('study_academic_year_id'))->where('semester_id', intval(session('active_semester_id')));
 		//  }])->first();
@@ -84,6 +84,7 @@ class PerformanceReportRequestController extends Controller
          $performance->study_academic_year_id = $request->get('study_academic_year_id');
          $performance->year_of_study = $request->get('year_of_study');
          $performance->payment_status = 'PENDING';
+         return $performance;
          $performance->save();
 
          if($student->applicant->country->code == 'TZ'){
