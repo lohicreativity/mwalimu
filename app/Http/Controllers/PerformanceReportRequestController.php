@@ -84,7 +84,6 @@ class PerformanceReportRequestController extends Controller
          $performance->study_academic_year_id = $request->get('study_academic_year_id');
          $performance->year_of_study = $request->get('year_of_study');
          $performance->payment_status = 'PENDING';
-         return 11;
          $performance->save();
 
          if($student->applicant->country->code == 'TZ'){
