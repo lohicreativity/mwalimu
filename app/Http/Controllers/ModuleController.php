@@ -25,11 +25,11 @@ class ModuleController extends Controller
         if($request->has('query')){
             $modules = Module::whereHas('departments',function($query) use($staff){
                  $query->where('campus_id',$staff->campus_id)->where('department_id',$staff->department_id);
-            })->with(['departments','ntaLevel'])->where('name','LIKE','%'.$request->get('query').'%')->OrWhere('code','LIKE','%'.$request->get('query').'%')->paginate(20);
+            })->with(['departments','ntaLevel'])->where('name','LIKE','%'.$request->get('query').'%')->OrWhere('code','LIKE','%'.$request->get('query').'%')->get();
         }else{
             $modules = Module::whereHas('departments',function($query) use($staff){
                  $query->where('campus_id',$staff->campus_id)->where('department_id',$staff->department_id);
-            })->with(['departments','ntaLevel'])->latest()->paginate(20);
+            })->with(['departments','ntaLevel'])->latest()->get();
         }
         
     	$data = [

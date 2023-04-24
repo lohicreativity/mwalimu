@@ -388,9 +388,6 @@
                   
                   </tbody>
                 </table>
-                <div class="ss-pagination-links">
-                {!! $modules->appends($request->except('page'))->render() !!}
-                </div>
               </div>
               <!-- /.card-body -->
             </div>
