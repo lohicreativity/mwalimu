@@ -166,7 +166,7 @@
          margin-bottom: 20px;
      }
      .ss-font-sm{
-        font-size: 13px;
+        font-size: 14px;
      }
      .ss-font-xs{
         font-size: 12px;
@@ -207,60 +207,74 @@
           <div class="col-md-12">
               <div class="ss-letter-head  ss-center">
                <h3>THE MWALIMU NYERERE MEMORIAL ACADEMY</h3>
-			   <img src="{{ asset('dist/img/logo.png') }}" alt="Config::get('constants.SITE_NAME') }}" class="ss-logo" width="10%">				   
+			   <img src="{{ asset('dist/img/logo.png') }}" alt="Config::get('constants.SITE_NAME') }}" class="ss-logo" width="10%">			   
                <h3>{{ $campus->name }}</h3>
                <h3>{{ $department->name }}</h3>
                <h3>{{ $program->name }} (YEAR {{ $year_of_study }} - {{ strtoupper(substr($intake->name,0,3)) }}) - {{ $study_academic_year->academicYear->year }}</h3>
-               <p class="ss-bold" style="font-size:15pt">@if($semester) {{ strtoupper($semester->name) }} @endif EXAMINATION RESULTS <span style="font-weight:normal">(CA Weight {{ (round($module_assignments[0]->programModuleAssignment->course_work_min_mark,0)) }}%, FE Weight {{(round($module_assignments[0]->programModuleAssignment->final_min_mark,0))}}%)</span> </p> 
+               <p class="ss-bold" style="font-size:15pt">ANNUAL EXAMINATION RESULTS <span style="font-weight:normal">(CA Weight {{ (round($module_assignments[0]->programModuleAssignment->course_work_min_mark,0)) }}%, FE Weight {{(round($module_assignments[0]->programModuleAssignment->final_min_mark,0))}}%)</span> </p> 
               </div>
                <div class="table-responsive ss-margin-bottom">
                   <table class="table table-condensed table-bordered">
                     <tr>
-                      <td class="ss-bold ss-font-sm" rowspan="2">SN</td>
+                      <td class="ss-bold" rowspan="2">SN</td>
                       @if($request->get('reg_display_type') == 'SHOW')
-                      <td class="ss-bold ss-font-sm" rowspan="2">Reg. No.</td>
+                      <td class="ss-bold" rowspan="2">Reg. No.</td>
                       @endif
                       @if($request->get('name_display_type') == 'SHOW')
-                      <td class="ss-bold ss-font-sm" rowspan="2">Name</td>
+                      <td class="ss-bold" rowspan="2">Name</td>
                       @endif
                       @if($request->get('gender_display_type') == 'SHOW')
-                      <td class="ss-bold ss-font-sm" rowspan="2">Sex</td>
+                      <td class="ss-bold" rowspan="2">Sex</td>
                       @endif
                       <!-- <td class="ss-bold" rowspan="2">CLASS MODE</td> -->
                       @foreach($module_assignments as $assignment)
-                      <td class="ss-bold ss-font-sm" colspan="4">{{ $assignment->module->code }} ({{ $assignment->module->credit }})</td>
+                      <td class="ss-bold" colspan="4">{{ $assignment->module->code }} ({{ $assignment->module->credit }})</td>
                       @endforeach
                       <td colspan="5"></td>
                     </tr>
                     <tr>
                       
                       @foreach($module_assignments as $assignment)
-                      <td class="ss-bold ss-font-sm">CA</td>
-                      <td class="ss-bold ss-font-sm">FE</td>
-                      <td class="ss-bold ss-font-sm">TT</td>
-                      <td class="ss-bold ss-font-sm">GD</td>
+                      <td class="ss-bold">CA</td>
+                      <td class="ss-bold">FE</td>
+                      <td class="ss-bold">TT</td>
+                      <td class="ss-bold">GD</td>
                       @endforeach
                       
-                      <td class="ss-bold ss-font-sm">GPA</td>
-                      <td class="ss-bold ss-font-sm">Points</td>
-                      <td class="ss-bold ss-font-sm">Credits</td>
-                      <td class="ss-bold ss-font-sm">Remark</td>
-                      <td class="ss-bold ss-font-sm">Classification</td>
+                      
+                      @if($semester)
+                         @if(App\Utils\Util::stripSpacesUpper($semester->name) == App\Utils\Util::stripSpacesUpper('Semester 2'))
+                          <td class="ss-bold">2nd Sem Remark</td>
+                          <td class="ss-bold">1st Sem Remark</td>
+                          <td class="ss-bold">GPA</td>
+                          <td class="ss-bold">Points</td>
+                          <td class="ss-bold">Credits</td>
+                          <td class="ss-bold">Overall Remark</td>
+                          <td class="ss-bold">Classification</td>
+                         @else
+                          <td class="ss-bold">Remark</td>
+                          <td class="ss-bold">GPA</td>
+                          <td class="ss-bold">Points</td>
+                          <td class="ss-bold">Credits</td>
+                          <td class="ss-bold">Classification</td>
+                         @endif
+                      @endif
+                      
                     </tr>
                     
                     
 
                     @foreach($students as $key=>$student)
                     <tr>
-                      <td class="ss-font-xs">{{ $key+1 }}</td>
+                      <td>{{ $key+1 }}</td>
                       @if($request->get('reg_display_type') == 'SHOW')
-                      <td class="ss-font-xs">{{ $student->registration_number }}</td>
+                      <td>{{ $student->registration_number }}</td>
                       @endif
                       @if($request->get('name_display_type') == 'SHOW')
-                      <td class="ss-font-xs">{{ $student->surname }}, {{ ucwords(strtolower($student->first_name))  }} {{ substr($student->middle_name, 1, 1)}}</td>
+                      <td>{{ $student->surname }}, {{ ucwords(strtolower($student->first_name)) }} {{ substr($student->middle_name,0,1)}}</td>
                       @endif
                       @if($request->get('gender_display_type') == 'SHOW')
-                      <td class="ss-font-xs">{{ $student->gender }}</td>
+                      <td>{{ $student->gender }}</td>
                       @endif
                          
 
@@ -278,39 +292,35 @@
 
                       
                           @foreach($student->examinationResults as $result)
-                            @if($result->module_assignment_id == $assignment->id)
-
+                            @if($result->module_assignment_id == $assignment->id)  
+                            
                             @php
                               $results_present = true;
                             @endphp
 
                             <td 
                               @if($result->course_work_remark == 'FAIL' && !$result->supp_processed_at) 
-                              class="ss-custom-grey ss-center ss-font-xs" 
+                              class="ss-custom-grey ss-center" 
                               @else 
-                              class="ss-center ss-font-xs" 
+                              class="ss-center" 
                               @endif>
 
                               @if($result->supp_processed_at)
                               N/A
                               @else 
-                                @if($assignment->module->course_work_based == 1)
-                                  @if($result->course_work_score) 
-                                  {{ $result->course_work_score }} 
-                                  @else - @endif
-                                @else
-                                N/A
-                                @endif  
-                              @endif          
-                            </td>
-
+                                @if($result->course_work_score) 
+                                {{ $result->course_work_score }} 
+                                @else - @endif
+                              @endif
+                              
+                          </td>
                             <td 
                               @if($result->final_remark == 'FAIL' && !$result->supp_processed_at) 
-                              class="ss-custom-grey ss-center ss-font-xs" 
+                              class="ss-custom-grey ss-center" 
                               @elseif(count($result->changes) != 0) 
-                              class="ss-center ss-custom-lightblue ss-font-xs" 
+                              class="ss-center ss-custom-lightblue" 
                               @else 
-                              class="ss-center ss-font-xs" 
+                              class="ss-center" 
                               @endif>
 
                               @if($result->supp_processed_at)
@@ -324,11 +334,11 @@
                             </td>
                             <td 
                               @if($result->course_work_remark == 'FAIL' || $result->final_remark == 'FAIL') 
-                                class="ss-custom-grey-- ss-center ss-font-xs" 
+                                class="ss-custom-grey-- ss-center" 
                               @elseif($result->supp_processed_at)
-                                class="ss-center ss-font-xs" 
+                                class="ss-center" 
                               @else 
-                                class="ss-center ss-font-xs" 
+                                class="ss-center" 
                               @endif>
 
                               @if($result->supp_processed_at)
@@ -344,8 +354,8 @@
                           </td>
                             <td 
                               @if($result->course_work_remark == 'FAIL' || $result->final_remark == 'FAIL') 
-                                class="ss-custom-grey-- ss-center ss-font-xs" 
-                              @else class="ss-center ss-font-xs" 
+                                class="ss-custom-grey-- ss-center" 
+                              @else class="ss-center" 
                               @endif>
                               
                                 @if($result->supp_processed_at)
@@ -363,34 +373,45 @@
                               
                               
                           </td>
-                          
+                      
+                            
                             @endif
                           @endforeach
-                          
                           @if(!$results_present)
-                            <td class="ss-font-xs"></td>
-                            <td class="ss-font-xs"></td>
-                            <td class="ss-font-xs"></td>
-                            <td class="ss-font-xs"></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
                           @endif
-                      
                       @endforeach
                       
-                      <td class="ss-font-xs">@if(count($student->semesterRemarks) != 0)   
-                        @if($student->semesterRemarks[0]->gpa) {{ bcdiv($student->semesterRemarks[0]->gpa,1,1) }} @else N/A @endif 
-                      @endif</td>
-                      <td class="ss-font-xs">@if(count($student->semesterRemarks) != 0)   
-                        @if($student->semesterRemarks[0]->gpa) {{ $student->semesterRemarks[0]->point }} @else N/A @endif 
-                      @endif</td>
-                      <td class="ss-font-xs">@if(count($student->semesterRemarks) != 0)   
-                        @if($student->semesterRemarks[0]->gpa) {{ $student->semesterRemarks[0]->credit }} @else N/A @endif 
-                      @endif</td>
-                      <td class="ss-font-xs">@if(count($student->semesterRemarks) != 0)   
-                        @if($student->semesterRemarks[0]->remark) {{ ucwords(strtolower($student->semesterRemarks[0]->remark)) }} @else N/A @endif 
-                      @endif</td>
-                      <td class="ss-font-xs">@if(count($student->semesterRemarks) != 0)   
-                        @if($student->semesterRemarks[0]->class) {{ $student->semesterRemarks[0]->class }} @else N/A @endif 
-                      @endif</td>
+                      @if(count($student->semesterRemarks) != 0)
+                      <td>
+                        @if(isset($student->semesterRemarks[1])) {{ $student->semesterRemarks[1]->remark }} @else N/A @endif
+                      </td>
+                      <td>
+                        @if(isset($student->semesterRemarks[0])) {{ $student->semesterRemarks[0]->remark }} @else N/A @endif
+                      </td>
+                      @endif
+                      @if($student->annualRemarks)
+                      @if(count($student->annualRemarks) != 0)
+                      <td>
+                        @if($student->annualRemarks[0]->gpa) {{ bcdiv($student->annualRemarks[0]->gpa,1,1) }} @else N/A @endif
+                      </td>
+                      <td>
+                        @if($student->annualRemarks[0]->gpa) {{ $student->annualRemarks[0]->point }} @else N/A @endif
+                      </td>
+                      <td>
+                        @if($student->annualRemarks[0]->gpa) {{ $student->annualRemarks[0]->credit }} @else N/A @endif
+                      </td>
+                      <td>
+                        @if($student->annualRemarks[0]->remark) @if($student->semesterRemarks[0]->remark == 'POSTPONED' && $student->semesterRemarks[1]->remark != 'POSTPONED') N/A @else {{ $student->annualRemarks[0]->remark }} @endif @else N/A @endif
+                      </td>
+                      <td>
+                        @if($student->annualRemarks[0]->class) {{ $student->annualRemarks[0]->class }} @else N/A @endif
+                      </td>
+                      @endif
+                      @endif
                     </tr>
                     @endforeach
                   </table>
@@ -406,8 +427,8 @@
                 <div class="table-responsive">
                    <table class="table table-condensed table-bordered">
                       <tr>
-                        <td class="ss-bold" rowspan="2">Code</td>
-                        <td class="ss-bold" rowspan="2">Name</td>
+                        <td class="ss-bold" rowspan="2">CODE</td>
+                        <td class="ss-bold" rowspan="2">NAME</td>
                         @foreach($grading_policies as $policy)
                         <td class="ss-bold" colspan="3">{{ $policy->grade }}</td>
                         @endforeach
@@ -416,11 +437,11 @@
                         <td class="ss-bold" colspan="3">I</td>
                         <td class="ss-bold" colspan="3">POST</td>
                         <td class="ss-bold" colspan="3">DS</td>
-                        <td class="ss-bold" colspan="3">Total</td>
-                        <td class="ss-bold" colspan="3">Pass</td>
-                        <td class="ss-bold" colspan="3">Fail</td>
-                        <td class="ss-bold" colspan="3">Fail FE</td>
-                        <td class="ss-bold" colspan="3">Retake</td>
+                        <td class="ss-bold" colspan="3">TOTAL</td>
+                        <td class="ss-bold" colspan="3">PASS</td>
+                        <td class="ss-bold" colspan="3">FAIL</td>
+                        <td class="ss-bold" colspan="3">FAIL FE</td>
+                        <td class="ss-bold" colspan="3">RETAKE</td>
                       </tr>
                       <tr>
                         @foreach($grading_policies as $policy)
@@ -428,9 +449,6 @@
                         <td class="ss-bold">F</td>
                         <td class="ss-bold">TT</td>
                         @endforeach
-                        <!-- <td class="ss-bold">M</td>
-                        <td class="ss-bold">F</td>
-                        <td class="ss-bold">TT</td>
                         <td class="ss-bold">M</td>
                         <td class="ss-bold">F</td>
                         <td class="ss-bold">TT</td>
@@ -457,7 +475,10 @@
                         <td class="ss-bold">TT</td>
                         <td class="ss-bold">M</td>
                         <td class="ss-bold">F</td>
-                        <td class="ss-bold">TT</td> -->
+                        <td class="ss-bold">TT</td>
+                        <td class="ss-bold">M</td>
+                        <td class="ss-bold">F</td>
+                        <td class="ss-bold">TT</td>
                       </tr>
                       @foreach($modules as $modKey=>$mod)
                       <tr>
@@ -511,8 +532,8 @@
                 <div class="table-responsive">
                    <table class="table table-condensed table-bordered">
                       <tr>
-                        <td class="ss-bold">Code</td>
-                        <td class="ss-bold">Name</td>
+                        <td class="ss-bold">CODE</td>
+                        <td class="ss-bold">NAME</td>
                         @foreach($grading_policies as $policy)
                         <td class="ss-bold">{{ $policy->grade }}</td>
                         @endforeach
@@ -521,23 +542,23 @@
                         <td class="ss-bold">IF</td>
                         <td class="ss-bold">POST</td>
                         <td class="ss-bold">DS</td>
-                        <td class="ss-bold">Pass</td>
-                        <td class="ss-bold">Fail</td>
+                        <td class="ss-bold">PASS</td>
+                        <td class="ss-bold">FAIL</td>
                       </tr>
                       @foreach($modules as $modKey=>$mod)
                       <tr>
                         <td>{{ $modKey }}</td>
                         <td>{{ $mod['name'] }}</td>
                         @foreach($grading_policies as $pol)
-                            <td>{{ round($mod['grades_perc'][$pol->grade],2) }}%</td>
+                            <td>{{ ($mod['grades'][$pol->grade]) }}({{ round($mod['grades_perc'][$pol->grade],0) }}%)</td>
                         @endforeach
-                        <td>{{ round($mod['inc_rate'],2) }}%</td>
-                        <td>{{ round($mod['ic_rate'],2) }}%</td>
-                        <td>{{ round($mod['if_rate'],2) }}%</td>
-                        <td>{{ round($mod['pst_rate'],2) }}%</td>
-                        <td>{{ round($mod['ds_rate'],2) }}%</td>
-                        <td>{{ round($mod['pass_rate'],2) }}%</td>
-                        <td>{{ round($mod['fail_rate'],2) }}%</td>
+                        <td>{{ ($mod['inc_count']) }}({{ round($mod['inc_rate'],0) }}%)</td>
+                        <td>{{ ($mod['ic_count']) }}({{ round($mod['ic_rate'],0) }}%)</td>
+                        <td>{{ ($mod['if_count']) }}({{ round($mod['if_rate'],0) }}%)</td>
+                        <td>{{ ($mod['pst_count']) }}({{ round($mod['pst_rate'],0) }}%)</td>
+                        <td>{{ ($mod['ds_count']) }}({{ round($mod['ds_rate'],0) }}%)</td>
+                        <td>{{ ($mod['pass_count']) }}({{ round($mod['pass_rate'],0) }}%)</td>
+                        <td>{{ ($mod['fail_count']) }}({{ round($mod['fail_rate'],0) }}%)</td>
                       </tr>
                       @endforeach
                    </table>
@@ -551,8 +572,8 @@
                 <div class="table-responsive">
                    <table class="table table-condensed table-bordered">
                      <tr>
-                       <td class="ss-bold">Key Name</td>
-                       <td class="ss-bold">Description</td>
+                       <td class="ss-bold">KEY NAME</td>
+                       <td class="ss-bold">DESCRIPTION</td>
                      </tr>
                      <tr>
                        <td>IC</td>
@@ -605,6 +626,10 @@
                      <tr>
                        <td>TT</td>
                        <td>Total</td>
+                     </tr>
+                     <tr>
+                       <td>FAIL&DISCO</td>
+                       <td>Failed and Discontinued</td>
                      </tr>
                   </table>
            </div><!-- end of table-responsive -->

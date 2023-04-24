@@ -1215,10 +1215,31 @@ class ModuleAssignmentController extends Controller
               $invalidEntries = [];
               foreach($line_of_text_2 as $line){
                    if(gettype($line) != 'boolean'){
-                       if((floatval(trim($line[1])) < 0 || floatval(trim($line[1])) > 100 || (!is_numeric(trim($line[1]))) && !empty($line[1]))){
-                         $validationStatus = false;
-                         $invalidEntries[] = trim($line[0]);
-                       }
+					    if($request->get('assessment_plan_id') == 'SUPPLEMENTARY'){
+						  $final_special_exam = SpecialExam::where('student_id',$student->id)->where('module_assignment_id',$module_assignment->id)->where('type','FINAL')->where('status','APPROVED')->first();
+						  $postponement = Postponement::where('student_id',$student->id)->where('study_academic_year_id',$module_assignment->study_academic_year_id)->where('semester_id',$module_assignment->programModuleAssignment->semester_id)->where('status','POSTPONED')->first();
+							if($final_special_exam || $postponement){	
+							   if((floatval(trim($line[1])) < 0 || floatval(trim($line[1])) > $module_assignment->programModuleAssignment->final_min_mark || (!is_numeric(trim($line[1]))) && !empty($line[1]))){
+								 $validationStatus = false;
+								 $invalidEntries[] = trim($line[0]);
+								}
+							}else{
+							   if((floatval(trim($line[1])) < 0 || floatval(trim($line[1])) > 100 || (!is_numeric(trim($line[1]))) && !empty($line[1]))){
+								 $validationStatus = false;
+								 $invalidEntries[] = trim($line[0]);
+								}								
+							}
+						}elseif($request->get('assessment_plan_id') == 'FINAL_EXAM'){
+						   if((floatval(trim($line[1])) < 0 || floatval(trim($line[1])) > $module_assignment->programModuleAssignment->final_min_mark || (!is_numeric(trim($line[1]))) && !empty($line[1]))){
+							 $validationStatus = false;
+							 $invalidEntries[] = trim($line[0]);
+							}								
+						}else{
+						   if((floatval(trim($line[1])) < 0 || floatval(trim($line[1])) > $plan->weight || (!is_numeric(trim($line[1]))) && !empty($line[1]))){
+							 $validationStatus = false;
+							 $invalidEntries[] = trim($line[0]);
+							}								
+						}
                    }
               }
 
@@ -1280,7 +1301,7 @@ class ModuleAssignmentController extends Controller
                       if($special_exam || $postponement){
                         $result_log->final_score = null;
                       }else{
-                        $result_log->final_score = (trim($line[1])*$module_assignment->programModuleAssignment->final_min_mark)/100;
+                        $result_log->final_score = trim($line[1]);
                       }
                       if($carry_history){
                          $result_log->exam_category = 'CARRY';
@@ -1313,7 +1334,7 @@ class ModuleAssignmentController extends Controller
                       if($special_exam || $postponement){
                         $result->final_score = null;
                       }else{
-                        $result->final_score = (trim($line[1])*$module_assignment->programModuleAssignment->final_min_mark)/100;
+                        $result->final_score = trim($line[1]);
                       }
                       $result->exam_type = 'FINAL';
                       if($carry_history){
@@ -1362,7 +1383,7 @@ class ModuleAssignmentController extends Controller
                           $result->module_assignment_id = $request->get('module_assignment_id');
                           $result->student_id = $student->id;
                           if($special_exam || $postponement){
-                             $result->final_score = !$special_exam || !$postponement? (trim($line[1])*$module_assignment->programModuleAssignment->final_min_mark)/100 : null;
+                             $result->final_score = !$special_exam || !$postponement? trim($line[1]) : null;
                              $result->final_remark = $module_assignment->programModuleAssignment->final_pass_score <= $result->final_score? 'PASS' : 'FAIL';
                              $result->supp_score = null;
                           }else{
@@ -1376,7 +1397,7 @@ class ModuleAssignmentController extends Controller
                              // $result->final_exam_remark = $module_assignment->programModuleAssignment->module_pass_mark <= $result->supp_score? 'PASS' : 'FAIL';
                           }
                           if($final_special_exam){
-                                 $result->final_score = (trim($line[1])*$module_assignment->programModuleAssignment->final_min_mark)/100;
+                                 $result->final_score = trim($line[1]);
                                  $result->final_remark = $module_assignment->programModuleAssignment->final_pass_score <= $result->final_score? 'PASS' : 'FAIL';
                                  $result->supp_score = null;
                              }
@@ -1410,7 +1431,7 @@ class ModuleAssignmentController extends Controller
                               $result->module_assignment_id = $request->get('module_assignment_id');
                               $result->student_id = $student->id;
                               if($special_exam || $postponement){
-                                 $result->final_score = !$special_exam && !$postponement? (trim($line[1])*$module_assignment->programModuleAssignment->final_min_mark)/100 : null;
+                                 $result->final_score = !$special_exam && !$postponement? trim($line[1]) : null;
                                  $result->final_remark = $module_assignment->programModuleAssignment->final_pass_score <= $result->final_score? 'PASS' : 'FAIL';
                                  $result->supp_score = null;
                               }else{
@@ -1469,7 +1490,7 @@ class ModuleAssignmentController extends Controller
                       $result_log->assessment_plan_id = $plan->id;
                       $result_log->student_id = $student->id;
 
-                      $result_log->score = (trim($line[1])*$plan->weight)/100;
+                      $result_log->score = trim($line[1]);
                       $result_log->uploaded_by_user_id = Auth::user()->id;
                       $result_log->save();
                       
@@ -1481,7 +1502,7 @@ class ModuleAssignmentController extends Controller
                       $result->module_assignment_id = $request->get('module_assignment_id');
                       $result->assessment_plan_id = $plan->id;
                       $result->student_id = $student->id;
-                      $result->score = (trim($line[1])*$plan->weight)/100;
+                      $result->score = trim($line[1]);
                       $result->uploaded_by_user_id = Auth::user()->id;
                       $result->save();
                   }
