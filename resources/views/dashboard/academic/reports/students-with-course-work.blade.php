@@ -211,6 +211,7 @@
                       <td class="ss-bold" colspan="3"></td>
                       <td class="ss-bold ss-center" colspan="{{ count($assessment_plans) }}">COURSEWORK COMPONENTS</td>
                       <td class="ss-bold"></td>
+                      <td class="ss-bold"></td>					  
                       <td class="ss-bold"></td>
                     </tr>
                     <tr>
