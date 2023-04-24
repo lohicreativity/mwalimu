@@ -103,6 +103,7 @@ class PerformanceReportRequestController extends Controller
 		$invoice->applicable_id = $request->get('study_academic_year_id');
 		$invoice->applicable_type = 'academic_year';
         $invoice->fee_type_id = $fee_amount->feeItem->feeType->id;
+        return $invoice;
         $invoice->save();
 
         $generated_by = 'SP';
