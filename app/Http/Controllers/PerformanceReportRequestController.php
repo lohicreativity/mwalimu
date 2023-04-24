@@ -104,7 +104,6 @@ class PerformanceReportRequestController extends Controller
 		$invoice->applicable_type = 'academic_year';
         $invoice->fee_type_id = $fee_amount->feeItem->feeType->id;
         $invoice->save();
-        return $invoice;
         $generated_by = 'SP';
         $approved_by = 'SP';
         $inst_id = config('constants.SUBSPCODE');
@@ -150,6 +149,7 @@ class PerformanceReportRequestController extends Controller
                 'currency'=>$currency
             );
 
+            return $data;
             //$txt=print_r($data, true);
             //$myfile = file_put_contents('/var/public_html/ifm/logs/req_bill.txt', $txt.PHP_EOL , FILE_APPEND | LOCK_EX);
             $url = url('bills/post_bill');
