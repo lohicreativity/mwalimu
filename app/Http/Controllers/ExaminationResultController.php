@@ -2943,7 +2943,6 @@ class ExaminationResultController extends Controller
     public function showProgramResultsReport(Request $request)
     {
       $campus_program = CampusProgram::with(['program.departments','campus'])->find(explode('_',$request->get('campus_program_id'))[0]);
-      return $campus_program;
       $study_academic_year = StudyAcademicYear::with('academicYear')->find($request->get('study_academic_year_id'));
       $semester = Semester::find($request->get('semester_id'));
       foreach($campus_program->program->departments as $dpt){
@@ -2969,6 +2968,7 @@ class ExaminationResultController extends Controller
                 }
 
         }else{
+         return 123;
         	$module_assignments = ModuleAssignment::whereHas('programModuleAssignment',function($query) use($request){
                 $query->where('campus_program_id',explode('_',$request->get('campus_program_id'))[0])->where('year_of_study',explode('_',$request->get('campus_program_id'))[2]);
     	         })->whereHas('programModuleAssignment.campusProgram',function($query) use($campus_program){
