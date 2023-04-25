@@ -254,7 +254,7 @@
                       <td class="ss-bold">TT</td>
                       <td class="ss-bold">GD</td>
                       @endforeach
-                      
+                      <td class="ss-bold">Remark</td>
                     </tr>
 
                     @foreach($students as $key=>$student)
