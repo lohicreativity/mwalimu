@@ -318,8 +318,8 @@ class ApplicationController extends Controller
            })->where('campus_id', $campus_id)->where('status','ADMITTED')->get();
 
          }elseif (Auth::user()->hasRole('hod')) {
-
-            $applicants = Applicant::doesntHave('student')->whereHas('selections',function($query) use($request){
+            //doesntHave('student')->
+            $applicants = Applicant::whereHas('selections',function($query) use($request){
                 $query->where('status','SELECTED');})
                 ->with('selections.campusProgram.program.departments')//,function($query) use($staff) {$query->where('department_id',$staff->dept_id);})
                 ->with(['disabilityStatus','ward','region','country','nextOfKin','intake','selections.campusProgram.program','nectaResultDetails','nacteResultDetails'])->where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$request->get('program_level_id'))->where(function($query){
