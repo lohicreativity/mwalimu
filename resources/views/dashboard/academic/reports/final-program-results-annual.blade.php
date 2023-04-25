@@ -238,7 +238,6 @@
                       <td class="ss-bold" colspan="{{ 2*count($mod) }}">SUBJECTS</td>
                       <td class="ss-bold">Remark</td>
                       @endforeach
-                      <td class="ss-bold">Remark</td>
                     </tr>
                     <tr>
                       <!-- <td class="ss-bold" rowspan="2">CLASS MODE</td> -->
