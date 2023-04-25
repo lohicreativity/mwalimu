@@ -62,12 +62,12 @@
                              <option value="">Select Campus</option>
                           @foreach($campuses as $campus)
 							@if($student->continue_status == 1) 
-                             <option value="{{ $campus->id }}" 
-								@if($selected_campus == $campus->id) selected="selected" @endif>{{ $campus->name }}
+                             <option value="{{ $student->applicant->campus_id }}" 
+								@if($selected_campus == $campus->id) selected="selected" @endif disabled="disabled">{{ $campus->name }}
 							 </option> 
 							@else
-							 <option value="{{ $campus->id }}"
-								@if($campus->id == $student->applicant->campus_id) selected="selected" @endif>{{ $campus->name }}
+							 <option value="{{ $student->applicant->campus_id }}"
+								@if($campus->id == $student->applicant->campus_id) selected="selected" @endif disabled="disabled">{{ $campus->name }}
 							 </option> 
 							@endif
                    
