@@ -879,14 +879,14 @@
         <div class="row">
         <div class="col-md-9">
              <div class="ss-left">
-                 <p class="ss-bold">Name of Head of Department: .................................</p>
-                 <p class="ss-bold">Signature: ..............................</p>
-                 <p class="ss-bold">Date: ..................................</p>
+                 <p class="ss-bold">Name of Deputy Rector-ARC: .................................</p>
+                 <p class="ss-bold">Signature: .................................................</p>
+                 <p class="ss-bold">Date: ......................................................</p>
              </div>
           </div><!--end of col-md-6 -->
           <div class="col-md-3">
              <div class="ss-left">
-                 <p class="ss-bold">Name of the Lecturer: .................................</p>
+                 <p class="ss-bold">Name of Head of Department: .................................</p>
                  <p class="ss-bold">Signature: .............................</p>
                  <p class="ss-bold">Date: ..................................</p>
              </div>
