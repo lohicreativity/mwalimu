@@ -133,6 +133,7 @@
                        @foreach($semesters as $semester)
                        <option value="{{ $semester->id }}" @if($semester->status == 'ACTIVE') selected="selected" @endif>{{ $semester->name }}</option>
                        @endforeach
+                       <option value="ANNUAL">Annual</option>                       
                        <option value="SUPPLEMENTARY">Supplementary</option>
                     </select>
                     {!! Form::input('hidden','study_academic_year_id',$study_academic_year->id) !!}
