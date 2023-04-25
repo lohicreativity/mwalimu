@@ -303,7 +303,7 @@ class ApplicationController extends Controller
 		$applicants = null;
          if (Auth::user()->hasRole('administrator')|| Auth::user()->hasRole('arc')) {
 
-            $applicants = Applicant::whereHas('selections',function($query) use($request){
+            $applicants = Applicant::doesntHave('student')->whereHas('selections',function($query) use($request){
                 $query->where('status','SELECTED');
            })->with(['disabilityStatus','ward','region','country','nextOfKin','intake','selections.campusProgram.program','nectaResultDetails','nacteResultDetails'])->where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$request->get('program_level_id'))->where(function($query){
                $query->where('confirmation_status','!=','CANCELLED')->orWhere('confirmation_status','!=','TRANSFERED')->orWhereNull('confirmation_status');
@@ -327,7 +327,7 @@ class ApplicationController extends Controller
            })->where('campus_id', $campus_id)->where('status','ADMITTED')->get();
 
          }        
-         
+
          $data = [
             'staff'=>$staff,
             'application_windows'=>ApplicationWindow::where('campus_id',$staff->campus_id)->get(),
