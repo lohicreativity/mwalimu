@@ -230,7 +230,7 @@
                       @foreach($sem_modules as $mdKey=>$mod)
                       <td class="ss-bold" colspan="{{ 2*count($mod)+1 }}">{{ $mdKey }}</td>
                       @endforeach
-                      <td class="ss-bold">ANNUAL</td>
+                      <td class="ss-bold">Annual</td>
                     </tr>
                     <tr>
                       <!-- <td class="ss-bold" rowspan="2">CLASS MODE</td> -->
@@ -238,14 +238,13 @@
                       <td class="ss-bold" colspan="{{ 2*count($mod) }}">SUBJECTS</td>
                       <td class="ss-bold" rowspan="3">Remark</td>
                       @endforeach
-                      <td class="ss-bold" rowspan="3">Remark</td>
                     </tr>
                     <tr>
                       <!-- <td class="ss-bold" rowspan="2">CLASS MODE</td> -->
                       @foreach($module_assignments as $assignment)
                       <td class="ss-bold" colspan="2">{{ $assignment->module->code }}</td>
                       @endforeach
-                      <td>hello</td>
+                      
                     </tr>
                     
                     <tr>

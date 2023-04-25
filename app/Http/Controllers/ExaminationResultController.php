@@ -3172,7 +3172,6 @@ class ExaminationResultController extends Controller
             }
            }
         }
-return $sem_modules;
         foreach($students as $key=>$student){
             
             foreach($module_assignments as $assignment){
