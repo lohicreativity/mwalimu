@@ -385,14 +385,6 @@
                           @endif
                       @endforeach
                       
-                      @if(count($student->semesterRemarks) != 0)
-                      <td>
-                        @if(isset($student->semesterRemarks[1])) {{ $student->semesterRemarks[1]->remark }} @else N/A @endif
-                      </td>
-                      <td>
-                        @if(isset($student->semesterRemarks[0])) {{ $student->semesterRemarks[0]->remark }} @else N/A @endif
-                      </td>
-                      @endif
                       @if($student->annualRemarks)
                       @if(count($student->annualRemarks) != 0)
                       <td>
