@@ -235,7 +235,7 @@
                     <tr>
                       <!-- <td class="ss-bold" rowspan="2">CLASS MODE</td> -->
                       @foreach($module_assignments as $assignment)
-                      <td class="ss-bold" colspan="2">{{ $assignment->module->code }}</td>
+                      <td class="ss-bold">{{ $assignment->module->code }}</td>
                       @endforeach
                       
                     </tr>
