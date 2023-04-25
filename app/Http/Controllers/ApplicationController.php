@@ -309,6 +309,8 @@ class ApplicationController extends Controller
                $query->where('confirmation_status','!=','CANCELLED')->orWhere('confirmation_status','!=','TRANSFERED')->orWhereNull('confirmation_status');
            })->where('status','ADMITTED')->get();
 
+           return $applicants; 
+
          }elseif (Auth::user()->hasRole('admission-officer')) {
 
             $applicants = Applicant::doesntHave('student')->whereHas('selections',function($query) use($request){
