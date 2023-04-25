@@ -234,29 +234,18 @@
                     </tr>
                     <tr>
                       <!-- <td class="ss-bold" rowspan="2">CLASS MODE</td> -->
-                      @foreach($sem_modules as $mdKey=>$mod)
-                      <td class="ss-bold" colspan="{{ 2*count($mod) }}">SUBJECTS</td>
-                      <td class="ss-bold" rowspan="3">Remark</td>
-                      @endforeach
-                      <td class="ss-bold" rowspan="3">Remark</td>
-                    </tr>
-                    <tr>
-                      <!-- <td class="ss-bold" rowspan="2">CLASS MODE</td> -->
                       @foreach($module_assignments as $assignment)
-                      <td class="ss-bold" colspan="4">{{ $assignment->module->code }}</td>
+                      <td class="ss-bold" colspan="2">{{ $assignment->module->code }}</td>
                       @endforeach
                       
                     </tr>
                     
                     <tr>
                       
-                    @foreach($module_assignments as $assignment)
-                      <td class="ss-bold ss-font-sm">CA</td>
-                      <td class="ss-bold ss-font-sm">FE</td>
-                      <td class="ss-bold ss-font-sm">TT</td>
-                      <td class="ss-bold ss-font-sm">GD</td>
+                      @foreach($module_assignments as $assignment)
+                      <td class="ss-bold">TT</td>
+                      <td class="ss-bold">GD</td>
                       @endforeach
-
                       
                     </tr>
 
