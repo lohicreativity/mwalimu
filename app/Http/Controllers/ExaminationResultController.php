@@ -2968,7 +2968,7 @@ class ExaminationResultController extends Controller
                 }
 
         }else{
-         return 123;
+
         	$module_assignments = ModuleAssignment::whereHas('programModuleAssignment',function($query) use($request){
                 $query->where('campus_program_id',explode('_',$request->get('campus_program_id'))[0])->where('year_of_study',explode('_',$request->get('campus_program_id'))[2]);
     	         })->whereHas('programModuleAssignment.campusProgram',function($query) use($campus_program){
@@ -3534,7 +3534,7 @@ class ExaminationResultController extends Controller
            'staff'=>User::find(Auth::user()->id)->staff,
            'request'=>$request
         ];
-               return $data; 
+
         if($request->get('semester_id') != 'SUPPLEMENTARY'){
             if(Util::stripSpacesUpper($semester->name) == Util::stripSpacesUpper('Semester 2')){
                return view('dashboard.academic.reports.final-program-results-second-semester',$data)->withTitle('Final Program Results - '.$campus_program->program->name);
