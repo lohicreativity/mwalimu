@@ -230,14 +230,14 @@
                       <!-- <td class="ss-bold" rowspan="2">CLASS MODE</td> -->
                       
                       @foreach($sem_modules as $mdKey=>$mod)
-                      <td class="ss-bold" colspan="{{ 2*count($mod)+1 }}">{{ strtoupper($mdKey) }}</td>
+                      <td class="ss-bold ss-center" colspan="{{ 2*count($mod)+1 }}">{{ strtoupper($mdKey) }}</td>
                       @endforeach
                       <td class="ss-bold">Annual</td>
                     </tr>
                     <tr>
                       <!-- <td class="ss-bold" rowspan="2">CLASS MODE</td> -->
                       @foreach($sem_modules as $mdKey=>$mod)
-                      <td class="ss-bold" colspan="{{ 2*count($mod) }}">Subjects</td>
+                      <td class="ss-bold ss-center" colspan="{{ 2*count($mod) }}">Subjects</td>
                       <td class="ss-bold" rowspan="3">Remark</td>
                       @endforeach
                     </tr>
@@ -332,82 +332,102 @@
         </div><!-- end of row -->
         <div class="row">
         <div class="col-md-12">
-             <h3 class="ss-bold">COURSE MODULES RESULTS SUMMARY</h3>
-                <div class="table-responsive">
+        <h3 class="ss-bold">PROGRAMME MODULES RESULTS SUMMARY BY SEX</h3>
+             <div class="table-responsive">
                    <table class="table table-condensed table-bordered">
                       <tr>
-                        <td class="ss-bold" rowspan="2">CODE</td>
-                        <td class="ss-bold" rowspan="2">NAME</td>
-                        <td class="ss-bold" colspan="3">C</td>
-                        <td class="ss-bold" colspan="3">F</td>
-                        <td class="ss-bold" colspan="3">I</td>
-                        <td class="ss-bold" colspan="3">POST</td>
-                        <td class="ss-bold" colspan="3">TOTAL</td>
-                        <td class="ss-bold" colspan="3">PASS</td>
-                        <td class="ss-bold" colspan="3">FAIL</td>
-                        <td class="ss-bold" colspan="3">CARRY</td>
-                        <td class="ss-bold" colspan="3">RETAKE</td>
+                        <td class="ss-bold ss-font-sm" rowspan="2">Code</td>
+                        <td class="ss-bold ss-font-sm" rowspan="2">Name</td>
+                        @foreach($grading_policies as $policy)
+                        <td class="ss-bold ss-font-sm" colspan="3">{{ $policy->grade }}</td>
+                        @endforeach
+                        <td class="ss-bold ss-font-sm" colspan="3">IC</td>
+                        <td class="ss-bold ss-font-sm" colspan="3">IF</td>
+                        <td class="ss-bold ss-font-sm" colspan="3">I</td>
+                        <td class="ss-bold ss-font-sm" colspan="3">POST</td>
+                        <td class="ss-bold ss-font-sm" colspan="3">DS</td>
+                        <td class="ss-bold ss-font-sm" colspan="3">Total</td>
+                        <td class="ss-bold ss-font-sm" colspan="3">Pass</td>
+                        <td class="ss-bold ss-font-sm" colspan="3">Fail</td>
+                        <td class="ss-bold ss-font-sm" colspan="3">Fail FE</td>
+                        <td class="ss-bold ss-font-sm" colspan="3">Retake</td>
                       </tr>
                       <tr>
-                        <td class="ss-bold">M</td>
-                        <td class="ss-bold">F</td>
-                        <td class="ss-bold">TT</td>
-                        <td class="ss-bold">M</td>
-                        <td class="ss-bold">F</td>
-                        <td class="ss-bold">TT</td>
-                        <td class="ss-bold">M</td>
-                        <td class="ss-bold">F</td>
-                        <td class="ss-bold">TT</td>
-                        <td class="ss-bold">M</td>
-                        <td class="ss-bold">F</td>
-                        <td class="ss-bold">TT</td>
-                        <td class="ss-bold">M</td>
-                        <td class="ss-bold">F</td>
-                        <td class="ss-bold">TT</td>
-                        <td class="ss-bold">M</td>
-                        <td class="ss-bold">F</td>
-                        <td class="ss-bold">TT</td>
-                        <td class="ss-bold">M</td>
-                        <td class="ss-bold">F</td>
-                        <td class="ss-bold">TT</td>
-                        <td class="ss-bold">M</td>
-                        <td class="ss-bold">F</td>
-                        <td class="ss-bold">TT</td>
-                        <td class="ss-bold">M</td>
-                        <td class="ss-bold">F</td>
-                        <td class="ss-bold">TT</td>
+                        @foreach($grading_policies as $policy)
+                        <td class="ss-bold ss-font-sm">M</td>
+                        <td class="ss-bold ss-font-sm">F</td>
+                        <td class="ss-bold ss-font-sm">TT</td>
+                        @endforeach
+                        <td class="ss-bold ss-font-sm">M</td>
+                        <td class="ss-bold ss-font-sm">F</td>
+                        <td class="ss-bold ss-font-sm">TT</td>
+                        <td class="ss-bold ss-font-sm">M</td>
+                        <td class="ss-bold ss-font-sm">F</td>
+                        <td class="ss-bold ss-font-sm">TT</td>
+                        <td class="ss-bold ss-font-sm">M</td>
+                        <td class="ss-bold ss-font-sm">F</td>
+                        <td class="ss-bold ss-font-sm">TT</td>
+                        <td class="ss-bold ss-font-sm">M</td>
+                        <td class="ss-bold ss-font-sm">F</td>
+                        <td class="ss-bold ss-font-sm">TT</td>
+                        <td class="ss-bold ss-font-sm">M</td>
+                        <td class="ss-bold ss-font-sm">F</td>
+                        <td class="ss-bold ss-font-sm">TT</td>
+                        <td class="ss-bold ss-font-sm">M</td>
+                        <td class="ss-bold ss-font-sm">F</td>
+                        <td class="ss-bold ss-font-sm">TT</td>
+                        <td class="ss-bold ss-font-sm">M</td>
+                        <td class="ss-bold ss-font-sm">F</td>
+                        <td class="ss-bold ss-font-sm">TT</td>
+                        <td class="ss-bold ss-font-sm">M</td>
+                        <td class="ss-bold ss-font-sm">F</td>
+                        <td class="ss-bold ss-font-sm">TT</td>
+                        <td class="ss-bold ss-font-sm">M</td>
+                        <td class="ss-bold ss-font-sm">F</td>
+                        <td class="ss-bold ss-font-sm">TT</td>
+                        <td class="ss-bold ss-font-sm">M</td>
+                        <td class="ss-bold ss-font-sm">F</td>
+                        <td class="ss-bold ss-font-sm">TT</td>
                       </tr>
                       @foreach($modules as $modKey=>$mod)
                       <tr>
-                        <td>{{ $modKey }}</td>
-                        <td>{{ $mod['name'] }}</td>
-                        <td>{{ $mod['ML']['supp_pass_count'] }}</td>
-                        <td>{{ $mod['FL']['supp_pass_count'] }}</td>
-                        <td>{{ $mod['supp_pass_count'] }}</td>
-                        <td>{{ $mod['ML']['supp_fail_count'] }}</td>
-                        <td>{{ $mod['FL']['supp_fail_count'] }}</td>
-                        <td>{{ $mod['supp_fail_count'] }}</td>
-                        <td>{{ $mod['ML']['supp_inc_count'] }}</td>
-                        <td>{{ $mod['FL']['supp_inc_count'] }}</td>
-                        <td>{{ $mod['supp_inc_count'] }}</td>
-                        <td>{{ $mod['ML']['supp_pst_count'] }}</td>
-                        <td>{{ $mod['FL']['supp_pst_count'] }}</td>
-                        <td>{{ $mod['supp_pst_count'] }}</td>
-                        <td>{{ $mod['ML']['supp_total_count'] }}</td>
-                        <td>{{ $mod['FL']['supp_total_count'] }}</td>
-                        <td>{{ $mod['supp_total_count'] }}</td>
-                        <td>{{ $mod['ML']['supp_pass_count'] }}</td>
-                        <td>{{ $mod['FL']['supp_pass_count'] }}</td>
-                        <td>{{ $mod['supp_pass_count'] }}</td>
-                        <td>{{ $mod['ML']['supp_fail_count'] }}</td>
-                        <td>{{ $mod['FL']['supp_fail_count'] }}</td>
-                        <td>{{ $mod['supp_fail_count'] }}</td>
-                        <td>{{ $mod['ML']['supp_carry_count'] }}</td>
-                        <td>{{ $mod['FL']['supp_carry_count'] }}</td>
-                        <td>{{ $mod['supp_carry_count'] }}</td>
-                        <td>{{ $mod['ML']['supp_retake_count'] }}</td>
-                        <td>{{ $mod['FL']['supp_retake_count'] }}</td>
-                        <td>{{ $mod['supp_retake_count'] }}</td>
+                        <td class="ss-bold ss-font-xs">{{ $modKey }}</td>
+                        <td class="ss-bold ss-font-xs">{{ $mod['name'] }}</td>
+                        @foreach($grading_policies as $pol)
+                            <td class="ss-bold ss-font-xs">{{ $mod['grades']['ML'][$pol->grade] }}</td>
+                            <td class="ss-bold ss-font-xs">{{ $mod['grades']['FL'][$pol->grade] }}</td>
+                            <td class="ss-bold ss-font-xs">{{ $mod['grades'][$pol->grade] }}</td>
+                        @endforeach
+                        <td class="ss-bold ss-font-xs">{{ $mod['ML']['ic_count'] }}</td>
+                        <td class="ss-bold ss-font-xs">{{ $mod['FL']['ic_count'] }}</td>
+                        <td class="ss-bold ss-font-xs">{{ $mod['ic_count'] }}</td>
+                        <td class="ss-bold ss-font-xs">{{ $mod['ML']['if_count'] }}</td>
+                        <td class="ss-bold ss-font-xs">{{ $mod['FL']['if_count'] }}</td>
+                        <td class="ss-bold ss-font-xs">{{ $mod['if_count'] }}</td>
+                        <td class="ss-bold ss-font-xs">{{ $mod['ML']['inc_count'] }}</td>
+                        <td class="ss-bold ss-font-xs">{{ $mod['FL']['inc_count'] }}</td>
+                        <td class="ss-bold ss-font-xs">{{ $mod['inc_count'] }}</td>
+                        <td class="ss-bold ss-font-xs">{{ $mod['ML']['pst_count'] }}</td>
+                        <td class="ss-bold ss-font-xs">{{ $mod['FL']['pst_count'] }}</td>
+                        <td class="ss-bold ss-font-xs">{{ $mod['pst_count'] }}</td>
+                        <td class="ss-bold ss-font-xs">{{ $mod['ML']['ds_count'] }}</td>
+                        <td class="ss-bold ss-font-xs">{{ $mod['FL']['ds_count'] }}</td>
+                        <td class="ss-bold ss-font-xs">{{ $mod['ds_count'] }}</td>
+                        <td class="ss-bold ss-font-xs">{{ $mod['ML']['total_count'] }}</td>
+                        <td class="ss-bold ss-font-xs">{{ $mod['FL']['total_count'] }}</td>
+                        <td class="ss-bold ss-font-xs">{{ $mod['total_count'] }}</td>
+                        <td class="ss-bold ss-font-xs">{{ $mod['ML']['pass_count'] }}</td>
+                        <td class="ss-bold ss-font-xs">{{ $mod['FL']['pass_count'] }}</td>
+                        <td class="ss-bold ss-font-xs">{{ $mod['pass_count'] }}</td>
+                        <td class="ss-bold ss-font-xs">{{ $mod['ML']['fail_count'] }}</td>
+                        <td class="ss-bold ss-font-xs">{{ $mod['FL']['fail_count'] }}</td>
+                        <td class="ss-bold ss-font-xs">{{ $mod['fail_count'] }}</td>
+                        <td class="ss-bold ss-font-xs">{{ $mod['ML']['fail_fe_count'] }}</td>
+                        <td class="ss-bold ss-font-xs">{{ $mod['FL']['fail_fe_count'] }}</td>
+                        <td class="ss-bold ss-font-xs">{{ $mod['fail_fe_count'] }}</td>
+                        <td class="ss-bold ss-font-xs">{{ $mod['ML']['retake_count'] }}</td>
+                        <td class="ss-bold ss-font-xs">{{ $mod['FL']['retake_count'] }}</td>
+                        <td class="ss-bold ss-font-xs">{{ $mod['retake_count'] }}</td>
                       </tr>
                       @endforeach
                    </table>
