@@ -230,25 +230,31 @@
                       @foreach($sem_modules as $mdKey=>$mod)
                       <td class="ss-bold" colspan="{{ 2*count($mod)+1 }}">{{ $mdKey }}</td>
                       @endforeach
-                      <td class="ss-bold">Annual</td>
+                      <td class="ss-bold">ANNUAL</td>
+                    </tr>
+                    <tr>
+                      <!-- <td class="ss-bold" rowspan="2">CLASS MODE</td> -->
+                      @foreach($sem_modules as $mdKey=>$mod)
+                      <td class="ss-bold" colspan="{{ 2*count($mod) }}">SUBJECTS</td>
+                      <td class="ss-bold" rowspan="3">Remark</td>
+                      @endforeach
+                      <td class="ss-bold" rowspan="3">Remark</td>
                     </tr>
                     <tr>
                       <!-- <td class="ss-bold" rowspan="2">CLASS MODE</td> -->
                       @foreach($module_assignments as $assignment)
-                      <td class="ss-bold ss-font-sm" colspan="4">{{ $assignment->module->code }} ({{ $assignment->module->credit }})</td>
+                      <td class="ss-bold" colspan="2">{{ $assignment->module->code }}</td>
                       @endforeach
-                      <td class="ss-bold ss-font-sm">Remark</td>                      
+                      
                     </tr>
                     
                     <tr>
                       
-                    @foreach($module_assignments as $assignment)
-                      <td class="ss-bold ss-font-sm">CA</td>
-                      <td class="ss-bold ss-font-sm">FE</td>
-                      <td class="ss-bold ss-font-sm">TT</td>
-                      <td class="ss-bold ss-font-sm">GD</td>
-                    @endforeach
-
+                      @foreach($module_assignments as $assignment)
+                      <td class="ss-bold">TT</td>
+                      <td class="ss-bold">GD</td>
+                      @endforeach
+                      
                     </tr>
 
                     @foreach($students as $key=>$student)
