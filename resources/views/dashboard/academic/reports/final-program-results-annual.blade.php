@@ -245,7 +245,7 @@
                       @foreach($module_assignments as $assignment)
                       <td class="ss-bold" colspan="2">{{ $assignment->module->code }}</td>
                       @endforeach
-                      
+                      <td>hello</td>
                     </tr>
                     
                     <tr>
