@@ -244,14 +244,6 @@
                       
                       @if($semester)
                          @if(App\Utils\Util::stripSpacesUpper($semester->name) == App\Utils\Util::stripSpacesUpper('Semester 2'))
-                          <td class="ss-bold">2nd Sem Remark</td>
-                          <td class="ss-bold">1st Sem Remark</td>
-                          <td class="ss-bold">GPA</td>
-                          <td class="ss-bold">Points</td>
-                          <td class="ss-bold">Credits</td>
-                          <td class="ss-bold">Overall Remark</td>
-                          <td class="ss-bold">Classification</td>
-                         @else
                           <td class="ss-bold">Remark</td>
                           <td class="ss-bold">GPA</td>
                           <td class="ss-bold">Points</td>

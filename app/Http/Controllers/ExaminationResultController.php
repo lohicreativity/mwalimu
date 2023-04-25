@@ -3536,11 +3536,11 @@ class ExaminationResultController extends Controller
         ];
 
         if($request->get('semester_id') != 'SUPPLEMENTARY'){
-            if(Util::stripSpacesUpper($semester->name) == Util::stripSpacesUpper('Semester 2')){
+/*             if(Util::stripSpacesUpper($semester->name) == Util::stripSpacesUpper('Semester 2')){
                return view('dashboard.academic.reports.final-program-results-second-semester',$data)->withTitle('Final Program Results - '.$campus_program->program->name);
-            }else{
+            }else{ */
                return view('dashboard.academic.reports.final-program-results-first-semester',$data)->withTitle('Final Program Results - '.$campus_program->program->name);
-            }
+            //}
         }else{
             return view('dashboard.academic.reports.final-program-results-supplementary',$data)->withTitle('Supplementary Program Results - '.$campus_program->program->name);
         }
