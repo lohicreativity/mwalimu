@@ -24,6 +24,7 @@ class PostponementController extends Controller
     public function index(Request $request)
     {
         $staff = User::find(Auth::user()->id)->staff;
+        return $staff;
         if (Auth::user()->hasRole('administrator')|| Auth::user()->hasRole('arc')) {
             $postponements = $request->get('query')? Postponement::whereHas('student',function($query) use($request){
                 $query->where('first_name','LIKE','%'.$request->get('query').'%')->orWhere('middle_name','LIKE','%'.$request->get('query').'%')->orWhere('surname','LIKE','%'.$request->get('query').'%')->orWhere('registration_number','LIKE','%'.$request->get('query').'%');
