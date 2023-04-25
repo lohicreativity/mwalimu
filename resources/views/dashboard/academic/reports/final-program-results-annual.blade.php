@@ -254,7 +254,9 @@
                       <td class="ss-bold">TT</td>
                       <td class="ss-bold">GD</td>
                       @endforeach
+                      @foreach($sem_modules as $mdKey=>$mod)
                       <td class="ss-bold">Remark</td>
+                      @endforeach
                     </tr>
 
                     @foreach($students as $key=>$student)
