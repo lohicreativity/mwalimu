@@ -320,12 +320,14 @@ class ApplicationController extends Controller
          }elseif (Auth::user()->hasRole('hod')) {
 
             $applicants = Applicant::doesntHave('student')->whereHas('selections',function($query) use($request){
-                $query->where('status','SELECTED');
-           })->with(['disabilityStatus','ward','region','country','nextOfKin','intake','selections.campusProgram.program','nectaResultDetails','nacteResultDetails'])->where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$request->get('program_level_id'))->where(function($query){
+                $query->where('status','SELECTED');})
+                ->whereHas('selections.campusProgram.progra.departments',function($query) use($staff) {$query->where('dept_id',$staff->dept_id)})
+                ->with(['disabilityStatus','ward','region','country','nextOfKin','intake','selections.campusProgram.program','nectaResultDetails','nacteResultDetails'])->where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$request->get('program_level_id'))->where(function($query){
                $query->where('confirmation_status','!=','CANCELLED')->orWhere('confirmation_status','!=','TRANSFERED')->orWhereNull('confirmation_status');
            })->where('campus_id', $campus_id)->where('status','ADMITTED')->get();
 
-         }         
+         }        
+         return $applicants; 
          
          $data = [
             'staff'=>$staff,
