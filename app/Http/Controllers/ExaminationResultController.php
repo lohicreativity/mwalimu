@@ -2934,7 +2934,6 @@ class ExaminationResultController extends Controller
             'staff'=>User::find(Auth::user()->id)->staff,
             'request'=>$request
     	];
-return $data;
     	return view('dashboard.academic.program-results',$data)->withTitle('Final Results');
     }
 
@@ -3534,7 +3533,7 @@ return $data;
            'staff'=>User::find(Auth::user()->id)->staff,
            'request'=>$request
         ];
-                
+               return $data; 
         if($request->get('semester_id') != 'SUPPLEMENTARY'){
             if(Util::stripSpacesUpper($semester->name) == Util::stripSpacesUpper('Semester 2')){
                return view('dashboard.academic.reports.final-program-results-second-semester',$data)->withTitle('Final Program Results - '.$campus_program->program->name);
