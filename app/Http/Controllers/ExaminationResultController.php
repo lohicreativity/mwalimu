@@ -2934,7 +2934,7 @@ class ExaminationResultController extends Controller
             'staff'=>User::find(Auth::user()->id)->staff,
             'request'=>$request
     	];
-
+return $data;
     	return view('dashboard.academic.program-results',$data)->withTitle('Final Results');
     }
 
