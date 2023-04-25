@@ -572,8 +572,8 @@
                 <div class="table-responsive">
                    <table class="table table-condensed table-bordered">
                      <tr>
-                       <td class="ss-bold">KEY NAME</td>
-                       <td class="ss-bold">DESCRIPTION</td>
+                       <td class="ss-bold">Key Name</td>
+                       <td class="ss-bold">Description</td>
                      </tr>
                      <tr>
                        <td>IC</td>
