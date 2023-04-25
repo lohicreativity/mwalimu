@@ -2950,7 +2950,7 @@ class ExaminationResultController extends Controller
             $department = $dpt;
          }
       }
-    	if($request->get('semester_id') != 'SUPPLEMENTARY'){
+    	if($request->get('semester_id') != 'SUPPLEMENTARY' && $request->get('semester_id') != 'ANNUAL'){
 	    	$module_assignments = ModuleAssignment::whereHas('programModuleAssignment',function($query) use($request){
 	                $query->where('campus_program_id',explode('_',$request->get('campus_program_id'))[0])->where('year_of_study',explode('_',$request->get('campus_program_id'))[2])->where('semester_id',$request->get('semester_id'));
 	    	        })->whereHas('programModuleAssignment.campusProgram',function($query) use($campus_program){
@@ -2992,8 +2992,8 @@ class ExaminationResultController extends Controller
         	$assignmentIds[] = $assign->id;
         }
 
-        if($request->get('semester_id') != 'SUPPLEMENTARY'){
-           if(Util::stripSpacesUpper($semester->name) == Util::stripSpacesUpper('Semester 1')){
+        if($request->get('semester_id') != 'SUPPLEMENTARY' && $request->get('semester_id') != 'ANNUAL'){
+         if(Util::stripSpacesUpper($semester->name) == Util::stripSpacesUpper('Semester 1')){
               $students = Student::whereHas('applicant',function($query) use($request){
                   $query->where('intake_id',$request->get('intake_id'));
               })->whereHas('registrations',function($query) use($request){
@@ -3542,7 +3542,7 @@ class ExaminationResultController extends Controller
                return view('dashboard.academic.reports.final-program-results-first-semester',$data)->withTitle('Final Program Results - '.$campus_program->program->name);
             }*/
             if($request->get('semester_id') == 'ANNUAL'){
-               return view('dashboard.academic.reports.final-program-results-supplementary',$data)->withTitle('Final Program Results - '.$campus_program->program->name);
+               return view('dashboard.academic.reports.final-program-results-annual',$data)->withTitle('Final Program Results - '.$campus_program->program->name);
             }else{
                return view('dashboard.academic.reports.final-program-results-first-semester',$data)->withTitle('Final Program Results - '.$campus_program->program->name);             
             }
