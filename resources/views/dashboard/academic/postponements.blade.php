@@ -117,6 +117,7 @@
                     @if(!Auth::user()->hasRole('hod'))
                     <td>@if($post->recommended == 1) <a href="{{ url('academic/postponement/'.$post->id.'/recommend') }}">Recommended</a> @elseif($post->recommended === 0) <a href="{{ url('academic/postponement/'.$post->id.'/recommend') }}">Not Recommended</a> @endif</td>
                     @endif
+                    @if(Auth::user()->hasRole('hod') || Auth::user()->hasRole('arc') || Auth::user()->hasRole('administrator'))
                     <td>
                       @if(Auth::user()->hasRole('hod'))
                       @if($post->status == 'PENDING')
@@ -140,7 +141,7 @@
                               Decline
                        </a>
                        @endif
-
+                      @endif
                        <div class="modal fade" id="ss-accept-post-{{ $post->id }}">
                         <div class="modal-dialog modal-lg">
                           <div class="modal-content">
