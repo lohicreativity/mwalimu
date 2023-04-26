@@ -108,7 +108,6 @@
                 @endif
               </div><!-- end of accordian -->
 
-              
               @if(Auth::user()->hasRole('hod'))
               <div class="card">
                  {!! Form::open(['url'=>'academic/postponement/resumption/recommend','class'=>'ss-form-processing']) !!}
@@ -141,7 +140,7 @@
               @else
               <div class="card">
                  <div class="card-body">
-                    <p>{{ $postponement->recommendation }}</p>
+                    <p>{{ $postponement->resumption_recommendation }}</p>
                  </div>
               </div>
               @endif
