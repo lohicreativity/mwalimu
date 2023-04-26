@@ -43,7 +43,7 @@ class PostponementController extends Controller
                 $query->where('first_name','LIKE','%'.$request->get('query').'%')->orWhere('middle_name','LIKE','%'.$request->get('query').'%')->orWhere('surname','LIKE','%'.$request->get('query').'%')->orWhere('registration_number','LIKE','%'.$request->get('query').'%');
           })->whereHas('student.campusProgram', function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
           ->whereHas('student.campusProgram.program.departments', function($query) use($staff){$query->where('id',$staff->department_id);})
-          ->with(['student','StudyAcademicYear.academicYear','semester'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->get() : $request->get('query')? Postponement::whereHas('student.campusProgram', function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
+          ->with(['student','StudyAcademicYear.academicYear','semester'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->get() : Postponement::whereHas('student.campusProgram', function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
       ->whereHas('student.campusProgram.program.departments', function($query) use($staff){$query->where('id',$staff->department_id);})
       ->with(['student','StudyAcademicYear.academicYear','semester'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->get();
         }else{
