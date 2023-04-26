@@ -85,12 +85,14 @@
                     <th>Category</th>
                     <th>Status</th>
                     <th>Date Resumed</th>
-                    @if(!Auth::user()->hasRole('hod'))
-                    <th>Recommendation</th>
-                    @endif
-                    <th>Actions</th>
-                    @if(!Auth::user()->hasRole('hod'))
-                    <th>Accept</th>
+                    @if(Auth::user()->hasRole('arc') || Auth::user()->hasRole('administrator'))                     
+                      @if(!Auth::user()->hasRole('hod'))
+                      <th>Recommendation</th>
+                      @endif
+                      <th>Actions</th>
+                      @if(!Auth::user()->hasRole('hod'))
+                      <th>Accept</th>
+                      @endif
                     @endif
                   </tr>
                   </thead>
@@ -103,6 +105,7 @@
                     <td>{{ $post->category }}</td>
                     <td>{{ $post->status }}</td>
                     <td>{{ Carbon\Carbon::parse($post->resumed_at)->format('Y-m-d') }} @if($post->is_renewal == 1) * @endif</td>
+                    @if(Auth::user()->hasRole('hod') || Auth::user()->hasRole('arc') || Auth::user()->hasRole('administrator'))                      
                     @if(!Auth::user()->hasRole('hod'))
                     <td>@if($post->resume_recommended == 1) <a href="{{ url('academic/postponement/'.$post->id.'/resume/recommend') }}">Recommended</a> @else <a href="{{ url('academic/postponement/'.$post->id.'/resume/recommend') }}">Not Recommended</a> @endif</td>
                     @endif
@@ -167,19 +170,20 @@
                         @endif
                       </td>
                     @endif
+                    @endif
                   </tr>
                   @endforeach
-                  
-                  @if(!Auth::user()->hasRole('hod'))
-                   <tr>
-                     <td colspan="9">
-                      
-                      <input type="submit" class="btn btn-primary" name="action" value="Accept Selected"> <input type="submit" class="btn btn-primary" name="action" value="Decline Selected">
-                      
-                    </td>
-                   </tr>
+                  @if(Auth::user()->hasRole('hod') || Auth::user()->hasRole('arc') || Auth::user()->hasRole('administrator'))                 
+                    @if(!Auth::user()->hasRole('hod'))
+                    <tr>
+                      <td colspan="9">
+                        
+                        <input type="submit" class="btn btn-primary" name="action" value="Accept Selected"> <input type="submit" class="btn btn-primary" name="action" value="Decline Selected">
+                        
+                      </td>
+                    </tr>
+                    @endif
                   @endif
-                  
                   </tbody>
                 </table>
                 

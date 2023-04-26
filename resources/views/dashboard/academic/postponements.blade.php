@@ -90,7 +90,7 @@
                   <thead>
                   <tr>
                     <th>Student</th>
-                    <th>Reg Number</th>
+                    <th>Reg#</th>
                     <th>Semester</th>
                     <th>Category</th>
                     <th>Status</th>
