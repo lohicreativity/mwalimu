@@ -32,7 +32,7 @@ class PostponementController extends Controller
         }elseif(Auth::user()->hasRole('admission-officer')){
             $postponements = $request->get('query')? Postponement::whereHas('student',function($query) use($request){
                 $query->where('first_name','LIKE','%'.$request->get('query').'%')->orWhere('middle_name','LIKE','%'.$request->get('query').'%')->orWhere('surname','LIKE','%'.$request->get('query').'%')->orWhere('registration_number','LIKE','%'.$request->get('query').'%');
-          })->whereHas('campusProgram', function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
+          })->whereHas('student.campusProgram', function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
           ->with(['student','StudyAcademicYear.academicYear','semester'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->get() : Postponement::with(['student','StudyAcademicYear.academicYear','semester'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->whereNull('postponed_by_user_id')->get();
         }elseif(Auth::user()->hasRole('hod')){
             $postponements = $request->get('query')? Postponement::whereHas('student',function($query) use($request){
