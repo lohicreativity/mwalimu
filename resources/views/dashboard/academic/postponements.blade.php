@@ -89,6 +89,7 @@
                 <table id="example2" class="table table-bordered table-hover ss-margin-top ss-paginated-table">
                   <thead>
                   <tr>
+                    <th>SN</th>
                     <th>Student</th>
                     <th>Reg#</th>
                     <th>Semester</th>
@@ -107,8 +108,9 @@
                   </tr>
                   </thead>
                   <tbody>
-                  @foreach($postponements as $post)
+                  @foreach($postponements as $key=>$post)
                   <tr>
+                    <td>{{ ($key+1) }}
                     <td>{{ $post->student->first_name }} {{ $post->student->middle_name }} {{ $post->student->surname }}</td>
                     <td>{{ $post->student->registration_number }}</td>
                     <td>@if($post->semester) {{ $post->semester->name }} @endif</td>
