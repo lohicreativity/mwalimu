@@ -94,12 +94,14 @@
                     <th>Category</th>
                     <th>Status</th>
                     <th>Date Submitted</th>
-                    @if(!Auth::user()->hasRole('hod'))
-                    <th>Recommendation</th>
-                    @endif
-                    <th>Actions</th>
-                    @if(!Auth::user()->hasRole('hod'))
-                    <th>Select</th>
+                    @if(Auth::user()->hasRole('hod') || Auth::user()->hasRole('arc') || Auth::user()->hasRole('administrator'))
+                      @if(!Auth::user()->hasRole('hod'))
+                        <th>Recommendation</th>
+                      @endif
+                        <th>Actions</th>
+                      @if(!Auth::user()->hasRole('hod'))
+                        <th>Select</th>
+                      @endif
                     @endif
                   </tr>
                   </thead>
