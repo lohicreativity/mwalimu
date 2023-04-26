@@ -69,8 +69,9 @@
                 <h3 class="card-title">List of Postponements</h3>
               </div>
               <!-- /.card-header -->
-              @if(Auth::user()->hasRole('arc') || Auth::user()->hasRole('administrator'))                
               <div class="card-body">
+              @if(Auth::user()->hasRole('arc') || Auth::user()->hasRole('administrator'))                
+
                 {!! Form::open(['url'=>'academic/postponements','method'=>'GET']) !!}
                 {!! Form::input('hidden','study_academic_year_id',$request->get('study_academic_year_id')) !!}
                 <div class="input-group ss-stretch">

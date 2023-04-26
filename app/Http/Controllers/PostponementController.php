@@ -47,7 +47,7 @@ class PostponementController extends Controller
                     ->get();
         }
         if(count($postponements)==0){
-            return redirect()->back()->with('error','There are not postponements');
+            return redirect()->back()->with('error','There are no postponement cases');
 
         }
     	$data = [
