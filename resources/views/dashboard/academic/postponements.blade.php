@@ -114,10 +114,10 @@
                     <td>{{ $post->category }}</td>
                     <td>{{ $post->status }}</td>
                     <td>{{ Carbon\Carbon::parse($post->created_at)->format('Y-m-d') }} @if($post->is_renewal == 1) * @endif</td>
+                    @if(Auth::user()->hasRole('hod') || Auth::user()->hasRole('arc') || Auth::user()->hasRole('administrator'))                    
                     @if(!Auth::user()->hasRole('hod'))
                     <td>@if($post->recommended == 1) <a href="{{ url('academic/postponement/'.$post->id.'/recommend') }}">Recommended</a> @elseif($post->recommended === 0) <a href="{{ url('academic/postponement/'.$post->id.'/recommend') }}">Not Recommended</a> @endif</td>
                     @endif
-                    @if(Auth::user()->hasRole('hod') || Auth::user()->hasRole('arc') || Auth::user()->hasRole('administrator'))
                     <td>
                       @if(Auth::user()->hasRole('hod'))
                       @if($post->status == 'PENDING')
