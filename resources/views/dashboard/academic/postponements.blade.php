@@ -71,21 +71,11 @@
               <!-- /.card-header -->
                  
               <div class="card-body">
-                {!! Form::open(['url'=>'academic/postponements','method'=>'GET']) !!}
-                {!! Form::input('hidden','study_academic_year_id',$request->get('study_academic_year_id')) !!}
-                <div class="input-group ss-stretch">
-                 <input type="text" name="query" class="form-control" placeholder="Search for student name or registration number">
-                 <span class="input-group-btn">
-                   <button class="btn btn-default" type="submit"><span class="fa fa-search"></span></button>
-                 </span>
-                </div>
-                {!! Form::close() !!}
-
                 {!! Form::open(['url'=>'academic/accept-postponements','class'=>'ss-form-processing']) !!}
 
                 {!! Form::input('hidden','study_academic_year_id',$request->get('study_academic_year_id')) !!}
                  
-                <table id="example2" class="table table-bordered table-hover ss-margin-top ss-paginated-table">
+                <table id="example2" class="table table-bordered ss-margin-top ss-paginated-table">
                   <thead>
                   <tr>
                     <th>Student</th>
