@@ -213,6 +213,7 @@
                         @endif
                       </td>
                     @endif
+                    @endif 
                   </tr>
                   @endforeach
 
@@ -226,8 +227,7 @@
                       </td>
                      </tr>
                     @endif
-                  @endif
-                  @endif  
+                  @endif 
                   
                   </tbody>
                 </table>
