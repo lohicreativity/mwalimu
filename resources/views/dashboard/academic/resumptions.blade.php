@@ -85,7 +85,7 @@
                     <th>Category</th>
                     <th>Status</th>
                     <th>Date Resumed</th>
-                    @if(Auth::user()->hasRole('arc') || Auth::user()->hasRole('administrator'))                     
+                    @if(Auth::user()->hasRole('hod') || Auth::user()->hasRole('arc') || Auth::user()->hasRole('administrator'))                     
                       @if(!Auth::user()->hasRole('hod'))
                       <th>Recommendation</th>
                       @endif
