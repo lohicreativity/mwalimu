@@ -46,6 +46,10 @@ class PostponementController extends Controller
                     ->with(['student','StudyAcademicYear.academicYear','semester'])->where('study_academic_year_id',$request->get('study_academic_year_id'))
                     ->get();
         }
+        if(!$postponements){
+            return redirect()->back()->with('error','There are not postponements');
+
+        }
     	$data = [
     	     'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
            'postponements'=>$postponements,
