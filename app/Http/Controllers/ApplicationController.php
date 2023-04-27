@@ -328,6 +328,10 @@ class ApplicationController extends Controller
 
          }        
 
+         if(!applicants){
+            return->redirect()->back()->with('error','No admitted applicants');
+         }
+         
          $data = [
             'staff'=>$staff,
             'application_windows'=>ApplicationWindow::where('campus_id',$staff->campus_id)->get(),
