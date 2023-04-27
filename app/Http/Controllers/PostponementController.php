@@ -119,9 +119,31 @@ class PostponementController extends Controller
         
         if(Postponement::where('student_id',$request->get('student_id'))->where('status','POSTPONED')->count() == 0){
             if(Registration::where('student_id',$request->get('student_id'))->where('study_academic_year_id',$request->get('study_academic_year_id'))->where('semester_id',$request->get('semester_id'))->count() == 0){
-                return redirect()->back()->with('error','You cannot postpone because you have not been registered yet for this semester');
+                return redirect()->back()->with('error','You cannot postpone because you have not been registered for this semester');
             }
         }
+
+        if($request=>get('category') == 'SEMESTER' || $request=>get('category') == 'ANNUAL'){
+            $student = Student::where('id',$request->get('student_id'));
+            $final_result_upload_status = ModuleAssignment::whereHas('programModuleAssignment.campusProgram',function($query) {$query->where('campus_program_id',$student->campus_program_id);})
+                                                          ->whereHas('programModuleAssignment',function($query)use($request){$query->->where('study_academic_year_id',$request->get('study_academic_year_id'))
+                                                          ->where('semester_id',$request->get('semester_id'));})
+                                                          ->where('final_upload_status','UPLOADED')->count();
+
+            if($request=>get('category') == 'SEMESTER' && (SemesterRemark::where('student_id',$request->get('student_id'))
+            ->where('study_academic_year_id',$request->get('study_academic_year_id'))
+            ->where('semester_id',$request->get('semester_id'))->count() > 0 || $final_result_upload_status > 0)){
+
+              return redirect()->back()->with('error','You cannot postpone this semester because final results have already been uploaded');
+
+            }elseif($request=>get('category') == 'ANNUAL' && (SemesterRemark::where('student_id',$request->get('student_id'))
+                                                          ->where('study_academic_year_id',$request->get('study_academic_year_id'))->count() > 0 || $final_result_upload_status > 0)){
+
+              return redirect()->back()->with('error','You cannot postpone this academic year because you already have final results');  
+
+            }
+        }
+
     	$validation = Validator::make($request->all(),[
             'study_academic_year_id'=>'required',
             'student_id'=>'required',

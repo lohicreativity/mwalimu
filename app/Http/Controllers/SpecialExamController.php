@@ -86,9 +86,9 @@ class SpecialExamController extends Controller
         //     return redirect()->back()->with('error','Examinations phase is over');
         // }
 
-        if (sizeof($suppExams) == 0 && sizeof($resultPublished) != 0) {
+/*         if (sizeof($suppExams) == 0 && sizeof($resultPublished) != 0) {
             return redirect()->back()->with('error','No modules to postpone');
-        }
+        } */
 
         if ($student->studentship_status_id == 3) {
             return redirect()->back()->with('error','You have postponed semester or year');
@@ -193,7 +193,13 @@ class SpecialExamController extends Controller
         	return redirect()->back()->with('error','Special exam already exists');
         }
 
-
+        if(ModuleAssignment::whereHas('programModuleAssignment.campusProgram',function($query) {$query->where('campus_program_id',$student->campus_program_id);})
+                                                          ->whereHas('programModuleAssignment',function($query)use($request){$query->->where('study_academic_year_id',$request->get('study_academic_year_id'))
+                                                          ->where('semester_id',$request->get('semester_id'));})
+                                                          ->where('final_upload_status','UPLOADED')
+                                                          ->where('id',$request->get('module_assignment_id'))->count() > 0){
+            return redirect()->back()->with('error','You cannot postpone this module because your final results have already been uploaded');                                                                        
+        }
         (new SpecialExamAction)->store($request);
 
         return Util::requestResponse($request,'Special exam created successfully');

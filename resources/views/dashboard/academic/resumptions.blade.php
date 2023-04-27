@@ -81,7 +81,7 @@
                   <tr>
                     <th>SN</th>
                     <th>Student</th>
-                    <th>Reg Number</th>
+                    <th>Reg#</th>
                     <th>Semester</th>
                     <th>Category</th>
                     <th>Status</th>
@@ -178,7 +178,7 @@
                   @if(Auth::user()->hasRole('hod') || Auth::user()->hasRole('arc') || Auth::user()->hasRole('administrator'))                 
                     @if(!Auth::user()->hasRole('hod'))
                     <tr>
-                      <td colspan="9">
+                      <td colspan="12">
                         
                         <input type="submit" class="btn btn-primary" name="action" value="Accept Selected"> <input type="submit" class="btn btn-primary" name="action" value="Decline Selected">
                         
