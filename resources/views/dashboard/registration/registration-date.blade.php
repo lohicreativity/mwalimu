@@ -74,8 +74,16 @@
                        @endforeach
                     </select>
                   @else
+                  @php
+                    foreach($campuses as $campus){
+                      if($campus->id == 3){
+                        $name = $campus->name;
+                      } 
+                      break;
+                    }
+                  @endphp
                   {!! Form::label('','Campus') !!}
-                  {!! Form::text('campus_id',@foreach($campuses as $campus) @if($campus->id == 3) {{ ($campus->name) }} @endif @break @endforeach,$campus_id) !!}
+                  {!! Form::text('campus_id',{{$name}},$campus_id) !!}
                   {!! Form::input('hidden','campus_id',session('staff_campus_id'))) !!}                  
                   @endif  
                   </div>
