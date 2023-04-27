@@ -143,6 +143,7 @@
                               </i>
                               Decline
                        </a>
+                       @else N/A
                        @endif
                        <div class="modal fade" id="ss-accept-post-{{ $post->id }}">
                         <div class="modal-dialog modal-lg">
@@ -213,6 +214,7 @@
                       <td>
                         @if($post->status == 'PENDING')
                         {!! Form::checkbox('post_'.$post->id,$post->id,true) !!}
+                        @else N/A
                         @endif
                       </td>
                     @endif
@@ -223,7 +225,7 @@
                   @if(!Auth::user()->hasRole('hod'))
                     @if(!$request->get('query'))
                      <tr>
-                       <td colspan="9">
+                       <td colspan="12">
                         
                         <input type="submit" class="btn btn-primary" name="action" value="Accept Selected"> <input type="submit" class="btn btn-primary" name="action" value="Decline Selected">
                         
