@@ -136,7 +136,7 @@ class PostponementController extends Controller
 
               return redirect()->back()->with('error','You cannot postpone this semester because final results have already been uploaded');
 
-            }elseif($request=>get('category') == 'ANNUAL' && (SemesterRemark::where('student_id',$request->get('student_id'))
+            }elseif($request->get('category') == 'ANNUAL' && (SemesterRemark::where('student_id',$request->get('student_id'))
                                                           ->where('study_academic_year_id',$request->get('study_academic_year_id'))->count() > 0 || $final_result_upload_status > 0)){
 
               return redirect()->back()->with('error','You cannot postpone this academic year because you already have final results');  
