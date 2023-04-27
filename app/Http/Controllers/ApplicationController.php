@@ -328,7 +328,7 @@ class ApplicationController extends Controller
 
          }        
 
-         if(!applicants){
+         if(!$applicants){
             return redirect()->back()->with('error','No admitted applicants');
          }
 
