@@ -241,10 +241,10 @@ class SpecialExamController extends Controller
             ->where('study_academic_year_id',session('active_academic_year_id'))
             ->get();
 
-        if (sizeof($opted_modules) == 0) {
+/*         if (sizeof($opted_modules) == 0) {
             return redirect()->back()->with('error','You have not opted any optional modules');
         }
-
+ */
         
         
         // if ($request->get('mod_assign_'.$assign->id) ) {
