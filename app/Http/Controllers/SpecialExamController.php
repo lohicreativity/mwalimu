@@ -202,7 +202,7 @@ class SpecialExamController extends Controller
                                                           ->where('id',$request->get('module_assignment_id'))->count() > 0){
             return redirect()->back()->with('error','You cannot postpone because final results for this module have already been uploaded');                                                                        
         }
-        if($request->get('type') == 'SUPPLEMENTARY' && ExamResult::whereHas('moduleAssignment'function($query)use($request){$query->where('study_academic_year_id',$request->get('study_academic_year_id'));})
+        if($request->get('type') == 'SUPPLEMENTARY' && ExamResult::whereHas('moduleAssignment',function($query)use($request){$query->where('study_academic_year_id',$request->get('study_academic_year_id'));})
                                                                  ->where('student_id', $request->get('student_id'))
                                                                  ->where('module_assignment_id',$request->get('module_assignment_id'))
                                                                  ->whereNotNull('supp_score')->orwhereNotNull('supp_remark')->count() > 0){
