@@ -132,7 +132,7 @@
               </div><!-- end of accordian -->
 
               
-              @if(Auth::user()->hasRole('hod'))
+              @if(Auth::user()->hasRole('hod') && $postponement->status != 'PENDING')
               <div class="card">
                  {!! Form::open(['url'=>'academic/postponement/recommend','class'=>'ss-form-processing']) !!}
                  <div class="card-body">
@@ -157,7 +157,7 @@
                  </div>
                  </div>
                  <div class="card-footer">
-                   <button type="submit" class="btn btn-primary" @if($postponement->status != 'PENDING') disabled='disabled' @endif>Save Recommendation</button>
+                   <button type="submit" class="btn btn-primary">Save Recommendation</button>
                  </div>
                  {!! Form::close() !!}
               </div>
