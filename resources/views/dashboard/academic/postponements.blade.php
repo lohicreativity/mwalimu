@@ -115,7 +115,7 @@
                     <td>{{ $post->student->registration_number }}</td>
                     <td>@if($post->semester) {{ $post->semester->name }} @endif</td>
                     <td>{{ $post->category }}</td>
-                    <td>{{ $post->status }}</td>
+                    <td>@if($post->status == 'PENDING') <span style='color:red'>{{ $post->status }} </span> @else {{ $post->status }} @endif</td>
                     <td>{{ Carbon\Carbon::parse($post->created_at)->format('Y-m-d') }} @if($post->is_renewal == 1) * @endif</td>
                     @if(Auth::user()->hasRole('hod') || Auth::user()->hasRole('arc') || Auth::user()->hasRole('administrator'))                    
                     @if(!Auth::user()->hasRole('hod'))
