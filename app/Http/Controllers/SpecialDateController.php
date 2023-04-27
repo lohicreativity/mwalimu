@@ -34,7 +34,7 @@ class SpecialDateController extends Controller
    * Display registration deadline
    */
   public function showRegistrationDeadline(Request $request)
-  {
+  {return $request;
       $data = [
            'campuses'=>Campus::all(),
            'study_academic_years'=>StudyAcademicYear::with('academicYear')->latest()->get(),
