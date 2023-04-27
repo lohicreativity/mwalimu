@@ -64,7 +64,7 @@
                     </select>
                   </div>
                   <div class="form-group col-6">
-                  @if(Auth::user()->hasRole('admission-officer') || Auth::user()->hasRole('administrator'))                    
+                  
                     {!! Form::label('','Select campus') !!}
                     <select name="campus_id" class="form-control" required>
                        <option value="">Select Campus</option>
@@ -73,19 +73,6 @@
                        {{ $cp->name }}</option>
                        @endforeach
                     </select>
-                  @else
-                  @php
-                    foreach($campuses as $campus){
-                      if($campus->id == 3){
-                        $name = $campus->name;
-                      } 
-                      break;
-                    }
-                  @endphp
-                  {!! Form::label('','Campus') !!}
-                  {!! Form::text('campus_id',{{$name}},$campus_id) !!}
-                  {!! Form::input('hidden','campus_id',session('staff_campus_id')) !!}                  
-                  @endif  
                   </div>
                   </div>
                   <div class="ss-form-actions">
