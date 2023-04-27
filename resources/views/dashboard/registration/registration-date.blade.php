@@ -47,6 +47,7 @@
                  {!! Form::open(['url'=>'registration/registration-deadline','class'=>'ss-form-processing','method'=>'GET']) !!}
                   @php                
                    $campus_id = [
+                      'class'=>'form-control',
                       'placeholder'=>'Campus name',
                       'readonly'=>true
                    ];
