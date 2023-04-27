@@ -133,7 +133,6 @@
                        @endif
                        @else
                        
-                      @if($post->status == 'PENDING')
                       <a class="btn btn-success btn-sm" href="#" data-toggle="modal" data-target="#ss-accept-post-{{ $post->id }}">
                               <i class="fas fa-check">
                               </i>
@@ -144,8 +143,6 @@
                               </i>
                               Decline
                        </a>
-                       @else N/A
-                       @endif
                        <div class="modal fade" id="ss-accept-post-{{ $post->id }}">
                         <div class="modal-dialog modal-lg">
                           <div class="modal-content">
@@ -213,10 +210,9 @@
                     </td>
                     @if(!Auth::user()->hasRole('hod'))
                       <td>
-                        @if($post->status == 'PENDING')
+
                         {!! Form::checkbox('post_'.$post->id,$post->id,true) !!}
-                        @else N/A
-                        @endif
+
                       </td>
                     @endif
                     @endif 
