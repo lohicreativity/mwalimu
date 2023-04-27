@@ -86,9 +86,9 @@ class SpecialExamController extends Controller
         //     return redirect()->back()->with('error','Examinations phase is over');
         // }
 
-/*         if (sizeof($suppExams) == 0 && sizeof($resultPublished) != 0) {
+        if (sizeof($suppExams) == 0 && sizeof($resultPublished) != 0) {
             return redirect()->back()->with('error','No modules to postpone');
-        } */
+        } 
 
         if ($student->studentship_status_id == 3) {
             return redirect()->back()->with('error','You have postponed semester or year');
@@ -203,7 +203,6 @@ class SpecialExamController extends Controller
             return redirect()->back()->with('error','You cannot postpone because final results for this module have already been uploaded');                                                                        
         }
         if($request->get('type') == 'SUPPLEMENTARY' && ExamResult::whereHas('moduleAssignment',function($query)use($request){$query->where('study_academic_year_id',$request->get('study_academic_year_id'));})
-                                                                 ->where('student_id', $request->get('student_id'))
                                                                  ->where('module_assignment_id',$request->get('module_assignment_id'))
                                                                  ->whereNotNull('supp_score')->orwhereNotNull('supp_remark')->count() > 0){
             return redirect()->back()->with('error','You cannot postpone because supplementary results for this module have already been uploaded');    
@@ -241,10 +240,10 @@ class SpecialExamController extends Controller
             ->where('study_academic_year_id',session('active_academic_year_id'))
             ->get();
 
-/*         if (sizeof($opted_modules) == 0) {
+        if (sizeof($opted_modules) == 0) {
             return redirect()->back()->with('error','You have not opted any optional modules');
         }
- */
+
         
         
         // if ($request->get('mod_assign_'.$assign->id) ) {
