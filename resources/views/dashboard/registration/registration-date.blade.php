@@ -63,7 +63,7 @@
                        <option value="">Select Campus</option>
                        @foreach($campuses as $cp)
                        <option value="{{ $cp->id }}" @if($cp->id == $request->get('campus_id')) selected="selected" @endif
-                       @if(!Auth::user()->hasRole('admission-officer') || !Auth::user()->hasRole('administrator')) disabled="disabled" @endif>
+                       @if(!Auth::user()->hasRole('admission-officer') || !Auth::user()->hasRole('administrator')) selected="selected" disabled="disabled" @endif>
                        {{ $cp->name }}</option>
                        @endforeach
                     </select>
