@@ -215,9 +215,11 @@
                     </td>
                     @if(!Auth::user()->hasRole('hod'))
                       <td>
-
-                        {!! Form::checkbox('post_'.$post->id,$post->id,true) !!}
-
+                        @if($post->status != 'PENDING')
+                          {!! Form::checkbox('post_'.$post->id,$post->id,false) !!}
+                        @else                        
+                          {!! Form::checkbox('post_'.$post->id,$post->id,true) !!}
+                        @endif
                       </td>
                     @endif
                     @endif 
