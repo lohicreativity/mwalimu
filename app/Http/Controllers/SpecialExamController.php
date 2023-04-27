@@ -194,7 +194,7 @@ class SpecialExamController extends Controller
         }
 
         if(ModuleAssignment::whereHas('programModuleAssignment.campusProgram',function($query) {$query->where('campus_program_id',$student->campus_program_id);})
-                                                          ->whereHas('programModuleAssignment',function($query)use($request){$query->->where('study_academic_year_id',$request->get('study_academic_year_id'));})
+                                                          ->whereHas('programModuleAssignment',function($query)use($request){$query->where('study_academic_year_id',$request->get('study_academic_year_id'));})
                                                           ->where('semester_id',$request->get('semester_id'));})
                                                           ->where('final_upload_status','UPLOADED')
                                                           ->where('id',$request->get('module_assignment_id'))->count() > 0){
