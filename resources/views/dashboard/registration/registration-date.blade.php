@@ -52,8 +52,8 @@
                     <select name="study_academic_year_id" class="form-control" required>
                        <option value="">Select Study Academic Year</option>
                        @foreach($study_academic_years as $year)
-                       <option value="{{ $year->id }}" @if($year->id == $request->get('study_academic_year_id')) selected="selected" @endif
-                          @if(!Auth::user()->hasRole('admission-officer') || !Auth::user()->hasRole('administrator')) disabled="disabled" @endif>
+                       <option value="{{ $year->id }}" @if($year->id == $request->get('study_academic_year_id')) selected="selected"
+                          @elseif(!Auth::user()->hasRole('admission-officer') || !Auth::user()->hasRole('administrator')) disabled="disabled" @endif>
                           {{ $year->academicYear->year }}</option>
                        @endforeach
                     </select>
