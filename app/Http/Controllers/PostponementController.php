@@ -130,7 +130,7 @@ class PostponementController extends Controller
                                                           ->where('semester_id',$request->get('semester_id'));})
                                                           ->where('final_upload_status','UPLOADED')->count();
 
-            if($request=>get('category') == 'SEMESTER' && (SemesterRemark::where('student_id',$request->get('student_id'))
+            if($request->get('category') == 'SEMESTER' && (SemesterRemark::where('student_id',$request->get('student_id'))
             ->where('study_academic_year_id',$request->get('study_academic_year_id'))
             ->where('semester_id',$request->get('semester_id'))->count() > 0 || $final_result_upload_status > 0)){
 
