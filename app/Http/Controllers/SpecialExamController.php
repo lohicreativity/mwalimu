@@ -164,7 +164,8 @@ class SpecialExamController extends Controller
                  'student'=>$student,
                  'request'=>$request,
                  'suppExams'     => $suppExams,
-                 'specialExams_count' => $specialExams_count
+                 'specialExams_count' => $specialExams_count,
+                 'study_academic_year' => StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first()                 
              ];
      
 
