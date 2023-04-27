@@ -74,7 +74,7 @@
                     </select>
                   @else
                   {!! Form::label('','Campus') !!}
-                  {!! Form::text('campus_id',@foreach($campuses as $campus) @if($campus->id == session('staff_campus_id')) {{ ($campus->name) }} @endif @break @endforeach,$campus_id) !!}
+                  {!! Form::text('campus_id',@foreach($campuses as $campus) @if($campus->id == 3) {{ ($campus->name) }} @endif @break @endforeach,$campus_id) !!}
                   {!! Form::input('hidden','campus_id',session('staff_campus_id'))) !!}                  
                   @endif  
                   </div>
