@@ -129,7 +129,12 @@
                               </i>
                               @if($post->recommendation) Edit Recommendation @else Recommend @endif
                        </a>
-                       @else N/A
+                       @else 
+                       <a class="btn btn-info btn-sm" href="{{ url('academic/postponement/'.$post->id.'/recommend') }}">
+                              <i class="fas fa-eye-open">
+                              </i>
+                              View Recommendation
+                       </a>                       
                        @endif
                        @else
                        

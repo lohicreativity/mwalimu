@@ -157,7 +157,7 @@
                  </div>
                  </div>
                  <div class="card-footer">
-                   <button type="submit" class="btn btn-primary">Save Recommendation</button>
+                   <button type="submit" class="btn btn-primary" @if($postponement->status != 'PENDING') disabled='disabled' @endif>Save Recommendation</button>
                  </div>
                  {!! Form::close() !!}
               </div>
