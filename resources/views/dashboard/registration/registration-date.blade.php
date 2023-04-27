@@ -116,13 +116,14 @@
                    $date = [
                       'placeholder'=>'Registration deadline',
                       'class'=>'form-control ss-datepicker',
+                      @if(!Auth::user()->hasRole('admission-officer') || !Auth::user()->hasRole('administrator')) 'readonly'=>true, @endif
                       'required'=>true
                    ];
                 @endphp
                    
                 <div class="row">
                   <div class="form-group col-6">
-                    {!! Form::label('','New registration deadline') !!}
+                    {!! Form::label('','Registration deadline') !!}
                     {!! Form::text('registration_date',App\Utils\DateMaker::toStandardDate($registration_date->date),$date) !!}
 
                     {!! Form::input('hidden','study_academic_year_id',$study_academic_year->id) !!}
@@ -133,9 +134,11 @@
                   </div>
                 
               </div>
+              @if(Auth::user()->hasRole('admission-officer') || Auth::user()->hasRole('administrator'))              
                <div class="card-footer">
                   <button type="submit" class="btn btn-primary">{{ __('Save Changes') }}</button>
                 </div>
+              @endif  
               {!! Form::close() !!}
               @endif
              </div>
