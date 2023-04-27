@@ -141,7 +141,9 @@
                     <th>Status</th>
                     <th>Begin Date</th>
                     <th>End Date</th>
+                    @if(Auth::user()->hasRole('admission-officer') || Auth::user()->hasRole('administrator'))                    
                     <th>Actions</th>
+                    @endif
                   </tr>
                   </thead>
                   <tbody>
@@ -152,6 +154,7 @@
                     <td>{{ $window->status }}</td>
                     <td>{{ $window->begin_date }}</td>
                     <td>{{ $window->end_date }}</td>
+                    @if(Auth::user()->hasRole('admission-officer') || Auth::user()->hasRole('administrator'))                    
                     <td>
                       @can('edit-application-window')
                       <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-edit-window-{{ $window->id }}">
@@ -314,6 +317,7 @@
                       @endif
                       @endcan
                     </td>
+                    @endif
                   </tr>
                   @endforeach
                   
