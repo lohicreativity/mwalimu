@@ -129,6 +129,7 @@
                               </i>
                               @if($post->recommendation) Edit Recommendation @else Recommend @endif
                        </a>
+                       @else N/A
                        @endif
                        @else
                        
@@ -143,7 +144,6 @@
                               </i>
                               Decline
                        </a>
-                       @else N/A
                        @endif
                        <div class="modal fade" id="ss-accept-post-{{ $post->id }}">
                         <div class="modal-dialog modal-lg">
