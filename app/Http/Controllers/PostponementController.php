@@ -123,7 +123,7 @@ class PostponementController extends Controller
             }
         }
 
-        if($request=>get('category') == 'SEMESTER' || $request=>get('category') == 'ANNUAL'){
+        if($request->get('category') == 'SEMESTER' || $request->get('category') == 'ANNUAL'){
             $student = Student::where('id',$request->get('student_id'));
             $final_result_upload_status = ModuleAssignment::whereHas('programModuleAssignment.campusProgram',function($query) {$query->where('campus_program_id',$student->campus_program_id);})
                                                           ->whereHas('programModuleAssignment',function($query)use($request){$query->->where('study_academic_year_id',$request->get('study_academic_year_id'))

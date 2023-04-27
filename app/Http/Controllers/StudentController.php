@@ -1397,13 +1397,13 @@ class StudentController extends Controller
 			
 		}else{
       if(Graduant::where('student_id',$student->id)->where('status','GRADUATING')->count() == 0){
-        return redirect()->back()->with('error','You are not in the graduant list');
+        return redirect()->back()->with('error','You are not in the graduants list, please check with the Examination Office');
       }
 
       if(Clearance::where('student_id',$student->id)->where('library_status',1)->where('hostel_status',1)->where('finance_status',1)->where('hod_status',1)->count() == 0){
         return redirect()->back()->with('error','You have not finished clearance');
       }  
-          
+
 		$data = [
 		   'study_academic_year'=>StudyAcademicYear::with('academicYear')->where('status','ACTIVE')->first(),			
 		   'selected_campus'=>[],
