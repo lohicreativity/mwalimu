@@ -77,44 +77,14 @@
                </div>
              </div>
              <!-- /.card -->
-
+             @if(count($applicants) > 0)
              <div class="card">
                <div class="card-header">
                  <h3 class="card-title">{{ __('Admitted Applicants') }}</h3><br>
                </div>
                <!-- /.card-header -->
                <div class="card-body">
-                  {{--
-                  {!! Form::open(['url'=>'application/admitted-applicants','method'=>'GET']) !!}
 
-                  {!! Form::input('hidden','application_window_id',$request->get('application_window_id')) !!}
-                  {!! Form::input('hidden','program_level_id',$request->get('program_level_id')) !!}
-                  <div class="input-group">
-                   <input type="text" name="query" placeholder="Search for applicant name" class="form-control">
-                   <select name="nta_level_id" class="form-control">
-                      <option value="">Select NTA Level</option>
-                      @foreach($nta_levels as $level)
-                      <option value="{{ $level->id }}">{{ $level->name }}</option>
-                      @endforeach
-                   </select>
-                   <select name="campus_program_id" class="form-control ss-select-tags-">
-                      <option value="">Select Programme</option>
-                      @foreach($campus_programs as $program)
-                      <option value="{{ $program->id }}">{{ $program->program->name }}</option>
-                      @endforeach
-                   </select>
-                   <select name="gender" class="form-control">
-                      <option value="">Select Gender</option>
-                      <option value="M">Male</option>
-                      <option value="F">Female</option>
-                   </select>
-                   <span class="input-group-btn">
-                     <button class="btn btn-default" type="submit"><span class="fa fa-search"></span></button>
-                   </span>
-                  </div>
-                  {!! Form::close() !!} --}}
-                  <br>
-                  @if(count($applicants) > 0)
                   <table class="table table-bordered ss-margin-top ss-paginated-table">
                     <thead>
                         <tr>
