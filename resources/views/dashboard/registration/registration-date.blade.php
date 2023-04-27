@@ -84,7 +84,7 @@
                   @endphp
                   {!! Form::label('','Campus') !!}
                   {!! Form::text('campus_id',{{$name}},$campus_id) !!}
-                  {!! Form::input('hidden','campus_id',session('staff_campus_id'))) !!}                  
+                  {!! Form::input('hidden','campus_id',session('staff_campus_id')) !!}                  
                   @endif  
                   </div>
                   </div>
