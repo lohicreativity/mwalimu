@@ -328,7 +328,7 @@ class ApplicationController extends Controller
 
          }        
 
-         if(count($applicants) == 0){
+         if(count($applicants) == 0 && !empty($request)){
             return redirect()->back()->with('error','No admitted applicants');
          }
 
