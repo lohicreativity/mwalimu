@@ -132,7 +132,7 @@
               </div><!-- end of accordian -->
 
               
-              @if(Auth::user()->hasRole('hod') && $postponement->status != 'PENDING')
+              @if(Auth::user()->hasRole('hod') && $postponement->status == 'PENDING')
               <div class="card">
                  {!! Form::open(['url'=>'academic/postponement/recommend','class'=>'ss-form-processing']) !!}
                  <div class="card-body">
