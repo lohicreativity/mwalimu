@@ -114,7 +114,7 @@
                   </div>
                   {!! Form::close() !!} --}}
                   <br>
-
+                  @if(count($applicants) > 0)
                   <table class="table table-bordered ss-margin-top ss-paginated-table">
                     <thead>
                         <tr>
@@ -152,7 +152,7 @@
                  @endforeach
                    </tbody>
                   </table>
-
+                @endif    
                   
                </div>
             </div>
