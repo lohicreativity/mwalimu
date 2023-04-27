@@ -144,6 +144,7 @@
                               </i>
                               Decline
                        </a>
+                       @else N/A
                        @endif
                        <div class="modal fade" id="ss-accept-post-{{ $post->id }}">
                         <div class="modal-dialog modal-lg">
