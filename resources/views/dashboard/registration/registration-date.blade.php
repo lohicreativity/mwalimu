@@ -113,12 +113,20 @@
                {!! Form::open(['url'=>'registration/update-registration-deadline','class'=>'ss-form-processing']) !!}
               <div class="card-body">
                 @php
+                  @if(Auth::user()->hasRole('admission-officer') || Auth::user()->hasRole('administrator'))                 
                    $date = [
                       'placeholder'=>'Registration deadline',
                       'class'=>'form-control ss-datepicker',
-                      @if(!Auth::user()->hasRole('admission-officer') || !Auth::user()->hasRole('administrator')) 'readonly'=>true, @endif
                       'required'=>true
                    ];
+                  @else
+                  $date = [
+                      'placeholder'=>'Registration deadline',
+                      'class'=>'form-control ss-datepicker',
+                      'readonly'=>true,
+                      'required'=>true
+                   ];                  
+                  @endif
                 @endphp
                    
                 <div class="row">
