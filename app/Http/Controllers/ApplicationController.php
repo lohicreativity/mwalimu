@@ -329,7 +329,7 @@ class ApplicationController extends Controller
          }        
 
          if(count($applicants) == 0 && !empty($request->get('program_level_id'))){
-            return redirect()->back()->with('error','No admitted applicants');
+            return redirect()->back()->with('error','No admitted applicants for this application window');
          }
 
          $data = [

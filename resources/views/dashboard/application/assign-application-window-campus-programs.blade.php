@@ -101,7 +101,9 @@
                     <th>Year</th>
                     <th>Intake</th>
                     <th>Programmes</th>
+                    @if(Auth::user()->hasRole('admission-officer') || Auth::user()->hasRole('administrator'))
                     <th>Assign</th>
+                    @endif
                   </tr>
                   </thead>
                   <tbody>
@@ -114,6 +116,7 @@
                         <p class="ss-font-xs ss-no-margin">{{ $prog->program->name }}</p>
                         @endforeach
                     </td>
+                    @if(Auth::user()->hasRole('admission-officer') || Auth::user()->hasRole('administrator'))
                     <td>
                     
                       <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-edit-academic-window-{{ $window->id }}">
@@ -190,6 +193,7 @@
                       
 
                     </td>
+                    @endif
                   </tr>
                   </tbody>
                 </table>
