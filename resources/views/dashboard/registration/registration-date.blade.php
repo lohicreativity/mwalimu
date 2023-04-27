@@ -45,7 +45,12 @@
               <!-- /.card-header -->
               <div class="card-body">
                  {!! Form::open(['url'=>'registration/registration-deadline','class'=>'ss-form-processing','method'=>'GET']) !!}
-                   
+                  @php                
+                   $campus_id = [
+                      'placeholder'=>'Campus name',
+                      'readonly'=>true
+                   ];
+                  @endphp                   
                    <div class="row">
                    <div class="form-group col-6">
                     {!! Form::label('','Select study academic year') !!}
@@ -69,7 +74,7 @@
                     </select>
                   @else
                   {!! Form::label('','Campus') !!}
-                  {!! Form::text('campus_id',@foreach($campuses as $campus) @if($campus->id == session('staff_campus_id')) {{$campus->name}} @endif @break @endforeach,null) !!}
+                  {!! Form::text('campus_id',@foreach($campuses as $campus) @if($campus->id == session('staff_campus_id')) {{$campus->name}} @endif @break @endforeach,$campus_id) !!}
                   {!! Form::input('hidden','campus_id',session('staff_campus_id'))) !!}                  
                   @endif  
                   </div>
