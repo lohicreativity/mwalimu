@@ -58,15 +58,20 @@
                     </select>
                   </div>
                   <div class="form-group col-6">
+                  @if(Auth::user()->hasRole('admission-officer') || Auth::user()->hasRole('administrator'))                    
                     {!! Form::label('','Select campus') !!}
                     <select name="campus_id" class="form-control" required>
                        <option value="">Select Campus</option>
                        @foreach($campuses as $cp)
-                       <option value="{{ $cp->id }}" @if($cp->id == $request->get('campus_id')) selected="selected" @endif
-                       @if(!Auth::user()->hasRole('admission-officer') || !Auth::user()->hasRole('administrator')) value= session('staff_campus_id') selected="selected" disabled="disabled" @endif>
+                       <option value="{{ $cp->id }}" @if($cp->id == $request->get('campus_id')) selected="selected" @endif>
                        {{ $cp->name }}</option>
                        @endforeach
                     </select>
+                  @else
+                  {!! Form::label('','Campus') !!}
+                  {!! Form::text('campus_id',@foreach($campuses as $campus) @if($campus->id == session('staff_campus_id')) $campus->name @endif @break @endforeach,'') !!}
+                  {!! Form::input('hidden','campus_id',session('staff_campus_id'))) !!}                  
+                  @endif  
                   </div>
                   </div>
                   <div class="ss-form-actions">
