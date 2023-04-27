@@ -27,15 +27,19 @@ class PostponementController extends Controller
         if (Auth::user()->hasRole('administrator')|| Auth::user()->hasRole('arc')) {
             $postponements = $request->get('query')? Postponement::whereHas('student',function($query) use($request){
                 $query->where('first_name','LIKE','%'.$request->get('query').'%')->orWhere('middle_name','LIKE','%'.$request->get('query').'%')->orWhere('surname','LIKE','%'.$request->get('query').'%')->orWhere('registration_number','LIKE','%'.$request->get('query').'%');
-          })->with(['student','StudyAcademicYear.academicYear','semester'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->get() : Postponement::with(['student','StudyAcademicYear.academicYear','semester'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->whereNull('postponed_by_user_id')->get();
+          })->with(['student','StudyAcademicYear.academicYear','semester'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->get() 
+          : Postponement::with(['student','StudyAcademicYear.academicYear','semester'])->where('study_academic_year_id',$request->get('study_academic_year_id'))
+          ->orderBy('status','ASC')->orderBy('updated_at','DESC')->get();
         }elseif(Auth::user()->hasRole('hod')){
             $postponements = $request->get('query')? Postponement::whereHas('student',function($query) use($request){
                 $query->where('first_name','LIKE','%'.$request->get('query').'%')->orWhere('middle_name','LIKE','%'.$request->get('query').'%')->orWhere('surname','LIKE','%'.$request->get('query').'%')->orWhere('registration_number','LIKE','%'.$request->get('query').'%');
           })->whereHas('student.campusProgram', function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
           ->whereHas('student.campusProgram.program.departments', function($query) use($staff){$query->where('id',$staff->department_id);})
-          ->with(['student','StudyAcademicYear.academicYear','semester'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->get() : Postponement::whereHas('student.campusProgram', function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
+          ->with(['student','StudyAcademicYear.academicYear','semester'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->get() 
+          : Postponement::whereHas('student.campusProgram', function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
       ->whereHas('student.campusProgram.program.departments', function($query) use($staff){$query->where('id',$staff->department_id);})
-      ->with(['student','StudyAcademicYear.academicYear','semester'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->get();
+      ->with(['student','StudyAcademicYear.academicYear','semester'])->where('study_academic_year_id',$request->get('study_academic_year_id'))
+      ->orderBy('status','ASC')->orderBy('updated_at','DESC')->get();
         }else{
             $postponements = $request->get('query')? Postponement::whereHas('student',function($query) use($request){
                 $query->where('first_name','LIKE','%'.$request->get('query').'%')
@@ -44,7 +48,7 @@ class PostponementController extends Controller
                 ->with(['student','StudyAcademicYear.academicYear','semester'])->where('study_academic_year_id',$request->get('study_academic_year_id'))
                 ->get() : Postponement::whereHas('student.campusProgram', function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
                     ->with(['student','StudyAcademicYear.academicYear','semester'])->where('study_academic_year_id',$request->get('study_academic_year_id'))
-                    ->get();
+                    ->orderBy('status','ASC')->orderBy('updated_at','DESC')->get();
         }
         if(count($postponements)==0){
             return redirect()->back()->with('error','There are no postponement cases');
@@ -69,16 +73,20 @@ class PostponementController extends Controller
         if (Auth::user()->hasRole('administrator')|| Auth::user()->hasRole('arc')) {
             $postponements = $request->get('query')? Postponement::whereHas('student',function($query) use($request){
                 $query->where('first_name','LIKE','%'.$request->get('query').'%')->orWhere('middle_name','LIKE','%'.$request->get('query').'%')->orWhere('surname','LIKE','%'.$request->get('query').'%')->orWhere('registration_number','LIKE','%'.$request->get('query').'%');
-          })->with(['student','StudyAcademicYear.academicYear','semester'])->where('resume_study_academic_year_id',$request->get('study_academic_year_id'))->whereNotNull('resumption_letter')->get() : Postponement::with(['student','StudyAcademicYear.academicYear','semester'])->where('resume_study_academic_year_id',$request->get('study_academic_year_id'))->whereNotNull('resumption_letter')->get();
+          })->with(['student','StudyAcademicYear.academicYear','semester'])->where('resume_study_academic_year_id',$request->get('study_academic_year_id'))->whereNotNull('resumption_letter')->get() 
+          : Postponement::with(['student','StudyAcademicYear.academicYear','semester'])->where('resume_study_academic_year_id',$request->get('study_academic_year_id'))
+                        ->whereNotNull('resumption_letter')->orderBy('status','ASC')->orderBy('updated_at','DESC')->get();
         }elseif(Auth::user()->hasRole('hod')){
             $postponements = $request->get('query')? 
                                     Postponement::whereHas('student',function($query) use($request){$query->where('first_name','LIKE','%'.$request->get('query').'%')
                                     ->orWhere('middle_name','LIKE','%'.$request->get('query').'%')->orWhere('surname','LIKE','%'.$request->get('query').'%')->orWhere('registration_number','LIKE','%'.$request->get('query').'%');
           })                        ->whereHas('student.campusProgram', function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
           ->whereHas('student.campusProgram.program.departments', function($query) use($staff){$query->where('id',$staff->department_id);})
-          ->with(['student','StudyAcademicYear.academicYear','semester'])->where('resume_study_academic_year_id',$request->get('study_academic_year_id'))->whereNotNull('resumption_letter')->get() : Postponement::whereHas('student.campusProgram', function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
-      ->whereHas('student.campusProgram.program.departments', function($query) use($staff){$query->where('id',$staff->department_id);})
-      ->with(['student','StudyAcademicYear.academicYear','semester'])->where('resume_study_academic_year_id',$request->get('study_academic_year_id'))->whereNotNull('resumption_letter')->get();
+          ->with(['student','StudyAcademicYear.academicYear','semester'])->where('resume_study_academic_year_id',$request->get('study_academic_year_id'))->whereNotNull('resumption_letter')->get() 
+                                    : Postponement::whereHas('student.campusProgram', function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
+                                                  ->whereHas('student.campusProgram.program.departments', function($query) use($staff){$query->where('id',$staff->department_id);})
+                                                  ->with(['student','StudyAcademicYear.academicYear','semester'])->where('resume_study_academic_year_id',$request->get('study_academic_year_id'))
+                                                  ->whereNotNull('resumption_letter')->orderBy('status','ASC')->orderBy('updated_at','DESC')->get();
         }else{
             $postponements = $request->get('query')? 
                                     Postponement::whereHas('student',function($query) use($request){$query->where('first_name','LIKE','%'.$request->get('query').'%')
@@ -86,7 +94,8 @@ class PostponementController extends Controller
                                     ->whereHas('student.campusProgram', function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
                                     ->with(['student','StudyAcademicYear.academicYear','semester'])->where('resume_study_academic_year_id',$request->get('study_academic_year_id'))->whereNotNull('resumption_letter')->get() 
                                     : Postponement::whereHas('student.campusProgram', function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
-                                    ->with(['student','StudyAcademicYear.academicYear','semester'])->where('resume_study_academic_year_id',$request->get('study_academic_year_id'))->whereNotNull('resumption_letter')->get();
+                                    ->with(['student','StudyAcademicYear.academicYear','semester'])->where('resume_study_academic_year_id',$request->get('study_academic_year_id'))
+                                    ->whereNotNull('resumption_letter')->orderBy('status','ASC')->orderBy('updated_at','DESC')->get();
         }
         if(count($postponements)==0){
             return redirect()->back()->with('error','There are no resumption cases');
