@@ -864,6 +864,7 @@
               @endcan
             </ul>
           </li>
+          @if(Auth::user()->hasRole('administrator'))
           <li class="nav-item">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-users"></i>
@@ -891,6 +892,7 @@
               @endcan
             </ul>
           </li>
+          @endif
           <li class="nav-item">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-book"></i>
