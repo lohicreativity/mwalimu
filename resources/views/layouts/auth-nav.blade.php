@@ -690,7 +690,7 @@
               @endcan
             </ul>
           </li>
-          @if(!Auth::user()->hasRole('hod') || !Auth::user()->hasRole('staff'))
+          @if(Auth::user()->hasRole('loan-officer') || Auth::user()->hasRole('administrator') || Auth::user()->hasRole('arc') || Auth::user()->hasRole('finance-officer'))
            <li class="nav-item">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-coins"></i>
