@@ -508,6 +508,14 @@
                   <p>Special Registration</p>
                 </a>
               </li>
+              @endcan
+              @can('view-registration-status')
+			        <li class="nav-item">
+                <a href="{{ url('registration/statistics') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>{{ __('Registration Status') }}</p>
+                </a>
+              </li>
               @endcan	
               @can('search-student')
               <li class="nav-item">
@@ -570,14 +578,6 @@
                 <a href="{{ url('academic/postponement/resumptions?study_academic_year_id='.session('active_academic_year_id')) }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>{{ __('Resumptions') }}</p>
-                </a>
-              </li>
-              @endcan
-              @can('view-registration-status')
-			        <li class="nav-item">
-                <a href="{{ url('registration/statistics') }}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>{{ __('Registration Status') }}</p>
                 </a>
               </li>
               @endcan
