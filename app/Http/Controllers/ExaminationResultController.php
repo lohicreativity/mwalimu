@@ -83,7 +83,7 @@ class ExaminationResultController extends Controller
             'first_semester_publish_status'=>$first_semester_publish_status,
             'second_semester_publish_status'=>$second_semester_publish_status,
             'publications'=>$request->has('study_academic_year_id')? ResultPublication::with(['studyAcademicYear.academicYear','semester','ntaLevel'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->latest()->get() : [],
-            'process_records'=>$exam_process_records
+            'process_records'=>$exam_process_records,
             'staff'=>$staff,
             'request'=>$request
     	];
