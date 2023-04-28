@@ -138,7 +138,6 @@
                   }else{
                   $date = [
                       'placeholder'=>'Registration deadline',
-                      'class'=>'form-control ss-datepicker',
                       'readonly'=>true,
                       'required'=>true
                    ];
