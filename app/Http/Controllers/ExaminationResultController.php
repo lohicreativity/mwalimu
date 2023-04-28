@@ -56,6 +56,23 @@ class ExaminationResultController extends Controller
          $second_semester_publish_status = true;
       }
 	  $staff = User::find(Auth::user()->id)->staff;
+     if(Auth::user()->hasRole('administrator') || Auth::user()->hasRole('administrator')){
+         $exam_process_records = ExaminationProcessRecord::with(['campusProgram.program','semester'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->latest()->paginate(20),
+      
+     }elseif(Auth::user()->hasRole('examination-officer')){
+         $exam_process_records = ExaminationProcessRecord::whereHas('campusProgram',function($query) use ($staff){
+            $query->where('campus_id',$staff->campus_id);
+         })->with(['campusProgram.program','semester'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->latest()->paginate(20),
+
+     }elseif(Auth::user()->hasRole('hod'){
+         $exam_process_records = ExaminationProcessRecord::whereHas('campusProgram',function($query) use ($staff){
+            $query->where('campus_id',$staff->campus_id);
+         })->whereHas('campusProgram.program.departments',function($query) use ($staff){
+            $query->where('id',$staff->department_id);
+         })->with(['campusProgram.program','semester'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->latest()->paginate(20),
+
+     }
+ 
     	$data = [
     	    'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
             'study_academic_year'=>$request->has('study_academic_year_id')? StudyAcademicYear::with('academicYear')->find($request->get('study_academic_year_id')) : null,
@@ -68,11 +85,7 @@ class ExaminationResultController extends Controller
             'first_semester_publish_status'=>$first_semester_publish_status,
             'second_semester_publish_status'=>$second_semester_publish_status,
             'publications'=>$request->has('study_academic_year_id')? ResultPublication::with(['studyAcademicYear.academicYear','semester','ntaLevel'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->latest()->get() : [],
-            'process_records'=>ExaminationProcessRecord::whereHas('campusProgram',function($query) use ($staff){
-                  $query->where('campus_id',$staff->campus_id);
-               })->whereHas('campusProgram.program.departments',function($query) use ($staff){
-                  $query->where('id',$staff->department_id);
-               })->with(['campusProgram.program','semester'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->latest()->paginate(20),
+            'process_records'=>$exam_process_records
             'staff'=>$staff,
             'request'=>$request
     	];
