@@ -80,7 +80,7 @@
             @if(count($applicants)>0)
              <div class="card">
                <div class="card-header">
-                 <h3 class="card-title">{{ __('Selected Applicants') }}</h3><br>
+                 <h3 class="card-title">{{ __('Selected Applicants') }}</h3><br><br>
                  <a href="{{ url('application/selected-applicants/download?application_window_id='.$request->get('application_window_id').'&program_level_id='.$request->get('program_level_id').'&campus_program_id='.$request->get('campus_program_id').'&nta_level_id='.$request->get('nta_level_id').'&gender='.$request->get('gender')) }}" class="btn btn-primary">Download Selected Applicants</a>
 
                  <!-- <a href="{{ url('application/submit-selected-applicants?application_window_id='.$request->get('application_window_id').'&program_level_id='.$request->get('program_level_id')) }}" class="btn btn-primary">Submit Selected Students</a> -->

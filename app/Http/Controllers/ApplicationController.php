@@ -246,7 +246,7 @@ class ApplicationController extends Controller
         //               ->orWhereNull('status');
         //     })->get();
         if(Auth::user()->hasRole('administrator')|| Auth::user()->hasRole('arc')) {
-            $applicants = Applicant::whereHas('applicationWindow',function($query) use($request){
+            $applicants = Applicant::doesntHave('student')->whereHas('applicationWindow',function($query) use($request){
                 $query->where('id',$request->get('application_window_id'));
            })->whereHas('selections',function($query) use($request){
                 $query->where('status','APPROVING')->orWhere('status','SELECTED')->orWhere('status','ELIGIBLE');
@@ -259,13 +259,12 @@ class ApplicationController extends Controller
            $batch = ApplicantProgramSelection::whereHas('applicant',function($query) use($request){$query->where('program_level_id',$request->get('program_level_id'));})
            ->where('application_window_id', $request->get('application_window_id'))->where('status', 'SELECTED')->latest()->first();
            
-           $selected_applicants = Applicant::whereHas('intake.applicationWindows',function($query) use($request){$query->where('id',$request->get('application_window_id'));})
+           $selected_applicants = Applicant::doesntHave('student')->whereHas('intake.applicationWindows',function($query) use($request){$query->where('id',$request->get('application_window_id'));})
                                            ->whereHas('selections',function($query) use($request){$query->where('status','APPROVING');})                                        
                                            ->with(['nextOfKin','intake','selections.campusProgram.program'])->where('program_level_id',$request->get('program_level_id'))->get();
 
-
         }elseif(Auth::user()->hasRole('hod')){
-            $applicants = Applicant::whereHas('applicationWindow',function($query) use($request){
+            $applicants = Applicant::doesntHave('student')->whereHas('applicationWindow',function($query) use($request){
                 $query->where('id',$request->get('application_window_id'));
            })->whereHas('selections',function($query) use($request){
                 $query->where('status','APPROVING')->orWhere('status','SELECTED')->orWhere('status','ELIGIBLE');
@@ -304,9 +303,9 @@ class ApplicationController extends Controller
                                            ->with(['nextOfKin','intake','selections.campusProgram.program'])->where('program_level_id',$request->get('program_level_id'))->get();
         }
 
-/*         if(count($selected_applicants) == 0 && !empty($request->get('program_level_id'))){
+        if(count($selected_applicants) == 0 && !empty($request->get('program_level_id'))){
             return redirect()->back()->with('error','No selected applicant in this programme level');
-        } */
+        }
 
          $data = [
             'staff'=>$staff,
