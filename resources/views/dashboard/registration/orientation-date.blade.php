@@ -168,9 +168,11 @@
                   </div>
                 
               </div>
+              @if(Auth::user()->hasRole('administrator') || Auth::user()->hasRole('admission-officer'))
                <div class="card-footer">
                   <button type="submit" class="btn btn-primary">{{ __('Save Changes') }}</button>
                 </div>
+              @endif  
               {!! Form::close() !!}
               @endif
              </div>
