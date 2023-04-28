@@ -245,19 +245,66 @@ class ApplicationController extends Controller
         //         $query->where('status','SELECTED')
         //               ->orWhereNull('status');
         //     })->get();
+        if(Auth::user()->hasRole('administrator')|| Auth::user()->hasRole('arc')) {
+            $applicants = Applicant::whereHas('applicationWindow',function($query) use($request){
+                $query->where('id',$request->get('application_window_id'));
+           })->whereHas('selections',function($query) use($request){
+                $query->where('status','APPROVING')->orWhere('status','SELECTED')->orWhere('status','ELIGIBLE');
+           })->with(['nextOfKin','intake','selections.campusProgram.program','nectaResultDetails','nacteResultDetails'])->where('program_level_id',$request->get('program_level_id'))
+           ->where(function($query) {
+               $query->where('status','SELECTED')
+                     ->orWhereNull('status');
+           })->get();
 
-         $applicants = Applicant::whereHas('applicationWindow',function($query) use($request){
-                 $query->where('id',$request->get('application_window_id'));
-            })->whereHas('selections',function($query) use($request){
-                 $query->where('status','APPROVING')->orWhere('status','SELECTED')->orWhere('status','ELIGIBLE');
-            })->with(['nextOfKin','intake','selections.campusProgram.program','nectaResultDetails','nacteResultDetails'])->where('program_level_id',$request->get('program_level_id'))->where('campus_id',$staff->campus_id)
-            ->where(function($query) {
-                $query->where('status','SELECTED')
-                      ->orWhereNull('status');
-            })->get();
-		
-		$batch = ApplicantProgramSelection::whereHas('applicant',function($query) use($request){$query->where('program_level_id',$request->get('program_level_id'));})
-										  ->where('application_window_id', $request->get('application_window_id'))->where('status', 'SELECTED')->latest()->first();        
+           $batch = ApplicantProgramSelection::whereHas('applicant',function($query) use($request){$query->where('program_level_id',$request->get('program_level_id'));})
+           ->where('application_window_id', $request->get('application_window_id'))->where('status', 'SELECTED')->latest()->first();
+           
+           $selected_applicants = Applicant::whereHas('intake.applicationWindows',function($query) use($request){$query->where('id',$request->get('application_window_id'));})
+                                           ->whereHas('selections',function($query) use($request){$query->where('status','APPROVING');})                                        
+                                           ->with(['nextOfKin','intake','selections.campusProgram.program'])->where('program_level_id',$request->get('program_level_id'))->get();
+
+
+        }elseif(Auth::user()->hasRole('hod')){
+            $applicants = Applicant::whereHas('applicationWindow',function($query) use($request){
+                $query->where('id',$request->get('application_window_id'));
+           })->whereHas('selections',function($query) use($request){
+                $query->where('status','APPROVING')->orWhere('status','SELECTED')->orWhere('status','ELIGIBLE');
+           })->with(['nextOfKin','intake','selections.campusProgram.program','nectaResultDetails','nacteResultDetails'])
+           ->where('program_level_id',$request->get('program_level_id'))
+           ->whereHas('selections.campusProgram.program.departments',function($query) use($staff){$query->where('department_id',$staff->department_id);})
+           ->where(function($query) {$query->where('status','SELECTED')->orWhereNull('status');})->get();
+
+           $selected_applicants = Applicant::whereHas('intake.applicationWindows',function($query) use($request){$query->where('id',$request->get('application_window_id'));})
+                                           ->whereHas('selections',function($query) use($request){$query->where('status','APPROVING');})
+                                           ->whereHas('selections.campusProgram.program.departments',function($query) use($staff){$query->where('department_id',$staff->department_id);})                                          
+                                           ->with(['nextOfKin','intake','selections.campusProgram.program'])->where('program_level_id',$request->get('program_level_id'))->get();
+
+           $batch = ApplicantProgramSelection::whereHas('applicant',function($query,$staff) use($request){$query->where('program_level_id',$request->get('program_level_id'))
+            ->where('campus_id',$staff->campus_id);})
+            ->whereHas('campusProgram.program.departments',function($query) use($staff){$query->where('department_id',$staff->department_id);})
+            ->where('application_window_id', $request->get('application_window_id'))->where('status', 'SELECTED')->latest()->first();      
+
+        }else{
+            $applicants = Applicant::whereHas('applicationWindow',function($query) use($request){
+                $query->where('id',$request->get('application_window_id'));
+           })->whereHas('selections',function($query) use($request){
+                $query->where('status','APPROVING')->orWhere('status','SELECTED')->orWhere('status','ELIGIBLE');
+           })->with(['nextOfKin','intake','selections.campusProgram.program','nectaResultDetails','nacteResultDetails'])
+           ->where('program_level_id',$request->get('program_level_id'))
+           ->where(function($query) {
+               $query->where('status','SELECTED')
+                     ->orWhereNull('status');
+           })->get();
+
+           $batch = ApplicantProgramSelection::whereHas('applicant',function($query) use($request){$query->where('program_level_id',$request->get('program_level_id'));})
+            ->where('application_window_id', $request->get('application_window_id'))->where('status', 'SELECTED')->latest()->first();   
+            
+           $selected_applicants = Applicant::whereHas('intake.applicationWindows',function($query) use($request){$query->where('id',$request->get('application_window_id'));})
+                                           ->whereHas('selections',function($query) use($request){$query->where('status','APPROVING');})                                           
+                                           ->with(['nextOfKin','intake','selections.campusProgram.program'])->where('program_level_id',$request->get('program_level_id'))->get();
+
+            
+        }
 
          $data = [
             'staff'=>$staff,
@@ -265,11 +312,7 @@ class ApplicationController extends Controller
             'application_window'=>ApplicationWindow::find($request->get('application_window_id')),
             'awards'=>Award::all(),
             'nta_levels'=>NTALevel::all(),
-            'selected_applicants'=>Applicant::whereHas('intake.applicationWindows',function($query) use($request){
-                 $query->where('id',$request->get('application_window_id'));
-            })->whereHas('selections',function($query) use($request){
-                 $query->where('status','APPROVING');
-            })->with(['nextOfKin','intake','selections.campusProgram.program'])->where('program_level_id',$request->get('program_level_id'))->get(),
+            'selected_applicants'=>$selected_applicants,
             'campus_programs'=>CampusProgram::whereHas('selections',function($query) use($request){
                   $query->where('application_window_id',$request->get('application_window_id'))->where('status','APPROVING');
             })->whereHas('program',function($query) use($request){
