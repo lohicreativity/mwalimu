@@ -534,14 +534,7 @@
                 </a>
               </li>
               @endcan
-              @can('view-reset-deadline')
-              <li class="nav-item">
-                <a href="{{ url('registration/registration-deadline?study_academic_year_id='.session('active_academic_year_id').'&campus_id='.session('staff_campus_id')) }}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Registration Deadline</p>
-                </a>
-              </li>
-              @endcan
+
               @can('view-identity-cards')
               <li class="nav-item">
                 <a href="{{ url('registration/print-id-card') }}" class="nav-link">
