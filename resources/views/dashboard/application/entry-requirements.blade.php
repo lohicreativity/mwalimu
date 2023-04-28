@@ -992,7 +992,7 @@
                 </div>
                 {!! Form::close() !!}
 
-                  <table id="example2" class="table table-bordered table-hover ss-margin-top">
+                  <table id="example2" class="table table-bordered table-hover ss-margin-top ss-paginated-table">
                   <thead>
                   <tr>
                     <th>Programme</th>
