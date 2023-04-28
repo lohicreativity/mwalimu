@@ -1071,17 +1071,20 @@
 
                                     $pass_subjects = [
                                        'placeholder'=>'Pass Subjects',
-                                       'class'=>'form-control'
+                                       'class'=>'form-control',
+                                       'readonly'=>true
                                     ];
 
                                     $pass_grade = [
                                        'placeholder'=>'Pass Grade',
-                                       'class'=>'form-control'
+                                       'class'=>'form-control',
+                                       'readonly'=>true
                                     ];
 
                                     $award_level = [
                                        'placeholder'=>'Award Level',
-                                       'class'=>'form-control'
+                                       'class'=>'form-control',
+                                       'readonly'=>true
                                     ];
 
                                     $award_division = [
@@ -1092,12 +1095,14 @@
 
                                     $exclude_subjects = [
                                        'placeholder'=>'Exclude Subjects',
-                                       'class'=>'form-control'
+                                       'class'=>'form-control',
+                                       'readonly'=>true
                                     ];
 
                                     $must_subjects = [
                                        'placeholder'=>'Must Subjects',
-                                       'class'=>'form-control'
+                                       'class'=>'form-control',
+                                       'readonly'=>true
                                     ];
 
                                     $subsidiary_subjects = [
@@ -1114,7 +1119,8 @@
 
                                     $max_capacity = [
                                        'placeholder'=>'Max Capacity',
-                                       'class'=>'form-control'
+                                       'class'=>'form-control',
+                                       'readonly'=>true
                                     ];
                                  @endphp
 
