@@ -45,12 +45,19 @@
               <!-- /.card-header -->
               <div class="card-body">
                  {!! Form::open(['url'=>'registration/registration-deadline','class'=>'ss-form-processing','method'=>'GET']) !!}
-                  @php                
-                   $campus_id = [
-                      'class'=>'form-control',
-                      'placeholder'=>'Campus name',
-                      'readonly'=>true
-                   ];
+                  @php
+                    if(Auth::user()->hasRole('admission-officer') || Auth::user()->hasRole('administrator')){                 
+                      $campus_id = [
+                          'class'=>'form-control',
+                          'placeholder'=>'Campus name'
+                      ];
+                    }else{
+                      $campus_id = [
+                          'class'=>'form-control',
+                          'placeholder'=>'Campus name',
+                          'readonly'=>true
+                      ];                      
+                    }
                   @endphp                   
                    <div class="row">
                    <div class="form-group col-6">
