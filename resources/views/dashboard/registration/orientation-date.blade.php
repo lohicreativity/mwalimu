@@ -92,12 +92,21 @@
               @if(!$orientation_date)
               {!! Form::open(['url'=>'registration/store-orientation-date','class'=>'ss-form-processing']) !!}
               <div class="card-body">
-                @php
+              @php
+                if(Auth::user()->hasRole('admission-officer') || Auth::user()->hasRole('administrator')){                 
                    $date = [
                       'placeholder'=>'Orientation date',
                       'class'=>'form-control ss-datepicker',
                       'required'=>true
                    ];
+                  }else{
+                  $date = [
+                      'placeholder'=>'rientation date',
+                      'class'=>'form-control',                      
+                      'readonly'=>true,
+                      'required'=>true
+                   ];
+                  }
                 @endphp
                    
                 <div class="row">
