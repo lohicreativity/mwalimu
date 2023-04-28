@@ -57,7 +57,7 @@
                        @endforeach
                     </select>
                   </div>
-                  @if(Auth::user()->hasRole('administrator'))                  
+                  @if(Auth::user()->hasRole('administrator') || Auth::user()->hasRole('arc'))                  
                   <div class="form-group col-6">
                     {!! Form::label('','Select campus') !!}
                     <select name="campus_id" class="form-control" required>
@@ -67,7 +67,7 @@
                        @endforeach
                     </select>
                   </div>
-                  @elseif(Auth::user()->hasRole('admission-officer'))
+                  @else
                   <div class="form-group col-6">
                     {!! Form::label('','Select campus') !!}
                     <select name="campus_id" class="form-control" required>
