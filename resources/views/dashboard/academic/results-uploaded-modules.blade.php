@@ -68,9 +68,9 @@
               <!-- /.card-header -->
               <div class="card-body">
                  {!! Form::open(['url'=>'academic/results/uploaded-modules','class'=>'ss-form-processing','method'=>'GET']) !!}
-                   
                   <div class="row">
-                  <div class="form-group col-12">
+                  @if(Auth::user()->hasRole('arc') || Auth::user()->hasRole('administrator'))                      
+                  <div class="form-group col-6">
                     {!! Form::label('','Select campus') !!}
                     <select name="campus_id" class="form-control" required>
                        <option value="">Select Campus</option>
@@ -79,6 +79,18 @@
                        @endforeach
                     </select>
                   </div>
+                  @else
+                  
+                  <div class="form-group col-6">
+                    {!! Form::label('','Select campus') !!}
+                    <select name="campus_id" class="form-control" required>
+                       <option value="">Select Campus</option>
+                       @foreach($campuses as $cp)
+                       <option value="{{ $cp->id }}" @if($request->get('campus_id') == $cp->id) selected="selected" @else disabled='disabled' @endif>{{ $cp->name }}</option>
+                       @endforeach
+                    </select>
+                  </div>   
+                  @endif               
                   </div>
                   <div class="ss-form-actions">
                    <button type="submit" class="btn btn-primary">{{ __('Search') }}</button>
