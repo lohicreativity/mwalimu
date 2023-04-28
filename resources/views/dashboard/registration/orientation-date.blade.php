@@ -69,13 +69,13 @@
                   </div>
                   @elseif(Auth::user()->hasRole('admission-officer'))
                   <div class="form-group col-6">
-                  
                     {!! Form::label('','Select campus') !!}
                     <select name="campus_id" class="form-control" required>
-                      <option value="">Select Campus</option>
-                      @foreach($campuses as $cp)
-                      <option value="{{ $cp->id }}" @if($cp->id == $request->get('campus_id')) selected="selected" @endif>{{ $cp->name }}</option>
-                      @endforeach
+                       <option value="">Select Campus</option>
+                       @foreach($campuses as $cp)
+                       <option value="{{ $cp->id }}" @if($cp->id == $request->get('campus_id')) selected="selected" @else disabled='disabled' @endif>
+                       {{ $cp->name }}</option>
+                       @endforeach
                     </select>
                   </div>
                   @endif
