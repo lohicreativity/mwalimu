@@ -47,8 +47,7 @@
                  {!! Form::open(['url'=>'finance/program-fees','class'=>'ss-form-processing','method'=>'GET']) !!}
                    
                    <div class="row">
-                    {!! Form::label('','Select campus') !!}
-                    <div class="form-group col-6">
+                   <div class="form-group col-6">
                     {!! Form::label('','Study academic year') !!}
                     <select name="study_academic_year_id" class="form-control">
                       <option value="">Select Study Academic Year</option>
