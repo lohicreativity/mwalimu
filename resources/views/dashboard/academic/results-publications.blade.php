@@ -68,9 +68,10 @@
               </div>
               <!-- /.card-header -->
               <div class="card-body">
-                <table id="example2" class="table table-bordered table-hover">
+                <table id="example2" class="table table-bordered table-hover ss-paginated-table">
                   <thead>
                   <tr>
+                    <th>SN</th>
                     <th>Study Academic Year</th>
                     <th>Semester</th>
                     <th>NTA Level</th>
@@ -83,13 +84,14 @@
                   </tr>
                   </thead>
                   <tbody>
-                  @foreach($publications as $publication)
+                  @foreach($publications as $key=>$publication)
                   <tr>
+                    <td>{{ ($key+1) }}</td>
                     <td>{{ $publication->studyAcademicYear->academicYear->year }}</td>
                     <td>@if($publication->semester) {{ $publication->semester->name }} @else Supplementary @endif</td>
                     <td>{{ $publication->ntaLevel->name }}</td>
                     <td>{{ $publication->campus->name }}</td>
-                    <td>{{ $publication->status }}</td>
+                    <td>@if($publication->status != 'PUBLISHED') <span style='color:red'>{{ $publication->status }} @else {{ $publication->status }} @endif</td>
                     <td>{{ $publication->type }}</td>
                     @can('publish-examination-results')
                     <td>                     
