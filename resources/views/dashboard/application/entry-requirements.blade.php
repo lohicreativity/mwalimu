@@ -1857,7 +1857,7 @@
                         <!-- /.modal-dialog -->
                       </div>
                       <!-- /.modal -->
-
+                      @if(Auth::user()->hasRole('administrator') || Auth::user()->hasRole('admission-officer'))                                   
                       <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-edit-requirement-{{ $requirement->id }}">
                               <i class="fas fa-pencil-alt">
                               </i>
@@ -2754,6 +2754,7 @@
                         <!-- /.modal-dialog -->
                       </div>
                       <!-- /.modal -->
+                      @endif
                     </td>
                   </tr>
                   @endforeach
