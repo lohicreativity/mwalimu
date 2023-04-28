@@ -65,8 +65,8 @@
                </div>
              </div>
              <!-- /.card -->
-             
              @if($application_window)
+             if(Auth::user()->hasRole('admission-officer') || Auth::user()->hasRole('administrator'))
              <div class="card">
                <div class="card-header">
                  <h3 class="card-title">{{ __('Add Entry Requirement') }}</h3>
@@ -974,7 +974,7 @@
             </div><!-- /tabpane -->
           </div>
             </div>
-            
+            @endif
             @if(count($entry_requirements) != 0)
             <div class="card">
                <div class="card-header">
