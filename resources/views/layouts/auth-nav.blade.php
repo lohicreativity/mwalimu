@@ -690,6 +690,7 @@
               @endcan
             </ul>
           </li>
+          @if(!Auth::user()->hasRole('hod') || !Auth::user()->hasRole('staff'))
            <li class="nav-item">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-coins"></i>
@@ -725,6 +726,7 @@
               @endcan
             </ul>
           </li>
+          @endif
           <li class="nav-item">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-folder-open"></i>
