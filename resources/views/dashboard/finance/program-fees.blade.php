@@ -138,7 +138,7 @@
                   
                 </div>
                 <div class="row">
-                  <div class="form-group col-4">
+                  <div class="form-group col-3">
                     {!! Form::label('','Study academic year') !!}
                     <select name="study_academic_year_id" class="form-control">
                       <option value="">Select Study Academic Year</option>
@@ -149,7 +149,7 @@
                       @endforeach
                     </select>
                   </div>
-                  <div class="form-group col-4">
+                  <div class="form-group col-3">
                     {!! Form::label('','Year of study') !!}
                     <select name="year_of_study" class="form-control">
                       <option value="1">1</option>
