@@ -85,8 +85,15 @@
                   <tbody>
                   @foreach($entry_requirements as $requirement)
                   <tr>
+                    @php
+                      if(Auth::user()->hasRole('hod')){
+                        $number = ['class'=>'form-control', 'readonly'=>true];
+                      }else{
+                        $number = ['class'=>'form-control'];    
+                      }
+                    @endphp
                     <td>{{ $requirement->campusProgram->program->name }}</td>
-                    <td>{{ Form::input('number','requirement_'.$requirement->id,$requirement->max_capacity,['class'=>'form-control', @if(Auth::user()->hasRole('hod'))'readonly'=>true @endif]) }}</td>
+                    <td>{{ Form::input('number','requirement_'.$requirement->id,$requirement->max_capacity,$number) }}</td>
                   </tr>
                   @endforeach
                   @if(Auth::user()->hasRole('administrator') || Auth::user()->hasRole('admission-officer'))
