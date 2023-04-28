@@ -302,10 +302,12 @@ class ApplicationController extends Controller
            $selected_applicants = Applicant::whereHas('intake.applicationWindows',function($query) use($request){$query->where('id',$request->get('application_window_id'));})
                                            ->whereHas('selections',function($query) use($request){$query->where('status','APPROVING');})                                           
                                            ->with(['nextOfKin','intake','selections.campusProgram.program'])->where('program_level_id',$request->get('program_level_id'))->get();
-
-            
         }
 
+        if(count($selected_applicants) == 0){
+            return redirect()->back()->with('error','No selected applicant in this programme level');
+        }
+        
          $data = [
             'staff'=>$staff,
             'application_windows'=>ApplicationWindow::where('campus_id',$staff->campus_id)->get(),
