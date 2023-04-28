@@ -63,7 +63,7 @@
             </div>
             <!-- /.card -->
 
- 
+            @if(count($exams) > 0)
             <div class="card">
               <div class="card-header">
                 <h3 class="card-title">List of Special Exam Requests</h3>
@@ -232,7 +232,7 @@
               
             </div>
             <!-- /.card -->
-
+            @endif
           </div>
           <!-- /.col -->
         </div>
