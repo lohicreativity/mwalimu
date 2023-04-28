@@ -55,7 +55,7 @@
                       $campus_id = [
                           'class'=>'form-control',
                           'placeholder'=>'Campus name',
-                          'readonly'=>true
+                          'disabled'=>true
                       ];                      
                     }
                   @endphp                   
