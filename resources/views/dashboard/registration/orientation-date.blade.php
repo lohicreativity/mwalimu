@@ -45,34 +45,41 @@
               <!-- /.card-header -->
               <div class="card-body">
                  {!! Form::open(['url'=>'registration/orientation-date','class'=>'ss-form-processing','method'=>'GET']) !!}
-                  @php                
-                   $campus_id = [
-                      'class'=>'form-control',
-                      'placeholder'=>'Campus name',
-                      'readonly'=>true
-                   ];
-                  @endphp                   
-                   <div class="row">
-                   <div class="form-group col-6">
+                   
+                  <div class="row">
+
+                    <div class="form-group col-6">
                     {!! Form::label('','Select study academic year') !!}
                     <select name="study_academic_year_id" class="form-control" required>
                        <option value="">Select Study Academic Year</option>
                        @foreach($study_academic_years as $year)
-                       <option value="{{ $year->id }}" @if($year->id == $request->get('study_academic_year_id')) selected="selected" @endif>
-                          {{ $year->academicYear->year }}</option>
+                       <option value="{{ $year->id }}" @if($year->id == $request->get('study_academic_year_id')) selected="selected" @endif>{{ $year->academicYear->year }}</option>
                        @endforeach
                     </select>
                   </div>
+                  @if(Auth::user()->hasRole('administrator'))                  
                   <div class="form-group col-6">
-                  
                     {!! Form::label('','Select campus') !!}
                     <select name="campus_id" class="form-control" required>
                        <option value="">Select Campus</option>
                        @foreach($campuses as $cp)
-                       <option value="{{ $cp->id }}" @if($cp->id == $request->get('campus_id')) selected="selected" @else disabled="disabled" @endif>{{ $cp->name }}</option>
+                       <option value="{{ $cp->id }}" @if($cp->id == $request->get('campus_id')) selected="selected" @endif>{{ $cp->name }}</option>
                        @endforeach
                     </select>
                   </div>
+                  @elseif(Auth::user()->hasRole('admission-officer'))
+                  <div class="form-group col-6">
+                  
+                    {!! Form::label('','Select campus') !!}
+                    <select name="campus_id" class="form-control" required>
+                      <option value="">Select Campus</option>
+                      @foreach($campuses as $cp)
+                      <option value="{{ $cp->id }}" @if($cp->id == $request->get('campus_id')) selected="selected" @endif>{{ $cp->name }}</option>
+                      @endforeach
+                    </select>
+                  </div>
+                  @endif
+                   
                   </div>
                   <div class="ss-form-actions">
                    <button type="submit" class="btn btn-primary">{{ __('Search') }}</button>
@@ -95,13 +102,13 @@
               @php
                 if(Auth::user()->hasRole('admission-officer') || Auth::user()->hasRole('administrator')){                 
                    $date = [
-                      'placeholder'=>'Orientation date',
+                      'placeholder'=>'Registration deadline',
                       'class'=>'form-control ss-datepicker',
                       'required'=>true
                    ];
                   }else{
                   $date = [
-                      'placeholder'=>'rientation date',
+                      'placeholder'=>'Registration deadline',
                       'class'=>'form-control',                      
                       'readonly'=>true,
                       'required'=>true
