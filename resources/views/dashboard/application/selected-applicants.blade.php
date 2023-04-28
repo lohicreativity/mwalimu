@@ -133,7 +133,7 @@
               </div>
               <!-- /.modal-dialog -->
             </div>
-            @endif
+
             <!-- /.modal -->
 
             <div class="modal fade" id="ss-select-program-confirmed">
@@ -379,7 +379,7 @@
                 
                </div>
             </div>
-
+            @endif
            </div>
           </div>
       </div><!-- /.container-fluid -->
