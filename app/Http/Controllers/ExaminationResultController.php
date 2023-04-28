@@ -64,12 +64,10 @@ class ExaminationResultController extends Controller
             $query->where('campus_id',$staff->campus_id);
          })->with(['campusProgram.program','semester'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->latest()->paginate(20);
 
-     }elseif(Auth::user()->hasRole('hod'){
+     }elseif(Auth::user()->hasRole('hod')){
          $exam_process_records = ExaminationProcessRecord::whereHas('campusProgram',function($query) use ($staff){
-            $query->where('campus_id',$staff->campus_id);
-         })->whereHas('campusProgram.program.departments',function($query) use ($staff){
-            $query->where('id',$staff->department_id);
-         })->with(['campusProgram.program','semester'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->latest()->paginate(20);
+            $query->where('campus_id',$staff->campus_id);})->whereHas('campusProgram.program.departments',function($query) use ($staff){$query->where('id',$staff->department_id);})
+            ->with(['campusProgram.program','semester'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->latest()->paginate(20);
 
      }
  
