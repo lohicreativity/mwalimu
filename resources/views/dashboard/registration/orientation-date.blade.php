@@ -102,13 +102,13 @@
               @php
                 if(Auth::user()->hasRole('admission-officer') || Auth::user()->hasRole('administrator')){                 
                    $date = [
-                      'placeholder'=>'Registration deadline',
+                      'placeholder'=>'Orientation date',
                       'class'=>'form-control ss-datepicker',
                       'required'=>true
                    ];
                   }else{
                   $date = [
-                      'placeholder'=>'Registration deadline',
+                      'placeholder'=>'Orientation date',
                       'class'=>'form-control',                      
                       'readonly'=>true,
                       'required'=>true
@@ -124,6 +124,7 @@
                     {!! Form::input('hidden','study_academic_year_id',$study_academic_year->id) !!}
                     {!! Form::input('hidden','campus_id',$campus->id) !!}
                     {!! Form::input('hidden','name','Orientation') !!}
+                
                   </div>
                   </div>
                 
@@ -136,12 +137,21 @@
               @else
                {!! Form::open(['url'=>'registration/update-orientation-date','class'=>'ss-form-processing']) !!}
               <div class="card-body">
-                @php
+              @php
+                if(Auth::user()->hasRole('admission-officer') || Auth::user()->hasRole('administrator')){                 
                    $date = [
                       'placeholder'=>'Orientation date',
                       'class'=>'form-control ss-datepicker',
                       'required'=>true
                    ];
+                  }else{
+                  $date = [
+                      'placeholder'=>'Orientation date',
+                      'class'=>'form-control',                      
+                      'readonly'=>true,
+                      'required'=>true
+                   ];
+                  }
                 @endphp
                    
                 <div class="row">
@@ -153,6 +163,7 @@
                     {!! Form::input('hidden','campus_id',$campus->id) !!}
                     {!! Form::input('hidden','special_date_id',$orientation_date->id) !!}
                     {!! Form::input('hidden','name','Orientation') !!}
+
                   </div>
                   </div>
                 
