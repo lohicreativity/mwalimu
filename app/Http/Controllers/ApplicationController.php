@@ -279,7 +279,7 @@ class ApplicationController extends Controller
                                            ->whereHas('selections.campusProgram.program.departments',function($query) use($staff){$query->where('department_id',$staff->department_id);})                                          
                                            ->with(['nextOfKin','intake','selections.campusProgram.program'])->where('program_level_id',$request->get('program_level_id'))->get();
 
-           $batch = ApplicantProgramSelection::whereHas('applicant',function($query,$staff) use($request){$query->where('program_level_id',$request->get('program_level_id'))
+           $batch = ApplicantProgramSelection::whereHas('applicant',function($query) use($request,$staff){$query->where('program_level_id',$request->get('program_level_id'))
             ->where('campus_id',$staff->campus_id);})
             ->whereHas('campusProgram.program.departments',function($query) use($staff){$query->where('department_id',$staff->department_id);})
             ->where('application_window_id', $request->get('application_window_id'))->where('status', 'SELECTED')->latest()->first();      
