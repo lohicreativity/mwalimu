@@ -155,7 +155,7 @@
                 @endphp
                    
                 <div class="row">
-                  <div class="form-group col-6">
+                  <div class="form-group col-3">
                     {!! Form::label('','Orientation date') !!}
                     {!! Form::text('orientation_date',App\Utils\DateMaker::toStandardDate($orientation_date->date),$date) !!}
 
