@@ -86,10 +86,10 @@
                   @foreach($entry_requirements as $requirement)
                   <tr>
                     @php
-                      if(!Auth::user()->hasRole('administrator') || !Auth::user()->hasRole('admission-officer')){
-                        $number = ['class'=>'form-control', 'readonly'=>true];
+                      if(Auth::user()->hasRole('administrator') || Auth::user()->hasRole('admission-officer')){
+                        $number = ['class'=>'form-control'];
                       }else{
-                        $number = ['class'=>'form-control'];    
+                        $number = ['class'=>'form-control', 'readonly'=>true];    
                       }
                     @endphp
                     <td>{{ $requirement->campusProgram->program->name }}</td>
