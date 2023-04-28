@@ -86,7 +86,7 @@
                   @foreach($entry_requirements as $requirement)
                   <tr>
                     @php
-                      if(Auth::user()->hasRole('hod')){
+                      if(!Auth::user()->hasRole('administrator') || !Auth::user()->hasRole('admission-officer')){
                         $number = ['class'=>'form-control', 'readonly'=>true];
                       }else{
                         $number = ['class'=>'form-control'];    
