@@ -187,44 +187,6 @@
              </div>
             @endif
 
-
-            @if(count($publications) != 0)
-            <div class="card">
-              <div class="card-header">
-                <h3 class="card-title">{{ __('Results Publishing Status') }}</h3>
-              </div>
-              <!-- /.card-header -->
-              <div class="card-body">
-                <table id="example2" class="table table-bordered table-hover">
-                  <thead>
-                  <tr>
-                    <th>Study Academic Year</th>
-                    <th>Semester</th>
-					<th>NTA Level</th>
-                    <th>Status</th>
-                    <th>Type</th>
-                    
-                  </tr>
-                  </thead>
-                  <tbody>
-                  @foreach($publications as $publication)
-                  <tr>
-                    <td>{{ $publication->studyAcademicYear->academicYear->year }}</td>
-                    <td>@if($publication->semester) {{ $publication->semester->name }} @else Supplementary @endif</td>
-					<td>{{ $publication->ntaLevel->name }}</td>
-                    <td>{{ $publication->status }}</td>
-                    <td>{{ $publication->type }}</td>
-                  </tr>
-                  @endforeach
-                  
-                  </tbody>
-                </table>
-              </div>
-              <!-- /.card-body -->
-            </div>
-            <!-- /.card -->
-            @endif
-
              @if(count($process_records) != 0)
             <div class="card">
               <div class="card-header">
@@ -232,7 +194,7 @@
               </div>
               <!-- /.card-header -->
               <div class="card-body">
-                <table id="example2" class="table table-bordered table-hover">
+                <table id="example2" class="table table-bordered table-hover ss-paginated-table">
                   <thead>
                   <tr>
                     <th>Programme</th>
@@ -253,9 +215,6 @@
                </tbody>
               </table>
 
-              <div class="ss-pagination-links">
-                  {!! $process_records->render() !!}
-              </div>
             </div>
           </div>
           @endif
