@@ -304,10 +304,10 @@ class ApplicationController extends Controller
                                            ->with(['nextOfKin','intake','selections.campusProgram.program'])->where('program_level_id',$request->get('program_level_id'))->get();
         }
 
-        if(count($selected_applicants) == 0){
+        if(count($selected_applicants) == 0 && !empty($request->get('program_level_id')){
             return redirect()->back()->with('error','No selected applicant in this programme level');
         }
-        
+
          $data = [
             'staff'=>$staff,
             'application_windows'=>ApplicationWindow::where('campus_id',$staff->campus_id)->get(),
