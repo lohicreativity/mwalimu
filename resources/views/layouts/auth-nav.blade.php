@@ -811,14 +811,6 @@
                 </a>
               </li>
               @endcan
-              @can('view-best-students')
-              <li class="nav-item">
-                <a href="{{ url('academic/results?study_academic_year_id='.session('active_academic_year_id').'&campus_id='.session('staff_campus_id')) }}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>{{ __('Best Students') }}</p>
-                </a>
-              </li>
-              @endcan
               @can('view-global-report')
               <li class="nav-item">
                 <a href="{{ url('academic/results/global-report') }}" class="nav-link">

@@ -39,9 +39,9 @@ class SpecialExamController extends Controller
                                                 ->whereNull('approved_by_user_id')->latest()->paginate(20); 
         }
         
-/*         if(count($special_exams) == 0){
+        if(count($special_exams) == 0){
             return redirect()->back()->with('error','No requests for special exams');
-        } */
+        }
     	$data = [
            'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
            'exams'=>$special_exams,
