@@ -47,7 +47,6 @@
                  {!! Form::open(['url'=>'finance/program-fees','class'=>'ss-form-processing','method'=>'GET']) !!}
                    
                    <div class="row">
-                  <div class="form-group col-6">
                     {!! Form::label('','Select campus') !!}
                     <div class="form-group col-6">
                     {!! Form::label('','Study academic year') !!}
