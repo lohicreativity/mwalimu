@@ -75,7 +75,9 @@
                     <th>Study Academic Year</th>
                     <th>Semester</th>
                     <th>NTA Level</th>
+                    @if(Auth::user()->hasRole('administrator') || Auth::user()->hasRole('arc'))
                     <th>Campus</th>
+                    @endif
                     <th>Status</th>
                     <th>Type</th>
                     @can('publish-examination-results')
@@ -90,7 +92,9 @@
                     <td>{{ $publication->studyAcademicYear->academicYear->year }}</td>
                     <td>@if($publication->semester) {{ $publication->semester->name }} @else Supplementary @endif</td>
                     <td>{{ $publication->ntaLevel->name }}</td>
+                    @if(Auth::user()->hasRole('administrator') || Auth::user()->hasRole('arc'))
                     <td>{{ $publication->campus->name }}</td>
+                    @endif
                     <td>@if($publication->status != 'PUBLISHED') <span style='color:red'>{{ $publication->status }} @else {{ $publication->status }} @endif</td>
                     <td>{{ $publication->type }}</td>
                     @can('publish-examination-results')
