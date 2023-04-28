@@ -24,11 +24,27 @@ class SpecialExamController extends Controller
      */
     public function index(Request $request)
     {
+        $staff = User::find(Auth::user()->id)->staff;
+        if(Auth::user()->hasRole('administrator') || Auth::user()->hasRole('arc')){
+            $special_exams = SpecialExamRequest::with(['student','semester','studyAcademicYear.academicYear','exams.moduleAssignment.module'])
+                                                ->whereNull('approved_by_user_id')->latest()->paginate(20);        
+        }elseif(Auth::user()->hasRole('examination-officer')){
+            $special_exams = SpecialExamRequest::whereHas('student.campusProgram',function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
+                                                ->with(['student','semester','studyAcademicYear.academicYear','exams.moduleAssignment.module'])
+                                                ->whereNull('approved_by_user_id')->latest()->paginate(20); 
+        }elseif(Auth::user()->hasRole('hod')){
+            $special_exams = SpecialExamRequest::whereHas('student.campusProgram',function($query) use($staff){$query->where('campus_id',$staff->campus_id);})
+                                                ->whereHas('student.campusProgram.program.departments',function($query) use($staff){$query->where('department_id',$staff->department_id);})
+                                                ->with(['student','semester','studyAcademicYear.academicYear','exams.moduleAssignment.module'])
+                                                ->whereNull('approved_by_user_id')->latest()->paginate(20); 
+        }
+        
+        if(count($special_exams) == 0){
+            return redirect()->back()->with('error','No requests for special exams');
+        }
     	$data = [
            'study_academic_years'=>StudyAcademicYear::with('academicYear')->get(),
-           'exams'=>$request->get('query')? SpecialExamRequest::whereHas('student',function($query) use($request){
-                 $query->where('first_name','LIKE','%'.$request->get('query').'%')->orWhere('middle_name','LIKE','%'.$request->get('query').'%')->orWhere('surname','LIKE','%'.$request->get('query').'%')->orWhere('registration_number','LIKE','%'.$request->get('query').'%');
-           })->with(['student','semester','studyAcademicYear.academicYear','exams.moduleAssignment.module'])->paginate(20) : SpecialExamRequest::with(['student','semester','studyAcademicYear.academicYear','exams.moduleAssignment.module'])->whereNull('approved_by_user_id')->paginate(20),
+           'exams'=>$special_exams,
            'semesters'=>Semester::all(),
            'staff'=>User::find(Auth::user()->id)->staff,
            'request'=>$request
