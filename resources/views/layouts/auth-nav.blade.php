@@ -16,8 +16,7 @@
                 <li class="nav-item">
                   <a @if($applicant->is_tcu_verified != 1 && str_contains($applicant->programLevel->name,'Degree') && $applicant->is_transfered != 1) disabled="disabled" @elseif($applicant->is_tcu_verified == 1 && str_contains($applicant->programLevel->name,'Degree') && $applicant->is_transfered == 1) disabled="disabled" @else href="{{ url('application/next-of-kin') }}" @endif class="nav-link">
 						<i class="far fa-circle nav-icon"></i>
-						<p>Next of Kin @if($applicant->next_of_kin_complete_status == 1) <i class="fa fa-check"></i> 
-					 @endif</p>
+						<p>Next of Kin @if($applicant->next_of_kin_complete_status == 1) <i class="fa fa-check"></i> @endif</p>
                   </a>
                 </li>
 
