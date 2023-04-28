@@ -508,7 +508,15 @@
                   <p>Special Registration</p>
                 </a>
               </li>
-              @endcan			  
+              @endcan	
+              @can('search-student')
+              <li class="nav-item">
+                <a href="{{ url('academic/student-search') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>{{ __('Student Search') }}</p>
+                </a>
+              </li>
+              @endcan		  
               @can('view-insurance-registrations')
               <li class="nav-item">
                 <a href="{{ url('application/failed-insurance-registrations?study_academic_year_id='.session('active_academic_year_id')) }}" class="nav-link">
@@ -530,14 +538,6 @@
                 <a href="{{ url('registration/external-transfer') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>External Transfer</p>
-                </a>
-              </li>
-              @endcan
-              @can('view-reset-deadline')
-              <li class="nav-item">
-                <a href="{{ url('registration/registration-deadline?study_academic_year_id='.session('active_academic_year_id').'&campus_id='.session('staff_campus_id')) }}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Registration Deadline</p>
                 </a>
               </li>
               @endcan
@@ -581,14 +581,6 @@
                 </a>
               </li>
               @endcan
-              @can('search-student')
-              <li class="nav-item">
-                <a href="{{ url('academic/student-search') }}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>{{ __('Student Search') }}</p>
-                </a>
-              </li>
-              @endcan
               @can('view-special-case-students')
               <li class="nav-item">
                 <a href="{{ url('academic/special-case-students') }}" class="nav-link">
@@ -597,6 +589,14 @@
                 </a>
               </li>
               @endcan
+              @can('view-reset-deadline')
+              <li class="nav-item">
+                <a href="{{ url('registration/registration-deadline?study_academic_year_id='.session('active_academic_year_id').'&campus_id='.session('staff_campus_id')) }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Registration Deadline</p>
+                </a>
+              </li>
+              @endcan              
             </ul>
           </li>
           <li class="nav-item">
