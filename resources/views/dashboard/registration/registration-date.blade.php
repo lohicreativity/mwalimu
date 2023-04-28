@@ -110,7 +110,7 @@
                 @endphp
                    
                 <div class="row">
-                  <div class="form-group col-4">
+                  <div class="form-group col-3">
                     {!! Form::label('','New registration deadline') !!}
                     {!! Form::text('registration_date',null,$date) !!}
 
@@ -147,7 +147,7 @@
                 @endphp
                    
                 <div class="row">
-                  <div class="form-group col-4">
+                  <div class="form-group col-3">
                     {!! Form::label('','Registration deadline') !!}
                     {!! Form::text('registration_date',App\Utils\DateMaker::toStandardDate($registration_date->date),$date) !!}
 
