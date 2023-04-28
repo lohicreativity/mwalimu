@@ -45,19 +45,12 @@
               <!-- /.card-header -->
               <div class="card-body">
                  {!! Form::open(['url'=>'registration/registration-deadline','class'=>'ss-form-processing','method'=>'GET']) !!}
-                  @php
-                    if(Auth::user()->hasRole('admission-officer') || Auth::user()->hasRole('administrator')){                 
-                      $campus_id = [
-                          'class'=>'form-control',
-                          'placeholder'=>'Campus name'
-                      ];
-                    }else{
-                      $campus_id = [
-                          'class'=>'form-control',
-                          'placeholder'=>'Campus name',
-                          'disabled'=>true
-                      ];                      
-                    }
+                  @php                
+                   $campus_id = [
+                      'class'=>'form-control',
+                      'placeholder'=>'Campus name',
+                      'readonly'=>true
+                   ];
                   @endphp                   
                    <div class="row">
                    <div class="form-group col-6">
@@ -70,8 +63,8 @@
                        @endforeach
                     </select>
                   </div>
+                  @if(Auth::user()->hasRole('administrator') || Auth::user()->hasRole('arc'))                  
                   <div class="form-group col-6">
-                  
                     {!! Form::label('','Select campus') !!}
                     <select name="campus_id" class="form-control" required>
                        <option value="">Select Campus</option>
@@ -79,6 +72,20 @@
                        <option value="{{ $cp->id }}" @if($cp->id == $request->get('campus_id')) selected="selected" @endif>{{ $cp->name }}</option>
                        @endforeach
                     </select>
+                  </div>
+                  @else
+                  <div class="form-group col-6">
+                    {!! Form::label('','Select campus') !!}
+                    <select name="campus_id" class="form-control" required>
+                       <option value="">Select Campus</option>
+                       @foreach($campuses as $cp)
+                       <option value="{{ $cp->id }}" @if($cp->id == $request->get('campus_id')) selected="selected" @else disabled='disabled' @endif>
+                       {{ $cp->name }}</option>
+                       @endforeach
+                    </select>
+                  </div>
+                  @endif
+                   
                   </div>
                   </div>
                   <div class="ss-form-actions">
@@ -109,7 +116,7 @@
                   }else{
                   $date = [
                       'placeholder'=>'Registration deadline',
-                      'class'=>'form-control',                      
+                      'class'=>'form-control ss-datepicker',
                       'readonly'=>true,
                       'required'=>true
                    ];
@@ -117,7 +124,7 @@
                 @endphp
                    
                 <div class="row">
-                  <div class="form-group col-3">
+                  <div class="form-group col-6">
                     {!! Form::label('','New registration deadline') !!}
                     {!! Form::text('registration_date',null,$date) !!}
 
@@ -146,7 +153,7 @@
                   }else{
                   $date = [
                       'placeholder'=>'Registration deadline',
-                      'class'=>'form-control',
+                      'class'=>'form-control ss-datepicker',
                       'readonly'=>true,
                       'required'=>true
                    ];
@@ -154,7 +161,7 @@
                 @endphp
                    
                 <div class="row">
-                  <div class="form-group col-3">
+                  <div class="form-group col-6">
                     {!! Form::label('','Registration deadline') !!}
                     {!! Form::text('registration_date',App\Utils\DateMaker::toStandardDate($registration_date->date),$date) !!}
 
