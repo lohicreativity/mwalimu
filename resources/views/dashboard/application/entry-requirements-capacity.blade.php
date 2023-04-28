@@ -86,7 +86,7 @@
                   @foreach($entry_requirements as $requirement)
                   <tr>
                     <td>{{ $requirement->campusProgram->program->name }}</td>
-                    <td>{{ Form::input('number','requirement_'.$requirement->id,$requirement->max_capacity,['class'=>'form-control' @if(Auth::user()->HasRole('hod')),'readonly'=>true @endif]) }}</td>
+                    <td>{{ Form::input('number','requirement_'.$requirement->id,$requirement->max_capacity,['class'=>'form-control', @if(Auth::user()->hasRole('hod'))'readonly'=>true @endif]) }}</td>
                   </tr>
                   @endforeach
                   @if(Auth::user()->hasRole('administrator') || Auth::user()->hasRole('admission-officer'))
