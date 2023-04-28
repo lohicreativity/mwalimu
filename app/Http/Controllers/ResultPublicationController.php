@@ -8,7 +8,7 @@ use App\Domain\Academic\Actions\ResultPublicationAction;
 use App\Domain\Academic\Models\StudyAcademicYear;
 use App\Domain\Academic\Models\Semester;
 use App\Utils\Util;
-use Validator;
+use Auth, Validator;
 use App\Models\User;
 
 class ResultPublicationController extends Controller
