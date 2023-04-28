@@ -57,19 +57,19 @@ class ExaminationResultController extends Controller
       }
 	  $staff = User::find(Auth::user()->id)->staff;
      if(Auth::user()->hasRole('administrator') || Auth::user()->hasRole('administrator')){
-         $exam_process_records = ExaminationProcessRecord::with(['campusProgram.program','semester'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->latest()->paginate(20),
+         $exam_process_records = ExaminationProcessRecord::with(['campusProgram.program','semester'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->latest()->paginate(20);
       
      }elseif(Auth::user()->hasRole('examination-officer')){
          $exam_process_records = ExaminationProcessRecord::whereHas('campusProgram',function($query) use ($staff){
             $query->where('campus_id',$staff->campus_id);
-         })->with(['campusProgram.program','semester'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->latest()->paginate(20),
+         })->with(['campusProgram.program','semester'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->latest()->paginate(20);
 
      }elseif(Auth::user()->hasRole('hod'){
          $exam_process_records = ExaminationProcessRecord::whereHas('campusProgram',function($query) use ($staff){
             $query->where('campus_id',$staff->campus_id);
          })->whereHas('campusProgram.program.departments',function($query) use ($staff){
             $query->where('id',$staff->department_id);
-         })->with(['campusProgram.program','semester'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->latest()->paginate(20),
+         })->with(['campusProgram.program','semester'])->where('study_academic_year_id',$request->get('study_academic_year_id'))->latest()->paginate(20);
 
      }
  
