@@ -707,7 +707,6 @@
                 </a>
               </li>
               @endcan
-              
               @can('view-loan-allocations')
               <li class="nav-item">
                 <a href="{{ url('finance/loan-beneficiaries?study_academic_year_id='.session('active_academic_year_id')) }}" class="nav-link">
