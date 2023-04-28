@@ -197,6 +197,7 @@
                 <table id="example2" class="table table-bordered table-hover ss-paginated-table">
                   <thead>
                   <tr>
+                    <th>SN</th>
                     <th>Programme</th>
                     <th>Semester</th>
                     <th>Year</th>
@@ -204,8 +205,9 @@
                  </tr>
                </thead>
                <tbody>
-                  @foreach($process_records as $record)
+                  @foreach($process_records as $key=>$record)
                   <tr>
+                     <td>{{ ($key+1) }}</td>
                      <td>{{ $record->campusProgram->program->name }}</td>
                      <td>@if($record->semester) {{ $record->semester->name }} @else Supplementary @endif</td>
                      <td>{{ $record->year_of_study }}</td>
