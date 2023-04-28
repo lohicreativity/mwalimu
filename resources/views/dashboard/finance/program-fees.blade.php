@@ -41,7 +41,6 @@
             <!-- general form elements -->
             <div class="card">
               <div class="card-header">
-                 <h3 class="card-title">Select Campus</h3>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
@@ -50,22 +49,7 @@
                    <div class="row">
                   <div class="form-group col-6">
                     {!! Form::label('','Select campus') !!}
-                    @if(Auth::user()->hasRole('finance-officer'))
-                    <select name="campus_id" class="form-control" required>
-                       @foreach($campuses as $cp)
-                       <option value="{{ $cp->id }}" @if($staff->campus_id == $cp->id) selected="selected" @else disabled="true" @endif>{{ $cp->name }}</option>
-                       @endforeach
-                    </select>
-                    @else
-                    <select name="campus_id" class="form-control" required>
-                       <option value="">Select Campus</option>
-                       @foreach($campuses as $cp)
-                       <option value="{{ $cp->id }}" @if($request->get('campus_id') == $cp->id) selected="selected" @endif>{{ $cp->name }}</option>
-                       @endforeach
-                    </select>
-                    @endif
-                  </div>
-                  <div class="form-group col-6">
+                    <div class="form-group col-6">
                     {!! Form::label('','Study academic year') !!}
                     <select name="study_academic_year_id" class="form-control">
                       <option value="">Select Study Academic Year</option>
@@ -74,6 +58,28 @@
                       @endforeach
                     </select>
                   </div>
+                  @if(Auth::user()->hasRole('administrator') || Auth::user()->hasRole('arc'))                  
+                  <div class="form-group col-6">
+                    {!! Form::label('','Select campus') !!}
+                    <select name="campus_id" class="form-control" required>
+                       <option value="">Select Campus</option>
+                       @foreach($campuses as $cp)
+                       <option value="{{ $cp->id }}" @if($staff->campus_id == $cp->id) selected="selected" @endif>{{ $cp->name }}</option>
+                       @endforeach
+                    </select>
+                  </div>
+                  @else
+                  <div class="form-group col-6">
+                    {!! Form::label('','Select campus') !!}
+                    <select name="campus_id" class="form-control" required>
+                       <option value="">Select Campus</option>
+                       @foreach($campuses as $cp)
+                       <option value="{{ $cp->id }}" @if($cp->id == $request->get('campus_id')) selected="selected" @else disabled='disabled' @endif>
+                       {{ $cp->name }}</option>
+                       @endforeach
+                    </select>
+                  </div>
+                  @endif
                   </div>
                   <div class="ss-form-actions">
                    <button type="submit" class="btn btn-primary">{{ __('Search') }}</button>
@@ -178,6 +184,7 @@
                 <table id="example2" class="table table-bordered table-hover ss-margin-top ss-paginated-table">
                   <thead>
                   <tr>
+                    <th>SN</th>
                     <th>Programme</th>
                     <th>Amount in TZS</th>
                     <th>Amount in USD</th>
@@ -191,8 +198,9 @@
                   </tr>
                   </thead>
                   <tbody>
-                  @foreach($fees as $fee)
+                  @foreach($fees as $key=>$fee)
                   <tr>
+                    <td>{{ ($key+1) }}</td>
                     <td>{{ $fee->campusProgram->program->code }}</td>
                     <td>{{ number_format($fee->amount_in_tzs,2) }}</td>
                     <td>{{ number_format($fee->amount_in_usd,2) }}</td>
