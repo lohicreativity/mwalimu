@@ -1229,10 +1229,7 @@
                                      </div>
 
                                  </div>
-                                 
-                                   <div class="card-footer">
-                                      <button type="submit" class="btn btn-primary">{{ __('Save Changes') }}</button>
-                                    </div>
+
                                   {!! Form::close() !!}
                               @elseif(str_contains($requirement->campusProgram->program->award->name,'Diploma'))
                                   @php
