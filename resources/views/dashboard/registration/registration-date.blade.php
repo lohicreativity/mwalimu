@@ -102,6 +102,7 @@
                   }else{
                   $date = [
                       'placeholder'=>'Registration deadline',
+                      'class'=>'form-control',                      
                       'readonly'=>true,
                       'required'=>true
                    ];
@@ -138,6 +139,7 @@
                   }else{
                   $date = [
                       'placeholder'=>'Registration deadline',
+                      'class'=>'form-control',
                       'readonly'=>true,
                       'required'=>true
                    ];
