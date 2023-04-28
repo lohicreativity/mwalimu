@@ -79,14 +79,13 @@
                        @endforeach
                     </select>
                   </div>
+                  
                   <div class="form-group col-6">
                     {!! Form::label('','Select campus') !!}
                     <select name="campus_id" class="form-control" required>
                        <option value="">Select Campus</option>
                        @foreach($campuses as $cp)
-                       @if($cp->id == $staff->campus_id)
-                       <option value="{{ $cp->id }}" @if($request->get('campus_id') == $cp->id) selected="selected" @endif>{{ $cp->name }}</option>
-                       @endif
+                       <option value="{{ $cp->id }}" @if($cp->id == $staff->campus_id) == $cp->id) selected="selected" @else disabled='disabled' @endif>{{ $cp->name }}</option>
                        @endforeach
                     </select>
                   </div>
