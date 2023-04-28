@@ -77,7 +77,9 @@
                     <th>Campus</th>
                     <th>Status</th>
                     <th>Type</th>
+                    @can('publish-examination-results')
                     <th>Actions</th>
+                    @endcan
                   </tr>
                   </thead>
                   <tbody>
