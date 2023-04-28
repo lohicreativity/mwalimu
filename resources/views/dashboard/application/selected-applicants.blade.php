@@ -77,7 +77,7 @@
                </div>
              </div>
              <!-- /.card -->
-            @if($selected_applicants)
+            @if(count($selected_applicants)>0)
              <div class="card">
                <div class="card-header">
                  <h3 class="card-title">{{ __('Selected Applicants') }}</h3><br>
