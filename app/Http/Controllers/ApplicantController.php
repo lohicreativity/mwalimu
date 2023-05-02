@@ -292,25 +292,28 @@ class ApplicantController extends Controller
         ->applicants()
         ->with(['programLevel'])
         ->where('campus_id',session('applicant_campus_id'))->first();
-		
-		$application_window = ApplicationWindow::where('campus_id',session('applicant_campus_id'))
-		->where('intake_id', $applicant->intake_id)
-		->where('begin_date','<=',now()->format('Y-m-d'))
-		->where('end_date','>=',now()->format('Y-m-d'))
-		->where('status','ACTIVE')->first();
-				
-        if($applicant->is_tamisemi !== 1 && $applicant->is_transfered != 1){
-            if(!$application_window){ 
- 				 if($applicant->status == null){
-               return 123; 
+
+        if($applicant->status=='ADMITTED'){
+            $application_window = ApplicationWindow::where('id',$applicant->application_window_id;
+        }else{
+            $application_window = ApplicationWindow::where('campus_id',session('applicant_campus_id'))
+            ->where('intake_id', $applicant->intake_id)
+            ->where('begin_date','<=',now()->format('Y-m-d'))
+            ->where('end_date','>=',now()->format('Y-m-d'))
+            ->where('status','ACTIVE')->first();
+
+            if($applicant->is_tamisemi !== 1 && $applicant->is_transfered != 1){
+               if(!$application_window){ 
+                  if($applicant->status == null){
                      return redirect()->to('application/submission')->with('error','Application window already closed');
-                 }
-                 if($applicant->multiple_admissions !== null && $applicant->status == 'SELECTED'){
+                  }
+                  if($applicant->multiple_admissions !== null && $applicant->status == 'SELECTED'){
                      return redirect()->to('application/admission-confirmation')->with('error','Application window already closed');
-                 }
-            }
+                  }
+               }
+           }                 
         }
-	
+				
         if($applicant->is_tcu_verified === null && str_contains($applicant->programLevel->name,'Degree')){
             $url='http://api.tcu.go.tz/applicants/checkStatus';
             $fullindex=str_replace('-','/',Auth::user()->username);
