@@ -294,7 +294,7 @@ class ApplicantController extends Controller
         ->where('campus_id',session('applicant_campus_id'))->first();
 
         if($applicant->status=='ADMITTED'){
-            $application_window = ApplicationWindow::where('id',$applicant->application_window_id;
+            $application_window = ApplicationWindow::where('id',$applicant->application_window_id)->first();
         }else{
             $application_window = ApplicationWindow::where('campus_id',session('applicant_campus_id'))
             ->where('intake_id', $applicant->intake_id)
