@@ -102,6 +102,7 @@ class NECTAServiceController extends Controller
         if(str_contains(strtoupper($index_number,'EQ'))){
             $index_no = explode('-',$index_number)[0];
             $exam_year = explode('-',$index_number)[1];
+            return $index_number.'-'.$index_no;
         }else{
             $index_no = explode('-',$index_number)[0].'-'.explode('-',$index_number)[1];
             $exam_year = explode('-',$index_number)[2];
