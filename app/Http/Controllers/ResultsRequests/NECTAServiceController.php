@@ -19,7 +19,7 @@ class NECTAServiceController extends Controller
 
     public function getResults(Request $request,$index_number,$exam_id)
     {
-        if(str_contains($index_number,'EQ')){
+        if(str_contains(strtoupper($index_number),'EQ')){
 
         }else{
 
