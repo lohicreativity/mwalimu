@@ -18,7 +18,7 @@ class NECTAServiceController extends Controller
     }
 
     public function getResults(Request $request,$index_number,$exam_id)
-    {
+    {return 1;
         if(str_contains(strtoupper($index_number,'EQ'))){
             $index_no = explode('-',$index_number)[0];
             $exam_year = explode('-',$index_number)[1];
@@ -98,7 +98,7 @@ class NECTAServiceController extends Controller
     }
 
     public function getResultsAdmin(Request $request,$index_number,$exam_id)
-    {
+    {   return 2;
         if(str_contains(strtoupper($index_number,'EQ'))){
             $index_no = explode('-',$index_number)[0];
             $exam_year = explode('-',$index_number)[1];
