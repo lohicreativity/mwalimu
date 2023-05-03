@@ -95,7 +95,7 @@ class NECTAServiceController extends Controller
 
             $details = NectaResultDetail::with('results')->find($detail->id);
             return response()->json(['details'=>$details,'exists'=>0]);
-       // }
+        }
     }
 
     public function getResultsAdmin(Request $request,$index_number,$exam_id)
