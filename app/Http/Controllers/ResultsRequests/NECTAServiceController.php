@@ -67,7 +67,7 @@ class NECTAServiceController extends Controller
                     $detail->applicant_id = $appl->id;
                     $detail->save();
                 
-/*                     foreach(json_decode($response)->subjects as $subject){
+                    foreach(json_decode($response)->subjects as $subject){
                         if($rs = NectaResult::where('subject_code',$subject->subject_code)->where('necta_result_detail_id',$detail->id)->first()){
                             $res = $rs;
                         }else{
@@ -79,7 +79,7 @@ class NECTAServiceController extends Controller
                         $res->applicant_id = $request->get('applicant_id');
                         $res->necta_result_detail_id = $detail->id;
                         $res->save();
-                    } */
+                    }
                 }
            // }
 
@@ -93,7 +93,8 @@ class NECTAServiceController extends Controller
             // }
             // $applicant->save();
 
-            return response()->json(['response'=>json_decode($response)]);
+            $details = NectaResultDetail::with('results')->find($detail->id);
+            return response()->json(['details'=>$details,'exists'=>0]);
        // }
     }
 
