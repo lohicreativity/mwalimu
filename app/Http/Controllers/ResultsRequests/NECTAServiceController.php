@@ -47,8 +47,9 @@ class NECTAServiceController extends Controller
                 return response()->json(['error'=>'Please refresh your browser and try again']);
             }
             
-            if(!NectaResultDetail::where('index_number',$index_no)->where('exam_id',$exam_id)->where('applicant_id',$request->get('applicant_id'))->first()){
-
+            if($det = NectaResultDetail::where('index_number',$index_no)->where('exam_id',$exam_id)->where('applicant_id',$request->get('applicant_id'))->first()){
+                $detail = $det;
+            }else{
                 $app = Applicant::find($request->get('applicant_id'));
                 $applicants = Applicant::where('user_id',$app->user_id)->get();
                 foreach ($applicants as $appl) {
@@ -66,10 +67,12 @@ class NECTAServiceController extends Controller
                     $detail->applicant_id = $appl->id;
                     $detail->save();
                 
+                    if(!NectaResult::where('necta_result_detail_id',$detail->id)->first()){
+          
                     foreach(json_decode($response)->subjects as $subject){
 
                             $res = new NectaResult;
-
+                    
                         $res->subject_name = $subject->subject_name;
                         $res->subject_code = $subject->subject_code;
                         $res->grade = $subject->grade;
@@ -77,6 +80,7 @@ class NECTAServiceController extends Controller
                         $res->necta_result_detail_id = $detail->id;
                         $res->save();
                     }
+                }
                 }
             }
 
