@@ -35,7 +35,7 @@ class NECTAServiceController extends Controller
             try{
             // $token = $this->getToken(config('constants.NECTA_API_KEY'));
             // $response = Http::get('https://api.necta.go.tz/api/public/results/'.$index_no.'/'.$exam_id.'/'.$exam_year.'/'.$token);
-                if($equivalent_no){
+                if(!empty($equivalent_no)){
                     $response = Http::post('https://api.necta.go.tz/api/results/individual',[
                         'api_key'=>config('constants.NECTA_API_KEY'),
                         'exam_year'=>$exam_year,
