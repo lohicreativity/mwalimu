@@ -50,18 +50,20 @@ class NECTAServiceController extends Controller
                         'exam_id'=>$exam_id
                     ]);
                 }
+
+                if(json_decode($response)->status->code == 0){
+                    return response()->json(['error'=>'Results not found']);
+                }
             }catch(\Exception $e){
                 return response()->json(['error'=>'Please refresh your browser and try again']);
             }
-            if(json_decode($response)->status->code == 0){
-                return response()->json(['error'=>'Results not found']);
-            }
-            if($det = NectaResultDetail::where('index_number',str_replace('-','/',$index_number))->where('exam_id',$exam_id)->where('applicant_id',$request->get('applicant_id'))->first()){
+
+/*            if($det = NectaResultDetail::where('index_number',str_replace('-','/',$index_number))->where('exam_id',$exam_id)->where('applicant_id',$request->get('applicant_id'))->first()){
                 $detail = $det;
             }else{
                 $app = Applicant::find($request->get('applicant_id'));
                 $applicants = Applicant::where('user_id',$app->user_id)->get();
-                foreach ($applicants as $appl) {
+                 foreach ($applicants as $appl) {
                     $detail = new NectaResultDetail;
                     $detail->center_name = json_decode($response)->particulars->center_name;
                     $detail->center_number = json_decode($response)->particulars->center_number;
@@ -89,7 +91,7 @@ class NECTAServiceController extends Controller
                         $res->necta_result_detail_id = $detail->id;
                         $res->save();
                     }
-                }
+                } */
             }
 
             // $applicant = Applicant::with('programLevel')->find($request->get('applicant_id'));
@@ -102,8 +104,9 @@ class NECTAServiceController extends Controller
             // }
             // $applicant->save();
 
-            $details = NectaResultDetail::with('results')->find($detail->id);
-            return response()->json(['details'=>$details,'exists'=>0]);
+        //    $details = NectaResultDetail::with('results')->find($detail->id);
+         //   return response()->json(['details'=>$details,'exists'=>0]);
+            return response()->json(['response'=>json_decode($response)]);
         }
     }
 
