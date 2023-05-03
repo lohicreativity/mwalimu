@@ -46,7 +46,7 @@ class NECTAServiceController extends Controller
             }catch(\Exception $e){
                 return response()->json(['error'=>'Please refresh your browser and try again']);
             }
-            return response()->json(['response'=>json_decode($response)]);
+            
             if($det = NectaResultDetail::where('index_number',$index_no)->where('exam_id',$exam_id)->where('applicant_id',$request->get('applicant_id'))->first()){
                 $detail = $det;
                 return response()->json(['details'=>$details,'exists'=>0]);
@@ -83,8 +83,10 @@ class NECTAServiceController extends Controller
                     }
                 }
                 
-                $details = NectaResultDetail::with('results')->find($detail->id);
-                return response()->json(['details'=>$details,'exists'=>0]);
+/*                 $details = NectaResultDetail::with('results')->find($detail->id);
+                return response()->json(['details'=>$details,'exists'=>0]); */
+                
+            return response()->json(['response'=>json_decode($response)]);
             }
 
             // $applicant = Applicant::with('programLevel')->find($request->get('applicant_id'));
@@ -97,7 +99,6 @@ class NECTAServiceController extends Controller
             // }
             // $applicant->save();
 
-            return response()->json(['response'=>json_decode($response)]);
         }
     }
 
