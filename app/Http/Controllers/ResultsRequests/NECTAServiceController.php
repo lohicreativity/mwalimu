@@ -35,7 +35,7 @@ class NECTAServiceController extends Controller
             try{
             // $token = $this->getToken(config('constants.NECTA_API_KEY'));
             // $response = Http::get('https://api.necta.go.tz/api/public/results/'.$index_no.'/'.$exam_id.'/'.$exam_year.'/'.$token);
-                if(!empty($equivalent_no)){
+                if($equivalent_no){
                     $response = Http::post('https://api.necta.go.tz/api/results/individual',[
                         'api_key'=>config('constants.NECTA_API_KEY'),
                         'exam_year'=>$exam_year,
@@ -50,20 +50,18 @@ class NECTAServiceController extends Controller
                         'exam_id'=>$exam_id
                     ]);
                 }
-
-                if(json_decode($response)->status->code == 0){
-                    return response()->json(['error'=>'Results not found']);
-                }
             }catch(\Exception $e){
                 return response()->json(['error'=>'Please refresh your browser and try again']);
             }
-
-/*            if($det = NectaResultDetail::where('index_number',str_replace('-','/',$index_number))->where('exam_id',$exam_id)->where('applicant_id',$request->get('applicant_id'))->first()){
+            if(json_decode($response)->status->code == 0){
+                return response()->json(['error'=>'Results not found']);
+            }
+            if($det = NectaResultDetail::where('index_number',$index_no)->where('exam_id',$exam_id)->where('applicant_id',$request->get('applicant_id'))->first()){
                 $detail = $det;
             }else{
                 $app = Applicant::find($request->get('applicant_id'));
                 $applicants = Applicant::where('user_id',$app->user_id)->get();
-                 foreach ($applicants as $appl) {
+                foreach ($applicants as $appl) {
                     $detail = new NectaResultDetail;
                     $detail->center_name = json_decode($response)->particulars->center_name;
                     $detail->center_number = json_decode($response)->particulars->center_number;
@@ -91,7 +89,7 @@ class NECTAServiceController extends Controller
                         $res->necta_result_detail_id = $detail->id;
                         $res->save();
                     }
-                } */
+                }
             }
 
             // $applicant = Applicant::with('programLevel')->find($request->get('applicant_id'));
@@ -104,9 +102,8 @@ class NECTAServiceController extends Controller
             // }
             // $applicant->save();
 
-        //    $details = NectaResultDetail::with('results')->find($detail->id);
-         //   return response()->json(['details'=>$details,'exists'=>0]);
-            return response()->json(['response'=>json_decode($response)]);
+            $details = NectaResultDetail::with('results')->find($detail->id);
+            return response()->json(['details'=>$details,'exists'=>0]);
         }
     }
 
@@ -122,15 +119,11 @@ class NECTAServiceController extends Controller
 
             $index_no = explode('-',$index_number)[0].'-'.explode('-',$index_number)[1];
             $exam_year = explode('-',$index_number)[2];
-        }
-        if($details = NectaResultDetail::with('results')->where('index_number',str_replace('-','/',$index_number))
-                                       ->where('exam_id',$exam_id)->where('applicant_id',$request->get('applicant_id'))->first()){
-            return response()->json(['details'=>$details,'exists'=>1]);
-        }else{                
+        }        
         try{
         // $token = $this->getToken(config('constants.NECTA_API_KEY'));
         // $response = Http::get('https://api.necta.go.tz/api/public/results/'.$index_no.'/'.$exam_id.'/'.$exam_year.'/'.$token);
-            if(!empty($equivalent_no)){
+            if(!empty($equivalent_no){
                 $response = Http::post('https://api.necta.go.tz/api/results/individual',[
                     'api_key'=>config('constants.NECTA_API_KEY'),
                     'exam_year'=>$exam_year,
@@ -151,7 +144,6 @@ class NECTAServiceController extends Controller
         }catch(\Exception $e){
             return response()->json(['error'=>'Please refresh your browser and try again']);
         }
-    }
         return response()->json(['response'=>json_decode($response)]);
     }
 }
