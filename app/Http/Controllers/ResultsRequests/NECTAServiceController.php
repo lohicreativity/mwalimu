@@ -49,6 +49,7 @@ class NECTAServiceController extends Controller
             
             if($det = NectaResultDetail::where('index_number',$index_no)->where('exam_id',$exam_id)->where('applicant_id',$request->get('applicant_id'))->first()){
                 $detail = $det;
+                return response()->json(['details'=>$details,'exists'=>0]);
             }else{
                 $app = Applicant::find($request->get('applicant_id'));
                 $applicants = Applicant::where('user_id',$app->user_id)->get();
@@ -81,7 +82,10 @@ class NECTAServiceController extends Controller
                         $res->save();
                     }
                 }
-            
+                
+                $details = NectaResultDetail::with('results')->find($detail->id);
+                return response()->json(['details'=>$details,'exists'=>0]);
+            }
 
             // $applicant = Applicant::with('programLevel')->find($request->get('applicant_id'));
             // if(str_contains($applicant->programLevel->name,'Bachelor') && $applicant->entry_mode == 'DIRECT' && $exam_id == 2){
@@ -93,9 +97,7 @@ class NECTAServiceController extends Controller
             // }
             // $applicant->save();
 
-            $details = NectaResultDetail::with('results')->find($detail->id);
-            }
-            return response()->json(['details'=>$details,'exists'=>0]);
+            return response()->json(['response'=>json_decode($response)]);
         }
     }
 
