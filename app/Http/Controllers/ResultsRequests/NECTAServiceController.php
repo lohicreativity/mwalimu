@@ -19,9 +19,6 @@ class NECTAServiceController extends Controller
 
     public function getResults(Request $request,$index_number,$exam_id)
     {
-/*         $index_no = explode('-',$index_number)[0].'-'.explode('-',$index_number)[1];
-        $exam_year = explode('-',$index_number)[2]; */
-
         if(str_contains(strtoupper($index_number),'EQ')){
             $index_no = explode('-',$index_number)[0];
             $exam_year = explode('-',$index_number)[1];
@@ -29,8 +26,8 @@ class NECTAServiceController extends Controller
 
             $index_no = explode('-',$index_number)[0].'-'.explode('-',$index_number)[1];
             $exam_year = explode('-',$index_number)[2];
-        }
-                
+        } 
+                       
             try{
                 // $token = $this->getToken(config('constants.NECTA_API_KEY'));
                 // $response = Http::get('https://api.necta.go.tz/api/public/results/'.$index_no.'/'.$exam_id.'/'.$exam_year.'/'.$token);
@@ -47,7 +44,7 @@ class NECTAServiceController extends Controller
                     return response()->json(['error'=>'Please refresh your browser and try again']);
                 }
             return response()->json(['response'=>json_decode($response)]);
-        
+    
     }
 
     public function getResultsAdmin(Request $request,$index_number,$exam_id)
