@@ -112,9 +112,9 @@ class NECTAServiceController extends Controller
     {
 /*         $index_no = explode('-',$index_number)[0].'-'.explode('-',$index_number)[1];
         $exam_year = explode('-',$index_number)[2]; */
-        $equivalent_no = $index_no = null;
-        if(str_contains($index_number,'EQ')){
-            $equivalent_no = explode('-',$index_number)[0];
+
+        if(str_contains(strtoupper($index_number),'EQ')){
+            $index_no = explode('-',$index_number)[0];
             $exam_year = explode('-',$index_number)[1];
         }else{
 
@@ -122,24 +122,14 @@ class NECTAServiceController extends Controller
             $exam_year = explode('-',$index_number)[2];
         }        
         try{
-         $token = $this->getToken(config('constants.NECTA_API_KEY'));
-         $response = Http::get('https://api.necta.go.tz/api/public/results/'.$equivalent_no.'/'.$exam_id.'/'.$exam_year.'/'.$token);
-/*             if($equivalent_no != null)){
-                $response = Http::post('https://api.necta.go.tz/api/results/individual',[
-                    'api_key'=>config('constants.NECTA_API_KEY'),
-                    'exam_year'=>$exam_year,
-                    'equivalenceno'=>$equivalent_no,
-                    'exam_id'=>$exam_id
-                ]);
-            }else{
-                $response = Http::post('https://api.necta.go.tz/api/results/individual',[
-                    'api_key'=>config('constants.NECTA_API_KEY'),
-                    'exam_year'=>$exam_year,
-                    'index_number'=>$index_no,
-                    'exam_id'=>$exam_id
-                ]);
-            } */
-
+        // $token = $this->getToken(config('constants.NECTA_API_KEY'));
+        // $response = Http::get('https://api.necta.go.tz/api/public/results/'.$index_no.'/'.$exam_id.'/'.$exam_year.'/'.$token);
+            $response = Http::post('https://api.necta.go.tz/api/results/individual',[
+                'api_key'=>config('constants.NECTA_API_KEY'),
+                'exam_year'=>$exam_year,
+                'index_number'=>$index_no,
+                'exam_id'=>$exam_id
+            ]);
             if(json_decode($response)->status->code == 0){
                 return response()->json(['error'=>'Results not found']);
             }
