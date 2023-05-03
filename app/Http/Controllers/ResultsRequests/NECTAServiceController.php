@@ -138,8 +138,9 @@ class NECTAServiceController extends Controller
                     'index_number'=>$index_no,
                     'exam_id'=>$exam_id
                 ]);
+                dd();
             }
-dd();
+
             if(json_decode($response)->status->code == 0){
                 return response()->json(['error'=>'Results not found']);
             }
