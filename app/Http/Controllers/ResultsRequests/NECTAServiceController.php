@@ -94,6 +94,7 @@ class NECTAServiceController extends Controller
             // $applicant->save();
 
             $details = NectaResultDetail::with('results')->find($detail->id);
+            }
             return response()->json(['details'=>$details,'exists'=>0]);
         }
     }
