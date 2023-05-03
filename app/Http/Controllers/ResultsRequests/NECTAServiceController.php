@@ -67,12 +67,12 @@ class NECTAServiceController extends Controller
                     $detail->applicant_id = $appl->id;
                     $detail->save();
                 
-                    if(!NectaResult::where('necta_result_detail_id',$detail->id)->first()){
-          
                     foreach(json_decode($response)->subjects as $subject){
-
+                        if($rs = NectaResult::where('subject_code',$subject->subject_code)->where('necta_result_detail_id',$detail->id)->first()){
+                            $res = $rs;
+                        }else{
                             $res = new NectaResult;
-                    
+                        }
                         $res->subject_name = $subject->subject_name;
                         $res->subject_code = $subject->subject_code;
                         $res->grade = $subject->grade;
@@ -80,7 +80,6 @@ class NECTAServiceController extends Controller
                         $res->necta_result_detail_id = $detail->id;
                         $res->save();
                     }
-                }
                 }
             }
 
