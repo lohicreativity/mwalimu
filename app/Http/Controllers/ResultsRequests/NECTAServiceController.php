@@ -27,10 +27,10 @@ class NECTAServiceController extends Controller
             $index_no = explode('-',$index_number)[0].'-'.explode('-',$index_number)[1];
             $exam_year = explode('-',$index_number)[2];
         } 
-        if($details = NectaResultDetail::with('results')->where('index_number',str_replace('-','/',$index_number))
+/*         if($details = NectaResultDetail::with('results')->where('index_number',str_replace('-','/',$index_number))
                                        ->where('exam_id',$exam_id)->where('applicant_id',$request->get('applicant_id'))->first()){
             return response()->json(['details'=>$details,'exists'=>1]);
-        }else{
+        }else{ */
             try{
             // $token = $this->getToken(config('constants.NECTA_API_KEY'));
             // $response = Http::get('https://api.necta.go.tz/api/public/results/'.$index_no.'/'.$exam_id.'/'.$exam_year.'/'.$token);
@@ -95,7 +95,7 @@ class NECTAServiceController extends Controller
 
             $details = NectaResultDetail::with('results')->find($detail->id);
             return response()->json(['details'=>$details,'exists'=>0]);
-        }
+       // }
     }
 
     public function getResultsAdmin(Request $request,$index_number,$exam_id)
