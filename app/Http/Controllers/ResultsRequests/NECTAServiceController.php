@@ -23,7 +23,6 @@ class NECTAServiceController extends Controller
             $index_no = explode('-',$index_number)[0];
             $exam_year = explode('-',$index_number)[1];
         }else{
-
             $index_no = explode('-',$index_number)[0].'-'.explode('-',$index_number)[1];
             $exam_year = explode('-',$index_number)[2];
         } 
@@ -47,10 +46,10 @@ class NECTAServiceController extends Controller
                 return response()->json(['error'=>'Please refresh your browser and try again']);
             }
             
-            if($det = NectaResultDetail::where('index_number',$index_no)->where('exam_id',$exam_id)->where('applicant_id',$request->get('applicant_id'))->first()){
+/*             if($det = NectaResultDetail::where('index_number',$index_no)->where('exam_id',$exam_id)->where('applicant_id',$request->get('applicant_id'))->first()){
                 $detail = $det;
                 return response()->json(['details'=>$details,'exists'=>0]);
-            }else{
+            }else{ */
                 $app = Applicant::find($request->get('applicant_id'));
                 $applicants = Applicant::where('user_id',$app->user_id)->get();
                 foreach ($applicants as $appl) {
@@ -66,7 +65,6 @@ class NECTAServiceController extends Controller
                     $detail->points = json_decode($response)->results->points;
                     $detail->exam_id = $exam_id;
                     $detail->applicant_id = $appl->id;
-                    dd();
                     $detail->save();
                 
                     foreach(json_decode($response)->subjects as $subject){
@@ -86,7 +84,7 @@ class NECTAServiceController extends Controller
                 
                 $details = NectaResultDetail::with('results')->find($detail->id);
                 return response()->json(['details'=>$details,'exists'=>0]);
-            }
+            //}
 
             // $applicant = Applicant::with('programLevel')->find($request->get('applicant_id'));
             // if(str_contains($applicant->programLevel->name,'Bachelor') && $applicant->entry_mode == 'DIRECT' && $exam_id == 2){
