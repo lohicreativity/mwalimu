@@ -112,7 +112,7 @@ class NECTAServiceController extends Controller
     {
 /*         $index_no = explode('-',$index_number)[0].'-'.explode('-',$index_number)[1];
         $exam_year = explode('-',$index_number)[2]; */
-
+        $equivalent_no = $index_no = null;
         if(str_contains($index_number,'EQ')){
             $equivalent_no = explode('-',$index_number)[0];
             $exam_year = explode('-',$index_number)[1];
@@ -138,7 +138,6 @@ class NECTAServiceController extends Controller
                     'index_number'=>$index_no,
                     'exam_id'=>$exam_id
                 ]);
-                dd();
             }
 
             if(json_decode($response)->status->code == 0){
