@@ -56,7 +56,7 @@ class NECTAServiceController extends Controller
             if(json_decode($response)->status->code == 0){
                 return response()->json(['error'=>'Results not found']);
             }
-            if($det = NectaResultDetail::where('index_number',$index_no)->where('exam_id',$exam_id)->where('applicant_id',$request->get('applicant_id'))->first()){
+            if($det = NectaResultDetail::where('index_number',str_replace('-','/',$index_number))->where('exam_id',$exam_id)->where('applicant_id',$request->get('applicant_id'))->first()){
                 $detail = $det;
             }else{
                 $app = Applicant::find($request->get('applicant_id'));
