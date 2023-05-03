@@ -18,7 +18,7 @@ class NECTAServiceController extends Controller
     }
 
     public function getResults(Request $request,$index_number,$exam_id)
-    {
+    {return 123;
         if(str_contains(strtoupper($index_number),'EQ')){
             $index_no = explode('-',$index_number)[0];
             $exam_year = explode('-',$index_number)[1];
@@ -83,10 +83,8 @@ class NECTAServiceController extends Controller
                     }
                 }
                 
-/*                 $details = NectaResultDetail::with('results')->find($detail->id);
-                return response()->json(['details'=>$details,'exists'=>0]); */
-                
-            return response()->json(['response'=>json_decode($response)]);
+                $details = NectaResultDetail::with('results')->find($detail->id);
+                return response()->json(['details'=>$details,'exists'=>0]);
             }
 
             // $applicant = Applicant::with('programLevel')->find($request->get('applicant_id'));
