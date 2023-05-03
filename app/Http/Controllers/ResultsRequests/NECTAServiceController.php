@@ -122,9 +122,9 @@ class NECTAServiceController extends Controller
             $exam_year = explode('-',$index_number)[2];
         }        
         try{
-        // $token = $this->getToken(config('constants.NECTA_API_KEY'));
-        // $response = Http::get('https://api.necta.go.tz/api/public/results/'.$index_no.'/'.$exam_id.'/'.$exam_year.'/'.$token);
-            if($equivalent_no != null)){
+         $token = $this->getToken(config('constants.NECTA_API_KEY'));
+         $response = Http::get('https://api.necta.go.tz/api/public/results/'.$equivalent_no.'/'.$exam_id.'/'.$exam_year.'/'.$token);
+/*             if($equivalent_no != null)){
                 $response = Http::post('https://api.necta.go.tz/api/results/individual',[
                     'api_key'=>config('constants.NECTA_API_KEY'),
                     'exam_year'=>$exam_year,
@@ -138,7 +138,7 @@ class NECTAServiceController extends Controller
                     'index_number'=>$index_no,
                     'exam_id'=>$exam_id
                 ]);
-            }
+            } */
 
             if(json_decode($response)->status->code == 0){
                 return response()->json(['error'=>'Results not found']);
