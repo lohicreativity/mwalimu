@@ -18,7 +18,7 @@ class NECTAServiceController extends Controller
     }
 
     public function getResults(Request $request,$index_number,$exam_id)
-    {return 123;
+    {
         if(str_contains(strtoupper($index_number),'EQ')){
             $index_no = explode('-',$index_number)[0];
             $exam_year = explode('-',$index_number)[1];
@@ -66,6 +66,7 @@ class NECTAServiceController extends Controller
                     $detail->points = json_decode($response)->results->points;
                     $detail->exam_id = $exam_id;
                     $detail->applicant_id = $appl->id;
+                    dd();
                     $detail->save();
                 
                     foreach(json_decode($response)->subjects as $subject){
