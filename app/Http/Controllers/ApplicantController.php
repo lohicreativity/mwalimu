@@ -126,10 +126,10 @@ class ApplicantController extends Controller
 
             session(['applicant_campus_id'=>$request->get('campus_id')]);
             $continue_applicant = Applicant::where('user_id',Auth::user()->id)->where('is_continue', 1)->first();
-			if($continue_applicant){
-				$campus = Campus::where('id', $continue_applicant->campus_id)->first();
-				
-			}
+            if($continue_applicant){
+               $campus = Campus::where('id', $continue_applicant->campus_id)->first();
+               
+            }
 			
             if(!Applicant::where('user_id',Auth::user()->id)->where('campus_id',$request->get('campus_id'))->first() && !$continue_applicant){
                 $app = Applicant::where('user_id',Auth::user()->id)->where('campus_id',0)->first();
@@ -158,17 +158,24 @@ class ApplicantController extends Controller
                     $applicant->district_id = $app->district_id;
                     $applicant->ward_id = $app->ward_id;
                     $applicant->street = $app->street;
+                    $applicant->nin = $app->nin;
+                    $applicant->is_tcu_verified = $app->is_tcu_verified;
+                    $applicant->diploma_certificate = $app->diploma_certificate;
                     $applicant->basic_info_complete_status = $app->basic_info_complete_status;
+                    $applicant->results_complete_status = $app->results_complete_status;
+                    $applicant->teacher_diploma_certificate = $app->teacher_diploma_certificate;
+                    $applicant->veta_certificate = $app->veta_certificate;
+                    $applicant->veta_status = $app->veta_status;
+                    $applicant->rank_points = $app->rank_points;
+                    $applicant->nacte_reg_no = $app->nacte_reg_no;
+                    $applicant->avn_no_results = $app->avn_no_results;
+                    $applicant->teacher_certificate_status = $app->teacher_certificate_status;
                     $applicant->next_of_kin_id = $app->next_of_kin_id;
                     $applicant->next_of_kin_complete_status = $app->next_of_kin_complete_status;
                     $applicant->birth_certificate = $app->birth_certificate;
-
                     $applicant->o_level_certificate = $app->o_level_certificate;
-
                     $applicant->a_level_certificate = $app->a_level_certificate;
-
                     $applicant->diploma_certificate = $app->diploma_certificate; 
-
                     $applicant->documents_complete_status = $app->documents_complete_status;
                     $applicant->save();
 					
@@ -201,20 +208,143 @@ class ApplicantController extends Controller
                         $applicant->district_id = $app->district_id;
                         $applicant->ward_id = $app->ward_id;
                         $applicant->street = $app->street;
+                        $applicant->nin = $app->nin;
+                        $applicant->is_tcu_verified = $app->is_tcu_verified;
+                        $applicant->diploma_certificate = $app->diploma_certificate;
                         $applicant->basic_info_complete_status = $app->basic_info_complete_status;
+                        $applicant->results_complete_status = $app->results_complete_status;
+                        $applicant->teacher_diploma_certificate = $app->teacher_diploma_certificate;
+                        $applicant->veta_certificate = $app->veta_certificate;
+                        $applicant->veta_status = $app->veta_status;
+                        $applicant->rank_points = $app->rank_points;
+                        $applicant->nacte_reg_no = $app->nacte_reg_no;
+                        $applicant->avn_no_results = $app->avn_no_results;
+                        $applicant->teacher_certificate_status = $app->teacher_certificate_status;
                         $applicant->next_of_kin_id = $app->next_of_kin_id;
                         $applicant->next_of_kin_complete_status = $app->next_of_kin_complete_status;
-
                         $applicant->birth_certificate = $app->birth_certificate;
-
                         $applicant->o_level_certificate = $app->o_level_certificate;
-
                         $applicant->a_level_certificate = $app->a_level_certificate;
-
                         $applicant->diploma_certificate = $app->diploma_certificate; 
-
                         $applicant->documents_complete_status = $app->documents_complete_status;
                         $applicant->save();
+
+                        $applicants = Applicant::where('user_id',Auth::user()->id)->get();
+                        foreach($applicants as $appl){
+                           $necta_result_details = NectaResultDetails::where('applicant_id', $appl->id)->where('verified',1)->get();
+                           if($necta_result_details){
+                              foreach($necta_result_details as $necta_result_detail){
+                                 $result_details = new NectaResultDetails;
+                                 $result_details->applicant_id = $applicant->id;
+                                 $result_details->center_name = $necta_result_detail->center_name;
+                                 $result_details->center_number = $necta_result_detail->center_number;
+                                 $result_details->first_name = $necta_result_detail->first_name;
+                                 $result_details->middle_name = $necta_result_detail->middle_name;
+                                 $result_details->last_name = $necta_result_detail->last_name;
+                                 $result_details->index_number = $necta_result_detail->index_number;
+                                 $result_details->sex = $necta_result_detail->sex;
+                                 $result_details->division = $necta_result_detail->division;
+                                 $result_details->points = $necta_result_detail->points;
+                                 $result_details->exam_id = $necta_result_detail->exam_id;
+                                 $result_details->verified = $necta_result_detail->verified;
+                                 $result_details->created_at = now();
+                                 $result_details->updated_at = now();
+                                 $result_details->save();
+   
+                                 $result_subjects = NectaResults::where('necta_result_detail_id',$necta_result_detail->id)->get();
+                                 foreach($result_subjects as $subject){
+                                    $result = new NectaResults;
+                                    $result->applicant_id = $applicant->id;
+                                    $result->subject_code = $subject->subject_code;
+                                    $result->grade = $subject->grade;
+                                    $result->necta_result_detail_id = $result_details->id;
+                                    $result->created_at = now();
+                                    $result->updated_at = now();
+                                    $result->save();
+   
+                                 }
+   
+                              }
+                              break;
+                           } 
+                           if($applicant->entry_mode == 'EQUIVALENT'){
+                              $nacte_result_details = NacteResultDetail::where('applicant_id', $appl->id)->where('verified',1)->get();
+                              $out_result_details = OutResultDetail::where('applicant_id', $appl->id)->where('verified',1)->get();
+                              if($nacte_result_details){
+                                 foreach($nacte_result_details as $nacte_result_detail){
+                                    $result_details = new NacteResultDetail;
+                                    $result_details->applicant_id = $applicant->id;
+                                    $result_details->institution = $nacte_result_detail->institution;
+                                    $result_details->programme = $nacte_result_detail->programme;
+                                    $result_details->firstname = $nacte_result_detail->firstname;
+                                    $result_details->middlename = $nacte_result_detail->middlename;
+                                    $result_details->surname = $nacte_result_detail->surname;
+                                    $result_details->avn = $nacte_result_detail->avn;
+                                    $result_details->gender = $nacte_result_detail->gender;
+                                    $result_details->diploma_gpa = $nacte_result_detail->diploma_gpa;
+                                    $result_details->diploma_code = $nacte_result_detail->diploma_code;
+                                    $result_details->diploma_category = $nacte_result_detail->diploma_category;
+                                    $result_details->diploma_graduation_year = $nacte_result_detail->diploma_graduation_year;
+                                    $result_details->username = $nacte_result_detail->username;
+                                    $result_details->date_birth = $nacte_result_detail->date_birth;
+                                    $result_details->verified = $nacte_result_detail->verified;
+                                    $result_details->created_at = now();
+                                    $result_details->updated_at = now();
+                                    $result_details->save();
+      
+                                    $result_subjects = NacteResult::where('nacte_result_detail_id',$nacte_result_detail->id)->get();
+                                    foreach($result_subjects as $subject){
+                                       $result = new NacteResult;
+                                       $result->applicant_id = $applicant->id;
+                                       $result->subject = $subject->subject;
+                                       $result->grade =  $subject->grade;
+                                       $result->nacte_result_detail_id =  $result_details->id;
+                                       $result->created_at = now();
+                                       $result->updated_at = now();
+                                       $result->save();
+      
+                                    }
+      
+                                 }
+                                 break;
+                              }
+   
+                              if($out_result_details){
+                                 foreach($out_result_details as $out_result_detail){
+                                    $result_details = new OutResultDetail;
+                                    $result_details->applicant_id = $applicant->id;
+                                    $result_details->reg_no = $out_result_detail->reg_no;
+                                    $result_details->index_number = $out_result_detail->index_number;
+                                    $result_details->first_name = $out_result_detail->first_name;
+                                    $result_details->middle_name = $out_result_detail->middle_name;
+                                    $result_details->surname = $out_result_detail->surname;
+                                    $result_details->gender = $out_result_detail->gender;
+                                    $result_details->gpa = $out_result_detail->gpa;
+                                    $result_details->classification = $out_result_detail->classification;
+                                    $result_details->birth_date = $out_result_detail->birth_date;
+                                    $result_details->verified = $out_result_detail->verified;
+                                    $result_details->created_at = now();
+                                    $result_details->updated_at = now();
+                                    $result_details->save();
+      
+                                    $result_subjects = OutResult::where('out_result_detail_id',$out_result_detail->id)->get();
+                                    foreach($result_subjects as $subject){
+                                       $result = new OutResult;
+                                       $result->subject_name = $subject->subject_name;
+                                       $result->subject_code = $subject->subject_code;
+                                       $result->grade =  $subject->grade;
+                                       $result->out_result_detail_id =  $result_details->id;
+                                       $result->created_at = now();
+                                       $result->updated_at = now();
+                                       $result->save();
+      
+                                    }
+      
+                                 }
+                                 break;
+                              }
+                           }                     
+                       }
                     }
 				}
 			session(['applicant_campus_id'=>$request->get('campus_id')]);
@@ -550,7 +680,7 @@ class ApplicantController extends Controller
     public function selectPrograms(Request $request)
     {
 		$applicant = User::find(Auth::user()->id)->applicants()->where('campus_id',session('applicant_campus_id'))->first();
-		
+
 		$second_attempt_applicant = ApplicantProgramSelection::where('applicant_id',$applicant->id)->where('batch_no','>',0)->first();
 		if($second_attempt_applicant && $applicant->batch_no > 0){
 			$applicant = Applicant::where('id',$applicant->id)->first();
@@ -933,18 +1063,20 @@ class ApplicantController extends Controller
 						&& ($a_level_subsidiary_pass_count + $a_level_principle_pass_count >= 2)) || $a_level_principle_pass_count >= 2)){
 							$programs[] = $program;
 						}
-                       $has_btc = false;
-					   $has_diploma = false;
+                       $has_btc = $has_diploma = $pass_diploma = false;
                       
                        if(unserialize($program->entryRequirements[0]->equivalent_majors) != '' && $program->entryRequirements[0]->nta_level >= 4){
             
                            foreach(unserialize($program->entryRequirements[0]->equivalent_majors) as $sub){
                                 foreach($applicant->nacteResultDetails as $det){
-                                   if(str_contains(strtolower($det->programme),strtolower($sub)) && str_contains(strtolower($det->programme),'basic')){
-                                     $has_btc = true;
-                                   }elseif(str_contains(strtolower($det->programme),'diploma')){
-									 $has_diploma = true;  
-								   }
+                                    if(str_contains(strtolower($det->programme),strtolower($sub)) && str_contains(strtolower($det->programme),'basic')){
+                                       $has_btc = true;
+                                    }elseif(str_contains(strtolower($det->programme),'diploma')){
+                                       $has_diploma = true;  
+                                       if($det->diploma_gpa >= 2){
+                                          $pass_diploma = true;
+                                       }  
+								            }
                                 }
                            }
                        } elseif (unserialize($program->entryRequirements[0]->equivalent_majors) != '' && $program->entryRequirements[0]->nta_level == 5) {
@@ -955,18 +1087,26 @@ class ApplicantController extends Controller
                                    if(str_contains(strtolower($det->programme),'basic')){
                                      $has_btc = true;
                                    }elseif(str_contains(strtolower($det->programme),'diploma')){
-									 $has_diploma = true;  
-								   }
+                                       $has_diploma = true;  
+                                       if($det->diploma_gpa >= 2){
+                                          $pass_diploma = true;
+                                       }
+								            }
                             }
                        }
 
-                       if(($o_level_pass_count + $o_level_other_pass_count) >= $program->entryRequirements[0]->pass_subjects && $has_btc){
+                       if(($o_level_pass_count + $o_level_other_pass_count) >= $program->entryRequirements[0]->pass_subjects && $has_btc && !$has_diploma){
                            $programs[] = $program;
                        } elseif (($o_level_pass_count + $o_level_other_pass_count) >= $program->entryRequirements[0]->pass_subjects && $applicant->veta_status == 1) {
                            $programs[] = $program;
-                       }elseif(($o_level_pass_count + $o_level_other_pass_count) >= $program->entryRequirements[0]->pass_subjects && $has_diploma){
-						   // retrieve campus programmes, with students, offered in the previous application window
-					   }
+                       }elseif(($o_level_pass_count + $o_level_other_pass_count) >= $program->entryRequirements[0]->pass_subjects && $has_btc && $has_diploma && $pass_diploma){
+						      // retrieve campus programmes, with students, offered in the previous application window
+                           $previous_programmes = CampusProgram::whereHas('students.applicant', function($query) use($applicant){$query->where('application_window_id',$applicant->application_window_id - 1);})
+                                                               ->where('campus_id', $applicant->campus_id)->whereHas('program', function($query){$query->where('name','LIKE','%Ordinary%');})->get();
+                           foreach($previous_programmes as $program){
+                              $programs[] = $program;   
+                           }
+					        }
                    }
                    
                    // Bachelor
