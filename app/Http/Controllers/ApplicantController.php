@@ -231,10 +231,10 @@ class ApplicantController extends Controller
 
                         $applicants = Applicant::where('user_id',Auth::user()->id)->get();
                         foreach($applicants as $appl){
-                           $necta_result_details = NectaResultDetails::where('applicant_id', $appl->id)->where('verified',1)->get();
+                           $necta_result_details = NectaResultDetail::where('applicant_id', $appl->id)->where('verified',1)->get();
                            if($necta_result_details){
                               foreach($necta_result_details as $necta_result_detail){
-                                 $result_details = new NectaResultDetails;
+                                 $result_details = new NectaResultDetail;
                                  $result_details->applicant_id = $applicant->id;
                                  $result_details->center_name = $necta_result_detail->center_name;
                                  $result_details->center_number = $necta_result_detail->center_number;
@@ -251,9 +251,9 @@ class ApplicantController extends Controller
                                  $result_details->updated_at = now();
                                  $result_details->save();
    
-                                 $result_subjects = NectaResults::where('necta_result_detail_id',$necta_result_detail->id)->get();
+                                 $result_subjects = NectaResult::where('necta_result_detail_id',$necta_result_detail->id)->get();
                                  foreach($result_subjects as $subject){
-                                    $result = new NectaResults;
+                                    $result = new NectaResult;
                                     $result->applicant_id = $applicant->id;
                                     $result->subject_code = $subject->subject_code;
                                     $result->grade = $subject->grade;
