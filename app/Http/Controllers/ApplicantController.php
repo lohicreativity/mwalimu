@@ -230,9 +230,12 @@ class ApplicantController extends Controller
                         $applicant->save();
 
                         $applicants = Applicant::where('user_id',Auth::user()->id)->get();
+
                         foreach($applicants as $appl){
                            $necta_result_details = NectaResultDetail::where('applicant_id', $appl->id)->where('verified',1)->get();
-                           if($necta_result_details){
+                           $necta_change_status = $nacte_change_status = $out_change_status = false;
+
+                           if(count($necta_result_details)>0){
                               foreach($necta_result_details as $necta_result_detail){
                                  $result_details = new NectaResultDetail;
                                  $result_details->applicant_id = $applicant->id;
@@ -250,12 +253,13 @@ class ApplicantController extends Controller
                                  $result_details->created_at = now();
                                  $result_details->updated_at = now();
                                  $result_details->save();
-   
+
                                  $result_subjects = NectaResult::where('necta_result_detail_id',$necta_result_detail->id)->get();
                                  foreach($result_subjects as $subject){
                                     $result = new NectaResult;
                                     $result->applicant_id = $applicant->id;
                                     $result->subject_code = $subject->subject_code;
+                                    $result->subject_name = $subject->subject_name;
                                     $result->grade = $subject->grade;
                                     $result->necta_result_detail_id = $result_details->id;
                                     $result->created_at = now();
@@ -263,9 +267,8 @@ class ApplicantController extends Controller
                                     $result->save();
    
                                  }
-   
                               }
-                              break;
+                              $necta_change_status = true;
                            } 
                            if($applicant->entry_mode == 'EQUIVALENT'){
                               $nacte_result_details = NacteResultDetail::where('applicant_id', $appl->id)->where('verified',1)->get();
@@ -286,6 +289,7 @@ class ApplicantController extends Controller
                                     $result_details->diploma_category = $nacte_result_detail->diploma_category;
                                     $result_details->diploma_graduation_year = $nacte_result_detail->diploma_graduation_year;
                                     $result_details->username = $nacte_result_detail->username;
+                                    $result_details->registration_number = $nacte_result_detail->registration_number;
                                     $result_details->date_birth = $nacte_result_detail->date_birth;
                                     $result_details->verified = $nacte_result_detail->verified;
                                     $result_details->created_at = now();
@@ -304,9 +308,8 @@ class ApplicantController extends Controller
                                        $result->save();
       
                                     }
-      
                                  }
-                                 break;
+                                 $nacte_change_status = true;
                               }
    
                               if($out_result_details){
@@ -322,6 +325,7 @@ class ApplicantController extends Controller
                                     $result_details->gpa = $out_result_detail->gpa;
                                     $result_details->classification = $out_result_detail->classification;
                                     $result_details->birth_date = $out_result_detail->birth_date;
+                                    $result_details->academic_year = $out_result_detail->academic_year;
                                     $result_details->verified = $out_result_detail->verified;
                                     $result_details->created_at = now();
                                     $result_details->updated_at = now();
@@ -341,8 +345,13 @@ class ApplicantController extends Controller
                                     }
       
                                  }
-                                 break;
+                                 $out_change_status = true;
                               }
+                           }
+                           if($applicant->entry_mode == 'DIRECT' && $necta_change_status){
+                              break;
+                           }elseif($applicant->entry_mode == 'EQUIVALENT' && $necta_change_status && ($nacte_change_status || out_change_status)){
+                              break;
                            }                     
                        }
                     }
