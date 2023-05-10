@@ -112,11 +112,17 @@
                   </div>
                   <div class="row">
                   <div class="form-group col-4">
-                    {!! Form::label('','Department') !!}
+                    {!! Form::label('','Department/Unit') !!}
                     <select name="department_id" class="form-control" required>
-                      <option value="">Select Department</option>
+                      <option value="">Select Department/Unit</option>
                       @foreach($departments as $department)
-                      <option value="{{ $department->id }}">{{ $department->name }}</option>
+                      <option value="{{ $department->id }}">{{ $department->name }}
+                        @if(Auth::user()->hasRole('arc') || Auth::user()->hasRole('administrator')) -
+                          @foreach($department->campuses as $campus)
+                           {{ $campus->name }}
+                          @endforeach
+                        @endif
+                      </option>
                       @endforeach
                     </select>
                   </div>
