@@ -44,10 +44,12 @@ class ProgramController extends Controller
                  $query->where('id',$staff->campus_id);
             })->where('id', $staff->department_id)->get();
 			
+        }elseif(Auth::user()->hasRole('administrator') || Auth::user()->hasRole('arc')){
+            $departments = Department::whereHas('campuses')->with('campuses')->get();
+            $programs = Program::whereHas('departments')->with(['departments','ntaLevel','award','campusPrograms'])->orderBy('code')->get();
         }else{
-		$departments = Department::whereHas('campuses',function($query) use($staff){
-            $query->where('id',$staff->campus_id);
-        })->get();
+		    $departments = Department::whereHas('campuses',function($query) use($staff){
+            $query->where('id',$staff->campus_id);})->get();
 
           if($request->has('query')){
             $programs = Program::whereHas('departments',function($query) use($staff){
@@ -100,9 +102,14 @@ class ProgramController extends Controller
            }
         }
 
+        $check_program_department = Program::whereHas('departments', function($query) use($request)
+                                            {$query->where('campus_id',$request->get('campus_id'));})->where('code', $request->get('code'))->first();
 
-        (new ProgramAction)->store($request);
-
+        if ($check_program_department) {
+            return redirect()->back()->with('error','The programme has already been assigned in '.$check_program_department->departments[0]->name);
+        } else {
+            (new ProgramAction)->store($request);
+        }
         return Util::requestResponse($request,'Program created successfully');
     }
 
