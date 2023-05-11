@@ -290,7 +290,7 @@
 							@endif
                           <th>Batch#</th>							
                           <th>Phone</th>
-                          <th>Gender</th>
+                          <th>Sex</th>
                           <th>Programme</th>
                           <th>Status</th>
                         </tr>
@@ -323,8 +323,8 @@
 					  @endif
 					  </td>
 					  <td>{{ $applicant->phone }}</td>
-                      <td>{{ $applicant->gender }}</td>
-                      <td>@foreach($applicant->selections as $selection)
+            <td>{{ $applicant->gender }}</td>
+            <td>@foreach($applicant->selections as $selection)
 							@if($selection->status != 'ELIGIBLE' && $applicant->status == 'SELECTED')
 								{{ $selection->campusProgram->program->code }}
 								@if($selection->order == 1)
@@ -345,34 +345,35 @@
 								@endif
 							@endif
                           @endforeach
-                      </td>
-                      <td>
-                        @if($applicant->status == 'SELECTED')
-							@foreach($applicant->selections as $selection)
-								@if($selection->status == 'SELECTED' || $selection->status == 'APPROVING')
-									@if($selection->status == 'SELECTED')
-									<span class="badge badge-success">
-										@if($selection->status == 'APPROVING') PRE-SELECTED 
-										@else {{ $selection->status }} 
-										@endif 
-										@if($applicant->multiple_admissions == 1)*
-										@endif
-									</span>
-									@else
-									<span class="badge badge-warning">
-										@if($selection->status == 'APPROVING') PRE-SELECTED 
-										@else {{ $selection->status }} 
-										@endif
-									</span>
-									@endif
-								@endif
-							@endforeach
-                        @elseif($applicant->status == null)
-                        <span class="badge badge-danger">NOT SELECTED</span>
-                        @endif
+              </td>
+              <td>
+                @if($applicant->status == 'SELECTED')
+							      @foreach($applicant->selections as $selection)
+								        @if($selection->status == 'SELECTED' || $selection->status == 'APPROVING')
+                            @if($selection->status == 'SELECTED')
+                            <span class="badge badge-success">
+                              @if($selection->status == 'APPROVING' && $selection->batch_no == 0) PRE-SELECTED
+                              @else {{ $selection->status }}
+                              @endif 
+                              @if($applicant->multiple_admissions == 1)*
+                              @endif
+                            </span>
+                            @else
+                            <span class="badge badge-danger">
+                              @if($selection->status == 'APPROVING' && !$selection_status && $selection->batch_no == 0) PRE-SELECTED
+                              @elseif($selection->status == 'APPROVING' && $selection_status) NOT APPROVED
+
+                              @endif
+                            </span>
+                            @endif
+								        @endif
+							      @endforeach
+                @elseif($applicant->status == null)
+                    <span class="badge badge-danger">NOT SELECTED</span>
+                @endif
                       </td>
                    </tr>
-                 @endforeach
+                    @endforeach
                    </tbody>
                   </table>
 

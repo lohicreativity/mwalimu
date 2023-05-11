@@ -432,10 +432,24 @@ class ApplicantController extends Controller
         ->applicants()
         ->with(['programLevel'])
         ->where('campus_id',session('applicant_campus_id'))->first();
+      $regulator_status = Applicant::where('program_level_id', $applicant->program_level_id)
+                                   ->whereHas('selections', function ($query) {$query->where('status', 'SELECTED')
+                                   ->orWhere('status', 'PENDING');})
+                                   ->where('application_window_id', $applicant->application_window_id)
+                                   ->where('intake_id', $applicant->intake_id)
+                                   ->count();	
+		$selected_applicants = Applicant::where('program_level_id', $applicant->program_level_id)
+                                      ->whereHas('selections',function($query) use($applicant){$query->where('application_window_id',$applicant->application_window_id);})
+                                      ->where('application_window_id', $applicant->application_window_id)
+                                      ->where('intake_id', $applicant->intake_id)->where('status', 'SELECTED')->first();
 
-        if($applicant->status=='ADMITTED'){
-            $application_window = ApplicationWindow::where('id',$applicant->application_window_id)->first();
-        }else{
+		$selection_status = !empty($selected_applicants)? true : false; // Check if internal selection is done
+		$regulator_selection = $regulator_status != 0 ? true : false;  // Check if applicants retrieved from regulator
+
+         //if($applicant->status != null){
+         if($applicant->status=='ADMITTED' || ($applicant->status=='SELECTED') && $regulator_selection){         
+               $application_window = ApplicationWindow::where('id',$applicant->application_window_id)->first();
+         }else{
             $application_window = ApplicationWindow::where('campus_id',session('applicant_campus_id'))
             ->where('intake_id', $applicant->intake_id)
             ->where('begin_date','<=',now()->format('Y-m-d'))
@@ -444,17 +458,21 @@ class ApplicantController extends Controller
 
             if($applicant->is_tamisemi !== 1 && $applicant->is_transfered != 1){
                if(!$application_window){ 
-                  if($applicant->status == null){
+                  if($applicant->status == null || ($applicant->status == 'SELECTED' && !$regulator_selection)){
                      return redirect()->to('application/submission')->with('error','Application window already closed');
                   }
                   if($applicant->multiple_admissions !== null && $applicant->status == 'SELECTED'){
                      return redirect()->to('application/admission-confirmation')->with('error','Application window already closed');
                   }
+               }else{
+                  if($applicant->status != null && !$regulator_selection){
+                     return redirect()->to('application/submission')->with('error','Action is not allowed at the moment');
+                  }
                }
-           }                 
-        }
+            }                 
+         }
 				
-        if($applicant->is_tcu_verified === null && str_contains($applicant->programLevel->name,'Degree')){
+        if($applicant->is_tcu_verified === null && str_contains($applicant->programLevel->name,'Degree' && $applicant->is_tcu_verified == 0)){
             $url='http://api.tcu.go.tz/applicants/checkStatus';
             $fullindex=str_replace('-','/',Auth::user()->username);
             $xml_request='<?xml version="1.0" encoding="UTF-8"?> 
@@ -477,22 +495,6 @@ class ApplicantController extends Controller
             }
         }
 
-        $regulator_status = Applicant::where('program_level_id', $applicant->program_level_id)
-								->whereHas('selections', function ($query) {$query->where('status', 'SELECTED')
-								->orWhere('status', 'PENDING');})
-								->where('application_window_id', $applicant->application_window_id)
-								->where('intake_id', $applicant->intake_id)
-								->count();
-				
-		$selected_applicants = Applicant::where('program_level_id', $applicant->program_level_id)
-						->whereHas('selections',function($query) use($applicant){$query->where('application_window_id',$applicant->application_window_id);})
-						->where('application_window_id', $applicant->application_window_id)
-						->where('intake_id', $applicant->intake_id)->where('status', 'SELECTED')->first();
-	
-//        $selection_status = false;
-		$selection_status = $selected_applicants != null ? true : false;
-		$regulator_selection = $regulator_status != 0 ? true : false;
-		
 /*         if(ApplicationWindow::where('campus_id',session('applicant_campus_id'))->where('intake_id', $applicant->intake_id)
 			->where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('status','ACTIVE')->first()){
            $selection_status = $selected_applicants != null ? true : false;
@@ -502,9 +504,9 @@ class ApplicantController extends Controller
 
          $check_selected_applicant = User::find(Auth::user()->id)->applicants()
         ->whereHas('selections', function ($query) {$query->where('status', 'SELECTED')->orWhere('status', 'PENDING');})
-        ->with(['programLevel', 'selections.campusProgram.program', 'selections' => function($query) {$query->where('status', 'SELECTED')->orWhere('status', 'PENDING')->first();}])
+        ->with(['programLevel', 'selections.campusProgram.program', 'selections' => function($query) {$query->where('status', 'SELECTED')->first();}])
 		->where('campus_id',session('applicant_campus_id'))->first();
-		
+
 		ApplicantProgramSelection::where('application_window_id', $applicant->application_window_id)
          ->where(function($query) {
             $query->where('status', 'SELECTED')
@@ -556,7 +558,7 @@ class ApplicantController extends Controller
            'applicant'=>$applicant,
            'student' => $payment_status? $student : [],
            'selection_status' => $selection_status,
-		   'regulator_selection' => $regulator_selection,
+		     'regulator_selection' => $regulator_selection,
            'check_selected_applicant' => $check_selected_applicant,
            'application_window'=>ApplicationWindow::where('campus_id',session('applicant_campus_id'))->where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->first(),
            'campus'=>Campus::find(session('applicant_campus_id')),
@@ -611,7 +613,11 @@ class ApplicantController extends Controller
             if(!ApplicationWindow::where('campus_id',session('applicant_campus_id'))->where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('status','ACTIVE')->first()){
                  return redirect()->to('application/submission')->with('error','Application window already closed');
             }
+            if($applicant->batch_no != 0){
+               return redirect()->to('application/submission')->with('error','Action is not allowed at the moment');
+           }
         }
+
         $data = [
            'applicant'=>$applicant,
            'campus'=>Campus::find(session('applicant_campus_id')),
@@ -621,6 +627,7 @@ class ApplicantController extends Controller
            'districts'=>District::all(),
            'wards'=>Ward::all(),
            'disabilities'=>DisabilityStatus::all(),
+           'regulator_selection'=>false
         ];
 
         return view('dashboard.application.edit-next-of-kin',$data)->withTitle('Edit Next of Kin');
@@ -632,9 +639,13 @@ class ApplicantController extends Controller
     public function payments(Request $request)
     {
         $applicant = User::find(Auth::user()->id)->applicants()->with(['country','applicationWindow','programLevel'])->where('campus_id',session('applicant_campus_id'))->first();
+
         if($applicant->is_tamisemi != 1){
             if(!ApplicationWindow::where('campus_id',session('applicant_campus_id'))->where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('status','ACTIVE')->first()){
                  return redirect()->to('application/submission')->with('error','Application window already closed');
+            }
+            if($applicant->batch_no != 0){
+               return redirect()->to('application/submission')->with('error','Action is not allowed at the moment');
             }
         }
         $study_academic_year = StudyAcademicYear::whereHas('academicYear',function($query) use ($applicant){
@@ -653,7 +664,8 @@ class ApplicantController extends Controller
             })->with(['feeItem.feeType'])->where('study_academic_year_id',$study_academic_year->id)->first(),
            'invoice'=>$invoice,
            'usd_currency'=>Currency::where('code','USD')->first(),
-           'gateway_payment'=>$invoice? GatewayPayment::where('control_no',$invoice->control_no)->first() : null
+           'gateway_payment'=>$invoice? GatewayPayment::where('control_no',$invoice->control_no)->first() : null,
+           'regulator_selection'=>false
         ];
 
         return view('dashboard.application.payments',$data)->withTitle('Payments');
@@ -665,21 +677,26 @@ class ApplicantController extends Controller
     public function requestResults(Request $results)
     {
 		$applicant = User::find(Auth::user()->id)->applicants()->with('programLevel')->where('campus_id',session('applicant_campus_id'))->first();
-		$selection_status = ApplicantProgramSelection::where('applicant_id',$applicant->id)->count();
+
+      $selection_status = ApplicantProgramSelection::where('applicant_id',$applicant->id)->count();
 		if($applicant->is_transfered != 1){
         if(!ApplicationWindow::where('campus_id',session('applicant_campus_id'))->where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('status','ACTIVE')->first()){
              return redirect()->to('application/submission')->with('error','Application window already closed');
         }
+        if($applicant->batch_no != 0){
+         return redirect()->to('application/submission')->with('error','Action is not allowed at the moment');
+         }
 		}
         
         $data = [
-           'applicant'=>$applicant,
-           'campus'=>Campus::find(session('applicant_campus_id')),
-           'o_level_necta_results'=>NectaResultDetail::with('results')->where('applicant_id',$applicant->id)->where('exam_id','1')->where('verified',1)->get(),
-           'a_level_necta_results'=>NectaResultDetail::with('results')->where('applicant_id',$applicant->id)->where('exam_id','2')->where('verified',1)->get(),
-           'nacte_results'=>NacteResultDetail::with('results')->where('applicant_id',$applicant->id)->where('verified',1)->get(),
-           'out_results'=>OutResultDetail::with('results')->where('applicant_id',$applicant->id)->where('verified',1)->get(),
-		   'selection_status'=>$selection_status>0? $selection_status : 0
+         'applicant'=>$applicant,
+         'campus'=>Campus::find(session('applicant_campus_id')),
+         'o_level_necta_results'=>NectaResultDetail::with('results')->where('applicant_id',$applicant->id)->where('exam_id','1')->where('verified',1)->get(),
+         'a_level_necta_results'=>NectaResultDetail::with('results')->where('applicant_id',$applicant->id)->where('exam_id','2')->where('verified',1)->get(),
+         'nacte_results'=>NacteResultDetail::with('results')->where('applicant_id',$applicant->id)->where('verified',1)->get(),
+         'out_results'=>OutResultDetail::with('results')->where('applicant_id',$applicant->id)->where('verified',1)->get(),
+		   'selection_status'=>$selection_status>0? $selection_status : 0,
+         'regulator_selection'=>false
         ];
         return view('dashboard.application.request-results',$data)->withTitle('Request Results');
     }
@@ -691,20 +708,24 @@ class ApplicantController extends Controller
     {
 		$applicant = User::find(Auth::user()->id)->applicants()->where('campus_id',session('applicant_campus_id'))->first();
 
-		$second_attempt_applicant = ApplicantProgramSelection::where('applicant_id',$applicant->id)->where('batch_no','>',0)->first();
-		if($second_attempt_applicant && $applicant->batch_no > 0){
+		$second_attempt_applicant = $request->other_attempt == true? ApplicantProgramSelection::where('applicant_id',$applicant->id)->where('batch_no','>',0)->first() : null;
+      if(!empty($second_attempt_applicant) && $applicant->batch_no > 0){
 			$applicant = Applicant::where('id',$applicant->id)->first();
 			$applicant->submission_complete_status = 0;
 			$applicant->programs_complete_status = 0;
 			$applicant->batch_no = 0;
+         $applicant->status = null;
 			$applicant->save();
 		}
 		
         if(!ApplicationWindow::where('campus_id',session('applicant_campus_id'))->where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('status','ACTIVE')->first()){
-             if($second_attempt_applicant){
-				return redirect()->back()->with('error','Please wait for application window to be openned');				 
-			 }
-			 return redirect()->to('application/submission')->with('error','Application window already closed');
+            if($second_attempt_applicant){
+				   return redirect()->back()->with('error','Please wait for application window to be openned');				 
+			   }
+			   return redirect()->to('application/submission')->with('error','Application window already closed');
+        }
+        if($applicant->batch_no != 0){
+         return redirect()->to('application/submission')->with('error','Action is not allowed at the moment');
         }
         // $window = ApplicationWindow::where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('campus_id',session('applicant_campus_id'))->first();
 
@@ -1503,7 +1524,8 @@ class ApplicantController extends Controller
            'applicant'=>$applicant,
            'campus'=>Campus::find(session('applicant_campus_id')),
            'application_window'=>$window,
-           'campus_programs'=>$window ? $programs : []
+           'campus_programs'=>$window ? $programs : [],
+           'regulator_selection'=>false
         ];
         return view('dashboard.application.select-programs',$data)->withTitle('Select Programmes');
     }
@@ -1538,14 +1560,19 @@ class ApplicantController extends Controller
     public function uploadAvnDocuments(Request $request)
     {
        $applicant = User::find(Auth::user()->id)->applicants()->with('programLevel')->where('campus_id',session('applicant_campus_id'))->first();
+       
        if($applicant->is_tamisemi != 1 && $applicant->is_transfered != 1){
          if(!ApplicationWindow::where('campus_id',session('applicant_campus_id'))->where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('status','ACTIVE')->first()){
                return redirect()->to('application/submission')->with('error','Application window already closed');
+          }
+          if($applicant->batch_no != 0){
+            return redirect()->to('application/submission')->with('error','Action is not allowed at the moment');
           }
        }
        $data = [
           'applicant'=>$applicant,
           'campus'=>Campus::find(session('applicant_campus_id')),
+          'regulator_selection'=>false
        ];
        return view('dashboard.application.upload-avn-documents',$data)->withTitle('Upload AVN Documents');
     }
@@ -1558,26 +1585,39 @@ class ApplicantController extends Controller
         $applicant = User::find(Auth::user()->id)->applicants()->with('programLevel')->where('campus_id',session('applicant_campus_id'))->first();
 
 
-         $applicants = Applicant::where('program_level_id', $applicant->program_level_id)->where('submission_complete_status', 1)->where('application_window_id', $applicant->application_window_id)->whereNotNull('status')->first();
+         $applicants = Applicant::where('program_level_id', $applicant->program_level_id)->where('submission_complete_status', 1)
+                                ->where('application_window_id', $applicant->application_window_id)->whereNotNull('status')
+                                ->where('batch_no',$applicant->batch_no)->first();
+         $selection_status = !empty($applicants) ? true : false;
 
         if(ApplicationWindow::where('campus_id',session('applicant_campus_id'))->where('intake_id', $applicant->intake_id)->where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('status','ACTIVE')->first()){
             if($applicant->programs_complete_status != 1){
                 return redirect()->back()->with('error','You must first select programmes');
             }
         }
-        $selection_status = true;
+
         if(!ApplicationWindow::where('campus_id',session('applicant_campus_id'))->where('intake_id', $applicant->intake_id)->where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('status','ACTIVE')->first()){
            $selection_status = $applicants != null ? true : false;
         }
 
         $program_selection = ApplicantProgramSelection::where('applicant_id', $applicant->id)->where('application_window_id', $applicant->application_window_id)->where('status', 'SELECTED')->first();
-      //   return $program_selection;
+         
+        //   check selection confirmation from regulator
+        $regulator_status = Applicant::where('program_level_id', $applicant->program_level_id)
+        ->whereHas('selections', function ($query) {$query->where('status', 'SELECTED')
+        ->orWhere('status', 'PENDING');})
+        ->where('application_window_id', $applicant->application_window_id)
+        ->where('intake_id', $applicant->intake_id)
+        ->count();	
+
+        $regulator_selection = $regulator_status != 0 ? true : false;
 
         $data = [
             'applicant'=>$applicant,
             'campus'=>Campus::find(session('applicant_campus_id')),
             'selected_status'=>$selection_status,
-            'program_selection' => $program_selection
+            'program_selection' => $program_selection,
+            'regulator_selection'=> $regulator_selection
         ];
         return view('dashboard.application.submission',$data)->withTitle('Submission');
       }

@@ -42,48 +42,39 @@
             @if($regulator_selection)
 
               @if($check_selected_applicant)
-				@if($check_selected_applicant->selections[0]->status == 'PENDING')
-                  <div class="alert alert-danger">
+                  @if($check_selected_applicant->selections[0]->status == 'PENDING')
+                    <div class="alert alert-danger">
+                      <h3 class="text-white" style="font-size: 18px!important;">
+                        <i class="fa fa-times-circle"></i> 
+                        Sorry, you have not been selected this round. Please <a href="{{ url('application/select-programs?other_attempt=true') }}">click here</a> to select a new programme for the next round.
+                      </h3>
+                    </div>
+                  @elseif($applicant->confirmation_status != 'CANCELLED' && $applicant->status == 'SELECTED')
+                      <div class="alert alert-success">
+                        <h3 class="text-white" style="font-size: 18px!important;"><i class="fa fa-check-circle"></i> 
+                        Congratulations! You have been successfully selected for {{ $check_selected_applicant->selections[0]->campusProgram->program->name }} programme. @if($applicant->multiple_admissions == null) Please wait for admission package. @else Please <a href="{{ url('application/admission-confirmation') }}">click here</a> to confirm with us.@endif</h3>
+                      </div>
+                  @elseif($applicant->status == 'ADMITTED' && !$student)
+                      <div class="alert alert-success">
+                        <h3 class="text-white" style="font-size: 18px!important;"><i class="fa fa-check-circle"></i> 
+                        Congratulations! You have been successfully admitted to {{ $check_selected_applicant->selections[0]->campusProgram->program->name }} programme.</h3>
+                      </div>
+                  @elseif($student)
+                      <div class="alert alert-success">
+                        <h3 class="text-white" style="font-size: 18px!important;"><i class="fa fa-check-circle"></i> 
+                        Congratulations for a successful registration. Your registration number is <strong>{{ $student->registration_number }}</strong>. You MUST change your password by <a href="{{ url('change-password') }}">clicking here to access your student account.</a> </h3>
+                      </div>                
+                  @endif
+              @else
+                  @if($applicant->batch_no > 0)
+                    <div class="alert alert-danger">
                     <h3 class="text-white" style="font-size: 18px!important;">
                       <i class="fa fa-times-circle"></i> 
-                      Sorry, you have not been selected this round. Please <a href="{{ url('application/select-programs') }}">click here</a> to select a new programme for the next round.
+                      Sorry, you have not been selected in this round. Please <a href="{{ url('application/select-programs?other_attempt=true') }}">click here</a> to select a new programme for the next round.
                     </h3>
-                  </div>
-                @elseif($applicant->confirmation_status != 'CANCELLED' && $applicant->status == 'SELECTED')
-                    <div class="alert alert-success">
-                      <h3 class="text-white" style="font-size: 18px!important;"><i class="fa fa-check-circle"></i> 
-                      Congratulations! You have been successfully selected for {{ $check_selected_applicant->selections[0]->campusProgram->program->name }} programme. @if($applicant->multiple_admissions == null) Please wait for admission package. @else Please <a href="{{ url('application/admission-confirmation') }}">click here</a> to confirm with us.@endif</h3>
-                    </div>
-                @elseif($applicant->status == 'ADMITTED' && !$student)
-                    <div class="alert alert-success">
-                      <h3 class="text-white" style="font-size: 18px!important;"><i class="fa fa-check-circle"></i> 
-                      Congratulations! You have been successfully admitted to {{ $check_selected_applicant->selections[0]->campusProgram->program->name }} programme.</h3>
-                    </div>
-                @elseif($student)
-                    <div class="alert alert-success">
-                      <h3 class="text-white" style="font-size: 18px!important;"><i class="fa fa-check-circle"></i> 
-                      Congratulations for a successful registration. Your registration number is <strong>{{ $student->registration_number }}</strong>. You MUST change your password by <a href="{{ url('change-password') }}">clicking here to access your student account.</a> </h3>
-                    </div>                
-                @endif
-			  @else
-				  @if($applicant->batch_no > 0)
-					  <div class="alert alert-danger">
-						<h3 class="text-white" style="font-size: 18px!important;">
-						  <i class="fa fa-times-circle"></i> 
-						  Sorry, you have not been selected in this round. Please <a href="{{ url('application/select-programs') }}">click here</a> to select a new programme for the next round.
-						</h3>
-					  </div> 					  
-				  @endif 
+                    </div> 					  
+                  @endif 
               @endif
-          
-            @else 
-			  @if($applicant->submission_complete_status == 1 && !$selection_status)		
-				<div class="alert alert-success">
-				  <h3 class="text-white" style="font-size: 18px!important;"><i class="fa fa-check-circle"></i> 
-					Please wait, your application is still in progress.
-				  </h3>
-				</div>
-			   @endif
             @endif
 
             

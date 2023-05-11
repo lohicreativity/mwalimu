@@ -95,36 +95,52 @@
                       </div>
                 </div>
                 @else
-
-                  @if($selected_status == true)
-                    @if($applicant->status !=null && !$program_selection)
-                    <div class="alert alert-danger" role="alert">
-                      <h5><i class="fa fa-times-circle"></i> We are sorry to inform you that you have not been selected.</h5>
-                    </div>
-                    @endif
-                  @else
-                  <div class="card card-default">
-                      <div class="card-header">
-                        <h3 class="card-title">{{ __('Application Submission') }}</h3>
-                      </div>
-                      <!-- /.card-header -->
-                      <!-- form start -->
-                      <div class="card-body ss-center">
-                        <div class="row">
-                          <div class="col-12">
-                            <div class="alert alert-success" role="alert">
-                              <h5><i class="fa fa-check-circle"></i> Please wait, your application is still in progress.</h5>
+                  @if($applicant->submission_complete_status == 1)
+                      @if($applicant->status == null)
+                          <div class="card card-default">
+                              <div class="card-header">
+                                <h3 class="card-title">{{ __('Application Submission') }}</h3>
+                              </div>
+                              <!-- /.card-header -->
+                              <!-- form start -->
+                              <div class="card-body ss-center">
+                                <div class="row">
+                                  <div class="col-12">
+                                    <div class="alert alert-success" role="alert">
+                                      <h5><i class="fa fa-check-circle"></i> Please wait, your application is still in progress.</h5>
+                                    </div>
+                                  </div>
+                                  
+                                  <div class="col-12">
+                                      <a href="{{ url('application/summary') }}" class="btn btn-primary">Download Application Preview</a>
+                                  </div>
+                                </div>
+                              </div>
+                          </div>
+                      @endif
+                      @if($selected_status == true && !$regulator_selection)
+                      <div class="card card-default">
+                          <div class="card-header">
+                            <h3 class="card-title">{{ __('Application Submission') }}</h3>
+                          </div>
+                          <!-- /.card-header -->
+                          <!-- form start -->
+                          <div class="card-body ss-center">
+                            <div class="row">
+                              <div class="col-12">
+                                <div class="alert alert-success" role="alert">
+                                  <h5><i class="fa fa-check-circle"></i> Please wait, your application is still in progress.</h5>
+                                </div>
+                              </div>
+                              
+                              <div class="col-12">
+                                  <a href="{{ url('application/summary') }}" class="btn btn-primary">Download Application Preview</a>
+                              </div>
                             </div>
                           </div>
-                          
-                          <div class="col-12">
-                              <a href="{{ url('application/summary') }}" class="btn btn-primary">Download Application Preview</a>
-                          </div>
-                        </div>
                       </div>
-                  </div>
+                      @endif
                   @endif
-                
                 @endif
 
 
