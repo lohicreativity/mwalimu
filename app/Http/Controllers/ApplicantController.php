@@ -2080,9 +2080,7 @@ class ApplicantController extends Controller
 
         }else{
 
-            $applicant = $request->get('index_number')? Applicant::with(['nextOfKin', 'payment'])->where('index_number',$request->get('index_number'))->where(function($query) use($staff){
-               $query->orWhere('campus_id',0);
-           })->first() : null;
+            $applicant = $request->get('index_number')? Applicant::with(['nextOfKin', 'payment'])->where('index_number',$request->get('index_number'))->first() : null;
 
         }
 
@@ -2127,14 +2125,14 @@ class ApplicantController extends Controller
                $query->where('campus_id',$staff->campus_id)->orWhere('campus_id',0);
            })->first() : null;
 
-        } else {
+        }else{
 
-            $applicant = $request->get('index_number')? Applicant::with(['nextOfKin', 'payment'])->where('index_number',$request->get('index_number'))->where(function($query) use($staff){
-               $query->orWhere('campus_id',0);
-           })->first() : null;
+            $applicant = $request->get('index_number')? Applicant::with(['nextOfKin', 'payment'])->where('index_number',$request->get('index_number'))->first() : null;
 
         }
-
+        if(!$applicant && !empty($request->get('index_number'))){
+         return redirect()->back()->with('error','No such applicant. Please crosscheck the index number');
+         }
          $data = [
          'applicant'=> $applicant,
          'awards'=>Award::all(),
