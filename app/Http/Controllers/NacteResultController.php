@@ -78,7 +78,10 @@ class NacteResultController extends Controller
             }
 
             $applicant->save();
-
+            $nacte_detail = NacteResultDetail::find($request->get('nacte_result_detail_id'));
+            $nacte_detail->verified = 1;
+            $nacte_detail->save();
+            
             return redirect()->back()->with('message','NACTE results confirmed successfully');
 
         }
