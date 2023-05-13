@@ -64,12 +64,12 @@ class NacteResultController extends Controller
 
         //if($applicant->nacte_reg_no != $nacte_detail->registration_number){
 
-            if(strtoupper($applicant->first_name) != strtoupper($nacte_detail->firstname) || strtoupper($applicant->surname) != strtoupper($nacte_detail->surname)){
-                return redirect()->to('application/nullify-nacte-reg-results?detail_id='.$request->get('nacte_result_detail_id'));
+        if(strtoupper($applicant->first_name) != strtoupper($nacte_detail->firstname) || strtoupper($applicant->surname) != strtoupper($nacte_detail->surname)){
+            return redirect()->to('application/nullify-nacte-reg-results?detail_id='.$request->get('nacte_result_detail_id'));
            // }
             
 
-        }else {
+        }else{
 
             $applicant->nacte_reg_no = $request->get('nacte_reg_no');
             
@@ -78,6 +78,8 @@ class NacteResultController extends Controller
             }
 
             $applicant->save();
+
+            return redirect()->back()->with('message','NACTE results confirmed successfully');
 
         }
     }
