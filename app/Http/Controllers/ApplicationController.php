@@ -271,7 +271,7 @@ class ApplicationController extends Controller
                 $query->where('id',$request->get('application_window_id'));
            })->whereHas('selections',function($query) use($request){
                 $query->where('status','APPROVING')->orWhere('status','SELECTED')->orWhere('status','ELIGIBLE');
-           })->with(['nextOfKin','intake','selections.campusProgram.program','nectaResultDetails','nacteResultDetails'])
+           })->with(['selections','nextOfKin','intake','selections.campusProgram.program','nectaResultDetails','nacteResultDetails'])
            ->where('program_level_id',$request->get('program_level_id'))
            ->whereHas('selections.campusProgram.program.departments',function($query) use($staff){$query->where('department_id',$staff->department_id);})
            ->where(function($query) {$query->where('status','SELECTED')->orWhereNull('status');})->get();
@@ -294,18 +294,14 @@ class ApplicationController extends Controller
         }else{
             $applicants = Applicant::whereHas('applicationWindow',function($query) use($request){
                 $query->where('id',$request->get('application_window_id'));
-           })->whereHas('selections',function($query) use($request){
-                $query->where('status','APPROVING')->orWhere('status','SELECTED')->orWhere('status','ELIGIBLE');
-           })->with(['nextOfKin','intake','selections.campusProgram.program','nectaResultDetails','nacteResultDetails'])
-           ->where('program_level_id',$request->get('program_level_id'))
-           ->where(function($query) {
-               $query->where('status','SELECTED')
-                     ->orWhereNull('status');
-           })->get();
+           })->whereHas('selections')
+           ->with(['selections','nextOfKin','intake','selections.campusProgram.program','nectaResultDetails','nacteResultDetails'])
+           ->where('program_level_id',$request->get('program_level_id')) ->where(function($query){$query->where('status','SELECTED')
+                     ->orWhereNull('status');})->get();
 
            $batch = ApplicantProgramSelection::whereHas('applicant',function($query) use($request){$query->where('program_level_id',$request->get('program_level_id'));})
-            ->where('application_window_id', $request->get('application_window_id'))->where('status', 'SELECTED')->latest()->first();
-            
+            ->where('application_window_id', $request->get('application_window_id'))->max('batch_no');
+
            $selection_status = ApplicantProgramSelection::whereHas('applicant',function($query) use($request){$query->where('program_level_id',$request->get('program_level_id'));})
             ->where('application_window_id', $request->get('application_window_id'))->where('batch_no', 0)->count(); 
             
@@ -317,6 +313,7 @@ class ApplicationController extends Controller
         if(count($selected_applicants) == 0 && !empty($request->get('program_level_id'))){
             return redirect()->back()->with('error','No selected applicant in this programme level');
         }
+
          $data = [
             'staff'=>$staff,
             'application_windows'=>ApplicationWindow::where('campus_id',$staff->campus_id)->get(),
@@ -340,7 +337,7 @@ class ApplicationController extends Controller
             'applicants'=>$applicants,
             'submission_logs'=>ApplicantSubmissionLog::where('program_level_id',$request->get('program_level_id'))->where('application_window_id',$request->get('application_window_id'))->get(),
             'request'=>$request,
-			'batch_no'=>$batch? $batch->batch_no : 0,
+			'batch_no'=>$batch,
             'selection_status'=> $selection_status > 0? false : true
          ];
          return view('dashboard.application.selected-applicants',$data)->withTitle('Selected Applicants');
@@ -3701,7 +3698,7 @@ class ApplicationController extends Controller
         //        return redirect()->back()->with('error','You cannot reset applicant\'s password because application window is already closed');
         // }
         $user = User::find($request->get('user_id'));
-        $user->password = Hash::make('password');
+        $user->password = Hash::make($applicant->index_no);
         $user->save();
 
         return redirect()->to('application/application-dashboard')->with('message','Password reset successfully');
