@@ -455,6 +455,7 @@
                        <option value="Human Resource">Human Resource</option>
                        <option value="Records Management">Records Management</option>
                        <option value="Archives">Archives</option>
+                       <option value="Rural Development">Rural Development</option>
                        <option value="Information Management">Information Management</option>
                        <option value="Library">Library</option>
                        <option value="Gender">Gender</option>
@@ -801,6 +802,7 @@
                        <option value="Human Resource">Human Resource</option>
                        <option value="Records Management">Records Management</option>
                        <option value="Archives">Archives</option>
+                       <option value="Rural Development">Rural Development</option>
                        <option value="Information Management">Information Management</option>
                        <option value="Library">Library</option>
                        <option value="Gender">Gender</option>
@@ -1384,6 +1386,7 @@
                                                <option value="Human Resource" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Human Resource',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Human Resource</option>
                                                <option value="Records Management" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Records Management',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Records Management</option>
                                                <option value="Archives" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Archives',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Archives</option>
+                                               <option value="Rural Development" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Rural Development',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Rural Development</option>
                                                <option value="Information Management" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Information Management',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Information Management</option>
                                                <option value="Library" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Library',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Library</option>
                                                <option value="Gender" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Gender',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Gender</option>
@@ -1687,6 +1690,7 @@
                                                <option value="Human Resource" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Human Resource',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Human Resource</option>
                                                <option value="Records Management" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Records Management',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Records Management</option>
                                                <option value="Archives" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Archives',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Archives</option>
+                                               <option value="Rural Development" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Rural Development',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Rural Development</option>
                                                <option value="Information Management" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Information Management',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Information Management</option>
                                                <option value="Library" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Library',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Library</option>
                                                <option value="Gender" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Gender',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Gender</option>
@@ -2237,6 +2241,7 @@
                                                <option value="Human Resource" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Human Resource',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Human Resource</option>
                                                <option value="Records Management" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Records Management',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Records Management</option>
                                                <option value="Archives" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Archives',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Archives</option>
+                                               <option value="Rural Development" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Rural Development',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Rural Development</option>
                                                <option value="Information Management" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Information Management',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Information Management</option>
                                                <option value="Library" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Library',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Library</option>
                                                <option value="Gender" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Gender',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Gender</option>
@@ -2543,6 +2548,7 @@
                                                <option value="Human Resource" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Human Resource',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Human Resource</option>
                                                <option value="Records Management" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Records Management',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Records Management</option>
                                                <option value="Archives" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Archives',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Archives</option>
+                                               <option value="Rural Development" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Rural Development',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Rural Development</option>
                                                <option value="Information Management" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Information Management',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Information Management</option>
                                                <option value="Library" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Library',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Library</option>
                                                <option value="Gender" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Gender',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Gender</option>
