@@ -2086,7 +2086,7 @@ class ApplicantController extends Controller
 
         }
 
-        if(!$applicant && $request->get('search') == true){
+        if(!$applicant && !empty($request->get('index_number'))){
             return redirect()->back()->with('error','No such applicant. Please crosscheck the index number');
         }
 
