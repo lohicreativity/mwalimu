@@ -754,12 +754,20 @@ class ApplicantController extends Controller
         $selected_program = array();
         
            $index_number = $applicant->index_number;
-           $exam_year = explode('/', $index_number)[2];
+           if(str_contains($index_number,'EQ')){
+            $exam_year = explode('-',$index_number)[1];
+           }else{
+            $exam_year = explode('/', $index_number)[2];
+           }
           
            foreach($applicant->nectaResultDetails as $detail) {
               if($detail->exam_id == 2){
                   $index_number = $detail->index_number;
-                  $exam_year = explode('/', $index_number)[2];
+                  if(str_contains($index_number,'EQ')){
+                     $exam_year = explode('-',$index_number)[1];
+                  }else{
+                     $exam_year = explode('/', $index_number)[2];
+                  }
               }
            }
 
