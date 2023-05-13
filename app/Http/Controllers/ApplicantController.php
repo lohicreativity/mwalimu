@@ -755,7 +755,7 @@ class ApplicantController extends Controller
         
            $index_number = $applicant->index_number;
            if(str_contains($index_number,'EQ')){
-            $exam_year = explode('-',$index_number)[1];
+            $exam_year = explode('/',$index_number)[1];
            }else{
             $exam_year = explode('/', $index_number)[2];
            }
@@ -764,7 +764,7 @@ class ApplicantController extends Controller
               if($detail->exam_id == 2){
                   $index_number = $detail->index_number;
                   if(str_contains($index_number,'EQ')){
-                     $exam_year = explode('-',$index_number)[1];
+                     $exam_year = explode('/',$index_number)[1];
                   }else{
                      $exam_year = explode('/', $index_number)[2];
                   }
@@ -2075,15 +2075,19 @@ class ApplicantController extends Controller
         if (Auth::user()->hasRole('admission-officer')) {
 
             $applicant = $request->get('index_number')? Applicant::with('nextOfKin')->where('index_number',$request->get('index_number'))->where(function($query) use($staff){
-               $query->where('campus_id',$staff->campus_id)->orWhere('campus_id',0);
+               $query->where('campus_id',$staff->campus_id);
            })->first() : null;
 
-        } else {
+        }else{
 
             $applicant = $request->get('index_number')? Applicant::with(['nextOfKin', 'payment'])->where('index_number',$request->get('index_number'))->where(function($query) use($staff){
                $query->orWhere('campus_id',0);
            })->first() : null;
 
+        }
+
+        if(!$applicant && $request->get('search') == true){
+            return redirect()->back()->with('error','No such applicant. Please crosscheck the index number');
         }
 
         $a_level = $request->get('index_number') ? NectaResultDetail::where('applicant_id', $applicant->id)->where('exam_id', 2)->where('verified', 1)->first() : null;
