@@ -1704,14 +1704,18 @@ class ApplicantController extends Controller
      * Delete recent invoice
      */
     public function deleteInvoice(Request $request)
-    {
+    { 
          $applicant = Applicant::find($request->get('applicant_id'));
          $invoice = Invoice::where('payable_id',$applicant->id)->where('payable_type','applicant')->latest()->first();
          if(GatewayPayment::where('control_no',$invoice->control_no)->count() == 0){
 		   $invoice->payable_id = 0;
            $invoice->save();
+
+           return response()->json(['status','200']);
+         }else{
+           return response()->json(['status','100']);
          }
-         return response()->json(['status','200']);
+
     }
 
     /**
@@ -2133,10 +2137,13 @@ class ApplicantController extends Controller
         if(!$applicant && !empty($request->get('index_number'))){
          return redirect()->back()->with('error','No such applicant. Please crosscheck the index number');
          }
-         $data = [
+
+          $data = [
          'applicant'=> $applicant,
          'awards'=>Award::all(),
-		 'countries'=>Country::all(),
+		   'countries'=>Country::all(),
+         'invoice'=>$request->get('index_number')? Invoice::whereHas('gatewayPayment',function($query){$query->where('paid_amount','>',0);})
+                                                          ->where('payable_id',$applicant->id)->where('payable_type','applicant')->latest()->first() : null
          ];
 
          return view('dashboard.application.edit-applicant-details', $data)->withTitle('Edit Applicant Details');

@@ -140,10 +140,11 @@
                           <th>SN</th>
                           <th>Index#</th>						  
                           <th>Name</th>
-                          <th>Gender</th>
-                          <th>Phone</th>
+                          <th>Sex</th>
+                          <th>Phone#</th>
                           <th>Award</th>
-                          <th>Submission Status</th>
+                          <th>Batch#</th>
+                          <th>Application Status</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -154,7 +155,25 @@
                       <td><a href="#" data-toggle="modal" data-target="#ss-progress-{{ $applicant->id }}">{{ $applicant->first_name }} {{ $applicant->middle_name }} {{ $applicant->surname }}</a></td>
                       <td>{{ $applicant->gender }}</td>
                       <td>{{ $applicant->phone }}</td>
-                      <td>{{ $applicant->programLevel->code }}</td>
+                      <td>
+                        @if(!empty($applicant->programLevel->code))
+                        {{ $applicant->programLevel->code }}
+                        @else
+                        N/A
+                        @endif
+                      </td>
+                      <td>
+                        @if($batch_no)
+                          @if($applicant->batch_no == 0 && $batch_no == 0)
+                            Batch 1
+                          @elseif($applicant->batch_no == 0 && $batch_no > 0)
+                            Batch {{ ($batch_no + 1) }}
+                          @elseif($applicant->batch_no > 0 && $batch_no > 0)
+                            Batch {{ $applicant->batch_no }}
+                          @endif
+                        @else
+                        Batch 1
+                        @endif</td>
                       <td>@if($applicant->submission_complete_status == 1)
                            <span class="badge badge-success">Submitted</span>
                           @elseif($applicant->programs_complete_status == 1 && $applicant->submission_complete_status == 0)
@@ -434,7 +453,7 @@
                                   <div id="collapseProgrammeSelection" class="collapse" aria-labelledby="ss-programmes-selection" data-parent="#accordionExample-2">
                                     <div class="card-body">
                                       
-                                    @if($applicant->selections)
+                                    @if(count($applicant->selections) > 0)
                                       @foreach($applicant->selections as $selection)
 
                                         @if($selection->order == 1)
@@ -471,9 +490,7 @@
                       <!-- /.modal -->
                     @endforeach
 
-                  <div class="ss-pagination-links">
-                     {!! $applicants->appends($request->except('page'))->render() !!}
-                  </div>
+
                </div>
             </div>
             @endif

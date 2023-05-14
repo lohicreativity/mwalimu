@@ -73,7 +73,8 @@
             @if($applicant)
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">Edit Applicant - {{ $applicant->first_name }} {{ $applicant->middle_name }} {{ $applicant->surname }}</h3>
+                <h4 class="card-title">Edit Applicant - {{ $applicant->first_name }} {{ $applicant->middle_name }} {{ $applicant->surname }} 
+                  <span style="color:red">({{ $applicant->index_number }})</span></h4>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
@@ -173,10 +174,10 @@
                    <button type="submit" class="btn btn-primary">{{ __('Save Changes') }}</button>
                    @endif
                    <a href="{{ url('application/reset-applicant-password-default?user_id='.$applicant->user_id.'&applicant_id='.$applicant->id) }}" class="btn btn-primary">Reset Password</a>
-
+                  @if(empty($invoice))
                    <a href="#" id="ss-reset-control-number" data-token="{{ session()->token() }}" data-applicant-id="{{ $applicant->id }}" class="btn btn-primary">Reset Control Number</a>
                   </div>
-
+                  @endif
                    {!! Form::close() !!}
               @endif
 

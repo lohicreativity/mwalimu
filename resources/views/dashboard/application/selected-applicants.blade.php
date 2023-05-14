@@ -278,16 +278,16 @@
                   <table class="table table-bordered ss-margin-top ss-paginated-table">
                     <thead>
                         <tr>
-                          <th>#</th>
+                          <th>SN</th>
                           <th>Name</th>
-						  <th>Form IV Index#</th>
-						    @if($request->get('program_level_id') != 1)
-								@if($request->get('program_level_id') == 2)
-									<th>NACTE Reg#/Form IV Index#</th>
-								@else
-									<th>F6 Index#/AVN</th>
-								@endif
-							@endif
+                          <th>Form IV Index#</th>
+                            @if($request->get('program_level_id') != 1)
+                              @if($request->get('program_level_id') == 2)
+                                <th>NACTE Reg#/Form IV Index#</th>
+                              @else
+                                <th>F6 Index#/AVN</th>
+                              @endif
+                            @endif
                           <th>Batch#</th>							
                           <th>Phone</th>
                           <th>Sex</th>
@@ -296,86 +296,165 @@
                         </tr>
                     </thead>
                     <tbody>
-                 @foreach($applicants as $applicant)
-                   <tr>
-                      <td>{{ $loop->iteration }}</td>
-                      <td>{{ $applicant->first_name }} {{ $applicant->middle_name }} {{ $applicant->surname }}</td>
-                      <td>{{ $applicant->index_number }}</td>
-					  @if($request->get('program_level_id') != 1)
-						
-						<td>@foreach($applicant->nectaResultDetails as $detail)
-								@if($detail->exam_id == 2) 
-									{{ $detail->index_number }} 
-								@endif
-							@endforeach <br>
-							@foreach($applicant->nacteResultDetails as $detail)
-								{{ $detail->avn }}
-							@endforeach
-						</td>
-					  @endif
-					  <td>
-					  @if($applicant->batch_no == 0 && $batch_no == 0)
-						Batch 1
-					  @elseif($applicant->batch_no == 0 && $batch_no > 0)
-						Batch {{ ($batch_no + 1) }}
-					  @else
-						Batch {{ ($applicant->batch_no) }}
-					  @endif
-					  </td>
-					  <td>{{ $applicant->phone }}</td>
-            <td>{{ $applicant->gender }}</td>
-            <td>@foreach($applicant->selections as $selection)
-							@if($selection->status != 'ELIGIBLE' && $applicant->status == 'SELECTED')
-								{{ $selection->campusProgram->program->code }}
-								@if($selection->order == 1)
-									(1st Choice)
-								@elseif($selection->order == 2)
-									(2nd Choice)
-								@elseif($selection->order == 3)
-									(3rd Choice)
-								@elseif($selection->order == 4)
-									(4th Choice)
-								@endif
-								@break
-							@elseif($applicant->status == null)
-								@if($applicant->selections[count($applicant->selections) - 1]->order != null)
-									{{ $selection->campusProgram->program->code }}
-								@else
-									{{ $selection->campusProgram->program->code }},
-								@endif
-							@endif
-                          @endforeach
-              </td>
-              <td>
-                @if($applicant->status == 'SELECTED')
-							      @foreach($applicant->selections as $selection)
-								        @if($selection->status == 'SELECTED' || $selection->status == 'APPROVING')
-                            @if($selection->status == 'SELECTED')
-                            <span class="badge badge-success">
-                              @if($selection->status == 'APPROVING' && $selection->batch_no == 0) PRE-SELECTED
-                              @else {{ $selection->status }}
-                              @endif 
-                              @if($applicant->multiple_admissions == 1)*
-                              @endif
-                            </span>
-                            @else
-                            <span class="badge badge-danger">
-                              @if($selection->status == 'APPROVING' && !$selection_status && $selection->batch_no == 0) PRE-SELECTED
-                              @elseif($selection->status == 'APPROVING' && $selection_status) NOT APPROVED
+                    @php $counter = 1; @endphp
+                    @foreach($applicants as $applicant)
 
+                      @foreach($applicant->selections as $selection)
+
+                        @if($selection->status != 'ELIGIBLE')
+                          <tr>
+                              <td>{{ $counter++ }}</td>
+                              <td>{{ $applicant->first_name }} {{ $applicant->middle_name }} {{ $applicant->surname }}</td>
+                              <td>{{ $applicant->index_number }}</td>
+                              @if($request->get('program_level_id') != 1)	
+                              <td>@foreach($applicant->nectaResultDetails as $detail)
+                                    @if($detail->exam_id == 2) 
+                                      {{ $detail->index_number }} 
+                                    @endif
+                                  @endforeach <br>
+                                  @foreach($applicant->nacteResultDetails as $detail)
+                                    {{ $detail->avn }}
+                                  @endforeach
+                              </td>
                               @endif
-                            </span>
-                            @endif
-								        @endif
-							      @endforeach
-                @elseif($applicant->status == null)
-                    <span class="badge badge-danger">NOT SELECTED</span>
-                @endif
-                      </td>
-                   </tr>
+                              <td>
+                                  @if($applicant->batch_no == 0 && $batch_no == 0)
+                                    Batch 1
+                                  @elseif($selection->batch_no == 0 && $batch_no > 0)
+                                    Batch {{ ($batch_no + 1) }}
+                                  @elseif($selection->batch_no > 0 && $batch_no > 0)
+                                    Batch {{ ($batch_no) }}
+                                  @endif
+                              </td>
+                              <td>{{ $applicant->phone }}</td>
+                              <td>{{ $applicant->gender }}</td>
+                              <td>
+                              @php
+
+                                $batch_numbers = array();
+                                foreach($applicant->selections as $x){
+                                    if(!in_array($x->batch_no, $batch_numbers) && $selection->status != 'ELIGIBLE'){
+                                    $batch_numbers[] = $x->batch_no;
+                                    }
+                                    $key = 0;
+                                    if($selection->batch_no == 1){
+                                      $key = 0;
+                                    }elseif($selection->batch_no == 2){
+                                      $key = 1;
+                                    }
+                                }
+                              @endphp
+
+                              @if($selection->batch_no == $batch_numbers[$key] || ($selection->status == 'APPROVING' && $selection->batch_no == 0))
+                                  {{ $selection->campusProgram->program->code }}
+                                  @if($selection->order == 1)
+                                    (1st Choice)
+                                  @elseif($selection->order == 2)
+                                    (2nd Choice)
+                                  @elseif($selection->order == 3)
+                                    (3rd Choice)
+                                  @elseif($selection->order == 4)
+                                    (4th Choice)
+                                  @endif
+                              @endif
+                              </td>
+                              <td>
+                                @if($applicant->status == 'SELECTED')
+                                  @if($selection->status == 'SELECTED' || $selection->status == 'APPROVING')
+                                      @if($selection->status == 'SELECTED')
+                                      <span class="badge badge-success">
+                                        @if($selection->status == 'APPROVING' && $selection->batch_no == 0) PRE-SELECTED
+                                        @else {{ $selection->status }} 
+                                        @endif 
+                                        @if($applicant->multiple_admissions == 1)*
+                                        @endif
+                                      </span>
+                                      @else
+                                        @if($selection->status == 'APPROVING' && !$selection_status && $selection->batch_no == 0) 
+                                        <span class="badge badge-warning"> PRE-SELECTED </span>
+                                        @endif
+  
+                                      @endif
+                                  @endif
+                                @elseif($applicant->status == null && $selection->batch_no > 0)
+                                  <span class="badge badge-danger"> NOT APPROVED </span> 
+                                @elseif($selection->status == 'APPROVING' && $selection->batch_no == 0)
+                                  <span class="badge badge-warning">PRE SELECTED</span>
+                                @endif
+                              </td>
+                          </tr>
+                          
+                        @else
+
+                          @if($selection->batch_no == 0)
+
+                          <tr>
+                              <td>{{ $counter }}</td>
+                              <td>{{ $applicant->first_name }} {{ $applicant->middle_name }} {{ $applicant->surname }}</td>
+                              <td>{{ $applicant->index_number }}</td>
+                              @if($request->get('program_level_id') != 1)	
+                              <td>@foreach($applicant->nectaResultDetails as $detail)
+                                    @if($detail->exam_id == 2) 
+                                      {{ $detail->index_number }} 
+                                    @endif
+                                  @endforeach <br>
+                                  @foreach($applicant->nacteResultDetails as $detail)
+                                    {{ $detail->avn }}
+                                  @endforeach
+                              </td>
+                              @endif
+                              <td>
+                                  @if($applicant->batch_no == 0 && $batch_no == 0)
+                                    Batch 1
+                                  @elseif($selection->batch_no == 0 && $batch_no > 0)
+                                    Batch {{ ($batch_no + 1) }}
+                                  @elseif($selection->batch_no > 0 && $batch_no > 0)
+                                    Batch {{ ($batch_no) }}
+                                  @endif
+                              </td>
+                              <td>{{ $applicant->phone }}</td>
+                              <td>{{ $applicant->gender }}</td>
+                              <td>     
+                              @if($applicant->status == null && !$selection_status)
+                                @if(count($applicant->selections) > 0)
+                                  @php $total_selections = 0;
+                                      foreach($applicant->selections as $y){
+                                        if($y->batch_no == 0){
+                                          $total_selections++;
+                                        }
+                                      }
+                                      $x = $total_selections; 
+                                  @endphp
+                                    @foreach($applicant->selections as $select)
+                                      @if($select->batch_no == 0)
+                                        @if($total_selections > 1)
+                                          @php --$x ; @endphp
+                                          {{ $select->campusProgram->program->code }}@if($x != 0), @endif
+                                        @else
+                                          {{ $select->campusProgram->program->code }}
+                                        @endif
+                                      @endif
+                                    @endforeach
+                                @endif
+                              @endif
+
+                        </td>
+                        <td>
+                          @if($applicant->status == null && $selection_status)
+                            <span class="badge badge-danger">NOT SELECTED</span>
+                          @elseif($applicant->status == null && !$selection_status)
+                            <span class="badge badge-warning">WAITING</span>                         
+                          @endif
+                        </td>
+                    </tr>
+                    @php $counter++; @endphp
+                    @break
+                    @endif
+                    @endif
                     @endforeach
-                   </tbody>
-                  </table>
+                @endforeach  
+                </tbody>
+              </table>
 
                 
                </div>

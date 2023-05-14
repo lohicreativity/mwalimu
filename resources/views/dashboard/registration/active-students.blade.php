@@ -91,10 +91,10 @@
                         <tr>
                           <th>SN</th>
                           <th>Name</th>
-                          <th>Gender</th>
-						  <th>Form IV Index No. </th>
-						  <th>Form VI Index No./AVN </th>						  
-                          <th>Registration Number</th>
+                          <th>Sex</th>
+						  <th>Form IV Index# </th>
+						  <th>Form VI Index#/AVN </th>						  
+                          <th>Reg#</th>
                           <th>Programme</th>
                         </tr>
                     </thead>
