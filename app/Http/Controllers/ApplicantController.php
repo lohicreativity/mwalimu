@@ -2135,13 +2135,13 @@ class ApplicantController extends Controller
         if(!$applicant && !empty($request->get('index_number'))){
          return redirect()->back()->with('error','No such applicant. Please crosscheck the index number');
          }
-
+         
           $data = [
          'applicant'=> $applicant,
          'awards'=>Award::all(),
 		   'countries'=>Country::all(),
-         'invoice'=>$request->get('index_number')? Invoice::whereHas('gatewayPayment',function($query){$query->where('paid_amount','>',0);})
-                                                          ->where('payable_id',$applicant->id)->where('payable_type','applicant')->latest()->first() : null
+         'invoice'=>$request->get('index_number')? Invoice::whereNull('gateway_payment_id')->where('payable_id',$applicant->id)
+                                                            ->where('payable_type','applicant')->where('fee_type_id',1)->latest()->first() : null
          ];
 
          return view('dashboard.application.edit-applicant-details', $data)->withTitle('Edit Applicant Details');
