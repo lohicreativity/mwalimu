@@ -1711,11 +1711,9 @@ class ApplicantController extends Controller
 		   $invoice->payable_id = 0;
            $invoice->save();
 
-           return response()->json(['status','200']);
-         }else{
-           return response()->json(['status','100']);
          }
-
+           
+         return response()->json(['status','200']);
     }
 
     /**
