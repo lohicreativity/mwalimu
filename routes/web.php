@@ -71,7 +71,7 @@ Route::get('test',function(){
 	// return $response;
 
 	// return $result;
-	 $acpac = new ACPACService;
+	// $acpac = new ACPACService;
 
 	// //$acpac->query("INSERT INTO receipts (BANK,BANKNAME,RCPNUMBER,RCPDATE,RCPDESC,IDCUST,NAMECUST,INVOICE,AMTAPPLIED,IMPORTED,IMPDATE) VALUES
  //   //('J','CRDB','REC03','10','TF','MNMA003','TEST','INV003','100.0','C','10')");
@@ -83,14 +83,14 @@ Route::get('test',function(){
 	// INSERT INTO customer (IDCUST,IDGRP,NAMECUST,TEXTSTRE1,TEXTSTRE2,TEXTSTRE3,TEXTSTRE4,NAMECITY,CODESTTE,CODEPSTL,CODECTRY,NAMECTAC,TEXTPHON1,TEXTPHON2,CODETERR,IDACCTSET,CODECURN,EMAIL1,EMAIL2) VALUES ('BTCOD00122','12221','MPAMBA, OTHUMAN S','fddgdgfd','KIGOMA','MATENDO','qwerty','KIGOMA','Tanzania','fddgdgfd','Tanzania','dsfdsafsdf, ddgfdsff ','255746508500','255746508500','BTC.COD','STD','TSH','dennis.lupiana@gmail.com','UNKNOWN')
 
 
-	 $acpac->query("DELETE FROM customer");
-	 $acpac->query("DELETE FROM invoices");
-	 $acpac->query("DELETE FROM receipts");
- 	$results = $acpac->query('SELECT * FROM customer');
+	// $acpac->query("DELETE FROM customer");
+	// $acpac->query("DELETE FROM invoices");
+	// $acpac->query("DELETE FROM receipts");
+/* 	$results = $acpac->query('SELECT * FROM customer');
      while ($row = sqlsrv_fetch_array($results)) {
      	print_r($row);
     }
-/*
+
     echo '<br><br><br>';
 
     $results = $acpac->query('SELECT * FROM invoices');
