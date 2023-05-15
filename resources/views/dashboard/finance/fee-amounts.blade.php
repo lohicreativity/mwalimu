@@ -106,13 +106,16 @@
             <div class="card">
               <div class="card-header">
                 <h3 class="card-title">{{ __('List of Fee Amounts') }}</h3><br>
+                @if($previous_yr > 1)
                 <a href="{{ url('finance/fee-amount/assign-as-previous') }}" class="btn btn-primary">Assign As Previous</a>
+                @endif
               </div>
               <!-- /.card-header -->
               <div class="card-body">
-                <table id="example2" class="table table-bordered table-hover">
+                <table id="example2" class="table table-bordered table-hover ss-paginated-table">
                   <thead>
                   <tr>
+                    <th>SN</th>
                     <th>Item</th>
                     <th>Amount in TZS</th>
                     <th>Amount in USD</th>
@@ -121,8 +124,9 @@
                   </tr>
                   </thead>
                   <tbody>
-                  @foreach($amounts as $amount)
+                  @foreach($amounts as $key=>$amount)
                   <tr>
+                    <td>{{ ($key + 1) }}</td>
                     <td>{{ $amount->feeItem->name }}</td>
                     <td>{{ number_format($amount->amount_in_tzs,2) }}</td>
                     <td>{{ number_format($amount->amount_in_usd,2) }}</td>
@@ -250,9 +254,6 @@
                   
                   </tbody>
                 </table>
-                <div class="ss-pagination-links">
-                {!! $amounts->render() !!}
-                </div>
               </div>
               <!-- /.card-body -->
             </div>

@@ -16,13 +16,14 @@ class FeeAmountController extends Controller
     /**
      * Display a list of amounts
      */
-    public function index()       
-    {
+    public function index(Request $request)       
+    {   
     	$data = [
-           'amounts'=>FeeAmount::with('feeItem')->latest()->paginate(20),
+           'amounts'=> !empty($request->study_academic_year_id)? FeeAmount::with('feeItem')->where('study_academic_year_id',$request->study_academic_year_id)->get() : [],
            'fee_items'=>FeeItem::all(),
            'study_academic_years'=>StudyAcademicYear::with('academicYear')->latest()->get(),
-           'staff'=>User::find(Auth::user()->id)->staff
+           'staff'=>User::find(Auth::user()->id)->staff,
+           'previous_yr'=>FeeAmount::distinct('study_academic_year_id')->count()
     	];
     	return view('dashboard.finance.fee-amounts',$data)->withTitle('Fee Amounts');
     }
