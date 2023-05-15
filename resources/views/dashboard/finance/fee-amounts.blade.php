@@ -75,7 +75,9 @@
                     <select name="fee_item_id" class="form-control">
                       <option value="">Select Fee Item</option>
                       @foreach($fee_items as $item)
+                        @if(!str_contains(strtolower($item->name),'tuition fee'))
                         <option value="{{ $item->id }}">{{ $item->name }}</option>
+                        @endif
                       @endforeach
                     </select>
                   </div>
