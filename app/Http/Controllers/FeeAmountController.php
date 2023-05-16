@@ -19,11 +19,19 @@ class FeeAmountController extends Controller
      */
     public function index(Request $request)       
     {   
+        $staff = User::find(Auth::user()->id)->staff;
+        if(Auth::user()->hasRole('administrator') || Auth::user()->hasRole('arc')){
+            $fee_items = FeeItem::all();   
+        }else{
+            $fee_items = FeeItem::where('campus_id',$staff->campus_id)->get();
+        }
+
     	$data = [
-           'amounts'=> !empty($request->study_academic_year_id)? FeeAmount::with(['feeItem','campus'])->where('study_academic_year_id',$request->study_academic_year_id)->get() : [],
-           'fee_items'=>FeeItem::all(),
+           'amounts'=> !empty($request->study_academic_year_id)? FeeAmount::with(['feeItem','campus'])->where('campus_id',$staff->campus_id)
+                                                                ->where('study_academic_year_id',$request->study_academic_year_id)->get() : [],
+           'fee_items'=>$fee_items,
            'study_academic_years'=>StudyAcademicYear::with('academicYear')->latest()->get(),
-           'staff'=>User::find(Auth::user()->id)->staff,
+           'staff'=>$staff,
            'previous_yr'=>FeeAmount::distinct('study_academic_year_id')->count(),
            'campuses'=>Campus::all()
     	];

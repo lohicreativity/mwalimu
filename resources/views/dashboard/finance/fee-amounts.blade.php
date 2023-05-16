@@ -63,15 +63,15 @@
                 <div class="card-body">
 
                   <div class="row">
-                  <div class="form-group col-3">
+                  <div class="form-group col-4">
                     {!! Form::label('','Amount in TZS') !!}
                     {!! Form::text('amount_in_tzs',null,$amount_in_tzs) !!}
                   </div>
-                  <div class="form-group col-3">
+                  <div class="form-group col-4">
                     {!! Form::label('','Amount in USD') !!}
                     {!! Form::text('amount_in_usd',null,$amount_in_usd) !!}
                   </div>
-                  <div class="form-group col-3">
+                  <div class="form-group col-4">
                     {!! Form::label('','Fee item') !!}
                     <select name="fee_item_id" class="form-control">
                       <option value="">Select Fee Item</option>
@@ -82,7 +82,7 @@
                       @endforeach
                     </select>
                   </div>
-                  <div class="form-group col-3">
+                  <div class="form-group col-4">
                     {!! Form::label('','Study academic year') !!}
                     <select name="study_academic_year_id" class="form-control">
                       <option value="">Select Study Academic Year</option>
@@ -92,7 +92,7 @@
                     </select>
                   </div>
                   @if(Auth::user()->hasRole('administrator') || Auth::user()->hasRole('arc'))                  
-                  <div class="form-group col-3">
+                  <div class="form-group col-4">
                     {!! Form::label('','Select campus') !!}
                     <select name="campus_id" class="form-control" required>
                        <option value="">Select Campus</option>
@@ -102,7 +102,7 @@
                     </select>
                   </div>
                   @else
-                  <div class="form-group col-3">
+                  <div class="form-group col-4">
                     {!! Form::label('','Select campus') !!}
                     <select name="campus_id" class="form-control" required>
                        <option value="">Select Campus</option>

@@ -98,7 +98,7 @@
                     </select>
                   </div>
                   @if(Auth::user()->hasRole('administrator') || Auth::user()->hasRole('arc'))                  
-                  <div class="form-group col-3">
+                  <div class="form-group col-4">
                     {!! Form::label('','Select campus') !!}
                     <select name="campus_id" class="form-control" required>
                        <option value="">Select Campus</option>
@@ -108,7 +108,7 @@
                     </select>
                   </div>
                   @else
-                  <div class="form-group col-3">
+                  <div class="form-group col-4">
                     {!! Form::label('','Select campus') !!}
                     <select name="campus_id" class="form-control" required>
                        <option value="">Select Campus</option>
@@ -146,7 +146,9 @@
                     <th>Fee Type</th>
                     <th>Payment Order</th>
                     <th>Is Mandatory</th>
-                    <th>Campus</th>
+                    @if(Auth::user()->hasRole('administrator') || Auth::user()->hasRole('arc'))
+                      <th>Campus</th>
+                    @endif
                     <th>Actions</th>
                   </tr>
                   </thead>

@@ -18,10 +18,18 @@ class FeeItemController extends Controller
      */
     public function index()
     {
+        $staff = User::find(Auth::user()->id)->staff;
+
+        if(Auth::user()->hasRole('administrator') || Auth::user()->hasRole('arc')){
+            $fee_items = FeeItem::with('campus')->get();   
+        }else{
+            $fee_items = FeeItem::with('campus')->where('campus_id',$staff->campus_id)->get();
+        }
+
     	$data = [
-           'items'=>FeeItem::with('campus')->get(),
+           'items'=>$fee_items,
            'fee_types'=>FeeType::all(),
-           'staff'=>User::find(Auth::user()->id)->staff,
+           'staff'=>$staff,
            'campuses'=>Campus::all()
     	];
     	return view('dashboard.finance.fee-items',$data)->withTitle('Fee Items');
