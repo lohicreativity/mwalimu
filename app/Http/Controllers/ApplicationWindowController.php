@@ -25,12 +25,23 @@ class ApplicationWindowController extends Controller
      */
     public function index(Request $request)
     {
+        $staff = User::find(Auth::user()->id)->staff;
+        if(Auth::user()->hasRole('administrator') || Auth::user()->hasRole('arc')){
+            $windows = ApplicationWindow::with(['campus','intake'])
+            //    ->where('YEAR(end_date)', '=', now()->format('Y'))
+                ->whereBetween(DB::raw('YEAR(end_date)'), [now()->format('Y') - 1, now()->format('Y')])
+                ->latest('end_date')
+               ->get();
+        }else{
+            $windows = ApplicationWindow::with(['campus','intake'])->where('campus_id',$staff->campus_id)
+            //    ->where('YEAR(end_date)', '=', now()->format('Y'))
+                ->whereBetween(DB::raw('YEAR(end_date)'), [now()->format('Y') - 1, now()->format('Y')])
+                ->latest('end_date')
+               ->get();
+        }
+           
     	$data = [
-           'windows'=>ApplicationWindow::with(['campus','intake'])
-        //    ->where('YEAR(end_date)', '=', now()->format('Y'))
-            ->whereBetween(DB::raw('YEAR(end_date)'), [now()->format('Y') - 1, now()->format('Y')])
-            ->latest('end_date')
-           ->paginate(20),
+           'windows'=>$windows,
            'intakes'=>Intake::all(),
            'campuses'=>Campus::all(),
            'staff'=>User::find(Auth::user()->id)->staff,

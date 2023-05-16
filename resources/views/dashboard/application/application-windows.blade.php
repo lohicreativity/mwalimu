@@ -136,7 +136,10 @@
                 <table id="example2" class="table table-bordered table-hover">
                   <thead>
                   <tr>
-                    <th>Campus</th>
+                    <th>SN</th>
+                    @if(Auth::user()->hasRole('administrator') || Auth::user()->hasRole('arc')) 
+                      <th>Campus</th>
+                    @endif
                     <th>Intake</th>
                     <th>Status</th>
                     <th>Begin Date</th>
@@ -147,10 +150,13 @@
                   </tr>
                   </thead>
                   <tbody>
-                  @foreach($windows as $window)
+                  @foreach($windows as $key=>$window)
                   <tr>
-                    <th>{{ $window->campus->name }}</th>
-                    <th>{{ $window->intake->name }}</th>
+                    <td>{{ ($key+1) }}</td>
+                    @if(Auth::user()->hasRole('administrator') || Auth::user()->hasRole('arc')) 
+                      <td>{{ $window->campus->name }}</td>
+                    @endif
+                    <td>{{ $window->intake->name }}</td>
                     <td>{{ $window->status }}</td>
                     <td>{{ $window->begin_date }}</td>
                     <td>{{ $window->end_date }}</td>
@@ -180,9 +186,9 @@
                                  @php
                                     $begin_date = [
                                        'placeholder'=>'Begin date',
-                                       'class'=>(strtotime($window->begin_date) <= strtotime(now()))? 'form-control' : 'form-control ss-datepicker',
+                                       'class'=>(strtotime($window->begin_date) <= strtotime(now()) && $window->status == 'ACTIVE')? 'form-control' : 'form-control ss-datepicker',
                                        'autocomplete'=>'off',
-                                       'readonly'=>(strtotime($window->begin_date) <= strtotime(now()))? true: null,
+                                       'readonly'=>(strtotime($window->begin_date) <= strtotime(now()) && $window->status == 'ACTIVE')? true: null,
                                        'required'=>true
                                     ];
 
@@ -323,9 +329,6 @@
                   
                   </tbody>
                 </table>
-                <div class="ss-pagination-links">
-                {!! $windows->render() !!}
-                </div>
               </div>
               <!-- /.card-body -->
             </div>

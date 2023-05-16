@@ -147,7 +147,9 @@
                     @if(Auth::user()->hasRole('administrator') || Auth::user()->hasRole('arc'))   
                       <th>Campus</th>
                     @endif
-                    <th>Actions</th>
+                    @if(Auth::user()->hasRole('finance-officer') || Auth::user()->hasRole('administrator') || Auth::user()->hasRole('arc')) 
+                      <th>Actions</th>
+                    @endif
                   </tr>
                   </thead>
                   <tbody>
@@ -161,6 +163,7 @@
                     @if(Auth::user()->hasRole('administrator') || Auth::user()->hasRole('arc'))   
                       <td>{{ $amount->campus->name }}</td>
                     @endif
+                    @if(Auth::user()->hasRole('finance-officer') || Auth::user()->hasRole('administrator') || Auth::user()->hasRole('arc')) 
                     <td>
                       @can('edit-fee-amount')
                       <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-edit-amount-{{ $amount->id }}">
@@ -279,6 +282,7 @@
                       </div>
                       <!-- /.modal -->
                     </td>
+                    @endif
                   </tr>
                   @endforeach
                   
