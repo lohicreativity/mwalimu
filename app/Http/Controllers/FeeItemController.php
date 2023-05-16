@@ -9,6 +9,7 @@ use App\Domain\Finance\Actions\FeeItemAction;
 use App\Models\User;
 use App\Utils\Util;
 use Validator, Auth;
+use App\Domain\Settings\Models\Campus;
 
 class FeeItemController extends Controller
 {
@@ -18,9 +19,10 @@ class FeeItemController extends Controller
     public function index()
     {
     	$data = [
-           'items'=>FeeItem::paginate(20),
+           'items'=>FeeItem::with('campus')->get(),
            'fee_types'=>FeeType::all(),
-           'staff'=>User::find(Auth::user()->id)->staff
+           'staff'=>User::find(Auth::user()->id)->staff,
+           'campuses'=>Campus::all()
     	];
     	return view('dashboard.finance.fee-items',$data)->withTitle('Fee Items');
     }
@@ -48,7 +50,7 @@ class FeeItemController extends Controller
         //     return redirect()->back()->with('error','Fee item with this fee type already exists');
         // }
 
-        if(FeeItem::where('name',$request->get('name'))->count() != 0){
+        if(Feeitem::where('name',$request->get('name'))->where('campus_id',$request->get('campus_id'))->count() != 0){
             return redirect()->back()->with('error','Fee item with this name already exists');
         }
 

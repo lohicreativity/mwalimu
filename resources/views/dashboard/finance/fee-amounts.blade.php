@@ -61,6 +61,7 @@
               @endphp
               {!! Form::open(['url'=>'finance/fee-amount/store','class'=>'ss-form-processing']) !!}
                 <div class="card-body">
+
                   <div class="row">
                   <div class="form-group col-3">
                     {!! Form::label('','Amount in TZS') !!}
@@ -90,6 +91,29 @@
                       @endforeach
                     </select>
                   </div>
+                  @if(Auth::user()->hasRole('administrator') || Auth::user()->hasRole('arc'))                  
+                  <div class="form-group col-3">
+                    {!! Form::label('','Select campus') !!}
+                    <select name="campus_id" class="form-control" required>
+                       <option value="">Select Campus</option>
+                       @foreach($campuses as $cp)
+                       <option value="{{ $cp->id }}" @if($staff->campus_id == $cp->id) selected="selected" @endif>{{ $cp->name }}</option>
+                       @endforeach
+                    </select>
+                  </div>
+                  @else
+                  <div class="form-group col-3">
+                    {!! Form::label('','Select campus') !!}
+                    <select name="campus_id" class="form-control" required>
+                       <option value="">Select Campus</option>
+                       @foreach($campuses as $cp)
+                       <option value="{{ $cp->id }}" @if($cp->id == $staff->campus_id) selected="selected" @else disabled='disabled' @endif>
+                       {{ $cp->name }}</option>
+                       @endforeach
+                    </select>
+                  </div>
+                  @endif
+
                 </div>
                 </div>
                 <!-- /.card-body -->
@@ -120,6 +144,9 @@
                     <th>Amount in TZS</th>
                     <th>Amount in USD</th>
                     <th>Academic Year</th>
+                    @if(Auth::user()->hasRole('administrator') || Auth::user()->hasRole('arc'))   
+                      <th>Campus</th>
+                    @endif
                     <th>Actions</th>
                   </tr>
                   </thead>
@@ -131,6 +158,9 @@
                     <td>{{ number_format($amount->amount_in_tzs,2) }}</td>
                     <td>{{ number_format($amount->amount_in_usd,2) }}</td>
                     <td>{{ $amount->studyAcademicYear->academicYear->year }}</td>
+                    @if(Auth::user()->hasRole('administrator') || Auth::user()->hasRole('arc'))   
+                      <td>{{ $amount->campus->name }}</td>
+                    @endif
                     <td>
                       @can('edit-fee-amount')
                       <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-edit-amount-{{ $amount->id }}">

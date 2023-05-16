@@ -15,6 +15,7 @@ class FeeItemAction implements FeeItemInterface{
                 $item->payment_order = $request->get('payment_order');
                 $item->fee_type_id = $request->get('fee_type_id');
                 $item->is_mandatory = $request->get('is_mandatory');
+                $item->campus_id = $request->get('campus_id');
                 $item->save();
 	}
 
@@ -25,6 +26,7 @@ class FeeItemAction implements FeeItemInterface{
                 $item->payment_order = $request->get('payment_order');
                 $item->fee_type_id = $request->get('fee_type_id');
                 $item->is_mandatory = $request->get('is_mandatory');
+                $item->campus_id = $request->get('campus_id');
                 $item->save();
 	}
 }

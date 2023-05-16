@@ -13,6 +13,7 @@ class FeeAmountAction implements FeeAmountInterface{
                 $amount->amount_in_tzs = $request->get('amount_in_tzs');
                 $amount->amount_in_usd = $request->get('amount_in_usd');
                 $amount->fee_item_id = $request->get('fee_item_id');
+                $amount->campus_id = $request->get('campus_id');
                 $amount->study_academic_year_id = $request->get('study_academic_year_id');
                 $amount->save();
 	}
@@ -22,6 +23,7 @@ class FeeAmountAction implements FeeAmountInterface{
                 $amount->amount_in_tzs = $request->get('amount_in_tzs');
                 $amount->amount_in_usd = $request->get('amount_in_usd');
                 $amount->fee_item_id = $request->get('fee_item_id');
+                $amount->campus_id = $request->get('campus_id');
                 $amount->study_academic_year_id = $request->get('study_academic_year_id');
                 $amount->save();
 	}

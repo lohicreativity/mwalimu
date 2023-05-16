@@ -10,6 +10,7 @@ use App\Domain\Finance\Actions\FeeAmountAction;
 use App\Models\User;
 use App\Utils\Util;
 use Validator, Auth;
+use App\Domain\Settings\Models\Campus;
 
 class FeeAmountController extends Controller
 {
@@ -19,11 +20,12 @@ class FeeAmountController extends Controller
     public function index(Request $request)       
     {   
     	$data = [
-           'amounts'=> !empty($request->study_academic_year_id)? FeeAmount::with('feeItem')->where('study_academic_year_id',$request->study_academic_year_id)->get() : [],
+           'amounts'=> !empty($request->study_academic_year_id)? FeeAmount::with(['feeItem','campus'])->where('study_academic_year_id',$request->study_academic_year_id)->get() : [],
            'fee_items'=>FeeItem::all(),
            'study_academic_years'=>StudyAcademicYear::with('academicYear')->latest()->get(),
            'staff'=>User::find(Auth::user()->id)->staff,
-           'previous_yr'=>FeeAmount::distinct('study_academic_year_id')->count()
+           'previous_yr'=>FeeAmount::distinct('study_academic_year_id')->count(),
+           'campuses'=>Campus::all()
     	];
     	return view('dashboard.finance.fee-amounts',$data)->withTitle('Fee Amounts');
     }
@@ -37,6 +39,11 @@ class FeeAmountController extends Controller
             'amount_in_tzs'=>'required',
             'amount_in_usd'=>'required',
         ]);
+
+        if(FeeAmount::where('fee_item_id',$request->get('fee_item_id'))->where('campus_id',$request->get('campus_id'))
+                    ->where('study_academic_year_id',$request->get('study_academic_year_id'))->count() != 0){
+            return redirect()->back()->with('error','Amount for the fee item already exists');
+        }
 
         if($validation->fails()){
            if($request->ajax()){
@@ -93,6 +100,7 @@ class FeeAmountController extends Controller
              $amount->amount_in_usd = $amt->amount_in_usd;
              $amount->fee_item_id = $amt->fee_item_id;
              $amount->study_academic_year_id = $study_academic_year->id;
+             $amount->campus_id = $amt->campus_id;
              $amount->save();
          }
          return redirect()->back()->with('message','Fee amounts assigned as previous successfully');

@@ -4,6 +4,7 @@ namespace App\Domain\Finance\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Domain\Settings\Models\Campus;
 
 class FeeItem extends Model
 {
@@ -41,6 +42,11 @@ class FeeItem extends Model
     public function setNameAttribute($value)
     {
         $this->attributes['name'] = ucwords($value);
+    }
+
+    public function campus()
+    {
+    	return $this->belongsTo(Campus::class,'campus_id');
     }
 
 }

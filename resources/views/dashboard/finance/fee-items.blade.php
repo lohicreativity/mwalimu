@@ -97,6 +97,28 @@
                       @endforeach
                     </select>
                   </div>
+                  @if(Auth::user()->hasRole('administrator') || Auth::user()->hasRole('arc'))                  
+                  <div class="form-group col-3">
+                    {!! Form::label('','Select campus') !!}
+                    <select name="campus_id" class="form-control" required>
+                       <option value="">Select Campus</option>
+                       @foreach($campuses as $cp)
+                       <option value="{{ $cp->id }}" @if($staff->campus_id == $cp->id) selected="selected" @endif>{{ $cp->name }}</option>
+                       @endforeach
+                    </select>
+                  </div>
+                  @else
+                  <div class="form-group col-3">
+                    {!! Form::label('','Select campus') !!}
+                    <select name="campus_id" class="form-control" required>
+                       <option value="">Select Campus</option>
+                       @foreach($campuses as $cp)
+                       <option value="{{ $cp->id }}" @if($cp->id == $staff->campus_id) selected="selected" @else disabled='disabled' @endif>
+                       {{ $cp->name }}</option>
+                       @endforeach
+                    </select>
+                  </div>
+                  @endif
                 </div>
                 </div>
                 <!-- /.card-body -->
@@ -116,19 +138,22 @@
               </div>
               <!-- /.card-header -->
               <div class="card-body">
-                <table id="example2" class="table table-bordered table-hover">
+                <table id="example2" class="table table-bordered table-hover ss-paginated-table">
                   <thead>
                   <tr>
+                    <th>SN</th>
                     <th>Name</th>
                     <th>Fee Type</th>
                     <th>Payment Order</th>
                     <th>Is Mandatory</th>
+                    <th>Campus</th>
                     <th>Actions</th>
                   </tr>
                   </thead>
                   <tbody>
-                  @foreach($items as $item)
+                  @foreach($items as $key=>$item)
                   <tr>
+                    <td>{{ ($key+1) }}</td>
                     <td>{{ $item->name }}</td>
                     <td>{{ $item->feeType->name }}</td>
                     <td>{{ $item->payment_order }}</td>
@@ -139,6 +164,9 @@
                           No
                         @endif
                     </td>
+                    @if(Auth::user()->hasRole('administrator') || Auth::user()->hasRole('arc')) 
+                    <td>{{ $item->campus->name }}</td>
+                    @endif
                     <td>
                       <!-- <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-edit-item-{{ $item->id }}">
                               <i class="fas fa-pencil-alt">
@@ -270,9 +298,6 @@
                   
                   </tbody>
                 </table>
-                <div class="ss-pagination-links">
-                {!! $items->render() !!}
-                </div>
               </div>
               <!-- /.card-body -->
             </div>

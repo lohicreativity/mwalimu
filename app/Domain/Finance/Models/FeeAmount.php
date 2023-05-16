@@ -5,6 +5,7 @@ namespace App\Domain\Finance\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Domain\Academic\Models\StudyAcademicYear;
+use App\Domain\Settings\Models\Campus;
 
 class FeeAmount extends Model
 {
@@ -26,6 +27,11 @@ class FeeAmount extends Model
     public function studyAcademicYear()
     {
     	return $this->belongsTo(StudyAcademicYear::class,'study_academic_year_id');
+    }
+
+    public function campus()
+    {
+    	return $this->belongsTo(Campus::class,'campus_id');
     }
 
 }
