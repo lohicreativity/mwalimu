@@ -26,9 +26,15 @@ class FeeAmountController extends Controller
             $fee_items = FeeItem::where('campus_id',$staff->campus_id)->get();
         }
 
+        $amounts = FeeAmount::with(['feeItem','campus'])->where('campus_id',$staff->campus_id)
+        ->where('study_academic_year_id',$request->study_academic_year_id)->get();
+
+        if(!Auth::user()->hasRole('administrator') && !Auth::user()->hasRole('arc') && !Auth::user()->hasRole('finance-officer') && count($amounts) == 0){
+            return redirect()->back()->with('error','No fee amount specified in this academic year');    
+        }
+
     	$data = [
-           'amounts'=> !empty($request->study_academic_year_id)? FeeAmount::with(['feeItem','campus'])->where('campus_id',$staff->campus_id)
-                                                                ->where('study_academic_year_id',$request->study_academic_year_id)->get() : [],
+           'amounts'=> !empty($request->study_academic_year_id)? $amounts : [],
            'fee_items'=>$fee_items,
            'study_academic_years'=>StudyAcademicYear::with('academicYear')->latest()->get(),
            'staff'=>$staff,
