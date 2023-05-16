@@ -39,11 +39,9 @@ class StaffController extends Controller
      */
     public function index(Request $request)
     {
-       if($request->has('query')){
-          $staffs = Staff::with(['country','region','district','ward','designation','user.roles'])->where('first_name','LIKE','%'.$request->get('query').'%')->orWhere('middle_name','LIKE','%'.$request->get('query').'%')->orWhere('surname','LIKE','%'.$request->get('query').'%')->orWhere('pf_number','LIKE','%'.$request->get('query').'%')->paginate(20);
-       }else{
-          $staffs = Staff::with(['country','region','district','ward','designation','user.roles'])->paginate(20);
-       }
+
+      $staffs = Staff::with(['country','region','district','ward','designation','user.roles'])->get();
+
     	$data = [
            'staffs'=>$staffs,
            'roles'=>Role::where('name','!=','student')->get(),
@@ -57,7 +55,7 @@ class StaffController extends Controller
            'staff'=>User::find(Auth::user()->id)->staff,
            'request'=>$request
     	];
-    	return view('dashboard.human-resources.staffs',$data)->withTitle('staffs');
+    	return view('dashboard.human-resources.staffs',$data)->withTitle('Staff Details');
     }
 
     /**

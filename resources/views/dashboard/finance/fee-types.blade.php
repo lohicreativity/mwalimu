@@ -163,9 +163,10 @@
               </div>
               <!-- /.card-header -->
               <div class="card-body">
-                <table id="example2" class="table table-bordered table-hover">
+                <table id="example2" class="table table-bordered table-hover ss-paginated-table">
                   <thead>
                   <tr>
+                    <th>SN</th>
                     <th>Name</th>
                     <th>GFS Code</th>
                     <th>GL Code</th>
@@ -176,8 +177,9 @@
                   </tr>
                   </thead>
                   <tbody>
-                  @foreach($types as $type)
+                  @foreach($types as $key=>$type)
                   <tr>
+                    <td>{{ ($key+1) }}</td>
                     <td>{{ $type->name }}</td>
                     <td>{{ $type->gfs_code }}</td>
                     <td>{{ $type->gl_code }}</td>
@@ -378,9 +380,6 @@
                   
                   </tbody>
                 </table>
-                <div class="ss-pagination-links">
-                {!! $types->render() !!}
-                </div>
               </div>
               <!-- /.card-body -->
             </div>

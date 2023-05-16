@@ -49,30 +49,22 @@
               <!-- /.card-header -->
               <div class="card-body">
                 @if(count($staffs) != 0)
-                {!! Form::open(['url'=>'staff/staff-members','method'=>'GET']) !!}
-                <div class="input-group ss-stretch">
-                 <input type="text" name="query" class="form-control" placeholder="Search for staff name of PF number">
-                 <span class="input-group-btn">
-                   <button class="btn btn-default" type="submit"><span class="fa fa-search"></span></button>
-                 </span>
-                </div>
-                {!! Form::close() !!}
-                <table id="example2" class="table table-bordered table-hover ss-margin-top">
+                <table id="example2" class="table table-bordered table-hover ss-margin-top ss-paginated-table">
                   <thead>
                   <tr>
+                    <th>SN</th>
                     <th>Name</th>
-                    <th>PF Number</th>
                     <th>Category</th>
                     <th>Email</th>
-                    <th>Phone</th>
+                    <th>Phone#</th>
                     <th>Actions</th>
                   </tr>
                   </thead>
                   <tbody>
-                  @foreach($staffs as $staff)
+                  @foreach($staffs as $key=>$staff)
                   <tr>
+                    <td>{{ ($key+1) }}</td>
                     <td>{{ $staff->title }} {{ $staff->first_name }} {{ $staff->middle_name }} {{ $staff->surname }}</td>
-                    <td>{{ $staff->pf_number }}</td>
                     <td>{{ $staff->category }}</td>
                     <td>{{ $staff->email }}</td>
                     <td>{{ $staff->phone }}</td>
@@ -191,9 +183,6 @@
                   
                   </tbody>
                 </table>
-                <div class="ss-pagination-links">
-                {!! $staffs->appends($request->except('page'))->render() !!}
-                </div>
                 @endif
               </div>
               <!-- /.card-body -->

@@ -17,7 +17,7 @@ class FeeTypeController extends Controller
     public function index()
     {
     	$data = [
-           'types'=>FeeType::paginate(20),
+           'types'=>FeeType::get(),
            'staff'=>User::find(Auth::user()->id)->staff
     	];
     	return view('dashboard.finance.fee-types',$data)->withTitle('Fee Types');
