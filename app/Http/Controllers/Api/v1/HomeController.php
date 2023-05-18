@@ -35,29 +35,38 @@ class HomeController extends Controller
 
     public function getParents(Request $request)
     {
-        $faculties = Faculty::where('campus_id', $request->get('campus_id'))->get();
+        
+    //    $faculties = Faculty::where('campus_id', $request->get('campus_id'))->get();
 
-        if ($request->get('unit_category_id') == 1 || $request->get('unit_category_id') == 2) {
+        if($request->get('unit_category_id') == 1){
 
-            if(count($faculties) > 0){
+            $campuses = Campus::all();
+            
+            if(count($campuses) > 0) {
+                return response()->json(['status'=>'success','campuses'=>$campuses]);
+            }else{
+                return response()->json(['status'=>'failed','campuses'=>$campuses]);
+            }
+
+        }elseif($request->get('unit_category_id') == 2){
+            $faculties = Faculty::where('campus_id',$request->get('campus_id'))->get();
+            
+            if(count($faculties) > 0) {
                 return response()->json(['status'=>'success','faculties'=>$faculties]);
-            } else if (count($faculties) == 0) {
-                $campus = Campus::find($request->get('campus_id'));
-                return response()->json(['status'=>'success','campus'=>$campus]);
             }else{
                 return response()->json(['status'=>'failed','faculties'=>$faculties]);
             }
 
-        } else if ($request->get('unit_category_id') == 4) {
+        }elseif ($request->get('unit_category_id') == 4) {
 
             $departments = Department::whereHas('campuses',function($query) use($request){
                 $query->where('campuses.id', $request->get('campus_id'))->where('unit_category_id', 2);
             })->with('campuses')->get();
             
-            if (count($departments) > 0) {
+            if(count($departments) > 0) {
                 return response()->json(['status'=>'success','departments'=>$departments]);
-            } else {
-                return response()->json(['status'=>'success','departments'=>$departments]);
+            }else{
+                return response()->json(['status'=>'failed','departments'=>$departments]);
             }
 
         }

@@ -195,7 +195,7 @@ $('.ss-form-processing-nacte-reg-number').submit(function(e){
 <script>
   $('#unit-categories').on('change',function(e){
 
-    if ($(e.target).val() == 2 || $(e.target).val() == 1) {
+    /* if($(e.target).val() == 1 || $(e.target).val() == 1) {
 
       $("#parent_input").empty();
 
@@ -208,9 +208,9 @@ $('.ss-form-processing-nacte-reg-number').submit(function(e){
         unit_category_id:$(e.target).val()
       }      
       }).done(function(data, status){
-          if (status == "success") {
+          if(status == "success") {
 
-            if ('campus' in data) {
+            if('campus' in data) {
 
               $("#parents").remove();
               $("#parent_input").append('<input type="text" class="form-control" readonly value="'+data.campus.name+'"></input>');
@@ -227,32 +227,94 @@ $('.ss-form-processing-nacte-reg-number').submit(function(e){
             }
       
           }
-      });
+      }); */
 
-    }  else if ($(e.target).val() == 4) {
+      if($(e.target).val() == 1) {
+        $('#parent-label').show();
+        $('#parents').show();
 
-      $.ajax({
-      method:'POST',
-      url:$(e.target).data('source-url'),
-      data:{
+        $.ajax({
+        method:'POST',
+        url:$(e.target).data('source-url'),
+        data:{
+          _token:$(e.target).data('token'),
+          unit_category_id:$(e.target).val()
+        }      
+        }).done(function(data, status){
+            if(status == "success") {
+              if(data.campuses.length > 0){
+                var element = '<option value="">Select Campus</option>';
+                for(var i=0; i<data.campuses.length; i++){
+                  element += '<option value="'+data.campuses[i].id+'">'+data.campuses[i].name+'</option>';
+                }
+                $($(e.target).data('target')).html(element);
+
+              }else{
+                  $('#parent-label').hide();
+                  $('#parents').hide();
+    
+              }
+            }
+        });
+      }else if($(e.target).val() == 2) {
+        $('#parent-label').show();
+        $('#parents').show();
+
+        $.ajax({
+        method:'POST',
+        url:$(e.target).data('source-url'),
+        data:{
         _token:$(e.target).data('token'),
         campus_id: $('#campus_id').val(),
         unit_category_id:$(e.target).val()
-      }      
-      }).done(function(data, status){
-          if (status == "success") {
-
-            var element = '<option value="">Select Department</option>';
-            for(var i=0; i<data.departments.length; i++){
-              element += '<option value="'+data.departments[i].id+'">'+data.departments[i].name+'</option>';
+        }      
+        }).done(function(data, status){
+          if(status == "success") {
+            if(data.faculties.length > 0){
+              var element = '<option value="">Select Faculty</option>'; 
+              for(var i=0; i<data.faculties.length; i++){
+              element += '<option value="'+data.faculties[i].id+'">'+data.faculties[i].name+'</option>';
+              
+              }
+              $($(e.target).data('target')).html(element);
+              
+            }else{
+              $('#parent-label').hide();
+              $('#parents').hide();
+              
             }
-            $($(e.target).data('target')).html(element);
-      
           }
-      });
+        });
 
+      }else if($(e.target).val() == 4) {
+        $('#parent-label').show();
+        $('#parents').show();
 
-    } 
+        $.ajax({
+        method:'POST',
+        url:$(e.target).data('source-url'),
+        data:{
+        _token:$(e.target).data('token'),
+        campus_id: $('#campus_id').val(),
+        unit_category_id:$(e.target).val()
+        }      
+        }).done(function(data, status){
+          if(status == "success") {
+            if(data.departments.length > 0){
+              var element = '<option value="">Select Department</option>';
+              for(var i=0; i<data.departments.length; i++){
+                element += '<option value="'+data.departments[i].id+'">'+data.departments[i].name+'</option>';
+              }
+              $($(e.target).data('target')).html(element);
+
+            }else{
+                $('#parent-label').hide();
+                $('#parents').hide();
+  
+            }
+          }
+        });
+      } 
 
 
     // $.ajax({
