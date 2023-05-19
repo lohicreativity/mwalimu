@@ -10,6 +10,8 @@ use App\Domain\Settings\Actions\FacultyAction;
 use App\Models\User;
 use App\Utils\Util;
 use Validator, Auth;
+use App\Domain\Academic\Models\CampusProgram;
+use App\Domain\Academic\Models\Department;
 
 
 class FacultyController extends Controller
@@ -33,7 +35,7 @@ class FacultyController extends Controller
             'faculties' => $faculties
         ];
 
-    	return view('dashboard.settings.faculties', $data)->withTitle('faculties');
+    	return view('dashboard.settings.faculties', $data)->withTitle('Faculties');
     }
 
      /**
@@ -101,17 +103,17 @@ class FacultyController extends Controller
      */
     public function destroy($id)
     {
-        // try{
-        //     $faculty = faculty::findOrFail($id);
-        //     if(CampusProgram::where('campus_id',$campus->id)->count() != 0){
-        //        return redirect()->back()->with('error','Campus cannot be deleted because it has assigned programs');
-        //     }else{
-        //       $campus->delete();
-        //       return redirect()->back()->with('message','Campus deleted successfully');
-        //     }
-        // }catch(Exception $e){
-        //     return redirect()->back()->with('error','Unable to get the resource specified in this request');
-        // }
+        try{
+            $faculty = faculty::findOrFail($id);
+            if(Department::where('parent_id',$id)->count() != 0){
+               return redirect()->back()->with('error','Faculty cannot be deleted because it has been assigned offices, departments and/or units');
+            }else{
+              $faculty->delete();
+              return redirect()->back()->with('message','Faculty deleted successfully');
+            }
+        }catch(Exception $e){
+            return redirect()->back()->with('error','Unable to get the resource specified in this request');
+        }
     }
 
 }
