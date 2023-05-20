@@ -259,23 +259,35 @@
                  <td style="font-weight:bold">Names:</td>
                  <td>{{ $applicant->nextOfKin->surname }}, {{ ucwords(strtolower($applicant->nextOfKin->first_name)) }} {{ ucwords(strtolower($applicant->nextOfKin->middle_name)) }}</td>
                </tr>
-               <tr>
-                 <td style="font-weight:bold">Sex:</td>
-                 <td>@if($applicant->nextOfKin->gender == 'F') Female @elseif($applicant->nextOfKin->gender == 'M') Male @endif</td>
-               </tr>
-               <tr>
-                 <td style="font-weight:bold">Relationship:</td>
-                 <td>{{ $applicant->nextOfKin->relationship }}</td>
-               </tr>
-               <tr>
-                 <td style="font-weight:bold">Nationality:</td>
-                 <td>{{ ucwords(strtolower($applicant->nextOfKin->nationality)) }}</td>
-               </tr>
-               <tr>
-                 <td style="font-weight:bold">Email Address:</td>
-                 <td>@if(empty($applicant->nextOfKin->email))N/A @else $applicant->nextOfKin->email @endif</td>
-               </tr>
 
+               <tr>
+                 <td style="font-weight:bold">Phone Number:</td>
+                 <td>{{ $applicant->nextOfKin->phone }}</td>
+               </tr>
+               <tr>
+                 <td style="font-weight:bold">Address:</td>
+                 <td>{{ $applicant->nextOfKin->address }}</td>
+               </tr>
+               <tr>
+                 <td style="font-weight:bold">Country:</td>
+                 <td>{{ ucwords(strtolower($applicant->nextOfKin->country->name)) }}</td>
+               </tr>
+               <tr>
+                 <td style="font-weight:bold">Region:</td>
+                 <td>{{ ucwords(strtolower($applicant->nextOfKin->region->name)) }}</td>
+               </tr>
+               <tr>
+                 <td style="font-weight:bold">District:</td>
+                 <td>{{ ucwords(strtolower($applicant->nextOfKin->district->name)) }}</td>
+               </tr>
+               <tr>
+                 <td style="font-weight:bold">Ward:</td>
+                 <td>{{ ucwords(strtolower($applicant->nextOfKin->ward->name)) }}</td>
+               </tr>
+               <tr>
+                 <td style="font-weight:bold">Street:</td>
+                 <td>{{ ucwords(strtolower($applicant->street)) }}</td>
+               </tr>
                
              </table>
 
