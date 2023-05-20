@@ -362,7 +362,7 @@
                   <td>Points</td>
                 </tr>
                 <tr>
-                  <td>{{ $detail }}</td>
+                  <td>{{ $detail->results }}</td>
                   <td>{{ $detail->division }}</td>
                   <td>{{ $detail->points }}</td>
                 </tr>
