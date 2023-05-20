@@ -212,7 +212,7 @@
         </div>
         <div class="row">
           <div class="col-md-12">
-             <h3>Personal Information</h3><hr>
+             <span style="font-size: 16pt; font-weight:bold">Personal Information</span><hr>
 
              <table class="table table-hover">
         <tr>     <td style="font-weight:bold">Names:</td>
