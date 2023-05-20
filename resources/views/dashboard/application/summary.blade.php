@@ -232,7 +232,7 @@
                </tr>
                <tr>
                  <td>Country</td>
-                 <td>{{ ucwords(strtolower(($applicant->country->name)) }}</td>
+                 <td>{{ ucwords(strtolower($applicant->country->name)) }}</td>
                </tr>
                <tr>
                  <td>Region</td>
