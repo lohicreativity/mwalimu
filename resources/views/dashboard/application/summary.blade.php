@@ -358,7 +358,7 @@
                 <tr>
                   <td style="font-weight:bold">Form IV</td>
                   @if($detail->exam_id == 2)
-                    <td style="font-weight:bold">Form VI</td>
+                    <td style="font-weight:bold" colsapn="2">Form VI</td>
                   @endif
                   <td style="font-weight:bold">Subjects</td>
                   <td style="font-weight:bold">Division</td>
