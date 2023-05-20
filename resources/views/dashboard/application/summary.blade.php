@@ -212,101 +212,102 @@
         </div>
         <div class="row">
           <div class="col-md-12">
-             <span style="font-size: 16pt; font-weight:bold">Personal Information</span><hr>
+             <br><span style="font-size: 16pt; font-weight:bold">Personal Information</span><hr>
 
              <table class="table table-hover">
-        <tr>     <td style="font-weight:bold">Names:</td>
+               <tr>     
+                 <td style="font-weight:bold">Names:</td>
                  <td>{{ $applicant->surname }}, {{ ucwords(strtolower($applicant->first_name)) }} {{ ucwords(strtolower($applicant->middle_name)) }}</td>
-    </tr>
-
-     <tr>            <td style="font-weight:bold">Sex:</td>
-                <td> @if($applicant->gender == 'F') Female @elseif($applicant->gender == 'M') Male @endif</td>
-    </tr> <tr>
+               </tr>
+               <tr>            
+                 <td style="font-weight:bold">Sex:</td>
+                 <td> @if($applicant->gender == 'F') Female @elseif($applicant->gender == 'M') Male @endif</td>
+               </tr> 
+               <tr>
                  <td style="font-weight:bold">Nationality:</td>
                  <td>{{ ucwords(strtolower($applicant->nationality)) }}</td>
-
-    </tr>
+               </tr>
                <tr>
-                 <td>Address</td>
+                 <td style="font-weight:bold">Address:</td>
                  <td>{{ $applicant->address }}</td>
                </tr>
                <tr>
-                 <td>Country</td>
+                 <td style="font-weight:bold">Country:</td>
                  <td>{{ ucwords(strtolower($applicant->country->name)) }}</td>
                </tr>
                <tr>
-                 <td>Region</td>
+                 <td style="font-weight:bold">Region:</td>
                  <td>{{ ucwords(strtolower($applicant->region->name)) }}</td>
                </tr>
                <tr>
-                 <td>District</td>
+                 <td style="font-weight:bold">District:</td>
                  <td>{{ ucwords(strtolower($applicant->district->name)) }}</td>
                </tr>
                <tr>
-                 <td>Ward</td>
+                 <td style="font-weight:bold">Ward:</td>
                  <td>{{ ucwords(strtolower($applicant->ward->name)) }}</td>
                </tr>
                <tr>
-                 <td>Street</td>
+                 <td style="font-weight:bold">Street:</td>
                  <td>{{ ucwords(strtolower($applicant->street)) }}</td>
                </tr>
              </table>
 
-             <h3>Next of Kin Information</h3>
-             <table class="table table-bordered table-condensed">
+             <br><span style="font-size: 16pt; font-weight:bold">Next of Kin Information</span><hr>
+             <table class="table table-condensed">
                <tr>
-                 <td>Names</td>
+                 <td style="font-weight:bold">Names:</td>
                  <td>{{ $applicant->nextOfKin->surname }}, {{ ucwords(strtolower($applicant->nextOfKin->first_name)) }} {{ ucwords(strtolower($applicant->nextOfKin->middle_name)) }}</td>
                </tr>
                <tr>
-                 <td>Sex</td>
+                 <td style="font-weight:bold">Sex:</td>
                  <td>@if($applicant->nextOfKin->gender == 'F') Female @elseif($applicant->nextOfKin->gender == 'M') Male @endif</td>
                </tr>
                <tr>
-                 <td>Relationship</td>
+                 <td style="font-weight:bold">Relationship:</td>
                  <td>{{ $applicant->nextOfKin->relationship }}</td>
                </tr>
                <tr>
-                 <td>Nationality</td>
+                 <td style="font-weight:bold">Nationality:</td>
                  <td>{{ ucwords(strtolower($applicant->nextOfKin->nationality)) }}</td>
                </tr>
                <tr>
-                 <td>Email Address</td>
+                 <td style="font-weight:bold">Email Address:</td>
                  <td>@if(empty($applicant->nextOfKin->email))N/A @else $applicant->nextOfKin->email @endif</td>
                </tr>
                <tr>
-                 <td>Phone Number</td>
+                 <td style="font-weight:bold">Phone Number:</td>
                  <td>{{ $applicant->nextOfKin->phone }}</td>
                </tr>
                <tr>
-                 <td>Address</td>
+                 <td style="font-weight:bold">Address:</td>
                  <td>{{ $applicant->nextOfKin->address }}</td>
                </tr>
                <tr>
-                 <td>Country</td>
+                 <td style="font-weight:bold">Country:</td>
                  <td>{{ ucwords(strtolower($applicant->nextOfKin->country->name)) }}</td>
                </tr>
                <tr>
-                 <td>Region</td>
+                 <td style="font-weight:bold">Region:</td>
                  <td>{{ ucwords(strtolower($applicant->nextOfKin->region->name)) }}</td>
                </tr>
                <tr>
-                 <td>District</td>
+                 <td style="font-weight:bold">District:</td>
                  <td>{{ ucwords(strtolower($applicant->nextOfKin->district->name)) }}</td>
                </tr>
                <tr>
-                 <td>Ward</td>
+                 <td style="font-weight:bold">Ward:</td>
                  <td>{{ ucwords(strtolower($applicant->nextOfKin->ward->name)) }}</td>
                </tr>
                <tr>
-                 <td>Street</td>
+                 <td style="font-weight:bold">Street:</td>
                  <td>{{ ucwords(strtolower($applicant->street)) }}</td>
                </tr>
                
              </table>
 
-             <h3>Selected Programmes</h3>
-             <table class="table table-bordered table-condensed">
+             <br><span style="font-size: 16pt; font-weight:bold">Programmes Selected</span><hr>
+             <table class="table table-condensed">
               @if(App\Domain\Application\Models\ApplicantProgramSelection::hasSelectedChoice($applicant->selections,1))
                <tr>
                  <td>1<sup>st</sup> Choice</td>
@@ -350,8 +351,9 @@
               </table>
 
               @if(count($applicant->nectaResultDetails) != 0)
-              <h3>Results</h3>
-              <table class="table table-bordered table-condensed">
+
+              <br><span style="font-size: 16pt; font-weight:bold">Results</span><hr>
+              <table class="table table-condensed">
                 @foreach($applicant->nectaResultDetails as $detail)
                 <tr>
                   <td>Index Number - @if($detail->exam_id == 1) 0-Level @elseif($detail->exam_id == 2) A-Level @endif </td>
