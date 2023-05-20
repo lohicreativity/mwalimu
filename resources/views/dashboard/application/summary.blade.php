@@ -263,8 +263,11 @@
                  <td style="font-weight:bold">Sex:</td>
                  <td>@if($applicant->nextOfKin->gender == 'F') Female @elseif($applicant->nextOfKin->gender == 'M') Male @endif</td>
                </tr>
+               <tr>
+                 <td style="font-weight:bold">Relationship:</td>
+                 <td>{{ $applicant->nextOfKin->relationship }}</td>
+               </tr>
 
-               
              </table>
 
              <br><span style="font-size: 16pt; font-weight:bold">Programmes Selected</span><hr>
