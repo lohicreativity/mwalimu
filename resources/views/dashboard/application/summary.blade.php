@@ -362,7 +362,7 @@
                   <td>Points</td>
                 </tr>
                 <tr>
-                  <td>{{ $detail->results }}</td>
+                  <td>@foreach($detail->results as $subject) {{ ucwords(strtolower($subject->subject_name)) }} - {{ $subject->grade }}, @endforeach</td>
                   <td>{{ $detail->division }}</td>
                   <td>{{ $detail->points }}</td>
                 </tr>
