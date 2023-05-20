@@ -259,7 +259,24 @@
                  <td style="font-weight:bold">Names:</td>
                  <td>{{ $applicant->nextOfKin->surname }}, {{ ucwords(strtolower($applicant->nextOfKin->first_name)) }} {{ ucwords(strtolower($applicant->nextOfKin->middle_name)) }}</td>
                </tr>
+               <tr>
+                 <td style="font-weight:bold">Sex:</td>
+                 <td>@if($applicant->nextOfKin->gender == 'F') Female @elseif($applicant->nextOfKin->gender == 'M') Male @endif</td>
+               </tr>
+               <tr>
+                 <td style="font-weight:bold">Relationship:</td>
+                 <td>{{ $applicant->nextOfKin->relationship }}</td>
+               </tr>
+               <tr>
+                 <td style="font-weight:bold">Nationality:</td>
+                 <td>{{ ucwords(strtolower($applicant->nextOfKin->nationality)) }}</td>
+               </tr>
+               <tr>
+                 <td style="font-weight:bold">Email Address:</td>
+                 <td>@if(empty($applicant->nextOfKin->email))N/A @else $applicant->nextOfKin->email @endif</td>
+               </tr>
 
+               
              </table>
 
              <br><span style="font-size: 16pt; font-weight:bold">Programmes Selected</span><hr>
