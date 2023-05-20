@@ -212,7 +212,7 @@
         <div class="row">
           <div class="col-md-12">
              <h3>Basic Information</h3>
-             <table class="table table-bordered table-hover table-condensed">
+             <table class="table table-bordered table-hover">
                <tr>
                  <td style="font-weight:bold">First Name</td>
                  <td>{{ $applicant->first_name }}</td>
