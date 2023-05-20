@@ -356,13 +356,13 @@
               <table class="table table-hover">
                 @foreach($applicant->nectaResultDetails as $detail)
                 <tr>
-                  <td style="font-weight:bold" colspan="3">Form IV</td>
+                  <td style="font-weight:bold" colspan="3">Form IV @if($detail->exam_id == 1) ({{ $detail->index_number}}) @endif</td>
                   @if($detail->exam_id == 2)
                     <td style="font-weight:bold" colsapn="3">Form VI</td>
                   @endif
                 </tr>
                 <tr>
-                  <td style="font-weight:bold">Subjects</td>
+                  <td style="font-weight:bold; font-style:italic">Subjects</td>
                   <td style="font-weight:bold">Division</td>
                   <td style="font-weight:bold">Points</td>
                 </tr>
