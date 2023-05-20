@@ -365,10 +365,10 @@
                   <td style="font-weight:bold">Points</td>
                 </tr>
                 <tr>
-                  <td style="font-size:12pt">@if($detail->exam_id == 1) {{ $detail->index_number }} @endif</td>
-                  <td style="font-size:12pt">@foreach($detail->results as $subject) {{ ucwords(strtolower($subject->subject_name)) }} - {{ $subject->grade }}, @endforeach</td>
-                  <td style="font-size:12pt">{{ $detail->division }}</td>
-                  <td style="font-size:12pt">{{ $detail->points }}</td>
+                  <td style="font-size:10pt">@if($detail->exam_id == 1) {{ $detail->index_number }} @endif</td>
+                  <td style="font-size:10pt">@foreach($detail->results as $subject) {{ ucwords(strtolower($subject->subject_name)) }} - {{ $subject->grade }}, @endforeach</td>
+                  <td style="font-size:10pt">{{ $detail->division }}</td>
+                  <td style="font-size:10pt">{{ $detail->points }}</td>
                 </tr>
                 @endforeach
               </table>
