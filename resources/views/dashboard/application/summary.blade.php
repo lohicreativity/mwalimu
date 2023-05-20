@@ -365,7 +365,7 @@
                   <td style="font-weight:bold">Points</td>
                 </tr>
                 <tr>
-                  <td style="font-size:9pt">@if($detail->exam_id == 1) {{ $detail->index_number }} @endif</td>
+                  <td style="font-size:9pt"></td>
                   <td style="font-size:11pt">@foreach($detail->results as $subject) {{ ucwords(strtolower($subject->subject_name)) }} - {{ $subject->grade }}, @endforeach</td>
                   <td style="font-size:11pt">{{ $detail->division }}</td>
                   <td style="font-size:11pt">{{ $detail->points }}</td>
