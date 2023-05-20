@@ -264,7 +264,7 @@
                  <td>@if($applicant->nextOfKin->gender == 'F') Female @elseif($applicant->nextOfKin->gender == 'M') Male @endif</td>
                </tr>
                <tr>
-                 <td style="font-weight:bold">Relationship:</td>
+                 <td style="font-weight:bold">Relation:</td>
                  <td>{{ $applicant->nextOfKin->relationship }}</td>
                </tr>
                <tr>
