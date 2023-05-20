@@ -253,7 +253,7 @@
                </tr>
              </table>
 
-             <br><span style="font-size: 16pt; font-weight:bold">Next of Kin</span><hr>
+             <br><span style="font-size: 16pt; font-weight:bold">Next of Kin Information</span><hr>
              <table class="table table-hover">
                <tr>
                  <td style="font-weight:bold">Names:</td>
@@ -272,11 +272,11 @@
                  <td>{{ ucwords(strtolower($applicant->nextOfKin->nationality)) }}</td>
                </tr>
                <tr>
-                 <td style="font-weight:bold">Email Address:</td>
+                 <td style="font-weight:bold">Email:</td>
                  <td>@if(empty($applicant->nextOfKin->email))N/A @else $applicant->nextOfKin->email @endif</td>
                </tr>
                <tr>
-                 <td style="font-weight:bold">Phone Number:</td>
+                 <td style="font-weight:bold">Phone:</td>
                  <td>{{ $applicant->nextOfKin->phone }}</td>
                </tr>
                <tr>
