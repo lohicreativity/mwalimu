@@ -254,7 +254,7 @@
              </table>
 
              <br><span style="font-size: 16pt; font-weight:bold">Next of Kin Information</span><hr>
-             <table class="table table-condensed">
+             <table class="table table-hover">
                <tr>
                  <td style="font-weight:bold">Names:</td>
                  <td>{{ $applicant->nextOfKin->surname }}, {{ ucwords(strtolower($applicant->nextOfKin->first_name)) }} {{ ucwords(strtolower($applicant->nextOfKin->middle_name)) }}</td>
@@ -307,7 +307,7 @@
              </table>
 
              <br><span style="font-size: 16pt; font-weight:bold">Programmes Selected</span><hr>
-             <table class="table table-condensed">
+             <table class="table table-hover">
               @if(App\Domain\Application\Models\ApplicantProgramSelection::hasSelectedChoice($applicant->selections,1))
                <tr>
                  <td>1<sup>st</sup> Choice</td>
