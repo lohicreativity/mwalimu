@@ -356,13 +356,16 @@
               <table class="table table-condensed">
                 @foreach($applicant->nectaResultDetails as $detail)
                 <tr>
-                  <td style="font-weight:bold">Form IV <br> @if($detail->exam_id == 1) ({{ $detail->index_number }}) @endif</td>
+                  <td style="font-weight:bold">Form IV</td>
+                  @if($detail->exam_id == 2)
+                    <td style="font-weight:bold">Form VI</td>
+                  @endif
                   <td style="font-weight:bold">Subjects</td>
                   <td style="font-weight:bold">Division</td>
                   <td style="font-weight:bold">Points</td>
                 </tr>
                 <tr>
-                  <td> </td>
+                  <td>@if($detail->exam_id == 1) {{ $detail->index_number }} @endif</td>
                   <td>@foreach($detail->results as $subject) {{ ucwords(strtolower($subject->subject_name)) }} - {{ $subject->grade }}, @endforeach</td>
                   <td>{{ $detail->division }}</td>
                   <td>{{ $detail->points }}</td>
