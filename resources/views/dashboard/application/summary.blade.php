@@ -253,7 +253,7 @@
                </tr>
              </table>
 
-             <br><span style="font-size: 16pt; font-weight:bold">Next of Kin Information</span><hr>
+             <br><span style="font-size: 16pt; font-weight:bold">Next of Kin</span><hr>
              <table class="table table-hover">
                <tr>
                  <td style="font-weight:bold">Names:</td>
