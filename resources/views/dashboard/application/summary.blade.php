@@ -260,11 +260,11 @@
                </tr>
                <tr>
                  <td>Sex</td>
-                 <td>@if($$applicant->nextOfKin->gender == 'F') Female @elseif($$applicant->nextOfKin->gender == 'M') Male @endif</td>
+                 <td>@if($applicant->nextOfKin->gender == 'F') Female @elseif($$applicant->nextOfKin->gender == 'M') Male @endif</td>
                </tr>
                <tr>
                  <td>Relationship</td>
-                 <td>$$applicant->nextOfKin->relationship</td>
+                 <td>$applicant->nextOfKin->relationship</td>
                </tr>
                <tr>
                  <td>Nationality</td>
