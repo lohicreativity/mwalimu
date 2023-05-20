@@ -212,59 +212,6 @@
         </div>
         <div class="row">
           <div class="col-md-12">
-
-          <br><span style="font-size: 16pt; font-weight:bold">Next of Kin Information</span><hr>
-             <table class="table table-hover">
-               <tr>
-                 <td style="font-weight:bold">Names:</td>
-                 <td>{{ $applicant->nextOfKin->surname }}, {{ ucwords(strtolower($applicant->nextOfKin->first_name)) }} {{ ucwords(strtolower($applicant->nextOfKin->middle_name)) }}</td>
-               </tr>
-               <tr>
-                 <td style="font-weight:bold">Sex:</td>
-                 <td>@if($applicant->nextOfKin->gender == 'F') Female @elseif($applicant->nextOfKin->gender == 'M') Male @endif</td>
-               </tr>
-               <tr>
-                 <td style="font-weight:bold">Relation:</td>
-                 <td>{{ $applicant->nextOfKin->relationship }}</td>
-               </tr>
-               <tr>
-                 <td style="font-weight:bold">Nationality:</td>
-                 <td>{{ ucwords(strtolower($applicant->nextOfKin->nationality)) }}</td>
-               </tr>
-               <tr>
-                 <td style="font-weight:bold">Email:</td>
-                 <td>@if(empty($applicant->nextOfKin->email))N/A @else $applicant->nextOfKin->email @endif</td>
-               </tr>
-               <tr>
-                 <td style="font-weight:bold">Phone:</td>
-                 <td>{{ $applicant->nextOfKin->phone }}</td>
-               </tr>
-               <tr>
-                 <td style="font-weight:bold">Address:</td>
-                 <td>{{ $applicant->nextOfKin->address }}</td>
-               </tr>
-               <tr>
-                 <td style="font-weight:bold">Country:</td>
-                 <td>{{ ucwords(strtolower($applicant->nextOfKin->country->name)) }}</td>
-               </tr>
-               <tr>
-                 <td style="font-weight:bold">Region:</td>
-                 <td>{{ ucwords(strtolower($applicant->nextOfKin->region->name)) }}</td>
-               </tr>
-               <tr>
-                 <td style="font-weight:bold">District:</td>
-                 <td>{{ ucwords(strtolower($applicant->nextOfKin->district->name)) }}</td>
-               </tr>
-               <tr>
-                 <td style="font-weight:bold">Ward:</td>
-                 <td>{{ ucwords(strtolower($applicant->nextOfKin->ward->name)) }}</td>
-               </tr>
-               <tr>
-                 <td style="font-weight:bold">Street:</td>
-                 <td>{{ ucwords(strtolower($applicant->street)) }}</td>
-               </tr>
-               
-             </table>
              <br><span style="font-size: 16pt; font-weight:bold">Personal Information</span><hr>
 
              <table class="table table-hover">
@@ -306,7 +253,14 @@
                </tr>
              </table>
 
+             <br><span style="font-size: 16pt; font-weight:bold">Next of Kin Information</span><hr>
+             <table class="table table-hover">
+               <tr>
+                 <td style="font-weight:bold">Names:</td>
+                 <td>{{ $applicant->nextOfKin->surname }}, {{ ucwords(strtolower($applicant->nextOfKin->first_name)) }} {{ ucwords(strtolower($applicant->nextOfKin->middle_name)) }}</td>
+               </tr>
 
+             </table>
 
              <br><span style="font-size: 16pt; font-weight:bold">Programmes Selected</span><hr>
              <table class="table table-hover">
