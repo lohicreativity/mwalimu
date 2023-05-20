@@ -214,7 +214,7 @@
              <h3>Basic Information</h3>
              <table class="table table-bordered table-hover table-condensed">
                <tr>
-                 <td style="text-weight:bold">First Name</td>
+                 <td style="font-weight:bold">First Name</td>
                  <td>{{ $applicant->first_name }}</td>
                </tr>
                <tr>
