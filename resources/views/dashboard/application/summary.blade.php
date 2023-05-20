@@ -213,15 +213,15 @@
         <div class="row">
           <div class="col-md-12">
              <h3>Personal Information</h3>
-             <p> <span style="font-weight:bold">Names:</span>
-                 {{ $applicant->surname }}, {{ ucwords(strtolower($applicant->first_name)) }} {{ ucwords(strtolower($applicant->middle_name)) }}</p>
+                              <span style="font-weight:bold">Names:</span>
+                 {{ $applicant->surname }}, {{ ucwords(strtolower($applicant->first_name)) }} {{ ucwords(strtolower($applicant->middle_name)) }}<br>
   
 
-                 <p><span style="font-weight:bold">Sex:</span>
-                 @if($applicant->gender == 'F') Female @elseif($applicant->gender == 'M') Male @endif</p>
+                 <span style="font-weight:bold">Sex:</span>
+                 @if($applicant->gender == 'F') Female @elseif($applicant->gender == 'M') Male @endif<br>
 
-                 <p><span style="font-weight:bold">Nationality:</span>
-                 {{ ucwords(strtolower($applicant->nationality)) }}</p>
+                 <span style="font-weight:bold">Nationality:</span>
+                 {{ ucwords(strtolower($applicant->nationality)) }}
              <table class="table table-bordered table-hover">
 
 
