@@ -360,21 +360,20 @@
               <table class="table table-hover">
                 @foreach($applicant->nectaResultDetails as $detail)
                 <tr>
-                  <td style="font-weight:bold" colspan="5">Form IV @if($detail->exam_id == 1) ({{ $detail->index_number}}) @endif</td>
+                  <td style="font-weight:bold" colspan="4">Form IV @if($detail->exam_id == 1) ({{ $detail->index_number}}) @endif</td>
                   @if($detail->exam_id == 2)
-                    <td style="font-weight:bold" colsapn="5">Form VI</td>
+                    <td style="font-weight:bold" colsapn="3">Form VI</td>
                   @endif
                 </tr>
                 <tr>
                   <td style="font-weight:bold; font-style:italic">Subjects</td>
-                  <td></td>
                   <td style="font-weight:bold; font-style:italic">Division</td>
                   <td style="font-weight:bold; font-style:italic"></td>
                   <td style="font-weight:bold; font-style:italic">Points</td>
                 </tr>
                 <tr>
                   <td style="font-size:11pt">@foreach($detail->results as $subject) {{ ucwords(strtolower($subject->subject_name)) }} - {{ $subject->grade }}, @endforeach</td>
-                  <td></td>
+                  
                   <td style="font-size:11pt">{{ $detail->division }}</td>
                   <td></td>
                   <td style="font-size:11pt">{{ $detail->points }}</td>
