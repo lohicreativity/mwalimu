@@ -358,19 +358,23 @@
 
               <br><span style="font-size: 16pt; font-weight:bold">NECTA Results</span><hr>
               <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th style="font-weight:bold">Index Number</th>
+                    <th style="font-weight:bold">Subjects</th>
+                    <th style="font-weight:bold">Division</th>
+                    <th style="font-weight:bold">Points</th>
+                  </tr>     
+                </thead>
                 @foreach($applicant->nectaResultDetails as $detail)
-                <tr>
-                  <td style="font-weight:bold">Index Number</td>
-                  <td style="font-weight:bold">Subjects</td>
-                  <td style="font-weight:bold">Division</td>
-                  <td style="font-weight:bold">Points</td>
-                </tr>
-                <tr>
-                  <td style="font-size:11pt; vertical-align: top">@if($detail->exam_id == 1) {{ $detail->index_number}} <br>(Form IV) @elseif($detail->exam_id == 2) Form VI ({{ $detail->index_number}}) @endif</td>
-                  <td style="font-size:11pt; vertical-align: top">@foreach($detail->results as $subject) {{ ucwords(strtolower($subject->subject_name)) }} - {{ $subject->grade }}, @endforeach</td>
-                  <td style="font-size:11pt; vertical-align: top">{{ $detail->division }}</td>
-                  <td style="font-size:11pt; vertical-align: top">{{ $detail->points }}</td>
-                </tr>
+                <tbody>
+                  <tr>
+                    <td style="font-size:11pt; vertical-align: top">@if($detail->exam_id == 1) {{ $detail->index_number}} <br>(Form IV) @elseif($detail->exam_id == 2) Form VI ({{ $detail->index_number}}) @endif</td>
+                    <td style="font-size:11pt; vertical-align: top">@foreach($detail->results as $subject) {{ ucwords(strtolower($subject->subject_name)) }} - {{ $subject->grade }}, @endforeach</td>
+                    <td style="font-size:11pt; vertical-align: top">{{ $detail->division }}</td>
+                    <td style="font-size:11pt; vertical-align: top">{{ $detail->points }}</td>
+                  </tr>
+                </tbody>
                 @endforeach
               </table>
               @endif
