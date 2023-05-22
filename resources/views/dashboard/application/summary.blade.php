@@ -371,9 +371,9 @@
                   <td style="font-weight:bold; font-style:italic">Points</td>
                 </tr>
                 <tr>
-                  <td style="font-size:11pt">@foreach($detail->results as $subject) {{ ucwords(strtolower($subject->subject_name)) }} - {{ $subject->grade }}, @endforeach</td>
-                  <td style="font-size:11pt">{{ $detail->division }}</td>
-                  <td style="font-size:11pt">{{ $detail->points }}</td>
+                  <td style="font-size:11pt; vertical-align: top">@foreach($detail->results as $subject) {{ ucwords(strtolower($subject->subject_name)) }} - {{ $subject->grade }}, @endforeach</td>
+                  <td style="font-size:11pt; vertical-align: top">{{ $detail->division }}</td>
+                  <td style="font-size:11pt; vertical-align: top">{{ $detail->points }}</td>
                 </tr>
                 @endforeach
               </table>
@@ -384,14 +384,14 @@
               <table class="table">
                 @foreach($applicant->nacteResultDetails as $detail)
                 <tr>
-                  <td>AVN</td>
-                  <td>Subjects</td>
-                  <td>GPA</td>
+                  <td  style="font-weight:bold">AVN</td>
+                  <td  style="font-weight:bold">Subjects</td>
+                  <td  style="font-weight:bold">GPA</td>
                 </tr>
                 <tr>
                   <td style="vertical-align: top">{{ $detail->avn }}</td>
                   <td style="font-size:11pt; vertical-align: top">@foreach($detail->results as $subject) {{ ucwords(strtolower($subject->subject)) }} - {{ $subject->grade }}, @endforeach</td>
-                  <td style="vertical-align: top">{{ $detail->diploma_gpa }}</td>
+                  <td style="vertical-align: top">{{ round($detail->diploma_gpa,1) }}</td>
                 </tr>
                 @endforeach
               </table>
