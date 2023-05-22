@@ -56,12 +56,10 @@ class DepartmentController extends Controller
     public function store(Request $request)
     {
       if(Auth::user()->hasRole('administrator')) {
-
          $validation = Validator::make($request->all(),[
             'name'=>'required|unique:departments',
             'abbreviation'=>'required|unique:departments',
             'description'=>'required',
-            'campuses'=>'required',
         ]);
 
       } else if (Auth::user()->hasRole('admission-officer')) {
