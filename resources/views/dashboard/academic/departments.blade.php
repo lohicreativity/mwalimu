@@ -86,7 +86,6 @@
                   </div>
                   </div>
 
-                  @if(Auth::user()->hasRole('administrator') || Auth::user()->hasRole('arc'))
                   <div class="row">
                     <div class="form-group col-4">
                       {!! Form::label('','Type') !!}
@@ -106,6 +105,7 @@
                         @endforeach
                       </select>
                     </div>
+                    @if(Auth::user()->hasRole('administrator') || Auth::user()->hasRole('arc'))
                     <div class="form-group col-4">
                       {!! Form::label('','Campus') !!}
                       <!-- <select name="campuses[]" class="form-control ss-select-tags" multiple="multiple"> -->
@@ -116,28 +116,7 @@
                           @endforeach
                         </select>
                     </div>
-                  </div>
-                  @elseif(Auth::user()->hasRole('admission-officer'))
-                  <div class="row">
-                    <div class="form-group col-6">
-                      {!! Form::label('','Type') !!}
-                      <select name="unit_category_id" class="form-control" id="unit-categories" data-target="#parents" data-token="{{ session()->token() }}" data-source-url="{{ url('api/v1/get-parents') }}" required>
-                        <option value="">Select Type</option>
-                        @foreach($unit_categories as $category)
-                        <option value="{{ $category->id }}">{{ $category->name }}</option>
-                        @endforeach
-                      </select>
-                    </div>
-                    <div class="form-group col-6">
-                      {!! Form::label('','Parent',array('id' => 'parent-label')) !!}
-                      <div id="parent_input"></div>
-                      <select name="parent_id" id="parents" class="form-control">
-                        <option value="">Select Parent</option>
-                         @foreach($departments as $department)
-                        <option value="{{ $department->id }}">{{ $department->name }}</option>
-                        @endforeach 
-                      </select>
-                    </div>
+                    @elseif(Auth::user()->hasRole('admission-officer'))
                     {!! Form::input('hidden','campus_id',$staff->campus_id,['id'=>'campus_id']) !!}
                   </div>
                   @endif
@@ -169,7 +148,7 @@
                         <th>Name</th>
                         <th>Abbreviation</th>
                         <th>Type</th>
-                        @if(Auth::user()->hasRole('admission-officer'))
+                        @if(Auth::user()->hasRole('administrator'))
                           <th>Campus</th>
                         @endif
                         <th>Actions</th>
@@ -183,11 +162,13 @@
                           <td>{{ $department->name }}</td>
                           <td>{{ $department->abbreviation }}</td>
                           <td>{{ $department->categoryName }}</td>
-                          <td>
-                            @foreach($department->campuses as $campus)
-                            <p class="ss-no-margin">{{ $campus->name }}</p>
-                            @endforeach
-                          </td>
+                          @if(Auth::user()->hasRole('administrator'))
+                            <td>
+                              @foreach($department->campuses as $campus)
+                              <p class="ss-no-margin">{{ $campus->name }}</p>
+                              @endforeach
+                            </td>
+                          @endif
                           <td>
                             @can('edit-department')
                             <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-edit-department-{{ $department->id }}">
