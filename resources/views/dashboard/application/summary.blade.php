@@ -359,6 +359,7 @@
               <br><span style="font-size: 16pt; font-weight:bold">NECTA Results</span><hr>
               <table class="table table-hover">
                 @foreach($applicant->nectaResultDetails as $detail)
+                <tr>
                   <td style="font-weight:bold; font-style:italic">Index Number</td>
                   <td style="font-weight:bold; font-style:italic">Subjects</td>
                   <td style="font-weight:bold; font-style:italic">Division</td>
