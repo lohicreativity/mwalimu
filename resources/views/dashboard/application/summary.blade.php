@@ -378,16 +378,22 @@
               @if(count($applicant->nacteResultDetails) != 0)
               <br><span style="font-size: 16pt; font-weight:bold">NACTE Results</span><hr>
               <table class="table">
-                <th  style="font-weight:bold">Reg. No./AVN</th>
-                <th  style="font-weight:bold">Subjects</th>
-                <th  style="font-weight:bold">GPA</th>
-                @foreach($applicant->nacteResultDetails as $detail)
-                <tr>
-                  <td style="vertical-align: top">{{ $detail->avn }}</td>
-                  <td style="font-size:11pt; vertical-align: top">@foreach($detail->results as $subject) {{ ucwords(strtolower($subject->subject)) }} - {{ $subject->grade }}, @endforeach</td>
-                  <td style="vertical-align: top">{{ round($detail->diploma_gpa,1) }}</td>
-                </tr>
-                @endforeach
+                <thead>
+                  <tr>
+                    <th  style="font-weight:bold">Reg. No./AVN</th>
+                    <th  style="font-weight:bold">Subjects</th>
+                    <th  style="font-weight:bold">GPA</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @foreach($applicant->nacteResultDetails as $detail)
+                  <tr>
+                    <td style="vertical-align: top">{{ $detail->avn }}</td>
+                    <td style="font-size:11pt; vertical-align: top">@foreach($detail->results as $subject) {{ ucwords(strtolower($subject->subject)) }} - {{ $subject->grade }}, @endforeach</td>
+                    <td style="vertical-align: top">{{ round($detail->diploma_gpa,1) }}</td>
+                  </tr>
+                  @endforeach
+                </tbody>
               </table>
               @endif
          </div><!-- end of col-md-12 -->
