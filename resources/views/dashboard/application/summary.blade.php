@@ -357,7 +357,7 @@
               @if(count($applicant->nectaResultDetails) != 0)
 
               <br><span style="font-size: 16pt; font-weight:bold">NECTA Results</span><hr>
-              <table class="table table-hover">
+              <table class="table table-hover" style="border-collapse: collapse">
                 <thead>
                   <tr>
                     <th style="font-weight:bold">Index Number</th>
