@@ -2133,9 +2133,9 @@ class ApplicationController extends Controller
         $user->roles()->sync([$role->id]);
 
         $applicant = new Applicant;
-        $applicant->first_name = $request->get('first_name');
-        $applicant->middle_name = $request->get('middle_name');
-        $applicant->surname = $request->get('surname');
+        $applicant->first_name = strtoupper($request->get('first_name'));
+        $applicant->middle_name = strtoupper($request->get('middle_name'));
+        $applicant->surname = strtoupper($request->get('surname'));
         $applicant->user_id = $user->id;
         $applicant->campus_id = 0;
         $applicant->index_number = strtoupper($request->get('index_number'));
@@ -3624,9 +3624,9 @@ class ApplicationController extends Controller
                   $message = 'TCU fee not defined';
                }else{
                   $nacte_quality_assurance_fee = FeeAmount::where('study_academic_year_id',$study_academic_year->id)->whereHas('feeItem',function($query){
-                   $query->where('name','LIKE','%NACTE%');
+                   $query->where('name','LIKE','%NACTVET%')->where('name','LIKE','%Quality%');
                   })->first();
-                  $message = 'NACTE fee not defined';
+                  $message = 'NACTVET fee not defined';
                }
                
 
@@ -3643,8 +3643,8 @@ class ApplicationController extends Controller
                }
 
                $students_union_fee = FeeAmount::where('study_academic_year_id',$study_academic_year->id)->whereHas('feeItem',function($query){
-                   $query->where('name','LIKE','%MNMASO%')->orWhere('name','LIKE','%Student Organization%')->orWhere('name','LIKE','%MASO%');
-               })->first();
+                   $query->where('name','LIKE','%MNMASO%')->orWhere('name','LIKE','%Students Organization%')->orWhere('name','LIKE','%Students Union%')
+                   ->orWhere('name','LIKE','%MASO%');})->first();
 
                if(!$students_union_fee){
                    return redirect()->back()->with('error','Students union fee not defined');
@@ -3675,11 +3675,11 @@ class ApplicationController extends Controller
                }
 
                $identity_card_fee = FeeAmount::where('study_academic_year_id',$study_academic_year->id)->whereHas('feeItem',function($query){
-                   $query->where('name','LIKE','%Identity Card%');
+                   $query->where('name','LIKE','%New ID Card%');
                })->first();
 
                if(!$identity_card_fee){
-                   return redirect()->back()->with('error','Identity card fee not defined');
+                   return redirect()->back()->with('error','ID card fee for new students not defined');
                }
 
                $late_registration_fee = FeeAmount::where('study_academic_year_id',$study_academic_year->id)->whereHas('feeItem',function($query){
@@ -5361,13 +5361,12 @@ class ApplicationController extends Controller
                   })->first();
                }else{
                   $nacte_quality_assurance_fee = FeeAmount::where('study_academic_year_id',$study_academic_year->id)->whereHas('feeItem',function($query){
-                   $query->where('name','LIKE','%NACTE%');
-                  })->first();
+                   $query->where('name','LIKE','%NACTVET%')->where('name','LIKE','%Quality%');})->first();
                }
                
 
                if(!$nacte_quality_assurance_fee){
-                   redirect()->back()->with('error','NACTE fee not defined');
+                   redirect()->back()->with('error','NACTVET Quality Assurance fee not defined');
                }
 
                $practical_training_fee = FeeAmount::where('study_academic_year_id',$study_academic_year->id)->whereHas('feeItem',function($query){
@@ -5379,8 +5378,8 @@ class ApplicationController extends Controller
                }
 
                $students_union_fee = FeeAmount::where('study_academic_year_id',$study_academic_year->id)->whereHas('feeItem',function($query){
-                   $query->where('name','LIKE','%MNMASO%')->orWhere('name','LIKE','%Student Organization%')->orWhere('name','LIKE','%MASO%');
-               })->first();
+                   $query->where('name','LIKE','%MNMASO%')->orWhere('name','LIKE','%Student Organization%')->orWhere('name','LIKE','%MASO%')
+                   ->orWhere('name','LIKE','%Students Union%');})->first();
 
                if(!$students_union_fee){
                    redirect()->back()->with('error','Students union fee not defined');
@@ -5411,11 +5410,11 @@ class ApplicationController extends Controller
                }
 
                $identity_card_fee = FeeAmount::where('study_academic_year_id',$study_academic_year->id)->whereHas('feeItem',function($query){
-                   $query->where('name','LIKE','%Identity Card%');
+                   $query->where('name','LIKE','%New ID Card%');
                })->first();
 
                if(!$identity_card_fee){
-                   redirect()->back()->with('error','Identity card fee not defined');
+                   redirect()->back()->with('error','ID card fee for new students not defined');
                }
 
                $late_registration_fee = FeeAmount::where('study_academic_year_id',$study_academic_year->id)->whereHas('feeItem',function($query){
@@ -6517,12 +6516,12 @@ class ApplicationController extends Controller
 				})->where('study_academic_year_id',$ac_year->id)->with(['feeItem.feeType'])->first();
 			}else{
 				$quality_assurance_fee = FeeAmount::whereHas('feeItem',function($query){
-					$query->where('name','LIKE','%NACTE%');
+					$query->where('name','LIKE','%NACTVET%')->where('name','LIKE','%Quality%');
 				})->where('study_academic_year_id',$ac_year->id)->with(['feeItem.feeType'])->first();
 			}
 
 			$other_fees = FeeAmount::whereHas('feeItem',function($query){
-					$query->where('is_mandatory',1)->where('name','NOT LIKE','%NACTE%')->where('name','NOT LIKE','%TCU%');
+					$query->where('is_mandatory',1)->where('name','NOT LIKE','%NACTVET%')->where('name','LIKE','%Quality%')->where('name','NOT LIKE','%TCU%');
 				})->with(['feeItem.feeType'])->where('study_academic_year_id',$ac_year->id)->get();
 
 			if(str_contains($applicant->nationality,'Tanzania')){
@@ -6734,7 +6733,7 @@ class ApplicationController extends Controller
             }
          }
 
-         return redirect()->back()->with('message','Verified applicants retrieved successfully from NACTE');
+         return redirect()->back()->with('message','Verified applicants retrieved successfully from NACTVET');
     }
 
     /**
@@ -7976,12 +7975,12 @@ class ApplicationController extends Controller
 				})->where('study_academic_year_id',$ac_year->id)->with(['feeItem.feeType'])->first();
 			}else{
 				$quality_assurance_fee = FeeAmount::whereHas('feeItem',function($query){
-					$query->where('name','LIKE','%NACTE%');
+					$query->where('name','LIKE','%NACTVET%')->where('name','LIKE','%Quality%');
 				})->where('study_academic_year_id',$ac_year->id)->with(['feeItem.feeType'])->first();
 			}
 
 			$other_fees = FeeAmount::whereHas('feeItem',function($query){
-					$query->where('is_mandatory',1)->where('name','NOT LIKE','%NACTE%')->where('name','NOT LIKE','%TCU%');
+					$query->where('is_mandatory',1)->where('name','NOT LIKE','%NACTVET%')->where('name','LIKE','%NACTVET%')->where('name','NOT LIKE','%TCU%');
 				})->with(['feeItem.feeType'])->where('study_academic_year_id',$ac_year->id)->get();
 				
 			if($misc_invoice){

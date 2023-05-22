@@ -44,7 +44,7 @@ class ApplicantAction implements ApplicantInterface{
         $applicant->region_id = $request->get('region_id');
         $applicant->district_id = $request->get('district_id');
         $applicant->ward_id = $request->get('ward_id');
-        $applicant->street = $request->get('street');
+        $applicant->street = strtoupper($request->get('street'));
         $applicant->basic_info_complete_status = 1;
         $applicant->save();
 
