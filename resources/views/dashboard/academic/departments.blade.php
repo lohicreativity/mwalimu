@@ -110,12 +110,12 @@
                     <div class="form-group col-4">
                       {!! Form::label('','Campus') !!}
                       <!-- <select name="campuses[]" class="form-control ss-select-tags" multiple="multiple"> -->
-                        <select name="campus_id" class="form-control" required>
-                          <option value="">Select Campus</option>
-                          @foreach($campuses as $campus)
-                            <option value="{{ $campus->id }}">{{ $campus->name }}</option>
-                          @endforeach
-                        </select>
+                      <select name="campus_id" class="form-control" required>
+                       <option value="">Select Campus</option>
+                       @foreach($campuses as $cp)
+                       <option value="{{ $cp->id }}" @if($staff->campus_id == $cp->id) selected="selected" @endif>{{ $cp->name }}</option>
+                       @endforeach
+                    </select>
                     </div>
                     @elseif(Auth::user()->hasRole('admission-officer'))
                     {!! Form::input('hidden','campus_id',$staff->campus_id,['id'=>'campus_id']) !!}
