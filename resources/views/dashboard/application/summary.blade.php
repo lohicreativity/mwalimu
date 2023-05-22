@@ -368,7 +368,7 @@
                 </thead>
                 @foreach($applicant->nectaResultDetails as $detail)
                 <tbody>
-                  <tr>
+                  <tr style="border-top: 1pt solid black;  border-bottom: 1pt solid black">
                     <td style="font-size:11pt; vertical-align: top">@if($detail->exam_id == 1) {{ $detail->index_number}} <br>(Form IV) @elseif($detail->exam_id == 2) Form VI ({{ $detail->index_number}}) @endif</td>
                     <td style="font-size:11pt; vertical-align: top">@foreach($detail->results as $subject) {{ ucwords(strtolower($subject->subject_name)) }} - {{ $subject->grade }}, @endforeach</td>
                     <td style="font-size:11pt; vertical-align: top">{{ $detail->division }}</td>
@@ -391,7 +391,7 @@
                 </thead>
                 <tbody>
                   @foreach($applicant->nacteResultDetails as $detail)
-                  <tr>
+                  <tr style="border-top: 1pt solid black;  border-bottom: 1pt solid black">
                     <td style="vertical-align: top">{{ $detail->avn }}</td>
                     <td style="font-size:11pt; vertical-align: top">@foreach($detail->results as $subject) {{ ucwords(strtolower($subject->subject)) }} - {{ $subject->grade }}, @endforeach</td>
                     <td style="vertical-align: top">{{ round($detail->diploma_gpa,1) }}</td>
