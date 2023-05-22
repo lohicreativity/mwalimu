@@ -368,6 +368,7 @@
                 <tr>
                   <td style="font-weight:bold; font-style:italic">Subjects</td>
                   <td style="font-weight:bold; font-style:italic">Division</td>
+                  <td style="font-weight:bold; font-style:italic">Division</td>
                   <td style="font-weight:bold; font-style:italic">Points</td>
                 </tr>
                 <tr>
