@@ -87,7 +87,7 @@
                   </div>
 
                   <div class="row">
-                    <div class="form-group col-6">
+                    <div class="form-group col-4">
                       {!! Form::label('','Type') !!}
                       <select name="unit_category_id" class="form-control" id="unit-categories" data-target="#parents" data-token="{{ session()->token() }}" data-source-url="{{ url('api/v1/get-parents') }}" required>
                         <option value="">Select Type</option>
@@ -96,7 +96,7 @@
                         @endforeach
                       </select>
                     </div>
-                    <div class="form-group col-6">
+                    <div class="form-group col-4">
                       {!! Form::label('','Parent',array('id' => 'parent-label')) !!}
                       <div id="parent_input"></div>
                       <select name="parent_id" id="parents" class="form-control">
@@ -118,6 +118,26 @@
                     </select>
                     </div>
                     @elseif(Auth::user()->hasRole('admission-officer'))
+                    <div class="row">
+                    <div class="form-group col-6">
+                      {!! Form::label('','Type') !!}
+                      <select name="unit_category_id" class="form-control" id="unit-categories" data-target="#parents" data-token="{{ session()->token() }}" data-source-url="{{ url('api/v1/get-parents') }}" required>
+                        <option value="">Select Type</option>
+                        @foreach($unit_categories as $category)
+                        <option value="{{ $category->id }}">{{ $category->name }}</option>
+                        @endforeach
+                      </select>
+                    </div>
+                    <div class="form-group col-6">
+                      {!! Form::label('','Parent',array('id' => 'parent-label')) !!}
+                      <div id="parent_input"></div>
+                      <select name="parent_id" id="parents" class="form-control">
+                        <option value="">Select Parent</option>
+                         @foreach($departments as $department)
+                        <option value="{{ $department->id }}">{{ $department->name }}</option>
+                        @endforeach 
+                      </select>
+                    </div>
                     {!! Form::input('hidden','campus_id',$staff->campus_id,['id'=>'campus_id']) !!}
                   </div>
                   @endif
@@ -142,7 +162,7 @@
               <!-- /.card-header -->
               <div class="card-body">
                 @if(Auth::user()->hasRole('administrator') || Auth::user()->hasRole('admission-officer'))
-                  <table id="example2" class="table table-bordered table-hover ss-admission-officer-table ss-paginated-table">
+                  <table class="table table-bordered table-hover ss-admission-officer-table ss-paginated-table">
                     <thead>
                       <tr>
                         <th>SN</th>

@@ -19,7 +19,7 @@ class DepartmentAction implements DepartmentInterface{
         $department->save();
 
         if (Auth::user()->hasRole('administrator')) {
-            $department->campuses()->sync($request->get('campuses'));
+            $department->campuses()->sync($request->get('campus_id'));
         } else if (Auth::user()->hasRole('admission-officer')) {
             $department->campuses()->sync($request->get('staff_campus'));
         }
