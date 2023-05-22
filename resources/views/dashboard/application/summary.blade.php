@@ -381,7 +381,7 @@
 
               @if(count($applicant->nacteResultDetails) != 0)
               <br><span style="font-size: 16pt; font-weight:bold">NACTE Results</span><hr>
-              <table class="table table-bordered">
+              <table class="table">
                 @foreach($applicant->nacteResultDetails as $detail)
                 <tr>
                   <td>AVN</td>
@@ -389,10 +389,9 @@
                   <td>GPA</td>
                 </tr>
                 <tr>
-                  <td style="font-size:11pt">@foreach($detail->results as $subject) {{ ucwords(strtolower($subject->subject)) }} - {{ $subject->grade }}, @endforeach</td>
-
-                  <td>{{ $detail->avn }}</td>
-                  <td>{{ $detail->diploma_gpa }}</td>
+                  <td style="vertical-align: top">{{ $detail->avn }}</td>
+                  <td style="font-size:11pt; vertical-align: top">@foreach($detail->results as $subject) {{ ucwords(strtolower($subject->subject)) }} - {{ $subject->grade }}, @endforeach</td>
+                  <td style="vertical-align: top">{{ $detail->diploma_gpa }}</td>
                 </tr>
                 @endforeach
               </table>
