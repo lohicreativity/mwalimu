@@ -356,7 +356,7 @@
 
               @if(count($applicant->nectaResultDetails) != 0)
 
-              <br><span style="font-size: 16pt; font-weight:bold">Results</span><hr>
+              <br><span style="font-size: 16pt; font-weight:bold">NECTA Results</span><hr>
               <table class="table table-hover">
                 @foreach($applicant->nectaResultDetails as $detail)
                 <tr>
@@ -368,12 +368,11 @@
                 <tr>
                   <td style="font-weight:bold; font-style:italic">Subjects</td>
                   <td style="font-weight:bold; font-style:italic">Division</td>
-                  <td style="font-weight:bold; font-style:italic"></td>
                   <td style="font-weight:bold; font-style:italic">Points</td>
                 </tr>
                 <tr>
                   <td style="font-size:11pt">@foreach($detail->results as $subject) {{ ucwords(strtolower($subject->subject_name)) }} - {{ $subject->grade }}, @endforeach</td>
-                  <td style="font-size:11pt" colspan="2">{{ $detail->division }}</td>
+                  <td style="font-size:11pt">{{ $detail->division }}</td>
                   <td style="font-size:11pt">{{ $detail->points }}</td>
                 </tr>
                 @endforeach
@@ -381,14 +380,17 @@
               @endif
 
               @if(count($applicant->nacteResultDetails) != 0)
-              <h3>NACTE Results</h3>
-              <table class="table table-bordered table-condensed">
+              <br><span style="font-size: 16pt; font-weight:bold">NACTE Results</span><hr>
+              <table class="table table-bordered">
                 @foreach($applicant->nacteResultDetails as $detail)
                 <tr>
                   <td>AVN</td>
+                  <td>Subjects</td>
                   <td>GPA</td>
                 </tr>
                 <tr>
+                  <td style="font-size:11pt">@foreach($detail->results as $subject) {{ ucwords(strtolower($subject->subject)) }} - {{ $subject->grade }}, @endforeach</td>
+
                   <td>{{ $detail->avn }}</td>
                   <td>{{ $detail->diploma_gpa }}</td>
                 </tr>
