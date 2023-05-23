@@ -46,7 +46,7 @@
           <select name="program_level_id" class="form-control" id="ss-program-level" required>
              <option value="">Select Program Level</option>
              @foreach($awards as $award)
-             @if(str_contains($award->name,'Basic') || str_contains($award->name,'Ordinary') || str_contains($award->name,'Bachelor') || str_contains($award->name,'Masters'))
+             @if(str_contains($award->name,'Basic') || str_contains($award->name,'Ordinary') || str_contains($award->name,'Masters'))
              <option value="{{ $award->id }}" @if(old('program_level_id') == $award->id) selected="selected" @endif>{{ $award->name }}</option>
              @endif
              @endforeach
