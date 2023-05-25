@@ -48,6 +48,7 @@
                <div class="card-body">
                   {!! Form::open(['url'=>'application/applicants/list','class'=>'ss-form-processing','method'=>'GET']) !!}
                     <div class="row">
+                    @if(Auth::user()->hasRole('administrator') || Auth::user()->hasRole('arc'))   
                     <div class="form-group col-12">
                      <select name="application_window_id" class="form-control" required>
                         <option value="">Select Application Window</option>
@@ -56,6 +57,22 @@
                         @endforeach
                      </select>
                    </div>
+                   @else
+                   <div class="form-group col-12">
+                     <select name="application_window_id" class="form-control" required>
+                        <option value="">Select Application Window</option>
+                        @foreach($application_windows as $window)
+                          @if($staff->campus_id == $window->campus_id)
+                        <option value="{{ $window->id }}" @if($window->status == 'ACTIVE') selected="selected"@endif>{{ $window->begin_date }} - {{ $window->end_date }} - {{ $window->campus->name }} - {{ $window->intake->name }} </option>
+                          @endif
+                        @endforeach
+                     </select>
+                   </div>
+
+
+
+
+                   @endif
                  </div>
                    <div class="ss-form-actions">
                     <button type="submit" class="btn btn-primary">{{ __('Search') }}</button>
