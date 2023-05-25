@@ -1270,7 +1270,7 @@ class ApplicationController extends Controller
     }
 
     public function viewDocument(Request $request)
-    { return $request;
+    {
         $data = [
             'request' => $request,
             'applicant' =>$request->get('applicant_id')? Applicant::with('programLevel','insurances')->where('id',$request->get('applicant_id'))->first():
@@ -1356,7 +1356,8 @@ class ApplicationController extends Controller
                 }else{
                     $applicant->documents_complete_status = 0;
                 }
-            }elseif(str_contains($applicant->programLevel->name,'Masters')){
+            }elseif(str_contains(strtolower($applicant->programLevel->name),'master')){
+
                 if($applicant->status == null){
                     if($applicant->o_level_certificate && $applicant->a_level_certificate && $applicant->degree_certificate){
                         $applicant->documents_complete_status = 1;

@@ -30,14 +30,12 @@
                       </a>
                     </li>
                   @endif
-
                   <li class="nav-item">
                     <a @if($applicant->is_tcu_verified != 1 && str_contains($applicant->programLevel->name,'Degree') && $applicant->is_transfered != 1) disabled="disabled" @elseif($applicant->is_tcu_verified == 1 && str_contains($applicant->programLevel->name,'Degree') && $applicant->is_transfered == 1) disabled="disabled" @else href="{{ url('application/results') }}" @endif class="nav-link">
                     <i class="far fa-circle nav-icon"></i>
                     <p>Request Results @if($applicant->results_complete_status == 1) <i class="fa fa-check"></i> @endif</p>
                     </a>
                   </li>
-
                   @if($applicant->is_transfered != 1)
                     <li class="nav-item">
                       <a @if($applicant->is_tcu_verified != 1 && str_contains($applicant->programLevel->name,'Degree') && $applicant->is_transfered != 1) disabled="disabled" @elseif($applicant->is_tcu_verified == 1 && str_contains($applicant->programLevel->name,'Degree') && $applicant->is_transfered == 1) disabled="disabled" @else href="{{ url('application/select-programs') }}" @endif class="nav-link">
@@ -47,7 +45,7 @@
                     </li>
                   @endif
 
-                  @if($applicant->avn_no_results === 1 || $applicant->teacher_certificate_status === 1 || $applicant->veta_status == 1 || (str_contains($applicant->programLevel->name,'Certificate') && $applicant->entry_mode == 'EQUIVALENT'))
+                  @if($applicant->avn_no_results === 1 || $applicant->teacher_certificate_status === 1 || $applicant->veta_status == 1 || str_contains(strtolower($applicant->programLevel->name),'masters') || (str_contains($applicant->programLevel->name,'Certificate') && $applicant->entry_mode == 'EQUIVALENT'))
                   <li class="nav-item">
                     <a href="{{ url('application/upload-avn-documents') }}" class="nav-link">
                     <i class="far fa-circle nav-icon"></i>

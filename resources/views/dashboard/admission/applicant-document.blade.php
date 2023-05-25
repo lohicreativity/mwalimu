@@ -40,6 +40,20 @@
     @endif
 @endif
 
+@if($request->get('name') == 'basic_certificate')
+    @if(explode('.',$applicant->nacte_reg_no)[1] == 'pdf')
+        <iframe
+        src="https://drive.google.com/viewerng/viewer?embedded=true&url={{ asset('uploads/'.$applicant->nacte_reg_no) }}#toolbar=0&scrollbar=0"
+        frameBorder="0"
+        scrolling="auto"
+        height="100%"
+        width="100%">
+        </iframe>
+    @else 
+    <img src="{{ asset('uploads/'.$applicant->nacte_reg_no) }}" height="1200px" width="1200px" alt="" style="display: block; margin-left: auto; margin-right: auto;">
+    @endif
+@endif
+
 @if($request->get('name') == 'a_level_certificate')
     @if(explode('.',$applicant->a_level_certificate)[1] == 'pdf')
         <iframe
@@ -95,6 +109,21 @@
     <img src="{{ asset('uploads/'.$applicant->veta_certificate) }}" height="1200px" width="1200px" alt="" style="display: block; margin-left: auto; margin-right: auto;">
     @endif
 @endif
+
+@if($request->get('name') == 'degree_certificate')
+    @if(explode('.',$applicant->degree_certificate)[1] == 'pdf')
+        <iframe
+        src="https://drive.google.com/viewerng/viewer?embedded=true&url={{ asset('uploads/'.$applicant->degree_certificate) }}#toolbar=0&scrollbar=0"
+        frameBorder="0"
+        scrolling="auto"
+        height="100%"
+        width="100%">
+        </iframe>
+    @else
+    <img src="{{ asset('uploads/'.$applicant->degree_certificate) }}" height="1200px" width="1200px" alt="" style="display: block; margin-left: auto; margin-right: auto;">
+    @endif
+@endif
+
 @if($request->get('name') == 'insurance')
     @if(explode('.',$applicant->insurances[0]->card)[1] == 'pdf')
         <iframe

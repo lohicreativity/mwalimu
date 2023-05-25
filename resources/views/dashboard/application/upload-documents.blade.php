@@ -128,6 +128,15 @@
                         </td>
                       </tr>
                       @endif
+                      @if(str_contains($applicant->nacte_reg_no,'pdf'))
+                      <tr>
+                        <td>Basic Certificate</td>
+                        <td>
+                          <a href="{{ url('application/view-document?name=basic_certificate') }}" target="_blank" class="btn btn-primary"><i class="fa fa-eye"></i> View</a>
+                          <a href="{{ url('application/delete-document?name=basic_certificate') }}" class="btn btn-danger"><i class="fa fa-trash"></i> Delete</a>
+                        </td>
+                      </tr>
+                      @endif
                       @if($applicant->a_level_certificate)
                       <tr>
                         <td>A-Level Certificate</td>

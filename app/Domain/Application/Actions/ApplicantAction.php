@@ -91,7 +91,11 @@ class ApplicantAction implements ApplicantInterface{
                 if($request->get('document_name') == 'o_level_certificate'){
                     $applicant->o_level_certificate = $file_name; //$request->file('document')->getClientOriginalName();
                 }
-                
+ 
+                if($request->get('document_name') == 'basic_certificate'){
+                    $applicant->nacte_reg_no = $file_name; //$request->file('document')->getClientOriginalName();
+                }
+
                 if($request->get('document_name') == 'a_level_certificate'){
                     $applicant->a_level_certificate = $file_name; //$request->file('document')->getClientOriginalName();
                 }
@@ -116,65 +120,100 @@ class ApplicantAction implements ApplicantInterface{
                     $applicant->veta_certificate = $file_name; //$request->file('document')->getClientOriginalName(); 
                 }
 
+                if($request->get('document_name') == 'degree_certificate'){
+                    $applicant->degree_certificate = $file_name; //$request->file('document')->getClientOriginalName(); 
+                }
+
             }
 
             if($applicant->entry_mode == 'DIRECT'){
-            if(str_contains($applicant->programLevel->name,'Bachelor')){
-                if($applicant->birth_certificate && $applicant->o_level_certificate && $applicant->a_level_certificate){
-                    $applicant->documents_complete_status = 1;
-                }else{
-                    $applicant->documents_complete_status = 0;
-                }
-            }elseif(str_contains($applicant->programLevel->name,'Diploma') || str_contains($applicant->programLevel->name,'Certificate')){
-                if($applicant->birth_certificate && $applicant->o_level_certificate){
-                    $applicant->documents_complete_status = 1;
-                }else{
-                    $applicant->documents_complete_status = 0;
-                }
-            }
-        }else{
-
-            // if(str_contains($applicant->programLevel->name,'Bachelor')){
-            //     if($applicant->birth_certificate && $applicant->o_level_certificate && $applicant->diploma_certificate){
-            //         $applicant->documents_complete_status = 1;
-            //     }else{
-            //         $applicant->documents_complete_status = 0;
-            //     }
-            // }elseif(str_contains($applicant->programLevel->name,'Diploma') || str_contains($applicant->programLevel->name,'Certificate')){
-            //     if($applicant->birth_certificate && $applicant->o_level_certificate){
-            //         $applicant->documents_complete_status = 1;
-            //     }else{
-            //         $applicant->documents_complete_status = 0;
-            //     }
-            // }
-
-            
-            if(str_contains($applicant->programLevel->name,'Bachelor')){
-
-                if ($applicant->status == null) {
-                    if ($applicant->diploma_certificate) {
+                if(str_contains($applicant->programLevel->name,'Bachelor')){
+                    if($applicant->birth_certificate && $applicant->o_level_certificate && $applicant->a_level_certificate){
                         $applicant->documents_complete_status = 1;
-                    } else {
+                    }else{
                         $applicant->documents_complete_status = 0;
                     }
-                } elseif ($applicant->status == 'ADMITTED') {
 
+                }elseif(str_contains($applicant->programLevel->name,'Diploma') || str_contains($applicant->programLevel->name,'Certificate')){
                     if($applicant->birth_certificate && $applicant->o_level_certificate){
                         $applicant->documents_complete_status = 1;
                     }else{
                         $applicant->documents_complete_status = 0;
                     }
+
+                }elseif(str_contains(strtolower($applicant->programLevel->name),'master')){
+                    if($applicant->status == null){
+                        if($applicant->o_level_certificate && $applicant->a_level_certificate && $applicant->degree_certificate){
+                            $applicant->documents_complete_status = 1;
+                        }else{
+                            $applicant->documents_complete_status = 0;
+                        }
+
+                    }elseif($applicant->status == 'ADMITTED'){
+                        if($applicant->birth_certificate && $applicant->o_level_certificate && $applicant->a_level_certificate && $applicant->degree_certificate){
+                            $applicant->documents_complete_status = 1;
+                        }else{
+                            $applicant->documents_complete_status = 0;
+                        }
+                    }
                 }
+            }else{
+
+                // if(str_contains($applicant->programLevel->name,'Bachelor')){
+                //     if($applicant->birth_certificate && $applicant->o_level_certificate && $applicant->diploma_certificate){
+                //         $applicant->documents_complete_status = 1;
+                //     }else{
+                //         $applicant->documents_complete_status = 0;
+                //     }
+                // }elseif(str_contains($applicant->programLevel->name,'Diploma') || str_contains($applicant->programLevel->name,'Certificate')){
+                //     if($applicant->birth_certificate && $applicant->o_level_certificate){
+                //         $applicant->documents_complete_status = 1;
+                //     }else{
+                //         $applicant->documents_complete_status = 0;
+                //     }
+                // }
 
                 
-            }elseif(str_contains($applicant->programLevel->name,'Diploma') || str_contains($applicant->programLevel->name,'Certificate')){
-                if($applicant->birth_certificate && $applicant->o_level_certificate){
-                    $applicant->documents_complete_status = 1;
-                }else{
-                    $applicant->documents_complete_status = 0;
+                if(str_contains($applicant->programLevel->name,'Bachelor')){
+
+                    if($applicant->status == null){
+                        if($applicant->o_level_certificate && $applicant->a_level_certificate && $applicant->diploma_certificate && $applicant->degree_certificate){
+                            $applicant->documents_complete_status = 1;
+                        }else{
+                            $applicant->documents_complete_status = 0;
+                        }
+                    }elseif($applicant->status == 'ADMITTED'){
+                        if($applicant->birth_certificate && $applicant->o_level_certificate && $applicant->a_level_certificate && $applicant->diploma_certificate && $applicant->degree_certificate){
+                            $applicant->documents_complete_status = 1;
+                        }else{
+                            $applicant->documents_complete_status = 0;
+                        }
+                    }
+                    
+                }elseif(str_contains($applicant->programLevel->name,'Diploma') || str_contains($applicant->programLevel->name,'Certificate')){
+                    if($applicant->birth_certificate && $applicant->o_level_certificate){
+                        $applicant->documents_complete_status = 1;
+                    }else{
+                        $applicant->documents_complete_status = 0;
+                    }
+                }elseif(str_contains($applicant->programLevel->name,'Masters')){
+                    if($applicant->status == null) {
+                        if($applicant->o_level_certificate && $applicant->diploma_certificate && $applicant->degree_certificate) {
+                            $applicant->documents_complete_status = 1;
+                        }else{
+                            $applicant->documents_complete_status = 0;
+                        }
+
+                    }elseif($applicant->status == 'ADMITTED') {
+
+                        if($applicant->birth_certificate && $applicant->o_level_certificate && $applicant->diploma_certificate && $applicant->degree_certificate){
+                            $applicant->documents_complete_status = 1;
+                        }else{
+                            $applicant->documents_complete_status = 0;
+                        }
+                    }
                 }
             }
-        }
 
             $applicant->save();
 
@@ -213,6 +252,9 @@ class ApplicantAction implements ApplicantInterface{
                        $app->teacher_diploma_certificate = $file_name; //$request->file('document')->getClientOriginalName(); 
                     }
 
+                    if($request->get('document_name') == 'degree_certificate'){
+                        $applicant->degree_certificate = $file_name; //$request->file('document')->getClientOriginalName(); 
+                    }
                 }
 
                 $app->documents_complete_status = $applicant->documents_complete_status;

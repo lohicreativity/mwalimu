@@ -651,14 +651,19 @@ class ApplicantController extends Controller
         $study_academic_year = StudyAcademicYear::whereHas('academicYear',function($query) use ($applicant){
                $query->where('year','LIKE','%'.date('Y',strtotime($applicant->applicationWindow->begin_date)).'/%');
         })->first();
-        
+        $fee_amount = null;
+        if(str_contains(strtolower($applicant->programLevel->name),'master')){
+            $fee_amount = FeeAmount::whereHas('feeItem',function($query){$query->where('name','LIKE','%Application%')->where('name','LIKE','%Master%');})
+                                ->with(['feeItem.feeType'])->where('study_academic_year_id',$study_academic_year->id)->first();
+        }else{
+            $fee_amount = FeeAmount::whereHas('feeItem',function($query){$query->where('name','LIKE','%Application Fee%');})
+                                 ->with(['feeItem.feeType'])->where('study_academic_year_id',$study_academic_year->id)->first();
+        }
         $invoice = Invoice::where('payable_id',$applicant->id)->where('payable_type','applicant')->first();
         $data = [
            'applicant'=>$applicant,
            'campus'=>Campus::find(session('applicant_campus_id')),
-           'fee_amount'=>FeeAmount::whereHas('feeItem.feeType',function($query){
-                  $query->where('name','LIKE','%Application Fee%');
-            })->with(['feeItem.feeType'])->where('study_academic_year_id',$study_academic_year->id)->first(),
+           'fee_amount'=>$fee_amount,
            'hostel_fee_amount'=>FeeAmount::whereHas('feeItem.feeType',function($query){
                   $query->where('name','LIKE','%Hostel%');
             })->with(['feeItem.feeType'])->where('study_academic_year_id',$study_academic_year->id)->first(),
@@ -718,23 +723,24 @@ class ApplicantController extends Controller
 			$applicant->save();
 		}
 		
-        if(!ApplicationWindow::where('campus_id',session('applicant_campus_id'))->where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('status','ACTIVE')->first()){
-            if($second_attempt_applicant){
-				   return redirect()->back()->with('error','Please wait for application window to be openned');				 
-			   }
-			   return redirect()->to('application/submission')->with('error','Application window already closed');
-        }
-        if($applicant->batch_no != 0){
+      if(!ApplicationWindow::where('campus_id',session('applicant_campus_id'))->where('begin_date','<=',now()->format('Y-m-d'))
+                           ->where('end_date','>=',now()->format('Y-m-d'))->where('status','ACTIVE')->first()){
+         if($second_attempt_applicant){
+            return redirect()->back()->with('error','Please wait for application window to be openned');				 
+         }
+         return redirect()->to('application/submission')->with('error','Application window already closed');
+      }
+      if($applicant->batch_no != 0){
          return redirect()->to('application/submission')->with('error','Action is not allowed at the moment');
-        }
-        // $window = ApplicationWindow::where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('campus_id',session('applicant_campus_id'))->first();
+      }
+      // $window = ApplicationWindow::where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('campus_id',session('applicant_campus_id'))->first();
 
-        if($applicant->results_complete_status == 0){
-            return redirect()->to('application/results')->with('error','You must first complete results section');
-        }
+      if($applicant->results_complete_status == 0){
+         return redirect()->to('application/results')->with('error','You must first complete results section');
+      }
 
+      if(!str_contains($applicant->programLevel->name,'Masters')){
         $window = $applicant->applicationWindow;
-
         $campus_programs = $window? $window->campusPrograms()->whereHas('program',function($query) use($applicant){
                    $query->where('award_id',$applicant->program_level_id);
            })->with(['program','campus','entryRequirements'=>function($query) use($window){
@@ -1528,6 +1534,12 @@ class ApplicantController extends Controller
             }
             
         }
+      }else{
+         $window = $applicant->applicationWindow;
+         $programs = $window? $window->campusPrograms()->whereHas('program',function($query) use($applicant){
+                    $query->where('award_id',$applicant->program_level_id);
+            })->with(['program','campus'])->where('campus_id',session('applicant_campus_id'))->get() : [];
+      }
         $data = [
            'applicant'=>$applicant,
            'campus'=>Campus::find(session('applicant_campus_id')),

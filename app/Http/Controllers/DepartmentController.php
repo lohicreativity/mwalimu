@@ -22,20 +22,22 @@ class DepartmentController extends Controller
     public function index()
     {
       $staff = User::find(Auth::user()->id)->staff;
-	  $departments[] = null;
+	   $departments[] = null;
 	  
-      if (Auth::user()->hasRole('administrator')) {
-         $departments = Department::with('unitCategory','campuses')->get();
+      if (Auth::user()->hasRole('administrator') || Auth::user()->hasRole('arc')) {
+         $departments = Department::with('unitCategory')->get();
          
-      } elseif (Auth::user()->hasRole('admission-officer')) {
+      }elseif(Auth::user()->hasRole('admission-officer')) {
 
-         $departments = DB::table('departments')
+         $departments = Department::whereHas('campuses', function($query) use($staff){$query->where('campus_id',$staff->campus_id);})->with('unitCategory')->get();
+
+/*          $departments = DB::table('departments')
          ->select('departments.*',  'unit_categories.id as categoryId', 'unit_categories.name as categoryName', 'campus_department.campus_id as campusId')
          ->join('campus_department', 'departments.id', 'campus_department.department_id')
          ->join('campuses', 'campus_department.campus_id', 'campuses.id')
          ->join('unit_categories', 'departments.unit_category_id', 'unit_categories.id')
          ->where('campuses.id', $staff->campus_id)
-         ->get(); 
+         ->get(); */ 
       }
 
     	$data = [
@@ -99,7 +101,6 @@ class DepartmentController extends Controller
             'name'=>'required',
             'abbreviation'=>'required',
             'description'=>'required',
-            'campuses'=>'required',
          ]);
 
       } else if (Auth::user()->hasRole('admission-officer')) {
@@ -141,14 +142,16 @@ class DepartmentController extends Controller
      * Remove the specified department
      */
     public function destroy(Request $request, $id)
-    {
+    {  
         try{
             $department = Department::findOrFail($id);
-            if(Module::where('department_id',$department->id)->count() != 0 || Program::where('department_id',$department->id)->count() != 0){
-               return redirect()->back()->with('message','Department cannot be deleted because it has modules or programs');
+
+            if(Module::whereHas('departments', function($query) use($id){$query->where('department_id',$id);})->count()
+                || Program::whereHas('departments', function($query) use($id){$query->where('department_id',$id);})->count() != 0){
+               return redirect()->back()->with('error','Cannot be deleted. It has modules or programs');
             }else{
                $department->delete();
-               return redirect()->back()->with('message','Department deleted successfully');
+               return redirect()->back()->with('message','Deleted successfully');
             }
         }catch(Exception $e){
             return redirect()->back()->with('error','Unable to get the resource specified in this request');

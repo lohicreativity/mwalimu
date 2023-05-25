@@ -18,11 +18,11 @@ class DepartmentAction implements DepartmentInterface{
         $department->parent_id = $request->get('parent_id');
         $department->save();
 
-        if (Auth::user()->hasRole('administrator')) {
+/*         if (Auth::user()->hasRole('administrator') || Auth::user()->hasRole('arc')) {
             $department->campuses()->sync($request->get('campus_id'));
-        } else if (Auth::user()->hasRole('admission-officer')) {
-            $department->campuses()->sync($request->get('staff_campus'));
-        }
+        } else if (Auth::user()->hasRole('admission-officer')) { */
+            $department->campuses()->sync($request->get('campus_id'));
+        //}
 
 	}
 
@@ -34,13 +34,13 @@ class DepartmentAction implements DepartmentInterface{
         $department->unit_category_id = $request->get('unit_category_id');
         $department->parent_id = $request->get('parent_id');
         $department->save();
-
-        if (Auth::user()->hasRole('administrator')) {
+        $department->campuses()->sync($request->get('campus_id'));
+/*         if (Auth::user()->hasRole('administrator')) {
             $department->campuses()->sync($request->get('campuses'));
 
         } else if (Auth::user()->hasRole('admission-officer')) {
             $department->campuses()->sync($request->get('staff_campus'));
-        }
+        } */
 
 	}
 }

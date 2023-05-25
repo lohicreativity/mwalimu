@@ -57,22 +57,33 @@
                     {!! Form::label('','Select document') !!}
                     <select name="document_name" class="form-control" required>
                       @if($applicant->entry_mode == 'EQUIVALENT')
-                      @if($applicant->avn_no_results === 1)
-                      <option value="diploma_certificate">Diploma Certificate</option>
-                      @endif
-                      @if($applicant->teacher_certificate_status === 1)
-                      <option value="teacher_diploma_certificate">Teacher Certificate</option>
-                      @endif
-                      @if($applicant->veta_status === 1)
-                      <option value="veta_certificate">Veta Certificate</option>
-                      @endif
+                        @if(str_contains($applicant->programLevel->name,'Masters'))
+                          <option value="o_level_certificate">O-Level Certificate</option>
+                          <option value="basic_certificate">Basic Certificate</option>
+                          <option value="a_level_certificate">A-Level Certificate</option>
+                          <option value="diploma_certificate">Diploma Certificate</option>
+                          <option value="degree_certificate">Bachelor Degree</option>                          
+                        @endif
+                        @if($applicant->avn_no_results === 1)
+                        <option value="diploma_certificate">Diploma Certificate</option>
+                        @endif
+                        @if($applicant->teacher_certificate_status === 1)
+                        <option value="teacher_diploma_certificate">Teacher Certificate</option>
+                        @endif
+                        @if($applicant->veta_status === 1)
+                        <option value="veta_certificate">Veta Certificate</option>
+                        @endif
+                      @elseif(str_contains($applicant->programLevel->name,'Masters') && $applicant->entry_mode == 'DIRECT')
+                        <option value="o_level_certificate">O-Level Certificate</option>
+                        <option value="a_level_certificate">A-Level Certificate</option>
+                        <option value="degree_certificate">Bachelor Degree</option>
                       @endif
                     </select>
                     </div>
                   </div>
                   <div class="row">
                      <div class="form-group col-4">
-                     {!! Form::label('','Upload document') !!}
+                     {!! Form::label('','Upload document (pdf, png, jpeg or jpg)') !!}
                      {!! Form::file('document',['class'=>'form-control','required'=>true]) !!}
 
                      {!! Form::input('hidden','applicant_id',$applicant->id) !!}
@@ -85,7 +96,8 @@
               {!! Form::close() !!}
             </div>
             
-
+            @if($applicant->o_level_certificate || $applicant->a_level_certificate || $applicant->diploma_certificate || $applicant->teacher_diploma_certificate
+                || $applicant->veta_certificate || $applicant->degree_certificate)
             <div class="card card-default">
               <div class="card-header">
                 <h3 class="card-title">{{ __('Uploaded Documents') }}</h3>
@@ -101,6 +113,33 @@
                        </tr>
                     </thead>
                     <tbody>
+                      @if($applicant->o_level_certificate)
+                      <tr>
+                        <td>O Level Certificate</td>
+                        <td>
+                          <a href="{{ url('application/view-document?name=o_level_certificate') }}" target="_blank" class="btn btn-primary"><i class="fa fa-eye"></i> View</a>
+                          <a href="{{ url('application/delete-document?name=o_level_certificate') }}" class="btn btn-danger"><i class="fa fa-trash"></i> Delete</a>
+                        </td>
+                      </tr>
+                      @endif
+                      @if(str_contains($applicant->nacte_reg_no,'.pdf'))
+                      <tr>
+                        <td>Basic Certificate</td>
+                        <td>
+                          <a href="{{ url('application/view-document?name=basic_certificate') }}" target="_blank" class="btn btn-primary"><i class="fa fa-eye"></i> View</a>
+                          <a href="{{ url('application/delete-document?name=basic_certificate') }}" class="btn btn-danger"><i class="fa fa-trash"></i> Delete</a>
+                        </td>
+                      </tr>
+                      @endif
+                      @if($applicant->a_level_certificate)
+                      <tr>
+                        <td>A Level Certificate</td>
+                        <td>
+                          <a href="{{ url('application/view-document?name=a_level_certificate') }}" target="_blank" class="btn btn-primary"><i class="fa fa-eye"></i> View</a>
+                          <a href="{{ url('application/delete-document?name=a_level_certificate') }}" class="btn btn-danger"><i class="fa fa-trash"></i> Delete</a>
+                        </td>
+                      </tr>
+                      @endif
                       @if($applicant->diploma_certificate)
                       <tr>
                         <td>Diploma Certificate</td>
@@ -130,12 +169,22 @@
                         </td>
                       </tr>
                       @endif
+                      @if($applicant->degree_certificate)
+                      <tr>
+                        <td>Degree Certificate</td>
+                        <td>
+                          <a href="{{ url('application/view-document?name=degree_certificate') }}" target="_blank" class="btn btn-primary"><i class="fa fa-eye"></i> View</a>
+                          <a href="{{ url('application/delete-document?name=degree_certificate') }}" class="btn btn-danger"><i class="fa fa-trash"></i> Delete</a>
+                        </td>
+                      </tr>
+                      @endif
                     </tbody>
                   </table>
                 </div>
               </div>
               @endif
           </div>
+          @endif
         </div>
         
       </div><!-- /.container-fluid -->

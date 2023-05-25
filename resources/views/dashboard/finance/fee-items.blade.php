@@ -257,7 +257,7 @@
                       <!-- /.modal -->
                      
                      @can('delete-fee-item')
-                      <a class="btn btn-danger btn-sm" href="#" @if(App\Utils\Util::arrayContains($item->name,['MNMASO','Medical Examination','Caution Money','Practical Training','TCU','NACTE','Identity Card','Registration','Late Registration'])) disabled="disabled" @else data-toggle="modal" data-target="#ss-delete-item-{{ $item->id }}" @endif>
+                      <a class="btn btn-danger btn-sm" href="#" @if(App\Utils\Util::arrayContains($item->name,['Students Union','Medical Examination','Caution Money','Practical Training','TCU','NACTVET','New ID Card','Registration','Late Registration'])) disabled="disabled" @else data-toggle="modal" data-target="#ss-delete-item-{{ $item->id }}" @endif>
                               <i class="fas fa-trash">
                               </i>
                               Delete

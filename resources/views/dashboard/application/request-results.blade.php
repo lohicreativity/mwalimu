@@ -245,7 +245,7 @@
 
               @if($applicant->entry_mode == 'EQUIVALENT')
 
-              @if(str_contains($applicant->programLevel->name,'Degree'))
+              @if(str_contains($applicant->programLevel->name,'Degree') || str_contains($applicant->programLevel->name,'Masters'))
 
               <div class="card card-default">
               <div class="card-header">
@@ -310,48 +310,50 @@
             </div>
             <!-- /.card -->
 
-            @if(str_contains($applicant->programLevel->name,'Degree') && (( $gpa_less || count($a_level_necta_results) != 0) || ($applicant->teacher_certificate_status === 1)))
-            <div class="card card-default">
-              <div class="card-header">
-                <h3 class="card-title">{{ __('Foundation Programmes (OUT) Results') }}</h3>
-              </div>
-              <!-- /.card-header -->
-              @php
-                  $out_reg_number = [
-                     'placeholder'=>'N18-642-0000',
-                     'class'=>'form-control',
-                     'required'=>true
-                  ];
-              @endphp
-              {!! Form::open(['url'=>'application/get-out-results','class'=>'ss-form-processing-out']) !!}
-              <div class="card-body">
-                  {!! Form::input('hidden','applicant_id',$applicant->id) !!}
-
-                  <div class="row">
-                  <div class="form-group col-4">
-                    {!! Form::label('','OUT Reg mumber') !!}
-                    {!! Form::text('reg_no',null,$out_reg_number) !!}
-
+            @if(!str_contains($applicant->programLevel->name,'Masters'))
+              @if(str_contains($applicant->programLevel->name,'Degree') && (( $gpa_less || count($a_level_necta_results) != 0) || ($applicant->teacher_certificate_status === 1)))
+              <div class="card card-default">
+                <div class="card-header">
+                  <h3 class="card-title">{{ __('Foundation Programmes (OUT) Results') }}</h3>
+                </div>
+                <!-- /.card-header -->
+                @php
+                    $out_reg_number = [
+                      'placeholder'=>'N18-642-0000',
+                      'class'=>'form-control',
+                      'required'=>true
+                    ];
+                @endphp
+                {!! Form::open(['url'=>'application/get-out-results','class'=>'ss-form-processing-out']) !!}
+                <div class="card-body">
                     {!! Form::input('hidden','applicant_id',$applicant->id) !!}
 
-                    {!! Form::input('hidden','display_modal','#ss-confirm-out-results') !!}
+                    <div class="row">
+                    <div class="form-group col-4">
+                      {!! Form::label('','OUT Reg mumber') !!}
+                      {!! Form::text('reg_no',null,$out_reg_number) !!}
 
-                    {!! Form::input('hidden','results_container','#ss-out-results-container') !!}
+                      {!! Form::input('hidden','applicant_id',$applicant->id) !!}
 
+                      {!! Form::input('hidden','display_modal','#ss-confirm-out-results') !!}
+
+                      {!! Form::input('hidden','results_container','#ss-out-results-container') !!}
+
+                    </div>
+                    <div class="col-8">
+                      @foreach($out_results as $result)
+                      <p class="ss-font-xs">Reg No: {{ $result->reg_no }} <br>GPA: {{ $result->gpa }} <i class="fa fa-check"></i></p>
+                      @endforeach
+                    </div>
                   </div>
-                  <div class="col-8">
-                    @foreach($out_results as $result)
-                     <p class="ss-font-xs">Reg No: {{ $result->reg_no }} <br>GPA: {{ $result->gpa }} <i class="fa fa-check"></i></p>
-                    @endforeach
-                  </div>
-                 </div>
+                </div>
+                <div class="card-footer">
+              <button type="submit" class="btn btn-primary">{{ __('Add OUT Results') }}</button>
               </div>
-              <div class="card-footer">
-             <button type="submit" class="btn btn-primary">{{ __('Add OUT Results') }}</button>
-            </div>
-            {!! Form::close() !!}
-            </div>
-            @endif
+              {!! Form::close() !!}
+              </div>
+              @endif
+            
 
             <div class="card card-default">
               <div class="card-header">
@@ -375,7 +377,7 @@
             {!! Form::close() !!}
             </div>
             @endif
-             
+          @endif 
             
 
             
