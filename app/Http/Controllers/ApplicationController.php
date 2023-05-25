@@ -1082,12 +1082,17 @@ class ApplicationController extends Controller
 
 		$window = $applicant->applicationWindow;	
 
-		$campus_programs = $window? $window->campusPrograms()->whereHas('program',function($query) use($applicant){
-				$query->where('award_id',$applicant->program_level_id);
-		})->with(['program','campus','entryRequirements'=>function($query) use($window){
-				$query->where('application_window_id',$window->id);
-		}])->where('campus_id',session('applicant_campus_id'))->get() : [];
-        
+        if(!str_contains($applicant->programLevel->name,'Masters')){
+            $campus_programs = $window? $window->campusPrograms()->whereHas('program',function($query) use($applicant){
+                    $query->where('award_id',$applicant->program_level_id);
+            })->with(['program','campus','entryRequirements'=>function($query) use($window){
+                    $query->where('application_window_id',$window->id);
+            }])->where('campus_id',session('applicant_campus_id'))->get() : [];
+        }else{
+            $campus_programs = $window? $window->campusPrograms()->whereHas('program',function($query) use($applicant){
+                $query->where('award_id',$applicant->program_level_id);
+        })->with(['program','campus'])->where('campus_id',session('applicant_campus_id'))->get() : [];
+        }
         $count = ApplicantProgramSelection::where('applicant_id',$request->get('applicant_id'))->where('batch_no',0)->count();
         
 
@@ -1117,23 +1122,25 @@ class ApplicationController extends Controller
                  }
                  $selection->save();
 
-                // salim added avn results check on 1/30/2023
-                foreach ($campus_programs as $program) {
-                    if ($program->id == $request->get('campus_program_id')) {
-    
-                        if (unserialize($program->entryRequirements[0]->equivalent_must_subjects) != '' && sizeof($applicant_has_results) == 0) {
-                                $applicant->avn_no_results = 1;
-                                $applicant->save();
+                 if(!str_contains($applicant->programLevel->name,'Masters')){ 
+                    // salim added avn results check on 1/30/2023
+                    foreach ($campus_programs as $program) {
+                        if ($program->id == $request->get('campus_program_id')) {
+        
+                            if (unserialize($program->entryRequirements[0]->equivalent_must_subjects) != '' && sizeof($applicant_has_results) == 0) {
+                                    $applicant->avn_no_results = 1;
+                                    $applicant->save();
+                            }
                         }
                     }
-                }
+                 }
 
                 $select_count = ApplicantProgramSelection::where('applicant_id',$request->get('applicant_id'))->where('batch_no',0)->count();
 
                 if($request->get('choice') == 1){
                     $applicant = Applicant::find($request->get('applicant_id'));
                     $applicant->programs_complete_status = 1;
-                    if($applicant->entry_mode == 'DIRECT'){
+                    if($applicant->entry_mode == 'DIRECT' && !str_contains($applicant->programLevel->name,'Masters')){
                         $applicant->documents_complete_status = 1;
                     }
                     $applicant->save();
@@ -1158,11 +1165,17 @@ class ApplicationController extends Controller
 
           $window = $applicant->applicationWindow;
 
-          $campus_programs = $window? $window->campusPrograms()->whereHas('program',function($query) use($applicant){
-                  $query->where('award_id',$applicant->program_level_id);
-          })->with(['program','campus','entryRequirements'=>function($query) use($window){
-                  $query->where('application_window_id',$window->id);
-          }])->where('campus_id',session('applicant_campus_id'))->get() : [];
+          if(!str_contains($applicant->programLevel->name,'Masters')){
+            $campus_programs = $window? $window->campusPrograms()->whereHas('program',function($query) use($applicant){
+                    $query->where('award_id',$applicant->program_level_id);
+            })->with(['program','campus','entryRequirements'=>function($query) use($window){
+                    $query->where('application_window_id',$window->id);
+            }])->where('campus_id',session('applicant_campus_id'))->get() : [];
+          }else{
+            $campus_programs = $window? $window->campusPrograms()->whereHas('program',function($query) use($applicant){
+                $query->where('award_id',$applicant->program_level_id);
+            })->with(['program','campus'])->where('campus_id',session('applicant_campus_id'))->get() : [];
+          }
 
           $applicant_has_results = DB::table('nacte_results')->where('applicant_id', $selection->applicant_id)->get();
 
@@ -1180,29 +1193,30 @@ class ApplicationController extends Controller
           // retrieved all sections of applicant by salim on 1/31/2023
           $applicant_selections = ApplicantProgramSelection::where('applicant_id', $applicant->id)->get();
 
-          // declared selection flag to check if equivalent must subjects exists by salim on 1/31/2023
-          $selection_flag = null;
+          if(!str_contains($applicant->programLevel->name,'Masters')){
+            // declared selection flag to check if equivalent must subjects exists by salim on 1/31/2023
+            $selection_flag = null;
 
-          // check for equivalent musts subjects on selections by salim on 1/31/2023
-        foreach ($campus_programs as $program) {
-            foreach ($applicant_selections as $selection) {
-                if ($program->id == $selection->campus_program_id) {
-                    if (unserialize($program->entryRequirements[0]->equivalent_must_subjects) != null) {
-                        $selection_flag = true;
+            // check for equivalent musts subjects on selections by salim on 1/31/2023
+            foreach ($campus_programs as $program) {
+                foreach ($applicant_selections as $selection) {
+                    if ($program->id == $selection->campus_program_id) {
+                        if (unserialize($program->entryRequirements[0]->equivalent_must_subjects) != null) {
+                            $selection_flag = true;
+                        }   
                     }   
-                }   
+                }
+            }
+
+            // check flag if true to update avn no results by salim on 1/31/2023
+            if ($selection_flag) {
+                $applicant->avn_no_results = 1;
+                $applicant->save();
+            } else {
+                $applicant->avn_no_results = null;
+                $applicant->save();
             }
         }
-
-        // check flag if true to update avn no results by salim on 1/31/2023
-        if ($selection_flag) {
-            $applicant->avn_no_results = 1;
-            $applicant->save();
-        } else {
-            $applicant->avn_no_results = null;
-            $applicant->save();
-        }
-
 
           // didn't succeed to reset selection of program that has must equivalent subjects by salim on 1/30/2023
         //   $selection = ApplicantProgramSelection::with('applicant')->findOrFail($id);
@@ -1256,7 +1270,7 @@ class ApplicationController extends Controller
     }
 
     public function viewDocument(Request $request)
-    {
+    { return $request;
         $data = [
             'request' => $request,
             'applicant' =>$request->get('applicant_id')? Applicant::with('programLevel','insurances')->where('id',$request->get('applicant_id'))->first():
@@ -1290,9 +1304,14 @@ class ApplicationController extends Controller
                $applicant->o_level_certificate = null;
             }
 
+            if($request->get('name') == 'basic_certificate'){
+               unlink(public_path().'/uploads/'.$applicant->nacte_reg_no);
+               $applicant->nacte_reg_no = null;
+            }
+
             if($request->get('name') == 'a_level_certificate'){
-               unlink(public_path().'/uploads/'.$applicant->a_level_certificate);
-               $applicant->a_level_certificate = null;
+                unlink(public_path().'/uploads/'.$applicant->a_level_certificate);
+                $applicant->a_level_certificate = null;
             }
 
             if($request->get('name') == 'diploma_certificate'){
@@ -1315,6 +1334,11 @@ class ApplicationController extends Controller
                 $applicant->veta_certificate = null;
             }
 
+            if($request->get('name') == 'degree_certificate'){
+                unlink(public_path().'/uploads/'.$applicant->degree_certificate);
+                $applicant->degree_certificate = null;
+            }
+
         }catch(\Exception $e){
             return redirect()->back()->with('error','Document could not be found');
         }
@@ -1332,6 +1356,21 @@ class ApplicationController extends Controller
                 }else{
                     $applicant->documents_complete_status = 0;
                 }
+            }elseif(str_contains($applicant->programLevel->name,'Masters')){
+                if($applicant->status == null){
+                    if($applicant->o_level_certificate && $applicant->a_level_certificate && $applicant->degree_certificate){
+                        $applicant->documents_complete_status = 1;
+                    }else{
+                        $applicant->documents_complete_status = 0;
+                    }
+
+                }elseif($applicant->status == 'ADMITTED'){
+                    if($applicant->birth_certificate && $applicant->o_level_certificate && $applicant->a_level_certificate && $applicant->degree_certificate){
+                        $applicant->documents_complete_status = 1;
+                    }else{
+                        $applicant->documents_complete_status = 0;
+                    }
+                }
             }
         }else{
             if(str_contains($applicant->programLevel->name,'Bachelor')){
@@ -1345,6 +1384,23 @@ class ApplicationController extends Controller
                     $applicant->documents_complete_status = 1;
                 }else{
                     $applicant->documents_complete_status = 0;
+                }
+            }elseif(str_contains($applicant->programLevel->name,'Masters')){
+                if($applicant->status == null) {
+                    if($applicant->o_level_certificate && $applicant->diploma_certificate && $applicant->degree_certificate) {
+                        $applicant->documents_complete_status = 1;
+                    }else{
+                        $applicant->documents_complete_status = 0;
+                    }
+
+                }elseif($applicant->status == 'ADMITTED') {
+
+                    if($applicant->birth_certificate && $applicant->o_level_certificate 
+                    && $applicant->diploma_certificate && $applicant->degree_certificate){
+                        $applicant->documents_complete_status = 1;
+                    }else{
+                        $applicant->documents_complete_status = 0;
+                    }
                 }
             }
         }
@@ -1402,7 +1458,7 @@ class ApplicationController extends Controller
        if($applicant->results_complete_status == 0){
           return redirect()->back()->with('error','Results section not completed');
        }
-       if($applicant->avn_no_results == 1 || $applicant->teacher_certificate_status == 1){
+       if($applicant->avn_no_results == 1 || $applicant->teacher_certificate_status == 1 || str_contains($applicant->programLevel->name,'Masters')){
           if($applicant->documents_complete_status == 0){
              return redirect()->back()->with('error','Documents section not completed');
           }
@@ -1429,21 +1485,21 @@ class ApplicationController extends Controller
                  $query->where('verified',1);
             },'selections.campusProgram.campus','nectaResultDetails.results','nacteResultDetails.results','outResultDetails.results','programLevel','applicationWindow'])->find($applicant->id);
 
-        $window = $applicant->applicationWindow;
+            $window = $applicant->applicationWindow;
 
-        $campus_programs = $window? [$applicant->selections[0]->campusProgram] : [];
+            $campus_programs = $window? [$applicant->selections[0]->campusProgram] : [];
         
 
-        $award = $applicant->programLevel;
-        $programs = [];
+            $award = $applicant->programLevel;
+            $programs = [];
 
-        $o_level_grades = ['A'=>5,'B+'=>4,'B'=>3,'C'=>2,'D'=>1,'E'=>0.5,'F'=>0];
+            $o_level_grades = ['A'=>5,'B+'=>4,'B'=>3,'C'=>2,'D'=>1,'E'=>0.5,'F'=>0];
 
-        $diploma_grades = ['A'=>5,'B+'=>4,'B'=>3,'C'=>2,'D'=>1,'F'=>0];
+            $diploma_grades = ['A'=>5,'B+'=>4,'B'=>3,'C'=>2,'D'=>1,'F'=>0];
 
-        $out_grades = ['A'=>5,'B+'=>4,'B'=>3,'C'=>2,'D'=>1,'F'=>0];
+            $out_grades = ['A'=>5,'B+'=>4,'B'=>3,'C'=>2,'D'=>1,'F'=>0];
 
-        $selected_program = array();
+            $selected_program = array();
         
            $index_number = $applicant->index_number;
            $exam_year = explode('/', $index_number)[2];
