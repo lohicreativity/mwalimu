@@ -53,12 +53,13 @@
                     <table class="table table-bordered ss-margin-top ss-paginated-table">
                         <thead>
                             <tr>
-                                <th>#</th>
+                                <th>SN</th>
                                 <th>Name</th>
-                                <th>Gender</th>
-                                <th>Form IV Index No.</th>
-                                <th>Form VI Index No./AVN</th>
+                                <th>Sex</th>
+                                <th>Form IV Index#</th>
+                                <th>Form VI Index#/AVN</th>
                                 <th>Programme</th>
+                                <th>Status</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -68,7 +69,7 @@
                               <tr>
                                   <td>{{ $loop->iteration }}</td>
                                   <td>{{ $applicant->first_name }} {{ $applicant->middle_name }} {{ $applicant->surname }}</td>
-                                  <td>{{ $applicant->gender }}</td>
+                                  <td>@if($applicant->gender == 'F') Female @elseif($applicant->gender == 'M') Male @endif</td>
                                   <td>{{ $applicant->index_number }}</td>
                                   <td>
                                     @foreach($applicant->nectaResultDetails as $detail)
@@ -86,10 +87,11 @@
                                       {{ $selection->campusProgram->program->code }};
                                     @endforeach
                                   </td>
+                                  <td>@if($applicant->status == 'SELECTED') Selected @endif</td>
                                   <td>
                                     <a target="_blank" class="btn btn-primary" href="{{ url('application/view-applicant-documents?applicant_id='.$applicant->id.'&application_window_id='.session('active_window_id')) }}">
                                       <i class="fas fa-list"></i>
-                                      View Documents
+                                      View Certificates
                                     </a>
                                   </td>
                               </tr>

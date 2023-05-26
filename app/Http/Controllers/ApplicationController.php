@@ -505,12 +505,12 @@ class ApplicationController extends Controller
 
         $campus_id = $staff->campus_id;
 
-        if (Auth::user()->hasRole('administrator')) {
+        if (Auth::user()->hasRole('administrator') || Auth::user()->hasRole('arc')) {
 
             $applicants = Applicant::where('programs_complete_status', 1)
             ->where(function($query) {
                 $query->where('teacher_certificate_status', 1)
-                      ->orWhere('veta_status', 1);
+                      ->orWhere('veta_status', 1)->orWhere('program_level_id','>','4');
             })
             ->orWhere(function($query) {
                 $query->where('avn_no_results', 1)
@@ -523,34 +523,22 @@ class ApplicationController extends Controller
 
             
 
-        } else if (Auth::user()->hasRole('admission-officer')) {
-
-            $applicants = Applicant::where('campus_id', $campus_id)
-            ->where('programs_complete_status', 1)
-            ->where(function($query) {
-                $query->where('teacher_certificate_status', 1)
-                      ->orWhere('veta_status', 1);
-            })
-            ->orWhere(function($query) {
-                $query->where('avn_no_results', 1)
-                ->whereNotNull('diploma_certificate');
-            })
-            ->with(['intake','selections.campusProgram.program', 'nacteResultDetails', 'nacteResultDetails' => function($query) {
-                $query->where('verified', 1);
-            }])
-            
-            ->get();
+       // } else if (Auth::user()->hasRole('admission-officer')) {
+        } else{
+            $applicants = Applicant::where('campus_id', $campus_id)->where('programs_complete_status', 1)->orwhere('teacher_certificate_status', 1)
+            ->orWhere('veta_status', 1)->orWhere('program_level_id','>','4')->orWhere('avn_no_results', 1)
+            ->with(['intake','selections.campusProgram.program', 'nacteResultDetails', 'nacteResultDetails' => function($query){$query->where('verified', 1);}])->get();
 
         }
-
+/* 
         foreach ($applicants as $applicant) {
             foreach ($applicant->selections as $select) {
-                if ($select->status == "SELECTED" || $select->status == "APPROVING") {
+                if ($select->status == "SELECTED" || $select->status == "APPROVING" ) {
                     $applicants = null;
                 }
             }  
         }
-
+ */
         $data = [
             'applicants' => $applicants
         ];
@@ -560,39 +548,45 @@ class ApplicationController extends Controller
 
     public function viewApplicantDocuments(Request $request)
     {
-        $applicant = DB::table('applicants')
+/*         $applicant = DB::table('applicants')
         ->select('applicant_program_selections.*')
         ->join('applicant_program_selections', 'applicants.id', 'applicant_program_selections.applicant_id')
         ->where('applicant_program_selections.applicant_id', $request->get('applicant_id'))
         ->where('applicant_program_selections.status', 'ELIGIBLE')
-        ->get();
+        ->get(); */
 
+        $applicant = Applicant::whereHas('selections', function($query) use($request){$query->where('applicant_id', $request->get('applicant_id'));})->with(['selections','selections.campusProgram.program','programLevel'])->latest()->first();
         $programs_selected = array();
         $program_codes = array();
 
-        foreach ($applicant as $selection) {
+        foreach ($applicant->selections as $selection) {
             $programs_selected[] = $selection->campus_program_id;
         }
-
         $entry_requirements = EntryRequirement::where('application_window_id', $request->get('application_window_id'))
         ->with(['campusProgram.program']) 
         ->get();
 
-        foreach($programs_selected as $ps) {
-            foreach($entry_requirements as $er) {
+        foreach($programs_selected as $programs) {
+            foreach($entry_requirements as $requirements) {
 
-                if ($ps == $er->campus_program_id) {
-                    $count_applicants_per_program = ApplicantProgramSelection::where('campus_program_id', $ps)
+                if ($programs == $requirements->campus_program_id) {
+                    $count_applicants_per_program = ApplicantProgramSelection::where('campus_program_id', $programs)
                     ->where(function($query) {
                         $query->where('applicant_program_selections.status', 'SELECTED')
                               ->orWhere('applicant_program_selections.status', 'APPROVING');
                     })
                     ->count();
 
-                    if ($count_applicants_per_program < $er->max_capacity) {
-                        $program_codes[] = $er->campusProgram->program->code;
+                    if ($count_applicants_per_program < $requirements->max_capacity) {
+                        $program_codes[] = $requirements->campusProgram->program->code;
                     }
                 }   
+            }
+
+            if(str_contains(strtolower($applicant->programLevel->name),'master')){
+                foreach ($applicant->selections as $selection) {
+                    $program_codes[] = $selection->campusProgram->program->code;
+                }
             }
         }
 
@@ -602,7 +596,7 @@ class ApplicationController extends Controller
             'request'           => $request
         ];
 
-        return view('dashboard.admission.view-applicant-documents', $data)->withTitle('View Applicant Documents');
+        return view('dashboard.admission.view-applicant-documents', $data)->withTitle('Applicant Certificates');
     }
 
     /**
@@ -2274,12 +2268,15 @@ class ApplicationController extends Controller
         ->where('program_id', $program->id)
         ->first();
 
-        $update_applicant_selection = ApplicantProgramSelection::where('applicant_id', $applicant_id)
-        ->where('campus_program_id', $campus_program->id)
-        ->where('application_window_id', $application_window_id)
-        ->update(['status' => 'APPROVING']);
-
         Applicant::where('id',$applicant_id)->update(['status'=>'SELECTED']);
+        Applicant::whereHas('programLevel',function($query){$query->where('name','LIKE','%master%');})->where('id',$applicant_id)->first()? 
+        ApplicantProgramSelection::where('applicant_id', $applicant_id)->where('campus_program_id', $campus_program->id)
+        ->where('application_window_id', $application_window_id)
+        ->update(['status' => 'SELECTED']):
+        ApplicantProgramSelection::where('applicant_id', $applicant_id)->where('campus_program_id', $campus_program->id)
+                                 ->where('application_window_id', $application_window_id)
+                                 ->update(['status' => 'APPROVING']);
+
 
         return redirect()->to('application/other-applicants')->with('message','Applicant selected successfully');
 

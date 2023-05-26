@@ -25,7 +25,7 @@
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active"><a href="#">View Applicant Documents</a></li>
+              <li class="breadcrumb-item active"><a href="#">Applicant Certificates</a></li>
             </ol>
           </div><!-- /.col -->
         </div><!-- /.row -->
@@ -44,6 +44,90 @@
                <div class="card-body">
 
                 <div class="accordion" id="accordionExample-2">
+                @if($applicant->o_level_certificate)
+                    <div class="card">
+                      <div class="card-header" id="ss-o-level-certificate">
+                        <h2 class="mb-0">
+                          <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOLevel" aria-expanded="true" aria-controls="collapseOLevel">
+                            O Level Certificate
+                          </button>
+                        </h2>
+                      </div>
+
+                      <div id="collapseOLevel" class="collapse" aria-labelledby="ss-o-level-certificate" data-parent="#accordionExample-2">
+                        <div class="card-body">
+                          @if(explode('.',$applicant->o_level_certificate)[1] == 'pdf')
+                            <iframe
+                                  src="https://drive.google.com/viewerng/viewer?embedded=true&url={{ asset('uploads/'.$applicant->o_level_certificate) }}#toolbar=0&scrollbar=0"
+                                  frameBorder="0"
+                                  scrolling="auto"
+                                  height="400px"
+                                  width="100%"
+                              ></iframe>
+                          @else
+                            <img src="{{ asset('uploads/'.$applicant->o_level_certificate) }}" height="400px" width="100%">
+                          @endif
+                        </div>
+                      </div>
+                    </div>
+                  @endif
+
+                  @if($applicant->a_level_certificate)
+                    <div class="card">
+                      <div class="card-header" id="ss-a-level-certificate">
+                        <h2 class="mb-0">
+                          <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseALevel" aria-expanded="true" aria-controls="collapseALevel">
+                            A Level Certificate
+                          </button>
+                        </h2>
+                      </div>
+
+                      <div id="collapseALevel" class="collapse" aria-labelledby="ss-a-level-certificate" data-parent="#accordionExample-2">
+                        <div class="card-body">
+                          @if(explode('.',$applicant->a_level_certificate)[1] == 'pdf')
+                            <iframe
+                                  src="https://drive.google.com/viewerng/viewer?embedded=true&url={{ asset('uploads/'.$applicant->a_level_certificate) }}#toolbar=0&scrollbar=0"
+                                  frameBorder="0"
+                                  scrolling="auto"
+                                  height="400px"
+                                  width="100%"
+                              ></iframe>
+                          @else
+                            <img src="{{ asset('uploads/'.$applicant->a_level_certificate) }}" height="400px" width="100%">
+                          @endif
+                        </div>
+                      </div>
+                    </div>
+                  @endif
+
+                  @if(str_contains($applicant->nacte_reg_no,'.pdf'))
+                    <div class="card">
+                      <div class="card-header" id="ss-basic-certificate">
+                        <h2 class="mb-0">
+                          <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseBasicCertificate" aria-expanded="true" aria-controls="collapseBasicCertificate">
+                            Basic Technician Certificate
+                          </button>
+                        </h2>
+                      </div>
+
+                      <div id="collapseBasicCertificate" class="collapse" aria-labelledby="ss-basic-certificate" data-parent="#accordionExample-2">
+                        <div class="card-body">
+                          @if(explode('.',$applicant->nacte_reg_no)[1] == 'pdf')
+                            <iframe
+                                  src="https://drive.google.com/viewerng/viewer?embedded=true&url={{ asset('uploads/'.$applicant->nacte_reg_no) }}#toolbar=0&scrollbar=0"
+                                  frameBorder="0"
+                                  scrolling="auto"
+                                  height="400px"
+                                  width="100%"
+                              ></iframe>
+                          @else
+                            <img src="{{ asset('uploads/'.$applicant->nacte_reg_no) }}" height="400px" width="100%">
+                          @endif
+                        </div>
+                      </div>
+                    </div>
+                  @endif
+
                   @if($applicant->diploma_certificate)
                     <div class="card">
                       <div class="card-header" id="ss-diploma-certificate">
@@ -127,6 +211,35 @@
                       </div>
                     </div>
                   @endif
+
+                  @if($applicant->degree_certificate)
+                    <div class="card">
+                      <div class="card-header" id="ss-degree-certificate">
+                        <h2 class="mb-0">
+                          <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseDegreeCertificate" aria-expanded="true" aria-controls="collapseDegreeCertificate">
+                            Bachelor Degree Certificate
+                          </button>
+                        </h2>
+                      </div>
+
+                      <div id="collapseDegreeCertificate" class="collapse" aria-labelledby="ss-degree-certificate" data-parent="#accordionExample-2">
+                        <div class="card-body">
+                          @if(explode('.',$applicant->degree_certificate)[1] == 'pdf')
+                            <iframe
+                                  src="https://drive.google.com/viewerng/viewer?embedded=true&url={{ asset('uploads/'.$applicant->degree_certificate) }}#toolbar=0&scrollbar=0"
+                                  frameBorder="0"
+                                  scrolling="auto"
+                                  height="400px"
+                                  width="100%"
+                              ></iframe>
+                          @else
+                            <img src="{{ asset('uploads/'.$applicant->degree_certificate) }}" height="400px" width="100%">
+                          @endif
+                        </div>
+                      </div>
+                    </div>
+                  @endif
+
                 </div>
 
                 {!! Form::open(['url'=>'application/select-applicant','class'=>'ss-form-processing','method'=>'POST']) !!}
