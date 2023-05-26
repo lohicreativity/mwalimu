@@ -87,7 +87,9 @@
                                       {{ $selection->campusProgram->program->code }};
                                     @endforeach
                                   </td>
-                                  <td>@if($applicant->status == 'SELECTED') Selected @endif</td>
+                                  <td>@if($applicant->status == 'SELECTED')  <span class="badge badge-success"> Selected </span> 
+                                      @elseif($applicant->status == null && !$selection_status) <span class="badge badge-warning"> Pending </span> 
+                                      @elseif($applicant->status == null && $selection_status) <span class="badge badge-danger"> Rejected </span> @endif</td>
                                   <td>
                                     <a target="_blank" class="btn btn-primary" href="{{ url('application/view-applicant-documents?applicant_id='.$applicant->id.'&application_window_id='.session('active_window_id')) }}">
                                       <i class="fas fa-list"></i>

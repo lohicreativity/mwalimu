@@ -280,7 +280,7 @@
                         <tr>
                           <th>SN</th>
                           <th>Name</th>
-                          <th>Form IV Index#</th>
+                          <th>F4 Index#</th>
                             @if($request->get('program_level_id') != 1)
                               @if($request->get('program_level_id') == 2)
                                 <th>NACTE Reg#/Form IV Index#</th>

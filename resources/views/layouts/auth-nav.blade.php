@@ -406,6 +406,14 @@
                 </a>
               </li>
               @endcan
+              @if(Auth::user()->hasRole('administrator') || Auth::user()->hasRole('admission-officer') || Auth::user()->hasRole('arc'))
+              <li class="nav-item">
+                <a href="{{ url('application/other-applicants?application_window_id='.session('active_window_id')) }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>MSc & Other Applicants</p>
+                </a>
+              </li>
+              @endif
               @can('view-fetch-results')
                <li class="nav-item">
                 <a href="{{ url('application/admin-fetch-results') }}" class="nav-link">
@@ -457,14 +465,6 @@
                 </a>
               </li>
               @endcan
-              @if(Auth::user()->hasRole('administrator') || Auth::user()->hasRole('admission-officer'))
-              <li class="nav-item">
-                <a href="{{ url('application/other-applicants?application_window_id='.session('active_window_id')) }}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Other Applicants</p>
-                </a>
-              </li>
-              @endif
               @can('view-insurance-status')
               <li class="nav-item">
                 <a href="{{ url('application/insurance-statuses?application_window_id='.session('active_window_id')) }}" class="nav-link">

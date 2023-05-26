@@ -530,6 +530,10 @@ class ApplicationController extends Controller
             ->with(['intake','selections.campusProgram.program', 'nacteResultDetails', 'nacteResultDetails' => function($query){$query->where('verified', 1);}])->get();
 
         }
+
+        $selection_status = ApplicantProgramSelection::whereHas('applicant',function($query) use($request){$query->where('program_level_id',$request->get('program_level_id'));})
+        ->where('application_window_id', $request->get('application_window_id'))->where('batch_no', 0)->count(); 
+
 /* 
         foreach ($applicants as $applicant) {
             foreach ($applicant->selections as $select) {
@@ -540,7 +544,8 @@ class ApplicationController extends Controller
         }
  */
         $data = [
-            'applicants' => $applicants
+            'applicants' => $applicants,
+            'selection_status'=> $selection_status > 0? false : true
         ];
         
         return view('dashboard.admission.other-applicants', $data)->withTitle('Other Applicants');
