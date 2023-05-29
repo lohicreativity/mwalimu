@@ -39,7 +39,7 @@
           <div class="row">
           <div class="col-12">
             @if($applicant->payment_complete_status == 0 && $applicant->is_transfered != 1)
-            <div class="alert alert-warning">Payment section not completed</div>
+              <div class="alert alert-warning">Payment section not completed</div>
             @else
             <!-- general form elements -->
             <div class="card card-default">
@@ -82,7 +82,7 @@
 
                     {!! Form::input('hidden','results_link','#ss-results-confirmation-link') !!}
                     @if(count($o_level_necta_results) != 0) 
-                    <p class="ss-color-danger ss-italic">If you have more than one index number use the same box to request results</p>  
+                      <p class="ss-color-danger ss-italic">If you have more than one index number use the same box to request results</p>  
                     @endif                          
                     @foreach($o_level_necta_results as $result)
                      <p class="ss-font-xs">Center Name: {{ $result->center_name }} <br>Division: {{ $result->division }} &nbsp; Points: @if($result->points) {{ $result->points }} @else N/A @endif <i class="fa fa-check"></i></p>
@@ -99,7 +99,7 @@
             </div>
             <!-- /.card -->
 			
-			@if(str_contains($applicant->programLevel->name,'Certificate'))
+			      @if(str_contains($applicant->programLevel->name,'Certificate') && $applicant->entry_mode == 'EQUIVALENT')
             <div class="card card-default">
               <div class="card-header">
                 <h3 class="card-title">{{ __('VETA Certificate') }}</h3>
@@ -122,7 +122,7 @@
 
             {!! Form::close() !!}
             </div>
-			@endif
+			      @endif
             
             @if(!str_contains($applicant->programLevel->name,'Certificate'))
             <div class="card card-default">
@@ -270,10 +270,10 @@
                        $applicant_avn = null;
                        foreach($nacte_results as $res){
                            if($res->avn != null){
-							   $applicant_avn = $res->avn;
-							   break;
-						   }
-                       }
+                            $applicant_avn = $res->avn;
+                            break;
+                          }
+                        }
                     @endphp					
                     {!! Form::text('avn', $applicant_avn,$avn) !!}
                   </div>

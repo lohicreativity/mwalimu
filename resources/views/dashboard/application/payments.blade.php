@@ -58,9 +58,9 @@
                     <tr>
                        <td>{{ $fee_amount->feeItem->feeType->name }}</td>
                        @if(str_contains($applicant->nationality,'Tanzania'))
-                       <td>{{ number_format($fee_amount->amount_in_tzs,0) }} TZS</td>
+                        <td>{{ number_format($fee_amount->amount_in_tzs,0) }} TZS</td>
                        @else
-                       <td>{{ number_format($fee_amount->amount_in_usd*$usd_currency->factor,0) }} TZS</td>
+                        <td>{{ number_format($fee_amount->amount_in_usd*$usd_currency->factor,0) }} TZS</td>
                        @endif
                     </tr>
                     @if($invoice)

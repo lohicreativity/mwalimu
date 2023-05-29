@@ -90,7 +90,7 @@ class ApplicantController extends Controller
         $credentials = [
             'username'=>$request->get('index_number'),
             'password'=>$request->get('password'),
-			'status'=>'ACTIVE'
+			   'status'=>'ACTIVE'
         ];
 
         $campus = Campus::find($request->get('campus_id'));
@@ -472,7 +472,8 @@ class ApplicantController extends Controller
             }                 
          }
 				
-        if($applicant->is_tcu_verified === null && str_contains($applicant->programLevel->name,'Degree' && $applicant->is_tcu_verified == 0)){
+        if($applicant->is_tcu_verified === null && str_contains(strtolower($applicant->programLevel->name),'degree') 
+           && !str_contains(strtolower($applicant->programLevel->name),'master') && $applicant->is_tcu_verified == 0){
             $url='http://api.tcu.go.tz/applicants/checkStatus';
             $fullindex=str_replace('-','/',Auth::user()->username);
             $xml_request='<?xml version="1.0" encoding="UTF-8"?> 

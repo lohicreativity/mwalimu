@@ -2174,13 +2174,24 @@ class ApplicationController extends Controller
               return redirect()->back()->withInput()->withErrors($validation->messages());
            }
         }
+
+        $pattern = null;
+        if(str_contains(strtolower($request->get('index_number')),'eq')){
+            $pattern = "/eq(?:[0-9]{10}\/[0-9]{4})/i";
+        }else{
+            $pattern = "/[A-Za-z]{1}[0-9]{4}\/[0-9]{4}\/[0-9]{4}/";
+        }
+
+        if(!preg_match($pattern,$request->get('index_number'))){
+            return redirect()->back()->with('error','Incorrect index number');
+        }
         
         DB::beginTransaction();
         if($usr = User::where('username',$request->get('index_number'))->where('password',Hash::make($request->get('password')))->first()){
             $user = $usr;
         }else{
             $user = new User;
-            $user->username = $request->get('index_number');
+            $user->username = strtoupper($request->get('index_number'));
             $user->password = Hash::make($request->get('password'));
             $user->save();
         }

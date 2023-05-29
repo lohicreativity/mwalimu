@@ -41,6 +41,8 @@ class NectaResultController extends Controller
             $applicant->results_complete_status = 1;
         }elseif(str_contains($applicant->programLevel->name,'Certificate') && $applicant->entry_mode == 'DIRECT' && $detail->exam_id == 1){
             $applicant->results_complete_status = 1;
+        }elseif(str_contains($applicant->programLevel->name,'Masters')){
+            $applicant->results_complete_status = 1;
         }
         $applicant->save();
 
