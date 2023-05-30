@@ -384,7 +384,7 @@
                 <!-- /.card-body -->
 
                 <div class="card-footer">
-                  <button @if($applicant->is_tcu_verified != 1 && str_contains($applicant->programLevel->name,'Degree')   && $applicant->is_transfered != 1) disabled="disabled" @elseif($applicant->is_tcu_verified == 1 && str_contains($applicant->programLevel->name,'Degree') && $applicant->is_transfered == 1) disabled="disabled" @else type="submit" @endif class="btn btn-primary">{{ __('Save') }}</button>
+                  <button @if($applicant->is_tcu_verified != 1 && str_contains($applicant->programLevel->name,'Degree') && !str_contains(strtolower($applicant->programLevel->name),'master')  && $applicant->is_transfered != 1) disabled="disabled" @elseif($applicant->is_tcu_verified == 1 && str_contains($applicant->programLevel->name,'Degree') && $applicant->is_transfered == 1) disabled="disabled" @else type="submit" @endif class="btn btn-primary">{{ __('Save') }}</button>
                 </div>
               {!! Form::close() !!}
             </div>
