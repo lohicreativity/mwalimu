@@ -1585,11 +1585,11 @@ class ApplicantController extends Controller
        
        if($applicant->is_tamisemi != 1 && $applicant->is_transfered != 1){
          if(!ApplicationWindow::where('campus_id',session('applicant_campus_id'))->where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('status','ACTIVE')->first()){
-               return redirect()->to('application/submission')->with('error','Application window already closed');
-          }
-          if($applicant->batch_no != 0){
+            return redirect()->to('application/submission')->with('error','Application window already closed');
+         }
+         if($applicant->batch_no != 0){
             return redirect()->to('application/submission')->with('error','Action is not allowed at the moment');
-          }
+         }
        }
        $data = [
           'applicant'=>$applicant,
@@ -1661,7 +1661,6 @@ class ApplicantController extends Controller
             'address'=>'required|integer',
             'nationality'=>'required',
         ]);
-    	
 
         if($validation->fails()){
            if($request->ajax()){
