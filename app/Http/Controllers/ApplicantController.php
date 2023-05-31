@@ -685,15 +685,6 @@ class ApplicantController extends Controller
 		$applicant = User::find(Auth::user()->id)->applicants()->with('programLevel')->where('campus_id',session('applicant_campus_id'))->first();
       $index_number = $applicant->index_number;
       
-      if(str_contains($index_number,'EQ')){
-         $exam_year = explode('/',$index_number)[1];
-      }else{
-         $exam_year = explode('/', $index_number)[2];
-      }
-      if(empty($exam_year)){
-          return redirect()->back()->with('error','Incorrect index number. Please check with an Admission Officer');	
-      }
-
       $selection_status = ApplicantProgramSelection::where('applicant_id',$applicant->id)->count();
 		if($applicant->is_transfered != 1){
         if(!ApplicationWindow::where('campus_id',session('applicant_campus_id'))->where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('status','ACTIVE')->first()){
