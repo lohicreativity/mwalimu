@@ -683,6 +683,16 @@ class ApplicantController extends Controller
     public function requestResults(Request $results)
     {
 		$applicant = User::find(Auth::user()->id)->applicants()->with('programLevel')->where('campus_id',session('applicant_campus_id'))->first();
+      $index_number = $applicant->index_number;
+      
+      if(str_contains($index_number,'EQ')){
+         $exam_year = explode('/',$index_number)[1];
+      }else{
+         $exam_year = explode('/', $index_number)[2];
+      }
+      if(empty($exam_year)){
+          return redirect()->back()->with('error','Incorrect index number. Please check with an Admission Officer');	
+      }
 
       $selection_status = ApplicantProgramSelection::where('applicant_id',$applicant->id)->count();
 		if($applicant->is_transfered != 1){
@@ -766,7 +776,7 @@ class ApplicantController extends Controller
            }else{
             $exam_year = explode('/', $index_number)[2];
            }
-          
+           
            foreach($applicant->nectaResultDetails as $detail) {
               if($detail->exam_id == 2){
                   $index_number = $detail->index_number;
