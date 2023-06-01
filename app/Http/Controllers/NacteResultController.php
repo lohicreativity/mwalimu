@@ -103,7 +103,7 @@ class NacteResultController extends Controller
     {
         $detail = NacteResultDetail::find($request->get('detail_id'));
         $detail->delete();
-        return redirect()->back()->with('error','NACTE results names do not match your application names');
+        return redirect()->back()->with('error','NECTA results names do not match your application names');
     }
 
     /**
