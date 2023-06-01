@@ -123,6 +123,10 @@ class ApplicantAction implements ApplicantInterface{
                 if($request->get('document_name') == 'degree_certificate'){
                     $applicant->degree_certificate = $file_name; //$request->file('document')->getClientOriginalName(); 
                 }
+                
+                if($request->get('document_name') == 'degree_transcript'){
+                    $applicant->degree_transcript = $file_name; //$request->file('document')->getClientOriginalName(); 
+                }
 
             }
 
@@ -143,14 +147,16 @@ class ApplicantAction implements ApplicantInterface{
 
                 }elseif(str_contains(strtolower($applicant->programLevel->name),'master')){
                     if($applicant->status == null){
-                        if($applicant->o_level_certificate && $applicant->a_level_certificate && $applicant->degree_certificate){
+                        if($applicant->o_level_certificate && $applicant->a_level_certificate 
+                            && $applicant->degree_certificate && $applicant->degree_transcript){
                             $applicant->documents_complete_status = 1;
                         }else{
                             $applicant->documents_complete_status = 0;
                         }
 
                     }elseif($applicant->status == 'ADMITTED'){
-                        if($applicant->birth_certificate && $applicant->o_level_certificate && $applicant->a_level_certificate && $applicant->degree_certificate){
+                        if($applicant->birth_certificate && $applicant->o_level_certificate && $applicant->a_level_certificate 
+                            && $applicant->degree_certificate && $applicant->degree_transcript){
                             $applicant->documents_complete_status = 1;
                         }else{
                             $applicant->documents_complete_status = 0;
@@ -196,9 +202,10 @@ class ApplicantAction implements ApplicantInterface{
                     }else{
                         $applicant->documents_complete_status = 0;
                     }
-                }elseif(str_contains($applicant->programLevel->name,'Masters')){
+                }elseif(str_contains(strtolower($applicant->programLevel->name),'master')){
                     if($applicant->status == null) {
-                        if($applicant->o_level_certificate && $applicant->diploma_certificate && $applicant->degree_certificate) {
+                        if($applicant->o_level_certificate && $applicant->diploma_certificate 
+                            && $applicant->degree_certificate && $applicant->degree_transcript) {
                             $applicant->documents_complete_status = 1;
                         }else{
                             $applicant->documents_complete_status = 0;
@@ -206,7 +213,8 @@ class ApplicantAction implements ApplicantInterface{
 
                     }elseif($applicant->status == 'ADMITTED') {
 
-                        if($applicant->birth_certificate && $applicant->o_level_certificate && $applicant->diploma_certificate && $applicant->degree_certificate){
+                        if($applicant->birth_certificate && $applicant->o_level_certificate && $applicant->diploma_certificate 
+                            && $applicant->degree_certificate && $applicant->degree_transcript){
                             $applicant->documents_complete_status = 1;
                         }else{
                             $applicant->documents_complete_status = 0;
@@ -254,6 +262,10 @@ class ApplicantAction implements ApplicantInterface{
 
                     if($request->get('document_name') == 'degree_certificate'){
                         $applicant->degree_certificate = $file_name; //$request->file('document')->getClientOriginalName(); 
+                    }
+
+                    if($request->get('document_name') == 'degree_transcript'){
+                        $applicant->degree_transcript = $file_name; //$request->file('document')->getClientOriginalName(); 
                     }
                 }
 

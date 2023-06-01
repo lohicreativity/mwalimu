@@ -57,12 +57,13 @@
                     {!! Form::label('','Select document') !!}
                     <select name="document_name" class="form-control" required>
                       @if($applicant->entry_mode == 'EQUIVALENT')
-                        @if(str_contains($applicant->programLevel->name,'Masters'))
+                        @if(str_contains(strtolower($applicant->programLevel->name),'master'))
                           <option value="o_level_certificate">O-Level Certificate</option>
                           <option value="basic_certificate">Basic Certificate</option>
                           <option value="a_level_certificate">A-Level Certificate</option>
                           <option value="diploma_certificate">Diploma Certificate</option>
-                          <option value="degree_certificate">Bachelor Degree</option>                          
+                          <option value="degree_transcript">Bachelor Transcript</option>   
+                          <option value="degree_certificate">Bachelor Certificate</option>                          
                         @endif
                         @if($applicant->avn_no_results === 1)
                         <option value="diploma_certificate">Diploma Certificate</option>
@@ -73,10 +74,11 @@
                         @if($applicant->veta_status === 1)
                         <option value="veta_certificate">Veta Certificate</option>
                         @endif
-                      @elseif(str_contains($applicant->programLevel->name,'Masters') && $applicant->entry_mode == 'DIRECT')
+                      @elseif(str_contains(strtolower($applicant->programLevel->name),'master') && $applicant->entry_mode == 'DIRECT')
                         <option value="o_level_certificate">O-Level Certificate</option>
                         <option value="a_level_certificate">A-Level Certificate</option>
-                        <option value="degree_certificate">Bachelor Degree</option>
+                        <option value="degree_transcript">Bachelor Transcript</option>   
+                        <option value="degree_certificate">Bachelor Certificate</option> 
                       @endif
                     </select>
                     </div>
@@ -97,7 +99,7 @@
             </div>
             
             @if($applicant->o_level_certificate || $applicant->a_level_certificate || $applicant->diploma_certificate || $applicant->teacher_diploma_certificate
-                || $applicant->veta_certificate || $applicant->degree_certificate)
+                || $applicant->veta_certificate || $applicant->degree_certificate || $applicant->degree_transcript)
             <div class="card card-default">
               <div class="card-header">
                 <h3 class="card-title">{{ __('Uploaded Documents') }}</h3>
@@ -169,6 +171,17 @@
                         </td>
                       </tr>
                       @endif
+
+                      @if($applicant->degree_transcript)
+                      <tr>
+                        <td>Degree Transcript</td>
+                        <td>
+                          <a href="{{ url('application/view-document?name=degree_transcript') }}" target="_blank" class="btn btn-primary"><i class="fa fa-eye"></i> View</a>
+                          <a href="{{ url('application/delete-document?name=degree_transcript') }}" class="btn btn-danger"><i class="fa fa-trash"></i> Delete</a>
+                        </td>
+                      </tr>
+                      @endif
+
                       @if($applicant->degree_certificate)
                       <tr>
                         <td>Degree Certificate</td>

@@ -110,6 +110,20 @@
     @endif
 @endif
 
+@if($request->get('name') == 'degree_transcript')
+    @if(explode('.',$applicant->degree_transcript)[1] == 'pdf')
+        <iframe
+        src="https://drive.google.com/viewerng/viewer?embedded=true&url={{ asset('uploads/'.$applicant->degree_transcript) }}#toolbar=0&scrollbar=0"
+        frameBorder="0"
+        scrolling="auto"
+        height="100%"
+        width="100%">
+        </iframe>
+    @else
+    <img src="{{ asset('uploads/'.$applicant->degree_transcript) }}" height="1200px" width="1200px" alt="" style="display: block; margin-left: auto; margin-right: auto;">
+    @endif
+@endif
+
 @if($request->get('name') == 'degree_certificate')
     @if(explode('.',$applicant->degree_certificate)[1] == 'pdf')
         <iframe
