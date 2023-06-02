@@ -94,7 +94,14 @@ class GePGResponseController extends Controller
 		$psp_name = $data['psp_name'];
         $ctry_AccNum = $data['credited_acc_num'];
 
-
+		if($cell_number == null || $payer_email == null || $payer_name == null){
+			$invoice = Invoice::where('control_no',$control_no)->first();
+			if($invoice){
+				$cell_number = $invoice->phone;
+				$payer_email = $invoice->email;
+				$payer_name = $invoice->payer_name;
+			}
+		}
 
       if(GatewayPayment::where('transaction_id',$transaction_id)->count() == 0){
 		$gatepay = new GatewayPayment;
