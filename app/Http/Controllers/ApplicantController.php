@@ -2190,9 +2190,18 @@ class ApplicantController extends Controller
         if($applicant->submission_complete_status == 1){
             return redirect()->back()->with('error','Applicant details cannot be modified because the application is already submitted');
         }
+
+        $user = User::where('id',$applicant->user_id)->first();
+        if($user->username != $request->get('index_number')){
+         $user->username = $request->get('index_number');
+         $user->save();
+
+        }
+
         $mode_before = $applicant->entry_mode;
         $level_before = $applicant->program_level_id;
         $applicant->birth_date = DateMaker::toDBDate($request->get('dob'));
+        $applicant->index_number = $request->get('index_number');
         $applicant->nationality = $request->get('nationality');		
         $applicant->phone = $request->get('phone');
         $applicant->email = $request->get('email');
@@ -2204,8 +2213,8 @@ class ApplicantController extends Controller
             ApplicantProgramSelection::where('applicant_id',$applicant->id)->delete();
             Applicant::where('id',$applicant->id)->update(['programs_complete_status'=>0]);
         }
-
-        return redirect()->back()->with('message','Applicant details updated successfully');
+        return redirect()->to('application/edit-applicant-details')->with('message','Applicant details updated successfully');
+        //return redirect()->back()->with('message','Applicant details updated successfully');
     }
 
     /**

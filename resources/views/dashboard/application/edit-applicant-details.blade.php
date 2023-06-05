@@ -80,10 +80,17 @@
               <div class="card-body">
 
                     @php
+                      $index_number = [
+                         'placeholder'=>'Form IV Index Number',
+                         'class'=>'form-control',
+                         'readonly'=>App\Domain\Application\Models\Applicant::hasConfirmedResults($applicant)? true : null,
+                         'required'=>true
+                      ];
+
                       $dob = [
-						 'placeholder'=>'Date of Birth',
-						 'class'=>'form-control ss-datepicker',
-						 'required'=>true					  
+                        'placeholder'=>'Date of Birth',
+                        'class'=>'form-control ss-datepicker',
+                        'required'=>true					  
                       ];
                       $nationality = [
                          'placeholder'=>'Nationality',
@@ -96,7 +103,7 @@
                          'required'=>true
                       ];					  
                       $phone = [
-                         'placeholder'=>'255788010102',
+                         'placeholder'=>'255739000000',
                          'class'=>'form-control',
                          'required'=>true
                       ];
@@ -105,35 +112,39 @@
               {!! Form::open(['url'=>'application/update-applicant-details','class'=>'ss-form-processing']) !!}
 
                    <div class="row">
-                    <div class="form-group col-4">
-					   {!! Form::label('','Date of Birth') !!}
-					   {!! Form::text('dob',App\Utils\DateMaker::toStandardDate($applicant->birth_date),$dob) !!}					
+                   <div class="form-group col-3">
+                       {!! Form::label('','Index Number') !!}
+                       {!! Form::text('index_number',$applicant->index_number,$index_number) !!}
                     </div>
-                    <div class="form-group col-4">
+                    <div class="form-group col-3">
+                        {!! Form::label('','Date of Birth') !!}
+                        {!! Form::text('dob',App\Utils\DateMaker::toStandardDate($applicant->birth_date),$dob) !!}					
+                    </div>
+                    <div class="form-group col-3">
                        {!! Form::label('','Nationality') !!}
                        <select name="nationality" class="form-control" 									
-						@if($applicant->status == null) 
-							@if(App\Domain\Application\Models\Applicant::hasRequestedControlNumber($applicant) || $applicant->payment_complete_status == 1) 
-								disabled="disabled" 
-							@endif 
-						@endif required>
-                         <option value="">Select Nationality</option>
-                         @foreach($countries as $country)
-							<option value="{{ $country->nationality }}" 
-								@if($applicant->nationality == $country->nationality) selected="selected" @endif> {{ $country->nationality }}
-								</option>
+                        @if($applicant->status == null) 
+                          @if(App\Domain\Application\Models\Applicant::hasRequestedControlNumber($applicant) || $applicant->payment_complete_status == 1) 
+                            disabled="disabled" 
+                          @endif 
+                        @endif required>
+                        <option value="">Select Nationality</option>
+                        @foreach($countries as $country)
+                          <option value="{{ $country->nationality }}" 
+                            @if($applicant->nationality == $country->nationality) selected="selected" @endif> {{ $country->nationality }}
+                          </option>
                          @endforeach
                        </select>
                     </div>
-                    <div class="form-group col-4">
+                    <div class="form-group col-3">
                        {!! Form::label('','Email') !!}
                        {!! Form::email('email',$applicant->email,$email) !!}
                     </div>					
-                    <div class="form-group col-4">
+                    <div class="form-group col-3">
                        {!! Form::label('','Phone') !!}
                        {!! Form::text('phone',$applicant->phone,$phone) !!}
                     </div>
-                     <div class="form-group col-4">
+                     <div class="form-group col-3">
                       {!! Form::label('','Programme level') !!}
                       <select name="program_level_id" class="form-control" 
 					  @if($applicant->status != null) 
@@ -147,7 +158,7 @@
                          @endforeach
                       </select>
                     </div>
-                    <div class="form-group col-4">
+                    <div class="form-group col-3">
                       {!! Form::label('','Entry mode') !!}
                       <select name="entry_mode" class="form-control" 
 					  @if($applicant->status != null) 
