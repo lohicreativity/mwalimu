@@ -69,8 +69,9 @@
             </div>
           </div>
         </div>
+        <span style='color:red' class='ss-font-sm'>Format: S0000/0000/2023 or EQ2022000000/2023</span>
         <div class="input-group mb-3">
-          <input type="text" name="index_number" class="form-control" value="{{ old('index_number') }}" placeholder="Form IV Index Number (S1002/0213/2015)" required>
+          <input type="text" name="index_number" class="form-control" value="{{ old('index_number') }}" placeholder="Form IV Index Number" required>
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-key"></span>
