@@ -1091,9 +1091,9 @@ $('.ss-form-processing-necta-admin').submit(function(e){
          element += '<tr><td>Middle Name:</td><td>'+data.response.particulars.middle_name+'</td></tr>';
          element += '<tr><td>Last Name:</td><td>'+data.response.particulars.last_name+'</td></tr>';
          element += '<tr><td>Sex:</td><td>'+data.response.particulars.sex+'</td></tr>';
-         element += '<tr><td>Index Number:</td><td>'+data.response.particulars.index_number+'</td></tr>'
-         element += '<tr><td>Division:</td><td>'+data.response.particulars.division+'</td></tr>';
-         element += '<tr><td>Points:</td><td>'+data.response.particulars.points+'</td></tr>';
+         element += '<tr><td>Index Number:</td><td>'+$(e.target).find('input[name=index_number]').val()+'</td></tr>'
+         element += '<tr><td>Division:</td><td>'+data.response.results.division+'</td></tr>';
+         element += '<tr><td>Points:</td><td>'+data.response.results.points+'</td></tr>';
          for(var i=0; i<data.response.subjects.length; i++){
             element += '<tr><td>'+data.response.subjects[i].subject_name+'</td><td>'+data.response.subjects[i].grade+'</td></tr>'
          }
