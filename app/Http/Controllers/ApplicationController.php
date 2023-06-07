@@ -3830,6 +3830,23 @@ class ApplicationController extends Controller
         return view('dashboard.application.search-applicant',$data)->withTitle('Search For Applicant');
     }
 
+
+    /**
+     * Reset applicant's results
+     */
+    public function resetApplicantResults(Request $request)
+    {
+        NectaResultDetail::where('applicant_id', $request->get('applicant_id'))->where('verified',1)->update(['applicant_id'=>0]);
+        NectaResult::where('applicant_id', $request->get('applicant_id'))->update(['applicant_id'=>0]);
+        $applicant = Applicant::find($request->get('applicant_id'));
+        $applicant->results_complete_status = 0;
+        $applicant->rank_points = null;
+        $applicant->save();
+
+        return redirect()->back()->with('message','Results reset successfully');
+    }
+
+
     /**
      * Reset applicant's password
      */

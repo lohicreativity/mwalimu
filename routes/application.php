@@ -82,6 +82,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 	Route::get('download-applicants-list',[ApplicantController::class,'downloadApplicantsList']);
 
 	Route::get('search-for-applicant',[ApplicationController::class,'searchForApplicant']);
+    Route::get('reset-applicant-results',[ApplicationController::class,'resetApplicantResults']);
 	Route::post('reset-applicant-password',[ApplicationController::class,'resetApplicantPassword']);
 	Route::get('reset-applicant-password-default',[ApplicationController::class,'resetApplicantPasswordDefault']);
 
