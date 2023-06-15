@@ -135,6 +135,11 @@
                           </option>
                          @endforeach
                        </select>
+                       @if($applicant->status == null) 
+                          @if(App\Domain\Application\Models\Applicant::hasRequestedControlNumber($applicant) || $applicant->payment_complete_status == 1) 
+                          {!! Form::input('hidden','citizenship',$applicant->nationality) !!}
+                          @endif 
+                        @endif
                     </div>
                     <div class="form-group col-3">
                        {!! Form::label('','Email') !!}

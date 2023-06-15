@@ -11,6 +11,7 @@ use App\Models\User;
 use App\Utils\Util;
 use Validator, Auth;
 use App\Domain\Settings\Models\Campus;
+use App\Domain\Finance\Models\Invoice;
 
 class FeeAmountController extends Controller
 {
@@ -82,7 +83,14 @@ class FeeAmountController extends Controller
             'amount_in_tzs'=>'required',
             'amount_in_usd'=>'required',
         ]);
+        $amount = FeeAmount::findOrFail($request->get('fee_amount_id'));
+        $staff = User::find(Auth::user()->id)->staff;
 
+        if(Invoice::whereHas('feeType.feeItems.feeAmounts', function($query) use($staff, $request){$query->where('id',$request->get('fee_amount_id'))
+            ->where('campus_id',$staff->campus_id)->where('study_academic_year_id',$request->get('study_academic_year_id'));})->where('applicable_id', $request->get('study_academic_year_id'))->count() != 0){ 
+            return redirect()->back()->with('error','Fee amount cannot be edited. It has already been used');     
+            
+        }
         if($validation->fails()){
            if($request->ajax()){
               return response()->json(array('error_messages'=>$validation->messages()));
@@ -124,11 +132,18 @@ class FeeAmountController extends Controller
      * Remove the specified amount
      */
     public function destroy(Request $request, $id)
-    {
-        try{
+    {        try{
+
             $amount = FeeAmount::findOrFail($id);
-            $amount->delete();
-            return redirect()->back()->with('message','Fee amount deleted successfully');
+            $staff = User::find(Auth::user()->id)->staff;
+            $study_academic_year = StudyAcademicYear::latest()->first();
+
+           if(Invoice::whereHas('feeType.feeItems.feeAmounts', function($query) use($amount, $staff, $study_academic_year, $id){$query->where('id',$id)
+            ->where('campus_id',$staff->campus_id)->where('study_academic_year_id',$study_academic_year->id);})->where('applicable_id', $study_academic_year->id)->count() != 0){ 
+                return redirect()->back()->with('error','Fee amount cannot be deleted. It has already been used');           
+           }
+           $amount->delete();
+           return redirect()->back()->with('message','Fee amount deleted successfully');
         }catch(Exception $e){
             return redirect()->back()->with('error','Unable to get the resource specified in this request');
         }

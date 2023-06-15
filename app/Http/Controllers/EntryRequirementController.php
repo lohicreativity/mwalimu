@@ -23,7 +23,7 @@ class EntryRequirementController extends Controller
     public function index(Request $request)
     {
       $staff = User::find(Auth::user()->id)->staff;
-      $approving_status = ApplicantProgramSelection::where('application_window_id',$request->get('application_window_id'))->where('status','APPROVING')->count();
+      //$approving_status = ApplicantProgramSelection::where('application_window_id',$request->get('application_window_id'))->where('status','APPROVING')->count();
       $requirements = EntryRequirement::where('application_window_id',$request->get('application_window_id'))->get();
       $campusProgramIds = [];
       foreach ($requirements as $key => $req) {
@@ -62,7 +62,7 @@ class EntryRequirementController extends Controller
            'diploma_programs'=>Program::whereHas('campusPrograms',function($query) use($staff){
                 $query->where('campus_id',$staff->campus_id);
               })->where('name','LIKE','%Diploma%')->get(),
-           'selection_run'=>$approving_status == 0? false : true,
+           'prog_selection_status'=>ApplicantProgramSelection::where('application_window_id',$request->get('application_window_id'))->count() == 0? false : true,
            'request'=>$request
     	];
 
@@ -217,7 +217,12 @@ class EntryRequirementController extends Controller
     {
         try{
                $requirement = EntryRequirement::findOrFail($id);
-               $requirement->delete();
+               if(ApplicantProgramSelection::where('application_window_id',$requirement->application_window_id)->count() == 0){
+                  $requirement->delete();
+               }else{
+                  return redirect()->back()->with('error','The action cannot be performed');
+               }
+
                return redirect()->back()->with('message','Entry requirement deleted successfully');
         }catch(Exception $e){
             return redirect()->back()->with('error','Unable to get the resource specified in this request');

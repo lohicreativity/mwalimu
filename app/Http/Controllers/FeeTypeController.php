@@ -82,8 +82,8 @@ class FeeTypeController extends Controller
     {
         try{
             $type = FeeType::with('feeItems')->findOrFail($id);
-            if(count($item->feeItems) != 0){
-                return redirect()->back()->with('error','Fee type has items and cannot be deleted');
+            if(count($type->feeItems) != 0){
+                return redirect()->back()->with('error','Fee type cannot be deleted. Fee items already added');
             }
             $type->delete();
             return redirect()->back()->with('message','Fee type deleted successfully');

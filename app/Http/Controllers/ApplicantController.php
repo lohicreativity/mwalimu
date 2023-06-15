@@ -130,7 +130,11 @@ class ApplicantController extends Controller
                $campus = Campus::where('id', $continue_applicant->campus_id)->first();
                
             }
-			
+            $applicant = Applicant::where('user_id',Auth::user()->id)->where('campus_id',$request->get('campus_id'))->first();
+            if($applicant->submission_complete_status == 1 && $applicant->status == null){
+              $applicant->documents_complete_status = 0;
+              $applicant->save();
+            }
             if(!Applicant::where('user_id',Auth::user()->id)->where('campus_id',$request->get('campus_id'))->first() && !$continue_applicant){
                 $app = Applicant::where('user_id',Auth::user()->id)->where('campus_id',0)->first();
                 if($app){
@@ -401,7 +405,13 @@ class ApplicantController extends Controller
               if($applicant->payment_complete_status == 1){
                   if($applicant->results_complete_status == 1){
                      if($applicant->programs_complete_status == 1){
-                         return redirect()->to('application/submission');
+                        if($applicant->documents_complete_status == 1 && 
+                           ($applicant->avn_no_results === 1 || $applicant->teacher_certificate_status === 1 || $applicant->veta_status == 1 || str_contains(strtolower($applicant->programLevel->name),'masters') || (str_contains($applicant->programLevel->name,'Certificate') && $applicant->entry_mode == 'EQUIVALENT'))){
+                           return redirect()->to('application/submission');
+                        }elseif($applicant->avn_no_results === 1 || $applicant->teacher_certificate_status === 1 || $applicant->veta_status == 1 || str_contains(strtolower($applicant->programLevel->name),'masters') || (str_contains($applicant->programLevel->name,'Certificate') && $applicant->entry_mode == 'EQUIVALENT')){
+                           return redirect()->to('application/upload-avn-documents');
+                        }
+                        return redirect()->to('application/submission');
                      }else{
                          return redirect()->to('application/select-programs');
                      }
@@ -1618,6 +1628,15 @@ class ApplicantController extends Controller
             }
         }
 
+        if(ApplicationWindow::where('campus_id',session('applicant_campus_id'))->where('intake_id', $applicant->intake_id)->where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('status','ACTIVE')->first()){
+         if($applicant->documents_complete_status != 1 && 
+            (($applicant->avn_no_results === 1 || $applicant->teacher_certificate_status === 1 || $applicant->veta_status == 1 || 
+               str_contains(strtolower($applicant->programLevel->name),'masters') || (str_contains($applicant->programLevel->name,'Certificate') 
+               && $applicant->entry_mode == 'EQUIVALENT')))){
+             return redirect()->back()->with('error','You must upload required documents');
+         }
+        }
+
         if(!ApplicationWindow::where('campus_id',session('applicant_campus_id'))->where('intake_id', $applicant->intake_id)->where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('status','ACTIVE')->first()){
            $selection_status = $applicants != null ? true : false;
         }
@@ -1649,7 +1668,7 @@ class ApplicantController extends Controller
      * Store applicant into database
      */
     public function updateBasicInfo(Request $request)
-    {
+    { 
          $validation = Validator::make($request->all(),[
             'first_name'=>'required',
             'surname'=>'required',
@@ -1661,8 +1680,17 @@ class ApplicantController extends Controller
             'address'=>'required|integer',
             'nationality'=>'required',
         ]);
-    	
 
+        $applicant = Applicant::find($request->get('applicant_id'));
+        if($applicant->payment_complete_status == 1 && substr($request->get('phone'),1) != substr($applicant->phone,3)){
+            return redirect()->back()->withInput()->with('error','The action cannot be performed at the moment');
+         }
+        if(Applicant::hasConfirmedResults($applicant)){
+            if($applicant->first_name != $request->get('first_name') || $applicant->middle_name != $request->get('middle_name') 
+               || $applicant->surname != $request->get('surname') || $applicant->gender != $request->get('sex')){
+                  return redirect()->back()->withInput()->with('error','The action cannot be performed at the moment');
+            }
+        }
         if($validation->fails()){
            if($request->ajax()){
               return response()->json(array('error_messages'=>$validation->messages()));
@@ -1681,7 +1709,6 @@ class ApplicantController extends Controller
 
         (new ApplicantAction)->update($request);
          
-        $applicant = Applicant::find($request->get('applicant_id'));
         if($applicant->status == 'ADMITTED'){
            return redirect()->back()->with('message','Applicant updated successfully');
         }else{
@@ -2181,11 +2208,23 @@ class ApplicantController extends Controller
            }
         }
 
-        
-
         $applicant = Applicant::find($request->get('applicant_id'));
+        if(Applicant::hasConfirmedResults($applicant) && $request->get('index_number') != $applicant->index_number){
+            return redirect()->back()->with('error','The action cannot be performed');
+        }
+
+        if(Applicant::hasRequestedControlNumber($applicant) || $applicant->payment_complete_status == 1){
+            if($request->get('nationality') != $applicant->nationality || (!empty($request->get('citizenship')) && $request->get('citizenship') != $applicant->nationality)){
+               return redirect()->back()->with('error','The action cannot be performed');
+            }
+        }
+        
+        if($applicant->status != null && ($request->get('entry_mode') != $applicant->entry_mode || $request->get('program_level_id') != $applicant->program_level_id)){
+         return redirect()->back()->with('error','The action cannot be performed');
+        }
+
         if(!ApplicationWindow::where('campus_id',$applicant->campus_id)->where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('status','ACTIVE')->first()){
-               return redirect()->back()->with('error','Application window already closed');
+            return redirect()->back()->with('error','Application window already closed');
         }
         if($applicant->submission_complete_status == 1){
             return redirect()->back()->with('error','Applicant details cannot be modified because the application is already submitted');

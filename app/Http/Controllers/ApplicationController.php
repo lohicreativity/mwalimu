@@ -1466,7 +1466,10 @@ class ApplicationController extends Controller
        if($applicant->results_complete_status == 0){
           return redirect()->back()->with('error','Results section not completed');
        }
-       if($applicant->avn_no_results == 1 || $applicant->teacher_certificate_status == 1 || str_contains($applicant->programLevel->name,'Masters')){
+       
+       if($applicant->avn_no_results === 1 || $applicant->teacher_certificate_status === 1 || $applicant->veta_status == 1 || 
+       str_contains(strtolower($applicant->programLevel->name),'masters') || (str_contains($applicant->programLevel->name,'Certificate') 
+       && $applicant->entry_mode == 'EQUIVALENT')){
           if($applicant->documents_complete_status == 0){
              return redirect()->back()->with('error','Documents section not completed');
           }
@@ -1480,7 +1483,7 @@ class ApplicationController extends Controller
        //    return redirect()->back()->with('error','Upload documents section not completed');
        // }
        $applicant->submission_complete_status = 1;
-       $applicant->documents_complete_status = 0;
+       //$applicant->documents_complete_status = 0;
        $applicant->submitted_at = now();
        $applicant->save();
 	   

@@ -2723,7 +2723,7 @@
                       </div>
                       <!-- /.modal -->
                       
-                      <a class="btn btn-danger btn-sm" href="#" @if($selection_run) disabled="disabled" @else data-toggle="modal" data-target="#ss-delete-requirement-{{ $requirement->id }}" @endif>
+                      <a class="btn btn-danger btn-sm" href="#" data-toggle="modal" data-target="#ss-delete-requirement-{{ $requirement->id }}">
                               <i class="fas fa-trash">
                               </i>
                               Delete
@@ -2742,12 +2742,16 @@
                               <div class="row">
                                 <div class="col-12">
                                     <div id="ss-confirmation-container">
+                                    @if(!$prog_selection_status)
                                        <p id="ss-confirmation-text">Are you sure you want to delete this entry requirement from the list?</p>
                                        <div class="ss-form-controls">
                                          <button amount="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                                          <a href="{{ url('application/entry-requirement/'.$requirement->id.'/destroy') }}" class="btn btn-danger">Delete</a>
                                          </div><!-- end of ss-form-controls -->
                                       </div><!-- end of ss-confirmation-container -->
+                                    @else
+                                       <p id="ss-confirmation-text">Entry requirement cannot be deleted because it has already been used for programme selection.</p>
+                                    @endif
                                   </div><!-- end of col-md-12 -->
                                </div><!-- end of row -->
                             </div>
