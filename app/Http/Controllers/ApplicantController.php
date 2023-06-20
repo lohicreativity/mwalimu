@@ -131,9 +131,11 @@ class ApplicantController extends Controller
                
             }
             $applicant = Applicant::where('user_id',Auth::user()->id)->where('campus_id',$request->get('campus_id'))->first();
-            if($applicant->submission_complete_status == 1 && $applicant->status == null){
-              $applicant->documents_complete_status = 0;
-              $applicant->save();
+            if($applicant){
+               if($applicant->submission_complete_status == 1 && $applicant->status == null){
+                  $applicant->documents_complete_status = 0;
+                  $applicant->save();
+               }
             }
             if(!Applicant::where('user_id',Auth::user()->id)->where('campus_id',$request->get('campus_id'))->first() && !$continue_applicant){
                 $app = Applicant::where('user_id',Auth::user()->id)->where('campus_id',0)->first();
@@ -712,7 +714,7 @@ class ApplicantController extends Controller
          'a_level_necta_results'=>NectaResultDetail::with('results')->where('applicant_id',$applicant->id)->where('exam_id','2')->where('verified',1)->get(),
          'nacte_results'=>NacteResultDetail::with('results')->where('applicant_id',$applicant->id)->where('verified',1)->get(),
          'out_results'=>OutResultDetail::with('results')->where('applicant_id',$applicant->id)->where('verified',1)->get(),
-		   'selection_status'=>$selection_status>0? $selection_status : 0,
+		   'selection_status'=>$selection_status>0? 1 : 0,
          'regulator_selection'=>false
         ];
         return view('dashboard.application.request-results',$data)->withTitle('Request Results');
@@ -1004,7 +1006,7 @@ class ApplicantController extends Controller
                            $other_advance_subsidiary_ready = false;
                            foreach ($detail->results as $key => $result) {
 
-                              if($a_level_grades[$result->grade] >= $a_level_grades[$principle_pass_grade]){
+                              if($a_level_grades[$result->grade] >= $a_level_grades[$diploma_principle_pass_grade]){
                                  $applicant->rank_points += $a_level_grades[$result->grade];
                                  $subject_count += 1;
  /*                                if(unserialize($program->entryRequirements[0]->advance_must_subjects) != ''){
@@ -1510,7 +1512,7 @@ class ApplicantController extends Controller
                         
                         foreach($applicant->outResultDetails as $detail){
                             foreach($detail->results as $key => $result){
-                                if(!Util::arrayIsContainedInKey($result->code, $exclude_out_subjects_codes)){
+                                if(!Util::arrayIsContainedInKey($result->subject_code, $exclude_out_subjects_codes)){
                                    if($out_grades[$result->grade] >= $out_grades['C']){
                                       $out_pass_subjects_count += 1;
                                    }

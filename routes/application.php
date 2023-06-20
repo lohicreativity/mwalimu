@@ -93,7 +93,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
     Route::get('fetch-necta-results-admin/{index_number}/{exam_id}',[NECTAServiceController::class,'getResultsAdmin']);
     Route::get('fetch-nacte-results-admin/{avn}',[NACTEServiceController::class,'getResultsAdmin']);
     Route::get('admin-fetch-results',[ApplicationController::class,'getNectaResults']);
-    Route::post('get-necta-results',[ApplicantController::class,'getNectaResults']);
+    //Route::post('get-necta-results',[ApplicantController::class,'getNectaResults']);
     Route::post('get-nacte-results',[ApplicantController::class,'getNacteResults']);
     Route::get('fetch-out-results/{reg_no}',[OUTServiceController::class,'getResults']);
     Route::get('fetch-out-results-admin/{reg_no}',[OUTServiceController::class,'getResultsAdmin']);

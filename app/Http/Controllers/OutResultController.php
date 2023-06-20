@@ -7,6 +7,7 @@ use App\Domain\Application\Models\OutResultDetail;
 use App\Domain\Application\Models\OutResult;
 use App\Domain\Application\Models\Applicant;
 use Illuminate\Support\Facades\Http;
+use App\Domain\Application\Models\ApplicantProgramSelection;
 
 class OutResultController extends Controller
 {
@@ -15,6 +16,10 @@ class OutResultController extends Controller
      */
     public function confirm(Request $request)
     {
+        if(ApplicantProgramSelection::where('applicant_id',$request->get('applicant_id'))->count() != 0){
+            return redirect()->back()->with('error','The action cannot be performed at the moment'); 
+        }
+
         $detail = OutResultDetail::find($request->get('out_result_detail_id'));
         $detail->verified = 1;
         $detail->save();
@@ -33,6 +38,10 @@ class OutResultController extends Controller
      */
     public function destroy(Request $request)
     {
+        if(ApplicantProgramSelection::where('applicant_id',$request->get('applicant_id'))->count() != 0){
+            return redirect()->back()->with('error','The action cannot be performed at the moment'); 
+        }
+
     	$detail = OutResultDetail::find($request->get('out_result_detail_id'));
         if($detail->verified != 1){
     	OutResult::where('out_result_detail_id',$request->get('out_result_detail_id'))->delete();
@@ -47,6 +56,10 @@ class OutResultController extends Controller
      */
     public function nullify(Request $request)
     {
+        if(ApplicantProgramSelection::where('applicant_id',$request->get('applicant_id'))->count() != 0){
+            return redirect()->back()->with('error','The action cannot be performed at the moment'); 
+        }
+
         $detail = OutResultDetail::find($request->get('detail_id'));
         OutResult::where('out_result_detail_id',$request->get('detail_id'))->delete();
         // $detail->results->delete();

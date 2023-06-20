@@ -7,6 +7,7 @@ use App\Domain\Application\Models\NectaResultDetail;
 use App\Domain\Application\Models\NectaResult;
 use App\Domain\Application\Models\Applicant;
 use Illuminate\Support\Facades\Http;
+use App\Domain\Application\Models\ApplicantProgramSelection;
 
 class NectaResultController extends Controller
 {
@@ -15,7 +16,11 @@ class NectaResultController extends Controller
      *  Confirm NECTA results
      */
     public function confirm(Request $request)
-    {
+    {   
+        if(ApplicantProgramSelection::where('applicant_id',$request->get('applicant_id'))->count() != 0){
+            return redirect()->back()->with('error','The action cannot be performed at the moment'); 
+        }
+
         $detail = NectaResultDetail::find($request->get('necta_result_detail_id'));
         $detail->verified = 1;
         $detail->save();
@@ -53,6 +58,10 @@ class NectaResultController extends Controller
      */
     public function destroy(Request $request)
     {
+        if(ApplicantProgramSelection::where('applicant_id',$request->get('applicant_id'))->count() != 0){
+            return redirect()->back()->with('error','The action cannot be performed at the moment'); 
+        }
+        
     	$detail = NectaResultDetail::find($request->get('necta_result_detail_id'));
         if($detail->verified != 1){
         	NectaResult::where('necta_result_detail_id',$request->get('necta_result_detail_id'))->delete();
@@ -67,6 +76,10 @@ class NectaResultController extends Controller
      */
     public function nullify(Request $request)
     {
+        if(ApplicantProgramSelection::where('applicant_id',$request->get('applicant_id'))->count() != 0){
+            return redirect()->back()->with('error','The action cannot be performed at the moment'); 
+        }
+        
         $detail = NectaResultDetail::find($request->get('detail_id'));
         NectaResult::where('necta_result_detail_id',$request->get('detail_id'))->delete();
         //$detail->results->delete();

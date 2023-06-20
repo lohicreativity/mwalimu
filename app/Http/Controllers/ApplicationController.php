@@ -7623,6 +7623,10 @@ class ApplicationController extends Controller
            }
         }
 
+        if(ApplicantProgramSelection::where('applicant_id',$request->get('applicant_id'))->count() != 0){
+            return redirect()->back()->with('error','The action cannot be performed at the moment'); 
+        }
+        
         $applicant = Applicant::find($request->get('applicant_id'));
         $applicant->teacher_certificate_status = $request->get('teacher_certificate_status');
         $applicant->save();
@@ -7648,6 +7652,10 @@ class ApplicationController extends Controller
            }
         }
 
+        if(ApplicantProgramSelection::where('applicant_id',$request->get('applicant_id'))->count() != 0){
+            return redirect()->back()->with('error','The action cannot be performed at the moment'); 
+        }
+        
         $o_level_result_count = NectaResultDetail::where('applicant_id',$request->get('applicant_id'))->where('exam_id',1)->count();
 
         $applicant = Applicant::where('id',$request->get('applicant_id'))->with('programLevel')->first();

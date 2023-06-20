@@ -249,7 +249,7 @@
                     @php
                       $applicant_phone = null;
                       if($applicant->phone != null){
-                      $applicant_phone = "0".substr($applicant->phone,3);  
+                        $applicant_phone = "0".substr($applicant->phone,3);  
                       }
                     @endphp
                        {!! Form::text('phone', $applicant_phone,$phone) !!}
