@@ -1506,21 +1506,37 @@ class ApplicantController extends Controller
                             }
                         }
 
-
-                        $exclude_out_subjects_codes = unserialize($program->entryRequirements[0]->open_exclude_subjects); //['OFC 017','OFP 018','OFP 020'];
                         $out_pass_subjects_count = 0;
+                       if(unserialize($program->entryRequirements[0]->open_exclude_subjects) != '') //['OFC 017','OFP 018','OFP 020'];
+                        {
+                           $exclude_out_subjects_codes = unserialize($program->entryRequirements[0]->open_exclude_subjects);
                         
-                        foreach($applicant->outResultDetails as $detail){
-                            foreach($detail->results as $key => $result){
-                                if(!Util::arrayIsContainedInKey($result->subject_code, $exclude_out_subjects_codes)){
-                                   if($out_grades[$result->grade] >= $out_grades['C']){
-                                      $out_pass_subjects_count += 1;
+                           foreach($applicant->outResultDetails as $detail){
+                               foreach($detail->results as $key => $result){
+                                   if(!Util::arrayIsContainedInKey($result->subject_code, $exclude_out_subjects_codes)){
+                                      if($out_grades[$result->grade] >= $out_grades['C']){
+                                         $out_pass_subjects_count += 1;
+                                      }
                                    }
-                                }
-                            }
-                            $out_gpa = $detail->gpa;
-                      
-                        }
+                               }
+                               $out_gpa = $detail->gpa;
+                         
+                           }
+                       }else{
+
+                        foreach($applicant->outResultDetails as $detail){
+                           foreach($detail->results as $key => $result){
+                              if($out_grades[$result->grade] >= $out_grades['C']){
+                                 $out_pass_subjects_count += 1;
+                              }
+                               
+                           }
+                           $out_gpa = $detail->gpa;
+                     
+                       }
+
+                       }
+
 
 
                         if(($o_level_pass_count+$o_level_other_pass_count) >= $program->entryRequirements[0]->pass_subjects && $out_pass_subjects_count >= 3 && $out_gpa >= $program->entryRequirements[0]->open_equivalent_gpa && $a_level_out_subsidiary_pass_count >= 1 && $a_level_out_principle_pass_count >= 1){
