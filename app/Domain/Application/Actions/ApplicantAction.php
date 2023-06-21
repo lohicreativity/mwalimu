@@ -189,30 +189,45 @@ class ApplicantAction implements ApplicantInterface{
                             $applicant->documents_complete_status = 0;
                         }
                     }elseif($applicant->status == 'ADMITTED'){
-                        if($applicant->birth_certificate && $applicant->o_level_certificate && ($applicant->a_level_certificate || $applicant->diploma_certificate)){
+                        if($applicant->birth_certificate && $applicant->o_level_certificate && ($applicant->a_level_certificate || $applicant->diploma_certificate || $applicant->teacher_diploma_certificate)){
                             $applicant->documents_complete_status = 1;
                         }else{
                             $applicant->documents_complete_status = 0;
                         }
                     }
                     
-                }elseif(str_contains($applicant->programLevel->name,'Diploma') || str_contains($applicant->programLevel->name,'Certificate')){
-                    if($applicant->birth_certificate && $applicant->o_level_certificate){
-                        $applicant->documents_complete_status = 1;
-                    }else{
-                        $applicant->documents_complete_status = 0;
+                }elseif(str_contains($applicant->programLevel->name,'Diploma')){
+                    if($applicant->status == 'ADMITTED'){
+                        if($applicant->birth_certificate && $applicant->o_level_certificate){
+                            $applicant->documents_complete_status = 1;
+                        }else{
+                            $applicant->documents_complete_status = 0;
+                        }
+                    }
+                }elseif(str_contains($applicant->programLevel->name,'Certificate')){
+                    if($applicant->status == null){
+                        if($applicant->veta_certificate){
+                            $applicant->documents_complete_status = 1;
+                        }else{
+                            $applicant->documents_complete_status = 0;
+                        }
+                    }elseif($applicant->status == 'ADMITTED'){
+                        if($applicant->birth_certificate && $applicant->o_level_certificate && $applicant->veta_certificate){
+                            $applicant->documents_complete_status = 1;
+                        }else{
+                            $applicant->documents_complete_status = 0;
+                        }
                     }
                 }elseif(str_contains(strtolower($applicant->programLevel->name),'master')){
                     if($applicant->status == null) {
                         if($applicant->o_level_certificate && $applicant->diploma_certificate 
-                            && $applicant->degree_certificate && $applicant->degree_transcript) {
+                            && $applicant->degree_certificate && $applicant->degree_transcript){
                             $applicant->documents_complete_status = 1;
                         }else{
                             $applicant->documents_complete_status = 0;
                         }
 
                     }elseif($applicant->status == 'ADMITTED') {
-
                         if($applicant->birth_certificate && $applicant->o_level_certificate && $applicant->diploma_certificate 
                             && $applicant->degree_certificate && $applicant->degree_transcript){
                             $applicant->documents_complete_status = 1;

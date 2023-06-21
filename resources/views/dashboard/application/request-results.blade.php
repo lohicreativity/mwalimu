@@ -124,7 +124,7 @@
             </div>
 			      @endif
             
-            @if(!str_contains($applicant->programLevel->name,'Certificate'))
+            @if(!str_contains($applicant->programLevel->name,'Certificate') && !str_contains($applicant->programLevel->name,'Diploma'))
             <div class="card card-default">
               <div class="card-header">
                 <h3 class="card-title">
@@ -245,7 +245,7 @@
 
               @if($applicant->entry_mode == 'EQUIVALENT')
 
-              @if(str_contains($applicant->programLevel->name,'Degree') || str_contains($applicant->programLevel->name,'Masters'))
+              @if(str_contains($applicant->programLevel->name,'Bachelor') || str_contains($applicant->programLevel->name,'Masters'))
 
               <div class="card card-default">
               <div class="card-header">
