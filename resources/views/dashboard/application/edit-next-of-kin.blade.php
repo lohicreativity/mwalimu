@@ -172,6 +172,7 @@
                          <option value="Brother" @if($next_of_kin->relationship == 'Brother') selected="selected" @endif>Brother</option>
                          <option value="Sister" @if($next_of_kin->relationship == 'Sister') selected="selected" @endif>Sister</option>
                          <option value="Guardian" @if($next_of_kin->relationship == 'Guardian') selected="selected" @endif>Guardian</option>
+                         @if(str_contains(strtolower($applicant->programLevel->name),'masters')) <option value="Spouse" @if($next_of_kin->relationship == 'Spouse') selected="selected" @endif>Spouse</option> @endif
                        </select>
                     </div>
                   </div>
