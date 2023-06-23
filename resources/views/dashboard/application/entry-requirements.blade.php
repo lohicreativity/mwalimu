@@ -466,6 +466,7 @@
                        <option value="Information Technology">Information Technology</option>
                        <option value="Computer Science">Computer Science</option>
                        <option value="Social Work">Social Work</option>
+                       <option value="Development Planning">Development Planning</option>
                     </select>
                   </div>
                   <div class="form-group col-3">
@@ -813,6 +814,7 @@
                        <option value="Information Technology">Information Technology</option>
                        <option value="Computer Science">Computer Science</option>
                        <option value="Social Work">Social Work</option>
+                       <option value="Development Planning">Development Planning</option>
                     </select>
                   </div>
                   {!! Form::input('hidden','application_window_id',$application_window->id) !!}
@@ -1397,6 +1399,7 @@
                                                <option value="Information Technology" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Information Technology',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Information Technology</option>
                                                <option value="Computer Science" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Computer Science',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Computer Science</option>
                                                <option value="Social Work" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Social Work',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Social Work</option>
+                                               <option value="Development Planning" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Development Planning',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Development Planning</option>
                                           </select>
                                         </div>
                                         <div class="form-group col-3">
@@ -1701,7 +1704,8 @@
                                                <option value="Information Technology" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Information Technology',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Information Technology</option>
                                                <option value="Computer Science" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Computer Science',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Computer Science</option>
                                                <option value="Social Work" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Social Work',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Social Work</option>
-                                            </select>
+                                               <option value="Development Planning" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Development Planning',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Development Planning</option>
+                                             </select>
                                           </div>
                                           <div class="form-group col-3">
                                             {!! Form::label('','Equivalent Average Grade') !!}
@@ -2252,7 +2256,8 @@
                                                <option value="Information Technology" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Information Technology',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Information Technology</option>
                                                <option value="Computer Science" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Computer Science',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Computer Science</option>
                                                <option value="Social Work" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Social Work',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Social Work</option>
-                                          </select>
+                                               <option value="Development Planning" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Development Planning',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Development Planning</option>
+                                             </select>
                                         </div>
                                         <div class="form-group col-3">
                                           {!! Form::label('','Equivalent Average Grade') !!}
@@ -2559,7 +2564,8 @@
                                                <option value="Information Technology" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Information Technology',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Information Technology</option>
                                                <option value="Computer Science" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Computer Science',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Computer Science</option>
                                                <option value="Social Work" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Social Work',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Social Work</option>
-                                            </select>
+                                               <option value="Development Planning" @if(unserialize($requirement->equivalent_majors) != '') @if(in_array('Development Planning',unserialize($requirement->equivalent_majors))) selected="selected" @endif @endif>Development Planning</option>
+                                             </select>
                                           </div>
                                           <div class="form-group col-3">
                                             {!! Form::label('','Equivalent Average Grade') !!}
