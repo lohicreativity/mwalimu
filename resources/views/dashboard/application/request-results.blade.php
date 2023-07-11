@@ -124,7 +124,8 @@
             </div>
 			      @endif
             
-            @if(!str_contains($applicant->programLevel->name,'Certificate') && !str_contains($applicant->programLevel->name,'Diploma'))
+            @if(!str_contains($applicant->programLevel->name,'Certificate'))
+            @if(!str_contains($applicant->programLevel->name,'Diploma') || $applicant->entry_mode == 'DIRECT')
             <div class="card card-default">
               <div class="card-header">
                 <h3 class="card-title">
@@ -183,6 +184,7 @@
               {!! Form::close() !!}
             </div>
             <!-- /.card -->
+            @endif
             @endif
 
             <div class="modal fade" id="ss-confirm-results" data-backdrop="static" data-keyboard="false">

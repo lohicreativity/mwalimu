@@ -58,10 +58,22 @@
                   ];
 
                   $end_date = [
-                     'placeholder'=>'End date',
-                     'class'=>'form-control ss-datepicker',
-                     'autocomplete'=>'off',
-                     'required'=>true
+                      'placeholder'=>'BTC/Diploma End date',
+                      'class'=>'form-control ss-datepicker',
+                      'autocomplete'=>'off',
+                      'required'=>true
+                  ];
+
+                  $bsc_end_date = [
+                      'placeholder'=>'BSc. End date',
+                      'class'=>'form-control ss-datepicker',
+                      'autocomplete'=>'off',
+                  ];
+
+                  $msc_end_date = [
+                      'placeholder'=>'MSc. End date',
+                      'class'=>'form-control ss-datepicker',
+                      'autocomplete'=>'off',
                   ];
 
                   $capacity = [
@@ -74,7 +86,7 @@
                 <div class="card-body">
                   
                   <div class="row">
-                  <div class="form-group col-3">
+                  <div class="form-group col-4">
                     {!! Form::label('','Intake') !!}
                     <select name="intake_id" class="form-control" required>
                       <option>Select Intake</option>
@@ -83,17 +95,11 @@
                       @endforeach
                     </select>
                   </div>
-                  <div class="form-group col-3">
+                  <div class="form-group col-4">
                     {!! Form::label('','Begin date') !!}
                     {!! Form::text('begin_date',null,$begin_date) !!}
                   </div>
-                  <div class="form-group col-3">
-                    {!! Form::label('','End date') !!}
-                    {!! Form::text('end_date',null,$end_date) !!}
-
-                    {!! Form::input('hidden','status','INACTIVE') !!}
-                  </div>
-                  <div class="form-group col-3">
+                  <div class="form-group col-4">
                     @if(Auth::user()->hasRole('administrator'))
                     {!! Form::label('','Campus') !!}
                     <select name="campus_id" class="form-control" required>
@@ -112,6 +118,24 @@
                     </select>
                     @endif
 
+                  </div>
+                  <div class="form-group col-4">
+                    {!! Form::label('','BTC/Diploma End date') !!}
+                    {!! Form::text('end_date',null,$end_date) !!}
+
+                    {!! Form::input('hidden','status','INACTIVE') !!}
+                  </div>
+                  <div class="form-group col-4">
+                    {!! Form::label('','BSc. End date') !!}
+                    {!! Form::text('bsc_end_date',null,$bsc_end_date) !!}
+
+                    {!! Form::input('hidden','status','INACTIVE') !!}
+                  </div>
+                  <div class="form-group col-4">
+                    {!! Form::label('','MSc. End date') !!}
+                    {!! Form::text('msc_end_date',null,$msc_end_date) !!}
+
+                    {!! Form::input('hidden','status','INACTIVE') !!}
                   </div>
                   </div>
                 </div>
@@ -143,7 +167,9 @@
                     <th>Intake</th>
                     <th>Status</th>
                     <th>Begin Date</th>
-                    <th>End Date</th>
+                    <th>BTC/Diploma End Date</th>
+                    <th>BSc. End Date</th>
+                    <th>MSc. End Date</th>
                     @if(Auth::user()->hasRole('admission-officer') || Auth::user()->hasRole('administrator'))                    
                     <th>Actions</th>
                     @endif
@@ -160,6 +186,8 @@
                     <td>{{ $window->status }}</td>
                     <td>{{ $window->begin_date }}</td>
                     <td>{{ $window->end_date }}</td>
+                    <td>{{ $window->bsc_end_date }}</td>
+                    <td>{{ $window->msc_end_date }}</td>
                     @if(Auth::user()->hasRole('admission-officer') || Auth::user()->hasRole('administrator'))                    
                     <td>
                       @can('edit-application-window')
@@ -193,12 +221,23 @@
                                     ];
 
                                     $end_date = [
-                                       'placeholder'=>'End date',
-                                       'class'=>'form-control ss-datepicker',
-                                       'autocomplete'=>'off',
-                                       'required'=>true
+                                        'placeholder'=>'BTC/Diploma End date',
+                                        'class'=>'form-control ss-datepicker',
+                                        'autocomplete'=>'off',
+                                        'required'=>true
                                     ];
 
+                                    $bsc_end_date = [
+                                        'placeholder'=>'BSc. End date',
+                                        'class'=>'form-control ss-datepicker',
+                                        'autocomplete'=>'off',
+                                    ];
+
+                                    $msc_end_date = [
+                                        'placeholder'=>'MSc. End date',
+                                        'class'=>'form-control ss-datepicker',
+                                        'autocomplete'=>'off',
+                                    ];
                                     $capacity = [
                                        'placeholder'=>'Capacity',
                                        'class'=>'form-control',
@@ -209,7 +248,7 @@
                                 {!! Form::open(['url'=>'application/application-window/update','class'=>'ss-form-processing']) !!}
 
                                     <div class="row">
-                                      <div class="form-group col-3">
+                                      <div class="form-group col-4">
                                         {!! Form::label('','Intake') !!}
                                         <select name="intake_id" class="form-control" required>
                                           <option>Select Intake</option>
@@ -218,20 +257,11 @@
                                           @endforeach
                                         </select>
                                       </div>
-                                      <div class="form-group col-3">
+                                      <div class="form-group col-4">
                                         {!! Form::label('','Begin date') !!}
                                         {!! Form::text('begin_date',App\Utils\DateMaker::toStandardDate($window->begin_date),$begin_date) !!}
                                       </div>
-                                      <div class="form-group col-3">
-                                        {!! Form::label('','End date') !!}
-                                        {!! Form::text('end_date',App\Utils\DateMaker::toStandardDate($window->end_date),$end_date) !!}
-
-                                        {!! Form::input('hidden','study_academic_year_id',$window->study_academic_year_id) !!}
-
-                                        {!! Form::input('hidden','application_window_id',$window->id) !!}
-                                        {!! Form::input('hidden','status',$window->status) !!}
-                                      </div>
-                                      <div class="form-group col-3">
+                                      <div class="form-group col-4">
 
                                         {!! Form::label('','Campus') !!}
                                         @if(Auth::user()->hasRole('administrator'))
@@ -249,6 +279,23 @@
                                           @endforeach
                                         </select>
                                         @endif
+                                      </div>
+                                      <div class="form-group col-4">
+                                        {!! Form::label('','BTC/Diploma End date') !!}
+                                        {!! Form::text('end_date',App\Utils\DateMaker::toStandardDate($window->end_date),$end_date) !!}
+
+                                        {!! Form::input('hidden','study_academic_year_id',$window->study_academic_year_id) !!}
+
+                                        {!! Form::input('hidden','application_window_id',$window->id) !!}
+                                        {!! Form::input('hidden','status',$window->status) !!}
+                                      </div>
+                                      <div class="form-group col-4">
+                                        {!! Form::label('','BSc. End date') !!}
+                                        {!! Form::text('bsc_end_date',App\Utils\DateMaker::toStandardDate($window->bsc_end_date),$bsc_end_date) !!}
+                                      </div>
+                                      <div class="form-group col-4">
+                                        {!! Form::label('','MSc. End date') !!}
+                                        {!! Form::text('msc_end_date',App\Utils\DateMaker::toStandardDate($window->msc_end_date),$msc_end_date) !!}
                                       </div>
                                       </div>
                                       <div class="ss-form-actions">

@@ -72,12 +72,19 @@ class ApplicationWindowController extends Controller
             return redirect()->back()->with('error','You cannot create more than one application window in the same campus and intake');
         }
 
-        if(strtotime($request->get('begin_date')) > strtotime($request->get('end_date'))){
+        if(date('Y-m-d', strtotime($request->get('begin_date'))) > date('Y-m-d', strtotime($request->get('end_date')))){
             return redirect()->back()->with('error','End date cannot be less than begin date');
-        }elseif(strtotime($request->get('begin_date')) < strtotime(now()->format('Y-m-d'))){
-            return redirect()->back()->with('error','Begin date cannot be less than today date');
+        }elseif(date('Y-m-d', strtotime($request->get('begin_date'))) < date('Y-m-d', strtotime(now()->format('Y-m-d')))){
+            return redirect()->back()->with('error',"Begin date cannot be less than today's date");
         }
 
+        if(!empty($request->get('bcs_end_date')) || !empty($request->get('msc_end_date'))){
+            if(date('Y-m-d', strtotime($request->get('begin_date'))) > date('Y-m-d', strtotime($request->get('bcs_end_date'))) || date('Y-m-d', strtotime($request->get('begin_date'))) > date('Y-m-d', strtotime($request->get('msc_end_date')))){
+                return redirect()->back()->with('error','End date cannot be less than begin date');
+            }elseif(date('Y-m-d', strtotime($request->get('begin_date'))) < date('Y-m-d', strtotime($request->get('bcs_end_date'))) || date('Y-m-d', strtotime($request->get('begin_date'))) < date('Y-m-d', strtotime($request->get('msc_end_date')))){
+                return redirect()->back()->with('error',"Begin date cannot be less than today's date");
+            }
+        }
 
         (new ApplicationWindowAction)->store($request);
 
@@ -106,9 +113,12 @@ class ApplicationWindowController extends Controller
                 return redirect()->back()->with('error','You cannot update this application window because it does not belong to your campus');
         }
 
-        if(strtotime($request->get('begin_date')) > strtotime($request->get('end_date'))){
+        if(date('Y-m-d', strtotime($request->get('begin_date'))) > date('Y-m-d', strtotime($request->get('end_date'))) || date('Y-m-d',strtotime($request->get('begin_date'))) > date('Y-m-d',strtotime($request->get('bsc_end_date')))
+            || date('Y-m-d',strtotime($request->get('begin_date'))) > date('Y-m-d',strtotime($request->get('msc_end_date')))){
             return redirect()->back()->with('error','End date cannot be less than begin date');
         }
+
+        
 
         // elseif(strtotime($request->get('begin_date')) < strtotime(now()->format('Y-m-d'))){
         //     return redirect()->back()->with('error','Begin date cannot be less than today\'s date');

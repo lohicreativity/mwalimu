@@ -19,6 +19,16 @@ class ApplicationWindowAction implements ApplicationWindowInterface{
                 $window->intake_id = $request->get('intake_id');
                 $window->begin_date = DateMaker::toDBDate($request->get('begin_date'));
                 $window->end_date = DateMaker::toDBDate($request->get('end_date'));
+                if(!empty($request->get('bsc_end_date'))){
+                        $window->bsc_end_date =  DateMaker::toDBDate($request->get('bsc_end_date'));
+                }else{
+                        $window->bsc_end_date =  DateMaker::toDBDate($request->get('end_date'));
+                }
+                if(!empty($request->get('msc_end_date'))){
+                        $window->msc_end_date =  DateMaker::toDBDate($request->get('msc_end_date'));
+                }else{
+                        $window->msc_end_date =  DateMaker::toDBDate($request->get('end_date'));
+                }
                 $window->status = $request->get('status');
                 $window->campus_id = $request->get('campus_id');
                 $window->save();
@@ -46,6 +56,8 @@ class ApplicationWindowAction implements ApplicationWindowInterface{
                 $window->intake_id = $request->get('intake_id');
                 $window->begin_date = DateMaker::toDBDate($request->get('begin_date'));
                 $window->end_date = DateMaker::toDBDate($request->get('end_date'));
+                $window->bsc_end_date = DateMaker::toDBDate($request->get('bsc_end_date'));
+                $window->msc_end_date = DateMaker::toDBDate($request->get('msc_end_date'));
                 $window->status = $request->get('status');
                 $window->campus_id = $request->get('campus_id');
                 $window->save();

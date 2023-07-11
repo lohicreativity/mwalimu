@@ -68,10 +68,13 @@ class ApplicationController extends Controller
      * Disaplay form for application
      */
     public function index(Request $request)
-    {
+    {  
     	$data = [
            'awards'=>Award::all(),
-           'intakes'=>Intake::all()
+           'intakes'=>Intake::all(),
+           'certificate_window'=> ApplicationWindow::where('status','ACTIVE')->whereColumn('begin_date','!=','end_date')->first()? true : false,
+           'bsc_window'=> ApplicationWindow::where('status','ACTIVE')->whereColumn('begin_date','!=','bsc_end_date')->first()? true : false,
+           'msc_window'=> ApplicationWindow::where('status','ACTIVE')->whereColumn('begin_date','!=','msc_end_date')->first()? true : false
     	];
     	return view('dashboard.application.register',$data)->withTitle('Applicant Registration');
     }

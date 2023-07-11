@@ -24,6 +24,8 @@ class NectaResultController extends Controller
         $detail = NectaResultDetail::find($request->get('necta_result_detail_id'));
         $detail->verified = 1;
         $detail->save();
+        $o_level_results = NectaResultDetail::where('applicant_id', $request->get('applicant_id'))->where('verified',1)->first()? true : false;
+        return $o_level_results;
         $applicant  = Applicant::find($request->get('applicant_id'));
         $non_details = NectaResultDetail::where('id','!=',$request->get('necta_result_detail_id'))->where('first_name','!=',$detail->first_name)->where('last_name','!=',$detail->last_name)->get();
 
@@ -40,13 +42,13 @@ class NectaResultController extends Controller
         $applicant->middle_name =  $detail->middle_name;
         $applicant->surname = $detail->last_name;
         $applicant->gender = $detail->sex;
-        if(str_contains($applicant->programLevel->name,'Bachelor') && $applicant->entry_mode == 'DIRECT' && $detail->exam_id == 2){
+        if((str_contains($applicant->programLevel->name,'Bachelor') || str_contains($applicant->programLevel->name,'Diploma')) && $applicant->entry_mode == 'DIRECT' && $o_level_results && $detail->exam_id == 2){
             $applicant->results_complete_status = 1;
-        }elseif(str_contains($applicant->programLevel->name,'Diploma') && $applicant->entry_mode == 'DIRECT' && $detail->exam_id == 1){
-            $applicant->results_complete_status = 1;
+/*         }elseif(str_contains($applicant->programLevel->name,'Diploma') && $applicant->entry_mode == 'DIRECT' && $detail->exam_id == 1){
+            $applicant->results_complete_status = 1; */
         }elseif(str_contains($applicant->programLevel->name,'Certificate') && $applicant->entry_mode == 'DIRECT' && $detail->exam_id == 1){
             $applicant->results_complete_status = 1;
-        }elseif(str_contains($applicant->programLevel->name,'Masters')){
+        }elseif(str_contains($applicant->programLevel->name,'Masters') && $applicant->entry_mode == 'DIRECT' && $o_level_results && $detail->exam_id == 2){
             $applicant->results_complete_status = 1;
         }
         $applicant->save();
