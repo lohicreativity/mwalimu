@@ -684,19 +684,19 @@ class ApplicationController extends Controller
                 $a_level_schools    = null;
                 
                   $file_handle = fopen('php://output', 'w');
-                  fputcsv($file_handle,['S/N', 'FIRST NAME','MIDDLE NAME','SURNAME','GENDER', 'NATIONALITY', 'DISABILITY', 'DATEOFBIRTH', 'F4INDEXNO', 'F6INDEXNO', 'AVN NO', 'CHOICE1', 'CHOICE2', 'CHOICE3', 'CHOICE4', 'INSTITUTION CODE', 'ENTRY CATEGORY', 'OPTS', 'O-LEVEL RESULTS', 'APTS/GPA', 'A-LEVEL RESULTS/DIPLOMA', 'OPEN GPA', 'OPEN RESULTS', 'SELECTED', 'DATE REGISTERED', 'PHONE NUMBER', 'EMAIL ADDRESS', 'KIN PHONE NUMBER', 'DISTRICT', 'REGION', 'CLEARANCE', 'CLEARANCE STATUS', 'TCU ADMISSION STATUS', 'TCU VERIFICATION STATUS', 'CONFIRM STATUS', 'BATCH NO', 'DIPLOMA INSTITUTE', 'PROGRAM COURSE', 'DIPLOMA GPA', 'DIPLOMA RESULTS', 'O-LEVEL SCHOOL', 'CSEE PTS', 'A-LEVEL SCHOOL', 'ACSEE PTS', 'PROGRESS']);
+                  fputcsv($file_handle,['S/N', 'FIRST NAME','MIDDLE NAME','SURNAME','SEX', 'NATIONALITY', 'DISABILITY', 'DATEOFBIRTH', 'F4INDEXNO', 'F6INDEXNO', 'AVN NO', 'CHOICE1', 'CHOICE2', 'CHOICE3', 'CHOICE4', 'INSTITUTION CODE', 'ENTRY CATEGORY', 'OPTS', 'O-LEVEL RESULTS', 'APTS/GPA', 'A-LEVEL RESULTS/DIPLOMA', 'OPEN GPA', 'OPEN RESULTS', 'SELECTED', 'DATE REGISTERED', 'PHONE NUMBER', 'EMAIL ADDRESS', 'KIN PHONE NUMBER', 'DISTRICT', 'REGION', 'CONFIRM STATUS', 'BATCH NO', 'DIPLOMA INSTITUTE', 'PROGRAM COURSE', 'DIPLOMA GPA', 'DIPLOMA RESULTS', 'O-LEVEL SCHOOL', 'CSEE PTS', 'A-LEVEL SCHOOL', 'ACSEE PTS', 'PROGRESS']);
                   foreach ($list as $key => $applicant) { 
 
                     foreach($applicant->selections as $option){
             
                         if($option->order == 1){
-                            $firstChoice = $option->campusProgram->program->code;
+                            $firstChoice = !empty($option->campusProgram->program->code)? $option->campusProgram->program->code : "N/A";
                         }elseif($option->order == 2){
-                            $secondChoice = $option->campusProgram->program->code;
+                            $secondChoice = !empty($option->campusProgram->program->code)? $option->campusProgram->program->code : "N/A";
                         }elseif($option->order == 3){
-                            $thirdChoice = $option->campusProgram->program->code;
+                            $thirdChoice = !empty($option->campusProgram->program->code)? $option->campusProgram->program->code : "N/A";
                         }elseif($option->order == 4){
-                            $fourthChoice = $option->campusProgram->program->code;
+                            $fourthChoice = !empty($option->campusProgram->program->code)? $option->campusProgram->program->code : "N/A";
                         }
                     }
             
@@ -723,14 +723,15 @@ class ApplicationController extends Controller
                         }
 
             
-
+                      $o_level_points = null;
+                      $a_level_points = null;
                       $o_level_results = [];
                       $o_level_schools = [];
                       foreach($applicant->nectaResultDetails as $detail){
                           if($detail->exam_id == 1 && $detail->verified == 1){
 
                                 $o_level_schools = $detail->center_name;
-
+                                $o_level_points = $detail->points;
                                 foreach($detail->results as $result){
                                     $o_level_results[] = $result->subject_name.'-'.$result->grade;
                                 }
@@ -749,6 +750,7 @@ class ApplicationController extends Controller
                                 foreach($detail->results as $result){
                                     $a_level_results[] = $result->subject_name.'-'.$result->grade;
                                 }
+                                $a_level_points = $detail->points;
                             } else {
                                 $a_level_schools = null;
                             }
@@ -770,6 +772,7 @@ class ApplicationController extends Controller
                             
                         }
 
+                        $out_points = null;
                         foreach ($applicant->outResultDetails as $out_results) {
                             if ($out_results->verified == 1) {
                                 $out_gpa        = $out_results->gpa;
@@ -781,15 +784,16 @@ class ApplicationController extends Controller
                             }
                         }
 
+                        $batch_no = $applicant->batch_no == 0? 1 : $applicant->batch_no;
                       fputcsv($file_handle, 
                       [++$key, $applicant->first_name, $applicant->middle_name, $applicant->surname, 
                       $applicant->gender , $applicant->nationality, $applicant->disabilityStatus->name, $applicant->birth_date, $applicant->index_number, 
                       $a_level_index, $avn, $firstChoice, $secondChoice, $thirdChoice, $fourthChoice, $institution_code, 
                       $applicant->entry_mode, 'OPTS', implode(',', $o_level_results), 'APTS / GPA', implode(',',$a_level_results), 
                       $out_gpa, implode(',', $open_results), $status, $applicant->created_at, $applicant->phone, $applicant->email, $applicant->nextOfKin->phone, 
-                      $applicant->district->name, $applicant->region->name, 'CLEARANCE', 'CLEARANCE STATUS', 'TCU ADMISSION STATUS', 'TCU VERIFICATION STATUS', $confirm, 'BATCH NO', 
+                      $applicant->district->name, $applicant->region->name, $confirm, $batch_no, 
                       $diploma_institution, $programme, $diploma_gpa, implode(',', $diploma_results), $o_level_schools, 
-                      'CSEE PTS', $a_level_schools, 'ACSEE PTS', $applicant->status
+                      $o_level_points, $a_level_schools, $a_level_points, $applicant->status
                         ]);
                   }
                   fclose($file_handle);
@@ -2085,6 +2089,11 @@ class ApplicationController extends Controller
         }
 
         $applicant = Applicant::with('country')->find($request->get('applicant_id'));
+
+        if($applicant->basic_info_complete_status != 1){
+            return redirect()->back()->with('error','Please complete basic information first.');
+        }
+
         $fee_amount = FeeAmount::with(['feeItem.feeType'])->find($request->get('fee_amount_id'));
         $usd_currency = Currency::where('code','USD')->first();
 
@@ -2325,15 +2334,31 @@ class ApplicationController extends Controller
         // $closed_window = ApplicationWindow::where('campus_id',$staff->campus_id)->where('status','INACTIVE')->latest()->first();
         // changed closed window query
 
-        $closed_window = ApplicationWindow::where('campus_id',$request->get('campus_id'))
+/*         $closed_window = ApplicationWindow::where('campus_id',$request->get('campus_id'))
         ->where('end_date','>=', implode('-', explode('-', now()->format('Y-m-d'))))
+        ->where('status','INACTIVE')->latest()->first(); */
+
+        $closed_window = ApplicationWindow::where('campus_id',$request->get('campus_id'))
         ->where('status','INACTIVE')->latest()->first();
         
         if($closed_window){
-            return redirect()->back()->with('error','Application window is not active');
+            return redirect()->back()->with('error','Application window is inactive');
         }
 
-        if(ApplicationWindow::where('campus_id',$staff->campus_id)->where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('status','ACTIVE')->first()){
+        $award = Award::find($request->get('award_id'));
+ 
+        if(str_contains(strtolower($award->name),'basic') || str_contains(strtolower($award->name),'diploma')){
+            $open_window = ApplicationWindow::where('campus_id',$staff->campus_id)->where('begin_date','<=',now()->format('Y-m-d'))->where('status','ACTIVE')
+            ->where('end_date','>=',now()->format('Y-m-d'))->first();
+        }elseif(str_contains(strtolower($award->name),'bachelor')){
+            $open_window = ApplicationWindow::where('campus_id',$staff->campus_id)->where('begin_date','<=',now()->format('Y-m-d'))->where('status','ACTIVE')
+            ->where('bsc_end_date','>=',now()->format('Y-m-d'))->first();
+        }elseif(str_contains(strtolower($award->name),'master')){
+            $open_window = ApplicationWindow::where('campus_id',$staff->campus_id)->where('begin_date','<=',now()->format('Y-m-d'))->where('status','ACTIVE')
+            ->where('msc_end_date','>=',now()->format('Y-m-d'))->first();
+        }
+ 
+        if($open_window){
              return redirect()->back()->with('error','Application window not closed yet');
         }
 
@@ -2355,10 +2380,8 @@ class ApplicationController extends Controller
             $count[$program->id] = $count_selections;
         }
 
-        $award = Award::find($request->get('award_id'));
-
         if (Auth::user()->hasRole('admission-officer')) {
-            
+
             $applicants = Applicant::whereHas('selections',function($query) use($request, $staff){
                 $query->where('application_window_id',$request->get('application_window_id'))->where('batch_no',0)->where('campus_id', $staff->campus_id);
             })->with(['selections'=>function($query){$query->where('batch_no',0);},'nectaResultDetails.results','nacteResultDetails.results'])->where('program_level_id',$request->get('award_id'))->whereNull('is_tamisemi')->get();

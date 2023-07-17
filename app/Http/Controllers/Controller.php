@@ -35,7 +35,7 @@ class Controller extends BaseController
 
 	    	  if($staff){
 	    	     session(['staff_campus_id'=>$staff->campus_id]);
-	    	     $application_window = ApplicationWindow::where('campus_id',$staff->campus_id)->latest()->first();
+	    	     $application_window = ApplicationWindow::where('campus_id',$staff->campus_id)->where('status','ACTIVE')->latest()->first();
 	    	    if($application_window){
 		          session(['active_window_id'=>$application_window->id]);
 		        }else{

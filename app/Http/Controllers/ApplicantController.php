@@ -810,7 +810,7 @@ class ApplicantController extends Controller
                 
 
                   if(count($program->entryRequirements) == 0){
-                    return redirect()->back()->with('error',$program->program->name.' does not have entry requirements');
+                    return redirect()->back()->with('error',$program->program->name.' does not have entry requirements, please check with the Admission Office');
                   }
 
                   // if($program->entryRequirements[0]->max_capacity == null){
