@@ -103,9 +103,20 @@ class ApplicantController extends Controller
 
         $tamisemi_applicant = Applicant::where('index_number',$request->get('index_number'))->where('is_tamisemi',1)->first();
         
-        $window = ApplicationWindow::where('end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))
-        ->where('campus_id',$request->get('campus_id'))
-        ->where('status','ACTIVE')->latest()->first();
+        if($applicant->program_level_id == 1 || $applicant->program_level_id == 2){
+         $window = ApplicationWindow::where('end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))
+         ->where('campus_id',$request->get('campus_id'))
+         ->where('status','ACTIVE')->latest()->first();
+        }elseif($applicant->program_level_id == 4){
+         $window = ApplicationWindow::where('bsc_end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))
+         ->where('campus_id',$request->get('campus_id'))
+         ->where('status','ACTIVE')->latest()->first();
+        }elseif($applicant->program_level_id == 5){
+         $window = ApplicationWindow::where('msc_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))
+         ->where('campus_id',$request->get('campus_id'))
+         ->where('status','ACTIVE')->latest()->first();
+        }
+
 
         $closed_window = ApplicationWindow::where('campus_id',$request->get('campus_id'))
         ->where('end_date','>=', implode('-', explode('-', now()->format('Y-m-d'))))
