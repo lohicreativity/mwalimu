@@ -792,14 +792,38 @@ class ApplicationController extends Controller
                         }
 
                         $batch_no = $applicant->batch_no == 0? 1 : $applicant->batch_no;
+
+                        if(is_array($a_level_index)){
+                            $a_level_index=implode ($a_level_index);
+                         }
+                         if(is_array($a_level_results)){
+                            $a_level_results=implode ($a_level_results);
+                         }
+                         
+                        if(is_array($o_level_results)){
+                            $o_level_results=implode ($o_level_results);
+                         }
+                         if(is_array($open_results)){
+                            $open_results=implode ($open_results);
+                         }
+                         if(is_array($diploma_results)){
+                            $diploma_results=implode ($diploma_results);
+                         }
+                         if(is_array($o_level_schools)){
+                            $o_level_schools=implode ($o_level_schools);
+                         }
+                         if(is_array($a_level_schools)){
+                            $a_level_schools=implode ($a_level_schools);
+                         }
+
                       fputcsv($file_handle, 
                       [++$key, $applicant->first_name, $applicant->middle_name, $applicant->surname, 
                       $applicant->gender , $applicant->nationality, $applicant->disabilityStatus->name, $applicant->birth_date, $applicant->index_number, 
-                      implode(',', $a_level_index), $avn, $firstChoice, $secondChoice, $thirdChoice, $fourthChoice, $institution_code, 
-                      $applicant->entry_mode, 'OPTS', implode(',', $o_level_results), 'APTS / GPA', implode(',',$a_level_results), 
-                      $out_gpa, implode(',', $open_results), $status, $applicant->created_at, $applicant->phone, $applicant->email, $applicant->nextOfKin->phone, 
+                      $a_level_index, $avn, $firstChoice, $secondChoice, $thirdChoice, $fourthChoice, $institution_code, 
+                      $applicant->entry_mode, 'OPTS', $o_level_results, 'APTS / GPA', $a_level_results, 
+                      $out_gpa, $open_results, $status, $applicant->created_at, $applicant->phone, $applicant->email, $applicant->nextOfKin->phone, 
                       $applicant->district->name, $applicant->region->name, $confirm, $batch_no, 
-                      $diploma_institution, $programme, $diploma_gpa, implode(',', $diploma_results), $o_level_schools, 
+                      $diploma_institution, $programme, $diploma_gpa, $diploma_results, $o_level_schools, 
                       $o_level_points, $a_level_schools, $a_level_points, $applicant->status
                         ]);
                   }
