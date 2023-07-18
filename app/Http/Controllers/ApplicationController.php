@@ -742,6 +742,7 @@ class ApplicationController extends Controller
                       $diploma_results = [];
                       $open_results    = [];
                       $a_level_schools = [];
+                      $a_level_index = [];
 
                         foreach($applicant->nectaResultDetails as $detail){
                             if($detail->exam_id == 2 && $detail->verified == 1){
@@ -755,6 +756,11 @@ class ApplicationController extends Controller
                                 $a_level_schools = null;
                             }
                         }
+
+                        $diploma_gpa            = null;
+                        $diploma_institution    = null;
+                        $programme              = null;
+                        $avn                    = null;
 
                         foreach ($applicant->nacteResultDetails as $nacte_results) {
                             if ($nacte_results->verified == 1) {
@@ -773,6 +779,7 @@ class ApplicationController extends Controller
                         }
 
                         $out_points = null;
+                        $out_gpa = null;
                         foreach ($applicant->outResultDetails as $out_results) {
                             if ($out_results->verified == 1) {
                                 $out_gpa        = $out_results->gpa;
@@ -788,7 +795,7 @@ class ApplicationController extends Controller
                       fputcsv($file_handle, 
                       [++$key, $applicant->first_name, $applicant->middle_name, $applicant->surname, 
                       $applicant->gender , $applicant->nationality, $applicant->disabilityStatus->name, $applicant->birth_date, $applicant->index_number, 
-                      $a_level_index, $avn, $firstChoice, $secondChoice, $thirdChoice, $fourthChoice, $institution_code, 
+                      implode(',', $a_level_index), $avn, $firstChoice, $secondChoice, $thirdChoice, $fourthChoice, $institution_code, 
                       $applicant->entry_mode, 'OPTS', implode(',', $o_level_results), 'APTS / GPA', implode(',',$a_level_results), 
                       $out_gpa, implode(',', $open_results), $status, $applicant->created_at, $applicant->phone, $applicant->email, $applicant->nextOfKin->phone, 
                       $applicant->district->name, $applicant->region->name, $confirm, $batch_no, 
@@ -2509,7 +2516,7 @@ class ApplicationController extends Controller
 
         if (Auth::user()->hasRole('admission-officer')) {
             
-            $applicants = Applicant::whereHas('selections',function($query) use($request){
+            $applicants = Applicant::whereHas('selections',function($query) use($request, $staff){
                 $query->where('application_window_id',$request->get('application_window_id'))->where('campus_id', $staff->campus_id);
             })->with(['selections','nectaResultDetails.results','nacteResultDetails.results'])->where('program_level_id',$request->get('award_id'))->whereNull('is_tamisemi')->get();
 
