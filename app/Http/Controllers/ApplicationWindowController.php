@@ -17,6 +17,7 @@ use App\Utils\DateMaker;
 use Validator, Auth;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use App\Domain\Application\Models\ApplicationBatch;
 
 class ApplicationWindowController extends Controller
 {
@@ -202,15 +203,15 @@ class ApplicationWindowController extends Controller
             })->count();
 
             if($campus_programs_count < count($window->campusPrograms)){
-                return redirect()->back()->with('error','You cannot activate this application window because some offered programmes are missing entry requirements');
+                return redirect()->back()->with('error','You cannot activate the window because some offered programmes are missing entry requirements');
             }
 
             if($window->campus_id != session('staff_campus_id')){
-                return redirect()->back()->with('error','You cannot activate this application window because it does not belong to your campus');
+                return redirect()->back()->with('error','You cannot activate the window because it does not belong to your campus');
             }
 
             if(count($window->campusPrograms) == 0){
-                return redirect()->back()->with('error','You cannot activate this application window because no offered programmes have been set');
+                return redirect()->back()->with('error','You cannot activate the window because no offered programmes have been set');
             }
             $study_academic_year = StudyAcademicYear::whereHas('academicYear',function($query) use($window){
                    $query->where('year','LIKE','%'.Carbon::parse($window->begin_date)->format('Y').'/%');
@@ -221,8 +222,13 @@ class ApplicationWindowController extends Controller
             })->with(['feeItem.feeType'])->where('study_academic_year_id',$study_academic_year->id)->first();
 
             if(!$amount){
-                return redirect()->back()->with('error','You cannot activate this application window because application fee has not been set');
+                return redirect()->back()->with('error','You cannot activate the window because application fee has not been set');
             }
+
+            if(ApplicationBatch::where('application_window_id',$window->id)->count() == 0){
+                 return redirect()->back()->with('error','You cannot activate the window because no batch has been defined');               
+            }
+
 
             $window->status = 'ACTIVE';
             $window->save();

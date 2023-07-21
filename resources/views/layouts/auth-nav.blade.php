@@ -319,6 +319,14 @@
                 </a>
               </li>
               @endcan
+              @can('view-application-batches')
+              <li class="nav-item">
+                <a href="{{ url('application/application-batches?campus_id='.session('staff_campus_id')) }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Application Batches</p>
+                </a>
+              </li>
+              @endcan
               @can('view-offered-programmes')
               <li class="nav-item">
                 <a href="{{ url('application/application-window-campus-programs?campus_id='.session('staff_campus_id').'&application_window_id='.session('active_window_id')) }}" class="nav-link">

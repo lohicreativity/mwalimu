@@ -48,4 +48,10 @@ class ApplicationWindow extends Model
     {
     	return $this->belongsToMany(CampusProgram::class,'application_window_campus_program','application_window_id','campus_program_id');
     }
+
+
+    public function applicationBatches()
+    {
+        return $this->hasMany(ApplicationBatch::class,'application_window_id');
+    }
 }

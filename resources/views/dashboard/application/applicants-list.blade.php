@@ -179,18 +179,7 @@
                         N/A
                         @endif
                       </td>
-                      <td>
-                        @if($batch_no)
-                          @if($applicant->batch_no == 0 && $batch_no == 0)
-                            Batch 1
-                          @elseif($applicant->batch_no == 0 && $batch_no > 0)
-                            Batch {{ ($batch_no + 1) }}
-                          @elseif($applicant->batch_no > 0 && $batch_no > 0)
-                            Batch {{ $applicant->batch_no }}
-                          @endif
-                        @else
-                        Batch 1
-                        @endif</td>
+                      <td>{{ $applicant->batch->batch_no }}</td>
                       <td>@if($applicant->submission_complete_status == 1)
                            <span class="badge badge-success">Submitted</span>
                           @elseif($applicant->programs_complete_status == 1 && $applicant->submission_complete_status == 0)

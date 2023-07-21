@@ -16,6 +16,7 @@ use App\Domain\Finance\Models\Invoice;
 use App\Domain\Registration\Models\Student;
 use App\Domain\Academic\Models\CampusProgram;
 use App\Models\User;
+use App\Domain\Application\Models\ApplicationBatch;
 
 class Applicant extends Model
 {
@@ -111,6 +112,14 @@ class Applicant extends Model
         return $this->belongsTo(Award::class,'program_level_id');
     }
 
+        /**
+     * Establish one to one relationship with batches
+     */
+    public function batch()
+    {
+        return $this->belongsTo(ApplicationBatch::class,'batch_id');
+    }
+
     /**
      * Establish one to one relationship with program levels
      */
@@ -131,8 +140,8 @@ class Applicant extends Model
      * Establish one to many relationship with selections
      */
     public function freshSelections()
-    {
-        return $this->hasMany(ApplicantProgramSelection::class,'applicant_id')->where('batch_no',0);
+    {   
+        return $this->hasMany(ApplicantProgramSelection::class,'applicant_id')->where('batch_id',7);
     }
 	
     /**

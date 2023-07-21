@@ -1,0 +1,234 @@
+@extends('layouts.app')
+
+@section('content')
+
+<div class="wrapper">
+
+  <!-- Preloader -->
+  <div class="preloader flex-column justify-content-center align-items-center">
+    <img class="animation__shake" src="{{ asset('dist/img/logo.png') }}" alt="{{ Config::get('constants.SITE_NAME') }}" height="60" width="60">
+  </div>
+
+  @include('layouts.auth-header')
+
+  @include('layouts.sidebar')
+
+  <!-- Content Wrapper. Contains page content -->
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>{{ __('Application Batches') }}</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item active">{{ __('Application Batches') }}</li>
+            </ol>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-12">
+
+            <div class="card">
+              <div class="card-header">
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+                 {!! Form::open(['url'=>'application/application-batches-create','class'=>'ss-form-processing','method'=>'GET']) !!}
+                    @php
+                    if(Auth::user()->hasRole('admission-officer') || Auth::user()->hasRole('administrator')){  }               
+                    
+                    $begin_date = [
+                        'placeholder'=>'Begin Date',
+                        'class'=>'form-control ss-datepicker',
+                        'required'=>true
+                    ];
+    
+                    $end_date = [
+                        'placeholder'=>'End Date',
+                        'class'=>'form-control',
+                        'class'=>'form-control ss-datepicker',
+                        'required'=>true
+                    ];
+                    @endphp
+
+                
+                   <div class="row">
+               
+                  <div class="form-group col-4">
+                    {!! Form::label('','Programme Level') !!}
+                    <select name="program_level_id" class="form-control" required>
+                      <option value="">Select Programme Level</option>
+                      @foreach($awards as $award)
+                        @if(str_contains($award->name,'Basic') || str_contains($award->name,'Ordinary') || str_contains($award->name,'Bachelor') || str_contains($award->name,'Masters'))
+                        <option value="{{ $award->id }}" @if($request->get('program_level_id') == $award->id) selected="selected" @endif>{{ $award->name }}</option>
+                        @endif
+                      @endforeach
+                    </select>
+                  </div>
+
+                  <div class="form-group col-4">
+                    {!! Form::label('','Begin Date') !!}
+                    {!! Form::text('begin_date',null,$begin_date) !!}
+                  </div>
+
+                  <div class="form-group col-4">
+                    {!! Form::label('','End Date') !!}
+                    {!! Form::text('end_date',null,$end_date) !!}
+                  </div>
+                  </div>
+                  <div class="ss-form-actions">
+                   <button type="submit" class="btn btn-primary">{{ __('Create Batch') }}</button>
+                  </div>
+
+                 {!! Form::close() !!}
+              </div>
+            </div>
+            <!-- /.card -->
+          
+            @if(count($batches) != 0)
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">{{ __('Application Batches') }}</h3>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+                <table id="example2" class="table table-bordered table-hover">
+                  <thead>
+                  <tr>
+                    <th>SN</th>
+                    @if(Auth::user()->hasRole('administrator') || Auth::user()->hasRole('arc')) 
+                      <th>Campus</th>
+                    @endif
+                    <th>Application Window</th>
+                    <th>Intake</th>
+                    <th>Programme Level</th>
+                    <th>Batch#</th>
+                    <th>Begin Date</th>
+                    <th>End Date</th>
+                    @if(Auth::user()->hasRole('admission-officer') || Auth::user()->hasRole('administrator'))                    
+                    <th>Actions</th>
+                    @endif
+                  </tr>
+                  </thead>
+                  <tbody>
+                  @php $counter = 1 @endphp
+
+                  @foreach($batches as $batch)
+                  @foreach($batch as $ba)
+                  <tr>
+                    <td>{{ ($counter++) }}</td>
+                    @if(Auth::user()->hasRole('administrator') || Auth::user()->hasRole('arc')) 
+                      
+                   
+                    <td> @foreach($windows as $window)
+                          @if($window->id == $ba->application_window_id)
+                            @foreach($campuses as $campus)
+                                @if($window->campus_id == $campus->id){{ $campus->name }} @break @endif
+                            @endforeach
+                            @break
+                          @endif 
+                          @endforeach
+                    </td>
+                    @endif
+                    @foreach($windows as $window)
+                        @if($window->id == $ba->application_window_id) 
+                            <td> {{ $window->begin_date }} - {{ $window->end_date }} </td>
+                            <td> @foreach($intakes as $intake)
+                                    @if($intake->id == $window->intake_id) {{ $intake->name }} @break @endif
+                                 @endforeach
+                            </td>
+                            @break
+                        @endif
+                    @endforeach
+                    <td> @foreach($awards as $award) 
+                            @if($ba->program_level_id == $award->id) {{ $award->name }} @break @endif
+                        @endforeach
+                    </td>
+                    <td> {{ $ba->batch_no }} </td>
+                    <td> {{ $ba->begin_date }} </td>
+                    <td> {{ $ba->end_date }} </td>
+                    @if(Auth::user()->hasRole('admission-officer') || Auth::user()->hasRole('administrator'))                    
+                    <td>
+ 
+                      @can('delete-application-window')
+                      <a class="btn btn-danger btn-sm" href="#" data-toggle="modal" data-target="#ss-delete-batch-{{ $ba->id }}">
+                              <i class="fas fa-trash">
+                              </i>
+                              Delete
+                       </a>
+                       @endcan
+
+                       <div class="modal fade" id="ss-delete-batch-{{ $ba->id }}">
+                        <div class="modal-dialog modal-lg">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h4 class="modal-title"><i class="fa fa-exclamation-sign"></i> Confirmation Alert</h4>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+                            <div class="modal-body">
+                              <div class="row">
+                                <div class="col-12">
+                                    <div id="ss-confirmation-container">
+                                       <p id="ss-confirmation-text">Are you sure you want to delete this batch?</p>
+                                       <div class="ss-form-controls">
+                                         <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                         <a href="{{ url('application/application-batch/'.$ba->id.'/destroy') }}" class="btn btn-danger">Delete</a>
+                                         </div><!-- end of ss-form-controls -->
+                                      </div><!-- end of ss-confirmation-container -->
+                                  </div><!-- end of col-md-12 -->
+                               </div><!-- end of row -->
+                            </div>
+                            <div class="modal-footer justify-content-between">
+                              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
+                          </div>
+                          <!-- /.modal-content -->
+                        </div>
+                        <!-- /.modal-dialog -->
+                      </div>
+                      <!-- /.modal -->
+
+                    </td>
+                    @endif
+                  </tr>
+                  @endforeach
+                  @endforeach
+                  
+                  </tbody>
+                </table>
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+            @endif
+ 
+      </div>
+      <!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+  @include('layouts.footer')
+
+  <!-- Control Sidebar -->
+  <aside class="control-sidebar control-sidebar-dark">
+    <!-- Control sidebar content goes here -->
+  </aside>
+  <!-- /.control-sidebar -->
+</div>
+<!-- ./wrapper -->
+
+@endsection

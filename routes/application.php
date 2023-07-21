@@ -5,6 +5,7 @@ use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\ApplicantController;
 use App\Http\Controllers\NextOfKinController;
 use App\Http\Controllers\ApplicationWindowController;
+use App\Http\Controllers\ApplicationBatchController;
 use App\Http\Controllers\NectaResultController;
 use App\Http\Controllers\NacteResultController;
 use App\Http\Controllers\OutResultController;
@@ -70,6 +71,10 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function(){
 	Route::post('application-window/update', [ApplicationWindowController::class,'update']);
 	Route::get('application-window/{id}/destroy', [ApplicationWindowController::class,'destroy']);
 
+    Route::get('application-batches', [ApplicationBatchController::class,'index']);
+    Route::get('application-batches-create', [ApplicationBatchController::class,'store']);
+ //   Route::post('application-batch/store', [ApplicationBatchController::class,'store']);
+    Route::get('application-batch/{id}/destroy', [ApplicationBatchController::class,'destroy']);   
 
 	Route::get('entry-requirements', [EntryRequirementController::class,'index']);
 	Route::get('entry-requirements-capacity', [EntryRequirementController::class,'showCapacity']);
