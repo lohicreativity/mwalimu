@@ -63,6 +63,7 @@ class ProgramAction implements ProgramInterface{
 				$prog->regulator_code = $request->get('regulator_code');
 				$prog->save();		
 
-                $program->departments()->attach([$request->get('department_id')=>['campus_id'=>$request->get('campus_id')]]);
+/*                 DB::table('program_department')->where('program_id',$program->id)->where('department_id',$request->get('department_id'))->where('campus_id',$request->get('campus_id'))->delete();
+                $program->departments()->attach([$request->get('department_id')=>['campus_id'=>$request->get('campus_id')]]); */
 	}
 }

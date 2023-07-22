@@ -314,7 +314,7 @@
                                           <select name="department_id" class="form-control" required>
                                             <option value="">Select Department</option>
                                             @foreach($departments as $department)
-                                            <option value="{{ $department->id }}" @if($department->id == $programDeptIds) selected="selected" @endif>{{ $department->name }}</option>
+                                            <option value="{{ $department->id }}" @if($department->id == $programDeptIds) selected="selected" @else disabled='disabled' @endif>{{ $department->name }}</option>
                                             @endforeach
                                           </select>
                                         </div>

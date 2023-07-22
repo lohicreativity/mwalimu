@@ -139,7 +139,7 @@ class ProgramController extends Controller
         ->where('campus_id', $request->get('campus_id'))
         ->first();
 
-        if ($check_program_department) {
+        if (!$check_program_department) {
             return redirect()->back()->with('error','Program department already exists');
         } else {
             (new ProgramAction)->update($request);
