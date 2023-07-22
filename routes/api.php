@@ -29,4 +29,5 @@ Route::post('v1/get-nta-level',[HomeController::class,'getNTALevel']);
 Route::post('v1/get-nta-level-by-code',[HomeController::class,'getNTALevelByCode']);
 Route::post('v1/get-fee-type',[HomeController::class,'getFeeType']);
 Route::post('v1/get-parents',[HomeController::class,'getParents']);
+Route::post('v1/get-batches',[HomeController::class,'getBatches']);
 // Route::post('v1/get-faculty-parents',[HomeController::class,'getFacultyParents']);

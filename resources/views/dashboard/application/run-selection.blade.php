@@ -82,10 +82,10 @@
                <!-- /.card-header -->
                {!! Form::open(['url'=>'application/run-applicants-selection','class'=>'ss-form-processing']) !!}
                <div class="card-body">
-                
+               <div class="row">
                   <div class="form-group col-6">
                     {!! Form::label('','Programme Level') !!}
-                    <select onchange="val()" name="award_id" id="awards" class="form-control" required>
+                    <select onchange="val()" name="award_id" id="awards" class="form-control" data-target="#batches" data-token="{{ session()->token() }}" data-source-url="{{ url('api/v1/get-batches') }}" required>
                       <option value="">Select Programme Level</option>
                       @foreach($awards as $award)
                       @if(str_contains($award->name,'Basic') || str_contains($award->name,'Ordinary') || str_contains($award->name,'Bachelor') || str_contains($award->name,'Masters'))
@@ -94,7 +94,17 @@
                       @endforeach
                     </select>
                   </div>
+                  <div class="form-group col-6">
+                    {!! Form::label('','Batch Number') !!}
+                    <select onchange="val()" name="batch_id" id="batches" class="form-control" required>
+                      <option value="">Select Batch Number</option>
+                      @foreach($batches as $batch)
+                        <option value="{{ $batch->id }}">Batch {{ $batch->batch_no }}</option>
+                      @endforeach
+                    </select>
+                  </div>
                   {!! Form::input('hidden','application_window_id',$application_window->id) !!}
+                  </div>
                </div>
                <div class="card-footer">
                   <button type="submit" class="btn btn-primary">{{ __('Run Selection') }}</button>

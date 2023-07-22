@@ -697,9 +697,9 @@ class ApplicantController extends Controller
             if(!ApplicationWindow::where('campus_id',session('applicant_campus_id'))->where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('status','ACTIVE')->first()){
                  return redirect()->to('application/submission')->with('error','Application window already closed');
             }
-            if($applicant->batch_id != $batch->id){
+ /*            if($applicant->batch_id != $batch->id){
                return redirect()->to('application/submission')->with('error','Action is not allowed at the moment');
-            }
+            } */
         }
         $study_academic_year = StudyAcademicYear::whereHas('academicYear',function($query) use ($applicant){
                $query->where('year','LIKE','%'.date('Y',strtotime($applicant->applicationWindow->begin_date)).'/%');
@@ -1679,7 +1679,7 @@ class ApplicantController extends Controller
 
          $applicants = Applicant::where('program_level_id', $applicant->program_level_id)->where('submission_complete_status', 1)
                                 ->where('application_window_id', $applicant->application_window_id)->whereNotNull('status')
-                                ->where('batch_id',$batch->id)->first();
+                                ->where('batch_id',8)->first();
          $selection_status = !empty($applicants) ? true : false;
 
         if(ApplicationWindow::where('campus_id',session('applicant_campus_id'))->where('intake_id', $applicant->intake_id)->where('begin_date','<=',now()->format('Y-m-d'))->where('end_date','>=',now()->format('Y-m-d'))->where('status','ACTIVE')->first()){

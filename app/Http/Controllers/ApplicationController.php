@@ -692,13 +692,14 @@ class ApplicationController extends Controller
                             $confirm = 'Not Confirmed';
                         }
 
-                        
                         foreach ($applicant->selections as $selection) {
- 
-                            if ($selection->campusProgram->campus_id == 1) {
-                                $institution_code = substr($selection->campusProgram->regulator_code, 0, 2);
-                            } else if ($selection->campusProgram->campus_id == 2) {
-                                $institution_code = substr($selection->campusProgram->regulator_code, 0, 3);
+                            // Should improve to cater for all programme levels, currently works fine with BTC
+                            if($selection->campusProgram->campus_id == 1) {
+                                $institution_code = substr($selection->campusProgram->program->code, 0, 2);
+                            }elseif($selection->campusProgram->campus_id == 2){
+                                $institution_code = substr($selection->campusProgram->program->code, 0, 3);
+                            }elseif($selection->campusProgram->campus_id == 3){
+                                $institution_code = substr($selection->campusProgram->program->code, 0, 3);
                             }
 
                             if($selection->status == 'APPROVING' || $selection->status == 'SELECTED'){
@@ -949,6 +950,10 @@ class ApplicationController extends Controller
 
                     $payment = NactePayment::latest()->where('campus_id', $staff->campus_id)->first();
 
+                    if(!$payment){
+                      return redirect()->back()->with('error','No payment set for this campus');
+                    }
+
                     $result = Http::get('https://www.nacte.go.tz/nacteapi/index.php/api/payment/'.$payment->reference_no.'/'.config('constants.NACTE_API_SECRET'));
                   
                     if ((json_decode($result)->params[0]->balance/5000) < count($applicants)) {
@@ -974,6 +979,13 @@ class ApplicationController extends Controller
                  
                         if(ApplicantSubmissionLog::where('applicant_id',$applicant->id)->where('program_level_id',$request->get('program_level_id'))->count() == 0 && $approving_selection != null){
                    
+                        $regulator_programme_id = null;
+                        foreach($applicant->selections as $selection){
+                            
+                            if($selection->status == 'APPROVING'){
+                                $regulator_programme_id = $selection->campusProgram->regulator_code;
+                            }
+                        }
                             //API URL
                             $url = 'https://www.nacte.go.tz/nacteapi/index.php/api/upload';
 
@@ -987,7 +999,7 @@ class ApplicationController extends Controller
                                 'heading' => array(
                                     'authorization' => 'e52ab037dc82d24960d9b9c678b5a6147a1ba6ea',
                                     'intake' => strtoupper($applicant->intake->name),
-                                    'programme_id' => '13f781c5dbe25cf387f708eaf40a7a0eae6291e7',
+                                    'programme_id' => $regulator_programme_id,
                                     'application_year' => date('Y'),
                                     'level' => substr($string, $last_character),
                                     'payment_reference_number' => $payment->reference_no,
@@ -1052,13 +1064,15 @@ class ApplicationController extends Controller
                                 if(json_decode($result)->code == 200){
 
                                     Applicant::where('id',$applicant->id)->update(['status'=>'SUBMITTED']);
-
-                                    $log = new ApplicantSubmissionLog;
-                                    $log->applicant_id = $applicant->id;
-                                    $log->program_level_id = $request->get('program_level_id');
-                                    $log->application_window_id = $request->get('application_window_id');
-                                    $log->submitted = 1;
-                                    $log->save();
+                                    if(ApplicantSubmissionLog::where('applicant_id',$applicant->id)->where('program_level_id',$request->get('program_level_id'))->count() == 0){
+                   
+                                        $log = new ApplicantSubmissionLog;
+                                        $log->applicant_id = $applicant->id;
+                                        $log->program_level_id = $request->get('program_level_id');
+                                        $log->application_window_id = $request->get('application_window_id');
+                                        $log->submitted = 1;
+                                        $log->save();
+                                    }
                                 }
                             }
 
@@ -1143,6 +1157,7 @@ class ApplicationController extends Controller
                  if($applicant->is_continue == 1){
                     $selection->status = 'SELECTED';
                  }
+                 $selection->batch_id = $applicant->batch_id;                 
                  $selection->save();
 
                  if(!str_contains($applicant->programLevel->name,'Masters')){ 
@@ -2262,12 +2277,14 @@ class ApplicationController extends Controller
     public function showRunSelection(Request $request)
     { 
         $staff = User::find(Auth::user()->id)->staff;
+       ///return ApplicationBatch::where('application_window_id',$request->get('application_window_id'))->get();
         $data = [
            'staff'=>$staff,
            'awards'=>Award::all(),
            'application_windows'=>ApplicationWindow::where('campus_id',$staff->campus_id)->get(),
            'application_window'=>ApplicationWindow::find($request->get('application_window_id')),
-           'request'=>$request
+           'request'=>$request,
+           'batches'=>ApplicationBatch::where('application_window_id',$request->get('application_window_id'))->get()
         ];
         return view('dashboard.application.run-selection',$data)->withTitle('Run Selection');
     }

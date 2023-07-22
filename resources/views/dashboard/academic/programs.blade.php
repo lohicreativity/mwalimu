@@ -206,7 +206,7 @@
 					<th>HOD</th>
                     <th>Actions</th>
                   </tr>
-                  </thead>
+                  </thead>                                 
                   <tbody>
                   @foreach($programs as $program)
                   <tr>
@@ -280,10 +280,10 @@
                                      'required'=>true
                                   ];
 								  
-								  $programDeptIds = [];
+								  $programDeptIds = 0;
 								  foreach($program->departments as $dept){
-									  if($dept->campus_id == $staff->campus_id){
-										  $programDeptIds[] = $dept->id;
+									  if($dept->pivot->campus_id === $staff->campus_id){
+										  $programDeptIds = $dept->id;
 									  }
 								  }
                                 @endphp
@@ -314,7 +314,7 @@
                                           <select name="department_id" class="form-control" required>
                                             <option value="">Select Department</option>
                                             @foreach($departments as $department)
-                                            <option value="{{ $department->id }}" @if(in_array($department->id,$programDeptIds)) selected="selected" @endif>{{ $department->name }}</option>
+                                            <option value="{{ $department->id }}" @if($department->id == $programDeptIds) selected="selected" @endif>{{ $department->name }}</option>
                                             @endforeach
                                           </select>
                                         </div>

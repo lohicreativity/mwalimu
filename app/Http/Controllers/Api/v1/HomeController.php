@@ -17,6 +17,7 @@ use App\Domain\Finance\Models\FeeType;
 use App\Domain\Academic\Models\Department;
 use App\Models\User;
 use Auth;
+use App\Domain\Application\Models\ApplicationBatch;
 
 class HomeController extends Controller
 {
@@ -85,6 +86,19 @@ class HomeController extends Controller
             return response()->json(['status'=>'success','faculties'=>$faculties]);
     	}else{
     		return response()->json(['status'=>'failed','faculties'=>$faculties]);
+    	}
+    }
+
+       /**
+     * Return a list of batches
+     */
+    public function getBatches(Request $request)
+    {
+    	$batches = ApplicationBatch::where('program_level_id',$request->get('award_id'))->get();
+    	if(count($batches) != 0){
+            return response()->json(['status'=>'success','batches'=>$batches]);
+    	}else{
+    		return response()->json(['status'=>'failed','batches'=>$batches],404);
     	}
     }
 
