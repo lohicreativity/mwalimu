@@ -20,6 +20,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use App\Domain\Academic\Models\Award;
 use App\Domain\Application\Models\Applicant;
+use App\Domain\Application\Models\ApplicantProgramSelection;
 
 class ApplicationBatchController extends Controller
 {
@@ -76,14 +77,18 @@ class ApplicationBatchController extends Controller
         $window = ApplicationWindow::where('campus_id',session('staff_campus_id'))->latest()->first();
         if($window){
             $current_batch = ApplicationBatch::where('application_window_id',$window->id)->where('program_level_id', $request->get('program_level_id'))->latest()->first();
-        
-            if($current_batch){
-                if(Applicant::where('batch_id', $current_batch->id)){
-                    return redirect()->back()->with('error','Cannot be created because a new application batch has already been created');
+            $applicant_current_batch = Applicant::where('application_window_id',$window->id)->where('program_level_id', $request->get('program_level_id'))->max('batch_id');
+
+            if($current_batch && $applicant_current_batch){
+                if($current_batch->id > $applicant_current_batch){
+                    return redirect()->back()->with('error','Cannot be created because there is an unused batch');
+                }elseif($current_batch->id == $applicant_current_batch &&
+                        !ApplicantProgramSelection::where('application_window_id', $window->id)->where('batch_id', $current_batch->id)->where('status','!=','ELIGIBLE')->first()){
+                    return redirect()->back()->with('error','Cannot be created because selection is not done');
                 }
             }
         }else{
-            return redirect()->back()->with('error','Application window for this campus not already created');
+            return redirect()->back()->with('error','Application window for this campus has not been created');
         }
 
         (new ApplicationBatchAction)->store($request);

@@ -2152,6 +2152,9 @@ class ApplicationController extends Controller
         $payable = Invoice::find($invoice->id)->payable;
         $fee_type = $fee_amount->feeItem->feeType;
 
+        $firstname = str_contains($payable->first_name,"'")? str_replace("'","/",$payable->first_name) : $payable->first_name; 
+        $surname = str_contains($payable->surname,"'")? str_replace("'","/",$payable->surname) : $payable->surname;
+        
         $generated_by = 'SP';
         $approved_by = 'SP';
         $inst_id = Config::get('constants.SUBSPCODE');
@@ -2166,7 +2169,7 @@ class ApplicationController extends Controller
                                   $fee_type->gfs_code,
                                   $fee_type->payment_option,
                                   $payable->id,
-                                  $payable->first_name.' '.$payable->surname,
+                                  $firstname.' '.$surname,
                                   $payable->phone,
                                   $email,
                                   $generated_by,
