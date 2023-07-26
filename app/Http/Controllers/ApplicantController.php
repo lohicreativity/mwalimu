@@ -1728,7 +1728,7 @@ class ApplicantController extends Controller
      * Store applicant into database
      */
     public function updateBasicInfo(Request $request)
-    { 
+    {
          $validation = Validator::make($request->all(),[
             'first_name'=>'required',
             'surname'=>'required',
