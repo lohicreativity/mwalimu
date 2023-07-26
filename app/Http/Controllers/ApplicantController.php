@@ -115,7 +115,7 @@ class ApplicantController extends Controller
                $window = ApplicationWindow::where('bsc_end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))
                ->where('campus_id',$request->get('campus_id'))->where('status','ACTIVE')->latest()->first();
             }elseif($applicant->program_level_id == 5){
-               $window = ApplicationWindow::where('msc_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))
+               $window = ApplicationWindow::where('msc_end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))
                ->where('campus_id',$request->get('campus_id'))->where('status','ACTIVE')->latest()->first();
             }
         }
@@ -128,7 +128,7 @@ class ApplicantController extends Controller
                $window = ApplicationWindow::where('bsc_end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))
                ->where('campus_id',$request->get('campus_id'))->where('status','ACTIVE')->latest()->first();
             }elseif($appl->program_level_id == 5){
-               $window = ApplicationWindow::where('msc_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))
+               $window = ApplicationWindow::where('msc_end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))
                ->where('campus_id',$request->get('campus_id'))->where('status','ACTIVE')->latest()->first();
             }
          }       
@@ -2205,7 +2205,7 @@ class ApplicantController extends Controller
             'awards'=>Award::all(),
         ];
 
-        return view('dashboard.application.applicant-details', $data)->withTitle('Edit Applicant Details');
+        return view('dashboard.application.applicant-details', $data)->withTitle('Applicant Details');
 
 
 
@@ -2225,7 +2225,7 @@ class ApplicantController extends Controller
         if (Auth::user()->hasRole('admission-officer')) {
 
             $applicant = $request->get('index_number')? Applicant::with('nextOfKin')->where('index_number',$request->get('index_number'))->where(function($query) use($staff){
-               $query->where('campus_id',$staff->campus_id)->orWhere('campus_id',0);
+               $query->where('campus_id',$staff->campus_id);
            })->first() : null;
 
         }else{
