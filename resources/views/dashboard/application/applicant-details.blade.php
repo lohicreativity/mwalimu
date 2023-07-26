@@ -105,7 +105,8 @@
                 </table>
               </div>
             </div>
-
+            
+            @if($applicant->nextOfKin)
             <div class="card">
               <div class="card-header">
                 <h3 class="card-title">Next of Kin Details</h3>
@@ -140,7 +141,9 @@
                 </table>
               </div>
             </div>
+            @endif
 
+            @if($applicant->payment)
             <div class="card">
               <div class="card-header">
                 <h3 class="card-title">Payment Details</h3>
@@ -161,6 +164,7 @@
                 </table>
               </div>
             </div>
+            @endif         
 
             <div class="card">
               <div class="card-header">
