@@ -50,7 +50,7 @@
               <!-- form start -->
               @php
                   $index_number = [
-                     'placeholder'=>'S0000/0000/2015',
+                     'placeholder'=>'S0000/0000/2023 or EQ2022000000/2023',
                      'class'=>'form-control',
                      'required'=>true
                   ];
@@ -135,7 +135,7 @@
               <!-- form start -->
               @php
                   $index_number = [
-                     'placeholder'=>'S0000/0000/2015',
+                     'placeholder'=>'S0000/0000/2023 or EQ2022000000/2023',
                      'class'=>'form-control',
                      'required'=>true
                   ];
@@ -145,7 +145,10 @@
                      'class'=>'form-control',
                      'required'=>true
                   ];
-
+                  $f_vi_index_no = null;
+                  foreach($a_level_necta_results as $necta_results){
+                    $f_vi_index_no = $necta_results->index_number;
+                  }
               @endphp
               {!! Form::open(['url'=>'application/get-necta-results','class'=>'ss-form-processing-necta']) !!}
                 <div class="card-body">
@@ -153,7 +156,7 @@
                   <div class="row">
                   <div class="form-group col-4">
                     {!! Form::label('','Index number') !!}
-                    {!! Form::text('index_number',null,$index_number) !!}
+                    {!! Form::text('index_number',$f_vi_index_no,$index_number) !!}
                   </div>
                   <div class="form-group col-6">
 

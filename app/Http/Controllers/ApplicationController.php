@@ -62,6 +62,8 @@ use Validator, Hash, Config, Auth, Mail, PDF, DB;
 use App\Domain\Academic\Models\SemesterRemark;
 use App\Domain\Academic\Models\AnnualRemark;
 use App\Domain\Application\Models\ApplicationBatch;
+use App\Domain\Application\Models\NacteResultDetail;
+use App\Domain\Application\Models\NacteResult;
 
 class ApplicationController extends Controller
 {
@@ -1112,8 +1114,6 @@ class ApplicationController extends Controller
      */
     public function selectProgram(Request $request)
     {   
-		$applicant_has_results = DB::table('nacte_results')->where('applicant_id', $request->get('applicant_id'))->get();
-
 		$applicant = Applicant::find($request->get('applicant_id'));
 
 		$window = $applicant->applicationWindow;	
@@ -1164,15 +1164,16 @@ class ApplicationController extends Controller
                     // salim added avn results check on 1/30/2023
                     foreach ($campus_programs as $program) {
                         if ($program->id == $request->get('campus_program_id')) {
-        
-                            if (unserialize($program->entryRequirements[0]->equivalent_must_subjects) != '' && sizeof($applicant_has_results) == 0) {
+                            if (unserialize($program->entryRequirements[0]->equivalent_must_subjects) != '' && $applicant->entry_mode != 'DIRECT'){
+                                $applicant_has_nacte_results = NacteResultDetail::where('applicant_id', $request->get('applicant_id'))->where('verified',1)->first();
+                                if($applicant_has_nacte_results && empty(NacteResult::where('nacte_result_detail_id', $applicant_has_nacte_results->id)->first())){
                                     $applicant->avn_no_results = 1;
                                     $applicant->save();
+                                }
                             }
                         }
                     }
-                 }
-
+                }
                 $select_count = ApplicantProgramSelection::where('applicant_id',$request->get('applicant_id'))->where('batch_id',$batch->id)->count();
 
                 if($request->get('choice') == 1){
@@ -2523,7 +2524,7 @@ class ApplicationController extends Controller
         }elseif(str_contains(strtolower($prog->program->award_id),4)){
             $open_window = ApplicationWindow::where('campus_id',$staff->campus_id)->where('begin_date','<=',now()->format('Y-m-d'))->where('bsc_end_date','>=',now()->format('Y-m-d'))->where('status','ACTIVE')->first();
         }elseif(str_contains(strtolower($prog->program->award_id),5)){
-            $open_window = ApplicationWindow::where('campus_id',$staff->campus_id)->where('begin_date','<=',now()->format('Y-m-d'))->where('msc_date','>=',now()->format('Y-m-d'))->where('status','ACTIVE')->first();
+            $open_window = ApplicationWindow::where('campus_id',$staff->campus_id)->where('begin_date','<=',now()->format('Y-m-d'))->where('msc_end_date','>=',now()->format('Y-m-d'))->where('status','ACTIVE')->first();
         }
 
 

@@ -326,7 +326,7 @@
                   <legend>Contact Details</legend>
                   <div class="row">
                      <div class="form-group col-6">
-                       {!! Form::label('','Mailing Address') !!}
+                       {!! Form::label('','Postal Address') !!}
 					   @php
 						  $applicant_address = null;
 						  if($applicant->address != null){

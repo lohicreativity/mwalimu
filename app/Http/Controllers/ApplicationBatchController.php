@@ -73,7 +73,19 @@ class ApplicationBatchController extends Controller
               return redirect()->back()->withInput()->withErrors($validation->messages());
            }
         }
+        $window = ApplicationWindow::where('campus_id',session('staff_campus_id'))->latest()->first();
+        if($window){
+            $current_batch = ApplicationBatch::where('application_window_id',$window->id)->where('program_level_id', $request->get('program_level_id'))->latest()->first();
         
+            if($current_batch){
+                if(Applicant::where('batch_id', $current_batch->id)){
+                    return redirect()->back()->with('error','Cannot be created because a new application batch has already been created');
+                }
+            }
+        }else{
+            return redirect()->back()->with('error','Application window for this campus not already created');
+        }
+
         (new ApplicationBatchAction)->store($request);
 
         return Util::requestResponse($request,'Application batch created successfully');
