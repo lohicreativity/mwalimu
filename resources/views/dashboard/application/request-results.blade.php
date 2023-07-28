@@ -99,7 +99,7 @@
             </div>
             <!-- /.card -->
 			
-			      @if(str_contains($applicant->programLevel->name,'Certificate') && $applicant->entry_mode == 'EQUIVALENT')
+			      @if(str_contains(strtolower($applicant->programLevel->name),'certificate') && $applicant->entry_mode == 'EQUIVALENT')
             <div class="card card-default">
               <div class="card-header">
                 <h3 class="card-title">{{ __('VETA Certificate') }}</h3>
@@ -124,8 +124,8 @@
             </div>
 			      @endif
             
-            @if(!str_contains($applicant->programLevel->name,'Certificate'))
-            @if(!str_contains($applicant->programLevel->name,'Diploma') || $applicant->entry_mode == 'DIRECT')
+            @if(!str_contains(strtolower($applicant->programLevel->name),'certificate'))
+            @if(!str_contains(strtolower($applicant->programLevel->name),'diploma') || $applicant->entry_mode == 'DIRECT')
             <div class="card card-default">
               <div class="card-header">
                 <h3 class="card-title">
@@ -251,9 +251,9 @@
 
               @if($applicant->entry_mode == 'EQUIVALENT')
 
-              @if(str_contains($applicant->programLevel->name,'Bachelor') || str_contains($applicant->programLevel->name,'Masters'))
+              @if(str_contains(strtolower($applicant->programLevel->name),'bachelor') || str_contains(strtolower($applicant->programLevel->name),'master'))
 
-                @if(str_contains($applicant->programLevel->name,'Master'))
+                @if(str_contains(strtolower($applicant->programLevel->name),'master'))
                   <div class="card card-default">
                     <div class="card-header">
                       <h3 class="card-title">{{ __('Add NACTE Registration Number (If Applicable)') }}</h3>
@@ -268,7 +268,7 @@
 
                         $nacte_reg_no = null;
                         foreach($nacte_results as $nacte_result){
-                          if($nacte_result->applicant_id == $applicant->id){
+                          if($nacte_result->applicant_id == $applicant->id && str_contains(strtolower($nacte_result->programme),'basic')){
                             $nacte_reg_no = $nacte_result->registration_number;
                             break;
                           } 
@@ -365,8 +365,8 @@
             </div>
             <!-- /.card -->
 
-            @if(!str_contains($applicant->programLevel->name,'Masters'))
-              @if(str_contains($applicant->programLevel->name,'Degree') && (( $gpa_less || count($a_level_necta_results) != 0) || ($applicant->teacher_certificate_status === 1)))
+            @if(!str_contains(strtolower($applicant->programLevel->name),'master'))
+              @if(str_contains(strtolower($applicant->programLevel->name),'degree') && (( $gpa_less || count($a_level_necta_results) != 0) || ($applicant->teacher_certificate_status === 1)))
               <div class="card card-default">
                 <div class="card-header">
                   <h3 class="card-title">{{ __('Foundation Programmes (OUT) Results') }}</h3>
@@ -437,7 +437,7 @@
 
             
 
-            @if(str_contains($applicant->programLevel->name,'Diploma'))
+            @if(str_contains(strtolower($applicant->programLevel->name),'diploma'))
             <div class="card card-default">
               <div class="card-header">
                 <h3 class="card-title">{{ __('NACTE Registration Number') }}</h3>
