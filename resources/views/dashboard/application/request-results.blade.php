@@ -70,7 +70,7 @@
                     {!! Form::label('','Index number') !!}
                     {!! Form::text('index_number',$applicant->index_number,$index_number) !!}
                   </div>
-                  <div class="form-group col-6">
+                  <div class="form-group col-8">
 
                     {!! Form::input('hidden','applicant_id',$applicant->id) !!}
 
@@ -82,7 +82,7 @@
 
                     {!! Form::input('hidden','results_link','#ss-results-confirmation-link') !!}
                     @if(count($o_level_necta_results) != 0) 
-                      <p class="ss-color-danger ss-italic">If you have more than one index number use the same box to request results</p>  
+                      <span class="ss-color-danger ss-italic">If you have more than one index number use the same box to request results</span>  
                     @endif                          
                     @foreach($o_level_necta_results as $result)
                      <p class="ss-font-xs">Center Name: {{ $result->center_name }} <br>Division: {{ $result->division }} &nbsp; Points: @if($result->points) {{ $result->points }} @else N/A @endif <i class="fa fa-check"></i></p>
@@ -159,7 +159,7 @@
                     {!! Form::label('','Index number') !!}
                     {!! Form::text('index_number',$f_vi_index_no,$index_number) !!}
                   </div>
-                  <div class="form-group col-6">
+                  <div class="form-group col-8">
 
                     {!! Form::input('hidden','applicant_id',$applicant->id) !!}
 
@@ -171,7 +171,7 @@
 
                     {!! Form::input('hidden','results_link','#ss-results-confirmation-link') !!}
                     @if(count($a_level_necta_results) != 0) 
-                    <p class="ss-color-danger ss-italic">If you have more than one index number use the same box to request results</p>  
+                    <span class="ss-color-danger ss-italic">If you have more than one index number use the same box to request results</span>  
                     @endif  
 
                     @foreach($a_level_necta_results as $result)
@@ -268,7 +268,7 @@
 
                         $nacte_reg_no = null;
                         foreach($nacte_results as $nacte_result){
-                          if($nacte_result->applicant_id == $applicant->id && str_contains(strtolower($nacte_result->programme),'basic')){
+                          if(str_contains(strtolower($nacte_result->programme),'basic')){
                             $nacte_reg_no = $nacte_result->registration_number;
                             break;
                           } 
@@ -288,9 +288,16 @@
                     {!! Form::text('nacte_reg_no', $nacte_reg_no, $nacte_reg_number) !!}
                   </div>
                   <div class="col-8">
-                    <br><br>
+                    <br>
                     @foreach($nacte_results as $result)
-                     <p class="ss-font-xs">Reg No: {{ $result->registration_number }} <br>GPA: {{ $result->diploma_gpa }} <i class="fa fa-check"></i></p>
+                     <p class="ss-font-xs">
+                        @if(str_contains(strtolower($result->programme),'basic'))
+                          Institution: {{ $result->institution }} <br>
+                          Reg No: {{ $result->registration_number }} <br> GPA: {{ $result->diploma_gpa }} 
+                          @break
+                        @endif
+                      <i class="fa fa-check"></i>
+                    </p>
                     @endforeach
                   </div>
                  </div>
@@ -332,7 +339,7 @@
                     @endphp					
                     {!! Form::text('avn', $applicant_avn,$avn) !!}
                   </div>
-                  <div class="form-group col-4">
+                  <div class="form-group col-8">
 
                     {!! Form::input('hidden','applicant_id',$applicant->id) !!}
 
@@ -349,6 +356,7 @@
                         }
                        }
                     @endphp
+                    <br>
                     @foreach($nacte_results as $result)
                      <p class="ss-font-xs">Institution: {{ $result->institution }} <br>Programme: {{ $result->programme }} <br> GPA: {{ $result->diploma_gpa }} <i class="fa fa-check"></i></p>
                     @endforeach
@@ -396,6 +404,7 @@
 
                     </div>
                     <div class="col-8">
+                      <br>
                       @foreach($out_results as $result)
                       <p class="ss-font-xs">Reg No: {{ $result->reg_no }} <br>GPA: {{ $result->gpa }} <i class="fa fa-check"></i></p>
                       @endforeach
@@ -471,9 +480,17 @@
                     {!! Form::text('nacte_reg_no', $nacte_reg_no, $nacte_reg_number) !!}
                   </div>
                   <div class="col-8">
-                    <br><br>
+                    <br>
                     @foreach($nacte_results as $result)
-                     <p class="ss-font-xs">Reg No: {{ $result->registration_number }} <br>GPA: {{ $result->diploma_gpa }} <i class="fa fa-check"></i></p>
+                     <p class="ss-font-xs">
+                        @if(str_contains(strtolower($result->programme),'basic'))
+                          Institution: {{ $result->institution }} <br>
+                          Reg No: {{ $result->registration_number }} <br> GPA: {{ $result->diploma_gpa }} 
+                          @break
+                        @endif
+                  
+                      <i class="fa fa-check"></i>
+                    </p>
                     @endforeach
                   </div>
                  </div>
