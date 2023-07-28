@@ -89,7 +89,7 @@ class NacteResultController extends Controller
             $nacte_detail->verified = 1;
             $nacte_detail->save();
             
-            return redirect()->back()->with('message','NACTE results confirmed successfully');
+            return redirect()->back()->with('message','NACTVET results confirmed successfully');
 
         }
     }
@@ -104,21 +104,21 @@ class NacteResultController extends Controller
         if($detail->verified != 1){
     	    $detail->delete();
         }
-	    return redirect()->back()->with('message','NACTE results declined successfully');
+	    return redirect()->back()->with('message','NACTVET results declined successfully');
     }
 
     /**
      * Nullify NACTE results
      */
     public function nullifyNacteReg(Request $request)
-    {
+    { 
         if(ApplicantProgramSelection::where('applicant_id',$request->get('applicant_id'))->count() != 0){
             return redirect()->back()->with('error','The action cannot be performed at the moment'); 
         }
 
         $detail = NacteResultDetail::find($request->get('detail_id'));
         $detail->delete();
-        return redirect()->back()->with('error','NECTA results names do not match your application names');
+        return redirect()->back()->with('error','NACTVET results names do not match your application names');
     }
 
     /**
@@ -136,7 +136,7 @@ class NacteResultController extends Controller
     	// $detail->results->delete();
     	$detail->delete();
         }
-	    return redirect()->back()->with('message','NACTE results declined successfully');
+	    return redirect()->back()->with('message','NACTVET results declined successfully');
     }
 
     /**
@@ -152,6 +152,6 @@ class NacteResultController extends Controller
         NacteResult::where('nacte_result_detail_id',$request->get('detail_id'))->delete();
         // $detail->results->delete();
         $detail->delete();
-        return redirect()->back()->with('error','NACTE results names do not match your application names');
+        return redirect()->back()->with('error','NACTVET results names do not match your application names');
     }
 }
