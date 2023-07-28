@@ -252,6 +252,47 @@
 
               @if(str_contains($applicant->programLevel->name,'Bachelor') || str_contains($applicant->programLevel->name,'Masters'))
 
+                @if(str_contains($applicant->programLevel->name,'Master'))
+                  <div class="card card-default">
+                    <div class="card-header">
+                      <h3 class="card-title">{{ __('Add NACTE Registration Number (If Applicable)') }}</h3>
+                    </div>
+                    <!-- /.card-header -->
+                    @php
+                        $nacte_reg_number = [
+                          'placeholder'=>'NS0001/0002/2001',
+                          'class'=>'form-control',
+                          'required'=>true
+                        ];
+                    @endphp
+
+                    {!! Form::open(['class'=>'ss-form-processing-nacte-reg-number', 'method' => 'GET']) !!}
+              <div class="card-body">
+                  {!! Form::input('hidden','applicant_id',$applicant->id) !!}
+                  {!! Form::input('hidden','display_modal','#ss-confirm-nacte-reg-results') !!}
+                  {!! Form::input('hidden','results_container','#ss-nacte-reg-results-container') !!}
+                  {!! Form::input('hidden','results_link','#ss-nacte-results-confirmation-link') !!}
+
+                  <div class="row">
+                  <div class="form-group col-4">
+                    {!! Form::label('','NACTE Reg mumber') !!}
+                    {!! Form::text('nacte_reg_no', $applicant->nacte_reg_no, $nacte_reg_number) !!}
+                  </div>
+                  <div class="col-8">
+                    <br><br>
+                    @foreach($nacte_results as $result)
+                     <p class="ss-font-xs">Reg No: {{ $result->registration_number }} <br>GPA: {{ $result->diploma_gpa }} <i class="fa fa-check"></i></p>
+                    @endforeach
+                  </div>
+                 </div>
+              </div>
+              <div class="card-footer">
+             <button type="submit" class="btn btn-primary" @if($selection_status === 1) disabled = "true" @endif>{{ __('Add NACTE Registration Number') }}</button>
+            </div>
+            {!! Form::close() !!}
+                      </div>
+                @endif
+
               <div class="card card-default">
               <div class="card-header">
                 <h3 class="card-title">@if($applicant->entry_mode == 'EQUIVALENT') {{ __('Add NACTE Results (If Applicable)') }} @else {{ __('Add NACTE Results') }} @endif </h3>
