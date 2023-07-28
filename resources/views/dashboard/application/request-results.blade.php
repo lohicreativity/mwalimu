@@ -295,8 +295,8 @@
                           Institution: {{ $result->institution }} <br>
                           Reg No: {{ $result->registration_number }} <br> GPA: {{ $result->diploma_gpa }} 
                           @break
+                          <i class="fa fa-check"></i>
                         @endif
-                      <i class="fa fa-check"></i>
                     </p>
                     @endforeach
                   </div>
@@ -487,9 +487,9 @@
                           Institution: {{ $result->institution }} <br>
                           Reg No: {{ $result->registration_number }} <br> GPA: {{ $result->diploma_gpa }} 
                           @break
+                          <i class="fa fa-check"></i>
                         @endif
                   
-                      <i class="fa fa-check"></i>
                     </p>
                     @endforeach
                   </div>
