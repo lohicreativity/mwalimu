@@ -132,6 +132,23 @@ class ApplicantController extends Controller
                ->where('campus_id',$request->get('campus_id'))->where('status','ACTIVE')->latest()->first();
             }
          }       
+        
+         if(Auth::attempt($credentials)){
+            $new_to_campus_applicant = Applicant::where('user_id',Auth::user()->id)->where('campus_id','!=',$request->get('campus_id'))->first();
+
+            if($new_to_campus_applicant){
+               if($new_to_campus_applicant->program_level_id == 1 || $new_to_campus_applicant->program_level_id == 2){
+                  $window = ApplicationWindow::where('end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))
+                  ->where('campus_id',$request->get('campus_id'))->where('status','ACTIVE')->latest()->first();
+               }elseif($new_to_campus_applicant->program_level_id == 4){
+                  $window = ApplicationWindow::where('bsc_end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))
+                  ->where('campus_id',$request->get('campus_id'))->where('status','ACTIVE')->latest()->first();
+               }elseif($new_to_campus_applicant->program_level_id == 5){
+                  $window = ApplicationWindow::where('msc_end_date','>=',  implode('-', explode('-', now()->format('Y-m-d'))))
+                  ->where('campus_id',$request->get('campus_id'))->where('status','ACTIVE')->latest()->first();
+               }
+            }
+        }
 
         $closed_window = ApplicationWindow::where('campus_id',$request->get('campus_id'))
         ->where('end_date','>=', implode('-', explode('-', now()->format('Y-m-d'))))
@@ -523,8 +540,8 @@ class ApplicantController extends Controller
             }                 
          }
 				
-        if($applicant->is_tcu_verified === null && str_contains(strtolower($applicant->programLevel->name),'degree') 
-           && !str_contains(strtolower($applicant->programLevel->name),'master') && $applicant->is_tcu_verified == 0){
+        if(str_contains(strtolower($applicant->programLevel->name),'degree') && ($applicant->is_tcu_verified === null || $applicant->is_tcu_verified == 0)){
+          // && !str_contains(strtolower($applicant->programLevel->name),'master') && $applicant->is_tcu_verified == 0){
             $url='http://api.tcu.go.tz/applicants/checkStatus';
             $fullindex=str_replace('-','/',Auth::user()->username);
             $xml_request='<?xml version="1.0" encoding="UTF-8"?> 
