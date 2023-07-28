@@ -149,6 +149,7 @@
                   foreach($a_level_necta_results as $necta_results){
                     $f_vi_index_no = $necta_results->index_number;
                   }
+
               @endphp
               {!! Form::open(['url'=>'application/get-necta-results','class'=>'ss-form-processing-necta']) !!}
                 <div class="card-body">
@@ -264,6 +265,14 @@
                           'class'=>'form-control',
                           'required'=>true
                         ];
+
+                        $nacte_reg_no = null;
+                        foreach($nacte_results as $nacte_result){
+                          if($nacte_result->applicant_id == $applicant->id){
+                            $nacte_reg_no = $nacte_result->registration_number;
+                            break;
+                          } 
+                        }
                     @endphp
 
                     {!! Form::open(['class'=>'ss-form-processing-nacte-reg-number', 'method' => 'GET']) !!}
@@ -276,7 +285,7 @@
                   <div class="row">
                   <div class="form-group col-4">
                     {!! Form::label('','NACTE Reg mumber') !!}
-                    {!! Form::text('nacte_reg_no', $applicant->nacte_reg_no, $nacte_reg_number) !!}
+                    {!! Form::text('nacte_reg_no', $nacte_reg_no, $nacte_reg_number) !!}
                   </div>
                   <div class="col-8">
                     <br><br>
@@ -440,6 +449,14 @@
                      'class'=>'form-control',
                      'required'=>true
                   ];
+
+                  $nacte_reg_no = null;
+                  foreach($nacte_results as $nacte_result){
+                    if($nacte_result->applicant_id == $applicant->id){
+                      $nacte_reg_no = $nacte_result->registration_number;
+                      break;
+                    } 
+                  }
               @endphp
               {!! Form::open(['class'=>'ss-form-processing-nacte-reg-number', 'method' => 'GET']) !!}
               <div class="card-body">
@@ -451,7 +468,7 @@
                   <div class="row">
                   <div class="form-group col-4">
                     {!! Form::label('','NACTE Reg mumber') !!}
-                    {!! Form::text('nacte_reg_no', $applicant->nacte_reg_no, $nacte_reg_number) !!}
+                    {!! Form::text('nacte_reg_no', $nacte_reg_no, $nacte_reg_number) !!}
                   </div>
                   <div class="col-8">
                     <br><br>
