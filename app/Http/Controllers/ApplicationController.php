@@ -90,7 +90,7 @@ class ApplicationController extends Controller
     {
         $staff = User::find(Auth::user()->id)->staff;
         $application_window = ApplicationWindow::find($request->get('application_window_id'));
-
+        $applicants = null;
         if($request->get('department_id') != null){
            $applicants = Applicant::with(['selections.campusProgram.program'])
 						->where('application_window_id',$request->get('application_window_id'))
