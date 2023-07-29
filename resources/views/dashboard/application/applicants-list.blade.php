@@ -209,243 +209,38 @@
 
                                 <div class="card">
                                   <div class="card-header" id="ss-basic-information">
-                                      <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseBasicInformation" aria-expanded="true" aria-controls="collapseBasicInformation">
+                                      <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#" aria-expanded="true" aria-controls="collapseBasicInformation">
                                         1. Basic Information
                                         @if($applicant->basic_info_complete_status == 1) <i class="fa fa-check float-right"></i> @endif
                                       </button>
                                   </div>
-
-                                  <div id="collapseBasicInformation" class="collapse" aria-labelledby="ss-basic-information" data-parent="#accordionExample-2">
-                                    <div class="card-body">
-
-                                      <table class="table table-bordered table-condensed">
-                                        <tr>
-                                          <td>First name: </td>
-                                          <td>{{ $applicant->first_name }}</td>
-                                        </tr>
-                                        <tr>
-                                          <td>Middle name: </td>
-                                          <td>{{ $applicant->middle_name }}</td>
-                                        </tr>
-                                        <tr>
-                                          <td>Surname: </td>
-                                          <td>{{ $applicant->surname }}</td>
-                                        </tr>
-                                        <tr>
-                                          <td>Gender: </td>
-                                          <td>{{ $applicant->gender }}</td>
-                                        </tr>
-                                        <tr>
-                                          <td>Phone: </td>
-                                          <td>{{ $applicant->phone }}</td>
-                                        </tr>
-                                        <tr>
-                                          <td>Address: </td>
-                                          <td>{{ $applicant->address }}</td>
-                                        </tr>
-                                        <tr>
-                                          <td>Nationality: </td>
-                                          <td>{{ $applicant->nationality }}</td>
-                                        </tr>										
-                                      </table>
-
-                                    </div>
-                                  </div>
-
                                 </div>
 
                                 <div class="card">
                                   <div class="card-header" id="ss-next-of-kin">
-                                      <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseNextOfKin" aria-expanded="true" aria-controls="collapseNextOfKin">
+                                      <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#" aria-expanded="true" aria-controls="collapseNextOfKin">
                                         2. Next Of Kin
                                         @if($applicant->next_of_kin_complete_status == 1) <i class="fa fa-check float-right"></i> @endif
                                       </button>
                                   </div>
-
-                                  <div id="collapseNextOfKin" class="collapse" aria-labelledby="ss-next-of-kin" data-parent="#accordionExample-2">
-                                    <div class="card-body">
-
-                                      @if($applicant->nextOfKin)
-                                      <table class="table table-bordered table-condensed">
-                                        <tr>
-                                          <td>First name: </td>
-                                          <td>{{ $applicant->nextOfKin->first_name }}</td>
-                                        </tr>
-                                        <tr>
-                                          <td>Middle name: </td>
-                                          <td>{{ $applicant->nextOfKin->middle_name }}</td>
-                                        </tr>
-                                        <tr>
-                                          <td>Surname: </td>
-                                          <td>{{ $applicant->nextOfKin->surname }}</td>
-                                        </tr>
-                                        <tr>
-                                          <td>Gender: </td>
-                                          <td>{{ $applicant->nextOfKin->gender }}</td>
-                                        </tr>
-                                        <tr>
-                                          <td>Phone: </td>
-                                          <td>{{ $applicant->nextOfKin->phone }}</td>
-                                        </tr>
-                                        <tr>
-                                          <td>Address: </td>
-                                          <td>{{ $applicant->nextOfKin->address }}</td>
-                                        </tr>
-                                      </table>
-                                      @endif
-                                    
-                                      
-                                      
-                                    </div>
-                                  </div>
-                                  
                                 </div>
                                 
                                 <div class="card">
                                   <div class="card-header" id="ss-payments-complete">
-                                      <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapsePayments" aria-expanded="true" aria-controls="collapsePayments">
+                                      <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#" aria-expanded="true" aria-controls="collapsePayments">
                                         3. Payments
                                         @if($applicant->payment_complete_status == 1) <i class="fa fa-check float-right"></i> @endif
                                       </button>
                                   </div>
-
-                                  <div id="collapsePayments" class="collapse" aria-labelledby="ss-payments-complete" data-parent="#accordionExample-2">
-                                    <div class="card-body">
-
-                                      @if($applicant->payment)
-                                      <table class="table table-bordered table-condensed">
-                                        <tr>
-                                          <td>Control No</td>
-                                          <td>
-                                              @foreach($applicant->payment as $payment)
-                                              {{ $payment->control_no }}
-                                              @endforeach
-                                          </td> 
-                                        </tr>
-                                        <tr>
-                                          <td>Amount</td>
-                                          <td>
-                                            @foreach($applicant->payment as $payment)
-                                              {{ $payment->amount }} {{ $payment->currency }}
-                                            @endforeach
-                                          </td>
-                                        </tr>
-                                      </table>
-                                      @endif
-                                      
-                                    </div>
-                                  </div>
-                                  
                                 </div>
 
                                 <div class="card">
                                   <div class="card-header" id="ss-results-complete">
-                                      <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseResults" aria-expanded="true" aria-controls="collapseResults">
+                                      <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#" aria-expanded="true" aria-controls="collapseResults">
                                         4. Results
                                         @if($applicant->results_complete_status == 1) <i class="fa fa-check float-right"></i> @endif
                                       </button>
                                   </div>
-
-                                  <div id="collapseResults" class="collapse" aria-labelledby="ss-results-complete" data-parent="#accordionExample-2">
-                                    <div class="card-body">
-
-                                        @if($applicant->nectaResultDetails)
-
-                                          @foreach($applicant->nectaResultDetails as $necta_details)
-                                            @if($necta_details->exam_id == 1 && $necta_details->verified == 1)
-                                            <h4>Form IV Results</h4>
-                                            <table class="table table-bordered table-condensed">
-                                              <tbody>
-                                                @foreach($necta_details->results as $results)
-                                                  <tr>
-                                                    <td>
-                                                      {{ $results->subject_name }}
-                                                    </td>
-                                                    <td>
-                                                      {{ $results->grade }}
-                                                    </td>
-                                                  </tr>
-                                                @endforeach
-                                              </tbody>
-                                            </table>
-                                            @endif
-                                          @endforeach 
-
-                                          @foreach($applicant->nectaResultDetails as $necta_details)
-                                            @if($necta_details->exam_id == 2 && $necta_details->verified == 1)
-                                            <h4>Form VI Results</h4>
-                                            <table class="table table-bordered table-condensed mt-2">
-                                              <tbody>
-                                                @foreach($necta_details->results as $results)
-                                                  <tr>
-                                                    <td>
-                                                      {{ $results->subject_name }}
-                                                    </td>
-                                                    <td>
-                                                      {{ $results->grade }}
-                                                    </td>
-                                                  </tr>
-                                                @endforeach
-                                              </tbody>
-                                            </table>
-                                            @endif
-                                          @endforeach 
-
-                                        @endif
-
-                                        @if($applicant->nacteResultDetails)
-
-                                          @foreach($applicant->nacteResultDetails as $nacte_details)
-                                            @if($nacte_details->verified == 1)
-                                            <h4>Diploma Results</h4>
-                                            <table class="table table-bordered table-condensed mt-2">
-                                              <tbody>
-                                                @if($applicant->avn_no_results == null)
-                                                  @foreach($nacte_details->results as $results)
-                                                    <tr>
-                                                      <td>
-                                                        {{ $results->subject_name }}
-                                                      </td>
-                                                      <td>
-                                                        {{ $results->grade }}
-                                                      </td>
-                                                    </tr>
-                                                  @endforeach
-                                                @endif
-                                              </tbody>
-                                            </table>
-                                            @endif
-                                          @endforeach 
-
-                                        @endif
-
-                                        @if($applicant->outResultDetails)
-                                          @foreach($applicant->outResultDetails as $out_details)
-                                            @if($out_details->verified == 1)
-                                            <h4>Out Results</h4>
-                                            <table class="table table-bordered table-condensed mt-2">
-                                              <tbody>
-                                                @foreach($out_details->results as $results)
-                                                  <tr>
-                                                    <td>
-                                                      {{ $results->subject_name }}
-                                                    </td>
-                                                    <td>
-                                                      {{ $results->grade }}
-                                                    </td>
-                                                  </tr>
-                                                @endforeach
-                                              </tbody>
-                                            </table>
-                                            @endif
-                                          @endforeach
-                                        @endif
-                                      
-
-                                      
-                                    </div>
-                                  </div>
-                                  
                                 </div>
 
                                 <div class="card">

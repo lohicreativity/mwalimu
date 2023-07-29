@@ -95,40 +95,37 @@ class ApplicationController extends Controller
            $applicants = Applicant::with(['selections.campusProgram.program'])
 						->where('application_window_id',$request->get('application_window_id'))
 						->whereHas('selections.campusProgram.program.departments',function($query) use($request){$query->where('id',$request->get('department_id'));})
-						->with(['nextOfKin','intake'])->paginate(20);
+						->get();
         }elseif($request->get('duration') == 'today'){
-           $applicants = Applicant::with(['selections.campusProgram.program'])->where('application_window_id',$request->get('application_window_id'))->with(['nextOfKin','intake'])->where('created_at','<=',now()->subDays(1))->paginate(20);
+           $applicants = Applicant::with(['selections.campusProgram.program'])->where('application_window_id',$request->get('application_window_id'))->where('created_at','<=',now()->subDays(1))->get();
         }elseif($request->get('gender') != null){
-           $applicants = Applicant::with(['selections.campusProgram.program'])->where('application_window_id',$request->get('application_window_id'))->with(['nextOfKin','intake'])->where('gender',$request->get('gender'))->paginate(20);
+           $applicants = Applicant::with(['selections.campusProgram.program'])->where('application_window_id',$request->get('application_window_id'))->where('gender',$request->get('gender'))->get();
         }elseif($request->get('nta_level_id') != null){
            $applicants = Applicant::with(['selections.campusProgram.program'])->where('application_window_id',$request->get('application_window_id'))->whereHas('selections.campusProgram.program',function($query) use($request){
                  $query->where('nta_level_id',$request->get('nta_level_id'));
-            })->with(['nextOfKin','intake'])->paginate(20);
+            })->get();
         }elseif($request->get('campus_program_id') != null){
            $applicants = Applicant::with(['selections.campusProgram.program'])->where('application_window_id',$request->get('application_window_id'))->whereHas('selections',function($query) use($request){
                  $query->where('campus_program_id',$request->get('campus_program_id'));
-            })->with(['nextOfKin','intake'])->paginate(20);
+            })->get();
         }else{
-           $applicants = Applicant::with(['selections.campusProgram.program'])->where('application_window_id',$request->get('application_window_id'))->with(['nextOfKin','intake'])->paginate(20);
+           $applicants = Applicant::with(['selections.campusProgram.program'])->where('application_window_id',$request->get('application_window_id'))->get();
         }
 
         if($request->get('status') == 'progress'){ 
             if(Auth::user()->hasRole('administrator') || Auth::user()->hasRole('arc')){
-                $applicants = Applicant::with(['selections.campusProgram.program', 'programLevel', 'payment', 'nextOfKin', 'nectaResultDetails.results', 
-                                                'nacteResultDetails.results', 'outResultDetails.results'])
+                $applicants = Applicant::with(['selections.campusProgram.program', 'programLevel'])
                                         ->where('programs_complete_status',0)->where('submission_complete_status',0)
                                         ->where('application_window_id',$request->get('application_window_id'))->get();
         
             }elseif(Auth::user()->hasRole('hod')){
                 $applicants = Applicant::whereHas('selections.campusProgram.program.departments',function($query) use($staff){$query->where('department_id',$staff->department_id);})
-                                       ->with(['selections.campusProgram.program', 'programLevel', 'payment', 'nextOfKin', 'nectaResultDetails.results', 
-                                                'nacteResultDetails.results', 'outResultDetails.results'])
+                                       ->with(['selections.campusProgram.program', 'programLevel'])
                                         ->where('programs_complete_status',0)->where('submission_complete_status',0)
                                         ->where('application_window_id',$request->get('application_window_id'))->where('campus_id',$staff->campus_id)->get();
         
             }else{
-                $applicants = Applicant::with(['selections.campusProgram.program', 'programLevel', 'payment', 'nextOfKin', 'nectaResultDetails.results', 
-                                                'nacteResultDetails.results', 'outResultDetails.results'])
+                $applicants = Applicant::with(['selections.campusProgram.program', 'programLevel'])
                                         ->where('programs_complete_status',0)->where('submission_complete_status',0)
                                         ->where('campus_id',$staff->campus_id)
                                         ->where('application_window_id',$request->get('application_window_id'))->get();
@@ -137,21 +134,18 @@ class ApplicationController extends Controller
         
         }elseif($request->get('status') == 'completed'){        
             if(Auth::user()->hasRole('administrator') || Auth::user()->hasRole('arc')){
-                $applicants = Applicant::with(['selections.campusProgram.program', 'programLevel', 'payment', 'nextOfKin', 'nectaResultDetails.results', 
-                                               'nacteResultDetails.results', 'outResultDetails.results'])
+                $applicants = Applicant::with(['selections.campusProgram.program', 'programLevel'])
                                        ->where('programs_complete_status',1)->where('submission_complete_status',0)
                                        ->where('application_window_id',$request->get('application_window_id'))->get();
         
             }elseif(Auth::user()->hasRole('hod')){
                 $applicants = Applicant::whereHas('selections.campusProgram.program.departments',function($query) use($staff){$query->where('department_id',$staff->department_id);})
-                                       ->with(['selections.campusProgram.program', 'programLevel', 'payment', 'nextOfKin', 'nectaResultDetails.results', 
-                                                'nacteResultDetails.results', 'outResultDetails.results'])
+                                       ->with(['selections.campusProgram.program', 'programLevel'])
                                         ->where('programs_complete_status',1)->where('submission_complete_status',0)
                                         ->where('application_window_id',$request->get('application_window_id'))->where('campus_id',$staff->campus_id)->get();
         
             }else{
-                $applicants = Applicant::with(['selections.campusProgram.program', 'programLevel', 'payment', 'nextOfKin', 'nectaResultDetails.results', 
-                                               'nacteResultDetails.results', 'outResultDetails.results'])
+                $applicants = Applicant::with(['selections.campusProgram.program', 'programLevel'])
                                        ->where('programs_complete_status',1)->where('submission_complete_status',0)
                                        ->where('application_window_id',$request->get('application_window_id'))->where('campus_id',$staff->campus_id)->get();
         
@@ -159,38 +153,32 @@ class ApplicationController extends Controller
         
         }elseif($request->get('status') == 'submitted'){
             if(Auth::user()->hasRole('administrator') || Auth::user()->hasRole('arc')){
-                $applicants = Applicant::with(['selections.campusProgram.program', 'programLevel', 'payment', 'nextOfKin', 'nectaResultDetails.results', 
-                                               'nacteResultDetails.results', 'outResultDetails.results'])->where('submission_complete_status',1)
+                $applicants = Applicant::with(['selections.campusProgram.program', 'programLevel'])->where('submission_complete_status',1)
                                        ->where('application_window_id',$request->get('application_window_id'))->get();
         
             }elseif(Auth::user()->hasRole('hod')){
                 $applicants = Applicant::whereHas('selections.campusProgram.program.departments',function($query) use($staff){$query->where('department_id',$staff->department_id);})
-                                       ->with(['selections.campusProgram.program', 'programLevel', 'payment', 'nextOfKin', 'nectaResultDetails.results', 
-                                                'nacteResultDetails.results', 'outResultDetails.results'])->where('submission_complete_status',1)
+                                       ->with(['selections.campusProgram.program', 'programLevel'])->where('submission_complete_status',1)
                                         ->where('application_window_id',$request->get('application_window_id'))->where('campus_id',$staff->campus_id)->get();
         
             }else{
-                $applicants = Applicant::with(['selections.campusProgram.program', 'programLevel', 'payment', 'nextOfKin', 'nectaResultDetails.results', 
-                                               'nacteResultDetails.results', 'outResultDetails.results'])->where('submission_complete_status',1)
+                $applicants = Applicant::with(['selections.campusProgram.program', 'programLevel'])->where('submission_complete_status',1)
                                        ->where('application_window_id',$request->get('application_window_id'))->where('campus_id',$staff->campus_id)->get();
         
             }
         
         }elseif($request->get('status') == 'total'){
             if(Auth::user()->hasRole('administrator') || Auth::user()->hasRole('arc')){
-                $applicants = Applicant::with(['selections.campusProgram.program', 'programLevel', 'payment', 'nextOfKin', 'nectaResultDetails.results', 
-                                               'nacteResultDetails.results', 'outResultDetails.results'])
+                $applicants = Applicant::with(['selections.campusProgram.program', 'programLevel'])
                                        ->where('application_window_id',$request->get('application_window_id'))->get();
         
             }elseif(Auth::user()->hasRole('hod')){
                 $applicants = Applicant::whereHas('selections.campusProgram.program.departments',function($query) use($staff){$query->where('department_id',$staff->department_id);})
-                                       ->with(['selections.campusProgram.program', 'programLevel', 'payment', 'nextOfKin', 'nectaResultDetails.results', 
-                                                'nacteResultDetails.results', 'outResultDetails.results'])
+                                       ->with(['selections.campusProgram.program', 'programLevel'])
                                         ->where('application_window_id',$request->get('application_window_id'))->where('campus_id',$staff->campus_id)->get();
 
             }else{
-                $applicants = Applicant::with(['selections.campusProgram.program', 'programLevel', 'payment', 'nextOfKin', 'nectaResultDetails.results', 
-                                               'nacteResultDetails.results', 'outResultDetails.results'])
+                $applicants = Applicant::with(['selections.campusProgram.program', 'programLevel'])
                                        ->where('application_window_id',$request->get('application_window_id'))->where('campus_id',$staff->campus_id)->get();
         
             }       
