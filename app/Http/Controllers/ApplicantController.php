@@ -1877,39 +1877,87 @@ class ApplicantController extends Controller
       if($request->get('department_id') != null){
            $applicants = Applicant::where('application_window_id',$request->get('application_window_id'))->whereHas('selections.campusProgram.program.departments',function($query) use($request){
                  $query->where('id',$request->get('department_id'));
-            })->with(['nextOfKin','intake'])->get();
+            })->with(['programLevel','nextOfKin','intake','nectaResultDetails','nacteResultDetails'])->get();
         }elseif($request->get('duration') == 'today'){
-           $applicants = Applicant::where('application_window_id',$request->get('application_window_id'))->with(['nextOfKin','intake'])->where('created_at','<=',now()->subDays(1))->get();
+           $applicants = Applicant::where('application_window_id',$request->get('application_window_id'))->with(['programLevel','nextOfKin','intake','nectaResultDetails','nacteResultDetails'])->where('created_at','<=',now()->subDays(1))->get();
         }elseif($request->get('gender') != null){
-           $applicants = Applicant::where('application_window_id',$request->get('application_window_id'))->with(['nextOfKin','intake'])->where('gender',$request->get('gender'))->get();
+           $applicants = Applicant::where('application_window_id',$request->get('application_window_id'))->with(['programLevel','nextOfKin','intake','nectaResultDetails','nacteResultDetails'])->where('gender',$request->get('gender'))->get();
         }elseif($request->get('nta_level_id') != null){
            $applicants = Applicant::where('application_window_id',$request->get('application_window_id'))->whereHas('selections.campusProgram.program',function($query) use($request){
                  $query->where('nta_level_id',$request->get('nta_level_id'));
-            })->with(['nextOfKin','intake'])->get();
+            })->with(['programLevel','nextOfKin','intake','nectaResultDetails','nacteResultDetails'])->get();
         }elseif($request->get('campus_program_id') != null){
            $applicants = Applicant::where('application_window_id',$request->get('application_window_id'))->whereHas('selections',function($query) use($request){
                  $query->where('campus_program_id',$request->get('campus_program_id'));
-            })->with(['nextOfKin','intake'])->get();
+            })->with(['programLevel','nextOfKin','intake','nectaResultDetails','nacteResultDetails'])->get();
         }else{
-           $applicants = Applicant::where('application_window_id',$request->get('application_window_id'))->with(['nextOfKin','intake'])->get();
+           $applicants = Applicant::where('application_window_id',$request->get('application_window_id'))->with(['programLevel','nextOfKin','intake','nectaResultDetails','nacteResultDetails'])->get();
         }
 
         if($request->get('status') == 'progress'){
-           $applicants = Applicant::where('documents_complete_status',0)->where('submission_complete_status',0)->where('application_window_id',$request->get('application_window_id'))->where('campus_id',$application_window->campus_id)->get();
+           $applicants = Applicant::where('documents_complete_status',0)->where('submission_complete_status',0)->where('application_window_id',$request->get('application_window_id'))
+                                    ->where('campus_id',$application_window->campus_id)->with(['programLevel','nectaResultDetails','nacteResultDetails'])->get();
         }elseif($request->get('status') == 'completed'){
-           $applicants = Applicant::where('documents_complete_status',1)->where('submission_complete_status',0)->where('application_window_id',$request->get('application_window_id'))->where('campus_id',$application_window->campus_id)->get();
+           $applicants = Applicant::where('documents_complete_status',1)->where('submission_complete_status',0)->where('application_window_id',$request->get('application_window_id'))
+                                    ->where('campus_id',$application_window->campus_id)->with(['programLevel','nectaResultDetails','nacteResultDetails'])->get();
         }elseif($request->get('status') == 'submitted'){
-           $applicants = Applicant::where('documents_complete_status',1)->where('submission_complete_status',1)->where('application_window_id',$request->get('application_window_id'))->where('campus_id',$application_window->campus_id)->get();
+           $applicants = Applicant::where('documents_complete_status',1)->where('submission_complete_status',1)->where('application_window_id',$request->get('application_window_id'))
+                                    ->where('campus_id',$application_window->campus_id)->with(['programLevel','nectaResultDetails','nacteResultDetails'])->get();
         }elseif($request->get('status') == 'total'){
-            $applicants = Applicant::where('application_window_id',$request->get('application_window_id'))->where('campus_id',$application_window->campus_id)->get();
+            $applicants = Applicant::where('application_window_id',$request->get('application_window_id'))->where('campus_id',$application_window->campus_id)
+                                    ->with(['programLevel','nectaResultDetails','nacteResultDetails'])->get();
+        }
+/*         foreach($applicants as $row){
+         $payment_status = $row->payment_status == 1? 'Paid' : 'Not Paid';
+         $f6_index = 'N/A';
+         if($row->nectaResultDetails){
+           foreach($row->nectaResultDetails as $detail){
+              if($detail->exam_id == 2 && $detail->verified == 1){
+                 $f6_index = $detail->index_number;
+                 break;
+              }
+           }
+         }
         }
 
+        return $f6_index; */
         $callback = function() use ($applicants) 
               {
                   $file_handle = fopen('php://output', 'w');
-                  fputcsv($file_handle, ['Index Number','First Name','Middle Name','Surname','Gender','Phone Number']);
-                  foreach ($applicants as $row) { 
-                      fputcsv($file_handle, [$row->index_number,$row->first_name,$row->middle_name,$row->surname,$row->gender,$row->phone]);
+                  fputcsv($file_handle, ['F.4 Index Number/EQ','F.6 Index Number/EQ','AVN','First Name','Middle Name','Surname','Gender','Phone Number','Application Level','Category','Payment Status']);
+                  foreach($applicants as $row){
+                      $payment_status = $row->payment_status == 1? 'Paid' : 'Not Paid';
+                      $f6_index = null;
+                      if($row->nectaResultDetails){
+                        foreach($row->nectaResultDetails as $detail){
+                           if($detail->exam_id == 2 && $detail->verified == 1){
+                              $f6_index = $detail->index_number;
+                              break;
+                           }
+                        }
+                      }
+
+                      $avn = null;
+                      if($row->nacteResultDetails){
+                        foreach($row->nacteResultDetails as $detail){
+                           if($detail->verified == 1){
+                              $avn = $detail->avn;
+                              break;
+                           }
+                        }
+                      }
+/*                       $application_level = null;
+                      if(str_contains(strtolower($row->programLevel->name), 'bachelor')){
+                        $application_level = 'BD';
+                      }elseif(str_contains(strtolower($row->programLevel->name), 'diploma')){
+
+                      }elseif(str_contains(strtolower($row->programLevel->name), 'btc')){
+
+                      }elseif(str_contains(strtolower($row->programLevel->name), 'master')){
+
+                      }  */ 
+                      fputcsv($file_handle, [$row->index_number,$f6_index,$avn,ucwords(strtolower($row->first_name)),ucwords(strtolower($row->middle_name)),
+                              ucwords(strtolower($row->surname)),$row->gender,$row->phone,$row->programLevel->code, ucwords(strtolower($row->entry_mode)), $payment_status]);
                   }
                   fclose($file_handle);
               };

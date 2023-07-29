@@ -210,7 +210,8 @@ class ApplicationController extends Controller
             'departments'=>Department::all(),
             'campus_programs'=>CampusProgram::with('program')->get(),
             'applicants'=>$applicants,
-            'request'=>$request
+            'request'=>$request,
+            'batches'=>ApplicationBatch::all()
         ];
         return view('dashboard.application.applicants-list',$data)->withTitle('Applicants');
     }
@@ -826,6 +827,18 @@ class ApplicationController extends Controller
     {
         $staff = User::find(Auth::user()->id)->staff;
         $award = Award::find($request->get('program_level_id'));
+/*         $batch = ApplicationBatch::where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$award->id)->latest()->first();
+
+        if(Applicant::where('batch_id',$batch->id)->first()){
+            $selection_status = Applicant::where('program_level_id',$award->id)->where('application_window_id',$request->get('application_window_id'))->where('batch_id',$batch->id)
+            ->where('status','SELECTED')->first()? true : false;
+        }elseif(){
+            
+        }
+        
+        if(){
+
+        } */
 
         $applicants = Applicant::with(['nextOfKin.region','region','district','intake','selections.campusProgram.program.ntaLevel','nectaResultDetails','intake'])
                         ->where('program_level_id',$request->get('program_level_id'))->where('campus_id',$staff->campus_id)

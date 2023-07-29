@@ -179,7 +179,7 @@
                         N/A
                         @endif
                       </td>
-                      <td>{{ $applicant->batch->batch_no }}</td>
+                      <td>@foreach($batches as $batch) @if($batch->id == $applicant->batch_id){{ $batch->batch_no }} @break @endif @endforeach</td>
                       <td>@if($applicant->submission_complete_status == 1)
                            <span class="badge badge-success">Submitted</span>
                           @elseif($applicant->programs_complete_status == 1 && $applicant->submission_complete_status == 0)
