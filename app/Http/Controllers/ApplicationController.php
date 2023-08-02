@@ -3948,15 +3948,14 @@ class ApplicationController extends Controller
          }
 
          if(Auth::user()->hasRole('administrator') || Auth::user()->hasRole('arc')){
-            $progress_applications = Applicant::where('results_complete_status',0)->where('submission_complete_status',0)
-                                        ->where('application_window_id',$request->get('application_window_id'))->count();
-            $completed_applications = Applicant::where('results_complete_status',1)->where('submission_complete_status',0)
+            $progress_applications = Applicant::where('programs_complete_status',0)->where('application_window_id',$request->get('application_window_id'))->count();
+            $completed_applications = Applicant::where('programs_complete_status',1)->where('submission_complete_status',0)
                                         ->where('application_window_id',$request->get('application_window_id'))->count();
             $submitted_applications = Applicant::where('submission_complete_status',1)->where('application_window_id',$request->get('application_window_id'))->count();
             $total_applications = Applicant::where('application_window_id',$request->get('application_window_id'))->count();
-            $today_progress_applications = Applicant::where('results_complete_status',0)->where('submission_complete_status',0)
+            $today_progress_applications = Applicant::where('programs_complete_status',0)
                                             ->where('application_window_id',$request->get('application_window_id'))->whereDate('created_at','=',now()->format('Y-m-d'))->count();
-            $today_completed_applications = Applicant::where('results_complete_status',1)->where('submission_complete_status',0)
+            $today_completed_applications = Applicant::where('programs_complete_status',1)->where('submission_complete_status',0)
                                             ->where('application_window_id',$request->get('application_window_id'))->whereDate('created_at','=',now()->format('Y-m-d'))->count();
             $today_submitted_applications = Applicant::where('submission_complete_status',1)->where('application_window_id',$request->get('application_window_id'))
                                             ->whereDate('created_at','=',now()->format('Y-m-d'))->count();
@@ -3964,17 +3963,17 @@ class ApplicationController extends Controller
 
 
           }else{
-            $progress_applications = Applicant::where('results_complete_status',0)->where('submission_complete_status',0)
+            $progress_applications = Applicant::where('programs_complete_status',0)
                                         ->where('application_window_id',$application_window->id)->where('campus_id',$application_window->campus_id)->count();
-            $completed_applications = Applicant::where('results_complete_status',1)->where('submission_complete_status',0)
+            $completed_applications = Applicant::where('programs_complete_status',1)->where('submission_complete_status',0)
                                         ->where('application_window_id',$application_window->id)->where('campus_id',$application_window->campus_id)->count();
             $submitted_applications = Applicant::where('submission_complete_status',1)->where('application_window_id',$application_window->id)
                                         ->where('campus_id',$application_window->campus_id)->count();
             $total_applications = Applicant::where('application_window_id',$application_window->id)->where('campus_id',$application_window->campus_id)->count();
-            $today_progress_applications = Applicant::where('results_complete_status',0)->where('submission_complete_status',0)
+            $today_progress_applications = Applicant::where('programs_complete_status',0)
                                             ->where('application_window_id',$application_window->id)->where('campus_id',$application_window->campus_id)
                                             ->whereDate('created_at','=',now()->format('Y-m-d'))->count();
-            $today_completed_applications = Applicant::where('results_complete_status',1)->where('submission_complete_status',0)
+            $today_completed_applications = Applicant::where('programs_complete_status',1)->where('submission_complete_status',0)
                                             ->where('application_window_id',$application_window->id)->where('campus_id',$application_window->campus_id)
                                             ->whereDate('created_at','=',now()->format('Y-m-d'))->count();
             $today_submitted_applications = Applicant::where('submission_complete_status',1)->where('application_window_id',$application_window->id)
