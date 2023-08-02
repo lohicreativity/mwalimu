@@ -290,7 +290,7 @@
                       </div>
                       <!-- /.modal -->
                     @endforeach
-
+                    <div class="float-right ss-pagination-links"> {!! $applicants->appends($erquest->except('page'))->render() !!} </div>
 
                </div>
             </div>
