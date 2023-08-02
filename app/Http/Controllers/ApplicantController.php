@@ -533,7 +533,7 @@ class ApplicantController extends Controller
                      return redirect()->to('application/admission-confirmation')->with('error','Application window already closed');
                   }
                }else{
-                  if($applicant->status != null && !$regulator_selection){
+                  if($applicant->status != null && $applicant->status != 'SUBMITTED' && !$regulator_selection){
                      return redirect()->to('application/submission')->with('error','Action is not allowed at the moment');
                   }
                }

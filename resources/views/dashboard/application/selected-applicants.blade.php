@@ -329,7 +329,7 @@
                                 @endif
                               </td>
                               @endif
-                              <td>{{ $applicant->batch->batch_no }}</td>
+                              <td>@foreach($batches as $batch) @if($batch->batch_id == $applicant->batch_id) {{ $batch->batch_no }} @break @endif @endforeach</td>
                               <td>{{ $applicant->phone }}</td>
                               <td>{{ $applicant->gender }}</td>
                               <td>{{ $selection->campusProgram->program->code }}

@@ -75,6 +75,13 @@
                     </div> 					  
                   @endif 
               @endif
+            @elseif($applicant->status == 'SUBMITTED')
+            <div class="alert alert-success">
+                    <h3 class="text-white" style="font-size: 18px!important;">
+                      <i class="fa fa-check-circle"></i> 
+                      Your application has been received and we are finalizing selection process. Please bear with us.
+                    </h3>
+                    </div> 	
             @endif
 
             
