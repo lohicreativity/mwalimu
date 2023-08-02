@@ -157,7 +157,7 @@ class ApplicationController extends Controller
                                                 ->with(['selections:id,order,campus_program_id,applicant_id','selections.campusProgram:id,program_id','selections.campusProgram.program:id,code',
                                                 'programLevel:id,name'])->where('programs_complete_status',0)->where('submission_complete_status',0)
                                                 ->where('application_window_id',$request->get('application_window_id'))->where('campus_id',$staff->campus_id)
-                                                ->whereHas('selections.campusProgram.program.departments',function($query) use($staff){$query->where('department_id',$staff->department_id);})->get();
+                                                ->whereHas('selections.campusProgram.program.departments',function($query) use($staff){$query->where('department_id',$staff->department_id);})->paginate(1500);
 
             }
         
@@ -215,7 +215,7 @@ class ApplicationController extends Controller
                 $applicants = Applicant::select('id','first_name','surname','index_number','gender','phone','batch_id','submission_complete_status','programs_complete_status',
                                                 'basic_info_complete_status','next_of_kin_complete_status','payment_complete_status','results_complete_status','program_level_id')
                                                 ->with(['selections:id,order,campus_program_id,applicant_id','selections.campusProgram:id,program_id','selections.campusProgram.program:id,code',
-                                                'programLevel:id,name'])->where('application_window_id',$request->get('application_window_id'))->get();
+                                                'programLevel:id,name'])->where('application_window_id',$request->get('application_window_id'))->paginate(1500);
         
             }elseif(Auth::user()->hasRole('hod')){
                 $applicants = Applicant::select('id','first_name','surname','index_number','gender','phone','batch_id','submission_complete_status','programs_complete_status',
