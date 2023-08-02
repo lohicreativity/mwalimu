@@ -1906,14 +1906,24 @@ class ApplicantController extends Controller
  */
 
         }elseif($request->get('status') == 'completed'){
-           $applicants = Applicant::where('documents_complete_status',1)->where('submission_complete_status',0)->where('application_window_id',$request->get('application_window_id'))
+/*            $applicants = Applicant::where('documents_complete_status',1)->where('submission_complete_status',0)->where('application_window_id',$request->get('application_window_id'))
                                     ->where('campus_id',$application_window->campus_id)->with(['programLevel','nectaResultDetails','nacteResultDetails'])->get();
+ */
+            $applicants = Applicant::select('id','first_name','middle_name','surname','index_number','gender','phone','batch_id','payment_complete_status','program_level_id','entry_mode')
+            ->with(['programLevel:id,code','nectaResultDetails:id,exam_id,verified,index_number','nacteResultDetails:id,verified,avn'])->where('programs_complete_status',1)->where('submission_complete_status',0)->where('application_window_id',$request->get('application_window_id'))->where('campus_id',$application_window->campus_id)->get();
+                        
         }elseif($request->get('status') == 'submitted'){
-           $applicants = Applicant::where('documents_complete_status',1)->where('submission_complete_status',1)->where('application_window_id',$request->get('application_window_id'))
+ /*           $applicants = Applicant::where('documents_complete_status',1)->where('submission_complete_status',1)->where('application_window_id',$request->get('application_window_id'))
                                     ->where('campus_id',$application_window->campus_id)->with(['programLevel','nectaResultDetails','nacteResultDetails'])->get();
+                           
+   */          $applicants = Applicant::select('id','first_name','middle_name','surname','index_number','gender','phone','batch_id','payment_complete_status','program_level_id','entry_mode')
+            ->with(['programLevel:id,code','nectaResultDetails:id,exam_id,verified,index_number','nacteResultDetails:id,verified,avn'])->where('submission_complete_status',1)->where('application_window_id',$request->get('application_window_id'))->where('campus_id',$application_window->campus_id)->get();
         }elseif($request->get('status') == 'total'){
-            $applicants = Applicant::where('application_window_id',$request->get('application_window_id'))->where('campus_id',$application_window->campus_id)
-                                    ->with(['programLevel','nectaResultDetails','nacteResultDetails'])->get();
+           /*  $applicants = Applicant::where('application_window_id',$request->get('application_window_id'))->where('campus_id',$application_window->campus_id)
+                                    ->with(['programLevel','nectaResultDetails','nacteResultDetails'])->get(); */
+
+            $applicants = Applicant::select('id','first_name','middle_name','surname','index_number','gender','phone','batch_id','payment_complete_status','program_level_id','entry_mode')
+            ->with(['programLevel:id,code','nectaResultDetails:id,exam_id,verified,index_number','nacteResultDetails:id,verified,avn'])->where('application_window_id',$request->get('application_window_id'))->where('campus_id',$application_window->campus_id)->get();
         }
 /*         foreach($applicants as $row){
          $payment_status = $row->payment_status == 1? 'Paid' : 'Not Paid';
