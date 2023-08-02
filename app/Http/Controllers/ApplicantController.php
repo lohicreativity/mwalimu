@@ -1895,8 +1895,16 @@ class ApplicantController extends Controller
         }
 
         if($request->get('status') == 'progress'){
-           $applicants = Applicant::where('documents_complete_status',0)->where('submission_complete_status',0)->where('application_window_id',$request->get('application_window_id'))
+/*            $applicants = Applicant::where('documents_complete_status',0)->where('submission_complete_status',0)->where('application_window_id',$request->get('application_window_id'))
                                     ->where('campus_id',$application_window->campus_id)->with(['programLevel','nectaResultDetails','nacteResultDetails'])->get();
+ */         
+            $applicants = Applicant::select('id','first_name','middle_name','surname','index_number','gender','phone','batch_id','payment_complete_status','program_level_id','entry_mode')
+            ->with('programLevel:id,code')->where('programs_complete_status',0)->where('application_window_id',$request->get('application_window_id'))->where('campus_id',$application_window->campus_id)->get();
+
+            /* fputcsv($file_handle, [$row->index_number,$f6_index,$avn,ucwords(strtolower($row->first_name)),ucwords(strtolower($row->middle_name)),
+            ucwords(strtolower($row->surname)),$row->gender,$row->phone,$row->programLevel->code, ucwords(strtolower($row->entry_mode)), $payment_status]);
+ */
+
         }elseif($request->get('status') == 'completed'){
            $applicants = Applicant::where('documents_complete_status',1)->where('submission_complete_status',0)->where('application_window_id',$request->get('application_window_id'))
                                     ->where('campus_id',$application_window->campus_id)->with(['programLevel','nectaResultDetails','nacteResultDetails'])->get();
