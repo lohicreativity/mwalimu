@@ -169,7 +169,7 @@ class ApplicationController extends Controller
                                                 'basic_info_complete_status','next_of_kin_complete_status','payment_complete_status','results_complete_status','program_level_id')
                                                 ->with(['selections:id,order,campus_program_id,applicant_id','selections.campusProgram:id,program_id',
                                                 'selections.campusProgram.program:id,code','programLevel:id,name'])->where('submission_complete_status',1)
-                                                ->where('application_window_id',$request->get('application_window_id'))->where('campus_id',$staff->campus_id)->get();
+                                                ->where('application_window_id',$request->get('application_window_id'))->where('campus_id',$staff->campus_id)->paginate(1500);
         
             }
         
