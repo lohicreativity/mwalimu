@@ -92,77 +92,114 @@ class ApplicationController extends Controller
         $application_window = ApplicationWindow::find($request->get('application_window_id'));
         $applicants = null;
         if($request->get('department_id') != null){
-           $applicants = Applicant::with(['selections.campusProgram.program'])
-						->where('application_window_id',$request->get('application_window_id'))
-						->whereHas('selections.campusProgram.program.departments',function($query) use($request){$query->where('id',$request->get('department_id'));})
-						->get();
+            $applicants = Applicant::select('id','first_name','surname','index_number','gender','phone','batch_id','submission_complete_status','programs_complete_status',
+                                            'basic_info_complete_status','next_of_kin_complete_status','payment_complete_status','results_complete_status','program_level_id')
+                                            ->with(['selections:id,order,campus_program_id,applicant_id','selections.campusProgram:id,program_id',
+                                            'selections.campusProgram.program:id,code','programLevel:id,name'])->where('application_window_id',$request->get('application_window_id'))
+						                    ->whereHas('selections.campusProgram.program.departments',function($query) use($request){$query->where('id',$request->get('department_id'));})
+						                    ->paginate(1500);
+
         }elseif($request->get('duration') == 'today'){
-           $applicants = Applicant::with(['selections.campusProgram.program'])->where('application_window_id',$request->get('application_window_id'))->where('created_at','<=',now()->subDays(1))->get();
+            $applicants = Applicant::select('id','first_name','surname','index_number','gender','phone','batch_id','submission_complete_status','programs_complete_status',
+                                            'basic_info_complete_status','next_of_kin_complete_status','payment_complete_status','results_complete_status','program_level_id')
+                                            ->with(['selections:id,order,campus_program_id,applicant_id','selections.campusProgram:id,program_id',
+                                            'selections.campusProgram.program:id,code','programLevel:id,name'])->where('created_at','<=',now()->subDays(1))
+                                            ->where('application_window_id',$request->get('application_window_id'))->paginate(1500);
+
         }elseif($request->get('gender') != null){
-           $applicants = Applicant::with(['selections.campusProgram.program'])->where('application_window_id',$request->get('application_window_id'))->where('gender',$request->get('gender'))->get();
+           $applicants = Applicant::select('id','first_name','surname','index_number','gender','phone','batch_id','submission_complete_status','programs_complete_status',
+                                            'basic_info_complete_status','next_of_kin_complete_status','payment_complete_status','results_complete_status','program_level_id')
+                                            ->with(['selections:id,order,campus_program_id,applicant_id','selections.campusProgram:id,program_id',
+                                            'selections.campusProgram.program:id,code','programLevel:id,name'])->where('gender',$request->get('gender'))
+                                            ->where('application_window_id',$request->get('application_window_id'))->paginate(1500);
+
         }elseif($request->get('nta_level_id') != null){
-           $applicants = Applicant::with(['selections.campusProgram.program'])->where('application_window_id',$request->get('application_window_id'))->whereHas('selections.campusProgram.program',function($query) use($request){
-                 $query->where('nta_level_id',$request->get('nta_level_id'));
-            })->get();
+            $applicants = Applicant::select('id','first_name','surname','index_number','gender','phone','batch_id','submission_complete_status','programs_complete_status',
+                                            'basic_info_complete_status','next_of_kin_complete_status','payment_complete_status','results_complete_status','program_level_id')
+                                            ->with(['selections:id,order,campus_program_id,applicant_id','selections.campusProgram:id,program_id',
+                                            'selections.campusProgram.program:id,code','programLevel:id,name'])->where('application_window_id',$request->get('application_window_id'))
+                                            ->whereHas('selections.campusProgram.program',function($query) use($request){$query->where('nta_level_id',$request->get('nta_level_id'));})->paginate(1500);
+
         }elseif($request->get('campus_program_id') != null){
-           $applicants = Applicant::with(['selections.campusProgram.program'])->where('application_window_id',$request->get('application_window_id'))->whereHas('selections',function($query) use($request){
-                 $query->where('campus_program_id',$request->get('campus_program_id'));
-            })->get();
+            $applicants = Applicant::select('id','first_name','surname','index_number','gender','phone','batch_id','submission_complete_status','programs_complete_status',
+                                            'basic_info_complete_status','next_of_kin_complete_status','payment_complete_status','results_complete_status','program_level_id')
+                                            ->with(['selections:id,order,campus_program_id,applicant_id','selections.campusProgram:id,program_id',
+                                            'selections.campusProgram.program:id,code','programLevel:id,name'])
+                                            ->whereHas('selections',function($query) use($request){$query->where('campus_program_id',$request->get('campus_program_id'));})
+                                            ->where('application_window_id',$request->get('application_window_id'))->paginate(1500);
+
         }else{
-           $applicants = Applicant::with(['selections.campusProgram.program'])->where('application_window_id',$request->get('application_window_id'))->get();
+            $applicants = Applicant::select('id','first_name','surname','index_number','gender','phone','batch_id','submission_complete_status','programs_complete_status',
+                                            'basic_info_complete_status','next_of_kin_complete_status','payment_complete_status','results_complete_status','program_level_id')
+                                            ->with(['selections:id,order,campus_program_id,applicant_id','selections.campusProgram:id,program_id',
+                                            'selections.campusProgram.program:id,code','programLevel:id,name'])->where('application_window_id',$request->get('application_window_id'))->paginate(1500);
+
         }
 
         if($request->get('status') == 'progress'){ 
             if(Auth::user()->hasRole('administrator') || Auth::user()->hasRole('arc')){
-                $applicants = Applicant::with(['selections.campusProgram.program'=> function($query){$query->select('code');}, 'programLevel'])
-                                        ->where('programs_complete_status',0)->where('submission_complete_status',0)
-                                        ->where('application_window_id',$request->get('application_window_id'))->get();
-        
+               $applicants = Applicant::select('id','first_name','surname','index_number','gender','phone','batch_id','submission_complete_status','programs_complete_status',
+                                                'basic_info_complete_status','next_of_kin_complete_status','payment_complete_status','results_complete_status','program_level_id')
+                                                ->with(['selections:id,order,campus_program_id,applicant_id','selections.campusProgram:id,program_id',
+                                                'selections.campusProgram.program:id,code','programLevel:id,name'])->where('programs_complete_status',0)->where('submission_complete_status',0)
+                                                ->where('application_window_id',$request->get('application_window_id'))->paginate(1500);
+
             }elseif(Auth::user()->hasRole('hod')){
-                $applicants = Applicant::whereHas('selections.campusProgram.program.departments',function($query) use($staff){$query->where('department_id',$staff->department_id);})
-                                       ->with(['selections.campusProgram.program', 'programLevel'])
-                                        ->where('programs_complete_status',0)->where('submission_complete_status',0)
-                                        ->where('application_window_id',$request->get('application_window_id'))->where('campus_id',$staff->campus_id)->get();
-        
+               $applicants = Applicant::select('id','first_name','surname','index_number','gender','phone','batch_id','submission_complete_status','programs_complete_status',
+                                                'basic_info_complete_status','next_of_kin_complete_status','payment_complete_status','results_complete_status','program_level_id')
+                                                ->with(['selections:id,order,campus_program_id,applicant_id','selections.campusProgram:id,program_id',
+                                                'selections.campusProgram.program:id,code','programLevel:id,name'])->where('programs_complete_status',0)->where('submission_complete_status',0)
+                                                ->where('application_window_id',$request->get('application_window_id'))->where('campus_id',$staff->campus_id)->paginate(1500);
+
             }else{
                 $applicants = Applicant::select('id','first_name','surname','index_number','gender','phone','batch_id','submission_complete_status','programs_complete_status',
                                                 'basic_info_complete_status','next_of_kin_complete_status','payment_complete_status','results_complete_status','program_level_id')
                                                 ->with(['selections:id,order,campus_program_id,applicant_id','selections.campusProgram:id,program_id','selections.campusProgram.program:id,code',
                                                 'programLevel:id,name'])->where('programs_complete_status',0)->where('submission_complete_status',0)
-                                                ->where('application_window_id',$request->get('application_window_id'))->where('campus_id',$staff->campus_id)->get();
+                                                ->where('application_window_id',$request->get('application_window_id'))->where('campus_id',$staff->campus_id)
+                                                ->whereHas('selections.campusProgram.program.departments',function($query) use($staff){$query->where('department_id',$staff->department_id);})->get();
 
             }
         
         }elseif($request->get('status') == 'completed'){        
             if(Auth::user()->hasRole('administrator') || Auth::user()->hasRole('arc')){
-                $applicants = Applicant::with(['selections.campusProgram.program' => function($query){$query->select('code');}, 'programLevel'])
-                                       ->where('programs_complete_status',1)->where('submission_complete_status',0)
-                                       ->where('application_window_id',$request->get('application_window_id'))->paginate();
-        
+                $applicants = Applicant::select('id','first_name','surname','index_number','gender','phone','batch_id','submission_complete_status','programs_complete_status',
+                                                'basic_info_complete_status','next_of_kin_complete_status','payment_complete_status','results_complete_status','program_level_id')
+                                                ->with(['selections:id,order,campus_program_id,applicant_id','selections.campusProgram:id,program_id',
+                                                'selections.campusProgram.program:id,code','programLevel:id,name'])->where('programs_complete_status',1)->where('submission_complete_status',0)
+                                                ->where('application_window_id',$request->get('application_window_id'))->paginate(1500);
+
             }elseif(Auth::user()->hasRole('hod')){
-                $applicants = Applicant::whereHas('selections.campusProgram.program.departments',function($query) use($staff){$query->where('department_id',$staff->department_id);})
-                                       ->with(['selections.campusProgram.program', 'programLevel'])
-                                        ->where('programs_complete_status',1)->where('submission_complete_status',0)
-                                        ->where('application_window_id',$request->get('application_window_id'))->where('campus_id',$staff->campus_id)->get();
-        
+                $applicants = Applicant::select('id','first_name','surname','index_number','gender','phone','batch_id','submission_complete_status','programs_complete_status',
+                                                'basic_info_complete_status','next_of_kin_complete_status','payment_complete_status','results_complete_status','program_level_id')
+                                                ->with(['selections:id,order,campus_program_id,applicant_id','selections.campusProgram:id,program_id',
+                                                'selections.campusProgram.program:id,code','programLevel:id,name'])->where('programs_complete_status',1)->where('submission_complete_status',0)
+                                                ->where('application_window_id',$request->get('application_window_id'))->where('campus_id',$staff->campus_id)
+                                                ->whereHas('selections.campusProgram.program.departments',function($query) use($staff){$query->where('department_id',$staff->department_id);})->paginate(1500);
             }else{
                 $applicants = Applicant::select('id','first_name','surname','index_number','gender','phone','batch_id','submission_complete_status','programs_complete_status',
-                                        'basic_info_complete_status','next_of_kin_complete_status','payment_complete_status','results_complete_status','program_level_id')
-                                        ->with(['selections:id,order,campus_program_id,applicant_id','selections.campusProgram:id,program_id','selections.campusProgram.program:id,code',
-                                        'programLevel:id,name'])->where('programs_complete_status',1)->where('submission_complete_status',0)
-                                        ->where('application_window_id',$request->get('application_window_id'))->where('campus_id',$staff->campus_id)->paginate(1500);
-        
+                                                'basic_info_complete_status','next_of_kin_complete_status','payment_complete_status','results_complete_status','program_level_id')
+                                                ->with(['selections:id,order,campus_program_id,applicant_id','selections.campusProgram:id,program_id','selections.campusProgram.program:id,code',
+                                                'programLevel:id,name'])->where('programs_complete_status',1)->where('submission_complete_status',0)
+                                                ->where('application_window_id',$request->get('application_window_id'))->where('campus_id',$staff->campus_id)->paginate(1500);
             }
         
         }elseif($request->get('status') == 'submitted'){
             if(Auth::user()->hasRole('administrator') || Auth::user()->hasRole('arc')){
-                $applicants = Applicant::with(['selections.campusProgram.program' => function($query){$query->select('code');}, 'programLevel'])->where('submission_complete_status',1)
-                                       ->where('application_window_id',$request->get('application_window_id'))->get();
-        
+                $applicants = Applicant::select('id','first_name','surname','index_number','gender','phone','batch_id','submission_complete_status','programs_complete_status',
+                                                'basic_info_complete_status','next_of_kin_complete_status','payment_complete_status','results_complete_status','program_level_id')
+                                                ->with(['selections:id,order,campus_program_id,applicant_id','selections.campusProgram:id,program_id',
+                                                'selections.campusProgram.program:id,code','programLevel:id,name'])->where('submission_complete_status',1)
+                                                ->where('application_window_id',$request->get('application_window_id'))->paginate(1500);
+
             }elseif(Auth::user()->hasRole('hod')){
-                $applicants = Applicant::whereHas('selections.campusProgram.program.departments',function($query) use($staff){$query->where('department_id',$staff->department_id);})
-                                       ->with(['selections.campusProgram.program', 'programLevel'])->where('submission_complete_status',1)
-                                        ->where('application_window_id',$request->get('application_window_id'))->where('campus_id',$staff->campus_id)->get();
+                $applicants = Applicant::select('id','first_name','surname','index_number','gender','phone','batch_id','submission_complete_status','programs_complete_status',
+                                                'basic_info_complete_status','next_of_kin_complete_status','payment_complete_status','results_complete_status','program_level_id')
+                                                ->with(['selections:id,order,campus_program_id,applicant_id','selections.campusProgram:id,program_id',
+                                                'selections.campusProgram.program:id,code','programLevel:id,name'])->where('submission_complete_status',1)
+                                                ->where('application_window_id',$request->get('application_window_id'))->where('campus_id',$staff->campus_id)
+                                                ->whereHas('selections.campusProgram.program.departments',function($query) use($staff){$query->where('department_id',$staff->department_id);})->paginate(1500);
+
         
             }else{
                 $applicants = Applicant::select('id','first_name','surname','index_number','gender','phone','batch_id','submission_complete_status','programs_complete_status',
@@ -181,15 +218,19 @@ class ApplicationController extends Controller
                                                 'programLevel:id,name'])->where('application_window_id',$request->get('application_window_id'))->get();
         
             }elseif(Auth::user()->hasRole('hod')){
-                $applicants = Applicant::whereHas('selections.campusProgram.program.departments',function($query) use($staff){$query->where('department_id',$staff->department_id);})
-                                       ->with(['selections.campusProgram.program', 'programLevel'])
-                                        ->where('application_window_id',$request->get('application_window_id'))->where('campus_id',$staff->campus_id)->get();
+                $applicants = Applicant::select('id','first_name','surname','index_number','gender','phone','batch_id','submission_complete_status','programs_complete_status',
+                                                'basic_info_complete_status','next_of_kin_complete_status','payment_complete_status','results_complete_status','program_level_id')
+                                                ->with(['selections:id,order,campus_program_id,applicant_id','selections.campusProgram:id,program_id',
+                                                'selections.campusProgram.program:id,code','programLevel:id,name'])->where('application_window_id',$request->get('application_window_id'))
+                                                ->where('campus_id',$staff->campus_id)
+                                                ->whereHas('selections.campusProgram.program.departments',function($query) use($staff){$query->where('department_id',$staff->department_id);})->paginate(1500);                         
 
             }else{
                 $applicants = Applicant::select('id','first_name','surname','index_number','gender','phone','batch_id','submission_complete_status','programs_complete_status',
                                                 'basic_info_complete_status','next_of_kin_complete_status','payment_complete_status','results_complete_status','program_level_id')
-                                                ->with(['selections:id,order,campus_program_id,applicant_id','selections.campusProgram:id,program_id','selections.campusProgram.program:id,code',
-                                                'programLevel:id,name'])->where('application_window_id',$request->get('application_window_id'))->where('campus_id',$staff->campus_id)->get();
+                                                ->with(['selections:id,order,campus_program_id,applicant_id','selections.campusProgram:id,program_id',
+                                                'selections.campusProgram.program:id,code','programLevel:id,name'])->where('application_window_id',$request->get('application_window_id'))
+                                                ->where('campus_id',$staff->campus_id)->paginate(1500);
         
             }       
         }
