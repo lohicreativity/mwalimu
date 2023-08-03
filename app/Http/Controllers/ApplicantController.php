@@ -1897,9 +1897,15 @@ class ApplicantController extends Controller
         if($request->get('status') == 'progress'){
 /*            $applicants = Applicant::where('documents_complete_status',0)->where('submission_complete_status',0)->where('application_window_id',$request->get('application_window_id'))
                                     ->where('campus_id',$application_window->campus_id)->with(['programLevel','nectaResultDetails','nacteResultDetails'])->get();
- */         
+ */         $batch = ApplicationBatch::select('id')->where('application_window_id',$request->get('application_window_id'))->where('batch_no',2)->get();
+            $batches = [];
+            foreach($batch as $b){
+               $batches[] = $b->id;
+            }
+
             $applicants = Applicant::select('id','first_name','middle_name','surname','index_number','gender','phone','batch_id','payment_complete_status','program_level_id','entry_mode')
-            ->with('programLevel:id,code')->where('programs_complete_status',0)->where('application_window_id',$request->get('application_window_id'))->where('campus_id',$application_window->campus_id)->get();
+            ->with('programLevel:id,code')->where('programs_complete_status',0)->where('application_window_id',$request->get('application_window_id'))
+            ->where('campus_id',$application_window->campus_id)->whereIn('batch_id',$batch)->get();
 
             /* fputcsv($file_handle, [$row->index_number,$f6_index,$avn,ucwords(strtolower($row->first_name)),ucwords(strtolower($row->middle_name)),
             ucwords(strtolower($row->surname)),$row->gender,$row->phone,$row->programLevel->code, ucwords(strtolower($row->entry_mode)), $payment_status]);
@@ -1910,7 +1916,7 @@ class ApplicantController extends Controller
                                     ->where('campus_id',$application_window->campus_id)->with(['programLevel','nectaResultDetails','nacteResultDetails'])->get();
  */
             $applicants = Applicant::select('id','first_name','middle_name','surname','index_number','gender','phone','batch_id','payment_complete_status','program_level_id','entry_mode')
-            ->with(['programLevel:id,code','nectaResultDetails:id,exam_id,verified,index_number','nacteResultDetails:id,verified,avn'])->where('programs_complete_status',1)->where('submission_complete_status',0)->where('application_window_id',$request->get('application_window_id'))->where('campus_id',$application_window->campus_id)->get();
+            ->with(['programLevel:id,code','nectaResultDetails:id,exam_id,verified,index_number,applicant_id','nacteResultDetails:id,verified,avn,applicant_id'])->where('programs_complete_status',1)->where('submission_complete_status',0)->where('application_window_id',$request->get('application_window_id'))->where('campus_id',$application_window->campus_id)->get();
                         
         }elseif($request->get('status') == 'submitted'){
  /*           $applicants = Applicant::where('documents_complete_status',1)->where('submission_complete_status',1)->where('application_window_id',$request->get('application_window_id'))
@@ -1939,6 +1945,7 @@ class ApplicantController extends Controller
         }
 
         return $f6_index; */
+        return $applicants;
         $callback = function() use ($applicants) 
               {
                   $file_handle = fopen('php://output', 'w');
