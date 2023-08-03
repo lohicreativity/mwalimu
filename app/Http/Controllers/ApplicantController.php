@@ -1875,29 +1875,38 @@ class ApplicantController extends Controller
       $application_window = ApplicationWindow::find($request->get('application_window_id'));
 
       if($request->get('department_id') != null){
-           $applicants = Applicant::where('application_window_id',$request->get('application_window_id'))->whereHas('selections.campusProgram.program.departments',function($query) use($request){
+           $applicants = Applicant::select('id','first_name','middle_name','surname','index_number','gender','phone','batch_id','payment_complete_status','program_level_id','entry_mode')
+                                    ->where('application_window_id',$request->get('application_window_id'))->whereHas('selections.campusProgram.program.departments',function($query) use($request){
                  $query->where('id',$request->get('department_id'));
-            })->with(['programLevel','nextOfKin','intake','nectaResultDetails','nacteResultDetails'])->get();
+            })->with(['programLevel:id,code','nectaResultDetails:id,exam_id,verified,index_number,applicant_id','nacteResultDetails:id,verified,avn,applicant_id'])->get();
         }elseif($request->get('duration') == 'today'){
-           $applicants = Applicant::where('application_window_id',$request->get('application_window_id'))->with(['programLevel','nextOfKin','intake','nectaResultDetails','nacteResultDetails'])->where('created_at','<=',now()->subDays(1))->get();
+           $applicants = Applicant::select('id','first_name','middle_name','surname','index_number','gender','phone','batch_id','payment_complete_status','program_level_id','entry_mode')
+                                    ->where('application_window_id',$request->get('application_window_id'))->with(['programLevel:id,code','nectaResultDetails:id,exam_id,verified,index_number,applicant_id','nacteResultDetails:id,verified,avn,applicant_id'])->where('created_at','<=',now()->subDays(1))->get();
         }elseif($request->get('gender') != null){
-           $applicants = Applicant::where('application_window_id',$request->get('application_window_id'))->with(['programLevel','nextOfKin','intake','nectaResultDetails','nacteResultDetails'])->where('gender',$request->get('gender'))->get();
+           $applicants = Applicant::select('id','first_name','middle_name','surname','index_number','gender','phone','batch_id','payment_complete_status','program_level_id','entry_mode')
+                                    ->where('application_window_id',$request->get('application_window_id'))->with(['programLevel:id,code','nectaResultDetails:id,exam_id,verified,index_number,applicant_id','nacteResultDetails:id,verified,avn,applicant_id'])->where('gender',$request->get('gender'))->get();
         }elseif($request->get('nta_level_id') != null){
-           $applicants = Applicant::where('application_window_id',$request->get('application_window_id'))->whereHas('selections.campusProgram.program',function($query) use($request){
+           $applicants = Applicant::select('id','first_name','middle_name','surname','index_number','gender','phone','batch_id','payment_complete_status','program_level_id','entry_mode')
+                                    ->where('application_window_id',$request->get('application_window_id'))->whereHas('selections.campusProgram.program',function($query) use($request){
                  $query->where('nta_level_id',$request->get('nta_level_id'));
-            })->with(['programLevel','nextOfKin','intake','nectaResultDetails','nacteResultDetails'])->get();
+            })->with(['programLevel:id,code','nectaResultDetails:id,exam_id,verified,index_number,applicant_id','nacteResultDetails:id,verified,avn,applicant_id'])->get();
         }elseif($request->get('campus_program_id') != null){
-           $applicants = Applicant::where('application_window_id',$request->get('application_window_id'))->whereHas('selections',function($query) use($request){
-                 $query->where('campus_program_id',$request->get('campus_program_id'));
-            })->with(['programLevel','nextOfKin','intake','nectaResultDetails','nacteResultDetails'])->get();
+           $applicants = Applicant::select('id','first_name','middle_name','surname','index_number','gender','phone','batch_id','payment_complete_status','program_level_id','entry_mode')
+                                    ->where('application_window_id',$request->get('application_window_id'))->whereHas('selections',function($query) use($request){
+                                    $query->where('campus_program_id',$request->get('campus_program_id'));
+                                   })->with(['programLevel:id,code','nectaResultDetails:id,exam_id,verified,index_number,applicant_id','nacteResultDetails:id,verified,avn,applicant_id'])->get();
         }else{
-           $applicants = Applicant::where('application_window_id',$request->get('application_window_id'))->with(['programLevel','nextOfKin','intake','nectaResultDetails','nacteResultDetails'])->get();
+           $applicants = Applicant::select('id','first_name','middle_name','surname','index_number','gender','phone','batch_id','payment_complete_status','program_level_id','entry_mode')
+                                    ->where('application_window_id',$request->get('application_window_id'))
+                                    ->with(['programLevel:id,code','nectaResultDetails:id,exam_id,verified,index_number,applicant_id','nacteResultDetails:id,verified,avn,applicant_id'])->get();
         }
 
         if($request->get('status') == 'progress'){
 /*            $applicants = Applicant::where('documents_complete_status',0)->where('submission_complete_status',0)->where('application_window_id',$request->get('application_window_id'))
                                     ->where('campus_id',$application_window->campus_id)->with(['programLevel','nectaResultDetails','nacteResultDetails'])->get();
- */         $batch = ApplicationBatch::select('id')->where('application_window_id',$request->get('application_window_id'))->where('batch_no',2)->get();
+ */         
+
+/*              $batch = ApplicationBatch::select('id')->where('application_window_id',$request->get('application_window_id'))->where('batch_no',2)->get();
             $batches = [];
             foreach($batch as $b){
                $batches[] = $b->id;
@@ -1905,7 +1914,11 @@ class ApplicantController extends Controller
 
             $applicants = Applicant::select('id','first_name','middle_name','surname','index_number','gender','phone','batch_id','payment_complete_status','program_level_id','entry_mode')
             ->with('programLevel:id,code')->where('programs_complete_status',0)->where('application_window_id',$request->get('application_window_id'))
-            ->where('campus_id',$application_window->campus_id)->whereIn('batch_id',$batch)->get();
+            ->where('campus_id',$application_window->campus_id)->whereIn('batch_id',$batch)->get(); */
+
+            $applicants = Applicant::select('id','first_name','middle_name','surname','index_number','gender','phone','batch_id','payment_complete_status','program_level_id','entry_mode')
+                                    ->with('programLevel:id,code')->where('programs_complete_status',0)->where('application_window_id',$request->get('application_window_id'))
+                                    ->where('campus_id',$application_window->campus_id)->get();
 
             /* fputcsv($file_handle, [$row->index_number,$f6_index,$avn,ucwords(strtolower($row->first_name)),ucwords(strtolower($row->middle_name)),
             ucwords(strtolower($row->surname)),$row->gender,$row->phone,$row->programLevel->code, ucwords(strtolower($row->entry_mode)), $payment_status]);
@@ -1962,7 +1975,7 @@ class ApplicantController extends Controller
                         }
                       }
 
-                      $phone = !empty($row->phone)? substr($row->phone,0) : null;
+                      $phone = !empty($row->phone)? substr($row->phone,3) : null;
                       $avn = null;
                       if($row->nacteResultDetails){
                         foreach($row->nacteResultDetails as $detail){
