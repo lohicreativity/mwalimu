@@ -1958,7 +1958,7 @@ class ApplicantController extends Controller
         }
 
         return $f6_index; */
-        return $applicants;
+
         $callback = function() use ($applicants) 
               {
                   $file_handle = fopen('php://output', 'w');
