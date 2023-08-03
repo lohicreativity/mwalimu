@@ -233,7 +233,13 @@
                                   @endforeach
                               </td>
                             @endif
-                            <td>{{ $program->departments[0]->name }}</td>
+                            <td>
+                              @foreach($program->departments as $department)
+                                  @if($department->pivot->campus_id == $campusProgram->campus_id)
+                                      {{ $department->name }}
+                                  @endif
+                              @endforeach
+                          </td>
                             <td>
                               @foreach($staffs as $staff) 
                                 @if($staff->department_id == $program->departments[0]->id) <p class="ss-font-xs ss-no-margin">{{ $staff->title}} {{ $staff->first_name }} {{ $staff->surname }}</p> @endif 
@@ -333,8 +339,16 @@
                                           {!! Form::label('','Department') !!}
                                           <select name="department_id" class="form-control" required>
                                             <option value="">Select Department</option>
+                                            @php
+                                                foreach($program->departments as $department){
+                                                    if($department->pivot->campus_id == $campusProgram->campus_id){
+                                                        $department_id = $department->id;
+                                                        break;
+                                                    }
+                                                }
+                                            @endphp
                                             @foreach($departments as $department)
-                                            <option value="{{ $department->id }}" @if($department->id == $program->departments[0]->id) selected="selected" @else disabled='disabled' @endif>{{ $department->name }}</option>
+                                            <option value="{{ $department->id }}" @if($department->id == $department_id) selected="selected" @else disabled='disabled' @endif>{{ $department->name }}</option>
                                             @endforeach
                                           </select>
                                         </div>
