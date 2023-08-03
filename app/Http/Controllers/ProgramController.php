@@ -14,6 +14,8 @@ use App\Domain\Academic\Actions\ProgramAction;
 use App\Models\User;
 use App\Utils\Util;
 use Validator, Auth, DB;
+use App\Domain\Settings\Models\Campus;
+use App\Domain\HumanResources\Models\Staff;
 
 class ProgramController extends Controller
 {
@@ -23,6 +25,12 @@ class ProgramController extends Controller
     public function index(Request $request)
     {
         $staff = User::find(Auth::user()->id)->staff;
+
+        if(Auth::user()->hasRole('administrator') || Auth::user()->hasRole('arc')){
+            $staffs = Staff::whereHas('user.roles',function($query){$query->where('name','hod');})->get();
+        }else{
+            $staffs = Staff::whereHas('user.roles',function($query){$query->where('name','hod');})->where('campus_id',$staff->campus_id)->get();
+        }
 
         if(Auth::user()->hasRole('hod')){
 
@@ -47,6 +55,7 @@ class ProgramController extends Controller
         }elseif(Auth::user()->hasRole('administrator') || Auth::user()->hasRole('arc')){
             $departments = Department::whereHas('campuses')->with('campuses')->get();
             $programs = Program::whereHas('departments')->with(['departments','ntaLevel','award','campusPrograms'])->orderBy('code')->get();
+            
         }else{
 		    $departments = Department::whereHas('campuses',function($query) use($staff){
             $query->where('id',$staff->campus_id);})->get();
@@ -58,7 +67,7 @@ class ProgramController extends Controller
 				$query->where('campus_id',$staff->campus_id);
 			},'departments'=>function($query) use($staff){
 				$query->where('campus_id',$staff->campus_id);
-			}])->where('name','LIKE','%'.$request->get('query').'%')->OrWhere('code','LIKE','%'.$request->get('query').'%')->orderBy('nta_level_id',$request->get('nta_level'))->get();
+			}])->where('name','LIKE','%'.$request->get('query').'%')->OrWhere('code','LIKE','%'.$request->get('query').'%')->orderBy('code',$request->get('nta_level'))->get();
 			
 		  }else{
              $programs = Program::whereHas('departments',function($query) use($staff){
@@ -78,7 +87,9 @@ class ProgramController extends Controller
            'nta_levels'=>NTALevel::where('name','!=','NTA Level 7')->get(),
            'awards'=>Award::all(),
            'request'=>$request,
-           'staff'=>$staff
+           'staff'=>$staff,
+           'campuses'=>Campus::all(),
+           'staffs'=> $staffs
     	];
     	return view('dashboard.academic.programs',$data)->withTitle('Programmes');
     }

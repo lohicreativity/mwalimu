@@ -1955,6 +1955,7 @@ class ApplicantController extends Controller
                         }
                       }
 
+                      $phone = !empty($row->phone)? substr($row->phone,0) : null;
                       $avn = null;
                       if($row->nacteResultDetails){
                         foreach($row->nacteResultDetails as $detail){
@@ -1975,7 +1976,7 @@ class ApplicantController extends Controller
 
                       }  */ 
                       fputcsv($file_handle, [$row->index_number,$f6_index,$avn,ucwords(strtolower($row->first_name)),ucwords(strtolower($row->middle_name)),
-                              ucwords(strtolower($row->surname)),$row->gender,$row->phone,$row->programLevel->code, ucwords(strtolower($row->entry_mode)), $payment_status]);
+                              ucwords(strtolower($row->surname)),$row->gender,$phone,$row->programLevel->code, ucwords(strtolower($row->entry_mode)), $payment_status]);
                   }
                   fclose($file_handle);
               };
@@ -2394,6 +2395,12 @@ class ApplicantController extends Controller
         if($mode_before != $applicant->entry_mode || $level_before != $applicant->program_level_id){
             ApplicantProgramSelection::where('applicant_id',$applicant->id)->delete();
             Applicant::where('id',$applicant->id)->update(['programs_complete_status'=>0]);
+
+            if($level_before != $applicant->program_level_id){
+               $batch = ApplicationBatch::where('program_level_id',$applicant->program_level_id)->where('application_window_id',$applicant->application_window_id)
+                        ->latest()->first();
+               Applicant::where('id',$applicant->id)->update(['batch_id'=>$batch->id]);
+            }
         }
         return redirect()->to('application/edit-applicant-details')->with('message','Applicant details updated successfully');
         //return redirect()->back()->with('message','Applicant details updated successfully');

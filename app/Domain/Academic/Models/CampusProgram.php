@@ -93,7 +93,7 @@ class CampusProgram extends Model
      */
     public function setRegulatorCodeAttribute($value)
     {
-        $this->attributes['regulator_code'] = strtoupper($value);
+        $this->attributes['regulator_code'] = $value;
     }
 
     /**
@@ -101,7 +101,7 @@ class CampusProgram extends Model
      */
     public function getRegulatorCodeAttribute($value)
     {
-        return strtoupper($value);
+        return $value;
     }
 
     /**

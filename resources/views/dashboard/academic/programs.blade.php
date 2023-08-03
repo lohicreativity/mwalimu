@@ -200,26 +200,46 @@
                 <table id="example2" class="table table-bordered table-hover ss-paginated-table">
                   <thead>
                   <tr>
-                    <th>Regulator Code</th>
+                    @if(Auth::user()->hasRole('administrator') || Auth::user()->hasRole('arc'))
+                      <th>Regulator Code</th>
+                    @endif
                     <th>Code</th>
-					<th>Department</th>
-					<th>HOD</th>
-                    <th>Actions</th>
+                    @if(Auth::user()->hasRole('administrator') || Auth::user()->hasRole('arc'))
+                      <th>Campus</th>
+                    @endif
+                    <th>Department</th>
+                    <th>HOD</th>
+                    @if(!Auth::user()->hasRole('hod'))
+                      <th>Actions</th>
+                    @endif
                   </tr>
                   </thead>                                 
                   <tbody>
                   @foreach($programs as $program)
-                  <tr>
-                    <td>@if(count($program->campusPrograms) != 0) {{ $program->campusPrograms[0]->regulator_code }} @endif</td>
-                    <td>{{ $program->code }}</td>
-					          <td>@foreach($program->departments as $dept) <p>{{ $dept->name }}</p> @endforeach</td>
-					          <td>
-                      @foreach($program->departments as $dept) 
-					              @foreach($dept->staffs as $stf) 
-							            @if($stf->user->hasRole('hod') && $stf->campus_id == $staff->campus_id) <p class="ss-font-xs ss-no-margin">{{ $stf->title}} {{ $stf->first_name }} {{ $stf->surname }}</p> @endif 
-							          @endforeach 
-					            @endforeach
-                    </td>
+                     @if(count($program->campusPrograms) != 0)
+                      @foreach($program->campusPrograms as $campusProgram)
+                        <tr>
+                            @if(Auth::user()->hasRole('administrator') || Auth::user()->hasRole('arc'))
+                              <td>{{ $campusProgram->regulator_code }} </td>
+                            @endif
+                            <td>{{ $program->code }}</td>
+                            @if(Auth::user()->hasRole('administrator') || Auth::user()->hasRole('arc'))
+                              <td>@foreach($campuses as $campus)
+                                          @if($campusProgram->campus_id == $campus->id)
+                                              {{ substr($campus->name,0,-6) }} <br>
+                                              @break
+                                              
+                                          @endif
+                                  @endforeach
+                              </td>
+                            @endif
+                            <td>{{ $program->departments[0]->name }}</td>
+                            <td>
+                              @foreach($staffs as $staff) 
+                                @if($staff->department_id == $program->departments[0]->id) <p class="ss-font-xs ss-no-margin">{{ $staff->title}} {{ $staff->first_name }} {{ $staff->surname }}</p> @endif 
+                              @endforeach 
+                            </td>
+                    @if(!Auth::user()->hasRole('hod'))
                     <td>
                       @can('edit-programme')
                       <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-edit-program-{{ $program->id }}">
@@ -299,7 +319,7 @@
                                       {!! Form::text('name',$program->name,$name) !!}
 
                                       {!! Form::input('hidden','program_id',$program->id) !!}
-                                      {!! Form::input('hidden','campus_id',$staff->campus_id) !!}
+                                      {!! Form::input('hidden','campus_id',$campusProgram->campus_id) !!}
                                     </div>
                                     </div>
                                     <div class="row">
@@ -314,7 +334,7 @@
                                           <select name="department_id" class="form-control" required>
                                             <option value="">Select Department</option>
                                             @foreach($departments as $department)
-                                            <option value="{{ $department->id }}" @if($department->id == $programDeptIds) selected="selected" @else disabled='disabled' @endif>{{ $department->name }}</option>
+                                            <option value="{{ $department->id }}" @if($department->id == $program->departments[0]->id) selected="selected" @else disabled='disabled' @endif>{{ $department->name }}</option>
                                             @endforeach
                                           </select>
                                         </div>
@@ -359,7 +379,7 @@
 											{!! Form::text('regulator_code',null,$regulator_code) !!}
 											@endif
 											
-											{!! Form::input('hidden','campus_id',$staff->campus_id) !!}
+											{!! Form::input('hidden','campus_id',$campusProgram->campus_id) !!}
 											
 										  </div>
                                        </div>
@@ -418,9 +438,11 @@
                       </div>
                       <!-- /.modal -->
                     </td>
+                    @endif
                   </tr>
                   @endforeach
-                  
+                  @endif
+                  @endforeach
                   </tbody>
                 </table>
                 
