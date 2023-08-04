@@ -1958,11 +1958,12 @@ class ApplicantController extends Controller
         }
 
         return $f6_index; */
-
-        $callback = function() use ($applicants) 
+        $batches = ApplicationBatch::select('id','batch_no')->where('application_window_id',$request->get('application_window_id'))->get();
+        $callback = function() use ($applicants, $batches) 
               {
                   $file_handle = fopen('php://output', 'w');
-                  fputcsv($file_handle, ['F.4 Index Number/EQ','F.6 Index Number/EQ','AVN','First Name','Middle Name','Surname','Gender','Phone Number','Application Level','Category','Payment Status']);
+                  fputcsv($file_handle, ['F.4 Index Number/EQ','F.6 Index Number/EQ','AVN','First Name','Middle Name','Surname','Gender','Phone Number','Application Level','Category','Payment Status', 'Batch#']);
+                  
                   foreach($applicants as $row){
                       $payment_status = $row->payment_status == 1? 'Paid' : 'Not Paid';
                       $f6_index = null;
@@ -1973,6 +1974,14 @@ class ApplicantController extends Controller
                               break;
                            }
                         }
+                      }
+
+                      $batch_no = null;
+                      foreach($batches as $batch){
+                         if($row->batch_id == $batch->id){
+                           $batch_no = $batch->batch_no;
+                           break;
+                         }  
                       }
 
                       $phone = !empty($row->phone)? substr($row->phone,3) : null;
@@ -1996,7 +2005,7 @@ class ApplicantController extends Controller
 
                       }  */ 
                       fputcsv($file_handle, [$row->index_number,$f6_index,$avn,ucwords(strtolower($row->first_name)),ucwords(strtolower($row->middle_name)),
-                              ucwords(strtolower($row->surname)),$row->gender,$phone,$row->programLevel->code, ucwords(strtolower($row->entry_mode)), $payment_status]);
+                              ucwords(strtolower($row->surname)),$row->gender,$phone,$row->programLevel->code, ucwords(strtolower($row->entry_mode)), $payment_status, $batch_no]);
                   }
                   fclose($file_handle);
               };
