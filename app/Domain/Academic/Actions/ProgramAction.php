@@ -36,6 +36,15 @@ class ProgramAction implements ProgramInterface{
 				}
 				$prog->program_id = $program->id;
 				$prog->campus_id = $request->get('campus_id');
+                if($request->get('campus_id') == 1){
+                    $prog->code = $request->get('code');
+                }elseif($request->get('campus_id') == 2){
+                    $code = explode('.',$request->get('code'));
+                    $prog->code = $code[0].'Z.'.$code[1];
+                }elseif($request->get('campus_id') == 3){
+                    $code = explode('.',$request->get('code'));
+                    $prog->code = $code[0].'P.'.$code[1];
+                }
 				$prog->regulator_code = $request->get('regulator_code');
 				$prog->save();
                 
@@ -60,7 +69,17 @@ class ProgramAction implements ProgramInterface{
 				$prog = CampusProgram::find($request->get('campus_program_id'));
 				$prog->program_id = $request->get('program_id');
 				//$prog->campus_id = $request->get('campus_id');
+                if($request->get('campus_id') == 1){
+                    $prog->code = $request->get('code');
+                }elseif($request->get('campus_id') == 2){
+                    $code = explode('.',$request->get('code'));
+                    $prog->code = $code[0].'Z.'.$code[1];
+                }elseif($request->get('campus_id') == 3){
+                    $code = explode('.',$request->get('code'));
+                    $prog->code = $code[0].'P.'.$code[1];
+                }
 				$prog->regulator_code = $request->get('regulator_code');
+                
 				$prog->save();		
 
 /*                 DB::table('program_department')->where('program_id',$program->id)->where('department_id',$request->get('department_id'))->where('campus_id',$request->get('campus_id'))->delete();

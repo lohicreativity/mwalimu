@@ -203,7 +203,8 @@
                     @if(Auth::user()->hasRole('administrator') || Auth::user()->hasRole('arc'))
                       <th>Regulator Code</th>
                     @endif
-                    <th>Code</th>
+                    <th>General Code</th>
+                    <th>Campus Code</th>
                     @if(Auth::user()->hasRole('administrator') || Auth::user()->hasRole('arc'))
                       <th>Campus</th>
                     @endif
@@ -223,6 +224,7 @@
                               <td>{{ $campusProgram->regulator_code }} </td>
                             @endif
                             <td>{{ $program->code }}</td>
+                            <td>{{ $campusProgram->code }}</td>
                             @if(Auth::user()->hasRole('administrator') || Auth::user()->hasRole('arc'))
                               <td>@foreach($campuses as $campus)
                                           @if($campusProgram->campus_id == $campus->id)
