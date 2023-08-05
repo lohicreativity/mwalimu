@@ -183,7 +183,7 @@
 							  <td>{{ $graduant->student->first_name }} {{ $graduant->student->middle_name }} {{ $graduant->student->surname }}</td>
 							  <td>{{ $graduant->student->gender }}</td>
 							  <td>{{ $graduant->student->phone }}</td>
-							  <td>{{ $graduant->student->campusProgram->program->code }}</td>
+							  <td>{{ $graduant->student->campusProgram->code }}</td>
 							  <td>@if($graduant->reason == 'Disapproved') Disapproved @elseif($graduant->status == 'PENDING') Pending @endif</td>
 							  <td>{{ bcdiv($graduant->student->overallRemark->gpa,1,1) }}</td>
 							  <td>

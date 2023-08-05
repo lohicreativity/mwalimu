@@ -94,15 +94,8 @@
                       @endforeach
                     </select>
                   </div>
-                  <div class="form-group col-6">
-                    {!! Form::label('','Batch Number') !!}
-                    <select onchange="val()" name="batch_id" id="batches" class="form-control" required>
-                      <option value="">Select Batch Number</option>
-                      @foreach($batches as $batch)
-                        <option value="{{ $batch->id }}">Batch {{ $batch->batch_no }}</option>
-                      @endforeach
-                    </select>
-                  </div>
+
+
                   {!! Form::input('hidden','application_window_id',$application_window->id) !!}
                   </div>
                </div>

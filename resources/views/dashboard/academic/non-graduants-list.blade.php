@@ -166,7 +166,7 @@
                       <td>{{ $graduant->student->first_name }} {{ $graduant->student->middle_name }} {{ $graduant->student->surname }}</td>
                       <td>{{ $graduant->student->gender }}</td>
                       <td>{{ $graduant->student->phone }}</td>
-                      <td>{{ $graduant->student->campusProgram->program->code }}</td>
+                      <td>{{ $graduant->student->campusProgram->code }}</td>
                       <td><a href="{{ url('academic/results/show-student-report?registration_number='.$graduant->student->registration_number) }}">{{ $graduant->reason }}</a></td>
                     </tr>
                     @endforeach                

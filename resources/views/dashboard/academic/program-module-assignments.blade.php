@@ -114,7 +114,7 @@
                   @if(App\Utils\Util::collectionContainsKey($program->program->departments,$staff->department_id))
                   <tr>
                     <td>{{ $program->program->name }}</td>
-                    <td>{{ $program->program->code }}</td>
+                    <td>{{ $program->code }}</td>
                     <td>
                       @can('view-programme-modules')
                       <a class="btn btn-info btn-sm" href="#" data-toggle="modal" data-target="#ss-view-modules-{{ $program->id }}">

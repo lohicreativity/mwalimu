@@ -84,7 +84,7 @@
                                   </td>
                                   <td>
                                     @foreach($applicant->selections as $selection)
-                                      {{ $selection->campusProgram->program->code }};
+                                      {{ $selection->campusProgram->code }};
                                     @endforeach
                                   </td>
                                   <td>@if($applicant->status == 'SELECTED')  <span class="badge badge-success"> Selected </span> 

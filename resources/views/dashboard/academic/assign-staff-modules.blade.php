@@ -69,10 +69,10 @@
                        @foreach($campus_programs as $prog)
                          @if(Auth::user()->hasRole('hod'))
                          @if($staff->campus_id == $prog->campus_id && App\Utils\Util::collectionContainsKey($prog->program->departments,$staff->department_id))
-                         <option value="{{ $prog->id }}">{{ $prog->program->name }} - {{ $prog->program->code }} - {{ $prog->campus->name }}</option>
+                         <option value="{{ $prog->id }}">{{ $prog->program->name }} - {{ $prog->code }} - {{ $prog->campus->name }}</option>
                          @endif
                          @else
-                         <option value="{{ $prog->id }}">{{ $prog->program->name }} - {{ $prog->program->code }} - {{ $prog->campus->name }}</option>
+                         <option value="{{ $prog->id }}">{{ $prog->program->name }} - {{ $prog->code }} - {{ $prog->campus->name }}</option>
                          @endif
                        @endforeach
                     </select>

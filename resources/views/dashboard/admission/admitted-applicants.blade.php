@@ -114,7 +114,7 @@
                       <td>{{ $applicant->gender }}</td>
                       <td>@foreach($applicant->selections as $selection)
                            @if($selection->status == 'SELECTED')
-                           {{ $selection->campusProgram->program->code }}
+                           {{ $selection->campusProgram->code }}
                            @endif
                           @endforeach
                       </td>

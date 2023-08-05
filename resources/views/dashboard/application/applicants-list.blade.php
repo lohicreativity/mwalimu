@@ -258,13 +258,13 @@
                                       @foreach($applicant->selections as $selection)
 
                                         @if($selection->order == 1)
-                                        <p>{{ $selection->campusProgram->program->code }} - 1st choice </p>                                        
+                                        <p>{{ $selection->campusProgram->code }} - 1st choice </p>                                        
                                         @elseif($selection->order == 2)
-                                        <p>{{ $selection->campusProgram->program->code }} - 2nd choice </p>
+                                        <p>{{ $selection->campusProgram->code }} - 2nd choice </p>
                                         @elseif($selection->order == 3)
-                                        <p>{{ $selection->campusProgram->program->code }} - 3rd choice </p>
+                                        <p>{{ $selection->campusProgram->code }} - 3rd choice </p>
                                         @else
-                                        <p>{{ $selection->campusProgram->program->code }} - 4th choice </p> 
+                                        <p>{{ $selection->campusProgram->code }} - 4th choice </p> 
                                         @endif
 
                                       @endforeach
