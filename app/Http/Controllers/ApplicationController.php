@@ -2538,18 +2538,23 @@ class ApplicationController extends Controller
         if(!empty($request->get('award_id'))){
             $batch = ApplicationBatch::select('id','batch_no')->where('application_window_id', $request->get('application_window_id'))->where('program_level_id',$request->get('award_id'))->latest()->first();
             
-            if(Applicant::doesntHave('selections')->where('application_window_id', $request->get('application_window_id'))
-            ->where('program_level_id',$request->get('award_id'))->where('batch_id',$batch->id)->count() == 0){
-                $batch_id = $batch->id;
-                $batch_no = $batch->batch_no;
+            if($batch->batch_no > 1){
+                if(Applicant::doesntHave('selections')->where('application_window_id', $request->get('application_window_id'))
+                ->where('program_level_id',$request->get('award_id'))->where('batch_id',$batch->id)->count() == 0){
+                    $batch_id = $batch->id;
+                    $batch_no = $batch->batch_no;
+    
+                }else{
+                    $previous_batch = null;
 
-            }else{
-                $previous_batch = null;
-                if($batch->batch_no > 1){
                     $previous_batch = ApplicationBatch::where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$award->id)->where('batch_no', $batch->batch_no - 1)->first();
                     $batch_id = $previous_batch->id;
                     $batch_no = $previous_batch->batch_no;
+                    
                 }
+            }else{
+                $batch_id = $batch->id;
+                $batch_no = $batch->batch_no;              
             }
 
         }
