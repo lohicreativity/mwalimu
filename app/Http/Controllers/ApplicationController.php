@@ -349,7 +349,7 @@ class ApplicationController extends Controller
                      ->where('program_level_id',$request->get('program_level_id'))->whereNotIn('status', ['ADMITTED', 'SUBMITTED', 'NULL'])->update(['status'=>null]);
 
         }else{
-            return redirect()->back()->with('error','This task can only be performed by an Admission Officer');
+            return redirect()->back()->with('error','Sorry, this task can only be done by a respective Admission Officer.');
         }
 
 
@@ -2582,17 +2582,20 @@ class ApplicationController extends Controller
             })->with(['selections'=>function($query) use($batch_id){$query->where('batch_id',$batch_id);},'nectaResultDetails.results','nacteResultDetails.results'])
             ->where('program_level_id',$request->get('award_id'))->whereNull('is_tamisemi')->get(); */
 
-            $applicants = Applicant::whereHas('selections',function($query) use($request, $staff, $batch_id){$query->where('id',$request->get('application_window_id'))
+/*             $applicants = Applicant::whereHas('selections',function($query) use($request, $staff, $batch_id){$query->where('id',$request->get('application_window_id'))
                                     ->where('batch_id',$batch_id)->where('campus_id', $staff->campus_id)->where('status','ELIGIBLE');})
                                     ->with(['selections','nectaResultDetails.results','nacteResultDetails.results'])
+                                    ->where('program_level_id',$request->get('award_id'))->whereNull('is_tamisemi')->get(); */
+
+            $applicants = Applicant::select('id','rank_points','program_level_id','avn_no_results','teacher_certificate_status','teacher_diploma_certificate','batch_id')
+                                    ->whereHas('selections',function($query) use($request, $batch_id){$query->where('application_window_id',$request->get('application_window_id'))
+                                    ->where('batch_id',$batch_id)->where('status','ELIGIBLE');})
+                                    ->with(['selections:id,order,batch_id,campus_program_id,status,applicant_id','nacteResultDetails:id,applicant_id',
+                                    'nacteResultDetails.results:id,nacte_result_detail_id'])->where('status',null)
                                     ->where('program_level_id',$request->get('award_id'))->whereNull('is_tamisemi')->get();
 
-        } else {
-
-            $applicants = Applicant::whereHas('selections',function($query) use($request, $batch_id){
-                $query->where('application_window_id',$request->get('application_window_id'))->where('batch_id',$batch_id);
-            })->with(['selections'=>function($query) use($batch_id){$query->where('batch_id',$batch_id);},'nectaResultDetails.results','nacteResultDetails.results'])
-            ->where('program_level_id',$request->get('award_id'))->whereNull('is_tamisemi')->get();
+        }else{
+            return redirect()->back()->with('error','Sorry, this task can only be done by a respective Admission Officer.');
 
         }
 
@@ -2603,12 +2606,7 @@ class ApplicationController extends Controller
             $query->where('application_window_id',$request->get('application_window_id'));
         })->get(); */
 
-        $applicants = Applicant::select('id','rank_points','program_level_id','avn_no_results','teacher_certificate_status','teacher_diploma_certificate','batch_id')
-                                ->whereHas('selections',function($query) use($request, $batch_id){$query->where('application_window_id',$request->get('application_window_id'))
-                                ->where('batch_id',$batch_id)->where('status','ELIGIBLE');})
-                                ->with(['selections:id,order,batch_id,campus_program_id,status,applicant_id','nacteResultDetails:id,applicant_id',
-                                'nacteResultDetails.results:id,nacte_result_detail_id'])->where('status',null)
-                                ->where('program_level_id',$request->get('award_id'))->whereNull('is_tamisemi')->get();
+
 
         for($i = 0; $i < count($applicants); $i++){
             for($j = $i + 1; $j < count($applicants); $j++){
