@@ -317,7 +317,7 @@ class ApplicationController extends Controller
 
               
 */
-        $batch_id; $batch_no = 0;
+        $batch_id = $batch_no = 0;
         if(!empty($request->get('program_level_id'))){
             $batch = ApplicationBatch::select('id','batch_no')->where('application_window_id', $request->get('application_window_id'))
                                         ->where('program_level_id',$request->get('program_level_id'))->latest()->first();
@@ -2534,7 +2534,7 @@ class ApplicationController extends Controller
              return redirect()->back()->with('error','Application window is not active');
         }
 
-        $batch_id; $batch_no = 0;
+        $batch_id = $batch_no = 0;
         if(!empty($request->get('award_id'))){
             $batch = ApplicationBatch::select('id','batch_no')->where('application_window_id', $request->get('application_window_id'))->where('program_level_id',$request->get('award_id'))->latest()->first();
             
