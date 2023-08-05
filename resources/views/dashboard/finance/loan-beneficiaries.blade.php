@@ -139,7 +139,7 @@
 							@if($transfers)
 								@foreach($transfers as $trans_stud)
 									@if($trans_stud->student_id == $stud->student_id)
-										Transfered ({{ $trans_stud->previousProgram->program->code}} to {{ $trans_stud->currentProgram->program->code}})				
+										Transfered ({{ $trans_stud->previousProgram->code}} to {{ $trans_stud->currentProgram->program->code}})				
 										@break
 									@endif
 								@endforeach

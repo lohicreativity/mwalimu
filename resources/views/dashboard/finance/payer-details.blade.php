@@ -95,7 +95,7 @@
 
 							<div class="col-md-9 col-sm-9">
 								<h2>{{ $payer->first_name }} {{ $payer->middle_name }} {{ $payer->surname }}</h2>
-								<h6>{{ $payer->registration_number }} &nbsp; | &nbsp; {{ $payer->campusProgram->program->code}} &nbsp; | &nbsp; Year {{ $payer->year_of_study }} &nbsp; | &nbsp; <span style="color:red">{{ $payer->studentshipStatus->name }} </span></h6>
+								<h6>{{ $payer->registration_number }} &nbsp; | &nbsp; {{ $payer->campusProgram->code}} &nbsp; | &nbsp; Year {{ $payer->year_of_study }} &nbsp; | &nbsp; <span style="color:red">{{ $payer->studentshipStatus->name }} </span></h6>
 								<hr>
 								<ul style="list-style-type: none; inline">
 									<li><i class="icon-li fa fa-envelope"></i> &nbsp; &nbsp;{{ $payer->email }}</li>

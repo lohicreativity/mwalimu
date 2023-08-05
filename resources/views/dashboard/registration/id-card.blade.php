@@ -143,7 +143,7 @@
 						  <td>{{ $student->first_name }} {{ $student->middle_name }} {{ $student->surname }}</td>
 						  <td>{{ $student->gender }}</td>
 						  <td>{{ $student->phone }}</td>
-						  <td>{{ $student->campusProgram->program->code }}</td>
+						  <td>{{ $student->campusProgram->code }}</td>
 						  @if(Auth::user()->hasRole('admission-officer'))
 							<td>
 							  <a class="btn btn-success btn-sm" href="#" data-toggle="modal" data-target="#ss-student-id-{{ $student->id }}">

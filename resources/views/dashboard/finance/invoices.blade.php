@@ -129,7 +129,7 @@
                                @if($stud_reg) {{ $stud_reg }} @else N/A @endif
                            </td>
                            <td>{{ $invoice->payable->first_name }} {{ $invoice->payable->middle_name }} {{ $invoice->payable->surname }}</td>
-                           <td>{{ $invoice->payable->campusProgram->program->code }}</td>
+                           <td>{{ $invoice->payable->campusProgram->code }}</td>
                            <td>{{ $invoice->payable->year_of_study }}</td>
                            <td>{{ $invoice->feeType->name }}</td>
                            <td>{{ number_format($invoice->amount,2) }}</td>

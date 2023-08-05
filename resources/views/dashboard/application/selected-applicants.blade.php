@@ -91,7 +91,7 @@
                     <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#ss-select-program-confirmed">Retrieve Confirmed Applicants from TCU</a>
                     @elseif(($request->get('program_level_id') == 1 || $request->get('program_level_id') == 2) && $application_window->enrollment_report_download_status == 1)
                     <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#ss-submit-applicants">Submit Selected Applicants to NACTE</a>
-                    <a href="{{ url('application/get-nacte-applicants?program_level_id='.$request->get('program_level_id').'&application_window_id='.$request->get('application_window_id')) }}" class="btn btn-primary">Retrieve Verified Applicants from NACTE</a>
+                    <a href="{{ url('application/get-nacte-applicants?program_level_id='.$request->get('program_level_id').'&application_window_id='.$request->get('application_window_id')) }}" class="btn btn-primary">Retrieve Verified Applicants from NACTVET</a>
                     @endif
                  @endif
                </div>
@@ -194,6 +194,7 @@
                           <th>Name</th>
                           <th>Gender</th>
                           <th>Programme</th>
+                          <th>Batch#</th>
                           <th>Status</th>
                           <th>Action</th>
                         </tr>
@@ -206,9 +207,16 @@
                       <td>{{ $applicant->gender }}</td>
                       <td>@foreach($applicant->selections as $selection)
                            @if($selection->status == 'APPROVING')
-                           {{ $selection->campusProgram->program->name }}
+                           {{ $selection->campusProgram->code }}
                            @endif
                           @endforeach
+                      </td>
+                      <td> @foreach($batches as $batch)
+                              @if($batch->id == $applicant->batch_id)
+                                  {{ $batch->batch_no}}
+                                  @break
+                              @endif
+                            @endforeach
                       </td>
                       <td>@if(App\Domain\Application\Models\ApplicantSubmissionLog::containsApplicant($submission_logs,$applicant->id))
                         <span class="badge badge-success">Submitted</span>
@@ -229,9 +237,9 @@
                    </tbody>
                   </table>
                   @if($request->get('program_level_id') == 4)
-                  <button type="submit" class="btn btn-primary">Submit To TCU</button>
+                  <button type="submit" class="btn btn-primary">Submit to TCU</button>
                   @else
-                  <button type="submit" class="btn btn-primary">Submit To NACTVET</button>
+                  <button type="submit" class="btn btn-primary">Submit to NACTVET</button>
                   @endif
                   {!! Form::close() !!}
                   </div>
@@ -283,7 +291,7 @@
                           <th>F4 Index#</th>
                             @if($request->get('program_level_id') != 1)
                               @if($request->get('program_level_id') == 2)
-                                <th>NACTE Reg#/F6 Index#</th>
+                                <th>NACTVET Reg#/F6 Index#</th>
                               @else
                                 <th>F6 Index#/AVN</th>
                               @endif
@@ -308,31 +316,35 @@
                               <td>{{ $applicant->index_number }}</td>
                               @if($request->get('program_level_id') != 1)	
                               <td>
-                                @if($applicant->entry_mode == 'EQUIVALENT')
-                                  @foreach($applicant->nacteResultDetails as $detail)
-                                    {{ $detail->avn }}
-                                  @endforeach <br>
-                                  @foreach($applicant->nectaResultDetails as $detail)
-                                    @if($detail->exam_id == 2) 
-                                      {{ $detail->index_number }} 
-                                    @endif
-                                  @endforeach
-                                @else
-                                @foreach($applicant->nectaResultDetails as $detail)
-                                    @if($detail->exam_id == 2) 
-                                      {{ $detail->index_number }} 
-                                    @endif
-                                  @endforeach <br>
-                                  @foreach($applicant->nacteResultDetails as $detail)
-                                    {{ $detail->avn }}
-                                  @endforeach
-                                @endif
+                                  @if($applicant->entry_mode == 'EQUIVALENT')
+                                      @foreach($applicant->nacteResultDetails as $detail)
+                                        @if($detail->verified == 1)
+                                          {{ $detail->avn }}
+                                        @endif
+                                      @endforeach <br>
+                                      @foreach($applicant->nectaResultDetails as $detail)
+                                        @if($detail->exam_id == 2 && $detail->verified == 1) 
+                                          {{ $detail->index_number }} 
+                                        @endif
+                                      @endforeach
+                                  @else
+                                      @foreach($applicant->nectaResultDetails as $detail)
+                                        @if($detail->exam_id == 2 && $detail->verified == 1) 
+                                          {{ $detail->index_number }} 
+                                        @endif
+                                      @endforeach <br>
+                                      @foreach($applicant->nacteResultDetails as $detail)
+                                        @if($detail->verified == 1)
+                                          {{ $detail->avn }}
+                                        @endif
+                                      @endforeach
+                                  @endif
                               </td>
                               @endif
                               <td>@foreach($batches as $batch) @if($batch->batch_id == $applicant->batch_id) {{ $batch->batch_no }} @break @endif @endforeach</td>
                               <td>{{ $applicant->phone }}</td>
                               <td>{{ $applicant->gender }}</td>
-                              <td>{{ $selection->campusProgram->program->code }}
+                              <td>{{ $selection->campusProgram->code }}
                                   
                                   @if($selection->order == 1)
                                     (1st Choice)
@@ -353,11 +365,9 @@
                                       @else
                                         <span class="badge badge-warning"> PRE-SELECTED </span>
                                       @endif
-                                  @elseif($selection->status == 'ELIGIBLE' && !$selection_status) 
-                                    <span class="badge badge-warning"> PRE-SELECTED </span>   
+                                  @else
+                                      <span class="badge badge-danger"> NOT APPROVED </span>                                     
                                   @endif  
-                                @elseif($applicant->status == null && $selection_status)
-                                  <span class="badge badge-danger"> NOT APPROVED </span> 
                                 @endif
                               </td>
                           </tr>
@@ -368,25 +378,29 @@
                               <td>{{ $applicant->first_name }} {{ $applicant->middle_name }} {{ $applicant->surname }}</td>
                               <td>{{ $applicant->index_number }}</td>
                               @if($request->get('program_level_id') != 1)	
-                              <td>                               @if($applicant->entry_mode == 'EQUIVALENT')
-                                  @foreach($applicant->nacteResultDetails as $detail)
-                                    {{ $detail->avn }}
-                                  @endforeach <br>
-                                  @foreach($applicant->nectaResultDetails as $detail)
-                                    @if($detail->exam_id == 2) 
-                                      {{ $detail->index_number }} 
-                                    @endif
-                                  @endforeach
-                                @else
-                                @foreach($applicant->nectaResultDetails as $detail)
-                                    @if($detail->exam_id == 2) 
-                                      {{ $detail->index_number }} 
-                                    @endif
-                                  @endforeach <br>
-                                  @foreach($applicant->nacteResultDetails as $detail)
-                                    {{ $detail->avn }}
-                                  @endforeach
-                                @endif
+                              <td>@if($applicant->entry_mode == 'EQUIVALENT')
+                                      @foreach($applicant->nacteResultDetails as $detail)
+                                        @if($detail->verified == 1)
+                                          {{ $detail->avn }}
+                                        @endif
+                                      @endforeach <br>
+                                      @foreach($applicant->nectaResultDetails as $detail)
+                                        @if($detail->exam_id == 2 && $detail->verified == 1) 
+                                          {{ $detail->index_number }} 
+                                        @endif
+                                      @endforeach
+                                  @else
+                                      @foreach($applicant->nectaResultDetails as $detail)
+                                        @if($detail->exam_id == 2 && $detail->verified == 1) 
+                                          {{ $detail->index_number }} 
+                                        @endif
+                                      @endforeach <br>
+                                      @foreach($applicant->nacteResultDetails as $detail)
+                                        @if($detail->verified == 1)
+                                          {{ $detail->avn }}
+                                        @endif
+                                      @endforeach
+                                  @endif
                               </td>
                               @endif
                               <td>{{ $applicant->batch->batch_no }}</td>
@@ -413,9 +427,9 @@
                                             @if($select->batch_id == $batch_id)
                                               @if($total_selections > 1)
                                                 @php --$x ; @endphp
-                                                {{ $select->campusProgram->program->code }}@if($x != 0), @endif
+                                                {{ $select->campusProgram->code }}@if($x != 0), @endif
                                               @else
-                                                {{ $select->campusProgram->program->code }}
+                                                {{ $select->campusProgram->code }}
                                               @endif
                                             @endif
                                     @endforeach

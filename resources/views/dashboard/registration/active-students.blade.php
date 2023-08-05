@@ -122,7 +122,7 @@
 						@endif
 					  </td>
                       <td>{{ $reg->student->registration_number }}</td>
-                      <td>{{ $reg->student->campusProgram->program->code }}</td>
+                      <td>{{ $reg->student->campusProgram->code }}</td>
                    </tr>
                  @endforeach
                    </tbody>

@@ -165,7 +165,7 @@ class LoanAllocationController extends Controller
                   fputcsv($file_handle,['Form Four Index','Student Name','Sex','Registration Number','Course Code','Year of Study','Bank Account Number','Bank Name','Batch','Remarks']);
                   foreach ($list as $row) {
                     fputcsv($file_handle, [$row->student->applicant->index_number,$row->student->surname.', '.$row->student->first_name.' '.$row->student->middle_name,$row->student->gender == 'M'? 'Male' : 'Female'
-					,$row->student->registration_number,$row->student->campusProgram->program->code,$row->student->year_of_study,$row->account_number, $row->bank_name, 1, null]);
+					,$row->student->registration_number,$row->student->campusProgram->code,$row->student->year_of_study,$row->account_number, $row->bank_name, 1, null]);
                   }
                   fclose($file_handle);
               };

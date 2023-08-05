@@ -116,7 +116,7 @@
                       <td>{{ $student->phone }}</td>					  
 					  <td>{{ $student->applicant->index_number }}</td>
                       <td>{{ $student->registration_number }}</td>					  
-                      <td>{{ $student->campusProgram->program->code }}</td>
+                      <td>{{ $student->campusProgram->code }}</td>
                       <td>{{ ucwords(strtolower($student->academicStatus->name)) }}</td>					  
 					  <td><a href="{{ url('application/manual-registration?type=student&keyword='.$student->id) }}" class="btn btn-primary">Register</a></td>
                    </tr>

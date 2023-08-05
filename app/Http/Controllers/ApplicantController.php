@@ -1958,6 +1958,7 @@ class ApplicantController extends Controller
         }
 
         return $f6_index; */
+
         $batches = ApplicationBatch::select('id','batch_no')->where('application_window_id',$request->get('application_window_id'))->get();
         $callback = function() use ($applicants, $batches) 
               {
@@ -1965,7 +1966,7 @@ class ApplicantController extends Controller
                   fputcsv($file_handle, ['F.4 Index Number/EQ','F.6 Index Number/EQ','AVN','First Name','Middle Name','Surname','Gender','Phone Number','Application Level','Category','Payment Status', 'Batch#']);
                   
                   foreach($applicants as $row){
-                      $payment_status = $row->payment_status == 1? 'Paid' : 'Not Paid';
+                      $payment_status = $row->payment_complete_status == 1? 'Paid' : 'Not Paid';
                       $f6_index = null;
                       if($row->nectaResultDetails){
                         foreach($row->nectaResultDetails as $detail){

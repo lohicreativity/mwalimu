@@ -68,7 +68,7 @@ class ACPACController extends Controller
                       $stud_reg = null;
                   }
 
-                  fputcsv($file_handle, [$invoice->reference_no,$stud_reg,$invoice->payable->first_name.' '.$invoice->payable->middle_name.' '.$invoice->payable->surname,$invoice->payable->campusProgram->program->code,$invoice->payable->year_of_study,$invoice->feeType->name,number_format($invoice->amount,2),$invoice->currency, $invoice->control_no,$invoice->created_at
+                  fputcsv($file_handle, [$invoice->reference_no,$stud_reg,$invoice->payable->first_name.' '.$invoice->payable->middle_name.' '.$invoice->payable->surname,$invoice->payable->campusProgram->code,$invoice->payable->year_of_study,$invoice->feeType->name,number_format($invoice->amount,2),$invoice->currency, $invoice->control_no,$invoice->created_at
                     ]);
               }
               fclose($file_handle);

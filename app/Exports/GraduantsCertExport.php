@@ -33,7 +33,7 @@ class GraduantsCertExport implements WithMultipleSheets
                     $department = $dpt;
                 }
              }
-            $sheets[] = new GraduantsCertPerProgramSheet($program->program->id, $program->program->code, $program->program->name, $department->name, $program->campus->name, $program->campus_id, $this->study_academic_year_id);
+            $sheets[] = new GraduantsCertPerProgramSheet($program->program->id, $program->code, $program->program->name, $department->name, $program->campus->name, $program->campus_id, $this->study_academic_year_id);
         }
 
         return $sheets;
