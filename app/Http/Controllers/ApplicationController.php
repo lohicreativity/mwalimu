@@ -2639,11 +2639,12 @@ class ApplicationController extends Controller
                                     ->with(['selections','nectaResultDetails.results','nacteResultDetails.results'])
                                     ->where('program_level_id',$request->get('award_id'))->whereNull('is_tamisemi')->get(); */
 
-            $applicants_order = Applicant::select('id','rank_points')
+            $applicants = Applicant::select('id','rank_points','program_level_id','avn_no_results','entry_mode','teacher_certificate_status','batch_id')
                                     ->whereHas('selections',function($query) use($request, $batch_id){$query->where('application_window_id',$request->get('application_window_id'))
                                     ->where('batch_id',$batch_id)->where('status','ELIGIBLE');})
+                                    ->with(['selections:id,order,batch_id,campus_program_id,status,applicant_id','nacteResultDetails:id,applicant_id',
+                                    'nacteResultDetails.results:id,nacte_result_detail_id'])->where('status',null)
                                     ->where('program_level_id',$request->get('award_id'))->whereNull('is_tamisemi')->get();
-
 
         }else{
             return redirect()->back()->with('error','Sorry, this task can only be done by a respective Admission Officer.');
@@ -2659,7 +2660,7 @@ class ApplicationController extends Controller
 
 
 
-/*         for($i = 0; $i < count($applicants); $i++){
+        for($i = 0; $i < count($applicants); $i++){
             for($j = $i + 1; $j < count($applicants); $j++){
                if($applicants[$i]->rank_points < $applicants[$j]->rank_points){
                  $temp = $applicants[$i];
@@ -2667,16 +2668,16 @@ class ApplicationController extends Controller
                  $applicants[$j] = $temp;
                }
             }
-        } */
-   
+        }
+        
         $selected_program = [];
-        foreach ($applicants_order as $applicant) {
+        foreach ($applicants as $applicant) {
           $selected_program[$applicant->id] = false;
         }
 
         $selection_status = false;
         foreach($choices as $choice){   
-            foreach($campus_programs as $program){
+            foreach ($campus_programs as $program) {
 
                 if(count($program->entryRequirements) == 0){
                     return redirect()->back()->with('error',$program->program->name.' does not have entry requirements');
@@ -2686,24 +2687,7 @@ class ApplicationController extends Controller
                      return redirect()->back()->with('error','mMximum capacity for '.$program->program->name.' have not been specified.');
                 }
 
-                if($program->entryRequirements[0]){
-
-                    $applicants = Applicant::select('id','rank_points','program_level_id','avn_no_results','entry_mode','teacher_certificate_status','batch_id')
-                                            ->whereHas('selections',function($query) use($request, $batch_id,$program){$query->where('application_window_id',$request->get('application_window_id'))
-                                            ->where('batch_id',$batch_id)->where('status','ELIGIBLE')->where('campus_program_id',$program->id);})
-                                            ->with(['selections:id,order,batch_id,campus_program_id,status,applicant_id','nacteResultDetails:id,applicant_id',
-                                            'nacteResultDetails.results:id,nacte_result_detail_id'])->where('status',null)
-                                            ->where('program_level_id',$request->get('award_id'))->whereNull('is_tamisemi')->get();
-
-                    for($i = 0; $i < count($applicants); $i++){
-                        for($j = $i + 1; $j < count($applicants); $j++){
-                            if($applicants[$i]->rank_points < $applicants[$j]->rank_points){
-                                $temp = $applicants[$i];
-                                $applicants[$i] = $applicants[$j];
-                                $applicants[$j] = $temp;
-                            }
-                        }
-                    }
+                if(isset($program->entryRequirements[0])){
 
                     foreach($applicants as $applicant){
                         $has_results = true;
@@ -2718,7 +2702,8 @@ class ApplicationController extends Controller
                                 foreach($applicant->selections as $selection){
                                     if($selection->order == $choice && $selection->batch_id == $batch_id && $selection->campus_program_id == $program->id){
                                         if($count[$program->id] < $program->entryRequirements[0]->max_capacity && !$selected_program[$applicant->id]){
-                                            if($applicant->avn_no_results !== 1 || ($applicant->avn_no_results == 1 && $applicant->entry_mode == 'DIRECT')){
+                                            if((ApplicantProgramSelection::where('applicant_id',$applicant->id)->where('status','APPROVING')->where('batch_id',$batch->id)->count() == 0) && 
+                                                $applicant->avn_no_results !== 1 || ($applicant->avn_no_results == 1 && $applicant->entry_mode == 'DIRECT')){
                                                 $select = ApplicantProgramSelection::find($selection->id);
                                                 $select->status = 'APPROVING';
                                                 $select->status_changed_at = now();
@@ -2729,7 +2714,6 @@ class ApplicationController extends Controller
                                                 $selected_program[$applicant->id] = true;
 
                                                 $count[$program->id]++;
-                                                break;
                                             }
                                         }
                                     }
