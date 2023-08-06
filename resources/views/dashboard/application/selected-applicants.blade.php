@@ -449,7 +449,8 @@
                 </tbody>
               </table>
 
-          
+              <div class="float-right ss-pagination-links"> {!! $selected_applicants->appends($request->except('page'))->render() !!} </div>
+                
                </div>
             </div>
             @endif

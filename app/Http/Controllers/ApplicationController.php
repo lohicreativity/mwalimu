@@ -403,7 +403,7 @@ class ApplicationController extends Controller
                                     ->whereIn('status',['SELECTED'.null])->where('program_level_id',$request->get('program_level_id'))
                                     ->where('application_window_id',$request->get('application_window_id'))
                                     ->with(['selections:id,order,campus_program_id,applicant_id,status','selections.campusProgram:id,code',
-                                            'nectaResultDetails:id,applicant_id,index_number,exam_id,verified','nacteResultDetails:id,applicant_id,avn,verified'])->get();
+                                            'nectaResultDetails:id,applicant_id,index_number,exam_id,verified','nacteResultDetails:id,applicant_id,avn,verified'])->pagination(500);
  
  /*            $selection_status = ApplicantProgramSelection::whereHas('applicant',function($query) use($request){$query->where('program_level_id',$request->get('program_level_id'));})
            ->where('application_window_id', $request->get('application_window_id'))->where('batch_id', $batch)->count();
@@ -424,7 +424,7 @@ class ApplicationController extends Controller
                                     ->whereIn('status',['SELECTED'.null])->where('program_level_id',$request->get('program_level_id'))
                                     ->where('application_window_id',$request->get('application_window_id'))
                                     ->with(['selections:id,order,campus_program_id,applicant_id,status','selections.campusProgram:id,code',
-                                            'nectaResultDetails:id,applicant_id,index_number,exam_id,verified','nacteResultDetails:id,applicant_id,avn,verified'])->get();
+                                            'nectaResultDetails:id,applicant_id,index_number,exam_id,verified','nacteResultDetails:id,applicant_id,avn,verified'])->pagination(500);;
 
 
            // $batch = ApplicationBatch::where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$request->get('program_level_id'))->latest()->first();
@@ -440,7 +440,7 @@ class ApplicationController extends Controller
                                     ->whereIn('status',['SELECTED'.null])->where('program_level_id',$request->get('program_level_id'))
                                     ->where('application_window_id',$request->get('application_window_id'))
                                     ->with(['selections:id,order,campus_program_id,applicant_id,status','selections.campusProgram:id,code',
-                                            'nectaResultDetails:id,applicant_id,index_number,exam_id,verified','nacteResultDetails:id,applicant_id,avn,verified'])->get();
+                                            'nectaResultDetails:id,applicant_id,index_number,exam_id,verified','nacteResultDetails:id,applicant_id,avn,verified'])->pagination(500);;
 /*             $applicants = Applicant::whereHas('applicationWindow',function($query) use($request){
                 $query->where('id',$request->get('application_window_id'));
            })->whereHas('selections')
@@ -2716,10 +2716,6 @@ class ApplicationController extends Controller
                                                 $count[$program->id]++;
                                             }
                                         }
-                                    }
-
-                                    if($selection_status){
-                                        break;
                                     }
                                 }
                             }
