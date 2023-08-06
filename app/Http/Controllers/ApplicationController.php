@@ -436,8 +436,8 @@ class ApplicationController extends Controller
  */
         }else{
             $applicants = Applicant::select('id','first_name','middle_name','surname','index_number','gender','phone','batch_id','entry_mode','status')->doesntHave('student')
-                                    ->whereHas('selections',function($query){$query->where('status','APPROVING')->orWhere('status','SELECTED')->orWhere('status','ELIGIBLE');})
-                                    ->where(function($query){$query->where('status','SELECTED')->orWhereNull('status');})->where('program_level_id',$request->get('program_level_id'))
+                                    ->whereHas('selections',function($query){$query->whereIn('status',['APPROVING','SELECTED','ELIGIBLE']);})
+                                    ->whereIn('status',['SELECTED'.null])->where('program_level_id',$request->get('program_level_id'))
                                     ->where('application_window_id',$request->get('application_window_id'))
                                     ->with(['selections:id,order,campus_program_id,applicant_id,status','selections.campusProgram:id,code',
                                             'nectaResultDetails:id,applicant_id,index_number,exam_id,verified','nacteResultDetails:id,applicant_id,avn,verified'])->get();
@@ -457,6 +457,7 @@ class ApplicationController extends Controller
                                            ->with(['nextOfKin','intake','selections.campusProgram.program'])->where('program_level_id',$request->get('program_level_id'))->get(); */
         }
 
+        // Ready to be sent to regulators i.e. NACTVET and TCU
         $selected_applicants = Applicant::select('id','first_name','middle_name','surname','gender','batch_id')->doesntHave('student')
                                         ->whereHas('selections',function($query){$query->where('status','APPROVING');})
                                         ->where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$request->get('program_level_id'))                                        
