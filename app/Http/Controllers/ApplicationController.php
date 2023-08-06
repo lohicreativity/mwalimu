@@ -317,24 +317,29 @@ class ApplicationController extends Controller
 
               
 */
+
         $batch_id = $batch_no = 0;
         if(!empty($request->get('program_level_id'))){
             $batch = ApplicationBatch::select('id','batch_no')->where('application_window_id', $request->get('application_window_id'))
                                         ->where('program_level_id',$request->get('program_level_id'))->latest()->first();
-            
-            if(Applicant::doesntHave('selections')->where('application_window_id', $request->get('application_window_id'))
-            ->where('program_level_id',$request->get('program_level_id'))->where('batch_id',$batch->id)->count() == 0){
-                $batch_id = $batch->id;
-                $batch_no = $batch->batch_no;
+            if($batch->batch_no > 1){
+                if(Applicant::doesntHave('selections')->where('application_window_id', $request->get('application_window_id'))
+                             ->where('program_level_id',$request->get('program_level_id'))->where('batch_id',$batch->id)->count() == 0){
+                    $batch_id = $batch->id;
+                    $batch_no = $batch->batch_no;
 
-            }else{
-                $previous_batch = null;
-                if($batch->batch_no > 1){
-                    $previous_batch = ApplicationBatch::where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$request->get('program_level_id'))
-                                                        ->where('batch_no', $batch->batch_no - 1)->first();
-                    $batch_id = $previous_batch->id;
-                    $batch_no = $previous_batch->batch_no;
+                }else{
+                    $previous_batch = null;
+                    if($batch->batch_no > 1){
+                        $previous_batch = ApplicationBatch::where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$request->get('program_level_id'))
+                                                            ->where('batch_no', $batch->batch_no - 1)->first();
+                        $batch_id = $previous_batch->id;
+                        $batch_no = $previous_batch->batch_no;
+                    }
                 }
+            }else{
+                $batch_id = $batch->id;
+                $batch_no = $batch->batch_no;              
             }
 
         }
@@ -455,7 +460,7 @@ class ApplicationController extends Controller
         $selected_applicants = Applicant::select('id','first_name','middle_name','surname','gender','batch_id')->doesntHave('student')
                                         ->whereHas('selections',function($query){$query->where('status','APPROVING');})
                                         ->where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$request->get('program_level_id'))                                        
-                                        ->get();
+                                        ->paginate(500);
 
         if(count($selected_applicants) == 0 && !empty($request->get('program_level_id'))){
             return redirect()->back()->with('error','No selected applicant in this programme level');
@@ -913,7 +918,19 @@ class ApplicationController extends Controller
         $staff = User::find(Auth::user()->id)->staff;
         $award = Award::find($request->get('program_level_id'));
         $batch = ApplicationBatch::where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$award->id)->latest()->first();
+        $window = ApplicationWindow::where('id',$request->get('application_window_id'))->first();
         
+        if($window->campus_id == 1){
+            $tcu_username = config('constants.TCU_USERNAME_KIVUKONI');
+            $tcu_token = config('constants.TCU_TOKEN_KIVUKONI');
+
+        }elseif($window->campus_id == 2){
+            $tcu_usernane = config('constants.TCU_USERNAME_KARUME');
+            $tcu_token = config('constants.TCU_TOKEN_KARUME');
+
+        }elseif($window->campus_id == 3){
+
+        }
         $previous_batch = null;
         if($batch->batch_no > 1){
             $previous_batch = ApplicationBatch::where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$award->id)->where('batch_no', $batch->batch_no - 1)->first();
@@ -961,90 +978,119 @@ class ApplicationController extends Controller
 
                             $f6indexno = null;
                             foreach ($applicant->nectaResultDetails as $detail) {
-                                if($detail->exam_id == 2){
+                                if($detail->exam_id == 2 && $detail->verified == 1){
                                     $f6indexno = $detail->index_number;
                                 }
                             }
 
-                            if($f6indexno){
+                            $category = null;
+                            if($applicant->entry_mode == 'DIRECT'){
+                                $category = 'A';
 
-                                if($approving_selection){
-
-                                    $xml_request = '<?xml version="1.0" encoding="UTF-8"?>
-                                    <Request>
-                                    <UsernameToken>
-                                    <Username>'.config('constants.TCU_USERNAME').'</Username>
-                                    <SessionToken>'.config('constants.TCU_TOKEN').'</SessionToken>
-                                    </UsernameToken>
-                                    <RequestParameters>
-                                    <f4indexno>'.$applicant->index_number.'</f4indexno >
-                                    <f6indexno>'.$f6indexno.'</f6indexno>
-                                    <Gender>'.$applicant->gender.'</Gender>
-                                    <SelectedProgrammes>'.implode(',', $selected_programs).'</SelectedProgrammes>
-                                    <MobileNumber>'.str_replace('-', '', $applicant->phone).'</MobileNumber>
-                                    <OtherMobileNumber></OtherMobileNumber>
-                                    <EmailAddress>'.$applicant->email.'</EmailAddress>
-                                    <Category>A</Category>
-                                    <AdmissionStatus>provisional admission</AdmissionStatus>
-                                    <ProgrammeAdmitted>'.$approving_selection->campusProgram->regulator_code.'</ProgrammeAdmitted>
-                                    <Reason>eligible</Reason>
-                                    <Nationality >'.$applicant->nationality.'</Nationality>
-                                    <Impairment>'.$applicant->disabilityStatus->name.'</Impairment>
-                                    <DateOfBirth>'.$applicant->birth_date.'</DateOfBirth>
-                                    <NationalIdNumber>'.$applicant->nin.'</NationalIdNumber>
-                                    <Otherf4indexno></Otherf4indexno>
-                                    <Otherf6indexno></Otherf6indexno>
-                                    </RequestParameters>
-                                    </Request>';
-
-                                } else {
-
-                                    $xml_request = '<?xml version="1.0" encoding="UTF-8"?>
-                                    <Request>
-                                    <UsernameToken>
-                                    <Username>'.config('constants.TCU_USERNAME').'</Username>
-                                    <SessionToken>'.config('constants.TCU_TOKEN').'</SessionToken>
-                                    </UsernameToken>
-                                    <RequestParameters>
-                                    <f4indexno>'.$applicant->index_number.'</f4indexno >
-                                    <f6indexno>'.$f6indexno.'</f6indexno>
-                                    <Gender>'.$applicant->gender.'</Gender>
-                                    <SelectedProgrammes>'.implode(',', $selected_programs).'</SelectedProgrammes>
-                                    <MobileNumber>'.str_replace('-', '', $applicant->phone).'</MobileNumber>
-                                    <OtherMobileNumber></OtherMobileNumber>
-                                    <EmailAddress>'.$applicant->email.'</EmailAddress>
-                                    <Category>A</Category>
-                                    <AdmissionStatus>not selected</AdmissionStatus>
-                                    <ProgrammeAdmitted>'.null.'</ProgrammeAdmitted>
-                                    <Reason>max capacity</Reason>
-                                    <Nationality >'.$applicant->nationality.'</Nationality>
-                                    <Impairment>'.$applicant->disabilityStatus->name.'</Impairment>
-                                    <DateOfBirth>'.$applicant->birth_date.'</DateOfBirth>
-                                    <NationalIdNumber>'.$applicant->nin.'</NationalIdNumber>
-                                    <Otherf4indexno></Otherf4indexno>
-                                    <Otherf6indexno></Otherf6indexno>
-                                    </RequestParameters>
-                                    </Request>';
-                                }
-
-                                $xml_response=simplexml_load_string($this->sendXmlOverPost($url,$xml_request));
-                                $json = json_encode($xml_response);
-                                $array = json_decode($json,TRUE);           
-                    
-                                if ($array['Response']['ResponseParameters']['StatusCode'] == 200) {
-                                    
-                                    Applicant::where('id',$applicant->id)->update(['status'=>'SUBMITTED']);
-
-                                    $log = new ApplicantSubmissionLog;
-                                    $log->applicant_id = $applicant->id;
-                                    $log->program_level_id = $request->get('program_level_id');
-                                    $log->application_window_id = $request->get('application_window_id');
-                                    $log->submitted = 1;
-                                    $log->save();
-
+                            }else{
+                                if($f6indexno){
+                                    foreach($applicant->nacteResultDetail as $detail){
+                                        if($detail->verified == 1){
+                                            $category = 'D';
+                                            break;
+                                        }
+                                    }
+                                    foreach($applicant->outResultDetail as $detail){
+                                        if($detail->verified == 1){
+                                            $category = 'FD';
+                                            break;
+                                        }
+                                    }
+                                }else{
+                                    foreach($applicant->nacteResultDetail as $detail){
+                                        if($detail->verified == 1){
+                                            $category = 'D';
+                                            break;
+                                        }
+                                    }
                                 }
                             }
-                        }
+
+
+                            //if($f6indexno){
+
+                            if($approving_selection){
+
+                                $xml_request = '<?xml version="1.0" encoding="UTF-8"?>
+                                <Request>
+                                <UsernameToken>
+                                <Username>'.$tcu_usernane.'</Username>
+                                <SessionToken>'.$tcu_token.'</SessionToken>
+                                </UsernameToken>
+                                <RequestParameters>
+                                <f4indexno>'.$applicant->index_number.'</f4indexno >
+                                <f6indexno>'.$f6indexno.'</f6indexno>
+                                <Gender>'.$applicant->gender.'</Gender>
+                                <SelectedProgrammes>'.implode(',', $selected_programs).'</SelectedProgrammes>
+                                <MobileNumber>'.str_replace('-', '', $applicant->phone).'</MobileNumber>
+                                <OtherMobileNumber></OtherMobileNumber>
+                                <EmailAddress>'.$applicant->email.'</EmailAddress>
+                                <Category>'.$category.'</Category>
+                                <AdmissionStatus>provisional admission</AdmissionStatus>
+                                <ProgrammeAdmitted>'.$approving_selection->campusProgram->regulator_code.'</ProgrammeAdmitted>
+                                <Reason>eligible</Reason>
+                                <Nationality >'.$applicant->nationality.'</Nationality>
+                                <Impairment>'.$applicant->disabilityStatus->name.'</Impairment>
+                                <DateOfBirth>'.$applicant->birth_date.'</DateOfBirth>
+                                <NationalIdNumber>'.$applicant->nin.'</NationalIdNumber>
+                                <Otherf4indexno></Otherf4indexno>
+                                <Otherf6indexno></Otherf6indexno>
+                                </RequestParameters>
+                                </Request>';
+
+                            } else {
+
+                                $xml_request = '<?xml version="1.0" encoding="UTF-8"?>
+                                <Request>
+                                <UsernameToken>
+                                <Username>'.$tcu_usernane.'</Username>
+                                <SessionToken>'.$tcu_token.'</SessionToken>
+                                </UsernameToken>
+                                <RequestParameters>
+                                <f4indexno>'.$applicant->index_number.'</f4indexno >
+                                <f6indexno>'.$f6indexno.'</f6indexno>
+                                <Gender>'.$applicant->gender.'</Gender>
+                                <SelectedProgrammes>'.implode(',', $selected_programs).'</SelectedProgrammes>
+                                <MobileNumber>'.str_replace('-', '', $applicant->phone).'</MobileNumber>
+                                <OtherMobileNumber></OtherMobileNumber>
+                                <EmailAddress>'.$applicant->email.'</EmailAddress>
+                                <Category>'.$category.'</Category>
+                                <AdmissionStatus>not selected</AdmissionStatus>
+                                <ProgrammeAdmitted>'.null.'</ProgrammeAdmitted>
+                                <Reason>max capacity</Reason>
+                                <Nationality >'.$applicant->nationality.'</Nationality>
+                                <Impairment>'.$applicant->disabilityStatus->name.'</Impairment>
+                                <DateOfBirth>'.$applicant->birth_date.'</DateOfBirth>
+                                <NationalIdNumber>'.$applicant->nin.'</NationalIdNumber>
+                                <Otherf4indexno></Otherf4indexno>
+                                <Otherf6indexno></Otherf6indexno>
+                                </RequestParameters>
+                                </Request>';
+                            }
+
+                            $xml_response=simplexml_load_string($this->sendXmlOverPost($url,$xml_request));
+                            $json = json_encode($xml_response);
+                            $array = json_decode($json,TRUE);           
+                
+                            if ($array['Response']['ResponseParameters']['StatusCode'] == 200) {
+                                
+                                Applicant::where('id',$applicant->id)->update(['status'=>'SUBMITTED']);
+
+                                $log = new ApplicantSubmissionLog;
+                                $log->applicant_id = $applicant->id;
+                                $log->program_level_id = $request->get('program_level_id');
+                                $log->application_window_id = $request->get('application_window_id');
+                                $log->submitted = 1;
+                                $log->save();
+
+                            }
+                            }
+                        //}
 
                     } elseif (str_contains(strtolower($award->name),'diploma') || str_contains(strtolower($award->name),'basic')) {
 
@@ -2592,7 +2638,7 @@ class ApplicationController extends Controller
                                     ->with(['selections','nectaResultDetails.results','nacteResultDetails.results'])
                                     ->where('program_level_id',$request->get('award_id'))->whereNull('is_tamisemi')->get(); */
 
-            $applicants = Applicant::select('id','rank_points','program_level_id','avn_no_results','teacher_certificate_status','teacher_diploma_certificate','batch_id')
+            $applicants = Applicant::select('id','rank_points','program_level_id','avn_no_results','entry_mode','teacher_certificate_status','batch_id')
                                     ->whereHas('selections',function($query) use($request, $batch_id){$query->where('application_window_id',$request->get('application_window_id'))
                                     ->where('batch_id',$batch_id)->where('status','ELIGIBLE');})
                                     ->with(['selections:id,order,batch_id,campus_program_id,status,applicant_id','nacteResultDetails:id,applicant_id',
@@ -2655,7 +2701,7 @@ class ApplicationController extends Controller
                                 foreach($applicant->selections as $selection){
                                     if($selection->order == $choice && $selection->batch_id == $batch_id && $selection->campus_program_id == $program->id){
                                         if($count[$program->id] < $program->entryRequirements[0]->max_capacity && !$selected_program[$applicant->id]){
-                                            if($applicant->avn_no_results !== 1){
+                                            if($applicant->avn_no_results !== 1 || ($applicant->avn_no_results == 1 && $applicant->entry_mode == 'DIRECT')){
                                                 $select = ApplicantProgramSelection::find($selection->id);
                                                 $select->status = 'APPROVING';
                                                 $select->status_changed_at = now();
@@ -2669,6 +2715,10 @@ class ApplicationController extends Controller
                                                 break;
                                             }
                                         }
+                                    }
+
+                                    if($selection_status){
+                                        break;
                                     }
                                 }
                             }

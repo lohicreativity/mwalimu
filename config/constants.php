@@ -51,8 +51,11 @@ return [
     'PUBLIC_CERT_PASSWORD' => 'S3R1KAL1',
     'CERT_PASSWORD' => 'MnmaPassword',
 
-    'TCU_USERNAME' => 'MN',
-    'TCU_TOKEN' => 'M6RmtwhsWbVTGycZHxPL',
+    'TCU_USERNAME_KIVUKONI' => 'MN',
+    'TCU_TOKEN_KIVUKONI' => 'M6RmtwhsWbVTGycZHxPL',
+
+    'TCU_USERNAME_KARUME' => 'MNZ',
+    'TCU_TOKEN_KARUME' => '1Hpn63x87qGSRTjr4OfE',
 
     'OUT_USERNAME' => 'MNY',
     'OUT_TOKEN' => '25e82587ea1f95fea54f8d2ae75e1c4e',
