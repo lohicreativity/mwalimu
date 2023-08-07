@@ -848,8 +848,17 @@ class ApplicationController extends Controller
                                 $o_level_schools = $detail->center_name;
                                 $o_level_points = $detail->points;
                                 foreach($detail->results as $result){
+                                    foreach($o_level_grades as $grade=>$points){
+                                        if($result->grade != '' && array_key_exists($result->grade,$o_level_grades)){
+                                            $o_level_results[] = $result->subject_name.'-'.$result->grade.'('.$o_level_grades[$result->grade].') ';
+                                            break;
+                                        }else{
+                                            $o_level_results[] = $result->subject_name.'-'.$result->grade.' ';
+                                            break;
+                                        }
+                                    }
                                     //$a_level_results[] = $result->subject_name.'-'.$result->grade.'('.$a_level_grades[$result->grade].')';
-                                    $o_level_results[] = $result->subject_name.'-'.$result->grade.' ';
+                                    
                                 }
                           }
                       }
@@ -865,8 +874,17 @@ class ApplicationController extends Controller
                                 $a_level_schools    =  $detail->center_name;
                                 $a_level_index      =  $detail->index_number;
                                 foreach($detail->results as $result){
-                                    //$a_level_results[] = $result->subject_name.'-'.$result->grade.'('.$a_level_grades[$result->grade].')';
-                                    $a_level_results[] = $result->subject_name.'-'.$result->grade.' ';
+                                    foreach($a_level_grades as $grade=>$points){
+                                        if($result->grade != '' && array_key_exists($result->grade,$a_level_grades)){
+                                            $a_level_results[] = $result->subject_name.'-'.$result->grade.'('.$a_level_grades[$result->grade].') ';
+                                            break;
+                                        }else{
+                                            $a_level_results[] = $result->subject_name.'-'.$result->grade.' ';
+                                            break;
+                                        }
+
+                                    }
+
                                 }
                                 $a_level_points = $detail->points;
                             } else {
@@ -930,7 +948,6 @@ class ApplicationController extends Controller
                          if(is_array($a_level_schools)){
                             $a_level_schools=implode ($a_level_schools);
                          }
-
                          $phone = !empty($applicant->phone)? substr($applicant->phone,3) : null;
                          $next_of_kin_phone = !empty($applicant->nextOfKin->phone)? substr($applicant->nextOfKin->phone,3) : null;
 
@@ -947,6 +964,7 @@ class ApplicationController extends Controller
                   }
                   fclose($file_handle);
               };
+              //return $callback();
               ApplicationWindow::find($request->get('application_window_id'))->update(['enrollment_report_download_status'=>1]);
               return response()->stream($callback, 200, $headers);
     }
@@ -961,6 +979,7 @@ class ApplicationController extends Controller
         $batch = ApplicationBatch::where('application_window_id',$request->get('application_window_id'))->where('program_level_id',$award->id)->latest()->first();
         $window = ApplicationWindow::where('id',$request->get('application_window_id'))->first();
         
+        $tcu_username = $tcu_token = null;
         if($window->campus_id == 1){
             $tcu_username = config('constants.TCU_USERNAME_KIVUKONI');
             $tcu_token = config('constants.TCU_TOKEN_KIVUKONI');
@@ -4560,16 +4579,17 @@ class ApplicationController extends Controller
      * Retrieve applicants from TCU
      */
     public function getApplicantsFromTCU(Request $request)
-    {   return $request;
+    {   
         if(ApplicantSubmissionLog::where('program_level_id',$request->get('program_level_id'))->where('application_window_id',$request->get('application_window_id'))->count() == 0){
             return redirect()->back()->with('error','Applicants were not sent to TCU');
         } 
 
-        if(1){
+        $tcu_username = $tcu_token = null;
+        if($request->get('campus_id') == 1){
             $tcu_username = config('constants.TCU_USERNAME_KIVUKONI');
             $tcu_token = config('constants.TCU_TOKEN_KIVUKONI');
 
-        }elseif(2){
+        }elseif($request->get('campus_id') == 2){
             $tcu_usernane = config('constants.TCU_USERNAME_KARUME');
             $tcu_token = config('constants.TCU_TOKEN_KARUME');
 
