@@ -35,26 +35,20 @@ use App\Domain\Application\Models\ApplicantProgramSelection;
 */
 
 
-Route::get('send-applicants', function (Request $request) {{
+Route::get('send-applicants', function (Request $request) {
 
-    if($applicant->campus_id == 1){
-        $tcu_username = config('constants.TCU_USERNAME_KIVUKONI');
-        $tcu_token = config('constants.TCU_TOKEN_KIVUKONI');
 
-     }elseif($applicant->campus_id == 2){
-           $tcu_usernane = config('constants.TCU_USERNAME_KARUME');
-           $tcu_token = config('constants.TCU_TOKEN_KARUME');
 
-     }
-
-     $applicants = Applicant::where('program_level_id',4)->where('campus_id', 2)
+    $applicants = Applicant::where('program_level_id',4)->where('campus_id', 2)
 							->where('is_tcu_verified',1)->get(); 
 
-    Applicant::where('program_level_id',4)->where('campus_id', 2)->where('is_tcu_verified',1)->update(['tcu_verified'=>null]);
+    Applicant::where('program_level_id',4)->where('campus_id', 2)->where('is_tcu_verified',1)->update(['is_tcu_verified'=>null]);
 
 
     foreach($applicants as $applicant){
-
+        $tcu_usernane = config('constants.TCU_USERNAME_KARUME');
+        $tcu_token = config('constants.TCU_TOKEN_KARUME');
+        
         $url='http://api.tcu.go.tz/applicants/checkStatus';
         $fullindex=str_replace('-','/',$applicant->index_number);
         $xml_request='<?xml version="1.0" encoding="UTF-8"?> 
@@ -72,11 +66,11 @@ Route::get('send-applicants', function (Request $request) {{
         $array = json_decode($json,TRUE);
         
         if(isset($array['Response'])){
-        $applicant->is_tcu_verified = $array['Response']['ResponseParameters']['StatusCode'] == 202? 1 : 0;
+        $applicant->is_tcu_verified = $array['Response']['ResponseParameters']['StatusCode'] == 202? 2 : 0;
         $applicant->save();
         }
     }
-}
+});
 Route::get('batch-processing', function (Request $request) {
     //$applicant = Applicant::where('index_number',$data['f4indexno'])->where('application_window_id', $request->get('application_window_id'))
 	//						->where('program_level_id',$request->get('program_level_id'))->first(); // from API

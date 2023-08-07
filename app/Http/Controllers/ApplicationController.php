@@ -4560,10 +4560,20 @@ class ApplicationController extends Controller
      * Retrieve applicants from TCU
      */
     public function getApplicantsFromTCU(Request $request)
-    {
+    {   return $request;
         if(ApplicantSubmissionLog::where('program_level_id',$request->get('program_level_id'))->where('application_window_id',$request->get('application_window_id'))->count() == 0){
             return redirect()->back()->with('error','Applicants were not sent to TCU');
         } 
+
+        if(1){
+            $tcu_username = config('constants.TCU_USERNAME_KIVUKONI');
+            $tcu_token = config('constants.TCU_TOKEN_KIVUKONI');
+
+        }elseif(2){
+            $tcu_usernane = config('constants.TCU_USERNAME_KARUME');
+            $tcu_token = config('constants.TCU_TOKEN_KARUME');
+
+        }
 
         $url = 'http://41.59.90.200/applicants/getStatus';
 
@@ -4572,8 +4582,8 @@ class ApplicationController extends Controller
         $xml_request = '<?xml version="1.0" encoding="UTF-8"?>
                         <Request>
                         <UsernameToken>
-                        <Username>'.config('constants.TCU_USERNAME').'</Username>
-                        <SessionToken>'.config('constants.TCU_TOKEN').'</SessionToken>
+                        <Username>'.$tcu_usernane.'</Username>
+                        <SessionToken>'.$tcu_token.'</SessionToken>
                         </UsernameToken>
                         <RequestParameters>
                         <ProgrammeCode>'.$campus_program->regulator_code.'</ProgrammeCode>
