@@ -755,13 +755,13 @@ class ApplicationController extends Controller
                     foreach($applicant->selections as $option){
             
                         if($option->order == 1){
-                            $firstChoice = !empty($option->campusProgram)? $option->campusProgram->code : "N/A";
+                            $firstChoice = $option->campusProgram->code;
                         }elseif($option->order == 2){
-                            $secondChoice = !empty($option->campusProgram)? $option->campusProgram->code : "N/A";
+                            $secondChoice = $option->campusProgram->code;
                         }elseif($option->order == 3){
-                            $thirdChoice = !empty($option->campusProgram)? $option->campusProgram->code : "N/A";
+                            $thirdChoice = $option->campusProgram->code;
                         }elseif($option->order == 4){
-                            $fourthChoice = !empty($option->campusProgram)? $option->campusProgram->code : "N/A";
+                            $fourthChoice = $option->campusProgram->code;
                         }
                     }
             
