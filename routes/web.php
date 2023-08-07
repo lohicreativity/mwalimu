@@ -47,11 +47,11 @@ Route::get('send-applicants', function (Request $request) {{
 
      }
 
-     Applicant::where('program_level_id',4)->where('campus_id', 2)
-							->where('is_tcu_verified',1)->update(['tcu_verified'=>null]);
-
      $applicants = Applicant::where('program_level_id',4)->where('campus_id', 2)
 							->where('is_tcu_verified',1)->get(); 
+
+    Applicant::where('program_level_id',4)->where('campus_id', 2)->where('is_tcu_verified',1)->update(['tcu_verified'=>null]);
+
 
     foreach($applicants as $applicant){
 
